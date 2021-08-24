@@ -54,6 +54,8 @@
     <Compile Include="ModConfig.cs" />
     <None Include="i18n %28unofficial languages%29\Polish\pt.json" />
     <None Include="i18n\default.json" />
+    <None Include="itemConfigs\items_exampleMod.json" />
+    <None Include="itemConfigs\items_vanilla.json" />
     <None Include="ModEntry.cs.old" />
     <Compile Include="Minigames.cs" />
     <Compile Include="ModEntry.cs" />
@@ -67,9 +69,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\bait_magnet.png" />
     <Content Include="assets\fishy.wav" />
     <Content Include="assets\rod_farmer.png" />
     <Content Include="assets\rod_sprites.png" />
+    <Content Include="assets\tackle_basic.png" />
+    <Content Include="assets\tackle_curiosity.png" />
+    <Content Include="assets\tackle_quality.png" />
+    <Content Include="assets\tackle_spinners.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />

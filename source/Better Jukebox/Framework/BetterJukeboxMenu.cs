@@ -260,14 +260,6 @@ namespace Gaphodil.BetterJukebox.Framework
             this.yPositionOnScreen = Game1.uiViewport.Height / 2 - (h + borderWidth * 2) / 2;
             // setup ui
             SetUpPositions();
-
-            // from ShopMenu: 
-            if (Game1.options.snappyMenus && Game1.options.gamepadControls)
-            {
-                base.populateClickableComponentList();
-                snapToDefaultClickableComponent();
-            }
-
         }
 
         /// <summary>The action that is taken when an option is selected.</summary>
@@ -529,6 +521,13 @@ namespace Gaphodil.BetterJukebox.Framework
             UpdateVisibleOptions();
 
             SetScrollBarToLowestVisibleIndex();
+
+            // from ShopMenu, moved here to fix resize issue
+            if (Game1.options.snappyMenus && Game1.options.gamepadControls)
+            {
+                base.populateClickableComponentList();
+                snapToDefaultClickableComponent();
+            }
         }
 
         /// <summary>Repositions tabs so that the active one is positioned in front.</summary>

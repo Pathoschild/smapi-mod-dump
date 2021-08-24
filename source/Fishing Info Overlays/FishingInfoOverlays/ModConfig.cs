@@ -21,6 +21,8 @@ namespace StardewMods
 		public int[] BarMaxIconsPerRow { get; set; } = { 20, 20, 20, 20 };
 		public int[] BarBackgroundMode { get; set; } = { 0, 0, 0, 0 };
 		public string Comment_BarBackgroundMode { get; set; } = "Above BarBackgroundMode values: 0= Circles (behind each icon), 1= Rectangle (behind everything), 2= Off";
+		public int[] BarBackgroundColorRGBA { get; set; } = { 0, 0, 0, 128 };
+		public int[] BarTextColorRGBA { get; set; } = { 255, 255, 255, 255 };
 		public bool[] BarShowBaitAndTackleInfo { get; set; } = { true, true, true, true };
 		public bool[] BarShowPercentages { get; set; } = { true, true, true, true };
 		public int[] BarSortMode { get; set; } = { 0, 0, 0, 0 };

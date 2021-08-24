@@ -180,9 +180,10 @@ namespace CustomDeathPenaltyPlus
 
             // Edit strings
             this.Helper.Content.AssetEditors.Add(new AssetEditor.StringsFromCSFilesFixes(Helper));
-            
+
             // Edit mail
             this.Helper.Content.AssetEditors.Add(new AssetEditor.MailDataFixes(Helper));
+
         }
 
         /// <summary>Raised after the game state is updated</summary>
@@ -511,7 +512,6 @@ namespace CustomDeathPenaltyPlus
         /// <param name="e">The event data.</param>
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
-
             if (!Game1.player.modData.ContainsKey($"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday"))
             {
                 Game1.player.modData.Add($"{this.ModManifest.UniqueID}.DidPlayerPassOutYesterday", "false");

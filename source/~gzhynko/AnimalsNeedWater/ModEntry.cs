@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AnimalsNeedWater.Patching;
 using AnimalsNeedWater.Types;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -485,7 +485,7 @@ namespace AnimalsNeedWater
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            var harmony = HarmonyInstance.Create("GZhynko.AnimalsNeedWater");
+            var harmony = new Harmony(ModManifest.UniqueID);
             
             ModMonitor.VerboseLog("Patching AnimalHouse.performToolAction.");
             harmony.Patch(

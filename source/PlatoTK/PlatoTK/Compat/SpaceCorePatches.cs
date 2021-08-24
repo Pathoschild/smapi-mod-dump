@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System;
@@ -18,7 +18,7 @@ namespace PlatoTK.Compat
     internal static class SpaceCorePatches
     {
 
-        public static void PatchSpaceCore(IModHelper helper, HarmonyInstance instance)
+        public static void PatchSpaceCore(IModHelper helper, Harmony instance)
         {
             if (!helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
                 return;

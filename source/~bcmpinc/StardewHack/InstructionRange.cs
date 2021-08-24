@@ -8,11 +8,12 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using StardewModdingAPI;
+using System.Runtime.Serialization;
 
 namespace StardewHack
 {
@@ -70,13 +71,13 @@ namespace StardewHack
             }
             // No match found, throw a descriptive Exception.
             if (contains.Length == 1) {
-                throw new IndexOutOfRangeException("Could not find instruction: '"+contains[0]+"'");
+                throw new InstructionNotFoundException("Could not find instruction: '"+contains[0]+"'");
             } 
             System.Text.StringBuilder msg = new System.Text.StringBuilder($"Could not find instruction sequence (failed to match line {best_match}: \"{best_text}\"):");
             foreach (Object obj in contains) {
                 msg.Append("\n  " + obj);
             }
-            throw new IndexOutOfRangeException(msg.ToString());
+            throw new InstructionNotFoundException(msg.ToString());
         }
 
         /// <summary>
@@ -226,11 +227,11 @@ namespace StardewHack
         public InstructionRange Follow(int i) {
             var op = insts[start+i].operand;
             if (op == null || !(op is Label)) {
-                throw new Exception("Expected a branch instruction, got: "+insts[start+i]);
+                throw new InvalidBranchException("Expected a branch instruction, got: "+insts[start+i]);
             }
             Label lbl = (Label)op;
             int pos = insts.FindIndex(inst => inst.labels.Contains(lbl));
-            if (pos < 0) throw new Exception($"Label not found: LBL_{lbl.GetHashCode()}");
+            if (pos < 0) throw new InvalidBranchException($"Label not found: LBL_{lbl.GetHashCode()}");
             var res = new InstructionRange(insts, pos, 0);
             // Hack.Log($"Jump points to {pos}:");
             return res;
@@ -280,5 +281,13 @@ namespace StardewHack
             return string.Format ("[InstructionRange[{0}..{1}], length={2}]", start, start+length-1, length);
         }
     }
+
+    public class InstructionNotFoundException : Exception {
+        public InstructionNotFoundException(string message) : base(message) {}
+    }
+    public class InvalidBranchException : Exception {
+        public InvalidBranchException(string message) : base(message) { }
+    }
+
 }
 

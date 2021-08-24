@@ -22,27 +22,18 @@ Unique key is a combination of __\<item name\>:\<item id\>__
 Unique key was tested on every item, and from __2000+__ items __only 2__ was not unique (two Copper Pans :/)
 
 ---
-
-Place item in research area, and you will get output in console like
-
-```
-[Item Research 'n' Spawn] Current item - name: Deluxe Speed-Gro, ID: 466, category: Usable
-[Item Research 'n' Spawn] Unique key: Deluxe Speed-Gro:466
-```
-
-Where "_Deluxe Speed-Gro:466_" is unique key (case sensitive)
-
----
-Open you mod save file located in    
-.../Stardew Valley/Mods/ItemResearchSpawner/save/\<farmer\>_\<farm\>/progress.json
-
-Find your item key by searching it (Ctrl+F in most editors)
+1. Select item in hotbar   
+2. Use command ```rns_get_key``` to get unique key
+3. Get key. Ex.: "Wood:388"
 
 ### Balance categories
 
 You can balance categories by changing needed for research count, base item price and change item categories
 
-Open mod categories file located in .../Stardew Valley/Mods/ItemResearchSpawner/assets/categories-progress.json
+**Remember that by default mod forces default categories and pricelist. Either modify the files in assets folder or turn that of in config.**
+
+Open mod default categories file located in .../Stardew Valley/Mods/ItemResearchSpawner/assets/config/categories.json   
+or dump it using the following command ```rns_dump_categories```
 
 File has the following syntax:
 
@@ -90,23 +81,28 @@ If you experienced enough you can use ObjCategory, ItemId, Class as well. Howeve
 the first category that privatise the item, will have it. If you want to add item to category below, you __should add it to 
 "When" of new category and to "Except" in old category__.
 
-You can upload you file or its content to ["Categories balancing" forum topic](https://www.nexusmods.com/stardewvalley/mods/8933/?tab=forum&topic_id=10179748)
+You can upload your file content to ["Categories balancing" forum topic](https://www.nexusmods.com/stardewvalley/mods/8933/?tab=forum&topic_id=10179748)
+
+If you dumped file, load it using the following command ```rns_load_categories``` (Remember to save the day :))
 
 ### Balance individual item prices
 
-You can change items prices (for menu only) by commands and file price-config.json
+You can change items prices (for menu only) by commands and file pricelist.json
+
+**Remember that by default mod forces default categories and pricelist. Either modify the files in assets folder or turn that of in config.**
 
 ```
-research_set_price [0+] //change price for hotbar active item for "Buy" mode. Price must be non-negative!
+rns_set_price [0+] //change price for hotbar active item for "Buy" mode. Price must be non-negative!
 
-research_reset_price //reset price for hotbar active item for "Buy" mode to initial values
+rns_reset_price //reset price for hotbar active item for "Buy" mode to initial values
 ```
 
 This commands will change the item price globally for all farms   
 __Please open menu at least once and execute commands in game only!__
 
 In addition, you can change the config file located in
-.../Stardew Valley/Mods/ItemResearchSpawner/price-config.json
+.../Stardew Valley/Mods/ItemResearchSpawner/assets/config/pricelist.json    
+or dump it using the following command ```rns_dump_pricelist```
 
 File has the following syntax:
 
@@ -126,7 +122,9 @@ apply changes in game. Note the game auto-saves and loads the content of the fil
 research_reload_prices //load prices from price-config.json file
 ```
 
-You can upload you file or its content to ["Individual item prices balancing" forum topic](https://www.nexusmods.com/stardewvalley/mods/8933/?tab=forum&topic_id=10179773)
+You can upload you file content to ["Individual item prices balancing" forum topic](https://www.nexusmods.com/stardewvalley/mods/8933/?tab=forum&topic_id=10179773)
+
+If you dumped file, load it using the following command ```rns_load_pricelist``` (Remember to save the day :))
 
 ### Suggest improvement
 

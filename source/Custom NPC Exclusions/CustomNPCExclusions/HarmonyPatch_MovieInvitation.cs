@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -24,7 +24,7 @@ namespace CustomNPCExclusions
     /// <summary>A Harmony patch that excludes designated NPCs from being invited to the movie theater.</summary>
     public static class HarmonyPatch_MovieInvitation
     {
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_MovieInvitation)}\": transpiling SDV method \"NPC.tryToReceiveActiveObject(Farmer)\".", LogLevel.Trace);
             harmony.Patch(
@@ -34,6 +34,35 @@ namespace CustomNPCExclusions
         }
 
         /// <summary>Inserts an exclusion check and dialogue generation method at the beginning of the "receive Movie Ticket" code section.</summary>
+        /// <remarks>
+        /// Old C#:
+        ///     if ((int)who.ActiveObject.parentSheetIndex == 809 && !who.ActiveObject.bigCraftable)
+        ///     {
+        ///         if (!Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater"))
+        ///
+        /// New C#:
+        ///     if ((int)who.ActiveObject.parentSheetIndex == 809 && !who.ActiveObject.bigCraftable)
+        ///     {
+        ///	        if (ExcludeNPCFromTheaterInvitation(who))
+        ///		        return;
+        ///	        if (!Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater"))
+        ///		
+        /// Old IL:
+        ///     brtrue IL_0d18
+        ///     ldstr "ccMovieTheater"
+        ///     call bool StardewValley.Utility::doesMasterPlayerHaveMailReceivedButNotMailForTomorrow(string)
+        ///     brtrue.s IL_0796
+        /// 
+        /// New IL:
+        ///     brtrue IL_0d18
+        ///     ldarg.0
+        ///     call bool CustomNPCExclusions.HarmonyPatch_MovieInvitation::ExcludeNPCFromTheaterInvitation(NPC)
+        ///     brfalse.s NEW_LABEL
+        ///     ret
+        ///     ldstr "ccMovieTheater" [NEW_LABEL]
+        ///     call bool StardewValley.Utility::doesMasterPlayerHaveMailReceivedButNotMailForTomorrow(string)
+        ///     brtrue.s IL_0796
+        /// </remarks>
         public static IEnumerable<CodeInstruction> NPC_tryToReceiveActiveObject(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             try

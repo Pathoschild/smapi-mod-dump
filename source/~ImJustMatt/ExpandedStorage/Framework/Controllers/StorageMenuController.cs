@@ -9,9 +9,9 @@
 *************************************************/
 
 using System;
-using ImJustMatt.Common.Extensions;
+using XSAutomate.Common.Extensions;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Controllers
+namespace ExpandedStorage.Framework.Controllers
 {
     internal class StorageMenuController
     {

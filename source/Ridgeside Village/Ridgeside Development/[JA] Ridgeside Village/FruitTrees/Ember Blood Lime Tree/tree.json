@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Ember Blood Lime Tree",
+  "Product": "Ember Blood Lime",
+  "SaplingName": "Ember Blood Lime Sapling",
+  "SaplingDescription": "Takes 28 days to produce a mature Ember Blood Lime tree. Ready to harvest in the fall. Only grows if the 8 surrounding tiles are empty.",
+  "Season": "fall",
+  "SaplingPurchasePrice": 6000,
+}

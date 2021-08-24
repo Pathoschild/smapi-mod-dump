@@ -10,7 +10,7 @@
 
 {
   "Name": "Fishing Minigames",
-  "Author": "barteke22 (Here Fishy by aedenthorn)",
+  "Author": "barteke22 (Here Fishy base by aedenthorn)",
   "Version": "0.4.0",
   "Description": "Alternative fishing minigames, including Here Fishy Fishy.",
   "UniqueID": "barteke22.FishingMinigames",
@@ -22,5 +22,5 @@
       "IsRequired": false
     }
   ],
-  "UpdateKeys": [ "Nexus:" ]
+  "UpdateKeys": [ "Nexus:9345" ]
 }

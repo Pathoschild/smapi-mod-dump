@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Cherry Pluot",
+  "Description": "a sweet mixture of plum and apricot hybridizing with a foreign variant of cherry.",
+  "Category": "Fruit",
+  "Edibility": 18,
+  "Price": 150,
+  "IsColored": false,
+  "GiftTastes":
+  {
+  "Love": ["Blair", "Alissa", "Jeric"],
+  "Like": ["Sam", "Sebastian", "Vincent"],
+  },
+}

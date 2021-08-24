@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "BedEnergyRegain",
+  "Name": "PowerNap",
   "Author": "LakeMonster_",
-  "Version": "1.1.0",
-  "Description": "This mod will allow the player to regain energy when they are in their bed.",
-  "UniqueID": "LakeMonster_.BedEnergyRegain",
-  "EntryDll": "BedEnergyRegain.dll",
+  "Version": "1.2.0",
+  "Description": "This mod will allow the player to regain energy when they are in their bed in single player games.",
+  "UniqueID": "LakeMonster_.PowerNap",
+  "EntryDll": "PowerNap.dll",
   "MinimumApiVersion": "2.10.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:5256" ]
 }

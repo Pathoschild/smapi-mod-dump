@@ -94,7 +94,10 @@ namespace FarmAnimalVarietyRedux
         public static Dictionary<AnimalProduce, StardewValley.Object> GetPendingProduceDrops(FarmAnimal animal, HarvestType harvestType, Predicate<AnimalProduce> harvestableProducePredicate = null)
         {
             var pendingProduceDrops = new Dictionary<AnimalProduce, StardewValley.Object>();
+            
             var subtype = ModEntry.Instance.Api.GetAnimalSubtypeByInternalName(animal.type);
+            if (subtype?.Produce == null || subtype.Produce.Count == 0)
+                return pendingProduceDrops;
 
             // get all modData products
             var parsedProduces = new List<SavedProduceData>();

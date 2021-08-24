@@ -15,7 +15,7 @@ using StardewModdingAPI.Utilities;
 
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace ImJustMatt.ExpandedStorage.Framework.Models
+namespace ExpandedStorage.Framework.Models
 {
     internal class ControlsModel
     {

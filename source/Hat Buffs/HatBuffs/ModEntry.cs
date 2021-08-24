@@ -35,6 +35,7 @@ namespace HatBuffs
         {
             helper.Events.GameLoop.UpdateTicked+= this.OnUpdateTicked;
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
         }
 
 
@@ -47,10 +48,8 @@ namespace HatBuffs
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            buffs.Add("", new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, "UsefulHats", ""));
-
-            // TODO: add more hats
             // public Buff(int farming, int fishing, int mining, int digging, int luck, int foraging, int crafting, int maxStamina, int magneticRadius, int speed, int defense, int attack, int minutesDuration, string source, string displaySource)
+
             buffs.Add("Sailor's Cap", new Buff(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, "UsefulHats", "Sailor's Cap"));
             buffs.Add("Bowler Hat", new Buff(0, 0, 0, 0, 0, 0, 0, 30, 0, 0, 0, 0, 1, "UsefulHats", "Bowler Hat"));
             buffs.Add("Straw Hat", new Buff(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, "UsefulHats", "Straw Hat"));
@@ -77,7 +76,21 @@ namespace HatBuffs
             buffs.Add("Chicken Mask", new Buff(0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 1, "UsefulHats", "Chicken Mask"));
             buffs.Add("Totem Mask", new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, "UsefulHats", "Totem Mask"));
             buffs.Add("Golden Mask", new Buff(0, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 1, "UsefulHats", "Golden Mask"));
+
+            buffs.Add("Fedora", new Buff(0, 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 1, "UsefulHats", "Fedora"));
+            buffs.Add("Top Hat", new Buff(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, "UsefulHats", "Top Hat"));
+            buffs.Add("Tropiclip", new Buff(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, "UsefulHats", "Tropiclip"));
+            buffs.Add("Archer's Cap", new Buff(0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, "UsefulHats", "Archer's Cap"));
+            buffs.Add("Tiara", new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, "UsefulHats", "Tiara"));
         }
+
+
+        // refreshes buffs in the morning
+        private void OnDayStarted(object sender, EventArgs e)
+        {
+            currentBuff = null;
+        }
+
 
 
         private void OnUpdateTicked(object sender, EventArgs e)

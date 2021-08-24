@@ -24,16 +24,21 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
-using Object = StardewValley.Object;
 using xTile;
 using xTile.Layers;
 using xTile.Tiles;
+using Object = StardewValley.Object;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using System.Reflection;
+using Harmony;
 
 namespace FarmExpansion.Framework
 {
     public class FEFramework
     {
+        public event EventHandler BeforeRemoveEvent;
+        public event EventHandler AfterAppendEvent;
+
         internal IModHelper helper;
         internal IMonitor monitor;
 
@@ -53,6 +58,11 @@ namespace FarmExpansion.Framework
         internal Texture2D TreeTransplantFarmIcon;
         private IClickableMenu menuOverride;
         private bool overridableMenuActive;
+
+        static FEFramework()
+        {
+            HarmonyInstance.Create("FarmExpansion.Framework.FEFramework").PatchAll(Assembly.GetExecutingAssembly());
+        }
 
         public FEFramework(IModHelper helper, IMonitor monitor)
         {
@@ -104,120 +114,152 @@ namespace FarmExpansion.Framework
             }
         }*/
 
-        internal void ControlEvents_MouseChanged(object sender, EventArgsMouseStateChanged e)
+        internal void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+        {
+            if (!overridableMenuActive)
+                return;
+
+            if (e.Button == SButton.MouseLeft)
+                menuOverride.receiveLeftClick(Game1.getMouseX(), Game1.getMouseY(), false);
+        }
+
+        internal void OnCursorMoved(object sender, CursorMovedEventArgs e)
         {
             if (!overridableMenuActive)
                 return;
 
             menuOverride.performHoverAction(Game1.getMouseX(), Game1.getMouseY());
-
-            if (e.NewState.LeftButton == ButtonState.Pressed && e.PriorState.LeftButton != ButtonState.Pressed)
-                menuOverride.receiveLeftClick(Game1.getMouseX(), Game1.getMouseY(), false);
         }
 
-        internal void GraphicsEvents_OnPreRenderGuiEvent(object sender, EventArgs e)
+        /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised before that menu is drawn to the screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void RenderingActiveMenu(object sender, EventArgs e)
         {
             menuOverride.draw(Game1.spriteBatch);
         }
 
-        internal void MenuEvents_MenuChanged(object sender, EventArgsClickableMenuChanged e)
+        /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
-            // Add farm expansion point to world map
-            if (e.NewMenu is GameMenu)
+            switch (e.NewMenu)
             {
-                MapPage mp = null;
-
-                foreach (IClickableMenu page in this.helper.Reflection.GetField<List<IClickableMenu>>(Game1.activeClickableMenu, "pages").GetValue())
-                {
-                    if (!(page is MapPage))
-                        continue;
-                    mp = page as MapPage;
-                    break;
-                }
-                if (mp == null)
-                    return;
-
-                int mapX = this.helper.Reflection.GetField<int>(mp, "mapX").GetValue();
-                int mapY = this.helper.Reflection.GetField<int>(mp, "mapY").GetValue();
-                Rectangle locationOnMap = new Rectangle(mapX + 156, mapY + 272, 100, 80);
-
-                mp.points.Add(new ClickableComponent(locationOnMap, "Farm Expansion"));
-
-                foreach (ClickableComponent cc in mp.points)
-                {
-                    if (cc.myID != 1030)
-                        continue;
-
-                    cc.bounds.Width -= 64;
-                    break;
-                }
-
-                if (Game1.currentLocation == farmExpansion)
-                {
-                    this.helper.Reflection.GetField<Vector2>(mp, "playerMapPosition").SetValue(new Vector2(mapX + 50 * Game1.pixelZoom, mapY + 75 * Game1.pixelZoom));
-                    this.helper.Reflection.GetField<string>(mp, "playerLocationName").SetValue("Farm Expansion");
-                }
-                return;
-            }
-            // Intercept carpenter menu
-            if (e.NewMenu is CarpenterMenu)
-            {
-                if (!this.helper.Reflection.GetField<bool>(e.NewMenu, "magicalConstruction").GetValue())
-                    Game1.activeClickableMenu = new FECarpenterMenu(this, this.FarmBlueprints.ToArray(), this.ExpansionBlueprints.ToArray()); // copy blueprint lists to avoid saving temporary blueprints
-                return;
-            }
-            // Intercept purchase animals menu
-            if (e.NewMenu is PurchaseAnimalsMenu)
-            {
-                Game1.activeClickableMenu = new FEPurchaseAnimalsMenu(this);
-                return;
-            }
-            // Fixes infinite loop when animals hatch on farm expansion
-            if (e.NewMenu is NamingMenu)
-            {
-                foreach (Building building in farmExpansion.buildings)
-                    if (building.indoors != null && building.indoors == Game1.currentLocation)
-                        Game1.getFarm().buildings.AddRange(farmExpansion.buildings);
-                return;
-            }
-            if (IsTreeTransplantLoaded)
-                if (e.NewMenu.GetType().FullName.Equals("TreeTransplant.TreeTransplantMenu"))
-                {
-                    if (TreeTransplantFarmIcon == null)
+                // menu closed
+                case null:
+                    if (e.OldMenu is NamingMenu)
                     {
-                        try
+                        foreach (Building building in farmExpansion.buildings)
+                            Game1.getFarm().buildings.Remove(building);
+                    }
+
+                    if (IsTreeTransplantLoaded)
+                    {
+                        if (e.OldMenu.GetType().FullName.Equals("TreeTransplant.TreeTransplantMenu"))
                         {
-                            this.TreeTransplantFarmIcon = this.helper.Content.Load<Texture2D>(@"assets\TreeTransplantFarmIcon.png");
-                        }
-                        catch(Exception ex)
-                        {
-                            this.monitor.Log($"Could not load the menu icon for TreeTransplant compatibility.\n{ex}");
-                            return;
+                            helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
+                            helper.Events.Input.CursorMoved -= this.OnCursorMoved;
+                            helper.Events.Display.RenderingActiveMenu -= this.RenderingActiveMenu;
+                            overridableMenuActive = false;
+                            menuOverride = null;
                         }
                     }
-                    menuOverride = new FETreeTransplantMenu(this, e.NewMenu);
-                    overridableMenuActive = true;
-                    GraphicsEvents.OnPreRenderGuiEvent += this.GraphicsEvents_OnPreRenderGuiEvent;
-                    ControlEvents.MouseChanged += this.ControlEvents_MouseChanged;
-                }
+                    break;
+
+                // Add farm expansion point to world map
+                case GameMenu _:
+                    {
+                        MapPage mp = null;
+
+                        foreach (IClickableMenu page in this.helper.Reflection.GetField<List<IClickableMenu>>(Game1.activeClickableMenu, "pages").GetValue())
+                        {
+                            if (!(page is MapPage))
+                                continue;
+                            mp = page as MapPage;
+                            break;
+                        }
+                        if (mp == null)
+                            return;
+
+                        int mapX = this.helper.Reflection.GetField<int>(mp, "mapX").GetValue();
+                        int mapY = this.helper.Reflection.GetField<int>(mp, "mapY").GetValue();
+                        Rectangle locationOnMap = new Rectangle(mapX + 156, mapY + 272, 100, 80);
+
+                        mp.points.Add(new ClickableComponent(locationOnMap, "Farm Expansion"));
+
+                        foreach (ClickableComponent cc in mp.points)
+                        {
+                            if (cc.myID != 1030)
+                                continue;
+
+                            cc.bounds.Width -= 64;
+                            break;
+                        }
+
+                        if (Game1.currentLocation == farmExpansion)
+                        {
+                            // may result in wrong map position, getPlayerMapPosition is complex 600-line method in SDV1.3 instead of just a
+                            // simple Vector2 field to be assigned. But at glance everything seems to work allright even without this hack.
+                            //this.helper.Reflection.GetField<Vector2>(mp, "playerMapPosition").SetValue(new Vector2(mapX + 50 * Game1.pixelZoom, mapY + 75 * Game1.pixelZoom));
+                            this.helper.Reflection.GetField<string>(mp, "playerLocationName").SetValue("Farm Expansion");
+                        }
+                        return;
+                    }
+
+                // Intercept carpenter menu
+                case CarpenterMenu _:
+                    if (!this.helper.Reflection.GetField<bool>(e.NewMenu, "magicalConstruction").GetValue())
+                        Game1.activeClickableMenu = new FECarpenterMenu(this, this.FarmBlueprints.ToArray(), this.ExpansionBlueprints.ToArray()); // copy blueprint lists to avoid saving temporary blueprints
+                    return;
+
+                // Intercept purchase animals menu
+                case PurchaseAnimalsMenu _:
+                    Game1.activeClickableMenu = new FEPurchaseAnimalsMenu(this);
+                    return;
+
+                // Fixes infinite loop when animals hatch on farm expansion
+                case NamingMenu _:
+                    foreach (Building building in farmExpansion.buildings)
+                    {
+                        if (building.indoors.Value != null && building.indoors.Value == Game1.currentLocation)
+                        {
+                            foreach (var b in farmExpansion.buildings)
+                                Game1.getFarm().buildings.Add(b);
+                        }
+                    }
+                    return;
+
+                default:
+                    if (IsTreeTransplantLoaded && e.NewMenu.GetType().FullName.Equals("TreeTransplant.TreeTransplantMenu"))
+                    {
+                        if (TreeTransplantFarmIcon == null)
+                        {
+                            try
+                            {
+                                this.TreeTransplantFarmIcon = this.helper.Content.Load<Texture2D>(@"assets\TreeTransplantFarmIcon.png");
+                            }
+                            catch (Exception ex)
+                            {
+                                this.monitor.Log($"Could not load the menu icon for TreeTransplant compatibility.\n{ex}");
+                                return;
+                            }
+                        }
+                        menuOverride = new FETreeTransplantMenu(this, e.NewMenu);
+                        overridableMenuActive = true;
+                        helper.Events.Display.RenderingActiveMenu += this.RenderingActiveMenu;
+                        helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+                        helper.Events.Input.CursorMoved += this.OnCursorMoved;
+                    }
+
+                    break;
+            }
         }
 
-        internal void MenuEvents_MenuClosed(object sender, EventArgsClickableMenuClosed e)
-        {
-            if (e.PriorMenu is NamingMenu)
-                foreach (Building building in farmExpansion.buildings)
-                    Game1.getFarm().buildings.Remove(building);
-            if (IsTreeTransplantLoaded)
-                if (e.PriorMenu.GetType().FullName.Equals("TreeTransplant.TreeTransplantMenu"))
-                {
-                    ControlEvents.MouseChanged -= this.ControlEvents_MouseChanged;
-                    GraphicsEvents.OnPreRenderGuiEvent -= this.GraphicsEvents_OnPreRenderGuiEvent;
-                    overridableMenuActive = false;
-                    menuOverride = null;
-                }
-        }
-
-        internal void SaveEvents_AfterLoad(object sender, EventArgs e)
+        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             try
             {
@@ -227,13 +269,12 @@ namespace FarmExpansion.Framework
             catch (Exception ex)
             {
                 //ControlEvents.KeyPressed -= this.ControlEvents_KeyPress;
-                MenuEvents.MenuChanged -= this.MenuEvents_MenuChanged;
-                MenuEvents.MenuClosed -= this.MenuEvents_MenuClosed;
-                SaveEvents.AfterLoad -= this.SaveEvents_AfterLoad;
-                SaveEvents.BeforeSave -= this.SaveEvents_BeforeSave;
-                SaveEvents.AfterSave -= this.SaveEvents_AfterSave;
-                SaveEvents.AfterReturnToTitle -= this.SaveEvents_AfterReturnToTitle;
-                TimeEvents.AfterDayStarted -= this.TimeEvents_AfterDayStarted;
+                helper.Events.Display.MenuChanged -= this.OnMenuChanged;
+                helper.Events.GameLoop.SaveLoaded -= this.OnSaveLoaded;
+                helper.Events.GameLoop.Saving -= this.OnSaving;
+                helper.Events.GameLoop.Saved -= this.OnSaved;
+                helper.Events.GameLoop.ReturnedToTitle -= this.OnReturnedToTitle;
+                helper.Events.GameLoop.DayStarted -= this.OnDayStarted;
 
                 monitor.Log(ex.Message, LogLevel.Error);
                 monitor.Log($"Unable to load map file 'FarmExpansion.tbin', unloading mod. Please try re-installing the mod.", LogLevel.Alert);
@@ -244,8 +285,8 @@ namespace FarmExpansion.Framework
             {
                 farmExpansion = new FarmExpansion(map, "FarmExpansion", this)
                 {
-                    isFarm = true,
-                    isOutdoors = true
+                    IsFarm = true,
+                    IsOutdoors = true
                 };
                 /*if (Game1.currentSeason.Equals("winter"))
                 {
@@ -271,39 +312,58 @@ namespace FarmExpansion.Framework
             }
 
             Game1.locations.Add(farmExpansion);
+            AfterAppendEvent?.Invoke(farmExpansion, EventArgs.Empty);
             PatchMap();
             RepairBuildingWarps();
         }
 
-        internal void SaveEvents_BeforeSave(object sender, EventArgs e)
+        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void OnSaving(object sender, SavingEventArgs e)
         {
             Save();
+            BeforeRemoveEvent?.Invoke(farmExpansion, EventArgs.Empty);
             Game1.locations.Remove(farmExpansion);
         }
 
-        internal void SaveEvents_AfterSave(object sender, EventArgs e)
+        /// <summary>Raised after the game finishes writing data to the save file (except the initial save creation).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void OnSaved(object sender, SavedEventArgs e)
         {
             Game1.locations.Add(farmExpansion);
+            AfterAppendEvent?.Invoke(farmExpansion, EventArgs.Empty);
         }
 
-        internal void SaveEvents_AfterReturnToTitle(object sender, EventArgs e)
+        /// <summary>Raised after the game returns to the title screen.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             farmExpansion = null;
             map = null;
         }
 
-        internal void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        internal void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (Game1.isRaining)
-                foreach (KeyValuePair<Vector2, TerrainFeature> pair in farmExpansion.terrainFeatures)
-                    if (pair.Value != null && pair.Value is HoeDirt)
-                        ((HoeDirt)pair.Value).state = 1;
+            {
+                foreach (var feature in farmExpansion.terrainFeatures.Values)
+                {
+                    if (feature is HoeDirt dirt)
+                        dirt.state.Value = 1;
+                }
+            }
 
             foreach (Building current in farmExpansion.buildings)
-                if (current.indoors != null)
-                    for (int k = current.indoors.objects.Count - 1; k >= 0; k--)
-                        if (current.indoors.objects[current.indoors.objects.Keys.ElementAt(k)].minutesElapsed(3000 - Game1.timeOfDay, current.indoors))
-                            current.indoors.objects.Remove(current.indoors.objects.Keys.ElementAt(k));
+                if (current.indoors.Value != null)
+                    for (int k = current.indoors.Value.objects.Count() - 1; k >= 0; k--)
+                        if (current.indoors.Value.objects[current.indoors.Value.objects.Keys.ElementAt(k)].minutesElapsed(3000 - Game1.timeOfDay, current.indoors.Value))
+                            current.indoors.Value.objects.Remove(current.indoors.Value.objects.Keys.ElementAt(k));
 
             if (Game1.player.currentUpgrade != null)
                 if (farmExpansion.objects.ContainsKey(new Vector2(Game1.player.currentUpgrade.positionOfCarpenter.X / Game1.tileSize, Game1.player.currentUpgrade.positionOfCarpenter.Y / Game1.tileSize)))
@@ -321,12 +381,11 @@ namespace FarmExpansion.Framework
 
                     foreach (NPC npc in location.characters)
                     {
-                        if (!npc.name.Equals("Robin"))
+                        if (!npc.Name.Equals("Robin"))
                             continue;
 
                         robin = npc;
-                        npc.ignoreMultiplayerUpdates = true;
-                        npc.sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
+                        npc.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
                         {
                             new FarmerSprite.AnimationFrame(24, 75),
                             new FarmerSprite.AnimationFrame(25, 75),
@@ -335,20 +394,26 @@ namespace FarmExpansion.Framework
                         });
                         npc.ignoreScheduleToday = true;
                         Building buildingUnderConstruction = farmExpansion.getBuildingUnderConstruction();
-                        if (buildingUnderConstruction.daysUntilUpgrade > 0)
+                        if (buildingUnderConstruction.daysUntilUpgrade.Value > 0)
                         {
-                            if (!buildingUnderConstruction.indoors.characters.Contains(npc))
-                                buildingUnderConstruction.indoors.addCharacter(npc);
+                            if (!buildingUnderConstruction.indoors.Value.characters.Contains(npc))
+                                buildingUnderConstruction.indoors.Value.addCharacter(npc);
 
                             if (npc.currentLocation != null)
                                 npc.currentLocation.characters.Remove(npc);
 
-                            npc.currentLocation = buildingUnderConstruction.indoors;
+                            npc.currentLocation = buildingUnderConstruction.indoors.Value;
                             npc.setTilePosition(1, 5);
                         }
                         else
                         {
-                            Game1.warpCharacter(npc, "FarmExpansion", new Vector2(buildingUnderConstruction.tileX + buildingUnderConstruction.tilesWide / 2, buildingUnderConstruction.tileY + buildingUnderConstruction.tilesHigh / 2), false, false);
+                            Game1.warpCharacter(
+                                npc,
+                                "FarmExpansion",
+                                new Vector2(
+                                    buildingUnderConstruction.tileX.Value + buildingUnderConstruction.tilesWide.Value / 2,
+                                    buildingUnderConstruction.tileY.Value + buildingUnderConstruction.tilesHigh.Value / 2
+                                ));
                             npc.position.X = npc.position.X + Game1.tileSize / 4;
                             npc.position.Y = npc.position.Y - Game1.tileSize / 2;
                         }
@@ -384,8 +449,8 @@ namespace FarmExpansion.Framework
         {
             farmExpansion = new FarmExpansion(map, "FarmExpansion", this)
             {
-                isFarm = true,
-                isOutdoors = true
+                IsFarm = true,
+                IsOutdoors = true
             };
 
             string path = Path.Combine(helper.DirectoryPath, "pslocationdata", $"{Constants.SaveFolderName}.xml");
@@ -397,33 +462,33 @@ namespace FarmExpansion.Framework
             }
             //monitor.Log($"Object deserialized from {path}");
 
-            farmExpansion.animals = loaded.animals;
-            farmExpansion.buildings = loaded.buildings;
-            farmExpansion.characters = loaded.characters;
-            farmExpansion.terrainFeatures = loaded.terrainFeatures;
-            farmExpansion.largeTerrainFeatures = loaded.largeTerrainFeatures;
-            farmExpansion.resourceClumps = loaded.resourceClumps;
-            farmExpansion.objects = loaded.objects;
+            farmExpansion.animals.CopyFrom(loaded.animals.Pairs);
+            farmExpansion.buildings.ReplaceWith(loaded.buildings);
+            farmExpansion.characters.ReplaceWith(loaded.characters);
+            farmExpansion.terrainFeatures.ReplaceWith(loaded.terrainFeatures);
+            farmExpansion.largeTerrainFeatures.ReplaceWith(loaded.largeTerrainFeatures);
+            farmExpansion.resourceClumps.ReplaceWith(loaded.resourceClumps);
+            farmExpansion.objects.ReplaceWith(loaded.objects);
             farmExpansion.numberOfSpawnedObjectsOnMap = loaded.numberOfSpawnedObjectsOnMap;
-            farmExpansion.piecesOfHay = loaded.piecesOfHay;
+            farmExpansion.piecesOfHay.Value = loaded.piecesOfHay.Value;
             //farmExpansion.hasSeenGrandpaNote = loaded.hasSeenGrandpaNote;
             //farmExpansion.grandpaScore = loaded.grandpaScore;
 
-            foreach (KeyValuePair<long, FarmAnimal> animal in farmExpansion.animals)
-                animal.Value.reload();
+            foreach (KeyValuePair<long, FarmAnimal> animal in farmExpansion.animals.Pairs)
+                animal.Value.reload(null);
 
             foreach (Building building in farmExpansion.buildings)
             {
                 building.load();
-                if (building.indoors != null && building.indoors is AnimalHouse)
+                if (building.indoors.Value != null && building.indoors.Value is AnimalHouse)
                 {
-                    foreach (KeyValuePair<long, FarmAnimal> animalsInBuilding in ((AnimalHouse)building.indoors).animals)
+                    foreach (KeyValuePair<long, FarmAnimal> animalsInBuilding in ((AnimalHouse)building.indoors.Value).animals.Pairs)
                     {
                         FarmAnimal animal = animalsInBuilding.Value;
 
                         foreach (Building current in farmExpansion.buildings)
                         {
-                            if (current.tileX == (int)animal.homeLocation.X && current.tileY == (int)animal.homeLocation.Y)
+                            if (current.tileX.Value == (int)animal.homeLocation.X && current.tileY.Value == (int)animal.homeLocation.Y)
                             {
                                 animal.home = current;
                                 break;
@@ -435,7 +500,7 @@ namespace FarmExpansion.Framework
             for (int i = farmExpansion.characters.Count - 1; i >= 0; i--)
             {
                 if (!farmExpansion.characters[i].DefaultPosition.Equals(Vector2.Zero))
-                    farmExpansion.characters[i].position = farmExpansion.characters[i].DefaultPosition;
+                    farmExpansion.characters[i].position.Value = farmExpansion.characters[i].DefaultPosition;
 
                 farmExpansion.characters[i].currentLocation = farmExpansion;
 
@@ -443,23 +508,23 @@ namespace FarmExpansion.Framework
                     farmExpansion.characters[i].reloadSprite();
             }
 
-            foreach (KeyValuePair<Vector2, TerrainFeature> terrainFeature in farmExpansion.terrainFeatures)
+            foreach (KeyValuePair<Vector2, TerrainFeature> terrainFeature in farmExpansion.terrainFeatures.Pairs)
                 terrainFeature.Value.loadSprite();
 
-            foreach (KeyValuePair<Vector2, Object> current in farmExpansion.objects)
+            foreach (KeyValuePair<Vector2, Object> current in farmExpansion.objects.Pairs)
             {
                 current.Value.initializeLightSource(current.Key);
                 current.Value.reloadSprite();
             }
             foreach (Building building in farmExpansion.buildings)
             {
-                Vector2 tile = new Vector2((float)building.tileX, (float)building.tileY);
+                Vector2 tile = new Vector2((float)building.tileX.Value, (float)building.tileY.Value);
 
-                if (building.indoors is Shed)
+                if (building.indoors.Value is Shed)
                 {
-                    (building.indoors as Shed).furniture = (loaded.getBuildingAt(tile).indoors as Shed).furniture;
-                    (building.indoors as Shed).wallPaper = (loaded.getBuildingAt(tile).indoors as Shed).wallPaper;
-                    (building.indoors as Shed).floor = (loaded.getBuildingAt(tile).indoors as Shed).floor;
+                    (building.indoors.Value as Shed).furniture.ReplaceWith((loaded.getBuildingAt(tile).indoors.Value as Shed).furniture);
+                    (building.indoors.Value as Shed).wallPaper.Set((loaded.getBuildingAt(tile).indoors.Value as Shed).wallPaper);
+                    (building.indoors.Value as Shed).floor.Set((loaded.getBuildingAt(tile).indoors.Value as Shed).floor);
                 }
             }
         }
@@ -468,15 +533,15 @@ namespace FarmExpansion.Framework
         {
             foreach (Building building in farmExpansion.buildings)
             {
-                if (building.indoors != null)
+                if (building.indoors.Value != null)
                 {
                     List<Warp> warps = new List<Warp>();
-                    foreach (Warp warp in building.indoors.warps)
+                    foreach (Warp warp in building.indoors.Value.warps)
                     {
-                        warps.Add(new Warp(warp.X, warp.Y, "FarmExpansion", building.humanDoor.X + building.tileX, building.humanDoor.Y + building.tileY + 1, false));
+                        warps.Add(new Warp(warp.X, warp.Y, "FarmExpansion", building.humanDoor.X + building.tileX.Value, building.humanDoor.Y + building.tileY.Value + 1, false));
                     }
-                    building.indoors.warps.Clear();
-                    building.indoors.warps.AddRange(warps);
+                    building.indoors.Value.warps.Clear();
+                    building.indoors.Value.warps.AddRange(warps);
                 }
             }
         }
@@ -753,15 +818,15 @@ namespace FarmExpansion.Framework
         {
             if (Game1.random.NextDouble() < 0.4)
             {
-                robin.sprite.currentAnimation[robin.sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(27, 300, false, false, new AnimatedSprite.endOfAnimationBehavior(robinVariablePause), false);
+                robin.Sprite.currentAnimation[robin.Sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(27, 300, false, false, new AnimatedSprite.endOfAnimationBehavior(robinVariablePause), false);
                 return;
             }
             if (Game1.random.NextDouble() < 0.25)
             {
-                robin.sprite.currentAnimation[robin.sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(23, Game1.random.Next(500, 4000), false, false, new AnimatedSprite.endOfAnimationBehavior(robinVariablePause), false);
+                robin.Sprite.currentAnimation[robin.Sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(23, Game1.random.Next(500, 4000), false, false, new AnimatedSprite.endOfAnimationBehavior(robinVariablePause), false);
                 return;
             }
-            robin.sprite.currentAnimation[robin.sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(27, Game1.random.Next(1000, 4000), false, false, new AnimatedSprite.endOfAnimationBehavior(robinVariablePause), false);
+            robin.Sprite.currentAnimation[robin.Sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(27, Game1.random.Next(1000, 4000), false, false, new AnimatedSprite.endOfAnimationBehavior(robinVariablePause), false);
         }
 
         internal Farm swapFarm(Farm currentFarm)

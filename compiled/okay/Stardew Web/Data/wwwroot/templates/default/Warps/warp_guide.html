@@ -1,8 +1,12 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-#HEAD#
+    #HEAD#
     <script>
+        function SetImage() {
+            var e = document.getElementById("npcs");
+            document.getElementById("npcimage").src = "/Asset?asset=FramedSprite%2f" + e.value;
+        }
         function WarpStudio(iMode, oParam) {
 
             switch (iMode) {
@@ -12,17 +16,17 @@
 
                     if (iNMode !== null) {
                         switch (iNMode) {
-                            case "wntm":
+                            case "wntm":  // warp npc to me
                                 RunDebugCommand('wctm ' + e.value);
                                 break;
-                            case "wmtn":
+                            case "wmtn":    // warp me to npc
                                 RunDebugCommand('wtc ' + e.value);
                                 break;
                             case "wnt":
                                 var loc = document.getElementById("locs").value;
                                 var locx = document.getElementById("xloc").value;
                                 var locy = document.getElementById("yloc").value;
-                                RunDebugCommand('wct ' + e.value + ' ' + loc + ' ' + locx + ' ' + locy+ ' 1');
+                                RunDebugCommand('wct ' + e.value + ' ' + loc + ' ' + locx + ' ' + locy + ' 1');
                                 break;
                         }
                     }
@@ -41,10 +45,20 @@
                     var pMode = GetRadioButtonValue("playerwarp");
                     switch (pMode) {
                         case "mts":
-
+                            //RunDebugCommand('mts');
                             break;
                         case "stm":
                             RunDebugCommand('pstm');
+                            break;
+                        case "mtnpc": //me to NPC;
+                            var ePlayerNPC = document.getElementById("playernpcs");
+                            RunDebugCommand('wtc ' + ePlayerNPC.value);
+                            break;
+                        case "mtloc": //me to location
+                            var ploc = document.getElementById("plocs").value;
+                            var plocx = document.getElementById("xploc").value;
+                            var plocy = document.getElementById("yploc").value;
+                            WarpTo(ploc, plocx, plocy);
                             break;
                     }
                     break;
@@ -83,7 +97,7 @@
 
     </script>
 </head>
-<body onload="PageLoaded('Warp');">
+<body onload="SubPageLoaded('Cheats','Warps');">
 
     #MENUBAR#
     <div class="stardew_container top_margin_50 med_bottom_pad">

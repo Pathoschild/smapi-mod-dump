@@ -1,0 +1,81 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+   "Changes": [
+
+   //Fix Minecart Special Order
+   {
+      "Action": "EditData",
+      "Target": "Data/SpecialOrders",
+      "Update": "OnLocationChange",
+      "Entries": {
+         "RSV.SpecialOrder.FixMinecart": {
+            "Name": "[RSV.SpecialOrder.FixMinecart_Name]",
+            "Requester": "Lenny",
+            "Duration": "Month",
+            "Repeatable": "False",
+            "RequiredTags": "event_75160189",
+            "OrderType": "",
+            "SpecialRule": "",
+            "Text": "[RSV.SpecialOrder.FixMinecart_Text]",
+            "ItemToRemoveOnEnd": null,
+            "MailToRemoveOnEnd": null,
+            "RandomizedElements": null,
+            "Objectives": [
+               {
+                  "Type": "Donate",
+                  "Text": "[RSV.SpecialOrder.FixMinecart_Objective1_Text]",
+                  "RequiredCount": "300",
+                  "Data": {
+                     "DropBox": "RSVMinecartRepair",
+                     "DropBoxGameLocation": "Custom_Ridgeside_RidgesideVillage",
+                     "DropBoxIndicatorLocation": "67.5 15.4",
+                     "AcceptedContextTags": "item_wood"
+                  }
+               },
+               {
+                  "Type": "Donate",
+                  "Text": "[RSV.SpecialOrder.FixMinecart_Objective2_Text]",
+                  "RequiredCount": "20",
+                  "Data": {
+                     "DropBox": "RSVMinecartRepair",
+                     "DropBoxGameLocation": "Custom_Ridgeside_RidgesideVillage",
+                     "DropBoxIndicatorLocation": "67.5 15.4",
+                     "AcceptedContextTags": "item_iron_bar"
+                  }
+               },
+               {
+                  "Type": "Donate",
+                  "Text": "[RSV.SpecialOrder.FixMinecart_Objective3_Text]",
+                  "RequiredCount": "10",
+                  "Data": {
+                     "DropBox": "RSVMinecartRepair",
+                     "DropBoxGameLocation": "Custom_Ridgeside_RidgesideVillage",
+                     "DropBoxIndicatorLocation": "67.5 15.4",
+                     "AcceptedContextTags": "item_gold_bar"
+                  }
+               },
+            ],
+            "Rewards": [
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.FixedMinecart",
+                     "NoLetter": "true",
+                  }
+               },
+            ]
+         }
+      }
+   }
+
+],
+}

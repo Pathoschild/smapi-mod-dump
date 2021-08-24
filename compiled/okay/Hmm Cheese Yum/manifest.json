@@ -1,0 +1,10 @@
+﻿{
+    "Name": "HmmCheeseYum",
+    "Author": "tomasitobambito",
+    "Version": "1.1.1",
+    "Description": "Hmm Cheese Yum Hmm Hmm Hmm Cheese Yummy ... so thank you for bringing that into my life",
+    "UniqueID": "tomasitobambito.HmmCheeseYum",
+    "EntryDll": "HmmCheeseYum.dll",
+    "MinimumApiVersion": "3.11.0",
+    "UpdateKeys": [ "Nexus:9343" ]
+}

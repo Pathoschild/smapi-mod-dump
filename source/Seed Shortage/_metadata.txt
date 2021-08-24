@@ -6,9 +6,9 @@ mods:
    Seed Shortage
 
 latest commit:
-   commit 4ce9c6d155b228189f108a8a1df4ec16caa6146c
-   Author: xynerorias <43299926+xynerorias@users.noreply.github.com>
-   Date:   Wed Apr 8 00:26:43 2020 +0200
+   commit d1fa72600a77c10eb271f0d227527b60299b2f6a
+   Author: Axel Malmgren <43299926+xynerorias@users.noreply.github.com>
+   Date:   Wed Aug 18 14:42:49 2021 +0200
    
-       Add files via upload
+       Create LICENSE
    

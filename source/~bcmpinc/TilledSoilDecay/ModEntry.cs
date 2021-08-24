@@ -44,6 +44,12 @@ namespace StardewHack.TilledSoilDecay
             Delay = 1
         };
 
+        /** Chance that tilled soil will disappear on ginger island. Normally this is 0.1 (=10%). */
+        public DecayConfig Island = new DecayConfig() {
+            DryingRate = 0.5,
+            Delay = 2
+        };
+
         /** Chance that tilled soil will disappear outside the farm. Normally this is 1.0 (=100%). */
         public DecayConfig NonFarm = new DecayConfig() {
             DryingRate = 1.0,
@@ -54,25 +60,29 @@ namespace StardewHack.TilledSoilDecay
     public class ModEntry : HackWithConfig<ModEntry, ModConfig>
     {
         public override void HackEntry(IModHelper helper) {
-            Patch((Farm f)=>f.DayUpdate(0), Farm_DayUpdate);
-            Patch((HoeDirt hd)=>hd.dayUpdate(null, new Vector2()), HoeDirt_dayUpdate);
-            Patch((GameLocation gl)=>gl.DayUpdate(0), GameLocation_DayUpdate);
+            Patch((Farm f) => f.DayUpdate(0), Farm_DayUpdate);
+            Patch((StardewValley.Locations.IslandWest iw) => iw.DayUpdate(0), IslandWest_DayUpdate);
+            Patch((HoeDirt hd) => hd.dayUpdate(null, new Vector2()), HoeDirt_dayUpdate);
+            Patch((GameLocation gl) => gl.DayUpdate(0), GameLocation_DayUpdate);
         }
 
         protected override void InitializeApi(GenericModConfigMenuAPI api)
         {
             api.RegisterLabel(ModManifest, "Each night", "How soil decays every night");
             api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 0.1 (=10%).", () => (float)config.EachNight.DryingRate, (float val) => config.EachNight.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of days that the patch must have been without water, before it can disappear during the night.", () => config.EachNight.Delay, (int val) => config.EachNight.Delay = val, 0, 4);
+            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.EachNight.Delay, (int val) => config.EachNight.Delay = val, 0, 4);
             api.RegisterLabel(ModManifest, "First of Month", "How soil decays at the start of a new month");
             api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 0.8 (=80%).", () => (float)config.FirstOfMonth.DryingRate, (float val) => config.FirstOfMonth.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of days that the patch must have been without water, before it can disappear during the night.", () => config.FirstOfMonth.Delay, (int val) => config.FirstOfMonth.Delay = val, 0, 4);
+            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.FirstOfMonth.Delay, (int val) => config.FirstOfMonth.Delay = val, 0, 4);
             api.RegisterLabel(ModManifest, "Greenhouse", "How soil decays inside the greenhouse");
             api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 1.0 (=100%).", () => (float)config.Greenhouse.DryingRate, (float val) => config.Greenhouse.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of days that the patch must have been without water, before it can disappear during the night.", () => config.Greenhouse.Delay, (int val) => config.Greenhouse.Delay = val, 0, 4);
+            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.Greenhouse.Delay, (int val) => config.Greenhouse.Delay = val, 0, 4);
+            api.RegisterLabel(ModManifest, "Island", "How soil decays on Ginger Island");
+            api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 0.1 (=10%).", () => (float)config.Island.DryingRate, (float val) => config.Island.DryingRate = val, 0.0f, 1.0f);
+            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.Island.Delay, (int val) => config.Island.Delay = val, 0, 4);
             api.RegisterLabel(ModManifest, "Non-farm", "How soil decays outside the farm");
             api.RegisterClampedOption(ModManifest, "Drying Rate", "Chance that tilled soil will disappear. Normally this is 1.0 (=100%).", () => (float)config.NonFarm.DryingRate, (float val) => config.NonFarm.DryingRate = val, 0.0f, 1.0f);
-            api.RegisterClampedOption(ModManifest, "Delay", "Number of days that the patch must have been without water, before it can disappear during the night.", () => config.NonFarm.Delay, (int val) => config.NonFarm.Delay = val, 0, 4);
+            api.RegisterClampedOption(ModManifest, "Delay", "Number of consecutive days that the patch must have been without water, before it can disappear during the night.", () => config.NonFarm.Delay, (int val) => config.NonFarm.Delay = val, 0, 4);
         }
 
         void Farm_DayUpdate() {
@@ -121,6 +131,51 @@ namespace StardewHack.TilledSoilDecay
                     Instructions.Ldfld(typeof(ModConfig.DecayConfig), nameof(ModConfig.DecayConfig.DryingRate))
                 );
             }
+        }
+
+        void IslandWest_DayUpdate() {
+            var DayUpdate = BeginCode();
+
+            var hdv = generator.DeclareLocal(typeof(HoeDirt));
+
+            DayUpdate = DayUpdate.FindNext(
+                // is HoeDirt
+                Instructions.Isinst(typeof(HoeDirt)),
+                // .crop == null
+                Instructions.Callvirt_get(typeof(HoeDirt), nameof(HoeDirt.crop)),
+                OpCodes.Brtrue,
+
+                // Game1.random.NextDouble() <= 0.1
+                Instructions.Ldsfld(typeof(Game1), nameof(Game1.random)),
+                OpCodes.Callvirt,
+                OpCodes.Ldc_R8
+            );
+            DayUpdate.Replace(
+                DayUpdate[0],
+
+                // Inject && state <= -delay
+                Instructions.Stloc_S(hdv),
+                Instructions.Ldloc_S(hdv),
+                Instructions.Ldfld(typeof(HoeDirt), nameof(HoeDirt.state)),
+                Instructions.Call_get(typeof(NetInt), nameof(NetInt.Value)),
+                Instructions.Call(GetType(), nameof(getConfig)),
+                Instructions.Ldfld(typeof(ModConfig), nameof(ModConfig.Island)),
+                Instructions.Ldfld(typeof(ModConfig.DecayConfig), nameof(ModConfig.DecayConfig.Delay)),
+                Instructions.Neg(),
+                Instructions.Bgt((Label)DayUpdate[2].operand),
+                Instructions.Ldloc_S(hdv),
+
+                // Continue with && crop == null
+                DayUpdate[1],
+                DayUpdate[2],
+                DayUpdate[3],
+                DayUpdate[4],
+
+                // Set Decay Rate
+                Instructions.Call(GetType(), nameof(getConfig)),
+                Instructions.Ldfld(typeof(ModConfig), nameof(ModConfig.Island)),
+                Instructions.Ldfld(typeof(ModConfig.DecayConfig), nameof(ModConfig.DecayConfig.DryingRate))
+            );
         }
 
         // To support the decay delay, we will use the HoeDirt.state variable to track how many days the patch has gone without being watered.

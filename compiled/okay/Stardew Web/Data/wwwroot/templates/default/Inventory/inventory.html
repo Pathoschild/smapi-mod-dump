@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-#HEAD#
+    #HEAD#
     <script>
 
         function LocalPageLoaded() {
@@ -13,7 +13,7 @@
                     Search();
                 }
             });
-            PageLoaded('Inventory');
+            SubPageLoaded('Farm', 'Inventory');
             FetchData('');
         }
 
@@ -27,6 +27,8 @@
                         response.json().then(data => {
                             document.getElementById('results').innerHTML = data.HTML;
                             document.getElementById('alphabar').innerHTML = data.AlphaBar;
+                            var sTemplate = '<div class="" role="tooltip"><div class=""></div><div class="tooltip-inner bs_tooltip_div"></div></div>';
+                            $('[data-bs-toggle="tooltip"]').tooltip({ html: true,  sanitize: false, template: sTemplate,placement:'right',offset: [10,10] });
                         });
                     } else document.getElementById('results').innerHTML = 'Network response was not ok.';
                 })

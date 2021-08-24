@@ -10,7 +10,7 @@
 
 using StardewModdingAPI;
 
-namespace ImJustMatt.Common.Integrations.JsonAssets
+namespace Common.Integrations.JsonAssets
 {
     internal class JsonAssetsIntegration : ModIntegration<IJsonAssetsAPI>
     {

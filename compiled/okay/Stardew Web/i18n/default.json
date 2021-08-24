@@ -4,25 +4,44 @@
   //
   //  nav bar captions
   //
-  "navbar.home": "Home",
+  "navbar.home": "Today",
   "navbar.tasks": "Daily Tasks",
   "navbar.production": "Production",
   "navbar.inventory": "Inventory",
-  "navbar.shipping": "Shipping",
+  "navbar.shipping": "Basic Shipments",
   "navbar.social": "Social",
   "navbar.collections": "Collections",
   "navbar.bundles": "Bundles",
   "navbar.quests": "Quests",
   "navbar.stats": "Stats",
-  "navbar.mods": "Mods",
+  "navbar.mods": "My Mods",
   "navbar.logs": "Logs",
   "navbar.about": "About",
   "navbar.multi": "Multiplayer",
-  "navbar.modderutils": "Modder Utilities",
+  "navbar.modderutils": "Utilities",
   "navbar.warps": "Warps",
-  "navbar.dailypic": "Daily Picture",
+  "navbar.dailypic": "Daily Screenshot",
   "navbar.events": "Events",
   "navbar.locations": "Locations",
+  "navbar.chestman": "Chest Manager",
+  "navbar.farm": "Farm",
+  "navbar.farmer": "Farmer",
+  "navbar.console": "Console",
+  "navbar.map": "Map",
+  "navbar.xnb": "XNB Files",
+  "navbar.planning": "Planning",
+  "navbar.machines": "Machines",
+  "navbar.fish": "Fish",
+  "navbar.flowers": "Flowers",
+  "navbar.fruits": "Fruits",
+  "navbar.vegetables": "Vegetables",
+  "navbar.tools": "Tools",
+  "navbar.weapons": "Weapons",
+  "navbar.crafting": "Crafting",
+  "navbar.artisan": "Artisan Goods",
+  "navbar.bigcraftable": "Big Craftable",
+  "navbar.crops": "Crops",
+  "navbar.livestock": "Livestock",
   //
   //  web messages
   //
@@ -44,6 +63,28 @@
   "wm.search.name": "[Name] {{name}}",
   "wm.search.query": "No items were found matching your query '{{query}}'.",
   "wm.search.noreqs": "No requirements.",
+  "wm.calendar.cart": "The Travelling Cart is in Cindersap Forest today from 06:00 to 20:00.",
+  "wm.calendar.blackberry": "Blackberries are in season.",
+  "wm.calendar.salmonberry": "Salmonberries are in season.",
+  "wm.eventtype.bday": "Birthday",
+  "wm.eventtype.bberry": "Blackberry Season",
+  "wm.eventtype.festival": "Festival",
+  "wm.eventtype.other": "Other",
+  "wm.eventtype.sberry": "Salmonberry Season",
+  "wm.eventtype.cart": "Travelling Cart",
+  "wm.calendar.birthday": "It's {{NPC}} birthday today.",
+  "wm.mods.jamod": "This is a Json Asset Content Pack and adds the following items to the game:",
+  "wm.mods.ja.crops": "Crops",
+  "wm.mods.ja.objects": "Objects",
+  "wm.mods.ja.bc": "Big Craftables",
+  "wm.mods.ja.other": "Other",
+  "wm.mods.ja.trees": "Trees",
+  "wm.mods.ja.weapons": "Weapons",
+  "wm.mods.ja.clothing": "Clothing",
+  "wm.mods.ja.hats": "Hats",
+  "wm.mods.pfmmod": "This is a Producer Framework Mod and it adds crafting recipes to machines.",
+  "wm.achieve.prereq": "You must complete the Achievement '{{achieve}} first.",
+  "wm.achieve.unknown": "You must complete an unknown Achievement, key {{key}}.",
   //
   //  preconditions
   //
@@ -76,7 +117,7 @@
   "precon.q": "The Player has chosen the follwoing dialogue Ids: {{q}}.",
   "precon.s": "The Player has shipped the following items and quantities: {{s}}.",
   "precon.t": "The Game time must be between {{min}} and {{max}}.",
-  "precon.t.maybe": "Wait for the time to be between {{min}} and {{max}}.",
+  "precon.t.maybe": "Between the hours of {{min}} and {{max}}.",
   "precon.u": "The day of the month must be {{u}}.",
   "precon.v": "Tne NPC {{v}} is not invisible.",
   "precon.x": "For the Player mark the Event as seen send the mail '{{x}}'",
@@ -105,6 +146,7 @@
   //
   "plugin.old": "One of your Plugins are out of date.  Please check for any plugin updates.",
   "plugin.error": "Possible plugin issue, error updating cache for plugins: ",
+  "error.seelog": "An error occured, see log for details.",
   //
   //  farmer details
   //
@@ -196,6 +238,9 @@
   "tasks.misc.queen": "There's a new recipe on The Queen of Sauce.",
   "tasks.misc.merchant": "The traveling merchant is in town.",
   "tasks.misc.birthday": "It's {{NPCName}} birthday!",
+  "tasks.misc.nohay": "You have no hay left.",
+  "tasks.misc.hay": "You only have {{count}} hay left.",
+  "tasks.misc.lastday": "It's the last day of the season, make sure to harvest all of your applicable crops.",
   //
   //  object tasks
   //

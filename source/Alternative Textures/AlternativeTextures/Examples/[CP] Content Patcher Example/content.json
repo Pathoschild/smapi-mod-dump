@@ -1,0 +1,66 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "Format": "1.22.0",
+  "DynamicTokens": [
+    {
+      "Name": "RandomY",
+      "Value": "0"
+    },
+    {
+      "Name": "RandomY",
+      "Value": "32",
+      "When": {
+        "Query: {{Random: true, false |key={{Time}} }} = true": true
+      }
+    }
+  ],
+  "Changes": [
+    {
+      "LogName": "Test AT Pack Modification",
+      "Action": "EditImage",
+      "Target": "{{PeacefulEnd.AlternativeTextures/Textures:ExampleAuthor.ExampleAlternativeTexturesPack.Mini-Obelisk_Summer}}",
+      "FromFile": "assets/test_replacement.png",
+      "FromArea": {
+        "X": "0",
+        "Y": "{{RandomY}}",
+        "Width": "16",
+        "Height": "32"
+      },
+      "ToArea": {
+        "X": "0",
+        "Y": "0",
+        "Width": "16",
+        "Height": "32"
+      },
+      "Update": "OnLocationChange"
+    },
+    {
+      "LogName": "Test AT Tool Modification",
+      "Action": "EditImage",
+      "Target": "{{PeacefulEnd.AlternativeTextures/Tools:PaintBucket}}",
+      "FromFile": "assets/alt_paint_bucket.png",
+      "FromArea": {
+        "X": "0",
+        "Y": "0",
+        "Width": "16",
+        "Height": "16"
+      },
+      "ToArea": {
+        "X": "0",
+        "Y": "0",
+        "Width": "16",
+        "Height": "16"
+      },
+      "Update": "OnDayStart"
+    }
+  ]
+}

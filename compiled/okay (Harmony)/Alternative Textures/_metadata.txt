@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9246
+IDs: PeacefulEnd.AlternativeTextures
+update keys: Nexus:9246, GitHub:Floogen/AlternativeTextures

@@ -10,7 +10,21 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Expanded Preconditions Utility (EPU) is no longer required.  
+  _Json Assets now loads fine without EPU installed. If a content pack uses EPU conditions and you
+  don't have it installed, Json Assets will log an error and treat those conditions as always failed._
+
+**Update note for mod authors:**  
+When using EPU conditions (i.e. the `PurchaseRequirements` fields), adding it as a [manifest
+dependency](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest#Dependencies) and to
+your mod description is recommended to avoid confusion.
+
+## 1.8.3
+Released 01 August 2021 for SMAPI 3.12.0. Updated by Pathoschild.
+
 * Updated for Harmony upgrade in SMAPI 3.12.0.
+* Fixed duplicate items added to shop menu when it's hidden and restored by mods like Lookup Anything.
 
 ## 1.8.2
 Released 24 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.

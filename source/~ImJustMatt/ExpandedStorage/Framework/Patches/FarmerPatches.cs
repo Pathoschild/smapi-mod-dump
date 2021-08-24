@@ -9,20 +9,20 @@
 *************************************************/
 
 using System.Collections.Generic;
-using Harmony;
-using ImJustMatt.Common.Patches;
-using ImJustMatt.ExpandedStorage.Framework.Controllers;
-using ImJustMatt.ExpandedStorage.Framework.Extensions;
+using ExpandedStorage.Framework.Controllers;
+using HarmonyLib;
+using XSAutomate.Common.Patches;
+using ExpandedStorage.Framework.Extensions;
 using StardewModdingAPI;
 using StardewValley;
 
 // ReSharper disable InconsistentNaming
 
-namespace ImJustMatt.ExpandedStorage.Framework.Patches
+namespace ExpandedStorage.Framework.Patches
 {
     internal class FarmerPatches : BasePatch<ExpandedStorage>
     {
-        public FarmerPatches(IMod mod, HarmonyInstance harmony) : base(mod, harmony)
+        public FarmerPatches(IMod mod, Harmony harmony) : base(mod, harmony)
         {
             harmony.Patch(
                 AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventory), new[] {typeof(Item), typeof(List<Item>)}),

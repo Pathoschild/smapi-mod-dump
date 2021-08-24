@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -23,7 +23,7 @@ namespace CustomNPCExclusions
     /// <summary>A Harmony patch that excludes a list of NPCs from random town-related shop dialog.</summary>
     public static class HarmonyPatch_ShopDialog
     {
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_ShopDialog)}\": transpiling SDV method \"Game1.UpdateShopPlayerItemInventory(string, HashSet<NPC>)\".", LogLevel.Trace);
             harmony.Patch(

@@ -1,4 +1,6 @@
 {
   "UseProfitMargin": true,
-  "CustomProfitMargin": 0.75
+  "CustomProfitMargin": 0.75,
+  "UseProfitMarginForSpecialOrders": true,
+  "CustomProfitMarginForSpecialOrders": 0.75
 }

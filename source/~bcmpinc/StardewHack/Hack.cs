@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
@@ -32,7 +32,7 @@ namespace StardewHack
         /// <summary>
         /// The harmony instance used for patching. 
         /// </summary>
-        public HarmonyInstance harmony { get; private set; }
+        public Harmony harmony { get; private set; }
 
         /// <summary>
         /// The method being patched. 
@@ -52,15 +52,49 @@ namespace StardewHack
         /// </summary>
         public ILGenerator generator { get; internal set; }
 
+        /// <summary>
+        /// Maps the method being patched to the method doing said patching. 
+        /// </summary>
+        private Dictionary<MethodBase, MethodInfo> patchmap = new Dictionary<MethodBase, MethodInfo>();
+
+        /// <summary>
+        /// A stack to allow patches to trigger additional patches. 
+        /// This is necessary when dealing with delegates. 
+        /// </summary>
+        private Stack<MethodBase> to_be_patched = new Stack<MethodBase>();
+
+        private bool broken = false;
+
+        abstract internal MethodInfo getApplyPatchProxy(string UniqueID);
+
+        /// <summary>
+        /// Applies the methods annotated with BytecodePatch defined in this class. 
+        /// </summary>
         public override void Entry(IModHelper helper) {
             this.helper = helper;
 
             // Use the Mod's UniqueID to create the harmony instance.
             string UniqueID = helper.ModRegistry.ModID;
             Monitor.Log($"Applying bytecode patches for {UniqueID}.", LogLevel.Debug);
-            harmony = HarmonyInstance.Create(UniqueID);
+            harmony = new Harmony(UniqueID);
+
+            // Let the mod register its patches.
+            HackEntry(helper);
+
+            // Apply the registered patches.
+            // Any patched that are added by calls to ChainPatch during patching will be applied as well.
+            var apply = getApplyPatchProxy(UniqueID);
+            while (to_be_patched.Count > 0) {
+                var method = to_be_patched.Pop();
+                try {
+                    harmony.Patch(method, null, null, new HarmonyMethod(apply));
+                } catch (Exception err) {
+                    MarkAsBroken(err);
+                }
+            }
         }
-        
+
+
         public abstract void HackEntry(IModHelper helper);
 
         /// <summary>
@@ -110,7 +144,7 @@ namespace StardewHack
             while (err.InnerException != null) {
                 err = err.InnerException;
             }
-            Monitor.Log(err.Message + Environment.NewLine + err.StackTrace, level);
+            Monitor.Log(err.ToString(), level);
         }
 
         internal MethodBase getMethodBase(LambdaExpression arg) {
@@ -129,72 +163,21 @@ namespace StardewHack
                     throw new ArgumentException("Expression body has unexpected type: " + arg.Body.Type.Name);
             }
         }
-    }
-
-#pragma warning disable RECS0108 // Warns about static fields in generic types
-    // I 'love' generics. :P
-    // This pattern is used to have a separate static instance variable per type T.
-    public abstract class HackImpl<T> : HackBase where T : HackImpl<T>
-    {
-        /// <summary>
-        /// A reference to this class's instance. 
-        /// </summary>
-        static T instance;
-
-        /// <summary>
-        /// Maps the method being patched to the method doing said patching. 
-        /// </summary>
-        private static Dictionary<MethodBase, MethodInfo> patchmap = new Dictionary<MethodBase, MethodInfo>();
-
-        /// <summary>
-        /// A stack to allow patches to trigger additional patches. 
-        /// This is necessary when dealing with delegates. 
-        /// </summary>
-        private static Stack<MethodBase> to_be_patched = new Stack<MethodBase>();
-
-        private bool broken = false;
-        
-        protected HackImpl() {
-            instance = (T)this;
-        }
 
         void MarkAsBroken(Exception err) {
             if (!broken) {
                 Monitor.Log("The patch failed to apply cleanly. Usually this means the mod needs to be updated.", LogLevel.Alert);
                 Monitor.Log("As a result, this mod does not function properly or at all.", LogLevel.Alert);
-                Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at "+getReportUrl()+".", LogLevel.Alert);
+                Monitor.Log("Please upload your log file at https://log.smapi.io/ and report this bug at " + getReportUrl() + ".", LogLevel.Alert);
                 Library.ModEntry.broken_mods.Add(helper.ModRegistry.ModID);
                 broken = true;
             }
             LogException(err);
         }
-        
-        /// <summary>
-        /// Applies the methods annotated with BytecodePatch defined in this class. 
-        /// </summary>
-        public override void Entry(IModHelper helper) {
-            if (typeof(T) != GetType()) throw new Exception($"The type of this ({GetType()}) must be the same as the generic argument T ({typeof(T)}).");
-            base.Entry(helper);
-            
-            // Let the mod register its patches.
-            HackEntry(helper);
 
-            // Apply the registered patches.
-            // Any patched that are added by calls to ChainPatch during patching will be applied as well.
-            var apply = AccessTools.Method(typeof(HackImpl<T>), nameof(ApplyPatch));
-            while (to_be_patched.Count > 0) {
-                var method = to_be_patched.Pop();
-                try {
-                    harmony.Patch(method, null, null, new HarmonyMethod(apply));
-                } catch (Exception err) {
-                    MarkAsBroken(err);
-                }
-            }
-        }
-        
-        public void Patch(Expression<Action> method, Action patch)       => ChainPatch(getMethodBase(method), patch.Method);
+        public void Patch(Expression<Action> method, Action patch) => ChainPatch(getMethodBase(method), patch.Method);
         public void Patch<X>(Expression<Action<X>> method, Action patch) => ChainPatch(getMethodBase(method), patch.Method);
-        
+
         public void Patch(Type type, String methodName, Action patch) {
             var method = AccessTools.DeclaredMethod(type, methodName);
             if (method == null) {
@@ -224,37 +207,76 @@ namespace StardewHack
         /// <summary>
         /// Called by harmony to apply a patch. 
         /// </summary> 
-        private static IEnumerable<CodeInstruction> ApplyPatch(MethodBase original, ILGenerator generator, IEnumerable<CodeInstruction> instructions) {
+        public IEnumerable<CodeInstruction> ApplyPatch(MethodBase original, ILGenerator generator, IEnumerable<CodeInstruction> instructions) {
             // Set the patch's references to this method's arguments.
-            instance.original = original;
-            instance.generator = generator;
-            instance.instructions = new List<CodeInstruction>(instructions);
+            this.original = original;
+            this.generator = generator;
+            this.instructions = new List<CodeInstruction>(instructions);
 
             // Obtain the patch method
             var patch = patchmap[original];
 
             // Print info 
             string info = $"Applying patch {patch.Name} to {original} in {original.DeclaringType.FullName}.";
-            instance.Monitor.Log(info, LogLevel.Trace);
+            this.Monitor.Log(info, LogLevel.Trace);
 
             // Apply the patch
-            patch.Invoke(instance, null);
+            patch.Invoke(this, null);
 
             // Keep a reference to the resulting code.
-            instructions = instance.instructions;
+            instructions = this.instructions;
 
             // Clear the patch's references to this method's arguments.
-            instance.original = null;
-            instance.generator = null;
-            instance.instructions = null;
+            this.original = null;
+            this.generator = null;
+            this.instructions = null;
 
             // Return the resulting code.
             return instructions;
         }
-        
+    }
+
+#pragma warning disable RECS0108 // Warns about static fields in generic types
+    // I 'love' generics. :P
+    // This pattern is used to have a separate static instance variable per type T.
+    public abstract class HackImpl<T> : HackBase where T : HackImpl<T>
+    {
+        internal readonly static ModuleBuilder ProxyModule = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("StardewHack.Proxies"), AssemblyBuilderAccess.Run).DefineDynamicModule("StardewHack.Proxies");
+
+        /// <summary>
+        /// A reference to this class's instance. 
+        /// </summary>
+        internal static T instance;
+
+        protected HackImpl() {
+            instance = (T)this;
+        }
+
         /// Returns the used instance of this class.
         public static T getInstance() {
             return instance;
+        }
+
+        internal override MethodInfo getApplyPatchProxy(string UniqueID) {
+            MethodInfo instance = AccessTools.Method(GetType(), nameof(getInstance));
+            MethodInfo apply = AccessTools.Method(typeof(HackBase), nameof(ApplyPatch));
+            string className = UniqueID.Replace('.', '_') + "_proxy";
+            string methodName = "ApplyPatch";
+
+            TypeBuilder typeBuilder = ProxyModule.DefineType(className);
+                MethodBuilder methodBuilder = typeBuilder.DefineMethod(methodName, MethodAttributes.Public | MethodAttributes.Static, apply.ReturnType, apply.GetParameters().Types());
+
+            if (apply.GetParameters().Length != 3) throw new InvalidOperationException("StardewHack cannot build patch proxy.");
+            ILGenerator il = methodBuilder.GetILGenerator();
+            il.Emit(OpCodes.Call, instance);
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Ldarg_1);
+            il.Emit(OpCodes.Ldarg_2);
+            il.Emit(OpCodes.Call, apply);
+            il.Emit(OpCodes.Ret);
+
+            Type t = typeBuilder.CreateType();
+            return AccessTools.Method(t, methodName);
         }
     }
 #pragma warning restore RECS0108 // Warns about static fields in generic types

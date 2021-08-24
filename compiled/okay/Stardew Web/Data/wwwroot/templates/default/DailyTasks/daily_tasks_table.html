@@ -1,26 +1,43 @@
 ﻿<table>
     <tr>
         <td style="vertical-align: top;">
-            <div class="message_board_title">Farm Tasks</div>
+            <div class="message_board_title">Farm Tasks <div style="float:right; padding-right:30px;"><a href="/Custom/StardewWeb/daily_tasks.html">Help</a></div></div>
         </td>
         <td style="vertical-align:  top;">
-            <div class="message_board_title">Open Quests</div>
+
+            <div class="message_board_title">Silo</div>
+
         </td>
     </tr>
     <tr>
-        <td>  <div class="message_board"><div style="height: 300px;overflow:auto; width:100%;">#SUMMARY#</div></div></td>
+        <td>  <div class="message_paper_board base_font"><div style="height: 300px;overflow:auto; width:100%;">#SUMMARY#</div></div></td>
         <td>
-            <div class="message_board_list">
+
+            <div class="message_paper_board base_font">
                 <div style="height: 300px; overflow:auto;">
-                    #JOURNAL#
+                    <table>
+                        <tr>
+                            <td style="width:120px;">
+                              <img src="" id="silo" />
+                            </td>
+                            <td>
+                                <table class="stardew_table">
+                                    <tr><td class="stardew_label">Number of Silos</td><td class="stardew_data">#SILOS#</td></tr>
+                                    <tr><td class="stardew_label">Total Capacity</td><td class="stardew_data">#CAP#</td></tr>
+                                    <tr><td class="stardew_label">Used</td><td class="stardew_data">#USAGE#</td></tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
+
         </td>
     </tr>
 </table>
 
 <div class="message_board_title_lg">Farm Task Details</div>
-<div class="message_board_lg">
+<div class="message_paper_board_lg">
     <div class="submenu-bar submenu-black">
         <button class="submenu-bar-item submenu-bar-button" onclick="openTab('UnHarvested')">UnHarvested Crops</button>
         <button class="submenu-bar-item submenu-bar-button" onclick="openTab('Dead')">Dead Crops</button>

@@ -18,7 +18,7 @@ using CustomCompanions.Framework.Models;
 using CustomCompanions.Framework.Models.Companion;
 using CustomCompanions.Framework.Patches;
 using CustomCompanions.Framework.Utilities;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -61,7 +61,7 @@ namespace CustomCompanions
             // Load our Harmony patches
             try
             {
-                var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+                var harmony = new Harmony(this.ModManifest.UniqueID);
 
                 // Apply our patches
                 new RingPatch(monitor).Apply(harmony);
@@ -575,7 +575,7 @@ namespace CustomCompanions
                 return;
             }
 
-            Monitor.Log($"Spawning {companionKey} x{amountToSummon} at {Game1.currentLocation} on tile {Game1.player.getTileLocation()}!", LogLevel.Debug);
+            Monitor.Log($"Spawning {companionKey} x{amountToSummon} at {Game1.currentLocation.NameOrUniqueName} on tile {Game1.player.getTileLocation()}!", LogLevel.Debug);
             CompanionManager.SummonCompanions(companion, amountToSummon, targetTile, Game1.currentLocation);
         }
 

@@ -1,12 +1,34 @@
 ﻿<div class="message_board_title_lg">Configuration</div>
-<div class="message_board_lg base_font">
+<div class="message_board_lg base_font" style="padding-left:50px;padding-right:52px;">
     <form action="/Config" method="post">
-        <div style="height:650px;overflow:auto;">
+        <div style="height:650px;overflow:auto; padding-bottom:4px;">
 
             <table class="config_table" style="width:100%">
                 <!-- Web Server Options-->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/web-server-options.png" class="center_table" /></td></tr>
-                <tr><td class="config_setting">Server Address</td><td colspan="3" class="config_value"><input type="text" name="servaddr" value="#SERVADDR#" size="50" /></td></tr>
+                <tr><td class="config_setting">Server Address</td><td colspan="3" class="config_value"><input type="text" name="servaddr" value="#SERVADDR#" size="50" style="font-family:Tahoma; font-size:12pt;" /></td></tr>
+                <tr>
+                    <td class="config_setting">Background Image</td>
+                    <td colspan="3" class="config_value">
+                        <input type="text" name="bg" value="#BG#" size="50" style="font-family:Tahoma; font-size:12pt;" />
+                        <br />Currently you have to manually add your custom image to the directory 'Mods\Stardew Web\Data\wwwroot\images\backgrounds' and then enter the name into the box above.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="config_setting">Weather Background Image</td>
+                    <td colspan="3" class="config_value">
+                        <input type="text" name="weatherbg" value="#WEATHERBG#" size="50" style="font-family:Tahoma; font-size:12pt;" />
+                        <br />Currently you have to manually add your custom image to the directory 'Mods\Stardew Web\Data\wwwroot\images\weather' and then enter the name into the box above.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="config_setting"><input type="checkbox" name="useNPC" #USENPC# /></td>
+                    <td class="config_value" colspan="3">Use NPC Weather Presenter</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="config_value" colspan="3">NPC Presenter #NPCWEATHER# Image Index<input type="text" name="npcindex" value="#NPCSELINDEX#" size="2" /></td>
+                </tr>
                 <!-- Mod Options -->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/mod-options.png" class="center_table" /></td></tr>
                 <tr>
@@ -21,6 +43,12 @@
                     <td class="config_setting config_width">Server Cache Images</td>
                     <td class="config_value config_width center"><input type="checkbox" name="cacheimg" #CACHEIMG# /></td>
                 </tr>
+                <tr>
+                    <td class="config_setting config_width">Maximum Search Records Returned</td>
+                    <td class="config_value config_width center"><input type="text" name="maxhits" value="#MAXHITS#" /></td>
+                    <td class="config_setting config_width">Enable Plugins</td>
+                    <td class="config_value config_width center"><input type="checkbox" name="plugins" #PLUGINS# />  </td>
+                </tr>
                 <!-- Button Options -->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/button-options.png" class="center_table" /></td></tr>
                 <tr>
@@ -32,8 +60,8 @@
                 <tr>
                     <td class="config_setting config_width">Show 'Stop Time' Button</td>
                     <td class="config_value config_width center"><input type="checkbox" id="pause" name="pause" #PAUSE# /></td>
-                    <td class="config_setting config_width"></td>
-                    <td class="config_value config_width center"></td>
+                    <td class="config_setting config_width">Show 'Invincible' Button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="invc" name="invc" #INVC# /></td>
                 </tr>
                 <!-- Tab Options -->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/tab-options.png" class="center_table" /></td></tr>
@@ -48,6 +76,12 @@
                     <td class="config_value config_width center"><input type="checkbox" id="locationtab" name="locationtab" #LOCATIONTAB# /></td>
                     <td class="config_setting config_width">Show Events Tab</td>
                     <td class="config_value config_width center"><input type="checkbox" id="eventtab" name="eventtab" #EVENTTAB# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Map Extract List</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="mapextract" name="mapextract" #MAPEXTRACT# /></td>
+                    <td class="config_setting config_width"></td>
+                    <td class="config_value config_width center"></td>
                 </tr>
                 <!-- Thumbnail Options -->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/thumbnail-options.png" class="center_table" /></td></tr>
@@ -118,10 +152,21 @@
                 <tr>
                     <td class="config_setting config_width">Show NPC Event List</td>
                     <td class="config_value config_width center"><input type="checkbox" id="npcevents" name="npcevents" #NPCEVENTS# /></td>
-                    <td class="config_setting config_width"></td>
-                    <td class="config_value config_width center"></td>
+                    <td class="config_setting config_width">Show 'Farm Cheats' tab</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="farmcheat" name="farmcheat" #FARMCHEAT# /></td>
                 </tr>
-                <!-- Daily Task Parameters-->
+                <tr>
+                    <td class="config_setting config_width">Show 'Event Seen' Toggle Button</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="eventtoggle" name="eventtoggle" #EVENTTOGGLE# /></td>
+                    <td class="config_setting config_width">Show 'Farmer Cheats' tab</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="farmercheat" name="farmercheat" #FARMERCHEAT# /></td>
+                </tr>
+                <tr>
+                    <td class="config_setting config_width">Show Unknown Crops</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="showcrops" name="showcrops" #SHOWCROPS# /></td>
+                    <td class="config_setting config_width">Show 'Around Town' tab</td>
+                    <td class="config_value config_width center"><input type="checkbox" id="towncheat" name="towncheat" #TOWNCHEAT# /></td>
+                </tr>     <!-- Daily Task Parameters-->
                 <tr><td colspan="4" class="config_section_head"><img src="/images/banners/daily-task-report-options.png" class="center_table" /></td></tr>
                 <tr>
                     <td class="config_setting config_width">Show Birthdays</td>
@@ -186,8 +231,8 @@
                 <tr>
                     <td class="config_setting config_width">Show Ponds that want something</td>
                     <td class="config_value config_width center"><input type="checkbox" name="pondwant" #PONDWANT# /></td>
-                    <td class="config_setting config_width"></td>
-                    <td class="config_value config_width center"></td>
+                    <td class="config_setting config_width">Minimum Silo Hay Level</td>
+                    <td class="config_value config_width center"><input type="text" size="4" name="silomin" id="silomin" value="#SILOMIN#" /></td>
                 </tr>
                 <!-- machine and product details-->
                 <tr><td colspan="2" class="config_section_head"><img src="/images/banners/animal-products.png" class="center_table" /></td><td colspan="2" class="config_section_head"><img src="/images/banners/machines.png" class="center_table" /></td></tr>
@@ -207,7 +252,11 @@
             </table>
 
         </div>
-        <div style="padding-top:5px;"><button type="submit">Save</button> <button onclick="SetCheats(false); return false;">Disable All Cheats</button></div>
+        <div style="padding-top:10px;padding-bottom:10px; border-top: 2px solid black;padding-left:20px;background-color:bisque;">
+            <button type="submit">Save</button>
+            <button onclick="SetCheats(false); return false;">Disable All Cheats</button> 
+            <button onclick="SetCheats(true); return false;">Enable All Cheats</button>
+        </div>
     </form>
 
 

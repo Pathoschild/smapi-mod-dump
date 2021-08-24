@@ -8,16 +8,16 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 
-namespace ImJustMatt.Common.Patches
+namespace XSAutomate.Common.Patches
 {
     internal abstract class BasePatch<T> where T : IMod
     {
         private protected static T Mod;
 
-        internal BasePatch(IMod mod, HarmonyInstance harmony)
+        internal BasePatch(IMod mod, Harmony harmony)
         {
             Mod = (T) mod;
         }

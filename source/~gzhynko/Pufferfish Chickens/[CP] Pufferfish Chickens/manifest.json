@@ -11,10 +11,10 @@
 {
    "Name": "[CP] Pufferfish Chickens",
    "Author": "GZhynko",
-   "Version": "1.0.3",
+   "Version": "1.0.4",
    "Description": "Adds a new Farm event.",
    "UniqueID": "GZhynko.CP.Pufferfish_Chickens",
-   "MinimumApiVersion": "3.0.0",
+   "MinimumApiVersion": "3.12.0",
    "UpdateKeys": [ "Nexus:???" ],
    "ContentPackFor": {
       "UniqueID": "Pathoschild.ContentPatcher"

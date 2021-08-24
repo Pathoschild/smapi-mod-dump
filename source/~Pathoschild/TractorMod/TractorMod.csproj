@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>TractorMod</AssemblyName>
-    <Version>4.14.3</Version>
+    <Version>4.14.4-beta.20210819</Version>
     <RootNamespace>Pathoschild.Stardew.TractorMod</RootNamespace>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.4.0-beta.20210813" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="1.0.0" />
   </ItemGroup>
 

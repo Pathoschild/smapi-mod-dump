@@ -11,7 +11,7 @@
 {
   "Name": "Pufferfish Chickens",
   "Author": "GZhynko",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "Adds the pufferfish chicken as a new coop animal.",
   "UniqueID": "GZhynko.Pufferfish_Chickens",
   "UpdateKeys": [ "Nexus:???" ],

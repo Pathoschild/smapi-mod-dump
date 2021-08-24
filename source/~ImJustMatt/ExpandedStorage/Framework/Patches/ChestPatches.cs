@@ -13,10 +13,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection.Emit;
-using Harmony;
-using ImJustMatt.Common.Patches;
-using ImJustMatt.ExpandedStorage.Framework.Controllers;
-using ImJustMatt.ExpandedStorage.Framework.Extensions;
+using ExpandedStorage.Framework.Controllers;
+using HarmonyLib;
+using XSAutomate.Common.Patches;
+using ExpandedStorage.Framework.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -24,14 +24,14 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Patches
+namespace ExpandedStorage.Framework.Patches
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal class ChestPatches : BasePatch<ExpandedStorage>
     {
         private static readonly HashSet<string> ExcludeModDataKeys = new();
 
-        public ChestPatches(IMod mod, HarmonyInstance harmony) : base(mod, harmony)
+        public ChestPatches(IMod mod, Harmony harmony) : base(mod, harmony)
         {
             harmony.Patch(
                 AccessTools.Method(typeof(Chest), nameof(Chest.addItem), new[] {typeof(Item)}),

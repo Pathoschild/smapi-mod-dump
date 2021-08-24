@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Deflaktor/KeySuppressor
+**
+*************************************************/
+
+{
+  "Name": "KeySuppressor",
+  "Author": "Deflaktor",
+  "Version": "1.0.1",
+  "Description": "You can configure which keys the base game shall ignore (mods are unaffected)",
+  "UniqueID": "Deflaktor.KeySuppressor",
+  "EntryDll": "KeySuppressor.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9295" ]
+}

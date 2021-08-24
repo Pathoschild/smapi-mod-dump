@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "Name": "Content Patcher Tests For Alternative Textures",
+  "Author": "ExampleAuthor",
+  "Version": "1.0.0",
+  "Description": "Tests for using Content Patcher to modify Alternative Texture packs.",
+  "UniqueID": "PeacefulEnd.ContentPatcherForAlternativeTextures",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "PeacefulEnd.AlternativeTextures",
+      "IsRequired": true
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+﻿{
+  "location.prefix": "Fundort(e)",
+  "location.none": "Unbekannt - Mines/Event?",
+  "location.crabpot": "Krabbenreuse in: {{location}}",
+  "location.ocean": "Ozean",
+  "location.freshwater": "Süßwasser",
+  "location.forestriver": "Waldfluss",
+  "location.forestpond": "Waldteich",
+  "location.bugland": "Mutantenkäferhöhle",
+  "location.witchswamp": "Hexensumpf",
+  "season.prefix": "Jahreszeit",
+  "season.all": "Alle Jahreszeiten",
+  "season.none": "Unbekannt",
+  "time.prefix": "Uhrzeit",
+  "time.allday": "Ganztags",
+  "time.midday": "Mittags",
+  "time.midnight": "Mitternachts",
+  "weather.prefix": "Wetter",
+  "weather.sun": "Sonnig",
+  "weather.rain": "Regen",
+  "weather.none": "Unbekannt"
+}

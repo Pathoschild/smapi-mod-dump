@@ -44,7 +44,13 @@
 			"AllowValues": "true, false",
 			"Default": "true",
 			"Description": "Allows RSV NPCs to attend Pelican Town Festivals"
-		}				
+		},
+
+		"EnableWorldMapEdit": {
+			"AllowValues": "true, false",
+			"Default": "true",
+			"Description": "Allow world map patch."
+		}		
 },
 
 	/*********
@@ -123,7 +129,7 @@
 		//Sam Band Only
 		{
 			"Name": "RSVGATHER",
-			"Value": "/warp Sam 85 40/showFrame Sam 20/showFrame Abigail 49/showFrame Sebastian 42/fade/viewport 85 43/pause 800/speak Sam \"{{i18n:RSVG.14}}\"/",
+			"Value": "/warp Sam 74 38/showFrame Sam 20/showFrame Abigail 49/showFrame Sebastian 42/fade/viewport 74 39/pause 800/speak Sam \"{{i18n:RSVG.14}}\"/",
 			"When": {
 				"HasSeenEvent |contains=75160120": false
 			}
@@ -139,7 +145,7 @@
 		//Sam Band and Alissa
 		{
 			"Name": "RSVGATHER",
-			"Value": "/warp Alissa 85 40/faceDirection Alissa 2/showFrame Sam 20/showFrame Abigail 49/showFrame Sebastian 42/fade/viewport 85 43/pause 800/speak Sam \"{{i18n:RSVG.14}}\"/",
+			"Value": "/warp Alissa 74 38/warp Sam 72 38/faceDirection Alissa 2/showFrame Sam 20/showFrame Abigail 49/showFrame Sebastian 42/fade/viewport 74 39/pause 800/speak Sam \"{{i18n:RSVG.14}}\"/",
 			"When": {
 				"HasSeenEvent |contains=75160120": true
 			}
@@ -222,6 +228,82 @@
 			"Name": "RANDOMUNDREYA",
 			"Value": "{{Random:0 Custom_Ridgeside_RidgesideVillage 47 22 0, 0 Custom_Ridgeside_RidgesideVillage 81 70 0, 0 Town 98 85 0, 0 Custom_Ridgeside_RSVCliff 17 15 0, 0 BusStop 29 16 0, 0 Custom_Ridgeside_Ridge 51 24, 0 Custom_Ridgeside_RSVCableCar 9 14 0, 0 Custom_Ridgeside_RidgesideVillage 131 105 0, 0 Mountain 31 5 0, 0 Mountain 87 33 0, 0 Mountain 51 37 0, 0 Beach 69 5 0, 0 Beach 37 31 0, 0 Custom_Ridgeside_RidgesideVillage 134 42 0, 0 Town 46 15 0, 0 Custom_Ridgeside_RidgesideVillage 13 83 0, 0 Custom_Ridgeside_RidgesideVillage 134 23 0, 0 Custom_Ridgeside_RidgesideVillage 74 35 0, 0 Town 18 8 0, 0 Town 6 78 0}}",
 		},
+
+		//Spouse Genders	
+		{
+			"Name": "SpouseGender",
+			"Value": "female",
+			"When": {
+				"Query: '{{Rafseazz.RidgesideVillage/SpouseGender}}' = 'female'": true
+			},
+			"Update": "OnLocationChange, OnTimeChange"
+		},
+		{
+			"Name": "SpouseGender",
+			"Value": "male",
+			"When": {
+				"Query: '{{Rafseazz.RidgesideVillage/SpouseGender}}' = 'male'": true
+			},
+			"Update": "OnLocationChange, OnTimeChange"
+		},
+		{
+			"Name": "SpouseGender",
+			"Value": "undefined",
+			"When": {
+				"Query: '{{Rafseazz.RidgesideVillage/SpouseGender}}' = 'undefined'": true
+			},
+			"Update": "OnLocationChange, OnTimeChange"
+		},
+		{
+			"Name": "NPCListCheck",
+			"Value": "'Aguar', 'Alissa', 'Bert', 'Corine', 'Ezekiel', 'Flor', 'Freddie', 'Ian', 'Jeric', 'Keahi', 'Kenneth', 'Lenny', 'Lola', 'Maddie', 'Olga', 'Philip', 'Pika', 'Richard', 'Shiro', 'Trinnie', 'Ysabelle', 'Yuuma', 'Naomi', 'Kimpoi', 'Malaya', 'Alex', 'Elliott', 'Harvey', 'Sam', 'Sebastian', 'Shane', 'Abigail', 'Emily', 'Haley', 'Leah', 'Maru', 'Penny', 'Caroline', 'Clint', 'Demetrius', 'Evelyn', 'George', 'Gus', 'Jas', 'Jodi', 'Kenneth', 'Lewis', 'Linus', 'Marnie', 'Pam', 'Pierre', 'Robin', 'Vincent', 'Willy'"
+		},
+
+		//Hotel Guests
+		{
+			"Name": "RandomNumber",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber1",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber2",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber3",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber4",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber5",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber6",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber7",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber8",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber9",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
+		{
+			"Name": "RandomGuestNumber10",
+			"Value": "{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}"
+		},
 	],
 
 	/*********
@@ -299,14 +381,6 @@
 				"FromMapFile": "Assets/Maps/EventMaps/RSVTheRide.tmx",
 				"MigrateLegacyNames": [ "RSVTheRide" ]
 			}, 
-			/*********
-			** MineCart Map
-			*********/		
-			{
-				"Name": "Custom_Ridgeside_RSVMinecart",
-				"FromMapFile": "Assets/Maps/EventMaps/RSVMinecart.tmx",
-				"MigrateLegacyNames": [ "RSVMinecart" ]
-			},
 			/*********
 			** Event Hall Variants
 			*********/		
@@ -533,6 +607,10 @@
 			"Name": "Custom_Ridgeside_RSVHiddenWarp2",
 			"FromMapFile": "Assets/Maps/DynamicMaps/RSVHiddenWarp2.tmx",
 			"MigrateLegacyNames": [ "RSVHiddenWarp2" ]
+		},
+		{
+			"Name": "Custom_Ridgeside_WeddingReceptionPic",
+			"FromMapFile": "Assets/Maps/EventMaps/WeddingReceptionPic.tmx",
 		},        	 	   
 
 	],
@@ -552,7 +630,7 @@
 	*/
 	{
 		"Action": "Include",
-		"FromFile": "Data/DependencyData/CustomCompanions.json, Data/DependencyData/FarmTypeManager.json, Data/DependencyData/NPCMapLocations.json, Data/DependencyData/QuestFramework.json, Data/DependencyData/AntiSocialNPCs.json, Data/DependencyData/CustomNPCExclusions.json",
+		"FromFile": "Data/DependencyData/CustomCompanions.json, Data/DependencyData/CustomCompanionsTourists.json, Data/DependencyData/FarmTypeManager.json, Data/DependencyData/NPCMapLocations.json, Data/DependencyData/QuestFramework.json, Data/DependencyData/AntiSocialNPCs.json, Data/DependencyData/CustomNPCExclusions.json",
 	},
 
 	//Include Event Data
@@ -643,6 +721,16 @@
   		"LogName": "Include Tilesheets",		
 		"Action": "Include",
 		"FromFile": "Data/Tilesheets.json",
+  	},
+
+  	//Includes Special Orders
+	/*
+		Loads special order files
+	*/
+  	{
+  		"LogName": "Include Special Orders",		
+		"Action": "Include",
+		"FromFile": "Data/SpecialOrders/SpecialOrders.json, Data/SpecialOrders/SOStrings.json",
   	}
 
 ],
@@ -654,7 +742,7 @@
 		75160060,
 		75160175,
 		75160176,
-		75160193
+		75160193,
 	],
 	"RepeatResponse": [
 		75161001,

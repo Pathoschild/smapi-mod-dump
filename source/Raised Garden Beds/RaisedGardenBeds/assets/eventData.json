@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/RaisedGardenBeds
+**
+*************************************************/
+
+{
+	"Events": [
+		{
+			"Conditions": "m 10000/f {0} 250/j 31/w sunny",
+			"Who": "Robin",
+			"Where": "Farm",
+			"Script": "continue/64 15/farmer 64 16 2 {0} 64 18 0/skippable/pause 1500/speak {0} \"{1}\"/pause 800/itemAboveHead/playSound getNewSpecialItem/pause 3300/message \"{2}\"/pause 800/speak {0} \"{3}\"/pause 800/speak {0} \"{4}\"/pause 800/end"
+		}
+	]
+}

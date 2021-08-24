@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Quests;
@@ -21,7 +21,7 @@ namespace CustomNPCExclusions
     /// <summary>A Harmony patch that excludes a list of NPCs from greeting and/or being greeted by other NPCs. See <see cref="NPC.sayHiTo(Character)"/>.</summary>
     public static class HarmonyPatch_Greetings
     {
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_Greetings)}\": prefixing SDV method \"NPC.sayHiTo(Character)\".", LogLevel.Trace);
             harmony.Patch(

@@ -6,9 +6,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit b7d0650cc238433a3247b57d106d32233f82c16e
+   commit 7aa8326708275c2f3ebec0412d4ca63178f4b921
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Thu May 6 21:58:54 2021 +0200
+   Date:   Wed Aug 4 10:07:50 2021 +0200
    
-       Bump version to 4.1 to avoid confusion with non-official release
+       DeBump version to 5.1
    

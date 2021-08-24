@@ -61,8 +61,8 @@ namespace EventBlackBars
 
             api.RegisterLabel(manifest, "Appearance", null);
 
-            api.RegisterClampedOption(manifest, "Bar Height Percentage", "The percentage of the height of the screen for a bar to take up.", () => (float)config.BarHeightPercentage, (float val) => config.BarHeightPercentage = val, 1f, 49f, 0.1f);
-            api.RegisterSimpleOption(manifest, "Move Bars In Smoothly", "Whether to gradually move the bars in when an event starts, or have them fully out right away.", () => config.MoveBarsInSmoothly, (bool val) => config.MoveBarsInSmoothly = val);
+            api.RegisterClampedOption(manifest, "Bar Height Percentage", "The percentage of the height of the screen for a bar to take up.", () => (float)config.BarHeightPercentage, val => config.BarHeightPercentage = val, 1f, 49f, 0.1f);
+            api.RegisterSimpleOption(manifest, "Move Bars In Smoothly", "Whether to gradually move the bars in when an event starts, or have them fully out right away.", () => config.MoveBarsInSmoothly, val => config.MoveBarsInSmoothly = val);
         }
     }
 }

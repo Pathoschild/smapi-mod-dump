@@ -1,5 +1,5 @@
 {
   "NumberOfRequiredRareCrows": 8,
   "EnableProgressiveMode": true,
-  "ProgressivePercentPerRarecrow": 10
+  "ProgressivePercentPerRarecrow": 10.0
 }

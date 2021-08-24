@@ -43,6 +43,7 @@ None beyond SMAPI
 
 ## Conflicts
 
+* ***NOT*** Compatible with Android at this time. This mod uses `Utility.ModifyCoordinatesForUIScale` which was added in SDV 1.5, and is thus unavailable on mobile ATM
 * Will (somewhat ironically, given that Esca has been a huge help getting this going) conflict with [Custom Tracker](https://github.com/Esca-MMC/CustomTracker) due to that mod blanking out the default arrow. It might work if you set the config option `ReplaceTrackersWithForageIcons` in that mod to `false`
   * Will still only track standard SDV forage, does not track any custom items from that mod.
 

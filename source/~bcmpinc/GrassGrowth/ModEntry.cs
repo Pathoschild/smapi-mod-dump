@@ -97,10 +97,7 @@ namespace StardewHack.GrassGrowth
                     null,
                     Instructions.Ldstr("Diggable"),
                     Instructions.Ldstr("Back"),
-                    InstructionMatcher.AnyOf(
-                        Instructions.Call    (typeof(GameLocation), nameof(GameLocation.doesTileHaveProperty), typeof(int), typeof(int), typeof(string), typeof(string)),
-                        Instructions.Callvirt(typeof(GameLocation), nameof(GameLocation.doesTileHaveProperty), typeof(int), typeof(int), typeof(string), typeof(string))
-                    ),
+                    Instructions.Call(typeof(GameLocation), nameof(GameLocation.doesTileHaveProperty), typeof(int), typeof(int), typeof(string), typeof(string)),
                     OpCodes.Brfalse
                 );
                 growWeedGrass.Prepend(

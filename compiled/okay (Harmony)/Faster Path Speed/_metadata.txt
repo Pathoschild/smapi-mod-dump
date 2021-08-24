@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9344
+IDs: gaussfire.FasterPathSpeed
+update keys: Nexus:9344, GitHub:alanperrow/StardewModding

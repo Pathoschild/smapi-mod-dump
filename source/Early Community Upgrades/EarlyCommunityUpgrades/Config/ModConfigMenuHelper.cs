@@ -61,6 +61,12 @@ namespace EarlyCommunityUpgrades
 
 			AddParagraph("Note: You may need to scroll to see all options in some drop-down menus.");
 
+			AddLabel("Order");
+			AddCheckBox("Shortcuts First", "Complete shortcuts before building Pam's house",
+				() => Globals.Config.Order.shortcutsFirst,
+				(bool var) => Globals.Config.Order.shortcutsFirst = var
+			);
+
 			AddLabel("Costs");
 			AddDropdown("Money Needed For Pam's House", "The amount of money Robin requires to build Pam's new house",
 				() => Globals.Config.Costs.pamCostGold.ToString(),
@@ -99,18 +105,26 @@ namespace EarlyCommunityUpgrades
 				numFriendshipHeartsGainedOptions
 			);
 
+			AddLabel("Time");
+			AddIntSlider("Number of Days Required", "The numbers of days to pass before the community upgrade is completed.",
+				() => Globals.Config.Time.daysUntilCommunityUpgrade,
+				(int var) => Globals.Config.Time.daysUntilCommunityUpgrade = var,
+				1,
+				28
+			);
+
 			AddLabel("Instant Unlock");
 			AddParagraph("This will override the costs/requirements options above. The upgrade will be unlocked from the very beginning of the game. You will not receive the friendship points from Pam if you choose to unlock her house from the start.");
 
 			AddCheckBox("Pam's House", "Unlocks Pam's house from the start.",
 				() => Globals.Config.InstantUnlocks.pamsHouse,
 				(bool var) => Globals.Config.InstantUnlocks.pamsHouse = var
-				);
+			);
 
 			AddCheckBox("Shortcuts", "This will unlock the shortcuts around the valley from the start.",
 				() => Globals.Config.InstantUnlocks.shortcuts,
 				(bool var) => Globals.Config.InstantUnlocks.shortcuts = var
-				);
+			);
 		}
 
 		private static void AddLabel(string name, string desc = "")
@@ -131,6 +145,11 @@ namespace EarlyCommunityUpgrades
 		private static void AddCheckBox(string name, string desc, Func<bool> get, Action<bool> set)
 		{
 			api.RegisterSimpleOption(Globals.Manifest, name, desc, get, set);
+		}
+
+		private static void AddIntSlider(string name, string desc, Func<int> get, Action<int> set, int min, int max)
+		{
+			api.RegisterClampedOption(Globals.Manifest, name, desc, get, set, min, max);
 		}
 	}
 }

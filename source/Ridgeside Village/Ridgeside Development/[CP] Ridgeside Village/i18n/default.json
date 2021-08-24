@@ -1224,7 +1224,7 @@
 "event-75160149.10": "It says it's from 'Khea Winters'",
 "event-75160149.11": "Wait? Really? It says Khea?$u#$b#That's my sister's name!$h#$b#Whoa! She wrote back!?$h#$b#I can't wait to open it!$h",
 "event-75160149.12": "Um... @?#$b#Is it okay if you read it for me?$h#$b#I... I, er... I'm sorry I can't really read well....$s",
-"event-75160149.13": "Thank you so much, @.$h#$b#Let's go sit on my patio.$h",
+"event-75160149.13": "Thank you so much, @.$h#$b#Let's go sit somewhere.$h",
 "event-75160149.14": "Okay @... I'm ready.#$b#I sure hope they're doing fine....$s#$b#You can read it now.",
 "event-75160149.15": "You start to read the letter to Ian.#To my brother Ian,#First of all, I'm so sorry for not being able to reply to your many letters. But you can rest easy knowing we all received the money and letters you sent us these past months.#I'm sorry again for not being able to reply to your recent letters. Mama and Papa didn't know how to send one, and I was away on an internship.#But the moment I got hold of your letters and read them to Mom and Dad, they were very happy. We all were.#My graduation is almost coming up, Ian, and I really wish you can attend.#But I know you wouldn't agree to using up extra money just for travel expenses. So I understand.#I've been doing great in school and I just want to say thank you for everything, big brother Ian.#You're such an inspiration for me and without you and our parents' hard work, I wouldn't be where I am right now.#I promise, I will be successful one day, and I will repay you all back!#Thank you so much again, big brother. Mama says hi!#We miss you so much. Please rest when you can, I know you work yourself to the bone.#Take care of yourself, not just for us, but for yourself too.#You're the best big brother I could ever ask for. See you soon!#Love, your little sister, Khea",
 "event-75160149.16": "I...$s#$b#I...$6#$b#I'm glad....$7",
@@ -1393,6 +1393,7 @@
 "event-75160082.01": "Heya, @!$h#$b#Nice seeing ya!$h#$b#Whatcha doin today? Just visiting?",
 "event-75160082.02": "Oh! That's cool.#$b#Cool cool cool cool...$h",
 "event-75160082.03": "So, uh... By the way...#$b#My dad bought some of your produce the other day.#$b#It was delish! Great job, Mr. farmer!$h^It was delish! Great job, Ms. farmer!$h#$b#Dad said it wouldn't be a great dish without you!",
+"event-75160082.03.5": "Keahi pats you on the back",
 "event-75160082.04": "You deserve that pat on the back. You did great!$h#$b#I'm sure you're really busy... So I'll stop bothering you now, @.",
 "event-75160082.05": "Bye!$h",
 "event-75160082.06": "Ha ha ha ha.$h#$b#Oops. You smell super stinky, @! You better take a really long shower!$h",
@@ -1448,7 +1449,7 @@
 
 //Keahi finds fireworks, aka "Keahi no" (Keahi 8 hearts)
 "event-75160085.01": "Hey there, @!$h#$b#I found this old firecracker safely stored behind Ian's house.#$b#He wasn't around, so I took it and left a note.",
-"event-75160085.02": "It's an old one, though. I don't think it will light up.#$b#Hmm.... ... ... ... #$b#But just for fun, I'm gonna light it up!$h",
+"event-75160085.02": "It's an old one, though. I don't think it will light up.#$b#Hmm... #$b#But just for fun, I'm gonna light it up!$h",
 "event-75160085.03": "This firework is for you, @!$h#$b#For best friends!$h#$b#Don't worry, it won't light up! It's soaked and old!$h#$b#WOAH!$u",
 "event-75160085.04": "Oh no! I thought this was soaked through!$u",
 "event-75160085.05": "You drag Keahi away from the firecracker and run!",
@@ -1551,7 +1552,7 @@
 //Kiwi hiding (Kiwi 2 hearts)
 "event-75160177.01": "Hup! A human? What human doing here?#$b#Kiwi not move. Not see Kiwi maybe.",
 "event-75160177.02": "Human?$u#$b#What human want?$u#$b#He see Kiwi?!$u^She see Kiwi!?$u",
-"event-75160177.03": "Yes! Human sees!$u#$b#How!? Human have magic? Speak ancient language?$a#$b#Why human here?$a#$b#... Human not take Kiwi alive! $a",
+"event-75160177.03": "Yes! Human sees!$u#$b#How!? Human have magic? Speak ancient language?$a#$b#Why human here?$a#$b#Human not take Kiwi alive! $a",
 "event-75160177.04": "Huh? Human visit only? Want friend?#$b#Kiwi has Jio. Enough friend.#$b#Hmm... Kiwi want two friend maybe.",
 "event-75160177.05": "No! Kiwi is not foolish.$a#$b#Kiwi watch human, decide human good or human bad.$a",
 "event-75160177.06": "Hmm. Kiwi suspicious much...$a",
@@ -1973,7 +1974,7 @@
 "event-75160162.18": "Phew, another hard day's work.$h#$b#I can't wait to go back to the hotel and sleep like the dead!$6",
 
 //Philip in the saloon (Philip 4 hearts)
-"event-75160163.01": "Hey, Philip, I thought you still have work tomorrow?#$b#Might want to lay off the with the beers, there.$h",
+"event-75160163.01": "Hey, Philip, I thought you still have work tomorrow?#$b#Might want to lay off with the beers there.$h",
 "event-75160163.02": "*urp*$6#$b#Oops, I'm sorry Gus!$6#$b#I can manage!$6#$b#I'm just so bummed about my the latest issue of IncrediMan.$s#$b#After the switch to the new writers, the series has gone SUPER bad!$s#$b#Oh man, at this rate, they'll cancel the title. Uhhgg!$s#$b#Man, why do they do him dirty!?!$a#$b#*urp* $a",
 "event-75160163.03": "Uh, I'm sorry, Philip, but I don't really get what you're saying.$h#$b#But whatever it is, I hope things get better.$h",
 "event-75160163.04": "I hope so too, Gus.$s#$b#*urps*$a",
@@ -2100,6 +2101,7 @@
 "event-75160100.Fork1": "Huh? Did I hear that right?$h",
 "event-75160100.05": "That really means a lot @!$h#$b#Okay, you can head on back here and help me unpack the ingredients.$h",
 "event-75160100.06": "You can put that over there.",
+"event-75160100.06.1": "I'm speed!$u",
 "event-75160100.07": "Hi, boss!$h#$b#I'm sorry I'm late!",
 "event-75160100.08": "Oh! Glad to see you.$h#$b#I hope your Dad's alright, Corine.#$b#And oh? Where did you run off to earlier, young man?$a",
 "event-75160100.09": "Hehe... Sorry, Dad!$h#$b#Vincent and Trinnie came by the house really early.$h",
@@ -2529,7 +2531,7 @@
 "event-75160112.14": "Yuuma held back tears while running outside.",
 "event-75160112.15": "I... I'm tired...$s",
 "event-75160112.16": "I'm really tired...$s#$b#I... I...$s",
-"event-75160112.17": "I want to play with my niisan again....$4#$b#I want to play with the other kids again...$4#$b#I want to go out of the house anytime and just run around again....$4#$b#I want to see my niisan go out every morning to exercise and jog again....$4#$b#I want to see him healthy again....$4#$b#I want to see Mom and Dad again....$4#$b#I... I just want my old life back.$4#$b#I... I'm tired... I'm super tired...$4",
+"event-75160112.17": "I want to play with my niisan again....$4#$b#I want to play with the other kids again...$4#$b#I want to go out of the house anytime and just run around again....$4#$b#I want to see my niisan go out every morning to exercise and jog again....$4#$b#I want to see him healthy again....$4#$b#I want to my family to be complete again....$4#$b#I... I just want my old life back.$4#$b#I... I'm tired... I'm super tired...$4",
 "event-75160112.18": "I'm sorry...$4#$b#It's selfish of me...$4#$b#But...$4",
 "event-75160112.19": "Oniisan? I thought you were supposed to rest?$4#$b#Your body might get hurt again...$4",
 "event-75160112.20": "I couldn't sleep, heh.$h#$b#And hey... Yuuma.... I'm sorry for being a burden to you.$s#$b#I always see you look off the distance and sometimes see you look at the other kids playing outside when they pass by.#$b#I know you miss your old life... and I'm sorry for taking that away from you.... The moment I came back home with this injury...$s#$b#Yuuma... What I'm trying to say is that I'm really grateful you're my younger brother.$h#$b#And you never hesitated to take care of me.#$b#You did your very best everyday, and I felt so guilty for taking away your childhood.$s#$b#But... I always wanted you to talk to me about it, but you never opened up....$s#$b#So the moment I heard you cry out to @... I was happy that you were finally able to say what was in your heart....#$b#I hear you. And I'm sorry...$s#$b#But hey, little brother. You don't have to be so hard on yourself, okay?#$b#Please take your time to have fun with the other kids, too.$h#$b#Doctor Harvey said I'm getting better every day.#$b#It was just unfortunate that I had an attack again earlier. Aside from that, your big brother's getting better, okay?$h",
@@ -2556,34 +2558,33 @@
 "event-75160113.15": "Ha ha! I missed you guys!$h#$b#Thank you for cheering me up!$h",
 "event-75160113.16": "I had fun with my friends today!$h",
 
-//Quest Events
-	//MineCart Plot Unlock
-"event-75160189.01": "Oh, good to see you, @.$h#$b#Such a lovely day today, isn't it?",
-"event-75160189.02": "Oh, that?#$b#It's an old minecart system that connects Pelican Town to Ridgeside Village.#$b#It's been neglected for a while. This was built in case of emergencies... You know, when the war eventually reaches the valley.$s#$b#As things stand, though, it's not really the village's priority to fix it.#$b#Along with the lack of funding for supplies.$s",
-"event-75160189.03": "Let's get a little closer, shall we?",
-"event-75160189.04": "Hmmm...$s#$b#I wonder how we're going to fix this?",
-"event-75160189.05": "Say, @? How about we make this our special little project?$h#$b#We can restore the minecart system on our own.#$b#I mean, we do need an easier way to get supplies into the village, so why not use the carts?$4#$b#I guess you could fit inside of a cart as well... If you're not afraid.$h#$b#I'm sure a rickety old cart won't scare you, ha ha!$4#$b#I'm just messing with you, @.$h",
-"event-75160189.06": "Okay, this is the plan...",
-"event-75160189.07": "I'll convince a wealthy investor to invest some money into the village. But for that to happen I need to convince them you're self-sufficient and financially independent.#$b#So, all you've got to do is earn at least 150,000g. That should be enough to impress them!$h#$b#When you've already earned this much, just come by the office so I can do the paperwork, got it?$h",
-"event-75160189.08": "Excellent!$h#$b#Good luck!$h#$b#Pleasure doing business with you, @!$h#$b#Remember! Come by my office when you've earned enough!#$b#I'm looking forward to the restoration.$h",
+//Fixing Minecart Events
+	//Yuuma visits
+"event-75160189.01": "Hi, @.$h#$b#I'm really sorry for the sudden visit.",
+"event-75160189.02": "I was on my way to shop for groceries when Miss Lenny asked me for a favor.#$b#She asked me to tell you to visit Ridgeside whenever you're free.#$b#She has something important to discuss with you.",
+"event-75160189.03": "Alright, that's it, I guess.#$b#See you around.",
 
-//Lenny gets the money for minecart
-"event-75160191.01": "Ah, @! Nice to see you!$h#$b#I assume you're here for the Minecart Restoration Project? Is that 150,000g in your pocket or are you happy to see me?$h",
-"event-75160191.02": "Kidding! I'm really happy that you've managed to achieve such an amazing feat!$h#$b#Alright, I just need you to sign here, here, here and here.#$b#Alright, that should do it.",
-"event-75160191.03": "I think we're all done!$h#$b#Thank you so much, @!$h#$b#I'll get some contractors to work on it as soon as possible!$h",
-"event-75160191.04": "I can't wait!$h",
+	//Lenny gives quest
+"event-75160190.01": "Ah! @! Glad to know that you got Yuuma's message.$h#$b#Now don't go thinking about that being some form of child labor or something.$4#$b#That sweet young boy was on his way to Pelican Town anyway and I didn't want to pass the opportunity.$h",
+"event-75160190.02": "Oh, yes. About that important business.",
+"event-75160190.03": "See that minecart over there? I was thinking of a small project for us.#$b#I mean, why the heck not?$h#$b#Think of it as a small challenge.$4#$b#Come! Let's go take a closer look!$h",
+"event-75160190.04": "Now looksie, this old minecart here hasn't been of use for such a long time.#$b#It was originally intended to be a quick travel method for cases of emergencies, if ever the war reached the valley.#$b#Fortunately, it didn't have to come to that.$h#$b#So, it hasn't really served its purpose and was eventually abandoned.$s#$b#And so! I've been thinking...$h",
+"event-75160190.05": "How about I give you the honor of helping us restore this old minecart system here?$h",
+"event-75160190.06": "Just a second, now, we're all in this together.$h##$b#Restoring the minecart system would also allow you to easily travel around the village!$h#$b#Who knows? Riding around a minecart as a way to travel might be even fun!$h#$b#I'll handle the funding for it's restorationg, though we'd still need the supplies.#$b#Now that's where you'll come in.$h#$b#I've enlisted Robin's help and she has given me a list of the required supplies.$h",
+"event-75160190.07": "You can drop those supplies over to that minecart box when you have them.#$b#See? It ain't all bad right?$h",
+"event-75160190.08": "I knew you'd be up for the challenge!$h#$b#Just drop off the supplies over to that box whenever, alright?$h",
 
 	//MineCart Restored
-"event-75160190.01": "I think it's done!$h#$b#Good job, everyone!$h",
-"event-75160190.02": "Whoa, that was a tough gig!$h",
-"event-75160190.03": "Hi there, Lenny and @.#$b#We just finished restoring the old Ridgeside minecart system!$h",
-"event-75160190.04": "Woohoo! That sounds great!$h",
-"event-75160190.05": "Well it wouldn't have been possible without @!#$b#Great job, @!$h",
-"event-75160190.06": "Oh Lenny, we've also fixed up the other minecart over by Nightingale Orchard.#$b#This should make it easier for the Lidens to get around.",
-"event-75160190.07": "That's fantastic news!#$b#Thank you so much Robin, Clint, and Ian.$h",
-"event-75160190.08": "No problem, Lenny.#$b#I'm glad it's finally fixed.#$b#It's been a while since I worked on something that wasn't another tool upgrade.$h",
-"event-75160190.09": "I'm just happy to get another gig.$h",
-"event-75160190.10": "Don't worry, Ian. I've got more lined up!$4#$b#Thanks again, everyone!!$h",
+"event-75160191.01": "I think it's done!$h#$b#Good job, everyone!$h",
+"event-75160191.02": "Whoa, that was a tough gig!$h",
+"event-75160191.03": "Hi there, Lenny and @.#$b#We just finished restoring the old Ridgeside minecart system!$h",
+"event-75160191.04": "Woohoo! That sounds great!$h",
+"event-75160191.05": "Well it wouldn't have been possible without @!#$b#Great job, @!$h",
+"event-75160191.06": "Oh Lenny, we've also fixed up the other minecart over by Nightingale Orchard.#$b#This should make it easier for the Lidens to get around.",
+"event-75160191.07": "That's fantastic news!#$b#Thank you so much Robin, Clint, and Ian.$h",
+"event-75160191.08": "No problem, Lenny.#$b#I'm glad it's finally fixed.#$b#It's been a while since I worked on something that wasn't another tool upgrade.$h",
+"event-75160191.09": "I'm just happy to get another gig.$h",
+"event-75160191.10": "Don't worry, Ian. I've got more lined up!$4#$b#Thanks again, everyone!!$h",
 
 //InterModPatches
 	//InterModEvents
@@ -2614,7 +2615,7 @@
 "InterModEvent.EastScarpe.Yuuma4Hearts.02": "Oh?#$b#Them? They're just playing.#$b#Why won't I join?$s#$b#Umm...$u#$b#I mean...$s#$b#I have stuff to do...$u#$b#So...$s",
 "InterModEvent.EastScarpe.Yuuma4Hearts.03": "I need to get going, @. I have to hurry back to my brother.$s",
 
-			//Adds Eloise and Jacob to Alissa's 8 Heart Event
+			//Adds Eloise and Jacob to Alissa's 8 Heart Event (unused)
 "InterModEvent.EastScarpe.Alissa8Hearts.01": "I'm glad you came, @!$8#$b#I'm still shaking, though!#$b#I feel like I could explode any second.#$b#I'm so nervous.$11#$b#Okay... Calm down Alissa! Don't back down... Don't give up!$11",
 "InterModEvent.EastScarpe.Alissa8Hearts.02": "Well then. Seems like our guest of honor as arrived!$h#$b#Let's give the people what they want! Everyone's excited to hear you sing!$h",
 "InterModEvent.EastScarpe.Alissa8Hearts.03": "Miss Lenny! You didn't have to say that out loud!$9",
@@ -2652,7 +2653,7 @@
 //Animations
 "Animations.Aguar.Meditate": "%Mr. Aguar seems to be meditating.",
 "Animations.Alissa.Sing": "%Alissa is singing. But she seems a little bit shy.",
-"Animations.Flor.Read": "%Flor is engrossed in a book and doesn't notice you.",
+"Animations.Flor.Read": "%Flor seems to be engrossed in reading that she didn't notice you",
 "Animations.Philip.Gym": "*Huff huff*$8",
 "Animations.Ysabelle.Ballet": "*Inhale* *Exhale*$9",
 "Animations.Corine.Train": "*Huff huff*$7",
@@ -2680,14 +2681,14 @@
 "MapString.rsv.noquestboard": "There's a note in the board. It reads...#'Closed until further notice - Lenny'",
 
 "MapString.rsv.1": "Welcome to Ridgeside Village!",
-"MapString.rsv.2": "Log Cabin Hotel #The ultimate mountainside experience!#Residents: Richard, Philip, Ysabelle and Flor.",
+"MapString.rsv.2": "Log Cabin Hotel #The ultimate mountainside experience!",
 "MapString.rsv.3": "Lenny's Mailbox #Ridgeside Village Admin",
-"MapString.rsv.4": "Kobayashi Residence #Shiro and Yuuma live here.",
+"MapString.rsv.4": "Kobayashi Residence",
 "MapString.rsv.5": "This swing looks like it's never been used.",
 "MapString.rsv.6": "Eubank Residence#Kenneth lives here.#'Need anything fixed? Come on in!'",
 "MapString.rsv.7": "This a doghouse with no dog.#Who let the dog out?",
 "MapString.rsv.8": "Someone lit a bonfire here recently.",
-"MapString.rsv.9": "Winters Residence#Ian lives here.#'You call, I haul!'",
+"MapString.rsv.9": "Odd Jobs Services.#'You call, we haul!'",
 "MapString.rsv.10": "The sign has been cut cleanly in half.#It looks like it was cut with some sort of blade...",
 "MapString.rsv.11": "The statue is spooky.#You'd rather not touch it.",
 "MapString.rsv.12": "Someone seems to be living inside this grassy hut.#It seems a little small for a human, though.",
@@ -2700,7 +2701,7 @@
 "MapString.rsv.19": "Liden Residence#Bert, Olga and Trinnie live here.",
 "MapString.rsv.20": "The jars are full of fruit preserves.#They smell good!",
 "MapString.rsv.21": "Fruit drops when it's ripe.#Then it gets collected and made into preserves.",
-"MapString.rsv.22": "Alissa's Mailbox#Nightingale Orchard",
+"MapString.rsv.22": "Nightingale Orchard",
 "MapString.rsv.23.spring": "These crops look very healthy.",
 "MapString.rsv.23.summer": "These crops look very healthy.",
 "MapString.rsv.23.fall": "These crops look very healthy.",
@@ -2716,7 +2717,7 @@
 "MapString.rsv.32": "Well, well, well.#It's a well.",
 "MapString.rsv.33": "Akina Residence#Pika and Keahi live here.",
 "MapString.rsv.34": "Pretty sure I saw this horse walk into the Stardrop Saloon.",
-"MapString.rsv.35": "Jeric's Shop#Blooming Hill Farm",
+"MapString.rsv.35": "Blooming Hill Farm#Farm supplies available inside!",
 "MapString.rsv.36": "A worn-down workbench#Jeric sure keeps busy.",
 "MapString.rsv.37": "An old motorcycle.#Looks like Jeric's working on it.",
 "MapString.rsv.38": "This chicken is free from society's yoke.",
@@ -2900,7 +2901,7 @@
 "MapString.rsv.hotel1": "It's an old scroll on display chronicling the history of Ridgeside Village.",
 "MapString.rsv.hotel2": "It's a pretty painting of the Calico Desert.",
 "MapString.rsv.hotel3": "It's a guest book.#Looks like your Grandpa visited the hotel often.",
-"MapString.rsv.hotel4": "A check-in form. It costs 500G to book a room for the night.",
+"MapString.rsv.hotel4": "A check-in form. It costs 500$ to book a room for the night.",
 "MapString.rsv.hotel5": "It's a laptop. You want to take a peek but you remember that's a privacy violation.",
 "MapString.rsv.hotel6": "It's the Hotel Lobbby Computer. What did you just learn about privacy?",
 "MapString.rsv.hotel7": "The file cabinet is locked. Why were you looking in there anyway?",
@@ -4060,6 +4061,7 @@
 "Festivals.Jellies.Richard": "Another batch of jellies gone with the tide. I proposed on this day, many summers ago.$h#$b#I'm not sure which glowed brighter that night, the jellyfish or my dear wife's eyes.$4",
 "Festivals.Jellies.Trinnie": "I'm not sleepy!$s#$e#I'm gonna stay up and see the muhgreting jellyfishies!$h",
 "Festivals.Jellies.Yuuma": "The jellies make me think of my mommy and daddy.$s#$b#Maybe the jellies can take a message from me, all the way to them... $h#$e#... I really hope so.$s#$b#I just want them to know I still love them.$4",
+"Festivals.Jellies.Yuuma.2": "The jellies look pretty.$h#$b#They look complete. One day, I hope daddy comes back too and we can finally be complete.",
 
 		//Dateables
 "Festivals.Jellies.Alissa": "This beautiful scenery, it's breathtaking.#$b#It's like the ocean is performing for us.$h",
@@ -5143,6 +5145,7 @@
 "Flor.Dialogue.Resort_Wander": "I'm not really a beach person, but I'm glad I came out here!$h#$b# I'm also really glad I'm wearing sandals. This sand is really hot.$s",
 "Flor.Dialogue.Resort_Bar": "I'm so thirsty! I can't wait to get some lemonade.$14",
 "Flor.Dialogue.Resort": "Hi, @! Are you enjoying yourself?$h",
+"Flor.ArchaeologyHouse": "*whispering to herself* Oh... As I do recall, Piaget's theory in cognitive learning focused on assimilation and accomodation of information... But his study was not in a controlled environment though... He used his children as subjects... So would this be inaccurate?... Hmm...$6",
 
 
 "Freddie.Dialogue.Introduction": "Hello there, stranger.#$b#You must be the new farmer everyone has been talking about!$h#$b#Nice to meet you. My name is Freddie.#$b#I live here in Ridgeside with my wife Lola. Come by sometime for a chat, won't you.$h",
@@ -5678,7 +5681,7 @@
 
 //0 Hearts
 "Kenneth.Dialogue.Mon": "Good day, @. I've been pretty busy today. What about you?",
-"Kenneth.Dialogue.Tue": "I've got to stock up on some basics... #$b#I need parts for a personal projet, too, but that'll have to wait.",
+"Kenneth.Dialogue.Tue": "I've got to stock up on some basics... #$b#I need parts for a personal project, too, but that'll have to wait.",
 "Kenneth.Dialogue.Wed": "I check the lamps in town every week, just to be safe. #$b#I know I'm a huge worrywart about these sorts of things.",
 "Kenneth.Dialogue.Thu": "Maru is a great help! She's incredibly smart for her age. #$b#Sometimes it feels like she even knows more than I do!",
 "Kenneth.Dialogue.Fri": "I'm hungry.$s#$e#I wonder what's on Pika's menu today?",
@@ -8250,127 +8253,6 @@
 "InterModDialogue.EmberNightDialogue.Andy": "PLACEHOLDER",
 "InterModDialogue.EmberNightDialogue.Susan": "PLACEHOLDER",
 
-//Hotel Tourist population dialogues
-
-//General Days
-//Small amount of guests
-"Richard.HotelReaction.Small": "Hmm, business has been slow these days.$h#$e#I wonder what I should do to attract more customers.#$b#If you have any ideas, please let me know.$h",
-"Ysabelle.HotelReaction.Small": "I sincerely hope the coming days are better.$6#$b#I worry for Grandpa. He's been stressing about the lack of customers for a while now.$s",
-"Philip.HotelReaction.Small": "The hotel has been spacious lately.#$b#I hope this doesn't happen too often, or else I would need to look for a different place to stay.$s",
-"Flor.HotelReaction.Small": "I must speak to Mr. Richard when he's free.#$b#Maybe I can help come up with strategies for the hotel or something.",
-"Naomi.HotelReaction.Small": "placeholder",
-"Ian.HotelReaction.Small": "People haven't been coming in that much.$s#$b#Maybe I need to clean up more...",
-"Malaya.HotelReaction.Small": "placeholder",
-
-//Moderate amount of guests
-"Richard.HotelReaction.Moderate": "We've seen better days.#$b#But that's alright, I'm happy to serve my dear customers.$h",
-"Ysabelle.HotelReaction.Moderate": "Hmm, I think I'd be free later this afternoon.#$b#There's part of me that feels sad about it, but it gives me time to practice my pirouettes.$h",
-"Philip.HotelReaction.Moderate": "It's nice to see more people here.#$b#Thank Yoba for that.$h",
-"Flor.HotelReaction.Moderate": "This is a nice sign.#$b#I'm pleased to see a lot of people visiting.$h ",
-"Naomi.HotelReaction.Moderate": "placeholder",
-"Ian.HotelReaction.Moderate": "Mr. Richard told me that we have to come up with ways to attract more customers.",
-"Malaya.HotelReaction.Moderate": "placeholder",
-
-//Large amount of guests
-"Richard.HotelReaction.Large": "Today is a great day.$h#$b#Excuse me, but I must tend to the customers.#$e#I hope I'm making my dear Angelika proud.$h",
-"Ysabelle.HotelReaction.Large": "I'm glad to see Grandpa happy.$h#$b#Taking care of the hotel's his way to relax, and seeing it flourish makes me feel so proud of him.$h#$e#I wish Grandma was here to see this.$6",
-"Philip.HotelReaction.Large": "Wow, lots of people are here.#$b#Oh well, more people means more customer for them.$h",
-"Flor.HotelReaction.Large": "Oh, this is nice!$h#$b#Now, Mr. Richard won't worry so much.$h",
-"Naomi.HotelReaction.Large": "placeholder",
-"Ian.HotelReaction.Large": "Excuse me, I have to tend to a few things for Mr. Richard.#$e#I'm glad business is good today.#$b#But that just means more work for me.",
-"Malaya.HotelReaction.Large": "placeholder",
-
-//Day after RSV Gathering Festival
-"Richard.HotelReaction.Gathering": "placeholder",
-"Ysabelle.HotelReaction.Gathering": "placeholder",
-"Philip.HotelReaction.Gathering": "placeholder",
-"Flor.HotelReaction.Gathering": "placeholder",
-"Naomi.HotelReaction.Gathering": "placeholder",
-"Malaya.HotelReaction.Gathering": "placeholder",
-"Ian.HotelReaction.Gathering": "placeholder",
-//Authorities
-"Lenny.HotelReaction.Gathering": "placeholder",
-"Lewis.HotelReaction.Gathering": "placeholder",
-//Civilians
-"Ezekiel.HotelReaction.Gathering": "placeholder",
-"Aguar.HotelReaction.Gathering": "placeholder",
-"Freddie.HotelReaction.Gathering": "placeholder",
-"Lola.HotelReaction.Gathering": "placeholder",
-"Pika.HotelReaction.Gathering": "placeholder",
-"Keahi.HotelReaction.Gathering": "placeholder",
-"Trinnie.HotelReaction.Gathering": "placeholder",
-"Yuuma.HotelReaction.Gathering": "placeholder",
-
-//Day after Ember of Resolutions Festival
-"Richard.HotelReaction.EoR": "That was quite the gathering last night wasn't it?#$b#I hope you'll be able to commit to your reolutions.$4",
-"Ysabelle.HotelReaction.EoR": "Last night was breathtaking.#$b#It was as if the fire was a silent ignition to our spirits.$h",
-"Philip.HotelReaction.EoR": "That was great last night.$h#$b#It was a perfect way to start the year.",
-"Flor.HotelReaction.EoR": "Last night was pleasant.#$b#It brought people all over together, and it was a fun way for us to bond.$h",
-"Naomi.HotelReaction.EoR": "placeholder",
-"Ian.HotelReaction.EoR": "Did you have fun last night?#$b#Being by the fire felt kind of cozy and warm.$l",
-"Malaya.HotelReaction.EoR": "placeholder",
-  
-//Authorities
-"Lenny.HotelReaction.EoR": "We had quite a successful turnout last night.$h#$e#I hope you had a great time and will continue to visit Ridgeside or maybe even live here if you want.$4#$b#Everybody seems to enjoy your company @!$h",
-"Lewis.HotelReaction.EoR": "Lenny did me proud last night.#$b#The festival was a success!#$e#That runs in the family you know.",
-//Civilians
-"Ezekiel.HotelReaction.EoR": "Last night was quite good...#$e#I hope Corine had a good time last night.$h",
-"Aguar.HotelReaction.EoR": "Were you able to decide on your actions for the new year?#$e#You must decide on the best course of action for yourself.#$b#You wouldn't want to be a disappointment now, would you?",
-"Freddie.HotelReaction.EoR": "What a great day to start the new year!#$b#Were you able to ponder on your resolutions when you went home?#$e#The missus had a lot of thinking last night. I had to help her relax...#$b#If you know what I mean.$4",
-"Lola.HotelReaction.EoR": "Last night was wonderful.#$b#It was a beautiful way to start the year.$h",
-"Pika.HotelReaction.EoR": "So did you enjoy the feast Gus and I prepared last night?#$e#Which food did you like better?#$b#Mine right?$h",
-"Keahi.HotelReaction.EoR": "Last night was so cool!$h#$b#The fire was like WOAH!$u#$b#It was so big and we were able to make smores with the food that I snuck in teehee!$h",
-"Trinnie.HotelReaction.EoR": "Did you see Keahi last night?$4#$e#He had this yummy treat that he taught us how to do.$h#$b#Oh it was SO YUMMY! I think he even made it for me.$4",
-"Yuuma.HotelReaction.EoR": "Yesterday was quite festive, right?$h#$e#It made me kind of miss our parents...$s#$b#But I believe this year is going to bring new beginnings... I hope.",
-
-//Day after Alissa's Concert Festival
-"Richard.HotelReaction.Concert": "That young lady has quite the talent, doesn't she?#$b#Maybe I should ask her to sing at the cabin when we hold events here.",
-"Ysabelle.HotelReaction.Concert": "Alissa sang really well yesterday!$h#$b#Her voice was incredibly angelic. It's as if you were soothed like a baby.$h",
-"Philip.HotelReaction.Concert": "Were you at the concert yesterday?#$b#That Alissa sure has a great voice!#$e#She reminds me of the great superhero Operetta from the CDPep comics.$h",
-"Flor.HotelReaction.Concert": "Alissa has a wonderful voice.$l#$e#She definitely resembles the Luscinia Megarhynchos.$h#$b#Oh, that's the scientific term for Nightingale. *giggles*$h",
-"Naomi.HotelReaction.Concert": "placeholder",
-"Ian.HotelReaction.Concert": "Hello there @.$h#$b#Did you enjoy the ",
-"Malaya.HotelReaction.Concert": "placeholder",
-
-//Authorities
-"Lenny.HotelReaction.Concert": "placeholder",
-"Lewis.HotelReaction.Concert": "placeholder",
-//Civilians
-"Ezekiel.HotelReaction.Concert": "placeholder",
-"Aguar.HotelReaction.Concert": "placeholder",
-"Freddie.HotelReaction.Concert": "placeholder",
-"Lola.HotelReaction.Concert": "placeholder",
-"Pika.HotelReaction.Concert": "placeholder",
-"Keahi.HotelReaction.Concert": "placeholder",
-"Trinnie.HotelReaction.Concert": "placeholder",
-"Yuuma.HotelReaction.Concert": "placeholder",
-"Alissa.HotelReaction.Concert": "placeholder",
-"Olga.HotelReaction.Concert": "placeholder",
-"Bert.HotelReaction.Concert": "placeholder",
-
-//Randomized Tourist Dialogue
-"Tourist.Dialogue.1": "placeholder",
-"Tourist.Dialogue.2": "placeholder",
-"Tourist.Dialogue.3": "placeholder",
-"Tourist.Dialogue.4": "placeholder",
-"Tourist.Dialogue.5": "placeholder",
-"Tourist.Dialogue.6": "placeholder",
-"Tourist.Dialogue.7": "placeholder",
-"Tourist.Dialogue.8": "placeholder",
-"Tourist.Dialogue.9": "placeholder",
-"Tourist.Dialogue.10": "placeholder",
-"Tourist.Dialogue.11": "placeholder",
-"Tourist.Dialogue.12": "placeholder",
-"Tourist.Dialogue.13": "placeholder",
-"Tourist.Dialogue.14": "placeholder",
-"Tourist.Dialogue.15": "placeholder",
-"Tourist.Dialogue.16": "placeholder",
-"Tourist.Dialogue.17": "placeholder",
-"Tourist.Dialogue.18": "placeholder",
-"Tourist.Dialogue.19": "placeholder",
-"Tourist.Dialogue.20": "placeholder",
-
-
 //1.3 NPCs Dialogue
 "Gift.Love.Undreya": "PLACEHOLDER",
 "Gift.Love.Daia": "PLACEHOLDER",
@@ -8413,13 +8295,9 @@
 "Gift.Neutral.Kimpoi": "PLACEHOLDER",
 
 //Keahi prank
-"keahiprank.Helen": "PLACEHOLDER",
 "keahiprank.Undreya": "PLACEHOLDER",
 "keahiprank.Daia": "PLACEHOLDER",
-"keahiprank.Belinda": "PLACEHOLDER",
 "keahiprank.Bliss": "PLACEHOLDER",
-"keahiprank.Sari": "PLACEHOLDER",
-"keahiprank.Pipo": "PLACEHOLDER",
 "keahiprank.Acorn": "PLACEHOLDER",
 "keahiprank.Naomi": "PLACEHOLDER",
 "keahiprank.Malaya": "PLACEHOLDER",
@@ -8880,7 +8758,6 @@
 "Jio.Dialogue.breakUp": "PLACEHOLDER",
 "Jio.Dialogue.danceRejection": "PLACEHOLDER",
 "Jio.Dialogue.divorced": "PLACEHOLDER",
-"Jio.Dialogue.MovieInvitation": "PLACEHOLDER",
 
 //Belinda
 //Randomized
@@ -9391,25 +9268,17 @@
 "Helen.Dialogue.winter_27": "PLACEHOLDER",
 
 
-//Undreya
-//Day before Festivals
-"Undreya.Dialogue.spring_12": "Don't go collecting eggs without checking them tomorrow.#$b#You might hand me over to the townsfolk by accident!$u",
-"Undreya.Dialogue.summer_10": "I always attend the Luau. I love the soup!$h#$b#I also like the spare change that purple balloon has.#$b#He should visit more often.$h",
-"Undreya.Dialogue.summer_27": "I wanna see the jellies too!$h#$b#Of course I'll be there tomorrow! You'll just have a hard time finding me!$h",
-"Undreya.Dialogue.fall_26": "Uhmmm... I don't like tomorrow..$s",
-"Undreya.Dialogue.winter_7": "I hate fish. Yuck!$a#$b#I'm not interested in the festival tomorrow.",
-"Undreya.Dialogue.winter_14": "Ooh! I've been looking forward for the merchants to come!$h#$b#So many pockets to pick! Teehee < $h",
-"Undreya.Dialogue.winter_24": "I should learn to be a good elf from time to time.#$b#My friend wouldn't like it if I overstole...$s#$e#Yeah... I should learn to be good once in a while...$s",
+//Undreya new
 //Days of the Week
 
 //0 Hearts
-"Undreya.Dialogue.Mon": "PLACEHOLDER",
-"Undreya.Dialogue.Tue": "PLACEHOLDER",
-"Undreya.Dialogue.Wed": "PLACEHOLDER",
-"Undreya.Dialogue.Thu": "PLACEHOLDER",
-"Undreya.Dialogue.Fri": "PLACEHOLDER",
-"Undreya.Dialogue.Sat": "PLACEHOLDER",
-"Undreya.Dialogue.Sun": "PLACEHOLDER",
+"Undreya.Dialogue.Mon0": "PLACEHOLDER",
+"Undreya.Dialogue.Tue0": "PLACEHOLDER",
+"Undreya.Dialogue.Wed0": "PLACEHOLDER",
+"Undreya.Dialogue.Thu0": "PLACEHOLDER",
+"Undreya.Dialogue.Fri0": "PLACEHOLDER",
+"Undreya.Dialogue.Sat0": "PLACEHOLDER",
+"Undreya.Dialogue.Sun0": "PLACEHOLDER",
 
 //2 Hearts
 "Undreya.Dialogue.Mon2": "PLACEHOLDER",
@@ -9456,8 +9325,130 @@
 "Undreya.Dialogue.Sat10": "PLACEHOLDER",
 "Undreya.Dialogue.Sun10": "PLACEHOLDER",
 
+//Wedding Reception Mail
+"Mail.WedReceptionMail": "Dear @,^^We heard the news! Congratulations on being engaged! If you're interested, You can book an After-Wedding Reception that would take place here at the Log Cabin Hotel after your wedding! Come visit the hotel for more inquiries.^^- Richard^Log Cabin Hotel Owner.",
 
+//AFTER Wedding Reception Conversation Topic
+"postweddingreception.Acorn": "PLACEHOLDER",
+"postweddingreception.Aguar": "PLACEHOLDER",
+"postweddingreception.Bert": "PLACEHOLDER",
+"postweddingreception.Bliss": "PLACEHOLDER",
+"postweddingreception.Ezekiel": "PLACEHOLDER",
+"postweddingreception.Freddie": "PLACEHOLDER",
+"postweddingreception.Keahi": "PLACEHOLDER",
+"postweddingreception.Kimpoi": "PLACEHOLDER",
+"postweddingreception.Kiwi": "PLACEHOLDER",
+"postweddingreception.Lenny": "PLACEHOLDER",
+"postweddingreception.Lola": "PLACEHOLDER",
+"postweddingreception.Malaya": "PLACEHOLDER",
+"postweddingreception.Naomi": "PLACEHOLDER",
+"postweddingreception.Olga": "PLACEHOLDER",
+"postweddingreception.Pika": "PLACEHOLDER",
+"postweddingreception.Richard": "PLACEHOLDER",
+"postweddingreception.Trinnie": "PLACEHOLDER",
+"postweddingreception.Undreya": "PLACEHOLDER",
+"postweddingreception.Yuuma": "PLACEHOLDER",
 
+"postweddingreception.Caroline": "PLACEHOLDER",
+"postweddingreception.Clint": "PLACEHOLDER",
+"postweddingreception.Demetrius": "PLACEHOLDER",
+"postweddingreception.Evelyn": "PLACEHOLDER",
+"postweddingreception.George": "PLACEHOLDER",
+"postweddingreception.Gus": "PLACEHOLDER",
+"postweddingreception.Jas": "PLACEHOLDER",
+"postweddingreception.Jodi": "PLACEHOLDER",
+"postweddingreception.Kent": "PLACEHOLDER",
+"postweddingreception.Lewis": "PLACEHOLDER",
+"postweddingreception.Linus": "PLACEHOLDER",
+"postweddingreception.Marnie": "PLACEHOLDER",
+"postweddingreception.Pam": "PLACEHOLDER",
+"postweddingreception.Pierre": "PLACEHOLDER",
+"postweddingreception.Robin": "PLACEHOLDER",
+"postweddingreception.Sandy": "PLACEHOLDER",
+"postweddingreception.Vincent": "PLACEHOLDER",
+"postweddingreception.Willy": "PLACEHOLDER",
+"postweddingreception.Wizard": "PLACEHOLDER",
 
+//Log Cabin Hotel Strings
+"EventHallSign.Empty": "No reserved events",
+"EventHallSign.WeddingReception": "Event hall reserved for an upcoming Wedding Reception",
+"EventHallSign.Birthday": "Event Hall reserved for a Birthday Party",
+"EventHallSign.BdayToday1": "Welcome to",
+"EventHallSign.BdayToday2": "'s birthday party!",
+"EventHall.Closed": "The event hall is currently being cleaned up.",
+
+//Event Hall Events i18n
+	//Wedding Reception NOT undefined gender IGNORE GRAMMAR CHECK
+"event-75160245.00": "Are you all set, @?$h",
+"event-75160245.01": "We headed to the Log Cabin Hotel to attend our after-wedding reception...",
+"event-75160245.02": "Everyone...",
+"event-75160245.03": "A toast to the happy couple!$h",
+"event-75160245.04": "Congratulations to the both of you, @ and",
+"event-75160245.04.5": "!$h#$b#Here's to a happy wedded life for you both!$h",
+"event-75160245.05": "Shall we have our first dance?",
+"event-75160245.06": "I love you...",
+"event-75160245.07": "It was a fun reception...",
+	//Wedding Reception undefined gender IGNORE GRAMMAR CHECK
+"event-75160245.undefined.01": "We headed to the Log Cabin Hotel to attend our after-wedding reception...",
+"event-75160245.undefined.01.5": "@...$l",
+"event-75160245.undefined.02": "Everyone...",
+"event-75160245.undefined.03": "A toast to the happy couple!$h",
+"event-75160245.undefined.04": "Congratulations to the both of you, @ and",
+"event-75160245.undefined.04.5": "!$h#$b#Here's to a happy wedded life for you both!$h",
+"event-75160245.undefined.05": "Shall we have our first dance?",
+"event-75160245.undefined.05.5": "I'd love to...$l",
+"event-75160245.undefined.06": "I love you...",
+"event-75160245.undefined.07": "It was a fun reception...",
+	//Bday IGNORE GRAMMAR CHECK
+"event-75160247.00": "Happy birthday,",
+"event-75160247.01": "The party was a blast!",
+"event-75160247.02": "You gained a bunch of friendship points with",
+	//Anniversary Party NOT undefined gender IGNORE GRAMMAR CHECK
+"event-75160248.01": "Thank you for setting up our anniversary, @.$l",
+"event-75160248.02": "I'm all set!$h#$b#Let's go?$l",
+"event-75160248.03": "We headed to the Log Cabin Hotel for our wedding anniversary party...",
+"event-75160248.04": "Everyone...",
+"event-75160248.05": "A toast to the happy couple!$h",
+"event-75160248.06": "Happy Anniversary to the both you, @ and",
+"event-75160248.06.5": "!#$b#Cheers!$h",
+"event-75160248.07": "Would you like to have this dance?",
+"event-75160248.08": "I love you...",
+"event-75160248.09": "It was a fun party...",
+	//Anniversary Party undefined gender IGNORE GRAMMAR CHECK
+"event-75160248.undefined.01": "Thank you for setting up our anniversary, @.$l",
+"event-75160248.undefined.02": "I'm all set!$h#$b#Let's go?$l",
+"event-75160248.undefined.03": "We headed to the Log Cabin Hotel for our wedding anniversary party...",
+"event-75160248.undefined.04": "@...$l",
+"event-75160248.undefined.05": "Everyone...",
+"event-75160248.undefined.06": "A toast to the happy couple!$h",
+"event-75160248.undefined.07": "Happy Anniversary to the both you, @ and",
+"event-75160248.undefined.07.5": "!#$b#Cheers!$h",
+"event-75160248.undefined.08": "Would you like to have this dance?",
+"event-75160248.undefined.09": "I'd love to...$l",
+"event-75160248.undefined.10": "I love you...",
+"event-75160248.undefined.11": "It was a fun party...",
+
+//Naomi return conversation topic
+"event-75160249.followNaomi": "Oh! You're coming with us, @?",
+"event-75160249.stayBehind": "Goodbye, @!$h%fork",
+"NaomiReturn.Shiro": "Mom filled us in why Dad didn't come back with her.#$b#We're going to call him and tell her she'd arrived safely.",
+"NaomiReturn.Yuuma": "*sniff* No I didn't cry... *sniff*",
+"NaomiReturn.Lenny": "I can't wait to chat with Naomi about her travels!$h#$e#Naomi's a childhood friend of mine and Lewis.#$b#She may look strict, but she's a softie!$h#$b#Don't tell her I told you that.$h",
+"NaomiReturn.Richard": "The hotel's expansion was a marvelous idea!$h#$b#We're now receiving double the guests!$h",
+"NaomiReturn.Lewis": "Oh? Naomi's back?#$b#I should go say 'hi' to an old friend.$h",
+"NaomiReturn.Naomi": "The village seemed to have gotten a bit... Crowded, compared to how I remember it.#$b#But I'm glad to be back.$h",
+
+//Lidens event i18n extras
+"event-75160251.followLidens": "Oh! You're coming with us, @?",
+"event-75160251.stayBehind": "Goodbye, @!$h%fork",
+"LidensReturn.Alissa": "I can't believe mom and dad returned!$h#$b#I can't wait to ask them about their travels!$h",
+"LidensReturn.Malaya": "I'm glad our reunion went well$h#$b#Though to be honest, I'm still shaking!$7",
+"LidensReturn.Kimpoi": "My little Ali has grown up.$4",
+"LidensReturn.Olga": "I'm glad my brother and his wife are back.$h#$b#I heard they're going to set up a seed shop too.#$b#Come visit when you have the chance!$h",
+"LidensReturn.Bert": "Alissa and her parent's reunion was rather touching.$h#$b#Olga laughed when she saw me crying my eyes out!$h",
+"LidensReturn.Trinnie": "I have new a auntie and uncle!$h#$b#More toys for my birthday!$h",
+"LidensReturn.Lenny": "Alissa's parents recently came back.#$b#They left 9 years ago, they didn't disclose ther reason though.$s#$b#But it's glad to see them back and well.$h#$e#I'm sure Alissa's really happy.$h",
+
+"MapString.greenhouse.board": "Ridgeside Village Community Greenhouse#Plots owned by Nightingale Orchard, Blooming Hill Farm, and the Water Research Facility.",
 
 }

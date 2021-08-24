@@ -1,0 +1,73 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/RaisedGardenBeds
+**
+*************************************************/
+
+{
+	"Format": "1.23.0",
+	"Changes": [
+		{
+			"LogName": "RaisedGardenBeds Common Translations: English",
+			"Action": "EditData",
+			"Target": "Mods/blueberry.rgb.Assets/CommonTranslations",
+			"Fields": {
+				"en": {
+					"item.name": "Garden Bed",
+					"item.name.variant": "{0} Garden Bed",
+
+					"item.description": "Allows for planting seasonal crops on unsuitable ground. Can only be placed outdoors.",
+					"item.description.indoors": "Allows for planting seasonal crops on unsuitable ground.",
+					"item.description.default": "Dummy object, not spawnable with CJB Item Spawner. Type 'rgb.give' or 'rgb.giveall' into the SMAPI console to get some!",
+
+					"menu.title.new": "New blueprints",
+
+					"config.raisedbedsmaybreakwithage.name": "Garden beds break with age",
+					"config.raisedbedsmaybreakwithage.description": "Garden beds will deteriorate at the start of each new season if enabled.\nThe lifespan of each variety of bed differs,\nwith more expensive varieties lasting longer!\n\nMulti-season crops growing in garden beds will survive if their bed is broken,\nbut they won't keep growing until it's repaired!\nRepair a garden bed by placing another of the same variety in its place,\nor destroy it to regain some of the resources used to build it.",
+					"config.canbeplacedingreenhouse.name": "Can be placed in greenhouse",
+					"config.canbeplacedingreenhouse.description": "",
+					"config.canbeplacedinfarmhouse.name": "Can be placed in farmhouse",
+					"config.canbeplacedinfarmhouse.description": "",
+					"config.canbeplacedinbuildings.name": "Can be placed in farm buildings",
+					"config.canbeplacedinbuildings.description": "",
+					"config.recipesalwaysavailable.name": "Recipes always available",
+					"config.recipesalwaysavailable.description": "All varieties will be available all the time.\nIf disabled, Robin will give you basic recipes starting in Summer,\nand you'll learn more recipes through playing!",
+					"config.sprinklersenabled.name": "Sprinklers enabled",
+					"config.sprinklersenabled.description": "Garden beds will be watered by sprinklers.",
+
+					"event.0.dialogue.1": "Hi @! You look like you've settled in well to the old farm.#$b#I can see it's growing on you... or at least on your boots!$h#$b#If you're looking to grow a little extra, or just to keep things tidy, these blueprints might help you out.",
+					"event.0.dialogue.2": "Learned how to craft 'Garden Beds'",
+					"event.0.dialogue.3": "They're the plans for some farm-grade raised beds. There's a few styles here, in case you'd like to pick your favourite.#$b#I haven't got the time for gardening myself, but I still like to give back to the town gardens one way or another.",
+					"event.0.dialogue.4": "Well, if you're ever short on wood for these, you know where to buy it!$h"
+				}
+			}
+		},
+		{
+			"LogName": "RaisedGardenBeds Item Translations: English",
+			"Action": "EditData",
+			"Target": "Mods/blueberry.rgb.Assets/ItemTranslations",
+			"Fields": {
+				"en": {
+					"blueberry.RaisedGardenBeds.RGB": {
+						"Wood": "Wood",
+						"Stone": "Stone",
+						"Brick": "Brick",
+						"Hardwood": "Hardwood",
+						"Old": "Old",
+						"Gold": "Gold",
+						"Void": "Void",
+						"Wild": "Wild",
+						"Dungeon": "Dungeon",
+						"Candy": "Candy",
+						"Beach": "Beach",
+						"Crypt": "Crypt"
+					}
+				}
+			}
+		}
+	]
+}

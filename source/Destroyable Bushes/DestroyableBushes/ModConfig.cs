@@ -8,28 +8,23 @@
 **
 *************************************************/
 
+using Newtonsoft.Json;
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using Harmony;
-using Newtonsoft.Json;
 
 namespace DestroyableBushes
 {
     /// <summary>A collection of this mod's config.json file settings.</summary>
     public class ModConfig
     {
-        /// <summary>If true, all bushes should be made destroyable. If false, only bushes at the locations in <see cref="DestroyableBushLocations"/> should be made destroyable.</summary>
-        public bool AllBushesAreDestroyable { get; set; } = true;
-        /// <summary>A list of in-game locations where bushes should be made destroyable. If <see cref="AllBushesAreDestroyable"/> is true, this list is not used.</summary>
-        public List<string> DestroyableBushLocations { get; set; } = new List<string>();
-
+        /// <summary>The number component of <see cref="WhenBushesRegrow"/>.</summary>
+        [JsonIgnore]
+        public int? regrowNumber = 3;
+        /// <summary>The unit component of <see cref="WhenBushesRegrow"/>.</summary>
+        [JsonIgnore]
+        public RegrowUnit? regrowUnit = RegrowUnit.Days;
+        
         private string whenBushesRegrow = "3 days";
         /// <summary>A string describing the amount of time that will pass before a destroyed bush respawns. Set to null if unrecognized; null disables respawning.</summary>
         public string WhenBushesRegrow
@@ -98,16 +93,21 @@ namespace DestroyableBushes
             }
         }
 
-        /// <summary>The number component of <see cref="WhenBushesRegrow"/>.</summary>
-        [JsonIgnore]
-        public int? regrowNumber = 3;
-
-        /// <summary>The unit component of <see cref="WhenBushesRegrow"/>.</summary>
-        [JsonIgnore]
-        public RegrowUnit? regrowUnit = RegrowUnit.Days;
+        /// <summary>A list of in-game locations where bushes should be made destroyable. If blank, all locations will be allowed.</summary>
+        public List<string> DestroyableBushLocations { get; set; } = new List<string>();
+        /// <summary>A list of bush types that are allowed to be destroyed.</summary>
+        public DestroyableBushTypes DestroyableBushTypes { get; set; } = new DestroyableBushTypes();
 
         /// <summary>The number of wood pieces dropped by each type of bush when destroyed.</summary>
         public AmountOfWoodDropped AmountOfWoodDropped { get; set; } = new AmountOfWoodDropped();
+    }
+
+    /// <summary>A group of config.json file settings. Determines which bush sizes are allowed to be destroyed.</summary>
+    public class DestroyableBushTypes
+    {
+        public bool SmallBushes { get; set; } = true;
+        public bool MediumBushes { get; set; } = true;
+        public bool LargeBushes { get; set; } = true;
     }
 
     /// <summary>A group of config.json file settings. Sets the number of wood pieces dropped by each type of bush when destroyed.</summary>

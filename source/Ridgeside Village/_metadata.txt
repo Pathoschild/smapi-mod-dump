@@ -6,16 +6,22 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 1036e0b55b4fe23faa70971201396b040e2646e8
+   commit 0c777a12a32beb8c2911bef055a7217212c95249
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Sat Jul 31 22:59:15 2021 +0800
+   Date:   Mon Aug 23 23:25:00 2021 +0800
    
-       A lot of new changes! See description!
+       Greenhouse FINISHED! (I am speed)
        
-       > Added new fish: 'Ridgeside Bass'
-       > Added recipes for all dishes pre 1.3
-       > Added Ridgeside Bass to aquariums
-       > Added new recipe shop at Pika's
-       > Added some decorations to Pika's Shop
-       > Rework Arugula Roll's sprite
+       Other changes (done)
+       > Designed Interior
+       > Made shipping bin property (ShipmentRSV)
+       > Fixed OddJobs watering limit
+       > Remove tile action debugger
+       > Removed dialogue selection debug logs
+       > Removed ShowImage debug logs
+       > Made NPC crops
+       > Put new map string
+       > Fixed Warp Greenhouse
+       > Test functionality (works w/ multiplayer!)
+       > Test NPCs in greenhouse (they can visit! yey!)
    

@@ -9,7 +9,7 @@
 *************************************************/
 
 using DialogueBoxRedesign.Patching;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -93,7 +93,7 @@ namespace DialogueBoxRedesign
         
         private void ApplyHarmonyPatches()
         {
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
             harmony.Patch(
                 AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.drawPortrait)),

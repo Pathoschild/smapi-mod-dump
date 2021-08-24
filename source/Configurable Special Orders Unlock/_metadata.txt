@@ -6,9 +6,9 @@ mods:
    Configurable Special Orders Unlock
 
 latest commit:
-   commit 272e66a1718173940bbc294ff3b6a41c1f0fb104
+   commit 2658cb2d3b18ed12671d1209cebafb7268daf677
    Author: dtomlinson-ga <dtomlinson-ga@users.noreply.github.com>
-   Date:   Sat May 8 18:44:38 2021 -0400
+   Date:   Thu Aug 19 15:37:38 2021 -0400
    
-       Adjust README
+       Incremented version number to reflect patch.
    

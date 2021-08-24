@@ -32,6 +32,10 @@ namespace EarlyCommunityUpgrades
 					&& Globals.Config.Costs.pamCostWood == 950
 					&& Globals.Config.Costs.shortcutCostGold == 300000);
 			}
+			else if (asset.AssetNameEquals("Data/ExtraDialogue"))
+			{
+				return !(Globals.Config.Time.daysUntilCommunityUpgrade == 3);
+			}
 			return false;
 		}
 
@@ -68,6 +72,18 @@ namespace EarlyCommunityUpgrades
 				});
 
 			}
+			else if (asset.AssetNameEquals("Data/ExtraDialogue"))
+			{
+				IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+				//CultureInfo culture = CultureInfo.GetCultureInfo(Globals.Helper.Translation.Locale);
+
+				string daysUntilUpgrade = Globals.Config.Time.daysUntilCommunityUpgrade.ToString();
+
+				data["Robin_PamUpgrade_Accepted"] = Globals.GetTranslation("Robin_PamUpgrade_Accepted", new
+				{
+					daysUpgrade = daysUntilUpgrade
+				});
+			}
 		}
 
 		/// <summary>
@@ -78,6 +94,7 @@ namespace EarlyCommunityUpgrades
 		public void ReloadI18n()
 		{
 			Globals.Helper.Content.InvalidateCache("Strings/Locations");
+			Globals.Helper.Content.InvalidateCache("Data/ExtraDialogue");
 		}
 	}
 }

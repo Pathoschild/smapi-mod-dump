@@ -11,11 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.Objects;
 
-namespace ImJustMatt.GarbageDay.Framework.Controllers
+namespace GarbageDay.Framework.Controllers
 {
     internal static class CommandsController
     {
@@ -44,17 +44,17 @@ namespace ImJustMatt.GarbageDay.Framework.Controllers
         private static void FillGarbageCans(string command, string[] args)
         {
             var luck = float.TryParse(args.ElementAtOrDefault(0), out var luckFloat) ? luckFloat : 0;
-            GarbageDay.GarbageCans.Values.Do(garbageCan => garbageCan.DayStart(luck));
+            GarbageDay.GarbageCans.Do(garbageCan => garbageCan.Value.DayStart(luck));
         }
 
         private static void RemoveGarbageCans(string command, string[] args)
         {
-            GarbageDay.GarbageCans.Values.Do(garbageCan => garbageCan.Remove());
+            GarbageDay.GarbageCans.Values.Do(garbageCan => garbageCan.RemoveFromLocation());
         }
 
         private static void ResetGarbageCans(string command, string[] args)
         {
-            GarbageDay.GarbageCans.Do(garbageCan => garbageCan.Value.Add(garbageCan.Key));
+            GarbageDay.GarbageCans.Do(garbageCan => garbageCan.Value.AddToLocation());
         }
 
         internal class Command

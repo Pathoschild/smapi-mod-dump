@@ -31,12 +31,18 @@ namespace BillboardProfitMargin
 			this.config = this.Helper.ReadConfig<ModConfig>();
 			if (this.config.CustomProfitMargin < 0)
 			{
-				Logger.Error("Error in config.json: \"CustomQuestMargin\" must be at least 0.");
-				Logger.Error("Deactivating mod");
+				Logger.Error("Error in config.json: \"CustomProfitMargin\" must be at least 0.");
+				return;
+			}
+
+			if (this.config.CustomProfitMarginForSpecialOrders < 0)
+			{
+				Logger.Error("Error in config.json: \"CustomProfitMarginForSpecialOrders\" must be at least 0.");
 				return;
 			}
 
 			helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 			helper.Events.Display.MenuChanged += this.OnMenuChanged;
 		}
 
@@ -71,6 +77,14 @@ namespace BillboardProfitMargin
 		{
 			// wait for Quest Framework to potentially initialize a quest
 			this.Helper.Events.GameLoop.UpdateTicked += this.OnDayStartedDelayed;
+		}
+
+		/// <summary>Raised after each tick.</summary>
+		/// <param name="sender">The event sender.</param>
+		/// <param name="e">The event data.</param>
+		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+		{
+			this.Helper.Content.AssetEditors.Add(new SpecialOrdersAssetEditor(this.config));
 		}
 
 		private void OnMenuChanged(object sender, MenuChangedEventArgs e)

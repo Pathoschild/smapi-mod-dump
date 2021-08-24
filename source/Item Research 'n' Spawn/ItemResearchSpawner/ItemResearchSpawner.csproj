@@ -46,9 +46,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Compression" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -87,6 +84,8 @@
     <Compile Include="Models\GenericModConfigMenuAPI.cs" />
     <Compile Include="Models\MenuSettings.cs" />
     <Compile Include="Models\Messages\CategoriesMessage.cs" />
+    <Compile Include="Models\Messages\ItemProgressionRaw.cs" />
+    <Compile Include="Models\Messages\ItemResearchedMessage.cs" />
     <Compile Include="Models\Messages\ModStateMessage.cs" />
     <Compile Include="Models\Messages\PricelistMessage.cs" />
     <Compile Include="Models\Messages\ResearchProgressionMessage.cs" />
@@ -127,7 +126,6 @@
     <Content Include="manifest.json" />
     <Content Include="README.md" />
     <Content Include="release-notes.md" />
-    <Content Include="screenshot.png" />
     <Content Include="supporting.md" />
   </ItemGroup>
   <ItemGroup>

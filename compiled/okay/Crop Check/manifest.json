@@ -1,0 +1,10 @@
+{
+  "Name": "CropCheck",
+  "Author": "FairfieldBW",
+  "Version": "1.0.3",
+  "Description": "This mod checks crops on a specific tile to see if they are ready to harvest.",
+  "UniqueID": "FairfieldBW.CropCheck",
+  "EntryDll": "CropCheck.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9224" ]
+}

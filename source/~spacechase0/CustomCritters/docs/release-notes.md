@@ -9,6 +9,10 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Added integration with BugNet so you can catch custom critters.
+
 ## 1.2.8
 Released 19 June 2021 for Stardew Valley 1.5. Updated by Pathoschild.
 

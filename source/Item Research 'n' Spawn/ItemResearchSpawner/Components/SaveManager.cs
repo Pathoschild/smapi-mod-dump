@@ -47,6 +47,11 @@ namespace ItemResearchSpawner.Components
             _helper = helper;
             _modManifest = modManifest;
 
+            _progressions = new Dictionary<string, Dictionary<string, ResearchProgression>>();
+            _modStates = new Dictionary<string, ModState>();
+            _pricelist = new Dictionary<string, int>();
+            _categories = new List<ModDataCategory>();
+
             _helper.Events.GameLoop.Saving += OnSave;
             _helper.Events.GameLoop.SaveLoaded += OnLoad;
         }
@@ -59,6 +64,15 @@ namespace ItemResearchSpawner.Components
         public void LoadProgressions(Dictionary<string, Dictionary<string, ResearchProgression>> progressToLoad)
         {
             _progressions = progressToLoad;
+        }
+        
+        public void CommitResearch(string playerID, string key, ResearchProgression itemProgression)
+        {
+            var progression = GetProgression(playerID);
+
+            progression[key] = itemProgression;
+
+            _progressions[playerID] = progression;
         }
 
         public void CommitProgression(string playerID, Dictionary<string, ResearchProgression> commitProgression)
@@ -106,10 +120,7 @@ namespace ItemResearchSpawner.Components
 
         public void CommitPricelist(Dictionary<string, int> pricelist)
         {
-            foreach (var key in pricelist.Keys.ToArray())
-            {
-                _pricelist[key] = pricelist[key];
-            }
+            _pricelist = new Dictionary<string, int>(pricelist);
         }
 
         public Dictionary<string, int> GetPricelist()
@@ -117,18 +128,20 @@ namespace ItemResearchSpawner.Components
             return _pricelist.DeepClone();
         }
 
-        public void CommitCategories(ModDataCategory[] categories)
+        public void CommitCategories(List<ModDataCategory> categories)
         {
             _categories = categories;
         }
 
-        public ModDataCategory[] GetCategories()
+        public List<ModDataCategory> GetCategories()
         {
-            return _categories.ToArray();
+            return _categories.ToList();
         }
 
         private void OnSave(object sender, SavingEventArgs e)
         {
+            if (!Context.IsMainPlayer) return;
+            
             _helper.Data.WriteSaveData(SaveHelper.ProgressionsKey, _progressions);
 
             _helper.Data.WriteSaveData(SaveHelper.ModStatesKey, _modStates);
@@ -142,6 +155,8 @@ namespace ItemResearchSpawner.Components
 
         private void OnLoad(object sender, SaveLoadedEventArgs saveLoadedEventArgs)
         {
+            if (!Context.IsMainPlayer) return;
+            
             LoadProgression();
             LoadState();
             LoadPricelist();

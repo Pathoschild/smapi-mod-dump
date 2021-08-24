@@ -10,32 +10,15 @@
 
 using MasterFisher.Models;
 using SatoCore;
+using SatoCore.Extensions;
 using StardewModdingAPI;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MasterFisher
 {
     /// <summary>The mod entry point.</summary>
     public class ModEntry : ModBase
     {
-        /*********
-        ** Fields
-        *********/
-        /// <summary>The fish categories that have been parsed from content packs.</summary>
-        /// <remarks>This is used to temporarily store all categories before populating the repository, so edits and deletions can work correctly.</remarks>
-        private readonly List<FishCategory> CategoriesBeingLoaded = new List<FishCategory>();
-
-        /// <summary>The location areas that have been parsed from content packs.</summary>
-        /// <remarks>This is used to temporarily store all location areas before populating the repository, so edits and deletions can work correctly.</remarks>
-        private readonly List<LocationArea> LocationAreasBeingLoaded = new List<LocationArea>();
-
-        /// <summary>The bait that have been parsed from content packs.</summary>
-        /// <remarks>This is used to temporarily store all bait before populating the repository, so edits and deletions can work correctly.</remarks>
-        private readonly List<Bait> BaitBeingLoaded = new List<Bait>();
-
-
         /*********
         ** Accessors
         *********/
@@ -72,52 +55,33 @@ namespace MasterFisher
         /// <inheritdoc/>
         protected override void InitialiseContentPackLoading()
         {
-            CategoriesBeingLoaded.Clear();
-            LocationAreasBeingLoaded.Clear();
+            Categories.Clear();
+            LocationAreas.Clear();
+            Bait.Clear();
         }
 
         /// <inheritdoc/>
         protected override void LoadContentPack(IContentPack contentPack)
         {
             // categories
-            if (File.Exists(Path.Combine(contentPack.DirectoryPath, "categories.json")))
-                CategoriesBeingLoaded.AddRange(contentPack.LoadAsset<List<FishCategory>>("categories.json"));
+            if (contentPack.TryLoadAsset<List<FishCategory>>("categories.json", out var fishCategories))
+                Categories.StageItems(fishCategories);
 
             // location areas
-            if (File.Exists(Path.Combine(contentPack.DirectoryPath, "locations.json")))
-                LocationAreasBeingLoaded.AddRange(contentPack.LoadAsset<List<LocationArea>>("locations.json"));
+            if (contentPack.TryLoadAsset<List<LocationArea>>("locations.json", out var locations))
+                LocationAreas.StageItems(locations);
 
             // bait
-            if (File.Exists(Path.Combine(contentPack.DirectoryPath, "bait.json")))
-                BaitBeingLoaded.AddRange(contentPack.LoadAsset<List<Bait>>("bait.json"));
+            if (contentPack.TryLoadAsset<List<Bait>>("bait.json", out var bait))
+                Bait.StageItems(bait);
         }
 
         /// <inheritdoc/>
         protected override void FinaliseContentPackLoading()
         {
-            // categories
-            foreach (var category in CategoriesBeingLoaded.Where(category => category.Action == Action.Add))
-                Categories.Add(category);
-            foreach (var category in CategoriesBeingLoaded.Where(category => category.Action == Action.Edit))
-                Categories.Edit(category);
-            foreach (var category in CategoriesBeingLoaded.Where(category => category.Action == Action.Delete))
-                Categories.Delete(category.Name);
-
-            // location areas
-            foreach (var locationArea in LocationAreasBeingLoaded.Where(locationArea => locationArea.Action == Action.Add))
-                LocationAreas.Add(locationArea);
-            foreach (var locationArea in LocationAreasBeingLoaded.Where(locationArea => locationArea.Action == Action.Edit))
-                LocationAreas.Edit(locationArea);
-            foreach (var locationArea in LocationAreasBeingLoaded.Where(locationArea => locationArea.Action == Action.Delete))
-                LocationAreas.Delete(locationArea.UniqueName);
-
-            // bait
-            foreach (var bait in BaitBeingLoaded.Where(bait => bait.Action == Action.Add))
-                Bait.Add(bait);
-            foreach (var bait in BaitBeingLoaded.Where(bait => bait.Action == Action.Edit))
-                Bait.Edit(bait);
-            foreach (var bait in BaitBeingLoaded.Where(bait => bait.Action == Action.Delete))
-                Bait.Delete(bait.ObjectId);
+            Categories.ProcessStagedItems();
+            LocationAreas.ProcessStagedItems();
+            Bait.ProcessStagedItems();
         }
     }
 }

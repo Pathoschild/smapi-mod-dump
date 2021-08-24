@@ -432,7 +432,7 @@ namespace FarmAnimalVarietyRedux
 
             var defaultProductId = ResolveToken(produceToAdd.DefaultProductId ?? "-1");
             var upgradedProductId = ResolveToken(produceToAdd.UpgradedProductId ?? "-1");
-            produces.Add(new AnimalProduce(produceToAdd.UniqueName, defaultProductId, produceToAdd.DefaultProductMinFriendship ?? 0, produceToAdd.DefaultProductMaxFriendship ?? 1000, upgradedProductId, produceToAdd.UpgradedProductMinFriendship ?? 200, produceToAdd.UpgradedProductMaxFriendship ?? 1000, produceToAdd.PercentChanceForUpgradedProduct, produceToAdd.UpgradedProductIsRare ?? false, produceToAdd.HarvestType ?? HarvestType.Lay, produceToAdd.DaysToProduce ?? 1, produceToAdd.ProduceFasterWithCoopMaster ?? false, produceToAdd.ProduceFasterWithShepherd ?? false, produceToAdd.ToolName, produceToAdd.ToolHarvestSound, produceToAdd.Amount ?? 1, produceToAdd.Seasons, produceToAdd.PercentChance ?? 100, produceToAdd.PercentChanceForOneExtra ?? 0, produceToAdd.RequiresMale, produceToAdd.RequiresCoopMaster, produceToAdd.RequiresShepherd, produceToAdd.StandardQualityOnly ?? false, produceToAdd.DoNotAllowDuplicates ?? false));
+            produces.Add(new AnimalProduce(produceToAdd.UniqueName, defaultProductId, produceToAdd.DefaultProductMinFriendship ?? 0, produceToAdd.DefaultProductMaxFriendship ?? 1000, upgradedProductId, produceToAdd.UpgradedProductMinFriendship ?? 200, produceToAdd.UpgradedProductMaxFriendship ?? 1000, produceToAdd.PercentChanceForUpgradedProduct, produceToAdd.UpgradedProductIsRare ?? false, produceToAdd.HarvestType ?? HarvestType.Lay, produceToAdd.DaysToProduce ?? 1, produceToAdd.ProduceFasterWithCoopMaster ?? false, produceToAdd.ProduceFasterWithShepherd ?? false, produceToAdd.ToolName, produceToAdd.ToolHarvestSound, produceToAdd.Amount ?? 1, produceToAdd.Seasons, produceToAdd.PercentChance ?? 100, produceToAdd.PercentChanceForOneExtra ?? 0, produceToAdd.RequiresMale, produceToAdd.RequiresCoopMaster, produceToAdd.RequiresShepherd, produceToAdd.StandardQualityOnly ?? false, produceToAdd.DoNotAllowDuplicates ?? false, produceToAdd.ShowHarvestableSpriteSheet ?? true));
         }
 
         /// <summary>Edits a produce.</summary>
@@ -494,6 +494,7 @@ namespace FarmAnimalVarietyRedux
             produce.RequiresShepherd = newProduceValues.RequiresShepherd ?? produce.RequiresShepherd;
             produce.StandardQualityOnly = newProduceValues.StandardQualityOnly ?? produce.StandardQualityOnly;
             produce.DoNotAllowDuplicates = newProduceValues.DoNotAllowDuplicates ?? produce.DoNotAllowDuplicates;
+            produce.ShowHarvestableSpriteSheet = newProduceValues.ShowHarvestableSpriteSheet ?? produce.ShowHarvestableSpriteSheet;
         }
 
         /// <summary>Deletes a produce.</summary>

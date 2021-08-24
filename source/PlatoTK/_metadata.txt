@@ -6,9 +6,9 @@ mods:
    PlatoTK
 
 latest commit:
-   commit d37d94799c0c0d1c287157f9b2e737bd97013983
+   commit 95c81a48d976e29eb0066c5d80bcf778a2e9baf0
    Author: David <david@millionideas.de>
-   Date:   Sat Apr 10 23:57:08 2021 +0200
+   Date:   Mon Aug 23 21:58:39 2021 +0200
    
-       ...
+       update releases
    

@@ -6,9 +6,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit 472119b47f6913bfc8dceb78af3746c49fa23c6a
+   commit f60208b4ccd2338e311689194c3fa073873e39e4
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Feb 17 18:56:35 2021 -0600
+   Date:   Sat Aug 7 07:26:57 2021 -0500
    
-       Fix/tweak "MovieInvite" text key in readme.md
+       Add remarks for MovieInvitation transpiler
    

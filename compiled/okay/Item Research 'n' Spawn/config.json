@@ -1,4 +1,5 @@
 {
   "ShowMenuKey": "R",
-  "DefaultMode": "Spawn"
+  "DefaultMode": "Spawn",
+  "UseDefaultConfig": true
 }

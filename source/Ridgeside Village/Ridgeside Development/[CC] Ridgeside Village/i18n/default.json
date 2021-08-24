@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "text1.translation.string": "What a nice hotel",
+  "text2.translation.string": "I'm hungry",
+  "text3.translation.string": "Where's the toilet!?",
+  "text4.translation.string": "I should start a farm",
+  "text5.translation.string": "That lady is cute",
+  "text6.translation.string": "That guy is cute",
+  "text7.translation.string": "I'm sleepy...",
+  "text8.translation.string": "Oh look! A penny!",
+  "text9.translation.string": "Yawn",
+  "text10.translation.string": "Achoo!",
+}

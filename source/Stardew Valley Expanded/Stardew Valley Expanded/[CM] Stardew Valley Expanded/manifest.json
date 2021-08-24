@@ -11,8 +11,8 @@
 {
   "Name": "Stardew Valley Expanded Custom Music",
   "Author": "FlashShifter",
-  "Version": "1.13.1",
-  "Description": "Adds a new original soundtrack to the Crimson Badlands",
+  "Version": "1.13.11",
+  "Description": "Adds new original music to the game",
   "UniqueID": "FlashShifter.SVEMusic",
   "UpdateKeys": [ "Nexus:???" ],
   "ContentPackFor": {

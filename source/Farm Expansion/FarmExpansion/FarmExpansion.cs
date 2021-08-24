@@ -24,6 +24,9 @@ using xTile.Dimensions;
 using Object = StardewValley.Object;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using FarmExpansion.Framework;
+using StardewValley.Locations;
+using Netcode;
+using StardewValley.Network;
 
 namespace FarmExpansion
 {
@@ -38,114 +41,73 @@ namespace FarmExpansion
         {
         }
 
-        public FarmExpansion(Map m, string name, FEFramework framework) : base(m, name)
+        public FarmExpansion(Map m, string name, FEFramework framework) : base(/*"FarmExpansion", name*/)
         {
             this.framework = framework;
+            this.Map = m;
+            this.name.Value = name;
         }
 
         public override void DayUpdate(int dayOfMonth)
         {
-            new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed);
-            this.temporarySprites.Clear();
-            for (int i = this.terrainFeatures.Count - 1; i >= 0; i--)
             {
-                if (!this.isTileOnMap(this.terrainFeatures.ElementAt(i).Key))
-                {
-                    this.terrainFeatures.Remove(this.terrainFeatures.ElementAt(i).Key);
-                }
-                else
-                {
-                    this.terrainFeatures.ElementAt(i).Value.dayUpdate(this, this.terrainFeatures.ElementAt(i).Key);
-                }
+                // skip Farm.dayUpdate, call BuildableGameLocation.dayUpdate and anything further
+                // up the chain of inheritance.
+                // Don't try this at home, kids, this is ultimate example of how NOT to do things.
+                // thanks to https://stackoverflow.com/a/32562464 for this ugly workaround.
+                var ptr = typeof(BuildableGameLocation).GetMethod("DayUpdate").MethodHandle.GetFunctionPointer();
+                var grandparentDayUpdate = (Action<int>)Activator.CreateInstance(typeof(Action<int>), this, ptr);
+                grandparentDayUpdate(dayOfMonth);
             }
-            if (this.largeTerrainFeatures != null)
-            {
-                foreach (LargeTerrainFeature current in this.largeTerrainFeatures)
-                {
-                    current.dayUpdate(this);
-                }
-            }
-            foreach (Object current in this.objects.Values)
-            {
-                current.DayUpdate(this);
-            }
-            this.debris.Clear();
-            this.spawnObjects();
-            if (Game1.dayOfMonth == 1)
-            {
-                this.spawnObjects();
-            }
-            if (Game1.stats.DaysPlayed < 4u)
-            {
-                this.spawnObjects();
-            }
-            this.lightLevel = 0f;
-            this.addLightGlows(); // gamelocation dayupdate
-            foreach(Building current in this.buildings)
-            {
-                current.dayUpdate(dayOfMonth);
-            }// buildablelocation dayupdate
 
+            for (int index = this.animals.Count() - 1; index >= 0; --index)
+                this.animals.Pairs.ElementAt<KeyValuePair<long, FarmAnimal>>(index).Value.dayUpdate((GameLocation)this);
             /*if (Game1.whichFarm == 4 && !Game1.player.mailReceived.Contains("henchmanGone"))
             {
                 Game1.spawnMonstersAtNight = true;
             }*/
             this.lastItemShipped = null;
-            for (int i = this.animals.Count - 1; i >= 0; i--)
+            for (int index = this.characters.Count - 1; index >= 0; --index)
             {
-                this.animals.ElementAt(i).Value.dayUpdate(this);
+                if (this.characters[index] is JunimoHarvester)
+                    this.characters.RemoveAt(index);
             }
-            for (int j = this.characters.Count - 1; j >= 0; j--)
+            for (int index = this.characters.Count - 1; index >= 0; --index)
             {
-                if (this.characters[j] is JunimoHarvester)
-                {
-                    this.characters.RemoveAt(j);
-                }
-            }
-            for (int k = this.characters.Count - 1; k >= 0; k--)
-            {
-                if (this.characters[k] is Monster && (this.characters[k] as Monster).wildernessFarmMonster)
-                {
-                    this.characters.RemoveAt(k);
-                }
+                if (this.characters[index] is Monster && (this.characters[index] as Monster).wildernessFarmMonster)
+                    this.characters.RemoveAt(index);
             }
             if (this.characters.Count > 5)
             {
                 int num = 0;
-                for (int l = this.characters.Count - 1; l >= 0; l--)
+                for (int index = this.characters.Count - 1; index >= 0; --index)
                 {
-                    if (this.characters[l] is GreenSlime && Game1.random.NextDouble() < 0.035)
+                    if (this.characters[index] is GreenSlime && Game1.random.NextDouble() < 0.035)
                     {
-                        this.characters.RemoveAt(l);
-                        num++;
+                        this.characters.RemoveAt(index);
+                        ++num;
                     }
                 }
                 if (num > 0)
-                {
-                    Game1.showGlobalMessage(Game1.content.LoadString((num == 1) ? "Strings\\Locations:Farm_1SlimeEscaped" : "Strings\\Locations:Farm_NSlimesEscaped", new object[]
-                    {
-                num
-                    }));
-                }
+                    Game1.showGlobalMessage(Game1.content.LoadString(num == 1 ? "Strings\\Locations:Farm_1SlimeEscaped" : "Strings\\Locations:Farm_NSlimesEscaped", (object)num));
             }
-            
-            Dictionary<Vector2, TerrainFeature>.KeyCollection keys = this.terrainFeatures.Keys;
-            for (int num3 = keys.Count - 1; num3 >= 0; num3--)
+            // stuff for handling specific Game1.whichFarm (hardwood stump/geode spawning) - ommited, doesn't concern expansion
+
+            ICollection<Vector2> source = (ICollection<Vector2>)new List<Vector2>(this.terrainFeatures.Keys);
+            for (int index = source.Count - 1; index >= 0; --index)
             {
-                if (this.terrainFeatures[keys.ElementAt(num3)] is HoeDirt && (this.terrainFeatures[keys.ElementAt(num3)] as HoeDirt).crop == null && Game1.random.NextDouble() <= 0.1)
-                {
-                    this.terrainFeatures.Remove(keys.ElementAt(num3));
-                }
+                if (this.terrainFeatures[source.ElementAt<Vector2>(index)] is HoeDirt && (this.terrainFeatures[source.ElementAt<Vector2>(index)] as HoeDirt).crop == null && Game1.random.NextDouble() <= 0.1)
+                    this.terrainFeatures.Remove(source.ElementAt<Vector2>(index));
             }
-            if (this.terrainFeatures.Count > 0 && Game1.currentSeason.Equals("fall") && Game1.dayOfMonth > 1 && Game1.random.NextDouble() < 0.05)
+            if (this.terrainFeatures.Count() > 0 && Game1.currentSeason.Equals("fall") && (Game1.dayOfMonth > 1 && Game1.random.NextDouble() < 0.05))
             {
-                for (int num4 = 0; num4 < 10; num4++)
+                for (int index = 0; index < 10; ++index)
                 {
-                    TerrainFeature value2 = this.terrainFeatures.ElementAt(Game1.random.Next(this.terrainFeatures.Count)).Value;
-                    if (value2 is Tree && (value2 as Tree).growthStage >= 5 && !(value2 as Tree).tapped)
+                    TerrainFeature terrainFeature = this.terrainFeatures.Pairs.ElementAt<KeyValuePair<Vector2, TerrainFeature>>(Game1.random.Next(this.terrainFeatures.Count())).Value;
+                    if (terrainFeature is Tree && (int)((NetFieldBase<int, NetInt>)(terrainFeature as Tree).growthStage) >= 5 && !(bool)((NetFieldBase<bool, NetBool>)(terrainFeature as Tree).tapped))
                     {
-                        (value2 as Tree).treeType = 7;
-                        (value2 as Tree).loadSprite();
+                        (terrainFeature as Tree).treeType.Value = 7;
+                        (terrainFeature as Tree).loadSprite();
                         break;
                     }
                 }
@@ -161,256 +123,212 @@ namespace FarmExpansion
             spawnWeeds(false);
             if (dayOfMonth == 1)
             {
-                for (int num5 = this.terrainFeatures.Count - 1; num5 >= 0; num5--)
+                for (int index = this.terrainFeatures.Count() - 1; index >= 0; --index)
                 {
-                    if (this.terrainFeatures.ElementAt(num5).Value is HoeDirt && (this.terrainFeatures.ElementAt(num5).Value as HoeDirt).crop == null && Game1.random.NextDouble() < 0.8)
+                    KeyValuePair<Vector2, TerrainFeature> keyValuePair = this.terrainFeatures.Pairs.ElementAt<KeyValuePair<Vector2, TerrainFeature>>(index);
+                    if (keyValuePair.Value is HoeDirt)
                     {
-                        this.terrainFeatures.Remove(this.terrainFeatures.ElementAt(num5).Key);
+                        keyValuePair = this.terrainFeatures.Pairs.ElementAt<KeyValuePair<Vector2, TerrainFeature>>(index);
+                        if ((keyValuePair.Value as HoeDirt).crop == null && Game1.random.NextDouble() < 0.8)
+                        {
+                            NetVector2Dictionary<TerrainFeature, NetRef<TerrainFeature>> terrainFeatures = this.terrainFeatures;
+                            keyValuePair = this.terrainFeatures.Pairs.ElementAt<KeyValuePair<Vector2, TerrainFeature>>(index);
+                            Vector2 key = keyValuePair.Key;
+                            terrainFeatures.Remove(key);
+                        }
                     }
                 }
                 spawnWeedsAndStones(20, false, false);
-                if (Game1.currentSeason.Equals("spring") && Game1.stats.DaysPlayed > 1u)
+                if (Game1.currentSeason.Equals("spring") && Game1.stats.DaysPlayed > 1U)
                 {
                     spawnWeedsAndStones(40, false, false);
                     spawnWeedsAndStones(40, true, false);
-                    for (int num6 = 0; num6 < 15; num6++)
+                    for (int index = 0; index < 15; ++index)
                     {
-                        int num7 = Game1.random.Next(this.map.DisplayWidth / Game1.tileSize);
-                        int num8 = Game1.random.Next(this.map.DisplayHeight / Game1.tileSize);
-                        Vector2 vector = new Vector2((float)num7, (float)num8);
+                        int xTile = Game1.random.Next(this.map.DisplayWidth / 64);
+                        int yTile = Game1.random.Next(this.map.DisplayHeight / 64);
+                        Vector2 vector2 = new Vector2((float)xTile, (float)yTile);
                         Object @object;
-                        this.objects.TryGetValue(vector, out @object);
-                        if (@object == null && base.doesTileHaveProperty(num7, num8, "Diggable", "Back") != null && base.isTileLocationOpen(new Location(num7 * Game1.tileSize, num8 * Game1.tileSize)) && !this.isTileOccupied(vector, "") && base.doesTileHaveProperty(num7, num8, "Water", "Back") == null)
-                        {
-                            this.terrainFeatures.Add(vector, new Grass(1, 4));
-                        }
+                        this.objects.TryGetValue(vector2, out @object);
+                        if (@object == null && this.doesTileHaveProperty(xTile, yTile, "Diggable", "Back") != null && (this.isTileLocationOpen(new Location(xTile * 64, yTile * 64)) && !this.isTileOccupied(vector2, "")) && this.doesTileHaveProperty(xTile, yTile, "Water", "Back") == null)
+                            this.terrainFeatures.Add(vector2, (TerrainFeature)new Grass(1, 4));
                     }
-                    base.growWeedGrass(40);
+                    this.growWeedGrass(40);
                 }
             }
             base.growWeedGrass(1);
         }
 
-        new public void spawnWeedsAndStones(int numDebris = -1, bool weedsOnly = false, bool spawnFromOldWeeds = true)
-        {
-            if ((this as Farm).isBuildingConstructed("Gold Clock"))
-            {
-                return;
-            }
-            if (!Game1.currentSeason.Equals("winter"))
-            {
-                int num = (numDebris != -1) ? numDebris : ((Game1.random.NextDouble() < 0.95) ? ((Game1.random.NextDouble() < 0.25) ? Game1.random.Next(10, 21) : Game1.random.Next(5, 11)) : 0);
-                if (Game1.isRaining)
-                {
-                    num *= 2;
-                }
-                if (Game1.dayOfMonth == 1)
-                {
-                    num *= 5;
-                }
-                if (this.objects.Count <= 0 & spawnFromOldWeeds)
-                {
-                    return;
-                }
-                for (int i = 0; i < num; i++)
-                {
-                    Vector2 vector = spawnFromOldWeeds ? new Vector2((float)Game1.random.Next(-1, 2), (float)Game1.random.Next(-1, 2)) : new Vector2((float)Game1.random.Next(this.map.Layers[0].LayerWidth), (float)Game1.random.Next(this.map.Layers[0].LayerHeight));
-                    while (spawnFromOldWeeds && vector.Equals(Vector2.Zero))
-                    {
-                        vector = new Vector2((float)Game1.random.Next(-1, 2), (float)Game1.random.Next(-1, 2));
-                    }
-                    KeyValuePair<Vector2, Object> keyValuePair = new KeyValuePair<Vector2, Object>(Vector2.Zero, null);
-                    if (spawnFromOldWeeds)
-                    {
-                        keyValuePair = this.objects.ElementAt(Game1.random.Next(this.objects.Count));
-                    }
-                    Vector2 vector2 = spawnFromOldWeeds ? keyValuePair.Key : Vector2.Zero;
-                    if (((this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Diggable", "Back") != null) || (this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Diggable", "Back") == null)) && (this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Type", "Back") == null || !this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Type", "Back").Equals("Wood")) && (this.isTileLocationTotallyClearAndPlaceable(vector + vector2) || (spawnFromOldWeeds && ((this.objects.ContainsKey(vector + vector2) && this.objects[vector + vector2].parentSheetIndex != 105) || (this.terrainFeatures.ContainsKey(vector + vector2) && (this.terrainFeatures[vector + vector2] is HoeDirt || this.terrainFeatures[vector + vector2] is Flooring))))) && this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "NoSpawn", "Back") == null && (spawnFromOldWeeds || !this.objects.ContainsKey(vector + vector2)))
-                    {
-                        int num2 = -1;
+        // not needed, does exactly the same as GameLocation.spawnWeedsAndStones
+        //new public void spawnWeedsAndStones(int numDebris = -1, bool weedsOnly = false, bool spawnFromOldWeeds = true)
+        //{
+        //    if ((this as Farm).isBuildingConstructed("Gold Clock"))
+        //    {
+        //        return;
+        //    }
+        //    if (!Game1.currentSeason.Equals("winter"))
+        //    {
+        //        int num = (numDebris != -1) ? numDebris : ((Game1.random.NextDouble() < 0.95) ? ((Game1.random.NextDouble() < 0.25) ? Game1.random.Next(10, 21) : Game1.random.Next(5, 11)) : 0);
+        //        if (Game1.isRaining)
+        //        {
+        //            num *= 2;
+        //        }
+        //        if (Game1.dayOfMonth == 1)
+        //        {
+        //            num *= 5;
+        //        }
+        //        if (this.objects.Count() <= 0 & spawnFromOldWeeds)
+        //        {
+        //            return;
+        //        }
+        //        for (int i = 0; i < num; i++)
+        //        {
+        //            Vector2 vector = spawnFromOldWeeds ? new Vector2((float)Game1.random.Next(-1, 2), (float)Game1.random.Next(-1, 2)) : new Vector2((float)Game1.random.Next(this.map.Layers[0].LayerWidth), (float)Game1.random.Next(this.map.Layers[0].LayerHeight));
+        //            while (spawnFromOldWeeds && vector.Equals(Vector2.Zero))
+        //            {
+        //                vector = new Vector2((float)Game1.random.Next(-1, 2), (float)Game1.random.Next(-1, 2));
+        //            }
+        //            KeyValuePair<Vector2, Object> keyValuePair = new KeyValuePair<Vector2, Object>(Vector2.Zero, null);
+        //            if (spawnFromOldWeeds)
+        //            {
+        //                keyValuePair = this.objects.Pairs.ElementAt(Game1.random.Next(this.objects.Count()));
+        //            }
+        //            Vector2 vector2 = spawnFromOldWeeds ? keyValuePair.Key : Vector2.Zero;
+        //            if (((this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Diggable", "Back") != null) || (this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Diggable", "Back") == null)) && (this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Type", "Back") == null || !this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "Type", "Back").Equals("Wood")) && (this.isTileLocationTotallyClearAndPlaceable(vector + vector2) || (spawnFromOldWeeds && ((this.objects.ContainsKey(vector + vector2) && this.objects[vector + vector2].ParentSheetIndex != 105) || (this.terrainFeatures.ContainsKey(vector + vector2) && (this.terrainFeatures[vector + vector2] is HoeDirt || this.terrainFeatures[vector + vector2] is Flooring))))) && this.doesTileHaveProperty((int)(vector.X + vector2.X), (int)(vector.Y + vector2.Y), "NoSpawn", "Back") == null && (spawnFromOldWeeds || !this.objects.ContainsKey(vector + vector2)))
+        //            {
+        //                int parentSheetIndex = -1;
                         
-                        if (Game1.random.NextDouble() < 0.5 && !weedsOnly && (!spawnFromOldWeeds || keyValuePair.Value.Name.Equals("Stone") || keyValuePair.Value.Name.Contains("Twig")))
-                        {
-                            if (Game1.random.NextDouble() < 0.5)
-                            {
-                                num2 = ((Game1.random.NextDouble() < 0.5) ? 294 : 295);
-                            }
-                            else
-                            {
-                                num2 = ((Game1.random.NextDouble() < 0.5) ? 343 : 450);
-                            }
-                        }
-                        else if (!spawnFromOldWeeds || keyValuePair.Value.Name.Contains("Weed"))
-                        {
-                            num2 = GameLocation.getWeedForSeason(Game1.random, Game1.currentSeason);
-                        }
-                        if (!spawnFromOldWeeds && Game1.random.NextDouble() < 0.05)
-                        {
-                            this.terrainFeatures.Add(vector + vector2, new Tree(Game1.random.Next(3) + 1, Game1.random.Next(3)));
-                            continue;
-                        }
-                        if (num2 != -1)
-                        {
-                            bool flag2 = false;
-                            if (this.objects.ContainsKey(vector + vector2))
-                            {
-                                Object @object = this.objects[vector + vector2];
-                                if (@object is Fence || @object is Chest)
-                                {
-                                    continue;
-                                }
-                                if (@object.name != null && !@object.Name.Contains("Weed") && !@object.Name.Equals("Stone") && !@object.name.Contains("Twig") && @object.name.Length > 0)
-                                {
-                                    flag2 = true;
-                                    Game1.debugOutput = @object.Name + " was destroyed";
-                                }
-                                this.objects.Remove(vector + vector2);
-                            }
-                            else if (this.terrainFeatures.ContainsKey(vector + vector2))
-                            {
-                                try
-                                {
-                                    flag2 = (this.terrainFeatures[vector + vector2] is HoeDirt || this.terrainFeatures[vector + vector2] is Flooring);
-                                }
-                                catch (Exception)
-                                {
-                                }
-                                if (!flag2)
-                                {
-                                    return;
-                                }
-                                this.terrainFeatures.Remove(vector + vector2);
-                            }
-                            if (flag2)
-                            {
-                                Game1.showGlobalMessage(Game1.content.LoadString("Strings\\Locations:Farm_WeedsDestruction", new object[0]));
-                            }
-                            this.objects.Add(vector + vector2, new Object(vector + vector2, num2, 1));
-                        }
-                    }
-                }
-            }
-        }
+        //                if (Game1.random.NextDouble() < 0.5 && !weedsOnly && (!spawnFromOldWeeds || keyValuePair.Value.Name.Equals("Stone") || keyValuePair.Value.Name.Contains("Twig")))
+        //                {
+        //                    if (Game1.random.NextDouble() < 0.5)
+        //                    {
+        //                        parentSheetIndex = ((Game1.random.NextDouble() < 0.5) ? 294 : 295);
+        //                    }
+        //                    else
+        //                    {
+        //                        parentSheetIndex = ((Game1.random.NextDouble() < 0.5) ? 343 : 450);
+        //                    }
+        //                }
+        //                else if (!spawnFromOldWeeds || keyValuePair.Value.Name.Contains("Weed"))
+        //                {
+        //                    parentSheetIndex = GameLocation.getWeedForSeason(Game1.random, Game1.currentSeason);
+        //                }
+        //                if (!spawnFromOldWeeds && Game1.random.NextDouble() < 0.05)
+        //                {
+        //                    this.terrainFeatures.Add(vector + vector2, new Tree(Game1.random.Next(3) + 1, Game1.random.Next(3)));
+        //                    continue;
+        //                }
+        //                if (parentSheetIndex != -1)
+        //                {
+        //                    bool flag2 = false;
+        //                    if (this.objects.ContainsKey(vector + vector2))
+        //                    {
+        //                        Object @object = this.objects[vector + vector2];
+        //                        if (@object is Fence || @object is Chest)
+        //                        {
+        //                            continue;
+        //                        }
+        //                        if (@object.name != null && !@object.Name.Contains("Weed") && !@object.Name.Equals("Stone") && !@object.name.Contains("Twig") && @object.name.Length > 0)
+        //                        {
+        //                            flag2 = true;
+        //                            Game1.debugOutput = @object.Name + " was destroyed";
+        //                        }
+        //                        this.objects.Remove(vector + vector2);
+        //                    }
+        //                    else if (this.terrainFeatures.ContainsKey(vector + vector2))
+        //                    {
+        //                        try
+        //                        {
+        //                            flag2 = (this.terrainFeatures[vector + vector2] is HoeDirt || this.terrainFeatures[vector + vector2] is Flooring);
+        //                        }
+        //                        catch (Exception)
+        //                        {
+        //                        }
+        //                        if (!flag2)
+        //                        {
+        //                            return;
+        //                        }
+        //                        this.terrainFeatures.Remove(vector + vector2);
+        //                    }
+        //                    if (flag2)
+        //                    {
+        //                        Game1.showGlobalMessage(Game1.content.LoadString("Strings\\Locations:Farm_WeedsDestruction", new object[0]));
+        //                    }
+        //                    this.objects.Add(vector + vector2, new Object(vector + vector2, parentSheetIndex, 1));
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-        new public void spawnWeeds(bool weedsOnly)
-        {
-            int num = Game1.random.Next(5, 12);
-            if (Game1.dayOfMonth == 1 && Game1.currentSeason.Equals("spring"))
-            {
-                num *= 15;
-            }
-            for (int i = 0; i < num; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    int num2 = Game1.random.Next(this.map.DisplayWidth / Game1.tileSize);
-                    int num3 = Game1.random.Next(this.map.DisplayHeight / Game1.tileSize);
-                    Vector2 vector = new Vector2((float)num2, (float)num3);
-                    Object @object;
-                    this.objects.TryGetValue(vector, out @object);
-                    int num4 = -1;
-                    int num5 = -1;
-                    if (Game1.random.NextDouble() < 0.15 + (weedsOnly ? 0.05 : 0.0))
-                    {
-                        num4 = 1;
-                    }
-                    else if (!weedsOnly && Game1.random.NextDouble() < 0.35)
-                    {
-                        num5 = 1;
-                    }
-                    if (num5 != -1)
-                    {
-                        if (Game1.random.NextDouble() < 0.25)
-                        {
-                            return;
-                        }
-                    }
-                    else if (@object == null && this.doesTileHaveProperty(num2, num3, "Diggable", "Back") != null && this.isTileLocationOpen(new Location(num2 * Game1.tileSize, num3 * Game1.tileSize)) && !this.isTileOccupied(vector, "") && this.doesTileHaveProperty(num2, num3, "Water", "Back") == null)
-                    {
-                        string text = this.doesTileHaveProperty(num2, num3, "NoSpawn", "Back");
-                        if (text != null && (text.Equals("Grass") || text.Equals("All") || text.Equals("True")))
-                        {
-                            continue;
-                        }
-                        if (num4 != -1 && !Game1.currentSeason.Equals("winter"))
-                        {
-                            int numberOfWeeds = Game1.random.Next(1, 3);
-                            this.terrainFeatures.Add(vector, new Grass(num4, numberOfWeeds));
-                        }
-                    }
-                }
-            }
-        }
+        //new public void spawnWeeds(bool weedsOnly)
+        // shouldn't be needed (didn't check too thoroughly though)
+        //{
+        //    int num = Game1.random.Next(5, 12);
+        //    if (Game1.dayOfMonth == 1 && Game1.currentSeason.Equals("spring"))
+        //    {
+        //        num *= 15;
+        //    }
+        //    for (int i = 0; i < num; i++)
+        //    {
+        //        for (int j = 0; j < 3; j++)
+        //        {
+        //            int num2 = Game1.random.Next(this.map.DisplayWidth / Game1.tileSize);
+        //            int num3 = Game1.random.Next(this.map.DisplayHeight / Game1.tileSize);
+        //            Vector2 vector = new Vector2((float)num2, (float)num3);
+        //            Object @object;
+        //            this.objects.TryGetValue(vector, out @object);
+        //            int num4 = -1;
+        //            int num5 = -1;
+        //            if (Game1.random.NextDouble() < 0.15 + (weedsOnly ? 0.05 : 0.0))
+        //            {
+        //                num4 = 1;
+        //            }
+        //            else if (!weedsOnly && Game1.random.NextDouble() < 0.35)
+        //            {
+        //                num5 = 1;
+        //            }
+        //            if (num5 != -1)
+        //            {
+        //                if (Game1.random.NextDouble() < 0.25)
+        //                {
+        //                    return;
+        //                }
+        //            }
+        //            else if (@object == null && this.doesTileHaveProperty(num2, num3, "Diggable", "Back") != null && this.isTileLocationOpen(new Location(num2 * Game1.tileSize, num3 * Game1.tileSize)) && !this.isTileOccupied(vector, "") && this.doesTileHaveProperty(num2, num3, "Water", "Back") == null)
+        //            {
+        //                string text = this.doesTileHaveProperty(num2, num3, "NoSpawn", "Back");
+        //                if (text != null && (text.Equals("Grass") || text.Equals("All") || text.Equals("True")))
+        //                {
+        //                    continue;
+        //                }
+        //                if (num4 != -1 && !Game1.currentSeason.Equals("winter"))
+        //                {
+        //                    int numberOfWeeds = Game1.random.Next(1, 3);
+        //                    this.terrainFeatures.Add(vector, new Grass(num4, numberOfWeeds));
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         public override void draw(SpriteBatch b)
         {
-            if (!Game1.eventUp)
             {
-                for (int i = 0; i < this.characters.Count; i++)
-                {
-                    if (this.characters[i] != null)
-                    {
-                        this.characters[i].draw(b);
-                    }
-                }
+                // skip Farm.draw, call BuildableGameLocation.draw and anything further
+                // up the chain of inheritance.
+                // Don't try this at home, kids, this is ultimate example of how NOT to do things.
+                // thanks to https://stackoverflow.com/a/32562464 for this ugly workaround.
+                var ptr = typeof(BuildableGameLocation).GetMethod("draw").MethodHandle.GetFunctionPointer();
+                var grandparentDraw = (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, ptr);
+                grandparentDraw(b);
             }
-            for (int j = 0; j < this.projectiles.Count; j++)
-            {
-                this.projectiles[j].draw(b);
-            }
-            for (int k = 0; k < this.farmers.Count; k++)
-            {
-                if (!this.farmers[k].uniqueMultiplayerID.Equals(Game1.player.uniqueMultiplayerID))
-                {
-                    this.farmers[k].draw(b);
-                }
-            }
-            if (this.critters != null)
-            {
-                for (int l = 0; l < this.critters.Count; l++)
-                {
-                    this.critters[l].draw(b);
-                }
-            }
-            this.drawDebris(b);
-            if (!Game1.eventUp || (this.currentEvent != null && this.currentEvent.showGroundObjects))
-            {
-                foreach (KeyValuePair<Vector2, Object> current in this.objects)
-                {
-                    current.Value.draw(b, (int)current.Key.X, (int)current.Key.Y, 1f);
-                }
-            }
-            if (this.doorSprites != null)
-            {
-                foreach (TemporaryAnimatedSprite current in this.doorSprites.Values)
-                {
-                    current.draw(b, false, 0, 0);
-                }
-            }
-            if (this.largeTerrainFeatures != null)
-            {
-                foreach (LargeTerrainFeature current in largeTerrainFeatures)
-                {
-                    current.draw(b);
-                }
-            }
-            if (this.fishSplashAnimation != null)
-            {
-                this.fishSplashAnimation.draw(b, false, 0, 0);
-            }
-            if (this.orePanAnimation != null)
-            {
-                this.orePanAnimation.draw(b, false, 0, 0);
-            }
-            foreach (Building current in this.buildings)
-            {
-                current.draw(b);
-            }
+
             foreach (ResourceClump current in this.resourceClumps)
             {
-                current.draw(b, current.tile);
+                current.draw(b, current.tile.Value);
             }
-            foreach (KeyValuePair<long, FarmAnimal> current in this.animals)
+            foreach (KeyValuePair<long, FarmAnimal> current in this.animals.Pairs)
             {
                 current.Value.draw(b);
             }
@@ -474,75 +392,75 @@ namespace FarmExpansion
                 if ((this.objects[vector].Type.Equals("Crafting") || this.objects[vector].Type.Equals("interactive")) && this.objects[vector].name.Equals("Bee House"))
                 {
                     Object beeHive = this.objects[vector];
-                    if (!beeHive.readyForHarvest)
+                    if (!beeHive.readyForHarvest.Value)
                     {
                         return false;
                     }
-                    beeHive.honeyType = new Object.HoneyType?(Object.HoneyType.Wild);
+                    beeHive.honeyType.Value = new Object.HoneyType?(Object.HoneyType.Wild);
                     string str = "Wild";
                     int num6 = 0;
                         
-                    Crop crop = this.findCloseFlower(beeHive.tileLocation);
+                    Crop crop = this.findCloseFlower(beeHive.TileLocation);
                     if (crop != null)
                     {
-                        str = Game1.objectInformation[crop.indexOfHarvest].Split(new char[]
+                        str = Game1.objectInformation[crop.indexOfHarvest.Value].Split(new char[]
                         {
                             '/'
                         })[0];
-                        int indexOfHarvest = crop.indexOfHarvest;
+                        int indexOfHarvest = crop.indexOfHarvest.Value;
                         if (indexOfHarvest != 376)
                         {
                             switch (indexOfHarvest)
                             {
                                 case 591:
-                                    beeHive.honeyType = new Object.HoneyType?(Object.HoneyType.Tulip);
+                                    beeHive.honeyType.Value = new Object.HoneyType?(Object.HoneyType.Tulip);
                                     break;
                                 case 593:
-                                    beeHive.honeyType = new Object.HoneyType?(Object.HoneyType.SummerSpangle);
+                                    beeHive.honeyType.Value = new Object.HoneyType?(Object.HoneyType.SummerSpangle);
                                     break;
                                 case 595:
-                                    beeHive.honeyType = new Object.HoneyType?(Object.HoneyType.FairyRose);
+                                    beeHive.honeyType.Value = new Object.HoneyType?(Object.HoneyType.FairyRose);
                                     break;
                                 case 597:
-                                    beeHive.honeyType = new Object.HoneyType?(Object.HoneyType.BlueJazz);
+                                    beeHive.honeyType.Value = new Object.HoneyType?(Object.HoneyType.BlueJazz);
                                     break;
                             }
                         }
                         else
                         {
-                            beeHive.honeyType = new Object.HoneyType?(Object.HoneyType.Poppy);
+                            beeHive.honeyType.Value = new Object.HoneyType?(Object.HoneyType.Poppy);
                         }
-                        num6 = Convert.ToInt32(Game1.objectInformation[crop.indexOfHarvest].Split(new char[]
+                        num6 = Convert.ToInt32(Game1.objectInformation[crop.indexOfHarvest.Value].Split(new char[]
                         {
                             '/'
                         })[1]) * 2;
                     }
-                    if (beeHive.heldObject != null)
+                    if (beeHive.heldObject.Value != null)
                     {
-                        beeHive.heldObject.name = str + " Honey";
+                        beeHive.heldObject.Value.name = str + " Honey";
                         string displayName = framework.helper.Reflection.GetMethod(beeHive, "loadDisplayName").Invoke<string>();
-                        beeHive.heldObject.displayName = displayName;
-                        beeHive.heldObject.price += num6;
+                        beeHive.heldObject.Value.displayName = displayName;
+                        beeHive.heldObject.Value.Price += num6;
                         if (Game1.currentSeason.Equals("winter"))
                         {
-                            beeHive.heldObject = null;
-                            beeHive.readyForHarvest = false;
-                            beeHive.showNextIndex = false;
+                            beeHive.heldObject.Value = null;
+                            beeHive.readyForHarvest.Value = false;
+                            beeHive.showNextIndex.Value = false;
                             return false;
                         }
-                        if (who.IsMainPlayer && !who.addItemToInventoryBool(beeHive.heldObject, false))
+                        if (who.IsMainPlayer && !who.addItemToInventoryBool(beeHive.heldObject.Value, false))
                         {
                             Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Crop.cs.588", new object[0]));
                             return false;
                         }
                         Game1.playSound("coin");
                     }
-                    beeHive.readyForHarvest = false;
-                    beeHive.showNextIndex = false;
+                    beeHive.readyForHarvest.Value = false;
+                    beeHive.showNextIndex.Value = false;
                     if (!Game1.currentSeason.Equals("winter"))
                     {
-                        beeHive.heldObject = new Object(Vector2.Zero, 340, null, false, true, false, false);
-                        beeHive.minutesUntilReady = 2400 - Game1.timeOfDay + 4320;
+                        beeHive.heldObject.Value = new Object(Vector2.Zero, 340, null, false, true, false, false);
+                        beeHive.MinutesUntilReady = 2400 - Game1.timeOfDay + 4320;
                     }
                     return true;
                 }
@@ -557,25 +475,45 @@ namespace FarmExpansion
             {
                 if (buildings.Contains(animal.home))
                 {
-                    Game1.getFarm().animals.Remove(animal.myID);
-                    animals.Add(animal.myID, animal);
+                    Game1.getFarm().animals.Remove(animal.myID.Value);
+                    animals.Add(animal.myID.Value, animal);
                 }
             }
             foreach (Building building in buildings)
             {
-                if (building.indoors == null)
+                if (building.indoors.Value == null)
                     continue;
 
-                if (building.indoors is AnimalHouse)
+                if (building.indoors.Value is AnimalHouse)
                 {
                     List<FarmAnimal> stuckAnimals = new List<FarmAnimal>();
-                    foreach (FarmAnimal animal in ((AnimalHouse)building.indoors).animals.Values)
+                    foreach (FarmAnimal animal in ((AnimalHouse)building.indoors.Value).animals.Values)
                     {
-                        if (Game1.getFarm().isCollidingPosition(new Rectangle((building.tileX + building.animalDoor.X) * Game1.tileSize + 2, (building.tileY + building.animalDoor.Y) * Game1.tileSize + 2, (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4, Game1.tileSize - 4), Game1.viewport, false, 0, false, animal, false, false, false) || Game1.getFarm().isCollidingPosition(new Rectangle((building.tileX + building.animalDoor.X) * Game1.tileSize + 2, (building.tileY + building.animalDoor.Y + 1) * Game1.tileSize + 2, (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4, Game1.tileSize - 4), Game1.viewport, false, 0, false, animal, false, false, false))
+                        if (Game1.getFarm().isCollidingPosition(
+                                new Rectangle(
+                                    (building.tileX.Value + building.animalDoor.X) * Game1.tileSize + 2,
+                                    (building.tileY.Value + building.animalDoor.Y) * Game1.tileSize + 2,
+                                    (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4,
+                                    Game1.tileSize - 4),
+                                Game1.viewport, false, 0, false, animal, false, false, false
+                            )
+                            || Game1.getFarm().isCollidingPosition(
+                                new Rectangle(
+                                    (building.tileX.Value + building.animalDoor.X) * Game1.tileSize + 2,
+                                    (building.tileY.Value + building.animalDoor.Y + 1) * Game1.tileSize + 2,
+                                    (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4,
+                                    Game1.tileSize - 4),
+                                Game1.viewport, false, 0, false, animal, false, false, false))
                         {
-                            if (Game1.random.NextDouble() < 0.002 && building.animalDoorOpen && Game1.timeOfDay < 1630 && !Game1.isRaining && !Game1.currentSeason.Equals("winter") && building.indoors.getFarmers().Count() == 0 && !building.indoors.Equals(Game1.currentLocation))
+                            if (Game1.random.NextDouble() < 0.002
+                                && building.animalDoorOpen.Value
+                                && Game1.timeOfDay < 1630
+                                && !Game1.isRaining
+                                && !Game1.currentSeason.Equals("winter")
+                                && building.indoors.Value.farmers.Count() == 0
+                                && !building.indoors.Equals(Game1.currentLocation))
                             {
-                                if (isCollidingPosition(new Rectangle((building.tileX + building.animalDoor.X) * Game1.tileSize + 2, (building.tileY + building.animalDoor.Y) * Game1.tileSize + 2, (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4, Game1.tileSize - 4), Game1.viewport, false, 0, false, animal, false, false, false) || isCollidingPosition(new Rectangle((building.tileX + building.animalDoor.X) * Game1.tileSize + 2, (building.tileY + building.animalDoor.Y + 1) * Game1.tileSize + 2, (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4, Game1.tileSize - 4), Game1.viewport, false, 0, false, animal, false, false, false))
+                                if (isCollidingPosition(new Rectangle((building.tileX.Value + building.animalDoor.X) * Game1.tileSize + 2, (building.tileY.Value + building.animalDoor.Y) * Game1.tileSize + 2, (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4, Game1.tileSize - 4), Game1.viewport, false, 0, false, animal, false, false, false) || isCollidingPosition(new Rectangle((building.tileX.Value + building.animalDoor.X) * Game1.tileSize + 2, (building.tileY.Value + building.animalDoor.Y + 1) * Game1.tileSize + 2, (animal.isCoopDweller() ? Game1.tileSize : (Game1.tileSize * 2)) - 4, Game1.tileSize - 4), Game1.viewport, false, 0, false, animal, false, false, false))
                                 {
                                     break;
                                 }
@@ -591,12 +529,12 @@ namespace FarmExpansion
                         if (localBuildingAnimal.noWarpTimer <= 0)
                         {
                             localBuildingAnimal.noWarpTimer = 9000;
-                            ((AnimalHouse)building.indoors).animals.Remove(localBuildingAnimal.myID);
-                            building.currentOccupants--;
-                            animals.Add(localBuildingAnimal.myID, localBuildingAnimal);
+                            ((AnimalHouse)building.indoors.Value).animals.Remove(localBuildingAnimal.myID.Value);
+                            building.currentOccupants.Value--;
+                            animals.Add(localBuildingAnimal.myID.Value, localBuildingAnimal);
                             localBuildingAnimal.faceDirection(2);
                             localBuildingAnimal.SetMovingDown(true);
-                            localBuildingAnimal.position = new Vector2(building.getRectForAnimalDoor().X, (building.tileY + building.animalDoor.Y) * Game1.tileSize - (localBuildingAnimal.sprite.getHeight() * Game1.pixelZoom - localBuildingAnimal.GetBoundingBox().Height) + Game1.tileSize / 2);
+                            localBuildingAnimal.position.Value = new Vector2(building.getRectForAnimalDoor().X, (building.tileY.Value + building.animalDoor.Y) * Game1.tileSize - (localBuildingAnimal.Sprite.getHeight() * Game1.pixelZoom - localBuildingAnimal.GetBoundingBox().Height) + Game1.tileSize / 2);
                         }
                     }
                 }
@@ -611,11 +549,11 @@ namespace FarmExpansion
                         Game1.playSound("dwoop");
                     }
                     localAnimal.noWarpTimer = 3000;
-                    localAnimal.home.currentOccupants++;
-                    animals.Remove(localAnimal.myID);
-                    ((AnimalHouse)localAnimal.home.indoors).animals.Add(localAnimal.myID, localAnimal);
+                    localAnimal.home.currentOccupants.Value++;
+                    animals.Remove(localAnimal.myID.Value);
+                    ((AnimalHouse)localAnimal.home.indoors.Value).animals.Add(localAnimal.myID.Value, localAnimal);
 
-                    localAnimal.setRandomPosition(localAnimal.home.indoors);
+                    localAnimal.setRandomPosition(localAnimal.home.indoors.Value);
                     localAnimal.faceDirection(Game1.random.Next(4));
                     localAnimal.controller = null;
                 }
@@ -630,18 +568,18 @@ namespace FarmExpansion
                 foreach (Building building in buildings)
                 {
                     npcsToRemove.Clear();
-                    if (building.indoors != null)
+                    if (building.indoors.Value != null)
                     {
-                        foreach (NPC npc in building.indoors.characters)
+                        foreach (NPC npc in building.indoors.Value.characters)
                         {
-                            if (npc.name.Equals("Robin"))
+                            if (npc.Name.Equals("Robin"))
                             {
                                 npcsToRemove.Add(npc);
                             }
                         }
                         foreach (NPC carpenter in npcsToRemove)
                         {
-                            building.indoors.characters.Remove(carpenter);
+                            building.indoors.Value.characters.Remove(carpenter);
                         }
                     }
                 }
@@ -657,7 +595,7 @@ namespace FarmExpansion
             while (num <= 150 && queue.Count > 0)
             {
                 Vector2 vector = queue.Dequeue();
-                if (this.terrainFeatures.ContainsKey(vector) && this.terrainFeatures[vector] is HoeDirt && (this.terrainFeatures[vector] as HoeDirt).crop != null && (this.terrainFeatures[vector] as HoeDirt).crop.programColored && (this.terrainFeatures[vector] as HoeDirt).crop.currentPhase >= (this.terrainFeatures[vector] as HoeDirt).crop.phaseDays.Count - 1 && !(this.terrainFeatures[vector] as HoeDirt).crop.dead)
+                if (this.terrainFeatures.ContainsKey(vector) && this.terrainFeatures[vector] is HoeDirt && (this.terrainFeatures[vector] as HoeDirt).crop != null && (this.terrainFeatures[vector] as HoeDirt).crop.programColored.Value && (this.terrainFeatures[vector] as HoeDirt).crop.currentPhase.Value >= (this.terrainFeatures[vector] as HoeDirt).crop.phaseDays.Count - 1 && !(this.terrainFeatures[vector] as HoeDirt).crop.dead.Value)
                 {
                     return (this.terrainFeatures[vector] as HoeDirt).crop;
                 }

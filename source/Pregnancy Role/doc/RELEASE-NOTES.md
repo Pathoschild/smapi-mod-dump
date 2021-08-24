@@ -14,6 +14,7 @@ for queries and analysis.**
 
 *Release pending.*
 
+* Add Portuguese translation by Igostozo
 * Add Spanish translation by Monicuchi
 
 ## 2.0.0

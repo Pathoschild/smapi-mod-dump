@@ -14,6 +14,7 @@ Early Community Upgrades
 by Vertigon
 
 This mod seeks to make the Community Upgrades more accessible to the player. It does so by allowing the player (or host, if playing online) to modify:
+ - the order in which Community Upgrades are offered,
  - the requirements for the Community Upgrades to be offered, and
  - the costs to purchase each upgrade.
 

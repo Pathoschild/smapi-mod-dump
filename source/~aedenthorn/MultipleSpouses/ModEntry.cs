@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -82,7 +82,7 @@ namespace MultipleSpouses
             ObjectPatches.Initialize(Monitor, Helper, config);
             NetWorldStatePatches.Initialize(Monitor, Helper, config);
 
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
 
             // npc patches

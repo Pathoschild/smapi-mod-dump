@@ -88,7 +88,7 @@ namespace Pathoschild.Stardew.LookupAnything
 
             // load & validate database
             this.LoadMetadata();
-            this.IsDataValid = this.Metadata.LooksValid();
+            this.IsDataValid = this.Metadata?.LooksValid() == true;
             if (!this.IsDataValid)
             {
                 this.Monitor.Log($"The {this.DatabaseFileName} file seems to be missing or corrupt. Lookups will be disabled.", LogLevel.Error);
@@ -153,9 +153,15 @@ namespace Pathoschild.Stardew.LookupAnything
 
                 // pressed
                 if (keys.ToggleSearch.JustPressed())
+                {
+                    this.Helper.Input.SuppressActiveKeybinds(keys.ToggleSearch);
                     this.TryToggleSearch();
+                }
                 else if (keys.ToggleLookup.JustPressed())
+                {
+                    this.Helper.Input.SuppressActiveKeybinds(keys.ToggleLookup);
                     this.ToggleLookup();
+                }
                 else if (keys.ScrollUp.JustPressed())
                     (Game1.activeClickableMenu as LookupMenu)?.ScrollUp();
                 else if (keys.ScrollDown.JustPressed())

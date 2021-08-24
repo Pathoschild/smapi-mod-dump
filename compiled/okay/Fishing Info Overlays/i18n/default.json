@@ -73,5 +73,9 @@
 	"GenericMC.SplitScreen3": "Split Screen 3: Bottom Left",
 	"GenericMC.SplitScreen4": "Split Screen 4: Bottom Right",
 
+	"GenericMC.barColors": "Color Customization",
+	"GenericMC.barBackgroundColor": "Background Color",
+	"GenericMC.barTextColor": "Text Color",
+
 	"Bar.CrabMineWarning": "Bad Idea: Crab Pots placed in mines will be lost upon exiting."
 }

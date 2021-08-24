@@ -2,18 +2,30 @@
 <html lang="en">
 <head>
     #HEAD#
-  
+
 </head>
-<body onload="PageLoaded('Utils');">
+<body onload="SubPageLoaded('Modder_Utils','XNB');">
     #MENUBAR#
 
     <div class="stardew_container top_margin_50 med_bottom_pad">
-        <div class="message_board_title_lg">Content\Data</div>
-        <div class="message_board_list_lg"><div style="max-height:300px;overflow:auto;width:auto;">
-            Not all of the files have an HTML version, but the Json version is available for all files.<br /><br />
-             #DATADIR#
-             </div></div>  
+        <div class="message_board_title">JSON Files</div><div class="message_board_title">PNG Files</div>
+        <div class="message_board_list">
+            <div style="max-height:600px;overflow:auto;width:auto;">
+                Not all of the files have an HTML version, but the Json version is available for all files.<br /><br />
+                #DATADIR#
+            </div>
+        </div>
+        <div class="message_board_list">
+            <div style="max-height:600px;overflow:auto;width:auto;">
+               #PNGDATA#
+            </div>
+        </div>
     </div>
-
+    <div class="message_board_title_lg">Maps</div>
+    <div class="message_board_list_lg">
+        <div style="max-height:300px;overflow:auto;width:auto; width:100%;">
+            #TMXDATA#
+        </div>
+    </div>
 </body>
 </html>

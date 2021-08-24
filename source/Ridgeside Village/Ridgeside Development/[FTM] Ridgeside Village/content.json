@@ -712,7 +712,7 @@
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": 1
         },
-        "DaysUntilSpawnsExpire": null
+        "DaysUntilSpawnsExpire": 0
       }
     ],
     "CustomTileIndex": []

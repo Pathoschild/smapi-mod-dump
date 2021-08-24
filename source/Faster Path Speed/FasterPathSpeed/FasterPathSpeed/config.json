@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/alanperrow/StardewModding
+**
+*************************************************/
+
+{
+  "DefaultPathSpeedBuff": 1.0,
+  "IsPathSpeedBuffOnlyOnTheFarm": false,
+  "IsPathAffectHorseSpeed": true,
+  "HorsePathSpeedBuffModifier": 0.75,
+  "IsUseCustomPathSpeedBuffValues": false,
+  "CustomPathSpeedBuffValues": {
+    "Boardwalk": 1.0,
+    "Wood": 1.0,
+    "PlankFlooring": 1.0,
+    "Ghost": 1.0,
+    "Straw": 1.0,
+
+    "Gravel": 1.0,
+    "Cobblestone": 1.0,
+    "SteppingStone": 1.0,
+    "Stone": 1.0,
+    "TownFlooring": 1.0,
+
+    "Brick": 1.25,
+
+    "ColoredCobblestone": 1.5,
+    "IceTile": 1.5
+  }
+}

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace TheLion.Common.Integrations
+namespace TheLion.Stardew.Common.Integrations
 {
 	/// <summary>Handles integration with a given mod.</summary>
 	internal interface IModIntegration

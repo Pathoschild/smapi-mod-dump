@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/alanperrow/StardewModding
+   Git: https://github.com/alanperrow/StardewModding.git
+
+mods:
+   Faster Path Speed
+
+latest commit:
+   commit 5d6b4bdf7d6e8c6be3f86cddde21f321cff27ae5
+   Author: Alan Perrow <65362286+alanperrow@users.noreply.github.com>
+   Date:   Sun Aug 22 12:29:16 2021 -0400
+   
+       Fixed clipping issue.
+       Potentially fixed FileNotFoundException some uesrs were having (https://smapi.io/log/74e162b9bcbf4a18bb7e72e52c662aff), but cannot replicate so not sure.
+   

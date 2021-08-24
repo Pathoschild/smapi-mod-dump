@@ -12,7 +12,7 @@
   "Name": "New items for Pufferfish Chickens",
   "Author": "GZhynko",
   "Description": "Adds pufferfish eggs and mayonnaise.",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "UniqueID": "GZhynko.JsonAssets.Pufferfish_Chickens",
   "UpdateKeys": ["Nexus:???"],
   "ContentPackFor": {

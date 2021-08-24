@@ -12,52 +12,58 @@
     "GenericMC.MainLabel": "Fishing Minigame Options",
     "GenericMC.MainDesc": "Options for the alternative Fishing Minigames. Here you can pick your minigame style, or completely disable a minigame part.",
     "GenericMC.MainDesc2": "The fish size and quality is determined by the combined score of Start and End minigames, depending on which ones are enabled.",
-    "GenericMC.MainDescPC": "Saving and hitting F5, sleeping, or reloading the save will update saved config changes without restarting.",
-    "GenericMC.MainDescOther": "Sleeping, or reloading the save will update saved config changes without restarting the game.",
-    "GenericMC.MainDesc3": "If you changed your voice settings it will also play a preview of your current voice. You can hover over the variable names for more info.",
+    "GenericMC.MainDescPC": "Saving and hitting F5, sleeping, or reloading the save will update saved config changes without restarting the game.",
+    "GenericMC.MainDescOther": "Sleeping, or reloading the save, will update saved config changes without restarting the game.",
+    "GenericMC.MainDesc3": "If you changed your voice settings, it will also play a preview of your current voice. You can hover over the variable names for more info.",
 
     "GenericMC.Volume": "Voice Volume",
-    "GenericMC.VolumeDesc": "Allows fine tuning of the \"Here Fishy!\" volume. Press F5 after Saving to preview.",
+    "GenericMC.VolumeDesc": "Allows fine-tuning of the \"Here Fishy!\" max volume. The actual volume increases a bit with fishing level, starting at 80% of this value. Press F5 after Saving to preview the volume at fishing level 10 (98% of max volume, 11-15 make up the last 2%).",
     "GenericMC.Pitch": "Voice Pitch",
-    "GenericMC.PitchDesc": "Changes the pitch of your \"Here Fishy!\" voice. Starts randomized for multiplayer diversity. Press F5 after Saving to preview.",
+    "GenericMC.PitchDesc": "Changes the pitch of your \"Here Fishy!\" voice. Starts randomized for multiplayer diversity. The original is right in the middle. Press F5 after Saving to preview.",
 
     "GenericMC.KeyBinds": "Keybinds",
-    "GenericMC.KeyBindsDesc": "Button(s) used to trigger the minigame. If the same as Tool Use buttons, the Vanilla Fishing Minigame will be overwritten by this. \nSupports Mouse, Keyboard and Controller. Individual keys are separated by commas, combos are separated by the + sign. \nExample of 3 keys: MouseRight, Shift + K, ControllerX \nFor key names, see: https://stardewcommunitywiki.com/Modding:Player_Guide/Key_Bindings",
+    "GenericMC.KeyBindsDesc": "Button(s) used to trigger the minigame. If the same as Tool Use buttons, the Vanilla Fishing Minigame will be overwritten by this. Supports Mouse, Keyboard and Controller. Individual keys are separated by commas, combos like \"LeftShift + K\" are NOT supported for Keybind minigames, but work otherwise. Example of three keys: MouseRight, LeftShift + K, ControllerX. For key names, see: https://stardewcommunitywiki.com/Modding:Player_Guide/Key_Bindings",
+
+    "GenericMC.FreeAim": "Free Aim",
+    "GenericMC.FreeAimDesc": "Disabled: You can aim in front of you on a grid by holding\n your keybind, and control which tile with WASD, Arrow Keys, or DPad. \nEnabled: Allows you to simply click any tile you\n can reach (within your fishing level) with the cursor.\n Fishable tiles will be highlighted in both modes.\n Free Aim might not be very controller friendly, as the cursor position resets when accessing menus.\n It might also be less balanced, as it allows further diagonal aim.",
 
     "GenericMC.StartMinigameStyle": "Minigame Style (Start)",
-    "GenericMC.StartMinigameStyleDesc": "This minigame determines whether you catch the fish at all (non-fish catches skip this part), and contributes to total score. \nDDR Arrows: The classic rhythm game where you match arrow directions with your Movement buttons as they reach a specific area. \n??? \n???",
+    "GenericMC.StartMinigameStyleDesc": "This minigame determines whether you catch the fish at all\n (non-fish catches skip this part), and contributes to total score. \nDDR Arrows: The classic rhythm game where you match\n arrow directions with your Movement buttons as they reach a specific area. \nMinigame2: WIP \nMinigame3: WIP",
     "GenericMC.StartMinigameStyle1": "DDR Arrows",
     "GenericMC.StartMinigameStyle2": "todo",
     "GenericMC.StartMinigameStyle3": "todo",
 
     "GenericMC.EndMinigameStyle": "Minigame Style (End)",
-    "GenericMC.EndMinigameStyleDesc": "This minigame determines whether you take damage (if failed) when scooping up any fishable item/fish, and contributes to total score. \nMinigame Button: At the right time, press the button you use for fishing, keybind must be single button (no + combos). \nMatching Arrow:  At the right time, match the direction of the displayed arrow with WASD, Arrow Keys, or DPad. \nMatching Key:    At the right time, press the displayed button. Keyboard only, will use a letter from the fish/item name, if it can find any English ones - otherwise defaults to Arrows. Buttons might conflict with other mods. If you're getting arrows even when the name contains English letters, set Controller Option to 'Force Off'.",
-    "GenericMC.EndMinigameStyle1": "Minigame Button",
+    "GenericMC.EndMinigameStyleDesc": "This minigame determines whether you take damage (if failed)\n when scooping up any fishable item/fish, and contributes to total score. \nMinigame Keybind: At the right time, press the button\n you use for fishing, the keybind must be single button (no + combos). \nMatching Arrow:  At the right time, match the direction of the displayed arrow\n with WASD, Arrow Keys, or DPad. \nMatching Letter: At the right time, press the displayed letter.\n Keyboard only, will use a letter from the fish/item name, if\n it can find any English ones - otherwise defaults to Arrows.\n Buttons might conflict with other mods. If you're getting arrows even\n when the name contains English letters, set Controller Option to 'Force Off'.",
+    "GenericMC.EndMinigameStyle1": "Minigame Keybind",
     "GenericMC.EndMinigameStyle2": "Matching Arrow",
     "GenericMC.EndMinigameStyle3": "Matching Letter",
 
+    "GenericMC.EndLoseTreasure": "Lose Treasure On Fail (End)",
+    "GenericMC.EndLoseTreasureDesc": "If you fail the End Minigame, you'll lose any potential treasure. This is mainly recommended if you don't have a Start Minigame enabled, as you'll otherwise receive treasure for nothing.",
     "GenericMC.EndDamage": "Minigame Damage (End)",
-    "GenericMC.EndDamageDesc": "If you fail the end minigame, you'll get damaged based on the fish/item difficulty, size, and this multiplier. This is a straight up multiplier, so 0 means no damage, less than 1 means less, more means more.",
+    "GenericMC.EndDamageDesc": "If you fail the end minigame, you'll get damaged based on the fish/item difficulty, size, and this multiplier. This is a straight-up multiplier, so 0 means no damage, less than 1 means less, more means more.",
     "GenericMC.Difficulty": "Minigame Difficulty (Both)",
-    "GenericMC.DifficultyDesc": "Minigame difficulty (timers) is based on your equipment, fish difficulty and size. The negatives are multiplied by this number - the higher the harder.",
+    "GenericMC.DifficultyDesc": "Minigame difficulty (timers) is based on factors like your equipment, fish difficulty and size. This is the final value multiplier, the higher, the harder.",
 
     "GenericMC.StartMinigameScale": "Minigame Scale (Start)",
-    "GenericMC.StartMinigameScaleDesc": "The Start Minigame sclaes along with the zoom level, and can be fine-tuned here.",
+    "GenericMC.StartMinigameScaleDesc": "The Start Minigame scales along with the zoom level, and can be fine-tuned here.",
 
     "GenericMC.ConvertToMetric": "Convert to Metric",
-    "GenericMC.ConvertToMetricDesc": "WARNING: If using together with 'Inches To Metric System' Mod, delete all fish data from its 'content.json' (line 4-74), or they'll be double converted. \nWARNING: This will convert fish sizes as they're caught, and previous records won't be reversed to inches if you disable this. \nDoes not affect Festival Minigames, or regular fishing minigame - as their mechanics are based on fish size. Will work with modded fish caught via this mod.",
+    "GenericMC.ConvertToMetricDesc": "WARNING: If using together with 'Inches To Metric System' Mod, delete all\n fish data from its 'content.json' (line 4-74), or they'll be double converted. \nWARNING: This will convert fish sizes as they're caught,\n and previous records won't be reversed to inches if you disable this.\n Does not affect Festival Minigames, or regular fishing minigame - as their\n mechanics are based on fish size. Will work with modded fish caught via this mod.",
 
     "GenericMC.RealisticSizes": "Realistic Sizes",
-    "GenericMC.RealisticSizesDesc": "Enabled: The fish shown off at the end will have a realistic size VS player size, assuming the player holds them at a perspective that makes them a tiny bit bigger. Keep in mind that most of the time the fish are still pretty tiny, around hand size, with perspective making them 20% bigger.",
+    "GenericMC.RealisticSizesDesc": "Enabled: The fish shown off at the end will have a realistic size VS player size, assuming the player holds them at a perspective that makes them a tiny bit bigger. Keep in mind that most of the time the fish are pretty tiny, around hand size.",
 
     "GenericMC.FestivalLabel": "Festival Minigames",
     "GenericMC.FestivalDesc": "This only matters for Fall 16 and Winter 8 festivals, as they have fishing minigames that happen inside events.",
-    "GenericMC.FestivalDesc2": "Meaning that the animation mode and fishing override can't be fully hijacked, so it doesn't work/is janky. So here are the options for those.",
+    "GenericMC.FestivalDesc2": "Meaning that the animations can look a little glitchy, and full lenght minigames might be hard to balance. So here are the options for those.",
     "GenericMC.FestivalMode": "Festival Mode",
-    "GenericMC.FestivalModeDesc": "Vanilla: Use the regular fishing minigame for both festivals. OTHERWISE: \n\nFall 16: Click (or hold for auto) rod-use button to catch a fish with random delay between attempts. \nWinter 8 (Simple): Only does the End Minigame (if enabled), any non-trash counts. \nWinter 8 (Perfect Only): Only does the End Minigame (if enabled), only perfect catch fish count (better balance).",
+    "GenericMC.FestivalModeDesc": "Vanilla: Use the regular fishing minigame for both festivals. OTHERWISE: \n\nSimple: Only does the End Minigame (if enabled), any\n non-trash counts. A bit janky animations. \nPerfect Only: Only does the End Minigame (if enabled), only\n \"perfect catch\" fish count (better balance). A bit janky animations. \nStart Only: Plays the Start Minigame portion only,\n this one should be the most balanced in terms of points for effort.",
     "GenericMC.FestivalModeVanilla": "Vanilla",
     "GenericMC.FestivalModeSimple": "Simple",
     "GenericMC.FestivalModePerfectOnly": "Perfect Only",
+    "GenericMC.FestivalModeStartOnly": "Start Only",
 
     "GenericMC.Disabled": "Disabled",
 
@@ -67,16 +73,67 @@
     "GenericMC.SplitScreen3": "Split Screen 3: Bottom Left",
     "GenericMC.SplitScreen4": "Split Screen 4: Bottom Right",
 
+    "GenericMC.Colors": "Color Customization",
+    "GenericMC.MinigameColor": "Minigame Color",
 
-    "Minigame.Score": "Score",
+
+    "GenericMC.ItemData": "Item Data",
+    "GenericMC.ItemDataDesc1": "These are item specific effects for rods (nets), baits, and tackles (megaphones). You can hover over the effect name to see what it does.",
+    "GenericMC.ItemDataDesc2": "A few items have hardcoded effects that aren't listed here, but are mentioned in the item's description. Setting an effect to 0 will disable it.",
+    "GenericMC.ItemDataDesc3": "DOUBLE, LIFE, QUALITY, TREASURE, and UNBREAKING are additive, the rest are multipliers. I recommend the \"Everlasting Baits...\" Mod instead of UNBREAKING for immersion.",
+    "GenericMC.ItemDataDesc4": "The effects are meant to be non-decimal percentages/counts, but GMCM currently doesn't display their values - try being close to whole numbers.",
+
+
+    //Score: X out of at least Y  =   Fail/Success!
+    "Minigame.Score": "Score:",
+    "Minigame.Score2": "out of at least",
+    "Minigame.Score_0": "Epic Fail!",
+    "Minigame.Score_1": "Failure!",
+    "Minigame.Score_2": "Success!",
+    "Minigame.Score_3": "Great Success!",
     "Minigame.InfoDDR": "Match Arrow direction when inside the circle \n with Arrow Keys, WASD, or DPad. \n\n Your final score will decide \n if you manage to get the fish's attention.",
+    "Minigame.InfoDDR_Festival": "Match Arrow direction when inside the circle \n with Arrow Keys, WASD, or DPad. \n\n Points left until the next fish is caught:",
 
 
-    "net.fishing": "Fishing Net",
-    "net.bamboo": "Bamboo Net",
-    "net.training": "Training Net",
-    "net.traningDesc": "It's a lot easier to use than other nets, but can only catch basic fish.",
-    "net.fiberglass": "Fiberglass Net",
-    "net.iridium": "Iridium Net",
-    "net.skill": "+{0} Fishing Net Efficiency"
+    "Effects.AREA": "Expands the perfect area by {{val}}%",
+    "Effects.DAMAGE": "Damage taken reduced by {{val}}%",
+    "Effects.DIFFICULTY": "Minigame difficulty reduced by {{val}}%",
+    "Effects.DOUBLE": "Double fish chance +{{val}}% of daily luck.",
+    "Effects.LIFE": "Might fix a misplay, up to {{val}} times per cast.",
+    "Effects.QUALITY": "Attracts fish of {{val}} higher quality than normal.",
+    "Effects.SIZE": "Attracts {{val}}% larger fish.",
+    "Effects.SPEED": "Decreases minigame speed by {{val}}%",
+    "Effects.TREASURE": "Adds {{val}}% to treasure chance.",
+    "Effects.UNBREAKING": "{{val}}% chance of not being consumed.",
+
+
+    //rods -> nets
+    "Bamboo Pole":     "Bamboo Net",
+    "Training Rod":    "Training Net",
+    "Fiberglass Rod":  "Fiberglass Net",
+    "Iridium Rod":     "Iridium Net",
+    //baits - only needed so GMCM can get the right DisplayNames
+    "Bait":            "Bait",
+    "Magnet":          "Magnet",
+    "Wild Bait":       "Wild Bait",
+    "Magic Bait":      "Magic Bait",
+    //tackle -> megaphone
+    "Spinner":         "Spinner Megaphone",
+    "Dressed Spinner": "Dressed Megaphone",
+    "Trap Bobber":     "Trap Megaphone",
+    "Cork Bobber":     "Cork Megaphone",
+    "Lead Bobber":     "Lead Megaphone",
+    "Treasure Hunter": "Treasure Megaphone",
+    "Barbed Hook":     "Barbed Megaphone",
+    "Curiosity Lure":  "Curiosity Megaphone",
+    "Quality Bobber":  "Quality Megaphone",
+    //misc
+    "Rod.Fishing": "Fishing Net",
+    "Rod.FishingDesc": "Holding this net grants you the confidence needed to start fishing.",
+    "Rod.TrainingDesc": "It's a lot easier to use than other nets, but can only catch basic fish.",
+    "Rod.Skill": "+{0} Fishing Net Efficiency",
+
+
+    //everlasting baits and tackles mod
+    "Mods.Infinite": "infinite"
 }

@@ -11,13 +11,11 @@
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Characters;
 using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace FarmAnimalVarietyRedux.Patches
 {

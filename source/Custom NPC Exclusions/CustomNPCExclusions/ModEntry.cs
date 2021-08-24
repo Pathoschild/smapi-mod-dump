@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -29,7 +29,7 @@ namespace CustomNPCExclusions
         public override void Entry(IModHelper helper)
         {
             Instance = this; //set the reference to this mod's current instance
-            HarmonyInstance harmony = HarmonyInstance.Create(this.ModManifest.UniqueID); //create a Harmony instance for this mod
+            Harmony harmony = new Harmony(this.ModManifest.UniqueID); //create a Harmony instance for this mod
 
             //apply all Harmony patches
             HarmonyPatch_ItemDeliveryQuest.ApplyPatch(harmony);

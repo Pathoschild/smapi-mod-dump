@@ -10,6 +10,12 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Placing a chest now transfers attached mod data like Chests Anywhere settings (thanks to ImJustMatt!).
+
+## 1.3.4
+Released 01 August 2021 for SMAPI 3.12.0. Updated by Pathoschild.
+
 * Updated for Harmony upgrade in SMAPI 3.12.0.
 
 ## 1.3.3

@@ -6,10 +6,14 @@ for queries and analysis.**
 
 ----
 
+## 1.1.0
+
+- Feature: Add config to adjust special order rewards (board in front of Lewis' house)
+- Fix: Round up the adjusted quest value to match the regular profit margin handling
+
 ## 1.0.4
 
 - Fix: Improve Quest Framework compatibility. QF quests are now properly generated, but not adjusted at the moment.
-
 
 ## 1.0.3
 

@@ -10,7 +10,7 @@
 
 using CustomCompanions.Framework.Companions;
 using CustomCompanions.Framework.Managers;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -35,7 +35,7 @@ namespace CustomCompanions.Framework.Patches
             monitor = modMonitor;
         }
 
-        internal void Apply(HarmonyInstance harmony)
+        internal void Apply(Harmony harmony)
         {
             harmony.Patch(AccessTools.Method(_gameLocation, nameof(GameLocation.drawWater), new[] { typeof(SpriteBatch) }), prefix: new HarmonyMethod(GetType(), nameof(DrawWaterPostfix)));
         }

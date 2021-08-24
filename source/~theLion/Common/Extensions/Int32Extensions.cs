@@ -10,7 +10,7 @@
 
 using System.Linq;
 
-namespace TheLion.Common
+namespace TheLion.Stardew.Common.Extensions
 {
 	public static class Int32Extensions
 	{

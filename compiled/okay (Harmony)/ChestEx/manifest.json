@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "ChestEx",
 	"Author": "berkayylmao",
-	"Version": "2.0.2",
+	"Version": "2.0.3",
 	"Description": "Get more out of your chests and fridges! Set custom sizes, colours, names and more...",
 	"UniqueID": "berkayylmao.ChestEx",
 	"EntryDll": "ChestEx.dll",

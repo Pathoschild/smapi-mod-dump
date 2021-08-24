@@ -15,14 +15,11 @@ using System.Collections.Generic;
 namespace MasterFisher.Models
 {
     /// <summary>Represents a bait.</summary>
-    public class Bait
+    public class Bait : ModelBase
     {
         /*********
         ** Accessors
         *********/
-        /// <summary>How the bait data should be interpreted.</summary>
-        public Action Action { get; set; } = Action.Add;
-
         /// <summary>The id of the object that the bait is.</summary>
         [Identifier]
         [Token(nameof(ResolvedObjectId))]

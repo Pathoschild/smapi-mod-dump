@@ -27,5 +27,6 @@
   "OceanForagePerThousandMax": 10,
   "MinOceanChests": 0,
   "MaxOceanChests": 3,
-  "SwimRestoresVitals": false
+  "SwimRestoresVitals": false,
+  "ManualJumpButton": "MouseLeft"
 }

@@ -11,6 +11,7 @@
 {
   "ScienceHouse_Carpenter_CommunityUpgrade1": "...Micsoda? Szeretnél Pamnek építtetni egy házat? Ez egy remek ötlet! Csak adj nekem {{woodPieces}} fát és {{goldPieces}}g-t...",
   "ScienceHouse_Carpenter_CommunityUpgrade2": "...Tessék? Szeretnéd, ha pár rövidítést készítenék a völgy körül? Persze, meg tudom oldani! Szükségem lesz hozzá {{goldPieces}}g-re...",
-  "ScienceHouse_Carpenter_NotEnoughWood3": "Sajnálom... Van rá pénzed, de szükségem van még {{woodPieces}} darab fára."
+  "ScienceHouse_Carpenter_NotEnoughWood3": "Sajnálom... Van rá pénzed, de szükségem van még {{woodPieces}} darab fára.",
 
+  "Robin_PamUpgrade_Accepted": "Ez annyira kedves tőled! Holnap elkezdek dolgozni a fejlesztésen. Nagyjából {{daysUpgrade}} nap múlva kész is lesz."
 }

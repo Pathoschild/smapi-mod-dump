@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/5305
+IDs: blueberry.RaisedGardenBeds
+update keys: Nexus:5305, GitHub:b-b-blueberry/RaisedGardenBeds

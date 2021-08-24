@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Deflaktor/KeySuppressor
+   Git: https://github.com/Deflaktor/KeySuppressor.git
+
+mods:
+   Key Suppressor
+
+latest commit:
+   commit 5e838b94461c1d162ce1782a302dce1c79c729cf
+   Author: Deflaktor <deflaktor@gmail.com>
+   Date:   Mon Aug 23 11:33:37 2021 +0200
+   
+       Update README.md
+   

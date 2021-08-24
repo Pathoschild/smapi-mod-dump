@@ -1,42 +1,42 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-   #HEAD#
-   
+    #HEAD#
+
 </head>
-<body onload="PageLoaded('About');">
+<body onload="SubPageLoaded('Help','About');">
     #MENUBAR#
 
     <div class="stardew_container top_margin_50 med_bottom_pad">
         <table class="stardew_table">
-            <tr><td style="vertical-align:top;"><div class="message_board_title">About<a href="/Custom/StardewWeb/index.html" style="float: right;padding-top:3px;padding-right:30px;font-size: 20pt;">Help</a></div></td><td><div class="message_board_title">Credits</div></td></tr>
+            <tr><td style="vertical-align:top;"><div class="message_board_title">About</div></td><td><div class="message_board_title">Credits</div></td></tr>
             <tr>
                 <td style="vertical-align:top;">
-                    <div class="message_board_list" style="display:block;height: 285px;vertical-align:top;">
-                        <div style="padding-bottom:70px;">
-                            <span>Stardew Valley Web</span><br />
-                            <span>Version #VERSION#</span><br />
-                            <span>Created by:</span><br />
-                            <img src="/images/prism.png" style="height:32px; width:32px;" title="Prsim99 Avatar"/> <span>Prism99</span>
+                    <div class="message_cork_board_list" style="display:block;height: 300px;padding: 20px 0px 20px 40px;">
+                        <div style="padding:30px 30px 30px 70px; background-image:url(/images/note.png); background-size:500px 260px; width:490px;">
+                            <span style="font-size:34pt;">Stardew Web</span><br />
+                            <span style="font-size:20pt;">Version #VERSION#</span><br />
+                            <span style="font-size:20pt;">Created by:</span><br />
+                            <img src="/images/prism.png" style="height:32px; width:32px;" title="Prsim99 Avatar" /> <span style="font-size:20pt;">Prism99</span><br />
+                            <div style="padding-top: 8px;">
+                               
+                                <button style="font-size:16pt;" onclick="ClearCache();">Clear Server Cache</button>
+                            </div>
                         </div>
 
-                        
-                        <button style="font-size:16pt;" onclick="location.href='/Log';">Logs</button><button style="font-size:16pt;margin-left: 5px;" onclick="window.location.href='/Config';">Configure Options</button>
-                        <button style="font-size:16pt;float:right;" onclick="ClearCache();">Clear Server Cache</button>
-                      
                     </div>
                 </td>
                 <td>
-                    <div class="message_board_list" style="float:left; height:285px;">
-                        <ul>
-                            <!--
-    <li>The base web server is a fork of <a href="https://github.com/Rychard/CityWebServer">CityWebServer</a></li>
-        -->
-                            <li><span style="font-family: stardewwood; color: saddlebrown; font-weight: 600;">Stardew Wood Font</span> - <a href="https://www.ffonts.net/">ffonts.net</a></li>
-                            <li><span style="font-family: stardew;">Stardew Font</span> - <a href="https://fontsmagazine.com/">fontsmagazine.com</a></li>
-                            <li>The Daily Task tab uses an updated fork of the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1624?tab=description">Daily Task Report</a> to generate the report.</li>
-                            <li>Scrolls provided by <a href="https://www.kdau.com/scrollish/" target="_blank">kdau</a></li>
-                        </ul>
+                    <div class="message_cork_board_list" style="float:left; height:335px;padding: 20px 0px 20px 40px;">
+                        <div style="padding:30px 30px 30px 50px; background-image:url(/images/note.png); background-size:500px 335px; width:490px;">
+                            <ul>
+                                <li><span style="font-family: stardewwood; color: saddlebrown; font-weight: 600;">Stardew Wood Font</span> - <a href="https://www.ffonts.net/">ffonts.net</a></li>
+                                <li><span style="font-family: stardew;">Stardew Font</span> - <a href="https://fontsmagazine.com/">fontsmagazine.com</a></li>
+                                <li>The Daily Task tab uses an updated fork of the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1624?tab=description">Daily Task Report</a> to generate the report.</li>
+                                <li>Scrolls provided by <a href="https://www.kdau.com/scrollish/" target="_blank">kdau</a></li>
+                                <li>All Stardew Valley assets copyright <a href="http://twitter.com/concernedape">Concerned Ape</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -45,7 +45,7 @@
                 <td colspan="2">
                     <div class="message_board_list_lg">
                         <ul>
-                            <li>If set to "Pause When Game Window Inactive", Warps will not happen until you select the game window.<br /><img src="images\pause.png" style="width:356px; height:39px;" title="Pause Game"/></li>
+                            <li>If set to "Pause When Game Window Inactive", Warps will not happen until you select the game window.<br /><img src="images\pause.png" style="width:356px; height:39px;" title="Pause Game" /></li>
                             <li>If some of the in game images looked messed up, you can clear the image caches to see if that clears things up.  Press "Clear  Server Cache" button above.</li>
                         </ul>
                     </div>

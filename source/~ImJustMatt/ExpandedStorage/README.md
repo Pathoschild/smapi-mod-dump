@@ -6,7 +6,7 @@ for queries and analysis.**
 
 ----
 
-# Expanded Storage
+# eXpanded Storage
 Stardew Valley mod which allows Content Pack Creators to add custom storage to the game
 
 # Requirements

@@ -9,7 +9,7 @@
 *************************************************/
 
 using CustomCompanions.Framework.Managers;
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -27,7 +27,7 @@ namespace CustomCompanions.Framework.Patches
             monitor = modMonitor;
         }
 
-        internal void Apply(HarmonyInstance harmony)
+        internal void Apply(Harmony harmony)
         {
             harmony.Patch(AccessTools.Method(_ring, nameof(Ring.onEquip), new[] { typeof(Farmer), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(OnEquipPostfix)));
             harmony.Patch(AccessTools.Method(_ring, nameof(Ring.onUnequip), new[] { typeof(Farmer), typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(OnUnequipPostfix)));

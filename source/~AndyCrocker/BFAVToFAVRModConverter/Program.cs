@@ -262,7 +262,11 @@ namespace BfavToFavrModConverter
 
                     // if there is a harvested and adult sheet, swap them (as favr stored sheets as Harvested_ while bfav stores them as Ready to Harvest_)
                     if (!string.IsNullOrEmpty(adultSpriteSheetPath) && !string.IsNullOrEmpty(harvestedSpriteSheetPath))
-                        (adultSpriteSheetPath, harvestedSpriteSheetPath) = (harvestedSpriteSheetPath, adultSpriteSheetPath);
+                    {
+                        var tempAdultSpriteSheetPath = adultSpriteSheetPath;
+                        adultSpriteSheetPath = harvestedSpriteSheetPath;
+                        harvestedSpriteSheetPath = tempAdultSpriteSheetPath;
+                    }
 
                     // copy over sprite sheets
                     if (!string.IsNullOrEmpty(adultSpriteSheetPath))

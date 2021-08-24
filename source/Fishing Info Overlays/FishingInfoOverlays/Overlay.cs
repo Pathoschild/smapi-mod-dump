@@ -68,6 +68,8 @@ namespace StardewMods
         public static Dictionary<string, string> locationData;
         public static Dictionary<int, string> fishData;
         public static Texture2D[] background = new Texture2D[2];
+        public static Color colorBg;
+        public static Color colorText;
 
 
         public static int[] miniMode = new int[4];   //config values
@@ -196,9 +198,7 @@ namespace StardewMods
                 if (who.currentLocation is MineShaft && who.CurrentItem.Name.Equals("Crab Pot", StringComparison.Ordinal))//crab pot
                 {
                     string warning = translate.Get("Bar.CrabMineWarning");
-                    batch.DrawString(font, warning, boxBottomLeft + new Vector2(source.Width * iconScale, 0), Color.Black, 0f, new Vector2(1, -2), 1f * barScale[screen], SpriteEffects.None, 0.9f); //textbg
-                    batch.DrawString(font, warning, boxBottomLeft + new Vector2(source.Width * iconScale, 0), Color.Black, 0f, new Vector2(-1, -4), 1f * barScale[screen], SpriteEffects.None, 0.9f); //textbg
-                    batch.DrawString(font, warning, boxBottomLeft + new Vector2(source.Width * iconScale, 0), Color.Red, 0f, new Vector2(0, -3), 1f * barScale[screen], SpriteEffects.None, 1f); //text
+                    DrawStringWithBorder(batch, font, warning, boxBottomLeft + new Vector2(source.Width * iconScale, 0), Color.Red, 0f, Vector2.Zero, 1f * barScale[screen], SpriteEffects.None, 1f, colorBg); //text
                     batch.End();
                     batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
                     return;
@@ -216,7 +216,11 @@ namespace StardewMods
 
                         int baitCount = (who.CurrentItem as FishingRod).attachments[0].Stack;
                         batch.Draw(Game1.objectSpriteSheet, boxBottomLeft, source, Color.White, 0f, Vector2.Zero, 1.9f * barScale[screen], SpriteEffects.None, 0.9f);
-                        Utility.drawTinyDigits(baitCount, batch, boxBottomLeft + new Vector2((source.Width * iconScale) - Utility.getWidthOfTinyDigitString(baitCount, 2f * barScale[screen]), (showPercentages[screen] ? 26 : 18) * barScale[screen]), 2f * barScale[screen], 1f, Color.AntiqueWhite);
+
+                        if ((who.CurrentItem as FishingRod).attachments[0].Quality == 4) batch.Draw(Game1.mouseCursors, boxBottomLeft + (new Vector2(13f, (showPercentages[screen] ? 24 : 16)) * barScale[screen]),
+                            new Rectangle(346, 392, 8, 8), Color.White, 0f, Vector2.Zero, 1.9f * barScale[screen], SpriteEffects.None, 1f);
+                        else Utility.drawTinyDigits(baitCount, batch, boxBottomLeft + new Vector2((source.Width * iconScale) - Utility.getWidthOfTinyDigitString(baitCount, 2f * barScale[screen]),
+                            (showPercentages[screen] ? 26 : 19) * barScale[screen]), 2f * barScale[screen], 1f, colorText);
 
                         if (iconMode[screen] == 1) boxBottomLeft += new Vector2(0, (source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0));
                         else boxBottomLeft += new Vector2(source.Width * iconScale, 0);
@@ -229,7 +233,11 @@ namespace StardewMods
 
                         int tackleCount = FishingRod.maxTackleUses - (who.CurrentItem as FishingRod).attachments[1].uses;
                         batch.Draw(Game1.objectSpriteSheet, boxBottomLeft, source, Color.White, 0f, Vector2.Zero, 1.9f * barScale[screen], SpriteEffects.None, 0.9f);
-                        Utility.drawTinyDigits(tackleCount, batch, boxBottomLeft + new Vector2((source.Width * iconScale) - Utility.getWidthOfTinyDigitString(tackleCount, 2f * barScale[screen]), (showPercentages[screen] ? 26 : 18) * barScale[screen]), 2f * barScale[screen], 1f, Color.AntiqueWhite);
+
+                        if ((who.CurrentItem as FishingRod).attachments[1].Quality == 4) batch.Draw(Game1.mouseCursors, boxBottomLeft + (new Vector2(13f, (showPercentages[screen] ? 24 : 16)) * barScale[screen]),
+                            new Rectangle(346, 392, 8, 8), Color.White, 0f, Vector2.Zero, 1.9f * barScale[screen], SpriteEffects.None, 1f);
+                        else Utility.drawTinyDigits(tackleCount, batch, boxBottomLeft + new Vector2((source.Width * iconScale) - Utility.getWidthOfTinyDigitString(tackleCount, 2f * barScale[screen]),
+                            (showPercentages[screen] ? 26 : 19) * barScale[screen]), 2f * barScale[screen], 1f, colorText);
 
                         if (iconMode[screen] == 1) boxBottomLeft += new Vector2(0, (source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0));
                         else boxBottomLeft += new Vector2(source.Width * iconScale, 0);
@@ -336,11 +344,11 @@ namespace StardewMods
 
                             if (showPercentages[screen])
                             {
-                                batch.DrawString(font, percent + "%", boxBottomLeft + new Vector2((source.Width * iconScale) - ((font.MeasureString(percent + "%").X + 8) * 0.5f * barScale[screen]), 28 * barScale[screen]),
-                                    (caught) ? Color.White : Color.DarkGray, 0f, Vector2.Zero, 0.5f * barScale[screen], SpriteEffects.None, 1f);//%
+                                DrawStringWithBorder(batch, font, percent + "%", boxBottomLeft + new Vector2((source.Width * iconScale / 2f), 27f * barScale[screen]),
+                                    (caught) ? colorText : colorText * 0.8f, 0f, new Vector2(font.MeasureString(percent + "%").X / 2f, 0f), 0.58f * barScale[screen], SpriteEffects.None, 1f, colorBg);//%
                             }
 
-                            if (fish == miniFish && miniMode[screen] < 3) batch.Draw(background[backgroundMode[screen]], new Rectangle((int)boxBottomLeft.X - 1, (int)boxBottomLeft.Y - 1, (int)(source.Width * iconScale) + 1, (int)((source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0) + 1)),
+                            if (fish == miniFish && miniMode[screen] < 3) batch.Draw(background[0], new Rectangle((int)boxBottomLeft.X - 1, (int)boxBottomLeft.Y - 1, (int)(source.Width * iconScale) + 1, (int)((source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0) + 1)),
                                 null, Color.GreenYellow, 0f, Vector2.Zero, SpriteEffects.None, 0.9f);//minigame outline
 
                             if (backgroundMode[screen] == 0) AddBackground(batch, boxTopLeft, boxBottomLeft, iconCount, source, iconScale, boxWidth, boxHeight);
@@ -355,12 +363,7 @@ namespace StardewMods
                             {
                                 if (iconMode[screen] == 2)  // + text
                                 {
-                                    if (backgroundMode[screen] == 0)
-                                    {
-                                        batch.DrawString(font, fishNameLocalized, boxBottomLeft + new Vector2(source.Width * iconScale, 0), Color.Black, 0f, new Vector2(1, -2), 1f * barScale[screen], SpriteEffects.None, 0.9f); //textbg
-                                        batch.DrawString(font, fishNameLocalized, boxBottomLeft + new Vector2(source.Width * iconScale, 0), Color.Black, 0f, new Vector2(-1, -4), 1f * barScale[screen], SpriteEffects.None, 0.9f); //textbg
-                                    }
-                                    batch.DrawString(font, fishNameLocalized, boxBottomLeft + new Vector2(source.Width * iconScale, 0), (caught) ? Color.White : Color.DarkGray, 0f, new Vector2(0, -3), 1f * barScale[screen], SpriteEffects.None, 0.98f); //text
+                                    DrawStringWithBorder(batch, font, fishNameLocalized, boxBottomLeft + new Vector2(source.Width * iconScale, 0), (caught) ? colorText : colorText * 0.8f, 0f, new Vector2(0, -3), 1f * barScale[screen], SpriteEffects.None, 0.98f, colorBg); //text
                                     boxWidth = Math.Max(boxWidth, boxBottomLeft.X + (font.MeasureString(fishNameLocalized).X * barScale[screen]) + (source.Width * iconScale));
                                 }
 
@@ -390,7 +393,7 @@ namespace StardewMods
             else
             {
                 isMinigame = false;
-                miniFish = -1;
+                if (e.OldMenu is BobberBar) miniFish = -1;
             }
         }
         public void OnRenderMenu(object sender, RenderedActiveMenuEventArgs e)
@@ -536,8 +539,22 @@ namespace StardewMods
                         }
 
                         Game1.stats.TimesFished++;
-                        fish = who.currentLocation.getFish(0, 1, 5, who, 100, who.getTileLocation(), who.currentLocation.Name).ParentSheetIndex;
+                        item = who.currentLocation.getFish(0, 1, 5, who, 100, who.getTileLocation(), who.currentLocation.Name);
                         Game1.stats.TimesFished--;
+                        try
+                        {
+                            if (item.DisplayName.Equals("Error Item")) 
+                            {
+                                Monitor.LogOnce("Skipped Object of type" + item.GetType() + ", ID: " + item.parentSheetIndex + ", CodeName: " + item.Name + ", Catefory: " + item.Category + ". DisplayName is \"Error Item\".", LogLevel.Error);
+                                continue;
+                            }
+                            fish = item.ParentSheetIndex;
+                        }
+                        catch (Exception)
+                        {
+                            Monitor.LogOnce("Skipped Object of type" + item.GetType() + ", ID: " + item.parentSheetIndex + ", CodeName: " + item.Name + ", Catefory: " + item.Category + ". Missing DisplayName.", LogLevel.Error);
+                            continue;
+                        }
 
                         if (who.currentLocation is IslandLocation)
                         {
@@ -708,7 +725,7 @@ namespace StardewMods
             if (sortMode[screen] == 1) SortListByPercentages();
         }
 
-
+        private Object item;
         private void SortItemIntoListByDisplayName(int itemId)
         {
             string name = (itemId > 900000) ? new Hat(itemId - 900000).DisplayName : (new Object(itemId, 1).Name.Equals("Error Item", StringComparison.Ordinal)) ? new Furniture(itemId, Vector2.Zero).DisplayName : new Object(itemId, 1).DisplayName;
@@ -739,21 +756,35 @@ namespace StardewMods
             }
         }
 
+
+        /// <summary>Makes text a tiny bit bolder and adds a border behind it. The border uses text colour's alpha for its aplha value. 6 DrawString operations, so 6x less efficient.</summary>
+        private void DrawStringWithBorder(SpriteBatch batch, SpriteFont font, string text, Vector2 position, Color color, float rotation, Vector2 origin, float scale, SpriteEffects effects, float layerDepth, Color? borderColor = null)
+        {
+            Color border = borderColor.HasValue ? borderColor.Value : Color.Black;
+            border.A = color.A;
+            batch.DrawString(font, text, position + new Vector2(-1.2f * scale, -1.2f * scale), border, rotation, origin, scale, effects, layerDepth - 0.00001f);
+            batch.DrawString(font, text, position + new Vector2(1.2f * scale, -1.2f * scale), border, rotation, origin, scale, effects, layerDepth - 0.00001f);
+            batch.DrawString(font, text, position + new Vector2(-1.2f * scale, 1.2f * scale), border, rotation, origin, scale, effects, layerDepth - 0.00001f);
+            batch.DrawString(font, text, position + new Vector2(1.2f * scale, 1.2f * scale), border, rotation, origin, scale, effects, layerDepth - 0.00001f);
+
+            batch.DrawString(font, text, position + new Vector2(-0.2f * scale, -0.2f * scale), color, rotation, origin, scale, effects, layerDepth);
+            batch.DrawString(font, text, position + new Vector2(0.2f * scale, 0.2f * scale), color, rotation, origin, scale, effects, layerDepth);
+        }
         private void AddBackground(SpriteBatch batch, Vector2 boxTopLeft, Vector2 boxBottomLeft, int iconCount, Rectangle source, float iconScale, float boxWidth, float boxHeight)
         {
             if (backgroundMode[screen] == 0)
             {
                 batch.Draw(background[backgroundMode[screen]], new Rectangle((int)boxBottomLeft.X - 1, (int)boxBottomLeft.Y - 1, (int)(source.Width * iconScale) + 1, (int)((source.Width * iconScale) + 1 + (showPercentages[screen] ? 10 * barScale[screen] : 0))),
-                    null, new Color(0, 0, 0, 0.5f), 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+                    null, colorBg, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
             }
             else if (backgroundMode[screen] == 1)
             {
                 if (iconMode[screen] == 0) batch.Draw(background[backgroundMode[screen]], new Rectangle((int)boxTopLeft.X - 2, (int)boxTopLeft.Y - 2, (int)(source.Width * iconScale * Math.Min(iconCount, maxIconsPerRow[screen])) + 5,
-               (int)(((source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0)) * Math.Ceiling(iconCount / (maxIconsPerRow[screen] * 1.0))) + 5), null, new Color(0, 0, 0, 0.5f), 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+               (int)(((source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0)) * Math.Ceiling(iconCount / (maxIconsPerRow[screen] * 1.0))) + 5), null, colorBg, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
                 else if (iconMode[screen] == 1) batch.Draw(background[backgroundMode[screen]], new Rectangle((int)boxTopLeft.X - 2, (int)boxTopLeft.Y - 2, (int)(source.Width * iconScale * Math.Ceiling(iconCount / (maxIconsPerRow[screen] * 1.0))) + 5,
-                    (int)(((source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0)) * Math.Min(iconCount, maxIconsPerRow[screen])) + 5), null, new Color(0, 0, 0, 0.5f), 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+                    (int)(((source.Width * iconScale) + (showPercentages[screen] ? 10 * barScale[screen] : 0)) * Math.Min(iconCount, maxIconsPerRow[screen])) + 5), null, colorBg, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
                 else if (iconMode[screen] == 2) batch.Draw(background[backgroundMode[screen]], new Rectangle((int)boxTopLeft.X - 2, (int)boxTopLeft.Y - 2, (int)(boxWidth - boxTopLeft.X + 6), (int)boxHeight + 4),
-                    null, new Color(0, 0, 0, 0.5f), 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
+                    null, colorBg, 0f, Vector2.Zero, SpriteEffects.None, 0.5f);
             }
         }
     }

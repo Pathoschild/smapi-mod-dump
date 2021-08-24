@@ -6,9 +6,9 @@ mods:
    Build On Any Tile
 
 latest commit:
-   commit 912126cc53861e3ff63abf190de3b88f4dfd14f8
+   commit e4cc961e1f49893b096f24b69335231a447b835d
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Dec 21 14:04:07 2020 -0600
+   Date:   Sun Aug 1 18:31:01 2021 -0500
    
-       Increment manifest to 1.0.2
+       Update NuGet, use Any CPU and Harmony 2.x, trim usings
    

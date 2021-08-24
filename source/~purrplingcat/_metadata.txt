@@ -7,9 +7,9 @@ mods:
    Quest Essentials
 
 latest commit:
-   commit 4ea73da6778c72bcfa494312bac7f1dc48813726
-   Author: PurrplingCat <ellenfawkes@gmail.com>
-   Date:   Mon Jun 7 20:55:41 2021 +0200
+   commit be3d16edc1845ac58750cea2c1d9514b278a1478
+   Author: shekurika <shekurika@gmail.com>
+   Date:   Mon Aug 9 10:32:27 2021 +0200
    
-       QE: Some fixes
+       fix for the TotalMoneyEarned staying 0 bug (#2)
    

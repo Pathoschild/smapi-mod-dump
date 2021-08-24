@@ -16,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 5a5e6c8e04d83af7d07953a1bb93a3e1abefe2bb
+   commit dfb729f216fd033b81addb1d7fa55a7e1dbff25d
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Sat May 22 12:26:59 2021 +0200
+   Date:   Wed Aug 4 14:14:15 2021 +0200
    
-       fix #57: OnlyPreventTapped setting was applied when false.
+       Update HarvestWithScythe readme
    

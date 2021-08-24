@@ -38,5 +38,29 @@
     "category.weapons": "Weapons",
     "category.cooking": "Cooking",
     "category.misc": "Misc",
-    "category.junk": "Junk"
+    "category.junk": "Junk",
+    
+    //commands
+    "command.unlock-all.desc": "Unlock all items research progression",
+    "command.unlock-all.succ": "All researches were completed! :D",
+    
+    "command.unlock-active.desc": "Unlock hotbar active item",
+    "command.unlock-active.err-no-item": "Select an item first",
+    "command.unlock-active.succ": "Item - {0}, was unlocked! ;)",
+    
+    "command.set-mode.desc": "Change mod mode:\\n[0] - Spawn Mode \\n[1] - Buy/Sell Mode",
+    "command.set-mode.err": "Available modes:\\n[0] - Spawn Mode \\n[1] - Buy/Sell Mode",
+    "command.set-mode.succ": "Mode was changed to: {0}",
+    
+    "command.set-price.desc": "Set a hotbar active item price (globally, for mod menu only) \\n0+ values only!",
+    "command.set-price.err-no-item": "Select an item first",
+    "command.set-price.err-incorrect-price": "Price must be a correct non-negative integer (like 120, 999, 0)",
+    "command.set-price.succ": "Price for {0}, was changed to: {1}! ;)",
+    
+    "command.reset-price.desc": "Reset a hotbar active item price (globally, for mod menu only)",
+    "command.reset-price.err-no-item": "Select an item first",
+    "command.reset-price.succ": "Price for {0}, was reset! ;)",
+    
+    "command.reload_prices.desc": "Reload pricelist file",
+    "command.reload_prices.succ": "Pricelist was loaded :)"
 }

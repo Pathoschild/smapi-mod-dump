@@ -9,7 +9,7 @@
 *************************************************/
 
 using BmFont;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PlatoTK.UI.Components;

@@ -10,8 +10,14 @@ for f in files:
     with open(f) as file:
         text = file.read()
 
-    # Bump version
-    text = re.sub('"Version": "[\d.]+",', '"Version": "4.1",', text)
+    # Bump mod version
+    text = re.sub('"Version": "[\d.]+",', '"Version": "5.1",', text)
+
+    # Bump api version
+    text = re.sub('"MinimumApiVersion": "[\d.]+",', '"MinimumApiVersion": "3.12.0",', text)
+
+    # Bump StardewHack version
+    text = re.sub('("UniqueID": "bcmpinc[.]StardewHack",\s+"MinimumVersion":) "[\d.]+"', '\\1 "5.1"', text)
 
     with open(f, "w") as file:
         file.write(text)

@@ -31,7 +31,7 @@ namespace EarlyCommunityUpgrades
 
 			helper.Events.GameLoop.GameLaunched += (sender, args) => ModConfigMenuHelper.TryLoadModConfigMenu();
 			helper.Events.GameLoop.ReturnedToTitle += (sender, args) => modAssetEditor.ReloadI18n();
-			helper.Events.Player.Warped += (sender, args) => CommunityUpgradesPatches.CheckInstantUnlocks();
+			helper.Events.GameLoop.SaveLoaded += (sender, args) => CommunityUpgradesPatches.CheckInstantUnlocks();
 
 			if (CommunityUpgradesPatches.ApplyHarmonyPatches())
 				Monitor.Log("Patches successfully applied");

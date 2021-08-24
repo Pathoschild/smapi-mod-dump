@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
-using ImJustMatt.Common.Integrations.GenericModConfigMenu;
+using Common.Integrations.GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 

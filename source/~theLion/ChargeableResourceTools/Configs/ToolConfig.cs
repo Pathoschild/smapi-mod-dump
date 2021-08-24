@@ -10,7 +10,7 @@
 
 using StardewModdingAPI.Utilities;
 
-namespace TheLion.AwesomeTools
+namespace TheLion.Stardew.Tools.Configs
 {
 	/// <summary>The mod user-defined settings.</summary>
 	public class ToolConfig
@@ -21,9 +21,13 @@ namespace TheLion.AwesomeTools
 		/// <summary>The Pickaxe features to enable.</summary>
 		public PickaxeConfig PickaxeConfig { get; set; } = new();
 
-		/// <summary>Whether the mod requires an additional hotkey to activate.</summary>
-		public bool RequireModkey { get; set; } = true;
+		/// <summary>The Scythe features to enable.</summary>
+		public ScytheConfig ScytheConfig { get; set; } = new();
 
+		/// <summary>Whether charging requires a mod key to activate.</summary>
+		public bool RequireModkey { get; set; } = true;
+		
+		/// <summary>The chosen mod key(s).</summary>
 		public KeybindList Modkey { get; set; } = KeybindList.Parse("LeftShift, LeftShoulder");
 
 		/// <summary>How much stamina the shockwave should consume.</summary>

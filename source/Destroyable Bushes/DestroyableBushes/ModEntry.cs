@@ -8,17 +8,8 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using Harmony;
+using HarmonyLib;
 
 namespace DestroyableBushes
 {
@@ -85,7 +76,7 @@ namespace DestroyableBushes
         /// <summary>Applies any Harmony patches used by this mod.</summary>
         private void ApplyHarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
+            Harmony harmony = new Harmony(ModManifest.UniqueID); //create this mod's Harmony instance
 
             //apply all patches
             HarmonyPatch_BushesAreDestroyable.ApplyPatch(harmony);

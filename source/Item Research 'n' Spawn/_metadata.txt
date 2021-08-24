@@ -6,9 +6,13 @@ mods:
    Item Research 'n' Spawn
 
 latest commit:
-   commit a0b58ea53eb0652237f34695523afb5784911c7f
+   commit 286f0005b5dd114dc2b05f807b0d3f90d945a097
+   Merge: e3e6015 019e03e
    Author: aleksi_ttu <aleksi@ttu.ee>
-   Date:   Sat Jul 31 16:21:23 2021 +0300
+   Date:   Mon Aug 23 00:42:58 2021 +0300
    
-       still not working
+       Merge remote-tracking branch 'origin/master'
+       
+       # Conflicts:
+       #       ItemResearchSpawner/release-notes.md
    

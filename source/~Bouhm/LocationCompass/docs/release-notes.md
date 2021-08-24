@@ -9,6 +9,16 @@ for queries and analysis.**
 ﻿﻿[← back to readme](README.md)
 
 # Release notes
+## 1.3.5
+Released 20 August 2021 for SMAPI 3.12.2. Updated by Pathoschild.
+
+* Fixed possible errors when scanning locations.
+
+## 1.3.4
+Released 06 August 2021 for SMAPI 3.12.2. Updated by Pathoschild.
+
+* Fixed crash when scanning locations in some cases.
+
 ## 1.3.3
 Released 17 July 2021 for SMAPI 3.11.0. Updated by Pathoschild.
 

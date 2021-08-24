@@ -82,9 +82,16 @@ namespace GiftDecline
 			NpcHelper.StoreAmountOfGiftsReceived(Game1.player.currentLocation.characters);
 		}
 
-		/// <summary>Day ends (before save).</summary>
+		/// <summary>Day ends (before save). This event is triggered *before* OnSaveLoaded for a new game.</summary>
 		public static void OnDayEnding()
 		{
+			bool isNewGame = Game1.Date.TotalDays == -1;
+			if (isNewGame)
+			{
+				SaveGameHelper.LoadFromFileOrInitialize();
+				return;
+			}
+
 			// don't ever reset, just apply the gift taste
 			if (ConfigHelper.Config.ResetEveryXDays == 0)
 			{

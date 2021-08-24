@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/b-b-blueberry/RaisedGardenBeds
+   Git: https://github.com/b-b-blueberry/RaisedGardenBeds.git
+
+mods:
+   Raised Garden Beds
+
+latest commit:
+   commit 632be90bcf3daeba8e70eee69f5423da1910c3e0
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Fri Aug 20 20:15:59 2021 +1000
+   
+       1.0.1-c:
+       Update content pack manifest versions.
+   

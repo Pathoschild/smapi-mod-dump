@@ -11,7 +11,7 @@
 using FarmAnimalVarietyRedux.Menus;
 using FarmAnimalVarietyRedux.Models;
 using FarmAnimalVarietyRedux.Models.Converted;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -70,7 +70,7 @@ namespace FarmAnimalVarietyRedux.Patches
                     && nextInstruction.opcode == OpCodes.Callvirt && nextInstruction.operand == typeof(FarmAnimal).GetMethod("reloadData", BindingFlags.Public | BindingFlags.Instance))
                 {
                     // skip loading both these instructions
-                    i += 2;
+                    i++;
                     continue;
                 }
 
@@ -191,7 +191,6 @@ namespace FarmAnimalVarietyRedux.Patches
             __instance.GetType().GetField("_displayType", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, animalName);
             __instance.sound.Value = animalSubtype.SoundId;
             __instance.showDifferentTextureWhenReadyForHarvest.Value = ModEntry.Instance.AssetManager.HasDifferentSpriteSheetWhenHarvested(animal.InternalName, animalSubtype.InternalName);
-            __instance.Sprite = new AnimatedSprite(Path.Combine("Animals", animalType), 0, animalSubtype.FrontAndBackSpriteWidth, animalSubtype.FrontAndBackSpriteHeight);
             __instance.frontBackSourceRect.Value = new Rectangle(0, 0, animalSubtype.FrontAndBackSpriteWidth, animalSubtype.FrontAndBackSpriteHeight);
             __instance.sidewaysSourceRect.Value = new Rectangle(0, 0, animalSubtype.SideSpriteWidth, animalSubtype.SideSpriteHeight);
             __instance.happinessDrain.Value = animalSubtype.HappinessDrain;
@@ -210,6 +209,20 @@ namespace FarmAnimalVarietyRedux.Patches
             __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/buildings"] = JsonConvert.SerializeObject(animal.Buildings ?? new List<string>());
             __instance.modData[$"{ModEntry.Instance.ModManifest.UniqueID}/allowForageRepeats"] = animalSubtype.AllowForageRepeats.ToString();
 
+            // set the sprite
+            {
+                var parsedProduces = new List<SavedProduceData>();
+                if (__instance.modData.TryGetValue($"{ModEntry.Instance.ModManifest.UniqueID}/produces", out var producesString))
+                    parsedProduces = JsonConvert.DeserializeObject<List<SavedProduceData>>(producesString);
+
+                var isSheared = false;
+                var pendingToolProduces = Utilities.GetPendingProduceDrops(__instance, HarvestType.Tool);
+                if (__instance.showDifferentTextureWhenReadyForHarvest && !pendingToolProduces.Any(toolProduce => toolProduce.Key.ShowHarvestableSpriteSheet && parsedProduces.First(parsedProduce => parsedProduce.UniqueName.ToLower() == toolProduce.Key.UniqueName.ToLower()).DaysLeft == 0))
+                    isSheared = true;
+
+                __instance.Sprite = new AnimatedSprite(Path.Combine("Animals", (isSheared ? "Sheared" : "") + animalType), 0, animalSubtype.FrontAndBackSpriteWidth, animalSubtype.FrontAndBackSpriteHeight);
+            }
+            
             // fix stored produce (if an animal was converted from BFAV to FAVR or if a content pack changes half way through a save
             {
                 var parsedProduces = new List<SavedProduceData>();
@@ -520,10 +533,10 @@ namespace FarmAnimalVarietyRedux.Patches
             }
 
             // handle forage behavior
+            var pendingForageProduces = Utilities.GetPendingProduceDrops(__instance, HarvestType.Forage);
             var animalSubtype = ModEntry.Instance.Api.GetAnimalSubtypeByInternalName(__instance.type);
-            if (animalSubtype != null && location.IsOutdoors && !Game1.isRaining && !__instance.isBaby() && Game1.random.NextDouble() < .0002f) // the random is so the animals don't produce all foragables instantly
+            if (pendingForageProduces.Count() > 0 && animalSubtype != null && location.IsOutdoors && !Game1.isRaining && !__instance.isBaby() && Game1.random.NextDouble() < .0002f) // the random is so the animals don't produce all foragables instantly
             {
-                var pendingForageProduces = Utilities.GetPendingProduceDrops(__instance, HarvestType.Lay);
                 var pendingForageProduce = pendingForageProduces.ElementAt(Game1.random.Next(pendingForageProduces.Count()));
 
                 // make sure the place is blank for spawning the foraged item

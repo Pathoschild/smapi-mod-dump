@@ -11,18 +11,18 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Harmony;
-using ImJustMatt.Common.Patches;
+using HarmonyLib;
+using XSAutomate.Common.Patches;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Patches
+namespace ExpandedStorage.Framework.Patches
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal class UtilityPatches : BasePatch<ExpandedStorage>
     {
-        public UtilityPatches(IMod mod, HarmonyInstance harmony) : base(mod, harmony)
+        public UtilityPatches(IMod mod, Harmony harmony) : base(mod, harmony)
         {
             harmony.Patch(
                 AccessTools.Method(typeof(Utility), nameof(Utility.playerCanPlaceItemHere)),

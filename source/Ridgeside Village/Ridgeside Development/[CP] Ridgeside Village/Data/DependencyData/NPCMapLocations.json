@@ -17,7 +17,7 @@
 	"LogName": "NPC Sprite Offsets", 
 	"Action": "EditData",
 	"Target": "Mods/Bouhm.NPCMapLocations/NPCs",
-	"When": { "HasMod: |contains=Yagisan.NPCMapLocationsForNPCs": false, "HasMod: |contains=Bouhm.NPCMapLocations": true },	  
+	"When": { "HasMod: |contains=Yagisan.NPCMapLocationsForNPCs": false, "HasMod: |contains=Bouhm.NPCMapLocations": true, "EnableWorldMapEdit": true },	  
 	  "Entries": {
 
 		// Adds NPCs
@@ -109,7 +109,7 @@
 	"LogName": "Ridgeside Village - Location Support", 
 	"Action": "EditData",
 	"Target": "Mods/Bouhm.NPCMapLocations/Locations",
-	"When": { "HasMod: |contains=Yagisan.NPCMapLocationsForNPCs": false, "HasMod: |contains=Bouhm.NPCMapLocations": true },	 
+	"When": { "HasMod: |contains=Yagisan.NPCMapLocationsForNPCs": false, "HasMod: |contains=Bouhm.NPCMapLocations": true, "EnableWorldMapEdit": true },	 
 	"Entries": {
 		
 		// Locations
@@ -291,11 +291,9 @@
 		"LogName": "Overlays the vanilla map",
 		"Action": "EditImage",
 		"Target": "LooseSprites/map",
-		"FromFile": "Assets/Maps/WorldMaps/map.png",
-		"FromArea": { "X": 0, "Y": 53, "Width": 58, "Height": 78 }, 
-		"ToArea": { "X": 0, "Y": 53, "Width": 58, "Height": 78 },		
+		"FromFile": "Assets/Maps/WorldMaps/map.png",	
 		"PatchMode": "Overlay",
-		"When": { "HasMod: |contains=grapeponta.VibrantPastoralSVE": false, "HasMod: |contains=grapeponta.VibrantPastoralRecolor": false, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": false, "FarmType: |contains=Beach": false},
+		"When": { "HasMod: |contains=grapeponta.VibrantPastoralSVE": false, "HasMod: |contains=grapeponta.VibrantPastoralRecolor": false, "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": false, "FarmType: |contains=Beach": false, "EnableWorldMapEdit": true},
 	},
 
 	//Vanilla w/ NPCMapLocations
@@ -307,7 +305,7 @@
 		"FromArea": { "X": 0, "Y": 53, "Width": 58, "Height": 78 }, 
 		"ToArea": { "X": 0, "Y": 53, "Width": 58, "Height": 78 },
 		"PatchMode": "Overlay",
-		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": true },
+		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": true, "EnableWorldMapEdit": true },
 	},
  	{
 		"LogName": "Vanilla Map Overlay 2 with NPC Map Locations installed",
@@ -317,7 +315,7 @@
 		"FromArea": { "X": 0, "Y": 180, "Width": 58, "Height": 183 }, 
 		"ToArea": { "X": 0, "Y": 180, "Width": 58, "Height": 183 },
 		"PatchMode": "Overlay",
-		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": true },
+		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": true, "EnableWorldMapEdit": true },
 	},
  	{
 		"LogName": "Vanilla Map Overlay 3 with NPC Map Locations installed",
@@ -327,7 +325,7 @@
 		"FromArea": { "X": 131, "Y": 180, "Width": 58, "Height": 183 }, 
 		"ToArea": { "X": 131, "Y": 180, "Width": 58, "Height": 183 },
 		"PatchMode": "Overlay",
-		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": true },
+		"When": { "HasMod: |contains=FlashShifter.StardewValleyExpandedCP": false, "HasMod: |contains=Bouhm.NPCMapLocations": true, "EnableWorldMapEdit": true },
 	},
 	
 ]

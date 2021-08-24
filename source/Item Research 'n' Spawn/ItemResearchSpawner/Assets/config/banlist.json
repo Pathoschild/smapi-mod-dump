@@ -8,13 +8,16 @@
 **
 *************************************************/
 
-{
-  "problematicitems": [
-    "BigCraftable:101",
-    "BigCraftable:81",
-    "BigCraftable:82",
-    "BigCraftable:128",
-    "BigCraftable:29",
-    "BigCraftable:84"
-  ]
-}
+[
+  "War Memento:864",
+  "Gourmet Tomato Salt:865",
+  "Stardew Valley Rose:866",
+  "Advanced TV Remote:867",
+  "Arctic Shard:868",
+  "Lost Axe:788",
+  "Berry Basket:790",
+  "Wriggling Worm:869",
+  "Pirate's Locket:870",
+  "Ectoplasm:875",
+  "Prismatic Jelly:876"
+]

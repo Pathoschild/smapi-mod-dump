@@ -9,7 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI;
-using Harmony;
+using HarmonyLib;
 using System.Collections.Generic;
 
 namespace StardewHack.Library
@@ -23,22 +23,22 @@ namespace StardewHack.Library
     
         public override void Entry(IModHelper helper) {
             // Check versions
-            var harmony_version = typeof(HarmonyInstance).Assembly.GetName().Version;
+            var harmony_version = typeof(Harmony).Assembly.GetName().Version;
             Monitor.Log($"Loaded StardewHack library v{ModManifest.Version} using Harmony v{harmony_version}.", LogLevel.Info);
             if (harmony_version < new System.Version(1,2,0,1)) {
                 Monitor.Log($"Expected Harmony v1.2.0.1 or later. Mods that depend on StardewHack might not work correctly.", LogLevel.Warn);
             }
             
             // Check incompatible mods.
-            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "bcmpinc.FixAnimalTools",     new SemanticVersion(3,0,0));
-            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(4,0,0));
-            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(4,0,0));
+            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(5,0,0));
+            CheckIncompatible(helper, "bcmpinc.FixAnimalTools",     new SemanticVersion(5,0,0));
+            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(5,0,0));
+            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(5,1,0));
+            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(5,0,0));
+            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(5,1,0));
+            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(5,0,0));
+            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(5,1,0));
+            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(5,0,0));
             
             // Register event to show warning in case some mod's patches failed to apply cleanly.
             Helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
@@ -47,7 +47,7 @@ namespace StardewHack.Library
         public void CheckIncompatible(IModHelper helper, string uniqueID, SemanticVersion version) {
             var mod = helper.ModRegistry.Get(uniqueID);
             if (mod != null && mod.Manifest.Version.IsOlderThan(version)) {
-                this.Monitor.Log($"Mod '{mod.Manifest.Name}' v{mod.Manifest.Version} is outdated. This will likely cause problems. Please update '{mod.Manifest.Name}' to at least v{version}.", LogLevel.Error);
+                Monitor.Log($"Mod '{mod.Manifest.Name}' v{mod.Manifest.Version} is outdated. This will likely cause problems. Please update '{mod.Manifest.Name}' to at least v{version}.", LogLevel.Error);
             }
         }
 
@@ -70,7 +70,8 @@ namespace StardewHack.Library
 
             // The message is a list containing a single string.
             var dialogue = new List<string>() {
-                "StardewHack failed to apply some bytecode patches. The following mods won't work correctly or at all: " +
+                "StardewHack v" + ModManifest.Version +
+                " failed to apply some bytecode patches. The following mods won't work correctly or at all: " +
                 mod_list.Join() +
                 ". Check your console or error log for further instructions."
             };

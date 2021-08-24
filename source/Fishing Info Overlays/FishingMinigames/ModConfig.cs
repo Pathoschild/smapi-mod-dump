@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using StardewModdingAPI.Utilities;
+using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace FishingMinigames
 {
@@ -17,15 +18,44 @@ namespace FishingMinigames
         public int VoiceVolume { get; set; } = 100;
         public int[] VoicePitch { get; set; }
         public string[] Voice_Test_Ignore_Me { get; set; }//internal for voice setting change check
-        public string[] KeyBinds { get; set; } = { "MouseLeft, Space, ControllerX", "MouseLeft, Space, ControllerX", "MouseLeft, Space, ControllerX", "MouseLeft, Space, ControllerX" };
+        public string[] KeyBinds { get; set; } = { "MouseLeft, C, ControllerX", "MouseLeft, C, ControllerX", "MouseLeft, C, ControllerX", "MouseLeft, C, ControllerX" };
+        public bool[] FreeAim { get; set; } = { false, false, false, false };
         public int[] StartMinigameStyle { get; set; } = { 1, 1, 1, 1 };
         public int[] EndMinigameStyle { get; set; } = { 2, 2, 2, 2 };
         public float StartMinigameScale { get; set; } = 1f;
+        public bool[] EndLoseTreasureIfFailed { get; set; } = { true, true, true, true };
         public float[] EndMinigameDamage { get; set; } = { 1f, 1f, 1f, 1f };
         public float[] MinigameDifficulty { get; set; } = { 1f, 1f, 1f, 1f };
         public bool ConvertToMetric { get; set; } = false;
         public bool RealisticSizes { get; set; } = true;
-        public int[] FestivalMode { get; set; } = { 2, 2, 2, 2 };
+        public int[] FestivalMode { get; set; } = { 3, 3, 3, 3 };
+        public Color MinigameColor { get; set; } = Color.Cyan;
+
+        public Dictionary<string, Dictionary<string, int>> SeeInfoForBelowData { get; set; } = new Dictionary<string, Dictionary<string, int>>()
+        {
+            //rods
+            {"Training Rod", new Dictionary<string, int>(){     { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 50 }, { "TREASURE", 0 } }},
+            {"Bamboo Pole", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 } }},
+            {"Fiberglass Rod", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 20 }, { "TREASURE", 0 } }},
+            {"Iridium Rod", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 40 }, { "TREASURE", 0 } }},
+
+            //baits
+            {"Bait", new Dictionary<string, int>(){             { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Magnet", new Dictionary<string, int>(){           { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", -10 }, { "SPEED", 0 }, { "TREASURE", 15 }, { "UNBREAKING", 0 } }},
+            {"Wild Bait", new Dictionary<string, int>(){        { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 120 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 20 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Magic Bait", new Dictionary<string, int>(){       { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 30 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+
+            //tackle
+            {"Spinner", new Dictionary<string, int>(){          { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 3 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Dressed Spinner", new Dictionary<string, int>(){  { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 10 }, { "DOUBLE", 0 }, { "LIFE", 7 }, { "QUALITY", 0 }, { "SIZE", 20 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Trap Bobber", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 1 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 20 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Cork Bobber", new Dictionary<string, int>(){      { "AREA", 40 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 10 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Lead Bobber", new Dictionary<string, int>(){      { "AREA", 0 }, { "DAMAGE", 50 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Treasure Hunter", new Dictionary<string, int>(){  { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 5 }, { "UNBREAKING", 0 } }},
+            {"Barbed Hook", new Dictionary<string, int>(){      { "AREA", 10 }, { "DAMAGE", 0 }, { "DIFFICULTY", 20 }, { "DOUBLE", 0 }, { "LIFE", 2 }, { "QUALITY", 0 }, { "SIZE", 0 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+            {"Curiosity Lure", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 0 }, { "SIZE", 10 }, { "SPEED", 0 }, { "TREASURE", 1 }, { "UNBREAKING", 0 } }},
+            {"Quality Bobber", new Dictionary<string, int>(){   { "AREA", 0 }, { "DAMAGE", 0 }, { "DIFFICULTY", 0 }, { "DOUBLE", 0 }, { "LIFE", 0 }, { "QUALITY", 1 }, { "SIZE", 20 }, { "SPEED", 0 }, { "TREASURE", 0 }, { "UNBREAKING", 0 } }},
+        };
 
 
         public ModConfig()

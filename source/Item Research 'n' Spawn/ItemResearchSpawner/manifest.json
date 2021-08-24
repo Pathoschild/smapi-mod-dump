@@ -11,7 +11,7 @@
 {
   "Name": "Item Research 'n' Spawn",
   "Author": "TSlex, CJBok and Pathoschild",
-  "Version": "1.0.0-alpha-r2",
+  "Version": "1.0.0",
   "Description": "Give any item you want if you've researched it!",
   "UniqueID": "TSlex.ItemResearchSpawner",
   "EntryDll": "ItemResearchSpawner.dll",

@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <EnableHarmony>true</EnableHarmony>
+    <EnableModZip>false</EnableModZip>
+    <EnableModDeploy>false</EnableModDeploy>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5292883C-225B-4A46-B1FE-D928B8DA4230}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AlternativeTextures</RootNamespace>
+    <AssemblyName>AlternativeTextures</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlternativeTextures.cs" />
+    <Compile Include="Framework\External\ContentPatcher\ToolToken.cs" />
+    <Compile Include="Framework\External\ContentPatcher\TextureToken.cs" />
+    <Compile Include="Framework\Interfaces\IContentPatcherApi.cs" />
+    <Compile Include="Framework\Interfaces\IJsonAssetsApi.cs" />
+    <Compile Include="Framework\Managers\ApiManager.cs" />
+    <Compile Include="Framework\Managers\AssetManager.cs" />
+    <Compile Include="Framework\Managers\TextureManager.cs" />
+    <Compile Include="Framework\Models\VariationModel.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\FishTankFurniturePatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\BedFurniturePatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\FurniturePatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\FlooringPatch.cs" />
+    <Compile Include="Framework\UI\PaintBucketMenu.cs" />
+    <Compile Include="Framework\Models\AlternativeTextureModel.cs" />
+    <Compile Include="Framework\Patches\AnimatedObjects\PhonePatch.cs" />
+    <Compile Include="Framework\Patches\AnimatedObjects\IndoorPotPatch.cs" />
+    <Compile Include="Framework\Patches\AnimatedObjects\CrabPotPatch.cs" />
+    <Compile Include="Framework\Patches\AnimatedObjects\ChestPatch.cs" />
+    <Compile Include="Framework\Patches\UtilityPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\ResourceClumpPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\GiantCropPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\GameLocationPatch.cs" />
+    <Compile Include="Framework\Patches\PatchTemplate.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\FruitTreePatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\BushPatch.cs" />
+    <Compile Include="Framework\Patches\Tools\ToolPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\TreePatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\GrassPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\HoeDirtPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\CropPatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\FencePatch.cs" />
+    <Compile Include="Framework\Patches\StandardObjects\ObjectPatch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Examples\[AT] Crystal Mini-Obelisks\manifest.json" />
+    <None Include="Examples\[AT] Crystal Mini-Obelisks\Textures\MiniObelisk\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\BrownCouch\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\NeedlepointFlower\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OakChair\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\Calendar\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\DeluxeFishTank\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\ModernFishTank\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\SmallFishTank\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\StrawberryDoubleBed\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\TotemPole\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OakTable\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OakDresser\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furniture\DarkRug\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Gate Examples\Gate2\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Gate Examples\Gate1\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\MiniShippingBin\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Furnace\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Grass\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Sub Folder Example\HeavyTapper\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Sub Folder Example\Tapper\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\AutoPetter\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\TuboFlowers_FallWinter\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\TuboFlowers_SpringSummer\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Phone\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\GardenPot\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\CrabPot\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\JunimoChest\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Scarecrow\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\StoneChest\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Chest\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\GiantMelon\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Cask\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Stump\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Poppy\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\SteppingStonePath\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\StoneWalkwayFloor\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Sub Folder Example\MiniFridge\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\WoodFloor\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\TeaBushSummer\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\TeaBushSpring\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\TreeOakSpring\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\AppleSaplingSummer\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\TreeOakSummer\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\GrassSpring\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\JsonAssetExampleItem\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\GrassSummer\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\Loom\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Sunflower\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\StoneFence\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\WoodFence2\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\WoodFence\texture.json" />
+    <None Include="Examples\[AT] Snowcrows\manifest.json" />
+    <None Include="Examples\[AT] Snowcrows\Textures\DeluxeScarecrow\texture.json" />
+    <None Include="Examples\[AT] Snowcrows\Textures\Scarecrow\texture.json" />
+    <None Include="Examples\[CP] Content Patcher Example\content.json" />
+    <None Include="Examples\[CP] Content Patcher Example\manifest.json" />
+    <None Include="Examples\[JA] Json Asset Example\BigCraftables\Example Item\big-craftable.json" />
+    <None Include="Examples\[JA] Json Asset Example\content-pack.json" />
+    <None Include="Examples\[AT] Example Pack\manifest.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\MiniObelisk\texture.json" />
+    <None Include="Examples\[JA] Json Asset Example\manifest.json" />
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Examples\[AT] Crystal Mini-Obelisks\Textures\MiniObelisk\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\BrownCouch\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\NeedlepointFlower\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OakChair\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\Calendar\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\DeluxeFishTank\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\ModernFishTank\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\SmallFishTank\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\StrawberryDoubleBed\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\TotemPole\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OakTable\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OakDresser\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\DarkRug\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Gate Examples\Gate2\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Gate Examples\Gate1\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\MiniShippingBin\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Furnace\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Grass\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Sub Folder Example\HeavyTapper\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Sub Folder Example\Tapper\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\AutoPetter\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\TuboFlowers_FallWinter\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\TuboFlowers_SpringSummer\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Phone\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\GardenPot\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\CrabPot\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\JunimoChest\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Scarecrow\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\StoneChest\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Chest\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\GiantMelon\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Cask\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Stump\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Poppy\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\SteppingStonePath\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\StoneWalkwayFloor\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Sub Folder Example\MiniFridge\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\WoodFloor\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\TeaBushSummer\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\TeaBushSpring\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\TreeOakSpring\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\AppleSaplingSummer\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\TreeOakSummer\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\GrassSpring\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\JsonAssetExampleItem\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\GrassSummer\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\Loom\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Sunflower\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\StoneFence\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\WoodFence2\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\WoodFence\texture.png" />
+    <Content Include="Examples\[AT] Snowcrows\Textures\DeluxeScarecrow\texture.png" />
+    <Content Include="Examples\[AT] Snowcrows\Textures\Scarecrow\texture.png" />
+    <Content Include="Examples\[CP] Content Patcher Example\assets\alt_paint_bucket.png" />
+    <Content Include="Examples\[CP] Content Patcher Example\assets\test_replacement.png" />
+    <Content Include="Examples\[JA] Json Asset Example\BigCraftables\Example Item\big-craftable.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\MiniObelisk\texture.png" />
+    <Content Include="Framework\Assets\PaintBrushEmpty.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Framework\Assets\PaintBrushFilled.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Framework\Assets\PaintBucket.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+  <Target Name="PostBuildMacros">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="Targets" />
+    </GetAssemblyIdentity>
+    <ItemGroup>
+      <VersionNumber Include="$([System.Text.RegularExpressions.Regex]::Replace(&quot;%(Targets.Version)&quot;, &quot;^(.+?)(\.0+)$&quot;, &quot;$1&quot;))" />
+    </ItemGroup>
+  </Target>
+  <PropertyGroup>
+    <PostBuildEventDependsOn>
+    $(PostBuildEventDependsOn);
+    PostBuildMacros;
+  </PostBuildEventDependsOn>
+    <PostBuildEvent>powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '@(VersionNumber)' | sc -LiteralPath \"$f\" })"
+
+powershell Remove-Item -Path '$(SolutionDir)releases\latest\$(SolutionName)"' -Recurse -Force
+xcopy /s /y /i "$(TargetDir)" "$(SolutionDir)releases\latest\$(SolutionName)"
+7z a -tzip "$(SolutionDir)releases\$(SolutionName)-@(VersionNumber).zip" "$(SolutionDir)releases\latest\$(SolutionName)"
+
+powershell Remove-Item -Path '$(GameModsPath)\$(SolutionName)' -Recurse -Force
+powershell Remove-Item -Path '$(GameModsPath)\Alternative Textures Examples' -Recurse -Force
+
+xcopy /s /y /i "$(SolutionDir)releases\latest\$(SolutionName)" "$(GameModsPath)\$(SolutionName)"
+xcopy /s /y /i "$(SolutionDir)Examples\*" "$(GameModsPath)\Alternative Textures Examples"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

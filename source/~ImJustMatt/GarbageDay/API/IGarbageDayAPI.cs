@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace ImJustMatt.GarbageDay.API
+namespace GarbageDay.API
 {
     public interface IGarbageDayAPI
     {

@@ -14,7 +14,7 @@
   "Version": "1.0.0",
   "Description": "Allows pufferfish eggs to be made into mayo",
   "UniqueID": "6480.PFM.Pufferfish_Chickens",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.12.0",
   "UpdateKeys": [ "Nexus:???" ],
   "Dependencies": [
     {

@@ -25,6 +25,10 @@
 		"IsRequired": true,
 	   },
 	   {
+		"UniqueID": "Rafseazz.RidgesideVillage",
+		"IsRequired": true,
+	   },
+	   {
 		"UniqueID": "Esca.FarmTypeManager",
 		"IsRequired": true,
 	   },	   

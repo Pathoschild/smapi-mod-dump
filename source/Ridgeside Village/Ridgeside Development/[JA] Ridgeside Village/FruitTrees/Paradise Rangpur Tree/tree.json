@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Paradise Rangpur Tree",
+  "Product": "Paradise Rangpur",
+  "SaplingName": "Paradise Rangpur Sapling",
+  "SaplingDescription": "Takes 28 days to produce a mature Paradise Rangpur tree. Ready to harvest in the summer. Only grows if the 8 surrounding tiles are empty.",
+  "Season": "summer",
+  "SaplingPurchasePrice": 5000,
+}

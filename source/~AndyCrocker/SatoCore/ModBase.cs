@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using SatoCore.Attributes;
 using SatoCore.Extensions;
 using StardewModdingAPI;
@@ -79,7 +79,7 @@ namespace SatoCore
         /// <summary>Loads the harmony patches.</summary>
         private void LoadHarmonyPatches()
         {
-            var harmonyInstance = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             foreach (var method in this.GetType().Assembly.GetTypes().SelectMany(type => type.GetTypeInfo().DeclaredMethods))
             {
@@ -98,9 +98,9 @@ namespace SatoCore
                 // apply patch
                 switch (patchAttribute.PatchType)
                 {
-                    case PatchType.Prefix: harmonyInstance.Patch(patchAttribute.OriginalMethod, prefix: new HarmonyMethod(method)); break;
-                    case PatchType.Transpiler: harmonyInstance.Patch(patchAttribute.OriginalMethod, transpiler: new HarmonyMethod(method)); break;
-                    case PatchType.Postfix: harmonyInstance.Patch(patchAttribute.OriginalMethod, postfix: new HarmonyMethod(method)); break;
+                    case PatchType.Prefix: harmony.Patch(patchAttribute.OriginalMethod, prefix: new HarmonyMethod(method)); break;
+                    case PatchType.Transpiler: harmony.Patch(patchAttribute.OriginalMethod, transpiler: new HarmonyMethod(method)); break;
+                    case PatchType.Postfix: harmony.Patch(patchAttribute.OriginalMethod, postfix: new HarmonyMethod(method)); break;
                     default: this.Monitor.Log($"Patch '{method.GetFullName()}' has an invalid patch type ({patchAttribute.PatchType})", LogLevel.Error); break;
                 }
             }

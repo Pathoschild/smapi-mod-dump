@@ -91,7 +91,7 @@ namespace BillboardProfitMargin
 				? Game1.player.difficultyModifier
 				: config.CustomProfitMargin;
 
-			int adjustReward = (int)(originalReward * rewardMultiplier);
+			int adjustReward = (int)Math.Ceiling(originalReward * rewardMultiplier);
 
 			return adjustReward;
 		}

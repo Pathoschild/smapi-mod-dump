@@ -1,11 +1,11 @@
 ﻿{
    "Name": "Grass Growth",
    "Author": "bcmpinc",
-   "Version": "4.1",
+   "Version": "5.0",
    "Description": "Allows long grass to spread everywhere on your farm.",
    "UniqueID": "bcmpinc.GrassGrowth",
    "EntryDll": "GrassGrowth.dll",
-   "MinimumApiVersion": "3.9.0",
+   "MinimumApiVersion": "3.12.0",
    "UpdateKeys": ["Nexus:2732"],
    "Dependencies": [{
       "UniqueID": "bcmpinc.StardewHack",

@@ -11,7 +11,7 @@
 using System;
 using StardewModdingAPI;
 using StardewValley;
-using Harmony;
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
 using StardewValley.TerrainFeatures;
@@ -40,7 +40,7 @@ namespace StardewValleyExpanded
     {
         private static IMonitor Monitor;
 
-        public static void Hook(HarmonyInstance harmony, IMonitor monitor)
+        public static void Hook(Harmony harmony, IMonitor monitor)
         {
             EndNexusMusic.Monitor = monitor;
 

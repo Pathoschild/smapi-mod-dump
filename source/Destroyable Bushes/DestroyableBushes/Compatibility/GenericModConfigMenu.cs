@@ -8,17 +8,10 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using Harmony;
+using System;
+using System.Collections.Generic;
 
 namespace DestroyableBushes
 {
@@ -35,24 +28,9 @@ namespace DestroyableBushes
                     return;
 
                 api.RegisterModConfig(ModManifest, () => Config = new ModConfig(), () => Helper.WriteConfig(Config)); //register "revert to default" and "write" methods for this mod's config
+                api.SetDefaultIngameOptinValue(ModManifest, true); //allow in-game setting changes (rather than just at the main menu)
 
                 //register an option for each of this mod's config settings
-                api.RegisterSimpleOption
-                (
-                    ModManifest,
-                    "All bushes are destroyable",
-                    "Check this box to make bushes destroyable everywhere.\nUncheck this box to make bushes destroyable at locations in the list below.",
-                    () => Config.AllBushesAreDestroyable,
-                    (bool val) => Config.AllBushesAreDestroyable = val
-                );
-                api.RegisterSimpleOption
-                (
-                    ModManifest,
-                    "Destroyable bush locations",
-                    "A list of locations where bushes should be destroyable.\nSeparate each name with a comma.\nExample: \"Farm, BusStop, Forest, Woods\"",
-                    () => GMCMLocationList,
-                    (string val) => GMCMLocationList = val
-                );
                 api.RegisterSimpleOption
                 (
                     ModManifest,
@@ -61,6 +39,45 @@ namespace DestroyableBushes
                     () => Config.WhenBushesRegrow ?? "null", //return the string "null" if the setting is null
                     (string val) => Config.WhenBushesRegrow = val
                 );
+                api.RegisterSimpleOption
+                (
+                    ModManifest,
+                    "Destroyable bush locations",
+                    "A list of locations where bushes should be destroyable.\nIf the list is empty, all locations will be allowed.\nSeparate each name with a comma.\nExample: \"Farm, BusStop, Forest, Woods\"",
+                    () => GMCMLocationList,
+                    (string val) => GMCMLocationList = val
+                );
+
+                api.RegisterLabel
+                (
+                    ModManifest,
+                    "Destroyable bush types",
+                    "The types of bush that are allowed to be destroyed."
+                );
+                api.RegisterSimpleOption
+                (
+                    ModManifest,
+                    "Small bushes",
+                    "Check this box to make small bushes destroyable.",
+                    () => Config.DestroyableBushTypes.SmallBushes,
+                    (bool val) => Config.DestroyableBushTypes.SmallBushes = val
+                );
+                api.RegisterSimpleOption
+                (
+                    ModManifest,
+                    "Medium bushes",
+                    "Check this box to make medium bushes destroyable. These are the type that can produce berries.",
+                    () => Config.DestroyableBushTypes.MediumBushes,
+                    (bool val) => Config.DestroyableBushTypes.MediumBushes = val
+                );
+                api.RegisterSimpleOption
+                (
+                    ModManifest,
+                    "Large bushes",
+                    "Check this box to make large bushes destroyable.",
+                    () => Config.DestroyableBushTypes.LargeBushes,
+                    (bool val) => Config.DestroyableBushTypes.LargeBushes = val
+                );
 
                 api.RegisterLabel
                 (
@@ -68,7 +85,6 @@ namespace DestroyableBushes
                     "Amount of wood dropped",
                     "The number of wood pieces dropped when each type of bush is destroyed."
                 );
-
                 api.RegisterSimpleOption
                 (
                     ModManifest,
@@ -154,6 +170,7 @@ namespace DestroyableBushes
     public interface GenericModConfigMenuAPI
     {
         void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
+        void SetDefaultIngameOptinValue(IManifest mod, bool optedIn);
 
         void RegisterLabel(IManifest mod, string labelName, string labelDesc);
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);

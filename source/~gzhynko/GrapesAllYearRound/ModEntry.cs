@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -84,7 +84,7 @@ namespace GrapesAllYearRound
         
         private void ApplyHarmonyPatches()
         {
-            var harmony = HarmonyInstance.Create("GZhynko.GrapesAllYearRound");
+            var harmony = new Harmony(ModManifest.UniqueID);
             
             harmony.Patch(
                 AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.dayUpdate)),

@@ -13,9 +13,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit c83e70f9f92e1c74237dbfdb5bd5c93e6c5df18c
+   commit e58fffc85249a182b42142d798a442b46912f035
    Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Sun Jun 13 22:42:21 2021 +0200
+   Date:   Wed Aug 18 10:34:52 2021 -0400
    
-       fix: fix bars being rendered during some festivals
+       fix: prevent bars from moving out if they are not moved in
    

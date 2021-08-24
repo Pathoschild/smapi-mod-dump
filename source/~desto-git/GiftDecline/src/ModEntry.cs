@@ -10,7 +10,6 @@
 
 namespace GiftDecline
 {
-	using System;
 	using System.Collections.Generic;
 	using Common;
 	using StardewModdingAPI;

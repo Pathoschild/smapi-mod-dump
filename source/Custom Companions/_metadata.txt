@@ -6,11 +6,9 @@ mods:
    Custom Companions
 
 latest commit:
-   commit c4c81a82f100a8bf20aea1ac7dfd9b39ecfba7c0
+   commit 136bd675fcacab23210ffa58064858c490d1e8b6
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Wed Jul 28 21:29:50 2021 -0500
+   Date:   Sat Aug 7 08:58:07 2021 -0500
    
-       Prevented Companions from being spawned on NPCBarrier tiles
-       
-       Also added a default of 5 attempts to find an applicable tile to place a companion in.
+       v1.6.3 released
    

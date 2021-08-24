@@ -8,17 +8,11 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
 using Newtonsoft.Json;
+using StardewModdingAPI.Utilities;
+using StardewValley.TerrainFeatures;
+using System.Collections.Generic;
 
 namespace DestroyableBushes
 {
@@ -68,6 +62,28 @@ namespace DestroyableBushes
                 Tile = tile;
                 Size = size;
                 DateDestroyed = SDate.Now();
+            }
+
+            /// <summary>Returns all tiles that would be obstructed by this bush's collision box.</summary>
+            /// <returns>Each tile that would be obstructed by this bush's collision box.</returns>
+            public IEnumerable<Vector2> GetCollisionTiles()
+            {
+                switch (Size)
+                {
+                    case Bush.mediumBush: //2 tiles wide
+                    case Bush.walnutBush:
+                        yield return Tile;
+                        yield return new Vector2(Tile.X + 1, Tile.Y);
+                        break;
+                    case Bush.largeBush: //3 tiles wide
+                        yield return Tile;
+                        yield return new Vector2(Tile.X + 1, Tile.Y);
+                        yield return new Vector2(Tile.X + 2, Tile.Y);
+                        break;
+                    default: //1 tile wide
+                        yield return Tile;
+                        break;
+                }
             }
         }
     }

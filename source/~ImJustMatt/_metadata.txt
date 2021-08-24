@@ -9,9 +9,9 @@ mods:
    Garbage Day
 
 latest commit:
-   commit 01e93f67ff4cafe13f19f63fa98b0f25d2e4df24
+   commit 04b7c5c38d62cd6a7e20b3bdd50c6a21f1d53498
    Author: Matthew <justmatt@outlook.com>
-   Date:   Mon Mar 29 19:21:42 2021 -0500
+   Date:   Wed Aug 18 16:08:14 2021 -0500
    
-       Reduce passed args to Config.RegisterModConfig
+       Remove discontinued projects
    

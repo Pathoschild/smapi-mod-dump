@@ -9,6 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.3.2
+Released 16 Aug 2021.
+
+* Fixed minor bug with gamepad controls/snappy menus being incorrect on window resize
+
 ## 1.3.1
 Released 22 Jul 2021.
 

@@ -9,9 +9,9 @@
 *************************************************/
 
 using System.Collections.Generic;
-using ImJustMatt.ExpandedStorage.API;
+using ExpandedStorage.API;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Models
+namespace ExpandedStorage.Framework.Models
 {
     public class TabModel : ITab
     {

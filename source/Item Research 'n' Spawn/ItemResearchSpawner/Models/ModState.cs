@@ -23,5 +23,19 @@ namespace ItemResearchSpawner.Models
         public string SearchText { get; set; } = "";
 
         public string Category { get; set; } = I18n.Category_All();
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ModState CModState)
+            {
+                return ActiveMode == CModState.ActiveMode &&
+                       Quality == CModState.Quality &&
+                       SortOption == CModState.SortOption &&
+                       SearchText.Equals(CModState.SearchText) &&
+                       Category.Equals(CModState.Category);
+            }
+
+            return false;
+        }
     }
 }

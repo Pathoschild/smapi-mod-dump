@@ -8,13 +8,12 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using System;
 using xTile.Dimensions;
@@ -25,7 +24,7 @@ namespace BuildOnAnyTile
     /// <summary>A Harmony patch that makes <see cref="BuildableGameLocation"/> allow buildings to be placed on any tile (depending on <see cref="ModConfig"/> settings).</summary>
     public static class HarmonyPatch_BuildOnAnyTile
     {
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BuildOnAnyTile)}\": prefixing SDV method \"BuildableGameLocation.isBuildable(Vector2)\".", LogLevel.Trace);
             harmony.Patch(

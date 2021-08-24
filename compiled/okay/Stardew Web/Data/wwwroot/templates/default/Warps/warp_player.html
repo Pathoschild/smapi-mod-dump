@@ -1,31 +1,17 @@
 ﻿<table class="stardew_table">
     <tr>
-        <td style="vertical-align:top;border: 2px solid black; padding:20px;">
-            <table style="">
-                <tr><td>Warp To</td></tr>
-                <tr><td><select name="plocs" id="plocs">#PLOCS#</select> X: <input type="text" size="4" name="xploc" id="xploc" value="0" /> Y: <input type="text" size="4" name="yploc" id="yploc" value="0" /></td></tr>
-                <tr><td></td></tr>
-            </table>
-        </td>
-        <td style="padding:20px;border: 2px solid black;">
+        <td class="top"><img src="/Asset?asset=Sprite%2fFarmer" id="" style="width:128px;height:192px;" /></td>
+        <td>
             <table>
-                <tr><td>Warp</td></tr>
-                <tr>
-                    <td>
-                        <input type="radio" id="mts" name="playerwarp" value="mts" checked /> <label for="mts">Me to my spouse</label><br />
-                        <input type="radio" id="stm" name="playerwarp" value="stm" /> <label for="stm">My spouse to me</label><br />
-                    </td>
-                </tr>
-                <tr><td></td></tr>
-            </table>
-        </td>
-        <td style="padding:20px;border: 2px solid black;">
-            <table>
-                <tr><td></td><td><button onclick="WarpStudio(4,'u')">Up</button></td><td></td></tr>
-                <tr><td><button onclick="WarpStudio(4,'l')">Left</button></td><td></td><td><button onclick="WarpStudio(4,'r')">Right</button></td></tr>
-                <tr><td></td><td><button onclick="WarpStudio(4,'d')">Down</button></td><td></td></tr>
+                <tr><td style="padding:5px;"><input type="radio" id="mts" name="playerwarp" value="mts" disabled /></td><td style="padding:5px;">Me to my spouse</td></tr>
+                <tr><td style="padding:5px;"><input type="radio" id="stm" name="playerwarp" value="stm" #SPDISABLED# /></td><td style="padding:5px;">My spouse to me</td></tr>
+                <tr><td style="padding:5px;"><input type="radio" id="mtnpc" name="playerwarp" value="mtnpc" checked /></td><td style="padding:5px;">To NPC</td></tr>
+                <tr><td style="padding:5px;"></td><td style="padding:5px;"><select name="npcs" id="playernpcs">#NPCS#</select></td></tr>
+                <tr><td style="padding:5px;"><input type="radio" id="mtloc" name="playerwarp" value="mtloc" /></td><td style="padding:5px;">Warp to location</td></tr>
+                <tr><td style="padding:5px;"></td><td style="padding:5px;"><select name="plocs" id="plocs"  style="width:230px;">#PLOCS#</select></td></tr>
+                <tr><td style="padding:5px;"></td><td style="padding:5px;"> X: <input type="text" size="4" name="xploc" id="xploc" value="-1" /> Y: <input type="text" size="4" name="yploc" id="yploc" value="-1" /></td></tr>
+                <tr><td style="padding:5px;"></td><td style="padding:10px 5px 5px 5px; border-top:2px solid brown;"><button onclick="WarpStudio(3);">Warp</button></td></tr>
             </table>
         </td>
     </tr>
-    <tr><td><button onclick="WarpStudio(2);">Warp</button></td><td><button>Warp</button></td></tr>
 </table>

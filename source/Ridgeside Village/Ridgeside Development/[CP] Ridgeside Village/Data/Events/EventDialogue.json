@@ -194,7 +194,27 @@
                         "ysabelle1_2": "{{i18n:event-75160142.Fork2}}",
                         "ysabelle1_3": "{{i18n:event-75160142.Fork3}}",        
                 }
-        },   
+        },
+
+        {
+                "Action": "EditData",
+                "Target": "Characters/Dialogue/Malaya",
+                "Entries": {   
+                        //Malaya & Kimpoi introduction                    
+                        "lidens_arrive1": "{{i18n:event-75160251.followLidens}}",
+                        "lidens_arrive2": "{{i18n:event-75160251.stayBehind}}",                        
+                }
+        },
+
+        {
+                "Action": "EditData",
+                "Target": "Characters/Dialogue/Naomi",
+                "Entries": {   
+                        //Naomi introduction                    
+                        "naomi_arrive1": "{{i18n:event-75160249.followNaomi}}",
+                        "naomi_arrive2": "{{i18n:event-75160249.stayBehind}}",                        
+                }
+        },
 
 
 	

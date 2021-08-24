@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Desert Tangelo",
+  "Description": "A seedless hybrid of tangerine and grapefruit that looks like it has been sun-kissed in the desert.",
+  "Category": "Fruit",
+  "Edibility": 22,
+  "Price": 165,
+  "IsColored": false,
+  "GiftTastes":
+  {
+  "Love": ["Zayne", "Paula", "Kiarra"],
+  "Like": ["Faye", "Bryle", "Sean"],
+  },
+}

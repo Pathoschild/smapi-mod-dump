@@ -9,9 +9,9 @@
 *************************************************/
 
 using System.Collections.Generic;
-using ImJustMatt.GarbageDay.API;
+using GarbageDay.API;
 
-namespace ImJustMatt.GarbageDay.Framework.Models
+namespace GarbageDay.Framework.Models
 {
     internal class ContentModel : IContent
     {

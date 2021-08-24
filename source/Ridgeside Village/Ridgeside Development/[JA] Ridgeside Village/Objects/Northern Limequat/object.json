@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Northern Limequat",
+  "Description": "Often a substitute for lemons or key limes, but don't underestimate this northern-bound fruit! Because of the natural habitat's high state, this has been made perfect to balance sweet recipes.",
+  "Category": "Fruit",
+  "Edibility": 14,
+  "Price": 190,
+  "IsColored": false,
+  "GiftTastes":
+  {
+  "Love": ["Pika", "Maddie", "Leah"],
+  "Like": ["Sam", "Caroline", "Bert"],
+  },
+}

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Quests;
@@ -21,7 +21,7 @@ namespace CustomNPCExclusions
     /// <summary>A Harmony patch that excludes a list of NPCs from <see cref="SocializeQuest"/>.</summary>
     public static class HarmonyPatch_SocializeQuest
     {
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_SocializeQuest)}\": postfixing SDV method \"SocializeQuest.loadQuestInfo()\".", LogLevel.Trace);
             harmony.Patch(

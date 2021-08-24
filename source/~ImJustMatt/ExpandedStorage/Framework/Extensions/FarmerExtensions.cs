@@ -9,13 +9,13 @@
 *************************************************/
 
 using System;
-using ImJustMatt.ExpandedStorage.Framework.Controllers;
+using ExpandedStorage.Framework.Controllers;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Extensions
+namespace ExpandedStorage.Framework.Extensions
 {
     internal static class FarmerExtensions
     {

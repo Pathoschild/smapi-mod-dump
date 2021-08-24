@@ -6,9 +6,9 @@ mods:
    Custom Tokens
 
 latest commit:
-   commit 407ac70ff044bf37c6271c0a308bb5a855beade8
+   commit 13f6068b1eebfcc5bf709f5beb9b3d1c51cb2184
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Thu May 27 10:26:40 2021 +1000
+   Date:   Mon Aug 2 11:55:11 2021 +1000
    
-       resolve conflicts
+       migrate to SMAPI 3.12
    

@@ -8,16 +8,9 @@
 **
 *************************************************/
 
-using Harmony;
-using Microsoft.Xna.Framework;
+using HarmonyLib;
 using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Locations;
-using StardewValley.Menus;
 using System;
-using xTile.Dimensions;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace BuildOnAnyTile
 {
@@ -48,7 +41,7 @@ namespace BuildOnAnyTile
         /// <summary>Applies any Harmony patches used by this mod.</summary>
         private void ApplyHarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
+            Harmony harmony = new Harmony(ModManifest.UniqueID); //create this mod's Harmony instance
 
             HarmonyPatch_BuildOnAnyTile.ApplyPatch(harmony);
         }

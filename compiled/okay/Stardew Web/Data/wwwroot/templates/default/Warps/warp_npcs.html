@@ -1,11 +1,35 @@
 ﻿<table class="stardew_table">
-    <tr><td>NPC</td></tr>
-    <tr><td><select name="npcs" id="npcs">#NPCS#</select> </td></tr>
-    <tr><td>
-        <input type="radio" id="wntm" name="npcwarp" value="wntm" checked /> <label for="wntm">Warp NPC to Me</label><br />
-        <input type="radio" id="wmtn" name="npcwarp" value="wmtn" /> <label for="wmtn">Warp Me to the NPC</label><br />
-        <input type="radio" id="wnt" name="npcwarp" value="wnt" /> <label for="wnt">Warp NPC to location</label><br />
-</td></tr>
-    <tr><td style="padding-left:20px;"><select name="locs" id="locs">#LOCS#</select> X: <input type="text" size="4" name="xloc" id="xloc" value="-1" /> Y: <input type="text" size="4" name="yloc" id="yloc" value="-1" /></td></tr>
-    <tr><td><button onclick="WarpStudio(0);">Warp</button> </td></tr>
+
+    <tr>
+        <td style="padding:5px;"><img src="/Asset?asset=FramedSprite%2fAbigail" id="npcimage" /></td>
+        <td rowspan="2" style="padding:5px; vertical-align:top;">
+            <table>
+                <tr>
+                    <td style="padding:5px;"><input type="radio" id="wntm" name="npcwarp" value="wntm" checked /></td>
+                    <td style="padding:5px;"><label for="wntm">Warp NPC to Me</label></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;"><input type="radio" id="wmtn" name="npcwarp" value="wmtn" /></td>
+                    <td style="padding:5px;"><label for="wmtn">Warp Me to the NPC</label></td>
+                </tr>
+                <tr>
+                    <td style="padding:5px;"><input type="radio" id="wnt" name="npcwarp" value="wnt" /></td>
+                    <td style="padding:5px;"><label for="wnt">Warp NPC to location</label></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="padding:5px;"><select name="locs" id="locs" style="width:230px;">#LOCS#</select></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="padding:5px;">
+                        X: <input type="text" size="4" name="xloc" id="xloc" value="-1" /> Y:
+                        <input type="text" size="4" name="yloc" id="yloc" value="-1" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr> <td style="padding:5px;"><select name="npcs" id="npcs" onchange="SetImage()">#NPCS#</select> </td></tr>
+    <tr><td></td><td style="padding:10px 5px 5px 5px; border-top:2px solid brown;"><button onclick="WarpStudio(0);">Warp</button> </td></tr>
 </table>

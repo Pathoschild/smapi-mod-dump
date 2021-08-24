@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Cherry Pluot Tree",
+  "Product": "Cherry Pluot",
+  "SaplingName": "Cherry Pluot Sapling",
+  "SaplingDescription": "Takes 28 days to produce a mature Cherry Pluot tree. Ready to harvest in the spring. Only grows if the 8 surrounding tiles are empty.",
+  "Season": "spring",
+  "SaplingPurchasePrice": 6000,
+}

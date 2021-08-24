@@ -99,6 +99,9 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
         /// <summary>Whether the item can not be produced if it's in the player possession.</summary>
         public bool? DoNotAllowDuplicates { get; set; }
 
+        /// <summary>Whether the produce is able to update the animals sprite sheet to 'harvestable' (if a harvestable sprite sheet is available).</summary>
+        public bool? ShowHarvestableSpriteSheet { get; set; }
+
 
         /*********
         ** Public Methods
@@ -132,7 +135,8 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
         /// <param name="requiresShepherd">Whether the player must have the Shepherd profession for the animal to produce the item.</param>
         /// <param name="standardQualityOnly">Whether the product should be standard quality only.</param>
         /// <param name="doNotAllowDuplicates">Whether the item can not be produced if it's in the player possession.</param>
-        public ParsedAnimalProduce(Action action, string uniqueName, string defaultProductId = "-1", int? defaultProductMinFriendship = 0, int? defaultProductMaxFriendship = 1000, string upgradedProductId = "-1", int? upgradedProductMinFriendship = 200, int? upgradedProductMaxFriendship = 1000, float? percentChanceForUpgradedProduct = null, bool? upgradedProductIsRare = false, HarvestType harvestType = FarmAnimalVarietyRedux.HarvestType.Lay, int? daysToProduce = 1, bool? produceFasterWithCoopMaster = false, bool? produceFasterWithShepherd = false, string toolName = null, string toolHarvestSound = null, int? amount = 1, string[] seasons = null, float? percentChance = 100, float percentChanceForOneExtra = 0, bool? requiresMale = null, bool? requiresCoopMaster = null, bool? requiresShepherd = null, bool standardQualityOnly = false, bool doNotAllowDuplicates = false)
+        /// <param name="showHarvestableSpriteSheet">Whether the produce is able to update the animals sprite sheet to 'harvestable' (if a harvestable sprite sheet is available).</param>
+        public ParsedAnimalProduce(Action action, string uniqueName, string defaultProductId = "-1", int? defaultProductMinFriendship = 0, int? defaultProductMaxFriendship = 1000, string upgradedProductId = "-1", int? upgradedProductMinFriendship = 200, int? upgradedProductMaxFriendship = 1000, float? percentChanceForUpgradedProduct = null, bool? upgradedProductIsRare = false, HarvestType harvestType = FarmAnimalVarietyRedux.HarvestType.Lay, int? daysToProduce = 1, bool? produceFasterWithCoopMaster = false, bool? produceFasterWithShepherd = false, string toolName = null, string toolHarvestSound = null, int? amount = 1, string[] seasons = null, float? percentChance = 100, float percentChanceForOneExtra = 0, bool? requiresMale = null, bool? requiresCoopMaster = null, bool? requiresShepherd = null, bool standardQualityOnly = false, bool doNotAllowDuplicates = false, bool showHarvestableSpriteSheet = true)
         {
             Action = action;
             UniqueName = uniqueName;
@@ -159,6 +163,7 @@ namespace FarmAnimalVarietyRedux.Models.Parsed
             RequiresShepherd = requiresShepherd;
             StandardQualityOnly = standardQualityOnly;
             DoNotAllowDuplicates = doNotAllowDuplicates;
+            ShowHarvestableSpriteSheet = showHarvestableSpriteSheet;
         }
     }
 }

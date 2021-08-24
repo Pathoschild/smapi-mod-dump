@@ -9,6 +9,10 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Improved translations. Thanks to adnan-shoukfeh (updated Spanish)!
+
 ## 1.20.14
 Released 25 May 2021 for SMAPI 3.9.5 or later.
 

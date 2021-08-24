@@ -11,7 +11,7 @@
 {
   "Name": "Grandpa's Farm",
   "Author": "FlashShifter",
-  "Version": "1.13",
+  "Version": "1.13.11",
   "Description": "A small immersive farm map meant for single player gameplay.",
   "UniqueID": "flashshifter.GrandpasFarm",
   "MinimumApiVersion": "3.0",

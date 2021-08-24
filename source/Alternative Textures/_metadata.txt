@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Floogen/AlternativeTextures
+   Git: https://github.com/Floogen/AlternativeTextures.git
+
+mods:
+   Alternative Textures
+
+latest commit:
+   commit 7d8cf171c81778f43235dff7df403ac8804d2135
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Mon Aug 23 09:49:27 2021 -0500
+   
+       v2.2.1 released
+   

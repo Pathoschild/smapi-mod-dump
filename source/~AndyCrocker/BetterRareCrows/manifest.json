@@ -11,10 +11,10 @@
 {
   "Name": "Better Rarecrows",
   "Author": "Satozaki",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Description": "Once all rarecrows have been placed, you will not get crows anywhere on the farm",
   "UniqueID": "Satozaki.BetterRarecrows",
   "EntryDll": "BetterRarecrows.dll",
-  "MinimumApiVersion": "2.9",
+  "MinimumApiVersion": "3.12.0",
   "UpdateKeys": [ "Nexus:3232" ]
 }

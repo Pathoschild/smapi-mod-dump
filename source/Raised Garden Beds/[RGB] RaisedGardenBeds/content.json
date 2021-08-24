@@ -1,0 +1,188 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/RaisedGardenBeds
+**
+*************************************************/
+
+{
+	"Wood": {
+		"SoilHeightAboveGround": 8,
+		"RecipeIngredients": [
+			{
+				"Object": "Wood",
+				"Count": 20
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": null,
+		"DaysToBreak": 44
+	},
+	"Stone": {
+		"SoilHeightAboveGround": 8,
+		"RecipeIngredients": [
+			{
+				"Object": "Stone",
+				"Count": 20
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": null,
+		"DaysToBreak": 60
+	},
+	"Brick": {
+		"SoilHeightAboveGround": 8,
+		"RecipeIngredients": [
+			{
+				"Object": "Clay",
+				"Count": 10
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": null,
+		"DaysToBreak": 60
+	},
+	"Hardwood": {
+		"SoilHeightAboveGround": 10,
+		"RecipeIngredients": [
+			{
+				"Object": "Hardwood",
+				"Count": 5
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "y 2/r .075", // Has reached year 2, random chance
+		"DaysToBreak": 84
+	},
+	"Old": {
+		"SoilHeightAboveGround": 6,
+		"RecipeIngredients": [
+			{
+				"Object": "Driftwood",
+				"Count": 3
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "s 142 1 702 1 718 1", // Has shipped 1 Carp, 1 Chub, 1 Cockle
+		"DaysToBreak": 32
+	},
+	"Gold": {
+		"SoilHeightAboveGround": 6,
+		"RecipeIngredients": [
+			{
+				"Object": "Gold Bar",
+				"Count": 2
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "m 1000000", // Has earned 1,000,000g
+		"DaysToBreak": 0
+	},
+	"Void": {
+		"SoilHeightAboveGround": 9,
+		"RecipeIngredients": [
+			{
+				"Object": "Void Essence",
+				"Count": 10
+			},
+			{
+				"Object": "Stone",
+				"Count": 10
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "n slimeHutchBuilt", // Has built a Slime Hutch
+		"DaysToBreak": 128
+	},
+	"Wild": {
+		"SoilHeightAboveGround": 6,
+		"RecipeIngredients": [
+			{
+				"Object": "Fiber",
+				"Count": 5
+			},
+			{
+				"Object": "Stone",
+				"Count": 10
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "n hasPickedUpMagicInk", // Has unlocked Junimo Huts
+		"DaysToBreak": 60
+	},
+	"Dungeon": {
+		"SoilHeightAboveGround": 8,
+		"RecipeIngredients": [
+			{
+				"Object": "Coal",
+				"Count": 2
+			},
+			{
+				"Object": "Stone",
+				"Count": 10
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "b 1", // Has reached the bottom of the mines
+		"DaysToBreak": 84
+	},
+	"Candy": {
+		"SoilHeightAboveGround": 8,
+		"RecipeIngredients": [
+			{
+				"Object": "Sugar",
+				"Count": 2
+			},
+			{
+				"Object": "Wood",
+				"Count": 10
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "n winter_14", // Has received the Winter Star mail
+		"DaysToBreak": 84
+	},
+	"Beach": {
+		"SoilHeightAboveGround": 7,
+		"RecipeIngredients": [
+			{
+				"Object": "Wood",
+				"Count": 20
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "n summer_10", // Has received the Luau mail
+		"DaysToBreak": 44
+	},
+	"Crypt": {
+		"SoilHeightAboveGround": 6,
+		"RecipeIngredients": [
+			{
+				"Object": "Bone Fragment",
+				"Count": 5
+			},
+			{
+				"Object": "Stone",
+				"Count": 10
+			}
+		],
+		"RecipeCraftedCount": 1,
+		"RecipeIsDefault": false,
+		"RecipeConditions": "n fall_26", // Has received the Spirits Eve mail
+		"DaysToBreak": 84
+	}
+}

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -70,7 +70,7 @@ namespace PlatoTK.Patching
                 AccessTools.DeclaredMethod(typeof(Town), "performAction"),
             };
 
-            var harmony = HarmonyInstance.Create($"Plato.QuestionPatches");
+            var harmony = new Harmony($"Plato.QuestionPatches");
             harmony.Patch(questionRaised, prefix: new HarmonyMethod(AccessTools.Method(typeof(EventPatches), nameof(DialogueBox))));
             
             foreach(var method in questionAsked)

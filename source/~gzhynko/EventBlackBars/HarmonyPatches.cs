@@ -8,16 +8,21 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using StardewValley;
+
+//ReSharper disable InconsistentNaming
 
 namespace EventBlackBars
 {
     public class HarmonyPatches
     {
-        /// <summary> Patch for the Game1.eventFinished method. </summary>
-        public static void EventEnd()
+        /// <summary> Patch for the Event.exitEvent method. </summary>
+        public static void EventEnd(Event __instance)
         {
-            ModEntry.Instance.StartMovingBars(false);
+            if (__instance.isFestival || __instance.isWedding) return;
+            
+            ModEntry.Instance.StartMovingBars(Direction.MoveOut);
         }
         
         /// <summary> Patch for the GameLocation.startEvent method. </summary>
@@ -25,7 +30,7 @@ namespace EventBlackBars
         {
             if (evt.isFestival || evt.isWedding) return;
             
-            ModEntry.Instance.StartMovingBars(true);
+            ModEntry.Instance.StartMovingBars(Direction.MoveIn);
         }
     }
 }

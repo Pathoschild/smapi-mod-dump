@@ -1,0 +1,8 @@
+﻿{
+	"Name": "StardewAutoGC",
+	"Author": "Lake1059",
+	"Version": "1.2.0",
+	"UniqueID": "Lake1059.StardewAutoGC",
+	"EntryDll": "StardewAutoGC.dll",
+	"UpdateKeys": [ "Nexus:9293" ]
+}

@@ -16,14 +16,11 @@ using System.Collections.Generic;
 namespace MasterFisher.Models
 {
     /// <summary>Represents an area in a location that can be configured.</summary>
-    public class LocationArea
+    public class LocationArea : ModelBase
     {
         /*********
         ** Accessors
         *********/
-        /// <summary>How the location data should be interpreted.</summary>
-        public Action Action { get; set; } = Action.Add;
-
         /// <summary>The unique name of the location area being configured.</summary>
         [Identifier]
         public string UniqueName { get; set; }

@@ -17,7 +17,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Controllers
+namespace ExpandedStorage.Framework.Controllers
 {
     internal class VacuumChestController
     {

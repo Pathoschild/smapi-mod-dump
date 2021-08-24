@@ -23,74 +23,58 @@ namespace ItemResearchSpawner.Components
         private ProgressionManager _progressionManager;
         private ModManager _modManager;
 
-        public CommandManager(IModHelper helper, IMonitor monitor, ProgressionManager progressionManager, ModManager modManager)
+        public CommandManager(IModHelper helper, IMonitor monitor, ProgressionManager progressionManager,
+            ModManager modManager)
         {
             _helper = helper;
             _monitor = monitor;
-            
+
             _progressionManager = progressionManager;
             _modManager = modManager;
 
-            helper.ConsoleCommands.Add("research_unlock_all", "unlock all items research progression",
+            helper.ConsoleCommands.Add("rns_unlock_all", "unlock all items research progression",
                 UnlockAllProgression);
 
-            helper.ConsoleCommands.Add("research_unlock_active", "unlock hotbar active item",
+            helper.ConsoleCommands.Add("rns_unlock_active", "unlock hotbar active item",
                 UnlockActiveProgression);
 
-            helper.ConsoleCommands.Add("research_set_mode", "change mode to \n 0 - Spawn Mode \n 1 - Buy/Sell Mode",
+            helper.ConsoleCommands.Add("rns_set_mode", "change mode to \n 0 - Spawn Mode \n 1 - Buy/Sell Mode",
                 SetMode);
 
-            helper.ConsoleCommands.Add("research_set_price",
+            helper.ConsoleCommands.Add("rns_set_price",
                 "set hotbar active item price (globally, for mod menu only) \n 0+ values only",
                 SetPrice);
 
-            helper.ConsoleCommands.Add("research_reset_price",
+            helper.ConsoleCommands.Add("rns_reset_price",
                 "reset hotbar active item price (globally, for mod menu only)",
                 ResetPrice);
 
-            helper.ConsoleCommands.Add("research_get_key", "get hotbar active item unique key",
+            helper.ConsoleCommands.Add("rns_get_key", "get hotbar active item unique key",
                 GetUniqueKey);
-            
-            helper.ConsoleCommands.Add("research_dump_progression", "dump player(s) progression to file",
+
+            helper.ConsoleCommands.Add("rns_dump_progression", "dump player(s) progression to file",
                 DumpProgression
-                );
-            
-            helper.ConsoleCommands.Add("research_load_progression", "load player(s) progression from file",
-                LoadProgression
-            );
-            
-            helper.ConsoleCommands.Add("research_dump_pricelist", "dump pricelist to file",
-                DumpPricelist
-            );
-            
-            helper.ConsoleCommands.Add("research_load_pricelist", "load pricelist from file",
-                LoadPricelist
-            );
-            
-            helper.ConsoleCommands.Add("research_dump_categories", "dump categories to file",
-                DumpCategories
-            );
-            
-            helper.ConsoleCommands.Add("research_load_categories", "load categories from file",
-                LoadCategories
             );
 
-            // helper.ConsoleCommands.Add("research_use_defaults", "change config option of uning default configuration" +
-            //                                                     "\n0 - false" +
-            //                                                     "\n1 - true",
-            //     (_, args) =>
-            //     {
-            //         var config = _helper.ReadConfig<ModConfig>();
-            //
-            //         config.UseDefaultConfig = args[0] switch
-            //         {
-            //             "0" => false,
-            //             "1" => true,
-            //             _ => config.UseDefaultConfig
-            //         };
-            //
-            //         _helper.WriteConfig(config);
-            //     });
+            helper.ConsoleCommands.Add("rns_load_progression", "load player(s) progression from file",
+                LoadProgression
+            );
+
+            helper.ConsoleCommands.Add("rns_dump_pricelist", "dump pricelist to file",
+                DumpPricelist
+            );
+
+            helper.ConsoleCommands.Add("rns_load_pricelist", "load pricelist from file",
+                LoadPricelist
+            );
+
+            helper.ConsoleCommands.Add("rns_dump_categories", "dump categories to file",
+                DumpCategories
+            );
+
+            helper.ConsoleCommands.Add("rns_load_categories", "load categories from file",
+                LoadCategories
+            );
         }
 
         private void UnlockAllProgression(string command, string[] args)
@@ -98,7 +82,7 @@ namespace ItemResearchSpawner.Components
             if (!CheckCommandInGame()) return;
 
             _progressionManager.UnlockAllProgression();
-            
+
             _monitor.Log($"All researches were completed! :D", LogLevel.Info);
         }
 
@@ -155,9 +139,11 @@ namespace ItemResearchSpawner.Components
                     {
                         _monitor.Log($"Price must be a non-negative number", LogLevel.Info);
                     }
-
-                    _modManager.SetItemPrice(activeItem, price);
-                    _monitor.Log($"Price for {activeItem.DisplayName}, was changed to: {price}! ;)", LogLevel.Info);
+                    else
+                    {
+                        _modManager.SetItemPrice(activeItem, price);
+                        _monitor.Log($"Price for {activeItem.DisplayName}, was changed to: {price}! ;)", LogLevel.Info);
+                    }
                 }
                 catch (Exception)
                 {
@@ -199,31 +185,39 @@ namespace ItemResearchSpawner.Components
                 _monitor.Log($"{Helpers.GetItemUniqueKey(activeItem)}", LogLevel.Info);
             }
         }
-        
+
         private void DumpProgression(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
+
+            if (Context.IsMultiplayer)
+            {
+                _monitor.Log($"Wait until all clients response", LogLevel.Info);
+            }
             
             ProgressionManager.Instance.DumpPlayersProgression();
-            
-            _monitor.Log($"Player(s) Progressions were dumped", LogLevel.Info);
+
+            if (!Context.IsMultiplayer)
+            {
+                _monitor.Log($"Player(s) Progressions were dumped", LogLevel.Info);
+            }
         }
 
         private void LoadProgression(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
-            
+
             ProgressionManager.Instance.LoadPlayersProgression();
-            
+
             _monitor.Log($"Player(s) progressions was loaded", LogLevel.Info);
         }
 
         private void DumpPricelist(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
-            
+
             ModManager.Instance.DumpPricelist();
-            
+
             _monitor.Log($"Pricelist was dumped to {SaveHelper.PricelistDumpPath}", LogLevel.Info);
         }
 
@@ -231,18 +225,18 @@ namespace ItemResearchSpawner.Components
         {
             if (!CheckIsHostPlayer()) return;
             if (!CheckIsForceDefaults()) return;
-            
+
             ModManager.Instance.LoadPricelist();
-            
+
             _monitor.Log($"Pricelist was loaded", LogLevel.Info);
         }
-        
+
         private void DumpCategories(string command, string[] args)
         {
             if (!CheckIsHostPlayer()) return;
-            
+
             ModManager.Instance.DumpCategories();
-            
+
             _monitor.Log($"Categories was dumped to {SaveHelper.CategoriesDumpPath}", LogLevel.Info);
         }
 
@@ -252,7 +246,7 @@ namespace ItemResearchSpawner.Components
             if (!CheckIsForceDefaults()) return;
 
             ModManager.Instance.LoadCategories();
-            
+
             _monitor.Log($"Categories was loaded", LogLevel.Info);
         }
 
@@ -266,10 +260,10 @@ namespace ItemResearchSpawner.Components
 
             return true;
         }
-        
+
         private bool CheckIsHostPlayer()
         {
-            if (!CheckCommandInGame() && Context.IsMainPlayer)
+            if (CheckCommandInGame() && !Context.IsMainPlayer)
             {
                 _monitor.Log($"This command is for host player only ", LogLevel.Info);
                 return false;
@@ -277,12 +271,14 @@ namespace ItemResearchSpawner.Components
 
             return true;
         }
-        
+
         private bool CheckIsForceDefaults()
         {
             if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
             {
-                _monitor.Log($"Currently default config is used for prices and categories. Please turn that off in config first :O", LogLevel.Warn);
+                _monitor.Log(
+                    $"Currently default config is used for prices and categories. Please turn that off in config first :O",
+                    LogLevel.Warn);
                 return false;
             }
 

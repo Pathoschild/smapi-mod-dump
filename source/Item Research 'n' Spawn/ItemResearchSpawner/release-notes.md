@@ -8,6 +8,27 @@ for queries and analysis.**
 
 [(← Back to readme)](README.md)
 
+## 1.0.0
+Released 23 August 2021 for SMAPI 3.9.5 or later.
+
+New stuff:
+* Linux (and possible MacOS) support
+* New commands ([see documentation](README.md#commands))
+* Saving in game files
+* Added banlist for any item that can break game (like quest items)
+* New assets arrangement
+* Multiplayer support (remote players)
+* New mod config option
+* In buy mode counter was changed to "($$$)"
+* If item cannot be researched, instead of counter there will be "(X)"
+
+Bugfixes:
+* Fixed copper pan being hat instead of tool
+* Fixed item not appearing in menu after research in some cases
+* Fixed eat animation breaking
+* Fixed mod crash on new worlds
+* Fixed price changing command
+
 ## 1.0.0-alpha-r2
 Released 24 June 2021 for SMAPI 3.9.5 or later.
 

@@ -10,6 +10,13 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Fixed typo in Abigail's dialogue (thanks to mcBegins2Snow!).
+* Improved translations. Thanks to Evelyon (added Spanish), mcBegins2Snow (added Chinese), and YuugenKyungMi2SV (added Portuguese)!
+
+## 1.0.10
+Released 01 August 2021 for SMAPI 3.12.0. Updated by Pathoschild.
+
 * Updated for Harmony upgrade in SMAPI 3.12.0.
 
 ## 1.0.9

@@ -1,0 +1,4 @@
+{
+    "GlobalConfigSettings:ChangeOnEveryLoad":"Change On Every Load",
+    "GlobalConfigSettings:ChangeOnEveryLoadDescription":"Reassigns global settings on every save load (and joining multiplayer) instead of farm creation."
+}

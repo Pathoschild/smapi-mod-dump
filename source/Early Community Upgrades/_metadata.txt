@@ -6,9 +6,9 @@ mods:
    Early Community Upgrades
 
 latest commit:
-   commit 741c3f14a06c0d6d50cbf26abebf32eee584c9b0
+   commit b9969082f49c6f5d1570b84a604c10cdf3cc440b
    Author: dtomlinson-ga <dtomlinson-ga@users.noreply.github.com>
-   Date:   Mon May 3 00:58:13 2021 -0400
+   Date:   Sun Aug 22 13:25:48 2021 -0400
    
-       Added try/catch block to GMCM menu setup for more robustness.
+       Added feature to configure time until upgrade is completed.
    

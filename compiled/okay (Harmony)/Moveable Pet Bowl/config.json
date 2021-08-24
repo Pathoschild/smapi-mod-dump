@@ -1,4 +1,5 @@
 {
   "EnableMod": true,
-  "CustomPetBowl": false
+  "CustomPetBowl": false,
+  "FixTilesheet": true
 }

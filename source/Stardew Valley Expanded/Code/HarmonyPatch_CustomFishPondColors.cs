@@ -10,7 +10,7 @@
 
 using System;
 using StardewModdingAPI;
-using Harmony;
+using HarmonyLib;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewValley.Buildings;
@@ -27,9 +27,9 @@ namespace StardewValleyExpanded
         private static IMonitor Monitor { get; set; } = null;
 
         /// <summary>Applies this Harmony patch to the game.</summary>
-        /// <param name="harmony">The <see cref="HarmonyInstance"/> created with this mod's ID.</param>
+        /// <param name="harmony">The <see cref="Harmony"/> created with this mod's ID.</param>
         /// <param name="monitor">The <see cref="IMonitor"/> provided to this mod by SMAPI. Used for log messages.</param>
-        public static void ApplyPatch(HarmonyInstance harmony, IMonitor monitor)
+        public static void ApplyPatch(Harmony harmony, IMonitor monitor)
         {
             if (!Applied && monitor != null) //if NOT already applied
             {

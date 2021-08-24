@@ -92,8 +92,11 @@ namespace ConfigurableSpecialOrdersUnlock
 			{
 				if (Globals.Config.skipCutscene)
 				{
-					Game1.player.eventsSeen.Add(15389722);
-					Globals.Monitor.Log("Skipping cutscene");
+					if (!Game1.player.eventsSeen.Contains(15389722))
+					{
+						Game1.player.eventsSeen.Add(15389722);
+						Globals.Monitor.Log("Skipping Special Orders board installation cutscene");
+					}
 				}
 
 				return true;

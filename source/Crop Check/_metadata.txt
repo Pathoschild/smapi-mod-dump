@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/FairfieldBW/CropCheck
+   Git: https://github.com/FairfieldBW/CropCheck.git
+
+mods:
+   Crop Check
+
+latest commit:
+   commit 8dc0d823a209f285e051f031c8d3fbc07b197645
+   Author: LUCAS-PC\Lucas <lucaskchang@gmail.com>
+   Date:   Fri Aug 20 14:26:06 2021 -0700
+   
+       Update Manifest
+   

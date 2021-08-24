@@ -101,6 +101,8 @@ namespace CarryChest
                     placed.MinutesUntilReady = original.MinutesUntilReady;
                     if (original.items.Any())
                         placed.items.CopyFrom(original.items);
+                    foreach (var modData in original.modData)
+                        placed.modData.CopyFrom(modData);
                 }
             }
         }

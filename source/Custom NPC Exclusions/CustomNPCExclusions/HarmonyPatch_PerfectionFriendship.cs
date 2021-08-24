@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -24,7 +24,7 @@ namespace CustomNPCExclusions
     /// <summary>A Harmony patch that excludes designated NPCs from the perfection system's friendship percentage.</summary>
     public static class HarmonyPatch_PerfectionFriendship
     {
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_PerfectionFriendship)}\": transpiling SDV method \"Utility.getMaxedFriendshipPercent(Farmer)\".", LogLevel.Trace);
             harmony.Patch(

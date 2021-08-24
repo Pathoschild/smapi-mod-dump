@@ -51,9 +51,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 94726f6d651aa5f6dab2870faf63acb69b758be7
+   commit f1af296cc07b2cfc3ad6a90ae27a6625dffd1822
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jul 31 01:22:16 2021 -0400
+   Date:   Fri Aug 20 01:00:31 2021 -0400
    
-       update docs
+       prepare for beta release
    

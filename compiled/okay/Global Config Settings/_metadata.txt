@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9340
+IDs: Gaphodil.GlobalConfigSettings
+update keys: Nexus:9340, GitHub:Gaphodil/GlobalConfigSettings

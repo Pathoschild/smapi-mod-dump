@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/barteke22/StardewMods
+**
+*************************************************/
+
+{
+    "Example Item Name": [//Item reference name (without modID). Must be Unique - if there's 2 items with the same name, the last entry (in the last file) will be used for all of them.
+        "SPEED:1.0",
+        "SIZE:1.1"
+    ],
+    //The above item is an example of how you can add effects to ingame or modded fishing rods, baits and tackles. "Example Item Name" is ignored by code.
+    //Any effects added directly to the GetFish() method are automatically included. Some effects, like DIFFICULTY and SIZE, influence others.
+
+
+    //EFFECT + Info:                                                        Default Value:   Stacking:      Direction:
+
+    //AREA      = minigame "perfect" area                                       1.0           * X            higher = better
+    //DAMAGE    = reduces damage taken on end fail                              1.0           * X            higher = more taken
+    //DIFFICULTY= fish difficulty (arrow count or time, depending on minigame)  1.0           * X            higher = harder
+    //DOUBLE    = base chance of double fish                                    0.0           + X            higher = better
+    //LIFE      = can prevent up to X negative points per minigame              0             + X            higher = more
+    //QUALITY   = adds X to final quality                                       0             + X            higher = more
+    //SIZE      = fish size                                                     1.0           * X            higher = better
+    //SPEED     = minigame speed                                                1.0           * X            higher = harder
+    //TREASURE  = treasure base chance multiplier                               0.0           + X            higher = better
+
+    //rods
+	
+    //bait
+	
+    //tackle
+	
+}

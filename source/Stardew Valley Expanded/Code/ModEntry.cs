@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -40,13 +40,17 @@ namespace StardewValleyExpanded
 
             CustomBuffs.Enable(Helper);
 
+            ClintVolumeControl.Enable(Helper, Monitor);
+
+            FireflySpawner.Enable(Helper, Monitor);
+
             SpecialOrderNPCIcons.Enable(Helper, Monitor);
 
             FixIslandToFarmObelisk.Enable(helper, Monitor);
 
             AddSpecialOrdersAfterEvents.Enable(Helper, Monitor);
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             EndNexusMusic.Hook(harmony, Monitor);
 
@@ -57,6 +61,16 @@ namespace StardewValleyExpanded
             HarmonyPatch_SpousePatioAnimations.ApplyPatch(harmony, Monitor);
 
             HarmonyPatch_CustomFishPondColors.ApplyPatch(harmony, Monitor);
+
+            HarmonyPatch_FarmComputerLocations.ApplyPatch(harmony, Monitor);
+
+            HarmonyPatch_FixDesertBusWarp.ApplyPatch(harmony, Monitor);
+
+            HarmonyPatch_DesertSecretNoteTile.ApplyPatch(harmony, Monitor);
+
+            HarmonyPatch_DesertFishingItems.ApplyPatch(harmony, Monitor);
+
+            HarmonyPatch_CustomGrangeJudging.ApplyPatch(harmony, Helper, Monitor);
 
             HarmonyPatch_MovieTheaterNPCs.ApplyPatch(harmony, Monitor);
 
@@ -152,12 +166,12 @@ namespace StardewValleyExpanded
                 Position = new Vector2(110 * Game1.tileSize, 14 * Game1.tileSize)
             };
 
-            FarmAnimal babyCow1 = new FarmAnimal("Baby Cow", multiplayer.getNewID(), -1L)
+            FarmAnimal babyCow1 = new FarmAnimal("Dairy Cow", multiplayer.getNewID(), -1L)
             {
                 Position = new Vector2(108 * Game1.tileSize, 16 * Game1.tileSize)
             };
 
-            FarmAnimal babyCow2 = new FarmAnimal("Baby Cow", multiplayer.getNewID(), -1L)
+            FarmAnimal babyCow2 = new FarmAnimal("Dairy Cow", multiplayer.getNewID(), -1L)
             {
                 Position = new Vector2(107 * Game1.tileSize, 8 * Game1.tileSize)
             };

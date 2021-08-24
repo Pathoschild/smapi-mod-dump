@@ -8,13 +8,11 @@
 **
 *************************************************/
 
-using FarmAnimalVarietyRedux.Models;
 using FarmAnimalVarietyRedux.Models.Converted;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 

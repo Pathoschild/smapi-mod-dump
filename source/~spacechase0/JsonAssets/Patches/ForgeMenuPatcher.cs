@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -68,7 +67,7 @@ namespace JsonAssets.Patches
                 bool isMatch =
                     left_item.Name == recipe.BaseItemName
                     && right_item.GetContextTags().Contains(recipe.IngredientContextTag)
-                    && (!recipe.AbleToForgeConditions.Any() || Mod.instance.Epu.CheckConditions(recipe.AbleToForgeConditions));
+                    && Mod.instance.CheckEpuCondition(recipe.AbleToForgeConditions);
 
                 if (isMatch)
                 {
@@ -91,7 +90,7 @@ namespace JsonAssets.Patches
                 bool isMatch =
                     left_item.Name == recipe.BaseItemName
                     && right_item.GetContextTags().Contains(recipe.IngredientContextTag)
-                    && (!recipe.AbleToForgeConditions.Any() || Mod.instance.Epu.CheckConditions(recipe.AbleToForgeConditions));
+                    && Mod.instance.CheckEpuCondition(recipe.AbleToForgeConditions);
 
                 if (isMatch)
                 {
@@ -114,7 +113,7 @@ namespace JsonAssets.Patches
                 bool isMatch =
                     left_item.Name == recipe.BaseItemName
                     && right_item.GetContextTags().Contains(recipe.IngredientContextTag)
-                    && (!recipe.AbleToForgeConditions.Any() || Mod.instance.Epu.CheckConditions(recipe.AbleToForgeConditions));
+                    && Mod.instance.CheckEpuCondition(recipe.AbleToForgeConditions);
 
                 if (isMatch)
                 {

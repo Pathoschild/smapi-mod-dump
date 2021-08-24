@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-#HEAD#
+    #HEAD#
     <script>
 
         function LocalPageLoaded() {
@@ -13,46 +13,22 @@
                     SendDebug();
                 }
             });
-            PageLoaded('Utils');
-         }
-
-        function SendDebug() {
-         var sQuery=document.getElementById("dcom").value
-
-            RunDebugCommand(sQuery,'dout');
-  
-        /*    fetch(sUrl).then(function(response) {
-                return response.text();
-                }).then(function(string) {
-                     document.getElementById('dout').innerHTML =string;
-                }).catch(function(err) {  
-                     document.getElementById('dout').innerHTML ='Fetch Error'+ err;  
-                });
-                */
-            /*
-
-            fetch(sUrl)
-                .then(response => {
-                    if (response.ok) {
-
-                        document.getElementById('dout').innerHTML = response.text();
-                       
-                    } else document.getElementById('dout').innerHTML = 'Network response was not ok.';
-                })
-                .catch(error =>
-                    document.getElementById('dout').innerHTML = 'Fetch error: ' + error
-                );
-
-*/
+           SubPageLoaded('Modder_Utils','Console');
         }
 
+        function SendDebug() {
+            var sQuery = document.getElementById("dcom").value
+            RunDebugCommand(sQuery, "dout");
+        }
+
+   
     </script>
 </head>
 <body onload="LocalPageLoaded();">
     #MENUBAR#
 
     <div class="stardew_container top_margin_50 med_bottom_pad">
-         #CONTENT#
+        #CONTENT#
     </div>
 
 </body>

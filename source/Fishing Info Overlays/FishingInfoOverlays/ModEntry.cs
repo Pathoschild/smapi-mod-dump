@@ -66,6 +66,8 @@ namespace StardewMods
                 try
                 {
                     GenericMCPerScreen(GenericMC, 0);
+                    GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.barColors"), translate.Get("GenericMC.barColors"), translate.Get("GenericMC.barColors"));
+
                     for (int i = 2; i < 5; i++)
                     {
                         GenericMC.RegisterPageLabel(ModManifest, translate.Get("GenericMC.SplitScreen" + i), translate.Get("GenericMC.SplitScreenDesc"), translate.Get("GenericMC.SplitScreen" + i));
@@ -73,6 +75,18 @@ namespace StardewMods
                     GenericMCPerScreen(GenericMC, 1);
                     GenericMCPerScreen(GenericMC, 2);
                     GenericMCPerScreen(GenericMC, 3);
+
+                    GenericMC.StartNewPage(ModManifest, translate.Get("GenericMC.barColors"));
+                    GenericMC.RegisterLabel(ModManifest, translate.Get("GenericMC.barBackgroundColor"), "");
+                    GenericMC.RegisterClampedOption(ModManifest, "R", "", () => config.BarBackgroundColorRGBA[0], (int val) => config.BarBackgroundColorRGBA[0] = val, 0, 255);
+                    GenericMC.RegisterClampedOption(ModManifest, "G", "", () => config.BarBackgroundColorRGBA[1], (int val) => config.BarBackgroundColorRGBA[1] = val, 0, 255);
+                    GenericMC.RegisterClampedOption(ModManifest, "B", "", () => config.BarBackgroundColorRGBA[2], (int val) => config.BarBackgroundColorRGBA[2] = val, 0, 255);
+                    GenericMC.RegisterClampedOption(ModManifest, "A", "", () =>    config.BarBackgroundColorRGBA[3], (int val) => config.BarBackgroundColorRGBA[3] = val, 0, 255);
+                    GenericMC.RegisterLabel(ModManifest, translate.Get("GenericMC.barTextColor"), "");
+                    GenericMC.RegisterClampedOption(ModManifest, "R", "", () => config.BarTextColorRGBA[0], (int val) => config.BarTextColorRGBA[0] = val, 0, 255);
+                    GenericMC.RegisterClampedOption(ModManifest, "G", "", () => config.BarTextColorRGBA[1], (int val) => config.BarTextColorRGBA[1] = val, 0, 255);
+                    GenericMC.RegisterClampedOption(ModManifest, "B", "", () => config.BarTextColorRGBA[2], (int val) => config.BarTextColorRGBA[2] = val, 0, 255);
+                    GenericMC.RegisterClampedOption(ModManifest, "A", "", () => config.BarTextColorRGBA[3], (int val) => config.BarTextColorRGBA[3] = val, 0, 255);
                 }
                 catch (Exception)
                 {
@@ -206,9 +220,8 @@ namespace StardewMods
             Overlay.fishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");                   //gets fish data
             Overlay.background[0] = WhiteCircle(17, 30);
             Overlay.background[1] = WhitePixel();
-
-            //locationData = Helper.Content.Load<Dictionary<string, string>>("Data\\Locations", ContentSource.GameContent);
-            //fishData = Helper.Content.Load<Dictionary<int, string>>("Data\\Fish", ContentSource.GameContent);
+            Overlay.colorBg = new Color(config.BarBackgroundColorRGBA[0], config.BarBackgroundColorRGBA[1], config.BarBackgroundColorRGBA[2], config.BarBackgroundColorRGBA[3]);
+            Overlay.colorText = new Color(config.BarTextColorRGBA[0], config.BarTextColorRGBA[1], config.BarTextColorRGBA[2], config.BarTextColorRGBA[3]);
 
             overlay.ResetAllScreens();
         }

@@ -22,6 +22,7 @@
 			"RSV_GH1": "{{i18n:RSV.GH1.{{TargetWithoutPath}}}}",
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -107,6 +108,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	
@@ -118,6 +120,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -127,6 +130,8 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -136,6 +141,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -145,6 +151,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -163,6 +170,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -173,6 +181,9 @@
 			"RSV_GH1": "{{i18n:RSV.GH1.{{TargetWithoutPath}}}}",
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -182,6 +193,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -192,6 +204,8 @@
 			"RSV_GH1": "{{i18n:RSV.GH1.{{TargetWithoutPath}}}}",
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -201,6 +215,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -210,6 +225,8 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	
@@ -222,6 +239,7 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -233,6 +251,8 @@
 			"keahi_nosorry": "{{i18n:keahinosorry.Trinnie}}",
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -241,6 +261,7 @@
 		"Target": "Characters/Dialogue/Jas",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -249,6 +270,7 @@
 		"Target": "Characters/Dialogue/Vincent",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -258,6 +280,8 @@
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 			"introductionRSV": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	
@@ -368,6 +392,7 @@
 		"Target": "Characters/Dialogue/Caroline",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -376,6 +401,7 @@
 		"Target": "Characters/Dialogue/Clint",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -384,6 +410,7 @@
 		"Target": "Characters/Dialogue/Demetrius",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -392,6 +419,7 @@
 		"Target": "Characters/Dialogue/Evelyn",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -400,6 +428,7 @@
 		"Target": "Characters/Dialogue/George",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -408,6 +437,7 @@
 		"Target": "Characters/Dialogue/Gus",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -416,6 +446,7 @@
 		"Target": "Characters/Dialogue/Jodi",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -424,6 +455,7 @@
 		"Target": "Characters/Dialogue/Kent",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -432,6 +464,8 @@
 		"Target": "Characters/Dialogue/Lewis",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -440,6 +474,7 @@
 		"Target": "Characters/Dialogue/Linus",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -448,6 +483,7 @@
 		"Target": "Characters/Dialogue/Marnie",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -456,6 +492,7 @@
 		"Target": "Characters/Dialogue/Pam",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -464,6 +501,7 @@
 		"Target": "Characters/Dialogue/Pierre",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -472,6 +510,7 @@
 		"Target": "Characters/Dialogue/Robin",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -480,6 +519,7 @@
 		"Target": "Characters/Dialogue/Sandy",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -488,6 +528,7 @@
 		"Target": "Characters/Dialogue/Willy",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 	{
@@ -496,14 +537,72 @@
 		"Target": "Characters/Dialogue/Wizard",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
 		},
 	},
 
-	//1.3 NPC Keahi Prank
+	//1.3 NPCs
 	{
-		"LogName": "1.3 NPCs",
+		"LogName": "Undreya",
 		"Action": "EditData",
-		"Target": "Characters/Dialogue/Helen, Characters/Dialogue/Undreya, Characters/Dialogue/Daia, Characters/Dialogue/Belinda, Characters/Dialogue/Bliss, Characters/Dialogue/Bliss, Characters/Dialogue/Sari, Characters/Dialogue/Pipo, Characters/Dialogue/Acorn, Characters/Dialogue/Naomi, Characters/Dialogue/Malaya, Characters/Dialogue/Kimpoi,",
+		"Target": "Characters/Dialogue/Undreya",
+		"Entries": {
+			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+		},
+	},
+	{
+		"LogName": "Bliss",
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Bliss",
+		"Entries": {
+			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+		},
+	},
+	{
+		"LogName": "Acorn",
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Acorn",
+		"Entries": {
+			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+		},
+	},
+	{
+		"LogName": "Naomi",
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Naomi",
+		"Entries": {
+			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
+		},
+	},
+	{
+		"LogName": "Malaya",
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Malaya",
+		"Entries": {
+			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
+		},
+	},
+	{
+		"LogName": "Kimpoi",
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Kimpoi",
+		"Entries": {
+			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"Lidens_Return": "{{i18n:LidensReturn.{{TargetWithoutPath}}}}"
+		},
+	},
+	{
+		"LogName": "Daia",
+		"Action": "EditData",
+		"Target": "Characters/Dialogue/Daia",
 		"Entries": {
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 		},

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using StardewValley;
 
 namespace FarmExpansion.Framework
@@ -44,6 +45,16 @@ namespace FarmExpansion.Framework
         public void AddExpansionBluePrint(BluePrint blueprint)
         {
             this.Framework.ExpansionBlueprints.Add(blueprint);
+        }
+
+        public void AddRemoveListener(EventHandler handler)
+        {
+            Framework.BeforeRemoveEvent += handler;
+        }
+
+        public void AddAppendListener(EventHandler handler)
+        {
+            Framework.AfterAppendEvent += handler;
         }
     }
 }

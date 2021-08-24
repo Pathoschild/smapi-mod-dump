@@ -89,14 +89,17 @@ namespace DialogueBoxRedesign.Patching
 		    if (!dialogueBox.isPortraitBox()) return true;
 		    if (dialogueBox.isQuestion) return true;
 
+		    var viewportWidth = (int) (Game1.viewport.Width / Game1.options.uiScale * Game1.options.zoomLevel);
+		    var viewportHeight = (int) (Game1.viewport.Height / Game1.options.uiScale * Game1.options.zoomLevel);
+		    
 		    dialogueBox.height = 250;
-		    dialogueBox.y = Game1.uiViewport.Height - dialogueBox.height - 64;
+		    dialogueBox.y = viewportHeight - dialogueBox.height - 64;
 
 		    var gradientBackground = Game1.currentSeason == "winter" && ModEntry.Config.DarkerBackgroundInWinter
 			    ? ModEntry.DarkerGradientSample
 			    : ModEntry.GradientSample;
 		    
-		    spriteBatch.Draw(gradientBackground, new Rectangle(0, yPos, Game1.viewport.Width, Game1.viewport.Height - yPos), Color.White);
+		    spriteBatch.Draw(gradientBackground, new Rectangle(0, yPos, viewportWidth, viewportHeight - yPos), Color.White);
 
 		    return false;
 	    }

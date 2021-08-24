@@ -10,7 +10,7 @@
 
 using System.Collections.Generic;
 
-namespace ImJustMatt.ExpandedStorage.API
+namespace ExpandedStorage.API
 {
     public interface ITab
     {

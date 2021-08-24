@@ -25,7 +25,7 @@ Want many of **\<item you want here>**?
 Collect some of them, put in research area, and click the button!    
 Now you can have as much of **\<item you want here>** as you want :)
 
-![](screenshot.png)
+![screenshot](screenshot.png)
 
 ### Modes:
 
@@ -35,9 +35,13 @@ This mod has two modes:
   Research the items and afterward give as much as you want. Different items have different amount of quantity needed
   for research completion, depends on item category.
 
+![spawn mode](spawn.gif)
+
 * __"Buy" mode__ - [Minecraft ProjectE mod](https://ftb.fandom.com/wiki/ProjectE) like mode. 
   Works almost like "Spawn" mode, but here you need to spend money to get the item. Returning the item (selling)
   will increase your balance. In this mode all researches required only one item.
+
+![buy mode](buy.gif)
   
 See [commands](#commands) to know how to change mode and prices for "Buy" mode   
 In mod config, you can specify default mode!
@@ -92,25 +96,38 @@ Other:
 `Shift + LMB` - delete an item or sell it
 
 ### Commands:
-__In-game only, menu must be opened at least once!__
+__In-game only, recommended to open menu at least once!__   
+(Add "/" if use from game itself)
 ```
+rns_get_key //logs active item unique key
 
-research_unlock_all //unlock all items (in-game only, menu must be opened at least once)   
+rns_unlock_all //unlock all items (in-game only, menu must be opened at least once)   
 
-research_unlock_active //unlock hotbar active item (in-game only, menu must be opened at least once)  
+rns_unlock_active //unlock hotbar active item (in-game only, menu must be opened at least once)  
 
-research_set_mode [0/1] //change mod mode to Spawn (0) or Buy (1)
+rns_set_mode [0/1] //change mod mode to Spawn (0) or Buy (1)
 
-research_set_price [0+] //change price for hotbar active item for "Buy" mode. Price must be non-negative!
+rns_set_price [0+] //change price for hotbar active item for "Buy" mode. Price must be non-negative!
 
-research_reset_price //reset price for hotbar active item for "Buy" mode to initial values
+rns_reset_price //reset price for hotbar active item for "Buy" mode to initial values
 
-research_reload_prices //load prices from price-config.json file
+rns_dump_progression //get player(s) progression and saves into file(s)
+
+rns_load_progression //load and apply player(s) progression from file(s)
+
+rns_dump_pricelist //get custom pricelist and saves into file (only for host in multiplayer)
+
+rns_load_pricelist //load and apply custom pricelist from file (only for host in multiplayer)
+
+rns_dump_categories //get custom categories and saves into file (only for host in multiplayer)
+
+rns_load_categories //load and apply custom categories from file (only for host in multiplayer)
 ```
 
 ### Compatibility (at present):
 
-+ All platforms supported, but only working with __windows is guaranteed__
++ **All platforms supported** (MacOS not tested)
++ Singleplayer + multiplayer (not split screen)
 + Only keyboard + mouse (gamepad not tested)
 + **SMAPI 3.9.5** or later
 

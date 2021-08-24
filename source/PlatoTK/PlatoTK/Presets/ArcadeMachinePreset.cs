@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PlatoTK.APIs;
@@ -41,7 +41,7 @@ namespace PlatoTK.Presets
         {
             if (!Patched)
             {
-                var instance = HarmonyInstance.Create("PlatoTK.ArcadeMachine");
+                var instance = new Harmony("PlatoTK.ArcadeMachine");
 
                 instance.Patch(
                     original: AccessTools.Method(typeof(StardewValley.Object), nameof(StardewValley.Object.checkForAction)),

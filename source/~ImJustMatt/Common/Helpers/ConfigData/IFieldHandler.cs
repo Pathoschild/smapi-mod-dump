@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using ImJustMatt.Common.Integrations.GenericModConfigMenu;
+using Common.Integrations.GenericModConfigMenu;
 using StardewModdingAPI;
 
 namespace Helpers.ConfigData

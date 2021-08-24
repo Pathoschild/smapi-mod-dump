@@ -1,6 +1,7 @@
 ﻿{
-  "ModId": "prims99.stardewweb",
+  "ModId": "prism99.stardewweb",
   "RootPage": "index.html",
   "PathName": "StardewWeb",
-  "CSSFile":  "css/stardewweb_manual.css"
+  "CSSFile": "css/stardewweb_manual.css",
+  "DisplayName": "Stardew Web"
 }

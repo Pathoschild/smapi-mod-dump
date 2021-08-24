@@ -11,27 +11,27 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImJustMatt.Common.Integrations.GenericModConfigMenu;
-using ImJustMatt.ExpandedStorage.Framework.Models;
+using ExpandedStorage.Framework.Models;
+using Common.Integrations.GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Controllers
+namespace ExpandedStorage.Framework.Controllers
 {
     internal class AssetController : IAssetLoader, IAssetEditor
     {
         private readonly ExpandedStorage _mod;
-
+        
         /// <summary>Dictionary of Expanded Storage configs</summary>
         internal readonly IDictionary<string, StorageController> Storages = new Dictionary<string, StorageController>();
-
+        
         /// <summary>Dictionary of Expanded Storage tabs</summary>
         internal readonly IDictionary<string, TabController> Tabs = new Dictionary<string, TabController>();
-
+        
         private bool _isContentLoaded;
-
+        
         internal AssetController(ExpandedStorage mod)
         {
             _mod = mod;
@@ -40,9 +40,8 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
             _mod.Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             _mod.Helper.Events.GameLoop.DayStarted += OnDayStarted;
         }
-
-        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        
+        /// <inheritdoc />
         public bool CanEdit<T>(IAssetInfo asset)
         {
             // Load bigCraftable on next tick for vanilla storages
@@ -50,25 +49,24 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
             {
                 _mod.Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             }
-
+            
             return false;
         }
-
-        /// <summary>Load a matched asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
+        
+        /// <inheritdoc />
         public void Edit<T>(IAssetData asset)
         {
         }
-
-        /// <summary>Load Data for Mods/furyx639.ExpandedStorage path</summary>
+        
+        /// <inheritdoc />
         public bool CanLoad<T>(IAssetInfo asset)
         {
             var assetName = PathUtilities.NormalizePath(asset.AssetName);
             var modPath = PathUtilities.NormalizePath("Mods/furyx639.ExpandedStorage/");
             return assetName.StartsWith(modPath);
         }
-
-        /// <summary>Provide base versions of ExpandedStorage assets</summary>
+        
+        /// <inheritdoc />
         public T Load<T>(IAssetInfo asset)
         {
             var assetParts = PathUtilities.GetSegments(asset.AssetName).Skip(2).ToList();
@@ -86,10 +84,10 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                         throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
                     return (T) (object) tab.Texture?.Invoke() ?? _mod.Helper.Content.Load<T>($"assets/{tab.TabImage}");
             }
-
+            
             throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
         }
-
+        
         /// <summary>Returns Storage by object context.</summary>
         internal bool TryGetStorage(object context, out StorageController storage)
         {
@@ -99,10 +97,9 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 .FirstOrDefault(c => c.MatchesContext(context));
             return storage != null;
         }
-
+        
         /// <summary>Returns ExpandedStorageTab by tab name.</summary>
         internal TabController GetTab(string modUniqueId, string tabName)
-
         {
             return Tabs
                 .Where(t => t.Key.EndsWith($"/{tabName}"))
@@ -111,7 +108,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 .ThenByDescending(t => t.ModUniqueId.Equals("furyx639.ExpandedStorage"))
                 .FirstOrDefault();
         }
-
+        
         /// <summary>Raised after the game is launched, right before the first update tick.</summary>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
@@ -119,13 +116,13 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 _mod.JsonAssets.API.IdsAssigned += OnIdsLoaded;
             else
                 _mod.Monitor.Log("Json Assets not detected, Expanded Storages content will not be loaded", LogLevel.Warn);
-
+            
             _mod.Monitor.Log("Loading Expanded Storage Content", LogLevel.Info);
             foreach (var contentPack in _mod.Helper.ContentPacks.GetOwned())
             {
                 _mod.ExpandedStorageAPI.LoadContentPack(contentPack);
             }
-
+            
             // Load Default Tabs
             foreach (var storageTab in _mod.Config.DefaultTabs)
             {
@@ -138,10 +135,10 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 };
                 Tabs.Add(tabId, tab);
             }
-
+            
             _isContentLoaded = true;
         }
-
+        
         /// <summary>Raised after a new in-game day starts, or after connecting to a multiplayer world.</summary>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
@@ -150,7 +147,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 sprite.InvalidateCache();
             }
         }
-
+        
         /// <summary>Load Json Assets Ids.</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -172,7 +169,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 }
             }
         }
-
+        
         /// <summary>Raised after the game state is updated</summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
@@ -180,28 +177,28 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
         {
             if (!_isContentLoaded)
                 return;
-
+            
             _mod.Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
-
+            
             var bigCraftables = Game1.bigCraftablesInformation
                 .Where(StorageController.IsVanillaStorage)
                 .Select(data => new KeyValuePair<int, string>(data.Key, data.Value.Split('/')[0]))
                 .ToList();
-
+            
             foreach (var storage in Storages.Where(storage => storage.Value.Source != StorageController.SourceType.JsonAssets))
             {
                 var bigCraftableIds = bigCraftables
                     .Where(data => data.Value.Equals(storage.Key))
                     .Select(data => data.Key)
                     .ToList();
-
+                
                 storage.Value.ObjectIds.Clear();
                 if (!bigCraftableIds.Any())
                 {
                     storage.Value.Source = StorageController.SourceType.Unknown;
                     continue;
                 }
-
+                
                 storage.Value.Source = StorageController.SourceType.Vanilla;
                 foreach (var bigCraftableId in bigCraftableIds)
                 {
@@ -212,7 +209,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                     }
                 }
             }
-
+            
             foreach (var bigCraftable in bigCraftables.Where(data => !Storages.ContainsKey(data.Value)))
             {
                 var defaultStorage = new StorageController(bigCraftable.Value)
@@ -230,7 +227,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 ), _mod.Config.LogLevelProperty);
             }
         }
-
+        
         internal static void RegisterModConfig(
             IContentPack contentPack,
             GenericModConfigMenuIntegration modConfigMenu,
@@ -239,7 +236,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
         {
             if (!modConfigMenu.IsLoaded || !expandedStorages.Values.Any(expandedStorage => expandedStorage.PlayerConfig))
                 return;
-
+            
             void RevertToDefault()
             {
                 foreach (var playerConfig in playerConfigs)
@@ -251,12 +248,12 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                     playerConfig.Value.DisabledFeatures = new HashSet<string>(expandedStorage.DisabledFeatures);
                 }
             }
-
+            
             void SaveToFile()
             {
                 contentPack.WriteJsonFile("config.json", playerConfigs);
             }
-
+            
             modConfigMenu.API.RegisterModConfig(contentPack.Manifest, RevertToDefault, SaveToFile);
             modConfigMenu.API.SetDefaultIngameOptinValue(contentPack.Manifest, true);
             modConfigMenu.API.RegisterLabel(contentPack.Manifest, contentPack.Manifest.Name, "");

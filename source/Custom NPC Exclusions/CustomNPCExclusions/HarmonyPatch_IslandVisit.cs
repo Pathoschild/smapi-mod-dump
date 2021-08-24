@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -23,7 +23,7 @@ namespace CustomNPCExclusions
     /// <summary>A Harmony patch that excludes designated NPCs from visiting <see cref="IslandSouth"/>.</summary>
     public static class HarmonyPatch_IslandVisit
     {
-        public static void ApplyPatch(HarmonyInstance harmony, IModHelper helper)
+        public static void ApplyPatch(Harmony harmony, IModHelper helper)
         {
             //add SMAPI events
             helper.Events.GameLoop.DayStarted += DayStarted_SetupIslandSchedules;
@@ -87,7 +87,7 @@ namespace CustomNPCExclusions
         /// This patch negates SDV's calls to the method while allowing it to be "manually" called by <see cref="DayStarted_SetupIslandSchedules"/>.
         /// See that method's remarks for more information.
         /// </remarks>
-        [HarmonyPriority(Harmony.Priority.High)] //use high priority to avoid duplicate calls to other prefixes on this method, if any
+        [HarmonyPriority(Priority.High)] //use high priority to avoid duplicate calls to other prefixes on this method, if any
         private static bool IslandSouth_SetupIslandSchedules()
         {
             try

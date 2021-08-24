@@ -1,0 +1,35 @@
+﻿<div class="message_board_title_lg">Frequently Asked Questions</div>
+<div class="message_board_list_lg" style="display:block;">
+    <ul>
+        <li>
+            <b>Can I access the web page from another PC?</b> - Yes<br />
+            To view the web site on another machine there are 3 steps:
+            <ol style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-size: 14pt;">
+                <li>
+                    Change the 'Server Address' parameter to "http://+:8080/" in the Config view of the mod or in the config.json file in the mod's directory.  The game will have to be re-started for the change to take effect.
+                </li>
+                <li>
+                    Open a command window, as administrator, and run the following command:
+                    <br /><br />
+                    netsh http add urlacl url=http://+:8080/ user=Everyone
+                    <br /><br />
+                    This command allows the mod to use the 8080 port, without having to run as administrator.  The alternative to this command is run stardew as administrator, which is not a good way to run.
+                </li>
+                <li>
+                    Run windows defender firewall and add a program exception for stardewmoddingapi.
+                    (The rule is most likely already there.)
+                </li>
+            </ol>
+            <br />
+            You will now be able to view the mod from any machine on your local network.
+            <br />
+            <br />
+            <b>DO NOT PORT FORWARD TO THIS ADDRESS</b>.<br /><br />This mod is not hardened to be exposed to the nasty internet.
+        </li>
+    </ul>
+
+
+
+    <br /><br />
+    <a href="index.html">Return to the Index</a>
+</div>

@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Controllers
+namespace ExpandedStorage.Framework.Controllers
 {
     internal class StorageSpriteController
     {
@@ -43,7 +43,7 @@ namespace ImJustMatt.ExpandedStorage.Framework.Controllers
                 Width = _texture.Width / Math.Max(1, _frames);
                 Height = _playerColor ? _texture.Height / 3 : _texture.Height;
                 TileWidth = Width / 16;
-                TileHeight = (_depth is { } depth && depth > 0 ? depth : Height - 16) / 16;
+                TileHeight = (_depth is { } depth and > 0 ? depth : Height - 16) / 16;
                 return _texture;
             }
         }

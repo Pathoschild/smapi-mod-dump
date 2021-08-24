@@ -93,6 +93,9 @@ namespace FarmAnimalVarietyRedux.Models.Converted
         /// <summary>Whether the item can not be produced if it's in the player possession.</summary>
         public bool DoNotAllowDuplicates { get; set; }
 
+        /// <summary>Whether the produce is able to update the animals sprite sheet to 'harvestable' (if a harvestable sprite sheet is available).</summary>
+        public bool ShowHarvestableSpriteSheet { get; set; }
+
 
         /*********
         ** Public Methods
@@ -122,7 +125,8 @@ namespace FarmAnimalVarietyRedux.Models.Converted
         /// <param name="requiresShepherd">Whether the player must have the Shepherd profession for the animal to produce the item.</param>
         /// <param name="standardQualityOnly">Whether the product should be standard quality only.</param>
         /// <param name="doNotAllowDuplicates">Whether the item can not be produced if it's in the player possession.</param>
-        public AnimalProduce(string uniqueName, int defaultProductId, int defaultProductMinFriendship, int defaultProductMaxFriendship, int upgradedProductId, int upgradedProductMinFriendship, int upgradedProductMaxFriendship, float? percentChanceForUpgradedProduct, bool upgradedProductIsRare, HarvestType harvestType, int daysToProduce, bool produceFasterWithCoopMaster, bool produceFasterWithShepherd, string toolName, string toolHarvestSound, int amount, string[] seasons, float percentChance, float percentChanceForOneExtra, bool? requiresMale, bool? requiresCoopMaster, bool? requiresShepherd, bool standardQualityOnly, bool doNotAllowDuplicates)
+        /// <param name="showHarvestableSpriteSheet">Whether the produce is able to update the animals sprite sheet to 'harvestable' (if a harvestable sprite sheet is available).</param>
+        public AnimalProduce(string uniqueName, int defaultProductId, int defaultProductMinFriendship, int defaultProductMaxFriendship, int upgradedProductId, int upgradedProductMinFriendship, int upgradedProductMaxFriendship, float? percentChanceForUpgradedProduct, bool upgradedProductIsRare, HarvestType harvestType, int daysToProduce, bool produceFasterWithCoopMaster, bool produceFasterWithShepherd, string toolName, string toolHarvestSound, int amount, string[] seasons, float percentChance, float percentChanceForOneExtra, bool? requiresMale, bool? requiresCoopMaster, bool? requiresShepherd, bool standardQualityOnly, bool doNotAllowDuplicates, bool showHarvestableSpriteSheet)
         {
             if (seasons == null || seasons.Length == 0)
                 seasons = new[] { "spring", "summer", "fall", "winter" };
@@ -151,9 +155,10 @@ namespace FarmAnimalVarietyRedux.Models.Converted
             RequiresShepherd = requiresShepherd;
             StandardQualityOnly = standardQualityOnly;
             DoNotAllowDuplicates = doNotAllowDuplicates;
+            ShowHarvestableSpriteSheet = showHarvestableSpriteSheet;
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"UniqueName: {UniqueName}, DefaultProductId: {DefaultProductId}, DefaultProductMinFriendship: {DefaultProductMinFriendship}, DefaultProductMaxFriendship: {DefaultProductMaxFriendship}, UpgradedProductId: {UpgradedProductId}, UpgradedProductMinFriendship: {UpgradedProductMinFriendship}, UpgradedProductMaxFriendship: {UpgradedProductMaxFriendship}, PercentChanceForUpgradedProduct: {PercentChanceForUpgradedProduct}, UpgradedProductIsRare: {UpgradedProductIsRare}, HarvestType: {HarvestType}, DaysToProduce: {DaysToProduce}, ProduceFasterWithCoopMaster: {ProduceFasterWithCoopMaster}, ProduceFasterWithShepherd: {ProduceFasterWithShepherd}, ToolName: {ToolName}, ToolHarvestSound: {ToolHarvestSound}, Amount: {Amount}, Seasons: {string.Join(", ", Seasons)}, PercentChance: {PercentChance}, PercentChanceForOneExtra: {PercentChanceForOneExtra}, RequiresMale: {RequiresMale}, RequiresCoopMaster: {RequiresCoopMaster}, RequiresShepherd: {RequiresShepherd}, StandardQualityOnly: {StandardQualityOnly}, DoNotAllowDuplicates: {DoNotAllowDuplicates}";
+        public override string ToString() => $"UniqueName: {UniqueName}, DefaultProductId: {DefaultProductId}, DefaultProductMinFriendship: {DefaultProductMinFriendship}, DefaultProductMaxFriendship: {DefaultProductMaxFriendship}, UpgradedProductId: {UpgradedProductId}, UpgradedProductMinFriendship: {UpgradedProductMinFriendship}, UpgradedProductMaxFriendship: {UpgradedProductMaxFriendship}, PercentChanceForUpgradedProduct: {PercentChanceForUpgradedProduct}, UpgradedProductIsRare: {UpgradedProductIsRare}, HarvestType: {HarvestType}, DaysToProduce: {DaysToProduce}, ProduceFasterWithCoopMaster: {ProduceFasterWithCoopMaster}, ProduceFasterWithShepherd: {ProduceFasterWithShepherd}, ToolName: {ToolName}, ToolHarvestSound: {ToolHarvestSound}, Amount: {Amount}, Seasons: {string.Join(", ", Seasons)}, PercentChance: {PercentChance}, PercentChanceForOneExtra: {PercentChanceForOneExtra}, RequiresMale: {RequiresMale}, RequiresCoopMaster: {RequiresCoopMaster}, RequiresShepherd: {RequiresShepherd}, StandardQualityOnly: {StandardQualityOnly}, DoNotAllowDuplicates: {DoNotAllowDuplicates}, ShowHarvestableSpriteSheet: {ShowHarvestableSpriteSheet}";
     }
 }

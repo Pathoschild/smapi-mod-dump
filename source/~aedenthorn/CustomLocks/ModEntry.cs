@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -37,7 +37,7 @@ namespace CustomLocks
 
 
             CustomLocksPatches.Initialize(Monitor);
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Mountain), nameof(Mountain.checkAction)),

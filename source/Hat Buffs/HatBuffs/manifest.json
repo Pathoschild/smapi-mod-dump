@@ -11,10 +11,10 @@
 {
   "Name": "HatBuffs",
   "Author": "popska",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Gives the player buffs depending on the hat they're wearing.",
   "UniqueID": "popska.HatBuffs",
   "EntryDll": "HatBuffs.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:9050" ]
 }

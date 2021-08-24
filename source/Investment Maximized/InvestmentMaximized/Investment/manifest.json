@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MissCoriel/InvestmentMaximized
+**
+*************************************************/
+
+{
+  "Name": "Investmentmet Maximized",
+  "Author": "MissCoriel",
+  "Version": "1.0.0",
+  "Description": "Invest some money in seven markets",
+  "UniqueID": "misscoriel.investmax",
+  "EntryDll": "Investment.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "" ]
+}

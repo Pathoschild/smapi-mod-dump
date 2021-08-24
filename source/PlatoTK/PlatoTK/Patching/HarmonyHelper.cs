@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PlatoTK.Network;
@@ -22,7 +22,7 @@ namespace PlatoTK.Patching
 {
     internal class HarmonyHelper : InnerHelper, IHarmonyHelper
     {
-        public HarmonyInstance HarmonyInstance { get; }
+        public Harmony HarmonyInstance { get; }
         private static HashSet<MethodInfo> TracedMethods = new HashSet<MethodInfo>();
         internal static HashSet<TracedObject> TracedObjects;
         internal static HashSet<TypeForwarding> TracedTypes = new HashSet<TypeForwarding>();
@@ -39,7 +39,7 @@ namespace PlatoTK.Patching
             }
 
             if (HarmonyInstance == null)
-                HarmonyInstance = HarmonyInstance.Create($"Plato.HarmonyHelper.{Plato.ModHelper.ModRegistry.ModID}");
+                HarmonyInstance = new Harmony($"Plato.HarmonyHelper.{Plato.ModHelper.ModRegistry.ModID}");
 
         }
 
@@ -187,6 +187,9 @@ namespace PlatoTK.Patching
                         continue;
                     else
                         TracedMethods.Add(method);
+
+                    if (!method.IsDeclaredMember())
+                        method = method.DeclaringType.GetMethod(method.Name, method.GetParameters().Select(p => p.ParameterType).ToArray());
 
                     bool hasReturnType = method.ReturnType != Type.GetType("System.Void");
                     List<Type> patchParameters = new List<Type>();

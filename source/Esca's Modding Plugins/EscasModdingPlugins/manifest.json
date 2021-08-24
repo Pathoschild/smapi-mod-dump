@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/EscasModdingPlugins
+**
+*************************************************/
+
+{
+  "Name": "Esca's Modding Plugins",
+  "Author": "Esca",
+  "Version": "1.0.0",
+  "Description": "Adds new data assets, map/tile properties, and features for other mods to use.",
+  "UniqueID": "Esca.EMP",
+  "EntryDll": "EMP.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:9296", "GitHub:Esca-MMC/EscasModdingPlugins", "ModDrop:1005443" ]
+}

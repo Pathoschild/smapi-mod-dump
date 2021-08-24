@@ -109,11 +109,22 @@ namespace GiftDecline
 			foreach (string npcName in SaveState.GiftTasteOverwrites.Keys)
 			{
 				NPC npc = Game1.getCharacterFromName(npcName);
+				if (npc == null)
+				{
+					Logger.Trace("Skipping unknown NPC \"" + npcName + "\".");
+					continue;
+				}
 
 				// .ToList because the save state is potentially "repaired" in this block
 				foreach (string itemId in SaveState.GiftTasteOverwrites[npcName].Keys.ToList())
 				{
 					Item item = new Object(int.Parse(itemId), 1);
+					if (item == null)
+					{
+						Logger.Trace("Skipping unknown item \"" + itemId + "\" for NPC \"" + npcName + "\".");
+						continue;
+					}
+
 					int currentTaste = SaveState.GiftTasteOverwrites[npcName][itemId];
 					int actualSetTaste = NpcHelper.SetGiftTasteLevel(npc, item, currentTaste);
 					if (actualSetTaste != currentTaste)

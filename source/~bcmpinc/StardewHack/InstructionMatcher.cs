@@ -10,7 +10,7 @@
 
 using System;
 using System.Reflection.Emit;
-using Harmony;
+using HarmonyLib;
 
 namespace StardewHack
 {
@@ -24,20 +24,65 @@ namespace StardewHack
         
         public static InstructionMatcher AnyOf(params InstructionMatcher[] query) => new IM_AnyOf(query);
     }
-    
+
+    internal static class FuzzyOpcodeTable {
+        static OpCode[] table;
+        
+        static void init() {
+            table = new OpCode[256];
+
+            add_pair(OpCodes.Bge,     OpCodes.Bge_S);
+            add_pair(OpCodes.Bge_Un,  OpCodes.Bge_Un_S);
+            add_pair(OpCodes.Bgt,     OpCodes.Bgt_S);
+            add_pair(OpCodes.Bgt_Un,  OpCodes.Bgt_Un_S);
+            add_pair(OpCodes.Ble,     OpCodes.Ble_S);
+            add_pair(OpCodes.Ble_Un,  OpCodes.Ble_Un_S);
+            add_pair(OpCodes.Blt,     OpCodes.Blt_S);
+            add_pair(OpCodes.Blt_Un,  OpCodes.Blt_Un_S);
+            add_pair(OpCodes.Beq,     OpCodes.Beq_S);
+            add_pair(OpCodes.Bne_Un,  OpCodes.Bne_Un_S);
+
+            add_pair(OpCodes.Br,      OpCodes.Br_S);
+            add_pair(OpCodes.Brfalse, OpCodes.Brfalse_S);
+            add_pair(OpCodes.Brtrue,  OpCodes.Brtrue_S);
+
+            add_pair(OpCodes.Call,    OpCodes.Callvirt);
+        }
+
+        static void add_pair(OpCode a, OpCode b) {
+            if (table[a.Value].Size > 0) throw new ArgumentException("OpCode " + a.Name + " is already paired.");
+            if (table[b.Value].Size > 0) throw new ArgumentException("OpCode " + b.Name + " is already paired.");
+            table[a.Value] = b;
+            table[b.Value] = a;
+        }
+
+        public static OpCode alt(OpCode v) {
+            if (v.Value < 0 || v.Value >= 256) return v;
+            if (table == null) init();
+            var r = table[v.Value];
+            if (r.Size == 0) return v;
+            return r;
+        }
+
+    };
+
+
     internal class IM_CodeInstruction : InstructionMatcher
     {
         readonly CodeInstruction query;
+        readonly OpCode alt;
+
         public IM_CodeInstruction(CodeInstruction q) {
             query = q;
+            alt = FuzzyOpcodeTable.alt(q.opcode);
         }
 
         public override bool match(CodeInstruction instruction) {
             // Exact match.
             if (query == instruction) return true;
-            
+
             // Check Opcode
-            if (!instruction.opcode.Equals(query.opcode)) return false;
+            if (!query.opcode.Equals(instruction.opcode) && !alt.Equals(instruction.opcode)) return false;
             
             // Check Operand
             if (instruction.operand == null) {
@@ -64,12 +109,15 @@ namespace StardewHack
     internal class IM_OpCode : InstructionMatcher
     {
         readonly OpCode query;
+        readonly OpCode alt;
+
         public IM_OpCode(OpCode q) {
             query = q;
+            alt = FuzzyOpcodeTable.alt(q);
         }
 
         public override bool match(CodeInstruction instruction) {
-            return instruction.opcode.Equals(query);
+            return query.Equals(instruction.opcode) || alt.Equals(instruction.opcode);
         }
 
         public override string ToString() {

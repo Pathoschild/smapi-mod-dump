@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "Paradise Rangpur",
+  "Description": "Much like its name, once you taste this it'll definitely take you to paradise with its intensely sour and smoky lime flavor! Perfect for classy delicacies.",
+  "Category": "Fruit",
+  "Edibility": 16,
+  "Price": 120,
+  "IsColored": false,
+  "GiftTastes":
+  {
+  "Love": ["Yuuma", "Lenny", "Marnie"],
+  "Like": ["Willy", "Lola", "Robin"],
+  },
+}

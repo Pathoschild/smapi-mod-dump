@@ -15,7 +15,7 @@
 
 body {
     padding-top: 50px;
-    background-image: url('/images/stardewbackground.png');
+    background-image: url('/images/backgrounds/#BACKGROUND#');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -82,6 +82,10 @@ html {
     text-align: right;
 }
 
+.inline {
+    display: inline-block !important;
+}
+
 .center_table {
     margin-left: auto;
     margin-right: auto;
@@ -120,6 +124,19 @@ html {
     padding: 5px;
 }
 
+a.navbar_link {
+    padding: unset !important;
+    padding-right: 8px !important;
+    color: lightgray;
+}
+
+    a.navbar_link:hover {
+        padding: unset !important;
+        padding-right: 8px !important;
+        color: yellow;
+        text-decoration: none;
+    }
+
 .sectionhead {
     font-family: "Open Sans", sans-serif;
     font-size: 28px;
@@ -135,7 +152,7 @@ html {
 }
 
 .top_margin_50 {
-    margin-top: 50px;
+    margin-top: 80px;
 }
 
 .task_type {
@@ -166,7 +183,7 @@ html {
 
 .stardew_table {
     /* background-color: #fa9305;*/
-    border-spacing: 4px;
+    border-spacing: 0px;
     border-collapse: separate;
     /*  border: 3px solid #ab3b00;*/
 }
@@ -199,22 +216,40 @@ html {
     background-color: #fa9305;
     font-weight: 600;
     padding: 5px;
+    border: 2px solid #ab3b00;
 }
 
 .stardew_row {
     border: 2px solid #ab3b00;
     padding: 5px;
-    background-color: #f5b565;
+    background-color: navajowhite; /* #f5b565;*/
     font-family: stardew,'Times New Roman', Times, serif;
     font-size: 18pt;
 }
 
 .stardew_data {
     padding: 2px 5px 2px 5px;
-    background: rgba(245, 181, 101, 0.78);
+    background: tan; /*rgba(245, 181, 101, 0.78);*/
     font-family: stardew,'Times New Roman', Times, serif;
     border: 2px solid #ab3b00;
     font-size: 20pt;
+    border-radius: 10px;
+}
+
+.guild_data {
+    padding: 2px 5px 2px 5px;
+    background: tan; /*rgba(245, 181, 101, 0.78);*/
+    font-family: stardew,'Times New Roman', Times, serif;
+    border: 2px solid brown;
+    font-size: 20pt;
+    border-radius: 10px;
+    margin: 4px;
+    display: inline-block;
+    width: 245px;
+}
+
+.stardew_char_port {
+    margin: 10px 10px 0px 10px;
 }
 
 .stardew_label {
@@ -382,7 +417,7 @@ html {
 
 .wallet_content {
     width: 24px;
-    height: 24px;
+   
 }
 
 .skill_icon {
@@ -394,11 +429,23 @@ html {
     padding-left: 10px;
     vertical-align: middle;
 }
-.shipping_banner{
-    padding-bottom:10px;
-    padding-top:10px;
+
+.shipping_banner {
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
+
 .bundle_div {
+    width: 100%;
+}
+
+.bundle_item {
+    text-align: left;
+    padding: 5px;
+}
+
+.bundle_checkbox {
+    vertical-align: top;
 }
 
 .fixed_header {
@@ -419,6 +466,7 @@ html {
 .warp_link {
     text-decoration: underline;
     cursor: zoom-in;
+    display:inline-block;
 }
 
     .warp_link:hover {
@@ -441,6 +489,7 @@ html {
     margin-right: auto;
     padding: 10px;
 }
+
 .animal_image {
     height: 96px;
     width: 96px;
@@ -485,9 +534,9 @@ html {
 }
 
 .search_close_button {
-  position:absolute;
-  top:25px;
-  left:710px;
+    position: absolute;
+    top: 25px;
+    left: 710px;
 }
 
 .search_banner {
@@ -502,9 +551,9 @@ html {
 
 .search_container {
     width: 758px;
-    padding-top: 55px;
+    padding-top: 45px;
     margin-left: 15px;
-    background-color: azure;
+    /* background-color: azure;*/
     padding-bottom: 10px;
     margin-top: -10px;
 }
@@ -516,6 +565,11 @@ html {
     color: coral;
     font-size: 24pt;
     margin-top: -15px;
+}
+
+.search_detail_box {
+    padding: 10px;
+    min-height: 100%;
 }
 
 .search_text {
@@ -534,14 +588,14 @@ html {
 
 .search_results {
     position: absolute;
-    top: 125px;
-    height: 430px;
-    width: 740px;
+    top: 110px;
+    height: 480px;
+    width: 759px;
     overflow: auto;
-    border: 1px solid black;
-    background-color: white;
+    /* border: 1px solid black;*/
+    /* background-color: white;*/
     padding: 0px;
-    margin: 5px 20px 5px 20px;
+    margin: 5px 20px 5px 17px;
 }
 
 .lookuptext {
@@ -697,12 +751,34 @@ html {
     width: 600px;
 }
 
+.disp_single_column {
+    width: 620px;
+}
+
 .message_board {
     background-image: url('/images/message_board.png');
     margin: 5px;
     background-size: 100% 100%;
     padding: 35px 35px 30px 50px;
     display: inline-flex;
+    width: 600px;
+}
+
+.message_cork_board {
+    background-image: url('/images/message_cork_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    display: inline-flex;
+    width: 600px;
+}
+
+.message_paper_board {
+    background-image: url('/images/message_board_paper.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    /*   display: inline-flex;*/
     width: 600px;
 }
 
@@ -715,8 +791,26 @@ html {
     width: 1230px;
 }
 
+.message_paper_board_lg {
+    background-image: url('/images/message_board_paper.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 40px 60px 30px 60px;
+    display: inline-block;
+    width: 1230px;
+}
+
 .message_board_full {
     background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 60px 80px 60px 80px;
+    display: inline-block;
+    width: 100%;
+}
+
+.message_paper_board_full {
+    background-image: url('/images/message_board_paper.png');
     margin: 5px;
     background-size: 100% 100%;
     padding: 60px 80px 60px 80px;
@@ -735,7 +829,20 @@ html {
     display: inline-flex;
 }
 
+.message_cork_board_list {
+    background-image: url('/images/message_cork_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 20pt;
+    width: 600px;
+    display: inline-flex;
+}
+
 .message_board_list_lg {
+    /*    border-image: url('/images/title_box.png') 2 fill;
+    border-image-width: 5px 5px 5px 5px;*/
     background-image: url('/images/message_board.png');
     margin: 5px;
     background-size: 100% 100%;
@@ -747,7 +854,8 @@ html {
 }
 
 .message_board_title {
-    background-image: url('/images/title_box.png');
+    border-image: url('/images/title_box.png') 0 fill;
+    /*  background-image: url('/images/title_box.png');*/
     margin: 5px 5px 5px 5px;
     background-size: 100% 100%;
     padding: 10px 5px 10px 5px;
@@ -836,4 +944,245 @@ html {
     color: lawngreen;
     font-size: 20pt;
     display: inline-block;
+}
+
+.chest_header {
+    padding: 5px;
+    border: 2px solid brown;
+    background-color: bisque;
+}
+
+.chest_content {
+    width: 100%;
+    max-height: 350px;
+    overflow: auto;
+    border: 1px solid brown;
+    background-image: url(/images/cork-board-dark.png);
+}
+
+.chest_table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+}
+
+.chest_cell {
+    width: 80px;
+    height: 95px;
+    border-top: 4px solid #d68f54;
+    border-right: 4px solid #d68f54;
+    border-left: 4px solid #ffe4a1;
+    border-bottom: 4px solid#ffe4a1;
+    padding: 4px;
+    background-color: #f8ba70;
+}
+
+.mechanics_table {
+}
+
+.mechanics_cell {
+    padding: 5px;
+}
+
+.button_unsee {
+    float: right;
+    border-radius: 0 12px 12px 0;
+    width: 80px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14pt;
+    background-color: #fcbb17;
+}
+
+.catalog_prod_title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18pt;
+    text-align: left;
+    color: #de830d;
+    font-weight: 600;
+}
+
+.wallet_items {
+    padding: 4px;
+}
+
+.cheat_skill_button {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 16pt;
+}
+
+.warning_div {
+    border: 2px solid brown;
+    border-radius: 10px;
+    padding: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    text-align: center;
+    width: 95%;
+    background-color: tan;
+}
+
+.rouded_div {
+    border: 2px solid brown;
+    border-radius: 10px;
+    padding: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    text-align: center;
+    background-color: tan;
+}
+
+.flasher {
+    animation: blinkMe 2s linear infinite;
+}
+
+@keyframes blinkMe {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.modder_mod_cell {
+    padding: 2px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14pt;
+}
+
+a.event_link {
+    color: black;
+}
+
+li.events {
+    position: relative;
+    list-style-type: none;
+}
+
+    li.events:before {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: -30px;
+        width: 25px;
+        height: 25px;
+        background-image: url('/images/view_details_32.png');
+        background-size: 25px 25px;
+    }
+
+.calender_bars {
+    background-color: darkkhaki;
+}
+
+a.quest_link {
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+    a.quest_link:hover {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+.product_image {
+    width: 36px;
+    vertical-align: sub;
+    cursor: zoom-in
+}
+.product_text{
+    font-size:20pt;
+    font-family:stardew;
+}
+.warp_building_image {
+    width: 140px;
+    height: 75px;
+    cursor: zoom-in;
+}
+
+.mod_details_table {
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+.mod_ja_cell {
+    padding: 3px;
+    background-color: bisque;
+}
+
+.bs_5_nav_fix {
+    text-decoration: none;
+    font-size: 14pt;
+    padding-right: 10px;
+}
+
+.bs_tooltop_box {
+    /*
+        border-image: url('/images/title_box.png') 5 10 5 10 fill;
+    
+    border-image-slice: 10;
+    border-image-width: 10;
+      */
+    background-color: unset !important;
+    width: 290px;
+    height: 120px;
+    color: white;
+}
+
+.bs_tooltip_div {
+    background-color: transparent !important;
+    border-image-source: url(/images/title_box.png);
+    border-image-width: 15px 10px 10px 10px;
+    border-image-slice: 25 fill;
+    border-image-repeat: stretch;
+    max-width: 290px;
+    width: 290px;
+    height: 200px;
+    padding: 10px 10px 5px 10px;
+}
+
+.weather_location {
+    padding: 3px 5px 3px 3px;
+    text-align: right;
+    color:  blue;
+}
+
+.weather_data {
+    padding: 3px;
+    text-align: center;
+  
+}
+
+.weather_header {
+    padding: 3px 10px 3px 10px;
+    text-align: center;
+    border-bottom: 2px solid black;
+}
+
+.achieve_todo{
+    color:black;
+    border-bottom: 1px dashed brown;
+    padding:3px;
+}
+
+.achieve_complete {
+    color: forestgreen;
+    border-bottom: 1px dashed brown;
+    padding: 3px;
+}
+
+.achieve_disabled {
+    color: grey;
+    border-bottom: 1px dashed brown;
+    padding: 3px;
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9343
+IDs: tomasitobambito.HmmCheeseYum
+update keys: Nexus:9343

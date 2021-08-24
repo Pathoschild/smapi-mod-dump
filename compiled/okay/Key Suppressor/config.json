@@ -1,0 +1,29 @@
+{
+  "SuppressedKeys": {
+    "DPadDown": "Suppress",
+    "DPadLeft": "Suppress",
+    "DPadRight": "Suppress",
+    "DPadUp": "Suppress",
+    "LeftShift": "DoNotSuppress",
+    "RightStick": "Suppress",
+    "ControllerA": "DoNotSuppress",
+    "ControllerB": "SuppressOnlyWhenPlayerFree",
+    "ControllerX": "DoNotSuppress",
+    "ControllerY": "DoNotSuppress",
+    "ControllerBack": "DoNotSuppress",
+    "ControllerStart": "DoNotSuppress",
+    "BigButton": "DoNotSuppress",
+    "LeftShoulder": "DoNotSuppress",
+    "RightShoulder": "DoNotSuppress",
+    "LeftTrigger": "DoNotSuppress",
+    "RightTrigger": "DoNotSuppress",
+    "LeftThumbstickDown": "DoNotSuppress",
+    "LeftThumbstickLeft": "DoNotSuppress",
+    "LeftThumbstickRight": "DoNotSuppress",
+    "LeftThumbstickUp": "DoNotSuppress",
+    "RightThumbstickDown": "DoNotSuppress",
+    "RightThumbstickLeft": "DoNotSuppress",
+    "RightThumbstickRight": "DoNotSuppress",
+    "RightThumbstickUp": "DoNotSuppress"
+  }
+}

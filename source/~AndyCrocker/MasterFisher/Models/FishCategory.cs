@@ -14,14 +14,11 @@ using SatoCore.Attributes;
 namespace MasterFisher.Models
 {
     /// <summary>Represents a category a fish can be in.</summary>
-    public class FishCategory
+    public class FishCategory : ModelBase
     {
         /*********
         ** Accessors
         *********/
-        /// <summary>How the category data should be interpreted.</summary>
-        public Action Action { get; set; } = Action.Add;
-
         /// <summary>The name of the category.</summary>
         [Identifier]
         public string Name { get; set; }

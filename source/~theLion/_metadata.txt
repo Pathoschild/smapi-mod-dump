@@ -7,9 +7,10 @@ mods:
    Walk Of Life
 
 latest commit:
-   commit 3e7c8dc90c844435416d14d6240ba263ba055256
-   Author: Matheus Leao <matheus_is@live.com>
-   Date:   Tue Jul 27 02:46:56 2021 +0000
+   commit be32546c077b0dc4db092b4b7e36ab3d39ca9a5f
+   Merge: ecd9484 43791d3
+   Author: The Lion <matheus_is@live.com>
+   Date:   Mon Aug 23 10:48:10 2021 -0300
    
-       Update README.md
+       Merge branch 'master' of gitlab.com:theLion/smapi-mods
    

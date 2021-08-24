@@ -6,9 +6,11 @@ mods:
    Hat Buffs
 
 latest commit:
-   commit 37fe4b6322d7b74e34ca61b3e43a44c180bac02c
+   commit e71dbe901253d42619b1063d075fe7d753b36212
    Author: popska <popska@tuta.io>
-   Date:   Thu Jul 1 17:40:07 2021 -0600
+   Date:   Mon Aug 23 19:53:20 2021 -0600
    
-       added many hats; renamed to 'HatBuffs'
+       updated to 1.0.1:
+           * added buffs for 5 more hats
+           * fixed bug where the buff resets as player sleeps
    

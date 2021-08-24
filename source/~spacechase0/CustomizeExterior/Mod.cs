@@ -338,7 +338,7 @@ namespace CustomizeExterior
                 buildingType: "houses",
                 folderName: farm.GetFarmhouseAssetPackName(),
                 debugLabel: "farmhouse",
-                update: texture => typeof(Farm).GetField(nameof(Farm.houseTextures)).SetValue(null, texture)
+                update: texture => Farm.houseTextures = texture
             );
         }
 

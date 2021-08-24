@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>HorseFluteAnywhere</AssemblyName>
-    <Version>1.1.6</Version>
+    <Version>1.1.8-beta.20210819</Version>
     <RootNamespace>Pathoschild.Stardew.HorseFluteAnywhere</RootNamespace>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.4.0-beta.20210813" />
   </ItemGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" />

@@ -1,0 +1,10 @@
+{
+    "Name": "Global Config Settings",
+    "Author": "Gaphodil",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "3.8.0",
+    "Description": "Sets and applies global settings on farm creation (or save load).",
+    "UniqueID": "Gaphodil.GlobalConfigSettings",
+    "EntryDll": "GlobalConfigSettings.dll",
+    "UpdateKeys": [ "Nexus:9340" ]
+}

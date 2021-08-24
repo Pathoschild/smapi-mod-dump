@@ -6,9 +6,9 @@ mods:
    Fishing Info Overlays
 
 latest commit:
-   commit 4de7d277e7b28ba2618bcebdf3efa2242a9b1e92
+   commit 7c5580f2467e50be310806ecaceed0df730a0cf3
    Author: barteke22 <bartosz2008@hotmail.com>
-   Date:   Mon Jul 26 01:04:46 2021 +0200
+   Date:   Tue Aug 24 00:18:45 2021 +0200
    
-       Ginger & Ponds
+       Font, Halt, DummyMenu Fix
    

@@ -144,7 +144,7 @@ namespace FarmExpansion.Menus
             List<Object> stock = this.getPurchaseAnimalStock();
             for (int i = 0; i < stock.Count; i++)
             {
-                this.animalsToPurchase.Add(new ClickableTextureComponent(string.Concat(stock[i].salePrice()), new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + IClickableMenu.borderWidth + i % 3 * Game1.tileSize * 2, this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth / 2 + i / 3 * (Game1.tileSize + Game1.tileSize / 3), Game1.tileSize * 2, Game1.tileSize), null, stock[i].Name, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(i % 3 * 16 * 2, 448 + i / 3 * 16, 32, 16), 4f, stock[i].type == null)
+                this.animalsToPurchase.Add(new ClickableTextureComponent(string.Concat(stock[i].salePrice()), new Microsoft.Xna.Framework.Rectangle(this.xPositionOnScreen + IClickableMenu.borderWidth + i % 3 * Game1.tileSize * 2, this.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth / 2 + i / 3 * (Game1.tileSize + Game1.tileSize / 3), Game1.tileSize * 2, Game1.tileSize), null, stock[i].Name, Game1.mouseCursors, new Microsoft.Xna.Framework.Rectangle(i % 3 * 16 * 2, 448 + i / 3 * 16, 32, 16), 4f, stock[i].Type == null)
                 {
                     item = stock[i],
                     myID = i,
@@ -162,49 +162,49 @@ namespace FarmExpansion.Menus
             Object item = new Object(100, 1, false, 400, 0)
             {
                 name = "Chicken",
-                type = ((currentFarm.isBuildingConstructed("Coop") || currentFarm.isBuildingConstructed("Deluxe Coop") || currentFarm.isBuildingConstructed("Big Coop")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5926", new object[0])),
+                Type = ((currentFarm.isBuildingConstructed("Coop") || currentFarm.isBuildingConstructed("Deluxe Coop") || currentFarm.isBuildingConstructed("Big Coop")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5926", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5922", new object[0])
             };
             list.Add(item);
             item = new Object(100, 1, false, 750, 0)
             {
                 name = "Dairy Cow",
-                type = ((currentFarm.isBuildingConstructed("Barn") || currentFarm.isBuildingConstructed("Deluxe Barn") || currentFarm.isBuildingConstructed("Big Barn")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5931", new object[0])),
+                Type = ((currentFarm.isBuildingConstructed("Barn") || currentFarm.isBuildingConstructed("Deluxe Barn") || currentFarm.isBuildingConstructed("Big Barn")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5931", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5927", new object[0])
             };
             list.Add(item);
             item = new Object(100, 1, false, 2000, 0)
             {
                 name = "Goat",
-                type = ((currentFarm.isBuildingConstructed("Big Barn") || currentFarm.isBuildingConstructed("Deluxe Barn")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5936", new object[0])),
+                Type = ((currentFarm.isBuildingConstructed("Big Barn") || currentFarm.isBuildingConstructed("Deluxe Barn")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5936", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5933", new object[0])
             };
             list.Add(item);
             item = new Object(100, 1, false, 2000, 0)
             {
                 name = "Duck",
-                type = ((currentFarm.isBuildingConstructed("Big Coop") || currentFarm.isBuildingConstructed("Deluxe Coop")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5940", new object[0])),
+                Type = ((currentFarm.isBuildingConstructed("Big Coop") || currentFarm.isBuildingConstructed("Deluxe Coop")) ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5940", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5937", new object[0])
             };
             list.Add(item);
             item = new Object(100, 1, false, 4000, 0)
             {
                 name = "Sheep",
-                type = (currentFarm.isBuildingConstructed("Deluxe Barn") ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5944", new object[0])),
+                Type = (currentFarm.isBuildingConstructed("Deluxe Barn") ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5944", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5942", new object[0])
             };
             list.Add(item);
             item = new Object(100, 1, false, 4000, 0)
             {
                 name = "Rabbit",
-                type = (currentFarm.isBuildingConstructed("Deluxe Coop") ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5947", new object[0])),
+                Type = (currentFarm.isBuildingConstructed("Deluxe Coop") ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5947", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5945", new object[0])
             };
             list.Add(item);
             item = new Object(100, 1, false, 8000, 0)
             {
                 name = "Pig",
-                type = (currentFarm.isBuildingConstructed("Deluxe Barn") ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5950", new object[0])),
+                Type = (currentFarm.isBuildingConstructed("Deluxe Barn") ? null : Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5950", new object[0])),
                 displayName = Game1.content.LoadString("Strings\\StringsFromCSFiles:Utility.cs.5948", new object[0])
             };
             list.Add(item);
@@ -236,16 +236,16 @@ namespace FarmExpansion.Menus
                     return;
                 }
                 this.textBox.OnEnterPressed -= this.e;
-                this.animalBeingPurchased.name = sender.Text;
+                this.animalBeingPurchased.Name = sender.Text;
                 this.animalBeingPurchased.displayName = sender.Text;
                 this.animalBeingPurchased.home = this.newAnimalHome;
-                this.animalBeingPurchased.homeLocation = new Vector2((float)this.newAnimalHome.tileX, (float)this.newAnimalHome.tileY);
-                this.animalBeingPurchased.setRandomPosition(this.animalBeingPurchased.home.indoors);
-                (this.newAnimalHome.indoors as AnimalHouse).animals.Add(this.animalBeingPurchased.myID, this.animalBeingPurchased);
-                (this.newAnimalHome.indoors as AnimalHouse).animalsThatLiveHere.Add(this.animalBeingPurchased.myID);
+                this.animalBeingPurchased.homeLocation.Value = new Vector2((float)this.newAnimalHome.tileX.Value, (float)this.newAnimalHome.tileY.Value);
+                this.animalBeingPurchased.setRandomPosition(this.animalBeingPurchased.home.indoors.Value);
+                (this.newAnimalHome.indoors.Value as AnimalHouse).animals.Add(this.animalBeingPurchased.myID.Value, this.animalBeingPurchased);
+                (this.newAnimalHome.indoors.Value as AnimalHouse).animalsThatLiveHere.Add(this.animalBeingPurchased.myID.Value);
                 this.newAnimalHome = null;
                 this.namingAnimal = false;
-                Game1.player.money -= this.priceOfAnimal;
+                Game1.player.Money -= this.priceOfAnimal;
                 Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForReturnAfterPurchasingAnimal), 0.02f);
             }
         }
@@ -345,19 +345,19 @@ namespace FarmExpansion.Menus
                 Building buildingAt = currentFarm.getBuildingAt(tile);
                 if (buildingAt != null && !this.namingAnimal)
                 {
-                    if (buildingAt.buildingType.Contains(this.animalBeingPurchased.buildingTypeILiveIn))
+                    if (buildingAt.buildingType.Contains(this.animalBeingPurchased.buildingTypeILiveIn.Value))
                     {
-                        if ((buildingAt.indoors as AnimalHouse).isFull())
+                        if ((buildingAt.indoors.Value as AnimalHouse).isFull())
                         {
                             Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11321", new object[0]));
                         }
-                        else if (this.animalBeingPurchased.harvestType != 2)
+                        else if (this.animalBeingPurchased.harvestType.Value != 2)
                         {
                             this.namingAnimal = true;
                             this.newAnimalHome = buildingAt;
-                            if (this.animalBeingPurchased.sound != null && Game1.soundBank != null)
+                            if (this.animalBeingPurchased.sound.Value != null && Game1.soundBank != null)
                             {
-                                Cue expr_15B = Game1.soundBank.GetCue(this.animalBeingPurchased.sound);
+                                ICue expr_15B = Game1.soundBank.GetCue(this.animalBeingPurchased.sound.Value);
                                 expr_15B.SetVariable("Pitch", (float)(1200 + Game1.random.Next(-200, 201)));
                                 expr_15B.Play();
                             }
@@ -370,30 +370,30 @@ namespace FarmExpansion.Menus
                                 this.snapCursorToCurrentSnappedComponent();
                             }
                         }
-                        else if (Game1.player.money >= this.priceOfAnimal)
+                        else if (Game1.player.Money >= this.priceOfAnimal)
                         {
                             this.newAnimalHome = buildingAt;
                             this.animalBeingPurchased.home = this.newAnimalHome;
-                            this.animalBeingPurchased.homeLocation = new Vector2((float)this.newAnimalHome.tileX, (float)this.newAnimalHome.tileY);
-                            this.animalBeingPurchased.setRandomPosition(this.animalBeingPurchased.home.indoors);
-                            (this.newAnimalHome.indoors as AnimalHouse).animals.Add(this.animalBeingPurchased.myID, this.animalBeingPurchased);
-                            (this.newAnimalHome.indoors as AnimalHouse).animalsThatLiveHere.Add(this.animalBeingPurchased.myID);
+                            this.animalBeingPurchased.homeLocation.Value = new Vector2((float)this.newAnimalHome.tileX.Value, (float)this.newAnimalHome.tileY.Value);
+                            this.animalBeingPurchased.setRandomPosition(this.animalBeingPurchased.home.indoors.Value);
+                            (this.newAnimalHome.indoors.Value as AnimalHouse).animals.Add(this.animalBeingPurchased.myID.Value, this.animalBeingPurchased);
+                            (this.newAnimalHome.indoors.Value as AnimalHouse).animalsThatLiveHere.Add(this.animalBeingPurchased.myID.Value);
                             this.newAnimalHome = null;
                             this.namingAnimal = false;
-                            if (this.animalBeingPurchased.sound != null && Game1.soundBank != null)
+                            if (this.animalBeingPurchased.sound.Value != null && Game1.soundBank != null)
                             {
-                                Cue expr_2DC = Game1.soundBank.GetCue(this.animalBeingPurchased.sound);
+                                ICue expr_2DC = Game1.soundBank.GetCue(this.animalBeingPurchased.sound.Value);
                                 expr_2DC.SetVariable("Pitch", (float)(1200 + Game1.random.Next(-200, 201)));
                                 expr_2DC.Play();
                             }
-                            Game1.player.money -= this.priceOfAnimal;
+                            Game1.player.Money -= this.priceOfAnimal;
                             Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:PurchaseAnimalsMenu.cs.11324", new object[]
                             {
                                 this.animalBeingPurchased.displayType
                             }), Color.LimeGreen, 3500f));
-                            this.animalBeingPurchased = new FarmAnimal(this.animalBeingPurchased.type, MultiplayerUtility.getNewID(), Game1.player.uniqueMultiplayerID);
+                            this.animalBeingPurchased = new FarmAnimal(this.animalBeingPurchased.type.Value, ModEntry.ModHelper.Multiplayer.GetNewID(), Game1.player.UniqueMultiplayerID);
                         }
-                        else if (Game1.player.money < this.priceOfAnimal)
+                        else if (Game1.player.Money < this.priceOfAnimal)
                         {
                             Game1.dayTimeMoneyBox.moneyShakeTimer = 1000;
                         }
@@ -415,8 +415,8 @@ namespace FarmExpansion.Menus
                     }
                     else if (this.namingAnimal && this.randomButton.containsPoint(x, y))
                     {
-                        this.animalBeingPurchased.name = Dialogue.randomName();
-                        this.animalBeingPurchased.displayName = this.animalBeingPurchased.name;
+                        this.animalBeingPurchased.Name = Dialogue.randomName();
+                        this.animalBeingPurchased.displayName = this.animalBeingPurchased.Name;
                         this.textBox.Text = this.animalBeingPurchased.displayName;
                         this.randomButton.scale = this.randomButton.baseScale;
                         Game1.playSound("drumkit6");
@@ -441,15 +441,15 @@ namespace FarmExpansion.Menus
                 }
                 foreach (ClickableTextureComponent current in this.animalsToPurchase)
                 {
-                    if (current.containsPoint(x, y) && (current.item as Object).type == null)
+                    if (current.containsPoint(x, y) && (current.item as Object).Type == null)
                     {
                         int num = current.item.salePrice();
-                        if (Game1.player.money >= num)
+                        if (Game1.player.Money >= num)
                         {
                             Game1.globalFadeToBlack(new Game1.afterFadeFunction(this.setUpForAnimalPlacement), 0.02f);
                             Game1.playSound("smallSelect");
                             this.onFarm = true;
-                            this.animalBeingPurchased = new FarmAnimal(current.hoverText, MultiplayerUtility.getNewID(), Game1.player.uniqueMultiplayerID);
+                            this.animalBeingPurchased = new FarmAnimal(current.hoverText, ModEntry.ModHelper.Multiplayer.GetNewID(), Game1.player.UniqueMultiplayerID);
                             this.priceOfAnimal = num;
                         }
                         else
@@ -619,18 +619,18 @@ namespace FarmExpansion.Menus
                     Vector2 tile = new Vector2((float)((x + Game1.viewport.X) / Game1.tileSize), (float)((y + Game1.viewport.Y) / Game1.tileSize));
                     foreach (Building current in currentFarm.buildings)
                     {
-                        current.color = Color.White;
+                        current.color.Value = Color.White;
                     }
                     Building buildingAt = currentFarm.getBuildingAt(tile);
                     if (buildingAt != null)
                     {
-                        if (buildingAt.buildingType.Contains(this.animalBeingPurchased.buildingTypeILiveIn) && !(buildingAt.indoors as AnimalHouse).isFull())
+                        if (buildingAt.buildingType.Contains(this.animalBeingPurchased.buildingTypeILiveIn.Value) && !(buildingAt.indoors.Value as AnimalHouse).isFull())
                         {
-                            buildingAt.color = Color.LightGreen * 0.8f;
+                            buildingAt.color.Value = Color.LightGreen * 0.8f;
                         }
                         else
                         {
-                            buildingAt.color = Color.Red * 0.8f;
+                            buildingAt.color.Value = Color.Red * 0.8f;
                         }
                     }
                 }
@@ -683,7 +683,7 @@ namespace FarmExpansion.Menus
                     while (enumerator.MoveNext())
                     {
                         ClickableTextureComponent current = enumerator.Current;
-                        current.draw(b, ((current.item as Object).type != null) ? (Color.Black * 0.4f) : Color.White, 0.87f);
+                        current.draw(b, ((current.item as Object).Type != null) ? (Color.Black * 0.4f) : Color.White, 0.87f);
                     }
                     goto IL_2AE;
                 }
@@ -713,9 +713,9 @@ namespace FarmExpansion.Menus
             }
             if (this.hovered != null)
             {
-                if ((this.hovered.item as Object).type != null)
+                if ((this.hovered.item as Object).Type != null)
                 {
-                    IClickableMenu.drawHoverText(b, Game1.parseText((this.hovered.item as Object).type, Game1.dialogueFont, Game1.tileSize * 5), Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, -1, -1, -1, -1, 1f, null);
+                    IClickableMenu.drawHoverText(b, Game1.parseText((this.hovered.item as Object).Type, Game1.dialogueFont, Game1.tileSize * 5), Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, -1, -1, -1, -1, 1f, null);
                 }
                 else
                 {

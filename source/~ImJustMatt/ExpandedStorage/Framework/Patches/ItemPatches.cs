@@ -9,19 +9,19 @@
 *************************************************/
 
 using System.Diagnostics.CodeAnalysis;
-using Harmony;
-using ImJustMatt.Common.Patches;
-using ImJustMatt.ExpandedStorage.Framework.Controllers;
+using ExpandedStorage.Framework.Controllers;
+using HarmonyLib;
+using XSAutomate.Common.Patches;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 
-namespace ImJustMatt.ExpandedStorage.Framework.Patches
+namespace ExpandedStorage.Framework.Patches
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal class ItemPatches : BasePatch<ExpandedStorage>
     {
-        public ItemPatches(IMod mod, HarmonyInstance harmony) : base(mod, harmony)
+        public ItemPatches(IMod mod, Harmony harmony) : base(mod, harmony)
         {
             harmony.Patch(
                 AccessTools.Method(typeof(Item), nameof(Item.canStackWith), new[] {typeof(ISalable)}),

@@ -64,6 +64,8 @@ The way the assets system works is an 'order of priority' of sorts. The assets f
 
 The names for the images have to be exactly the same as in the **content.json** below with either **"Baby "** or **"Harvested "** concatenated on the front (obviously depending on if the sheet is for the baby or harvested varients).
 
+There is also a special prefix that is **"Harvestable "**, this will set the current 'adult' sprite sheet to be the 'harvested' sprite sheet, and the 'harvestable' sprite sheet will be set to the 'adult' sprite sheet.
+
 The only required asset is an adult sheet (see Lion example above), the animal will still have a child phase (unless specified in **content.json**), however, they will look exactly the same to their adult versions.
 
 Also, a "default" adult sheet (the one that is in the root of the assets folder) isn't required if each season has a valid adult sheet in its sub folder.
@@ -91,6 +93,7 @@ Also, a "default" adult sheet (the one that is in the root of the assets folder)
                 "IsIncubatable": true,
                 "Produce": [
                     {
+                        "UniqueName": "default",
                         "Action": "Add",
                         "DefaultProductId": "-1",
                         "DefaultProductMinFriendship": 0,
@@ -114,7 +117,8 @@ Also, a "default" adult sheet (the one that is in the root of the assets folder)
                         "RequiresCoopMaster": null,
                         "RequiresShepherd": null,
                         "StandardQualityOnly": false,
-                        "DoNotAllowDuplicates": false
+                        "DoNotAllowDuplicates": false,
+                        "ShowHarvestableSpriteSheet": true
                     }
                 ],
                 "DaysTillMature": 3,
@@ -215,6 +219,7 @@ RequiresCoopMaster              | `null`                                     | W
 RequiresShepherd                | `null`                                     | Whether the player must have the Shepherd profession for the animal to produce the item. **Note:** if `true` is specified then the farmer must have the Shepherd profession for the animal to drop the item, if `false` is specified then the farmer must not have the Shepherd profession for the animal to drop the item, if `null` is specified then it doesn't matter whether the farmer has it or not.
 StandardQualityOnly             | `false`                                    | Whether the product should be standard quality only.
 DoNotAllowDuplicates            | `false`                                    | Whether the item can not be produced if it's in the player possession. An object is in the players possession if it placed in an animal building or on the farm, in a farmer's inventory, or in a chest.
+ShowHarvestableSpriteSheet      | `true`                                     | Whether the produce is able to update the animals sprite sheet to 'harvestable' (if a harvestable sprite sheet is available).
 
 #### Special properties
 Property     | Description

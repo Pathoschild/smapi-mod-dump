@@ -44,7 +44,7 @@ namespace Swim
         public int MinOceanChests { get; set; }
         public int MaxOceanChests { get; set; }
         public bool SwimRestoresVitals { get; set; }
-
+        public SButton ManualJumpButton { get; set; }
 
         public ModConfig()
         {
@@ -77,6 +77,7 @@ namespace Swim
             MinOceanChests = 0;
             MaxOceanChests = 3;
             SwimRestoresVitals = false;
+            ManualJumpButton = SButton.MouseLeft;
         }
     }
 }

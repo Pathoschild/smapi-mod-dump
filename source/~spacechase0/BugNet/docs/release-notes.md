@@ -9,6 +9,14 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Added [a mod-provided API to let other mods register critter instances](README.md#for-mod-authors).
+* Fixed error items when not playing in English.
+* Fixed error items when catching an unsupported critter. (Unsupported critters will be ignored instead.)
+* Internal refactoring.
+* Improved translations. Thanks to Evelyon (added Spanish) and mcBegins2Snow (added Chinese)!
+
 ## 1.3.1
 Released 10 July 2021 for Stardew Valley 1.5. Updated by Pathoschild.
 

@@ -6,9 +6,9 @@ mods:
    Regular Quality
 
 latest commit:
-   commit 73a31af79b8c9d7de6b000e80f12508adc3a6312
+   commit c2287ddfcd8b3348c0bf118bf9b80a9ac944c15e
    Author: desto-git <desto-git@users.noreply.github.com>
-   Date:   Wed Dec 23 11:11:45 2020 +0100
+   Date:   Sun Aug 15 04:06:25 2021 +0200
    
-       [GD] recompile for sv 1.5, prefer log over throw
+       [GD] don't throw on a new save (for real this time)
    

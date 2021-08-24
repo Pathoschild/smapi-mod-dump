@@ -24,6 +24,8 @@
 // along with this program.  If not, see https://www.gnu.org/licenses/.
 
 using StardewModdingAPI;
+using StardewValley;
+using System.Linq;
 
 namespace ConfigurableSpecialOrdersUnlock
 {
@@ -46,9 +48,22 @@ namespace ConfigurableSpecialOrdersUnlock
 
 			helper.Events.GameLoop.GameLaunched += (sender, args) => ModConfigMenuHelper.TryLoadModConfigMenu();
 			helper.Events.GameLoop.SaveLoaded += (sender, args) => modAssetEditor.InvalidateCache();
+			helper.Events.GameLoop.SaveLoaded += (sender, args) => CleanUpSave();
 
 			if (SpecialOrdersPatch.ApplyHarmonyPatches())
 				Monitor.Log($"{ModManifest.Name}: Patches successfully applied");
+		}
+
+		private void CleanUpSave()
+		{
+			if (Game1.player.eventsSeen.Count(id => id == 15389722) > 1)
+			{
+				Monitor.Log("Duplicate event IDs detected - cleaning up save");
+
+				Game1.player.eventsSeen.Set(
+					Game1.player.eventsSeen.Distinct().ToArray()
+				);
+			}
 		}
 	}
 }

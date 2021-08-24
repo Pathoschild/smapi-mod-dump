@@ -16,7 +16,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using System.Collections.Generic;
-using Harmony;
+using HarmonyLib;
 
 
 namespace CustomTokens
@@ -63,7 +63,7 @@ namespace CustomTokens
                 helper.ConsoleCommands.Add("tracker", "Displays the current tracked values", this.DisplayInfo);
             }
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
             QuestData.Hook(harmony, this.Monitor);
         }
 

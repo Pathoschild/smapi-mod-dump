@@ -39,9 +39,12 @@ The available settings are:
 
 Name | Valid settings | Description
 -----|----------------|------------
-AllBushesAreDestroyable | **true** or false | If true, bushes at every in-game location will be destroyable. If false, bushes can only be destroyed at locations in the *DestroyableBushLocations* list.
-DestroyableBushLocations | A list of location names, e.g. `["farm", "forest", "woods"]` | A list of locations where bushes will be destroyable (if *AllBushesAreDestroyable* is false). Names should be in quotation marks and separated by commas. To find a location's name, you may need to use another mod such as [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679/).
 WhenBushesRegrow | A number and a unit of time, e.g. **"3 days"** (or *null* to never regrow bushes) | If the unit is "days", bushes will respawn after that number of days. "Seasons" (or "months") will respawn bushes after that many seasons (on the first day of the season). "Years" will respawn bushes after that many years (on the first day of Spring).
+DestroyableBushLocations | A list of location names, e.g. `["farm", "forest", "woods"]` | A list of locations where bushes will be destroyable. If the list is blank, bushes will be destroyable at all locations. Names should be in quotation marks and separated by commas. To find a location's name, you may need to use another mod such as [Debug Mode](https://www.nexusmods.com/stardewvalley/mods/679/).
+DestroyableBushTypes | N/A | The settings below control which types of bush will be destroyable.
+SmallBushes | **true** or false | If true, small bushes will be destoyable.
+MediumBushes | **true** or false | If true, medium bushes will be destoyable. These are the type that can produce berries.
+LargeBushes | **true** or false | If true, large bushes will be destoyable.
 AmountOfWoodDropped | N/A | The settings below control how many pieces of wood are dropped by each bush type when destroyed. Players with the Forester profession will receive 25% more wood.
 SmallBushes | A positive integer (default **2**) | The number of wood pieces dropped by small bushes when destroyed.
 MediumBushes | A positive integer (default **4**) | The number of wood pieces dropped by medium bushes when destroyed.

@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "Name": "Alternative Textures",
+  "Author": "PeacefulEnd",
+  "Version": "REPLACE_ME_WITH_VERSION",
+  "Description": "Framework which allows the usage of different textures for placeable items in Stardew Valley.",
+  "UniqueID": "PeacefulEnd.AlternativeTextures",
+  "EntryDll": "AlternativeTextures.dll",
+  "MinimumApiVersion": "3.11.0",
+  "UpdateKeys": [ "Nexus:9246" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

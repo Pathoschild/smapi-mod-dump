@@ -10,6 +10,15 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Updated for Stardew Valley 1.5.5.
+* Fixed able to level up spells with zero free points.
+* Fixed initial spells no longer learned immediately.
+* Fixed PyTK still marked as a requirement in the manifest.
+* Improved translations. Thanks to Evelyon (added Spanish)!
+
+## 0.5.5
+Released 01 August 2021 for SMAPI 3.12.0. Updated by Pathoschild.
+
 * Switching spell bar now requires holding the cast key, and no longer rotates your toolbar too (thanks to AWolters-ru!).
 * Fixed initial spells not learned if you bypass the learn-magic event.
 

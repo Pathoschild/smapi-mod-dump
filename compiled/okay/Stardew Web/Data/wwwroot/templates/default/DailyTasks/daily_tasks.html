@@ -2,10 +2,19 @@
 <html lang="en">
 <head>
 #HEAD#
-    <script src='/scripts/stardewweb.js'></script>
+  <script>
+      function LoadPageLoaded() {
+
+
+          document.getElementById("silo").src = "/asset/silo_usage.png?" + new Date().getTime();
+
+          SubPageLoaded('Farm', 'Tasks');
+      }
+
+  </script>
 
 </head>
-<body onload="PageLoaded('Tasks');">
+<body onload="LoadPageLoaded();">
    
         #MENUBAR#
 

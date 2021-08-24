@@ -11,6 +11,8 @@
 {
   "ScienceHouse_Carpenter_CommunityUpgrade1": "えっ、 なになに？パムに 家を 建てて あげたいの？それ いいわね！ それじゃあ 木材が {{woodPieces}}個と 費用は {{goldPieces}}g ってとこかな",
   "ScienceHouse_Carpenter_CommunityUpgrade2": "…どうしたの？谷の周りにいくつか近道を作って欲しいですって？もちろん、私ならできるよ！ {{goldPieces}}gは必要かな…",
-  "ScienceHouse_Carpenter_NotEnoughWood3": "ごめんなさい…お金は 足りてるけど、 木材も {{woodPieces}}個 必要なの"
+  "ScienceHouse_Carpenter_NotEnoughWood3": "ごめんなさい…お金は 足りてるけど、 木材も {{woodPieces}}個 必要なの",
+
+  "Robin_PamUpgrade_Accepted": "本当に やさしいのね！改築は 明日から 始めるわ。だいたい {{daysUpgrade}}日ぐらい かかるかな。"
 
 }

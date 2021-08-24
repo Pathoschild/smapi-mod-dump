@@ -1,0 +1,10 @@
+{
+  "Name": "Item Recovery",
+  "Author": "Mysty",
+  "Version": "1.0.1-beta",
+  "Description": "Recover all lost items from Adventurers Guild.",
+  "UniqueID": "Mysty.ItemRecovery",
+  "EntryDll": "ItemRecovery.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9354" ]
+}

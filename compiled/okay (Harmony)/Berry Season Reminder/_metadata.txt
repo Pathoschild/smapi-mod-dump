@@ -1,3 +1,3 @@
-page URL: https://stardewvalley.curseforge.com/projects/berry-season-reminder
+page URL: https://www.nexusmods.com/stardewvalley/mods/9315
 IDs: com.anthonyhilyard.berryseasonreminder
-update keys: GitHub:AHilyard/BerrySeasonReminder
+update keys: Nexus:9315, GitHub:AHilyard/BerrySeasonReminder

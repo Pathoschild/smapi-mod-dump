@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9296
+IDs: Esca.EMP
+update keys: Nexus:9296, GitHub:Esca-MMC/EscasModdingPlugins, ModDrop:1005443

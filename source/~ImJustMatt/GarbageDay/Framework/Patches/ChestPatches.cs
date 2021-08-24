@@ -10,18 +10,18 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Harmony;
-using ImJustMatt.Common.Patches;
+using HarmonyLib;
+using XSAutomate.Common.Patches;
 using StardewModdingAPI;
 using StardewValley.Objects;
 
-namespace ImJustMatt.GarbageDay.Framework.Patches
+namespace GarbageDay.Framework.Patches
 {
     [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter")]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     internal class ChestPatches : BasePatch<GarbageDay>
     {
-        public ChestPatches(IMod mod, HarmonyInstance harmony) : base(mod, harmony)
+        public ChestPatches(IMod mod, Harmony harmony) : base(mod, harmony)
         {
             harmony.Patch(
                 AccessTools.Method(typeof(Chest), nameof(Chest.ShowMenu)),

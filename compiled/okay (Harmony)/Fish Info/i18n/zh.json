@@ -1,0 +1,24 @@
+﻿//Chinese translation provided by zeled520
+//https://github.com/zeled520/Chinese-translation-txt/blob/main/Stardew%20Valley/FishInfo%5BSirSpeshkitty%5D%20%20zh.json
+{
+  "location.prefix": "出现地区",
+  "location.none": "未知 - 矿山/事件?",
+  "location.crabpot": "蟹肉锅: {{location}}",
+  "location.ocean": "海洋",
+  "location.freshwater": "淡水",
+  "location.forestriver": "森林河",
+  "location.forestpond": "森林塘",
+  "location.bugland": "荒原",
+  "location.witchswamp": "巫婆沼泽",
+  "season.prefix": "季节",
+  "season.all": "所有季节",
+  "season.none": "没有找到条目",
+  "time.prefix": "时间",
+  "time.allday": "全天",
+  "time.midday": "中午",
+  "time.midnight": "午夜",
+  "weather.prefix": "天气",
+  "weather.sun": "晴天",
+  "weather.rain": "雨天",
+  "weather.none": "没有找到条目"
+}

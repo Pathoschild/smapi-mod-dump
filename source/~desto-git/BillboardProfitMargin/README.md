@@ -24,5 +24,18 @@ Compatible with:
 
 ## Configuration
 
-- `UseProfitMargin: bool` = Use the profit margin (`true`), or use the custom amount (`false`)
-- `CustomQuestMargin: float` = Multiplier for quest rewards. `1.0` = no change, `0.5` = half, `2.0` = double
+- `UseProfitMargin: bool` = (Pierre's) Use the profit margin (`true`), or use the custom amount (`false`)
+- `CustomProfitMargin: float` = (Pierre's) Multiplier for quest rewards. `1.0` = no change, `0.5` = half, `2.0` = double
+- `UseProfitMarginForSpecialOrders: bool` = (Lewis') Use the profit margin (`true`), or use the custom amount (`false`)
+- `CustomProfitMarginForSpecialOrders: float` = (Lewis') Multiplier for quest rewards. `1.0` = no change, `0.5` = half, `2.0` = double
+
+## Existing save
+
+This mod can be used on an existing save.
+
+For special orders (the board in front of Lewis' house),
+please note however that only newly accepted quests will have their reward updated,
+and that those quests rewards remain after you remove the mod again.
+New quests after mod removal will have their original reward value again.
+
+Reason being that special order rewards are already written to the save file by the game once the quest has been accepted.

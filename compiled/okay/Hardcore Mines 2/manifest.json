@@ -1,7 +1,7 @@
 {
   "Name": "Hardcore Mine 2",
   "Author": "ItsLittany",
-  "Version": "1.3.5",
+  "Version": "1.3.6",
   "Description": "Updated version of Hardcore Mines works with 1.5",
   "UniqueID": "itslittany.HardcoreMines2",
   "EntryDll": "HardcoreMines2.dll",

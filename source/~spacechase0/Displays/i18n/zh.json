@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "mannequin.desc": "把衣服、帽子或靴子放在上面。",
+    "mannequin.name.plain-male": "普通男性人体模型",
+    "mannequin.name.plain-female": "普通女性人体模型",
+    "mannequin.name.magic-male": "魔法男性人体模型",
+    "mannequin.name.magic-female": "魔法女性人体模型"
+}

@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "ItemName": "Heavy Tapper",
+  "Type": "Craftable",
+  "TextureWidth": 16,
+  "TextureHeight": 32,
+  "Keywords": [ "Heavy Tapper" ],
+  "ManualVariations": [
+    {
+      "Id": -1, // Note: -1 is the default vanilla texture. It is not required to give it, though allows user to 
+      "ChanceWeight": 0.5
+    },
+    {
+      "Id": 0,
+      "ChanceWeight": 0.5,
+      "Keywords": [ "Pink" ]
+    },
+    {
+      "Id": 1,
+      "ChanceWeight": 0.5,
+      "Keywords": [ "Blue" ]
+    }
+  ]
+}

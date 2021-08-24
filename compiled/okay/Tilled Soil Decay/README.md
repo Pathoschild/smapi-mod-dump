@@ -6,12 +6,15 @@ Prevents watered tilled soil from disappearing during the night. If you only wan
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `DryDecayRate`: Amount of tilled soil that will disappear. Normally this is 0.1 (=10%). Default = 0.5.
-* `DecayDelay`: Number of days that the patch must have been without water, before it can disappear during the night. Default = 2.
-* `DryDecayRateFirstOfMonth`: Amount of tilled soil that will disappear at the start of a new month. Normally this is 0.8 (=80%). Default = 1.
-* `DecayDelayFirstOfMonth`: Number of days that the patch must have been without water, before it can disappear during the night at the end of the month. Default = 1.
-* `DryDecayRateGreenhouse`: Amount of tilled soil that will disappear in the greenhouse. Normally this is 1.0 (=100%). Default = 1.
-* `DecayDelayGreenhouse`: Number of days that the patch must have been without water, before it disappears in the greenhouse and other non-farm locations. Default = 1.
+* `EachNight`: How soil decays every night
+* `FirstOfMonth`: How soil decays at the start of a new month
+* `Greenhouse`: How soil decays inside the greenhouse
+* `Island`: How soil decays on Ginger Island
+* `NonFarm`: How soil decays outside the farm
+
+Each of the previous 5 settings consists of two options.
+* `DryingRate`: Chance that tilled soil will disappear. On the farm this is normally 0.1 (=10%), but this mod increases it to 0.5 (=50%).
+* `Delay`: Number of consecutive days that the patch must have been without water, before it can disappear during the night. Normally this is 0, but for the farm this mod sets it to 2. Note that rain waters the patch and thus resets the days without water counter to 0.
 
 ## Dependencies
 This mod requires the following mods to be installed:
@@ -35,4 +38,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 4.0:
 * Added integration for [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
 * Add 64-bit support
+
+#### 5.1:
+* Add support for Ginger Island
 

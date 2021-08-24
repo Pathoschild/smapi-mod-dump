@@ -83,5 +83,9 @@
 	"GenericMC.SplitScreen3": "Podzielony Ekran 3: Lewy Dolny",
 	"GenericMC.SplitScreen4": "Podzielony Ekran 4: Prawy Dolny",
 
+	"GenericMC.barColors": "Ustawienia Kolorów",
+	"GenericMC.barBackgroundColor": "Kolor Tła",
+	"GenericMC.barTextColor": "Kolor Tekstu",
+
 	"Bar.CrabMineWarning": "Zły pomysł: Pułapki na kraby umieszczone w kopalniach, zostaną utracone po wyjściu."
 }
