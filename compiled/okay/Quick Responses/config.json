@@ -2,5 +2,10 @@
   "EnableMod": true,
   "SelectFirstResponseKey": "E",
   "ShowNumbers": true,
-  "NumberColor": "0, 0, 0, 255"
+  "NumberColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  }
 }

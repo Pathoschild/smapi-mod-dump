@@ -1,7 +1,12 @@
 {
   "ConfigKey": "K",
   "HighlightKey": "F3",
-  "GridColour": "176, 224, 230, 255",
+  "GridColour": {
+    "B": 230,
+    "G": 224,
+    "R": 176,
+    "A": 255
+  },
   "SprinklerShapes": {
     "599": [
       [

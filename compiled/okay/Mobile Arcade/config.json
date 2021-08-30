@@ -1,7 +1,17 @@
 {
   "EnableMod": true,
-  "BackgroundColor": "41, 57, 106, 255",
-  "PostBackgroundColor": "255, 255, 255, 255",
+  "BackgroundColor": {
+    "B": 106,
+    "G": 57,
+    "R": 41,
+    "A": 255
+  },
+  "PostBackgroundColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
   "PostMarginX": 16,
   "PostMarginY": 16,
   "PostHeight": 128

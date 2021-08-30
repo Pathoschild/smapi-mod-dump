@@ -10,8 +10,18 @@
     "hideAtFestivals": false,
     "maxWidth": 600,
     "maxItems": 10,
-    "backgroundColor": "0, 0, 0, 50",
-    "textColor": "203, 203, 203, 203",
+    "backgroundColor": {
+      "B": 0,
+      "G": 0,
+      "R": 0,
+      "A": 50
+    },
+    "textColor": {
+      "B": 203,
+      "G": 203,
+      "R": 203,
+      "A": 203
+    },
     "offsetX": 0,
     "offsetY": 0
   }

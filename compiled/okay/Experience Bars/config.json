@@ -1,18 +1,71 @@
 {
   "ToggleBars": "X",
-  "Position": "10, 10",
+  "Position": {
+    "X": 10,
+    "Y": 10
+  },
   "BaseColors": {
-    "BarBorder": "184, 134, 11, 255",
-    "BarBackground": "0, 0, 0, 255",
-    "BarBackgroundTick": "50, 50, 50, 255",
-    "BarForegroundTick": "120, 120, 120, 255"
+    "BarBorder": {
+      "B": 11,
+      "G": 134,
+      "R": 184,
+      "A": 255
+    },
+    "BarBackground": {
+      "B": 0,
+      "G": 0,
+      "R": 0,
+      "A": 255
+    },
+    "BarBackgroundTick": {
+      "B": 50,
+      "G": 50,
+      "R": 50,
+      "A": 255
+    },
+    "BarForegroundTick": {
+      "B": 120,
+      "G": 120,
+      "R": 120,
+      "A": 255
+    }
   },
   "SkillColors": {
-    "Combat": "178, 255, 211, 255",
-    "Farming": "115, 255, 56, 255",
-    "Fishing": "117, 225, 255, 255",
-    "Foraging": "205, 127, 50, 255",
-    "Luck": "255, 255, 84, 255",
-    "Mining": "247, 31, 0, 255"
+    "Combat": {
+      "B": 211,
+      "G": 255,
+      "R": 178,
+      "A": 255
+    },
+    "Farming": {
+      "B": 56,
+      "G": 255,
+      "R": 115,
+      "A": 255
+    },
+    "Fishing": {
+      "B": 255,
+      "G": 225,
+      "R": 117,
+      "A": 255
+    },
+    "Foraging": {
+      "B": 50,
+      "G": 127,
+      "R": 205,
+      "A": 255
+    },
+    "Luck": {
+      "B": 84,
+      "G": 255,
+      "R": 255,
+      "A": 255
+    },
+    "Mining": {
+      "B": 0,
+      "G": 31,
+      "R": 247,
+      "A": 255
+    }
   }
 }

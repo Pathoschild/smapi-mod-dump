@@ -34,12 +34,42 @@
   "PriceMult": 1.0,
   "AppHeaderHeight": 32,
   "AppRowHeight": 32,
-  "BackgroundColor": "255, 255, 255, 255",
-  "HighlightColor": "230, 230, 255, 255",
-  "GreyedColor": "230, 230, 230, 255",
-  "HeaderColor": "100, 100, 200, 255",
-  "TextColor": "0, 0, 0, 255",
-  "HeaderTextColor": "255, 255, 255, 255",
+  "BackgroundColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "HighlightColor": {
+    "B": 255,
+    "G": 230,
+    "R": 230,
+    "A": 255
+  },
+  "GreyedColor": {
+    "B": 230,
+    "G": 230,
+    "R": 230,
+    "A": 255
+  },
+  "HeaderColor": {
+    "B": 200,
+    "G": 100,
+    "R": 100,
+    "A": 255
+  },
+  "TextColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  },
+  "HeaderTextColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
   "MarginX": 4,
   "MarginY": 4,
   "HeaderTextScale": 0.5,

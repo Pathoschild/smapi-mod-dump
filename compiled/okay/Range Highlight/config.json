@@ -17,11 +17,46 @@
   "ShowBeehouseRangeKey": "H",
   "ShowJunimoRangeKey": "J",
   "hotkeysToggle": false,
-  "JunimoRangeTint": "178, 178, 178, 178",
-  "SprinklerRangeTint": "153, 153, 230, 178",
-  "ScarecrowRangeTint": "153, 255, 153, 178",
-  "BeehouseRangeTint": "255, 255, 153, 178",
-  "BombRangeTint": "255, 128, 128, 153",
-  "BombInnerRangeTint": "255, 178, 128, 26",
-  "BombOuterRangeTint": "255, 178, 128, 204"
+  "JunimoRangeTint": {
+    "B": 178,
+    "G": 178,
+    "R": 178,
+    "A": 178
+  },
+  "SprinklerRangeTint": {
+    "B": 230,
+    "G": 153,
+    "R": 153,
+    "A": 178
+  },
+  "ScarecrowRangeTint": {
+    "B": 153,
+    "G": 255,
+    "R": 153,
+    "A": 178
+  },
+  "BeehouseRangeTint": {
+    "B": 153,
+    "G": 255,
+    "R": 255,
+    "A": 178
+  },
+  "BombRangeTint": {
+    "B": 128,
+    "G": 128,
+    "R": 255,
+    "A": 153
+  },
+  "BombInnerRangeTint": {
+    "B": 128,
+    "G": 178,
+    "R": 255,
+    "A": 26
+  },
+  "BombOuterRangeTint": {
+    "B": 128,
+    "G": 178,
+    "R": 255,
+    "A": 204
+  }
 }

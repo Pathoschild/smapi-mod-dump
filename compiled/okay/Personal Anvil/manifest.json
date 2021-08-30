@@ -6,5 +6,8 @@
   "UniqueID": "Strobe.PersonalAnvil",
   "EntryDll": "PersonalAnvil.dll",
   "MinimumApiVersion": "3.2.2",
-  "UpdateKeys": ["Nexus:5326"]
+  "UpdateKeys": ["Nexus:5326"],
+  "Dependencies": [
+    { "UniqueID": "spacechase0.JsonAssets" } // added locally
+  ]
 }

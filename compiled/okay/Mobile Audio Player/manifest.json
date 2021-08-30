@@ -18,5 +18,6 @@
         "UniqueID": "Platonymous.ModUpdater",
         "IsRequired": false
       },
+      { "UniqueID": "aedenthorn.MobilePhone" } // added locally
   ]
 }

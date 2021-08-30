@@ -2,12 +2,42 @@
   "EnableMod": true,
   "ListLineOne": "{1}",
   "ListLineTwo": "{2} - {3}",
-  "BackgroundColor": "25, 60, 107, 255",
-  "LineOneColor": "255, 255, 255, 255",
-  "LineTwoColor": "211, 211, 211, 255",
-  "HighlightColor": "90, 139, 227, 255",
-  "ButtonBarColor": "169, 169, 169, 255",
-  "VolumeBarColor": "0, 255, 0, 255",
+  "BackgroundColor": {
+    "B": 107,
+    "G": 60,
+    "R": 25,
+    "A": 255
+  },
+  "LineOneColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "LineTwoColor": {
+    "B": 211,
+    "G": 211,
+    "R": 211,
+    "A": 255
+  },
+  "HighlightColor": {
+    "B": 227,
+    "G": 139,
+    "R": 90,
+    "A": 255
+  },
+  "ButtonBarColor": {
+    "B": 169,
+    "G": 169,
+    "R": 169,
+    "A": 255
+  },
+  "VolumeBarColor": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  },
   "MarginX": 4.0,
   "MarginY": 4,
   "VolumeBarWidth": 8,

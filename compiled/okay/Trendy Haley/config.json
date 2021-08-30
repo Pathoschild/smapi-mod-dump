@@ -1,7 +1,12 @@
 {
   "SaveGame": {
     "Alex_180579228": {
-      "HairColor": "1, 143, 203, 255",
+      "HairColor": {
+        "B": 203,
+        "G": 143,
+        "R": 1,
+        "A": 255
+      },
       "ColorIsFading": true,
       "AlphaBlend": false,
       "SpouseLookAlike": false

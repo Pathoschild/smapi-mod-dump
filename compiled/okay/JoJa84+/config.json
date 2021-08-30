@@ -2,9 +2,24 @@
   "HotKey": "F9",
   "EnableHotKey": true,
   "EnableMobileApp": true,
-  "AppBackgroundColor": "255, 200, 120, 255",
-  "InputColor": "0, 0, 0, 255",
-  "PrevInputColor": "100, 100, 100, 255",
+  "AppBackgroundColor": {
+    "B": 120,
+    "G": 200,
+    "R": 255,
+    "A": 255
+  },
+  "InputColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  },
+  "PrevInputColor": {
+    "B": 100,
+    "G": 100,
+    "R": 100,
+    "A": 255
+  },
   "AppMarginX": 5,
   "AppMarginY": 5
 }

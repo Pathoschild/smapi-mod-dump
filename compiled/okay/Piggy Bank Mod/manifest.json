@@ -5,5 +5,9 @@
     "Description": "Adds a piggy bank to store gold",
     "UniqueID": "MindMeltMax.PiggyBank",
     "UpdateKeys": [ "Nexus:6934" ],
-    "EntryDll": "Piggy Bank Mod.dll"
+    "EntryDll": "Piggy Bank Mod.dll",
+
+    "Dependencies": [
+        { "UniqueID": "spacechase0.JsonAssets" } // added locally
+    ]
 }
