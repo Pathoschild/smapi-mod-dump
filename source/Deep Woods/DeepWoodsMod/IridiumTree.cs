@@ -20,7 +20,7 @@ using static DeepWoodsMod.DeepWoodsSettings;
 
 namespace DeepWoodsMod
 {
-    class IridiumTree : ResourceClump
+    public class IridiumTree : ResourceClump
     {
         private const int TREE_TOP_TILE_INDEX = 0;
         private const int TREE_TRUNK_TILE_INDEX = 26;

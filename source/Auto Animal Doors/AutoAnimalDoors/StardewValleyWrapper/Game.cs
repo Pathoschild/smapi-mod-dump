@@ -9,6 +9,7 @@
 *************************************************/
 
 
+using System;
 using System.Collections.Generic;
 
 namespace AutoAnimalDoors.StardewValleyWrapper
@@ -45,17 +46,27 @@ namespace AutoAnimalDoors.StardewValleyWrapper
             {
                 List<Farm> farms = new List<Farm>();
                 farms.Add(new Farm(StardewValley.Game1.getFarm()));
-
+                Console.Write(String.Format("First farm {0}", StardewValley.Game1.getFarm().name));
                 // Look for custom farms as well
                 foreach (StardewValley.GameLocation location in StardewValley.Game1.locations) {
-                    if (location.GetType().IsSubclassOf(typeof(StardewValley.Farm)))
+                    if (IsLocationAFarm(location))
                     {
+                        Console.Write(String.Format("Got farm {0}", location.name));
                         farms.Add(new Farm((StardewValley.Farm)location));
                     }
                 }
                 return farms;
             }
+        }
+        
+        private bool IsLocationAFarm(StardewValley.GameLocation location)
+        {
+            return location.GetType().IsSubclassOf(typeof(StardewValley.Farm));
+        }
 
+        public bool IsPlayerAtTheFarm()
+        {
+            return IsLocationAFarm(StardewValley.Game1.currentLocation);
         }
 
         public bool IsLoaded()

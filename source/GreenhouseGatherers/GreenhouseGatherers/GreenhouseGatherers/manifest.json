@@ -18,9 +18,13 @@
   "MinimumApiVersion": "3.0.0",
   "UpdateKeys": [ "Nexus:7619" ],
   "Dependencies": [
-   {
-      "UniqueID": "spacechase0.JsonAssets",
+    {
+      "UniqueID": "spacechase0.DynamicGameAssets",
       "IsRequired": true
-   }
-]
+    },
+    {
+      "UniqueID": "furyx639.ExpandedStorage",
+      "IsRequired": true
+    }
+  ]
 }

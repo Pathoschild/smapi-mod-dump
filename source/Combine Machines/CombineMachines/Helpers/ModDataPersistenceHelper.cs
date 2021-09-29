@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -44,7 +44,7 @@ namespace CombineMachines.Helpers
             helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
             helper.Events.World.ObjectListChanged += World_ObjectListChanged;
 
-            HarmonyInstance Harmony = HarmonyInstance.Create(ModEntry.ModInstance.ModManifest.UniqueID);
+            Harmony Harmony = new Harmony(ModEntry.ModInstance.ModManifest.UniqueID);
 
             //  EDIT: These patches probably aren't needed anymore? I think a hotfix update added similar logic to the vanilla game somewhere around Update 1.5.1 or 1.5.2
             //  Patch Item.getOne to copy the modData to the return value

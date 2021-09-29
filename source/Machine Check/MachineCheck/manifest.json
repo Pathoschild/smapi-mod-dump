@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FairfieldBW/MachineCheck
+**
+*************************************************/
+
+{
+  "Name": "MachineCheck",
+  "Author": "FairfieldBW",
+  "Version": "1.0.1",
+  "Description": "This mod checks machines on a specific tile to see if they are ready to harvest.",
+  "UniqueID": "FairfieldBW.MachineCheck",
+  "EntryDll": "MachineCheck.dll",
+  "MinimumApiVersion": "3.0.0"
+}

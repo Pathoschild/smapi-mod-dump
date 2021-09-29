@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/barteke22/StardewMods
+   Git: https://github.com/barteke22/StardewMods.git
+
+mods:
+   Custom Spouse Location
+   Fishing Info Overlays
+   Fishing Minigames
+   Fishing Minigames
+
+latest commit:
+   commit 852f30ff623a23ef909c986f61ebc2360137b199
+   Author: barteke22 <bartosz2008@hotmail.com>
+   Date:   Wed Sep 29 18:20:47 2021 +0200
+   
+       Render/Button Null Fix
+   

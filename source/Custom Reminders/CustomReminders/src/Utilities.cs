@@ -63,7 +63,7 @@ namespace Dem1se.CustomReminders.Utilities
     }
 
     /// <summary>Contains methods related to parsing/converting formats for data of this mod.</summary>
-    static class Converts
+    static class Convert
     {
         /// <summary>
         /// Returns the SDate.DaysSinceStart() int equivalent given the date season and year
@@ -72,7 +72,7 @@ namespace Dem1se.CustomReminders.Utilities
         /// <param name="season"></param>
         /// <param name="year"></param>
         /// <returns>Returns int of DaysSinceStart</returns>
-        public static int ConvertToDays(int date, int season, int year)
+        public static int ToDaysSinceStart(int date, int season, int year)
         {
             return (season * 28) + ((year - 1) * 112) + date;
         }
@@ -82,7 +82,7 @@ namespace Dem1se.CustomReminders.Utilities
         /// </summary>
         /// <param name="daysSinceStart">The DaysSinceStart of the date to convert</param>
         /// <returns></returns>
-        public static string ConvertToPrettyDate(int daysSinceStart)
+        public static string ToPrettyDate(int daysSinceStart)
         {
             int remainderAfterYears = daysSinceStart % 112;
             int years = (daysSinceStart - remainderAfterYears) / 112;
@@ -121,17 +121,18 @@ namespace Dem1se.CustomReminders.Utilities
             return $"{monthStr} {day}, {Utilities.Globals.Helper.Translation.Get("date.year")} {years + 1}";
         }
 
+
         /// <summary>
         /// Converts the 24hrs time int to 12hrs string
         /// </summary>
         /// <param name="timeIn24"></param>
         /// <returns></returns>
-        public static string ConvertToPrettyTime(int timeIn24)
+        public static string ToPrettyTime(int timeIn24)
         {
             string prettyTime;
             if (timeIn24 <= 1230) // Pre noon
             {
-                prettyTime = Convert.ToString(timeIn24);
+                prettyTime = System.Convert.ToString(timeIn24);
                 if (prettyTime.EndsWith("00")) // ends with 00
                 {
                     prettyTime = timeIn24 <= 930 ? prettyTime.Remove(1) : prettyTime.Remove(2);
@@ -153,10 +154,14 @@ namespace Dem1se.CustomReminders.Utilities
             }
             else // after noon
             {
-                prettyTime = Convert.ToString(timeIn24 - 1200);
+                prettyTime = System.Convert.ToString(timeIn24 - 1200);
                 if (prettyTime.EndsWith("00")) // ends with 00
                 {
-                    prettyTime = prettyTime.Replace("00", " ");
+                    if (prettyTime == "1000")
+                        prettyTime = prettyTime.Remove(2);
+                    else
+                        prettyTime = prettyTime.Replace("00", " ");
+
                     if (prettyTime.StartsWith("0"))
                         prettyTime = prettyTime.Replace("0", " ");
                     prettyTime = prettyTime.Trim();
@@ -176,7 +181,7 @@ namespace Dem1se.CustomReminders.Utilities
     }
 
     /// <summary>Contains methods related to reading and writing to files for this mod.</summary>
-    static class Files
+    static class File
     {
         /// <summary>
         /// This function will write the reminder to the json file reliably.
@@ -184,18 +189,18 @@ namespace Dem1se.CustomReminders.Utilities
         /// <param name="reminderMessage">The message that will pop up in reminder</param>
         /// <param name="daysSinceStart">The date converted to DaysSinceStart</param>
         /// <param name="time">The time of the reminder in 24hrs format</param>
-        public static void WriteToFile(string reminderMessage, int daysSinceStart, int time)
+        public static void Write(string reminderMessage, int daysSinceStart, int time, int interval)
         {
-            ReminderModel ReminderData = new ReminderModel(reminderMessage, daysSinceStart, time);
+            ReminderModel ReminderData = new ReminderModel(reminderMessage, daysSinceStart, time, interval);
             string pathToWrite = Path.Combine(Globals.Helper.DirectoryPath, "data", Globals.SaveFolderName);
             string serializedReminderData = JsonConvert.SerializeObject(ReminderData, Formatting.Indented);
             int reminderCount = 0;
             bool bWritten = false;
             while (!bWritten)
             {
-                if (!File.Exists(Path.Combine(pathToWrite, $"reminder_{daysSinceStart}_{time}_{reminderCount}.json")))
+                if (!System.IO.File.Exists(Path.Combine(pathToWrite, $"reminder_{daysSinceStart}_{time}_{reminderCount}.json")))
                 {
-                    File.WriteAllText(Path.Combine(pathToWrite, $"reminder_{daysSinceStart}_{time}_{reminderCount}.json"), serializedReminderData);
+                    System.IO.File.WriteAllText(Path.Combine(pathToWrite, $"reminder_{daysSinceStart}_{time}_{reminderCount}.json"), serializedReminderData);
                     bWritten = true;
                 }
                 else
@@ -215,7 +220,7 @@ namespace Dem1se.CustomReminders.Utilities
             {
                 if (reminderIndex == iterationIndex)
                 {
-                    File.Delete(path);
+                    System.IO.File.Delete(path);
                     iterationIndex++;
                 }
                 else

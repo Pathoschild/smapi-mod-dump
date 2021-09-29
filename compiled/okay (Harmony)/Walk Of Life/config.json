@@ -1,12 +1,16 @@
 {
-  "UseModdedProfessionIcons": true,
-  "ModKey": "LeftShift, LeftShoulder",
-  "ArtisanLevelUpDifficulty": 0,
+  "Modkey": "LeftShift, LeftShoulder",
+  "SuperModeKey": "LeftShift, LeftShoulder",
+  "HoldKeyToActivateSuperMode": true,
+  "SuperModeActivationDelay": 1.0,
+  "SuperModeDrainFactor": 3,
   "ForagesNeededForBestQuality": 500,
   "MineralsNeededForBestQuality": 500,
   "ChanceToStartTreasureHunt": 0.2,
   "TreasureHuntHandicap": 1.0,
   "TreasureDetectionDistance": 3.0,
-  "TrashNeededForNextTaxLevel": 100,
-  "TaxBonusCeiling": 0.37
+  "TrashNeededPerTaxLevel": 100,
+  "TrashNeededPerFriendshipPoint": 10,
+  "TaxDeductionCeiling": 0.25,
+  "EnableILCodeExport": true
 }

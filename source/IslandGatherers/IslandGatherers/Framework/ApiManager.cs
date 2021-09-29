@@ -13,30 +13,36 @@ using IslandGatherers.Framework.Interfaces;
 
 namespace IslandGatherers.Framework
 {
-    internal static class ApiManager
+    public static class ApiManager
     {
-        private static IJsonAssetsApi jsonAssetsApi;
-        private static IExpandedStorageApi expandedStorageApi;
+        private static DynamicGameAssetsApi dynamicGameAssets;
+        private static IExpandedStorageAPI expandedStorageApi;
         private static IGenericModConfigMenuAPI genericModConfigMenuApi;
 
-        internal static bool HookIntoJsonAssets(IModHelper helper)
+        public static void HookIntoDynamicGameAssets(IModHelper helper)
         {
-            jsonAssetsApi = helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+            // Attempt to hook into the IMobileApi interface
+            dynamicGameAssets = helper.ModRegistry.GetApi<DynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
 
-            if (jsonAssetsApi is null)
+            if (dynamicGameAssets is null)
             {
-                IslandGatherers.monitor.Log("Failed to hook into spacechase0.JsonAssets.", LogLevel.Error);
-                return false;
+                IslandGatherers.monitor.Log("Failed to hook into spacechase0.DynamicGameAssets.", LogLevel.Error);
+                return;
             }
 
-            IslandGatherers.monitor.Log("Successfully hooked into spacechase0.JsonAssets.", LogLevel.Debug);
-            return true;
+            IslandGatherers.monitor.Log("Successfully hooked into spacechase0.DynamicGameAssets.", LogLevel.Debug);
         }
+
+        public static DynamicGameAssetsApi GetDynamicGameAssetsInterface()
+        {
+            return dynamicGameAssets;
+        }
+
 
         public static bool HookIntoExpandedStorage(IModHelper helper)
         {
             // Attempt to hook into the IMobileApi interface
-            expandedStorageApi = helper.ModRegistry.GetApi<IExpandedStorageApi>("furyx639.ExpandedStorage");
+            expandedStorageApi = helper.ModRegistry.GetApi<IExpandedStorageAPI>("furyx639.ExpandedStorage");
 
             if (expandedStorageApi is null)
             {
@@ -62,12 +68,7 @@ namespace IslandGatherers.Framework
             return true;
         }
 
-        internal static IJsonAssetsApi GetJsonAssetsApi()
-        {
-            return jsonAssetsApi;
-        }
-
-        internal static IExpandedStorageApi GetExpandedStorageApi()
+        internal static IExpandedStorageAPI GetExpandedStorageApi()
         {
             return expandedStorageApi;
         }
@@ -75,6 +76,10 @@ namespace IslandGatherers.Framework
         public static IGenericModConfigMenuAPI GetGMCMInterface()
         {
             return genericModConfigMenuApi;
+        }
+        public static string GetParrotPotModDataFlag()
+        {
+            return IslandGatherers.parrotPotFlag;
         }
     }
 }

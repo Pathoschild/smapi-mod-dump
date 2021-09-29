@@ -24,14 +24,15 @@ namespace EscasModdingPlugins
     /// <summary>Allows customization of which fishing "zones" and locations are used from the "Data/Locations" asset. Uses a custom data asset and/or tile properties.</summary>
     public static class HarmonyPatch_FishLocations
     {
-        /// <summary>True if this patch is currently applied.</summary>
-        public static bool Applied { get; private set; } = false;
-        /// <summary>The SMAPI monitor to use for log messages.</summary>
-        private static IMonitor Monitor { get; set; } = null;
         /// <summary>The name of the data asset used by this patch.</summary>
         public static string AssetName { get; set; } = null;
         /// <summary>The name of the tile property used by this patch.</summary>
         public static string TilePropertyName { get; set; } = null;
+
+        /// <summary>True if this patch is currently applied.</summary>
+        public static bool Applied { get; private set; } = false;
+        /// <summary>The SMAPI monitor to use for log messages.</summary>
+        private static IMonitor Monitor { get; set; } = null;
 
         /// <summary>Applies this Harmony patch to the game.</summary>
         /// <param name="harmony">The <see cref="Harmony"/> created with this mod's ID.</param>

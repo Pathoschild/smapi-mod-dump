@@ -8,7 +8,9 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace GreenhouseGatherers
@@ -16,6 +18,8 @@ namespace GreenhouseGatherers
     public static class ModResources
     {
         private static IMonitor monitor;
+        internal static Texture2D emptyStatue;
+        internal static Texture2D filledStatue;
 
         public static void LoadMonitor(IMonitor iMonitor)
         {
@@ -25,6 +29,12 @@ namespace GreenhouseGatherers
         public static IMonitor GetMonitor()
         {
             return monitor;
+        }
+
+        public static void LoadAssets(IModHelper helper, string primaryPath)
+        {
+            emptyStatue = helper.Content.Load<Texture2D>(Path.Combine(primaryPath, "Sprites", "empty.png"));
+            filledStatue = helper.Content.Load<Texture2D>(Path.Combine(primaryPath, "Sprites", "filled.png"));
         }
 
         public static string SplitCamelCaseText(string input)

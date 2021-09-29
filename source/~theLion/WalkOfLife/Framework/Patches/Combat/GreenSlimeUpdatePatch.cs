@@ -36,7 +36,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 		#region harmony patches
 
-		/// <summary>Patch for Slimes to damage monsters around Piper.</summary>
+		/// <summary>Patch for Slimes to damage monsters around Piper + destroy nearby objects during super mode.</summary>
 		[HarmonyPostfix]
 		private static void GreenSlimeUpdatePostfix(GreenSlime __instance, GameLocation location)
 		{
@@ -44,16 +44,17 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				if (!location.DoesAnyPlayerHereHaveProfession("Piper")) return;
 
-				foreach (var npc in __instance.currentLocation.characters.Where(npc => npc.IsMonster && npc is not GreenSlime))
+				foreach (var npc in __instance.currentLocation.characters.Where(npc => npc.IsMonster && npc is not GreenSlime && npc is not BigSlime))
 				{
 					var monster = (Monster)npc;
 					var monsterBox = monster.GetBoundingBox();
-					if (monster.IsInvisible || monster.isInvincible() || monster.isGlider.Value || !monsterBox.Intersects(__instance.GetBoundingBox()))
+					var piperIndex = Util.Professions.IndexOf("Piper");
+					if (monster.IsInvisible || monster.isInvincible() || (monster.isGlider.Value && __instance.Scale < 1.4f) || !monsterBox.Intersects(__instance.GetBoundingBox()))
 						continue;
 
 					if (monster is Bug bug && bug.isArmoredBug.Value // skip armored bugs
 						|| monster is LavaCrab && __instance.Sprite.currentFrame % 4 == 0 // skip shelled lava crabs
-						|| monster is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 && !ModEntry.Reflection.GetField<NetBool>(crab, name: "shellGone").GetValue().Value // skip shelled rock crabs
+						|| monster is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 && !ModEntry.ModHelper.Reflection.GetField<NetBool>(crab, name: "shellGone").GetValue().Value // skip shelled rock crabs
 						|| monster is LavaLurk lurk && lurk.currentState.Value == LavaLurk.State.Submerged // skip submerged lava lurks
 						|| monster is Spiker) // skip spikers
 						continue;
@@ -61,7 +62,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					var damageToMonster = Math.Max(1, __instance.DamageToFarmer + Game1.random.Next(-__instance.DamageToFarmer / 4, __instance.DamageToFarmer / 4));
 					var trajectory = SUtility.getAwayFromPositionTrajectory(monsterBox, __instance.Position) / 2f;
 					monster.takeDamage(damageToMonster, (int)trajectory.X, (int)trajectory.Y, isBomb: false, 1.0, hitSound: "slime");
-					monster.setInvincibleCountdown((int)(BASE_INVINCIBILITY_TIMER * Util.Professions.GetCooldownOrChargeTimeReduction()));
+					monster.setInvincibleCountdown((int)(BASE_INVINCIBILITY_TIMER * (1f - Util.Professions.GetPiperSlimeAttackSpeedModifier())));
 					monster.currentLocation.debris.Add(new Debris(damageToMonster, new Vector2(monsterBox.Center.X + 16, monsterBox.Center.Y), new Color(255, 130, 0), 1f, monster));
 				}
 			}

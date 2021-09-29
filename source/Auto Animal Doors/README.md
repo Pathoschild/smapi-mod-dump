@@ -52,9 +52,11 @@ You can find it in the mods install directory.
 | **CoopRequiredUpgradeLevel**| *integer* | 1       | The coop upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
 | **BarnRequiredUpgradeLevel**| *integer* | 1       | The barn upgrade level required for auto open/close (1=base, 2=big, 3=deluxe)    |
 | **AutoOpenEnabled**         | *boolean* | true    | true if doors should automatically open, false if not                            |
+| **DoorSoundSetting**        | *string*  | "ONLY_ON_FARM" | Sets when you hear the door sound openning and closing. Possible values: ("ONLY_ON_FARM", "ALWAYS_ON", "ALWAYS_OFF") |
 | **OpenDoorsWhenRaining**    | *boolean* | false   | true if doors should open even when raining/lightning, false if not              |
 | **OpenDoorsDuringWinter**   | *boolean* | false   | true if doors should open even during winter, false if not                       |
 
+  
 ### Example config.json
 
 ```json
@@ -65,6 +67,7 @@ You can find it in the mods install directory.
   "CoopRequiredUpgradeLevel": 1,
   "BarnRequiredUpgradeLevel": 1,
   "AutoOpenEnabled": true,
+  "DoorSoundSetting": "ONLY_ON_FARM",
   "OpenDoorsWhenRaining": false,
   "OpenDoorsDuringWinter": false
 }

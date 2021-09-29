@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Marlon",
   "PurchasePrice": 5000,
+  "NameLocalization": {
+	  "zh": "锋利刀刃之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "似乎让你的剑更锋利，并提高你的战斗水平。"
+  },
 }

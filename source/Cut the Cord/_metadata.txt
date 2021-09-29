@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/harshlele/CutTheCord
+   Git: https://github.com/harshlele/CutTheCord.git
+
+mods:
+   Cut the Cord
+
+latest commit:
+   commit 5668c70d2965be266ce6c7381532c27fb5ba6957
+   Author: Harshal Lele <harshallele97@gmail.com>
+   Date:   Wed Sep 8 15:23:10 2021 +0530
+   
+       moved readme, license
+   

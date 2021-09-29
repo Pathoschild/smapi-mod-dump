@@ -27,7 +27,7 @@ namespace GreenhouseGatherersAutomate.GreenhouseGatherersAutomate.Automate
         /// <returns>Returns an instance or <c>null</c>.</returns>
         public IAutomatable GetFor(Object obj, GameLocation location, in Vector2 tile)
         {
-            if (obj.ParentSheetIndex == ApiManager.GetHarvestStatueID())
+            if (obj.modData.ContainsKey(ApiManager.GetHarvestStatueModDataFlag()))
             {
                 return new HarvestStatueMachine(obj, location, tile);
             }

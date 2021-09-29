@@ -6,9 +6,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit db6bf8816f5e6de7416d8ca897d8a0b15f61ec4d
+   commit ecc93ba6c6bc9519145adb00bc386fac9af83324
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Tue May 18 18:53:43 2021 -0400
+   Date:   Fri Sep 24 00:11:25 2021 -0400
    
-       Add compatibility with Entoarox Framework by disabling their mod's logic that overrides the game's save serializer.
+       Update manifest MinimumApiVersion
    

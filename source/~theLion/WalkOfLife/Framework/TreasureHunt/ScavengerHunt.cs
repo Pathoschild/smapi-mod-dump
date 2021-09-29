@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -46,11 +45,11 @@ namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 		};
 
 		/// <summary>Construct an instance.</summary>
-		internal ScavengerHunt(string huntStartedMessage, string huntFailedMessage, Texture2D icon)
+		internal ScavengerHunt()
 		{
-			HuntStartedMessage = huntStartedMessage;
-			HuntFailedMessage = huntFailedMessage;
-			Icon = icon;
+			HuntStartedMessage = ModEntry.ModHelper.Translation.Get("scavenger.huntstarted");
+			HuntFailedMessage = ModEntry.ModHelper.Translation.Get("scavenger.huntfailed");
+			IconSourceRect = new Rectangle(80, 656, 16, 16);
 		}
 
 		/// <summary>Try to start a new scavenger hunt at this location.</summary>
@@ -66,10 +65,10 @@ namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 
 			Util.Tiles.MakeTileDiggable(v, location);
 			TreasureTile = v;
-			TimeLimit = (uint)(location.Map.DisplaySize.Area / Math.Pow(Game1.tileSize * 10, 2) / 2 * ModEntry.Config.TreasureHuntHandicap);
+			TimeLimit = (uint)(location.Map.DisplaySize.Area / Math.Pow(Game1.tileSize, 2) / 10 * ModEntry.Config.TreasureHuntHandicap);
 			Elapsed = 0;
 			ModEntry.Subscriber.Subscribe(new Events.ArrowPointerUpdateTickedEvent(), new Events.ScavengerHuntUpdateTickedEvent(), new Events.ScavengerHuntRenderedHudEvent());
-			Game1.addHUDMessage(new HuntNotification(HuntStartedMessage, Icon));
+			Game1.addHUDMessage(new HuntNotification(HuntStartedMessage, IconSourceRect));
 		}
 
 		/// <summary>Check if the player has found the treasure tile.</summary>
@@ -146,7 +145,7 @@ namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 			while (Random.NextDouble() <= chance)
 			{
 				chance *= 0.4f;
-				if (Game1.currentSeason.Equals("spring") && !(Game1.currentLocation is Beach) && Random.NextDouble() < 0.1)
+				if (Game1.currentSeason == "spring" && !(Game1.currentLocation is Beach) && Random.NextDouble() < 0.1)
 					treasures.Add(new SObject(273, Random.Next(2, 6) + (Random.NextDouble() < 0.25 ? 5 : 0))); // rice shoot
 
 				if (Random.NextDouble() <= 0.33 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS"))

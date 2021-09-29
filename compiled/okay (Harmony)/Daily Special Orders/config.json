@@ -1,0 +1,9 @@
+{
+  "RefreshAfterPicking": true,
+  "RefreshTuesday": true,
+  "RefreshWednesday": true,
+  "RefreshThursday": true,
+  "RefreshFriday": true,
+  "RefreshSaturday": true,
+  "RefreshSunday": true
+}

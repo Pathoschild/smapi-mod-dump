@@ -11,7 +11,7 @@
 {
 	"Name": "Faster Path Speed",
 	"Author": "gaussfire",
-	"Version": "1.1.0",
+	"Version": "1.2.2",
 	"Description": "Increases movement speed on placed paths.",
 	"UniqueID": "gaussfire.FasterPathSpeed",
 	"EntryDll": "FasterPathSpeed.dll",

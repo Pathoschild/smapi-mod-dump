@@ -17,6 +17,9 @@
   "new-reminder.reminder-time": "알림 시간",
   "new-reminder.instruction": "알림 기간을 설정하세요.",
   "new-reminder.invalid-time": "알림을 사용할 수 없는 시간입니다.",
+  "new-reminder.recurring-label": "되풀이",
+  "new-reminder.interval-label": "간격",
+  "new-reminder.interval-explaination": "간격 1: 매일, 2: 하루 걸러, 등등...",
 
   // Display reminder page
   "display-reminder.title": "설정한 알림 보기",

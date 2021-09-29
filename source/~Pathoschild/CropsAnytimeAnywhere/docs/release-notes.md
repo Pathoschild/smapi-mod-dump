@@ -10,7 +10,13 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Updated for Stardew Valley 1.5.5.
+* You can now configure `ForceTillable` per-location.  
+  _If you previously edited the option, you'll need to reapply your changes for the `*` location._
+* Internal performance optimizations.
+
+## 1.3.5
+Released 04 September 2021 for SMAPI 3.12.6 or later.
+
 * Fixed fruit trees not plantable in town.
 
 ## 1.3.4

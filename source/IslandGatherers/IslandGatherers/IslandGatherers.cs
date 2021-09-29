@@ -8,10 +8,12 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using IslandGatherers.Framework;
 using IslandGatherers.Framework.Objects;
 using IslandGatherers.Framework.Patches;
+using IslandGatherers.Framework.Patches.GameLocations;
+using IslandGatherers.Framework.Patches.Objects;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -29,12 +31,16 @@ namespace IslandGatherers
 {
     public class IslandGatherers : Mod
     {
-        public static int parrotStorageID;
-
         internal static IMonitor monitor;
         internal static IModHelper modHelper;
         internal static ModConfig config;
-        internal static readonly string parrotPotFlag = "PeacefulEnd.IslandGatherers_IsParrotStorage";
+        internal static readonly string oldParrotPotFlag = "PeacefulEnd.IslandGatherers_IsParrotStorage";
+        internal static readonly string hasConvertedOldStatues = "PeacefulEnd.IslandGatherers/HasConvertedToNewStatues";
+
+        // Parrot Pot ModData
+        internal static readonly string parrotPotFlag = "PeacefulEnd.IslandGatherers/ParrotPot";
+        internal static readonly string ateCropsFlag = "PeacefulEnd.IslandGatherers/AteCrops";
+        internal static readonly string spawnedJunimosFlag = "PeacefulEnd.IslandGatherers/HasSpawnedJunimos";
 
         public override void Entry(IModHelper helper)
         {
@@ -48,12 +54,13 @@ namespace IslandGatherers
             // Load our Harmony patches
             try
             {
-                var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+                var harmony = new Harmony(this.ModManifest.UniqueID);
 
                 // Apply our patches
-                new ObjectPatch(monitor).Apply(harmony);
-                new CropPatch(monitor).Apply(harmony);
-                new IslandNorthPatch(monitor).Apply(harmony);
+                new ObjectPatch(Monitor, Helper).Apply(harmony);
+                new CropPatch(Monitor, Helper).Apply(harmony);
+                new ChestPatch(Monitor, Helper).Apply(harmony);
+                new IslandNorthPatch(Monitor, Helper).Apply(harmony);
             }
             catch (Exception e)
             {
@@ -64,13 +71,6 @@ namespace IslandGatherers
             // Hook into GameLoop events
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-            helper.Events.GameLoop.Saving += this.OnSaving;
-        }
-
-        private void OnIdsAssigned(object sender, EventArgs e)
-        {
-            // Get the Harvest Statue item ID
-            parrotStorageID = ApiManager.GetJsonAssetsApi().GetBigCraftableId("Parrot Pot");
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -97,26 +97,33 @@ namespace IslandGatherers
                 configAPI.RegisterSimpleOption(ModManifest, "Parrots Appear After Harvest", "If true, parrots will appear after harvesting.", () => config.DoParrotsAppearAfterHarvest, (bool val) => config.DoParrotsAppearAfterHarvest = val);
             }
 
-            // Hook into the APIs we utilize
-            if (Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets") && ApiManager.HookIntoJsonAssets(Helper))
+            // Check if spacechase0's DynamicGameAssets is in the current mod list
+            if (Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
             {
-                var jsonAssetsApi = ApiManager.GetJsonAssetsApi();
+                Monitor.Log("Attempting to hook into spacechase0.DynamicGameAssets.", LogLevel.Debug);
+                ApiManager.HookIntoDynamicGameAssets(Helper);
 
-                // Hook into Json Asset's IdsAssigned event
-                jsonAssetsApi.IdsAssigned += this.OnIdsAssigned;
+                var contentPack = Helper.ContentPacks.CreateTemporary(
+                    Path.Combine(Helper.DirectoryPath, AssetManager.assetFolderPath),
+                    "PeacefulEnd.IslandGatherers.ParrotPot",
+                    "PeacefulEnd.IslandGatherers.ParrotPot",
+                    "Adds the required assets for Island Gatherers.",
+                    "PeacefulEnd",
+                    new SemanticVersion("1.0.0"));
 
                 // Check if furyx639's Expanded Storage is in the current mod list
-                if (Helper.ModRegistry.IsLoaded("furyx639.ExpandedStorage") && ApiManager.HookIntoExpandedStorage(Helper))
+                if (Helper.ModRegistry.IsLoaded("furyx639.ExpandedStorage"))
                 {
-                    var expandedStorageApi = ApiManager.GetExpandedStorageApi();
+                    Monitor.Log("Attempting to hook into furyx639.ExpandedStorage.", LogLevel.Debug);
+                    ApiManager.HookIntoExpandedStorage(Helper);
 
                     // Add the Harvest Statue via Expanded Storage, so we can make use of their expanded chest options
-                    expandedStorageApi.LoadContentPack(Path.Combine(Helper.DirectoryPath, "assets", "[JA] Island Gatherers Pack"));
+                    ApiManager.GetExpandedStorageApi().LoadContentPack(contentPack.Manifest, Path.Combine(Helper.DirectoryPath, AssetManager.assetFolderPath));
                 }
                 else
                 {
-                    // Load in our assets
-                    jsonAssetsApi.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets", "[JA] Island Gatherers Pack"));
+                    // Add the Harvest Statue purely via Json Assets
+                    ApiManager.GetDynamicGameAssetsInterface().AddEmbeddedPack(contentPack.Manifest, Path.Combine(Helper.DirectoryPath, AssetManager.assetFolderPath));
                 }
             }
         }
@@ -125,93 +132,70 @@ namespace IslandGatherers
         {
             // Load all Parrot Pots
             Monitor.Log("Loading...", LogLevel.Trace);
+            if (!Game1.MasterPlayer.modData.ContainsKey(IslandGatherers.hasConvertedOldStatues))
+            {
+                ConvertOldParrotStorage();
+                Game1.MasterPlayer.modData[IslandGatherers.hasConvertedOldStatues] = true.ToString();
+            }
+
             foreach (GameLocation location in Game1.locations)
             {
-                ConvertChestToParrotStorage(location);
-
-                if (location is BuildableGameLocation)
-                {
-                    foreach (Building building in (location as BuildableGameLocation).buildings)
-                    {
-                        GameLocation indoorLocation = building.indoors.Value;
-                        if (indoorLocation is null)
-                        {
-                            continue;
-                        }
-
-                        ConvertChestToParrotStorage(indoorLocation);
-                    }
-                }
+                DoMorningHarvest(Game1.getLocationFromName("IslandWest"));
             }
         }
 
-        private void OnSaving(object sender, SavingEventArgs e)
+        private void DoMorningHarvest(GameLocation location)
         {
-            // Find all Parrot Pots
-            Monitor.Log("Saving...", LogLevel.Trace);
-            foreach (GameLocation location in Game1.locations)
+            foreach (Chest chest in location.Objects.Values.Where(o => o.modData.ContainsKey(IslandGatherers.parrotPotFlag)))
             {
-                ConvertParrotStorageToChest(location);
+                // Reset daily modData flags
+                chest.modData[IslandGatherers.spawnedJunimosFlag] = false.ToString();
 
-                if (location is BuildableGameLocation)
-                {
-                    foreach (Building building in (location as BuildableGameLocation).buildings)
-                    {
-                        GameLocation indoorLocation = building.indoors.Value;
-                        if (indoorLocation is null)
-                        {
-                            continue;
-                        }
-
-                        ConvertParrotStorageToChest(indoorLocation);
-                    }
-                }
+                // Gather any crops nearby
+                var harvestStatue = new ParrotPot(chest, location);
+                harvestStatue.HarvestCrops(location, config.EnableHarvestMessage, config.DoParrotsEatExcessCrops, config.DoParrotsHarvestFromPots, config.DoParrotsHarvestFromFruitTrees, config.DoParrotsHarvestFromFlowers, config.DoParrotsSowSeedsAfterHarvest, config.MinimumFruitOnTreeBeforeHarvest);
             }
         }
 
-        private void ConvertChestToParrotStorage(GameLocation location)
+        private void ConvertOldParrotStorage()
+        {
+            // Find all chests with the "is-harvest-statue" == "true"
+            Monitor.Log("Loading...", LogLevel.Trace);
+            ConvertFlaggedChestsToHarvestStatues(Game1.getLocationFromName("IslandWest"));
+        }
+
+        private void ConvertFlaggedChestsToHarvestStatues(GameLocation location)
         {
             foreach (Chest chest in location.Objects.Pairs.Where(p => p.Value is Chest).Select(p => p.Value).ToList())
             {
-                if (chest is ParrotPot || !chest.modData.ContainsKey(parrotPotFlag))
+                if (!chest.modData.ContainsKey(oldParrotPotFlag))
                 {
                     continue;
                 }
 
-                // Add the items from the temp Chest to the ParrotPot
-                ParrotPot parrotPot = new ParrotPot(chest.TileLocation, parrotStorageID, config.EnableHarvestMessage, config.DoParrotsEatExcessCrops, config.DoParrotsHarvestFromPots, config.DoParrotsHarvestFromFruitTrees, config.DoParrotsHarvestFromFlowers, config.DoParrotsSowSeedsAfterHarvest, config.MinimumFruitOnTreeBeforeHarvest);
-                parrotPot.AddItems(chest.items);
+                // Add the items from the temp Chest to the HarvestStatue
+                var items = chest.items;
+                var modData = chest.modData.Pairs;
+                var tileLocation = chest.TileLocation;
+                location.removeObject(chest.TileLocation, false);
+
+                var statueItem = ApiManager.GetDynamicGameAssetsInterface().SpawnDGAItem("PeacefulEnd.IslandGatherers.ParrotPot/ParrotPot") as Item;
+                var wasReplaced = (statueItem as StardewValley.Object).placementAction(location, (int)tileLocation.X * 64, (int)tileLocation.Y * 64, Game1.player);
+                Monitor.Log($"Attempting to replace old Parrot Pot at {tileLocation} | Was Replaced: {wasReplaced}", LogLevel.Debug);
 
                 // Move the modData over in case the Chests Anywhere mod is used (so we can retain name / category data)
-                parrotPot.modData = chest.modData;
-
-                // Remove the temp Chest by placing ParrotPot
-                location.setObject(chest.TileLocation, parrotPot);
-
-                // Gather any crops nearby
-                parrotPot.HarvestCrops(location);
-            }
-        }
-
-        private void ConvertParrotStorageToChest(GameLocation location)
-        {
-            foreach (ParrotPot parrotPot in location.Objects.Pairs.Where(p => p.Value is ParrotPot).Select(p => p.Value).ToList())
-            {
-                // Add the items from ParrotPot to temp Chest, so the player will still have their items if mod is uninstalled
-                Chest chest = new Chest(true, parrotPot.TileLocation);
-                foreach (var item in parrotPot.items.Where(i => i != null))
+                if (wasReplaced && location.objects.ContainsKey(tileLocation) && location.objects[tileLocation] is Chest statueObj)
                 {
-                    chest.addItem(item);
+                    foreach (var pair in modData.Where(p => p.Key != oldParrotPotFlag))
+                    {
+                        statueObj.modData[pair.Key] = pair.Value;
+                    }
+
+                    foreach (var item in items.Where(i => i != null))
+                    {
+                        statueObj.addItem(item);
+                    }
                 }
-
-                // Retain any previous modData in case the Chests Anywhere mod is used (so we can retain name / category data)
-                chest.modData = parrotPot.modData;
-
-                // Ensure the proper flag is within the modData
-                chest.modData[parrotPotFlag] = String.Empty;
-
-                // Remove the ParrotPot by placing the Chest
-                location.setObject(parrotPot.TileLocation, chest);
             }
         }
     }

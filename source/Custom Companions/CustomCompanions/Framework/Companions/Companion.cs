@@ -88,7 +88,7 @@ namespace CustomCompanions.Framework.Companions
             base.HideShadow = true; // Always hiding the default shadow, as we are allowing user to config beyond normal settings
             base.Sprite.loop = false;
             base.Scale = model.Scale;
-            base.collidesWithOtherCharacters.Value = (model.Type.ToUpper() == "FLYING" ? false : true);
+            base.collidesWithOtherCharacters.Value = (model.Type.ToUpper() == "FLYING" || !model.EnableCharacterCollision ? false : true);
             base.Breather = model.EnableBreathing;
             base.displayName = null;
 
@@ -857,6 +857,24 @@ namespace CustomCompanions.Framework.Companions
             return targetTile;
         }
 
+        internal Vector2 GetPositionDirectlyBehind(Vector2 position, int facingDirection)
+        {
+            var adjacentPositions = Utility.getAdjacentTileLocationsArray(position);
+            switch (facingDirection)
+            {
+                case 0:
+                    return adjacentPositions[2];
+                case 1:
+                    return adjacentPositions[0];
+                case 2:
+                    return adjacentPositions[3];
+                case 3:
+                    return adjacentPositions[1];
+                default:
+                    return adjacentPositions[0];
+            }
+        }
+
         internal void SetMotion(Vector2 motion)
         {
             this.motion.Value = motion;
@@ -1044,7 +1062,7 @@ namespace CustomCompanions.Framework.Companions
             if (Game1.IsMasterGame)
             {
                 this.hasShadow.Value = model.EnableShadow;
-                base.collidesWithOtherCharacters.Value = (model.Type.ToUpper() == "FLYING" ? false : true);
+                base.collidesWithOtherCharacters.Value = (model.Type.ToUpper() == "FLYING" || !model.EnableCharacterCollision ? false : true);
                 if (base.Sprite.loadedTexture != model.TileSheetPath || base.Sprite.SpriteWidth != model.FrameSizeWidth || base.Sprite.SpriteHeight != model.FrameSizeHeight)
                 {
                     base.Sprite = new AnimatedSprite(model.TileSheetPath, 0, model.FrameSizeWidth, model.FrameSizeHeight);

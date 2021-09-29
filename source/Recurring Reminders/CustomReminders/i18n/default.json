@@ -15,7 +15,10 @@
   "new-reminder.reminder-time": "Reminder Time",
   "new-reminder.instruction": "Choose the Hour, Minutes and Period",
   "new-reminder.invalid-time": "The entered time is invalid",
-
+  "new-reminder.recurring-label": "Recurring",
+  "new-reminder.interval-label": "Interval",
+  "new-reminder.interval-explaination": "Interval 1: everyday, 2: every other day, and so on...",
+  
   // Display reminder page
   "display-reminder.title": "Display Reminder",
   "display-reminder.zero-reminders": "No reminders are set yet",

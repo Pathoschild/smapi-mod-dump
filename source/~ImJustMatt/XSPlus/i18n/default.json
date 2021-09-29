@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "tabs.Clothing.name": "Clothing",
+  "tabs.Cooking.name": "Cooking",
+  "tabs.Crops.name": "Crops",
+  "tabs.Equipment.name": "Equipment",
+  "tabs.Fishing.name": "Fish",
+  "tabs.Materials.name": "Materials",
+  "tabs.Misc.name": "Misc",
+  "tabs.Seeds.name": "Seeds",
+}

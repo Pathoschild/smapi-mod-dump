@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public static class AmbientSounds
 	{

@@ -23,7 +23,7 @@ using static DeepWoodsMod.DeepWoodsGlobals;
 
 namespace DeepWoodsMod
 {
-    class DeepWoodsBuilder
+    public class DeepWoodsBuilder
     {
         private enum GrassType
         {
@@ -850,12 +850,21 @@ namespace DeepWoodsMod
             int maxY = this.spaceManager.GetMapHeight() - Settings.Map.ExitLength;
 
             deepWoods.lightSources.Add(new Vector2(this.spaceManager.GetMapWidth() / 2, this.spaceManager.GetMapHeight() / 2));
-            int numAdditionalLights = ((maxX - minX) * (maxY - minY)) / NUM_TILES_PER_LIGHTSOURCE;
-            for (int i = 0; i < numAdditionalLights; i++)
+
+            if (Settings.Performance.LightSourceDensity > 0)
             {
-                int x = this.random.GetRandomValue(minX, maxX);
-                int y = this.random.GetRandomValue(minY, maxY);
-                deepWoods.lightSources.Add(new Vector2(x, y));
+                int numAdditionalLights = ((maxX - minX) * (maxY - minY)) / NUM_TILES_PER_LIGHTSOURCE;
+                if (DeepWoodsSettings.Settings.Performance.LightSourceDensity < 100)
+                {
+                    numAdditionalLights = (int)(numAdditionalLights * DeepWoodsSettings.Settings.Performance.LightSourceDensity / 100);
+                }
+
+                for (int i = 0; i < numAdditionalLights; i++)
+                {
+                    int x = this.random.GetRandomValue(minX, maxX);
+                    int y = this.random.GetRandomValue(minY, maxY);
+                    deepWoods.lightSources.Add(new Vector2(x, y));
+                }
             }
 
             Location lichtungCenter = (leftPos + rightPos + topPos + bottomPos) / 4;
@@ -1146,11 +1155,18 @@ namespace DeepWoodsMod
                 }
             }
 
-            int maxLightSources = Math.Max(1, numFillTiles / NUM_TILES_PER_LIGHTSOURCE);
-            int numLightSources = 1 + this.random.GetRandomValue(0, maxLightSources);
-            for (int i = 0; i < numLightSources; i++)
+            if (DeepWoodsSettings.Settings.Performance.LightSourceDensity > 0)
             {
-                deepWoods.lightSources.Add(new Vector2(this.random.GetRandomValue(minFillX, maxFillX + 1), this.random.GetRandomValue(minFillY, maxFillY + 1)));
+                int maxLightSources = Math.Max(1, numFillTiles / NUM_TILES_PER_LIGHTSOURCE);
+                int numLightSources = 1 + this.random.GetRandomValue(0, maxLightSources);
+                if (DeepWoodsSettings.Settings.Performance.LightSourceDensity < 100)
+                {
+                    numLightSources = (int)(numLightSources * DeepWoodsSettings.Settings.Performance.LightSourceDensity / 100);
+                }
+                for (int i = 0; i < numLightSources; i++)
+                {
+                    deepWoods.lightSources.Add(new Vector2(this.random.GetRandomValue(minFillX, maxFillX + 1), this.random.GetRandomValue(minFillY, maxFillY + 1)));
+                }
             }
         }
 

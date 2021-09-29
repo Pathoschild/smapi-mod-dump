@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,14 @@ namespace IslandGatherers.Framework
     internal static class AssetManager
     {
         internal static string assetFolderPath;
+        internal static Texture2D emptyStatue;
+        internal static Texture2D filledStatue;
 
         internal static void SetUpAssets(IModHelper helper)
         {
-            assetFolderPath = helper.Content.GetActualAssetKey("assets", ContentSource.ModFolder);
+            assetFolderPath = Path.Combine("assets", "Parrot Pot");
+            emptyStatue = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "Sprites", "empty.png"));
+            filledStatue = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "Sprites", "filled.png"));
         }
 
         internal static string SplitCamelCaseText(string input)

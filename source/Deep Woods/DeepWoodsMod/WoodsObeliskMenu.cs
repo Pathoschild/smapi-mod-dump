@@ -18,7 +18,7 @@ using static DeepWoodsMod.DeepWoodsSettings;
 
 namespace DeepWoodsMod
 {
-    class WoodsObeliskMenu : IClickableMenu
+    public class WoodsObeliskMenu : IClickableMenu
     {
         public List<ClickableComponent> levelButtons = new List<ClickableComponent>();
 

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9709
+IDs: TwinBuilderOne.MoreBundles
+update keys: Nexus:9709, GitHub:TwinBuilderOne/StardewValleyMods

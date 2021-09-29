@@ -8,50 +8,48 @@
 **
 *************************************************/
 
-using System.Diagnostics.CodeAnalysis;
-using HarmonyLib;
-using Pathoschild.Stardew.Automate;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Objects;
-using XSAutomate.Common.Patches;
-
 namespace XSAutomate
 {
-    [SuppressMessage("ReSharper", "UnusedType.Global")]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    using System.Diagnostics.CodeAnalysis;
+    using Common.Integrations.XSLite;
+    using CommonHarmony;
+    using HarmonyLib;
+    using Pathoschild.Stardew.Automate;
+    using StardewModdingAPI;
+    using StardewModdingAPI.Events;
+    using StardewValley;
+    using StardewValley.Objects;
+
     public class XSAutomate : Mod
     {
-        private const string ChestContainerType = "Pathoschild.Stardew.Automate.Framework.Storage.ChestContainer";
-        private static IReflectionHelper _reflection;
-        private static IExpandedStorageAPI _expandedStorageAPI;
-        
+        private static IReflectionHelper Reflection;
+        private static XSLiteIntegration XSLite;
+
         /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
-            _reflection = helper.Reflection;
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            
-            Monitor.LogOnce("Patching Automate for Restricted Storage");
-            var harmony = new Harmony(ModManifest.UniqueID);
+            XSAutomate.XSLite = new XSLiteIntegration(helper.ModRegistry);
+            XSAutomate.Reflection = helper.Reflection;
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            this.Monitor.LogOnce("Patching Automate for Filtered Items");
+            var harmony = new Harmony(this.ModManifest.UniqueID);
             harmony.Patch(
-                new AssemblyPatch("Automate").Method(ChestContainerType, "Store"),
-                new HarmonyMethod(GetType(), nameof(StorePrefix))
-            );
+                new AssemblyPatch("Automate").Method("Pathoschild.Stardew.Automate.Framework.Storage.ChestContainer", "Store"),
+                new HarmonyMethod(typeof(XSAutomate), nameof(XSAutomate.StorePrefix)));
         }
-        
+
+        [SuppressMessage("ReSharper", "SA1313", Justification = "Naming is determined by Harmony.")]
+        [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
+        private static bool StorePrefix(Chest ___Chest, object stack)
+        {
+            Item item = XSAutomate.Reflection.GetProperty<Item>(stack, "Sample").GetValue();
+            return XSAutomate.XSLite.API.AcceptsItem(___Chest, item);
+        }
+
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            _expandedStorageAPI = Helper.ModRegistry.GetApi<IExpandedStorageAPI>("furyx639.ExpandedStorage");
-            var automateAPI = Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
-            automateAPI.AddFactory(new AutomationFactoryController());
-        }
-        
-        private static bool StorePrefix(Chest ___Chest, ITrackedStack stack)
-        {
-            var item = _reflection.GetProperty<Item>(stack, "Sample").GetValue();
-            return _expandedStorageAPI.AcceptsItem(___Chest, item);
+            var automate = this.Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
+            automate.AddFactory(new AutomationFactory());
         }
     }
 }

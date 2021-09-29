@@ -188,7 +188,7 @@ namespace MultipleSpouses
                 {
                     return;
                 }
-                ModEntry.PMonitor.Log($"reset farmhouse state - upgrade level {__instance.upgradeLevel}");
+                ModEntry.PMonitor.Log($"reset farmhouse state - upgrade level {__instance.upgradeLevel}, {Environment.StackTrace}");
 
                 Misc.ResetSpouses(f);
 

@@ -6,9 +6,10 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 10f2bb51e3db0cb027d0c0769c7a539a1fff83ac
+   commit 3943d0b3d3387bbebc2d94cd00621debcca059ee
+   Merge: 9a0ed4b 68fabc4
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun May 23 03:03:43 2021 -0500
+   Date:   Wed Sep 15 10:59:58 2021 -0500
    
-       Opt into GMCM in-game setting changes
+       Merge branch 'master' of https://github.com/Esca-MMC/FarmTypeManager
    

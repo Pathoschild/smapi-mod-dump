@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9540
+IDs: shaklin.uniquechildrentalk
+update keys: Nexus:9540

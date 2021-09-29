@@ -17,6 +17,7 @@ using System;
 using System.Reflection;
 using TheLion.Stardew.Common.Extensions;
 using TheLion.Stardew.Common.Harmony;
+using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
@@ -47,7 +48,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				var anyPlayerIsArborist = Util.Professions.DoesAnyPlayerHaveProfession("Arborist", out var n);
+				var anyPlayerIsArborist = Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out var n);
 				if (__instance.growthStage.Value > __state || !anyPlayerIsArborist || !CanThisTreeGrow(__instance, environment, tileLocation)) return;
 
 				if (__instance.treeType.Value == Tree.mahoganyTree)
@@ -76,7 +77,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <param name="tileLocation">The tree's tile location.</param>
 		private static bool CanThisTreeGrow(Tree tree, GameLocation environment, Vector2 tileLocation)
 		{
-			if (Game1.GetSeasonForLocation(tree.currentLocation).Equals("winter") && !tree.treeType.Value.AnyOf(Tree.palmTree, Tree.palmTree2) && !environment.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) && !tree.fertilized.Value)
+			if (Game1.GetSeasonForLocation(tree.currentLocation) == "winter" && !tree.treeType.Value.AnyOf(Tree.palmTree, Tree.palmTree2) && !environment.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) && !tree.fertilized.Value)
 				return false;
 
 			var s = environment.doesTileHaveProperty((int)tileLocation.X, (int)tileLocation.Y, "NoSpawn", "Back");

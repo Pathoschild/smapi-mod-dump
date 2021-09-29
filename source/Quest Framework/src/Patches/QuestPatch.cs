@@ -8,9 +8,10 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using PurrplingCore;
 using PurrplingCore.Patching;
+using QuestFramework.Extensions;
 using QuestFramework.Framework;
 using QuestFramework.Framework.Events;
 using QuestFramework.Framework.Quests;
@@ -47,10 +48,11 @@ namespace QuestFramework.Patches
 
                 if (__result != null && customQuest != null)
                 {
-                    if (customQuest.BaseType == QuestType.Monster && __result is SlayMonsterQuest)
+                    if (customQuest.BaseType == QuestType.Monster && __result is SlayMonsterQuest slayQuest)
                     {
                         // This is fix for use custom dialogue text for slay monster quest type
-                        (__result as SlayMonsterQuest).dialogueparts.Clear();
+                        slayQuest.dialogueparts.Clear();
+                        slayQuest.reward.Value = customQuest.Reward;
                     }
 
                     if (!Game1.player.hasQuest(id))
@@ -98,7 +100,7 @@ namespace QuestFramework.Patches
                 }
 
                 // Call observer objective updater (if this managed quest is observed)
-                if (managedQuest is IQuestObserver observer)
+                if (managedQuest is IQuestInfoUpdater observer)
                 {
                     observer.UpdateObjective(
                         new QuestInfo(__instance, Game1.player), 
@@ -176,7 +178,7 @@ namespace QuestFramework.Patches
                     __instance._questDescription = managedQuest.Description;
                 }
 
-                if (managedQuest is IQuestObserver observer)
+                if (managedQuest is IQuestInfoUpdater observer)
                 {
                     observer.UpdateDescription(
                         new QuestInfo(__instance, Game1.player),
@@ -205,7 +207,7 @@ namespace QuestFramework.Patches
                     __instance._questTitle = managedQuest.Title;
                 }
 
-                if (managedQuest is IQuestObserver observer)
+                if (managedQuest is IQuestInfoUpdater observer)
                 {
                     observer.UpdateTitle(
                         new QuestInfo(__instance, Game1.player),
@@ -227,8 +229,8 @@ namespace QuestFramework.Patches
         {
             try
             {
-                if (Instance.QuestCheckerLock.Contains(__instance))
-                    return true; // Always call only the original method for locked quests
+                if (Instance.QuestCheckerLock.Contains(__instance) || !__instance.IsManaged())
+                    return true; // Always call only the original method for locked or unmanaged quests
 
                 var managedQuest = Instance.QuestManager.GetById(__instance.id.Value);
 
@@ -249,6 +251,13 @@ namespace QuestFramework.Patches
                     return false;
                 }
 
+                if (managedQuest.BaseType == QuestType.Custom)
+                {
+                    __result = false;
+
+                    return false;
+                }
+
                 return true;
 
             } catch (Exception e)
@@ -260,7 +269,13 @@ namespace QuestFramework.Patches
             }
         }
 
-        protected override void Apply(HarmonyInstance harmony)
+        private static void Before_Farmer_checkForQuestComplete(ref bool __result, NPC n, int number1, int number2, Item item, string str, int questType = -1)
+        {
+            __result = Instance.QuestManager.CheckForQuestComplete(
+                new CompletionArgs(n, number1, number2, item, str, questType));
+        }
+
+        protected override void Apply(Harmony harmony)
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(Quest), nameof(Quest.getQuestFromId)),
@@ -286,6 +301,10 @@ namespace QuestFramework.Patches
             harmony.Patch(
                 original: AccessTools.Method(typeof(Quest), nameof(Quest.checkIfComplete)),
                 prefix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.Before_checkIfComplete))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.checkForQuestComplete)),
+                prefix: new HarmonyMethod(typeof(QuestPatch), nameof(QuestPatch.Before_Farmer_checkForQuestComplete))
             );
         }
     }

@@ -4,4 +4,10 @@
   "Edibility": -300,
   "Price": 0,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "难以捉摸的戒指"
+  },
+  "DescriptionLocalization": {
+	  "zh": "这是个戒指，还是个幻觉？ （只买一个，任何多余的都用不了，只会浪费钱）"
+  },
 }

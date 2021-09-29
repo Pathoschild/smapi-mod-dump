@@ -1,0 +1,10 @@
+{
+	"Name": "ArtisanGoodsRedone",
+	"Author": "Rhukii",
+	"Version": "1.0",
+	"Description": "Adds artisan goods icons based on their ingredients",
+	"UniqueID": "Rhukii.ArtisanGoodsRedone",
+	"EntryDll": "ArtisanGoodsRedone.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:9414" ]
+}

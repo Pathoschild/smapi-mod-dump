@@ -1,0 +1,43 @@
+{
+  "ToggleShaftsKey": "OemTilde",
+  "ForceShafts": false,
+  "ToggleHighlightTypeKey": "LeftShift + OemTilde",
+  "HighlightTypes": [
+    "Rectangle"
+  ],
+  "HighlightRectangleRGBA": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  },
+  "HighlightImageFilename": "cracked.png",
+  "HighlightAlpha": 0.45,
+  "CycleAlpha": "LeftAlt + OemTilde",
+  "HighlightUsesStoneTint": false,
+  "ToggleTint": "LeftControl + OemTilde",
+  "NodeRadar": false,
+  "ToggleNodeRadar": "LeftControl + LeftShift + OemTilde",
+  "RadarScale": 1.0,
+  "NodeTypes": [
+    "Topaz",
+    "Amethyst",
+    "Aquamarine",
+    "Jade",
+    "Emerald",
+    "Ruby",
+    "Diamond",
+    "Gem",
+    "Mystic",
+    "Geode",
+    "FrozenGeode",
+    "MagmaGeode",
+    "OmniGeode",
+    "CinderShard",
+    "Copper",
+    "Iron",
+    "Gold",
+    "Iridium",
+    "Radioactive"
+  ]
+}

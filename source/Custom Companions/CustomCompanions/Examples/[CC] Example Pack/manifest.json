@@ -11,7 +11,7 @@
 {
   "Name": "Example Pack",
   "Author": "ExampleAuthor",
-  "Version": "1.6.3",
+  "Version": "1.6.5",
   "Description": "Example pack for the Custom Companions framework.",
   "UniqueID": "ExampleAuthor.ExamplePack",
   "UpdateKeys": [],
@@ -23,6 +23,6 @@
   ],
   "ContentPackFor": {
     "UniqueID": "PeacefulEnd.CustomCompanions",
-    "MinimumVersion": "1.6.3"
+    "MinimumVersion": "1.6.5"
   }
 }

@@ -17,7 +17,7 @@ using static DeepWoodsMod.DeepWoodsGlobals;
 
 namespace DeepWoodsMod
 {
-    class DeepWoodsDebris
+    public class DeepWoodsDebris
     {
         public static void Initialize(DeepWoods deepWoods)
         {
@@ -27,42 +27,38 @@ namespace DeepWoodsMod
                 int mapWidth = deepWoods.mapWidth.Value;
                 int mapHeight = deepWoods.mapHeight.Value;
 
-                int numBaubles = (mapWidth * mapHeight) / MINIMUM_TILES_FOR_BAUBLE;
-
-                for (int index = 0; index < numBaubles; ++index)
+                if (DeepWoodsSettings.Settings.Performance.BaubleDensity > 0)
                 {
-                    deepWoods.baubles.Add(new Vector2(Game1.random.Next(0, mapWidth * 64), Game1.random.Next(0, mapHeight * 64)));
+                    int numBaubles = (mapWidth * mapHeight) / MINIMUM_TILES_FOR_BAUBLE;
+                    if (DeepWoodsSettings.Settings.Performance.BaubleDensity < 100)
+                    {
+                        numBaubles = (int)(numBaubles * DeepWoodsSettings.Settings.Performance.BaubleDensity / 100);
+                    }
+
+                    for (int index = 0; index < numBaubles; ++index)
+                    {
+                        deepWoods.baubles.Add(new Vector2(Game1.random.Next(0, mapWidth * 64), Game1.random.Next(0, mapHeight * 64)));
+                    }
                 }
 
-                if (Game1.currentSeason != "winter" && !deepWoods.isLichtung.Value)
+                if (Game1.currentSeason != "winter" && !deepWoods.isLichtung.Value && DeepWoodsSettings.Settings.Performance.LeafDensity > 0)
                 {
                     int numWeatherDebris = (mapWidth * mapHeight) / MINIMUM_TILES_FOR_LEAVES;
+                    if (DeepWoodsSettings.Settings.Performance.LeafDensity < 100)
+                    {
+                        numWeatherDebris = (int)(numWeatherDebris * DeepWoodsSettings.Settings.Performance.LeafDensity / 100);
+                    }
 
                     for (int index = 0; index < numWeatherDebris; ++index)
                     {
                         Vector2 v = new Vector2(Game1.random.Next(0, mapWidth * 64), Game1.random.Next(0, mapHeight * 64));
-                        deepWoods.weatherDebris.Add(new WeatherDebris(v, GetLeaveType(deepWoods), Game1.random.Next(15) / 500f, Game1.random.Next(-10, 0) / 50f, Game1.random.Next(10) / 50f));
+                        deepWoods.weatherDebris.Add(new WeatherDebris(v, GetLeafType(deepWoods), Game1.random.Next(15) / 500f, Game1.random.Next(-10, 0) / 50f, Game1.random.Next(10) / 50f));
                     }
-
-                    /*
-                    int maxValue = 192;
-                    for (int index = 0; index < numWeatherDebris; ++index)
-                    {
-                        Viewport viewport = Game1.graphics.GraphicsDevice.Viewport;
-
-                        float x = (index * maxValue % viewport.Width + Game1.random.Next(maxValue));
-
-                        float y = (index * maxValue / viewport.Width * maxValue + Game1.random.Next(maxValue));
-
-                        WeatherDebris weatherDebris = new WeatherDebris(new Vector2(x, y), 1, Game1.random.Next(15) / 500f, Game1.random.Next(-10, 0) / 50f, Game1.random.Next(10) / 50f);
-                        deepWoods.weatherDebris.Add(weatherDebris);
-                    }
-                    */
                 }
             }
         }
 
-        private static int GetLeaveType(DeepWoods deepWoods)
+        private static int GetLeafType(DeepWoods deepWoods)
         {
             if (deepWoods.isLichtung.Value)
             {

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/dtomlinson-ga/ConfigurableBundleCosts
+   Git: https://github.com/dtomlinson-ga/ConfigurableBundleCosts.git
+
+mods:
+   Configurable Bundle Costs
+
+latest commit:
+   commit 7fc9132c415bc56ee8a62d415edf63477ad84ceb
+   Author: dtomlinson-ga <dtomlinson.ga@gmail.com>
+   Date:   Sun Sep 12 12:02:01 2021 -0400
+   
+       Added note about Target values.
+   

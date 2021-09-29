@@ -1,7 +1,7 @@
 {
   "Name": "Quality Smash",
   "Author": "barfytheclown",
-  "Version": "1.2.0-2",
+  "Version": "1.3-alpha",
   "Description": "Too many items? Smash 'em to reduce their quality",
   "UniqueID": "barfytheclown.QualitySmash",
   "EntryDll": "QualitySmash.dll",

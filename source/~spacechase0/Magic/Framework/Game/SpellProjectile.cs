@@ -98,7 +98,7 @@ namespace Magic.Framework.Game
 
         public override void behaviorOnCollisionWithMonster(NPC npc, GameLocation loc)
         {
-            if (!(npc is Monster))
+            if (npc is not Monster)
                 return;
 
             bool didDmg = loc.damageMonster(npc.GetBoundingBox(), this.Damage.Value, this.Damage.Value + 1, false, this.Source);
@@ -141,7 +141,7 @@ namespace Magic.Framework.Game
         {
             if (this.IsSeeking.Value)
             {
-                if (this.SeekTarget == null || this.SeekTarget.Health <= 0 || this.SeekTarget.currentLocation == null)
+                if (this.SeekTarget is not { Health: > 0 } || this.SeekTarget.currentLocation == null)
                 {
                     this.Disappear(location);
                     return true;

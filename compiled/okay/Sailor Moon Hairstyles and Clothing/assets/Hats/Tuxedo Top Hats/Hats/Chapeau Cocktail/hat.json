@@ -1,0 +1,10 @@
+{
+    "Name": "Chapeau Cocktail",
+    "Description": "...",
+    "PurchasePrice": "150",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": true,
+    "NameLocalization": {
+        "en": "Chapeau Cocktail"
+    }
+}

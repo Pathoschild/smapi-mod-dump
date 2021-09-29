@@ -59,6 +59,7 @@
     "MinLevelForFlowers": 3,
     "MinLevelForFruits": 5,
     "MinLevelForThornyBushes": 10,
+    "MinLevelForDangerousMonsters": 15,
     "MinLevelForBuffedMonsters": 15,
     "MinLevelForWoodsObelisk": 20,
     "MinLevelForMeteorite": 25,
@@ -81,7 +82,9 @@
           "Modifier": 0
         }
       }
-    }
+    },
+    "EnableGuaranteedClearings": true,
+    "GuaranteedClearingsFrequency": 50
   },
   "Map": {
     "MaxMapWidth": 64,
@@ -1435,6 +1438,9 @@
     }
   },
   "Monsters": {
+    "MonsterDensity": 100.0,
+    "DisableBuffedMonsters": false,
+    "DisableDangerousMonsters": false,
     "ChanceForHalfMonsterCount": {
       "Value": {
         "BadLuck": 0,
@@ -1454,6 +1460,24 @@
       }
     },
     "ChanceForUnbuffedMonster": {
+      "Value": {
+        "BadLuck": 0,
+        "Neutral": 25,
+        "GoodLuck": 75
+      },
+      "Range": 100,
+      "RangeLevelModifier": {
+        "Min": {
+          "Level": 0,
+          "Modifier": 0
+        },
+        "Max": {
+          "Level": 0,
+          "Modifier": 0
+        }
+      }
+    },
+    "ChanceForNonDangerousMonster": {
       "Value": {
         "BadLuck": 0,
         "Neutral": 25,
@@ -1659,6 +1683,117 @@
           }
         }
       }
+    },
+    "Bug": {
+      "MinLevel": 15,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "Spider": {
+      "MinLevel": 15,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "ArmoredBug": {
+      "MinLevel": 25,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "PutridGhost": {
+      "MinLevel": 25,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
+    },
+    "DustSprite": {
+      "MinLevel": 25,
+      "Chance": {
+        "Value": {
+          "BadLuck": 10,
+          "Neutral": 10,
+          "GoodLuck": 10
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      }
     }
+  },
+  "Performance": {
+    "LightSourceDensity": 100.0,
+    "BaubleDensity": 100.0,
+    "LeafDensity": 100.0,
+    "GrassDensity": 100.0
   }
 }

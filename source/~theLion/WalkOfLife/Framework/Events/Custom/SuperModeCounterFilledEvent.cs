@@ -14,8 +14,6 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 	public class SuperModeCounterFilledEvent : BaseEvent
 	{
-		private readonly SuperModeBarFlashUpdateTickedEvent _superModeBarFlashUpdateTickedEvent = new();
-
 		/// <summary>Hook this event to the event listener.</summary>
 		public override void Hook()
 		{
@@ -28,10 +26,11 @@ namespace TheLion.Stardew.Professions.Framework.Events
 			ModEntry.SuperModeCounterFilled -= OnSuperModeCounterFilled;
 		}
 
-		/// <summary>Raised when SuperModeCounter is set to zero.</summary>
+		/// <summary>Raised when SuperModeCounter is set to the max value.</summary>
 		public void OnSuperModeCounterFilled()
 		{
-			ModEntry.Subscriber.Subscribe(_superModeBarFlashUpdateTickedEvent);
+			ModEntry.Subscriber.Subscribe(new SuperModeBarShakeTimerUpdateTickedEvent());
+
 		}
 	}
 }

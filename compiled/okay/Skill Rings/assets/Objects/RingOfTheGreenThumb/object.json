@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Pierre",
   "PurchasePrice": 25000,
+  "NameLocalization": {
+	  "zh": "生机之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "让你更好地种植植物，提升你的农业。"
+  },
 }

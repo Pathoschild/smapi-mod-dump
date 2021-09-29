@@ -12,7 +12,7 @@ using StardewValley;
 
 namespace QuestFramework.Quests
 {
-    public interface ICompletionArgs
+    public interface ICompletionArgs : ICompletionMessage
     {
         /// <summary>
         /// Interaction with NPC
@@ -38,5 +38,10 @@ namespace QuestFramework.Quests
         /// Text to test
         /// </summary>
         string String { get; }
+
+        /// <summary>
+        /// Type of completion source (Quest type id)
+        /// </summary>
+        int CompletionType { get; }
     }
 }

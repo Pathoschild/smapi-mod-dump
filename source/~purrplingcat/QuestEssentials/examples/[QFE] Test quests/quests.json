@@ -51,9 +51,9 @@
     },
     {
       "Name": "TestStoryQuest",
-      "Type": "PurrplingCat.QuestEssentials/Special",
+      "Type": "PurrplingCat.QuestEssentials/Adventure",
       "Title": "Testing story quest",
-      "Description": "This is an testing story quest",
+      "Description": "This is an testing adventure quest",
       "Tasks": [
         /*{
           "Name": "TestTask1",
@@ -162,7 +162,7 @@
     },
     {
       "Name": "TestStoryQuest2",
-      "Type": "PurrplingCat.QuestEssentials/Special",
+      "Type": "PurrplingCat.QuestEssentials/Adventure",
       "Title": "Testing story quest",
       "Description": "This is an testing story quest",
       "Tasks": [

@@ -43,7 +43,11 @@ namespace ItemBags.Community_Center
                 this.Building = Game1.getLocationFromName("CommunityCenter") as CommunityCenter;
                 this.IsJojaMember = Game1.MasterPlayer.mailReceived.Contains("JojaMember"); // Possible TODO Do names of received mail depend on current language?
 
-                Dictionary<string, string> RawBundleData = Game1.netWorldState.Value.BundleData; //Game1.content.Load<Dictionary<string, string>>(@"Data\Bundles");
+#if ANDROID && LEGACYVERSION
+                Dictionary<string, string> RawBundleData = Game1.content.Load<Dictionary<string, string>>(@"Data\Bundles");
+#else
+                Dictionary<string, string> RawBundleData = Game1.netWorldState.Value.BundleData;
+#endif
                 Dictionary<string, List<Tuple<int, string>>> GroupedByRoomName = new Dictionary<string, List<Tuple<int, string>>>();
                 foreach (KeyValuePair<string, string> KVP in RawBundleData)
                 {

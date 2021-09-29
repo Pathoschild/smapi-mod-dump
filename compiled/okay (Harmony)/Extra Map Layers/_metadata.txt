@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9633
+IDs: aedenthorn.ExtraMapLayers
+update keys: Nexus:9633, GitHub:aedenthorn/StardewValleyMods

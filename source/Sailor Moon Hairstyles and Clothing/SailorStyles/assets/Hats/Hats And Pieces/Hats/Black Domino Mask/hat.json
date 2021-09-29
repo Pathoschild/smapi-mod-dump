@@ -10,14 +10,8 @@
 
 {
     "Name": "Black Domino Mask",
-    "Description": "A dapper mask to conceal your secret identity. Isn't this from one of those Coattail Mask comics?",
+    "Description": "...",
     "PurchasePrice": "200",
     "ShowHair": true,
-    "IgnoreHairstyleOffset": true,
-    "NameLocalization": {
-        "es": "Máscara de Dominó Negra"
-    },
-    "DescriptionLocalization": {
-        "es": "Una máscara elegante para ocultar tu identidad secreta. ¿No es de uno de esos cómics de Coattail Mask?"
-    }
+    "IgnoreHairstyleOffset": true
 }

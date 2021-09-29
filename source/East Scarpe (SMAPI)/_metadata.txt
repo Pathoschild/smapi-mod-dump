@@ -6,9 +6,9 @@ mods:
    East Scarpe (SMAPI)
 
 latest commit:
-   commit b4e384e0893edf5086340ecdac51ccbc82a0e0a6
+   commit f84ec4bf374ec7fbd8afad0eda44a7c07490251e
    Author: Kevin Daughtridge <kevin@kdau.com>
-   Date:   Mon Jun 28 19:20:11 2021 -0700
+   Date:   Sat Aug 28 21:39:02 2021 -0700
    
-       v2.0.0+1
+       v2.0.0+2
    

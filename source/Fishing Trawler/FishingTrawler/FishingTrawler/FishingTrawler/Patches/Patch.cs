@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 
 namespace FishingTrawler.Patches
@@ -22,6 +22,6 @@ namespace FishingTrawler.Patches
             Monitor = monitor;
         }
 
-        internal abstract void Apply(HarmonyInstance harmony);
+        internal abstract void Apply(Harmony harmony);
     }
 }

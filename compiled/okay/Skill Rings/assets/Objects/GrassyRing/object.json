@@ -4,4 +4,10 @@
   "Edibility": -300,
   "Price": 0,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "长满草的戒指"
+  },
+  "DescriptionLocalization": {
+	  "zh": "一个长满了草的戒指，真可惜我不吃那个。"
+  },
 }

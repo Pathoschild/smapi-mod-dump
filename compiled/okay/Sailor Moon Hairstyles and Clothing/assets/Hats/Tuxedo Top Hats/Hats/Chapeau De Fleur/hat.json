@@ -1,0 +1,10 @@
+{
+    "Name": "Chapeau De Fleur",
+    "Description": "...",
+    "PurchasePrice": "150",
+    "ShowHair": true,
+    "IgnoreHairstyleOffset": true,
+    "NameLocalization": {
+        "en": "Chapeau De Fleur"
+    }
+}

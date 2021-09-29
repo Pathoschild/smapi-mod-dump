@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using StardewModdingAPI;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				Helper
 					.FindFirst(
-						new CodeInstruction(OpCodes.Bge_Un) // find index of first branch instruction
+						new CodeInstruction(ModEntry.GameFramework.Equals(GameFramework.Xna) ? OpCodes.Bge_Un_S : OpCodes.Bge_Un) // find index of first branch instruction
 					)
 					.GetOperand(out var returnLabel) // get return label
 					.Return()

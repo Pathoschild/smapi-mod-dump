@@ -13,6 +13,7 @@ using QuestFramework.Quests;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,8 +58,20 @@ namespace QuestFramework.Framework
                 throw new InvalidQuestException($"Quest `{quest.GetFullName()}` is already registered!");
             }
 
+            quest.OnRegister();
             this.Quests.Add(quest);
             this.monitor.Log($"Added quest `{quest.Name}` to quest manager");
+        }
+
+        internal void AdjustQuest(object adjustMessage)
+        {
+            var activeQuests = this.Quests
+                .Where(q => q.IsInQuestLog());
+
+            foreach(var activeQuest in activeQuests)
+            {
+                activeQuest.OnAdjust(adjustMessage);
+            }
         }
 
         public void AcceptQuest(string fullQuestName, bool silent = false)
@@ -106,6 +119,7 @@ namespace QuestFramework.Framework
                 throw new InvalidOperationException($"Quest factory {name} is already registered!");
 
             this.Factories.Add(name, factory);
+            this.monitor.Log($"Registered quest type {name}");
         }
 
         public bool IsManaged(int id)
@@ -166,6 +180,42 @@ namespace QuestFramework.Framework
                 throw new InvalidQuestException("Quest name is unexpectedly assigned by factory!");
 
             return quest;
+        }
+
+        internal bool CheckForQuestComplete<TQuest>(ICompletionMessage completionMessage) where TQuest : CustomQuest
+        {
+            bool worked = false;
+            Quest vanillaQuestProxy;
+            var activeQuests = this.Quests
+                .Where(q => q.IsInQuestLog())
+                .OfType<TQuest>();
+
+            this.monitor.Log($"Checking managed quest completions <{typeof(TQuest).FullName}, {completionMessage.GetType().FullName}>");
+
+            foreach (var activeQuest in activeQuests)
+            {
+                vanillaQuestProxy = activeQuest.GetInQuestLog();
+
+                if (vanillaQuestProxy == null || vanillaQuestProxy.completed.Value || vanillaQuestProxy.destroy.Value)
+                {
+                    continue;
+                }
+
+                worked |= activeQuest.OnCompletionCheck(completionMessage);
+            }
+
+            return worked;
+        }
+
+        internal bool CheckForQuestComplete(ICompletionMessage completionMessage)
+        {
+            return this.CheckForQuestComplete<CustomQuest>(completionMessage);
+        }
+
+        internal void Clean()
+        {
+            this.Quests.ForEach(q => q.Dispose());
+            this.Quests.Clear();
         }
     }
 }

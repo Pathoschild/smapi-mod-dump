@@ -37,6 +37,7 @@
 	"item.blackdominomask.name": "Black Domino Mask",
 	"item.cleardominomask.name": "Clear Domino Mask",
 	"item.whitedominomask.name": "White Domino Mask",
+	"item.squareshades.name": "Square Shades",
 
 	// Everyday Heroes
 	"item.beigebuttonup.name": "Beige Buttonup",
@@ -183,9 +184,50 @@
 	"item.sakurakimonoredupper.name": "Sakura Kimono Red Upper",
 	"item.sakurakimonowhiteupper.name": "Sakura Kimono White Upper",
 	"item.sakurakimonoyellowupper.name": "Sakura Kimono Yellow Upper",
+	"item.sakurayukatalower.name": "Sakura Yukata Lower",
+	"item.sakurayukataupper.name": "Sakura Yukata Upper",
 
 	// Skirts n' Stuff
 	"item.wavyskirt.name": "Wavy Skirt",
+
+	// Tuxedo Top Hats
+	"item.chapeaumask.name": "Chapeau Mask",
+	"item.chapeauclassique.name": "Chapeau Classique",
+	"item.chapeaudefleurs.name": "Chapeau De Fleurs",
+	"item.chapeauroyale.name": "Chapeau Royale",
+	"item.chapeaucocktail.name": "Chapeau Cocktail",
+	"item.chapeaudefiance.name": "Chapeau De Fiance",
+	"item.chapeaublanc.name": "Chapeau Blanc",
+
+	// Man About Town
+	"item.greenblazeronblack.name": "Green Blazer on Black",
+	"item.bluesleevelesstracktop.name": "Blue Sleeveless Track Top",
+	"item.puffyjoggingtop.name": "Puffy Jogging Top",
+	"item.lemon-lavendarbuttonup.name": "Lemon-Lavendar Buttonup",
+	"item.greencollarshirt.name": "Green Collar Shirt",
+	"item.arcadetop.name": "Arcade Top",
+	"item.woolscarfandcardigan.name": "Wool Scarf and Cardigan",
+	"item.businesscasualshirt.name": "Business-Casual Shirt",
+	"item.orangedoubleshirt.name": "Orange Double-Up Shirt",
+	"item.skitop.name": "Ski Top",
+	"item.lazypinkbuttonup.name": "Lazy Pink Buttonup",
+	"item.earthywaistcoat.name": "Earthy Waistcoat",
+	"item.purplejacketongreen.name": "Purple Jacket On Green",
+	"item.beigejacketgreentop.name": "Beige Jacket On Green",
+	"item.crimsonjacketsandytop.name": "Crimson Sandy Jacket",
+	"item.schooluniform-tuxedo.name": "School Uniform - Tuxedo",
+
+	// Stylish Rogue
+	"item.tuxedomask.name": "Tuxedo Mask",
+	"item.tuxedoclassique.name": "Tuxedo Classique",
+	"item.tuxedodefleurs.name": "Tuxedo De Fleurs",
+	"item.tuxedodefiance.name": "Tuxedo De Fiancé",
+	"item.tuxedococktail.name": "Tuxedo Cocktail",
+	"item.tuxedoroyale.name": "Tuxedo Royale",
+	"item.tuxedodeluxe.name": "Tuxedo De Luxe",
+	"item.tuxedoblonde.name": "Tuxedo Blonde",
+	"item.tuxedomystique.name": "Tuxedo Mystique",
+	"item.tuxedodenuit.name": "Tuxedo De Nuit",
 
 
 	// ITEM DESCRIPTIONS:
@@ -201,6 +243,7 @@
 	"item.blackdominomask.description": "A dapper mask to conceal your secret identity. Isn't this from one of those Coattail Mask comics?",
 	"item.cleardominomask.description": "A dapper mask to conceal your secret identity. Isn't this from one of those Coattail Mask comics?",
 	"item.whitedominomask.description": "A dapper mask to conceal your secret identity. Wonder whose this is?",
+	"item.squareshades.description": "A funky pair of hip shades.",
 
 	// Everyday Heroes
 	"item.beigebuttonup.description": "A green sweater snugly wrapped in a buttonup cardigan.",
@@ -239,6 +282,7 @@
 	"item.greensleevelessturtleneck.description": "A bold choice of outfit.",
 	"item.collaredshirtandsweater.description": "A comfy green sweater.",
 	"item.greentop.description": "A deep green shirt sporting a belt and scarf.",
+	"item.greyhoodieonpink.description": "A simple, comfortable outfit.",
 	"item.home-madedress.description": "There's a lot of love sewn into this dress. It reminds you of home.",
 	"item.hotpinkoveralls.description": "A pair of big, bright overalls.",
 	"item.hotpinkvelvetjacket.description": "The black trim takes the edge off this all-pink outfit.",
@@ -254,6 +298,7 @@
 	"item.orangecollaredtank.description": "Fashionistas still argue whether this top counts as smart-casual.",
 	"item.orangedresstop.description": "A yellow top under a loose orange dress. It needs the lower half.",
 	"item.orangestripedshirt.description": "A shirt sporting thick, colourful stripes.",
+	"item.orangewrap.description": "A bold and colourful top.",
 	"item.peagreendress.description": "A bright green dress top. It'd look silly without the bottom half.",
 	"item.peachyoveralls.description": "A pastel pink pair of overalls.",
 	"item.photographerscoat.description": "Apparel for an incredible scoop.",
@@ -269,6 +314,7 @@
 	"item.rainydaytop.description": "A cute sailor outfit in a deep blue.",
 	"item.rainydaytopandblouse.description": "A cute sailor outfit in a deep blue.",
 	"item.redturtleneck.description": "A thick, red sweater.",
+	"item.salmon-pinkhoodie.description": "A pink hooded sweatshirt over a striking green top.",
 	"item.sandyovershirt.description": "A beige shirt and red undershirt.",
 	"item.sapphireshirt.description": "A collared shirt decorated with a gemstone brooch.",
 	"item.scarletkeyholetop.description": "A revealing top in rich red fabric.",
@@ -297,7 +343,7 @@
 	"item.woollyfleece.description": "There couldn't possibly be anything more comfortable.",
 	"item.yellowtie-top.description": "For when you want to show you put effort into looking relaxed.",
 	"item.yellow-greendress.description": "A deep green dress over a yellow top.",
-	
+
 	// Uniform Operation
 	"item.schooluniform-chibiblue.description": "A children's school uniform.",
 	"item.schooluniform-chibiwhite.description": "A children's school uniform.",
@@ -310,6 +356,7 @@
 
 	// Sailor Suits
 	"item.sailorchibimoon.description": "A cute little sailor suit covered in bows.",
+	"item.sailorjupiter.description": "A stellar sailor suit adorned with bows and a gemstone.",
 	"item.sailormars.description": "A stellar sailor suit adorned with bows and a gemstone.",
 	"item.sailormercury.description": "A stellar sailor suit adorned with bows and a gemstone.",
 	"item.sailormoon.description": "The iconic outfit of the pretty sailor-suited soldier.",
@@ -343,7 +390,48 @@
 	"item.sakurakimonoredupper.description": "A red kimono, upper half.",
 	"item.sakurakimonowhiteupper.description": "A white kimono, upper half.",
 	"item.sakurakimonoyellowupper.description": "A yellow kimono, upper half.",
+	"item.sakurayukatalower.description": "A simple yukata, lower half.",
+	"item.sakurayukataupper.description": "A simple yukata, upper half.",
 
 	// Skirts n' Stuff
-	"item.wavyskirt.description": "A comfy skirt. The pleats flow like flower petals!"
+	"item.wavyskirt.description": "A comfy skirt. The pleats flow like flower petals!",
+
+	// Tuxedo Top Hats
+	"item.chapeaumask.description": "The iconic disguise of a handsome jewel hunter.",
+	"item.chapeauclassique.description": "A stylish top hat.",
+	"item.chapeaudefleurs.description": "A deep, dark top hat with a rose-red sash.",
+	"item.chapeauroyale.description": "A most royal top hat, with a deep blue ribbon.",
+	"item.chapeaucocktail.description": "A top hat suited for extravagant evenings.",
+	"item.chapeaudefiance.description": "A top hat in a subdued colour.",
+	"item.chapeaublanc.description": "A stellar white top hat.",
+
+	// Man About Town
+	"item.greenblazeronblack.description": "A sharp blazer with fresh-pressed lapels.",
+	"item.bluesleevelesstracktop.description": "Fitness wear. Better get a workout!",
+	"item.puffyjoggingtop.description": "Works up a sweat!",
+	"item.lemon-lavendarbuttonup.description": "The lighter side of a dark wardrobe. Very summery!",
+	"item.greencollarshirt.description": "Sunny and bright.",
+	"item.arcadetop.description": "Weird top. Best to use it for jogging.",
+	"item.woolscarfandcardigan.description": "Very comfy. Good for long, cold nights.",
+	"item.businesscasualshirt.description": "All business, some of the time.",
+	"item.orangedoubleshirt.description": "Looks like a beach sunset.",
+	"item.skitop.description": "Winter weather gear for the mountains.",
+	"item.lazypinkbuttonup.description": "Comfy, casual, and confident.",
+	"item.earthywaistcoat.description": "Prim and proper dress.",
+	"item.purplejacketongreen.description": "Electrifying.",
+	"item.beigejacketgreentop.description": "Vintage streetwear.",
+	"item.crimsonjacketsandytop.description": "A sandy button-up top.",
+	"item.schooluniform-tuxedo.description": "The strict and sharp senior uniform of Moto Azabu High.",
+
+	// Stylish Rogue
+	"item.tuxedomask.description": "The iconic outfit of a dashing champion of justice.",
+	"item.tuxedoclassique.description": "A perfectly regular tuxedo.",
+	"item.tuxedodefiance.description": "A groom's outfit in a subdued beige grey.",
+	"item.tuxedoroyale.description": "A most royal affair, dressed in pins and medals.",
+	"item.tuxedodeluxe.description": "A spotless white tuxedo with a shining emerald sash and collar.",
+	"item.tuxedococktail.description": "Reserved for parties with most distinguished guests.",
+	"item.tuxedoblonde.description": "A black-on-white tuxedo, paired with a brilliant golden waistcoat.",
+	"item.tuxedomystique.description": "A glamorous white wedding tuxedo sporting a lavendar satin trim.",
+	"item.tuxedodefleurs.description": "A fancy tux sporting a peacock pattern of red roses.",
+	"item.tuxedodenuit.description": "A formal evening jacket over a thick, grey waistcoat."
 }

@@ -10,14 +10,8 @@
 
 {
     "Name": "Moon Hair Brooch",
-    "Description": "Sailor Moon's hair brooches. Made to fit a certain style!",
+    "Description": "...",
     "PurchasePrice": "100",
     "ShowHair": true,
-    "IgnoreHairstyleOffset": true,
-    "NameLocalization": {
-        "es": "Broche de Pelo de Luna"
-    },
-    "DescriptionLocalization": {
-        "es": "Broches de pelo de Sailor Moon. Hecho para adaptarse a un cierto estilo!"
-    }
+    "IgnoreHairstyleOffset": true
 }

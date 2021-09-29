@@ -15,7 +15,7 @@
             echo Pushing to Android device: "$(GameModsPath)"            
         </PostBuildEvent> 
         <PostBuildEvent>
-            adb push "$(GameModsPath)"\PlayerCoordinates /sdcard/StardewValley/Mods
+            adb push "$(GameModsPath)\$(ProjectName)" /sdcard/StardewValley/Mods
         </PostBuildEvent>
     </PropertyGroup>
 </Project>

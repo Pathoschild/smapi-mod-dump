@@ -163,6 +163,15 @@ function RunDebugCommand(sCommand, sElement, callback) {
             if (sElement == "popup") {
                 ShowPopUp(string, 6000);
             }
+            else if (sElement == "recres") {
+                //
+                //  deal with recording result
+                //
+                AddRecordingResult(string);
+            }
+            else if (sElement == "loadres") {
+                PopulateSave(string);
+            }
             else {
                 document.getElementById(sElement).innerHTML = string;
             }
@@ -175,6 +184,14 @@ function RunDebugCommand(sCommand, sElement, callback) {
     });
 }
 
+function AddRecordingResult(sResult) {
+    if (sResult != "") {
+        var opt = document.createElement("option");
+        opt.text = sResult;
+        opt.value = sResult;
+        document.getElementById("recordings").options.add(opt);
+    }
+}
 function GetPreviousPage() {
     if (iPageViewing > 0) {
         iPageViewing--;

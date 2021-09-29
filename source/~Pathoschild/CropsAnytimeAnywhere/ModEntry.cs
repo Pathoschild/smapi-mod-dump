@@ -24,7 +24,7 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere
         ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
-        private ModConfig Config;
+        private LocationConfigManager Config;
 
 
         /*********
@@ -35,8 +35,9 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere
         public override void Entry(IModHelper helper)
         {
             // read config
-            this.Config = helper.ReadConfig<ModConfig>();
-            this.Config.InLocations ??= new Dictionary<string, PerLocationConfig>();
+            this.Config = new LocationConfigManager(
+                helper.ReadConfig<ModConfig>()
+            );
 
             // read data
             var fallbackTileTypes = this.LoadFallbackTileTypes();

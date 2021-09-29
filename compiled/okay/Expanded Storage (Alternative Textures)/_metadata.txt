@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7431
+IDs: furyx639.XSAlternativeTextures
+update keys: Nexus:7431@AlternativeTextures, Nexus:7431, GitHub:ImJustMatt/StardewMods

@@ -60,3 +60,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 #### 5.1
 * Updated to use Harmony 2.1 and support SMAPI 3.12
 * Fixes the `System.InvalidOperationException: Late bound operations cannot be performed on types or methods for which ContainsGenericParameters is true.` issue.
+
+#### 5.2
+* Fixed issue with `System.AppDomain.DefineDynamicAssembly` for compatibility with SDV 1.5.5 beta

@@ -241,7 +241,7 @@ namespace StardewHack
     // This pattern is used to have a separate static instance variable per type T.
     public abstract class HackImpl<T> : HackBase where T : HackImpl<T>
     {
-        internal readonly static ModuleBuilder ProxyModule = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("StardewHack.Proxies"), AssemblyBuilderAccess.Run).DefineDynamicModule("StardewHack.Proxies");
+        internal readonly static ModuleBuilder ProxyModule = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("StardewHack.Proxies"), AssemblyBuilderAccess.Run).DefineDynamicModule("StardewHack.Proxies");
 
         /// <summary>
         /// A reference to this class's instance. 

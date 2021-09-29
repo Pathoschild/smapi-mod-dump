@@ -9,12 +9,18 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for Stardew Valley 1.5.5.
+## 1.3.1
+Released 11 September 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Internal refactoring.
+
+## 1.3.0
+Released 04 September 2021 for SMAPI 3.12.6 or later. Updated by Pathoschild.
+
 * Added integration with BugNet so you can catch custom critters.
 
 ## 1.2.8
-Released 19 June 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+Released 19 June 2021 for SMAPI 3.9.5 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.5.
 * Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).

@@ -9,7 +9,15 @@
 *************************************************/
 
 {
-    "critter.cage": "Kalitka: {{critterName}}",
+    // net
+    "bug-net.name": "Bogárháló",
+    "bug-net.description": "Elkapja az állatkákat, meg az ilyesmiket.",
+
+    // critter cage
+    "cage.name": "Állatka ketrec: {{critterName}}",
+    "cage.description": "Ez egy állatka! Egy ketrecben!",
+
+    // critter names
     "critter.GreenFrog": "Zöld béka",
     "critter.OliveFrog": "Olajzöld béka",
     "critter.Cloud": "Felhő?",

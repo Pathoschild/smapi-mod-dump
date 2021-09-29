@@ -24,7 +24,7 @@ using static DeepWoodsMod.DeepWoodsSettings;
 
 namespace DeepWoodsMod
 {
-    class GingerBreadHouse : ResourceClump
+    public class GingerBreadHouse : ResourceClump
     {
         private new int parentSheetIndex;
         private NetFloat nextSpawnFoodHealth = new NetFloat();

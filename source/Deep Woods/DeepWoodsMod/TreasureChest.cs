@@ -25,7 +25,7 @@ namespace DeepWoodsMod
     /// It cannot be picked up and it won't be deleted when empty.
     /// Allows for nice treasure chests with plenty of loot that players can access without hassle.
     /// </summary>
-    class TreasureChest : Chest
+    public class TreasureChest : Chest
     {
         public readonly NetBool isTrashCan = new NetBool();
         private Texture2D texture;

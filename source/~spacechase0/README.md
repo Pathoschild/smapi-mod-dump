@@ -15,19 +15,19 @@ use the right translations.
 
 (❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
 
-&nbsp;     | Bug Net                  | Capstone Professions                  | Displays                   | Magic                   | More Rings | Preexisting Relationships                  | Surfing Festival
----------- | :----------------------- | :------------------------------------ | :------------------------- | :---------------------- | ---------- | :----------------------------------------- | ----------------
-Chinese    | [✓](BugNet/i18n/zh.json) | [✓](CapstoneProfessions/i18n/zh.json) | [✓](Displays/i18n/zh.json) | [✓](Magic/i18n/zh.json) | ✓          | [✓](PreexistingRelationships/i18n/zh.json) | ✓
-French     | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                  | ❑ missing
-German     | ❑ missing                | ❑ missing                             | [✓](Displays/i18n/de.json) | ❑ missing               | ❑ missing  | ❑ missing                                  | ❑ missing
-Hungarian  | [✓](BugNet/i18n/hu.json) | [✓](CapstoneProfessions/i18n/hu.json) | ❑ missing                  | ❑ missing               | ✓          | ❑ missing                                  | ✓
-Italian    | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                  | ❑ missing
-Japanese   | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                  | ❑ missing
-Korean     | ❑ missing                | ❑ missing                             | ❑ missing                  | [✓](Magic/i18n/ko.json) | ❑ missing  | ❑ missing                                  | ✓
-Portuguese | ❑ missing                | ❑ missing                             | ❑ missing                  | [✓](Magic/i18n/pt.json) | ❑ missing  | ❑ missing                                  | ❑ missing
-Russian    | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                  | ✓
-Spanish    | [✓](BugNet/i18n/es.json) | [✓](CapstoneProfessions/i18n/es.json) | [✓](Displays/i18n/es.json) | [✓](Magic/i18n/es.json) | ✓          | [✓](PreexistingRelationships/i18n/es.json) | ✓
-Turkish    | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                  | ❑ missing
+&nbsp;     | Bug Net                  | Capstone Professions                  | Displays                   | Magic                   | More Rings | Preexisting Relationships                 | Surfing Festival
+---------- | :----------------------- | :------------------------------------ | :------------------------- | :---------------------- | ---------- | :---------------------------------------- | ----------------
+Chinese    | [✓](BugNet/i18n/zh.json) | [✓](CapstoneProfessions/i18n/zh.json) | [✓](Displays/i18n/zh.json) | [✓](Magic/i18n/zh.json) | ✓          | [✓](PreexistingRelationship/i18n/zh.json) | ✓
+French     | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                 | ❑ missing
+German     | ❑ missing                | ❑ missing                             | [✓](Displays/i18n/de.json) | ❑ missing               | ❑ missing  | ❑ missing                                 | ❑ missing
+Hungarian  | [✓](BugNet/i18n/hu.json) | [✓](CapstoneProfessions/i18n/hu.json) | ❑ missing                  | ❑ missing               | ✓          | ❑ missing                                 | ✓
+Italian    | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                 | ❑ missing
+Japanese   | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                 | ❑ missing
+Korean     | ❑ missing                | ❑ missing                             | ❑ missing                  | [✓](Magic/i18n/ko.json) | ❑ missing  | ❑ missing                                 | ✓
+Portuguese | ❑ missing                | ❑ missing                             | ❑ missing                  | [✓](Magic/i18n/pt.json) | ❑ missing  | ❑ missing                                 | ❑ missing
+Russian    | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                 | ✓
+Spanish    | [✓](BugNet/i18n/es.json) | [✓](CapstoneProfessions/i18n/es.json) | [✓](Displays/i18n/es.json) | [✓](Magic/i18n/es.json) | ✓          | [✓](PreexistingRelationship/i18n/es.json) | ✓
+Turkish    | ❑ missing                | ❑ missing                             | ❑ missing                  | ❑ missing               | ❑ missing  | ❑ missing                                 | ❑ missing
 
 Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
 on the wiki for help contributing translations.
@@ -43,15 +43,9 @@ for troubleshooting.
 ### Compiling a mod for testing
 To compile a mod and add it to your game's `Mods` directory:
 
-1. Clone Tiled.Net:
-
-   ```bash
-   git clone https://github.com/napen123/Tiled.Net.git
-   ```
-
-2. Rebuild the solution in [Visual Studio](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com/).  
+1. Rebuild the solution in [Visual Studio](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com/).  
    <small>This will compile the code and package it into the `Mods` directory.</small>
-3. Launch any project with debugging.  
+2. Launch any project with debugging.  
    <small>This will start the game through SMAPI and attach the Visual Studio debugger.</small>
 
 ### Compiling a mod for release
@@ -92,35 +86,39 @@ I     | 1.  Better Meteorites
       | 16. MultiFertilizer
       | 17. Object Time Left
       | 18. Profit Calculator
-      | 19. Rush Orders
-      | 20. Spenny
-      | 21. Three-Heart Dance Partner
-      | 22. Throwable Axe
+      | 19. Realtime Minimap
+      | 20. Rush Orders
+      | 21. Spenny
+      | 22. Super Hopper
+      | 23. Three-Heart Dance Partner
+      | 24. Throwable Axe
 ----- | ------------------------------
-II    | 23. Content Patcher Animations
-      | 24. Generic Mod Config Menu
-      | 25. Hybrid Crop Engine
-      | 26. SpaceCore
-      | 27. Json Assets                 * needs SpaceCore
+II    | 25. Content Patcher Animations
+      | 26. Generic Mod Config Menu
+      | 27. Hybrid Crop Engine
+      | 28. SpaceCore
+      | 29. Dynamic Game Assets         * needs SpaceCore
+      | 30. Json Assets                 * needs SpaceCore
 ----- | ------------------------------
-III   | 28. Animal Social Menu
-      | 29. Another Hunger Mod
-      | 30. Bigger Craftables
-      | 31. Bug Net
-      | 32. Capstone Professions
-      | 33. Cooking Skill
-      | 34. Customize Exterior
-      | 35. Displays
-      | 36. Luck Skill
-      | 37. Mana Bar
-      | 38. Magic                       * needs Mana Bar
-      | 39. More Buildings
-      | 40. More Rings
-      | 41. Preexisting Relationship
-      | 42. Pyromancer's Journey
-      | 43. Sleepy Eye
-      | 44. Statue of Generosity
-      | 45. Theft of the Winter Star
+III   | 31. Animal Social Menu
+      | 32. Another Hunger Mod
+      | 33. Bigger Craftables
+      | 34. Bug Net
+      | 35. Capstone Professions
+      | 36. Cooking Skill
+      | 37. Customize Exterior
+      | 38. DGAAutomate
+      | 39. Displays
+      | 40. Luck Skill
+      | 41. Mana Bar
+      | 42. Magic                       * needs Mana Bar
+      | 43. More Buildings
+      | 44. More Rings
+      | 45. Preexisting Relationship
+      | 46. Pyromancer's Journey
+      | 47. Sleepy Eye
+      | 48. Statue of Generosity
+      | 49. Theft of the Winter Star
 ----- | ------------------------------
-IV    | 46. Surfing Festival
+IV    | 50. Surfing Festival
 ```

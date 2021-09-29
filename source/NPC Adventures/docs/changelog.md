@@ -8,6 +8,15 @@ for queries and analysis.**
 
 # Full changelog
 
+## 0.16.3 "Revival"
+
+- Fixed Quest Framework version dependency to 1.4 in manifest.json
+
+## 0.16.2 "Revival"
+
+- Fixes rare error in GetCharacterFromName() postfix (thx shekurika)
+- Changed Harmony references to Harmony2.0 (thx shekurika)
+
 ## 0.16.1 "Revival"
 
 - Fixed issue with following through cooled lava in volcano

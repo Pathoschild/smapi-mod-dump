@@ -5,4 +5,10 @@
   "Edibility": -300,
   "Price": 50000,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "自然赏金之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "你的觅食能力大大提升。"
+  },
 }

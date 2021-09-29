@@ -5,4 +5,10 @@
   "Edibility": -300,
   "Price": 50000,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "自然神谕之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "自然之神本身在帮助你。"
+  },
 }

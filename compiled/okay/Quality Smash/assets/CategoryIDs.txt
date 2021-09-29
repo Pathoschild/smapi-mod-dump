@@ -1,0 +1,17 @@
+﻿Artisan Goods,-26
+Cooking,-7
+Crafting,-8
+Egg,-5
+Fish,-4
+Flowers,-80
+Fruits,-79
+Greens,-81
+Ingredients,-25
+Meat,-14
+Milk,-6
+Monster Loot,-28
+Sellable to Fish Shop,-23
+Sellable to Pierre and Marnie,-18
+Sellable to Pierre,-17
+Syrup,-27
+Vegetable,-75

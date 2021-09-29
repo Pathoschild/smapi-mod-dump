@@ -9,7 +9,7 @@
 *************************************************/
 
 using CombineMachines.Helpers;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -47,15 +47,15 @@ namespace CombineMachines.Patches
         }
     }
 
-    [HarmonyPatch(typeof(SObject), nameof(SObject.canStackWith))]
+    [HarmonyPatch(typeof(Item), nameof(Item.canStackWith))]
     public static class CanStackWithPatch
     {
-        public static bool Prefix(SObject __instance, ISalable other, ref bool __result)
+        public static bool Prefix(Item __instance, ISalable other, ref bool __result)
         {
             try
             {
                 //  Always return false if the machine has been merged with another machine
-                if (__instance.IsCombinedMachine())
+                if (__instance is SObject sObj && sObj.IsCombinedMachine())
                 {
                     __result = false;
                     return false;

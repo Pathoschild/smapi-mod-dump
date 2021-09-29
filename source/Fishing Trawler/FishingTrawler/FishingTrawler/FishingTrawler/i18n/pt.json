@@ -1,0 +1,153 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FishingTrawler
+**
+*************************************************/
+
+{
+  // Config settings
+  "config.option.required_fishing_level.name": "Level Mínimo de Pesca necessário ",
+  "config.option.required_fishing_level.description": "Define o Level mínimo de Pesca para o Murphy aparecer.",
+  "config.option.net_output.name": "Liberação da Rede de Pesca",
+  "config.option.net_output.description": "Determina a quantidade de peixe que cada rede dá no Pesqueiro. O padrão é 1 (Então no total são 2, por ter 2 redes).",
+  "config.option.engine_boost.name": "Impulso do Motor",
+  "config.option.engine_boost.description": "Determina a quantidade de peixe bônus que o motor dá quando funcionando. O padrão é 2.",
+  "config.option.event_frequency_lower.name": "Frequência de Eventos (Baixo)",
+  "config.option.event_frequency_lower.description": "Define o tempo mínimo para um evento acontecer. 1 é um segundo, 2 é dois, etc.",
+  "config.option.event_frequency_upper.name": "Frequência de Eventos (Superior)",
+  "config.option.event_frequency_upper.description": "Define o tempo máximo antes que um evento ocorra. 1 é um segundo, 2 é dois, etc.",
+  "config.option.murphy_appearance_day.name": "Dia em que Murphy Aparece",
+  "config.option.murphy_appearance_day.description": "Determina o dia da semana em que o Murphy está disponível para uma saída.",
+  "config.option.murphy_appearance_day_island.name": "Dia em que Murphy aparece (ilha)",
+  "config.option.murphy_appearance_day_island.description": "Determina o dia da semana em que Murphy vai estar disponível para uma saída, se você puder visitar a Ilha.",
+
+  // Murphy's dialogue
+  "dialogue.player_title.male": "Rapaz",
+  "dialogue.player_title.female": "Mocinha",
+  "dialogue.introduction": "Ahoy {0}!$h#$b#Cê deve ser @? Willy mencionou que um amigo dele iria passar por aqui.^Cê deve ser @? Willy mencionou que uma amiga dele iria passar por aqui.$n#$b#Então cê ta interessado em ser um marinheiro a bordo do velho Dawnshard?^Então cê ta interessada em ser uma marinheira a bordo do velho Dawnshard?$n#$b#Eu não tenho muito para oferecer como um pagamento, mas uma parte dos peixes que pegarmos são seus!$h#$e",
+  "dialogue.greeting": "Ahoy {0}!$h#$b#O mar está a nosso favor hoje. Coma Benção de Yoba nós vamos voltar inteiros.$n#$e",
+  "dialogue.greeting_rainy": "Ahoy {0}!$h#$b#O mar pode estar bravo hoje, velhos marinheiros podemos lidar com isso aye?$n#$e",
+  "dialogue.greeting_island": "Ahoy {0}!$h#$b#Nada como apreciar uma boa bebida enquanto sente a brisa do oceano, aye {0}?$h#$e",
+  "dialogue.options": "quer sair para pescar, {0}?",
+  "dialogue.confirm_first_trip": "Como esta vai ser sua primeira saída, cê quer uma explicação sobre as obrigações de um marinheiro?^Como esta vai ser sua primeira saída, cê quer uma explicação sobre as obrigações de uma marinheira?",
+  "dialogue.minigame_explanation_hull": "Seu principal trabalho como marinheiro vai ser manter o Dawnshard flutuando enquanto estamos navegando ao redor das Ilhas Fern.$n#$b#Essa velha garota já viu dias melhores, assim como eu, e ela está propensa a quebrar.$s#$b#Buracos podem aparecer no casco, então tenha certeza de concertar eles rapidamente.$n#$b#Se entrar muita água, eu vou ter que dar meia-volta e sua parte da pesca vai ser quase nada.$s#$b#",
+  "dialogue.minigame_explanation_bailing": "Eu vou providenciar ocê com um balde quando levantarmos ancora. Use ele no casco para tirar um pouco de água e jogar ela no oceano para reduzir a inundação.$n#$b#",
+  "dialogue.minigame_explanation_nets": "Sua segunda tarefa é ter certeza que as redes estão funcionando. Elas estão localizadas no convés, seguradas pelos guindastes perto da poupa.$n#$b#Sem redes funcionando, significa sem peixes para nós.$s#$b#",
+  "dialogue.minigame_explanation_engine": "por último é o motor, localizado na cabine. Os canos soltam vapor ocasionalmente  e precisam ser reparados.$n#$b#Um cano vazando significa um motor falhando. um motor falhando significa que as redes não pegam peixes. Se ambos, as redes e o motor falharem, nós começamos a perder peixes também.$s#$b#",
+  "dialogue.minigame_explanation_finish": "Se voltarmos inteiros, o compartilhamento da carga total é seu. Entretanto, se voltarmos mais cedo, sua parte é menor.$n#$b#Se você estiver pronto para trabalhar, me avise e nós vamos zarpar.^Se você estiver pronta para trabalhar, me avise e nós vamos zarpar.$h#$e#",
+  "dialogue.reward_explanation_flags": "Carambolas {0}! Isso é o que eu acho que é?$u#$b#%Murphy pega gentilmente a Bandeira de sua mão, antes de examinar ela de perto.$n#$b#Essa é uma das Antigas Bandeiras que Marinheiros e Piratas usavam e estavam perdidas no tempo.$n#$b#Muitas lendas são contadas sobre essas bandeiras e os efeitos que são dados para os marinheiros que as usam.$n#$b#Eu vou lhe devolver {0}, mas se você quiser colocar ela na velha Dawnshard, ou se mais delas aparecerem, me avise.$h#$e",
+  "dialogue.after_trip_successful": "Muito bem {0}! Vamos fazer docê um verdadeiro marinheiro.^Muito bem {0}! Vamos fazer docê uma verdadeira marinheira.$h#$b#Sua parte do que pescamos está guardado no caixote a esquerda!$n#$e",
+  "dialogue.after_trip_failure": "Pela benção de Yoba nós voltamos inteiros.$s#$b#Não se preocupe {0}, tem sempre uma próxima vez.$n#$e",
+  "dialogue.trip_finished": "Ocê está ansioso para uma outra expedição?$n#$b#Desculpe {0}, ocê vai ter que esperar até o próximo dia. Esses velhos ossos precisam de um descanso.$h#$e",
+  "dialogue.full_inventory": "Todos a bor-$n#$b#Ah! Desculpe {0}, ocê precisa abrir um espaço na sua mochila para o balde.$u#$b#Confie em mim, ocê vai precisar dele.$s#$e",
+  "dialogue.deckhand_busy": "Eh?$u#$b#Parece que um de seus camaradas está ocupado olhando sua mochila ou algo assim, {0}.$n#$bApresse eles e venha falar comigo quando estiverem prontos.",
+  "dialogue.start_departure": "Todos a bordo! Levantar ancora e vamos zarpar!",
+  "dialogue.how_to_hoist_flag": "Ocê está pensando em içar uma das bandeiras eh?$n#$b#Me entregue uma delas e eu vou fazer com que ela esteja içada assim que zarparmos.$h#$e",
+  "dialogue.what_flag_is_hoisted_none": "A velha Dawnshard não está com nenhuma bandeira no momento.",
+  "dialogue.what_flag_is_hoisted": "Atualmente a velha Dawnshard está com a Bandeira {0}.",
+  "dialogue.identify_flag": "Eh {0}?$n#$b#Carambolas! Ocê conseguiu achar outra bandeira?$u#$b#%Murphy pega gentilmente a bandeira de sua mão, antes de examinar de perto.$n#$b#Com toda certeza é outra das bandeiras antigas. O mar gosta muito de você {0}!$n#$b#Eu vou te devolver isso, mas se você quiser içar esta bandeira na velha Dawnshard ou achar mais delas, ocê me avise por favor.$h#$e",
+  "dialogue.given_flag_to_hoist": "Essa bandeira vai ser uma ótima adição a Dawnshard!$h#$b#Eu vou iça-la corretamente assim que zarparmos {0}.",
+  "dialogue.given_flag_to_hoist_return_old": "Essa bandeira vai ser uma ótima adição a Dawnshard!$n#$b#Eu vou iça-la corretamente assim que zarparmos {0}.$h#$b#Ah! antes que eu me esqueça, aqui está a outra bandeira que estava içada antes.$n#$e",
+  "dialogue.remove_current_flag": "Ocê que a bandeira de volta {0}?$n#$b#O barco vai ficar um pouco vazio sem ela, mas aqui está!$h#$e",
+  "dialogue.more_questions": "No que posso ajudar ocê, {0}?",
+  "dialogue.goodbye": "Me avise se ocê precisar de algo a mais, {0}.$h#$e",
+  "dialogue.multiple_deckhands": "Ocê pode trazer quantos companheiros quiser, {0}.$h#$b#apenas tenha certeza que eles estão esperando aqui nesse cais quando formos zarpar, ou então vão ficar para trás!$n#$e",
+
+  // Player responses
+  "response.what_does_deckhand_do": "O que um marinheiro faz?^O que uma marinheira faz?",
+  "response.like_to_hoist_flag": "Eu gostaria  de içar uma bandeira.",
+  "response.what_flag_is_trawler_flying": "Que bandeira está içada no pesqueiro?",
+  "response.want_have_flag_back": "Posso ter minha bandeira de volta?",
+  "response.never_mind": "Na verdade, esquece.",
+  "response.start_trip": "Eu estou pronto para zarpar!",
+  "response.found_another_flag": "Eu encontrei outra Bandeira!",
+  "response.bring_some_friends": "Posso trazer alguns amigos junto?",
+  "response.more_questions": "eu tenho algumas perguntas.",
+  "response.no_departure": "Talvez outra hora.",
+  "response.yes_explain": "Sim.",
+  "response.no_explain": "Não.",
+
+  // Status messages during trawler trip
+  "status_message.default": "Ah o cheiro do oceano...",
+  "status_message.sea_favors_us": "O oceano está a nosso favor!",
+  "status_message.yoba_be_praised": "Yoba seja louvado!",
+  "status_message.ship_falling_apart": "Esse barco está caindo aos pedaços!",
+  "status_message.losing_fish": "Estamos perdendo os peixes!",
+  "status_message.taking_on_water": "Estamos tirando a água!",
+  "status_message.lots_of_problems": "Temos muitos problemas!",
+  "status_message.engine_failing": "O motor está falhando!",
+  "status_message.nets_torn": "As redes rasgaram!",
+  "status_message.leak": "Nós temos um vazamento!",
+
+  // Letter message that is sent once player has requirements to meet Murphy
+  "letter.meet_murphy": "Ahoy !^ ^Meu velho companheiro de apostas Murphy passou aqui recentemente. Ele está procurando por alguns marinheiros dispostos a trabalhar no seu pesqueiro. Eu citei no seu nome, como eu já vi você pescando pela cidade, e ele parece animado em te conhecer.^ ^-Willy ^ ^P.S. Murphy mencionou que estaria na parte direita das docas (depois da ponte) nas {0} e que ele iria embora antes do anoitecer.",
+  "letter.island_murphy": "Ahoy !^ ^Eu soube que recentemente ocê construiu um resort na Ilha Gengibre. Eu vou passar por la semanalmente nas {0} para esticar minhas pernas e pegar uma bebida. ^^Se estiver interessado em outra pescaria, me encontre nas docas na parte leste da ilha antes de anoitecer.^ ^-Murphy",
+
+  // Tools and special rewards
+  "item.bailing_bucket.name": "Balde Salva-vidas",
+  "item.bailing_bucket.description_full": "um balde cheio de água do mar. Esvazie ele no outro lado do navio.",
+  "item.bailing_bucket.description_empty": "Um confiável, embora velho balde. Use ele para pegar água no casco e esvazie no oceano.",
+  "item.angler_ring.name": "Anel do Pescador",
+  "item.angler_ring.description": "É gelado ao toque.\n\nUsar ele faz com que se sinta em harmonia com o oceano.",
+
+  // Ancient flag reward names and descriptions
+  "item.ancient_flag.parely.name": "Bandeira da Negociação",
+  "item.ancient_flag.jolly_roger.name": "Guerreiro Alegre",
+  "item.ancient_flag.gamblers_crest.name": "O Escudo do Apostador",
+  "item.ancient_flag.mermaids_blessing.name": "A Benção da Sereia",
+  "item.ancient_flag.patron_saint.name": "O Santo Padroeiro",
+  "item.ancient_flag.sharks_fin.name": "Barbatana de Tubarão",
+  "item.ancient_flag.worldly_flag.name": "Bandeira Mundana",
+  "item.ancient_flag.slime_king.name": "o Rei Slime",
+  "item.ancient_flag.king_crab.name": "O Caranguejo Rei",
+  "item.ancient_flag.unknown.name": "Bandeira Anciã",
+
+  "item.ancient_flag.parely.description": "Previne vazamentos de acontecerem, mas diminui a qualidade das recompensas em 25%.",
+  "item.ancient_flag.jolly_roger.description": "Quadruplica a produção da rede de pesca, mas toda vez que tiver um vazamento, todos os buracos vão soltar água.",
+  "item.ancient_flag.gamblers_crest.description": "Tem 50% de chance de dobrar a quantidade de peixes pegos, mas tem 25% de consumir todos os peixes.",
+  "item.ancient_flag.mermaids_blessing.description": "Tem 10% de chance de consumir um peixe, mas da um peixe randômico na caixa de recompensas.",
+  "item.ancient_flag.patron_saint.description": "Tem 25% de chance de consumir um peixe, mas da a exp total por pegar ele.",
+  "item.ancient_flag.sharks_fin.description": "Aumenta o tempo de pesca do pesqueiro em 1 minuto, permitindo mais peixes serem pegos.",
+  "item.ancient_flag.worldly_flag.description": "Permite que o pesqueiro pegue peixes não disponíveis normalmente no oceano.",
+  "item.ancient_flag.slime_king.description": "Consome todos os peixes mas da 75% de chance de converter cada peixe em um slime, 50% de chance de converter em um Salmão Mutante e 1% de chance de converter em um Ovo de Slime randômico.",
+  "item.ancient_flag.king_crab.description": "limita o pesqueiro em pescar apenas peixes do covo, com chance aumentada de caranguejos.",
+  "item.ancient_flag.unknown.description": "Uma bandeira antiga que emana um pouco de magia.\n\nTalvez Murphy saiba mais sobre ela?",
+
+
+  // Game messages sent by this mod
+  "game_message.given_bailing_bucket": "Um balde foi adicionado ao seu inventário.",
+  "game_message.trip_succeeded": "A saída foi um sucesso! Murphy está voltando ao porto.",
+  "game_message.trip_failed": "O navio está com muita água! Murphy rapidamente retorna ao porto antes que afunde.",
+  "game_message.identify_flag_first": "Você precisa identificar a bandeira antes de colocar ela nas paredes!",
+  "game_message.bailing_bucket.empty_into_sea": "Esvazie o balde no oceano!",
+  "game_message.bailing_bucket.no_water_to_bail": "Não tem água para ser retirada!",
+  "game_message.bailing_bucket.stand_closer_to_edge": "Fique próximo a beirada antes de tentar esvaziar o balde!",
+  "game_message.bailing_bucket.bail_from_hull": "Você deveria estar usando isso para retirar a água do casco!",
+  "game_message.gamblers_crest_effect.success": "O 'Escudo do Apostador' dobrou a quantidade de peixes!",
+  "game_message.gamblers_crest_effect.failed": "O 'Escudo do Apostador' pegou todos os seus peixes!",
+  "game_message.gamblers_crest_effect.neutral": "O 'Escudo do Apostador' deixou sua caixa intacta.",
+  "game_message.xp_gained": "Você ganhou {0} de experiência de pesca dessa saída!",
+  "game_message.bonus_xp_gained": "A Bandeira 'O Santo Padroeiro' lhe concedeu {0} de experiência bônus!",
+  "game_message.empty_crate": "O caixote de pesca está vazio.",
+  "game_message.messy_note": "Tem uma nota aqui...#Você não consegue entender a letra.",
+  "game_message.readable_note": "Tem uma nota aqui...#É do Murphy! Ela diz que ele vai estar ancorado na próxima semana, e para falar com ele antes de anoitecer se você quiser ir a uma saída para pescar.",
+  "game_message.speak_to_captain": "Você tem que falar com o capitão antes de entrar no barco!",
+  "game_message.walk_the_plank": "Andar na prancha não parece ser uma boa ideia...",
+  "game_message.pathos_cat": "Um gato com um padrão interessante branco e preto.",
+
+  // UI related
+  "ui.flooding.name": "Inundando",
+  "ui.nets.name": "Redes",
+  "ui.engine.name": "Motor",
+  "ui.generic.working": "Trabalhando",
+  "ui.nets.ripping": "Rasgando",
+  "ui.nets.ripped": "Rasgada",
+  "ui.engine.failing": "Falhando",
+
+  // Etc
+  "etc.murphy_name": "Murphy"
+}

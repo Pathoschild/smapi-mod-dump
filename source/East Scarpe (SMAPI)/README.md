@@ -6,9 +6,9 @@ for queries and analysis.**
 
 ----
 
-# ![[icon]](promo/icon.png) East Scarpe SMAPI component
+# ![[icon]](promo/icon.png) East Scarp SMAPI component
 
-This is the SMAPI (C#) component of LemurKat's East Scarpe mod. This component is written by kdau.
+This is the SMAPI (C#) component of LemurKat's East Scarp mod. This component is written by kdau.
 
 ## Features
 
@@ -39,6 +39,14 @@ For each entry in the `FishingAreas` data field, when the given `Conditions` app
 
 In locations listed in the `FruitTreeLocations` data field, there should be a one-time spawn of fruit trees based on the sapling indexes given as values of the `FruitTree` property on the `Back` layer. The trees should spawn as fully mature, with in-season trees already bearing one fruit. If a number is given for the `FruitLimit` property on the `Back` layer, the corresponding fruit tree will be limited to bearing that many fruit at any time.
 
+## Obelisks
+
+Any obelisk with the given `Name` in the `ObeliskWarp` data field should warp players to the given `X` and `Y` tile coordinates in the given `Location`. These obelisks should be transformed for save files to avoid bugs caused by removal of this mod.
+
+## Rain watering
+
+For each entry in the `RainWatering` data field, any hoed dirt within the given `Area` of the given `Location` should be watered on any day when it is raining in that location.
+
 ### Sea Monster
 
 For each entry in the `SeaMonsterSpawns` data field, when the given `Conditions` apply and a player is in the given `Location`, at each tick there should be the given `Chance` for the Sea Monster to spawn somewhere within the given `Area`. At most one Sea Monster should be present on a particular map at any time.
@@ -54,29 +62,3 @@ For each entry in the `WaterEffects` data field, when the given `Conditions` app
 ### Winter grass
 
 For each entry in the `WinterGrasses` data field, grass in the given `Area` of the given `Location` should survive through the winter with a seasonally appropriate appearance.
-
-## Release notes
-
-### Version 2.0.0
-
-* Require Stardew 1.5 or higher
-* Redesign all features to be generic and fully configurable
-* Remove dependency on TMXL for loading of main East Scarpe map
-
-### Version 1.4.0
-
-* Add Crab Pot fishing area support
-* Add Orchard fruit tree spawns
-
-### Version 1.1.3
-
-* Avoid additional errors when map fails to load
-
-### Version 1.1.0
-
-* All constants are now in a `data.json` file for easier editing
-* Any grass on the map is now preserved through the winter with appropraite sprites
-
-### Version 1.0.0
-
-* Initial release

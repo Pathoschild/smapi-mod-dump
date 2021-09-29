@@ -100,7 +100,7 @@ namespace MoreBuildings
                     var b = farm.buildings[i];
 
                     // This is probably a new building if it hasn't been converted yet.
-                    if (b.buildingType.Value == "Shed2" && !(b is BigShedBuilding))
+                    if (b.buildingType.Value == "Shed2" && b is not BigShedBuilding)
                     {
                         Log.Debug($"Converting big shed at ({b.tileX}, {b.tileY}) to actual big shed.");
 
@@ -114,7 +114,7 @@ namespace MoreBuildings
                         farm.buildings[i].tilesHigh.Value = b.tilesHigh.Value;
                         farm.buildings[i].load();
                     }
-                    else if (b.buildingType.Value == "SpookyShed" && !(b is SpookyShedBuilding))
+                    else if (b.buildingType.Value == "SpookyShed" && b is not SpookyShedBuilding)
                     {
                         Log.Debug($"Converting spooky shed at ({b.tileX}, {b.tileY}) to actual spooky shed.");
 
@@ -128,7 +128,7 @@ namespace MoreBuildings
                         farm.buildings[i].tilesHigh.Value = b.tilesHigh.Value;
                         farm.buildings[i].load();
                     }
-                    else if (b.buildingType.Value == "FishShack" && !(b is FishingShackBuilding))
+                    else if (b.buildingType.Value == "FishShack" && b is not FishingShackBuilding)
                     {
                         Log.Debug($"Converting fishing shack at ({b.tileX}, {b.tileY}) to actual fishing shack.");
 
@@ -143,7 +143,7 @@ namespace MoreBuildings
                         farm.buildings[i].tilesHigh.Value = b.tilesHigh.Value;
                         farm.buildings[i].load();
                     }
-                    else if (b.buildingType.Value == "MiniSpa" && !(b is MiniSpaBuilding))
+                    else if (b.buildingType.Value == "MiniSpa" && b is not MiniSpaBuilding)
                     {
                         Log.Debug($"Converting mini spa at ({b.tileX}, {b.tileY}) to actual mini spa.");
 

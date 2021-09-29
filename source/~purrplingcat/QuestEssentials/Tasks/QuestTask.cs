@@ -23,7 +23,7 @@ namespace QuestEssentials.Tasks
     public abstract class QuestTask
     {
         internal static readonly Dictionary<string, Type> knownTypes;
-        private SpecialQuest _quest;
+        private AdventureQuest _quest;
         protected bool _complete;
 
         public string Name { get; set; }
@@ -139,7 +139,7 @@ namespace QuestEssentials.Tasks
         {
         }
 
-        public virtual void Register(SpecialQuest quest)
+        public virtual void Register(AdventureQuest quest)
         {
             if (quest.State == null)
             {

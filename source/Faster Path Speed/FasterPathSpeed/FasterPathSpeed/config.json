@@ -12,7 +12,8 @@
   "DefaultPathSpeedBuff": 1.0,
   "IsPathSpeedBuffOnlyOnTheFarm": false,
   "IsPathAffectHorseSpeed": true,
-  "HorsePathSpeedBuffModifier": 0.75,
+  "HorsePathSpeedBuffModifier": 1.0,
+  "IsEnablePathReplace": true,
   "IsUseCustomPathSpeedBuffValues": false,
   "CustomPathSpeedBuffValues": {
     "Boardwalk": 1.0,

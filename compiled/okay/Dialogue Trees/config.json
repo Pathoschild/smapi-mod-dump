@@ -1,0 +1,7 @@
+{
+  "Enabled": true,
+  "ModButton": "LeftAlt",
+  "AskButton": "MouseLeft",
+  "AnswerButton": "MouseRight",
+  "MaxPlayerQuestions": 4
+}

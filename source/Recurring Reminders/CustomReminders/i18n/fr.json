@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dem1se/SDVMods
+**
+*************************************************/
+
+{
+  // New reminder page
+  "new-reminder.title": "Nouveau Rappel",
+  "new-reminder.reminder-message": "Message du Rappel",
+  "new-reminder.reminder-time": "Date du Rappel",
+  "new-reminder.instruction": "Choisissez l'Heure, les Minutes et la Période",
+  "new-reminder.invalid-time": "Le temps entré est invalide",
+
+  // Display reminder page
+  "display-reminder.title": "Afficher les Rappels",
+  "display-reminder.zero-reminders": "Aucun Rappel créé",
+
+  // general strings
+  "date.year": "Année",
+  "date.season.summer": "Été",
+  "date.season.spring": "Printemps",
+  "date.season.fall": "Automne",
+  "date.season.winter": "Hiver"
+}

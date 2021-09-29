@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "ItemName": "Recycling Machine",
+  "Type": "Craftable",
+  "TextureWidth": 16,
+  "TextureHeight": 32,
+  "ManualVariations": [
+    {
+      "Id": 0,
+      "Animation": [
+        {
+          "Frame": 0,
+          "Duration": 500
+        },
+        {
+          "Frame": 1,
+          "Duration": 1500
+        },
+        {
+          "Frame": 2,
+          "Duration": 1500
+        },
+        {
+          "Frame": 3,
+          "Duration": 1500
+        }
+      ]
+    },
+    {
+      "Id": 1,
+      "Keywords": [ "Blue" ],
+      "Animation": [
+        {
+          "Frame": 0,
+          "Duration": 500
+        },
+        {
+          "Frame": 1,
+          "Duration": 1500
+        },
+        {
+          "Frame": 2,
+          "Duration": 500
+        },
+        {
+          "Frame": 3,
+          "Duration": 1000
+        }
+      ]
+    }
+  ]
+}

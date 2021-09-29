@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
@@ -52,7 +53,6 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				__instance.readyForHarvest.Value = true;
 
 				var r = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + (int)__instance.TileLocation.X * 1000 + (int)__instance.TileLocation.Y);
-				var locationData = Game1.content.Load<Dictionary<string, string>>(Path.Combine("Data", "Locations"));
 				var fishData = Game1.content.Load<Dictionary<int, string>>(Path.Combine("Data", "Fish"));
 				var whichFish = -1;
 				if (__instance.bait.Value != null)
@@ -65,7 +65,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						}
 						else if (Game1.random.NextDouble() < (__instance.HasMagicBait() ? 0.25 : 0.1))
 						{
-							var rawFishData = __instance.HasMagicBait() ? GetRawFishDataForAllSeasons(location, locationData) : GetRawFishDataForCurrentSeason(location, locationData);
+							var rawFishData = __instance.HasMagicBait() ? location.GetRawFishDataForAllSeasons() : location.GetRawFishDataForCurrentSeason();
 							var rawFishDataWithLocation = GetRawFishDataWithLocation(rawFishData);
 							whichFish = ChooseFish(__instance, fishData, rawFishDataWithLocation, location, r);
 							if (whichFish < 0) whichFish = ChooseTrapFish(__instance, fishData, location, r, isLuremaster: true);
@@ -113,28 +113,6 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 		#region private methods
 
-		/// <summary>Get the raw fish data for the current game season.</summary>
-		/// <param name="location">The location of the crab pot.</param>
-		/// <param name="locationData">Raw location data from the game files.</param>
-		private static string[] GetRawFishDataForCurrentSeason(GameLocation location, Dictionary<string, string> locationData)
-		{
-			return locationData[location.NameOrUniqueName].Split('/')[4 + SUtility.getSeasonNumber(Game1.currentSeason)].Split(' ');
-		}
-
-		/// <summary>Get the raw fish data for the all seasons.</summary>
-		/// <param name="location">The location of the crab pot.</param>
-		/// <param name="locationData">Raw location data from the game files.</param>
-		private static string[] GetRawFishDataForAllSeasons(GameLocation location, Dictionary<string, string> locationData)
-		{
-			List<string> allSeasonFish = new();
-			for (var i = 0; i < 4; ++i)
-			{
-				var seasonalFishData = locationData[location.NameOrUniqueName].Split('/')[4 + i].Split(' ');
-				if (seasonalFishData.Length > 1) allSeasonFish.AddRange(seasonalFishData);
-			}
-			return allSeasonFish.ToArray();
-		}
-
 		/// <summary>Convert raw fish data into a look-up dictionary for fishing locations from fish indices.</summary>
 		/// <param name="rawFishData">String array of catchable fish indices and fishing locations.</param>
 		private static Dictionary<string, string> GetRawFishDataWithLocation(string[] rawFishData)
@@ -157,10 +135,10 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <param name="specificFishLocation">The fishing location index for this fish.</param>
 		/// <param name="crabpot">The crab pot instance.</param>
 		/// <param name="location">The location of the crab pot.</param>
-		private static bool IsCorrectLocationAndTimeForThisFish(string[] specificFishData, int specificFishLocation, CrabPot crabpot, GameLocation location)
+		private static bool IsCorrectLocationAndTimeForThisFish(string[] specificFishData, int specificFishLocation, Vector2 tileLocation, GameLocation gameLocation)
 		{
 			var specificFishSpawnTimes = specificFishData[5].Split(' ');
-			if (specificFishLocation == -1 || location.getFishingLocation(crabpot.TileLocation) == specificFishLocation)
+			if (specificFishLocation == -1 || gameLocation.getFishingLocation(tileLocation) == specificFishLocation)
 			{
 				for (var t = 0; t < specificFishSpawnTimes.Length; t += 2)
 				{
@@ -177,10 +155,10 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <param name="location">The location of the crab pot.</param>
 		private static bool IsCorrectWeatherForThisFish(string[] specificFishData, GameLocation location)
 		{
-			if (specificFishData[7].Equals("both")) return true;
+			if (specificFishData[7] == "both") return true;
 
-			return specificFishData[7].Equals("rainy") && !Game1.IsRainingHere(location) ||
-				specificFishData[7].Equals("sunny") && Game1.IsRainingHere(location);
+			return specificFishData[7] == "rainy" && !Game1.IsRainingHere(location) ||
+				specificFishData[7] == "sunny" && Game1.IsRainingHere(location);
 		}
 
 		/// <summary>Choose amongst a pre-select list of fish.</summary>
@@ -197,19 +175,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			foreach (var key in keys)
 			{
 				var specificFishDataFields = fishData[Convert.ToInt32(key)].Split('/');
-				if (Util.Objects.IsLegendaryFish(specificFishDataFields[0])) continue;
+				if (Util.Objects.LegendaryFishNames.Contains(specificFishDataFields[0])) continue;
 
 				if (!crabpot.HasMagicBait() && !IsFishLevelLowerThanNumber(specificFishDataFields, crabpot.HasWildBait() ? 90 : 70)
 				|| crabpot.HasMagicBait() && IsFishLevelLowerThanNumber(specificFishDataFields, 70)) continue;
 
 				var specificFishLocation = Convert.ToInt32(rawFishDataWithLocation[key]);
-				if (!crabpot.HasMagicBait() && (!IsCorrectLocationAndTimeForThisFish(specificFishDataFields, specificFishLocation, crabpot, location) || !IsCorrectWeatherForThisFish(specificFishDataFields, location)))
+				if (!crabpot.HasMagicBait() && (!IsCorrectLocationAndTimeForThisFish(specificFishDataFields, specificFishLocation, crabpot.TileLocation, location) || !IsCorrectWeatherForThisFish(specificFishDataFields, location)))
 					continue;
 
 				if (r.NextDouble() > GetChanceForThisFish(specificFishDataFields)) continue;
 
 				var whichFish = Convert.ToInt32(key);
-				if (Util.Objects.IsAlgae(whichFish) && counter == 0)
+				if (whichFish.AnyOf(152, 152, 157) && counter == 0) // if is algae, reroll
 				{
 					++counter;
 					continue;
@@ -243,7 +221,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 				var shouldCatchOceanFish = crabpot.ShouldCatchOceanFish(location);
 				var rawSplit = kvp.Value.Split('/');
-				if ((rawSplit[4].Equals("ocean") && !shouldCatchOceanFish) || (rawSplit[4].Equals("freshwater") && shouldCatchOceanFish))
+				if ((rawSplit[4] == "ocean" && !shouldCatchOceanFish) || (rawSplit[4] == "freshwater" && shouldCatchOceanFish))
 					continue;
 
 				if (isLuremaster)
@@ -272,7 +250,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <param name="who">The player.</param>
 		private static int ChoosePirateTreasure(Random r, Farmer who)
 		{
-			var keys = Util.Objects.PirateTreasureTable.Keys.ToArray();
+			var keys = Util.Objects.TrapperPirateTreasureTable.Keys.ToArray();
 			SUtility.Shuffle(r, keys);
 			foreach (var key in keys)
 			{
@@ -287,7 +265,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <param name="index">The treasure item index.</param>
 		private static double GetChanceForThisTreasure(int index)
 		{
-			return Convert.ToDouble(Util.Objects.PirateTreasureTable[index][0]);
+			return Convert.ToDouble(Util.Objects.TrapperPirateTreasureTable[index][0]);
 		}
 
 		/// <summary>Get the quality for the chosen catch.</summary>
@@ -297,7 +275,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		private static int GetTrapFishQuality(int whichFish, Farmer who, Random r, CrabPot crabpot, bool isLuremaster)
 		{
 			if (isLuremaster && crabpot.HasMagicBait()) return SObject.bestQuality;
-			if (!who.HasProfession("Trapper") || Util.Objects.PirateTreasureTable.ContainsKey(whichFish) || Util.Objects.IsAlgae(whichFish)) return SObject.lowQuality;
+			
+			var fish = new SObject(whichFish, 1);
+			if (!who.HasProfession("Trapper") || fish.IsPirateTreasure() || fish.IsAlgae()) return SObject.lowQuality;
 			return r.NextDouble() < who.FishingLevel / 30.0 ? SObject.highQuality : r.NextDouble() < who.FishingLevel / 15.0 ? SObject.medQuality : SObject.lowQuality;
 		}
 
@@ -307,7 +287,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <param name="r">Random number generator.</param>
 		private static int GetTrapFishQuantity(CrabPot crabpot, int whichFish, Random r)
 		{
-			return crabpot.HasWildBait() && r.NextDouble() < 0.5 ? 2 : Util.Objects.PirateTreasureTable.TryGetValue(whichFish, out var treasureData) ? r.Next(Convert.ToInt32(treasureData[1]), Convert.ToInt32(treasureData[2]) + 1) : 1;
+			return crabpot.HasWildBait() && r.NextDouble() < 0.5 ? 2 : Util.Objects.TrapperPirateTreasureTable.TryGetValue(whichFish, out var treasureData) ? r.Next(Convert.ToInt32(treasureData[1]), Convert.ToInt32(treasureData[2]) + 1) : 1;
 		}
 
 		/// <summary>Get random trash.</summary>

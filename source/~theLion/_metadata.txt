@@ -7,10 +7,9 @@ mods:
    Walk Of Life
 
 latest commit:
-   commit be32546c077b0dc4db092b4b7e36ab3d39ca9a5f
-   Merge: ecd9484 43791d3
+   commit 8f7d5bb2a1447ea078e85183eedcad5d62388905
    Author: The Lion <matheus_is@live.com>
-   Date:   Mon Aug 23 10:48:10 2021 -0300
+   Date:   Wed Sep 29 14:46:56 2021 -0300
    
-       Merge branch 'master' of gitlab.com:theLion/smapi-mods
+       Typo in fish audit cc. Caught profession index out of range exceptions.
    

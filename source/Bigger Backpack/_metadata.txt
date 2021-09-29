@@ -6,9 +6,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 7aa8326708275c2f3ebec0412d4ca63178f4b921
+   commit 04dd7574a3516e03401d9e085d98af27e7040de9
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Wed Aug 4 10:07:50 2021 +0200
+   Date:   Tue Sep 7 20:49:06 2021 +0200
    
-       DeBump version to 5.1
+       Â–Ignore MSB3277 warning
    

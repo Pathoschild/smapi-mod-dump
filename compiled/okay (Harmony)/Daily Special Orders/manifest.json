@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Daily Special Orders",
+  "Author": "shekurika",
+  "Version": "1.0.0",
+  "Description": "Allows to change specify how often the special order boards update.",
+  "UniqueID": "shekurika.DailySpecialOrders",
+  "EntryDll": "DailySpecialOrders.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:9693"],
+}

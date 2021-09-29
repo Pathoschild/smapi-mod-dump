@@ -1,0 +1,50 @@
+{
+  "SpritePreviewName": "",
+  "SpouseRoom_Auto_Blacklist": "",
+  "SpouseRoom_Auto_Chance": 100,
+  "SpouseRoom_Auto_PerformanceMode": false,
+  "SpouseRoom_Auto_MapChairs_DownOnly_Blacklist": "All",
+  "SpouseRoom_Auto_FurnitureChairs_UpOnly_Blacklist": "",
+  "SpouseRoom_Auto_Facing_TileOffset": {
+    "Default": "-1.1, 0",
+    "sebastianFrog": "0.5, 1.5"
+  },
+  "SpouseRoom_Manual_TileOffsets": {
+    "Default": [
+      {
+        "Key": "Up",
+        "Value": "-999, -999"
+      }
+    ],
+    "sebastianFrog": [
+      {
+        "Key": "Down",
+        "Value": "-999, -999"
+      }
+    ]
+  },
+  "Kitchen_Manual_TileOffsets": {
+    "Default": [
+      {
+        "Key": "Down",
+        "Value": "-999, -999"
+      }
+    ]
+  },
+  "Patio_Manual_TileOffsets": {
+    "Default": [
+      {
+        "Key": "Down",
+        "Value": "-999, -999"
+      }
+    ]
+  },
+  "Porch_Manual_TileOffsets": {
+    "Default": [
+      {
+        "Key": "Down",
+        "Value": "-999, -999"
+      }
+    ]
+  }
+}

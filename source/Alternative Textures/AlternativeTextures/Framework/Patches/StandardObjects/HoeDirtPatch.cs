@@ -31,7 +31,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
     {
         private readonly Type _object = typeof(HoeDirt);
 
-        internal HoeDirtPatch(IMonitor modMonitor) : base(modMonitor)
+        internal HoeDirtPatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
         {
 
         }

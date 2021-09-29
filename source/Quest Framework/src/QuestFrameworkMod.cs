@@ -54,6 +54,8 @@ namespace QuestFramework
         internal QuestLogWatchdog QuestLogWatchdog { get; private set; }
         internal NetworkOperator NetworkOperator { get; private set; }
         internal EventManager EventManager { get; private set; }
+        internal NpcOfferController NpcOfferController { get; private set; }
+        internal ItemOfferController ItemOfferController { get; private set; }
 
         internal static QuestFrameworkMod Instance { get; private set; }
         internal static Multiplayer Multiplayer { get; private set; }
@@ -78,6 +80,8 @@ namespace QuestFramework
             this.ContentPackLoader = new Loader(this.Monitor, this.QuestManager, this.QuestOfferManager, this.ConditionManager, this.CustomBoardController);
             this.QuestController = new QuestController(this.QuestManager, this.QuestOfferManager, this.Monitor);
             this.MailController = new MailController(this.QuestManager, this.QuestOfferManager, this.Monitor);
+            this.NpcOfferController = new NpcOfferController(this.QuestOfferManager, this.QuestManager, helper.Events, new QuestFrameworkEvents(this.EventManager), this.Monitor);
+            this.ItemOfferController = new ItemOfferController(this.QuestOfferManager, this.QuestManager, this.Monitor);
             this.QuestLogWatchdog = new QuestLogWatchdog(helper.Events, this.EventManager, this.StatsManager, this.Monitor);
             this.NetworkOperator = new NetworkOperator(
                 helper: helper.Multiplayer,
@@ -107,9 +111,9 @@ namespace QuestFramework
             this.Patcher.Apply(
                 new Patches.QuestPatch(this.QuestManager, this.EventManager),
                 new Patches.LocationPatch(this.ConditionManager, this.CustomBoardController),
-                new Patches.Game1Patch(this.QuestManager, this.QuestOfferManager),
+                new Patches.Game1Patch(this.QuestManager, this.QuestOfferManager, this.ItemOfferController),
                 new Patches.DialoguePatch(this.QuestManager),
-                new Patches.NPCPatch(this.QuestManager, this.QuestOfferManager),
+                new Patches.NPCPatch(this.QuestManager, this.NpcOfferController),
                 new Patches.BillboardPatch());
 
             helper.ConsoleCommands.Add("quests_list", "List all managed quests", Commands.ListQuests);
@@ -200,7 +204,7 @@ namespace QuestFramework
             this.ChangeState(State.CLEANING);
             this.QuestController.Reset();
             this.CustomBoardController.Reset();
-            this.QuestManager.Quests.Clear();
+            this.QuestManager.Clean();
             this.QuestOfferManager.Offers.Clear();
             this.ConditionManager.Clean();
             this.QuestStateStore.Clean();

@@ -29,17 +29,17 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 		#region harmony patch
 
-		/// <summary>Patch to make Hunter invisible in Super Mode.</summary>
+		/// <summary>Patch to make Poacher invisible in super mode.</summary>
 		[HarmonyTranspiler]
 		private static bool NPCWithinPlayerThresholdPrefix(NPC __instance, ref bool __result)
 		{
 			try
 			{
-				if (__instance is not Monster monster) return true; // run original method
+				if (__instance is not Monster) return true; // run original method
 
-				var foundPlayer = ModEntry.Reflection.GetMethod(monster, name: "findPlayer").Invoke<Farmer>();
+				var foundPlayer = ModEntry.ModHelper.Reflection.GetMethod(__instance, name: "findPlayer").Invoke<Farmer>();
 				if (!foundPlayer.IsLocalPlayer || !ModEntry.IsSuperModeActive ||
-					ModEntry.SuperModeIndex != Util.Professions.IndexOf("Hunter")) return true; // run original method
+					ModEntry.SuperModeIndex != Util.Professions.IndexOf("Poacher")) return true; // run original method
 
 				__result = false;
 				return false; // don't run original method

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9717
+IDs: KubichekEV.DisableAutoPickup
+update keys: Nexus:9717

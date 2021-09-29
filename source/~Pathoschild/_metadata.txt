@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 9aa7f009012e9242c1ab1308fcd52bcda470a9c8
+   commit 4e94c62cc6e3b5ee2b09db98ad43007f46dc128e
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Aug 19 20:33:09 2021 -0400
+   Date:   Mon Sep 27 18:53:47 2021 -0400
    
-       prepare for beta release
+       add naming convention to editorconfig
    

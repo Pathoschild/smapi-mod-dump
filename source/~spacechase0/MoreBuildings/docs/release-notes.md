@@ -9,17 +9,23 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for Stardew Valley 1.5.5.
+## 1.0.9
+Released 11 September 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Internal refactoring.
+
+## 1.0.8
+Released 04 September 2021 for SMAPI 3.12.6 or later. Updated by Pathoschild.
+
 * Fixed error item that can be caught in the fishing shack.
 
 ## 1.0.7
-Released 01 August 2021 for SMAPI 3.12.0. Updated by Pathoschild.
+Released 01 August 2021 for SMAPI 3.12.0 or later. Updated by Pathoschild.
 
 * Updated for Harmony upgrade in SMAPI 3.12.0.
 
 ## 1.0.6
-Released 19 June 2021 for Stardew Valley 1.5. Updated by Pathoschild.
+Released 19 June 2021 for SMAPI 3.9.5 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.5.
 * Fixed compatibility with [unofficial 64-bit mode](https://stardewvalleywiki.com/Modding:Migrate_to_64-bit_on_Windows).

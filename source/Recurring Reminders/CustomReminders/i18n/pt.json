@@ -17,6 +17,9 @@
   "new-reminder.reminder-time": "Hora do Lembrete",
   "new-reminder.instruction": "Escolha a Hora, Minutos e Periodo do Dia",
   "new-reminder.invalid-time": "A Hora não é válida",
+  "new-reminder.recurring-label": "Recorrente",
+  "new-reminder.interval-label": "Intervalo",
+  "new-reminder.interval-explaination": "Intervalo 1: diário, 2: dia sim, dia não, e assim por diante...",
 
   // Display reminder page
   "display-reminder.title": "Mostrar Lembrete",

@@ -6,9 +6,9 @@ mods:
    Esca's Modding Plugins
 
 latest commit:
-   commit 941fbca7a8c0788b92d81b2ddfdcad2908411cef
+   commit 44941a7081155f16831ce44cc00e7ee8f735bced
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Aug 16 14:21:51 2021 -0500
+   Date:   Thu Sep 23 17:38:07 2021 -0500
    
-       Add manifest update keys, tweak readme.md
+       Move readme to docs folder
    

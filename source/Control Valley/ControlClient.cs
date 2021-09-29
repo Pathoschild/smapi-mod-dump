@@ -11,7 +11,7 @@
 /*
  * ControlValley
  * Stardew Valley Support for Twitch Crowd Control
- * Copyright (C) 2021 TheTexanTesla
+ * Copyright (C) 2021 TerribleTable
  * LGPL v2.1
  * 
  * This library is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -165,6 +166,7 @@ namespace ControlValley
 
         public void NetworkLoop()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             while (Running)
             {
                 UI.ShowInfo("Attempting to connect to Crowd Control");
@@ -212,6 +214,7 @@ namespace ControlValley
 
         public void RequestLoop()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             while (Running)
             {
                 try

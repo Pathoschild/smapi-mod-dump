@@ -1,0 +1,260 @@
+﻿Albacore,705
+Algae Soup,456
+Amaranth,300
+Anchovy,129
+Ancient Fruit,454
+Angler,160
+Apple,613
+Apricot,634
+Artichoke Dip,605
+Artichoke,274
+Autumn's Bounty,235
+Baked Fish,198
+Banana Pudding,904
+Banana,91
+Bean Hotpot,207
+Beer,346
+Beet,284
+Blackberry Cobbler,611
+Blackberry,410
+Blobfish,800
+Blue Discus,838
+Blue Jazz,597
+Blueberry Tart,234
+Blueberry,258
+Bok Choy,278
+Bread,216
+Bream,132
+Brown Egg,180
+Bruschetta,618
+Bullhead,700
+Cactus Fruit,90
+Carp Surprise,209
+Carp,142
+Catfish,143
+Cauliflower,190
+Cave Carrot,78
+Chanterelle,281
+Cheese Cauliflower,197
+Cheese,424
+Cherry,638
+Chocolate Cake,220
+Chowder,727
+Chub,702
+Clam,372
+Cockle,718
+Coconut,88
+Coffee Bean,433
+Coffee,395
+Coleslaw,648
+Common Mushroom,404
+Complete Breakfast,201
+Cookie,223
+Coral,393
+Corn,270
+Crab Cakes,732
+Crab,717
+Cranberries,282
+Cranberry Candy,612
+Cranberry Sauce,238
+Crayfish,716
+Crimsonfish,159
+Crispy Bass,214
+Crocus,418
+Crystal Fruit,414
+Daffodil,18
+Dandelion,22
+Dinosaur Egg,107
+Dish O' The Sea,242
+Dorado,704
+Duck Egg,442
+Duck Feather,444
+Duck Mayonnaise,307
+Eel,148
+Eggplant Parmesan,231
+Eggplant,272
+Escargot,729
+Fairy Rose,595
+Farmer's Lunch,240
+Fiddlehead Fern,259
+Fiddlehead Risotto,649
+Fish Stew,728
+Fish Taco,213
+Flounder,267
+Fried Calamari,202
+Fried Eel,225
+Fried Egg,194
+Fried Mushroom,205
+Fruit Salad,610
+Garlic,248
+Ghostfish,156
+Ginger Ale,903
+Glacierfish Jr.,902
+Glacierfish,775
+Glazed Yams,208
+Goat Cheese,426
+Goat Milk,436
+Golden Egg,928
+Grape,398
+Green Bean,188
+Green Tea,614
+Halibut,708
+Hashbrowns,210
+Hazelnut,408
+Herring,147
+Holly,283
+Hops,304
+Hot Pepper,260
+Ice Cream,233
+Ice Pip,161
+Jelly,344
+Juice,350
+Kale,250
+Large Brown Egg,182
+Large Goat Milk,438
+Large Milk,186
+Large White Egg,174
+Largemouth Bass,136
+Lava Eel,162
+Leek,20
+Legend Fish,163
+Legend II,900
+Lingcod,707
+Lionfish,837
+Lobster Bisque,730
+Lobster,715
+Lucky Lunch,204
+Magma Cap,851
+Maki Roll,228
+Mango Sticky Rice,905
+Mango,834
+Maple Bar,731
+Mayonnaise,306
+Mead,459
+Melon,254
+Midnight Carp,269
+Midnight Squid,798
+Milk,184
+Miner's Treat,243
+Morel,257
+Ms. Angler,899
+Mussel,719
+Mutant Carp,682
+Nautilus Shell,392
+Octopus,149
+Omelet,195
+Orange,635
+Ostrich Egg,289
+Oyster,723
+Pale Ale,303
+Pale Broth,457
+Pancakes,211
+Parsnip Soup,199
+Parsnip,24
+Peach,636
+Pepper Poppers,215
+Perch,141
+Periwinkle,722
+Pickles,342
+Pike,144
+Pineapple,832
+Pink Cake,221
+Pizza,206
+Plum Pudding,604
+Poi,906
+Pomegranate,637
+Poppy,376
+Poppyseed Muffin,651
+Potato,192
+Pufferfish,128
+Pumpkin Pie,608
+Pumpkin Soup,236
+Pumpkin,276
+Purple Mushroom,422
+Rabbit's Foot,446
+Radioactive Carp,901
+Radish Salad,609
+Radish,264
+Rainbow Shell,394
+Rainbow Trout,138
+Red Cabbage,266
+Red Mullet,146
+Red Mushroom,420
+Red Plate,230
+Red Slime Egg,437
+Red Snapper,150
+Rhubarb Pie,222
+Rhubarb,252
+Rice Pudding,232
+Roasted Hazelnuts,607
+Roots Platter,244
+Salad,196
+Salmon Dinner,212
+Salmon,139
+Salmonberry,296
+Sandfish,164
+Sardine,131
+Sashimi,227
+Scorpion Carp,165
+Sea Cucumber,154
+Sea Urchin,397
+Seafoam Pudding,265
+Seaweed,152
+Shad,706
+Shrimp Cocktail,733
+Shrimp,720
+Slimejack,796
+Smallmouth Bass,137
+Snail,721
+Snow Yam,416
+Son of Crimsonfish,898
+Spaghetti,224
+Spice Berry,396
+Spicy Eel,226
+Spook Fish,799
+Spring Onion,399
+Squid Ink Ravioli,921
+Squid,151
+Starfruit,268
+Stingray,836
+Stir Fry,606
+Stonefish,158
+Strange Bun,203
+Strawberry,400
+Stuffing,239
+Sturgeon,698
+Summer Spangle,593
+Sunfish,145
+Sunflower,421
+Super Cucumber,155
+Super Meal,237
+Survival Burger,241
+Sweet Gem Berry,417
+Sweet Pea,402
+Taro Root,830
+Tiger Trout,699
+Tilapia,701
+Tom Kha Soup,218
+Tomato,256
+Tortilla,229
+Triple Shot Espresso,253
+Tropical Curry,907
+Trout Soup,219
+Truffle,430
+Tulip,591
+Tuna,130
+Unmilled Rice,271
+Vegetable Medley,200
+Void Egg,305
+Void Mayonnaise,308
+Void Salmon,795
+Walleye,140
+Wheat,262
+White Egg,176
+Wild Horseradish,16
+Wild Plum,406
+Wine,348
+Winter Root,412
+Woodskip,734
+Wool,440
+Yam,280

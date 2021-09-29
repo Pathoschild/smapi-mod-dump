@@ -8,6 +8,35 @@ for queries and analysis.**
 
 # Changelog
 
+## 1.4.0
+
+This version reworked some C# Quest apis (used by new [Quest Essentials mod](https://www.nexusmods.com/stardewvalley/mods/8827), the QF extension), fixes lot of problems with QF quests, adds fields for mail letters after quest completion and new some new conditions for interact between inventory and quests and current location. Also this upgrades to new Harmony 2.1 and SMAPI 3.12, adds Hungarian and Spanish translations.
+
+- Added Hungarian translation by martin66789 and spanish translation by Carlos
+- Updated Harmony references to work with Harmony2.0 (thx shekurika)
+- Enhanced logging for loading content packs and exposing quest types
+- Fixed minor issue when resizing while CustomBoard is open
+- Fixed controller input problem on CustomBoards
+- Added better log for used action tiles for custom dropboxes
+- Fixed slay monster quest reward problem
+- Added new common global conditions: `HasItemInInventory`, `HasActiveQuest` and `CurrentLocation`
+- Quest offer manager now internally checks if offering quest is already in log (and offers it ONLY if not)
+- Added offering quest by pick up an item
+- Reworked NPC quest offer system (optimized)
+- Added fields `AddMailOnComplete` and `RemoveMailOnComplete` for content pack quests
+- Show talk bubble mouse cursor when quest should be offered on NPC talk
+- Added adjust quest trigger when farmer try talk with NPC
+- Added `ITalkMessage` interface
+- Quests with `BaseType` value `Custom` always returns false for Quest.checkIfComplete and your custom quest is not vanilla base type or doesn't implements `IQuestObserver` interface (for checking completion for custom quests override OnCompletionCheck method on your custom quest type class)
+- Update title, objective and description methods are splited from `IQuestObserver` to `IQuestInfoUpdater` (IQuestObserver extends IQuestInfoUpdater)
+- `CustomQuest<TState>.Sync` now marks quest for sync at end of update sync instead of sync immediatelly (for immediatelly sync use new API method `CustomQuest<TState>.PerformSync`)
+- CustomQuest class now implements IDisposable interface
+- Added new extensions: `CheckGlobalConditions`, `CheckGlobalCondition`
+- Added new APIs for `CustomQuest<TState>` class: `NeedsSync`, `PerformSync`; and protected virtual methods `OnStateReset`, `OnStateRestored`
+- Added new APIs for `CustomQuest` class: `onCompletionCheck`, `OnRegister`, `OnInitialize`, `ForceUpdate`, `OnUpdate`, `OnAdjust`
+- Added new managed API: `CheckForQuestComplete`, `AdjustQuest` and `GetAllManagedQuests`
+- Added support for offer special order via NPC talk
+
 ## 1.3.4
 
 - Fixed problem with quest type id reintegration

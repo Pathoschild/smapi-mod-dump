@@ -110,7 +110,13 @@ namespace QuestFramework.Framework.Controllers
                     .Distinct()
                     .ToArray();
 
-                UpdateAvailableSpecialOrders(order_types);
+                SpecialOrder.UpdateAvailableSpecialOrders(true);
+                SeedCustomAvailableSpecialOrders(order_types);
+            }
+
+            if (Context.IsMainPlayer)
+            {
+                ReseedNpcOfferedOrders();
             }
         }
 
@@ -176,11 +182,88 @@ namespace QuestFramework.Framework.Controllers
             this._customBoardTriggers.Value.Clear();
         }
 
-        public static void UpdateAvailableSpecialOrders(string[] validTypes)
+        public static void SeedCustomAvailableSpecialOrders(string[] validTypes, int pick = 2)
         {
-            SpecialOrder.UpdateAvailableSpecialOrders(true);
-
             var order_data = Game1.content.Load<Dictionary<string, SpecialOrderData>>("Data\\SpecialOrders");
+            List<string> keys = GatherValidOrderKeys(order_data);
+
+            Random r = new Random((int)Game1.uniqueIDForThisGame + (int)((float)Game1.stats.DaysPlayed * 1.3f));
+            foreach (string type_to_find in validTypes)
+            {
+                var typed_keys = new List<string>();
+                foreach (string key3 in keys)
+                {
+                    if (order_data[key3].OrderType == type_to_find)
+                    {
+                        typed_keys.Add(key3);
+                    }
+                }
+
+                if (type_to_find != "Qi")
+                {
+                    for (int j = 0; j < typed_keys.Count; j++)
+                    {
+                        if (Game1.player.team.completedSpecialOrders.ContainsKey(typed_keys[j]))
+                        {
+                            typed_keys.RemoveAt(j);
+                            j--;
+                        }
+                    }
+                }
+
+                var all_keys = new List<string>(typed_keys);
+                for (int i = 0; i < pick; i++)
+                {
+                    if (typed_keys.Count == 0)
+                    {
+                        if (all_keys.Count == 0)
+                        {
+                            break;
+                        }
+                        typed_keys = new List<string>(all_keys);
+                    }
+
+                    int index = r.Next(typed_keys.Count);
+                    string key2 = typed_keys[index];
+                    Game1.player.team.availableSpecialOrders.Add(SpecialOrder.GetSpecialOrder(key2, r.Next()));
+                    typed_keys.Remove(key2);
+                    all_keys.Remove(key2);
+                }
+            }
+        }
+
+        public static void ReseedNpcOfferedOrders()
+        {
+            var order_data = Game1.content.Load<Dictionary<string, SpecialOrderData>>("Data\\SpecialOrders");
+            List<string> keys = GatherValidOrderKeys(order_data);
+            Random r = new Random((int)Game1.uniqueIDForThisGame + (int)((float)Game1.stats.DaysPlayed * 1.3f));
+
+            // Clean NPC offers before new seed
+            for (int i = 0; i < Game1.player.team.availableSpecialOrders.Count; i++)
+            {
+                var toRemove = Game1.player.team.availableSpecialOrders[i];
+
+                if (toRemove.orderType.Value == "QF_NPC")
+                {
+                    Game1.player.team.availableSpecialOrders.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            foreach (string key in keys)
+            {
+                if (!order_data.ContainsKey(key))
+                    continue;
+
+                if (order_data[key].OrderType == "QF_NPC")
+                {
+                    Game1.player.team.availableSpecialOrders.Add(SpecialOrder.GetSpecialOrder(key, r.Next()));
+                }
+            }
+        }
+
+        private static List<string> GatherValidOrderKeys(Dictionary<string, SpecialOrderData> order_data)
+        {
             var keys = new List<string>(order_data.Keys);
 
             for (int k = 0; k < keys.Count; k++)
@@ -217,49 +300,7 @@ namespace QuestFramework.Framework.Controllers
                 }
             }
 
-            Random r = new Random((int)Game1.uniqueIDForThisGame + (int)((float)Game1.stats.DaysPlayed * 1.3f));
-            foreach (string type_to_find in validTypes)
-            {
-                var typed_keys = new List<string>();
-                foreach (string key3 in keys)
-                {
-                    if (order_data[key3].OrderType == type_to_find)
-                    {
-                        typed_keys.Add(key3);
-                    }
-                }
-                
-                if (type_to_find != "Qi")
-                {
-                    for (int j = 0; j < typed_keys.Count; j++)
-                    {
-                        if (Game1.player.team.completedSpecialOrders.ContainsKey(typed_keys[j]))
-                        {
-                            typed_keys.RemoveAt(j);
-                            j--;
-                        }
-                    }
-                }
-
-                var all_keys = new List<string>(typed_keys);
-                for (int i = 0; i < 2; i++)
-                {
-                    if (typed_keys.Count == 0)
-                    {
-                        if (all_keys.Count == 0)
-                        {
-                            break;
-                        }
-                        typed_keys = new List<string>(all_keys);
-                    }
-
-                    int index = r.Next(typed_keys.Count);
-                    string key2 = typed_keys[index];
-                    Game1.player.team.availableSpecialOrders.Add(SpecialOrder.GetSpecialOrder(key2, r.Next()));
-                    typed_keys.Remove(key2);
-                    all_keys.Remove(key2);
-                }
-            }
+            return keys;
         }
     }
 }

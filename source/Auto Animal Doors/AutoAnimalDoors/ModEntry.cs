@@ -8,7 +8,9 @@
 **
 *************************************************/
 
+using AutoAnimalDoors.Menu;
 using AutoAnimalDoors.StardewValleyWrapper;
+using StardewModdingAPI.Events;
 using System.Collections.Generic;
 using Buildings = AutoAnimalDoors.StardewValleyWrapper.Buildings;
 
@@ -16,15 +18,20 @@ namespace AutoAnimalDoors
 {
     class ModEntry : StardewModdingAPI.Mod
     {
-        private ModConfig config;
-        private StardewModdingAPI.IModHelper helper;
+        private MenuRegistry GenericMenuRegistry { get; set; }
 
         public override void Entry(StardewModdingAPI.IModHelper helper)
         {
             Logger.Instance.Initialize(this.Monitor);
-            config = helper.ReadConfig<ModConfig>();
-            this.helper = helper;
+            GenericMenuRegistry = new MenuRegistry(Helper);
+            ModConfig.Instance = Helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.DayStarted += SetupAutoDoorCallbacks;
+            helper.Events.GameLoop.GameLaunched += SetupMenu;
+        }
+
+        private void SetupMenu(object sender, GameLaunchedEventArgs e)
+        {
+            GenericMenuRegistry.InitializeMenu(ModManifest, ModConfig.Instance);
         }
 
         private bool IsGoToSleepDialog(StardewValley.Menus.IClickableMenu menu)
@@ -55,10 +62,17 @@ namespace AutoAnimalDoors
 
         private void SetupAutoDoorCallbacks(object sender, System.EventArgs eventArgs)
         {
-            // Disable mod if not the main player (only one player needs to open/close the doors
+            // Remove callback for non host computers, no need to keep calling this
+            if (!StardewModdingAPI.Context.IsOnHostComputer)
+            {
+                Helper.Events.GameLoop.DayStarted -= SetupAutoDoorCallbacks;
+                return;
+            }
+
+            // Split screen users don't need to close the doors, but can't remove callback since the 
+            // host needs to have this method run for them
             if (!StardewModdingAPI.Context.IsMainPlayer)
             {
-                helper.Events.GameLoop.DayStarted -= SetupAutoDoorCallbacks;
                 return;
             }
 
@@ -66,21 +80,21 @@ namespace AutoAnimalDoors
             if (game.IsLoaded())
             {
                 // Remove the subscriptions before adding them, this ensures we are only ever subscribed once
-                helper.Events.Display.MenuChanged -= this.OnMenuChanged;
-                helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
-                helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
+                Helper.Events.Display.MenuChanged -= this.OnMenuChanged;
+                Helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
+                Helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
 
-                bool skipDueToWinter = !config.OpenDoorsDuringWinter && game.Season == Season.WINTER;
-                bool skipDueToWeather = !config.OpenDoorsWhenRaining && (game.Weather == Weather.RAINING || game.Weather == Weather.LIGHTNING);
+                bool skipDueToWinter = !ModConfig.Instance.OpenDoorsDuringWinter && game.Season == Season.WINTER;
+                bool skipDueToWeather = !ModConfig.Instance.OpenDoorsWhenRaining && (game.Weather == Weather.RAINING || game.Weather == Weather.LIGHTNING);
                 if (!skipDueToWinter && !skipDueToWeather)
                 {
-                    if (config.AutoOpenEnabled)
+                    if (ModConfig.Instance.AutoOpenEnabled)
                     {
-                        helper.Events.GameLoop.TimeChanged += this.OpenAnimalDoors;
+                        Helper.Events.GameLoop.TimeChanged += this.OpenAnimalDoors;
                     }
 
-                    helper.Events.GameLoop.TimeChanged += this.CloseAnimalDoors;
-                    helper.Events.Display.MenuChanged += this.OnMenuChanged;
+                    Helper.Events.GameLoop.TimeChanged += this.CloseAnimalDoors;
+                    Helper.Events.Display.MenuChanged += this.OnMenuChanged;
                 }
             }
         }
@@ -89,10 +103,10 @@ namespace AutoAnimalDoors
         {
             if (type == Buildings.AnimalBuildingType.BARN)
             {
-                return config.BarnRequiredUpgradeLevel;
+                return ModConfig.Instance.BarnRequiredUpgradeLevel;
             } else if (type == Buildings.AnimalBuildingType.COOP)
             {
-                return config.CoopRequiredUpgradeLevel;
+                return ModConfig.Instance.CoopRequiredUpgradeLevel;
             }
             return 0;
         }
@@ -134,7 +148,7 @@ namespace AutoAnimalDoors
 
         private void CloseAnimalDoors(object sender, StardewModdingAPI.Events.TimeChangedEventArgs timeOfDayChanged)
         {
-            if (timeOfDayChanged.NewTime >= config.AnimalDoorCloseTime)
+            if (timeOfDayChanged.NewTime >= ModConfig.Instance.AnimalDoorCloseTime)
             {
                 List<Buildings.AnimalBuilding> eligibleAnimalBuildings = this.EligibleAnimalBuildings;
                 foreach (Buildings.AnimalBuilding animalBuilding in eligibleAnimalBuildings)
@@ -146,15 +160,15 @@ namespace AutoAnimalDoors
                 }
 
                 SetAllAnimalDoorsState(Buildings.AnimalDoorState.CLOSED);
-                helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
+                Helper.Events.GameLoop.TimeChanged -= this.CloseAnimalDoors;
             }
         }
 
         private void OpenAnimalDoors(object sender, StardewModdingAPI.Events.TimeChangedEventArgs timeOfDayChanged)
         {
-            if (timeOfDayChanged.NewTime >= config.AnimalDoorOpenTime && timeOfDayChanged.NewTime < config.AnimalDoorCloseTime)
+            if (timeOfDayChanged.NewTime >= ModConfig.Instance.AnimalDoorOpenTime && timeOfDayChanged.NewTime < ModConfig.Instance.AnimalDoorCloseTime)
             {
-                helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
+                Helper.Events.GameLoop.TimeChanged -= this.OpenAnimalDoors;
                 SetAllAnimalDoorsState(Buildings.AnimalDoorState.OPEN);
             }
         }

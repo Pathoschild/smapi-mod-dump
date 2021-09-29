@@ -6,9 +6,9 @@ mods:
    Auto Animal Doors
 
 latest commit:
-   commit 01f06bc21a8c6b9ad16e294783047e9d35c8ae68
+   commit 3eefa90a1cf1e0f9c4e6503b4f0a70a89a190d95
    Author: Aaron Taggart <ajtaggs@gmail.com>
-   Date:   Wed Jan 27 22:41:08 2021 -0600
+   Date:   Mon Sep 6 17:47:45 2021 -0500
    
-       Update README.md
+       Add Door Sound Setting option
    

@@ -68,6 +68,17 @@
 	[
 		"Custom_ESOrchard"
 	],
+	"ObeliskWarp":
+	{
+		"Name": "Scarp Obelisk",
+		"Location": "Custom_EastScarpe",
+		"X": 24,
+		"Y": 97
+	},
+	"RainWatering":
+	[
+		{ "Location": "Custom_ESMeadowFarm" }
+	],
 	"SeaMonsterSpawns":
 	[
 		{

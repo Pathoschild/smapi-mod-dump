@@ -6,9 +6,9 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit b596bada38949cfb9dc35717a1601b81323c215b
+   commit 6d20c571cc37aa3edc49de1bbe4b9cf485e55ad2
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Tue Aug 10 12:50:22 2021 -0700
+   Date:   Thu Sep 16 19:22:10 2021 -0700
    
-       1.3.1 update (Russian)
+       1.3.2 update (Thai)
    

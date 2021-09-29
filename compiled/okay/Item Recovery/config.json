@@ -1,3 +1,4 @@
 {
-  "CostMultiplier": 0.5
+  "CostMultiplier": 0.5,
+  "DaysTillRecoverable": 0
 }

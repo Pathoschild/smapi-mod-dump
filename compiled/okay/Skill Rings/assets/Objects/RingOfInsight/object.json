@@ -5,4 +5,10 @@
   "Price": 1000,
   "Edibility": -300,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "洞察之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "帮你你深入了解正在学习的内容，并增加经验。"
+  },
 }

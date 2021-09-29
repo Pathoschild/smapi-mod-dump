@@ -8,6 +8,9 @@ for queries and analysis.**
 
 # Release Notes
 
+## 2.1.0
+- Updated from Expanded Storage (Legacy) to XSLite+XSPlus
+
 ## 2.0.1
 - Allow adding Garbage Cans using "Garbage": "ID" tile property
 - Update to SMAPI 3.12

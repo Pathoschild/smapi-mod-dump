@@ -49,7 +49,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				var grid = new CircleTileGrid(tileLocation, radius);
 				foreach (var tile in grid)
 				{
-					if (!__instance.objects.TryGetValue(tile, out var tileObj) || !Util.Objects.IsStone(tileObj)) continue;
+					if (!__instance.objects.TryGetValue(tile, out var tileObj) || !tileObj.IsStone()) continue;
 
 					if (isBlaster)
 					{
@@ -73,7 +73,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							if (r.NextDouble() < 0.25)
 							{
 								Game1.createObjectDebris(382, (int)tile.X, (int)tile.Y, who.UniqueMultiplayerID, __instance);
-								ModEntry.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer")
+								ModEntry.ModHelper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer")
 									.GetValue()
 									.broadcastSprites(__instance,
 										new TemporaryAnimatedSprite(25,
@@ -91,6 +91,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						Game1.createObjectDebris(resourceIndex, (int)tile.X, (int)tile.Y, who.UniqueMultiplayerID, __instance);
 					}
 					else
+					{
 						switch (tileObj.ParentSheetIndex)
 						{
 							case 44: // gem node
@@ -117,6 +118,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 									Game1.createObjectDebris(827, (int)tile.X, (int)tile.Y, who.UniqueMultiplayerID, __instance);
 								break;
 						}
+					}
 				}
 
 				if (!who.IsLocalPlayer || !isDemolitionist) return;

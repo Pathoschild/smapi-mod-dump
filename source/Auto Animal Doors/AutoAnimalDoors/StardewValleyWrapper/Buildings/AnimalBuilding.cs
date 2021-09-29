@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AutoAnimalDoors.Config;
 using System.Collections.Generic;
 
 namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
@@ -18,7 +19,7 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
 
     abstract class AnimalBuilding : Building
     {
-        private Farm Farm { get; set; }
+        private Farm Farm { get; }
 
         public AnimalBuilding(StardewValley.Buildings.Building building, Farm farm) :
             base(building)
@@ -86,6 +87,19 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
             if (this.building.animalDoor.Value != null && !this.building.isUnderConstruction())
             {
 
+                PlayDoorSound();
+
+                building.animalDoorOpen.Value = !building.animalDoorOpen.Value;
+                AnimateDoorStateChange();
+            }
+        }
+
+        private void PlayDoorSound()
+        {
+            DoorSoundSetting doorSoundSetting = ModConfig.Instance.DoorSoundSetting;
+            if(doorSoundSetting == DoorSoundSetting.ALWAYS_ON ||
+                doorSoundSetting == DoorSoundSetting.ONLY_ON_FARM && StardewValley.Game1.player.currentLocation.IsFarm)
+            {
                 if (!building.animalDoorOpen.Value)
                 {
                     StardewValley.Game1.player.currentLocation.playSound("doorCreak");
@@ -94,13 +108,6 @@ namespace AutoAnimalDoors.StardewValleyWrapper.Buildings
                 {
                     StardewValley.Game1.player.currentLocation.playSound("doorCreakReverse");
                 }
-
-                building.animalDoorOpen.Value = !building.animalDoorOpen.Value;
-                AnimateDoorStateChange();
-                int xPositionOfAnimalDoor = this.building.animalDoor.X + this.building.tileX.Value;
-                int yPositionOfAnimalDoor = this.building.animalDoor.Y + this.building.tileY.Value;
-
-                this.building.doAction(new Microsoft.Xna.Framework.Vector2(xPositionOfAnimalDoor, yPositionOfAnimalDoor), StardewValley.Game1.player);
             }
         }
 

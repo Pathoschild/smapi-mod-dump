@@ -1,0 +1,7 @@
+{
+  "big-craftable.HarvestStatue.name": "Harvest Statue",
+  "big-craftable.HarvestStatue.description": "A magic infused statue that attracts Junimos. If placed indoors the Junimos will harvest nearby crops for you.",
+
+  "crafting.HarvestStatueRecipe.name": "Harvest Statue",
+  "crafting.HarvestStatueRecipe.description": "Creates a Harvest Statue."
+}

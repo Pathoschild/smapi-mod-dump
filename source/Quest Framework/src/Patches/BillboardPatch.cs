@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using PurrplingCore.Patching;
 using QuestFramework.Extensions;
 using QuestFramework.Framework;
@@ -68,7 +68,7 @@ namespace QuestFramework.Patches
             }
         }
 
-        protected override void Apply(HarmonyInstance harmony)
+        protected override void Apply(Harmony harmony)
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), nameof(Billboard.receiveLeftClick)),

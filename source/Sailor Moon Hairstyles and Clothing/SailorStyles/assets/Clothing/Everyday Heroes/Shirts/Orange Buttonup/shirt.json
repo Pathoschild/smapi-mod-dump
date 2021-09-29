@@ -11,7 +11,7 @@
 {
     "Name": "Orange Buttonup",
     "Description": "...",
-    "HasFemaleVariant": false,
+    "HasFemaleVariant": "true",
     "Price": 50,
     "Dyeable": false
 }

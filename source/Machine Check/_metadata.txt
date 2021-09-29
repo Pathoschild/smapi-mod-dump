@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/FairfieldBW/MachineCheck
+   Git: https://github.com/FairfieldBW/MachineCheck.git
+
+mods:
+   Machine Check
+
+latest commit:
+   commit 16384acb299d95909e9e888ecf4523090c05caf9
+   Author: LUCAS-PC\Lucas <lucaskchang@gmail.com>
+   Date:   Sun Sep 5 19:00:47 2021 -0700
+   
+       Initial Commit
+   

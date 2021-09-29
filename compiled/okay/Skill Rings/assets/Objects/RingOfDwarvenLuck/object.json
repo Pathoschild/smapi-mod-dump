@@ -5,4 +5,10 @@
   "Edibility": -300,
   "Price": 50000,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "矮人好运之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "采矿时矮人的幸运笼罩着你。"
+  },
 }

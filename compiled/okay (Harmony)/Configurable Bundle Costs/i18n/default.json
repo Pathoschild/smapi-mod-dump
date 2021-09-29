@@ -1,0 +1,4 @@
+{
+  "Morris_BuyMovieTheater": "Ah, our favorite customer... I have exciting news for you! Joja headquarters has approved the construction of a new Joja 'entertainment opportunity' to replace the nearby Joja Warehouse. We just need an investor willing to support our vision! So, naturally, I turn to you... our most devoted and generous Joja member.#$b#$q -1 -1#We could make this happen for a small investment of... *cough*... {{buyValue}}g...$h#$r -1 -1 Yes#Yes#$r -1 -1 No#No",
+  "Morris_TheaterBought": "{{buyValue}}...!$2#$b#*Ahem*... I mean... Excellent! Our Joja Construction Team will begin work on the new building tonight! Thank you for supporting our work."
+}

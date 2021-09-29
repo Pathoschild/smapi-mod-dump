@@ -9,8 +9,6 @@
 *************************************************/
 
 using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Menus;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
@@ -21,7 +19,6 @@ namespace TheLion.Stardew.Professions.Framework.Events
 		{
 			ModEntry.Subscriber.SubscribeMissingEvents();
 			ModEntry.Subscriber.CleanUpRogueEvents();
-			LevelUpMenu.RevalidateHealth(Game1.player);
 		}
 	}
 }

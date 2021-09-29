@@ -8,10 +8,6 @@
 **
 *************************************************/
 
-using StardewValley;
-using System.Linq;
-using TheLion.Stardew.Common.Extensions;
-
 namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public delegate void SuperModeDisabledEventHandler();
@@ -33,14 +29,16 @@ namespace TheLion.Stardew.Professions.Framework.Events
 		/// <summary>Raised when IsSuperModeActive is set to false.</summary>
 		public void OnSuperModeDisabled()
 		{
-			Game1.player.stopGlowing();
-			ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBarFlashUpdateTickedEvent), typeof(SuperModeCountdownUpdateTickedEvent));
+			// remove countdown and fade out overlay
+			ModEntry.Subscriber.Subscribe(new SuperModeOverlayFadeOutUpdateTickedEvent());
+			ModEntry.Subscriber.Unsubscribe(typeof(SuperModeCountdownUpdateTickedEvent));
 
-			var buffID = (ModEntry.UniqueID + ModEntry.SuperModeIndex).Hash();
-			var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == ++buffID);
-			if (buff != null) Game1.buffsDisplay.removeOtherBuff(buffID);
+			// notify peers
+			ModEntry.ModHelper.Multiplayer.SendMessage(message: ModEntry.SuperModeIndex, messageType: "SuperModeDectivated", modIDs: new[] { ModEntry.UniqueID });
 
-			ModEntry.Multiplayer.SendMessage(message: ModEntry.SuperModeIndex, messageType: "SuperModeDectivated", modIDs: new[] { ModEntry.UniqueID });
+			// remove permanent effects
+			if (ModEntry.SuperModeIndex == Util.Professions.IndexOf("Piper"))
+				ModEntry.Subscriber.Subscribe(new SlimeDeflationUpdateTickedEvent());
 		}
 	}
 }

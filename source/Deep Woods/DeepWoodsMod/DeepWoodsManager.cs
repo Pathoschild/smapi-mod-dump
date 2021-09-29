@@ -25,7 +25,7 @@ using static DeepWoodsMod.DeepWoodsSettings;
 
 namespace DeepWoodsMod
 {
-    class DeepWoodsManager
+    public class DeepWoodsManager
     {
         public static DeepWoods currentDeepWoods = null;
         public static string currentWarpRequestName = null;

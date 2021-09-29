@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using SObject = StardewValley.Object;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public static class CrabPotCatches
 	{

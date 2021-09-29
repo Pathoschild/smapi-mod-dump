@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Instant Pets",
+    "Author": "blueberry",
+    "Version": "1.0.0",
+    "Description": "Skip Marnie and Demetrius' events and start with a farm pet and cave of your choice.",
+    "UniqueID": "blueberry.InstantPets",
+    "EntryDll": "InstantPets.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:9448" ]
+}

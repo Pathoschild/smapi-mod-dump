@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using ProfitCalculator.Framework;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
@@ -18,12 +19,6 @@ namespace ProfitCalculator
 {
     internal class Mod : StardewModdingAPI.Mod
     {
-        internal class ProfitData
-        {
-            public int Profit;
-            public string Crop = "invalid";
-        }
-
         public override void Entry(IModHelper helper)
         {
             Log.Monitor = this.Monitor;

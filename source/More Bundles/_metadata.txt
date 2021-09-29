@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/TwinBuilderOne/StardewValleyMods
+   Git: https://github.com/TwinBuilderOne/StardewValleyMods.git
+
+mods:
+   More Bundles
+
+latest commit:
+   commit 87bce3a184caeb6385fd96e8ba6dca30da6e474e
+   Merge: b8b3027 3a9afa7
+   Author: TwinBuilderOne <86498605+TwinBuilderOne@users.noreply.github.com>
+   Date:   Mon Sep 27 17:09:52 2021 -0500
+   
+       Merge pull request #1 from TwinBuilderOne/more-bundles
+       
+       More Bundles 1.0.1
+   

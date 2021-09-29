@@ -17,11 +17,14 @@
   "new-reminder.reminder-time": "Hora del recordatorio",
   "new-reminder.instruction": "Elige la hora, minutos y periodo del día",
   "new-reminder.invalid-time": "La hora introducida no es válida",
-  
+  "new-reminder.recurring-label": "Periódico",
+  "new-reminder.interval-label": "Intervalo",
+  "new-reminder.interval-explaination": "Intervalo 1: diario, 2: cualquier otro día, y así...",
+
   // Display reminder page
   "display-reminder.title": "Mostras recordatorio",
   "display-reminder.zero-reminders": "Aún no hay recordatorios fijados",
-  
+
   // general strings
   "date.year": "Año",
   "date.season.summer": "Verano",

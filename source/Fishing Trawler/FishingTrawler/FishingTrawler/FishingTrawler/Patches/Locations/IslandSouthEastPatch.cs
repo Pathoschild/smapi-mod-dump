@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -35,9 +35,9 @@ namespace FishingTrawler.Patches.Locations
 
         }
 
-        internal override void Apply(HarmonyInstance harmony)
+        internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_islandSouthEast, nameof(IslandSouthEast.checkAction), new[] { typeof(xTile.Dimensions.Location), typeof(xTile.Dimensions.Rectangle), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(CheckActionPatch)));
+            harmony.Patch(AccessTools.Method(typeof(IslandLocation), nameof(IslandLocation.checkAction), new[] { typeof(xTile.Dimensions.Location), typeof(xTile.Dimensions.Rectangle), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(CheckActionPatch)));
             harmony.Patch(AccessTools.Method(_islandSouthEast, nameof(IslandSouthEast.cleanupBeforePlayerExit), null), postfix: new HarmonyMethod(GetType(), nameof(CleanupBeforePlayerExitPatch)));
             harmony.Patch(AccessTools.Method(_islandSouthEast, nameof(IslandSouthEast.draw), new[] { typeof(SpriteBatch) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPatch)));
             harmony.Patch(AccessTools.Method(_islandSouthEast, nameof(IslandSouthEast.UpdateWhenCurrentLocation), new[] { typeof(GameTime) }), postfix: new HarmonyMethod(GetType(), nameof(UpdateWhenCurrentLocationPatch)));

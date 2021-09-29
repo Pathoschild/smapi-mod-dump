@@ -77,7 +77,7 @@ namespace ItemBags.Bags
 
             public bool IsMatch(Object Item)
             {
-                return Item != null && Item.ParentSheetIndex == this.Id && Item.bigCraftable == this.IsBigCraftable && IsValidQuality(Item);
+                return Item != null && Item.ParentSheetIndex == this.Id && Item.bigCraftable.Value == this.IsBigCraftable && IsValidQuality(Item);
             }
 
             public override string ToString()

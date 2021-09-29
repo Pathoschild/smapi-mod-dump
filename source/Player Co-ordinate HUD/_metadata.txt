@@ -6,9 +6,9 @@ mods:
    Player Co-ordinate HUD
 
 latest commit:
-   commit cef3c56b350b9ec2de1bccde3ed507d954bced7a
+   commit 01ff4e4cb234d9820a561a87ffe6c9a5c36efdd4
    Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
-   Date:   Tue Jun 22 14:06:56 2021 +0100
+   Date:   Sun Sep 26 18:51:58 2021 +0100
    
-       Slight change. We don't really need the double push.
+       Small update to build files.
    

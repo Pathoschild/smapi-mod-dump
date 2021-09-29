@@ -10,7 +10,7 @@
 
 {
   "Garbage Can": {
-    "Image": "GarbageCan.png",
+    "Image": "assets/GarbageCan.png",
     "Frames": 3,
     "PlayerColor": true,
     "PlayerConfig": false,
@@ -18,8 +18,6 @@
     "OpenNearbySound": "trashcanlid",
     "CloseNearbySound": "trashcanlid",
     "OpenSound": "trashcan",
-    "Capacity": 12,
-    "EnabledFeatures": ["Indestructible"],
-    "DisabledFeatures": ["CanCarry", "ShowSearchBar", "ShowColorPicker", "ShowTabs", "VacuumItems"]
+    "Capacity": 12
   }
 }

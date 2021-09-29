@@ -83,13 +83,17 @@ namespace ItemBags.Helpers
         /// <summary>Returns <see cref="ICursorPosition.ScreenPixels"/>, always adjusted for UI Scaling. SMAPI version 3.8.1 and earlier used to always do this, but changes were made to SMAPI 3.8.2+.</summary>
         public static Vector2 LegacyScreenPixels(this ICursorPosition value)
         {
+#if ANDROID && LEGACYVERSION
+            return value.ScreenPixels;
+#else
             if (IsLegacyCursorPosition)
                 return value.ScreenPixels;
             else
                 return Utility.ModifyCoordinatesForUIScale(value.ScreenPixels);
+#endif
         }
 
-        #region Split List
+#region Split List
         //Taken from: https://stackoverflow.com/questions/3514740/how-to-split-an-array-into-a-group-of-n-elements-each
         private static IEnumerable<TList> Split<TList, T>(this TList value, int countOfEachPart) where TList : IEnumerable<T>
         {
@@ -129,6 +133,6 @@ namespace ItemBags.Helpers
         {
             return value.Split<IEnumerable<T>, T>(countOfEachPart);
         }
-        #endregion Split List
+#endregion Split List
     }
 }

@@ -27,9 +27,6 @@ namespace SailorStyles.Editors
 
 		public T Load<T>(IAssetInfo asset)
 		{
-			Log.D($"Loaded custom asset ({asset.AssetName})",
-				ModEntry.Config.DebugMode);
-
 			if (asset.AssetNameEquals(ModConsts.GameContentCatSchedulePath))
 				return (T)(object) Helper.Content.Load
 					<Dictionary<string, string>>
@@ -52,9 +49,6 @@ namespace SailorStyles.Editors
 
 		public void Edit<T>(IAssetData asset)
 		{
-			Log.D($"Edited {(asset.AssetName.StartsWith("assets") ? "custom" : "default")} asset ({asset.AssetName})",
-				ModEntry.Config.DebugMode);
-
 			var json = Helper.Content.Load
 				<Dictionary<string, string>>
 				(ModConsts.LocalAnimationsPath + ".json");

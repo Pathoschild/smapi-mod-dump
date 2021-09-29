@@ -1,8 +1,8 @@
 DeepWoodsMod for Stardew Valley
 Author: Max Vollmer
-Version: 1.9.0-beta
+Version: 2.0.0-beta
 
-Needs SMAPI v3.8.0 or higher: https://smapi.io/
+Needs SMAPI v3.13.0 or higher: https://smapi.io/
 
 Web: https://www.nexusmods.com/stardewvalley/mods/2571
 Sourcecode: https://github.com/maxvollmer/DeepWoodsMod
@@ -37,9 +37,11 @@ License: Exclusive/Custom, please ask author directly for permission if you want
 ====
 Translations:
 
-fr.json by AresRyu (https://forums.nexusmods.com/index.php?/user/31452340-aresryu/)
-ko.json by S2SKY (https://github.com/S2SKY)
-ru.json by FixThisPlz (https://github.com/FixThisPlz)
-pt.json by shiro2579 (https://github.com/shiro2579)
-zh.json by q847633684 (https://forums.nexusmods.com/index.php?showuser=76028173)
+de.json by Deflaktor (https://github.com/Deflaktor)
 es.json by skullSG (https://forums.nexusmods.com/index.php?showuser=55091432)
+fr.json by AresRyu (https://forums.nexusmods.com/index.php?/user/31452340-aresryu/)
+hu.json by martin66789 (https://www.nexusmods.com/users/27323031)
+ko.json by S2SKY (https://github.com/S2SKY)
+pt.json by shiro2579 (https://github.com/shiro2579)
+ru.json by FixThisPlz (https://github.com/FixThisPlz) with improvements by kionell (https://github.com/kionell)
+zh.json by q847633684 (https://forums.nexusmods.com/index.php?showuser=76028173)

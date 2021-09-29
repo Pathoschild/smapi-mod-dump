@@ -24,14 +24,16 @@ namespace Dem1se.CustomReminders
     /// <summary> Data model for reminders </summary>
     class ReminderModel
     {
-        public ReminderModel(string reminderMessage, int daysSinceStart, int time24hrs)
+        public ReminderModel(string reminderMessage, int daysSinceStart, int time24hrs, int interval)
         {
             ReminderMessage = reminderMessage;
             DaysSinceStart = daysSinceStart;
             Time = time24hrs;
+            Interval = interval;
         }
         public string ReminderMessage { get; set; }
         public int DaysSinceStart { get; set; }
         public int Time { get; set; }
+        public int Interval { get; set; }
     }
 }

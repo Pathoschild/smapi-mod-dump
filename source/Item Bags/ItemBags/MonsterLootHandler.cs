@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using ItemBags.Bags;
 using ItemBags.Persistence;
 using StardewModdingAPI;
@@ -58,7 +58,7 @@ namespace ItemBags
         {
             MonsterLootHandler.Helper = Helper;
 
-            HarmonyInstance Harmony = HarmonyInstance.Create(ItemBagsMod.ModInstance.ModManifest.UniqueID);
+            Harmony Harmony = new Harmony(ItemBagsMod.ModInstance.ModManifest.UniqueID);
 
             //  Patch GameLocation.monsterDrop, so that we can give a small chance of making monsters also drop ItemBags
             Harmony.Patch(

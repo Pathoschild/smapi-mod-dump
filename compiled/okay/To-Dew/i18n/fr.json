@@ -1,63 +1,63 @@
 {
     // Chaînes pour la configuration du menu Generic Mod Config
-    "config.hotkey": "Hotkey",
-    "config.hotkey.desc": "La clé pour afficher la liste des tâches",
-    "config.secondary-close-button": "Bouton de fermeture secondaire",
-    "config.secondary-close-button.desc": "Une touche alternative (en plus de ESC) pour fermer la liste de tâches",
+    "config.hotkey": "Touche",
+    "config.hotkey.desc": "Touche pour afficher la liste des tâches",
+    "config.secondary-close-button": "Touche secondaire de fermeture",
+    "config.secondary-close-button.desc": "Une touche alternative (en plus de Échap) pour fermer la liste de tâches",
     "config.debug": "Debug",
-    "config.debug.desc": "Activer la sortie de débogage dans le journal",
-    "config.overlay": "Superposition",
-    "config.overlay.desc": "Configurer la superposition permanente affichant la liste",
-    "config.overlay.enabled": "Enabled",
-    "config.overlay.enabled.desc": "La superposition est-elle activée?",
-    "config.overlay.hotkey": "Raccourci",
-    "config.overlay.hotkey.desc": "Raccourci pour afficher ou masquer",
-    "config.overlay.hide-at-festivals": "Se cacher pendant les festivals",
-    "config.overlay.hide-at-festivals.desc": "Masquer la superposition pendant les festivals?",
-    "config.overlay.max-width": "Max Width",
-    "config.overlay.max-width.desc": "Largeur maximale de la superposition en pixels",
-    "config.overlay.max-items": "Max Items",
-    "config.overlay.max-items.desc": "Nombre maximum d'éléments à afficher dans la superposition",
+    "config.debug.desc": "Activer la sortie de débogage dans la console",
+    "config.overlay": "Overlay",
+    "config.overlay.desc": "Configurer l'overlay permanente affichant la liste",
+    "config.overlay.enabled": "Activer",
+    "config.overlay.enabled.desc": "L'overlay est-il activé ?",
+    "config.overlay.hotkey": "Touche",
+    "config.overlay.hotkey.desc": "Touche pour afficher ou masquer l'overlay",
+    "config.overlay.hide-at-festivals": "Cacher pendant les festivals",
+    "config.overlay.hide-at-festivals.desc": "Masquer l'overlay pendant les festivals ?",
+    "config.overlay.max-width": "Largeur max",
+    "config.overlay.max-width.desc": "Largeur maximale de l'overlay en pixels",
+    "config.overlay.max-items": "Éléments max",
+    "config.overlay.max-items.desc": "Nombre maximum d'éléments à afficher dans l'overlay (nombre de ligne)",
 
     // Superposition
     "overlay.header": "Liste To-Dew",
 
     // Messages du journal de la console
-    "message.save-version-newer": "Les informations de la liste de cette sauvegarde sont dans une version de format plus récente ({{saveFormatVersion}}) que celle utilisée par cette version de {{modName}} ({{modFormatVersion}}). La prochaine sauvegarde utilisera cette ancienne version, ce qui entraînera la perte de tous les attributs ajoutés dans la nouvelle version. ",
-    "message.save-version-former": "Lire les informations de la liste dans la version de format {{saveFormatVersion}}. Elle sera mise à jour avec la version de format actuelle ({{modFormatVersion}}) lors de la prochaine sauvegarde.",
+    "message.save-version-newer": "Les informations de la liste de cette sauvegarde sont dans une version de format plus récente ({{saveFormatVersion}}) que celle utilisée par cette version de {{modName}} ({{modFormatVersion}}). La prochaine sauvegarde utilisera cette ancienne version, ce qui entraînera la perte de tous les attributs ajoutés dans la nouvelle version.",
+    "message.save-version-former": "Lecture des informations de la liste dans la version de format {{saveFormatVersion}}. Elle sera mise à jour avec la version de format actuelle ({{modFormatVersion}}) lors de la prochaine sauvegarde.",
     "message.host-no-mod": "L'hôte n'a pas {{modName}} installé; liste désactivée.",
     "message.host-different-mod-version": "L'hôte a la version {{hostVersion}} de {{modName}} installée, mais vous avez la version {{myVersion}}. Tentative de continuer quand même.",
     "message.ignoring-unexpected-message-type": "Ignorer le type de message inattendu {{messageType}} du lecteur {{fromId}} ({{fromName}})",
-    "message.host-newer-data-format-minor": "L'hôte utilise une version de format de données plus récente ({{hostVersion}}) que cette version de {{modName}} utilise ({{myVersion}}), mais nous ferons de notre mieux pour y faire face. ",
-    "message.host-newer-data-format-major": "L'hôte utilise une version de format de données plus récente ({{hostVersion}}) que celle utilisée par cette version de {{modName}} ({{myVersion}}). a un numéro de version majeur différent, nous n'essaierons pas de le gérer. ",
+    "message.host-newer-data-format-minor": "L'hôte utilise une version de format de données plus récente ({{hostVersion}}) que cette version de {{modName}} utilise ({{myVersion}}), mais nous ferons de notre mieux le gérer.",
+    "message.host-newer-data-format-major": "L'hôte utilise une version de format de données plus récente ({{hostVersion}}) que celle utilisée par cette version de {{modName}} ({{myVersion}}). Au vu de l'important écart du numéro de version, nous n'essaierons pas de le gérer.",
     "message.host-old-data-format": "L'hôte utilise la version de format de données {{hostVersion}}, qui est plus ancienne que la version de format actuelle ({{myVersion}}). Certaines fonctionnalités peuvent ne pas être disponibles.",
     "message.current-item-deleted": "L'élément {{itemId}} a été supprimé par un autre joueur",
 
-    // menu liste
+    // Menu liste
     "menu.list.title-bold-part": "Liste To-Dew",
     "menu.list.title-rest": "pour la ferme {{farmName}}",
-    "menu.textbox.title": "Ajouter un élément à faire", // pas sûr que le TitleText apparaisse réellement n'importe où
-    // menu de configuration de l'élément (modifier)
-    "menu.edit.title": "Élément d'édition",
+    "menu.textbox.title": "Ajouter un élément à faire", // Pas sûr que TitleText apparaisse réellement quelque part
+    // Menu de configuration de l'élément (modifier)
+    "menu.edit.title": "Édition de l'élément",
     "menu.edit.header": "En-tête",
     "menu.edit.bold": "Gras",
     "menu.edit.repeating": "Répétition",
-    "menu.edit.hide-in-overlay": "Masquer dans la superposition",
-    "menu.edit.show-when": "Afficher l'élément quand:",
+    "menu.edit.hide-in-overlay": "Masquer dans l'overlay",
+    "menu.edit.show-when": "Afficher l'élément quand :",
     "menu.edit.raining-on-farm": "Il pleut à la ferme",
     "menu.edit.not-raining-on-farm": "Il ne pleut pas à la ferme",
     "menu.edit.raining-on-island": "Il pleut sur l'île",
     "menu.edit.not-raining-on-island": "Il ne pleut pas sur l'île",
-    "menu.edit.only-days": "Afficher uniquement ces jours-ci:",
-    "menu.edit.week": "Semaine:",
-    "menu.edit.only-season": "Afficher uniquement dans:",
+    "menu.edit.only-days": "Jours :",
+    "menu.edit.week": "Semaines :",
+    "menu.edit.only-season": "Saisons :",
 
-    // noms des jours complets (puisque le jeu n'a que des traductions pour les noms courts)
-    "sunday": "dimanche",
+    // Noms des jours complets (puisque le jeu n'a que des traductions pour les noms abrégés)
+    "sunday": "Dimanche",
     "monday": "Lundi",
-    "tuesday": "mardi",
-    "wednesday": "mercredi",
-    "thursday": "jeudi",
-    "friday": "vendredi",
-    "saturday": "samedi"
+    "tuesday": "Mardi",
+    "wednesday": "Mercredi",
+    "thursday": "Jeudi",
+    "friday": "Vendredi",
+    "saturday": "Samedi"
 }

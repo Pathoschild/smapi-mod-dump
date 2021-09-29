@@ -6,9 +6,9 @@ mods:
    Quest Framework
 
 latest commit:
-   commit 26bb949a663900246bf88008df33c674c56c42c7
-   Author: PurrplingCat <git@purrplingcat.com>
-   Date:   Sat Feb 27 16:15:11 2021 +0100
+   commit d3aa61e90bc10c1d4fa9fcb4e42e378d8786e476
+   Author: PurrplingCat <ellenfawkes@gmail.com>
+   Date:   Mon Sep 20 11:35:47 2021 +0200
    
-       Release 1.3.4
+       requires SMAPI 3.12.7 and newer
    

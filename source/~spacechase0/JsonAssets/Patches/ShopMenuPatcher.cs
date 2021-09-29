@@ -36,7 +36,7 @@ namespace JsonAssets.Patches
         {
             harmony.Patch(
                 original: this.RequireMethod<ShopMenu>(nameof(ShopMenu.setUpShopOwner)),
-                prefix: this.GetHarmonyMethod(nameof(ShopMenuPatcher.Before_SetUpShopOwner))
+                prefix: this.GetHarmonyMethod(nameof(Before_SetUpShopOwner))
             );
         }
 

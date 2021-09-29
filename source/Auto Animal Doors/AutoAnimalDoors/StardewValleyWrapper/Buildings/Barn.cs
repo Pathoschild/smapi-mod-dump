@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AutoAnimalDoors.Config;
 using Netcode;
 using System;
 using System.Collections.Generic;

@@ -6,9 +6,9 @@ mods:
    Fishing Trawler
 
 latest commit:
-   commit 7a3322d6fdc298b07d9ee030cc29115cd3b7bd4d
+   commit 07b0ad138722d9caa87963f2fea0aff20168766f
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Thu Apr 22 14:03:43 2021 -0500
+   Date:   Wed Sep 15 14:19:30 2021 -0500
    
-       v1.3.3 released
+       v1.3.7 released
    

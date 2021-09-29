@@ -31,7 +31,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
     {
         private readonly Type _object = typeof(ResourceClump);
 
-        internal ResourceClumpPatch(IMonitor modMonitor) : base(modMonitor)
+        internal ResourceClumpPatch(IMonitor modMonitor, IModHelper modHelper) : base(modMonitor, modHelper)
         {
 
         }
@@ -40,7 +40,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
         {
             harmony.Patch(AccessTools.Method(_object, nameof(ResourceClump.draw), new[] { typeof(SpriteBatch), typeof(Vector2) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(ResourceClump.seasonUpdate), new[] { typeof(bool) }), postfix: new HarmonyMethod(GetType(), nameof(SeasonUpdatePostfix)));
-            harmony.Patch(AccessTools.Constructor(typeof(GiantCrop), new[] { typeof(int), typeof(int), typeof(int), typeof(Vector2) }), postfix: new HarmonyMethod(GetType(), nameof(ResourceClumpPostfix)));
+            harmony.Patch(AccessTools.Constructor(typeof(ResourceClump), new[] { typeof(int), typeof(int), typeof(int), typeof(Vector2) }), postfix: new HarmonyMethod(GetType(), nameof(ResourceClumpPostfix)));
         }
 
         private static bool DrawPrefix(ResourceClump __instance, float ___shakeTimer, SpriteBatch spriteBatch, Vector2 tileLocation)
@@ -54,7 +54,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 }
 
                 var textureVariation = Int32.Parse(__instance.modData["AlternativeTextureVariation"]);
-                if (textureVariation == -1)
+                if (textureVariation == -1 || AlternativeTextures.modConfig.IsTextureVariationDisabled(textureModel.GetId(), textureVariation))
                 {
                     return true;
                 }
@@ -68,7 +68,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 var textureOffset = textureVariation * textureModel.TextureHeight;
                 Rectangle sourceRect = new Rectangle(0, textureOffset, 32, 32);
 
-                spriteBatch.Draw(textureModel.Texture, Game1.GlobalToLocal(Game1.viewport, position), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (__instance.tile.Y + 1f) * 64f / 10000f + __instance.tile.X / 100000f);
+                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, position), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (__instance.tile.Y + 1f) * 64f / 10000f + __instance.tile.X / 100000f);
 
                 return false;
             }

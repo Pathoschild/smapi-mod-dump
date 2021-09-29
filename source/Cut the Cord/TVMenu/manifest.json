@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/harshlele/CutTheCord
+**
+*************************************************/
+
+{
+  "Name": "CutTheCord",
+  "Author": "cgifox",
+  "Version": "1.0.1",
+  "Description": "A simple mod that shows the weather,luck and any recipes right in your bed at the start of the day",
+  "UniqueID": "cgifox.CutTheCord",
+  "EntryDll": "CutTheCord.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:9571"]
+}

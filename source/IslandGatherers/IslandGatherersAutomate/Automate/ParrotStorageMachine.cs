@@ -19,7 +19,7 @@ namespace IslandGatherersAutomate.Automate
 {
     public class ParrotStorageMachine : IMachine
     {
-        private readonly ParrotPot Entity;
+        private readonly Chest Entity;
         private int[] validOutputCategories = new int[] { -75, -79, -81 }; // Vegetables, Fruit, Forage
 
         /// <summary>The location which contains the machine.</summary>
@@ -38,7 +38,7 @@ namespace IslandGatherersAutomate.Automate
         /// <param name="tile">The tile covered by the machine.</param>
         public ParrotStorageMachine(Object entity, GameLocation location, in Vector2 tile)
         {
-            Entity = entity as ParrotPot;
+            Entity = entity as Chest;
             Location = location;
             TileArea = new Rectangle((int)tile.X, (int)tile.Y, 1, 1);
         }

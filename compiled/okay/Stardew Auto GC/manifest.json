@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "StardewAutoGC_NET5",
 	"Author": "Lake1059",
-	"Version": "1.3.0",
+	"Version": "1.4.0",
 	"UniqueID": "Lake1059.StardewAutoGC_NET5",
 	"EntryDll": "StardewAutoGC_NET5.dll",
 	"UpdateKeys": [ "Nexus:9293" ]

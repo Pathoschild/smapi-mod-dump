@@ -79,7 +79,7 @@
 	"item.hotpinkoveralls.name": "Overol Rosa Fuerte",
 	"item.hotpinkvelvetjacket.name": "Chaqueta de Terciopelo Rosa",
 	"item.lemonblouseandblazer.name": "Lemon Blouse and Blazer",
-	"item.maroonbuttonup.name": "Maroon Buttonup",
+	"item.maroonbuttonup.name": "Botón Granate",
 	"item.maroonjacketongreen.name": "Chaqueta Granate en Verde",
 	"item.maroontop.name": "Top Granate",
 	"item.mauvesweater.name": "Jersey Malva",
@@ -131,7 +131,7 @@
 	"item.whitecroptop.name": "Top Corto Blanco",
 	"item.whitedress.name": "Vestido Blanco",
 	"item.whitewaistcoat.name": "Chaleco Blanco",
-	"item.wickedlife.name": "vida Perverso",
+	"item.wickedlife.name": "Vida Perverso",
 	"item.woollyfleece.name": "Lana Lanuda",
 	"item.yellowtie-top.name": "Corbata Amarilla",
 	"item.yellow-greendress.name": "Vestido Amarillo y Verde",
@@ -200,7 +200,7 @@
 	"item.blackdominomask.description": "Una máscara elegante para ocultar tu identidad secreta. ¿No es de uno de esos cómics de Coattail Mask?",
 	"item.cleardominomask.description": "Una máscara elegante para ocultar tu identidad secreta. ¿No es de uno de esos cómics de Coattail Mask?",
 	"item.whitedominomask.description": "Una máscara elegante para ocultar tu identidad secreta. ¿Me pregunto de quién es esto?",
-	
+
 	// Everyday Heroes
 	"item.beigesuper-croptop.description": "Una camisa increíblemente corta en beige liso.",
 	"item.blackblouseandblazer.description": "Chaqueta verde cara, blusa negra lisa, elegante cinturón amarillo.",
@@ -242,7 +242,7 @@
 	"item.hotpinkoveralls.description": "Un par de overoles grandes y brillantes.",
 	"item.hotpinkvelvetjacket.description": "El ribete negro le quita el borde a este atuendo totalmente rosa.",
 	"item.lemonblouseandblazer.description": "A tangy, sweet-and-sour top.",
-	"item.maroonbuttonup.description": "A deep red sweater with a tall collar.",
+	"item.maroonbuttonup.description": "Un suéter rojo oscuro con cuello alto.",
 	"item.maroonjacketongreen.description": "Hay una camisa blanca escondida debajo de estas gruesas capas.",
 	"item.maroontop.description": "Una parte superior de dos tonos marrón rojizo.",
 	"item.mauvesweater.description": "Un suéter morado con un lindo lazo.",

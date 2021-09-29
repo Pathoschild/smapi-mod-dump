@@ -4,4 +4,10 @@
   "Edibility": -300,
   "Price": 0,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "粘粘的戒指"
+  },
+  "DescriptionLocalization": {
+	  "zh": "一个摸起来很粘的戒指，闻起来非常香。"
+  },
 }

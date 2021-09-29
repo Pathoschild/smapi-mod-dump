@@ -9,9 +9,17 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for Stardew Valley 1.5.5.
+## 1.35.3
+Released 18 September 2021 for SMAPI 3.12.5 or later.
+
+* Improved translations. Thanks to ellipszist (added Thai)!  
+  _Note: Thai requires Stardew Valley 1.5.5 and the [Thai mod](https://www.nexusmods.com/stardewvalley/mods/7052)._
+
+## 1.35.2
+Released 04 September 2021 for SMAPI 3.12.6 or later.
+
 * Opening a search/lookup with a keybind no longer triggers vanilla actions bound to the same key too (thanks to Deflaktor!).
+* Fixed seed fields shown for non-seed items in some cases.
 
 ## 1.35.1
 Released 01 August 2021 for SMAPI 3.12.0 or later.

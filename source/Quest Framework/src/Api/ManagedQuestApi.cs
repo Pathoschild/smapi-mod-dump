@@ -139,6 +139,7 @@ namespace QuestFramework.Api
                 throw new ArgumentException("Quest type name contains unallowed characters.", nameof(type));
 
             this.QuestManager.RegisterQuestFactory($"{this.ModUid}/{type}", factory);
+            Monitor.Log($"{this.ModUid} exposed quest type {this.ModUid}/{type}", LogLevel.Debug);
         }
 
         public void ExposeQuestType<TQuest>(string type) where TQuest : CustomQuest, new()
@@ -156,7 +157,52 @@ namespace QuestFramework.Api
 
         public void RegisterCustomBoard(CustomBoardTrigger boardTrigger)
         {
+            if (boardTrigger == null)
+            {
+                throw new ArgumentNullException(nameof(boardTrigger));
+            }
+
             this.CustomBoardController.RegisterBoardTrigger(boardTrigger);
+        }
+
+        public bool CheckForQuestComplete(ICompletionMessage completionMessage)
+        {
+            if (completionMessage == null)
+            {
+                throw new ArgumentNullException(nameof(completionMessage));
+            }
+
+            return this.QuestManager.CheckForQuestComplete(completionMessage);
+        }
+
+        public bool CheckForQuestComplete<TQuest>(ICompletionMessage completionMessage) where TQuest : CustomQuest
+        {
+            if (completionMessage == null)
+            {
+                throw new ArgumentNullException(nameof(completionMessage));
+            }
+
+            return this.QuestManager.CheckForQuestComplete<TQuest>(completionMessage);
+        }
+
+        public void AdjustQuest(object adjustMessage)
+        {
+            if (adjustMessage is null)
+            {
+                throw new ArgumentNullException(nameof(adjustMessage));
+            }
+
+            this.QuestManager.AdjustQuest(adjustMessage);
+        }
+
+        public IEnumerable<CustomQuest> GetAllManagedQuests()
+        {
+            return this.QuestManager.Quests.AsReadOnly();
+        }
+
+        public IEnumerable<T> GetAllManagedQuests<T>() where T : CustomQuest
+        {
+            return this.GetAllManagedQuests().OfType<T>();
         }
     }
 }

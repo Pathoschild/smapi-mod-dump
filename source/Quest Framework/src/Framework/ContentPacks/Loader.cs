@@ -83,11 +83,11 @@ namespace QuestFramework.Framework.ContentPacks
 
         private void Prepare(Content content)
         {
-            foreach (var schedule in content.Offers)
+            foreach (var offer in content.Offers)
             {
-                if (!schedule.QuestName.Contains('@'))
+                if (!offer.QuestName.Contains('@'))
                 {
-                    schedule.QuestName = $"{schedule.QuestName}@{content.Owner.Manifest.UniqueID}";
+                    offer.QuestName = $"{offer.QuestName}@{content.Owner.Manifest.UniqueID}";
                 }
             }
         }
@@ -104,8 +104,8 @@ namespace QuestFramework.Framework.ContentPacks
 
             if (content.Quests == null || !content.Quests.Any())
             {
-                this.Monitor.Log($"Content pack `{content.Owner.Manifest.Name}` contains no quests.", LogLevel.Error);
-                isValid = false;
+                this.Monitor.Log($"Content pack `{content.Owner.Manifest.Name}` contains no quests.", LogLevel.Debug);
+                content.Quests = new List<QuestData>();
             }
 
             return isValid;
@@ -169,9 +169,10 @@ namespace QuestFramework.Framework.ContentPacks
                     continue;
                 }
 
-                if (location.doesTileHaveProperty(dropBox.Value.Tile.X, dropBox.Value.Tile.Y, "Action", "Buildings") != null)
+                string previousAction = location.doesTileHaveProperty(dropBox.Value.Tile.X, dropBox.Value.Tile.Y, "Action", "Buildings");
+                if (previousAction != null)
                 {
-                    this.Monitor.Log($"({dropBox.Key.Manifest.UniqueID}) Cannot add drop box on tile `{dropBox.Value.Tile}` in `{dropBox.Value.Location}`: This tile is reserved for another action.", LogLevel.Error);
+                    this.Monitor.Log($"({dropBox.Key.Manifest.UniqueID}) Cannot add drop box on tile `{dropBox.Value.Tile}` in `{dropBox.Value.Location}`: This tile is reserved for another action (`{previousAction}`).", LogLevel.Error);
                     continue;
                 }
 
@@ -237,6 +238,10 @@ namespace QuestFramework.Framework.ContentPacks
                     ConversationTopicHelper.AddConversationTopic(questData.ConversationTopic.AddWhenQuestCompleted);
                 if (!string.IsNullOrEmpty(questData.ConversationTopic?.RemoveWhenQuestCompleted))
                     ConversationTopicHelper.RemoveConversationTopic(questData.ConversationTopic.RemoveWhenQuestCompleted);
+                if (!string.IsNullOrEmpty(questData.AddMailOnComplete))
+                    MailHelper.AddMail(questData.AddMailOnComplete);
+                if (!string.IsNullOrEmpty(questData.RemoveMailOnComplete))
+                    MailHelper.RemoveMail(questData.RemoveMailOnComplete);
             };
             managedQuest.Removed += (_sender, _info) =>
             {

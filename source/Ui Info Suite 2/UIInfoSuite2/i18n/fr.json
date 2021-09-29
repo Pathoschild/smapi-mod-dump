@@ -1,0 +1,54 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Annosz/UiInfoSuite2
+**
+*************************************************/
+
+{
+	"Billboard": "Tableau d'annonces",
+	"Calendar": "Calendrier",
+	"Days": "jours",
+	"DaysToMature": "jours pour mûrir",
+	"HarvestPrice": "Valeur de la récolte",
+	"Hours": "heures",
+	"LevelUp": "Gain de niveau",
+	"Minutes": "minutes",
+	"ReadyToHarvest": "Prêt à récolter!",
+	"TodaysRecipe": "Recette d'aujourd'hui: ",
+	"TravelingMerchantIsInTown": "Le marchand itinérant est en ville!",
+	"DaysUntilToolIsUpgraded": "{0} jours avant que {1} ne termine de s'améliorer",
+	"ToolIsFinishedBeingUpgraded": "{0} est terminé!",
+	"ShowLuckIcon": "Montrer l'icône de chance",
+	"ShowLevelUpAnimation": "Montrer l'animation de gain de niveau",
+	"ShowExperienceBar": "Montrer la barre d'exp.",
+	"AllowExperienceBarToFadeOut": "Permettre à la barre d'exp. de disparaître",
+	"ShowExperienceGain": "Montrer le gain d'exp.",
+	"ShowLocationOfTownsPeople": "Montrer les habitants sur la carte",
+	"ShowBirthdayIcon": "Montrer l'icône d'anniversaire",
+	"ShowHeartFills": "Montrer le remplissage des coeurs",
+	"ShowAnimalsNeedPets": "Montrer les animaux à câliner",
+	"DisplayCalendarAndBillboard": "Montrer Calendrier/Tableau d'annonces",
+	"ShowCropAndBarrelTooltip": "Montrer le temps des récoltes/barils",
+	"ShowItemEffectRanges": "Montrer portée épouvantails/arroseurs",
+	"ShowExtraItemInformation": "Montrer informations supp. des objets",
+	"ShowTravelingMerchant": "Montrer le marchand itinérant",
+	"ShowRainyDay": "Show rainy days", // TODO
+	"ShowHarvestPricesInShop": "Montrer le prix des récoles en magasin",
+	"ShowWhenNewRecipesAreAvailable": "Montrer quand nouvelles recettes disp.",
+	"ShowToolUpgradeStatus": "Montrer état de l'amélioration des outils",
+	"HideAnimalPetOnMaxFriendship": "Hide on max friendship", // TODO
+	"HideMerchantWhenVisited": "Hide when visited", // TODO
+	"ShowExactValue": "Show exact value", // TODO
+	"DailyLuckValue": "Your daily luck is {0}", // TODO
+	"LuckStatus1": "Tu te sens chanceux!",
+	"LuckStatus2": "Tu te sens chanceux... mais pas trop", // TODO
+	"LuckStatus3": "Tu te sens chanceux... mais pas trop", // TODO
+	"LuckStatus4": "Tu te sens chanceux... mais pas trop", // TODO
+	"LuckStatus5": "Tu ne te sens pas tu tout chanceux...", // TODO
+	"LuckStatus6": "Tu ferais mieux de rester à la maison aujourd'hui",
+	"RobinBuildingStatus": "Robin will finish your new building in {0} day(s)" // TODO
+}

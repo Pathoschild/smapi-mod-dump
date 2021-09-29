@@ -9,7 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI;
-using GreenhouseGatherers.GreenhouseGatherers.API.Interfaces.JsonAssets;
+using GreenhouseGatherers.GreenhouseGatherers.API.Interfaces.DynamicGameAssets;
 using GreenhouseGatherers.GreenhouseGatherers.API.Interfaces.ExpandedStorage;
 
 namespace GreenhouseGatherers.GreenhouseGatherers.API
@@ -18,37 +18,26 @@ namespace GreenhouseGatherers.GreenhouseGatherers.API
     {
         private static IMonitor monitor = ModResources.GetMonitor();
 
-        private static IJsonAssetApi jsonAssetApi;
+        private static DynamicGameAssetsApi dynamicGameAssets;
         private static IExpandedStorageAPI expandedStorageApi;
 
-        public static void HookIntoJsonAssets(IModHelper helper)
+        public static void HookIntoDynamicGameAssets(IModHelper helper)
         {
             // Attempt to hook into the IMobileApi interface
-            jsonAssetApi = helper.ModRegistry.GetApi<IJsonAssetApi>("spacechase0.JsonAssets");
+            dynamicGameAssets = helper.ModRegistry.GetApi<DynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
 
-            if (jsonAssetApi is null)
+            if (dynamicGameAssets is null)
             {
-                monitor.Log("Failed to hook into spacechase0.JsonAssets.", LogLevel.Error);
+                monitor.Log("Failed to hook into spacechase0.DynamicGameAssets.", LogLevel.Error);
                 return;
             }
 
-            monitor.Log("Successfully hooked into spacechase0.JsonAssets.", LogLevel.Debug);
+            monitor.Log("Successfully hooked into spacechase0.DynamicGameAssets.", LogLevel.Debug);
         }
 
-        public static IJsonAssetApi GetJsonAssetInterface()
+        public static DynamicGameAssetsApi GetDynamicGameAssetsInterface()
         {
-            return jsonAssetApi;
-        }
-
-
-        public static int GetHarvestStatueID()
-        {
-            if (jsonAssetApi is null)
-            {
-                return -1;
-            }
-
-            return jsonAssetApi.GetBigCraftableId("Harvest Statue");
+            return dynamicGameAssets;
         }
 
         public static void HookIntoExpandedStorage(IModHelper helper)
@@ -68,6 +57,11 @@ namespace GreenhouseGatherers.GreenhouseGatherers.API
         public static IExpandedStorageAPI GetExpandedStorageInterface()
         {
             return expandedStorageApi;
+        }
+
+        public static string GetHarvestStatueModDataFlag()
+        {
+            return ModEntry.harvestStatueFlag;
         }
     }
 }

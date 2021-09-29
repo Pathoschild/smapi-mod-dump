@@ -4,4 +4,10 @@
   "Edibility": -300,
   "Price": 0,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "布满灰尘的戒指"
+  },
+  "DescriptionLocalization": {
+	  "zh": "这个满是尘土的戒指，该去哪里洗呢？值得思考思考..."
+  },
 }

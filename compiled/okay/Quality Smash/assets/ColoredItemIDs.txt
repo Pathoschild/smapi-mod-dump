@@ -1,0 +1,9 @@
+﻿Brown Egg,180
+White Egg,176
+Large Brown Egg,182
+Large White Egg,174
+Blue Jazz,597
+Fairy Rose,595
+Poppy,376
+Summer Spangle,593
+Tulip,591

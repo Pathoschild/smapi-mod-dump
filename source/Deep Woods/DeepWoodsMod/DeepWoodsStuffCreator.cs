@@ -18,7 +18,6 @@ using xTile.Dimensions;
 using static DeepWoodsMod.DeepWoodsRandom;
 using static DeepWoodsMod.DeepWoodsSettings;
 using static DeepWoodsMod.DeepWoodsGlobals;
-using System.Reflection;
 using DeepWoodsMod.API.Impl;
 
 namespace DeepWoodsMod
@@ -47,12 +46,21 @@ namespace DeepWoodsMod
             if (!Game1.IsMasterGame)
                 return;
 
-            // this.random.EnterMasterMode();
-
             ClearStuff();
             AddStuff();
 
-            // this.random.LeaveMasterMode();
+            if (Settings.Performance.GrassDensity < 100)
+            {
+                var terrainFeatures = deepWoods.terrainFeatures;
+                var terrainFeatureLocations = new List<Vector2>(terrainFeatures.Keys);
+                foreach (var location in terrainFeatureLocations)
+                {
+                    if (terrainFeatures[location] is Grass && (Settings.Performance.GrassDensity < random.GetRandomValue(1, 100)))
+                    {
+                        terrainFeatures.Remove(location);
+                    }
+                }
+            }
         }
 
         private void ClearStuff()

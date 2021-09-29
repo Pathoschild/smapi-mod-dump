@@ -9,16 +9,18 @@
 *************************************************/
 
 using System;
-using StardewModdingAPI;
-using StardewValley;
-using Harmony;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewValley.Monsters;
 using System.Reflection.Emit;
 using System.Reflection;
-using StardewValley.Network;
+
+using HarmonyLib;
+
+using Microsoft.Xna.Framework;
+
+using StardewValley.Monsters;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace FarmTypeManager
 {
@@ -32,7 +34,7 @@ namespace FarmTypeManager
 
             /// <summary>Enables this class's Harmony patches. Does nothing if patches are currently applied.</summary>
             /// <param name="harmony"></param>
-            public static void ApplyPatch(HarmonyInstance harmony)
+            public static void ApplyPatch(Harmony harmony)
             {
                 if (IsApplied) //if these patches are currently applied
                     return; //do nothing
@@ -61,7 +63,7 @@ namespace FarmTypeManager
 
             /// <summary>Disables this class's Harmony patches. Does nothing if patches are not currently applied.</summary>
             /// <param name="harmony">The Harmony instance created for this mod.</param>
-            public static void RemovePatch(HarmonyInstance harmony)
+            public static void RemovePatch(Harmony harmony)
             {
                 if (!IsApplied)
                     return;
@@ -147,7 +149,9 @@ namespace FarmTypeManager
                 }
             }
 
-            /// <summary>Causes monsters to skip redundant calculations in single player mode.</summary>
+            /// <summary>
+            /// Causes monsters to skip redundant calculations in single player mode.
+            /// </summary>
             private static bool Monster_findPlayer_Prefix(ref Farmer __result)
             {
                 try

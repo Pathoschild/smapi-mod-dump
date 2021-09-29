@@ -25,7 +25,7 @@ namespace DeepWoodsMod
     // Removes itself when the flower was plucked.
     // Doesn't allow tools (watering, destroying flower with pickaxe etc.)
     // This way we can have flowers grow in the forest without grass being ruined by a dirt patch.
-    class Flower : HoeDirt
+    public class Flower : HoeDirt
     {
         public Flower()
             : base()
@@ -54,6 +54,10 @@ namespace DeepWoodsMod
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)
         {
+            if (t is MeleeWeapon)
+            {
+                return base.performToolAction(t, damage, tileLocation, location);
+            }
             return this.crop == null || this.crop.dead.Value;
         }
 

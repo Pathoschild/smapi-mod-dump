@@ -19,6 +19,8 @@ mods:
    Custom NPC Fixes
    Customize Exterior
    Displays
+   Dynamic Game Assets
+   Dynamic Game Assets → DGA Automate
    Experience Bars
    Extended Reach
    Flower Color Picker
@@ -40,20 +42,22 @@ mods:
    Preexisting Relationship
    Profit Calculator
    Pyromancer's Journey
+   Realtime Minimap
    Rush Orders
    Sleepy Eye
    SpaceCore
    Spenny
    Statue of Generosity
+   Super Hopper
    Surfing Festival
    Theft of the Winter Star
    Three-Heart Dance Partner
    Throwable Axe
 
 latest commit:
-   commit f1af296cc07b2cfc3ad6a90ae27a6625dffd1822
+   commit b68a7b3b8484a2aeffdd5e4eb2eb2a5e68088021
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Aug 20 01:00:31 2021 -0400
+   Date:   Sat Sep 25 12:23:00 2021 -0400
    
-       prepare for beta release
+       rewrite Statue of Generosity gift logic to handle edge cases
    

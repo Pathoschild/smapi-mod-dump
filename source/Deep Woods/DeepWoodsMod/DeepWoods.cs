@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using DeepWoodsMod.API;
 using Microsoft.Xna.Framework;
@@ -61,8 +62,6 @@ namespace DeepWoodsMod
         public readonly NetBool hasEverBeenVisited = new NetBool(false);
 
         public readonly NetInt playerCount = new NetInt(0);
-
-        public readonly new NetObjectList<ResourceClump> resourceClumps = new NetObjectList<ResourceClump>();
 
         public readonly NetBool isLichtungSetByAPI = new NetBool(false);
         public readonly NetBool isMapSizeSetByAPI = new NetBool(false);
@@ -156,18 +155,22 @@ namespace DeepWoodsMod
                 return this.exits;
             }
         }
-        public ICollection<ResourceClump> ResourceClumps { get { return this.resourceClumps; } }
+        public ICollection<ResourceClump> ResourceClumps { get { return base.resourceClumps; } }
         public ICollection<Vector2> Baubles { get { return this.baubles; } }
         public ICollection<WeatherDebris> WeatherDebris { get { return this.weatherDebris; } }
 
 
+        private bool IsNullOrEmpty(string s)
+        {
+            return s == null || s.Length == 0;
+        }
 
         private int seed = 0;
         public int Seed
         {
             get
             {
-                if (seed == 0 && Name.Length > 0)
+                if (seed == 0 && !IsNullOrEmpty(Name))
                 {
                     if (Name == "DeepWoods")
                         seed = DeepWoodsRandom.CalculateSeed(1, EnterDirection.FROM_TOP, null);
@@ -178,10 +181,15 @@ namespace DeepWoodsMod
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
         public DeepWoods()
             : base()
         {
+            base.locationContext = LocationContext.Default;
+            base.seasonOverride = "";
+            base.name.Value = "";
             base.critters = new List<Critter>();
+            this.updateMap();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
@@ -260,7 +268,7 @@ namespace DeepWoodsMod
         protected override void initNetFields()
         {
             base.initNetFields();
-            this.NetFields.AddFields(parentName, parentExitLocation, hasReceivedNetworkData, enterDir, enterLocation, exits, uniqueMultiplayerID, level, mapWidth, mapHeight, isLichtung, lichtungHasLake, lichtungCenter, spawnedFromObelisk, hasEverBeenVisited, spawnTime, abandonedByParentTime, playerCount, resourceClumps, isLichtungSetByAPI, isMapSizeSetByAPI, canGetLost, additionalExitLocations, isOverrideMap);
+            this.NetFields.AddFields(parentName, parentExitLocation, hasReceivedNetworkData, enterDir, enterLocation, exits, uniqueMultiplayerID, level, mapWidth, mapHeight, isLichtung, lichtungHasLake, lichtungCenter, spawnedFromObelisk, hasEverBeenVisited, spawnTime, abandonedByParentTime, playerCount, isLichtungSetByAPI, isMapSizeSetByAPI, canGetLost, additionalExitLocations, isOverrideMap);
         }
 
         private void DetermineExits()
@@ -302,7 +310,20 @@ namespace DeepWoodsMod
             var random = new DeepWoodsRandom(this, this.Seed ^ Game1.currentGameTime.TotalGameTime.Milliseconds ^ Game1.random.Next());
 
             if (!this.isLichtungSetByAPI.Value)
-                this.isLichtung.Value = this.level.Value >= Settings.Level.MinLevelForClearing && !(this.Parent?.isLichtung ?? true) && random.CheckChance(Settings.Luck.Clearings.ChanceForClearing);
+            {
+                if (this.level.Value >= Settings.Level.MinLevelForClearing)
+                {
+                    if (random.CheckChance(Settings.Luck.Clearings.ChanceForClearing))
+                    {
+                        this.isLichtung.Value = true;
+                    }
+                    else if (Settings.Level.EnableGuaranteedClearings)
+                    {
+                        if (this.level.Value == Settings.Level.MinLevelForClearing || this.level.Value % Settings.Level.GuaranteedClearingsFrequency == 0)
+                            this.isLichtung.Value = true;
+                    }
+                }
+            }
 
             if (!this.isMapSizeSetByAPI.Value)
             {
@@ -735,19 +756,6 @@ namespace DeepWoodsMod
             }
         }
 
-        public override bool isCollidingPosition(Microsoft.Xna.Framework.Rectangle position, xTile.Dimensions.Rectangle viewport, bool isFarmer, int damagesFarmer, bool glider, Character character)
-        {
-            if (!glider)
-            {
-                foreach (ResourceClump resourceClump in this.resourceClumps)
-                {
-                    if (resourceClump.getBoundingBox(resourceClump.tile.Value).Intersects(position))
-                        return true;
-                }
-            }
-            return base.isCollidingPosition(position, viewport, isFarmer, damagesFarmer, glider, character);
-        }
-
         public override bool performToolAction(Tool t, int tileX, int tileY)
         {
             foreach (ResourceClump resourceClump in this.resourceClumps)
@@ -816,19 +824,6 @@ namespace DeepWoodsMod
 
             // Call parent method for further checks.
             return base.isTileLocationTotallyClearAndPlaceable(v);
-        }
-
-        public override bool isTileOccupied(Vector2 tileLocation, string characterToIgnore = "", bool ignoreAllCharacters = false)
-        {
-            // Check resourceClumps.
-            foreach (ResourceClump resourceClump in this.resourceClumps)
-            {
-                if (resourceClump.occupiesTile((int)tileLocation.X, (int)tileLocation.Y))
-                    return true;
-            }
-
-            // Call parent method for further checks.
-            return base.isTileOccupied(tileLocation, characterToIgnore, ignoreAllCharacters);
         }
 
         public bool CanPlaceMonsterHere(int x, int y, Monster monster)
@@ -1011,19 +1006,6 @@ namespace DeepWoodsMod
         {
             base.UpdateWhenCurrentLocation(time);
             DeepWoodsDebris.Update(this, time);
-            foreach (ResourceClump resourceClump in this.resourceClumps)
-            {
-                resourceClump.tickUpdate(time, resourceClump.tile.Value, this);
-            }
-        }
-
-        public override void draw(SpriteBatch b)
-        {
-            base.draw(b);
-            foreach (ResourceClump resourceClump in this.resourceClumps)
-            {
-                resourceClump.draw(b, resourceClump.tile.Value);
-            }
         }
 
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)

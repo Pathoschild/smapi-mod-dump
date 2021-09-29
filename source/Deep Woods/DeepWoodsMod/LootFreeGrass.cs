@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 
 namespace DeepWoodsMod
 {
-    class LootFreeGrass : Grass
+    public class LootFreeGrass : Grass
     {
         //private bool canDropHay = true;
 

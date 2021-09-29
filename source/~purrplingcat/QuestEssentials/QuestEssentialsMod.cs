@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -43,7 +43,7 @@ namespace QuestEssentials
             helper.Events.Player.Warped += this.Player_Warped;
             helper.Events.Display.MenuChanged += this.Display_MenuChanged;
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.receiveLeftClick)),
@@ -88,7 +88,7 @@ namespace QuestEssentials
             if (!Context.IsWorldReady)
                 return;
 
-            QuestApi.CheckForQuestComplete<SpecialQuest>(
+            QuestApi.CheckForQuestComplete<AdventureQuest>(
                 new PlayerMovedMessage(
                     location: e.NewLocation,
                     position: e.Player.Position,
@@ -108,7 +108,7 @@ namespace QuestEssentials
                 this._lastLocation = Game1.player.currentLocation;
                 this._lastTilePosition = Game1.player.getTileLocationPoint();
 
-                QuestApi.CheckForQuestComplete<SpecialQuest>(
+                QuestApi.CheckForQuestComplete<AdventureQuest>(
                     new PlayerMovedMessage(
                         location: this._lastLocation,
                         position: Game1.player.getStandingPosition(),
@@ -146,7 +146,7 @@ namespace QuestEssentials
             questApi.ExposeQuestType<SellItemQuest>("SellItem");
             questApi.ExposeQuestType<EarnMoneyQuest>("EarnMoney");
             questApi.ExposeQuestType<TalkQuest>("Talk");
-            questApi.ExposeQuestType<SpecialQuest>("Special");
+            questApi.ExposeQuestType<AdventureQuest>("Adventure");
             questApi.ExposeQuestType<CollectQuest>("Collect");
 
             QuestApi = questApi;

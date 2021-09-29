@@ -9,20 +9,20 @@
 *************************************************/
 
 using System;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public static class FishingAreas
 	{
 		// private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static IMonitor Monitor => ModEntry.Instance.Monitor;
 		private static ModData Data => ModEntry.Instance.data;
-		private static HarmonyInstance Harmony => ModEntry.Instance.harmony;
+		private static Harmony Harmony => ModEntry.Instance.harmony;
 
 		internal static void Patch ()
 		{

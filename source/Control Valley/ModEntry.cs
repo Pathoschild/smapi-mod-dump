@@ -11,7 +11,7 @@
 /*
  * ControlValley
  * Stardew Valley Support for Twitch Crowd Control
- * Copyright (C) 2021 TheTexanTesla
+ * Copyright (C) 2021 TerribleTable
  * LGPL v2.1
  * 
  * This library is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
  * USA
  */
 
+using System.Globalization;
 using System.Threading;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -42,6 +43,8 @@ namespace ControlValley
 
         public override void Entry(IModHelper helper)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
             if (Context.IsMultiplayer)
             {
                 this.Monitor.Log("Crowd Control is unavailable in multiplayer. Skipping mod.", LogLevel.Info);
@@ -54,6 +57,8 @@ namespace ControlValley
 
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
             if (client == null) return;
             Helper.Events.GameLoop.Saved -= client.OnSaved;
             Helper.Events.GameLoop.Saving -= client.OnSaving;
@@ -64,6 +69,8 @@ namespace ControlValley
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
             if (!Context.IsWorldReady || client != null) return;
             client = new ControlClient();
             Helper.Events.GameLoop.Saved += client.OnSaved;

@@ -21,6 +21,7 @@ using SpaceShared;
 using SpaceShared.APIs;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -31,20 +32,12 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using TheftOfTheWinterStar.Framework;
 using TheftOfTheWinterStar.Patches;
+using xTile;
 using xTile.Tiles;
 using SObject = StardewValley.Object;
 
 namespace TheftOfTheWinterStar
 {
-    internal enum ArenaStage
-    {
-        NotTriggered,
-        Stage1,
-        Finished1,
-        Stage2,
-        Finished2
-    }
-
     internal class Mod : StardewModdingAPI.Mod, IAssetEditor
     {
         public const int EventId = 91000;
@@ -59,7 +52,8 @@ namespace TheftOfTheWinterStar
         /// <summary>The unique key in <see cref="TerrainFeature.modData"/> which contains the original crop data for the Tempus Globe logic.</summary>
         private string PrevCropDataKey;
 
-        private static readonly string[] Locs = new[]
+        /// <summary>The names of the custom locations to load.</summary>
+        private readonly string[] LocationNames = new[]
         {
             "Entrance",
             "Arena",
@@ -77,6 +71,14 @@ namespace TheftOfTheWinterStar
             "Boss"
         };
 
+        /// <summary>The locations and tiles on which to drop decorations.</summary>
+        private readonly IDictionary<string, Vector2[]> DecoSpots = new Dictionary<string, Vector2[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["BusStop"] = new Vector2[] { new(5, 8), new(9, 10), new(10, 14) },
+            ["Backwoods"] = new Vector2[] { new(40, 30), new(32, 31), new(25, 29) },
+            ["Tunnel"] = new Vector2[] { new(33, 10), new(23, 9), new(10, 8) }
+        };
+
         public override void Entry(IModHelper helper)
         {
             Mod.Instance = this;
@@ -86,17 +88,17 @@ namespace TheftOfTheWinterStar
             this.BossBarFg = this.Helper.Content.Load<Texture2D>("assets/bossbar-fg.png");
             this.PrevCropDataKey = $"{this.ModManifest.UniqueID}/prev-data";
 
-            this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveCreated += this.OnCreated;
             helper.Events.GameLoop.SaveLoaded += this.OnLoaded;
             helper.Events.GameLoop.Saving += this.OnSaving;
-            this.Helper.Events.GameLoop.UpdateTicked += this.OnUpdated;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdated;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
-            this.Helper.Events.Player.Warped += this.OnWarped;
-            this.Helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
-            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            this.Helper.Events.Display.RenderedHud += this.OnRenderedHud;
+            helper.Events.Player.Warped += this.OnWarped;
+            helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Display.RenderedHud += this.OnRenderedHud;
 
             SpaceEvents.OnBlankSave += this.OnBlankSave;
             SpaceEvents.ActionActivated += this.OnActionActivated;
@@ -109,20 +111,31 @@ namespace TheftOfTheWinterStar
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return asset.AssetNameEquals("Data\\CraftingRecipes") || asset.AssetNameEquals("Strings\\StringsFromMaps");
+            return
+                asset.AssetNameEquals("Data/CraftingRecipes")
+                || asset.AssetNameEquals("Maps/Tunnel")
+                || asset.AssetNameEquals("Strings/StringsFromMaps")
+                || this.TryGetDecoSpots(asset, out _);
         }
 
         public void Edit<T>(IAssetData asset)
         {
-            if (asset.AssetNameEquals("Data\\CraftingRecipes"))
-            {
-                if (Mod.Ja == null)
-                    return;
+            // scatter decorations
+            if (this.TryGetDecoSpots(asset, out Vector2[] decoSpots))
+                this.ScatterDecorationsIfNeeded(asset.Data as Map, decoSpots);
 
-                var dict = asset.AsDictionary<string, string>().Data;
-                dict.Add("Frosty Stardrop", Mod.Ja.GetObjectId("Frosty Stardrop Piece") + " 5/Field/434/false/null");
+            // add Frosty Stardrop recipe
+            if (asset.AssetNameEquals("Data/CraftingRecipes"))
+            {
+                if (Mod.Ja != null)
+                {
+                    var dict = asset.AsDictionary<string, string>().Data;
+                    dict.Add("Frosty Stardrop", Mod.Ja.GetObjectId("Frosty Stardrop Piece") + " 5/Field/434/false/null");
+                }
             }
-            else if (asset.AssetNameEquals("Strings\\StringsFromMaps"))
+
+            // add map strings
+            else if (asset.AssetNameEquals("Strings/StringsFromMaps"))
             {
                 var dict = asset.AsDictionary<string, string>().Data;
                 dict.Add("FrostDungeon.LockedEntrance", "This door is locked right now.");
@@ -135,6 +148,18 @@ namespace TheftOfTheWinterStar
                 dict.Add("FrostDungeon.Trail1", "A smashed candy cane.");
                 dict.Add("FrostDungeon.Trail2", "Some festive ornaments.");
                 dict.Add("FrostDungeon.Trail3", "A smashed miniature tree.");
+            }
+
+            // edit tunnel map
+            else if (asset.AssetNameEquals("Maps/Tunnel"))
+            {
+                var overlay = Game1.currentSeason == "winter" && Game1.dayOfMonth < 25
+                    ? this.Helper.Content.Load<Map>("assets/OverlayPortal.tmx")
+                    : this.Helper.Content.Load<Map>("assets/OverlayPortalLocked.tmx");
+
+                asset
+                    .AsMap()
+                    .PatchMap(overlay, targetArea: new Rectangle(7, 4, 3, 3));
             }
         }
 
@@ -170,7 +195,7 @@ namespace TheftOfTheWinterStar
 
             if (Game1.currentLocation.Name == "FrostDungeon.Arena")
             {
-                if ((this.SaveData.ArenaStage == ArenaStage.Stage1 || this.SaveData.ArenaStage == ArenaStage.Stage2) &&
+                if ((this.SaveData.ArenaStage is ArenaStage.Stage1 or ArenaStage.Stage2) &&
                     Game1.currentLocation.characters.Count(npc => npc is Monster) <= 0)
                 {
                     Game1.playSound("questcomplete");
@@ -251,6 +276,12 @@ namespace TheftOfTheWinterStar
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            // update maps
+            this.Helper.Content.InvalidateCache("Maps/Tunnel");
+            foreach (string mapName in this.DecoSpots.Keys)
+                this.Helper.Content.InvalidateCache($"Maps/{mapName}");
+
+            // apply Tempus Globe logic
             int seasonalDelimiter = Mod.Ja.GetBigCraftableId("Tempus Globe");
             foreach (var loc in Game1.locations.Where(this.IsFarm))
             {
@@ -397,7 +428,7 @@ namespace TheftOfTheWinterStar
             int keyHalfB = Mod.Ja.GetObjectId("Festive Big Key (A)");
             Log.Trace("IDs for chests: " + stardropPiece + " " + scepter + " " + key + " " + keyHalfB);
 
-            foreach (string locName in Mod.Locs)
+            foreach (string locName in this.LocationNames)
             {
                 var loc = Game1.getLocationFromName("FrostDungeon." + locName);
                 if (locName == "Entrance")
@@ -410,7 +441,7 @@ namespace TheftOfTheWinterStar
                         loc.objects[pos] = breakable;
                     }*/
                 }
-                if (locName == "Bonus1" || locName == "Bonus2" || locName == "Bonus3")
+                if (locName is "Bonus1" or "Bonus2" or "Bonus3")
                 {
                     var pos = new Vector2(9, 9);
                     if (locName == "Bonus2")
@@ -474,62 +505,9 @@ namespace TheftOfTheWinterStar
                 }
             }
 
-            var decoSpots = new Dictionary<string, Vector2[]>
-            {
-                ["BusStop"] = new Vector2[] { new(5, 8), new(9, 10), new(10, 14) },
-                ["Backwoods"] = new Vector2[] { new(40, 30), new(32, 31), new(25, 29) },
-                ["Tunnel"] = new Vector2[] { new(33, 10), new(23, 9), new(10, 8) }
-            };
-
-            if (decoSpots.TryGetValue(e.NewLocation.Name, out Vector2[] spots))
-            {
-                if (Game1.currentSeason == "winter" && Game1.dayOfMonth < 25 && !this.SaveData.BeatBoss)
-                {
-                    TileSheet ts = null;
-                    for (int i = 0; i < e.NewLocation.Map.TileSheets.Count; ++i)
-                    {
-                        if (e.NewLocation.map.TileSheets[i].ImageSource.Contains("trail-decorations"))
-                        {
-                            ts = e.NewLocation.map.TileSheets[i];
-                            break;
-                        }
-                    }
-                    if (ts == null)
-                    {
-                        // AddTileSheet sorts the tilesheets by ID after adding them.
-                        // The game sometimes refers to tilesheets by their index (such as in Beach.fixBridge)
-                        // Prepending this to the ID should ensure that this tilesheet is added to the end,
-                        // which preserves the normal indices of the tilesheets.
-                        char comeLast = '\u03a9'; // Omega
-
-                        ts = new TileSheet(e.NewLocation.Map, this.Helper.Content.GetActualAssetKey("assets/trail-decorations.png"), new xTile.Dimensions.Size(2, 2), new xTile.Dimensions.Size(16, 16));
-                        ts.Id = comeLast + ts.Id;
-                        e.NewLocation.map.AddTileSheet(ts);
-                        e.NewLocation.map.LoadTileSheets(Game1.mapDisplayDevice);
-
-                        Random r = new Random((int)Game1.uniqueIDForThisGame + e.NewLocation.Name.GetHashCode());
-                        var layer = e.NewLocation.map.GetLayer("Buildings");
-                        foreach (var spot in spots)
-                        {
-                            int tile = r.Next(4);
-                            layer.Tiles[(int)spot.X, (int)spot.Y] = new StaticTile(layer, ts, BlendMode.Alpha, tile);
-                            e.NewLocation.setTileProperty((int)spot.X, (int)spot.Y, "Buildings", "Action", $"Message \"FrostDungeon.Trail{tile}\"");
-                        }
-                    }
-                }
-                else
-                {
-                    var layer = e.NewLocation.Map.GetLayer("Buildings");
-                    foreach (var spot in spots)
-                    {
-                        layer.Tiles[(int)spot.X, (int)spot.Y] = null;
-                    }
-                }
-            }
-
             if (e.NewLocation.Name == "Farm" && !Game1.player.eventsSeen.Contains(Mod.EventId) && Game1.currentSeason == "winter" && Game1.dayOfMonth < 25)
             {
-                string eventStr = "continue/64 15/farmer 64 16 2 Lewis 64 18 0/pause 1500/speak Lewis \"Hello, @.#$b#I was making preparations for the Feast of the Winter Star and... I can't find any of the decorations!$s#$b#It seems someone stole the decorations.$4#$b#I'm not sure why somebody would do this... but decorations don't just disappear by themselves!$s#$b#Anyways, I was hoping you could retrieve them for us?$h#$b#There was a trail of broken decorations leading down the tunnel to the left of the bus stop. We'd all appreciate it if you could do this for us.$n#$b#Or we could hire Marlon but that's going to be costly.$s#$b#Good luck!$n\"/pause 500/end";
+                string eventStr = "continue/64 15/farmer 64 16 2 Lewis 64 18 0/skippable/pause 1500/speak Lewis \"Hello, @.#$b#I was making preparations for the Feast of the Winter Star and... I can't find any of the decorations!$s#$b#It seems someone stole the decorations.$4#$b#I'm not sure why somebody would do this... but decorations don't just disappear by themselves!$s#$b#Anyways, I was hoping you could retrieve them for us?$h#$b#There was a trail of broken decorations leading down the tunnel to the left of the bus stop. We'd all appreciate it if you could do this for us.$n#$b#Or we could hire Marlon but that's going to be costly.$s#$b#Good luck!$n\"/pause 500/end";
                 e.NewLocation.currentEvent = new Event(eventStr, Mod.EventId);
                 Game1.eventUp = true;
                 Game1.displayHUD = false;
@@ -537,22 +515,6 @@ namespace TheftOfTheWinterStar
                 Game1.player.showNotCarrying();
 
                 Game1.player.eventsSeen.Add(Mod.EventId);
-            }
-            else if (e.NewLocation.Name == "Tunnel")
-            {
-                var doorwayTs = e.NewLocation.Map.TileSheets.Single(ts => ts.ImageSource.Contains("magic-doorway"));
-                if (Game1.currentSeason == "winter" && Game1.dayOfMonth < 25 && doorwayTs.ImageSource.Contains("magic-doorway-locked.png"))
-                {
-                    doorwayTs.ImageSource = doorwayTs.ImageSource.Replace("magic-doorway-locked.png", "magic-doorway.png");
-                    e.NewLocation.map.LoadTileSheets(Game1.mapDisplayDevice);
-                    e.NewLocation.setTileProperty(8, 6, "Buildings", "Action", "Warp 9 12 FrostDungeon.Entrance");
-                }
-                else if ((Game1.currentSeason != "winter" || Game1.dayOfMonth >= 25) && doorwayTs.ImageSource.Contains("magic-doorway.png"))
-                {
-                    doorwayTs.ImageSource = doorwayTs.ImageSource.Replace("magic-doorway.png", "magic-doorway-locked.png");
-                    e.NewLocation.map.LoadTileSheets(Game1.mapDisplayDevice);
-                    e.NewLocation.setTileProperty(8, 6, "Buildings", "Action", "Message \"FrostDungeon.LockedEntrance\"");
-                }
             }
             else if (e.NewLocation.Name == "FrostDungeon.Boss")
             {
@@ -576,6 +538,73 @@ namespace TheftOfTheWinterStar
             }
         }
 
+        /// <summary>Get the <see cref="DecoSpots"/> for a map asset, if any.</summary>
+        /// <param name="decoSpots">The tiles on which to drop decorations.</param>
+        private bool TryGetDecoSpots(IAssetInfo asset, out Vector2[] decoSpots)
+        {
+            // make sure it's a map asset
+            if (!typeof(Map).IsAssignableFrom(asset.DataType))
+            {
+                decoSpots = null;
+                return false;
+            }
+
+            // check for deco spots
+            string mapName = PathUtilities.GetSegments(asset.AssetName).Last();
+            return
+                this.DecoSpots.TryGetValue(mapName, out decoSpots)
+                && decoSpots.Any();
+        }
+
+        /// <summary>Drop decorations on the given tiles.</summary>
+        /// <param name="map">The map to edit.</param>
+        /// <param name="spots">The tiles on which to drop decorations.</param>
+        private void ScatterDecorationsIfNeeded(Map map, Vector2[] spots)
+        {
+            if (Game1.currentSeason == "winter" && Game1.dayOfMonth < 25 && !this.SaveData.BeatBoss)
+            {
+                TileSheet ts = null;
+                for (int i = 0; i < map.TileSheets.Count; ++i)
+                {
+                    if (map.TileSheets[i].ImageSource.Contains("trail-decorations"))
+                    {
+                        ts = map.TileSheets[i];
+                        break;
+                    }
+                }
+                if (ts == null)
+                {
+                    // AddTileSheet sorts the tilesheets by ID after adding them.
+                    // The game sometimes refers to tilesheets by their index (such as in Beach.fixBridge)
+                    // Prepending this to the ID should ensure that this tilesheet is added to the end,
+                    // which preserves the normal indices of the tilesheets.
+                    char comeLast = '\u03a9'; // Omega
+
+                    ts = new TileSheet(map, this.Helper.Content.GetActualAssetKey("assets/trail-decorations.png"), new xTile.Dimensions.Size(2, 2), new xTile.Dimensions.Size(16, 16));
+                    ts.Id = comeLast + ts.Id;
+                    map.AddTileSheet(ts);
+                    map.LoadTileSheets(Game1.mapDisplayDevice);
+
+                    Random r = new Random((int)Game1.uniqueIDForThisGame + map.assetPath.GetHashCode());
+                    var buildingsLayer = map.GetLayer("Buildings");
+                    foreach (var spot in spots)
+                    {
+                        int tile = r.Next(4);
+                        buildingsLayer.Tiles[(int)spot.X, (int)spot.Y] = new StaticTile(buildingsLayer, ts, BlendMode.Alpha, tile)
+                        {
+                            Properties = { ["Action"] = $"Message \"FrostDungeon.Trail{tile}\"" }
+                        };
+                    }
+                }
+            }
+            else
+            {
+                var layer = map.GetLayer("Buildings");
+                foreach (var spot in spots)
+                    layer.Tiles[(int)spot.X, (int)spot.Y] = null;
+            }
+        }
+
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
             if (!e.Player.knowsRecipe("Frosty Stardrop"))
@@ -591,34 +620,11 @@ namespace TheftOfTheWinterStar
         {
             Log.Debug("Adding frost dungeon");
 
-            foreach (string locName in Mod.Locs)
+            foreach (string locName in this.LocationNames)
             {
-                var loc = new GameLocation(this.Helper.Content.GetActualAssetKey("assets/" + locName + ".tbin"), "FrostDungeon." + locName);
-                Game1.locations.Add(loc);
+                var location = new GameLocation(this.Helper.Content.GetActualAssetKey($"assets/{locName}.tmx"), $"FrostDungeon.{locName}");
+                Game1.locations.Add(location);
             }
-
-            // AddTileSheet sorts the tilesheets by ID after adding them.
-            // The game sometimes refers to tilesheets by their index (such as in Beach.fixBridge)
-            // Prepending this to the ID should ensure that this tilesheet is added to the end,
-            // which preserves the normal indices of the tilesheets.
-            char comeLast = '\u03a9'; // Omega
-
-            var tunnel = Game1.getLocationFromName("Tunnel");
-            var animDoorTilesheet = SpaceCore.Content.LoadTsx(this.Helper, "assets/magic-doorway.tsx", "magic-doorway", tunnel.Map, out var animMapping);
-            animDoorTilesheet.Id = comeLast + animDoorTilesheet.Id;
-            tunnel.map.AddTileSheet(animDoorTilesheet);
-
-            var buildings = tunnel.map.GetLayer("Buildings");
-            buildings.Tiles[7, 4] = animMapping[0].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[8, 4] = animMapping[1].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[9, 4] = animMapping[2].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[7, 5] = animMapping[16].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[8, 5] = animMapping[17].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[9, 5] = animMapping[18].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[7, 6] = animMapping[32].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[8, 6] = animMapping[33].MakeTile(animDoorTilesheet, buildings);
-            buildings.Tiles[9, 6] = animMapping[34].MakeTile(animDoorTilesheet, buildings);
-            tunnel.setTileProperty(8, 6, "Buildings", "Action", "Warp 9 12 FrostDungeon.Entrance");
         }
 
         private void OnActionActivated(object sender, EventArgsAction e)

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Multiplayer Hub",
+  "Author": "Alberto Moreira Luiz",
+  "Version": "1.0.2-Alpha",
+  "Description": "Broadcast Multiplayer Games to allow others find your server",
+  "UniqueID": "AlbertoMoreiraLuiz.MultiplayerHub",
+  "EntryDll": "MultiplayerHub.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9672" ]
+}

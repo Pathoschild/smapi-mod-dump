@@ -1,0 +1,10 @@
+{
+  "Name": "DisableAutoPickup",
+  "Author": "Copyright (c) 2021 Kubichek E.V.",
+  "Version": "1.0.0",
+  "Description": "Disables automatic pickup of items from the ground.",
+  "UniqueID": "KubichekEV.DisableAutoPickup",
+  "EntryDll": "DisableAutoPickup.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9717" ]
+}

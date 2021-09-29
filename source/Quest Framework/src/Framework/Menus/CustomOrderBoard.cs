@@ -158,6 +158,7 @@ namespace QuestFramework.Framework.Menus
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
         {
             base.gameWindowSizeChanged(oldBounds, newBounds);
+            Game1.activeClickableMenu = new CustomOrderBoard(this.boardType, this._billboardTexture);
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)

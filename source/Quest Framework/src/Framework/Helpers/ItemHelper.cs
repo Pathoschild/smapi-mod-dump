@@ -52,5 +52,34 @@ namespace QuestFramework.Framework.Helpers
 
             return -1;
         }
+
+        public static bool CheckItemContextTags(Item item, string tags)
+        {
+            if (string.IsNullOrEmpty(tags))
+                return true;
+
+            bool fail = false;
+
+            foreach (string tagArray in tags.Split(','))
+            {
+                bool foundMatch = false;
+
+                foreach (string tag in tagArray.Split('/'))
+                {
+                    if (item.HasContextTag(tag.Trim()))
+                    {
+                        foundMatch = true;
+                        break;
+                    }
+                }
+
+                if (!foundMatch)
+                {
+                    fail = true;
+                }
+            }
+
+            return !fail;
+        }
     }
 }

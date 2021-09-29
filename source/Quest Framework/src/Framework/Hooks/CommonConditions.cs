@@ -10,6 +10,7 @@
 
 using PurrplingCore;
 using QuestFramework.Extensions;
+using QuestFramework.Framework.Helpers;
 using QuestFramework.Framework.Stats;
 using QuestFramework.Quests;
 using StardewModdingAPI;
@@ -18,6 +19,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CUtils = PurrplingCore.Utils;
 
 namespace QuestFramework.Framework.Hooks
 {
@@ -29,7 +31,7 @@ namespace QuestFramework.Framework.Hooks
             return new Dictionary<string, Func<string, object, bool>>()
             {
                 ["Weather"] = (valueToCheck, _) => GetCurrentWeatherName() == valueToCheck.ToLower(),
-                ["Date"] = (valueToCheck, _) => SDate.Now() == Utils.ParseDate(valueToCheck),
+                ["Date"] = (valueToCheck, _) => SDate.Now() == CUtils.ParseDate(valueToCheck),
                 ["Days"] = (valueToCheck, _) => Utility.parseStringToIntArray(valueToCheck).Any(d => d == SDate.Now().Day),
                 ["Seasons"] = (valueToCheck, _) => valueToCheck.ToLower().Split(' ').Any(s => s == SDate.Now().Season),
                 ["DaysOfWeek"] = (valueToCheck, _) => valueToCheck.Split(' ').Any(
@@ -44,8 +46,8 @@ namespace QuestFramework.Framework.Hooks
                 ["DaysPlayed"] = (valueToCheck, _) => Game1.Date.TotalDays == Convert.ToInt32(valueToCheck),
                 ["IsPlayerMarried"] = (valueToCheck, _) => ParseBool(valueToCheck) == Game1.player.isMarried(),
                 ["QuestAcceptedInPeriod"] = (valueToCheck, context) => IsQuestAcceptedInPeriod(valueToCheck, context as CustomQuest),
-                ["QuestAcceptedDate"] = (valueToCheck, context) => IsQuestAcceptedDate(Utils.ParseDate(valueToCheck), context as CustomQuest),
-                ["QuestCompletedDate"] = (valueToCheck, context) => IsQuestCompletedDate(Utils.ParseDate(valueToCheck), context as CustomQuest),
+                ["QuestAcceptedDate"] = (valueToCheck, context) => IsQuestAcceptedDate(CUtils.ParseDate(valueToCheck), context as CustomQuest),
+                ["QuestCompletedDate"] = (valueToCheck, context) => IsQuestCompletedDate(CUtils.ParseDate(valueToCheck), context as CustomQuest),
                 ["QuestAcceptedToday"] = (valueToCheck, context) => IsQuestAcceptedDate(SDate.Now(), context as CustomQuest) == ParseBool(valueToCheck),
                 ["QuestCompletedToday"] = (valueToCheck, context) => IsQuestCompletedDate(SDate.Now(), context as CustomQuest) == ParseBool(valueToCheck),
                 ["QuestNeverAccepted"] = (valueToCheck, context) => context is CustomQuest managedQuest && managedQuest.IsNeverAccepted() == ParseBool(valueToCheck),
@@ -58,7 +60,41 @@ namespace QuestFramework.Framework.Hooks
                 ["HasMod"] = (valueToCheck, _) => CheckHasModCondition(valueToCheck),
                 ["Random"] = (valueToCheck, _) => Game1.random.NextDouble() < Convert.ToDouble(valueToCheck) / 100, // Chance is in %
                 ["EPU"] = (valueToCheck, _) => CheckEpuCondition(valueToCheck), // For compatibility with EPU conditions
+                ["HasItemInInventory"] = CheckItemInInventoryByTags, // Check if player has an item in inventory matches given name or context tags
+                ["HasActiveQuest"] = (valueToCheck, _) => HasActiveQuest(valueToCheck?.Split(' ')),
+                ["CurrentLocation"] = (valueToCheck, _) => Game1.player?.currentLocation?.Name == valueToCheck,
             };
+        }
+
+        private static bool HasActiveQuest(string[] vs)
+        {
+            if (vs == null)
+            {
+                return false;
+            }
+
+            foreach (var v in vs)
+            {
+                var quest = QuestFrameworkMod.Instance.QuestManager.Fetch(v);
+
+                if (quest != null && quest.IsInQuestLog())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool CheckItemInInventoryByTags(string valueToCheck, object context)
+        {
+            if (!Context.IsWorldReady)
+                return false;
+
+            if (Game1.player.hasItemInInventoryNamed(valueToCheck))
+                return true;
+
+            return Game1.player.Items.Any(i => ItemHelper.CheckItemContextTags(i, valueToCheck));
         }
 
         private static bool CheckHasModCondition(string valueToCheck)

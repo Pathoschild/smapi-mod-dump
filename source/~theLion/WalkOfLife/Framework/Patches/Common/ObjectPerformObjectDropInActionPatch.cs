@@ -36,6 +36,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		#region harmony patches
 
 		/// <summary>Patch to remember initial machine state.</summary>
+		// ReSharper disable once RedundantAssignment
 		[HarmonyPrefix]
 		private static bool ObjectPerformObjectDropInActionPrefix(SObject __instance, ref bool __state)
 		{
@@ -52,14 +53,14 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				// if there was an object inside before running the original method, or if the machine is still empty after running the original method, or if the machine doesn't belong to this player, then do nothing
 				if (__state || __instance.heldObject.Value == null || Game1.IsMultiplayer && __instance.owner.Value != who.UniqueMultiplayerID || probe) return;
 
-				if (__instance.name.AnyOf("Crystalarium", "Geode Crusher") && who.HasProfession("Gemologist") && (Util.Objects.IsForagedMineral(__instance.heldObject.Value) || Util.Objects.IsGemOrMineral(__instance.heldObject.Value)))
+				if (__instance.name.AnyOf("Crystalarium", "Geode Crusher") && who.HasProfession("Gemologist") && (__instance.heldObject.Value.IsForagedMineral() || __instance.heldObject.Value.IsGemOrMineral()))
 				{
 					__instance.heldObject.Value.Quality = Util.Professions.GetGemologistMineralQuality();
 				}
-				else if (Util.Objects.IsArtisanMachine(__instance) && dropInItem is SObject dropIn)
+				else if (__instance.IsArtisanMachine() && dropInItem is SObject dropIn)
 				{
 					// mead cares about input honey flower type
-					if (__instance.name.Equals("Keg") && dropIn.ParentSheetIndex == 340 && dropIn.preservedParentSheetIndex.Value > 0)
+					if (__instance.name == "Keg" && dropIn.ParentSheetIndex == 340 && dropIn.preservedParentSheetIndex.Value > 0)
 					{
 						__instance.heldObject.Value.preservedParentSheetIndex.Value = dropIn.preservedParentSheetIndex.Value;
 						__instance.heldObject.Value.Price = dropIn.Price * 2;

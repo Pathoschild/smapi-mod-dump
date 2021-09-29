@@ -9,7 +9,7 @@
 *************************************************/
 
 using CombineMachines.Helpers;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -30,7 +30,7 @@ namespace CombineMachines.Patches
         /// <summary>Intended to be invoked once during the mod entry, to apply Harmony patches to the game code</summary>
         internal static void Entry(IModHelper helper)
         {
-            HarmonyInstance Harmony = HarmonyInstance.Create(ModEntry.ModInstance.ModManifest.UniqueID);
+            Harmony Harmony = new Harmony(ModEntry.ModInstance.ModManifest.UniqueID);
 
             //  Patch StardewValley.Object.maximumStackSize to always return 1 if a machine has been combined with other machines
             Harmony.Patch(
@@ -40,7 +40,7 @@ namespace CombineMachines.Patches
 
             //  Patch StardewValley.Object.canStackWith to always return false if either one has already been combined with other machines
             Harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.canStackWith)),
+                original: AccessTools.Method(typeof(Item), nameof(Item.canStackWith)),
                 prefix: new HarmonyMethod(typeof(CanStackWithPatch), nameof(CanStackWithPatch.Prefix))
             );
 

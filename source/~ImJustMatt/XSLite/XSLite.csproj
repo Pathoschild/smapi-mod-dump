@@ -1,20 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="..\build\common.targets" />
     <Import Project="..\Common\Common.projitems" Label="Shared" />
-    
+    <Import Project="..\CommonHarmony\CommonHarmony.projitems" Label="Shared" />
     <PropertyGroup>
-        <AssemblyName>ExpandedStorage</AssemblyName>
-        <Version>1.6.10</Version>
-        <TargetFramework>net5.0</TargetFramework>
+        <Version>1.7.1</Version>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
-    
     <ItemGroup>
-      <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.4.0-beta.20210813" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="assets" />
+      <PackageReference Include="ClrHeapAllocationAnalyzer" Version="3.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 </Project>

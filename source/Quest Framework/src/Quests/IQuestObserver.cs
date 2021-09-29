@@ -19,11 +19,8 @@ namespace QuestFramework.Quests
     /// <summary>
     /// Quest observer which defines custom quest actions, acting and whatever.
     /// </summary>
-    public interface IQuestObserver
+    public interface IQuestObserver : IQuestInfoUpdater
     {
         bool CheckIfComplete(IQuestInfo questData, ICompletionArgs completion);
-        void UpdateObjective(IQuestInfo questData, ref string objective);
-        void UpdateDescription(IQuestInfo questData, ref string description);
-        void UpdateTitle(IQuestInfo questData, ref string title);
     }
 }

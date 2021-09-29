@@ -1,0 +1,79 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/AlternativeTextures
+**
+*************************************************/
+
+{
+  "ItemName": "Mini-Obelisk",
+  "Type": "Craftable",
+  "TextureWidth": 16,
+  "TextureHeight": 32,
+  "ManualVariations": [
+    {
+      "Id": -1,
+      "ChanceWeight": 0
+    },
+    {
+      "Id": 0
+    },
+    {
+      "Id": 1,
+      "Keywords": [ "Spooky" ]
+    },
+    {
+      "Id": 2,
+      "Keywords": [ "Blue" ]
+    },
+    {
+      "Id": 3,
+      "Keywords": [ "Green" ]
+    },
+    {
+      "Id": 4,
+      "Keywords": [ "Yellow" ]
+    },
+    {
+      "Id": 5,
+      "Keywords": [ "Red" ]
+    },
+    {
+      "Id": 6,
+      "Keywords": [ "Orange" ]
+    },
+    {
+      "Id": 7,
+      "Keywords": [ "Violet" ]
+    },
+    {
+      "Id": 8,
+      "Keywords": [ "Purple" ]
+    },
+    {
+      "Id": 9,
+      "Keywords": [ "Teal" ]
+    }
+  ],
+  "Animation": [
+    {
+      "Frame": 0,
+      "Duration": 500
+    },
+    {
+      "Frame": 1,
+      "Duration": 1500
+    },
+    {
+      "Frame": 2,
+      "Duration": 500
+    },
+    {
+      "Frame": 3,
+      "Duration": 1500
+    }
+  ]
+}

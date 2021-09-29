@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Willy",
   "PurchasePrice": 25000,
+  "NameLocalization": {
+	  "zh": "疯狂水手之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "包含一个会导你的精灵。"
+  },
 }

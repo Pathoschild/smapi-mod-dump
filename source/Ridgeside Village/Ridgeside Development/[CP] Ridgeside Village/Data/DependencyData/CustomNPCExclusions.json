@@ -18,7 +18,7 @@
 			"Action": "EditData",
 			"Target": "Data/CustomNPCExclusions",
 			"Entries": {
-				"Kiwi": "MovieInvite",
+				"Kiwi": "MovieInvite, WinterStar",
 				"Undreya": "ALL",
 				"Helen": "ALL",
 				"Belinda": "ALL",
@@ -29,6 +29,24 @@
 				"Naomi": "ALL",
 				"Malaya": "ALL",
 				"Kimpoi": "ALL",
+				"Raeriyala": "ALL",
+				"Zayne": "ALL",
+				"Bryle": "ALL",
+
+				"Anton": "MovieInvite IslandVisit",
+				"Ariah": "MovieInvite IslandVisit",
+				"Blair": "MovieInvite IslandVisit",
+				"Carmen": "MovieInvite IslandVisit",
+				"Faye": "MovieInvite IslandVisit",
+				"Irene": "MovieInvite IslandVisit",
+				"Kiarra": "MovieInvite IslandVisit",
+				"Lorenzo": "MovieInvite IslandVisit",
+				"Louie": "MovieInvite IslandVisit",
+				"Maive": "MovieInvite IslandVisit",
+				"Paula": "MovieInvite IslandVisit",
+				"Sean": "MovieInvite IslandVisit",
+				"Shanice": "MovieInvite IslandVisit",
+				"Sonny": "MovieInvite IslandVisit",
 			}
 		},
 

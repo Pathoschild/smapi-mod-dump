@@ -41,6 +41,8 @@ namespace QuestFramework.Framework.ContentPacks.Model
         public Dictionary<string, string> Tags { get; set; }
         public Dictionary<string, int> FriendshipGain { get; set; }
         public ConversationTopicData ConversationTopic { get; set; }
+        public string AddMailOnComplete { get; set; }
+        public string RemoveMailOnComplete { get; set; }
 
         [JsonExtensionData]
         public JObject ExtendedData { get; set; }

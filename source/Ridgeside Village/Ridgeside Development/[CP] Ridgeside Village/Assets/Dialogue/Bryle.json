@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	{
+   
+   "Action": "EditData",
+   "Target": "Characters/Dialogue/Bryle",
+   "Entries": {
+
+
+		//Spring
+	"spring_1": "{{i18n:Bryle.Dialogue.spring_1}}",
+	"spring_12": "{{i18n:Bryle.Dialogue.spring_12}}",
+	"spring_23": "{{i18n:Bryle.Dialogue.spring_23}}",
+
+		//Summer
+	"summer_1": "{{i18n:Bryle.Dialogue.summer_1}}",
+	"summer_10": "{{i18n:Bryle.Dialogue.summer_10}}",
+	"summer_27": "{{i18n:Bryle.Dialogue.summer_27}}",
+
+		//Fall
+	"fall_1": "{{i18n:Bryle.Dialogue.fall_1}}",
+	"fall_15": "{{i18n:Bryle.Dialogue.fall_15}}",
+	"fall_26": "{{i18n:Bryle.Dialogue.fall_26}}",
+
+		//Winter
+	"winter_1": "{{i18n:Bryle.Dialogue.winter_1}}",
+	"winter_7": "{{i18n:Bryle.Dialogue.winter_7}}",
+	"winter_24": "{{i18n:Bryle.Dialogue.winter_24}}",
+
+	"spring": "{{i18n:Bryle.Dialogue.random.{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}}}}",
+		},
+	},
+]
+}

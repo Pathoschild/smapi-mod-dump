@@ -23,10 +23,11 @@ mods:
    Upgrade Empty Cabins
 
 latest commit:
-   commit d6c50fc9815d31a8b647785197d9fd2248c53c53
-   Merge: b733e54 96eff32
-   Author: Yiminxue Zheng <yiminxuezheng@gmail.com>
-   Date:   Wed Apr 14 09:58:44 2021 -0400
+   commit eea5f23bf661818f9aa31adf4a8e26bd6c91da94
+   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
+   Date:   Sat Sep 11 01:25:15 2021 -0400
    
-       Merge branch 'master' of https://github.com/ChroniclerCherry/stardew-valley-mods
+       Revert "Revert "Revert "Load assets through Content API so they can be patched (#52)" (#62)" (#63)" (#64)
+       
+       This reverts commit 85f2a0d1a9d72230d2b479f0c636aa620d2ea43a.
    

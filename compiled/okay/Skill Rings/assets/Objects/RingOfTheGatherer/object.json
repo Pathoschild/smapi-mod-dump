@@ -18,4 +18,10 @@
 	],
 	"CanPurchase": false
   },
+  "NameLocalization": {
+	  "zh": "采集者之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "指导你觅食的方法，并提高技能。"
+  },
 }

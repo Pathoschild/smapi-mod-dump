@@ -12,7 +12,7 @@ using Bpendragon.GreenhouseSprinklers.Data;
 
 using GreenhouseSprinklers.APIs;
 
-using Harmony;
+using HarmonyLib;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -56,7 +56,7 @@ namespace Bpendragon.GreenhouseSprinklers
 
             //Set up harmony to patch the Building.upgrade function
             BuildingPatches.Initialize(Monitor, Helper, Data, Config);
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
             harmony.Patch(
                 original: AccessTools.Method(typeof(Building), nameof(Building.dayUpdate)),
                 prefix: new HarmonyMethod(typeof(BuildingPatches), nameof(BuildingPatches.Upgrade_Prefix))

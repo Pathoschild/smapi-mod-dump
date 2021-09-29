@@ -1,0 +1,24 @@
+﻿{
+    "Name": "Custom Spouse Location",
+    "Author": "barteke22",
+    "Version": "1.0.0",
+    "Description": "Stuff.",
+    "UniqueID": "barteke22.CustomSpouseLocation",
+    "EntryDll": "CustomSpouseLocation.dll",
+    "MinimumApiVersion": "3.12.0",
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "aedenthorn.CustomSpousePatio",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "aedenthorn.MultipleSpouses",
+            "IsRequired": false
+        }
+    ],
+    "UpdateKeys": [ "Nexus:9676" ]
+}

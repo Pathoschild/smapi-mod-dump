@@ -13,7 +13,7 @@ using static DeepWoodsMod.DeepWoodsRandom;
 
 namespace DeepWoodsMod
 {
-    class DeepWoodsTileDefinitions
+    public class DeepWoodsTileDefinitions
     {
         public static readonly int DEBUG_PINK = 68;
         public static readonly int DEBUG_DARK = 115;

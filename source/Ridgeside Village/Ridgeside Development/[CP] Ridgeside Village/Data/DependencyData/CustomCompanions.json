@@ -135,6 +135,13 @@
                   "CustomCompanions": "Spawn 1 Rafseazz.RSVCC.WanderingChicken"
                }
             },
+            {
+               "Position": { "X": 57, "Y": 53 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "Spawn 1 Rafseazz.RSVCC.Torts"
+               }
+            },
          ],
 		"When": {
 			"Weather": "Sun, Wind",
@@ -265,6 +272,13 @@
                   "CustomCompanions": null
                }
             },
+            {
+               "Position": { "X": 57, "Y": 53 },
+               "Layer": "Back",
+               "SetProperties": {
+                  "CustomCompanions": "null"
+               }
+            },
          ],
 		"When": {
 			"Weather: |contains=Sun,Wind": false,
@@ -337,6 +351,17 @@
          "Time": "{{Range: 2000, 2600}}",
       },
       "Update": "OnLocationChange, OnTimeChange"
+   },
+
+   {
+      "LogName": "Torts random dialogue",
+      "Action": "EditData",
+      "Target": "{{PeacefulEnd.CustomCompanions/Companions:Rafseazz.RSVCC.Torts}}",
+      "Entries": {
+         "Companion": {
+            "InspectionDialogue": "{{i18n:Torts.{{Season}}{{Random: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}}}}"
+         }
+      }
    }
 ]
 }

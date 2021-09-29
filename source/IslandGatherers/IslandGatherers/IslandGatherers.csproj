@@ -55,23 +55,25 @@
     <Compile Include="Framework\AssetManager.cs" />
     <Compile Include="Framework\Interfaces\IExpandedStorageApi.cs" />
     <Compile Include="Framework\Interfaces\IGenericModConfigMenuAPI.cs" />
-    <Compile Include="Framework\Interfaces\IJsonAssetsApi.cs" />
+    <Compile Include="Framework\Interfaces\DynamicGameAssetsApi.cs" />
     <Compile Include="Framework\ModConfig.cs" />
     <Compile Include="Framework\Objects\ParrotPot.cs" />
-    <Compile Include="Framework\Patches\IslandNorthPatch.cs" />
-    <Compile Include="Framework\Patches\CropPatch.cs" />
-    <Compile Include="Framework\Patches\ObjectPatch.cs" />
+    <Compile Include="Framework\Patches\GameLocations\IslandNorthPatch.cs" />
+    <Compile Include="Framework\Patches\Objects\ChestPatch.cs" />
+    <Compile Include="Framework\Patches\Objects\CropPatch.cs" />
+    <Compile Include="Framework\Patches\Objects\ObjectPatch.cs" />
+    <Compile Include="Framework\Patches\PatchTemplate.cs" />
     <Compile Include="IslandGatherers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\[JA] Island Gatherers Pack\BigCraftables\Parrot Pot\big-craftable.json">
+    <None Include="assets\Parrot Pot\i18n\default.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\[JA] Island Gatherers Pack\content-pack.json">
+    <None Include="assets\Parrot Pot\content.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="assets\[JA] Island Gatherers Pack\expanded-storage.json">
+    <None Include="assets\Parrot Pot\expanded-storage.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="manifest.json">
@@ -81,10 +83,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="assets\[JA] Island Gatherers Pack\BigCraftables\Parrot Pot\big-craftable-2.png">
+    <Content Include="assets\Parrot Pot\Sprites\filled.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="assets\[JA] Island Gatherers Pack\BigCraftables\Parrot Pot\big-craftable.png">
+    <Content Include="assets\Parrot Pot\Sprites\empty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -28,7 +28,7 @@ EarnMoney | `PurrplingCat.QuestEssentials/EarnMoney` | `<int:MoneyEarningsGoal>`
 SellItem | `PurrplingCat.QuestEssentials/SellItem` | `<int:WhichItem> [<int:Amount>]` | Sell a specified item of specified amount. If the amount is not defined in trigger, then amount is 1.
 Talk | `PurrplingCat.QuestEssentials/Talk` | `<string:NPC_name>` | Talk with an NPC
 Collect | `PurrplingCat.QuestEssentials/Collect` | `<int:itemId> [<int:count>]` | Collect items (alternative to harvest quest type)
-SpecialQuest | `PurrplingCat.QuestEssentials/Special` | *none* | Multi-staged quest. See [Special Quests](docs/special-quests.md) docs for more details.
+AdventureQuest | `PurrplingCat.QuestEssentials/Adventure` | *none* | Multi-staged quest. See [Adventure Quests](docs/adventure-quests.md) docs for more details.
 
 ## Use Quest Essentials in your content pack
 

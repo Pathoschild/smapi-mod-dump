@@ -11,7 +11,7 @@
 {
   "Name": "Player Co-ordinate Display",
   "Author": "DecidedlyHuman",
-  "Version": "0.7.0",
+  "Version": "0.7.1-AndroidTesting",
   "Description": "A simple mod to draw the player's co-ordinates to the screen. Also allows you to log them to a file in the mod directory.",
   "UniqueID": "DecidedlyHuman.PlayerCoordinates",
   "EntryDll": "PlayerCoordinates.dll",

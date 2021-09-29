@@ -166,7 +166,7 @@ namespace ItemBags.Bags
 
         public override bool IsValidBagObject(Object item)
         {
-            if (!BaseIsValidBagObject(item) || item.bigCraftable)
+            if (!BaseIsValidBagObject(item) || item.bigCraftable.Value)
             {
                 return false;
             }
@@ -221,7 +221,7 @@ namespace ItemBags.Bags
         /// <param name="RequiredQuantities">Optional. Use null to have this automatically computed, or use <see cref="GetRequiredQuantities(Object)"/> and cache the value if making several successive calls to this method for the same Object.</param>
         private int GetMaxStackSize(Object Item, Dictionary<ObjectQuality, int> RequiredQuantities)
         {
-            if (!BaseIsValidBagObject(Item) || Item.bigCraftable)
+            if (!BaseIsValidBagObject(Item) || Item.bigCraftable.Value)
                 return 0;
 
             if (RequiredQuantities == null)

@@ -10,8 +10,18 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Updated for Stardew Valley 1.5.5.
-* Improved translations. Thanks to adnan-shoukfeh (updated Spanish)!
+* Fixed compatibility with recent Expanded Storage versions.
+
+## 1.20.16
+Released 18 September 2021 for SMAPI 3.12.5 or later.
+
+* Improved translations. Thanks to ellipszist (added Thai)!  
+  _Note: Thai requires Stardew Valley 1.5.5 and the [Thai mod](https://www.nexusmods.com/stardewvalley/mods/7052)._
+
+## 1.20.15
+Released 04 September 2021 for SMAPI 3.12.6 or later.
+
+* Improved translations. Thanks to adnan-shoukfeh (updated Spanish) and pikulet (updated Chinese)!
 
 ## 1.20.14
 Released 25 May 2021 for SMAPI 3.9.5 or later.

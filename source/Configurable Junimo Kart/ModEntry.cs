@@ -89,11 +89,17 @@ namespace ConfigurableJunimoKart
             // Get Junimo Kart player object
             MineCartCharacter player = this.Helper.Reflection.GetField<MineCartCharacter>(Game1.currentMinigame, "player").GetValue();
 
-            // Force gravity to constant fall gravity in config
-            player.gravity = this.config_.gravity;
+            if (this.config_.gravity > 0f)
+            {
+                // Force gravity to constant fall gravity in config
+                player.gravity = this.config_.gravity;
+            }
 
-            // Force player private speed multiplier to speed multiplier in config
-            this.Helper.Reflection.GetField<float>(player,"_speedMultiplier").SetValue(this.config_.speed_multiplier);
+            if (this.config_.speed_multiplier > 0f)
+            {
+                // Force player private speed multiplier to speed multiplier in config
+                this.Helper.Reflection.GetField<float>(player,"_speedMultiplier").SetValue(this.config_.speed_multiplier);
+            }
 
             // Reinsert Junimo Kart player object with new values
             this.Helper.Reflection.GetField<MineCartCharacter>(Game1.currentMinigame, "player").SetValue(player);

@@ -1,8 +1,8 @@
 ﻿{
 	"Name": "Mail Framework Mod",
 	"Author": "Digus",
-	"Version": "1.10.2",
-	"MinimumApiVersion": "3.9.0",
+	"Version": "1.11.0",
+	"MinimumApiVersion": "3.12.0",
 	"Description": "Utility classes to send mail in the game.",
 	"UniqueID": "DIGUS.MailFrameworkMod",
 	"EntryDll": "MailFrameworkMod.dll",

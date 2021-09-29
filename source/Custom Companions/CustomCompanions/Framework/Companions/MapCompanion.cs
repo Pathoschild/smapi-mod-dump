@@ -35,6 +35,11 @@ namespace CustomCompanions.Framework.Companions
         private bool hasReachedDestination;
         private Stack<Point> activePath;
 
+        // Follow related
+        private Character followTarget;
+        private int targetLastFacingDirection;
+        private List<Point> nodeTargets;
+
         public MapCompanion()
         {
 
@@ -355,6 +360,11 @@ namespace CustomCompanions.Framework.Companions
         {
             var collidingCharacter = location.isCollidingWithCharacter(this.nextPosition(this.FacingDirection));
             if (this.bypassCollision && collidingCharacter != null && (!collidingCharacter.Equals(this) || (collidingCharacter is MapCompanion && (collidingCharacter as MapCompanion).targetTile != this.targetTile)))
+            {
+                return false;
+            }
+
+            if (collidingCharacter != null && collidingCharacter is MapCompanion companion && !companion.Equals(this) && !companion.collidesWithOtherCharacters)
             {
                 return false;
             }
@@ -1176,27 +1186,100 @@ namespace CustomCompanions.Framework.Companions
         {
             if (Game1.IsMasterGame)
             {
-                var followTileRadius = 5;
+                var detectionTileRadius = 5;
+                var followTileRadius = detectionTileRadius * 2;
+                var followAnyCharacter = false;
                 if (arguments != null)
                 {
                     if (arguments.Length > 0)
                     {
                         followTileRadius = (int)arguments[0];
+                        detectionTileRadius = (int)arguments[0];
+                    }
+                    if (arguments.Length > 1)
+                    {
+                        followTileRadius = (int)arguments[1];
+                    }
+                    if (arguments.Length > 2)
+                    {
+                        followAnyCharacter = arguments[2] >= 1;
                     }
                 }
 
-                var destinationTile = this.GetTargetTile();
-                var targetFollower = Utility.isThereAFarmerWithinDistance(this.GetTargetTile(), followTileRadius, location);
-                if (targetFollower != null)
+                var destinationTile = base.getTileLocationPoint();
+                if (followTarget != null && (this.followTarget.currentLocation != this.currentLocation || (followTileRadius > 0 && Vector2.Distance(this.followTarget.getTileLocation(), this.GetTargetTile()) > followTileRadius)))
                 {
-                    destinationTile = targetFollower.getTileLocation();
+                    followTarget = null;
+                    targetLastFacingDirection = -1;
+                    nodeTargets = new List<Point>();
                 }
 
-                if (base.getTileLocation() != destinationTile)
+                if (followTarget is null)
                 {
-                    if (activePath is null || activePath.Count == 0 || (activePath.Count < 3 && !activePath.Last().Equals(new Point((int)destinationTile.X, (int)destinationTile.Y))))
+                    followTarget = Utility.isThereAFarmerWithinDistance(this.GetTargetTile(), detectionTileRadius, location);
+                    if (followTarget != null && !String.IsNullOrEmpty(model.TargetNpcName) && !String.Equals(model.TargetNpcName, followTarget.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        activePath = PathFindController.findPath(new Point((int)base.getTileLocation().X, (int)base.getTileLocation().Y), new Point((int)destinationTile.X, (int)destinationTile.Y), PathFindController.isAtEndPoint, base.currentLocation, this, 300);
+                        followTarget = null;
+                    }
+
+                    if (followAnyCharacter && followTarget is null)
+                    {
+                        foreach (NPC npc in location.characters.Where(c => !c.Equals(this)))
+                        {
+                            if (Vector2.Distance(npc.getTileLocation(), this.GetTargetTile()) <= detectionTileRadius)
+                            {
+                                var actualName = npc is MapCompanion companion ? companion.model.Name : npc.Name;
+                                if (String.IsNullOrEmpty(model.TargetNpcName) || String.Equals(model.TargetNpcName, actualName, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    followTarget = npc;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    nodeTargets = new List<Point>();
+                    if (followTarget is null)
+                    {
+                        destinationTile = Utility.Vector2ToPoint(this.GetTargetTile());
+                    }
+                    else
+                    {
+                        targetLastFacingDirection = followTarget.FacingDirection;
+                        nodeTargets.Add(followTarget.getTileLocationPoint());
+                    }
+                }
+
+                if (followTarget != null)
+                {
+                    if (followTarget.FacingDirection != targetLastFacingDirection)
+                    {
+                        targetLastFacingDirection = followTarget.FacingDirection;
+                        nodeTargets.Add(followTarget.getTileLocationPoint());
+                    }
+                    else if (nodeTargets.Count() == 0)
+                    {
+                        nodeTargets.Add(Utility.Vector2ToPoint(base.GetPositionDirectlyBehind(followTarget.getTileLocation(), followTarget.FacingDirection)));
+                    }
+                }
+
+                if (nodeTargets.Count() > 0)
+                {
+                    if (nodeTargets.ElementAt(0) != base.getTileLocationPoint())
+                    {
+                        destinationTile = nodeTargets.ElementAt(0);//base.GetPositionDirectlyBehind(followTarget.getTileLocation(), followTarget.FacingDirection);
+                    }
+                    else
+                    {
+                        nodeTargets.RemoveAt(0);
+                    }
+                }
+
+                if (base.getTileLocationPoint() != destinationTile)
+                {
+                    if (activePath is null || activePath.Count == 0 || (activePath.Count < 3 && !activePath.Last().Equals(destinationTile)))
+                    {
+                        activePath = PathFindController.findPath(new Point((int)base.getTileLocation().X, (int)base.getTileLocation().Y), destinationTile, PathFindController.isAtEndPoint, base.currentLocation, this, 300);
                     }
                 }
                 else

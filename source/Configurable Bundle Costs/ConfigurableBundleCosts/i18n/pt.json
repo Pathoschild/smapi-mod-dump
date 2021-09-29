@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dtomlinson-ga/ConfigurableBundleCosts
+**
+*************************************************/
+
+{
+  "Morris_BuyMovieTheater": "Ah, nosso cliente favorito... Tenho boas notícias para você! A sede da Joja aprovou a construção de uma nova 'oportunidade de entretenimento', para substituir o Armazém Joja. Só precisamos de um investidor que apoie nossa visão! Então, naturalmente, eu pensei em você... nosso membro mais generoso e devoto da Joja.#$b#$q -1 -1#Nós podemos realizar isso com apenas um pequeno investimento de... *tosse*... {{buyValue}}g...$h#$r -1 -1 Yes#Sim#$r -1 -1 No#Não",
+  "Morris_TheaterBought": "{{buyValue}}...!$2#$b#*Ahem*... Quer dizer... Excelente! Nosso Time de Construção Joja vai começar a construir o novo edifício hoje! Obrigado por apoiar nosso trabalho."
+}

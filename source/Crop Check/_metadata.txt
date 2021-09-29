@@ -6,9 +6,9 @@ mods:
    Crop Check
 
 latest commit:
-   commit 8dc0d823a209f285e051f031c8d3fbc07b197645
+   commit 7e3e2a6f14b645ac4437781eadc60a2badc34e9d
    Author: LUCAS-PC\Lucas <lucaskchang@gmail.com>
-   Date:   Fri Aug 20 14:26:06 2021 -0700
+   Date:   Sun Sep 5 18:58:09 2021 -0700
    
-       Update Manifest
+       Initial Commit
    

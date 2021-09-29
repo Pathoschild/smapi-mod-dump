@@ -22,6 +22,6 @@ namespace GreenhouseGatherers.GreenhouseGatherers.API.Interfaces.ExpandedStorage
         /// <summary>Load a directory as an Expanded Storage content pack.</summary>
         /// <param name="path">Path containing expandedStorage.json file.</param>
         /// <returns>True if content was loaded successfully.</returns>
-        bool LoadContentPack(string path);
+        bool LoadContentPack(IManifest manifest, string path);
     }
 }

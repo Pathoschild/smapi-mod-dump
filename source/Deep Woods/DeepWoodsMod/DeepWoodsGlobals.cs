@@ -15,7 +15,7 @@ using static DeepWoodsMod.DeepWoodsRandom;
 
 namespace DeepWoodsMod
 {
-    class DeepWoodsGlobals
+    public class DeepWoodsGlobals
     {
         public readonly static string WOODS_OBELISK_BUILDING_NAME = "Woods Obelisk";
         public readonly static string EARTH_OBELISK_BUILDING_NAME = "Earth Obelisk";
@@ -25,13 +25,15 @@ namespace DeepWoodsMod
         public readonly static string DEFAULT_OUTDOOR_TILESHEET_ID = "DefaultOutdoor";
         public readonly static string LAKE_TILESHEET_ID = "WaterBorderTiles";
 
+        // The maximum possible luck level in vanilla SDV is 8: 5 from Magic Rock Candy, 1 from Ginger Ale, and 2 from two Lucky Rings.
+        public readonly static int MAXIMUM_POSSIBLE_LUCKLEVEL = 8;
+
         public readonly static Location WOODS_WARP_LOCATION = new Location(26, 31);
         public readonly static int NUM_TILES_PER_LIGHTSOURCE = 16;
         public readonly static int MINIMUM_TILES_FOR_BAUBLE = 16;
         public readonly static int MINIMUM_TILES_FOR_LEAVES = 16;
         public readonly static int MINIMUM_TILES_FOR_MONSTER = 16;
         public readonly static int MINIMUM_TILES_FOR_TERRAIN_FEATURE = 4;
-        public readonly static int NUM_MONSTER_SPAWN_TRIES = 4;
         public readonly static Chance CHANCE_FOR_WATER_LILY = new Chance(8);
         public readonly static Chance CHANCE_FOR_BLOSSOM_ON_WATER_LILY = new Chance(30);
         public readonly static int TIME_BEFORE_DELETION_ALLOWED = 100;

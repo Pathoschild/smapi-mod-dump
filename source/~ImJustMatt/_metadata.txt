@@ -4,14 +4,16 @@ urls:
 
 mods:
    Custom Bundles
-   Expanded Storage
+   Expanded Storage (Alternative Textures)
+   Expanded Storage (Lite)
+   Expanded Storage (Plus)
    Expanded Storage → XSAutomate
    Garbage Day
 
 latest commit:
-   commit 04b7c5c38d62cd6a7e20b3bdd50c6a21f1d53498
+   commit 7881c1031bd5e39714c07cf7354f9cd254d3c108
    Author: Matthew <justmatt@outlook.com>
-   Date:   Wed Aug 18 16:08:14 2021 -0500
+   Date:   Mon Sep 27 21:44:58 2021 -0500
    
-       Remove discontinued projects
+       Fixed manifest descriptions
    

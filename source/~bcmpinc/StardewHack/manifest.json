@@ -11,7 +11,7 @@
 {
    "Name": "StardewHack",
    "Author": "bcmpinc",
-   "Version": "5.1",
+   "Version": "5.2",
    "Description": "Transpilation library used by my other mods. Doesn't do much on its own.",
    "UniqueID": "bcmpinc.StardewHack",
    "EntryDll": "StardewHack.dll",

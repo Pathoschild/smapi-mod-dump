@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/adverserath/StardewValley-CasualLifeMod
+**
+*************************************************/
+
+{
+  "Name": "Casual Life",
+  "Author": "adverserath",
+  "Version": "1.5.4.2",
+  "Description": "Slow down game time and update by minutes",
+  "UniqueID": "Adverserath.CasualLife",
+  "EntryDll": "CasualLife.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:6011" ]
+}

@@ -6,9 +6,14 @@ mods:
    Configurable Junimo Kart
 
 latest commit:
-   commit 7159566c2873c9209302652d06725d2182efa962
+   commit 2eb45c41e3dee0e67879eeb13bdab8e956891d73
+   Merge: 7159566 1549197
    Author: tophatsquid <tophatsquidlol@gmail.com>
-   Date:   Sat Aug 29 11:27:27 2020 +0000
+   Date:   Wed Sep 29 16:15:26 2021 +0000
    
-       ci: Fixes release description from including unnecessary branch name (it will always be 'release')
+       Merge branch 'gravity_and_speedmultiplier_only_if_set' into 'develop'
+       
+       Change gravity and speedmultiplier only if set
+       
+       See merge request tophatsquid/sdv-configurable-junimo-kart!3
    

@@ -1,0 +1,4 @@
+{
+  "Morris_BuyMovieTheater": "Áh, a kedvenc vásárlónk... Izgalmas hírekkel szolgálhatok! A Joja főhadiszállás engedélyezte az új Joja 'szórakoztató központot', amivel kicserélhetjük a közeli Joja Raktárépületet. Már csak egy befektetőre van szükségünk, aki támogatná meglátásunkat! Így természetesen hozzád fordulok... a legelhivatottabb és legnagylelkűbb Joja tagunkhoz.#$b#$q -1 -1#Mindezt megoldhatnánk egy csekélyke... *köhöm*... {{buyValue}}g összeggel...$h#$r -1 -1 Yes#Igen#$r -1 -1 No#Nem",
+  "Morris_TheaterBought": "{{buyValue}}...!$2#$b#*Köhöm*... Úgy értem... Kiváló! A Joja Építkezési Csapatunk még ma este nekilát az új épületnek! Köszönjük, hogy támogattad a munkánkat."
+}

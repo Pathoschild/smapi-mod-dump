@@ -1,13 +1,12 @@
 {
-  "CoolDownAmount": 3,
-  "QuestID1": 300001,
-  "QuestID2": 300002,
-  "QuestID3": 300003,
-  "QuestID4": 300004,
   "MilkMale": true,
   "MilkFemale": true,
-  "Verbose": false,
-  "NeedTool": false,
   "StackMilk": false,
-  "ExtraDialogue": true
+  "CollectItems": true,
+  "ExtraDialogue": true,
+  "ThirdParty": true,
+  "Quests": true,
+  "Debug": false,
+  "Verbose": false,
+  "MilkButton": "O"
 }

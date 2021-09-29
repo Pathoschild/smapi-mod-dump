@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,16 +26,21 @@ namespace AlternativeTextures.Framework.Models
         public string ItemName { get; set; }
         internal int ItemId { get; set; } = -1;
         public string Type { get; set; }
+        public bool EnableContentPatcherCheck { get; set; }
         public List<string> Keywords { get; set; } = new List<string>();
         public List<string> Seasons { get; set; } = new List<string>(); // For use by mod user to determine which seasons the texture is valid for
         internal string Season { get; set; } // Used by framework to split the Seasons property into individual AlternativeTextureModel models
+        internal string TextureId { get; set; }
+        internal string ModelName { get; set; }
         public int TextureWidth { get; set; }
         public int TextureHeight { get; set; }
         public int Variations { get; set; } = 1;
-        internal Texture2D Texture { get; set; }
         internal string TileSheetPath { get; set; }
+        internal List<Texture2D> Textures { get; set; } = new List<Texture2D>();
         public List<VariationModel> ManualVariations { get; set; } = new List<VariationModel>();
+        public List<AnimationModel> Animation { get; set; } = new List<AnimationModel>();
 
+        public static int MAX_TEXTURE_HEIGHT { get { return 16384; } }
         internal enum TextureType
         {
             Unknown,
@@ -46,7 +53,15 @@ namespace AlternativeTextures.Framework.Models
             ResourceClump,
             Bush,
             Flooring,
-            Furniture
+            Furniture,
+            Character,
+            Building,
+            Decoration
+        }
+
+        public AlternativeTextureModel ShallowCopy()
+        {
+            return (AlternativeTextureModel)this.MemberwiseClone();
         }
 
         public string GetTextureType()
@@ -61,12 +76,61 @@ namespace AlternativeTextures.Framework.Models
 
         public string GetId()
         {
-            return String.Concat(Owner, ".", GetNameWithSeason());
+            return TextureId;
+        }
+
+        public string GetTokenId()
+        {
+            return String.Concat(Owner, ".", ItemName, "_", String.IsNullOrEmpty(Season) ? Game1.currentSeason : Season);
         }
 
         public string GetNameWithSeason()
         {
-            return String.IsNullOrEmpty(Season) ? String.Concat(GetTextureType(), "_", ItemName) : String.Concat(GetTextureType(), "_", ItemName, "_", Season);
+            return ModelName;
+        }
+
+        public int GetVariations()
+        {
+            return ManualVariations.Where(v => v.Id >= 0).Count() > 0 ? ManualVariations.Where(v => v.Id >= 0).Count() : Variations;
+        }
+
+        public List<AnimationModel> GetAnimationData(int variation)
+        {
+            var manualVariation = ManualVariations.FirstOrDefault(v => v.Id == variation && v.HasAnimation());
+            if (manualVariation != null)
+            {
+                return manualVariation.Animation;
+            }
+
+            return Animation;
+        }
+
+        public AnimationModel GetAnimationDataAtIndex(int variation, int index)
+        {
+            return GetAnimationData(variation).ElementAt(index);
+        }
+
+        public Texture2D GetTexture(int variation)
+        {
+            int textureOffset = TextureHeight * variation;
+            if (textureOffset >= MAX_TEXTURE_HEIGHT)
+            {
+                return Textures[textureOffset / MAX_TEXTURE_HEIGHT];
+            }
+
+            return Textures[0];
+        }
+
+        public Color GetRandomTint(int variation)
+        {
+            if (!HasTint(variation))
+            {
+                return Color.White;
+            }
+
+            var tints = ManualVariations.First(v => v.Id == variation).Tints;
+            var selectedTint = tints[Game1.random.Next(tints.Count())];
+            return new Color(selectedTint[0], selectedTint[1], selectedTint[2], selectedTint[3]);
         }
 
         public bool HasKeyword(string variationString, string keyword)
@@ -87,6 +151,16 @@ namespace AlternativeTextures.Framework.Models
             }
 
             return Keywords.Any(k => k.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        public bool HasAnimation(int variation)
+        {
+            return Animation.Count() > 0 || ManualVariations.Any(v => v.Id == variation && v.HasAnimation());
+        }
+
+        public bool HasTint(int variation)
+        {
+            return ManualVariations.Any(v => v.Id == variation && v.HasTint());
         }
 
         public override string ToString()

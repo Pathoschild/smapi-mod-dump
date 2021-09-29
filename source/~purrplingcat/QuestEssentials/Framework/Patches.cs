@@ -194,7 +194,7 @@ namespace QuestEssentials.Framework
         {
             bool isColligingWithEntity = __instance.isCollidingWithCharacter(new Microsoft.Xna.Framework.Rectangle(tileLocation.X * 64, tileLocation.Y * 64, 64, 64)) != null;
             
-            if (!isColligingWithEntity && QuestEssentialsMod.QuestApi.CheckForQuestComplete<SpecialQuest>(new TileActionMessage(who, __instance, new Point(tileLocation.X, tileLocation.Y))))
+            if (!isColligingWithEntity && QuestEssentialsMod.QuestApi.CheckForQuestComplete<AdventureQuest>(new TileActionMessage(who, __instance, new Point(tileLocation.X, tileLocation.Y))))
             {
                 __result = true;
 

@@ -166,13 +166,16 @@ namespace CustomCompanions
             // Clear out the list of denied companions to respawn
             this.LoadContentPacks(true);
             CompanionManager.denyRespawnCompanions = new List<SceneryCompanions>();
+
+            // Check for any Content Patcher changes from OnDayStart
+            this.ValidateModelCache(null, true, true);
         }
 
         private void OnCustomLoad(object sender, EventArgs e)
         {
             this.OnDayStarted(sender, e);
 
-            this.areAllModelsValidated = this.ValidateModelCache(Game1.player.currentLocation, true);
+            this.areAllModelsValidated = this.ValidateModelCache(Game1.player.currentLocation, true, true);
 
             this.DebugReload(null, null);
         }
@@ -192,7 +195,7 @@ namespace CustomCompanions
             // Check for any content patcher changes every second, but iterate through list based on PERIODIC_CHECK_INTERVAL
             if (e.IsMultipleOf(PERIODIC_CHECK_INTERVAL) || !this.areAllModelsValidated)
             {
-                this.areAllModelsValidated = this.ValidateModelCache(Game1.player.currentLocation, false, PERIODIC_CHECK_INTERVAL / 60);
+                this.areAllModelsValidated = this.ValidateModelCache(Game1.player.currentLocation, false, false, PERIODIC_CHECK_INTERVAL / 60);
             }
         }
 
@@ -211,10 +214,10 @@ namespace CustomCompanions
             this.RemoveOrphanCompanions(e.NewLocation);
         }
 
-        private bool ValidateModelCache(GameLocation location, bool forceCheck = false, int workingPeriod = -1)
+        private bool ValidateModelCache(GameLocation location, bool bypassCheckCondition = false, bool checkAllCompanions = false, int workingPeriod = -1)
         {
             // Have to load each asset every second, as we don't have a way to track content patcher changes (except for comparing changes to our cache)
-            var validCompanionIdToTokens = AssetManager.idToAssetToken.Where(p => location.characters.Any(c => CompanionManager.IsCustomCompanion(c) && (c as Companion).model != null && (c as Companion).model.GetId() == p.Key && ((c as Companion).model.EnablePeriodicPatchCheck || forceCheck))).ToList();
+            var validCompanionIdToTokens = AssetManager.idToAssetToken.Where(p => checkAllCompanions || location.characters.Any(c => CompanionManager.IsCustomCompanion(c) && (c as Companion).model != null && (c as Companion).model.GetId() == p.Key && ((c as Companion).model.EnablePeriodicPatchCheck || bypassCheckCondition))).ToList();
             if (validCompanionIdToTokens.Count() == 0)
             {
                 return true;

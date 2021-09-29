@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using TheLion.Stardew.Professions.Framework;
@@ -23,34 +25,43 @@ namespace TheLion.Stardew.Professions
 	/// <summary>The mod entry point.</summary>
 	public class ModEntry : Mod
 	{
-		public static ModData Data { get; private set; }
-		public static ModConfig Config { get; private set; }
+		internal static ModData Data { get; set; }
+		internal static ModConfig Config { get; set; }
+		internal static EventSubscriber Subscriber { get; private set; }
+		internal static ProspectorHunt ProspectorHunt { get; set; }
+		internal static ScavengerHunt ScavengerHunt { get; set; }
+		internal static SoundEffectLoader SfxLoader { get; set; }
+
+		internal static GameFramework GameFramework { get; private set; }
+		internal static IModHelper ModHelper { get; private set; }
+		internal static IManifest Manifest { get; private set; }
+		internal static Action<string, LogLevel> Log { get; private set; }
+		internal static string UniqueID { get; private set; }
 
 		public static int DemolitionistExcitedness { get; set; }
 		public static int SpelunkerLadderStreak { get; set; }
 		public static int SlimeContactTimer { get; set; }
-
+		public static HashSet<int> MonstersStolenFrom { get; set; } = new();
+		public static Dictionary<GreenSlime, float> PipedSlimesScales { get; set; } = new();
 		public static Dictionary<int, HashSet<long>> ActivePeerSuperModes { get; set; } = new();
 		public static int SuperModeCounterMax => 500;
+		public static bool ShouldShakeSuperModeBar { get; set; }
+		public static float SuperModeBarAlpha { get; set; }
+		public static Color SuperModeGlowColor { get; set; }
+		public static Color SuperModeOverlayColor { get; set; }
+		public static float SuperModeOverlayAlpha { get; set; }
+		public static string SuperModeSfx { get; set; }
 
 		public static int SuperModeIndex
 		{
 			get => _superModeIndex;
 			set
 			{
-				_superModeIndex = value;
-				SuperModeRegistered?.Invoke();
-			}
-		}
-
-		public static bool IsSuperModeActive
-		{
-			get => _isSuperModeActive;
-			set
-			{
-				if (!value) SuperModeDisabled?.Invoke();
-				else SuperModeEnabled?.Invoke();
-				_isSuperModeActive = value;
+				if (_superModeIndex != value)
+				{
+					_superModeIndex = value;
+					SuperModeIndexChanged?.Invoke(value);
+				}
 			}
 		}
 
@@ -66,6 +77,8 @@ namespace TheLion.Stardew.Professions
 				}
 				else
 				{
+					if (_superModeCounter == value) return;
+
 					if (_superModeCounter == 0) SuperModeCounterRaisedAboveZero?.Invoke();
 					if (value >= SuperModeCounterMax) SuperModeCounterFilled?.Invoke();
 					_superModeCounter = Math.Min(value, SuperModeCounterMax);
@@ -73,50 +86,29 @@ namespace TheLion.Stardew.Professions
 			}
 		}
 
-		public static int SuperModeKeyTimer
+		public static bool IsSuperModeActive
 		{
-			get => _superModeKeyTimer;
+			get => _isSuperModeActive;
 			set
 			{
-				switch (value)
-				{
-					case > 0:
-						_superModeKeyTimer = value;
-						break;
-					case 0:
-						_superModeKeyTimer = 0;
-						SuperModeKeyHeldLongEnough?.Invoke();
-						break;
-				}
+				if (_isSuperModeActive == value) return;
+
+				if (!value) SuperModeDisabled?.Invoke();
+				else SuperModeEnabled?.Invoke();
+				_isSuperModeActive = value;
 			}
 		}
-
-		internal static GameFramework GameFramework { get; private set; }
-		internal static IContentHelper Content { get; private set; }
-		internal static IModEvents Events { get; private set; }
-		internal static IModRegistry ModRegistry { get; private set; }
-		internal static IMultiplayerHelper Multiplayer { get; private set; }
-		internal static IReflectionHelper Reflection { get; private set; }
-		internal static ITranslationHelper I18n { get; private set; }
-		internal static Action<string, LogLevel> Log { get; private set; }
-		internal static string UniqueID { get; private set; }
-
-		internal static EventSubscriber Subscriber { get; private set; }
-		internal static ProspectorHunt ProspectorHunt { get; set; }
-		internal static ScavengerHunt ScavengerHunt { get; set; }
 
 		public static event SuperModeCounterFilledEventHandler SuperModeCounterFilled;
 		public static event SuperModeCounterRaisedAboveZeroEventHandler SuperModeCounterRaisedAboveZero;
 		public static event SuperModeCounterReturnedToZeroEventHandler SuperModeCounterReturnedToZero;
 		public static event SuperModeDisabledEventHandler SuperModeDisabled;
 		public static event SuperModeEnabledEventHandler SuperModeEnabled;
-		public static event SuperModeKeyHeldLongEnoughEventHandler SuperModeKeyHeldLongEnough;
-		public static event SuperModeRegisteredEventHandler SuperModeRegistered;
+		public static event SuperModeIndexChangedEventHandler SuperModeIndexChanged;
 
 		private static int _superModeIndex = -1;
 		private static bool _isSuperModeActive;
 		private static int _superModeCounter;
-		private static int _superModeKeyTimer;
 
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -124,14 +116,10 @@ namespace TheLion.Stardew.Professions
 		{
 			// get target framework
 			GameFramework = Constants.GameFramework;
-
+			
 			// store references to mod helpers
-			Content = helper.Content;
-			Events = helper.Events;
-			ModRegistry = helper.ModRegistry;
-			Multiplayer = helper.Multiplayer;
-			Reflection = helper.Reflection;
-			I18n = helper.Translation;
+			ModHelper = helper;
+			Manifest = ModManifest;
 			Log = Monitor.Log;
 
 			// get configs.json
@@ -144,83 +132,26 @@ namespace TheLion.Stardew.Professions
 			// get mod assets
 			helper.Content.AssetEditors.Add(new IconEditor());
 
+			// get sound assets
+			SfxLoader = new SoundEffectLoader(helper.DirectoryPath);
+
 			// apply harmony patches
-			BasePatch.Init();
-			new HarmonyPatcher().ApplyAll(
-				new AnimalHouseAddNewHatchedAnimalPatch(),
-				new BasicProjectileBehaviorOnCollisionWithMonsterPatch(),
-				new BobberBarCtorPatch(),
-				new BushShakePatch(),
-				new CrabPotCheckForActionPatch(),
-				new CrabPotDayUpdatePatch(),
-				new CrabPotDrawPatch(),
-				new CrabPotPerformObjectDropInActionPatch(),
-				new CraftingRecipeCtorPatch(),
-				new CropHarvestPatch(),
-				new FarmAnimalDayUpdatePatch(),
-				new FarmAnimalGetSellPricePatch(),
-				new FarmAnimalPetPatch(),
-				new FarmerHasOrWillReceiveMailPatch(),
-				new FarmerShowItemIntakePatch(),
-				new FarmerTakeDamagePatch(),
-				new FishingRodStartMinigameEndFunctionPatch(),
-				new FishPondUpdateMaximumOccupancyPatch(),
-				new FruitTreeDayUpdatePatch(),
-				new Game1CreateObjectDebrisPatch(),
-				new Game1DrawHUDPatch(),
-				new GameLocationBreakStonePatch(),
-				new GameLocationCheckActionPatch(),
-				new GameLocationDamageMonsterPatch(),
-				new GameLocationGetFishPatch(),
-				new GameLocationExplodePatch(),
-				new GameLocationOnStoneDestroyedPatch(),
-				new GeodeMenuUpdatePatch(),
-				new GreenSlimeBehaviorAtGameTickPatch(),
-				new GreenSlimeCollisionWithFarmerBehaviorPatch(),
-				new GreenSlimeOnDealContactDamagePatch(),
-				new GreenSlimeUpdatePatch(),
-				new LevelUpMenuAddProfessionDescriptionsPatch(),
-				new LevelUpMenuDrawPatch(),
-				new LevelUpMenuGetImmediateProfessionPerkPatch(),
-				new LevelUpMenuGetProfessionNamePatch(),
-				new LevelUpMenuGetProfessionTitleFromNumberPatch(),
-				new LevelUpMenuRemoveImmediateProfessionPerkPatch(),
-				new LevelUpMenuRevalidateHealthPatch(),
-				new MeleeWeaponDoAnimateSpecialMovePatch(),
-				new MineShaftCheckStoneForItemsPatch(),
-				new MonsterBehaviorAtGameTickPatch(),
-				new MonsterFindPlayerPatch(),
-				new MonsterTakeDamagePatch(),
-				new NPCWithinPlayerThresholdPatch(),
-				new ObjectCheckForActionPatch(),
-				new ObjectCtorPatch(),
-				new ObjectGetMinutesForCrystalariumPatch(),
-				new ObjectGetPriceAfterMultipliersPatch(),
-				new ObjectLoadDisplayNamePatch(),
-				new ObjectPerformObjectDropInActionPatch(),
-				new PondQueryMenuDrawPatch(),
-				new ProjectileBehaviorOnCollisionPatch(),
-				new QuestionEventSetUpPatch(),
-				new SlingshotCanAutoFirePatch(),
-				new SlingshotGetRequiredChargeTimePatch(),
-				new SlingshotPerformFirePatch(),
-				new TemporaryAnimatedSpriteCtorPatch(),
-				new TreeDayUpdatePatch(),
-				new TreeUpdateTapperProductPatch(),
-				ModRegistry.IsLoaded("Pathoschild.Automate") ? new CrabPotMachineGetStatePatch() : null,
-				ModRegistry.IsLoaded("CJBok.CheatsMenu") ? new ProfessionsCheatSetProfessionPatch() : null,
-				null
-			);
+			BasePatch.Init(helper.DirectoryPath);
+			new HarmonyPatcher().ApplyAll();
 
 			// start event manager
 			Subscriber = new EventSubscriber();
 
 			// add debug commands
-			Helper.ConsoleCommands.Add("player_checkprofessions", "List the player's current professions.", ConsoleCommands.CheckLocalPlayerProfessions);
+			Helper.ConsoleCommands.Add("player_checkprofessions", "List the player's current professions.", ConsoleCommands.PrintLocalPlayerProfessions);
 			Helper.ConsoleCommands.Add("player_addprofessions", "Add the specified professions to the local player." + ConsoleCommands.GetUsageForAddProfessions(), ConsoleCommands.AddProfessionsToLocalPlayer);
 			Helper.ConsoleCommands.Add("player_resetprofessions", "Reset all skills and professions for the local player.", ConsoleCommands.ResetLocalPlayerProfessions);
-			Helper.ConsoleCommands.Add("player_readyult", "Max-out the super mode resource.", ConsoleCommands.ReadySuperMode);
-			Helper.ConsoleCommands.Add("wol_getdatafield", "Check current value for a profession data field." + ConsoleCommands.GetAvailableDataFields(), ConsoleCommands.PrintModDataField);
+			Helper.ConsoleCommands.Add("player_setultmeter", "Set the super mode meter to the desired value.", ConsoleCommands.SetSuperModeCounter);
+			Helper.ConsoleCommands.Add("player_readyult", "Max-out the super mode meter.", ConsoleCommands.ReadySuperMode);
+			Helper.ConsoleCommands.Add("player_maxanimalfriendship", "Max-out the friendship of all owned animals.", ConsoleCommands.MaxAnimalFriendship);
+			Helper.ConsoleCommands.Add("player_maxanimalmood", "Max-out the mood of all owned animals.", ConsoleCommands.MaxAnimalMood);
+			Helper.ConsoleCommands.Add("player_getfishaudit", "Check your fishing progress as Angler.", ConsoleCommands.PrintFishCaughtAudit);
+			Helper.ConsoleCommands.Add("wol_checkdata", "Check current value of all mod data fields.", ConsoleCommands.PrintModData);
 			Helper.ConsoleCommands.Add("wol_setitemsforaged", "Set a new value for ItemsForaged field.", ConsoleCommands.SetItemsForaged);
 			Helper.ConsoleCommands.Add("wol_setmineralscollected", "Set a new value for MineralsCollected field.", ConsoleCommands.SetMineralsCollected);
 			Helper.ConsoleCommands.Add("wol_setprospectorstreak", "Set a new value for ProspectorStreak field.", ConsoleCommands.SetProspectorStreak);

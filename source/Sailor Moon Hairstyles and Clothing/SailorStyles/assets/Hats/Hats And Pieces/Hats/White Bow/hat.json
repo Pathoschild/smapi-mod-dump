@@ -10,14 +10,8 @@
 
 {
     "Name": "White Bow",
-    "Description": "A big, white hair bow.",
+    "Description": "...",
     "PurchasePrice": "150",
     "ShowHair": true,
-    "IgnoreHairstyleOffset": true,
-    "NameLocalization": {
-        "es": "Lazo Blanco"
-    },
-    "DescriptionLocalization": {
-        "es": "Un gran lazo blanco para el pelo."
-    }
+    "IgnoreHairstyleOffset": true
 }

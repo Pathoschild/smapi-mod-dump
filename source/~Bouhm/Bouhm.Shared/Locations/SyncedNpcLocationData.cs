@@ -15,6 +15,9 @@ namespace Bouhm.Shared.Locations
 {
     internal class SyncedNpcLocationData
     {
+        /*********
+        ** Accessors
+        *********/
         public Dictionary<string, LocationData> Locations { get; set; } = new();
     }
 }

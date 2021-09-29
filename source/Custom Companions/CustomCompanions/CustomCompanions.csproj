@@ -94,6 +94,7 @@
     <None Include="Examples\[CC] Example Pack\Companions\ExampleAlternativeWanderWalkingCow\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleUnderwaterFish\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleWalkerCollisionTest\companion.json" />
+    <None Include="Examples\[CC] Example Pack\Companions\ExampleWalkerFollowSpecificName\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleWalkerSimplePathTest\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleWalkerPacingTest\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleWalkerFollowTest\companion.json" />

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -179,7 +179,7 @@ namespace NpcAdventure.Patches
 			}
 		}
 
-		protected override void Apply(HarmonyInstance harmony)
+		protected override void Apply(Harmony harmony)
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(Duggy), nameof(Duggy.behaviorAtGameTick)),
@@ -206,7 +206,7 @@ namespace NpcAdventure.Patches
 			   prefix: new HarmonyMethod(typeof(MonsterBehaviorPatch), nameof(MonsterBehaviorPatch.Before_Skeleton_behaviorAtGameTick))
 			);
 			harmony.Patch(
-				original: AccessTools.Method(typeof(Ghost), nameof(Ghost.updateMovement)),
+				original: AccessTools.Method(typeof(Monster), nameof(Monster.updateMovement)),
 				prefix: new HarmonyMethod(typeof(MonsterBehaviorPatch), nameof(MonsterBehaviorPatch.Before_Ghost_updateMovement))
 			);
 			harmony.Patch(

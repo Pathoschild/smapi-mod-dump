@@ -14,7 +14,7 @@ using System.IO;
 
 namespace SailorStyles
 {
-	internal class ModConsts
+	internal static class ModConsts
 	{
 		/* Files */
 		internal const string CatId = "zss_cat";
@@ -26,13 +26,18 @@ namespace SailorStyles
 		internal const string HatsDir = "Hats";
 		internal const string ClothingDir = "Clothing";
 		internal const string HairstylesDir = "Hairstyles";
-		internal const string ContentPackPrefix = "blueberry.SailorStyles.Clothing.";
+		internal const string ContentPackPrefix = "blueberry.SailorStyles.";
+		internal const string ClothingPackPrefix = "Clothing.";
+		internal const string HatPackPrefix = "Hats.";
 		internal static readonly List<string> HatPacks = new List<string>
 		{
 			"Hats And Pieces"
+			// "Tuxedo Top Hats"	<= Not enabled by default, content is added contextually
 		};
 		internal static readonly List<string> ClothingPacks = new List<string>
 		{
+			"Man About Town",
+			"Stylish Rogue",
 			"Sakura Kimono",
 			"Skirts n' Stuff",
 			"Everyday Heroes",
@@ -42,13 +47,16 @@ namespace SailorStyles
 		internal static readonly Dictionary<string, int> ClothingPackCosts = new Dictionary<string, int>
 		{
 			{ "Hats And Pieces", 100 },
+			{ "Tuxedo Top Hats", 100 },
+			{ "Man About Town", 50 },
+			{ "Stylish Rogue", 375 },
 			{ "Sakura Kimono", 375 },
 			{ "Skirts n' Stuff", 250 },
 			{ "Everyday Heroes", 50 },
 			{ "Uniform Operation", 100 },
 			{ "Sailor Suits", 100 }
 		};
-		internal const int DefaultClothingCost = 280;
+		internal const int DefaultClothingCost = 100;
 
 		/* Assets */
 		internal static readonly string GameContentAnimationsPath = Path.Combine("Data", "animationDescriptions");

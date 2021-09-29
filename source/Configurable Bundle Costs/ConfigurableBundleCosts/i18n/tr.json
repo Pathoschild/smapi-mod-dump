@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dtomlinson-ga/ConfigurableBundleCosts
+**
+*************************************************/
+
+{
+  "Morris_BuyMovieTheater": "Ah, en sevdiğimiz müşterimiz... Senin için harika bir haberim var! Joja Kuruluş Merkezi bölgedeki deponun yerine yeni bir Joja 'eğlence olanağı' inşa etme projesini onayladı. Tek ihtiyacımız vizyonumuza destek olacak bir yatırımcı! Doğal olarak ben de sana... en sadık ve cömer Joja üyemize haber vermek istedim.#$b#$q -1 -1#Bu işlemi ufak bir miktar yatırımla... *öksürür*... {{buyValue}}g ile halledebiliriz...$h#$r -1 -1 Yes#Evet.#$r -1 -1 No#Hayır.",
+  "Morris_TheaterBought": "{{buyValue}}...!$2#$b#*boğazını temizler*... Demek istediğim... mükemmelsin! Joja inşaat ekibimiz bu akşam yeni binanın yapımına başlayacak! Desteğin için teşekkür ederiz."
+}

@@ -4,4 +4,10 @@
   "Edibility": -300,
   "Price": 0,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "石头雕的戒指"
+  },
+  "DescriptionLocalization": {
+	  "zh": "一个石头做的戒指，听起来里面好像有什么东西。"
+  },
 }

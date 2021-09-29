@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Pierre",
   "PurchasePrice": 5000,
+  "NameLocalization": {
+	  "zh": "肥沃土壤之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "提高你的土壤质量，稍微曾强农业。"
+  },
 }

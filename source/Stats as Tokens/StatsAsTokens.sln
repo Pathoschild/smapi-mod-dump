@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StatsAsTokens", "StatsAsTokens.csproj", "{BE5B512E-7AD6-4D0B-A981-0CEEADC52B42}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE5B512E-7AD6-4D0B-A981-0CEEADC52B42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5B512E-7AD6-4D0B-A981-0CEEADC52B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE5B512E-7AD6-4D0B-A981-0CEEADC52B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE5B512E-7AD6-4D0B-A981-0CEEADC52B42}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2269BB81-93CF-4130-9E9E-6940E7A5A159}
+	EndGlobalSection
+EndGlobal

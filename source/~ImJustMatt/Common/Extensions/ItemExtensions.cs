@@ -8,59 +8,30 @@
 **
 *************************************************/
 
-using System;
-using System.Linq;
-using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Objects;
-using Object = StardewValley.Object;
-
-namespace XSAutomate.Common.Extensions
+namespace Common.Extensions
 {
+    using System;
+    using System.Linq;
+    using StardewValley;
+    using StardewValley.Objects;
+
+    /// <summary>Extension methods for the <see cref="StardewValley.Item">StardewValley.Item</see> class.</summary>
     internal static class ItemExtensions
     {
-        private const string CategoryFurniture = "category_furniture";
-        private const string CategoryArtifact = "category_artifact";
-        private const string DonateMuseum = "donate_museum";
-        private const string DonateBundle = "donate_bundle";
-
-        public static bool MatchesTagExt(this Item item, string search)
+        /// <summary>Recursively iterates chests held within chests.</summary>
+        /// <param name="item">The originating item to search.</param>
+        /// <param name="action">The action to perform on items within chests.</param>
+        public static void RecursiveIterate(this Item item, Action<Item> action)
         {
-            return item.MatchesTagExt(search, true);
-        }
-
-        public static bool MatchesTagExt(this Item item, string search, bool exactMatch)
-        {
-            return item switch
+            if (item is Chest { SpecialChestType: Chest.SpecialChestTypes.None } chest)
             {
-                Furniture when TagEquals(search, CategoryFurniture, exactMatch) => true,
-                Object {Type: "Arch"} when TagEquals(search, CategoryArtifact, exactMatch) => true,
-                Object {Type: "Arch"} when TagEquals(search, DonateMuseum, exactMatch) => CanDonateToMuseum(item),
-                Object {Type: "Minerals"} when TagEquals(search, DonateMuseum, exactMatch) => CanDonateToMuseum(item),
-                Object obj when TagEquals(search, DonateBundle, exactMatch) => CanDonateToBundle(obj),
-                _ => item.GetContextTags().Any(tag => TagEquals(search, tag, exactMatch))
-            };
-        }
+                foreach (Item chestItem in chest.items.Where(chestItem => chestItem is not null))
+                {
+                    chestItem.RecursiveIterate(action);
+                }
+            }
 
-        private static bool TagEquals(string search, string match, bool exact)
-        {
-            return exact && search.Equals(match) || match.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) > -1;
-        }
-
-        private static bool CanDonateToMuseum(Item item)
-        {
-            return Game1.locations
-                       .OfType<LibraryMuseum>()
-                       .FirstOrDefault()?.isItemSuitableForDonation(item)
-                   ?? false;
-        }
-
-        private static bool CanDonateToBundle(Object obj)
-        {
-            return Game1.locations
-                       .OfType<CommunityCenter>()
-                       .FirstOrDefault()?.couldThisIngredienteBeUsedInABundle(obj)
-                   ?? false;
+            action(item);
         }
     }
 }

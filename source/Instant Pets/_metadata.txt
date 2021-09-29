@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/b-b-blueberry/InstantPets
+   Git: https://github.com/b-b-blueberry/InstantPets.git
+
+mods:
+   Instant Pets
+
+latest commit:
+   commit 1c9e0f47b08ab3a86595767a3d6440dd75614d02
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Sat Sep 4 22:21:23 2021 +1000
+   
+       Add project files.
+   

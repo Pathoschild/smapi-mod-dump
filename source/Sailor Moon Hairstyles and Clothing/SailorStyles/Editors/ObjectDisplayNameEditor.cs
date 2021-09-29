@@ -35,16 +35,16 @@ namespace SailorStyles.Editors
 		private static void Edit(IAssetData asset)
 		{
 			void localiseNames(
-				ref IDictionary<int, string> source, List<string> packs,
+				ref IDictionary<int, string> source, Dictionary<string, bool> packs,
 				int nameIndex, int descriptionIndex,
 				Func<string, List<string>> packSelector, Func<string, int> idSelector)
 			{
 				const char delimiter = ':';
 				List<string> items = packs
-					.SelectMany(pack => packSelector(ModEntry.ContentPackNameToId(pack)))
+					.SelectMany(pack => packSelector(ModEntry.GetIdFromContentPackName(pack.Key, pack.Value)))
 					.ToList();
-				Dictionary<string, int> itemsGrouped = items.Zip(items
-					.Select(item => idSelector(item)), (name, id) => name + delimiter + id)
+				Dictionary<string, int> itemsGrouped = items
+					.Zip(items.Select(item => idSelector(item)), (name, id) => name + delimiter + id)
 					.ToDictionary(str => str.Split(delimiter)[0], str => int.Parse(str.Split(delimiter)[1]));
 				foreach (KeyValuePair<string, int> nameAndId in itemsGrouped)
 				{
@@ -63,8 +63,9 @@ namespace SailorStyles.Editors
 				var data = asset.AsDictionary<int, string>().Data;
 
 				// Add localised names and descriptions for new clothes
+				Dictionary<string, bool> packs = ModConsts.ClothingPacks.ToDictionary(pack => pack, isHat => false);
 				localiseNames(
-					source: ref data, packs: ModConsts.ClothingPacks,
+					source: ref data, packs: packs,
 					nameIndex: 1, descriptionIndex: 2,
 					packSelector: ModEntry.JsonAssets.GetAllClothingFromContentPack,
 					idSelector: ModEntry.JsonAssets.GetClothingId);
@@ -77,8 +78,10 @@ namespace SailorStyles.Editors
 				var data = asset.AsDictionary<int, string>().Data;
 
 				// Add localised names and descriptions for new hats
+				Dictionary<string, bool> packs = ModConsts.HatPacks.ToDictionary(pack => pack, isHat => true);
+				packs.Add("Tuxedo Top Hats", true);
 				localiseNames(
-					source: ref data, packs: ModConsts.HatPacks,
+					source: ref data, packs: packs,
 					nameIndex: 5, descriptionIndex: 1, // JA items inexplicably add a blank field at index 4
 					packSelector: ModEntry.JsonAssets.GetAllHatsFromContentPack,
 					idSelector: ModEntry.JsonAssets.GetHatId);

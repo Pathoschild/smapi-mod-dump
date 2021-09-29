@@ -9,11 +9,9 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Projectiles;
 using System;
@@ -34,27 +32,23 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 		#region harmony patches
 
-		/// <summary>Patch for Rascal slingshot damage increase with travel time + apply Piper projectile slow.</summary>
+		/// <summary>Patch for Rascal slingshot damage increase with travel time.</summary>
 		[HarmonyPrefix]
-		private static bool BasicProjectileBehaviorOnCollisionWithMonsterPrefix(BasicProjectile __instance, ref NetString ___collisionSound, NetCharacterRef ___theOneWhoFiredMe, int ___travelTime, ref NPC n, GameLocation location)
+		private static bool BasicProjectileBehaviorOnCollisionWithMonsterPrefix(BasicProjectile __instance, ref NetBool ___damagesMonsters, NetCharacterRef ___theOneWhoFiredMe, int ___travelTime, ref NPC n, GameLocation location)
 		{
 			try
 			{
-				if (n is not Monster) return true; // run original logic
+				if (!___damagesMonsters.Value) return false; // don't run original logic
+
+				if (!n.IsMonster) return true; // run original logic
 
 				var firer = ___theOneWhoFiredMe.Get(location) is Farmer farmer ? farmer : Game1.player;
 				if (!firer.HasProfession("Rascal")) return true; // run original logic
 
-				ModEntry.Reflection.GetMethod(__instance, name: "explosionAnimation")?.Invoke(location);
+				ModEntry.ModHelper.Reflection.GetMethod(__instance, name: "explosionAnimation")?.Invoke(location);
 				var damageToMonster = (int)(__instance.damageToFarmer.Value * Util.Professions.GetRascalBonusDamageForTravelTime(___travelTime));
-				var didAnyDamage = location.damageMonster(n.GetBoundingBox(), damageToMonster, damageToMonster + 1, isBomb: false, firer);
-				if (!didAnyDamage || ModEntry.SuperModeIndex != Util.Professions.IndexOf("Piper") || Game1.random.NextDouble() > Util.Professions.GetPiperSlowChance()) return false; // don't run original logic
+				location.damageMonster(n.GetBoundingBox(), damageToMonster, damageToMonster + 1, isBomb: false, firer);
 
-				___collisionSound.Value = "slimeHit";
-				--n.addedSpeed;
-				//n.startGlowing(Color.Green, border: false, 0.05f);
-				n.glowingColor = Color.Green;
-				n.glowRate = 0.05f;
 				return false; // don't run original logic
 			}
 			catch (Exception ex)

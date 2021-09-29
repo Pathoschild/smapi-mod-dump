@@ -11,34 +11,27 @@
 {
   "Name": "Garbage Day",
   "Author": "furyx639",
-  "Version": "2.1.0-alpha.1",
-  "Description": "This turns trash cans into storages.",
+  "Version": "2.1.0-beta.4",
+  "Description": "Turns the town trash cans into chests.",
   "UniqueID": "furyx639.GarbageDay",
   "EntryDll": "GarbageDay.dll",
-  "MinimumApiVersion": "3.13.0-beta.20210818",
+  "MinimumApiVersion": "3.12.6",
   "UpdateKeys": [ "Nexus:8204" ],
   "Dependencies": [
     {
       "UniqueID": "furyx639.ExpandedStorage",
       "IsRequired": true,
-      "MinimumVersion": "1.7.0-alpha.1"
+      "MinimumVersion": "1.7.1-beta"
     },
     {
-      "UniqueID": "spacechase0.JsonAssets",
-      "IsRequired": true
+      "UniqueID": "furyx639.XSPlus",
+      "IsRequired": true,
+      "MinimumVersion": "1.0.0-beta"
     },
     {
-      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "UniqueID": "pepoluan.EvenBetterRNG",
       "IsRequired": false,
-      "MinimumVersion": "1.3.3"
-    },
-    {
-      "UniqueID": "Pathoschild.ContentPatcher",
-      "IsRequired": false
-    },
-    {
-      "UniqueID": "Platonymous.TMXLoader",
-      "IsRequired": false
-    },
+      "MinimumVersion": "1.10.0"
+    }
   ]
 }

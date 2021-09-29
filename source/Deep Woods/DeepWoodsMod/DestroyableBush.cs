@@ -19,7 +19,7 @@ using static DeepWoodsMod.DeepWoodsSettings;
 namespace DeepWoodsMod
 {
     // Hacky class that overrides StardewValley's bush class to allow destroying bushes with an axe anywhere.
-    class DestroyableBush : Bush
+    public class DestroyableBush : Bush
     {
         protected int minAxeLevel;
 

@@ -18,4 +18,10 @@
 	],
 	"CanPurchase": false
   },
+  "NameLocalization": {
+	  "zh": "深根之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "提高你的觅食技能。"
+  },
 }

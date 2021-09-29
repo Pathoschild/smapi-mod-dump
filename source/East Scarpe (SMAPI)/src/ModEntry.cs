@@ -9,19 +9,20 @@
 *************************************************/
 
 using ExpandedPreconditionsUtility;
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using System;
 using System.IO;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public class ModEntry : Mod
 	{
 		internal static ModEntry Instance { get; private set; }
 
 		public ModData data { get; private set; }
-		internal HarmonyInstance harmony { get; private set; }
+		internal Harmony harmony { get; private set; }
 		internal IConditionsChecker conditionsChecker { get; private set; }
 
 		public override void Entry (IModHelper helper)
@@ -33,7 +34,7 @@ namespace EastScarpe
 
 			// Add console commands.
 			Helper.ConsoleCommands.Add ("es_reset_fruit_trees",
-				"Resets fruit trees spawned for East Scarpe.",
+				"Resets fruit trees spawned for East Scarp.",
 				cmdResetFruitTrees);
 
 			// Handle game events.
@@ -41,11 +42,36 @@ namespace EastScarpe
 			Helper.Events.GameLoop.DayStarted += onDayStarted;
 			Helper.Events.GameLoop.UpdateTicked += onUpdateTicked;
 			Helper.Events.Player.Warped += onWarped;
+			Helper.Events.GameLoop.Saving += onSaving;
+			Helper.Events.GameLoop.Saved += onSaved;
+			Helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
+			Helper.Events.Display.MenuChanged += onMenuChanged;
 
 			// Apply Harmony patches.
-			harmony = HarmonyInstance.Create (ModManifest.UniqueID);
+			harmony = new Harmony (ModManifest.UniqueID);
 			FishingAreas.Patch ();
+			Obelisks.Patch ();
 			WinterGrasses.Patch ();
+		}
+
+		private void onMenuChanged (object sender, MenuChangedEventArgs e)
+		{
+			Obelisks.UpdateMenu (e.NewMenu);
+		}
+
+		private void onSaveLoaded (object sender, SaveLoadedEventArgs e)
+		{
+			Obelisks.RestoreAll ();
+		}
+
+		private void onSaved (object sender, SavedEventArgs e)
+		{
+			Obelisks.RestoreAll ();
+		}
+
+		private void onSaving (object sender, SavingEventArgs e)
+		{
+			Obelisks.SanitizeAll ();
 		}
 
 		private void onGameLaunched (object _sender, EventArgs _e)
@@ -62,6 +88,8 @@ namespace EastScarpe
 			{
 				CrabPotCatches.DayUpdate ();
 				FruitTrees.DayUpdate ();
+				Obelisks.RestoreAll ();
+				RainWatering.DayUpdate ();
 			}
 		}
 

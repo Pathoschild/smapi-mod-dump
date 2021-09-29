@@ -11,15 +11,20 @@ mods:
    Craftable Butterfly Hutches
    Craftable Terrarium
    Custom Chest Types
+   Custom Decoration Areas
    Custom Dungeon Floors
    Custom Fixed Dialogue
    Custom Locks
    Custom Ore Nodes
+   Custom Renovations
    Custom Resource Clumps
    Custom Spouse Patio
    Custom Spouse Patio Wizard
+   Custom Warp Points
+   Dialogue Trees
    Enhanced Loot Magnet
    Expert Sitting
+   Extra Map Layers
    Familiars
    Fire Breath
    Fishing Chests Expanded
@@ -67,10 +72,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 604a9d017d9bc12fd491d988046bf95e604ed1ed
-   Merge: 444bb43 20df44d
+   commit 4dcb5986cc05c34972751fee86d9047258899a62
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Mon Aug 23 20:59:24 2021 -0400
+   Date:   Sat Sep 18 14:02:48 2021 -0400
    
-       Merge branch 'master' of github.com:aedenthorn/StardewValleyMods
+       etc
    

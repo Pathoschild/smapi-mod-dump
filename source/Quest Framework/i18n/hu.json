@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/purrplingcat/QuestFramework
+**
+*************************************************/
+
+{
+    "fallbackTitle": "(Töröld ezt a küldetést)",
+    "fallbackDescription": "Ez a küldetés a Küldetés rendszer telepítésével jött létre. Ha ezt a küldetést látod, akkor valami történt a Küldetés rendszer moddal, vagy a küldetéshez tartozó modot eltávolították. Ezt a küldetést az eltávolítás gombra kattintva törölheted.",
+    "fallbackObjective": "Az eltávolítás gombra kattintva törölheted ezt a küldetést.",
+    "quest.itemHarvest.objective": "{{harvested}}/{{total}} betakarított {{itemName}}."
+}

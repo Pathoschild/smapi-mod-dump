@@ -10,14 +10,8 @@
 
 {
     "Name": "White Domino Mask",
-    "Description": "A dapper mask to conceal your secret identity. Wonder whose this is?",
+    "Description": "...",
     "PurchasePrice": "200",
     "ShowHair": true,
-    "IgnoreHairstyleOffset": true,
-    "NameLocalization": {
-        "es": "Máscara de Dominó Blanca"
-    },
-    "DescriptionLocalization": {
-        "es": "Una máscara elegante para ocultar tu identidad secreta. ¿Me pregunto de quién es esto?"
-    }
+    "IgnoreHairstyleOffset": true
 }

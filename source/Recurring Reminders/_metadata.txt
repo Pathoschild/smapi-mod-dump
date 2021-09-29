@@ -6,10 +6,9 @@ mods:
    Recurring Reminders
 
 latest commit:
-   commit 83803c23666dadccffbe74cabfe4b9c7dd7e7560
-   Author: Dem1se <dem1se.io@protonmail.com>
-   Date:   Wed Jun 2 10:22:15 2021 +0530
+   commit 3b932689174fb8aa550f124b3d3b6ac61da590d8
+   Author: Tenebrosful <48710891+Tenebrosful@users.noreply.github.com>
+   Date:   Sat Sep 4 06:11:54 2021 +0200
    
-       Remove older release from release dir
-       required for PyModUpdater to work properly
+       Create fr.json
    

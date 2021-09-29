@@ -11,7 +11,7 @@
 {
     "Name": "Hot Pink Velvet Jacket",
     "Description": "...",
-    "HasFemaleVariant": false,
+    "HasFemaleVariant": "true",
     "Price": 50,
     "Dyeable": false
 }

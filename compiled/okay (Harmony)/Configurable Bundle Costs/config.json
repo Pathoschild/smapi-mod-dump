@@ -1,0 +1,18 @@
+{
+  "Joja": {
+    "busCost": 40000,
+    "minecartsCost": 15000,
+    "bridgeCost": 25000,
+    "greenhouseCost": 35000,
+    "panningCost": 20000,
+    "movieTheaterCost": 500000,
+    "applyValues": true
+  },
+  "Vault": {
+    "bundle1": 2500,
+    "bundle2": 5000,
+    "bundle3": 10000,
+    "bundle4": 25000,
+    "applyValues": true
+  }
+}

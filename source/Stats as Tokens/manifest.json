@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/dtomlinson-ga/StatsAsTokens
+**
+*************************************************/
+
+{
+  "Name": "Stats As Tokens",
+  "Author": "Vertigon",
+  "Version": "0.4.0",
+  "Description": "Exposes all stats tracked by the game, as well as some custom ones, for use by CP packs.",
+  "UniqueID": "Vertigon.StatsAsTokens",
+  "EntryDll": "StatsAsTokens.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:9659" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.23.0"
+    }
+  ]
+}

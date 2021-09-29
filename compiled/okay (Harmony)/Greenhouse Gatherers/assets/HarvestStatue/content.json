@@ -1,0 +1,34 @@
+﻿[
+  {
+    "$ItemType": "BigCraftable",
+    "ID": "HarvestStatue",
+    "Texture": "Sprites/empty.png:0"
+  },
+  {
+    "$ItemType": "CraftingRecipe",
+    "ID": "HarvestStatueRecipe",
+    "IsCooking": false,
+    "KnownByDefault": false,
+    "Result": {
+      "Value": "PeacefulEnd.GreenhouseGatherers.HarvestStatue/HarvestStatue",
+      "Quantity": 1
+    },
+    "Ingredients": [
+      {
+        "Type": "VanillaObject",
+        "Value": 74,
+        "Quantity": 1
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 390,
+        "Quantity": 350
+      },
+      {
+        "Type": "VanillaObject",
+        "Value": 268,
+        "Quantity": 150
+      }
+    ]
+  }
+]

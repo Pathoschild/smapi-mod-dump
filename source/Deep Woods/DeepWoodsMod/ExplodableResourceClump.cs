@@ -15,7 +15,7 @@ using System;
 
 namespace DeepWoodsMod
 {
-    class ExplodableResourceClump : ResourceClump
+    public class ExplodableResourceClump : ResourceClump
     {
         public ExplodableResourceClump()
             : base()

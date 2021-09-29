@@ -22,7 +22,7 @@ using FishingTrawler.Objects.Rewards;
 using FishingTrawler.Objects.Tools;
 using FishingTrawler.Patches.Locations;
 using FishingTrawler.UI;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
@@ -131,7 +131,7 @@ namespace FishingTrawler
             // Load our Harmony patches
             try
             {
-                var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+                var harmony = new Harmony(this.ModManifest.UniqueID);
 
                 // Apply our patches
                 new BeachPatch(monitor).Apply(harmony);

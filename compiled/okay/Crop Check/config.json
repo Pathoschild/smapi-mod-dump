@@ -1,4 +1,5 @@
 {
   "ToggleKey": "N",
-  "FruitTreeAlertNumber": 1
+  "FruitTreeAlertNumber": 1,
+  "AutoUnsave": false
 }

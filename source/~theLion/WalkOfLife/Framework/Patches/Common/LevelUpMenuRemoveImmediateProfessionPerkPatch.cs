@@ -18,9 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using TheLion.Stardew.Common.Extensions;
 using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Events;
 using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -38,7 +36,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		#region harmony patches
 
 		/// <summary>Patch to remove modded immediate profession perks.</summary>
-		[HarmonyPrefix]
+		[HarmonyPostfix]
 		private static void LevelUpMenuRemoveImmediateProfessionPerkPostfix(int whichProfession)
 		{
 			try
@@ -46,7 +44,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				if (!Util.Professions.IndexByName.TryGetReverseValue(whichProfession, out var professionName)) return;
 
 				// remove immediate perks
-				if (professionName.Equals("Aquarist"))
+				if (professionName == "Aquarist")
 				{
 					foreach (var b in Game1.getFarm().buildings.Where(b => (b.owner.Value == Game1.player.UniqueMultiplayerID || !Game1.IsMultiplayer) && b is FishPond && !b.isUnderConstruction() && b.maxOccupants.Value > 10))
 					{
@@ -56,17 +54,17 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				}
 
 				// clean unnecessary mod data
-				ModEntry.Data.RemoveProfessionDataFields(whichProfession);
+				ModEntry.Data.RemoveProfessionDataFields(professionName);
 
 				// unsubscribe unnecessary events
-				ModEntry.Subscriber.UnsubscribeProfessionEvents(whichProfession);
+				ModEntry.Subscriber.UnsubscribeProfessionEvents(professionName);
 
 				// unregister super mode
-				var combatProfessions = new[] { "Brute", "Hunter", "Desperado", "Piper" };
-				if (!professionName.AnyOf(combatProfessions) || ModEntry.SuperModeIndex != whichProfession) return;
+				if (ModEntry.SuperModeIndex != whichProfession) return;
 
-				if (Game1.player.HasAnyOfProfessions(combatProfessions.Except(new[] { professionName }).ToArray()))
-					ModEntry.SuperModeIndex = Util.Professions.IndexOf(combatProfessions.First());
+				var superModeProfessions = new[] { "Brute", "Poacher", "Desperado", "Piper" };
+				if (Game1.player.HasAnyOfProfessions(superModeProfessions.Except(new[] { professionName }).ToArray()))
+					ModEntry.SuperModeIndex = Util.Professions.IndexOf(superModeProfessions.First());
 				else
 					ModEntry.SuperModeIndex = -1;
 

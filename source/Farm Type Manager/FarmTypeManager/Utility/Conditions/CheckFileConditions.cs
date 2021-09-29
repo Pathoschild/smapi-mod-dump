@@ -54,6 +54,11 @@ namespace FarmTypeManager
                                 validType = true;
                                 break; //skip checking the rest of the farm types
                             }
+                            else if (name.Equals(Game1.GetFarmTypeID(), StringComparison.OrdinalIgnoreCase)) //if this is the name of the player's custom farm type (added with SDV 1.5.5+ features)
+                            {
+                                validType = true;
+                                break; //skip checking the rest of the farm types
+                            }
                             else if (Enum.TryParse(name, true, out FarmTypes farmType)) //if this name can be parsed into a FarmTypes enum
                             {
                                 type = (int)farmType; //use it as an integer

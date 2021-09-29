@@ -22,7 +22,7 @@ using DeepWoodsMod.API.Impl;
 
 namespace DeepWoodsMod
 {
-    class Unicorn : Horse
+    public class Unicorn : Horse
     {
         private NetBool isScared = new NetBool(false);
         private NetBool isPetted = new NetBool(false);

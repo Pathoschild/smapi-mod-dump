@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -52,10 +52,10 @@ namespace MultiStoryFarmhouse
             Helper.Events.GameLoop.DayEnding += GameLoop_DayEnding;
             Helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
 
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(DecoratableLocation), nameof(DecoratableLocation.getWalls)),
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.getWalls)),
                prefix: new HarmonyMethod(typeof(CodePatches), nameof(CodePatches.getWalls_Prefix))
             );
 

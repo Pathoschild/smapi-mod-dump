@@ -1,0 +1,15 @@
+{
+  "EnableMultiplerHub": true,
+  "AllowOnlyModdedClients": true,
+  "ServerMOTD": "My Awesome public farm!",
+  "EnableModBlacklist": true,
+  "DisallowedMods": {
+    "Dummy.Mod": {
+      "DisplayName": "Dummy Mod",
+      "Version": "1.0.0",
+      "AutoKickPlayer": false,
+      "AutoBanPlayer": false,
+      "NotifyMasterPlayer": false
+    }
+  }
+}

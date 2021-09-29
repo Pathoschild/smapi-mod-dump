@@ -6,22 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 0c777a12a32beb8c2911bef055a7217212c95249
+   commit 7879707c361f7309336caab433f9ec4d80418bee
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Mon Aug 23 23:25:00 2021 +0800
+   Date:   Tue Sep 28 09:12:02 2021 +0800
    
-       Greenhouse FINISHED! (I am speed)
-       
-       Other changes (done)
-       > Designed Interior
-       > Made shipping bin property (ShipmentRSV)
-       > Fixed OddJobs watering limit
-       > Remove tile action debugger
-       > Removed dialogue selection debug logs
-       > Removed ShowImage debug logs
-       > Made NPC crops
-       > Put new map string
-       > Fixed Warp Greenhouse
-       > Test functionality (works w/ multiplayer!)
-       > Test NPCs in greenhouse (they can visit! yey!)
+       World Map update! SHEKU U A BEAST
    

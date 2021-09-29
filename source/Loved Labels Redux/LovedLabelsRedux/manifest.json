@@ -11,10 +11,10 @@
 {
   "Name": "Loved Labels Redux",
   "Author": "thespbgamer",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Shows the labels of the animals.",
   "UniqueID": "thespbgamer.LovedLabelsRedux",
   "EntryDll": "LovedLabelsRedux.dll",
-  "MinimumApiVersion": "3.10.1",
+  "MinimumApiVersion": "3.12.6",
   "UpdateKeys": [ "GitHub:thespbgamer/LovedLabelsRedux", "Nexus:8880" ]
 }

@@ -1,0 +1,26 @@
+{
+  "ParrotPot": {
+    "Frames": 1,
+    "Image": "Sprites/empty.png",
+    "PlayerColor": false,
+    "PlayerConfig": false,
+    "Capacity": 36,
+    "VacuumItems": false,
+    "IsPlaceable": true,
+    "AccessCarried": false,
+    "CanCarry": false,
+    "OpenSound": "stoneStep",
+    "PlaceSound": "hammer",
+    "ModData": {
+      "Pathoschild.Automate/StoreItems": "Disable",
+      "PeacefulEnd.IslandGatherers/ParrotPot": "true",
+      "PeacefulEnd.IslandGatherers/AteCrops": "false",
+      "PeacefulEnd.IslandGatherers/HasSpawnedJunimos": "false"
+    },
+    "DisabledFeatures": [
+      "AccessCarried",
+      "VacuumItems",
+      "CanCarry"
+    ]
+  }
+}

@@ -43,7 +43,7 @@ namespace GenericModConfigMenu.Framework.UI
             this.Scale = this.Hover ? Math.Min(this.Scale + 0.013f, 1.083f) : Math.Max(this.Scale - 0.013f, 1f);
 
             if (this.Clicked)
-                Callback?.Invoke(this);
+                this.Callback?.Invoke(this);
         }
 
         public override void Draw(SpriteBatch b)

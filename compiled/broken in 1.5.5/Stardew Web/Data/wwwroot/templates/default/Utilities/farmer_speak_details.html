@@ -1,0 +1,199 @@
+﻿<script>
+    function Record() {
+        RunDebugCommand("startrec", "status");
+        //document.getElementById("status").innerHTML = "Recording";
+    }
+    function Pause() {
+        document.getElementById("status").innerHTML = "Paused";
+    }
+    function Stop() {
+        RunDebugCommand("stopplaying", "status");
+        //document.getElementById("status").innerHTML = "Stopped";
+    }
+    function Play() {
+        RunDebugCommand("playrecording", "status");
+        //document.getElementById("status").innerHTML = "Playing";
+    }
+    function SaveRecording() {
+        RunDebugCommand("saverecording " + document.getElementById("savename").value, "popup");
+    }
+    function SendTalk() {
+        //
+        //  send the talk command with the entered text
+        //
+        if (document.getElementById("status").innerHTML == "Recording") {
+            RunDebugCommand('rectalk ' + document.getElementById('speakText').value, "recres")
+        }
+        else {
+            RunDebugCommand('talk ' + document.getElementById('speakText').value, null)
+        }
+    }
+    function SendThink() {
+        //
+        //  send the entered text as a thought bubble
+        //
+        if (document.getElementById("status").innerHTML == "Recording") {
+            RunDebugCommand('recthink ' + document.getElementById('thinkText').value, "recres")
+        }
+        else {
+            RunDebugCommand('think ' + document.getElementById('thinkText').value, null)
+        }
+    }
+    function ClearList() {
+        //
+        //  clear the current recording list
+        //
+        document.getElementById("recordings").options.length = 0;
+        RunDebugCommand('clearrecordings', null);
+    }
+    function DeleteItem() {
+        //
+        //  delete the current item from the current recording list
+        //
+        var iIndex = document.getElementById('recordings').selectedIndex;
+        if (iIndex > -1) {
+            RunDebugCommand('delrec ' + document.getElementById('recordings')[iIndex].value, null);
+        }
+        var s = 1;
+        var Index;
+        if (document.getElementById("recordings").selectedIndex == -1) {
+            alert("Please select any item from the ListBox");
+            return false;
+        }
+        while (s > 0) {
+            Index = document.getElementById("recordings").selectedIndex;
+            if (Index >= 0) {
+                document.getElementById("recordings").options[Index] = null;
+            }
+            else
+                s = 0;
+        }
+    }
+
+    function LoadSave() {
+        var iIndex = document.getElementById('saves').selectedIndex;
+        if (iIndex > -1) {
+            RunDebugCommand('loadsave ' + document.getElementById('saves')[iIndex].value,'loadres') ;
+        }
+    }
+    function HideBubble() {
+        RunDebugCommand('togglebubble off', 'recres');
+    }
+    function PopulateSave(data) {
+        var oList = document.getElementById("recordings");
+        oList.options.length = 0;
+        var arSave = data.split("#$#");
+
+        for (var iLoop = 0; iLoop < arSave.length; iLoop++) {
+            var opt = document.createElement("option");
+            opt.text = arSave[iLoop];
+            opt.value = arSave[iLoop];
+            oList.options.add(opt);
+        }
+    }
+</script>
+<table>
+    <tr>
+        <td>
+            <div class="message_board_title">Controller</div>
+        </td>
+        <td>
+            <div class="message_board_title">Current Recording</div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="message_paper_board base_font" style="height:450px;">
+                <table class="stardew_table" style="width:100%;">
+
+                    <tr>
+                        <td><button onclick="SendTalk();">Talk</button></td>
+                        <td><textarea id="speakText" rows="3" cols="20"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><button onclick="SendThink();">Think</button></td>
+                        <td><textarea id="thinkText" rows="3" cols="20"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="center">
+                            <button onclick="HideBubble();">Hide Bubble</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table style="margin-left:auto;margin-right:auto; width:290px;">
+                                <tr>
+                                    <td>
+                                        <button onclick="Record();">Record</button>
+                                        <button onclick="Pause();">Pause</button>
+                                        <button onclick="Stop();">Stop</button>
+                                        <button onclick="Play();">Play</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="center">
+                            <div id="status">----</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </td>
+        <td>
+
+            <div class="message_paper_board" style="height:400px;">
+                <table>
+                    <tr>
+                        <td>
+                            <select name="recodings" size="12" id="recordings" style="width:500px;">
+                                #ITEMS#
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><button onclick="ClearList();">Clear</button><button onclick="DeleteItem();">Delete</button></td>
+                                    <td><button onclick="SaveRecording();">Save</button> <input type="text" id="savename" width="20" /></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><div class="message_board_title_lg">Recordings</div></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div class="message_paper_board_lg">
+                <table>
+                    <tr>
+                        <td>
+                            <select name="saves" size="12" id="saves" style="width:500px;">
+                                #SAVES#
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><button onclick="DeleteItem();">Delete</button></td>
+                                    <td><button onclick="LoadSave();">Load</button></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </td>
+    </tr>
+</table>

@@ -21,10 +21,13 @@ using System.Threading.Tasks;
 
 namespace IslandGatherers.Framework.Objects
 {
-    public class ParrotPot : Chest
+    public class ParrotPot
     {
+        // Storage related
+        private Chest chest;
+        private GameLocation location;
+
         internal bool isFull = false;
-        internal bool ateCrops = false;
         internal bool harvestedToday = false;
         internal bool hasSpawnedParrots = false;
         internal List<Vector2> harvestedTiles = new List<Vector2>();
@@ -43,11 +46,22 @@ namespace IslandGatherers.Framework.Objects
 
         }
 
-        public ParrotPot(Vector2 position, int itemID, bool enableHarvestMessage = true, bool doParrotsEatExcessCrops = true, bool doParrotsHarvestFromPots = true, bool doParrotsHarvestFromFruitTrees = true, bool doParrotsHarvestFromFlowers = true, bool doParrotsSowSeedsAfterHarvest = false, int minimumFruitOnTreeBeforeHarvest = 3) : base(true, position, itemID)
+        public ParrotPot(Chest storage, GameLocation gameLocation)
         {
-            this.Name = "Parrot Pot";
-            this.modData[IslandGatherers.parrotPotFlag] = System.String.Empty;
+            chest = storage;
+            location = gameLocation;
+        }
 
+        public void AddItems(IEnumerable<Item> items)
+        {
+            foreach (var item in items)
+            {
+                chest.addItem(item);
+            }
+        }
+
+        internal void HarvestCrops(GameLocation location, bool enableHarvestMessage = true, bool doParrotsEatExcessCrops = true, bool doParrotsHarvestFromPots = true, bool doParrotsHarvestFromFruitTrees = true, bool doParrotsHarvestFromFlowers = true, bool doParrotsSowSeedsAfterHarvest = false, int minimumFruitOnTreeBeforeHarvest = 3)
+        {
             this._enableHarvestMessage = enableHarvestMessage;
             this._doParrotsEatExcessCrops = doParrotsEatExcessCrops;
             this._doParrotsHarvestFromPots = doParrotsHarvestFromPots;
@@ -56,27 +70,9 @@ namespace IslandGatherers.Framework.Objects
             this._doParrotsSowSeedsAfterHarvest = doParrotsSowSeedsAfterHarvest;
             this._minimumFruitOnTreeBeforeHarvest = minimumFruitOnTreeBeforeHarvest;
 
-            base.type.Value = "Crafting";
-            base.bigCraftable.Value = true;
-            base.canBeSetDown.Value = true;
 
-            // Setting SpecialChestType to -1 so we can bypass Automate's default chest logic
-            // TODO: Make this only happen if Automate is installed
-            this.SpecialChestType = (SpecialChestTypes)(-1);
-        }
-
-        public void AddItems(IEnumerable<Item> items)
-        {
-            foreach (var item in items)
-            {
-                this.addItem(item);
-            }
-        }
-
-        internal void HarvestCrops(GameLocation location)
-        {
             // Check if we're at capacity and that Parrots aren't allowed to eat excess crops
-            if (this.items.Count >= this.GetActualCapacity() && !_doParrotsEatExcessCrops)
+            if (chest.items.Count >= chest.GetActualCapacity() && !_doParrotsEatExcessCrops)
             {
                 Game1.showRedMessage($"The Parrots at the Ginger Island farm couldn't harvest due to lack of storage!");
                 return;
@@ -106,7 +102,7 @@ namespace IslandGatherers.Framework.Objects
             }
 
             // Check if the Parrots ate the crops due to no inventory space
-            if (ateCrops)
+            if (bool.Parse(chest.modData[IslandGatherers.ateCropsFlag]))
             {
                 Game1.showRedMessage($"The Parrots at the Ginger Island farm ate harvested crops due to lack of storage!");
                 return;
@@ -122,7 +118,7 @@ namespace IslandGatherers.Framework.Objects
 
         private bool HasRoomForHarvest()
         {
-            if (this.items.Count >= this.GetActualCapacity() && !_doParrotsEatExcessCrops)
+            if (chest.items.Count >= chest.GetActualCapacity() && !_doParrotsEatExcessCrops)
             {
                 return false;
             }
@@ -133,7 +129,7 @@ namespace IslandGatherers.Framework.Objects
         private void AttemptSowSeed(int seedIndex, HoeDirt hoeDirt, Vector2 tile)
         {
             // -74 == Object.SeedsCategory
-            Item seedItem = this.items.FirstOrDefault(i => i != null && i.Category == -74 && i.ParentSheetIndex == seedIndex);
+            Item seedItem = chest.items.FirstOrDefault(i => i != null && i.Category == -74 && i.ParentSheetIndex == seedIndex);
             if (seedItem != null)
             {
                 // Remove one seed from the stack, or the whole item if it is the last seed of the stack
@@ -141,7 +137,7 @@ namespace IslandGatherers.Framework.Objects
 
                 if (seedItem.Stack == 0)
                 {
-                    this.items.Remove(seedItem);
+                    chest.items.Remove(seedItem);
                 }
 
                 // Plant the seed on the ground
@@ -209,9 +205,9 @@ namespace IslandGatherers.Framework.Objects
                 }
 
                 Vector2 tile = tileToForage.Key;
-                if (this.addItem(tileToForage.Value.getOne()) != null)
+                if (chest.addItem(tileToForage.Value.getOne()) != null)
                 {
-                    ateCrops = true;
+                    chest.modData[IslandGatherers.ateCropsFlag] = true.ToString();
                 }
 
                 tilesToRemove.Add(tile);
@@ -284,9 +280,9 @@ namespace IslandGatherers.Framework.Objects
 
                 if (pot.heldObject.Value != null && pot.heldObject.Value.isForage(location))
                 {
-                    if (this.addItem(pot.heldObject.Value.getOne()) != null)
+                    if (chest.addItem(pot.heldObject.Value.getOne()) != null)
                     {
-                        ateCrops = true;
+                        chest.modData[IslandGatherers.ateCropsFlag] = true.ToString();
                     }
 
                     pot.heldObject.Value = null;
@@ -346,9 +342,9 @@ namespace IslandGatherers.Framework.Objects
                             break;
                     }
 
-                    if (this.addItem(new Object(fruitTree.indexOfFruit, 1, quality: fruitQuality)) != null)
+                    if (chest.addItem(new Object(fruitTree.indexOfFruit, 1, quality: fruitQuality)) != null)
                     {
-                        ateCrops = true;
+                        chest.modData[IslandGatherers.ateCropsFlag] = true.ToString();
                     }
                 }
 
@@ -356,32 +352,6 @@ namespace IslandGatherers.Framework.Objects
 
                 harvestedToday = true;
             }
-        }
-
-        public override bool placementAction(GameLocation location, int x, int y, Farmer who = null)
-        {
-            base.tileLocation.Value = new Vector2(x / 64, y / 64);
-            return true;
-        }
-
-        public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
-        {
-            float draw_x = x;
-            float draw_y = y;
-            if (this.localKickStartTile.HasValue)
-            {
-                draw_x = Utility.Lerp(this.localKickStartTile.Value.X, draw_x, this.kickProgress);
-                draw_y = Utility.Lerp(this.localKickStartTile.Value.Y, draw_y, this.kickProgress);
-            }
-            float base_sort_order = System.Math.Max(0f, ((draw_y + 1f) * 64f - 24f) / 10000f) + draw_x * 1E-05f;
-            if (this.localKickStartTile.HasValue)
-            {
-                spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((draw_x + 0.5f) * 64f, (draw_y + 0.5f) * 64f)), Game1.shadowTexture.Bounds, Color.Black * 0.5f, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, 0.0001f);
-                draw_y -= (float)System.Math.Sin((double)this.kickProgress * System.Math.PI) * 0.5f;
-            }
-
-            // Show a "filled" sprite or not, based on if the Harvest Statues has items
-            spriteBatch.Draw(Game1.bigCraftableSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((base.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), Game1.getSourceRectForStandardTileSheet(Game1.bigCraftableSpriteSheet, this.items.Any() ? this.ParentSheetIndex + 1 : this.ParentSheetIndex, 16, 32), this.tint.Value * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order);
         }
     }
 }

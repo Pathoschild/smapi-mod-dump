@@ -6,9 +6,9 @@ mods:
    Combine Machines
 
 latest commit:
-   commit 4362fc824515cd8d155709dd9ea22b2b17f05216
+   commit 2680563338cb85f615162c41531c266cb0e4095e
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Sat Mar 6 20:21:51 2021 -0500
+   Date:   Thu Sep 23 20:07:43 2021 -0400
    
-       Added controller support. SButton.MouseLeft and SButton.MouseRight replaced with IsUseToolButton and IsActionButton
+       Update for beta 64-bit game version ("Stardew Valley [monogame64bit]". Migrated to .net 5.0 and updated Harmony references to HarmonyLib.
    

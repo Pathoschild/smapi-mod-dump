@@ -7,9 +7,9 @@ mods:
    Quest Essentials
 
 latest commit:
-   commit be3d16edc1845ac58750cea2c1d9514b278a1478
-   Author: shekurika <shekurika@gmail.com>
-   Date:   Mon Aug 9 10:32:27 2021 +0200
+   commit fb4661f5dddc1dc606ff1beb2d9578aa709e6bb5
+   Author: PurrplingCat <ellenfawkes@gmail.com>
+   Date:   Mon Sep 20 12:55:10 2021 +0200
    
-       fix for the TotalMoneyEarned staying 0 bug (#2)
+       Renamed Custom Gift Dialogue in manifest.json
    

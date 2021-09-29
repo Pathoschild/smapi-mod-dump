@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9687
+IDs: aedenthorn.Renovations
+update keys: Nexus:9687, GitHub:aedenthorn/StardewValleyMods

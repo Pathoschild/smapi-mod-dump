@@ -11,7 +11,7 @@
 {
     "Name": "Pink Collared Coat",
     "Description": "...",
-    "HasFemaleVariant": false,
+    "HasFemaleVariant": "true",
     "Price": 50,
     "Dyeable": false
 }

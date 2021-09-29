@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "[JA] Garsnips",
+    "Description": "Hybrid Crop Engine example pack.",
+    "Author": "spacechase0, ParadigmNomad",
+    "Version": "1.0.3",
+    "UniqueID": "spacechase0.HybridCropEngine.Example.JA",
+    "ContentPackFor": {
+        "UniqueID": "spacechase0.JsonAssets"
+    },
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.HybridCropEngine"
+        }
+    ],
+    "UpdateKeys": [ "Nexus:6577@Garsnips" ]
+}

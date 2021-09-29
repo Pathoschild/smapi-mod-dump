@@ -99,6 +99,8 @@ Trigger           |           | `string` Completion trigger (see quest types for
 FriendshipGain    |           | `{[string]: int}` Additional friendship points for enumarated NPCs which player gains after this quest was completed.
 [Hooks](#hooks) || `Hook[]` Quest hooks (see hooks for more info)
 [ConversationTopic](#conversation-topic) || `ConversationTopic` Add or remove conversation topic (see conversation topic for more info)
+AddMailOnComplete |           | Receive the mail(s) by player after quest is completed. Supported multiple letter names. See [Completion Mails](#completion-mails) for more details
+RemoveMailOnComplete |        | Remove already received mail from player (clear mail flag) after quest is completed. Supported multiple letter names. See [Completion Mails](#completion-mails) for more details
 
 #### Example
 
@@ -198,6 +200,10 @@ You can define custom quest via setup value `Custom` into field `Type` or in for
 
 *Trigger*: Custom defined. In JSON api use hooks instead for handle your pure JSON custom quest. If you target a custom quest type defined by any other mod in your JSON content pack, follow instructions of the source mod of this quest type.
 
+**Needs more quest types?**
+
+The [Quest Essentials](https://www.nexusmods.com/stardewvalley/????) offers some new custom types for Quest Framework, like multi-staged quests, earn money quest type and etc.
+
 ### Rewards
 
 There are supported some reward types for quests. You can specify reward type in field `RewardType` in your quest definition. Reward is paid to player after quest is completed by clicking the reward in questlog menu (in quest details for completed quest)
@@ -269,6 +275,45 @@ Weapon      | Which weapon player gets by complete this quest. You can specify y
 }
 ```
 
+### Completion mails
+
+By adding fields `AddMailOnComplete` and/or `RemoveMailOnComplete` you can specify which mails will player receive after quest is completed, or which already received mail will be forgotten by player. 
+
+Add mail on complete is usefull for controll your custom events based on quests or for some other purposes. You can use mail name of received mail with Content Patcher in their condition system for control loading assets in dependency on quest completion and etc. You can specify multiple mails and with some flags. The format of a mail entry is:
+
+ ```
+ <letterId> [noletter|tomorrow|everyone]
+ ```
+ 
+ - `noletter` mail is received immediatelly without letter in farmer's mailbox
+ - `tomorrow` mail will be received at morning (next day)
+ - `everyone` mail will be received by farmer and by all farmhands recognized in multiplayer game (for single player is the same behaviour as without this flag)
+
+You can combine all of these flags per letter record. For the `RemoveMailOnComplete` you can use only the flag `everyone`. Mails to remove are removed immediatelly after complete quest, other flags are ignored and unread mails in the mailbox are not affected.
+
+```js
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "abigail_amethyst1",
+      "Type": "ItemDelivery",
+      "Title": "The purple lunch",
+      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
+      "Objective": "Bring amethyst to Abigail",
+      "DaysLeft": 5,
+      "Reward": "Chocolate Cake",
+      "RewardType": "Object"
+      "RewardAmount": 2, // Player gets two chocolate cakes after complete this quest
+      "Cancelable": true, // This quest can be cancelled by player
+      "Trigger": "Abigail 66", // Bring amethyst to Abby
+      "ReactionText": "Oh, it's looks delicious. I am really hungry."
+      "AddMailOnComplete:" "happy_abby noletter, abby_eats_rocks tomorrow everyone" // two mails will be received after this quest is completed
+    }
+  ]
+}
+```
+
 ### Colors & Texture
 
 Be different! You can specify background texture of quest details window in quest log menu. Just specify an relative path to your content pack root in field `Texture` for your quest. Also you can customize text colors for this quest with field `Colors`.
@@ -322,93 +367,6 @@ Color id | Description
   ]
 }
 ```
-
-## Hooks
-
-You can add some "magic" to your custom quests with hooks. Hooks do specified action with your quests when something was triggered in the game.
-
-Hooks has conditions for check if the action of hook will be triggered or not. There are two types of conditions: local and environment. You don't must specify all available conditions. You can specify conditions which you need.
-
-Field  | Description
------- | -----------
-When   | When this hook will be trigered (see hook types)
-Action | Which action will be executed (see actions)
-Has    | Conditions for execute the hook (see conditions and hook types).
-
-#### Example
-
-```js
-{
-  "Format": "1.0",
-  "Quests": [
-    {
-      "Name": "my_custom_quest",
-      "Type": "ItemDelivery", // Vanilla quest type
-      "Title": "The purple lunch",
-      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
-      "Objective": "Bring amethyst to Abigail",
-      "Reward": 300, // 300g
-      "Cancelable": true,
-      "Trigger": "Abigail 66", // Bring amethyst to Abby
-      "ReactionText": "Oh, it's looks delicious. I am really hungry.",
-      "Hooks": [
-         // Quest will be accepted (added to quest log) 
-         // when farmer go near the tree on the west side of graveyard in Town
-         // and when is sunny weather today
-        {
-          "When": "Tile",
-          "Has": {
-            "Location": "Town",
-            "Area": "2038 5573 326 245",
-            "Weather": "sunny"
-          },
-          "Action": "Accept"
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Actions
-
-There are these types of actions:
-
-Action name     | Description
---------------- | -----------
-Complete        | Complete the quest
-Remove          | Remove the quest from player's questlog (quest is not considered complete, just removed)
-CheckIfComplete | Handles completion checker and complete the quest if inner quest conditions are met.
-Accept          | Accept this quest and add it to player's quest log as new quest (has the sign new in quest log).
-
-### Hook types
-
-Some hook types has own specific conditions. See them bellow.
-**NOTE:** For specialized hook type's conditions you cant't use the negation `not:` prefix. This prefix is only for [common conditions](common-environment-conditions) and for global custom conditions.
-
-#### Location
-
-This hook is triggered when player entered or leaved specific location and all other conditions are met.
-
-Local condition | Description
---------------- | -----------
-Enter           | Name of the location the player enter
-Leave           | Name of the location the player left
-
-If you specify both, then the hook action will be triggered when player left the Leave location and entered the Enter location. For example:
-
-Enter condition is `Town` and leave condition is `BusStop`. This hook trigs their action when player entered Town from the Bus Stop.
-
-#### Tile
-
-This hook is triggered when player stands on specific tile position or in specific area of specific location.
-
-Local condition | Description
---------------- | -----------
-Location        | Game location
-Position        | Standing tile position (X, Y). Example `13 10`
-Area            | Specified standing area (X, Y, Width, Height) Example: `2038 5573 326 245`
-TouchAction     | Touch action property value must be this defined value for trig hook's action.
 
 ## Conversation topic
 
@@ -491,6 +449,9 @@ KnownCookingRecipe       | `Fried Egg`                | Player knows specified c
 HasMod                   | `PurrplingCat.NpcAdventure` | Checks if mod with specified mod UID(s) are loaded in SMAPI. You can put here one or more mod UIDs.
 Random                   | `52` or `22.272`           | A random chance in % (0 - 100). Number `52` means 52% of chance, number `22.272` means 22.272% of chance.
 EPU                      | EPU string like `!z spring/t 600 1000` | Condition processed by [Expanded Preconditions Utility](https://www.nexusmods.com/stardewvalley/mods/6529). For use this condition, EPU must be installed in SDV mods folder. See [EPU docs](https://github.com/ChroniclerCherry/stardew-valley-mods/blob/master/ExpandedPreconditionsUtility/README.md) for more information.
+HasItemInInventory       | `Battery Pack`, `item_amethyst`, `food_sweet, food_bakery` | Check if player has an item in inventory matches given name or context tags.
+HasActiveQuest           | `myQuest@purrplingcat.myquestpack`, `myQuest@purrplingcat.myquestpack another@obamoose.questpack` | Check if one or more of named quests are active in player's quest log. Named quests must be managed by QF.
+CurrentLocation          | `Town`, `Farm` and etc | Check if player's current location is the specified location in this condition by location name.
 
 Every condition name enlisted in this common conditions list you can prefix with `not:` for negate condition result.
 For example: `not:EventSeen` means event with specified id was not seen by player;
@@ -903,3 +864,92 @@ By place `[quest:<questname> <modUID>]` to the dialogue player get a quest when 
 ```
 
 **NOTE:** By add quest via dialogue in this outbound way, you can't check the QF conditions and no exclamation mark will be shown above NPC head. But in this way you can offer a quest via question dialogue.
+
+## Hooks (obsolete)
+
+**HOOKS ARE OBSOLETE! It's not recomended this feature, because it will be removed in future versions** Some of hooks features are replaced with [Quest Essential's Adventure Quests](docs/adventure-quests.md).
+
+You can add some "magic" to your custom quests with hooks. Hooks do specified action with your quests when something was triggered in the game.
+
+Hooks has conditions for check if the action of hook will be triggered or not. There are two types of conditions: local and environment. You don't must specify all available conditions. You can specify conditions which you need.
+
+Field  | Description
+------ | -----------
+When   | When this hook will be trigered (see hook types)
+Action | Which action will be executed (see actions)
+Has    | Conditions for execute the hook (see conditions and hook types).
+
+#### Example
+
+```js
+{
+  "Format": "1.0",
+  "Quests": [
+    {
+      "Name": "my_custom_quest",
+      "Type": "ItemDelivery", // Vanilla quest type
+      "Title": "The purple lunch",
+      "Description": "Abigail are very hungry. She wants to eat something special from mines.",
+      "Objective": "Bring amethyst to Abigail",
+      "Reward": 300, // 300g
+      "Cancelable": true,
+      "Trigger": "Abigail 66", // Bring amethyst to Abby
+      "ReactionText": "Oh, it's looks delicious. I am really hungry.",
+      "Hooks": [
+         // Quest will be accepted (added to quest log) 
+         // when farmer go near the tree on the west side of graveyard in Town
+         // and when is sunny weather today
+        {
+          "When": "Tile",
+          "Has": {
+            "Location": "Town",
+            "Area": "2038 5573 326 245",
+            "Weather": "sunny"
+          },
+          "Action": "Accept"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Actions
+
+There are these types of actions:
+
+Action name     | Description
+--------------- | -----------
+Complete        | Complete the quest
+Remove          | Remove the quest from player's questlog (quest is not considered complete, just removed)
+CheckIfComplete | Handles completion checker and complete the quest if inner quest conditions are met.
+Accept          | Accept this quest and add it to player's quest log as new quest (has the sign new in quest log).
+
+### Hook types
+
+Some hook types has own specific conditions. See them bellow.
+**NOTE:** For specialized hook type's conditions you cant't use the negation `not:` prefix. This prefix is only for [common conditions](common-environment-conditions) and for global custom conditions.
+
+#### Location
+
+This hook is triggered when player entered or leaved specific location and all other conditions are met.
+
+Local condition | Description
+--------------- | -----------
+Enter           | Name of the location the player enter
+Leave           | Name of the location the player left
+
+If you specify both, then the hook action will be triggered when player left the Leave location and entered the Enter location. For example:
+
+Enter condition is `Town` and leave condition is `BusStop`. This hook trigs their action when player entered Town from the Bus Stop.
+
+#### Tile
+
+This hook is triggered when player stands on specific tile position or in specific area of specific location.
+
+Local condition | Description
+--------------- | -----------
+Location        | Game location
+Position        | Standing tile position (X, Y). Example `13 10`
+Area            | Specified standing area (X, Y, Width, Height) Example: `2038 5573 326 245`
+TouchAction     | Touch action property value must be this defined value for trig hook's action.

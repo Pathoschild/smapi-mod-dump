@@ -7,9 +7,9 @@ mods:
    Island Gatherers Automate
 
 latest commit:
-   commit 0fd36e42124e11a0cc8ea9ec0a5eb132a99d49e1
+   commit 7dae5100f36898a02de52ea47f0e58b75cbb033b
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Wed Apr 21 00:18:17 2021 -0500
+   Date:   Mon Sep 13 19:57:23 2021 -0500
    
-       Fixed project post-build
+       v2.0.0 released
    

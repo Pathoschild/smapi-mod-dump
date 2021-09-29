@@ -9,8 +9,13 @@ for queries and analysis.**
 # ControlValley 1.2.3
 
 Stardew Valley Support for Twitch Crowd Control<br>
-Copyright (C) 2021 TheTexanTesla<br>
+Copyright (C) 2021 TerribleTable<br>
 LGPL v2.1
+
+## Contributors
+
+- [TerribleTable](https://twitter.com/tablesfordays)
+- [BambooleanLogic](https://twitter.com/BambooleanLogic)
 
 ## Roadmap
 
@@ -19,9 +24,7 @@ LGPL v2.1
 - [X] Status effects
 - [X] More warps
 - [X] Upgrade backpack
-- [ ] Official Crowd Control adoption
-  - [ ] ConcernedApe approval
-  - [ ] Warp World approval
+- [X] Official Crowd Control adoption
 - [ ] Downgrade backpack
 - [ ] Add/remove items
 - [ ] Multiplayer support
@@ -31,19 +34,11 @@ LGPL v2.1
 
 ## Installation and Use
 
-**NOTE: Currently offline Crowd Control demo for Windows only**
-
 - Download and install [SMAPI 3.9.2](https://smapi.io)
-- Download and install [Crowd Control SDK](https://forum.warp.world/t/how-to-setup-and-use-the-crowd-control-sdk/5121)
 - Download [`ControlValley.zip`](https://github.com/tesla1889tv/ControlValleyMod/releases/latest/download/ControlValley.zip)
-- Download [`StardewControl.cs`](https://github.com/tesla1889tv/ControlValleyMod/releases/latest/download/StardewControl.cs)
 - Extract `ControlValley.zip` into your SMAPI Mods folder
-- Run `CrowdControl.SDK.exe`
-- Select `Load Pack Source`
-- Locate and select `StardewControl.cs`
-- Select `Connect`
-- Run `StardewModdingAPI.exe`
-- Select various effects from the `CrowdControl.SDK.exe` window
+- Start “Stardew Valley (PC)” from the Crowd Control desktop app
+- Start Stardew Valley using `StardewModdingAPI.exe` in your install folder
 - ???
 - PROFIT
 

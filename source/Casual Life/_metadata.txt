@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/adverserath/StardewValley-CasualLifeMod
+   Git: https://github.com/adverserath/StardewValley-CasualLifeMod.git
+
+mods:
+   Casual Life
+
+latest commit:
+   commit a299a8453112fcfd01f0788d89f827f8325679b2
+   Author: David Rath <adverserath@gmail.com>
+   Date:   Thu Aug 26 23:50:14 2021 +0100
+   
+       * Update UpdateKeys
+       * Set version number in manifest
+   

@@ -6,9 +6,9 @@ mods:
    Control Valley
 
 latest commit:
-   commit 65accba504af28569a98b94cfafac2bb19bf570a
+   commit d4f8aaf235be4d3fe62978bbbe5d35dcf13ea1f3
    Author: tesla1889tv <itsglizzytime@gmail.com>
-   Date:   Sun Mar 28 14:21:17 2021 -0500
+   Date:   Sat Sep 4 15:32:35 2021 -0500
    
-       Bump patch version
+       Updated installation/use instructions
    

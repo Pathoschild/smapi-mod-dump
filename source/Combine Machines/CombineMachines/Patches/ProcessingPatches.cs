@@ -9,7 +9,7 @@
 *************************************************/
 
 using CombineMachines.Helpers;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -146,6 +146,7 @@ namespace CombineMachines.Patches
             if (PODIData.Input.IsOre() && PODIData.Farmer != null && ModEntry.UserConfig.FurnaceMultiplyCoalInputs)
             {
                 SecondaryInputQuantityAvailable = PODIData.Farmer.Items.Where(x => x != null && x.IsCoal()).Sum(x => x.Stack);
+                SecondaryInputQuantityAvailable += 1; // 1 coal has already been removed from the player's inventory by the time this event is invoked
             }
 
             //  Compute the maximum multiplier we can apply to the input and output based on how many more of the inputs the player has

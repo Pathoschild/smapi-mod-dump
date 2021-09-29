@@ -1,0 +1,145 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/barteke22/StardewMods
+**
+*************************************************/
+
+{
+    "GenericMC.MainLabel": "Opcje Minigier Wędkarskich",
+    "GenericMC.MainDesc": "Opcje dla alternatywnych minigier wędkarskich. Tutaj możesz wybrać swój styl minigry lub całkowicie wyłączyć część danej minigry.",
+    "GenericMC.MainDesc2": "Wielkość i jakość ryby jest określana przez łączny wynik minigier Startu i Końca, w zależności od tego, które z nich są włączone.",
+    "GenericMC.MainDesc3": "Jeśli zmieniłeś ustawienia głosu, zapisanie odtworzy podgląd twojego obecnego głosu. Możesz najechać kursorem na nazwę pozycji, aby uzyskać więcej informacji o niej.",
+
+    "GenericMC.Volume": "Głośność Głosu",
+    "GenericMC.VolumeDesc": "Pozwala na precyzyjne ustawienie maksymalnej głośności \"Here Fishy!\". Rzeczywista głośność zwiększa się nieco wraz z poziomem łowienia, zaczynając od 80% tej wartości. Po zapisaniu odworzy się podgląd głośności na poziomie połowu 10 (98% maksymalnej głośności, poziom 11-15 to ostatnie 2%).",
+    "GenericMC.Pitch": "Ton Głosu",
+    "GenericMC.PitchDesc": "Zmienia ton twojego głosu \"Here Fishy!\". Rozpoczyna się losowo w celu zróżnicowania dla wielu graczy. Oryginalny głos jest całkiem pośrodku. Zapisanie odtworzy podgląd.",
+
+    "GenericMC.KeyBinds": "Przyciski",
+    "GenericMC.KeyBindsDesc": "Przycisk(i) używane do uruchomienia minigry. Jeśli są takie same jak przyciski Użycia Narzędzia, oryginalna minigra Stardew zostanie zastąpiona tą. Obsługuje mysz, klawiaturę i kontroler. Poszczególne przyciski są oddzielone przecinkami, kombinacje takie jak \"LeftShift + K\" NIE są obsługiwane w minigrach używających Przyciski, lecz działają poza. Przykład trzech klawiszy: MouseRight, LeftShift + K, ControllerX. Nazwy przycisków znajdziesz na: https://stardewcommunitywiki.com/Modding:Player_Guide/Key_Bindings",
+
+    "GenericMC.FreeAim": "Celowanie Swobodne",
+    "GenericMC.FreeAimDesc": "Wyłączone: Możesz celować na kafelki przed sobą trzymając Przycisk,\n i kontrolować który kafelek za pomocą WASD, Strzałek lub DPad'a. \nWłączone: Pozwala po prostu kliknąć dowolny kafelek,\n do którego możesz dosięgnąć (przy Twoim poziomie łowienia) za pomocą kursora. \nKafelki nadające się do połowu zostaną podświetlone w obu trybach. \nSwobodne Celowanie może nie być zbyt przyjazne dla kontrolerów,\n ponieważ pozycja kursora resetuje się podczas użytku menu.",
+
+    "GenericMC.StartMinigameStyle": "Styl Minigry (Start)",
+    "GenericMC.StartMinigameStyleDesc": "Ta minigra określa, czy w ogóle złapiesz rybę (tylko ryby\n mają tę część) i przyczynia się do ogólnego wyniku. \nStrzałki DDR: Klasyczna gra rytmiczna, w której dopasowujesz kierunek\n strzałek za pomocą przycisków ruchu, gdy dotrą do określonego obszaru. \nMinigame2: Do zrobienia \nMinigame3: Do zrobienia",
+    "GenericMC.StartMinigameStyle1": "Strzałki DDR",
+    "GenericMC.StartMinigameStyle2": "todo",
+    "GenericMC.StartMinigameStyle3": "todo",
+
+    "GenericMC.EndMinigameStyle": "Styl Minigry (Koniec)",
+    "GenericMC.EndMinigameStyleDesc": "Ta minigra określa, czy odniesiesz obrażenia (jeśli się\n nie powiedzie) podczas zgarniania dowolnego przedmiotu/ryby którą\n można wyłowić, i ma wpływ na ogólny wynik. \nPrzycisk: W odpowiednim momencie naciśnij przycisk, którego używasz do\n łowienia, musi być pojedynczym przyciskiem (czyli nie kombinacje z \"+\"). \nStrzałki: W odpowiednim momencie dopasuj kierunek\n wyświetlanej strzałki za pomocą WASD, Strzałek lub DPad'a. \nLitery: W odpowiednim momencie naciśnij wyświetloną literę. Tylko dla klawiatur.\n Użyje literę z nazwy ryby/przedmiotu, jeśli znajdzie\n w niej jakieś angielskie - w przeciwnym razie wyświetli Strzałki.",
+    "GenericMC.EndMinigameStyle1": "Przycisk",
+    "GenericMC.EndMinigameStyle2": "Strzałki",
+    "GenericMC.EndMinigameStyle3": "Litery",
+
+    "GenericMC.EndLoseTreasure": "Strać Skarb (Koniec)",
+    "GenericMC.EndLoseTreasureDesc": "Jeśli nie zaliczysz minigry Końcowej, stracisz potencjalny skarb. Jest to zalecane głównie, jeśli nie masz włączonej minigry Startowej, ponieważ w przeciwnym razie otrzymasz skarb za nic.",
+    "GenericMC.EndDamage": "Obrażenia Minigry (Koniec)",
+    "GenericMC.EndDamageDesc": "Jeśli nie zaliczysz minigry Końcowej, otrzymasz obrażenia na podstawie poziomu trudności ryby/przedmiotu, jej rozmiaru, i tego mnożnika. Jest to prosty mnożnik, więc 0 oznacza brak obrażeń, mniej niż 1 znaczy mniej, więcej niż 1 znaczy więcej.",
+    "GenericMC.Difficulty": "Trudność Minigry (Obu)",
+    "GenericMC.DifficultyDesc": "Trudność minigry (czas) jest oparta na takich czynnikach jak trudność i rozmiar ryby/przedmiotu i twoim sprzęcie. To jest mnożnik końcowej wartości, im wyższy, tym trudniej.",
+
+    "GenericMC.TutorialSkip": "Pomiń Instrukcje",
+    "GenericMC.TutorialSkipDesc": "Pozwala pominąć zwolnione tempo Minigry Startu. Zmienione automatycznie po ukończeniu Minigry Startu. Można wyłączyć tę opcje, aby zobaczyć je ponownie.",
+
+    "GenericMC.StartMinigameScale": "Skala Minigry (Start)",
+    "GenericMC.StartMinigameScaleDesc": "Minigra startowa skaluje się wraz z poziomem powiększenia, i można ją tutaj dostroić.",
+
+    "GenericMC.ConvertToMetric": "System Metryczny",
+    "GenericMC.ConvertToMetricDesc": "OSTRZEŻENIE: Jeśli używasz razem z modyfikacją \"Inches To Metric System\", usuń wszystkie\n dane ryb z jej pliku 'content.json' (linie 4-74), bo inaczej będą podwójnie konwertowane. \nOSTRZEŻENIE: Ta konwersja rozmiarów ryb staję się w momencie ich złapania,\n więc poprzednie rekordy nie zostaną odwrócone, jeśli zmienisz tę opcję.\n Nie wpływa na minigry festiwalowe ani zwykłe minigry\n wędkarskie - ponieważ ich mechaniki opierają się na wielkości ryby.\n Będzie działać z rybami z innych modyfikacji złowionymi przez ten mod.",
+
+    "GenericMC.RealisticSizes": "Realistyczne Rozmiary",
+    "GenericMC.RealisticSizesDesc": "Włączone: Ryba pokazana na końcu będzie miała realistyczny rozmiar w porównaniu z graczem, zakładając, że gracz trzyma je z perspektywy, która sprawia, że ​​są odrobinę większe. Pamiętaj, że przez większość czasu ryby są bardzo małe, mniej-więcej wielkości dłoni.",
+
+    "GenericMC.FishTankHold": "Textury Z Akwarium",
+    "GenericMC.FishTankHoldDesc": "Włączone: Ryba pokazana na końcu będzie używać teksturę z akwarium, jeśli ją posiada. Te tekstury są bardziej jednostajne niż tekstury item'ów. Lecz jeśli ich nie lubisz, lub masz zainstalowany jakiś mod który daje rybom animacje, możesz je tu wyłączyć.",
+
+    "GenericMC.FestivalLabel": "Minigry Festiwalowe",
+    "GenericMC.FestivalDesc": "Ma to znaczenie tylko dla festiwali Jesień 16 i Zima 8, ponieważ mają minigry wędkarskie, które mają miejsce w specjalnych scenariuszach.",
+    "GenericMC.FestivalDesc2": "Oznacza to, że animacje mogą być trochę niezgrabne, i pełne minigry mogą być trudne do balansowania. Oto alternatywne opcje dla nich.",
+    "GenericMC.FestivalMode": "Tryb Festiwalowy",
+    "GenericMC.FestivalModeDesc": "Stardew: Użyj zwykłej minigry wędkarskiej na obu tych festiwalach. INACZEJ: \n\nProsta: Tylko minigra Końcowa, tylko ryby się liczą. Trochę niezgrabne animacje. \nTylko Perfekt: Tylko Końcowa minigra (jeśli jest włączona), liczy\n się tylko perfekcyjny połów ryb (bardzo trudna). Trochę niezgrabne animacje. \nTylko Start: Odtwarza tylko specjalną wersję minigry Startu,\n ta opcja powinna być najlepiej zrównoważona pod względem punktów za wysiłek. ",
+    "GenericMC.FestivalModeVanilla": "Stardew",
+    "GenericMC.FestivalModeSimple": "Prosta",
+    "GenericMC.FestivalModePerfectOnly": "Tylko Perfekt",
+    "GenericMC.FestivalModeStartOnly": "Tylko Start",
+
+    "GenericMC.Disabled": "Wyłącz",
+
+
+    "GenericMC.SplitScreenDesc": "Opcje dla trybu dzielonego ekranu, nie są ważne w innych trybach. Tylko główny użytkownik powinien je zmieniać.",
+    "GenericMC.SplitScreen2": "Podzielony Ekran 2: Prawy (Górny)",
+    "GenericMC.SplitScreen3": "Podzielony Ekran 3: Lewy Dolny",
+    "GenericMC.SplitScreen4": "Podzielony Ekran 4: Prawy Dolny",
+
+    "GenericMC.Colors": "Opcje Kolorów",
+    "GenericMC.MinigameColor": "Kolor Minigry",
+    "GenericMC.BossTransparency": "Przezroczystość Bossów",
+    "GenericMC.BossTransparencyDesc": "Włączone: Walki z bossem w minigrze Startu będą pokazywać lekko przezroczyste strzałki co kilka strzałek. Można to tu wyłączyć jeśli jest trudno za tym nadążyć.",
+
+
+    "GenericMC.ItemData": "Dane Osprzętu",
+    "GenericMC.ItemDataDesc1": "Tu są efekty specyficzne dla wędek (podbieraków), przynęt i spławików (megafonów). Możesz najechać kursorem na nazwę efektu, aby zobaczyć jego opis.",
+    "GenericMC.ItemDataDesc2": "Kilka przedmiotów ma \"hard-kodowane\" efekty. Nie są one tutaj wymienione, ale są w opisie przedmiotu w grze. Ustawienie efektu na 0 wyłączy go.",
+    "GenericMC.ItemDataDesc3": "EXTRA, LIFE, QUALITY, TREASURE, i UNBREAKING są addytywne, reszta to mnożniki. Polecam mod \"Everlasting Baits...\" zamiast UNBREAKING dla immersji.",
+    "GenericMC.ItemDataDesc4": "Efekty mają być procentami/liczbami bez przecinka, ale GMCM obecnie nie wyświetla ich wartości - spróbuj być blisko liczb całych.",
+
+
+    //Wynik: X z co najmniej Y = Porażka/Sukces!
+    "Minigame.Score": "Wynik:",
+    "Minigame.Score2": "z co najmniej",
+    "Minigame.Score_0": "Porażka Epickich Proporcji!",
+    "Minigame.Score_1": "Porażka!",
+    "Minigame.Score_2": "Sukces!",
+    "Minigame.Score_3": "Wielki sukces!",
+    "Minigame.InfoDDR": "Gdy strzałka wejdzie w okrąg, dopasuj jej kierunek \n za pomocą Strzałek, WASD, lub DPad'a. \n\n Twój wynik zadecyduje o tym, \n czy uda ci się przyciągnąć uwagę danej ryby.",
+    "Minigame.InfoDDR_Festival": "Gdy strzałka wejdzie w okrąg, dopasuj jej kierunek \n za pomocą Strzałek, WASD, lub DPad'a. \n\n Punkty potrzebne do złapania następnej ryby:",
+
+
+    "Effects.AREA": "Rozszerza obszar \"Perfekt!\" o {{val}}%",
+    "Effects.DAMAGE": "Otrzymane obrażenia zmniejszone o {{val}}%",
+    "Effects.DIFFICULTY": "Zmniejsza poziom trudności minigry o {{val}}%",
+    "Effects.EXTRA": "Może przyciągnąć do {{max}} podobnych, dodatkowych ryb, {{chance}}% szansy każda.",
+    "Effects.LIFE": "Może poprawić błąd, do {{val}} razy na połów.",
+    "Effects.QUALITY": "Przyciąga ryby o {{val}} wyższej jakości niż zwykle.",
+    "Effects.SIZE": "Przyciąga {{val}}% większe ryby.",
+    "Effects.SPEED": "Zmniejsza prędkość minigry o {{val}}%",
+    "Effects.TREASURE": "Dodaje {{val}}% do szansy na skarb.",
+    "Effects.UNBREAKING": "{{val}}% szansy na to, że nie zostanie skonsumowany.",
+
+
+    //wędka -> podbierak
+    "Bamboo Pole": "Podbierak Bambusowy",
+    "Training Rod": "Podbierak Treningowy",
+    "Fiberglass Rod": "Podbierak z Włókna Szklanego",
+    "Iridium Rod": "Podbierak z Iridu",
+    //przynęty - tylko podszebne dla GMCM
+    "Bait": "Przynęta",
+    "Magnet": "Magnes",
+    "Wild Bait": "Dzika Przynęta",
+    "Magic Bait": "Magiczna Przynęta",
+    //spławik -> megafon
+    "Spinner": "Megafon Spławika",
+    "Dressed Spinner": "Megafon Szmaciany",
+    "Trap Bobber": "Megafon Pułapka",
+    "Cork Bobber": "Megafon z Korka",
+    "Lead Bobber": "Megafon Ołowiany",
+    "Treasure Hunter": "Megafon Skarbów",
+    "Barbed Hook": "Megafon Ostry",
+    "Curiosity Lure": "Megafon Ciekawski",
+    "Quality Bobber": "Megafon Jakości",
+    //itd
+    "Rod.Fishing": "Podbierak",
+    "Rod.FishingDesc": "Ten podbierak daje Ci pewność siebie niezbędną do rozpoczęcia łowienia ryb.",
+    "Rod.TrainingDesc": "O wiele łatwiej nim machać, ale może tylko wytrzymać mniejsze ryby.",
+    "Rod.Skill": "+{0} do Skuteczności Podbieraka",
+
+
+    //wieczne przynęty i osprzęty (everlasting baits and tackles mod)
+    "Mods.Infinite": "bez końca"
+} 

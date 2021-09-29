@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  "tabs.Clothing.name": "Ruházat",
+  "tabs.Cooking.name": "Főzés",
+  "tabs.Crops.name": "Növények",
+  "tabs.Equipment.name": "Felszerelés",
+  "tabs.Fishing.name": "Horgászat",
+  "tabs.Materials.name": "Anyagok",
+  "tabs.Misc.name": "Egyéb",
+  "tabs.Seeds.name": "Magvak",
+}

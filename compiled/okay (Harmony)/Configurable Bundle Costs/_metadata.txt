@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9444
+IDs: Vertigon.ConfigurableBundleCosts
+update keys: Nexus:9444, GitHub:dtomlinson-ga/ConfigurableBundleCosts

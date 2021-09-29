@@ -1,0 +1,17 @@
+{
+  "Capacity": 0,
+  "MenuRows": 3,
+  "CraftingRange": "Location",
+  "StashingRange": "Location",
+  "OpenCrafting": "K",
+  "StashItems": "Z",
+  "ScrollUp": "DPadUp",
+  "ScrollDown": "DPadDown",
+  "PreviousTab": "DPadLeft",
+  "NextTab": "DPadRight",
+  "SearchTagSymbol": "#",
+  "Global": {
+    "InventoryTabs": true,
+    "SearchItems": true
+  }
+}

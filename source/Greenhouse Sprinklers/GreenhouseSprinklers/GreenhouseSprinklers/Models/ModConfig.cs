@@ -35,7 +35,7 @@ namespace Bpendragon.GreenhouseSprinklers.Data
         public bool WaterSandOnBeachFarm { get; set; } = true;
         public int MaxNumberOfUpgrades { get; set; } = 3;
 
-        public List<UpgradeCost> DifficultySettings = new List<UpgradeCost>()
+        public List<UpgradeCost> DifficultySettings = new()
         {
             new UpgradeCost(
                 new SingleUpgradeCost(SprinklerType.Basic, 5, 10000, 0, 0),

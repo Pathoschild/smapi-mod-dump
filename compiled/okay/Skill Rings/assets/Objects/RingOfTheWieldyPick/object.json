@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Dwarf",
   "PurchasePrice": 5000,
+  "NameLocalization": {
+	  "zh": "灵巧手镐之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "使你的镐更容易挥动，提升采矿技能。"
+  },
 }

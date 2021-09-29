@@ -66,12 +66,13 @@ namespace DeepWoodsMod
             if (deepWoods.isLichtung.Value)
                 return;
 
-            // random.EnterMasterMode();
+            deepWoods.characters.Clear();
+
+            if (Settings.Monsters.MonsterDensity <= 0)
+                return;
 
             int mapWidth = deepWoods.mapWidth.Value;
             int mapHeight = deepWoods.mapHeight.Value;
-
-            deepWoods.characters.Clear();
 
             // Calculate maximum theoretical amount of monsters for the current map.
             int maxMonsters = (mapWidth * mapHeight) / MINIMUM_TILES_FOR_MONSTER;
@@ -87,6 +88,11 @@ namespace DeepWoodsMod
                 numMonsters /= 2;
             }
 
+            if (Settings.Monsters.MonsterDensity < 100)
+            {
+                numMonsters = (int)(numMonsters * Settings.Monsters.MonsterDensity / 100);
+            }
+
             List<int> allTilesInRandomOrder = Enumerable.Range(0, mapWidth * mapHeight).OrderBy(n => Game1.random.Next()).ToList();
             int allTilesCount = allTilesInRandomOrder.Count();
 
@@ -98,7 +104,10 @@ namespace DeepWoodsMod
                 int x = tileIndex % mapWidth;
                 int y = tileIndex / mapWidth;
 
-                if (monster == null) monster = CreateRandomMonster(new Vector2(x, y));
+                if (monster == null)
+                {
+                    monster = CreateRandomMonster(new Vector2(x, y));
+                }
                 if (deepWoods.CanPlaceMonsterHere(x, y, monster))
                 {
                     monster.Position = new Vector2(x * 64f, y * 64f) - new Vector2(0, monster.Sprite.SpriteHeight - 64);
@@ -108,8 +117,6 @@ namespace DeepWoodsMod
                     numMonstersPlaced++;
                 }
             }
-
-            // random.LeaveMasterMode();
         }
 
         Monster CreateRandomMonster(Vector2 location)
@@ -148,24 +155,63 @@ namespace DeepWoodsMod
             {
                 monster = new RockCrab(new Vector2(), GetRockCrabType());
             }
+            else if (CanHazMonster(Settings.Monsters.Bug))
+            {
+                monster = new Bug(new Vector2(), 121);
+                monster.isHardModeMonster.Value = true;
+            }
+            else if (CanHazMonster(Settings.Monsters.ArmoredBug))
+            {
+                monster = new Bug(new Vector2(), 121);
+                monster.isHardModeMonster.Value = true;
+            }
+            else if (Game1.isDarkOut() && CanHazMonster(Settings.Monsters.PutridGhost))
+            {
+                monster = new Ghost(new Vector2(), "Putrid Ghost");
+            }
+            else if (Game1.isDarkOut() && CanHazMonster(Settings.Monsters.DustSprite))
+            {
+                monster = new DustSpirit(new Vector2()); new Leaper();
+            }
+            else if (Game1.isDarkOut() && CanHazMonster(Settings.Monsters.Spider))
+            {
+                monster = new Leaper(new Vector2());
+            }
             else
             {
                 foreach (var modMonster in DeepWoodsAPI.ToShuffledList(ModEntry.GetAPI().Monsters))
                 {
+                    // Item1 is a mod provided function that returns true if the mod wants to spawn a custom monster at this location.
+                    // Item2 is a mod provided function that returns the custom monster.
                     if (modMonster.Item1(deepWoods, location))
                     {
                         monster = modMonster.Item2();
                         break;
                     }
                 }
-                if (monster == null)
-                    monster = new GreenSlime(new Vector2(), GetSlimeLevel());
             }
 
-            if (deepWoods.level.Value >= Settings.Level.MinLevelForBuffedMonsters && !this.random.CheckChance(Settings.Monsters.ChanceForUnbuffedMonster))
+            // No other monster was selected and no mod provided a monster, default to green slime
+            if (monster == null)
+            {
+                monster = new GreenSlime(new Vector2(), GetSlimeLevel());
+            }
+
+            if (!Settings.Monsters.DisableBuffedMonsters
+                && deepWoods.level.Value >= Settings.Level.MinLevelForBuffedMonsters
+                && !this.random.CheckChance(Settings.Monsters.ChanceForUnbuffedMonster))
             {
                 BuffMonster(monster);
             }
+
+            if (!Settings.Monsters.DisableDangerousMonsters
+                && deepWoods.level.Value >= Settings.Level.MinLevelForDangerousMonsters
+                && !this.random.CheckChance(Settings.Monsters.ChanceForNonDangerousMonster))
+            {
+                monster.isHardModeMonster.Value = true;
+            }
+
+            monster.faceDirection(this.random.GetRandomValue(0, 4));
 
             return monster;
         }

@@ -1,22 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="..\build\common.targets" />
     <Import Project="..\Common\Common.projitems" Label="Shared" />
-    
     <PropertyGroup>
-        <Version>2.0.1</Version>
-        <TargetFramework>net5.0</TargetFramework>
-        <EnableHarmony>true</EnableHarmony>
+        <Version>2.1.0</Version>
     </PropertyGroup>
-    
     <ItemGroup>
-        <None Update="BigCraftables\Garbage Can\big-craftable.json" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="BigCraftables\Garbage Can\big-craftable.png" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="expanded-storage.json" CopyToOutputDirectory="PreserveNewest" />
-        <None Update="content-pack.json" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="content.json" CopyToOutputDirectory="Always" />
+        <Content Include="expanded-storage.json" CopyToOutputDirectory="Always" />
     </ItemGroup>
-    
     <ItemGroup>
-      <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.4.0-beta.20210813" />
+      <PackageReference Include="ClrHeapAllocationAnalyzer" Version="3.0.0" />
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 </Project>

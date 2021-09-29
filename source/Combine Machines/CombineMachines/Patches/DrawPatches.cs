@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System;
@@ -142,8 +142,8 @@ namespace CombineMachines.Patches
                                     else if (TargetObject.Stack > 1)
                                     {
                                         //  Code mostly taken from decompiled code: StardewValley.Object.drawInMenu
-                                        Vector2 StackPosition = Location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(TargetObject.stack, 3f * ScaleSize)) + 3f * ScaleSize, 64f - 18f * ScaleSize + 1f);
-                                        Utility.drawTinyDigits(TargetObject.stack, b, StackPosition, 3f * ScaleSize, 1f, Color.White);
+                                        Vector2 StackPosition = Location + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(TargetObject.Stack, 3f * ScaleSize)) + 3f * ScaleSize, 64f - 18f * ScaleSize + 1f);
+                                        Utility.drawTinyDigits(TargetObject.Stack, b, StackPosition, 3f * ScaleSize, 1f, Color.White);
                                     }
                                 }
                             }

@@ -79,3 +79,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Fix issue with swinging scythe when trying to pickup eggs.
 * Fix issue with fertilizer not being usable when using the GOLD setting.
 * Fix compatiblity issue with [MoreRings](https://www.nexusmods.com/stardewvalley/mods/2054) mod.
+
+#### 5.2:
+* Less invasive method to allow using swords as scythe, to fix issues with swords' stats being invisible and being unable to trash or sell them.

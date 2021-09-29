@@ -9,8 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for Stardew Valley 1.5.5.
+## 1.2.7
+Released 18 September 2021 for SMAPI 3.12.5 or later.
+
+* Improved translations. Thanks to ellipszist (added Thai)!  
+  _Note: Thai requires Stardew Valley 1.5.5 and the [Thai mod](https://www.nexusmods.com/stardewvalley/mods/7052)._
 
 ## 1.2.6
 Released 27 March 2021 for SMAPI 3.9.5 or later.

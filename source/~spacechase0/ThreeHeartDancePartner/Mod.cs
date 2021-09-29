@@ -34,7 +34,7 @@ namespace ThreeHeartDancePartner
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             // get dialog box
-            if (!(e.NewMenu is DialogueBox dialogBox))
+            if (e.NewMenu is not DialogueBox dialogBox)
                 return;
 
             // get festival

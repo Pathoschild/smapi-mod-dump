@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using xTile.Layers;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public static class FruitTrees
 	{
@@ -34,7 +34,7 @@ namespace EastScarpe
 
 			foreach (var location in GetLocations ())
 			{
-				if (location.modData.ContainsKey (SpawnedFlag))
+				if (!location.modData.ContainsKey (SpawnedFlag))
 					SpawnTrees (location);
 				else
 					UpdateTrees (location);

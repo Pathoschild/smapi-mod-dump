@@ -1,0 +1,62 @@
+﻿{
+  "give_flowersA": "Я не думал, что ты так относишься ко мне.$1#$b#Я думаю, теперь мы пара.$4",
+  "give_flowersB": "Это для меня? Я чувствую то же самое!#$b#Давай перейдем на новый уровень.$1",
+  "give_pendant": "Это то, что я думаю, ты не шутишь?!#$b#Конечно, я приму это!$1#$b#Я дам знать мэру Льюису.. наша свадьба будет через три дня.#$b#Я буду ждать.$4",
+  "stardrop_gift": "@, ты был для меня прекрасным мужем.  Я чувствую себя особенно.$4^@, ты была для меня замечательной женой.  Я чувствую себя особенно.$4#$b#Надеюсь, этот подарок передаст мои чувства к тебе.",
+  "rejectNPCA": "Не слишком ли рано заявить о своих чувствах?",
+  "rejectNPCB": "Хм... нет, спасибо..",
+  "reject_two_heartA": "Мы почти не встречались... Ты не слишком быстро?$2",
+  "reject_two_heartB": "Я не думаю, что ты знаешь меня достаточно, чтобы принять это решение.",
+  "reject_four_heartA": "...Ну ... я имею в виду ... мы друзья ... но я не думаю, что мы настолько близки.",
+  "reject_four_heartB": "Ох .. Ну .. Я пока не хочу разрушать нашу большую дружбу.$1",
+  "engageA": "Почему ты даешь мне это?  Ты уже в браке...$2#$b#Пожалуйста, не делай так..$2",
+  "engageB": "Это неправильно...$2",
+  "marriedA": "Я не думаю, что %spouse хотел бы узнать, что ты делаешь это.#2",
+  "marriedB": "Я думаю %spouse заслуживает лучшего, чем  этот твой поступок, @.$5",
+  "refusal_knownA": "Я не думаю, что готов к следующему шагу.",
+  "refusal_knownB": "Мы просто друзья, @.#$b#Думаю, это должно хотя бы мне польстить.$1",
+  "refusal_botherA": "Разве мы уже не разговаривали об этом? Мы еще не можем пожениться...$5",
+  "refusal_botherB": "Мое терпение истощается, @.$5",
+  "refusal_no_heartsA": "Разве это не слишком рано?",
+  "refusal_no_heartsB": "Почему?! Мы только встретились.$1",
+  "birthdayLoveA": "Привет! Это отличный подарок на день рождения!#$b#Большое тебе спасибо.$1",
+  "birthdayLoveB": "У меня было предчувствие, что ты принесешь мне что-то чудесное! Это фантастика!$1",
+  "birthdayLikeA": "Ой! У тебя есть подарок на мой день рождения!#$b#Я ценю это, спасибо!$1",
+  "birthdayLikeB": "У тебя есть это для меня? Это замечательно, спасибо.",
+  "birthdayDislikeA": "Что это .. ты пытаешься пошутить?$5",
+  "birthdayDislikeB": "Это ужасно .. Зачем ты это делаешь?$5",
+  "birthdayNeutralA": "Ой! На мой день рождения? Ну хотя бы видно старание.",
+  "birthdayNeutralB": "Мой день рождения наступил быстрее, чем ожидалось?#$b#Спасибо за попытку, @.",
+  "giftquestion_yes": "Понятно... Ты очень добрый человек.$1^Понятно .. Ты очень добрая девушка.$1",
+  "giftquestion_lie": "Ты действительно собираешься лгать об этом? Я уже знаю!$5#$b#Стоит ли мне беспокоиться об этом?!$2",
+  "breakUp": "О .. Думаю, нам нужно просто дружить..",
+  "NPC.cs.3962": "$q 10001 give_flowersA#?!...#$r 10001 0 give_flowersA# [Give Bouquet]",
+  "NPC.cs.3963": "$q 10001 give_flowersB#?!...#$r 10001 0 give_flowersB# [Give Bouquet]",
+  "NPC.cs.3980": "$q 10001 give_pendant#?!...#$r 10001 0 give_pendant# Will you marry me?",
+  "NPC.cs.4001": "$q 10001 stardrop_gift#?!...#$r 10001 0 stardrop_gift# Is this for me?",
+  "NPC.cs.3956": "$q 10001 rejectNPCA#?!...#$r 10001 0 rejectNPCA#[Give Bouquet]",
+  "NPC.cs.3957": "$q 10001 rejectNPCB#?!...#$r 10001 0 rejectNPCB#[Give Bouquet]",
+  "NPC.cs.3958": "$q 10001 reject_two_heartA#?!...#$r 10001 0 reject_two_heartA#[Give Bouquet]",
+  "NPC.cs.3959": "$q 10001 reject_two_heartB#?!...#$r 10001 0 reject_two_heartB#[Give Bouquet]",
+  "NPC.cs.3960": "$q 10001 reject_four_heartA#?!...#$r 10001 0 reject_four_heartA#[Give Bouquet]",
+  "NPC.cs.3961": "$q 10001 reject_four_heartB#?!...#$r 10001 0 reject_four_heartB#[Give Bouquet]",
+  "NPC.cs.3965": "$q 10001 engageA#?!...#$r 10001 0 engageA# Will you marry me?",
+  "NPC.cs.3966": "$q 10001 engageB#?!...#$r 10001 0 engageB# Will you marry me?",
+  "NPC.cs.3967": "$q 10001 marriedA#?!...#$r 10001 0 marriedA# Will you marry me?",
+  "NPC.cs.3968": "$q 10001 marriedB#?!...#$r 10001 0 marriedB# Will you marry me?",
+  "NPC.cs.3970": "$q 10001 refusal_no_heartsA#?!...#$r 10001 0 refusal_no_heartsA# Will you marry me?",
+  "NPC.cs.3971": "$q 10001 refusal_no_heartsB#?!...#$r 10001 0 refusal_no_heartsB# Will you marry me?",
+  "NPC.cs.3972": "$q 10001 refusal_knownA#?!...#$r 10001 0 refusal_knownA# Will you marry me?",
+  "NPC.cs.3973": "$q 10001 refusal_knownB#?!...#$r 10001 0 refusal_knownB# Will you marry me?",
+  "NPC.cs.3974": "$q 10001 refusal_botherA#?!...#$r 10001 0 refusal_botherA# Will you marry me?",
+  "NPC.cs.3975": "$q 10001 refusal_botherB#?!...#$r 10001 0 refusal_botherB# Will you marry me?",
+  "NPC.cs.4274": "$q 10001 birthdayLoveA#...#$r 10001 0 birthdayLoveA# [Happy Birthday]", //love
+  "NPC.cs.4275": "$q 10001 birthdayLoveB#...#$r 10001 0 birthdayLoveB# [Happy Birthday]", //love
+  "NPC.cs.4276": "$q 10001 birthdayLikeA#...#$r 10001 0 birthdayLikeA# [Happy Birthday]", //like
+  "NPC.cs.4277": "$q 10001 birthdayLikeB#...#$r 10001 0 birthdayLikeB# [Happy Birthday]", //like
+  "NPC.cs.4278": "$q 10001 birthdayDislikeA#...#$r 10001 0 birthdayDislikeA# [Happy Birthday]", //hate
+  "NPC.cs.4279": "$q 10001 birthdayDislikeB#...#$r 10001 0 birthdayDislikeB# [Happy Birthday]", //dislike
+  "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [Happy Birthday]", //neutral
+  "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [Happy Birthday]" //neutral
+
+}

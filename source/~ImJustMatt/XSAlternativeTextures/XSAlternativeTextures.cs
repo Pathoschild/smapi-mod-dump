@@ -8,80 +8,93 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using AlternativeTextures.Framework.Models;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-
 namespace XSAlternativeTextures
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using AlternativeTextures.Framework.Models;
+    using Common.Integrations.XSLite;
+    using Microsoft.Xna.Framework;
+    using Microsoft.Xna.Framework.Graphics;
+    using StardewModdingAPI;
+    using StardewModdingAPI.Events;
+    using IAlternativeTexturesAPI = AlternativeTextures.Framework.Interfaces.API.IApi;
+
+    /// <inheritdoc cref="StardewModdingAPI.Mod" />
     public class XSAlternativeTextures : Mod, IAssetEditor
     {
-        private static readonly string AlternativeTexturesPath = PathUtilities.NormalizePath("AlternativeTextures/Textures");
-        private static readonly string ExpandedStoragePath = PathUtilities.NormalizePath("Mods/furyx639.ExpandedStorage/SpriteSheets");
-        private static readonly IList<string> Storages = new List<string>();
-        
-        private static IAlternativeTexturesAPI _alternativeTexturesAPI;
-        private static IExpandedStorageAPI _expandedStorageAPI;
-        
+        private readonly IList<string> _storages = new List<string>();
+        private IAlternativeTexturesAPI _alternativeTexturesAPI = null!;
+        private XSLiteIntegration _xsLite = null!;
+
         /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
-            Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            this._xsLite = new XSLiteIntegration(helper.ModRegistry);
+            this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
         }
-        
+
+        /// <inheritdoc />
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            return asset.AssetName.StartsWith("AlternativeTextures") && asset.AssetName.Contains("ExpandedStorage");
+        }
+
+        /// <inheritdoc />
+        public void Edit<T>(IAssetData asset)
+        {
+            IAssetDataForImage editor = asset.AsImage();
+            editor.ExtendImage(80, this._storages.Count * 32);
+            for (int i = 0; i < this._storages.Count; i++)
+            {
+                var texture = this.Helper.Content.Load<Texture2D>($"ExpandedStorage/SpriteSheets/{this._storages[i]}", ContentSource.GameContent);
+                editor.PatchImage(texture, new Rectangle(0, 0, 16, 32), new Rectangle(0,  i * 32, 16, 32));
+                editor.PatchImage(texture, new Rectangle(0, 0, 80, 32), new Rectangle(16,  i * 32, 80, 32));
+            }
+        }
+
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            _alternativeTexturesAPI = Helper.ModRegistry.GetApi<IAlternativeTexturesAPI>("PeacefulEnd.AlternativeTextures");
-            _expandedStorageAPI = Helper.ModRegistry.GetApi<IExpandedStorageAPI>("furyx639.ExpandedStorage");
-            
-            var texturePath = Path.Combine(Helper.DirectoryPath, "assets", "texture.png");
+            this._alternativeTexturesAPI = this.Helper.ModRegistry.GetApi<IAlternativeTexturesAPI>("PeacefulEnd.AlternativeTextures");
             var model = new AlternativeTextureModel
             {
                 ItemName = "Chest",
                 Type = "Craftable",
                 TextureWidth = 16,
                 TextureHeight = 32,
-                Variations = 1,
-                Seasons = new List<string>()
+                Variations = this._storages.Count,
+                EnableContentPatcherCheck = true,
             };
-            foreach (var storageName in _expandedStorageAPI.GetAllStorages())
+            var textures = new List<Texture2D>();
+            Texture2D placeholder = this.Helper.Content.Load<Texture2D>("assets/texture.png");
+            foreach (string storageName in this._xsLite.API.GetAllStorages().OrderBy(storageName => storageName))
             {
-                Storages.Add(storageName);
-                model.Keywords = new List<string> { storageName };
-                _alternativeTexturesAPI.AddAlternativeTexture(model, "furyx639", texturePath);
+                Texture2D texture = null!;
+                try
+                {
+                    texture = this.Helper.Content.Load<Texture2D>($"ExpandedStorage/SpriteSheets/{storageName}", ContentSource.GameContent);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+
+                if (texture is null || texture.Width != 80 || (texture.Height != 32 && texture.Height != 96))
+                {
+                    continue;
+                }
+
+                textures.Add(placeholder);
+                this._storages.Add(storageName);
+                model.ManualVariations.Add(new VariationModel
+                {
+                    Id = this._storages.Count - 1,
+                    Keywords = new List<string> { storageName },
+                });
             }
-        }
-        
-        /// <inheritdoc />
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            var assetName = PathUtilities.NormalizePath(asset.AssetName);
-            var storageName = PathUtilities.GetSegments(asset.AssetName).ElementAtOrDefault(2);
-            if (!assetName.StartsWith(AlternativeTexturesPath, StringComparison.OrdinalIgnoreCase)
-                || string.IsNullOrWhiteSpace(storageName)
-                || !Storages.Contains(storageName))
-                return false;
-            var texture = Helper.Content.Load<Texture2D>(Path.Combine(ExpandedStoragePath, storageName), ContentSource.GameContent);
-            return texture.Width == 80 && texture.Height == 96;
-        }
-        
-        /// <inheritdoc />
-        public void Edit<T>(IAssetData asset)
-        {
-            var storageName = PathUtilities.GetSegments(asset.AssetName).ElementAtOrDefault(2);
-            if (storageName == null)
-                return;
-            var editor = asset.AsImage();
-            var texture = Helper.Content.Load<Texture2D>(Path.Combine(ExpandedStoragePath, storageName), ContentSource.GameContent);
-            editor.PatchImage(texture, new Rectangle(0, 0, 16, 32), new Rectangle(0,  0, 16, 32));
-            editor.PatchImage(texture, new Rectangle(0, 0, 80, 32), new Rectangle(16,  0, 80, 32));
+
+            this._alternativeTexturesAPI.AddAlternativeTexture(model, "ExpandedStorage", textures);
         }
     }
 }

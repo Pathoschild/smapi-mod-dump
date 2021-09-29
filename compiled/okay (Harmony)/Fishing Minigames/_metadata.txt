@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9345
+IDs: barteke22.FishingMinigames
+update keys: Nexus:9345, GitHub:barteke22/StardewMods

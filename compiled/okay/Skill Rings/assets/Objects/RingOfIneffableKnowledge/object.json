@@ -5,4 +5,10 @@
   "Edibility": -300,
   "Price": 50000,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "智周万物之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "佩戴时对万物一目了然，大大提升获取的经验值。"
+  },
 }

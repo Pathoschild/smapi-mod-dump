@@ -46,7 +46,7 @@ namespace AlternativeTextures.Framework.External.ContentPatcher
         /// <remarks>Default unrestricted.</remarks>
         public IEnumerable<string> GetValidInputs()
         {
-            return _textureManager.GetValidTextureNames();
+            return _textureManager.GetValidTextureNamesWithSeason();
         }
 
         /// <summary>Validate that the provided input arguments are valid.</summary>
@@ -58,7 +58,7 @@ namespace AlternativeTextures.Framework.External.ContentPatcher
         {
             error = String.Empty;
 
-            if (!_textureManager.GetValidTextureNames().Any(name => name == input))
+            if (!_textureManager.GetValidTextureNamesWithSeason().Any(name => String.Equals(name, input, StringComparison.OrdinalIgnoreCase)))
             {
                 error = $"No matching texture found for the given UNIQUE_ID.TEXTURE_NAME: {input}";
                 return false;
@@ -77,14 +77,14 @@ namespace AlternativeTextures.Framework.External.ContentPatcher
         /// <summary>Get whether the token is available for use.</summary>
         public bool IsReady()
         {
-            return _textureManager.GetValidTextureNames().Count > 0;
+            return _textureManager.GetValidTextureNamesWithSeason().Count > 0;
         }
 
         /// <summary>Get the current values.</summary>
         /// <param name="input">The input arguments, if any.</param>
         public IEnumerable<string> GetValues(string input)
         {
-            if (!IsReady() || !_textureManager.GetValidTextureNames().Any(name => name == input))
+            if (!IsReady() || !_textureManager.GetValidTextureNamesWithSeason().Any(name => String.Equals(name, input, StringComparison.OrdinalIgnoreCase)))
                 yield break;
 
             yield return $"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{input}";

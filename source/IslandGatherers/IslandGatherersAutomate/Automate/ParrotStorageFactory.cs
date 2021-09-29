@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using IslandGatherers.Framework;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using StardewValley;
@@ -26,7 +27,7 @@ namespace IslandGatherersAutomate.Automate
         /// <returns>Returns an instance or <c>null</c>.</returns>
         public IAutomatable GetFor(Object obj, GameLocation location, in Vector2 tile)
         {
-            if (obj.ParentSheetIndex == IslandGatherers.IslandGatherers.parrotStorageID)
+            if (obj.modData.ContainsKey(ApiManager.GetParrotPotModDataFlag()))
             {
                 return new ParrotStorageMachine(obj, location, tile);
             }

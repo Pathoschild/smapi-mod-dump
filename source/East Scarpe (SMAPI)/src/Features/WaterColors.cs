@@ -11,7 +11,7 @@
 using StardewModdingAPI;
 using StardewValley;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public static class WaterColors
 	{

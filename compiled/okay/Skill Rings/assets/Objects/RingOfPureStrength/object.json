@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Marlon",
   "PurchasePrice": 25000,
+  "NameLocalization": {
+	  "zh": "纯粹力量之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "让你更强大，增加战斗力。"
+  },
 }

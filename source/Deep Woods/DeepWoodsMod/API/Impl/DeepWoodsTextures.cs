@@ -37,16 +37,16 @@ namespace DeepWoodsMod.API.Impl
 
         public void LoadAll()
         {
-            WoodsObelisk = WoodsObelisk ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "woods_obelisk_mostlyreal.png"), ContentSource.ModFolder);
-            HealingFountain = HealingFountain ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "sinceriouslyyy_fountain.png"), ContentSource.ModFolder);
-            IridiumTree = IridiumTree ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "iridium_tree.png"), ContentSource.ModFolder);
-            GingerbreadHouseWinter = GingerbreadHouseWinter ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "gingerbread_house_technopoptart98.png"), ContentSource.ModFolder);
-            GingerbreadHouse = GingerbreadHouse ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "gingerbread_house_mostlyreal.png"), ContentSource.ModFolder);
-            BushThorns = BushThorns ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "bush_thorns.png"), ContentSource.ModFolder);
-            Unicorn = Unicorn ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "unicorn_zhuria.png"), ContentSource.ModFolder);
-            ExcaliburStone = ExcaliburStone ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "excalibur_stone.png"), ContentSource.ModFolder);
-            LakeTilesheet = LakeTilesheet ?? ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "lake_tilesheet.png"), ContentSource.ModFolder);
-            Festivals = Festivals ?? Game1.content.Load<Texture2D>("Maps\\Festivals");
+            WoodsObelisk ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "woods_obelisk_mostlyreal.png"), ContentSource.ModFolder);
+            HealingFountain ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "sinceriouslyyy_fountain.png"), ContentSource.ModFolder);
+            IridiumTree ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "iridium_tree.png"), ContentSource.ModFolder);
+            GingerbreadHouse ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "gingerbread_house_technopoptart98.png"), ContentSource.ModFolder);
+            GingerbreadHouseWinter ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "gingerbread_house_mostlyreal.png"), ContentSource.ModFolder);
+            BushThorns ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "bush_thorns.png"), ContentSource.ModFolder);
+            Unicorn ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "unicorn_zhuria.png"), ContentSource.ModFolder);
+            ExcaliburStone ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "excalibur_stone.png"), ContentSource.ModFolder);
+            LakeTilesheet ??= ModEntry.GetHelper().Content.Load<Texture2D>(Path.Combine("assets", "lake_tilesheet.png"), ContentSource.ModFolder);
+            Festivals ??= Game1.content.Load<Texture2D>("Maps\\Festivals");
         }
     }
 }

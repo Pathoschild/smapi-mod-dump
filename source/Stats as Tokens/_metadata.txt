@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/dtomlinson-ga/StatsAsTokens
+   Git: https://github.com/dtomlinson-ga/StatsAsTokens.git
+
+mods:
+   Stats as Tokens
+
+latest commit:
+   commit ea940b14af2c17f5fee9c7ece3225521bf92aa8c
+   Author: dtomlinson-ga <dtomlinson.ga@gmail.com>
+   Date:   Wed Sep 29 11:20:49 2021 -0400
+   
+       Update README.md
+   

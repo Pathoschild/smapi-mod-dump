@@ -35,7 +35,7 @@ namespace DeepWoodsMod
         }
     }
 
-    class WoodsPassageSettings
+    public class WoodsPassageSettings
     {
         public SimpleCoord[] DeleteBuildingTiles { get; set; } = new SimpleCoord[] {
             new SimpleCoord(29, 25),
@@ -59,7 +59,7 @@ namespace DeepWoodsMod
         };
     }
 
-    class MapSettings
+    public class MapSettings
     {
         public int MaxMapWidth { get; set; } = 64;
         public int MaxMapHeight { get; set; } = 64;
@@ -158,17 +158,20 @@ namespace DeepWoodsMod
         }
     }
 
-    class LevelSettings
+    public class LevelSettings
     {
         public int MinLevelForFlowers { get; set; } = 3;
         public int MinLevelForFruits { get; set; } = 5;
         public int MinLevelForThornyBushes { get; set; } = 10;
+        public int MinLevelForDangerousMonsters { get; set; } = 15;
         public int MinLevelForBuffedMonsters { get; set; } = 15;
         public int MinLevelForWoodsObelisk { get; set; } = 20;
         public int MinLevelForMeteorite { get; set; } = 25;
         public int MinLevelForClearing { get; set; } = 30;
         public int MinLevelForGingerbreadHouse { get; set; } = 50;
         public Chance ChanceForThornyBushesOnExit { get; set; } = new Chance(new LuckValue(50, 5));
+        public bool EnableGuaranteedClearings { get; set; } = true;
+        public int GuaranteedClearingsFrequency { get; set; } = 50;
     }
 
     public class ExcaliburSettings
@@ -377,10 +380,23 @@ namespace DeepWoodsMod
         public LuckRange PileItemStackSize { get; set; } = new LuckRange(new LuckValue(0, 100), new LuckValue(0, 100));
     }
 
+    public class PerformanceSettings
+    {
+        public float LightSourceDensity { get; set; } = 100;
+        public float BaubleDensity { get; set; } = 100;
+        public float LeafDensity { get; set; } = 100;
+        public float GrassDensity { get; set; } = 100;
+    }
+
     public class MonstersSettings
     {
+        public float MonsterDensity { get; set; } = 100;
+        public bool DisableBuffedMonsters { get; set; } = false;
+        public bool DisableDangerousMonsters { get; set; } = false;
+
         public Chance ChanceForHalfMonsterCount { get; set; } = new Chance(new LuckValue(0, 0, 50));
         public Chance ChanceForUnbuffedMonster { get; set; } = new Chance(new LuckValue(0, 25, 75));
+        public Chance ChanceForNonDangerousMonster { get; set; } = new Chance(new LuckValue(0, 25, 75));
 
         public DeepWoodsMonsters.MonsterDecider Bat { get; set; } = new DeepWoodsMonsters.MonsterDecider(1, 10);
         public DeepWoodsMonsters.MonsterDecider BigSlime { get; set; } = new DeepWoodsMonsters.MonsterDecider(2, 10);
@@ -391,6 +407,11 @@ namespace DeepWoodsMod
         public DeepWoodsMonsters.MonsterDecider RockCrab { get; set; } = new DeepWoodsMonsters.MonsterDecider(10, 10);
         public DeepWoodsMonsters.MonsterDecider Ghost { get; set; } = new DeepWoodsMonsters.MonsterDecider(10, 10);
         public DeepWoodsMonsters.MonsterDecider PurpleSlime { get; set; } = new DeepWoodsMonsters.MonsterDecider(10, 10);
+        public DeepWoodsMonsters.MonsterDecider Bug { get; set; } = new DeepWoodsMonsters.MonsterDecider(15, 10);
+        public DeepWoodsMonsters.MonsterDecider Spider { get; set; } = new DeepWoodsMonsters.MonsterDecider(15, 10);
+        public DeepWoodsMonsters.MonsterDecider ArmoredBug { get; set; } = new DeepWoodsMonsters.MonsterDecider(25, 10);
+        public DeepWoodsMonsters.MonsterDecider PutridGhost { get; set; } = new DeepWoodsMonsters.MonsterDecider(25, 10);
+        public DeepWoodsMonsters.MonsterDecider DustSprite { get; set; } = new DeepWoodsMonsters.MonsterDecider(25, 10);
     }
 
     public class FishiesLuckSettings
@@ -450,7 +471,7 @@ namespace DeepWoodsMod
         public FishiesLuckSettings Fishies { get; set; } = new FishiesLuckSettings();
     }
 
-    class DeepWoodsStateData
+    public class DeepWoodsStateData
     {
         private int lowestLevelReached = 0;
 
@@ -481,7 +502,7 @@ namespace DeepWoodsMod
         }
     }
 
-    class DeepWoodsSettings
+    public class DeepWoodsSettings
     {
         // Save stuff
         public static DeepWoodsStateData DeepWoodsState { get; set; } = new DeepWoodsStateData();
@@ -496,6 +517,7 @@ namespace DeepWoodsMod
         public ObjectsSettings Objects { get; set; } = new ObjectsSettings();
         public LuckSettings Luck { get; set; } = new LuckSettings();
         public MonstersSettings Monsters { get; set; } = new MonstersSettings();
+        public PerformanceSettings Performance { get; set; } = new PerformanceSettings();
 
         public static void DoSave()
         {

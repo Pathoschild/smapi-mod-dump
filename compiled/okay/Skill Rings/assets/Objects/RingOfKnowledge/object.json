@@ -5,4 +5,10 @@
   "Edibility": -300,
   "Price": 10000,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "智慧之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "为你提供升级所需的知识，并增加经验。"
+  },
 }

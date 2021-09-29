@@ -11,7 +11,7 @@
 {
   "Name": "Quest Essentials",
   "Author": "PurrplingCat",
-  "Version": "1.0.0-beta.2",
+  "Version": "1.0.0",
   "Description": "A useful extension for Quest Framework which provides new quest types and tools",
   "UniqueID": "PurrplingCat.QuestEssentials",
   "EntryDll": "QuestEssentials.dll",
@@ -20,7 +20,7 @@
   "Dependencies": [
     {
       "UniqueID": "PurrplingCat.QuestFramework",
-      "MinimumVersion": "1.4.0-beta.2"
+      "MinimumVersion": "1.4.0"
     }
   ]
 }

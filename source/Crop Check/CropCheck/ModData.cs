@@ -15,12 +15,5 @@ namespace CropCheck
     class ModData
     {
         public IDictionary<string, Dictionary<string, string>> TileChecks { get; set; } = new Dictionary<string, Dictionary<string, string>>();
-
-        public ModData()
-        {
-            this.TileChecks.Add("Farm", new Dictionary<string, string>());
-            this.TileChecks.Add("IslandWest", new Dictionary<string, string>());
-            this.TileChecks.Add("Greenhouse", new Dictionary<string, string>());
-        }
     }
 }

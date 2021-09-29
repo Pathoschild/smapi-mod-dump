@@ -8,10 +8,11 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using PurrplingCore.Patching;
 using QuestFramework.Extensions;
 using QuestFramework.Framework;
+using QuestFramework.Framework.Controllers;
 using StardewValley;
 using System;
 
@@ -21,13 +22,15 @@ namespace QuestFramework.Patches
     {
         public override string Name => nameof(Game1Patch);
 
-        QuestManager QuestManager { get; }
-        QuestOfferManager ScheduleManager { get; }
+        private QuestManager QuestManager { get; }
+        private QuestOfferManager ScheduleManager { get; }
+        private ItemOfferController ItemOfferController { get; }
 
-        public Game1Patch(QuestManager questManager, QuestOfferManager scheduleManager)
+        public Game1Patch(QuestManager questManager, QuestOfferManager offerManager, ItemOfferController itemOfferController)
         {
             this.QuestManager = questManager;
-            this.ScheduleManager = scheduleManager;
+            this.ScheduleManager = offerManager;
+            this.ItemOfferController = itemOfferController;
             Instance = this;
         }
 
@@ -44,11 +47,20 @@ namespace QuestFramework.Patches
             }
         }
 
-        protected override void Apply(HarmonyInstance harmony)
+        private static void After_checkItemFirstInventoryAdd(Item item)
+        {
+            Instance.ItemOfferController.CheckItemOffersQuest(item);
+        }
+
+        protected override void Apply(Harmony harmony)
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), nameof(Game1.CanAcceptDailyQuest)),
                 postfix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.After_CanAcceptDailyQuest))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.checkItemFirstInventoryAdd)),
+                postfix: new HarmonyMethod(typeof(Game1Patch), nameof(Game1Patch.After_checkItemFirstInventoryAdd))
             );
         }
     }

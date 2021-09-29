@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Annosz/UiInfoSuite2
+   Git: https://github.com/Annosz/UiInfoSuite2.git
+
+mods:
+   Ui Info Suite 2
+
+latest commit:
+   commit 2ac39072e3368be54803a9d2ec23649d6fefe33a
+   Author: Annosz <tadamleanyfalu@gmail.com>
+   Date:   Mon Sep 27 22:04:48 2021 +0200
+   
+       Version update for release
+   

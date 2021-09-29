@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/joisse1101/InstantAnimals
+   Git: https://github.com/joisse1101/InstantAnimals.git
+
+mods:
+   Instant Animals
+
+latest commit:
+   commit 021e7d900f44330a3062f395214ce0b804fd13d7
+   Author: joisse1101 <thoiwei@gmail.com>
+   Date:   Thu Sep 9 00:26:15 2021 +0800
+   
+       Initial commit
+   

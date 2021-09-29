@@ -84,7 +84,6 @@ namespace StardewHack.HarvestWithScythe
      */
     public class ModEntry : HackWithConfig<ModEntry, ModConfig> {
         public override void HackEntry(IModHelper helper) {
-            Patch((MeleeWeapon w) => w.isScythe(-1), MeleeWeapon_isScythe);
             Patch((Crop c) => c.harvest(0, 0, null, null), Crop_harvest);
             Patch((HoeDirt hd) => hd.performToolAction(null, 0, new Vector2(), null), HoeDirt_performToolAction);
             Patch((HoeDirt hd) => hd.performUseAction(new Vector2(), null), HoeDirt_performUseAction);
@@ -92,6 +91,8 @@ namespace StardewHack.HarvestWithScythe
             // If forage harvesting is configured to allow scythe.
             Patch((StardewValley.Object o) => o.performToolAction(null, null), Object_performToolAction);
             Patch((GameLocation gl) => gl.checkAction(new xTile.Dimensions.Location(), new xTile.Dimensions.Rectangle(), null), GameLocation_checkAction);
+
+            Patch((Grass g) => g.performToolAction(null, 0, new Vector2(), null), Grass_performToolAction);
 
             helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
         }
@@ -107,6 +108,7 @@ namespace StardewHack.HarvestWithScythe
             PlayerIsMounted = Game1.player.mount != null;
         }
 
+#region ModConfig
         static string writeEnum(HarvestModeEnum val) {
             switch (val) {
                 case HarvestModeEnum.HAND: return "Hand";
@@ -140,29 +142,23 @@ namespace StardewHack.HarvestWithScythe
             api.RegisterChoiceOption(ModManifest, "Forage", "How forage can be harvested.", () => writeEnum(config.HarvestMode.Forage), (string val) => config.HarvestMode.Forage = parseEnum(val), options);
             api.RegisterChoiceOption(ModManifest, "SpringOnion", "How spring onions can be harvested.", () => writeEnum(config.HarvestMode.SpringOnion), (string val) => config.HarvestMode.SpringOnion = parseEnum(val), options);
         }
+#endregion
 
-        static bool getHarvestWithSword() {
-            return getInstance().config.HarvestWithSword;
-        }
-
-        void MeleeWeapon_isScythe() {
-            BeginCode().Append(
-                Instructions.Call(GetType(), nameof(getHarvestWithSword)),
-                Instructions.Brfalse(AttachLabel(BeginCode()[0])),
-                Instructions.Ldc_I4_1(),
-                Instructions.Ret()
-            );
-        }
-
-
-        #region CanHarvest methods
+#region CanHarvest methods
         public const int HARVEST_PLUCKING = Crop.grabHarvest;
         public const int HARVEST_SCYTHING = Crop.sickleHarvest;
+
+        static public bool IsScythe(Tool t) {
+            if (t is MeleeWeapon) {
+                return getInstance().config.HarvestWithSword || (t as MeleeWeapon).isScythe();
+            }
+            return false;
+        }
 
         /** Check whether the used harvest method is allowed for the given harvest mode. */
         public static bool CanHarvest(HarvestModeEnum mode, int method) {
             var t = Game1.player.CurrentTool;
-            if (t is MeleeWeapon && ((t as MeleeWeapon).isScythe())) {
+            if (IsScythe(t)) {
                 if (mode == HarvestModeEnum.BOTH) {
                     // If mode is BOTH, then set mode depending on whether the scythe is currently equipped.
                     mode = HarvestModeEnum.SCYTHE;
@@ -440,7 +436,6 @@ namespace StardewHack.HarvestWithScythe
             //var var_quality = Crop_harvest_colored_flowers(var_vector);
             //Crop_harvest_sunflower_drops(var_quality);
         }
-#endregion
 
         // Proxy method for creating an object suitable for spawning as debris.
         public static void CreateDebris(Crop crop, int quality, Vector2 vector) {
@@ -454,14 +449,34 @@ namespace StardewHack.HarvestWithScythe
             }
             Game1.createItemDebris(dropped_item, vector, -1, null, -1);
         }
+#endregion
 
 #region Patch HoeDirt
 
         static readonly InstructionMatcher HoeDirt_crop = Instructions.Call_get(typeof(HoeDirt), nameof(HoeDirt.crop));
 
         void HoeDirt_performToolAction() {
+            var isScytheCode = FindCode(
+                // if (t is MeleeWeapon && 
+                OpCodes.Ldarg_1,
+                Instructions.Isinst(typeof(MeleeWeapon)),
+                OpCodes.Brfalse,
+
+                // (t as MeleeWeapon).isScythe()))
+                OpCodes.Ldarg_1,
+                Instructions.Isinst(typeof(MeleeWeapon)),
+                OpCodes.Ldc_I4_M1,
+                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
+                OpCodes.Brfalse            
+            );
+            isScytheCode.Replace(
+                isScytheCode[0],
+                Instructions.Call(GetType(), nameof(IsScythe), typeof(Tool)),
+                isScytheCode[2]
+            );
+
             // Find the first (and only) harvestMethod==1 check.
-            var HarvestMethodCheck = FindCode(
+            var HarvestMethodCheck = isScytheCode.FindNext(
                 OpCodes.Ldarg_0,
                 HoeDirt_crop,
                 Instructions.Ldfld(typeof(Crop), nameof(Crop.harvestMethod)),
@@ -576,6 +591,29 @@ namespace StardewHack.HarvestWithScythe
                 Instructions.Call(typeof(ModEntry), nameof(CanHarvestCrop), typeof(Crop), typeof(int)),
                 Instructions.Brfalse((Label)harvest_scythe[5].operand)
             );
+
+            harvest_scythe = harvest_scythe.FindNext(
+                // Game1.player.CurrentTool is MeleeWeapon &&
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
+                Instructions.Isinst(typeof(MeleeWeapon)),
+                OpCodes.Brfalse,
+
+                // (Game1.player.CurrentTool as MeleeWeapon).isScythe()
+                Instructions.Call_get(typeof(Game1), nameof(Game1.player)),
+                Instructions.Callvirt_get(typeof(Farmer), nameof(Farmer.CurrentTool)),
+                Instructions.Isinst(typeof(MeleeWeapon)),
+                OpCodes.Ldc_I4_M1,
+                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
+                OpCodes.Brfalse
+            );
+
+            harvest_scythe.Replace(
+                harvest_scythe[0],
+                harvest_scythe[1],
+                Instructions.Call(GetType(), nameof(IsScythe), typeof(Tool)),
+                harvest_scythe[3]
+            );
         }
 
         void HoeDirt_performUseAction() {
@@ -602,7 +640,7 @@ namespace StardewHack.HarvestWithScythe
         }
 
         public static bool ScytheForage(StardewValley.Object o, Tool t, GameLocation loc) {
-            if (t is MeleeWeapon && (t as MeleeWeapon).isScythe()) {
+            if (IsScythe(t)) {
                 if (CanHarvestObject(o, loc, HARVEST_SCYTHING)) {
                     var who = t.getLastFarmerToUse();
                     var vector = o.TileLocation;
@@ -739,7 +777,7 @@ namespace StardewHack.HarvestWithScythe
         static void TryScythe() {
             // Copied from HoeDirt.performUseAction()
             // TODO: Filter items that are not considered forage.
-            if (!PlayerIsMounted && Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && (Game1.player.CurrentTool as MeleeWeapon).isScythe()) {
+            if (!PlayerIsMounted && Game1.player.CurrentTool != null && IsScythe(Game1.player.CurrentTool)) {
                 Game1.player.CanMove = false;
                 Game1.player.UsingTool = true;
                 Game1.player.canReleaseTool = true;
@@ -751,8 +789,39 @@ namespace StardewHack.HarvestWithScythe
                 ((MeleeWeapon)Game1.player.CurrentTool).setFarmerAnimating (Game1.player);
             } 
         }
-        
+
         #endregion
+
+#region Grass
+        private void Grass_performToolAction() {
+            var isScytheCode = FindCode(
+                // if (t is MeleeWeapon && 
+                OpCodes.Ldarg_1,
+                Instructions.Isinst(typeof(MeleeWeapon)),
+                OpCodes.Brfalse,
+
+                // (t.Name.Contains("Scythe") || 
+                OpCodes.Ldarg_1,
+                Instructions.Callvirt_get(typeof(Item), nameof(Item.Name)),
+                Instructions.Ldstr("Scythe"),
+                OpCodes.Callvirt,
+                OpCodes.Brtrue,
+
+                // (t as MeleeWeapon).isScythe()))
+                OpCodes.Ldarg_1,
+                Instructions.Isinst(typeof(MeleeWeapon)),
+                OpCodes.Ldc_I4_M1,
+                Instructions.Callvirt(typeof(MeleeWeapon), nameof(MeleeWeapon.isScythe), typeof(int)),
+                OpCodes.Brfalse
+            );
+            isScytheCode.Replace(
+                isScytheCode[0],
+                Instructions.Call(GetType(), nameof(IsScythe), typeof(Tool)),
+                isScytheCode[2]
+            );
+        }
+
+#endregion
     }
 }
 

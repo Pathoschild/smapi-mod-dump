@@ -8,18 +8,24 @@
 **
 *************************************************/
 
+using AlternativeTextures.Framework.Interfaces;
 using AlternativeTextures.Framework.Models;
+using AlternativeTextures.Framework.Patches.Entities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Characters;
+using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static AlternativeTextures.Framework.Models.AlternativeTextureModel;
 using Object = StardewValley.Object;
 
 namespace AlternativeTextures.Framework.Patches
@@ -27,10 +33,12 @@ namespace AlternativeTextures.Framework.Patches
     internal class PatchTemplate
     {
         internal static IMonitor _monitor;
+        internal static IModHelper _helper;
 
-        internal PatchTemplate(IMonitor modMonitor)
+        internal PatchTemplate(IMonitor modMonitor, IModHelper modHelper)
         {
             _monitor = modMonitor;
+            _helper = modHelper;
         }
 
         internal static GenericTool GetPaintBucketTool()
@@ -41,16 +49,34 @@ namespace AlternativeTextures.Framework.Patches
             return paintBucket;
         }
 
+        internal static GenericTool GetScissorsTool()
+        {
+            var scissors = new GenericTool("Scissors", "Allows you to apply different textures to entities.", -1, 6, 6);
+            scissors.modData[AlternativeTextures.SCISSORS_FLAG] = true.ToString();
+
+            return scissors;
+        }
+
         internal static GenericTool GetPaintBrushTool()
         {
-            var paintBucket = new GenericTool("Paint Brush", "Allows you to copy a texture and apply it other objects of the same type.", -1, 6, 6);
-            paintBucket.modData[AlternativeTextures.PAINT_BRUSH_FLAG] = null;
+            var paintBrush = new GenericTool("Paint Brush", "Allows you to copy a texture and apply it other objects of the same type.", -1, 6, 6);
+            paintBrush.modData[AlternativeTextures.PAINT_BRUSH_FLAG] = null;
 
-            return paintBucket;
+            return paintBrush;
         }
 
         internal static string GetObjectName(Object obj)
         {
+            // Perform separate check for DGA objects, before using check for vanilla objects
+            if (IsDGAUsed() && AlternativeTextures.apiManager.GetDynamicGameAssetsApi() is IDynamicGameAssetsApi api && api != null)
+            {
+                var dgaId = api.GetDGAItemId(obj);
+                if (dgaId != null)
+                {
+                    return dgaId;
+                }
+            }
+
             if (obj.bigCraftable)
             {
                 if (!Game1.bigCraftablesInformation.ContainsKey(obj.parentSheetIndex))
@@ -85,9 +111,101 @@ namespace AlternativeTextures.Framework.Patches
             }
         }
 
+        internal static string GetCharacterName(Character character)
+        {
+            if (character is Child child)
+            {
+                if (child.Age >= 3)
+                {
+                    return $"{CharacterPatch.TODDLER_NAME_PREFIX}_{(child.Gender == 0 ? "Male" : "Female")}_{(child.darkSkinned ? "Dark" : "Light")}";
+                }
+                return $"{CharacterPatch.BABY_NAME_PREFIX}_{(child.darkSkinned ? "Dark" : "Light")}";
+            }
+
+            if (character is FarmAnimal animal)
+            {
+                var animalName = animal.type.Value;
+                if (animal.age < animal.ageWhenMature)
+                {
+                    animalName = "Baby" + (animal.type.Value.Equals("Duck") ? "White Chicken" : animal.type.Value);
+                }
+                else if (animal.showDifferentTextureWhenReadyForHarvest && animal.currentProduce <= 0)
+                {
+                    animalName = "Sheared" + animalName;
+                }
+                return animalName;
+            }
+
+            if (character is Horse horse)
+            {
+                // Tractor mod compatibility: -794739 is the ID used by Tractor Mod for determining if a Stable is really a garage
+                if (horse.modData.ContainsKey("Pathoschild.TractorMod"))
+                {
+                    return "Tractor";
+                }
+
+                return "Horse";
+            }
+
+            if (character is Pet pet)
+            {
+                return pet is Cat ? "Cat" : "Dog";
+            }
+
+            return character.name;
+        }
+
+        internal static string GetBuildingName(Building building)
+        {
+            // Tractor mod compatibility: -794739 is the ID used by Tractor Mod for determining if a Stable is really a garage
+            if (building.maxOccupants.Value == -794739)
+            {
+                return "Tractor Garage";
+            }
+
+            return building.buildingType;
+        }
+
         internal static Object GetObjectAt(GameLocation location, int x, int y)
         {
+            // If object is furniture and currently has something on top of it, check that instead
+            foreach (var furniture in location.furniture.Where(c => c.heldObject.Value != null))
+            {
+                if (furniture.boundingBox.Value.Contains(x, y))
+                {
+                    return furniture.heldObject.Value;
+                }
+            }
+
+            // Prioritize checking non-rug furniture first
+            foreach (var furniture in location.furniture.Where(c => c.furniture_type != Furniture.rug))
+            {
+                if (furniture.boundingBox.Value.Contains(x, y))
+                {
+                    return furniture;
+                }
+            }
+
+            // Replicating GameLocation.getObjectAt, but doing objects before rugs
+            // Doing this so the object on top of rugs are given instead of the latter
+            var tile = new Vector2(x / 64, y / 64);
+            if (location.objects.ContainsKey(tile))
+            {
+                return location.objects[tile];
+            }
+
             return location.getObjectAt(x, y);
+        }
+
+        internal static Building GetBuildingAt(GameLocation location, int x, int y)
+        {
+            Vector2 tile = new Vector2(x / 64, y / 64);
+            if (location is Farm farm && farm.buildings.FirstOrDefault(b => b.occupiesTile(tile)) is Building building && building != null)
+            {
+                return building;
+            }
+
+            return null;
         }
 
         internal static TerrainFeature GetTerrainFeatureAt(GameLocation location, int x, int y)
@@ -99,6 +217,47 @@ namespace AlternativeTextures.Framework.Patches
             }
 
             return location.terrainFeatures[tile];
+        }
+
+        internal static Character GetCharacterAt(GameLocation location, int x, int y)
+        {
+            var tileLocation = new Vector2(x / 64, y / 64);
+            var rectangle = new Rectangle(x, y, 64, 64);
+            if (location is Farm farm)
+            {
+                foreach (var animal in farm.animals.Values)
+                {
+                    if (animal.GetBoundingBox().Intersects(rectangle))
+                    {
+                        return animal;
+                    }
+                }
+            }
+            if (location is AnimalHouse animalHouse)
+            {
+                foreach (var animal in animalHouse.animals.Values)
+                {
+                    if (animal.GetBoundingBox().Intersects(rectangle))
+                    {
+                        return animal;
+                    }
+                }
+            }
+
+            foreach (var specialCharacter in location.characters.Where(c => c is Horse || c is Pet))
+            {
+                if (specialCharacter is Horse horse && horse.GetBoundingBox().Intersects(rectangle))
+                {
+                    return horse;
+                }
+
+                if (specialCharacter is Pet pet && pet.GetBoundingBox().Intersects(rectangle))
+                {
+                    return pet;
+                }
+            }
+
+            return location.isCharacterAtTile(tileLocation);
         }
 
         internal static int GetFloorSheetId(Flooring floor)
@@ -142,6 +301,29 @@ namespace AlternativeTextures.Framework.Patches
             }
         }
 
+        internal static string GetTreeTypeString(Tree tree)
+        {
+            switch (tree.treeType.Value)
+            {
+                case Tree.bushyTree:
+                    return "Oak";
+                case Tree.leafyTree:
+                    return "Maple";
+                case Tree.pineTree:
+                    return "Pine";
+                case Tree.mahoganyTree:
+                    return "Mahogany";
+                case Tree.mushroomTree:
+                    return "Mushroom";
+                case Tree.palmTree:
+                    return "Palm_1";
+                case Tree.palmTree2:
+                    return "Palm_2";
+                default:
+                    return String.Empty;
+            }
+        }
+
         internal static string GetBushTypeString(Bush bush)
         {
             switch (bush.size)
@@ -153,8 +335,73 @@ namespace AlternativeTextures.Framework.Patches
             }
         }
 
-        internal static bool AssignDefaultModData<T>(T type, string modelName, bool trackSeason = false, bool trackSheetId = false)
+        internal static TextureType GetTextureType(object obj)
         {
+            switch (obj)
+            {
+                case Character character:
+                    return TextureType.Character;
+                case Flooring floor:
+                    return TextureType.Flooring;
+                case Tree tree:
+                    return TextureType.Tree;
+                case FruitTree fruitTree:
+                    return TextureType.FruitTree;
+                case Building building:
+                    return TextureType.Building;
+                case Furniture furniture:
+                    return TextureType.Furniture;
+                case Object craftable:
+                    return TextureType.Craftable;
+                case DecoratableLocation location:
+                    return TextureType.Decoration;
+                default:
+                    return TextureType.Unknown;
+            }
+        }
+
+        internal static bool HasCachedTextureName<T>(T type, bool probe = false)
+        {
+            if (type is Object obj && obj.modData.ContainsKey("AlternativeTextureNameCached"))
+            {
+                if (!probe)
+                {
+                    obj.modData["AlternativeTextureName"] = obj.modData["AlternativeTextureNameCached"];
+                    obj.modData.Remove("AlternativeTextureNameCached");
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        internal static bool IsDGAUsed()
+        {
+            return _helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets");
+        }
+
+        internal static bool IsDGAObject(object obj)
+        {
+            if (IsDGAUsed() && AlternativeTextures.apiManager.GetDynamicGameAssetsApi() is IDynamicGameAssetsApi api && api != null)
+            {
+                var dgaId = api.GetDGAItemId(obj);
+                if (dgaId != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        internal static bool AssignDefaultModData<T>(T type, string modelName, bool trackSeason = false, bool trackSheetId = false, bool isWallpaper = false)
+        {
+            if (HasCachedTextureName(type))
+            {
+                return false;
+            }
+
             var textureModel = new AlternativeTextureModel() { Owner = AlternativeTextures.DEFAULT_OWNER, Season = trackSeason ? Game1.currentSeason : String.Empty };
             switch (type)
             {
@@ -164,13 +411,33 @@ namespace AlternativeTextures.Framework.Patches
                 case TerrainFeature terrain:
                     AssignTerrainFeatureModData(terrain, modelName, textureModel, -1, trackSeason);
                     return true;
+                case Character character:
+                    AssignCharacterModData(character, modelName, textureModel, -1, trackSeason);
+                    return true;
+                case Building building:
+                    AssignBuildingModData(building, modelName, textureModel, -1, trackSeason);
+                    return true;
+                case DecoratableLocation decoratableLocation:
+                    if (isWallpaper)
+                    {
+                        AssignWallpaperModData(decoratableLocation, modelName, textureModel, -1, trackSeason);
+                        return true;
+                    }
+
+                    AssignFloorModData(decoratableLocation, modelName, textureModel, -1, trackSeason);
+                    return true;
             }
 
             return false;
         }
 
-        internal static bool AssignModData<T>(T type, string modelName, bool trackSeason = false, bool trackSheetId = false)
+        internal static bool AssignModData<T>(T type, string modelName, bool trackSeason = false, bool trackSheetId = false, bool isWallpaper = false)
         {
+            if (HasCachedTextureName(type))
+            {
+                return false;
+            }
+
             var textureModel = AlternativeTextures.textureManager.GetRandomTextureModel(modelName);
 
             var selectedVariation = Game1.random.Next(-1, textureModel.Variations);
@@ -191,6 +458,21 @@ namespace AlternativeTextures.Framework.Patches
                     return true;
                 case TerrainFeature terrain:
                     AssignTerrainFeatureModData(terrain, modelName, textureModel, selectedVariation, trackSeason);
+                    return true;
+                case Character character:
+                    AssignCharacterModData(character, modelName, textureModel, selectedVariation, trackSeason);
+                    return true;
+                case Building building:
+                    AssignBuildingModData(building, modelName, textureModel, selectedVariation, trackSeason);
+                    return true;
+                case DecoratableLocation decoratableLocation:
+                    if (isWallpaper)
+                    {
+                        AssignWallpaperModData(decoratableLocation, modelName, textureModel, selectedVariation, trackSeason);
+                        return true;
+                    }
+
+                    AssignFloorModData(decoratableLocation, modelName, textureModel, selectedVariation, trackSeason);
                     return true;
             }
 
@@ -226,6 +508,83 @@ namespace AlternativeTextures.Framework.Patches
             }
 
             terrain.modData["AlternativeTextureVariation"] = variation.ToString();
+        }
+
+        private static void AssignCharacterModData(Character character, string modelName, AlternativeTextureModel textureModel, int variation, bool trackSeason = false)
+        {
+            character.modData["AlternativeTextureOwner"] = textureModel.Owner;
+            character.modData["AlternativeTextureName"] = String.Concat(textureModel.Owner, ".", modelName);
+
+            if (trackSeason && !String.IsNullOrEmpty(textureModel.Season))
+            {
+                character.modData["AlternativeTextureSeason"] = Game1.GetSeasonForLocation(character.currentLocation);
+            }
+
+            character.modData["AlternativeTextureVariation"] = variation.ToString();
+        }
+
+        private static void AssignBuildingModData(Building building, string modelName, AlternativeTextureModel textureModel, int variation, bool trackSeason = false)
+        {
+            building.modData["AlternativeTextureOwner"] = textureModel.Owner;
+            building.modData["AlternativeTextureName"] = String.Concat(textureModel.Owner, ".", modelName);
+
+            if (trackSeason && !String.IsNullOrEmpty(textureModel.Season))
+            {
+                building.modData["AlternativeTextureSeason"] = Game1.currentSeason;
+            }
+
+            building.modData["AlternativeTextureVariation"] = variation.ToString();
+        }
+
+        private static void AssignDecoratableLocationModData(DecoratableLocation decoratableLocation, string modelName, AlternativeTextureModel textureModel, int variation, bool trackSeason = false)
+        {
+            decoratableLocation.modData["AlternativeTextureOwner"] = textureModel.Owner;
+            decoratableLocation.modData["AlternativeTextureName"] = String.Concat(textureModel.Owner, ".", modelName);
+
+            if (trackSeason && !String.IsNullOrEmpty(textureModel.Season))
+            {
+                decoratableLocation.modData["AlternativeTextureSeason"] = Game1.currentSeason;
+            }
+
+            decoratableLocation.modData["AlternativeTextureVariation"] = variation.ToString();
+        }
+
+        private static void AssignWallpaperModData(DecoratableLocation decoratableLocation, string modelName, AlternativeTextureModel textureModel, int variation, bool trackSeason = false)
+        {
+            for (int x = 0; x < decoratableLocation.getWalls().Count(); x++)
+            {
+                decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Owner_{x}"] = textureModel.Owner;
+                decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Name_{x}"] = String.Concat(textureModel.Owner, ".", modelName);
+
+                if (trackSeason && !String.IsNullOrEmpty(textureModel.Season))
+                {
+                    decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Season_{x}"] = Game1.currentSeason;
+                }
+
+                decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Dirty_{x}"] = false.ToString();
+                decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Variation_{x}"] = variation.ToString();
+            }
+
+            AssignDecoratableLocationModData(decoratableLocation, modelName, textureModel, variation, trackSeason);
+        }
+
+        private static void AssignFloorModData(DecoratableLocation decoratableLocation, string modelName, AlternativeTextureModel textureModel, int variation, bool trackSeason = false)
+        {
+            for (int x = 0; x < decoratableLocation.getFloors().Count(); x++)
+            {
+                decoratableLocation.modData[$"AlternativeTexture.Floor.Owner_{x}"] = textureModel.Owner;
+                decoratableLocation.modData[$"AlternativeTexture.Floor.Name_{x}"] = String.Concat(textureModel.Owner, ".", modelName);
+
+                if (trackSeason && !String.IsNullOrEmpty(textureModel.Season))
+                {
+                    decoratableLocation.modData[$"AlternativeTexture.Floor.Season_{x}"] = Game1.currentSeason;
+                }
+
+                decoratableLocation.modData[$"AlternativeTexture.Floor.Dirty_{x}"] = false.ToString();
+                decoratableLocation.modData[$"AlternativeTexture.Floor.Variation_{x}"] = variation.ToString();
+            }
+
+            AssignDecoratableLocationModData(decoratableLocation, modelName, textureModel, variation, trackSeason);
         }
     }
 }

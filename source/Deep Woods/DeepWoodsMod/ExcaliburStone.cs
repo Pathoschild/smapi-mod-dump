@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace DeepWoodsMod
 {
-    class ExcaliburStone : LargeTerrainFeature
+    public class ExcaliburStone : LargeTerrainFeature
     {
         private NetBool swordPulledOut = new NetBool(false);
 
@@ -64,7 +65,8 @@ namespace DeepWoodsMod
             if (this.swordPulledOut.Value)
                 return true;
 
-            if (Game1.player.LuckLevel >= 10
+            if (Game1.player.DailyLuck >= 0.25
+                && Game1.player.LuckLevel >= DeepWoodsGlobals.MAXIMUM_POSSIBLE_LUCKLEVEL
                 && Game1.player.MiningLevel >= 10
                 && Game1.player.ForagingLevel >= 10
                 && Game1.player.FishingLevel >= 10
@@ -83,6 +85,20 @@ namespace DeepWoodsMod
             {
                 location.playSoundAt(Sounds.THUD_STEP, this.tilePosition.Value);
                 Game1.showRedMessage("It won't budge.");
+
+                ModEntry.Log($"Excalibur doesn't budge. " +
+                    $" DailyLuck is {Game1.player.DailyLuck}, must be >= 0.25. " +
+                    $" LuckLevel is {Game1.player.LuckLevel}, must be >= {DeepWoodsGlobals.MAXIMUM_POSSIBLE_LUCKLEVEL}. " +
+                    $" MiningLevel is {Game1.player.MiningLevel}, must be >= 10. " +
+                    $" ForagingLevel is {Game1.player.ForagingLevel}, must be >= 10. " +
+                    $" FishingLevel is {Game1.player.FishingLevel}, must be >= 10. " +
+                    $" FarmingLevel is {Game1.player.FarmingLevel}, must be >= 10. " +
+                    $" CombatLevel is {Game1.player.CombatLevel}, must be >= 10. " +
+                    $" timesReachedMineBottom is {Math.Max(Game1.player.timesReachedMineBottom, Game1.MasterPlayer.timesReachedMineBottom)}, must be >= 1. " +
+                    $" grandpaScore is {Game1.getFarm().grandpaScore.Value}, must be >= 4. " +
+                    $" JojaMember is {Game1.player.mailReceived.Contains("JojaMember") || Game1.MasterPlayer.mailReceived.Contains("JojaMember")}, must be false. " +
+                    $" hasCompletedCommunityCenter is {(Game1.player.hasCompletedCommunityCenter() || Game1.MasterPlayer.hasCompletedCommunityCenter())}, must be true." +
+                    $"", StardewModdingAPI.LogLevel.Info);
             }
 
             return true;

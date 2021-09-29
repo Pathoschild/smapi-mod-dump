@@ -63,6 +63,17 @@ namespace QuestFramework.Framework.ContentPacks
                 return Translate(token.Value<string>(), translation);
             if (token.Type == JTokenType.Object)
                 return TranslateJObject(translation, token.Value<JObject>());
+            if (token.Type == JTokenType.Array)
+            {
+                var source = (JArray)token;
+                var jArray = new JArray();
+
+                foreach (JToken toTranslate in source)
+                    jArray.Add(TranslateToken(translation, toTranslate));
+
+                return jArray;
+            }
+                
 
             return token;
         }

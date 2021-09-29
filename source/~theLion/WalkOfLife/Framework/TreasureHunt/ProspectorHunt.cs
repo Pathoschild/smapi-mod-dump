@@ -9,13 +9,13 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 {
@@ -23,11 +23,11 @@ namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 	public class ProspectorHunt : TreasureHunt
 	{
 		/// <summary>Construct an instance.</summary>
-		internal ProspectorHunt(string huntStartedMessage, string huntFailedMessage, Texture2D icon)
+		internal ProspectorHunt()
 		{
-			HuntStartedMessage = huntStartedMessage;
-			HuntFailedMessage = huntFailedMessage;
-			Icon = icon;
+			HuntStartedMessage = ModEntry.ModHelper.Translation.Get("prospector.huntstarted");
+			HuntFailedMessage = ModEntry.ModHelper.Translation.Get("prospector.huntfailed");
+			IconSourceRect = new Rectangle(48, 672, 16, 16);
 		}
 
 		/// <summary>Try to start a new prospector hunt at this location.</summary>
@@ -37,13 +37,13 @@ namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 			if (!location.Objects.Any() || !base.TryStartNewHunt()) return;
 
 			var v = location.Objects.Keys.ElementAtOrDefault(Random.Next(location.Objects.Keys.Count()));
-			if (!location.Objects.TryGetValue(v, out var obj) || !Util.Objects.IsStone(obj) || Util.Objects.IsResourceNode(obj)) return;
+			if (!location.Objects.TryGetValue(v, out var obj) || !obj.IsStone() || obj.IsResourceNode()) return;
 
 			TreasureTile = v;
 			TimeLimit = (uint)(location.Objects.Count() * ModEntry.Config.TreasureHuntHandicap);
 			Elapsed = 0;
 			ModEntry.Subscriber.Subscribe(new Events.ArrowPointerUpdateTickedEvent(), new Events.ProspectorHuntUpdateTickedEvent(), new Events.ProspectorHuntRenderedHudEvent());
-			Game1.addHUDMessage(new HuntNotification(HuntStartedMessage, Icon));
+			Game1.addHUDMessage(new HuntNotification(HuntStartedMessage, IconSourceRect));
 		}
 
 		/// <summary>Check if the player has found the treasure tile.</summary>

@@ -33,13 +33,13 @@ namespace TheLion.Stardew.Professions.Framework.Events
 		/// <summary>Raised when SuperModeCounter is set to zero.</summary>
 		public void OnSuperModeCounterReturnedToZero()
 		{
-			ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBuffsDisplayUpdateTickedEvent));
+			ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBuffDisplayUpdateTickedEvent));
 
 			if (!ModEntry.IsSuperModeActive) return;
 			ModEntry.IsSuperModeActive = false;
 
 			if (!Game1.currentLocation.AnyOfType(typeof(MineShaft), typeof(Woods), typeof(SlimeHutch), typeof(VolcanoDungeon)))
-				ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBarRenderedHudEvent));
+				ModEntry.Subscriber.Subscribe(new SuperModeBarFadeOutUpdateTickedEvent());
 		}
 	}
 }

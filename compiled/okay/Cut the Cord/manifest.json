@@ -1,0 +1,10 @@
+﻿{
+  "Name": "CutTheCord",
+  "Author": "cgifox",
+  "Version": "1.0.1",
+  "Description": "A simple mod that shows the weather,luck and any recipes right in your bed at the start of the day",
+  "UniqueID": "cgifox.CutTheCord",
+  "EntryDll": "CutTheCord.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:9571"]
+}

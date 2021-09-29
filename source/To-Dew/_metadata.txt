@@ -6,9 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 40484ab3714eb5b8d5d6f7e3f32406cf5e543fb3
+   commit f7ba317099ee211a18e8f8a8bd121b235e441596
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Wed Jun 23 19:32:46 2021 -0400
+   Date:   Fri Sep 3 23:18:32 2021 -0400
    
-       Add offset{X,Y} config properties for overlay
+       v1.9.2
    

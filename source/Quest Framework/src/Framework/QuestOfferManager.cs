@@ -12,6 +12,7 @@ using QuestFramework.Offers;
 using QuestFramework.Quests;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,7 @@ namespace QuestFramework.Framework
                    let context = this.questManager.Fetch(offer.QuestName)
                    let isRelevantOffer = offer.OfferedBy == source && context != null
                    where isRelevantOffer
+                         && Game1.player != null && !Game1.player.hasQuest(context.id)
                          && this.conditionManager.CheckConditions(offer.When, context)
                          && offer.CheckAdditionalCondition(context)
                          && (offer.OnlyMainPlayer == Context.IsMainPlayer || offer.OnlyMainPlayer == false)

@@ -160,6 +160,11 @@ namespace CustomDeathPenaltyPlus
             // Allow asset to be editted if name matches
             public bool CanEdit<T>(IAssetInfo asset)
             {
+                if (Context.IsWorldReady == false)
+                {
+                    return false;
+                }
+
                 var data = Game1.player.modData;
 
                 return asset.AssetNameEquals("Data\\mail") && data != null && data.ContainsKey($"{manifest.UniqueID}.MoneyLostLastPassOut");

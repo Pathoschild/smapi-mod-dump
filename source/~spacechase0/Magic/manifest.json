@@ -11,8 +11,8 @@
 {
     "Name": "Magic",
     "Author": "spacechase0",
-    "Version": "0.5.6-beta.20210819",
-    "MinimumApiVersion": "3.13.0-beta",
+    "Version": "0.5.7",
+    "MinimumApiVersion": "3.12.5",
     "Description": "Adds a full spell system to the game.",
     "UniqueID": "spacechase0.Magic",
     "EntryDll": "Magic.dll",

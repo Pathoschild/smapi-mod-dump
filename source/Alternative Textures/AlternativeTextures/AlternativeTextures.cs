@@ -8,13 +8,19 @@
 **
 *************************************************/
 
+using AlternativeTextures.Framework.External.GenericModConfigMenu;
 using AlternativeTextures.Framework.External.ContentPatcher;
+using AlternativeTextures.Framework.Interfaces.API;
 using AlternativeTextures.Framework.Managers;
 using AlternativeTextures.Framework.Models;
 using AlternativeTextures.Framework.Patches;
-using AlternativeTextures.Framework.Patches.AnimatedObjects;
+using AlternativeTextures.Framework.Patches.SpecialObjects;
+using AlternativeTextures.Framework.Patches.Buildings;
+using AlternativeTextures.Framework.Patches.Entities;
+using AlternativeTextures.Framework.Patches.GameLocations;
 using AlternativeTextures.Framework.Patches.StandardObjects;
 using AlternativeTextures.Framework.Patches.Tools;
+using AlternativeTextures.Framework.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,6 +28,7 @@ using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -32,29 +39,47 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using xTile.Tiles;
+using Microsoft.Xna.Framework.Input;
 
 namespace AlternativeTextures
 {
     public class AlternativeTextures : Mod
     {
+        // Core modData keys
         internal const string TEXTURE_TOKEN_HEADER = "AlternativeTextures/Textures/";
         internal const string TOOL_TOKEN_HEADER = "AlternativeTextures/Tools/";
         internal const string DEFAULT_OWNER = "Stardew.Default";
+
+        // Compatibility keys
         internal const string TOOL_CONVERSION_COMPATIBILITY = "AlternativeTextures.HasConvertedMilkPails";
+        internal const string TYPE_FIX_COMPATIBILITY = "AlternativeTextures.HasFixedBadObjectTyping";
+
+        // Tool related keys
         internal const string PAINT_BUCKET_FLAG = "AlternativeTextures.PaintBucketFlag";
         internal const string OLD_PAINT_BUCKET_FLAG = "AlternativeTexturesPaintBucketFlag";
         internal const string PAINT_BRUSH_FLAG = "AlternativeTextures.PaintBrushFlag";
         internal const string PAINT_BRUSH_SCALE = "AlternativeTextures.PaintBrushScale";
+        internal const string SCISSORS_FLAG = "AlternativeTextures.ScissorsFlag";
 
+        // Shared static helpers
         internal static IMonitor monitor;
         internal static IModHelper modHelper;
         internal static Multiplayer multiplayer;
+        internal static ModConfig modConfig;
 
         // Managers
         internal static TextureManager textureManager;
         internal static ApiManager apiManager;
         internal static AssetManager assetManager;
+
+        // Utilities
+        internal static FpsCounter fpsCounter;
+
+        // Debugging flags
+        private bool _displayFPS = false;
 
         public override void Entry(IModHelper helper)
         {
@@ -68,6 +93,9 @@ namespace AlternativeTextures
             apiManager = new ApiManager(monitor);
             assetManager = new AssetManager(helper);
 
+            // Setup our utilities
+            fpsCounter = new FpsCounter();
+
             // Load the asset manager
             helper.Content.AssetLoaders.Add(assetManager);
 
@@ -77,35 +105,52 @@ namespace AlternativeTextures
                 var harmony = new Harmony(this.ModManifest.UniqueID);
 
                 // Apply texture override related patches
-                new GameLocationPatch(monitor).Apply(harmony);
-                new ObjectPatch(monitor).Apply(harmony);
-                new FencePatch(monitor).Apply(harmony);
-                new HoeDirtPatch(monitor).Apply(harmony);
-                new CropPatch(monitor).Apply(harmony);
-                new GiantCropPatch(monitor).Apply(harmony);
-                new GrassPatch(monitor).Apply(harmony);
-                new TreePatch(monitor).Apply(harmony);
-                new FruitTreePatch(monitor).Apply(harmony);
-                new ResourceClumpPatch(monitor).Apply(harmony);
-                new BushPatch(monitor).Apply(harmony);
-                new FlooringPatch(monitor).Apply(harmony);
-                new FurniturePatch(monitor).Apply(harmony);
-                new BedFurniturePatch(monitor).Apply(harmony);
-                new FishTankFurniturePatch(monitor).Apply(harmony);
+                new GameLocationPatch(monitor, helper).Apply(harmony);
+                new ObjectPatch(monitor, helper).Apply(harmony);
+                new FencePatch(monitor, helper).Apply(harmony);
+                new HoeDirtPatch(monitor, helper).Apply(harmony);
+                new CropPatch(monitor, helper).Apply(harmony);
+                new GiantCropPatch(monitor, helper).Apply(harmony);
+                new GrassPatch(monitor, helper).Apply(harmony);
+                new TreePatch(monitor, helper).Apply(harmony);
+                new FruitTreePatch(monitor, helper).Apply(harmony);
+                new ResourceClumpPatch(monitor, helper).Apply(harmony);
+                new BushPatch(monitor, helper).Apply(harmony);
+                new FlooringPatch(monitor, helper).Apply(harmony);
+                new FurniturePatch(monitor, helper).Apply(harmony);
+                new BedFurniturePatch(monitor, helper).Apply(harmony);
+                new FishTankFurniturePatch(monitor, helper).Apply(harmony);
 
-                // Start of animated objects
-                new ChestPatch(monitor).Apply(harmony);
-                new CrabPotPatch(monitor).Apply(harmony);
-                new IndoorPotPatch(monitor).Apply(harmony);
-                new PhonePatch(monitor).Apply(harmony);
+                // Start of special objects
+                new ChestPatch(monitor, helper).Apply(harmony);
+                new CrabPotPatch(monitor, helper).Apply(harmony);
+                new IndoorPotPatch(monitor, helper).Apply(harmony);
+                new PhonePatch(monitor, helper).Apply(harmony);
+                new TorchPatch(monitor, helper).Apply(harmony);
+                new WallpaperPatch(monitor, helper).Apply(harmony);
                 /*
                  * Not supported:
                  * - Wood Chipper
                  */
 
+                // Start of entity patches
+                new CharacterPatch(monitor, helper).Apply(harmony);
+                new ChildPatch(monitor, helper).Apply(harmony);
+                new FarmAnimalPatch(monitor, helper).Apply(harmony);
+                new HorsePatch(monitor, helper).Apply(harmony);
+                new PetPatch(monitor, helper).Apply(harmony);
+                new MonsterPatch(monitor, helper).Apply(harmony);
+
+                // Start of building patches
+                new BuildingPatch(monitor, helper).Apply(harmony);
+
+                // Start of location patches
+                new GameLocationPatch(monitor, helper).Apply(harmony);
+                new DecoratableLocationPatch(monitor, helper).Apply(harmony);
+
                 // Paint tool related patches
-                new UtilityPatch(monitor).Apply(harmony);
-                new ToolPatch(monitor).Apply(harmony);
+                new UtilityPatch(monitor, helper).Apply(harmony);
+                new ToolPatch(monitor, helper).Apply(harmony);
             }
             catch (Exception e)
             {
@@ -116,6 +161,9 @@ namespace AlternativeTextures
             // Add in our debug commands
             helper.ConsoleCommands.Add("at_spawn_gc", "Spawns a giant crop based given harvest product id (e.g. Melon == 254).\n\nUsage: at_spawn_gc [HARVEST_ID]", this.DebugSpawnGiantCrop);
             helper.ConsoleCommands.Add("at_spawn_rc", "Spawns a resource clump based given resource name (e.g. Stump).\n\nUsage: at_spawn_rc [RESOURCE_NAME]", this.DebugSpawnResourceClump);
+            helper.ConsoleCommands.Add("at_spawn_child", "Spawns a child. Potentially buggy / gamebreaking, do not use. \n\nUsage: at_spawn_child [AGE] [IS_MALE] [SKIN_TONE]", this.DebugSpawnChild);
+            helper.ConsoleCommands.Add("at_set_age", "Sets age for all children in location. Potentially buggy / gamebreaking, do not use. \n\nUsage: at_set_age [AGE]", this.DebugSetAge);
+            helper.ConsoleCommands.Add("at_display_fps", "Displays FPS counter. Use again to disable. \n\nUsage: at_display_fps", delegate { _displayFPS = !_displayFPS; });
             helper.ConsoleCommands.Add("at_paint_shop", "Shows the carpenter shop with the paint bucket for sale.\n\nUsage: at_paint_shop", this.DebugShowPaintShop);
             helper.ConsoleCommands.Add("at_reload", "Reloads all Alternative Texture content packs.\n\nUsage: at_reload", delegate { this.LoadContentPacks(); });
 
@@ -129,6 +177,19 @@ namespace AlternativeTextures
             // Hook into Input events
             helper.Events.Input.ButtonsChanged += OnButtonChanged;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
+
+            // Hook into Display events
+            helper.Events.Display.Rendered += OnDisplayRendered;
+        }
+
+        private void OnDisplayRendered(object sender, RenderedEventArgs e)
+        {
+            if (!_displayFPS)
+            {
+                return;
+            }
+
+            fpsCounter.OnRendered(sender, e);
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -141,7 +202,7 @@ namespace AlternativeTextures
                 var yTile = (int)e.Cursor.Tile.Y * 64;
 
                 // Verify that a supported object exists at the tile
-                var placedObject = Game1.currentLocation.getObjectAt(xTile, yTile);
+                var placedObject = PatchTemplate.GetObjectAt(Game1.currentLocation, xTile, yTile);
                 if (placedObject is null)
                 {
                     var terrainFeature = PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, xTile, yTile);
@@ -150,14 +211,8 @@ namespace AlternativeTextures
                         var modelType = AlternativeTextureModel.TextureType.Flooring;
                         if (!flooring.modData.ContainsKey("AlternativeTextureName") || !flooring.modData.ContainsKey("AlternativeTextureVariation"))
                         {
-                            if (PatchTemplate.GetFloorSheetId(flooring) == -1)
-                            {
-                                return;
-                            }
-
                             // Assign default modData
                             var instanceSeasonName = $"{modelType}_{PatchTemplate.GetFlooringName(flooring)}_{Game1.GetSeasonForLocation(Game1.currentLocation)}";
-                            flooring.modData["AlternativeTextureSheetId"] = PatchTemplate.GetFloorSheetId(flooring).ToString();
                             PatchTemplate.AssignDefaultModData(flooring, instanceSeasonName, true);
                         }
 
@@ -215,7 +270,7 @@ namespace AlternativeTextures
                 else
                 {
                     // Verify that a supported object exists at the tile
-                    var placedObject = Game1.currentLocation.getObjectAt(xTile, yTile);
+                    var placedObject = PatchTemplate.GetObjectAt(Game1.currentLocation, xTile, yTile);
                     if (placedObject is null)
                     {
                         var terrainFeature = PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, xTile, yTile);
@@ -256,6 +311,11 @@ namespace AlternativeTextures
             }
         }
 
+        public override object GetApi()
+        {
+            return new Api(this);
+        }
+
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             // Hook into the APIs we utilize
@@ -264,14 +324,136 @@ namespace AlternativeTextures
                 apiManager.HookIntoJsonAssets(Helper);
             }
 
+            if (Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
+            {
+                apiManager.HookIntoDynamicGameAssets(Helper);
+            }
+
             if (Helper.ModRegistry.IsLoaded("Pathoschild.ContentPatcher") && apiManager.HookIntoContentPatcher(Helper))
             {
-                apiManager.GetContentPatcherInterface().RegisterToken(ModManifest, "Textures", new TextureToken(textureManager, assetManager));
-                apiManager.GetContentPatcherInterface().RegisterToken(ModManifest, "Tools", new ToolToken(textureManager, assetManager));
+                apiManager.GetContentPatcherApi().RegisterToken(ModManifest, "Textures", new TextureToken(textureManager, assetManager));
+                apiManager.GetContentPatcherApi().RegisterToken(ModManifest, "Tools", new ToolToken(textureManager, assetManager));
             }
 
             // Load any owned content packs
             this.LoadContentPacks();
+
+            // Set our default configuration file
+            modConfig = Helper.ReadConfig<ModConfig>();
+
+            // Hook into GMCM, if applicable
+            if (Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu") && apiManager.HookIntoGenericModConfigMenu(Helper))
+            {
+                var configApi = apiManager.GetGenericModConfigMenuApi();
+                configApi.RegisterModConfig(ModManifest, () => modConfig = new ModConfig(), () => Helper.WriteConfig(modConfig));
+
+                var contentPacks = Helper.ContentPacks.GetOwned();
+                // Create the page labels for each content pack's page
+                configApi.RegisterLabel(ModManifest, $"Content Packs", String.Empty);
+                foreach (var contentPack in contentPacks)
+                {
+                    configApi.RegisterPageLabel(ModManifest, String.Concat("> ", CleanContentPackNameForConfig(contentPack.Manifest.Name)), contentPack.Manifest.Description, contentPack.Manifest.UniqueID);
+                }
+
+                // Add the content pack owner pages
+                foreach (var contentPack in contentPacks)
+                {
+                    configApi.StartNewPage(ModManifest, contentPack.Manifest.UniqueID);
+                    configApi.OverridePageDisplayName(ModManifest, contentPack.Manifest.UniqueID, CleanContentPackNameForConfig(contentPack.Manifest.Name));
+
+                    // Create a page label for each TextureType under this content pack
+                    configApi.RegisterLabel(ModManifest, $"Catagories", String.Empty);
+                    foreach (var textureType in textureManager.GetAllTextures().Where(t => t.Owner == contentPack.Manifest.UniqueID).Select(t => t.GetTextureType()).Distinct().OrderBy(t => t))
+                    {
+                        configApi.RegisterPageLabel(ModManifest, String.Concat("> ", textureType), String.Empty, String.Concat(contentPack.Manifest.UniqueID, ".", textureType));
+                    }
+
+                    // Create a page label for each model under this content pack
+                    foreach (var model in textureManager.GetAllTextures().Where(t => t.Owner == contentPack.Manifest.UniqueID).OrderBy(t => t.GetTextureType()).ThenBy(t => t.ItemName))
+                    {
+                        configApi.StartNewPage(ModManifest, String.Concat(model.Owner, ".", model.GetTextureType()));
+
+                        // Create page label for each model
+                        var description = $"Type: {model.GetTextureType()}\nSeason(s): {(String.IsNullOrEmpty(model.Season) ? "All" : model.Season)}\nVariations: {model.GetVariations()}";
+                        configApi.RegisterPageLabel(ModManifest, String.Concat("> ", model.ItemName), description, model.GetId());
+                    }
+
+                    // Add the AlternativeTextureModel pages
+                    foreach (var model in textureManager.GetAllTextures().Where(t => t.Owner == contentPack.Manifest.UniqueID))
+                    {
+                        configApi.StartNewPage(ModManifest, model.GetId());
+
+                        for (int variation = 0; variation < model.GetVariations(); variation++)
+                        {
+                            // Add general description label
+                            var description = $"Type: {model.GetTextureType()}\nSeason(s): {(String.IsNullOrEmpty(model.Season) ? "All" : model.Season)}";
+                            configApi.RegisterLabel(ModManifest, $"Variation: {variation}", description);
+
+                            // Add the reference image for the alternative texture
+                            var sourceRect = new Rectangle(0, variation * model.TextureHeight, model.TextureWidth, model.TextureHeight);
+                            switch (model.GetTextureType())
+                            {
+                                case "Decoration":
+                                    var isFloor = model.ItemName.Equals("Floor", StringComparison.OrdinalIgnoreCase);
+                                    var decorationOffset = isFloor ? 8 : 16;
+                                    sourceRect = new Rectangle((variation % decorationOffset) * model.TextureWidth, (variation / decorationOffset) * model.TextureHeight, model.TextureWidth, model.TextureHeight);
+                                    break;
+                            }
+
+                            var scale = 4;
+                            if (model.TextureHeight >= 64)
+                            {
+                                scale = 2;
+                            }
+                            if (model.TextureHeight >= 128)
+                            {
+                                scale = 1;
+                            }
+                            configApi.RegisterImage(ModManifest, $"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{model.GetTokenId()}", sourceRect, scale);
+
+                            // Add our custom widget, which passes over the required data needed to flag the TextureId with the appropriate Variation 
+                            var textureWidget = new TextureWidget() { TextureId = model.GetId(), Variation = variation, Enabled = !modConfig.IsTextureVariationDisabled(model.GetId(), variation) };
+                            Func<Vector2, object, object> widgetUpdate = (Vector2 pos, object state) =>
+                            {
+                                var widget = state as TextureWidget;
+                                if (widget is null)
+                                {
+                                    widget = textureWidget;
+                                }
+
+                                var bounds = new Rectangle((int)pos.X, (int)pos.Y, OptionsCheckbox.sourceRectChecked.Width * 4, OptionsCheckbox.sourceRectChecked.Width * 4);
+                                bool isHovering = bounds.Contains(Game1.getOldMouseX(), Game1.getOldMouseY());
+                                if (isHovering && Game1.oldMouseState.LeftButton == ButtonState.Released && Game1.input.GetMouseState().LeftButton == ButtonState.Pressed)
+                                {
+                                    widget.Enabled = !widget.Enabled;
+                                }
+
+                                return widget;
+                            };
+                            Func<SpriteBatch, Vector2, object, object> widgetDraw = (SpriteBatch b, Vector2 pos, object state) =>
+                            {
+                                var widget = state as TextureWidget;
+                                b.Draw(Game1.mouseCursors, pos, widget.Enabled ? OptionsCheckbox.sourceRectChecked : OptionsCheckbox.sourceRectUnchecked, Color.White, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
+
+                                return widget;
+                            };
+                            Action<object> widgetSave = (object state) =>
+                            {
+                                if (state is null || !(state is TextureWidget widget))
+                                {
+                                    return;
+                                }
+
+                                modConfig.SetTextureStatus(widget.TextureId, widget.Variation, widget.Enabled);
+                            };
+                            configApi.RegisterLabel(ModManifest, String.Empty, String.Empty);
+                            configApi.RegisterComplexOption(ModManifest, $"Enabled", $"If checked, this alternative texture will be available.", widgetUpdate, widgetDraw, widgetSave);
+
+                            configApi.RegisterLabel(ModManifest, String.Empty, String.Empty);
+                        }
+                    }
+                }
+            }
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -286,6 +468,12 @@ namespace AlternativeTextures
                 Game1.player.modData[TOOL_CONVERSION_COMPATIBILITY] = true.ToString();
                 ConvertPaintBucketsToGenericTools(Game1.player);
             }
+            if (!Game1.player.modData.ContainsKey(TYPE_FIX_COMPATIBILITY))
+            {
+                Monitor.Log($"Fixing bad object and bigcraftable typings...", LogLevel.Debug);
+                Game1.player.modData[TYPE_FIX_COMPATIBILITY] = true.ToString();
+                FixBadObjectTyping();
+            }
         }
 
         private void OnWarped(object sender, WarpedEventArgs e)
@@ -296,9 +484,15 @@ namespace AlternativeTextures
 
         private void UpdateTextures()
         {
-            foreach (var texture in textureManager.GetAllTextures())
+            foreach (var texture in textureManager.GetAllTextures().Where(t => t.EnableContentPatcherCheck))
             {
-                var loadedTexture = Helper.Content.Load<Texture2D>($"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{texture.GetId()}", ContentSource.GameContent);
+                var loadedTexture = Helper.Content.Load<Texture2D>($"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{texture.GetTokenId()}", ContentSource.GameContent);
+                textureManager.UpdateTexture(texture.GetId(), loadedTexture);
+            }
+
+            foreach (var texture in textureManager.GetAllTextures().Where(t => t.EnableContentPatcherCheck))
+            {
+                var loadedTexture = Helper.Content.Load<Texture2D>($"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{texture.GetTokenId()}", ContentSource.GameContent);
                 textureManager.UpdateTexture(texture.GetId(), loadedTexture);
             }
 
@@ -338,8 +532,7 @@ namespace AlternativeTextures
                             continue;
                         }
 
-
-                        var parentFolderName = textureFolder.Parent.FullName.Replace(contentPack.DirectoryPath + "\\", String.Empty);
+                        var parentFolderName = textureFolder.Parent.FullName.Replace(contentPack.DirectoryPath + Path.DirectorySeparatorChar, String.Empty);
                         var modelPath = Path.Combine(parentFolderName, textureFolder.Name, "texture.json");
                         var seasons = contentPack.ReadJsonFile<AlternativeTextureModel>(modelPath).Seasons;
                         for (int s = 0; s < 4; s++)
@@ -352,9 +545,15 @@ namespace AlternativeTextures
                             // Parse the model and assign it the content pack's owner
                             AlternativeTextureModel textureModel = contentPack.ReadJsonFile<AlternativeTextureModel>(modelPath);
                             textureModel.Owner = contentPack.Manifest.UniqueID;
+                            textureModel.Type = textureModel.GetTextureType();
 
                             // Override Grass Alternative Texture pack ItemNames to always be Grass, in order to be compatible with translations 
-                            textureModel.ItemName = textureModel.GetTextureType() == "Grass" ? "Grass" : textureModel.ItemName;
+                            textureModel.ItemName = textureModel.Type == "Grass" ? "Grass" : textureModel.ItemName;
+                            if (String.IsNullOrEmpty(textureModel.ItemName))
+                            {
+                                Monitor.Log($"Unable to add alternative texture for {textureModel.Owner}: Missing the ItemName property!", LogLevel.Warn);
+                                continue;
+                            }
 
                             // Add the UniqueId to the top-level Keywords
                             textureModel.Keywords.Add(contentPack.Manifest.UniqueID);
@@ -365,19 +564,84 @@ namespace AlternativeTextures
                                 variation.Keywords.AddRange(textureModel.Keywords);
                             }
 
+                            // Set the season (if any)
+                            textureModel.Season = seasons.Count() == 0 ? String.Empty : seasons[s];
+
+                            // Set the ModelName and TextureId
+                            textureModel.ModelName = String.IsNullOrEmpty(textureModel.Season) ? String.Concat(textureModel.GetTextureType(), "_", textureModel.ItemName) : String.Concat(textureModel.GetTextureType(), "_", textureModel.ItemName, "_", textureModel.Season);
+                            textureModel.TextureId = String.Concat(textureModel.Owner, ".", textureModel.ModelName);
+
                             // Verify we are given a texture and if so, track it
                             if (!File.Exists(Path.Combine(textureFolder.FullName, "texture.png")))
                             {
-                                Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: No associated texture.png given", LogLevel.Warn);
-                                continue;
+                                // No texture.png found, may be using split texture files (texture_1.png, texture_2.png, etc.)
+                                var textureFilePaths = Directory.GetFiles(textureFolder.FullName, "texture_*.png")
+                                    .Select(t => Path.GetFileName(t))
+                                    .Where(t => t.Any(char.IsDigit))
+                                    .OrderBy(t => Int32.Parse(Regex.Match(t, @"\d+").Value));
+
+                                if (textureFilePaths.Count() == 0)
+                                {
+                                    Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: No associated texture.png or split textures (texture_1.png, texture_2.png, etc.) given", LogLevel.Warn);
+                                    continue;
+                                }
+                                if (textureModel.GetVariations() > textureFilePaths.Count())
+                                {
+                                    Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: There are less split texture files compared to variations ({textureFilePaths.Count()} file(s) vs {textureModel.GetVariations()} variation(s))", LogLevel.Warn);
+                                    continue;
+                                }
+
+                                // Load in the first texture_#.png to get its dimensions for creating stitchedTexture
+                                int maxVariationsPerTexture = AlternativeTextureModel.MAX_TEXTURE_HEIGHT / textureModel.TextureHeight;
+                                Texture2D baseTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(parentFolderName, textureFolder.Name, textureFilePaths.First()));
+                                for (int t = 0; t <= (textureModel.GetVariations() * textureModel.TextureHeight) / AlternativeTextureModel.MAX_TEXTURE_HEIGHT; t++)
+                                {
+                                    int variationLimit = Math.Min(maxVariationsPerTexture, textureModel.GetVariations() - (maxVariationsPerTexture * t));
+                                    if (variationLimit < 0)
+                                    {
+                                        variationLimit = 0;
+                                    }
+                                    Texture2D stitchedTexture = new Texture2D(Game1.graphics.GraphicsDevice, baseTexture.Width, Math.Min(textureModel.TextureHeight * variationLimit, AlternativeTextureModel.MAX_TEXTURE_HEIGHT));
+
+                                    // Now stitch together the split textures into a single texture
+                                    Color[] pixels = new Color[stitchedTexture.Width * stitchedTexture.Height];
+                                    for (int x = 0; x < variationLimit; x++)
+                                    {
+                                        var fileName = textureFilePaths.ElementAt(x + (variationLimit * t));
+                                        Monitor.Log($"Stitching together {textureModel.TextureId}: {fileName}", LogLevel.Trace);
+
+                                        var offset = x * baseTexture.Width * baseTexture.Height;
+                                        var subTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(parentFolderName, textureFolder.Name, fileName));
+
+                                        Color[] subPixels = new Color[subTexture.Width * subTexture.Height];
+                                        subTexture.GetData(subPixels);
+                                        for (int i = 0; i < subPixels.Length; i++)
+                                        {
+                                            pixels[i + offset] = subPixels[i];
+                                        }
+                                    }
+
+                                    stitchedTexture.SetData(pixels);
+                                    textureModel.Textures.Add(stitchedTexture);
+                                }
+
+                                textureModel.TileSheetPath = contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, textureFilePaths.First()));
                             }
-
-                            // Load in the texture
-                            textureModel.TileSheetPath = contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "texture.png"));
-                            textureModel.Texture = contentPack.LoadAsset<Texture2D>(textureModel.TileSheetPath);
-
-                            // Set the season (if any)
-                            textureModel.Season = seasons.Count() == 0 ? String.Empty : seasons[s];
+                            else
+                            {
+                                // Load in the single vertical texture
+                                textureModel.TileSheetPath = contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "texture.png"));
+                                Texture2D singularTexture = contentPack.LoadAsset<Texture2D>(textureModel.TileSheetPath);
+                                if (singularTexture.Height >= AlternativeTextureModel.MAX_TEXTURE_HEIGHT)
+                                {
+                                    Monitor.Log($"Unable to add alternative texture for {textureModel.Owner}: The texture {textureModel.TextureId} has a height larger than 16384!\nPlease split it into individual textures (e.g. texture_0.png, texture_1.png, etc.) to resolve this issue.", LogLevel.Warn);
+                                    continue;
+                                }
+                                else
+                                {
+                                    textureModel.Textures.Add(singularTexture);
+                                }
+                            }
 
                             // Track the texture model
                             textureManager.AddAlternativeTexture(textureModel);
@@ -467,9 +731,68 @@ namespace AlternativeTextures
             (Game1.currentLocation as Farm).resourceClumps.Add(new ResourceClump(600, 2, 2, Game1.player.getTileLocation() + new Vector2(1, 1)));
         }
 
+        private void DebugSpawnChild(string command, string[] args)
+        {
+            if (args.Length < 2)
+            {
+                Monitor.Log($"Missing required arguments: [AGE] [IS_MALE] [SKIN_TONE]", LogLevel.Warn);
+                return;
+            }
+
+            var age = -1;
+            if (!int.TryParse(args[0], out age) || age < 0)
+            {
+                Monitor.Log($"Invalid number given: {args[0]}", LogLevel.Warn);
+                return;
+            }
+
+            var isMale = false;
+            if (args[1].ToLower() == "true")
+            {
+                isMale = true;
+            }
+
+            var hasDarkSkin = false;
+            if (args[2].ToLower() == "dark")
+            {
+                hasDarkSkin = true;
+            }
+
+            var child = new Child("Test", isMale, hasDarkSkin, Game1.player);
+            child.Position = Game1.player.Position;
+            child.Age = age;
+            Game1.currentLocation.characters.Add(child);
+        }
+
+        private void DebugSetAge(string command, string[] args)
+        {
+            if (args.Length == 0)
+            {
+                Monitor.Log($"Missing required arguments: [AGE]", LogLevel.Warn);
+                return;
+            }
+
+            var age = -1;
+            if (!int.TryParse(args[0], out age))
+            {
+                Monitor.Log($"Invalid number given: {args[0]}", LogLevel.Warn);
+                return;
+            }
+
+            foreach (var child in Game1.currentLocation.characters.Where(c => c is Child))
+            {
+                child.Age = 3;
+            }
+        }
+
         private void DebugShowPaintShop(string command, string[] args)
         {
             Game1.activeClickableMenu = new ShopMenu(Utility.getCarpenterStock(), 0, "Robin");
+        }
+
+        private string CleanContentPackNameForConfig(string contentPackName)
+        {
+            return contentPackName.Replace("[", String.Empty).Replace("]", String.Empty);
         }
 
         private void ConvertPaintBucketsToGenericTools(Farmer who)
@@ -530,6 +853,59 @@ namespace AlternativeTextures
                         if (chest.items[i] is MilkPail milkPail && milkPail.modData.ContainsKey(OLD_PAINT_BUCKET_FLAG))
                         {
                             chest.items[i] = PatchTemplate.GetPaintBucketTool();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void FixBadObjectTyping()
+        {
+            foreach (var location in Game1.locations)
+            {
+                ConvertBadTypedObjectToNormalType(location);
+
+                if (location is BuildableGameLocation)
+                {
+                    foreach (var building in (location as BuildableGameLocation).buildings)
+                    {
+                        GameLocation indoorLocation = building.indoors.Value;
+                        if (indoorLocation is null)
+                        {
+                            continue;
+                        }
+
+                        ConvertBadTypedObjectToNormalType(indoorLocation);
+                    }
+                }
+            }
+        }
+
+        private void ConvertBadTypedObjectToNormalType(GameLocation location)
+        {
+            foreach (var obj in location.objects.Values.Where(o => o.modData.ContainsKey("AlternativeTextureName")))
+            {
+                if (obj.Type == "Craftable" || obj.Type == "Unknown")
+                {
+                    if (obj.bigCraftable && Game1.bigCraftablesInformation.TryGetValue(obj.parentSheetIndex, out var bigObjectInfo))
+                    {
+                        string[] objectInfoArray = bigObjectInfo.Split('/');
+                        string[] typeAndCategory = objectInfoArray[3].Split(' ');
+                        obj.type.Value = typeAndCategory[0];
+
+                        if (typeAndCategory.Length > 1)
+                        {
+                            obj.Category = Convert.ToInt32(typeAndCategory[1]);
+                        }
+                    }
+                    else if (!obj.bigCraftable && Game1.objectInformation.TryGetValue(obj.parentSheetIndex, out var objectInfo))
+                    {
+                        string[] objectInfoArray = objectInfo.Split('/');
+                        string[] typeAndCategory = objectInfoArray[3].Split(' ');
+                        obj.type.Value = typeAndCategory[0];
+                        if (typeAndCategory.Length > 1)
+                        {
+                            obj.Category = Convert.ToInt32(typeAndCategory[1]);
                         }
                     }
                 }

@@ -8,4 +8,10 @@
   "CanPurchase": true,
   "PurchaseFrom": "Willy",
   "PurchasePrice": 5000,
+  "NameLocalization": {
+	  "zh": "垂钓学徒之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "在戴上这枚戒指时你对钓鱼的感觉会好一些。"
+  },
 }

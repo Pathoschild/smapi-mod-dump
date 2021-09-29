@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9626
+IDs: aedenthorn.CustomWallsAndFloors
+update keys: Nexus:9626, GitHub:aedenthorn/StardewValleyMods

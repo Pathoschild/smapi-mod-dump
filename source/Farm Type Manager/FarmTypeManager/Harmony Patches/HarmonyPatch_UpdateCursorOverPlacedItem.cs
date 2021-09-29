@@ -9,16 +9,14 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+
+using HarmonyLib;
+
 using Microsoft.Xna.Framework;
+
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using Harmony;
 
 namespace FarmTypeManager
 {
@@ -29,7 +27,7 @@ namespace FarmTypeManager
         {
             /// <summary>Applies this Harmony patch to the game through the provided instance.</summary>
             /// <param name="harmony">This mod's Harmony instance.</param>
-            public static void ApplyPatch(HarmonyInstance harmony)
+            public static void ApplyPatch(Harmony harmony)
             {
                 Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_UpdateCursorOverPlacedItem)}\": postfixing SDV method \"Utility.canGrabSomethingFromHere(int, int, Farmer)\".", LogLevel.Trace);
                 harmony.Patch(
@@ -66,9 +64,9 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex)
                 {
-                    Utility.Monitor.LogOnce("A Harmony patch encountered an error. Your cursor might not change when hovering over spawned items. The auto-generated error message is displayed below:\n" +
-                        "----------\n" +
-                        ex.ToString(), LogLevel.Warn);
+                    Utility.Monitor.LogOnce("A Harmony patch encountered an error. Your cursor might not change when hovering over spawned items. The auto-generated error message is displayed below:\n----------\n" +
+                                            ex.ToString(), 
+                                            LogLevel.Warn);
                 }
             }
         }

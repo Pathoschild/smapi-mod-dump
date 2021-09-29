@@ -13,7 +13,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 
-namespace EastScarpe
+namespace EastScarp
 {
 	public static class Critters
 	{

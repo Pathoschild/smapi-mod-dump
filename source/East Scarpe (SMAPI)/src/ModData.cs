@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using System.Collections.Generic;
 
-namespace EastScarpe
+namespace EastScarp
 {
 #pragma warning disable IDE1006
 
@@ -110,6 +110,17 @@ namespace EastScarpe
 		public int Index { get; set; }
 	}
 
+	public class ObeliskWarp
+	{
+		public string Name { get; set; }
+		public string Location { get; set; }
+		public int X { get; set; }
+		public int Y { get; set; }
+	}
+
+	public class RainWateringArea : AreaSpecific
+	{ }
+
 	public class SeaMonsterSpawn : AreaSpecific
 	{
 		public Conditions Conditions { get; set; } = new ();
@@ -143,6 +154,10 @@ namespace EastScarpe
 		public List<FishingArea> FishingAreas { get; set; } = new ();
 
 		public List<string> FruitTreeLocations { get; set; } = new ();
+
+		public ObeliskWarp ObeliskWarp { get; set; } = new ();
+
+		public List<RainWateringArea> RainWateringAreas { get; set; } = new ();
 
 		public List<SeaMonsterSpawn> SeaMonsterSpawns { get; set; } = new ();
 

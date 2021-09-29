@@ -6,9 +6,9 @@ mods:
    Custom Companions
 
 latest commit:
-   commit 136bd675fcacab23210ffa58064858c490d1e8b6
+   commit de5ba07cc619192e7e2ce0ab3387c1c871bdd04f
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Sat Aug 7 08:58:07 2021 -0500
+   Date:   Sat Sep 25 19:33:52 2021 -0500
    
-       v1.6.3 released
+       v1.6.6 released
    

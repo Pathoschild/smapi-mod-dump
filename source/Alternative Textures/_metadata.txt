@@ -6,9 +6,9 @@ mods:
    Alternative Textures
 
 latest commit:
-   commit 7d8cf171c81778f43235dff7df403ac8804d2135
+   commit 599c86546523b8aad53189cf709f41cb22a3b50b
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Mon Aug 23 09:49:27 2021 -0500
+   Date:   Mon Sep 27 17:46:30 2021 -0500
    
-       v2.2.1 released
+       Added skip and warning for texture variations that have less split files than variations
    

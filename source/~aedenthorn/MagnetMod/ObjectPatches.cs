@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Harmony;
 using MagnetMod;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;

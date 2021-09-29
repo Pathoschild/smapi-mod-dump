@@ -5,4 +5,10 @@
   "Edibility": -300,
   "Price": 50000,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "战神之戒"
+  },
+  "DescriptionLocalization": {
+	  "zh": "你被战神庇护着。"
+  },
 }

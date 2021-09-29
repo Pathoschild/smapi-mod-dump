@@ -65,6 +65,24 @@
 "Name.Malaya": "Malaya",
 "Name.Kimpoi": "Kimpoi",
 
+"Name.Anton": "Anton",
+"Name.Ariah": "Ariah",
+"Name.Blair": "Blair",
+"Name.Bryle": "Bryle",
+"Name.Carmen": "Carmen",
+"Name.Faye": "Faye",
+"Name.Irene": "Irene",
+"Name.Kiarra": "Kiarra",
+"Name.Lorenzo": "Lorenzo",
+"Name.Louie": "Louie",
+"Name.Maive": "Madame Maive",
+"Name.Paula": "Paula",
+"Name.Raeriyala": "Raeriyala",
+"Name.Sean": "Sean",
+"Name.Shanice": "Shanice",
+"Name.Sonny": "Sonny",
+"Name.Zayne": "Zayne",
+
 // NPC Data
 "NPC_Data.Alissa": "Kimpoi 'dad' Malaya 'mom' Bert 'uncle' Olga 'aunt' Trinnie 'cousin_Trinnie'",
 "NPC_Data.Bert": " Olga 'wife' Trinnie 'daughter' Alissa 'niece Alissa'",
@@ -118,6 +136,26 @@
 "Gift.Love.Trinnie": "This is great! Thank you, @!!",
 "Gift.Love.Ysabelle": "This is just delightful, @! Thank you!",
 "Gift.Love.Yuuma": "Thank you, @! Thanks for thinking of me!",
+"Gift.Love.Ariah": "I love this! Thank you!",
+"Gift.Love.Maive": "I love this! Thank you!",
+"Gift.Love.Louie": "I love this! Thank you!",
+"Gift.Love.Irene": "I love this! Thank you!",
+"Gift.Love.Sonny": "I love this! Thank you!",
+"Gift.Love.Paula": "I love this! Thank you!",
+"Gift.Love.Carmen": "I love this! Thank you!",
+"Gift.Love.Blair": "I love this! Thank you!",
+"Gift.Love.Lorenzo": "I love this! Thank you!",
+"Gift.Love.Shanice": "I love this! Thank you!",
+"Gift.Love.Anton": "I love this! Thank you!",
+"Gift.Love.Kiarra": "I love this! Thank you!",
+"Gift.Love.Sean": "I love this! Thank you!",
+"Gift.Love.Faye": "I love this! Thank you!",
+"Gift.Love.Malaya": "I love this! Thank you!",
+"Gift.Love.Kimpoi": "I love this! Thank you!",
+"Gift.Love.Naomi": "I love this! Thank you!",
+"Gift.Love.Daia": "I love this! Thank you!",
+"Gift.Love.Bliss": "I love this! Thank you!",
+"Gift.Love.Undreya": "I love this! Thank you!",
 //Like
 "Gift.Like.Aguar": "This is adequate, thank you.",
 "Gift.Like.Alissa": "I like this, thanks!",
@@ -143,6 +181,26 @@
 "Gift.Like.Trinnie": "I like this! Thank you!",
 "Gift.Like.Ysabelle": "Thank you, this is generous of you.",
 "Gift.Like.Yuuma": "This is great! Thanks!",
+"Gift.Like.Ariah": "I like this. Thanks.",
+"Gift.Like.Maive": "I like this. Thanks.",
+"Gift.Like.Louie": "I like this. Thanks.",
+"Gift.Like.Irene": "I like this. Thanks.",
+"Gift.Like.Sonny": "I like this. Thanks.",
+"Gift.Like.Paula": "I like this. Thanks.",
+"Gift.Like.Carmen": "I like this. Thanks.",
+"Gift.Like.Blair": "I like this. Thanks.",
+"Gift.Like.Lorenzo": "I like this. Thanks.",
+"Gift.Like.Shanice": "I like this. Thanks.",
+"Gift.Like.Anton": "I like this. Thanks.",
+"Gift.Like.Kiarra": "I like this. Thanks.",
+"Gift.Like.Sean": "I like this. Thanks.",
+"Gift.Like.Faye": "I like this. Thanks.",
+"Gift.Like.Malaya": "I like this. Thanks.",
+"Gift.Like.Kimpoi": "I like this. Thanks.",
+"Gift.Like.Naomi": "I like this. Thanks.",
+"Gift.Like.Daia": "I like this. Thanks.",
+"Gift.Like.Bliss": "I like this. Thanks.",
+"Gift.Like.Undreya": "I like this. Thanks.",
 //Dislike
 "Gift.Dislike.Aguar": "I find this rather unpleasant.",
 "Gift.Dislike.Alissa": "I'm sorry, but I'm not fond of this.",
@@ -168,6 +226,26 @@
 "Gift.Dislike.Trinnie": "Ah! I don't like this!",
 "Gift.Dislike.Ysabelle": "Oh, this is just distasteful…",
 "Gift.Dislike.Yuuma": "I don't like this, @.",
+"Gift.Dislike.Ariah": "I don't like this.",
+"Gift.Dislike.Maive": "I don't like this.",
+"Gift.Dislike.Louie": "I don't like this.",
+"Gift.Dislike.Irene": "I don't like this.",
+"Gift.Dislike.Sonny": "I don't like this.",
+"Gift.Dislike.Paula": "I don't like this.",
+"Gift.Dislike.Carmen": "I don't like this.",
+"Gift.Dislike.Blair": "I don't like this.",
+"Gift.Dislike.Lorenzo": "I don't like this.",
+"Gift.Dislike.Shanice": "I don't like this.",
+"Gift.Dislike.Anton": "I don't like this.",
+"Gift.Dislike.Kiarra": "I don't like this.",
+"Gift.Dislike.Sean": "I don't like this.",
+"Gift.Dislike.Faye": "I don't like this.",
+"Gift.Dislike.Malaya": "I don't like this.",
+"Gift.Dislike.Kimpoi": "I don't like this.",
+"Gift.Dislike.Naomi": "I don't like this.",
+"Gift.Dislike.Daia": "I don't like this.",
+"Gift.Dislike.Bliss": "I don't like this.",
+"Gift.Dislike.Undreya": "I don't like this.",
 //Hate
 "Gift.Hate.Aguar": "This is atrocious.",
 "Gift.Hate.Alissa": "What are you doing? Get that away from me!",
@@ -193,6 +271,26 @@
 "Gift.Hate.Trinnie": "Ewww! I hate this!",
 "Gift.Hate.Ysabelle": "Now this is just unacceptable and utterly disgusting.",
 "Gift.Hate.Yuuma": "I'm telling my brother! You're rude!",
+"Gift.Hate.Ariah": "I hate this.",
+"Gift.Hate.Maive": "I hate this.",
+"Gift.Hate.Louie": "I hate this.",
+"Gift.Hate.Irene": "I hate this.",
+"Gift.Hate.Sonny": "I hate this.",
+"Gift.Hate.Paula": "I hate this.",
+"Gift.Hate.Carmen": "I hate this.",
+"Gift.Hate.Blair": "I hate this.",
+"Gift.Hate.Lorenzo": "I hate this.",
+"Gift.Hate.Shanice": "I hate this.",
+"Gift.Hate.Anton": "I hate this.",
+"Gift.Hate.Kiarra": "I hate this.",
+"Gift.Hate.Sean": "I hate this.",
+"Gift.Hate.Faye": "I hate this.",
+"Gift.Hate.Malaya": "I hate this.",
+"Gift.Hate.Kimpoi": "I hate this.",
+"Gift.Hate.Naomi": "I hate this.",
+"Gift.Hate.Daia": "I hate this.",
+"Gift.Hate.Bliss": "I hate this.",
+"Gift.Hate.Undreya": "I hate this.",
 //Neutral
 "Gift.Neutral.Aguar": "I guess I could use this for an experiment later...",
 "Gift.Neutral.Alissa": "Oh, you're giving me this? Thanks, @.",
@@ -218,6 +316,26 @@
 "Gift.Neutral.Trinnie": "Uh... What do you want me to do with this?",
 "Gift.Neutral.Ysabelle": "Oh, thank you, @",
 "Gift.Neutral.Yuuma": "Thanks.",
+"Gift.Neutral.Ariah": "Thanks.",
+"Gift.Neutral.Maive": "Thanks.",
+"Gift.Neutral.Louie": "Thanks.",
+"Gift.Neutral.Irene": "Thanks.",
+"Gift.Neutral.Sonny": "Thanks.",
+"Gift.Neutral.Paula": "Thanks.",
+"Gift.Neutral.Carmen": "Thanks.",
+"Gift.Neutral.Blair": "Thanks.",
+"Gift.Neutral.Lorenzo": "Thanks.",
+"Gift.Neutral.Shanice": "Thanks.",
+"Gift.Neutral.Anton": "Thanks.",
+"Gift.Neutral.Kiarra": "Thanks.",
+"Gift.Neutral.Sean": "Thanks.",
+"Gift.Neutral.Faye": "Thanks.",
+"Gift.Neutral.Malaya": "Thanks.",
+"Gift.Neutral.Kimpoi": "Thanks.",
+"Gift.Neutral.Naomi": "Thanks.",
+"Gift.Neutral.Daia": "Thanks.",
+"Gift.Neutral.Bliss": "Thanks.",
+"Gift.Neutral.Undreya": "Thanks.",
 
 
 //-------------------
@@ -287,7 +405,7 @@
 "keahiprank.Lewis": "Listen, @. Working hard is good, but I think you should learn to shower and relax once in a while.$s#$b#You're stinking up the town.$s",
 "keahiprank.Linus": "Ouch, got hit by the Ridgeside stink bug, huh?#$b#Been there, done that.#$b#It was a nightmare to get off.#$b#Took me hours of scrubbing.$s",
 "keahiprank.Marnie": "What's that smell? That can't be any of my cows!$s#$b#Uhm, @? Is that you?$s",
-"keahiprank.Pam": "What in Yoba's name is that smell? It's horrible!$s#$b#You make me wish I had no nose!$a",
+"keahiprank.Pam": "What in Yoba's name is that smell? It's horrible!$s#$b#You make me wish I had no nose!$u",
 "keahiprank.Pierre": "That smell is bad for business.$s#$b#I suggest you come back after you've taken a shower, @.$s",
 "keahiprank.Robin": "What's that smell? Is it you?$s#$b#No judgement here! But you really need to take a bath, @.",
 "keahiprank.Sandy": "Ah, it smells like the Ridgeside stink bug.$h#$b#Pungent? Yes.#$b#But it makes me miss the valley.$s",
@@ -337,19 +455,19 @@
 "EoR.32": "A whole new year...#I can't wait!",
 "RSVG.01": "Ehem... testing... 1, 2, 3...#$b#Okay! The sound system's good, Kenneth!$h",
 "RSVG.02": "Welcome everybody!$h",
-"RSVG.03": "Yes! This is such a spectacular gathering!#$b# I always look forward to this!$h",
-"RSVG.04": "Now now Lenny, we haven't even started the concert and yet you're this hyped already.$h",
+"RSVG.03": "Yes! This is such a spectacular gathering!#$b#I always look forward to this!$h#$b#I just want to start dancing now!",
+"RSVG.04": "Now, Lenny, we haven't even started the concert, and yet you're this energized already.$h",
 "RSVG.05": "Oh hush, little bro. I just can't wait!$4#$b#This is going to be fun!$h",
 "RSVG.06": "I'd like to thank everybody for helping make this year's gathering a success!$h#$b#This would not have been possible without everybody's cooperation.#$b#I hope everybody is having a good time!$h",
 "RSVG.07": "Let's get the show started!",
-"RSVG.08": "Ooh I think I ate too much!",
+"RSVG.08": "Ooh... I think I ate too much!",
 "RSVG.09": "This is fun!",
 "RSVG.10": "Let's start the music!",
 "RSVG.11": "Wooh!",
 "RSVG.12": "Everyone's here!",
-"RSVG.13": "And now without further ado!$h#$b#Let's jam!$h#$b#Hit it!$h",
-"RSVG.14": "...And a one...A two... And a...",
-"RSVG.15": "That was such a fun day!#I look forward for the next year!",
+"RSVG.13": "And now, without further ado!$h#$b#Let's jam!$h#$b#Hit it!$h",
+"RSVG.14": "...And a one... A two... And a...",
+"RSVG.15": "That was such a fun day!#I look forward to next year!",
 
 
 //--------------
@@ -743,23 +861,23 @@
 "event-75160123.04": "Hmmm....$a#$b#Hey, look over there!$a",
 "event-75160123.05": "Hm? Where did he go?$a#$b#Wait... Something's not right.$a",
 "event-75160123.06": "Corine grabs a loose plank from the bridge.",
-"event-75160123.07": "Keep your head down, @.$a#$b#He'll be here in 3..$a#$b#2..$a#$b#1..$a",
+"event-75160123.07": "Keep your head down, @.$a#$b#He'll be here in 3...$a#$b#2...$a#$b#1...$a",
 "event-75160123.08": "Hiya!$a",
 "event-75160123.09": "I knew it!$a#$b#He didn't leave!$a",
 "event-75160123.10": "You predicted my attack and deflected it. Fascinating.#$b#You have potential.",
 "event-75160123.11": "Huh!? What are you talking about?$a#$b#Do you make a habit of attacking people without warning?$a",
 "event-75160123.12": "My apologies. Here. Let me be the first to put down my weapon.#$b#I mean no harm.",
-"event-75160123.13": "It's a little late to say that!$a#$b#Who are you, anyway?  Why did you attack us?$a",
+"event-75160123.13": "It's a little late to say that!$a#$b#Who are you, anyway? Why did you attack us?$a",
 "event-75160123.14": "My name's Jio. An... adventurer.#$b#I apologize again for the surprise attack.#$b#When I came up here, I noticed an interesting 'ki'.#$b#A flow of energy, if you will. It was coming from this bridge.#$b#The ki I sensed was cautious and capable. I had to test it.#$b#You were the one that anticipated my attack before I even made it.#$b#It was your ki, Miss.",
 "event-75160123.15": "What is all this nonsense?$a#$b#It still doesn't excuse you for trying to hurt us!$a#$b#All I did was follow my gut.$a#$b#If you try another stunt like that, you'd better watch yourself!$a",
-"event-75160123.16": "You indeed have potential.#$b#I also sense your strong desire to help others, hmm? An unfound calling, as well. A yearning for something more...#$b#Hmm? Your energy... seems quite familiar as well....#$b#I have an offer for you. Train under me and you can help others in a much bigger scale than you could have imagined.#$b#If you'd like to consider my offer, come to the east side of the village forest.#$b#Who knows? Maybe you'll find what you're looking for.",
+"event-75160123.16": "You indeed have potential.#$b#I also sense your strong desire to help others, hmm? An unfound calling, as well. A yearning for something more...#$b#Hmm? Your energy... seems quite familiar as well...#$b#I have an offer for you. Train under me and you can help others on a much bigger scale than you could have imagined.#$b#If you'd like to consider my offer, come to the east side of the village forest.#$b#Who knows? Maybe you'll find what you're looking for.",
 "event-75160123.17": "Huh? What do you mean by that?$a",
 "event-75160123.18": "He left!$u#$b#Hmph! What's his problem?$a",
 "event-75160123.19": "Huh? How did I know where he'd be?#$b#Well, I don't really know... like I said, I just followed my gut.$s#$b#Not going to lie though, I felt cool!$h",
 "event-75160123.20": "His offer? Hmm..$s#$b#To be honest, I'm really suspicious of that guy.$a#$b#But... my gut's saying he's not lying, at least. And... I do think something's calling me to go and find out about this 'ki' thing.#$b#To be honest, I'm hoping it's what I've been looking for.$s#$b#I'm kind of unsure about this situation, though...$s",
 "event-75160123.21": "You believe that guy is sincere?#$b#Hmm... if you say so, I trust you. I guess it never hurts to try!#$b#And if he tries any funny business, I'll just use Dad's sword at home to fight him!$a",
-"event-75160123.22": "Oh! Hey! I think my break time's over!$h#$b#I better go back.$h#$b#Today has been so weird! But I'm glad I got to spend some time with a friend.  Even if our little party got crashed, haha. Thanks, @.$h",
-"event-75160123.23": "That sure was weird....#Corine seems determined to find out more about what Jio said.#I hope she's careful.",
+"event-75160123.22": "Oh! Hey! I think my break time's over!$h#$b#I better go back.$h#$b#Today has been so weird! But I'm glad I got to spend some time with a friend. Even if our little party got crashed, haha. Thanks, @.$h",
+"event-75160123.23": "That sure was weird...#Corine seems determined to find out more about what Jio said.#I hope she's careful.",
 "event-75160123.24": "Hmm... I'm still thinking if I should scout out the east side of the forest...$s",
 
 //Corine angry (Corine 6 hearts)
@@ -768,7 +886,7 @@
 "event-75160124.03": "Thank you, @! I'm sure everything will be fine, then!$h",
 "event-75160124.04": "Okay! Let's go!$a",
 "event-75160124.05": "So you came.#$b#The calling seems to be stronger than I expected, hm?",
-"event-75160124.06": "Hmph. Don't get me wrong. I haven't agreed to anything!$a#$b#But please... do tell me.$s#$b#What do you mean by 'helping other people in a much bigger scale?'",
+"event-75160124.06": "Hmph. Don't get me wrong. I haven't agreed to anything!$a#$b#But please... do tell me.$s#$b#What do you mean by 'helping other people on a much bigger scale'?",
 "event-75160124.07": "We do so by eliminating dangerous beings living among humanity in this world.",
 "event-75160124.08": "Wait! What do you mean, 'eliminating dangerous beings'?$a#$b#And among humanity?$a#$b#You want me to--to k--to harm other people?$s",
 "event-75160124.09": "I predicted this reaction.#$b#Don't close your ears just yet. There are true monstrosities that exist among humans.#$b#Sometimes, lethal force is needed to--",
@@ -1054,7 +1172,7 @@
 
 //Freddie goes buying stuff at Pierre (Freddie 2 hearts)
 "event-75160074.01": "Hello there, young @.#$b#I'm on my way into town to do some shopping.#$b#If you're looking for my wife, she's in the shed.",
-"event-75160074.02": "Do I need any help?#$b#Oh don't worry, these old bones can still manage a shopping trip on their own!$h#$b#See!",
+"event-75160074.02": "Do I need any help?#$b#Oh, don't worry, these old bones can still manage a shopping trip on their own!$h#$b#See!",
 "event-75160074.03": "Oof! Maybe I'm not as spry as I thought...$s",
 "event-75160074.04": "Freddie seems to be having a little trouble moving.",
 
@@ -1087,7 +1205,7 @@
 "event-75160075.01": "...It's nice seeing you, old friend.",
 "event-75160075.02": "Why, hello there @!$h#$b#I see you're also a part of the adventure guild now, hm?$h#$b#I'm glad they are recruiting promising individuals.",
 "event-75160075.03": "Oh him? He fell asleep again.$h#$b#He's an old friend of mine. But it's best we let him take his nap.#$b#Come on, let's go outside. You must be curious to why I know them, hmm?$h",
-"event-75160075.04": "Ah! The mountain breeze is so pleasant!$h#$b#I even hear the distant singing of the birds.$h#$b#Haha still got it.",
+"event-75160075.04": "Ah! The mountain breeze is so pleasant!$h#$b#I even hear the distant singing of the birds.$h#$b#Haha, still got it.",
 "event-75160075.05": "Heh. Watch this.$4",
 "event-75160075.06": "Freddie picks up a flat rock",
 "event-75160075.07": "Hiya!$a",
@@ -1141,7 +1259,7 @@
 //Ian carts (Ian 2 hearts)
 "event-75160146.01": "One down, one to go...",
 "event-75160146.02": "Oh man. Okay. I need to rest for a minute...$s",
-"event-75160146.03": "Hey, @.#$b#How's it going?#$b#Don't mind me, I'm just delivering some stuff.$h#$b#I'm taking a break at the moment, though. It's hot today.",
+"event-75160146.03": "Hey, @.#$b#How's it going?#$b#Don't mind me, I'm just delivering some stuff.$h#$b#I'm taking a break at the moment, though.",
 "event-75160146.04": "The boxes?#$b#Oh, they're different kinds of goods and supplies for people.$h#$b#I gotta go to Richard, Gus, Pierre, Robin, and Lewis.#$b#It's gonna be a long day.$s#$b#But it's gotta be done! And I'll get it done quick as I can.$h#$b#... I promised to help Marnie today, too...$s#$b#And I have to get there before she closes.$s#$b#I hope I have enough time...$s",
 "event-75160146.05": "Ian seems worried about how much he has to do...",
 
@@ -1187,9 +1305,9 @@
 "event-75160148.14": "Hey, @...$s#$b#I'm so bummed right now.$s#$b#I could really use a drink... But I won't because I have to wake up early tomorrow to help out Pierre with his stock.$s#$b#(Inhales and exhales deeply)$s",
 "event-75160148.15": "I'm sorry I'm all mopey right now..$s#$b#I just... I'm worried about my family.$s#$b#They still haven't written back after my last letter.$s#$b#I worked so hard to write that letter, and to earn enough money to send back to them....$s#$b#And I worry they haven't received any of it, because they haven't wrote back yet....$s#$b#I'm so worried... I'm so anxious....$s",
 "event-75160148.16": "Ian is trembling.#He seems to be really scared....",
-"event-75160148.17": "I work so hard for them, you know..$6#$b#Especially for my younger sister.$6#$b#She needs the money to finish college. She deserves that kind of life.$6#$b#And when she finishes, she won't have to work so many extra jobs just to earn decent money....$6#$b#I didn't finish school, and here I am, all dumb and all.$6#$b#All I could depend on is my body, so I worked and worked and worked.$6#$b#I moved here to the valley because it's  cheap and there's plenty of odd jobs. $6#$b#Since then, I've been working any job that comes up, no matter the pay. Just to get enough coin to send back....$6#$b#I was missing them the other day and I wanted to check upon how they were doing.$6#$b#But I haven't received any letter back yet.... $6#$b#We've been pretty poor all my life, I guess you could say we're in poverty....$6#$b#My sis, she dreams of being a doctor one day, you know....$7#$b#I'd do anything for my family. For my little sister....$7#$b#I don't even care if I get mocked for not being able to read, or when I work twenty hours a day.$7#$b#I'd gladly do all of it, just for them.$7",
-"event-75160148.18": "Ian seems to be wiping his tears off",
-"event-75160148.19": "(sniff) And yeah..$s#$b#That's why I've been working so much.$s#$b#And why I'm so scared right now....$s#$b#I just want to know if they're doing good.$s#$b#I'm scared, if something were to happen to them and I'm not there....$s#$b#I just hope they reply soon.$s#$b#Any kind of reply will do....$s",
+"event-75160148.17": "I work so hard for them, you know..$6#$b#Especially for my younger sister.$6#$b#She needs the money to finish college. She deserves that kind of life.$6#$b#And when she finishes, she won't have to work so many extra jobs just to earn decent money....$6#$b#I didn't finish school, and here I am, all dumb and all.$6#$b#All I could depend on is my body, so I worked and worked and worked.$6#$b#I moved here to the valley because it's cheap and there's plenty of odd jobs. $6#$b#Since then, I've been working any job that comes up, no matter the pay. Just to get enough coin to send back....$6#$b#I was missing them the other day and I wanted to check upon how they were doing.$6#$b#But I haven't received any letter back yet.... $6#$b#We've been pretty poor all my life, I guess you could say we're in poverty....$6#$b#My sis, she dreams of being a doctor one day, you know....$7#$b#I'd do anything for my family. For my little sister....$7#$b#I don't even care if I get mocked for not being able to read, or when I work twenty hours a day.$7#$b#I'd gladly do all of it, just for them.$7",
+"event-75160148.18": "Ian seems to be wiping his tears off.",
+"event-75160148.19": "(sniff) And yeah..$s#$b#That's why I've been working so much.$s#$b#And why I'm so scared right now....$s#$b#I just want to know if they're doing good.$s#$b#I'm scared if something were to happen to them and I'm not there....$s#$b#I just hope they reply soon.$s#$b#Any kind of reply will do....$s",
 "event-75160148.20": "What can I say to help Ian?",
 
 	//Response 1
@@ -1658,13 +1776,13 @@
 "event-75160090.01": "Hello there, dear. Nice of you to visit.$h#$b#I have to ask you to keep the volume down. My husband is napping.#$b#But please, do stay for a while. It's nice to have someone to talk to while I knit.$h",
 "event-75160090.02": "I'm so sorry, @. I'm not as sociable as my husband.$h#$b#I'm not really one for small talk...$s",
 "event-75160090.03": "Well, thank you, @. That's very gracious of you. #$b#Hmm... I wonder.",
-"event-75160090.04": "Have you ever been to the mines dear?$h#$b#How far down have you descended?#$b#Ah, just curious.",
+"event-75160090.04": "Have you ever been to the mines, dear?$h#$b#How far down have you descended?#$b#Ah, just curious.",
 "event-75160090.05": "Did she just ask about the mines?",
 
 	//Farmer has been to the mines
 "event-75160090.06": "Yeah, I've gone pretty deep.",
 "event-75160090.Fork1": "Oh! Oh, how exciting!$h",
-"event-75160090.08": "Do tell! How many monsters have you slain down there?$h#$b#Oh I haven't been this intrigued for a while now.$h",
+"event-75160090.08": "Do tell! How many monsters have you slain down there?$h#$b#Oh, I haven't been this intrigued for a while now.$h",
 "event-75160090.09": "Oh, that's quite a lot. That's well done, dear.$h#$b# A good start.",
 "event-75160090.10": "Oh nothing, dear.$h#$b#Please do be careful as you go down even further, okay?$h#$b#Always watch your back!$a",
 "event-75160090.11": "Oh, how I miss those days.$h#$b#Dear, why don't you stay for a while and tell me about your adventures in the mines?$h#$b#I'm so intrigued!",
@@ -1756,11 +1874,11 @@
 "event-75160135.Fork1": "Hmph.$7#$b#Stop saying such asinine things.$7",
 
 	//Farmer is going to the Ridge as well
-"event-75160135.05": "I'm heading to the ridge too!.",
+"event-75160135.05": "I'm heading to the ridge too!",
 "event-75160135.Fork2": "Oh? Really now?#$b#Well, why are you here then?",
 
 	//Continue
-"event-75160135.07": "Well I don't really care if you're there or not.#$b#If you want to tag along, please don't bother my field research, okay?$a",
+"event-75160135.07": "Well, I don't really care if you're there or not.#$b#If you want to tag along, please don't bother my field research, okay?$a",
 "event-75160135.08": "What are you looking at?$a#$b#Stop that silly grin and let me focus here.$a#$b#You're annoying.$7",
 "event-75160135.09": "Okay, these samples look promising.#$b#I can't wait to bring these to the lab.$h",
 "event-75160135.10": "Hey you, I'm heading back to the lab now.#$b#Wait a minute... Why am I--$7",
@@ -1771,8 +1889,8 @@
 "event-75160135.15": "It's a cute little bunny!",
 "event-75160135.16": "You're a scaredy cat aren't you?",
 "event-75160135.17": "Hey, there's nothing to be afraid of!",
-"event-75160135.18": "Maddie pushes you away once she realized she was hugging you.",
-"event-75160135.19": "Uh..--$8#$b#Umm--$8#$b#I--uhh.$7#$b#I only did that so I will--$a#$b#So I will be ready to throw you to the beast, if there was one, and run away myself.$7",
+"event-75160135.18": "Maddie pushes you away once she realizes she was hugging you.",
+"event-75160135.19": "Uh...$8#$b#Umm--$8#$b#I-- uhh.$7#$b#I only did that so I will--$a#$b#So I will be ready to throw you to the beast, if there was one, and run away myself.$7",
 "event-75160135.20": "Oh my! It's a bunny!$9#$b#Hey there, little buddy.$9#$b#It's okay... Hey there!$9",
 "event-75160135.21": "Come here, you little cutie you!$h#$b#You're so FLUFFY!!$h#$b#Who's the little cutie little bunny?$h#$b#Yes you are!$h#$b#Oh, look at you!!$h",
 "event-75160135.22": "What are you looking at?!$a",
@@ -1803,7 +1921,7 @@
 "event-75160136.08": "Oh? You're enjoying it? Pshh. Really, now?$h#$b#The other day I saw you looking half-dead from all that hard work.$6",
 "event-75160136.09": "Haha. Your body bred from the city isn't that tough, huh?$h#$b#Wahaha.$h",
 "event-75160136.10": "I'm just teasing you.$8#$b#I actually admire your work. You've done a somewhat decent job. I have to give it to you.$a#$b#You grow healthy crops and manage a huge farm by yourself.#$b#That's impressive, even for you @.$6",
-"event-75160136.11": "Huh? smiling suites me?$8#$b#Well I---$8#$b#I, umm--$u#$b#Another joke and I'll pour some acid on you!$a",
+"event-75160136.11": "Huh? smiling suits me?$8#$b#Well I---$8#$b#I, umm--$u#$b#Another joke and I'll pour some acid on you!$a",
 "event-75160136.12": "You notice a leaf stuck in her hair.",
 "event-75160136.13": "Hey, what are you--$a",
 "event-75160136.14": "As you reach for her hair, she turns around to face you.#And as she does, your hand is now holding her cheek and your face is in front of her face.",
@@ -1811,7 +1929,7 @@
 "event-75160136.16": "WHOA!$u",
 "event-75160136.17": "Ouch!!$s",
 "event-75160136.18": "Wha-?!$a#$b#Trinnie?$a#$b#What were you doing on top of that tree?$a#$b#Hey, are you okay?$s",
-"event-75160136.19": "Owww$s#$b#I'm sorry! I was hiding from Keahi! We were playing hide and seek.$s#$b#Oww... My arm hurts....$s",
+"event-75160136.19": "Owww.$s#$b#I'm sorry! I was hiding from Keahi! We were playing hide and seek.$s#$b#Oww... My arm hurts....$s",
 "event-75160136.20": "Wait, don't move. Let me go there..$a",
 "event-75160136.21": "My goodness. Thankfully it's nothing too serious.$h#$b#You only got some bruises. Thankfully nothing's broken.$h#$b#But we'd better go to the clinic to be safe, okay?$a",
 "event-75160136.22": "Okay Miss Maddie...$s#$b#I'm sorry for disturbing you....$s",
@@ -1825,7 +1943,7 @@
 "event-75160136.30": "Hmm..$s#$b#Let's just say... It's kind of hard to trust someone when the same kind of trust has been broken before...$7",
 "event-75160136.31": "Uhh... I'm sorry Miss Maddie, I don't get it.$u",
 "event-75160136.32": "Haha, well, one day you might understand, Trinnie. Although I hope you don't.$h",
-"event-75160136.33": "Okay, you say so....#$b#But Miss Maddie, I think...#$b#I think if you're sad, you should go to the person you feel happy with.$h#$b#Like @! I saw you look so happy earlier!$h",
+"event-75160136.33": "Okay, if you say so...#$b#But Miss Maddie, I think...#$b#I think if you're sad, you should go to the person you feel happy with.$h#$b#Like @! I saw you look so happy earlier!$h",
 "event-75160136.34": "Huh? No way.$8#$b#Hmph. That annoying little....$8",
 "event-75160136.35": "Miss Maddie! Why is the ice pack in my face? It's too cold!!$u",
 "event-75160136.36": "Oh! Sorry!$u",
@@ -2049,7 +2167,7 @@
 "event-75160166.02": "*snore*...$10#$b#Huh?$10",
 "event-75160166.03": "Whoa! I fell asleep!$u",
 "event-75160166.04": "Oh! Hey there @.$6#$b#It's kinda embarrassing you found me asleep here in the hotel lawn.$6#$b#I was just reading a comic book after a whole day of work.$6#$b#I guess I was really tired that I just immediately fell asleep.$h#$b#Quite embarrassing huh?$6",
-"event-75160166.05": "Haha you're real kind @.$6#$b#I really should sleep in my room now huh?#$b#But it's so relaxing here though.$6",
+"event-75160166.05": "Haha, you're real kind @.$6#$b#I really should sleep in my room now huh?#$b#But it's so relaxing here though.$6",
 "event-75160166.06": "How's work? It was good.$6#$b#I'm just super happy with my patient's progress so far.#$b#It warms my heart to see their eyes light up with hope whenever therapy shows good progress in their recovery.$h",
 "event-75160166.07": "Hey @, Is it fine if I sit while I talk?$6#$b#I'm a little tired haha.$h",
 "event-75160166.08": "I really like my job. Ever since I was a kid, I wanted to be like IncrediMan.#$b#But of course I have no super powers and all. So I aimed to become a healthcare professional.$6#$b#I then found Physical Therapy, and pursued it.#$b#And ever since, I was happy I found a job where I can be like my hero, who gave hope to people who are in need.#$b#It's kind of cheesy but I genuinely am thankful for this life.$h#$b#It's a simple life but I'm happy.#$b#No matter how tired I get, It fuels me to see my patients recover.$h#$b#Movement and function is often taken for granted when you don't have problems with it you know.#$b#But once you realize you have lost them, It brings such despair.$s#$b#And so, I wish to bring back hope in the eyes of those who lost it, for that what IncrediMan would do when he saves the world.$h#$b#I'm happy..$h#$b#Im--*yawn*...$10",
@@ -2187,7 +2305,7 @@
 "event-75160105.02": "Hmmmm...$s#$b#I think...$s#$b#I think it's time to end...$s",
 "event-75160105.03": "What in the blazes are you doing @?$a#$b#Why are you screaming out my name and brisking towards me with careful intent?$a",
 "event-75160105.04": "What!?$u#$b#You thought I was going to jump?$a#$b#Heavens no! I still have so much to live for!$a#$b#What crazy reason made you think I'll jump?$a",
-"event-75160105.05": "Oh! You heard me talk about 'the end'?$u#$b#Wahaha! My, You make me laugh @!$h#$b#Wahaha you must've misunderstood.",
+"event-75160105.05": "Oh! You heard me talk about 'the end'?$u#$b#Wahaha! My, You make me laugh @!$h#$b#Wahaha, you must've misunderstood.",
 "event-75160105.06": "You see @... I was talking about my late wife... Ysa's grandmother.#$b#Hmm... You're a good friend @. I think I can tell you all about it.",
 "event-75160105.07": "My wife, Angelika, oh how she was such an amazing soul I tell you.$h#$b#She had an attitude just like my granddaughter. Only, a lot more assertive.$h#$b#But she was the kindest and had the warmest welcoming voice and presence.#$b#It was her who really spearheaded in the idea of managing a hotel here at the village.#$b#We were just young teens when she has already planned for this cabin hotel, the location, design, everything!$h#$b#She was amazing... The love of my life I say..$h#$b#And I do miss her dearly...$s",
 "event-75160105.08": "You see @... She was sick for some time... Before she passed away a few years ago... She asked me for a promise...#$b#She said that when she finally passes... She wants me to spread her ashes off into the ridge...$s#$b#She said she wants that because this whole place has given her everything in life... and this place is where she wants to be even after death...$s#$b#And well... Ever since she passed... I..$s",
@@ -2362,22 +2480,22 @@
 "event-75160108.08": "Keahi! Don't say that!$s",
 "event-75160108.09": "Hey @! Don't worry, we'll leave in a while.$h#$b#We just wanted to visit you and see your farm!$h#$b#Mama said your farm has been really good and we were curious.",
 "event-75160108.10": "Yep! Dad said your produce are such quality ingredients!$h",
-"event-75160108.11": "Aunt Marnie also commended your care for your animals @!$h",
-"event-75160108.12": "Uhhmm Uhh. Mom said you're looking healthy!$h",
+"event-75160108.11": "Aunt Marnie also praised the way you care for your animals @!$h",
+"event-75160108.12": "Umm, mom said you're looking healthy!$h",
 "event-75160108.13": "What?",
 "event-75160108.14": "*facepalm*",
 "event-75160108.15": "Eyo! We're all healthy!$h",
 
 //Trinnie crush on Keahi (Trinnie 8 hearts)
-"event-75160109.01": "OH! @! Didn't see you there.$u#$b#I'm sorry I was lost in my own thoughts.$h#$b#If you're here to visit Mama and Papa they're outside tending the farm.#$b#Is there anything I can help you with?",
-"event-75160109.02": "Oh! You saw me crying?$s#$b#Heh. That's embarrassing!$h#$b#Hey don't worry! It's not a big deal or something.$s",
-"event-75160109.03": "Well... I've been thinking about Keahi lately...$s#$b#He's so cool and funny! He's so cute as well!$4#$b#I think I have a crush on him.$4#$b#But the problem is... I think he sees me as a little sister!$a#$b#And I think he likes somebody else$s",
-"event-75160109.04": "Yes! I think he likes Miss Ysabelle from the hotel!$a#$b#And also, last time he also mentioned that Miss Haley from town is pretty too!$a#$b#And I'm like, Why don't you find me pretty huh? Stupid boys!$a",
-"event-75160109.05": "Oh not all boys @. You're a smart one!$h^Why are boys so stupid @?$s#$b#But really though. I didn't think I would catch feelings for the guy!$s#$b#He's my best friend!$a",
-"event-75160109.06": "A lot can still happen over time?#$b#Oh! Yes @! You're right!$h#$b#We're still a little young right? SOOOO Maybe I can get even prettier than Miss Ysabelle or Miss Hayley in the future!$h#$b#Maybe my voice would be as beautiful as big sis Alissa as well!$h#$b#Maybe I'll be as smart as Miss Penny or Miss Flor too!$h",
+"event-75160109.01": "OH! @! Didn't see you there.$u#$b#I'm sorry, I was lost in my own thoughts.$h#$b#If you're here to visit Mama and Papa, they're outside tending the farm.#$b#Is there anything I can help you with?",
+"event-75160109.02": "Oh! You saw me crying?$s#$b#Heh. That's embarrassing!$h#$b#Hey, don't worry! It's not a big deal or anything.$s",
+"event-75160109.03": "Well... I've been thinking about Keahi lately...$s#$b#He's so cool and funny! He's so cute as well!$4#$b#I think I have a crush on him.$4#$b#But the problem is... I think he sees me as a little sister!$a#$b#And I think he likes somebody else.$s",
+"event-75160109.04": "Yes! I think he likes Miss Ysabelle from the hotel!$a#$b#And also, last time he also mentioned that Miss Haley from town is pretty too!$a#$b#And I'm like, why don't you find me pretty, huh? Stupid boys!$a",
+"event-75160109.05": "Oh, not all boys @. You're a smart one!$h^Why are boys so stupid, @?$s#$b#But really though. I didn't think I would catch feelings for the guy!$s#$b#He's my best friend!$a",
+"event-75160109.06": "A lot can still happen over time?#$b#Oh! Yes @! You're right!$h#$b#We're still a little young right? Sooo... Maybe I can get even prettier than Miss Ysabelle or Miss Haley in the future!$h#$b#Maybe my voice would be as beautiful as big sis Alissa as well!$h#$b#Maybe I'll be as smart as Miss Penny or Miss Flor too!$h",
 "event-75160109.07": "No, I'll BE BETTER THAN ALL OF THEM!$h#$b#MWAHAHAHA!$h",
-"event-75160109.08": "Hey @! Thanks for cheering me up!$h#$b#Hehe I won't lose easily!$h",
-"event-75160109.09": "Oh no. I think she had concluded a wrong idea.#Well I do hope this motivation can benefit her. Hopefully",
+"event-75160109.08": "Hey @! Thanks for cheering me up!$h#$b#Hehe, I won't lose easily!$h",
+"event-75160109.09": "Oh no. I think she got the wrong idea.#Well, I do hope this motivation can benefit her. Hopefully.",
 "event-75160109.10": "Teehee, I'll be the best!$h",
 
 //Undreya Introduction
@@ -2547,7 +2665,7 @@
 "event-75160113.04": "Hey! It's great to play with you again!$h",
 "event-75160113.05": "Thanks guys! Niisan is with Philip today. And he's getting better.$h#$b#I'm happy I can play with you today.$h",
 "event-75160113.06": "Hey, Yuuma? What's behind this door here?$h",
-"event-75160113.07": "Oh! That's my Mom and Dad's room.#$b#They aren't here right now, though.#$b#They're abroad because of their job and they just send us money sometimes.",
+"event-75160113.07": "Oh! That's my Mom and Dad's room.#$b#They aren't here right now, though.#$b#They're somewhere far because of their job and they just send us money sometimes.",
 "event-75160113.08": "Whoa! Just like my dad?",
 "event-75160113.09": "I don't really know.#$b#But I do miss them...$s",
 "event-75160113.10": "Hey now, don't be sad, Yuuma.#$b#Tell you what, until your parents come back, I can be your pretend mother!$h",
@@ -2680,7 +2798,7 @@
 
 "MapString.rsv.noquestboard": "There's a note in the board. It reads...#'Closed until further notice - Lenny'",
 
-"MapString.rsv.1": "Welcome to Ridgeside Village!",
+"MapString.rsv.1": "Welcome to Ridgeside Village!#A village at the side of the ridge!#P.S. If anyone can come up with a better slogan, please contact me. - Lenny",
 "MapString.rsv.2": "Log Cabin Hotel #The ultimate mountainside experience!",
 "MapString.rsv.3": "Lenny's Mailbox #Ridgeside Village Admin",
 "MapString.rsv.4": "Kobayashi Residence",
@@ -3228,7 +3346,7 @@
 	//Flor
 			//Brave Little Sapling (ANIMATED) (FAMILY) (COMEDY)
 "MovieData.Flor.SpringMovie0.Like.BeforeMovie": "This film is quite lighthearted, so I've heard.",
-"MovieData.Flor.SpringMovie0.Like.DuringMovie": "%Flor is focused on the film",
+"MovieData.Flor.SpringMovie0.Like.DuringMovie": "%Flor is focused on the film.",
 "MovieData.Flor.SpringMovie0.Like.AfterMovie": "The vibrancy of the story and colors match. This was indeed a family-appropriate story.$h.",
 
 			//Journey of the Praire King (VIDEOGAME)
@@ -3708,7 +3826,7 @@
 "MovieData.Pika.SummerMovie1.Like.AfterMovie": "It's surpringly good. Mahalo for inviting me, @.",
 
 			//Howls in the Rain (HORROR)
-"MovieData.Pika.FallMovie1.Love.BeforeMovie": "A thriller? Whaha I'm looking forward for this.$h",
+"MovieData.Pika.FallMovie1.Love.BeforeMovie": "A thriller? Whaha, I'm looking forward for this.$h",
 "MovieData.Pika.FallMovie1.Love.DuringMovie": "%Pika seems to be laughing.",
 "MovieData.Pika.FallMovie1.Love.AfterMovie": "Whoa! Now that was a relaxing time. Mahalo for inviting me @.$h",
 
@@ -3994,8 +4112,8 @@
 "Festivals.FlowerDance.Jeric": "Daaang, looking good.$h",
 "Festivals.FlowerDance.Jeric_spouse": "Don't worry about the dance, babe, just follow my lead.",
 "Festivals.FlowerDance.Kenneth": "Seeing everybody happy is so nice.$h#$b#Gives the valley a boost of positive energy!$h",
-"Festivals.FlowerDance.Kenneth_spouse": "I saw some of the villagers practicing their dance earlier. #$e#Everyone seems to be in such good spirits! $h#$b#@, care to dance?.",
-"Festivals.FlowerDance.Maddie": "Dancing is just a waste of energy.#$b#I've got better things to do$a",
+"Festivals.FlowerDance.Kenneth_spouse": "I saw some of the villagers practicing their dance earlier.#$e#Everyone seems to be in such good spirits!$h#$b#@, care to dance?.",
+"Festivals.FlowerDance.Maddie": "Dancing is just a waste of energy.#$b#I've got better things to do.$a",
 "Festivals.FlowerDance.Maddie_spouse": "I told Mr. Aguar there would be good food here, so he'd come. It's good to participate once in a while. You taught me that.",
 "Festivals.FlowerDance.Philip": "%Philip seems distracted. #$b#Hmm? #$b#Oh, sorry, I just can't figure out if that's part of the dance, or he's limping... $s",
 "Festivals.FlowerDance.Philip_spouse": "We're going to dance? #$e# Well, I guess I'll go make a fool of myself. #$b# Remember, you chose to marry me!$h",
@@ -4192,7 +4310,7 @@
 "Festivals.IceFest.Flor_spouse": "The ice looks really solid. I mean, I don't think anyone would cut holes in it if it wasn't...$s#$e#Please be careful all the same, honey.$s",
 "Festivals.IceFest.Ian": "My gloves have holes in them. I'm not bothered by the cold, so it's not that big of a deal.#$e#I wonder if Emily can teach me how to mend them.",
 "Festivals.IceFest.Ian_spouse": "Are you competing in the fishing tournament?#$e#I'll be cheering for you!$h#$b#Quietly though, since you don't want to scare the fish away.",
-"Festivals.IceFest.Jeric": "Looking good, @.#$e#Can't lie, I love a cute snowbunny.$h",
+"Festivals.IceFest.Jeric": "Looking good, @.#$e#Can't lie, I love a cutie bunny.$h",
 "Festivals.IceFest.Jeric_spouse": "Hey, @. Be sure to catch me if I slip and fall on the ice, okay?$h",
 "Festivals.IceFest.Kenneth": "They release the fish after the festival.#$b#They'd just go bad if we didn't.",
 "Festivals.IceFest.Kenneth_spouse": "All those fish I caught, yet my favorite catch is you.$h#$e#What? Can't a guy use a terrible pickup line once in a while?$h",
@@ -4232,7 +4350,7 @@
 "Festivals.WinterStar.Flor_spouse": "Festivals like this used to feel so lonely, because I didn't know how to connect.$s#$b#But I have you now, and you've changed everything.$h #$e#Thank you.$h#$b# I love you.$l",
 "Festivals.WinterStar.Ian": "I carved a wood sculpture for my gift.#$e#It's nothing fancy, but I hope they like it. Makes the splinters worth it!",
 "Festivals.WinterStar.Ian_spouse": "You're what I'm most thankful for.$h#$e#I'll give you your winter star gift at home, okay?$l",
-"Festivals.WinterStar.Jeric": "My secret giver better not give me some rough-spun cotton, I'll tell you what.$a#$b#That's nice for Emily and all, but I'm making high-class garments.",
+"Festivals.WinterStar.Jeric": "My secret giver better not give me some low quality fabric and sewing materials.$s#$b#That's nice for Emily and all, but I'm making high-class garments.",
 "Festivals.WinterStar.Jeric_spouse": "Time sure has a way of creeping up on you. #$b#I guess it flies when you're happy or however that thing Lewis says goes.$h",
 "Festivals.WinterStar.Kenneth": "To be honest, I've got one eye on that tree.$s#$b#All those lights...$u",
 "Festivals.WinterStar.Kenneth_spouse": "Hi, @! #$b#I hope your year has been at least as great as mine.#$e#Mine's been pretty amazing, with you in it!#$b#Hm? The tree? Oh, don't worry about it, it's fiiiine...",
@@ -4350,13 +4468,13 @@
 "Festivals.Gathering.Yuuma": "Everyone has brought something to sell.#$b#I wonder who started this whole competition between the boys and girls, though.",
 
 		//Dateables
-"Festivals.Gathering.Alissa": "Come and buy our goods, @!$h#$b#I promise you won't regret it!#$e#Sorry Jeric, But we'll win.$a",
+"Festivals.Gathering.Alissa": "Come and buy our goods, @!$h#$b#I promise you won't regret it!#$e#Sorry Jeric, but we'll win.$a",
 "Festivals.Gathering.Alissa_spouse": "Darling! Help us win!$h#$b#Lookie here! We don't have this plant at home, do we?$h",
 "Festivals.Gathering.Corine": "Look at the their stall! It looks run-down!$h#$b#Sorry boys, but we'll win this one.$h#$e#Hey Abby! Want to go take a peek at what they're selling?$h",
 "Festivals.Gathering.Corine_spouse": "I'll love you no matter who you help win this year, love.#$b#I just won't talk to you for a year if they win.$h",
 "Festivals.Gathering.Flor": "I'm interested in what the stalls on the other side sell.#$b#But the ladies tell me I should stay here.#$e#Hmmm... I'm quite confused.$s",
 "Festivals.Gathering.Flor_spouse": "Uhmm... I brought some of my old books to sell.#$b#I wonder if someone will buy them.#$e#Hey Elliott, here's the sculpture design I've been telling you about!$h",
-"Festivals.Gathering.Ian": "Phew, This wood sculpture is almost done.$h#$b#It's not as good as Leah's though.#$b#Oh well, I still hope someone buys it.$h",
+"Festivals.Gathering.Ian": "Phew! This wood sculpture is almost done.$h#$b#It's not as good as Leah's though.#$b#Oh well, I still hope someone buys it.$h",
 "Festivals.Gathering.Ian_spouse": "Are you having fun, honey?#$b#I have to finish this sculpture first. I'll join you in a while.",
 "Festivals.Gathering.Jeric": "Come right up and see the best stall in the valley!$h#$b#Blood, sweat and tears were involved in making this stall!$h#$e#Hey Shane! Did you forget the decorations!?$a",
 "Festivals.Gathering.Jeric_spouse": "Hey baby, do me a favor and spy on their wares, would you?$h#$b#Ha ha! I'm just kidding. I don't feel insecure at all... Ha ha!$h",
@@ -4390,8 +4508,8 @@
 "GatheringDialogue.Abigail": "I really want to sabotage their stall!$h#$b#Oh hey, @... You heard nothing!$h#$e#Hey Corine! Let's go take a peek!$h",
 "GatheringDialogue.Robin": "Ah! The Starbound Stage looks so good!#$b#I'm proud of my handiwork!$h",
 "GatheringDialogue.Demetrius": "These burgers are delicious!$h#$b#Pika and Gus make a good team when they're not competing.$h",
-"GatheringDialogue.Maru": "My little Music-tron 2000 is on display!$h#$b#It's like a tiny portable jukebox.$h#$e#Hey Flor! Take a look at this!$h",
-"GatheringDialogue.Sebastian": "I wonder why Jeric hasn't been maintaining this bike.#$b#It's such a waste to let it rust away...$s#$e#Hey Jeric! Come help me out here, would you?$a",
+"GatheringDialogue.Maru": "My little Music-tron 2000 is on display!$h#$b#It's like a tiny portable jukebox.$h#$e#I wonder where Flor is, I want to show her my project.$h",
+"GatheringDialogue.Sebastian": "I wonder why Jeric hasn't been maintaining this bike.#$b#It's such a waste to let it rust away...$s#$e#Uh, Jeric! Come help me out here, would you?$a",
 "GatheringDialogue.Pierre": "I was planning on setting up a stall as well, but Abigail convinced me that the gathering is supposed to be about fun, not profit.$s#$b#Oh well, more food for me!$h" ,
 "GatheringDialogue.Caroline": "I'm glad the kids are having fun.#$b#It was nice to catch up with Alissa as well! I wonder if she'll sing for us later?$h",
 "GatheringDialogue.Linus": "Lenny asked me to bring any forage I could find.#$b#I'm glad I could help out.$h",
@@ -4407,17 +4525,17 @@
 "GatheringDialogue.Jodi": "I'm a little worried that Vincent and Keahi might start teasing Trinnie again.$s#$b#She's louder than Jas so they provoke her more often.$h" ,
 "GatheringDialogue.Kent": "Pika cooks a mean dish!#$b#I should visit Ridgeside more often.$h",
 "GatheringDialogue.Sam": "I'm a little nervous for the concert later.$s#$b#But I'm pumped as well!$h#$e#Hey Alissa! You sure you don't want to perform with us?$h",
-"GatheringDialogue.Leah": "Jeric is... really symmetrical?#$b#What I'm trying to say is that his face is great for portrait painting.$h#$e#Hey Jeric, stand still for a second!$h",
-"GatheringDialogue.Shane": "Uhm... I think I forgot to bring the decorations for the stall.$u#$e#Hey come on now Philip! You were supposed to remind me!$a",
+"GatheringDialogue.Leah": "Jeric is... really symmetrical?#$b#What I'm trying to say is that his face is great for portrait painting.$h#$e#Hey! Jeric! stand still for a second!$h",
+"GatheringDialogue.Shane": "Uhm... I think I forgot to bring the decorations for the stall.$u#$e#*Grunts* Philip was supposed to remind me.$a",
 "GatheringDialogue.Marnie": "It's been so long since I visited the village!$h#$b#I hope Olga's cows won't get bothered by all the music.$s",
-"GatheringDialogue.Elliott": "I brought some of my poems to sell.#$b#They might just be words on paper but I think they could turn out to be quite popular!$h",
+"GatheringDialogue.Elliott": "I brought some of my poems to sell.#$b#I think they could turn out to be quite popular.$h",
 "GatheringDialogue.Gus": "The atmosphere here is great!$h#$b#I hope you're enjoying the Ridgeside Gathering, @.",
 "GatheringDialogue.Harvey": "I brought some energy tonics to contribute to the stall.$h#$e#I should go ask Ian's help, I've brought several heavy boxes of energy drinks.$s",
 "GatheringDialogue.Jas": "This clock has a teddybear design! It looks adorable!$h#$b#Oh! I forgot! I should be watching over Trinnie!$4#$b#She might start throwing stuff at the boys if they tease her too much!$h",
-"GatheringDialogue.Vincent": "Hey! check it out!#$b#Keahi and I found all this stuff in Mayor Lewis' lost-and-found bin.#$b#Now we're selling it!$h",
+"GatheringDialogue.Vincent": "Hey! Check it out!#$b#Keahi and I found all this stuff in Mayor Lewis' lost-and-found bin.#$b#Now we're selling it!$h",
 "GatheringDialogue.Willy": "Ah, the waterfalls around here are so calming.#$b#I should plan my next fishing trip around these parts.",
 "GatheringDialogue.Marlon": "The food's delicious!$h#$b#The two cooks should collaborate more often.",
-"GatheringDialogue.Wizard": "The locals seem to be enjoying the festivities.#$b#I'm also quite curious to see what the stalls are selling.#$b#They somehow got their hands on some rare and valuable trinkets.",
+"GatheringDialogue.Wizard": "The locals seem to be enjoying the festivities.#$b#I'm also quite curious to see what the stalls are selling.#$b#They've somehow gotten their hands on some rare and valuable objects.",
 
 //Romance Dialogue
 
@@ -4542,15 +4660,15 @@
 "Romance.MovieInvite.Spouse.Ysabelle": "A movie date, mon amour? I'd love to go to the movies with you!$l#$b#I love movies and I love you, ha ha!$h",
 
 //Mail
-"Mail.AlissaLetter": "Hello @!,^^I just wanted to tell you that I may have finished the song we talked about last time! You know, when I ran away from you... Anyway, I wanted to let you know and I look forward to having you hear it! Visit me at my house whenever you're free.^^- Alissa",
-"Mail.AlissaPerform": "Hello @!,^^There will be a little get-together at the village later. Lenny hopes everyone attends. She made invitations for everyone. I personally asked her if it's okay if I made your invitation letter. For no particular reason! Anyway, I hope to see you there!^^- Alissa",
-"Mail.FlorLetter": "Dear @,^I have recruited the participants and prepared all the necessary forms for the experiment on interactions between peers with contrasting interests. I shall await you in my room at the hotel.^^Sincerely, Florabelle Hibisca",
-"Mail.MaddieLetter": "@,^^10:00PM to 10:30PM. Find me.^^- M",
-"Mail.MaddieDate": "@,^^Meet me at my house. 4PM to 5PM. Don't be late.^^- Maddie",
-"Mail.JericLetter": "Hey gorgeous,^^Meet me at my farm around 5PM to 6PM later.^^- Jeric",
-"Mail.GH1Letter": "Dear @,^^We would like to invite you to celebrate the restoration of one Ridgeside's glorious Greenhouses! Its restoration would not have taken place if not for your help, so we would really love it if you could attend.^Hope to see you there!^^- Lenny^Ridgeside Village Bosslady",
-"Mail.EmberNightInvitation": "Dear @,^^We would like to invite you to celebrate the end of a pretty eventful year with the 'Ember of Resolutions' festival. What are your New Year's resolutions? Food? Power? Love? Ember of Resolutions. 10PM-12AM. North of Ridgeside Village.^Hope to see you there!^^- Lenny^Ridgeside Village Head Honcho",
-"Mail.GatheringInvitation": "Dear @,^^We would like to invite you to Ridgeside's traditional 'Ridgeside Gathering' festival. There's lots of shops, events and FOOD. Lots of FOOD! Be there or be square. 9AM-6PM in Ridgeside Village.^Hope to see you there!^^- Lenny^Former Miss Ridgeside",
+"Mail.AlissaLetter": "Hello @!,^^I just wanted to tell you that I may have finished the song we talked about last time! You know, when I ran away from you... Anyway, I wanted to let you know and I look forward to having you hear it! Visit me at my house whenever you're free.^^- Alissa[#]Alissa's Song",
+"Mail.AlissaPerform": "Hello @!,^^There will be a little get-together at the village later. Lenny hopes everyone attends. She made invitations for everyone. I personally asked her if it's okay if I made your invitation letter. For no particular reason! Anyway, I hope to see you there!^^- Alissa[#]Alissa's Debut",
+"Mail.FlorLetter": "Dear @,^I have recruited the participants and prepared all the necessary forms for the experiment on interactions between peers with contrasting interests. I shall await you in my room at the hotel.^^Sincerely, Florabelle Hibisca[#]Flor's Experiment",
+"Mail.MaddieLetter": "@,^^10:00PM to 10:30PM. Find me.^^- M[#]Mysterious Letter from M",
+"Mail.MaddieDate": "@,^^Meet me at my house. 4PM to 5PM. Don't be late.^^- Maddie[#]A Date with Maddie",
+"Mail.JericLetter": "Hey gorgeous,^^Meet me at my farm around 5PM to 6PM later.^^- Jeric[#]Farmer Love Story",
+"Mail.GH1Letter": "Dear @,^^We would like to invite you to celebrate the restoration of one Ridgeside's glorious Greenhouses! Its restoration would not have taken place if not for your help, so we would really love it if you could attend.^Hope to see you there!^^- Lenny^Ridgeside Village Bosslady[#]Community Greenhouse Opening!",
+"Mail.EmberNightInvitation": "Dear @,^^We would like to invite you to celebrate the end of a pretty eventful year with the 'Ember of Resolutions' festival. What are your New Year's resolutions? Food? Power? Love? Ember of Resolutions. 10PM-12AM. North of Ridgeside Village.^Hope to see you there!^^- Lenny^Ridgeside Village Head Honcho[#]Ember of Resolutions Invitation",
+"Mail.GatheringInvitation": "Dear @,^^We would like to invite you to Ridgeside's traditional 'Ridgeside Gathering' festival. There's lots of shops, events and FOOD. Lots of FOOD! Be there or be square. 9AM-6PM in Ridgeside Village.^Hope to see you there!^^- Lenny^Former Miss Ridgeside[#]Ridgeside Gathering Invitation",
 
 //Dialogue - Bachelors
 	//Alissa
@@ -4627,7 +4745,7 @@
 "Alissa.Dialogue.Tue10": "Hello, @! Done with work?#$b#I'm almost done with mine for today too!$h#$e#Want to spend some time after this?$l#$b#That is, if it's fine by you. If not it's fine, always remember to take care out there, okay? I'll be here.$u",
 "Alissa.Dialogue.Wed10": "@, I've been waiting for you to come!#$b#I tried singing inside the shed! The echo made my voice sound better!#$e#What do you mean it already sounds amazing? Stop it you!$l",
 "Alissa.Dialogue.Thu10": "I made some pancakes today, @. Here, try one! [211] I hope you like it!$h#$b#They're as sweet as you have been to me.$l#$e#Have a good day today, okay?",
-"Alissa.Dialogue.Fri10": "Hey there, @! I've been looking for you!$u#$e#I just wanted to give you this!#$b#%Alissa kisses you on the cheeks.#$b#There, Mission fulfilled!$h",
+"Alissa.Dialogue.Fri10": "Hey there, @! I've been looking for you!$u#$e#I just wanted to give you this!#$b#%Alissa kisses you on the cheeks.#$b#There, mission fulfilled!$h",
 "Alissa.Dialogue.Sat10": "@, hi there! Come here, you! I need a hug.$h#$e#Oh, by the way, have you seen a little kiwi fruit around the valley lately?#$b#I saw one rolling around the other day. It was a weird sight.$u",
 "Alissa.Dialogue.Sun10": "Hey, @! I missed you! Want to have a date today?$l#$b#We can go eat at Pika's restaurant if you want!$h",
 
@@ -4937,7 +5055,7 @@
 "Corine.Dialogue.Resort_Entering": "This place looks amazing!$h",
 "Corine.Dialogue.Resort_Leaving": "Time to head back home!#$b#It was a fun day!$h",
 "Corine.Dialogue.Resort_Leaving_2": "*Yawn* Whoa! Am I tired!$h",
-"Corine.Dialogue.Resort_Shore": "It would be nice if someone rubs some sunscreen on my back right about now.$s",
+"Corine.Dialogue.Resort_Shore": "It would be nice if someone could rub some sunscreen on my back right about now.$s",
 "Corine.Dialogue.Resort_Shore_2": "Ah! The relaxing sun, the waves crashing, and the warm sand. This is fabulous.$h",
 "Corine.Dialogue.Resort_Umbrella": "Oh don't mind me here. Just taking a break from the sun.$h",
 "Corine.Dialogue.Resort_Umbrella_2": "Hey now! You can join me here if you want to.$h",
@@ -4998,7 +5116,8 @@
 "Ezekiel.Dialogue.Tue4": "You're here again?#$b# What do you want now?",
 "Ezekiel.Dialogue.Wed4": "Hm?#$b#Oh, it's you.#$b#I was wondering... How do you manage a big farm like that?#$b#I was planning to buy one someday.#$b#Corine says I shouldn't, though. She doesn't want me to overwork myself.$s",
 "Ezekiel.Dialogue.Thu4": "Hm? You're here again.#$b#@, was it? Funny name...",
-"Ezekiel.Dialogue.Fri4": "Kent knows what I'm going through.$s#$b#But he's been through a lot worse.$s#$b#Gave his all for his country and what's he got to show for it?#$b#Huh? Who's Kent? That's Jodi's husband, don't you know? He's currently deployed.$s",
+"Ezekiel.Dialogue.Fri4_1": "Kent knows what I'm going through.$s#$b#But he's been through a lot worse.$s#$b#Gave his all for his country and what's he got to show for it?#$b#Huh? Who's Kent? That's Jodi's husband, don't you know? He's currently deployed.$s",
+"Ezekiel.Dialogue.Fri4_2": "Kent knows what I'm going through.$s#$b#But he's been through a lot worse.$s#$b#Gave his all for his country and what's he got to show for it?#$b#You should show him some respect when you see him.",
 "Ezekiel.Dialogue.Sat4": "Corine looks a lot like her mom, Helen.$h#$b#I don't want to lose her as well...$s#$e#What are you doing eavesdropping?$a#$b#None of your business!$a#$b#Scram!$a",
 "Ezekiel.Dialogue.Sun4": "Do you know Andy?#$b#Hmmm? What?#$b#Oh him? He's just a farmer I know.",
 
@@ -5125,7 +5244,7 @@
 "Flor.Dialogue.Thu10": "I've had kind of a strange day... #$b#I really need a dopamine boost. I might go get a coffee or something sweet for a snack...",
 "Flor.Dialogue.Fri10": "Promise me that you'll tell me if I ever get boring, okay?$s#$b#I would rather know that you're tired of hearing me chatter about psychology and maybe get a little hurt than wonder without ever being sure.$s",
 "Flor.Dialogue.Sat10": "It was really kind of Doctor Harvey to reach out when I came to the valley.$h#$b#I get to help provide behavioral health support for valley residents.$h#$b#I don't know if he knows it, but that help is getting me closer and closer to full licensure.$h",
-"Flor.Dialogue.Sun10": "Working with Doctor Harvey means it will be easier to stay here, if I decide to.$h#$b#Er, if you want me to. Not that I'd make the decision based just on you and me, I mean, that'd be unhealthy,but you are a major factor in my decision, just not in a codependent... $u#$b#I'm going to stop talking now.$l",
+"Flor.Dialogue.Sun10": "Working with Doctor Harvey means it will be easier to stay here, if I decide to.$h#$b#Er, if you want me to. Not that I'd make the decision based just on you and me, I mean, that'd be unhealthy, but you are a major factor in my decision, just not in a codependent... $u#$b#I'm going to stop talking now.$l",
 
 //Special Dialogue
 "Flor.Dialogue.breakUp": "Please don't. I need some time.$s",
@@ -5326,7 +5445,7 @@
 
 //10 Hearts
 "Ian.Dialogue.Mon10": "Hey there, @!#$b#How's the farm going?$h#$b#Just say the word if you need any help today.#$b#I'll always put you first.$l",
-"Ian.Dialogue.Tue10": "While I was helping Gus the other day, I asked what your usual order is.#$b#Not for any reason in particular.#$b#I was just curious, that's all!$h#$b#... okay maybe I wanted to see if I can make it for you.$l",
+"Ian.Dialogue.Tue10": "While I was helping Gus the other day, I asked what your usual order is.#$b#Not for any reason in particular.#$b#I was just curious, that's all!$h#$b#...okay maybe I wanted to see if I can make it for you.$l",
 "Ian.Dialogue.Wed10": "Hey, @!#$b#I'm glad you're here!$h#$b#Quick, I need an energy boost!#$b#Can I have a kiss?$l#$e#That hit the spot.$l#$b#Thanks @!$h",
 "Ian.Dialogue.Thu10": "I'm sorry I'm always busy, @!$s#$b#I promise I'll make it up to you!$s#$b#Tell me what day you're off next week.#$b#We'll make it a date!$h",
 "Ian.Dialogue.Fri10": "Ah!#$b#All this work is tiring.$s#$b#It's fulfilling when I finish a job, though!#$b#That's partially my fault, with how I push myself.$s#$b#I'd be lying if I said I didn't try and show off when you're around.$l",
@@ -5419,11 +5538,11 @@
 
 //8 Hearts
 "Jeric.Dialogue.Mon8": "Hey there, @. I gotta say, you're looking good.$6#$b#All that hard work on the farm, huh?$l",
-"Jeric.Dialogue.Tue8": "Well, look who it is!$h#$b#You look great today, by the way.$l#$e#We should hang out sometime, I wanna show you something I designed that'll look good on you.$l",
+"Jeric.Dialogue.Tue8": "Well, look who it is!$h#$b#You look great today, by the way.$l#$e#We should hang out sometime. I wanna show you something I designed that'll look good on you.$l",
 "Jeric.Dialogue.Wed8": "Oh, hi! How have you been lately?#$b#Anything exciting going on?#$e#We should grab coffee or a drink sometime when we're not both working.$l",
 "Jeric.Dialogue.Thu8": "It took Seb a good while to finally warm up to me.$h#$b#He can be very shy around people he doesn't know.#$e#He's a good person, though.$h#$b#Don't let his shyness put you off, ok?$h",
 "Jeric.Dialogue.Fri8": "Hey, let me know if you need any help around the farm.$h#$b#I know you got it, but I'm just sayin' I'm available.$l",
-"Jeric.Dialogue.Sat8": "Haley visited the other day, we talked about what's been going on lately.#$e#She's real sweet once you get to know her.#$b#She's got a soft spot for sunflowers, funny enough.$h",
+"Jeric.Dialogue.Sat8": "Haley visited the other day and we talked about what's been going on lately.#$e#She's real sweet once you get to know her.#$b#She's got a soft spot for sunflowers, funny enough.$h",
 "Jeric.Dialogue.Sun8": "My farm is doing great!$h#$b#Amazing harvest this week, turned a tidy profit.#$e#How about you? Anything neat happen last week?",
 
 //10 Hearts
@@ -5721,7 +5840,7 @@
 "Kenneth.Dialogue.Wed8": "You look great today @. I mean it.$l#$e#Why the sudden compliment? I mean why not?#$b#I don't mean anything weird by it. Just saying.$h",
 "Kenneth.Dialogue.Thu8": "Hey, @. How's your day looking today?#$e#If you have the time, want to hang out?$h",
 "Kenneth.Dialogue.Fri8": "Hey, how do you manage going around in the fields after dark?$s#$b#I'm just curious.$s#$e#I mean, I don't love the dark... or like it... at all...$l",
-"Kenneth.Dialogue.Sat8": "Fixing up the sound system at the stage is kind of fun.$h#$e#Want me to sing you a song? Haha I'm just kidding, I'm bad at singing.$h",
+"Kenneth.Dialogue.Sat8": "Fixing up the sound system at the stage is kind of fun.$h#$e#Want me to sing you a song? Haha, I'm just kidding, I'm bad at singing.$h",
 "Kenneth.Dialogue.Sun8": "I hope you're doing fine today @. Need any help with something?#$e#I hope I can help you with anything.$h#$e#Just tell me okay?$h",
 
 //10 Hearts
@@ -6178,7 +6297,7 @@
 "Olga.Dialogue.Mon2": "Always remember to replenish your energy once in a while @.#$b#It's important to eat well.",
 "Olga.Dialogue.Tue2": "Hello there, @.$h#$e#What are you up to today? How's the farm?",
 "Olga.Dialogue.Wed2": "Bert bought me flowers the other day.$4#$b#He's been so sweet lately.$4#$e#I wonder what he did wrong this time.$s",
-"Olga.Dialogue.Thu2": "Alissa is my brother's daughter.$h#$b#He's off sailing the high seas as a merchant fleet captain.#$e#He rarely comes home, unfortunately...$s",
+"Olga.Dialogue.Thu2": "I'm feeling a little extra hungry today.#$b#Must be all the stress!$h",
 "Olga.Dialogue.Fri2": "I don't have many close friends here in the village.$s#$e#I sure am glad I can visit Jodi and Caroline once in a while.$h",
 "Olga.Dialogue.Sat2": "Pierre and Bert are an interesting duo.$h#$b#Sometimes they are the best of friends...#$b#Yet sometimes they can't stand each other.$s",
 "Olga.Dialogue.Sun2": "Trinnie!$u#$b#Where did that little girl run off to this time?$a#$b#She didn't even finish her chores yet!$a",
@@ -6483,7 +6602,7 @@
 "Richard.Dialogue.Sun4": "%Richard sighs deeply.#$b#I miss my wife even more on days like these.$s#$e#We used to go to the beach on Sundays and fish, or go out for a swim.#$b#She'd always bring a picnic basket, and I'd rest my head in her lap after lunch.$h#$b#I do wish that she were here right now...$s",
 
 //6 Hearts
-"Richard.Dialogue.Mon6": "A pleasant morning to you, @!$h#$b#Have you been eating well?#$e#If you ever need anything don't hesitate to come to ask, alright?#$b#My door is always open.$h",
+"Richard.Dialogue.Mon6": "A pleasant day to you, @!$h#$b#Have you been eating well?#$e#If you ever need anything don't hesitate to come to ask, alright?#$b#My door is always open.$h",
 "Richard.Dialogue.Tue6": "The day's been good to us, so far!$h#$e#A lot of villagers have been visiting lately!#$b#I'm glad that they like what I do here.$h",
 "Richard.Dialogue.Wed6": "I'm on my way to visit Dr. Harvey.#$b#I felt something pop when I was lifting a box yesterday.$u#$e#I'm sure it's nothing.#$b#After all, I have to take care of Ysa and the hotel.$s",
 "Richard.Dialogue.Thu6": "I make it a point to teach Ysa something each day.#$e#Time's just so precious, you know?#$b#'You never know when your last day may be,' I always tell her.$s",
@@ -6577,7 +6696,7 @@
 "Shiro.Dialogue.Sun4": "Ugh... it's... it's not a good day. Excuse me.$6",
 
 //6 Hearts
-"Shiro.Dialogue.Mon6": "Our parents were offered incredible opportunities if they were willing to be transferred overseas. #$b#With my medical bills, they didn't really have a choice. That's why it's just me and Yuuma.$s",
+"Shiro.Dialogue.Mon6": "Our parents were offered incredible opportunities if they were willing to be transferred far away. #$b#With my medical bills, they didn't really have a choice. That's why it's just me and Yuuma.$s",
 "Shiro.Dialogue.Tue6": "Hey! I remember your grandpa. He was a family friend. #$b#You must be a pretty good person for him to entrust the farm to you.$h",
 "Shiro.Dialogue.Wed6": "I wish I could just wake up and be back to normal one day. #$b#I hate that Yuuma has to carry this much of a burden...$s",
 "Shiro.Dialogue.Thu6": "%Shiro's short of breath and seems frustrated. Maybe now isn't a good time.",
@@ -6983,7 +7102,7 @@
 "Alissa.MarriageDialogue.Rainy_Night_1": "Darling! You're back! How was your day?$h#$b#I had an eventful day today.$h#$e#But I'm glad I'm home with you!$l",
 "Alissa.MarriageDialogue.Rainy_Night_2": "I cooked dinner for you baby!$h#$b#I hope you like it!$l#$b#Auntie Olga taught me an old recipe. She says that she got it from her great grandmother and she's passing it on to me.#$b#I hope I did a good job making my own twist in it.$l",
 "Alissa.MarriageDialogue.Rainy_Night_3": " You must be tired baby, come. Change your clothes and climb on the bed with me$h#$b#I'm going to sing you a lullaby to help you sleep.$6",
-"Alissa.MarriageDialogue.Rainy_Night_4": " The rain's been pretty vocal today.#$b#Hmmm... maybe if I sing it'll calm the rain down.$6#$b#Hahaha any excuse just to sing, I know. Sorry.$l ",
+"Alissa.MarriageDialogue.Rainy_Night_4": " The rain's been pretty vocal today.#$b#Hmmm... maybe if I sing it'll calm the rain down.$6#$b#Hahaha, any excuse just to sing, I know. Sorry.$l ",
 "Alissa.MarriageDialogue.Rainy_Night_5": "~Rain rain, go away~$6#$b# Oh, welcome home baby!$h#$b#Were you good today?",
 "Alissa.MarriageDialogue.Rainy_Night_Alissa": "~When life gives you rainy days, go out and play to make the bad days go away~$6#$e#Come here baby, give me a hug and a kiss please?#$b#%Alissa pouts her cute little lips.",
 
@@ -7710,7 +7829,7 @@
 "Maddie.MarriageDialogue.winter_7": "I still think don't fishing is ethical, but I'll cheer you on if you insist on competing.$6#$b#To be honest, I'd much rather build a snowgoon than go fishing.$6",
 "Maddie.MarriageDialogue.winter_14": "I hope I find some cute trinkets at the night market!#$b#It's always a mystery what they're going to sell.$7",
 //"Maddie.MarriageDialogue.winter_15": "Honey, look at this one! I think I might buy it, I bet it'd look good on the counter.$h",
-"Maddie.MarriageDialogue.winter_16": "I actually don't mind the amount of people here right now#$b#Hmm... Maybe it's because you're here with me, huh?$h", 
+"Maddie.MarriageDialogue.winter_16": "I actually don't mind the amount of people here right now#$b#Hmm... Maybe it's because you're here with me, huh?$h",
 //"Maddie.MarriageDialogue.winter_17": "I think I'll look around tomorrow and see what I can find that's perfect for our home babe.$6",
 "Maddie.MarriageDialogue.winter_24": "Tomorrow I'm gonna dine like a queen.$h#$b#Gus tries to up his game every year, so who knows what he has in store for us!$h",
 
@@ -7740,7 +7859,7 @@
 ///Indoor Day
 "Maddie.MarriageDialogue.Indoor_Day_0": "Ughh it's so early in the morning! I need my coffeeee!$a#$e#Huh? Oh what? I look pretty even without it?$l#$b#Uhh?? What's the connection???$8#$b#You're just messing with me aren't you?$6",
 "Maddie.MarriageDialogue.Indoor_Day_1": "Hey babe, looking good there aren't you? Have you been working out?$6",
-"Maddie.MarriageDialogue.Indoor_Day_2": "Good morning @! How was your sleep?#$e#Did you dream about your side chick?$6#$b#Haha kidding boo! I'm just messing with you!$h",
+"Maddie.MarriageDialogue.Indoor_Day_2": "Good morning @! How was your sleep?#$e#Did you dream about your side chick?$6#$b#Haha, kidding boo! I'm just messing with you!$h",
 "Maddie.MarriageDialogue.Indoor_Day_3": "Oh dear! It's such a great morning. Don't ruin it with a cheesy pick up babe.$6#$e#A breakfast in bed would've been better, haha! Kidding!$h#$b#I love you, you crazy thing.$l",
 "Maddie.MarriageDialogue.Indoor_Day_4": "OOOOHH Babe why don't we grow some strawberries on our backyard?$9#$b#I have a bit of a hankering for strawberries lately.$l#$e#Hmm, maybe I'll try to buy one from Blooming Hill.",
 "Maddie.MarriageDialogue.Indoor_Day_Maddie": "Another day another hustle for us!$h#$e#Have a great day ahead! Bring home the bacon my little champion!$h",
@@ -7788,7 +7907,7 @@
 "Maddie.MarriageDialogue.Good_5": "Ms. Lenny congratulated me earlier on our nuptials!$h#$e#She said she wants to be a godmother and gave me a very obvious wink and a nudge... kind of ridiculous, huh?$u",
 "Maddie.MarriageDialogue.Good_6": "Hey babe! Oh, you're going out today?#$b#Could you bring back some takeout for dinner?",
 "Maddie.MarriageDialogue.Good_7": "When I got my heart broken, I thought I'd never be able to trust anyone else.$l#$b#Thanks for being patient with me @.$9",
-"Maddie.MarriageDialogue.Good_8": "Awwee thank you for caring for me babe! When you get sick I'll take care of you!$7#$e#But please don't get sick??? I'm terrible at that kind of stuff.$u#$b#Haha but I'll try for you.$h",
+"Maddie.MarriageDialogue.Good_8": "Awwee thank you for caring for me babe! When you get sick I'll take care of you!$7#$e#But please don't get sick??? I'm terrible at that kind of stuff.$u#$b#Haha, but I'll try for you.$h",
 "Maddie.MarriageDialogue.Good_9": "This. This is the life. Thank you so much. I know I don't say this often... But I really love you so much.",
 
 ///Neutral
@@ -8240,1095 +8359,40 @@
 //IntermodDialogue
 		//Festival Dialogue
 			//Gathering
-"InterModDialogue.GatheringDialogue.Sophia": "PLACEHOLDER",
-"InterModDialogue.GatheringDialogue.Victor": "PLACEHOLDER",
-"InterModDialogue.GatheringDialogue.Olivia": "PLACEHOLDER",
-"InterModDialogue.GatheringDialogue.Andy": "PLACEHOLDER",
-"InterModDialogue.GatheringDialogue.Susan": "PLACEHOLDER",
+"InterModDialogue.GatheringDialogue.Sophia": "It might be war now, but Philip said he'd lend me his latest issue of Incrediman later. I can't wait!$h",
+"InterModDialogue.GatheringDialogue.Sophia_spouse": "Don't tell the other girls, but I brought Philip my copy of 'Fairy Fighter Club'. Think he'll like it?",
+"InterModDialogue.GatheringDialogue.Victor": "I know he does it so Keahi feels included, but why did Jeric put the slime for sale?#$b#Where did Keahi get slime anyway...",
+"InterModDialogue.GatheringDialogue.Victor_spouse": "Hey, love. Glad to see you made it.#$b#Maybe I should be trusted with the decorations next year, haha.$h",
+"InterModDialogue.GatheringDialogue.Olivia": "It’s great to see Victor and his friends having fun.#$b#But I’m happy to catch up with Olga and Caroline.$h",
+"InterModDialogue.GatheringDialogue.Olivia_spouse": "Hello, dear. Are you having fun?#$b#Oh no, I couldn’t possibly join in.$h",
+"InterModDialogue.GatheringDialogue.Andy": "You should check out the stalls, farmer. Might find something useful.#$b#Me? I’ll stay near the free food.$h",
+"InterModDialogue.GatheringDialogue.Susan": "It’s good to see the young people having fun.$h#$b#Did you contribute at all, hun?",
+"InterModDialogue.GatheringDialogue.Claire": "I don’t usually come to the valley for festivals, but it’s fun.#$b#Martin kept talking about it.",
+"InterModDialogue.GatheringDialogue.Claire_spouse": "You made it, @. Seeing anything useful?$h#$b#I’m curious how they get it.",
+"InterModDialogue.GatheringDialogue.Martin": "Welcome, @! You’ll buy from the boys’ stall right?$h",
+"InterModDialogue.GatheringDialogue.Marlon": "@, don’t tell me you sold slime to the young boy.#$b#I can’t figure out how else he’d get it.",
+"InterModDialogue.GatheringDialogue.Gunther": "Looks like you’re not the only artifact hunter from the looks of what’s for sale.#$b#I wonder if they know the significance in those items.",
 
 			//Ember Of Resolutions
-"InterModDialogue.EmberNightDialogue.Sophia": "PLACEHOLDER",
-"InterModDialogue.EmberNightDialogue.Victor": "PLACEHOLDER",
-"InterModDialogue.EmberNightDialogue.Olivia": "PLACEHOLDER",
-"InterModDialogue.EmberNightDialogue.Andy": "PLACEHOLDER",
-"InterModDialogue.EmberNightDialogue.Susan": "PLACEHOLDER",
-
-//1.3 NPCs Dialogue
-"Gift.Love.Undreya": "PLACEHOLDER",
-"Gift.Love.Daia": "PLACEHOLDER",
-"Gift.Love.Bliss": "PLACEHOLDER",
-"Gift.Love.Acorn": "PLACEHOLDER",
-"Gift.Love.Naomi": "PLACEHOLDER",
-"Gift.Love.Malaya": "PLACEHOLDER",
-"Gift.Love.Kimpoi": "PLACEHOLDER",
-
-"Gift.Like.Undreya": "PLACEHOLDER",
-"Gift.Like.Daia": "PLACEHOLDER",
-"Gift.Like.Bliss": "PLACEHOLDER",
-"Gift.Like.Acorn": "PLACEHOLDER",
-"Gift.Like.Naomi": "PLACEHOLDER",
-"Gift.Like.Malaya": "PLACEHOLDER",
-"Gift.Like.Kimpoi": "PLACEHOLDER",
-
-"Gift.Dislike.Undreya": "PLACEHOLDER",
-"Gift.Dislike.Daia": "PLACEHOLDER",
-"Gift.Dislike.Bliss": "PLACEHOLDER",
-"Gift.Dislike.Acorn": "PLACEHOLDER",
-"Gift.Dislike.Naomi": "PLACEHOLDER",
-"Gift.Dislike.Malaya": "PLACEHOLDER",
-"Gift.Dislike.Kimpoi": "PLACEHOLDER",
-
-"Gift.Hate.Undreya": "PLACEHOLDER",
-"Gift.Hate.Daia": "PLACEHOLDER",
-"Gift.Hate.Bliss": "PLACEHOLDER",
-"Gift.Hate.Acorn": "PLACEHOLDER",
-"Gift.Hate.Naomi": "PLACEHOLDER",
-"Gift.Hate.Malaya": "PLACEHOLDER",
-"Gift.Hate.Kimpoi": "PLACEHOLDER",
-
-"Gift.Neutral.Undreya": "PLACEHOLDER",
-"Gift.Neutral.Daia": "PLACEHOLDER",
-"Gift.Neutral.Bliss": "PLACEHOLDER",
-"Gift.Neutral.Acorn": "PLACEHOLDER",
-"Gift.Neutral.Naomi": "PLACEHOLDER",
-"Gift.Neutral.Malaya": "PLACEHOLDER",
-"Gift.Neutral.Kimpoi": "PLACEHOLDER",
-
-//Keahi prank
-"keahiprank.Undreya": "PLACEHOLDER",
-"keahiprank.Daia": "PLACEHOLDER",
-"keahiprank.Bliss": "PLACEHOLDER",
-"keahiprank.Acorn": "PLACEHOLDER",
-"keahiprank.Naomi": "PLACEHOLDER",
-"keahiprank.Malaya": "PLACEHOLDER",
-"keahiprank.Kimpoi": "PLACEHOLDER",
-
-//Romance
-"Romance.Engagement.Jio0": "PLACEHOLDER",
-"Romance.Engagement.Jio1": "PLACEHOLDER",
-
-"Romance.Engagement.Daia0": "PLACEHOLDER",
-"Romance.Engagement.Daia1": "PLACEHOLDER",
-
-"Romance.FemaleWeddingFix.MaleFarmer1.Daia": "PLACEHOLDER",
-"Romance.FemaleWeddingFix.FemaleFarmer1.Daia": "PLACEHOLDER",
-"Romance.FemaleWeddingFix.MaleFarmer2.Daia": "PLACEHOLDER",
-"Romance.FemaleWeddingFix.FemaleFarmer2.Daia": "PLACEHOLDER",
-
-"Romance.give.flowersA.Daia": "PLACEHOLDER",
-"Romance.give.flowersB.Daia": "PLACEHOLDER",
-"Romance.stardrop.gift.Daia": "PLACEHOLDER",
-"Romance.rejectNPCA.Daia": "PLACEHOLDER",
-"Romance.rejectNPCB.Daia": "PLACEHOLDER",
-
-"Romance.give.flowersA.Jio": "PLACEHOLDER",
-"Romance.give.flowersB.Jio": "PLACEHOLDER",
-"Romance.stardrop.gift.Jio": "PLACEHOLDER",
-"Romance.rejectNPCA.Jio": "PLACEHOLDER",
-"Romance.rejectNPCB.Jio": "PLACEHOLDER",
-
-"Romance.MovieInvite.Spouse.Daia": "PLACEHOLDER",
-"Romance.MovieInvite.Spouse.Jio": "PLACEHOLDER",
-
-//Marriage
-///Spring
-"Daia.MarriageDialogue.spring_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.spring_12": "PLACEHOLDER",
-"Daia.MarriageDialogue.spring_23": "PLACEHOLDER",
-
-///Summer
-"Daia.MarriageDialogue.summer_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.summer_10": "PLACEHOLDER",
-"Daia.MarriageDialogue.summer_27": "PLACEHOLDER",
-
-///Fall
-"Daia.MarriageDialogue.fall_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.fall_15": "PLACEHOLDERh",
-"Daia.MarriageDialogue.fall_26": "PLACEHOLDER",
-
-///Winter
-"Daia.MarriageDialogue.winter_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.winter_7": "PLACEHOLDER",
-"Daia.MarriageDialogue.winter_24": "PLACEHOLDER",
-
-///Room
-"Daia.MarriageDialogue.spouseRoom_Daia": "PLACEHOLDER",
-
-///Patio
-"Daia.MarriageDialogue.patio_Daia": "PLACEHOLDER",
-
-///Rainy Day
-"Daia.MarriageDialogue.Rainy_Day_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Day_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Day_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Day_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Day_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Day_Daia": "PLACEHOLDER",
-
-///Rainy Night
-"Daia.MarriageDialogue.Rainy_Night_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Night_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Night_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Night_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Night_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Night_5": "PLACEHOLDER",
-"Daia.MarriageDialogue.Rainy_Night_Daia": "PLACEHOLDER",
-
-///Indoor Day
-"Daia.MarriageDialogue.Indoor_Day_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Day_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Day_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Day_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Day_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Day_Daia": "PLACEHOLDER",
-
-//Indoor Night
-"Daia.MarriageDialogue.Indoor_Night_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Night_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Night_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Night_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Night_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Indoor_Night_Daia": "PLACEHOLDER",
-
-///Outdoors
-"Daia.MarriageDialogue.Outdoor_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Outdoor_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Outdoor_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Outdoor_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Outdoor_4": "PLACEHOLDER",
-
-//Leaving
-"Daia.MarriageDialogue.funLeave_Daia": "PLACEHOLDER",
-
-//Returning
-"Daia.MarriageDialogue.funReturn_Daia": "PLACEHOLDER",
-
-//One kid
-"Daia.MarriageDialogue.OneKid_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.OneKid_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.OneKid_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.OneKid_3": "PLACEHOLDER",
-
-//Two kids
-"Daia.MarriageDialogue.TwoKids_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.TwoKids_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.TwoKids_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.TwoKids_3": "PLACEHOLDER",
-
-//Relationship-dependent
-///Good
-"Daia.MarriageDialogue.Good_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_5": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_6": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_7": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_8": "PLACEHOLDER",
-"Daia.MarriageDialogue.Good_9": "PLACEHOLDER",
-
-///Neutral
-"Daia.MarriageDialogue.Neutral_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_5": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_6": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_7": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_8": "PLACEHOLDER",
-"Daia.MarriageDialogue.Neutral_9": "PLACEHOLDER",
-
-///Bad
-"Daia.MarriageDialogue.Bad_0": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_1": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_2": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_3": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_4": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_5": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_6": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_7": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_8": "PLACEHOLDER",
-"Daia.MarriageDialogue.Bad_9": "PLACEHOLDER",
-
-///Spring
-"Jio.MarriageDialogue.spring_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.spring_12": "PLACEHOLDER",
-"Jio.MarriageDialogue.spring_23": "PLACEHOLDER",
-
-///Summer
-"Jio.MarriageDialogue.summer_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.summer_10": "PLACEHOLDER",
-"Jio.MarriageDialogue.summer_27": "PLACEHOLDER",
-
-///Fall
-"Jio.MarriageDialogue.fall_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.fall_15": "PLACEHOLDERh",
-"Jio.MarriageDialogue.fall_26": "PLACEHOLDER",
-
-///Winter
-"Jio.MarriageDialogue.winter_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.winter_7": "PLACEHOLDER",
-"Jio.MarriageDialogue.winter_17": "PLACEHOLDER",
-"Jio.MarriageDialogue.winter_24": "PLACEHOLDER",
-
-///Room
-"Jio.MarriageDialogue.spouseRoom_Jio": "PLACEHOLDER",
-
-///Patio
-"Jio.MarriageDialogue.patio_Jio": "PLACEHOLDER",
-
-///Rainy Day
-"Jio.MarriageDialogue.Rainy_Day_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Day_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Day_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Day_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Day_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Day_Jio": "PLACEHOLDER",
-
-///Rainy Night
-"Jio.MarriageDialogue.Rainy_Night_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Night_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Night_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Night_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Night_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Night_5": "PLACEHOLDER",
-"Jio.MarriageDialogue.Rainy_Night_Jio": "PLACEHOLDER",
-
-///Indoor Day
-"Jio.MarriageDialogue.Indoor_Day_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Day_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Day_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Day_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Day_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Day_Jio": "PLACEHOLDER",
-
-//Indoor Night
-"Jio.MarriageDialogue.Indoor_Night_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Night_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Night_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Night_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Night_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Indoor_Night_Jio": "PLACEHOLDER",
-
-///Outdoors
-"Jio.MarriageDialogue.Outdoor_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Outdoor_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Outdoor_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Outdoor_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Outdoor_4": "PLACEHOLDER",
-
-//Leaving
-"Jio.MarriageDialogue.funLeave_Jio": "PLACEHOLDER",
-
-//Returning
-"Jio.MarriageDialogue.funReturn_Jio": "PLACEHOLDER",
-
-//One kid
-"Jio.MarriageDialogue.OneKid_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.OneKid_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.OneKid_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.OneKid_3": "PLACEHOLDER",
-
-//Two kids
-"Jio.MarriageDialogue.TwoKids_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.TwoKids_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.TwoKids_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.TwoKids_3": "PLACEHOLDER",
-
-//Relationship-dependent
-///Good
-"Jio.MarriageDialogue.Good_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_5": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_6": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_7": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_8": "PLACEHOLDER",
-"Jio.MarriageDialogue.Good_9": "PLACEHOLDER",
-
-///Neutral
-"Jio.MarriageDialogue.Neutral_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_5": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_6": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_7": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_8": "PLACEHOLDER",
-"Jio.MarriageDialogue.Neutral_9": "PLACEHOLDER",
-
-///Bad
-"Jio.MarriageDialogue.Bad_0": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_1": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_2": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_3": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_4": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_5": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_6": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_7": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_8": "PLACEHOLDER",
-"Jio.MarriageDialogue.Bad_9": "PLACEHOLDER",
-
-	//Daia
-			//Brave Little Sapling (ANIMATED) (FAMILY) (COMEDY) LIKE
-"MovieData.Daia.SpringMovie0.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.SpringMovie0.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.SpringMovie0.Like.AfterMovie": "PLACEHOLDER",
-
-			//Journey of the Praire King (VIDEOGAME) LOVE
-"MovieData.Daia.SummerMovie0.Dislike.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.SummerMovie0.Dislike.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.SummerMovie0.Dislike.AfterMovie": "PLACEHOLDER",
-
-			//Mysterium (MINDFUCK) (MYSTERY) DISLIKE
-"MovieData.Daia.FallMovie0.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.FallMovie0.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.FallMovie0.Like.AfterMovie": "PLACEHOLDER",
-
-			//Miracle at Coldstar Ranch (WHOLESOME) (TEAR JERKER) (FAMILY) DISLIKE
-"MovieData.Daia.WinterMovie0.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.WinterMovie0.Like.DuringMovie": "*PLACEHOLDER",
-"MovieData.Daia.WinterMovie0.Like.AfterMovie": "PLACEHOLDER",
-
-			//Natural Wonders: Exploring Our Vibrant World (TOUR) (EDUCATIONAL) LIKE
-"MovieData.Daia.SpringMovie1.Dislike.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.SpringMovie1.Dislike.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.SpringMovie1.Dislike.AfterMovie": "PLACEHOLDER",
-
-			//Wumbus (SCI-FI) (COMEDY) LIKE
-"MovieData.Daia.SummerMovie1.Love.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.SummerMovie1.Love.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.SummerMovie1.Love.AfterMovie": "PLACEHOLDER",
-
-			//Howls in the Rain (HORROR) LOVE
-"MovieData.Daia.FallMovie1.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.FallMovie1.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.FallMovie1.Like.AfterMovie": "PLACEHOLDER",
-
-			//Zuzu City Express (CLASSIC) (ROMANCE) LOVE
-"MovieData.Daia.WinterMovie1.Love.BeforeMovie": "PLACEHOLDER",
-"MovieData.Daia.WinterMovie1.Love.DuringMovie": "PLACEHOLDER",
-"MovieData.Daia.WinterMovie1.Love.AfterMovie": "PLACEHOLDER",
-
-	//Jio
-			//Brave Little Sapling (ANIMATED) (FAMILY) (COMEDY) LIKE
-"MovieData.Jio.SpringMovie0.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.SpringMovie0.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.SpringMovie0.Like.AfterMovie": "PLACEHOLDER",
-
-			//Journey of the Praire King (VIDEOGAME) LIKE
-"MovieData.Jio.SummerMovie0.Dislike.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.SummerMovie0.Dislike.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.SummerMovie0.Dislike.AfterMovie": "PLACEHOLDER",
-
-			//Mysterium (MINDFUCK) (MYSTERY) LOVE
-"MovieData.Jio.FallMovie0.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.FallMovie0.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.FallMovie0.Like.AfterMovie": "PLACEHOLDER",
-
-			//Miracle at Coldstar Ranch (WHOLESOME) (TEAR JERKER) (FAMILY) LIKE
-"MovieData.Jio.WinterMovie0.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.WinterMovie0.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.WinterMovie0.Like.AfterMovie": "PLACEHOLDER",
-
-			//Natural Wonders: Exploring Our Vibrant World (TOUR) (EDUCATIONAL) DISLIKE
-"MovieData.Jio.SpringMovie1.Dislike.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.SpringMovie1.Dislike.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.SpringMovie1.Dislike.AfterMovie": "PLACEHOLDER",
-
-			//Wumbus (SCI-FI) (COMEDY) DISLIKE
-"MovieData.Jio.SummerMovie1.Love.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.SummerMovie1.Love.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.SummerMovie1.Love.AfterMovie": "PLACEHOLDER",
-
-			//Howls in the Rain (HORROR) LIKE
-"MovieData.Jio.FallMovie1.Like.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.FallMovie1.Like.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.FallMovie1.Like.AfterMovie": "PLACEHOLDER",
-
-			//Zuzu City Express (CLASSIC) (ROMANCE) DISLIKE
-"MovieData.Jio.WinterMovie1.Love.BeforeMovie": "PLACEHOLDER",
-"MovieData.Jio.WinterMovie1.Love.DuringMovie": "PLACEHOLDER",
-"MovieData.Jio.WinterMovie1.Love.AfterMovie": "PLACEHOLDER",
-
-//Daily Dialogue
-//Daia
-//Spring
-"Daia.Dialogue.spring_1": "PLACEHOLDER",
-"Daia.Dialogue.spring_12": "PLACEHOLDER",
-"Daia.Dialogue.spring_23": "PLACEHOLDER",
-
-//Summer
-"Daia.Dialogue.summer_1": "PLACEHOLDER",
-"Daia.Dialogue.summer_10": "PLACEHOLDER",
-"Daia.Dialogue.summer_27": "PLACEHOLDER",
-
-//Fall
-"Daia.Dialogue.fall_1": "PLACEHOLDER",
-"Daia.Dialogue.fall_15": "PLACEHOLDER",
-"Daia.Dialogue.fall_26": "PLACEHOLDER",
-
-//Winter
-"Daia.Dialogue.winter_1": "PLACEHOLDER",
-"Daia.Dialogue.winter_7": "PLACEHOLDER",
-"Daia.Dialogue.winter_24": "PLACEHOLDER",
-
-//Days of the Week
-
-//0 Hearts
-"Daia.Dialogue.Mon": "PLACEHOLDER",
-"Daia.Dialogue.Tue": "PLACEHOLDER",
-"Daia.Dialogue.Wed": "PLACEHOLDER",
-"Daia.Dialogue.Thu": "PLACEHOLDER",
-"Daia.Dialogue.Fri": "PLACEHOLDER",
-"Daia.Dialogue.Sat": "PLACEHOLDER",
-"Daia.Dialogue.Sun": "PLACEHOLDER",
-
-//2 Hearts
-"Daia.Dialogue.Mon2": "PLACEHOLDER",
-"Daia.Dialogue.Tue2": "PLACEHOLDER",
-"Daia.Dialogue.Wed2": "PLACEHOLDER",
-"Daia.Dialogue.Thu2": "PLACEHOLDER",
-"Daia.Dialogue.Fri2": "PLACEHOLDER",
-"Daia.Dialogue.Sat2": "PLACEHOLDER",
-"Daia.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Daia.Dialogue.Mon4": "PLACEHOLDER",
-"Daia.Dialogue.Tue4": "PLACEHOLDER",
-"Daia.Dialogue.Wed4": "PLACEHOLDER",
-"Daia.Dialogue.Thu4": "PLACEHOLDER",
-"Daia.Dialogue.Fri4": "PLACEHOLDER",
-"Daia.Dialogue.Sat4": "PLACEHOLDER",
-"Daia.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Daia.Dialogue.Mon6": "PLACEHOLDER",
-"Daia.Dialogue.Tue6": "PLACEHOLDER",
-"Daia.Dialogue.Wed6": "PLACEHOLDER",
-"Daia.Dialogue.Thu6": "PLACEHOLDER",
-"Daia.Dialogue.Fri6": "PLACEHOLDER",
-"Daia.Dialogue.Sat6": "PLACEHOLDER",
-"Daia.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Daia.Dialogue.Mon8": "PLACEHOLDER",
-"Daia.Dialogue.Tue8": "PLACEHOLDER",
-"Daia.Dialogue.Wed8": "PLACEHOLDER",
-"Daia.Dialogue.Thu8": "PLACEHOLDER",
-"Daia.Dialogue.Fri8": "PLACEHOLDER",
-"Daia.Dialogue.Sat8": "PLACEHOLDER",
-"Daia.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Daia.Dialogue.Mon10": "PLACEHOLDER",
-"Daia.Dialogue.Tue10": "PLACEHOLDER",
-"Daia.Dialogue.Wed10": "PLACEHOLDER",
-"Daia.Dialogue.Thu10": "PLACEHOLDER",
-"Daia.Dialogue.Fri10": "PLACEHOLDER",
-"Daia.Dialogue.Sat10": "PLACEHOLDER",
-"Daia.Dialogue.Sun10": "PLACEHOLDER",
-
-//Special Dialogue
-"Daia.Dialogue.breakUp": "PLACEHOLDER",
-"Daia.Dialogue.danceRejection": "PLACEHOLDER",
-"Daia.Dialogue.divorced": "PLACEHOLDER",
-"Daia.Dialogue.MovieInvitation": "PLACEHOLDER",
-
-//Resort
-"Daia.Dialogue.Resort_Entering": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Leaving": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Leaving_2": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Shore": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Shore_2": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Umbrella": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Umbrella_2": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Umbrella_3": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Wander": "PLACEHOLDER",
-"Daia.Dialogue.Resort_Bar": "PLACEHOLDER",
-"Daia.Dialogue.Resort": "PLACEHOLDER",
-
-//Jio
-//Special Dialogue
-"Jio.Dialogue.breakUp": "PLACEHOLDER",
-"Jio.Dialogue.danceRejection": "PLACEHOLDER",
-"Jio.Dialogue.divorced": "PLACEHOLDER",
-
-//Belinda
-//Randomized
-"Belinda.Dialogue.random.1" : "PLACEHOLDER",
-"Belinda.Dialogue.random.2" : "PLACEHOLDER",
-"Belinda.Dialogue.random.3" : "PLACEHOLDER",
-"Belinda.Dialogue.random.4" : "PLACEHOLDER",
-"Belinda.Dialogue.random.5" : "PLACEHOLDER",
-"Belinda.Dialogue.random.6" : "PLACEHOLDER",
-"Belinda.Dialogue.random.7" : "PLACEHOLDER",
-"Belinda.Dialogue.random.8" : "PLACEHOLDER",
-"Belinda.Dialogue.random.9" : "PLACEHOLDER",
-"Belinda.Dialogue.random.10" : "PLACEHOLDER",
-"Belinda.Dialogue.random.11" : "PLACEHOLDER",
-"Belinda.Dialogue.random.12" : "PLACEHOLDER",
-"Belinda.Dialogue.random.13" : "PLACEHOLDER",
-"Belinda.Dialogue.random.14" : "PLACEHOLDER",
-"Belinda.Dialogue.random.15" : "PLACEHOLDER",
-"Belinda.Dialogue.random.16" : "PLACEHOLDER",
-"Belinda.Dialogue.random.17" : "PLACEHOLDER",
-"Belinda.Dialogue.random.18" : "PLACEHOLDER",
-"Belinda.Dialogue.random.19" : "PLACEHOLDER",
-"Belinda.Dialogue.random.20" : "PLACEHOLDER",
-
-//Before Festivals
-"Belinda.Dialogue.spring_12": "PLACEHOLDER",
-"Belinda.Dialogue.spring_23": "PLACEHOLDER",
-"Belinda.Dialogue.summer_10": "PLACEHOLDER",
-"Belinda.Dialogue.summer_27": "PLACEHOLDER",
-"Belinda.Dialogue.fall_15": "PLACEHOLDER",
-"Belinda.Dialogue.fall_19": "PLACEHOLDER",
-"Belinda.Dialogue.fall_26": "PLACEHOLDER",
-"Belinda.Dialogue.winter_7": "PLACEHOLDER",
-"Belinda.Dialogue.winter_24": "PLACEHOLDER",
-"Belinda.Dialogue.winter_27": "PLACEHOLDER",
-
-
-//Bliss
-//Spring
-"Bliss.Dialogue.spring_1": "PLACEHOLDER",
-"Bliss.Dialogue.spring_12": "PLACEHOLDER",
-"Bliss.Dialogue.spring_23": "PLACEHOLDER",
-
-//Summer
-"Bliss.Dialogue.summer_1": "PLACEHOLDER",
-"Bliss.Dialogue.summer_10": "PLACEHOLDER",
-"Bliss.Dialogue.summer_27": "PLACEHOLDER",
-
-//Fall
-"Bliss.Dialogue.fall_1": "PLACEHOLDER",
-"Bliss.Dialogue.fall_15": "PLACEHOLDER",
-"Bliss.Dialogue.fall_26": "PLACEHOLDER",
-
-//Winter
-"Bliss.Dialogue.winter_1": "PLACEHOLDER",
-"Bliss.Dialogue.winter_7": "PLACEHOLDER",
-"Bliss.Dialogue.winter_24": "PLACEHOLDER",
-
-//Days of the Week
-
-//0 Hearts
-"Bliss.Dialogue.Mon": "PLACEHOLDER",
-"Bliss.Dialogue.Tue": "PLACEHOLDER",
-"Bliss.Dialogue.Wed": "PLACEHOLDER",
-"Bliss.Dialogue.Thu": "PLACEHOLDER",
-"Bliss.Dialogue.Fri": "PLACEHOLDER",
-"Bliss.Dialogue.Sat": "PLACEHOLDER",
-"Bliss.Dialogue.Sun": "PLACEHOLDER",
-
-//2 Hearts
-"Bliss.Dialogue.Mon2": "PLACEHOLDER",
-"Bliss.Dialogue.Tue2": "PLACEHOLDER",
-"Bliss.Dialogue.Wed2": "PLACEHOLDER",
-"Bliss.Dialogue.Thu2": "PLACEHOLDER",
-"Bliss.Dialogue.Fri2": "PLACEHOLDER",
-"Bliss.Dialogue.Sat2": "PLACEHOLDER",
-"Bliss.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Bliss.Dialogue.Mon4": "PLACEHOLDER",
-"Bliss.Dialogue.Tue4": "PLACEHOLDER",
-"Bliss.Dialogue.Wed4": "PLACEHOLDER",
-"Bliss.Dialogue.Thu4": "PLACEHOLDER",
-"Bliss.Dialogue.Fri4": "PLACEHOLDER",
-"Bliss.Dialogue.Sat4": "PLACEHOLDER",
-"Bliss.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Bliss.Dialogue.Mon6": "PLACEHOLDER",
-"Bliss.Dialogue.Tue6": "PLACEHOLDER",
-"Bliss.Dialogue.Wed6": "PLACEHOLDER",
-"Bliss.Dialogue.Thu6": "PLACEHOLDER",
-"Bliss.Dialogue.Fri6": "PLACEHOLDER",
-"Bliss.Dialogue.Sat6": "PLACEHOLDER",
-"Bliss.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Bliss.Dialogue.Mon8": "PLACEHOLDER",
-"Bliss.Dialogue.Tue8": "PLACEHOLDER",
-"Bliss.Dialogue.Wed8": "PLACEHOLDER",
-"Bliss.Dialogue.Thu8": "PLACEHOLDER",
-"Bliss.Dialogue.Fri8": "PLACEHOLDER",
-"Bliss.Dialogue.Sat8": "PLACEHOLDER",
-"Bliss.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Bliss.Dialogue.Mon10": "PLACEHOLDER",
-"Bliss.Dialogue.Tue10": "PLACEHOLDER",
-"Bliss.Dialogue.Wed10": "PLACEHOLDER",
-"Bliss.Dialogue.Thu10": "PLACEHOLDER",
-"Bliss.Dialogue.Fri10": "PLACEHOLDER",
-"Bliss.Dialogue.Sat10": "PLACEHOLDER",
-"Bliss.Dialogue.Sun10": "PLACEHOLDER",
-
-
-//Sari
-//Randomized
-"Sari.Dialogue.random.1" : "PLACEHOLDER",
-"Sari.Dialogue.random.2" : "PLACEHOLDER",
-"Sari.Dialogue.random.3" : "PLACEHOLDER",
-"Sari.Dialogue.random.4" : "PLACEHOLDER",
-"Sari.Dialogue.random.5" : "PLACEHOLDER",
-"Sari.Dialogue.random.6" : "PLACEHOLDER",
-"Sari.Dialogue.random.7" : "PLACEHOLDER",
-"Sari.Dialogue.random.8" : "PLACEHOLDER",
-"Sari.Dialogue.random.9" : "PLACEHOLDER",
-"Sari.Dialogue.random.10" : "PLACEHOLDER",
-"Sari.Dialogue.random.11" : "PLACEHOLDER",
-"Sari.Dialogue.random.12" : "PLACEHOLDER",
-"Sari.Dialogue.random.13" : "PLACEHOLDER",
-"Sari.Dialogue.random.14" : "PLACEHOLDER",
-"Sari.Dialogue.random.15" : "PLACEHOLDER",
-"Sari.Dialogue.random.16" : "PLACEHOLDER",
-"Sari.Dialogue.random.17" : "PLACEHOLDER",
-"Sari.Dialogue.random.18" : "PLACEHOLDER",
-"Sari.Dialogue.random.19" : "PLACEHOLDER",
-"Sari.Dialogue.random.20" : "PLACEHOLDER",
-
-
-//Pipo
-//Randomized
-"Pipo.Dialogue.random.1" : "PLACEHOLDER",
-"Pipo.Dialogue.random.2" : "PLACEHOLDER",
-"Pipo.Dialogue.random.3" : "PLACEHOLDER",
-"Pipo.Dialogue.random.4" : "PLACEHOLDER",
-"Pipo.Dialogue.random.5" : "PLACEHOLDER",
-"Pipo.Dialogue.random.6" : "PLACEHOLDER",
-"Pipo.Dialogue.random.7" : "PLACEHOLDER",
-"Pipo.Dialogue.random.8" : "PLACEHOLDER",
-"Pipo.Dialogue.random.9" : "PLACEHOLDER",
-"Pipo.Dialogue.random.10" : "PLACEHOLDER",
-"Pipo.Dialogue.random.11" : "PLACEHOLDER",
-"Pipo.Dialogue.random.12" : "PLACEHOLDER",
-"Pipo.Dialogue.random.13" : "PLACEHOLDER",
-"Pipo.Dialogue.random.14" : "PLACEHOLDER",
-"Pipo.Dialogue.random.15" : "PLACEHOLDER",
-"Pipo.Dialogue.random.16" : "PLACEHOLDER",
-"Pipo.Dialogue.random.17" : "PLACEHOLDER",
-"Pipo.Dialogue.random.18" : "PLACEHOLDER",
-"Pipo.Dialogue.random.19" : "PLACEHOLDER",
-"Pipo.Dialogue.random.20" : "PLACEHOLDER",
-
-
-//Acorn
-//Spring
-"Acorn.Dialogue.spring_1": "PLACEHOLDER",
-"Acorn.Dialogue.spring_12": "PLACEHOLDER",
-"Acorn.Dialogue.spring_23": "PLACEHOLDER",
-
-//Summer
-"Acorn.Dialogue.summer_1": "PLACEHOLDER",
-"Acorn.Dialogue.summer_10": "PLACEHOLDER",
-"Acorn.Dialogue.summer_27": "PLACEHOLDER",
-
-//Fall
-"Acorn.Dialogue.fall_1": "PLACEHOLDER",
-"Acorn.Dialogue.fall_15": "PLACEHOLDER",
-"Acorn.Dialogue.fall_26": "PLACEHOLDER",
-
-//Winter
-"Acorn.Dialogue.winter_1": "PLACEHOLDER",
-"Acorn.Dialogue.winter_7": "PLACEHOLDER",
-"Acorn.Dialogue.winter_24": "PLACEHOLDER",
-
-//Days of the Week
-
-//0 Hearts
-"Acorn.Dialogue.Mon": "PLACEHOLDER",
-"Acorn.Dialogue.Tue": "PLACEHOLDER",
-"Acorn.Dialogue.Wed": "PLACEHOLDER",
-"Acorn.Dialogue.Thu": "PLACEHOLDER",
-"Acorn.Dialogue.Fri": "PLACEHOLDER",
-"Acorn.Dialogue.Sat": "PLACEHOLDER",
-"Acorn.Dialogue.Sun": "PLACEHOLDER",
-
-//2 Hearts
-"Acorn.Dialogue.Mon2": "PLACEHOLDER",
-"Acorn.Dialogue.Tue2": "PLACEHOLDER",
-"Acorn.Dialogue.Wed2": "PLACEHOLDER",
-"Acorn.Dialogue.Thu2": "PLACEHOLDER",
-"Acorn.Dialogue.Fri2": "PLACEHOLDER",
-"Acorn.Dialogue.Sat2": "PLACEHOLDER",
-"Acorn.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Acorn.Dialogue.Mon4": "PLACEHOLDER",
-"Acorn.Dialogue.Tue4": "PLACEHOLDER",
-"Acorn.Dialogue.Wed4": "PLACEHOLDER",
-"Acorn.Dialogue.Thu4": "PLACEHOLDER",
-"Acorn.Dialogue.Fri4": "PLACEHOLDER",
-"Acorn.Dialogue.Sat4": "PLACEHOLDER",
-"Acorn.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Acorn.Dialogue.Mon6": "PLACEHOLDER",
-"Acorn.Dialogue.Tue6": "PLACEHOLDER",
-"Acorn.Dialogue.Wed6": "PLACEHOLDER",
-"Acorn.Dialogue.Thu6": "PLACEHOLDER",
-"Acorn.Dialogue.Fri6": "PLACEHOLDER",
-"Acorn.Dialogue.Sat6": "PLACEHOLDER",
-"Acorn.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Acorn.Dialogue.Mon8": "PLACEHOLDER",
-"Acorn.Dialogue.Tue8": "PLACEHOLDER",
-"Acorn.Dialogue.Wed8": "PLACEHOLDER",
-"Acorn.Dialogue.Thu8": "PLACEHOLDER",
-"Acorn.Dialogue.Fri8": "PLACEHOLDER",
-"Acorn.Dialogue.Sat8": "PLACEHOLDER",
-"Acorn.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Acorn.Dialogue.Mon10": "PLACEHOLDER",
-"Acorn.Dialogue.Tue10": "PLACEHOLDER",
-"Acorn.Dialogue.Wed10": "PLACEHOLDER",
-"Acorn.Dialogue.Thu10": "PLACEHOLDER",
-"Acorn.Dialogue.Fri10": "PLACEHOLDER",
-"Acorn.Dialogue.Sat10": "PLACEHOLDER",
-"Acorn.Dialogue.Sun10": "PLACEHOLDER",
-
-
-//Naomi
-//Spring
-"Naomi.Dialogue.spring_1": "PLACEHOLDER",
-"Naomi.Dialogue.spring_12": "PLACEHOLDER",
-"Naomi.Dialogue.spring_23": "PLACEHOLDER",
-
-//Summer
-"Naomi.Dialogue.summer_1": "PLACEHOLDER",
-"Naomi.Dialogue.summer_10": "PLACEHOLDER",
-"Naomi.Dialogue.summer_27": "PLACEHOLDER",
-
-//Fall
-"Naomi.Dialogue.fall_1": "PLACEHOLDER",
-"Naomi.Dialogue.fall_15": "PLACEHOLDER",
-"Naomi.Dialogue.fall_26": "PLACEHOLDER",
-
-//Winter
-"Naomi.Dialogue.winter_1": "PLACEHOLDER",
-"Naomi.Dialogue.winter_7": "PLACEHOLDER",
-"Naomi.Dialogue.winter_24": "PLACEHOLDER",
-
-//Days of the Week
-
-//0 Hearts
-"Naomi.Dialogue.Mon": "PLACEHOLDER",
-"Naomi.Dialogue.Tue": "PLACEHOLDER",
-"Naomi.Dialogue.Wed": "PLACEHOLDER",
-"Naomi.Dialogue.Thu": "PLACEHOLDER",
-"Naomi.Dialogue.Fri": "PLACEHOLDER",
-"Naomi.Dialogue.Sat": "PLACEHOLDER",
-"Naomi.Dialogue.Sun": "PLACEHOLDER",
-
-//2 Hearts
-"Naomi.Dialogue.Mon2": "PLACEHOLDER",
-"Naomi.Dialogue.Tue2": "PLACEHOLDER",
-"Naomi.Dialogue.Wed2": "PLACEHOLDER",
-"Naomi.Dialogue.Thu2": "PLACEHOLDER",
-"Naomi.Dialogue.Fri2": "PLACEHOLDER",
-"Naomi.Dialogue.Sat2": "PLACEHOLDER",
-"Naomi.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Naomi.Dialogue.Mon4": "PLACEHOLDER",
-"Naomi.Dialogue.Tue4": "PLACEHOLDER",
-"Naomi.Dialogue.Wed4": "PLACEHOLDER",
-"Naomi.Dialogue.Thu4": "PLACEHOLDER",
-"Naomi.Dialogue.Fri4": "PLACEHOLDER",
-"Naomi.Dialogue.Sat4": "PLACEHOLDER",
-"Naomi.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Naomi.Dialogue.Mon6": "PLACEHOLDER",
-"Naomi.Dialogue.Tue6": "PLACEHOLDER",
-"Naomi.Dialogue.Wed6": "PLACEHOLDER",
-"Naomi.Dialogue.Thu6": "PLACEHOLDER",
-"Naomi.Dialogue.Fri6": "PLACEHOLDER",
-"Naomi.Dialogue.Sat6": "PLACEHOLDER",
-"Naomi.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Naomi.Dialogue.Mon8": "PLACEHOLDER",
-"Naomi.Dialogue.Tue8": "PLACEHOLDER",
-"Naomi.Dialogue.Wed8": "PLACEHOLDER",
-"Naomi.Dialogue.Thu8": "PLACEHOLDER",
-"Naomi.Dialogue.Fri8": "PLACEHOLDER",
-"Naomi.Dialogue.Sat8": "PLACEHOLDER",
-"Naomi.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Naomi.Dialogue.Mon10": "PLACEHOLDER",
-"Naomi.Dialogue.Tue10": "PLACEHOLDER",
-"Naomi.Dialogue.Wed10": "PLACEHOLDER",
-"Naomi.Dialogue.Thu10": "PLACEHOLDER",
-"Naomi.Dialogue.Fri10": "PLACEHOLDER",
-"Naomi.Dialogue.Sat10": "PLACEHOLDER",
-"Naomi.Dialogue.Sun10": "PLACEHOLDER",
-
-
-//Malaya
-//Spring
-"Malaya.Dialogue.spring_1": "PLACEHOLDER",
-"Malaya.Dialogue.spring_12": "PLACEHOLDER",
-"Malaya.Dialogue.spring_23": "PLACEHOLDER",
-
-//Summer
-"Malaya.Dialogue.summer_1": "PLACEHOLDER",
-"Malaya.Dialogue.summer_10": "PLACEHOLDER",
-"Malaya.Dialogue.summer_27": "PLACEHOLDER",
-
-//Fall
-"Malaya.Dialogue.fall_1": "PLACEHOLDER",
-"Malaya.Dialogue.fall_15": "PLACEHOLDER",
-"Malaya.Dialogue.fall_26": "PLACEHOLDER",
-
-//Winter
-"Malaya.Dialogue.winter_1": "PLACEHOLDER",
-"Malaya.Dialogue.winter_7": "PLACEHOLDER",
-"Malaya.Dialogue.winter_24": "PLACEHOLDER",
-
-//Days of the Week
-
-//0 Hearts
-"Malaya.Dialogue.Mon": "PLACEHOLDER",
-"Malaya.Dialogue.Tue": "PLACEHOLDER",
-"Malaya.Dialogue.Wed": "PLACEHOLDER",
-"Malaya.Dialogue.Thu": "PLACEHOLDER",
-"Malaya.Dialogue.Fri": "PLACEHOLDER",
-"Malaya.Dialogue.Sat": "PLACEHOLDER",
-"Malaya.Dialogue.Sun": "PLACEHOLDER",
-
-//2 Hearts
-"Malaya.Dialogue.Mon2": "PLACEHOLDER",
-"Malaya.Dialogue.Tue2": "PLACEHOLDER",
-"Malaya.Dialogue.Wed2": "PLACEHOLDER",
-"Malaya.Dialogue.Thu2": "PLACEHOLDER",
-"Malaya.Dialogue.Fri2": "PLACEHOLDER",
-"Malaya.Dialogue.Sat2": "PLACEHOLDER",
-"Malaya.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Malaya.Dialogue.Mon4": "PLACEHOLDER",
-"Malaya.Dialogue.Tue4": "PLACEHOLDER",
-"Malaya.Dialogue.Wed4": "PLACEHOLDER",
-"Malaya.Dialogue.Thu4": "PLACEHOLDER",
-"Malaya.Dialogue.Fri4": "PLACEHOLDER",
-"Malaya.Dialogue.Sat4": "PLACEHOLDER",
-"Malaya.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Malaya.Dialogue.Mon6": "PLACEHOLDER",
-"Malaya.Dialogue.Tue6": "PLACEHOLDER",
-"Malaya.Dialogue.Wed6": "PLACEHOLDER",
-"Malaya.Dialogue.Thu6": "PLACEHOLDER",
-"Malaya.Dialogue.Fri6": "PLACEHOLDER",
-"Malaya.Dialogue.Sat6": "PLACEHOLDER",
-"Malaya.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Malaya.Dialogue.Mon8": "PLACEHOLDER",
-"Malaya.Dialogue.Tue8": "PLACEHOLDER",
-"Malaya.Dialogue.Wed8": "PLACEHOLDER",
-"Malaya.Dialogue.Thu8": "PLACEHOLDER",
-"Malaya.Dialogue.Fri8": "PLACEHOLDER",
-"Malaya.Dialogue.Sat8": "PLACEHOLDER",
-"Malaya.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Malaya.Dialogue.Mon10": "PLACEHOLDER",
-"Malaya.Dialogue.Tue10": "PLACEHOLDER",
-"Malaya.Dialogue.Wed10": "PLACEHOLDER",
-"Malaya.Dialogue.Thu10": "PLACEHOLDER",
-"Malaya.Dialogue.Fri10": "PLACEHOLDER",
-"Malaya.Dialogue.Sat10": "PLACEHOLDER",
-"Malaya.Dialogue.Sun10": "PLACEHOLDER",
-
-
-//Kimpoi
-//Spring
-"Kimpoi.Dialogue.spring_1": "PLACEHOLDER",
-"Kimpoi.Dialogue.spring_12": "PLACEHOLDER",
-"Kimpoi.Dialogue.spring_23": "PLACEHOLDER",
-
-//Summer
-"Kimpoi.Dialogue.summer_1": "PLACEHOLDER",
-"Kimpoi.Dialogue.summer_10": "PLACEHOLDER",
-"Kimpoi.Dialogue.summer_27": "PLACEHOLDER",
-
-//Fall
-"Kimpoi.Dialogue.fall_1": "PLACEHOLDER",
-"Kimpoi.Dialogue.fall_15": "PLACEHOLDER",
-"Kimpoi.Dialogue.fall_26": "PLACEHOLDER",
-
-//Winter
-"Kimpoi.Dialogue.winter_1": "PLACEHOLDER",
-"Kimpoi.Dialogue.winter_7": "PLACEHOLDER",
-"Kimpoi.Dialogue.winter_24": "PLACEHOLDER",
-
-//Days of the Week
-
-//0 Hearts
-"Kimpoi.Dialogue.Mon": "PLACEHOLDER",
-"Kimpoi.Dialogue.Tue": "PLACEHOLDER",
-"Kimpoi.Dialogue.Wed": "PLACEHOLDER",
-"Kimpoi.Dialogue.Thu": "PLACEHOLDER",
-"Kimpoi.Dialogue.Fri": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sat": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sun": "PLACEHOLDER",
-
-//2 Hearts
-"Kimpoi.Dialogue.Mon2": "PLACEHOLDER",
-"Kimpoi.Dialogue.Tue2": "PLACEHOLDER",
-"Kimpoi.Dialogue.Wed2": "PLACEHOLDER",
-"Kimpoi.Dialogue.Thu2": "PLACEHOLDER",
-"Kimpoi.Dialogue.Fri2": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sat2": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Kimpoi.Dialogue.Mon4": "PLACEHOLDER",
-"Kimpoi.Dialogue.Tue4": "PLACEHOLDER",
-"Kimpoi.Dialogue.Wed4": "PLACEHOLDER",
-"Kimpoi.Dialogue.Thu4": "PLACEHOLDER",
-"Kimpoi.Dialogue.Fri4": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sat4": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Kimpoi.Dialogue.Mon6": "PLACEHOLDER",
-"Kimpoi.Dialogue.Tue6": "PLACEHOLDER",
-"Kimpoi.Dialogue.Wed6": "PLACEHOLDER",
-"Kimpoi.Dialogue.Thu6": "PLACEHOLDER",
-"Kimpoi.Dialogue.Fri6": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sat6": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Kimpoi.Dialogue.Mon8": "PLACEHOLDER",
-"Kimpoi.Dialogue.Tue8": "PLACEHOLDER",
-"Kimpoi.Dialogue.Wed8": "PLACEHOLDER",
-"Kimpoi.Dialogue.Thu8": "PLACEHOLDER",
-"Kimpoi.Dialogue.Fri8": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sat8": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Kimpoi.Dialogue.Mon10": "PLACEHOLDER",
-"Kimpoi.Dialogue.Tue10": "PLACEHOLDER",
-"Kimpoi.Dialogue.Wed10": "PLACEHOLDER",
-"Kimpoi.Dialogue.Thu10": "PLACEHOLDER",
-"Kimpoi.Dialogue.Fri10": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sat10": "PLACEHOLDER",
-"Kimpoi.Dialogue.Sun10": "PLACEHOLDER",
-
-//Helen
-//Randomized
-"Helen.Dialogue.random.1" : "PLACEHOLDER",
-"Helen.Dialogue.random.2" : "PLACEHOLDER",
-"Helen.Dialogue.random.3" : "PLACEHOLDER",
-"Helen.Dialogue.random.4" : "PLACEHOLDER",
-"Helen.Dialogue.random.5" : "PLACEHOLDER",
-"Helen.Dialogue.random.6" : "PLACEHOLDER",
-"Helen.Dialogue.random.7" : "PLACEHOLDER",
-"Helen.Dialogue.random.8" : "PLACEHOLDER",
-"Helen.Dialogue.random.9" : "PLACEHOLDER",
-"Helen.Dialogue.random.10" : "PLACEHOLDER",
-"Helen.Dialogue.random.11" : "PLACEHOLDER",
-"Helen.Dialogue.random.12" : "PLACEHOLDER",
-"Helen.Dialogue.random.13" : "PLACEHOLDER",
-"Helen.Dialogue.random.14" : "PLACEHOLDER",
-"Helen.Dialogue.random.15" : "PLACEHOLDER",
-"Helen.Dialogue.random.16" : "PLACEHOLDER",
-"Helen.Dialogue.random.17" : "PLACEHOLDER",
-"Helen.Dialogue.random.18" : "PLACEHOLDER",
-"Helen.Dialogue.random.19" : "PLACEHOLDER",
-"Helen.Dialogue.random.20" : "PLACEHOLDER",
-
-//Before Festivals
-"Helen.Dialogue.spring_12": "PLACEHOLDER",
-"Helen.Dialogue.spring_23": "PLACEHOLDER",
-"Helen.Dialogue.summer_10": "PLACEHOLDER",
-"Helen.Dialogue.summer_27": "PLACEHOLDER",
-"Helen.Dialogue.fall_15": "PLACEHOLDER",
-"Helen.Dialogue.fall_19": "PLACEHOLDER",
-"Helen.Dialogue.fall_26": "PLACEHOLDER",
-"Helen.Dialogue.winter_7": "PLACEHOLDER",
-"Helen.Dialogue.winter_24": "PLACEHOLDER",
-"Helen.Dialogue.winter_27": "PLACEHOLDER",
-
-
-//Undreya new
-//Days of the Week
-
-//0 Hearts
-"Undreya.Dialogue.Mon0": "PLACEHOLDER",
-"Undreya.Dialogue.Tue0": "PLACEHOLDER",
-"Undreya.Dialogue.Wed0": "PLACEHOLDER",
-"Undreya.Dialogue.Thu0": "PLACEHOLDER",
-"Undreya.Dialogue.Fri0": "PLACEHOLDER",
-"Undreya.Dialogue.Sat0": "PLACEHOLDER",
-"Undreya.Dialogue.Sun0": "PLACEHOLDER",
-
-//2 Hearts
-"Undreya.Dialogue.Mon2": "PLACEHOLDER",
-"Undreya.Dialogue.Tue2": "PLACEHOLDER",
-"Undreya.Dialogue.Wed2": "PLACEHOLDER",
-"Undreya.Dialogue.Thu2": "PLACEHOLDER",
-"Undreya.Dialogue.Fri2": "PLACEHOLDER",
-"Undreya.Dialogue.Sat2": "PLACEHOLDER",
-"Undreya.Dialogue.Sun2": "PLACEHOLDER",
-
-//4 Hearts
-"Undreya.Dialogue.Mon4": "PLACEHOLDER",
-"Undreya.Dialogue.Tue4": "PLACEHOLDER",
-"Undreya.Dialogue.Wed4": "PLACEHOLDER",
-"Undreya.Dialogue.Thu4": "PLACEHOLDER",
-"Undreya.Dialogue.Fri4": "PLACEHOLDER",
-"Undreya.Dialogue.Sat4": "PLACEHOLDER",
-"Undreya.Dialogue.Sun4": "PLACEHOLDER",
-
-//6 Hearts
-"Undreya.Dialogue.Mon6": "PLACEHOLDER",
-"Undreya.Dialogue.Tue6": "PLACEHOLDER",
-"Undreya.Dialogue.Wed6": "PLACEHOLDER",
-"Undreya.Dialogue.Thu6": "PLACEHOLDER",
-"Undreya.Dialogue.Fri6": "PLACEHOLDER",
-"Undreya.Dialogue.Sat6": "PLACEHOLDER",
-"Undreya.Dialogue.Sun6": "PLACEHOLDER",
-
-//8 Hearts
-"Undreya.Dialogue.Mon8": "PLACEHOLDER",
-"Undreya.Dialogue.Tue8": "PLACEHOLDER",
-"Undreya.Dialogue.Wed8": "PLACEHOLDER",
-"Undreya.Dialogue.Thu8": "PLACEHOLDER",
-"Undreya.Dialogue.Fri8": "PLACEHOLDER",
-"Undreya.Dialogue.Sat8": "PLACEHOLDER",
-"Undreya.Dialogue.Sun8": "PLACEHOLDER",
-
-//10 Hearts
-"Undreya.Dialogue.Mon10": "PLACEHOLDER",
-"Undreya.Dialogue.Tue10": "PLACEHOLDER",
-"Undreya.Dialogue.Wed10": "PLACEHOLDER",
-"Undreya.Dialogue.Thu10": "PLACEHOLDER",
-"Undreya.Dialogue.Fri10": "PLACEHOLDER",
-"Undreya.Dialogue.Sat10": "PLACEHOLDER",
-"Undreya.Dialogue.Sun10": "PLACEHOLDER",
+"InterModDialogue.EmberNightDialogue.Sophia": "Happy New Year, @. Let's hope the next one's better.",
+"InterModDialogue.EmberNightDialogue.Sophia_spouse": "Happy New Year, @! Let's make the next one even better!$h",
+"InterModDialogue.EmberNightDialogue.Victor": "Hm, the structure is pretty solid... but what if we added a support beam there....#$b#%Victor is lost in thought.",
+"InterModDialogue.EmberNightDialogue.Victor_spouse": "Happy New Year, honey! I saved a good stick for you.",
+"InterModDialogue.EmberNightDialogue.Olivia": "Happy New Year, @. Do you have any plans for next year? ",
+"InterModDialogue.EmberNightDialogue.Olivia_spouse": "Let's spice things up for next year, dear. How about we try a new hobby together?$h",
+"InterModDialogue.EmberNightDialogue.Andy": "Happy New Year, @. Hope Yoba's blessings are on you next year.",
+"InterModDialogue.EmberNightDialogue.Claire": "The mountain is so quiet with the new snow. It truly feels like a fresh start. Happy New Year, @.",
+"InterModDialogue.EmberNightDialogue.Claire_spouse": "The new planting season is almost upon us. Are you ready, dear?",
+"InterModDialogue.EmberNightDialogue.Martin": "Brr! I hope they light the bonfire soon.#$b#Oh, hey @! Happy new year!",
+"InterModDialogue.EmberNightDialogue.Marlon": "The ridge's barrier looks sturdy as always. Wouldn't want monsters interrupting the festivities.",
+"InterModDialogue.EmberNightDialogue.Gunther": "Happy New Year, Mr. @.^Happy New Year, Ms. @.#$b#How did this year work out for you?",
+"InterModDialogue.EmberNightDialogue.Susan": "The walk from the railroad was long, but I wouldn't miss Gus and Pika's pumpkin pie for the world. Happy new year, hun. Stay warm.",
 
 //Wedding Reception Mail
 "Mail.WedReceptionMail": "Dear @,^^We heard the news! Congratulations on being engaged! If you're interested, You can book an After-Wedding Reception that would take place here at the Log Cabin Hotel after your wedding! Come visit the hotel for more inquiries.^^- Richard^Log Cabin Hotel Owner.",
 
 //AFTER Wedding Reception Conversation Topic
+//TO COMPLETE
 "postweddingreception.Acorn": "PLACEHOLDER",
 "postweddingreception.Aguar": "PLACEHOLDER",
 "postweddingreception.Bert": "PLACEHOLDER",
@@ -9431,7 +8495,7 @@
 //Naomi return conversation topic
 "event-75160249.followNaomi": "Oh! You're coming with us, @?",
 "event-75160249.stayBehind": "Goodbye, @!$h%fork",
-"NaomiReturn.Shiro": "Mom filled us in why Dad didn't come back with her.#$b#We're going to call him and tell her she'd arrived safely.",
+"NaomiReturn.Shiro": "Mom filled us in why Dad didn't come back with her.#$b#We're going to call him and tell him she had arrived safely.",
 "NaomiReturn.Yuuma": "*sniff* No I didn't cry... *sniff*",
 "NaomiReturn.Lenny": "I can't wait to chat with Naomi about her travels!$h#$e#Naomi's a childhood friend of mine and Lewis.#$b#She may look strict, but she's a softie!$h#$b#Don't tell her I told you that.$h",
 "NaomiReturn.Richard": "The hotel's expansion was a marvelous idea!$h#$b#We're now receiving double the guests!$h",
@@ -9450,5 +8514,217 @@
 "LidensReturn.Lenny": "Alissa's parents recently came back.#$b#They left 9 years ago, they didn't disclose ther reason though.$s#$b#But it's glad to see them back and well.$h#$e#I'm sure Alissa's really happy.$h",
 
 "MapString.greenhouse.board": "Ridgeside Village Community Greenhouse#Plots owned by Nightingale Orchard, Blooming Hill Farm, and the Water Research Facility.",
+"MapString.greenhouse.crops": "These aren't your crops!",
 
+//RSVMap String
+
+"Blooming.Hill.Farm" : "Blooming Hill Farm",
+"Jeric.Coop" : "Jeric's Chicken Coop",
+
+"Convenience.Store" : "Heaps Convenience Store",
+"Daniel.Residence" : "Daniels Residence",
+"Picken.Residence" : "Pickens Residence",
+"LogCabinHotel" : "Log Cabin Hotel",
+"Odd.Jobs" : "Odd Jobs",
+"Village.Office" : "Village Office",
+"Ridgeside.Clinic" : "Ridgeside Clinic",
+"Kobayashi.Residence" : "Kobayashi Residence",
+"Amethyne.Mansion" : "Amethyne Mansion       ",
+"Yojeong.Residence" : "Yojeong Residence and Clothing Shop",
+"Akina.Residence" : "Akina Residence",
+"Rivera.Residence" : "Rivera Residence",
+"Bladebane.Residence" : " Bladebane Residence",
+"Lola.Cabin" : "Lola's Cabin",
+"Nightingale.Orchard": "Nightingale Orchard",
+"Liden.Residence" : "Lidens Residence",
+"Water.Research.Facility" : "Water Research Facility",
+"Greenhouse" : "Community Greenhouse",
+"Pikas" : "Pika's Restaurant",
+"RSV.Stage" : "Starbound Stage",
+
+"MapString.rsv.52": "Ridgeside Clinic.",
+"MapString.rsv.53": "Heaps Convenience Store.",
+"MapString.rsv.54": "Yojeong Residence.#Selling clothes inside!",
+"MapString.rsv.55": "Amethyne Residence.",
+"MapString.rsv.56": "Rivera Residence.",
+"MapString.rsv.57": "Nature has seemed to swallow up this broken down car.",
+"MapString.rsv.58": "The license plate reads 'R1CH-80Y'.",
+"MapString.rsv.59": "A barrel full of fishes!#What a fishy sight.",
+"MapString.rsv.60": "Barrels and boxes full of supplies!",
+"MapString.rsv.61": "Who left this basket of fruits here?",
+"MapString.rsv.62": "A cute little makeshift pet house.#A sign is attached to it, it reads:#'Torts'",
+
+"MapString.rsv.ian13": "Sean's drawers.#It's a bit of a mess!",
+"MapString.rsv.ian14": "There are some clothes just lying around.",
+
+"MapString.rsv.faye1": "A cute little flower on a flower pot with fairy designs!",
+"MapString.rsv.faye2": "Faye's dresser.#I should practice decency and mind my own business.",
+"MapString.rsv.faye3": "The scissors are incredibly sharp!#Be careful now!",
+"MapString.rsv.faye4": "This piece of cloth is incredibly soft and shiny!",
+"MapString.rsv.faye5": "The wheel looks like it's been used with care.",
+"MapString.rsv.faye6": "A collection of different silk and threads.",
+"MapString.rsv.faye7": "'The dance of threads and needles.'#'By Mama Esh'",
+"MapString.rsv.faye8": "A paper full of different contact numbers is taped into the phone.",
+"MapString.rsv.faye9": "The food looks tasty!#I shouldn't take a bite though.",
+"MapString.rsv.faye10": "A fancy pink wine.#It's half full!#Or I can see it as half empty too.",
+"MapString.rsv.faye11": "It looks like some sort of application form to a famous clothing brand.",
+"MapString.rsv.faye12": "There's a drawing of an abstract design for a dress.",
+"MapString.rsv.faye13": "The radio is full of cute stickers!",
+"MapString.rsv.faye14": "'The Fundamentals of Design'#'By E. Shadow'",
+
+"MapString.rsv.hotel34": "The espresso machine is so expressive.",
+"MapString.rsv.hotel35": "A bunch of baking utensils arranged neatly!",
+"MapString.rsv.hotel36": "Tasty pastries in display!",
+
+"MapString.rsv.clinic1": "A collection of folders!#They don't seem to be about medical records.#That would be scary having them in the open if that were the case!",
+"MapString.rsv.clinic2": "The system's locked with a password",
+"MapString.rsv.clinic3": "It looks like a prescription for something.#It's kind of hard to read.",
+"MapString.rsv.clinic4": "The kitchen is clean and tidy!",
+"MapString.rsv.clinic5": "Paula's dresser.#Learn some manners and leave it be!",
+"MapString.rsv.clinic6": "A collection of medical books and literature.",
+"MapString.rsv.clinic7": "It looks like a book is lodged a bit too hastly.#It reads 'Diary'.#You slowly return it back.",
+
+"MapString.rsv.3bros1": "The shelves are full of different assortment of items.",
+"MapString.rsv.3bros2": "A bag labeled 'Pet food'.#For what pet exactly? It doesn't say anywhere!",
+"MapString.rsv.3bros3": "The famous hair conditioner 'Harvz Hair Care'.",
+"MapString.rsv.3bros4": "A cooler full of water bottles.",
+"MapString.rsv.3bros5": "It's empty inside.#There seems to be a scribbles of text written at the rim.#'Kia's hiding spot'.",
+"MapString.rsv.3bros6": "'Busy business issue 3' by Tia Kall.",
+"MapString.rsv.3bros7": "20 ways you can cook noodles.#A bunch of angry notes are written all over it.",
+"MapString.rsv.3bros8": "A book full of names.#'Sean - owes $10 for the sodas#Sean - owes $5 for the salt#Keahi - owes $5 for the crafting materials",
+"MapString.rsv.3bros9": "'Sale limited time only!'",
+"MapString.rsv.3bros10": "A stack of weights.#It's a bit dusty though.",
+"MapString.rsv.3bros11": "The fridge is full of different ingredients!#Someone must love cooking.",
+"MapString.rsv.3bros12": "Looks like the kitchen was recently cleaned.",
+"MapString.rsv.3bros13": "There's a bunch of crumpled papers inside.#You can see a glimpse of house designs from one of them.",
+"MapString.rsv.3bros14": "It's full of used tomatoes!",
+"MapString.rsv.3bros15": "Kiarra's laptop.#There seems to be an unfinished poster.",
+"MapString.rsv.3bros16": "The family's dresser.#Everything seems to fit inside.",
+"MapString.rsv.3bros17": "It's empty inside.#There seems to be a scribbles of text written at the rim.#'Kia's backup hiding spot'.",
+"MapString.rsv.3bros18": "Tick-tock says the loud clock.#Wait, there seems to be a note inside.#You can't reach it.",
+
+"MapString.rsv.purplemansion1": "The plant looks sophisticated and expensive.#Is this even real?",
+"MapString.rsv.purplemansion2": "Such a cute little flower.",
+"MapString.rsv.purplemansion3": "This flower is cute.",
+"MapString.rsv.purplemansion4": "Cuteness arises from this flower.",
+"MapString.rsv.purplemansion5": "The flower exudes cuteness.",
+"MapString.rsv.purplemansion6": "The plant looks... Intimidating.#Did it just talk?",
+"MapString.rsv.purplemansion7": "A majestic and expensive looking decor.#You keep your distance as it looks like it might fall with just a simple nudge!",
+"MapString.rsv.purplemansion8": "It feels like you could hop into the screen anytime!",
+"MapString.rsv.purplemansion9": "Why was the television attracted to the remote control?#Because it turns it on.",
+"MapString.rsv.purplemansion10": "'Fashion of now' by Kedi la kedi.",
+"MapString.rsv.purplemansion11": "It looks like a photobook.#It contains pictures of different Amethynes!",
+"MapString.rsv.purplemansion12": "Different assortment of objects all stashed up inside boxes.",
+"MapString.rsv.purplemansion13": "A bunch of items are neatly stored in shelves.",
+"MapString.rsv.purplemansion14": "Labeled 'Jam from Umuwi'.",
+"MapString.rsv.purplemansion15": "Labled 'Fruits from East Scarp.'",
+"MapString.rsv.purplemansion16": "The coffee's still hot.#Someone might've left it here.",
+"MapString.rsv.purplemansion17": "A variety of beautiful flowers are on display inside the glass.#They look so pretty!",
+"MapString.rsv.purplemansion18": "Some kind of classical song is being played in the radio.",
+"MapString.rsv.purplemansion19": "A giant empty aquarium.#Looks like they're preparing to put something huge inside.",
+"MapString.rsv.purplemansion20": "You find this statue quite ribbiting.",
+"MapString.rsv.purplemansion21": "The statue looks sad.#Looks like it's carrying a birden.",
+"MapString.rsv.purplemansion22": "It's tilted a bit to the right.#It makes it look hawkward.",
+"MapString.rsv.purplemansion23": "The fabled Junimo.#You feel a bit of magic emanating from it.",
+"MapString.rsv.purplemansion24": "It's locked.#As you take a peek from the gaps, you can see some shiny objects stashed inside.",
+"MapString.rsv.purplemansion25": "A collection of paitings.#They seem to be handled with care.",
+"MapString.rsv.purplemansion26": "'Painting for Beginners' by Tai Yo.",
+"MapString.rsv.purplemansion27": "It looks like an unfinished sketch of a meadow.",
+"MapString.rsv.purplemansion28": "A different assortment of colors.",
+"MapString.rsv.purplemansion29": "Irene's dresser.#I shouldn't open it.",
+"MapString.rsv.purplemansion30": "Sonny's dresser.#I should mind my own business.",
+"MapString.rsv.purplemansion31": "Yoba's statue.#Staring at it makes you feel at ease.",
+"MapString.rsv.purplemansion32": "A huge green crystal with a label 'Mountain Spirit Artifact'.",
+"MapString.rsv.purplemansion33": "An odd gem.#There's a note beside it.#'Use this gem to search for the mountain spirit.'#'Or so what that merchant said.'",
+"MapString.rsv.purplemansion34": "'The Secrets of the Mountains' by Grim.",
+"MapString.rsv.purplemansion35": "'Yoba Weekly' by Ayr Ryn.",
+"MapString.rsv.purplemansion36": "The jukebox is locked by some sort of passcode.#Maybe to prevent visitors from using it without permission.",
+"MapString.rsv.purplemansion37": "A huge dictionary!#It's currently at the page showing the word 'Reliability'.",
+"MapString.rsv.purplemansion38": "A stack of books full of bookmarks.",
+"MapString.rsv.purplemansion39": "The book is titled 'The History of Early Ferngill'",
+"MapString.rsv.purplemansion40": "There seems to be a piece of paper hidden under the plant.#There's a drawing of a kid holding hands with their parents and sibling with a scribbled text 'I miss you.'",
+"MapString.rsv.purplemansion41": "The cabinet's full of utensils and table napkins!",
+"MapString.rsv.purplemansion42": "The heat emitting from the fireplace seems to give warmth to the cold atmosphere of the lonely mansion.",
+"MapString.rsv.purplemansion43": "Money tree, oh give this farmer a bit of luck.",
+"MapString.rsv.purplemansion44": "A number of notes are pinned.#They seem to be notes on daily errands and requested dishes.",
+"MapString.rsv.purplemansion45": "A turned down book titled 'Fasionista Cute Edition'.",
+"MapString.rsv.purplemansion46": "Some freshly cooked dishes.#Maybe awaiting to be served?",
+"MapString.rsv.purplemansion47": "These condiments look imported and expensive!",
+"MapString.rsv.purplemansion48": "The kitchen is clean and tidy!",
+"MapString.rsv.purplemansion49": "Should you open it?#Maybe not.",
+"MapString.rsv.purplemansion50": "You shouldn't jump in a private pool without permission.",
+"MapString.rsv.purplemansion51": "A stack of books about political science.",
+"MapString.rsv.purplemansion52": "Ariah's dresser.#Don't you dare take a peek.",
+"MapString.rsv.purplemansion53": "The CPU is clean and well maintained with a classy design.",
+"MapString.rsv.purplemansion54": "'Ariah's Notes'#It's not nice to invade someone's privacy.",
+"MapString.rsv.purplemansion55": "A collection of books. Varying from political and social science, to anthropology and psychology.",
+"MapString.rsv.purplemansion56": "The drawer's locked.#There's a cute potted cactus on top of it though.",
+"MapString.rsv.purplemansion57": "Expensive looking gaming consoles are setup in a tidy manner.",
+"MapString.rsv.purplemansion58": "A ball with the initials 'L.A.' imprinted in it.",
+"MapString.rsv.purplemansion59": "Louie's dresser.#The open drawer shows a bunch of neatly folded button shirts.",
+"MapString.rsv.purplemansion60": "'Zeus the hamster'.#The hamster is wearing a gold collar.#He's looking at you with boastful eyes.",
+"MapString.rsv.purplemansion61": "An expensive looking perfume!#You spray a bit into the air.#Woah! That's strong!",
+"MapString.rsv.purplemansion62": "The Madame's private dresser.#They're locked.",
+"MapString.rsv.purplemansion63": "Madame's private bath.#You shouldn't use it without permission.",
+"MapString.rsv.purplemansion64": "Zayne's private dresser.#It's locked.",
+
+"MapString.rsv.blairhouse1": "Blair's dresser.#Mind your own business.",
+"MapString.rsv.blairhouse2": "There's a picture of a small girl with her parents.",
+"MapString.rsv.blairhouse3": "The teddy bear looks old and worn out.#It's held together with patches and stitches.",
+"MapString.rsv.blairhouse4": "A pile of boxes full of different items.",
+"MapString.rsv.blairhouse5": "Carmen's dresser.#It's locked.",
+"MapString.rsv.blairhouse6": "Yoba's altar.#There's a recently lit candle to honor Yoba.",
+"MapString.rsv.blairhouse7": "'Mountain Aquabiology' by Sheku Rika.",
+"MapString.rsv.blairhouse8": "'The Words of the enlightened'#A page is bookmarked. It reads:#'Learn to take it easy. You should never sacrifice your own wellbeing for anything.'",
+
+"MapString.rsv.alissa11": "Exotic seeds are in display.",
+"MapString.rsv.alissa12": "A locked dresser.#Come on. You should know to respect other's privacy by now!",
+"MapString.rsv.alissa13": "The globe has a bunch of taped notes in it.#Series of numbers and letters are written in each note.",
+"MapString.rsv.alissa14": "There's a book in the open drawer.#'Tales of the mythical shores of Pacifica.' by Otter Squeaks",
+
+"Torts.spring1": "*Spring turtle noises*",
+"Torts.spring2": "*Stares at you intensely*",
+"Torts.spring3": "*Munches on flowers*",
+"Torts.spring4": "*Snorts*",
+"Torts.spring5": "*Inhales flowers*",
+"Torts.spring6": "*Sneezes*",
+"Torts.spring7": "*Yawns*",
+"Torts.spring8": "*Burps*",
+"Torts.spring9": "*Hiss hiss*",
+"Torts.spring10": "*Hiccup*",
+
+"Torts.summer1": "*Hiss hiss but in summer*",
+"Torts.summer2": "*Pretend sweats*",
+"Torts.summer3": "*Munches on banana*",
+"Torts.summer4": "*Sunbathes intensely*",
+"Torts.summer5": "*Slurps soup*",
+"Torts.summer6": "*Salivates*",
+"Torts.summer7": "*Gasps for water*",
+"Torts.summer8": "*Wiggles*",
+"Torts.summer9": "*Summer turtle noises*",
+"Torts.summer10": "*Stares with passion*",
+
+"Torts.fall1": "*Fall turtle noises*",
+"Torts.fall2": "*Plays in leaves*",
+"Torts.fall3": "*Munches on berrie*",
+"Torts.fall4": "*Bites*",
+"Torts.fall5": "*Snorts leaves*",
+"Torts.fall6": "*Looking for a sai*",
+"Torts.fall7": "*Digs*",
+"Torts.fall8": "*Stares in silence*",
+"Torts.fall9": "*Enjoys weather*",
+"Torts.fall10": "*Smiles*",
+
+"Torts.winter1": "*Winter turtle noises*",
+"Torts.winter2": "*Creepy smile*",
+"Torts.winter3": "*Sings a merry song*",
+"Torts.winter4": "*Stares boastfully*",
+"Torts.winter5": "*Hides in shell*",
+"Torts.winter6": "*Munches on snow*",
+"Torts.winter7": "*Makes snow turtle-angel*",
+"Torts.winter8": "*Demands a scarf*",
+"Torts.winter9": "*Begs for cuddles*",
+"Torts.winter10": "*Plans heist*",
+
+"MapString.rsv.BusStop": "Ridgeside Village up ahead."
 }

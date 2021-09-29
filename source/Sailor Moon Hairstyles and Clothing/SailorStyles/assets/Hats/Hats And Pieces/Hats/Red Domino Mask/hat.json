@@ -10,14 +10,8 @@
 
 {
     "Name": "Red Domino Mask",
-    "Description": "Sailor V's signature mask. A thing of the past!",
+    "Description": "...",
     "PurchasePrice": "200",
     "ShowHair": true,
-    "IgnoreHairstyleOffset": true,
-    "NameLocalization": {
-        "es": "Máscara de Dominó Roja"
-    },
-    "DescriptionLocalization": {
-        "es": "Máscara de la firma de Sailor V. ¡Una cosa del pasado!"
-    }
+    "IgnoreHairstyleOffset": true
 }

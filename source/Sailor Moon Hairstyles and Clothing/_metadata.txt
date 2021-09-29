@@ -6,9 +6,10 @@ mods:
    Sailor Moon Hairstyles and Clothing
 
 latest commit:
-   commit 51bb37fb1d252ced80df8126119fd7dbd1eca416
-   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
-   Date:   Sat Jun 5 16:44:16 2021 +1000
+   commit 7ab6aff3423d5b3c2187559f17f8733ab542ada3
+   Merge: ac54130 51bb37f
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Tue Sep 7 00:42:08 2021 +1000
    
-       Create README.md
+       Merge branch 'master' of https://github.com/b-b-blueberry/SailorStyles
    

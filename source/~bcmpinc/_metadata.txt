@@ -16,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit dfb729f216fd033b81addb1d7fa55a7e1dbff25d
+   commit 30c759fba128b3b872ca61e2c684e14f955ee006
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Wed Aug 4 14:14:15 2021 +0200
+   Date:   Tue Sep 7 20:38:50 2021 +0200
    
-       Update HarvestWithScythe readme
+       Ignore MSB3277 warning
    

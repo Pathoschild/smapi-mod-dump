@@ -10,7 +10,7 @@
 
 using System;
 using System.Linq;
-using Harmony;
+using HarmonyLib;
 using NpcAdventure.StateMachine;
 using NpcAdventure.Story;
 using NpcAdventure.Utils;
@@ -81,7 +81,7 @@ namespace NpcAdventure
 
         private void GetPatches(string command, string[] args)
         {
-            string describePatch(Patch p) => $"{p.patch.ReflectedType.FullName}.{p.patch.Name}";
+            string describePatch(Patch p) => $"{p.PatchMethod.ReflectedType.FullName}.{p.PatchMethod.Name}";
 
             if (args.Length > 0 && args[0] == "recheck")
             {

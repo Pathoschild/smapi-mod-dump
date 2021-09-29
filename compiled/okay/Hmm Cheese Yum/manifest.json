@@ -1,7 +1,7 @@
 ﻿{
     "Name": "HmmCheeseYum",
     "Author": "tomasitobambito",
-    "Version": "1.1.1",
+    "Version": "1.1.2", // fixed locally
     "Description": "Hmm Cheese Yum Hmm Hmm Hmm Cheese Yummy ... so thank you for bringing that into my life",
     "UniqueID": "tomasitobambito.HmmCheeseYum",
     "EntryDll": "HmmCheeseYum.dll",

@@ -11,7 +11,7 @@
 {
     "Name": "Sailor Neptune",
     "Description": "...",
-    "HasFemaleVariant": false,
+    "HasFemaleVariant": "true",
     "Price": 50,
     "Dyeable": false
 }

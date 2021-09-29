@@ -45,12 +45,12 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 			// get bullet properties
 			var damage = mainProjectile.damageToFarmer;
-			var xVelocity = ModEntry.Reflection.GetField<NetFloat>(mainProjectile, name: "xVelocity").GetValue().Value;
-			var yVelocity = ModEntry.Reflection.GetField<NetFloat>(mainProjectile, name: "yVelocity").GetValue().Value;
-			var ammunitionIndex = ModEntry.Reflection.GetField<NetInt>(mainProjectile, name: "currentTileSheetIndex").GetValue().Value;
-			var startingPosition = ModEntry.Reflection.GetField<NetPosition>(mainProjectile, name: "position").GetValue().Value;
-			var collisionSound = ModEntry.Reflection.GetField<NetString>(mainProjectile, name: "collisionSound").GetValue().Value;
-			var collisionBehavior = ModEntry.Reflection.GetField<BasicProjectile.onCollisionBehavior>(mainProjectile, name: "collisionBehavior").GetValue();
+			var xVelocity = ModEntry.ModHelper.Reflection.GetField<NetFloat>(mainProjectile, name: "xVelocity").GetValue().Value;
+			var yVelocity = ModEntry.ModHelper.Reflection.GetField<NetFloat>(mainProjectile, name: "yVelocity").GetValue().Value;
+			var ammunitionIndex = ModEntry.ModHelper.Reflection.GetField<NetInt>(mainProjectile, name: "currentTileSheetIndex").GetValue().Value;
+			var startingPosition = ModEntry.ModHelper.Reflection.GetField<NetPosition>(mainProjectile, name: "position").GetValue().Value;
+			var collisionSound = ModEntry.ModHelper.Reflection.GetField<NetString>(mainProjectile, name: "collisionSound").GetValue().Value;
+			var collisionBehavior = ModEntry.ModHelper.Reflection.GetField<BasicProjectile.onCollisionBehavior>(mainProjectile, name: "collisionBehavior").GetValue();
 
 			var netVelocity = new Vector2(xVelocity * -1f, yVelocity * -1f);
 			var speed = netVelocity.Length();
@@ -90,7 +90,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			else if (Game1.random.NextDouble() < Util.Professions.GetDesperadoDoubleStrafeChance())
 			{
-				DelayedAction doubleStrafe = new(100, () =>
+				// do Double Strafe
+				DelayedAction doubleStrafe = new(50, () =>
 				{
 					location.projectiles.Add(new BasicProjectile(damage, ammunitionIndex, 0, 0,
 						(float)(Math.PI / (64f + Game1.random.Next(-63, 64))), 0f - netVelocity.X * speed,
@@ -112,9 +113,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			Helper.Attach(original, instructions);
 
 			/// Injected: damage *= 1.5f
-			///			  if (who.IsLocalPlayer && SuperModeIndex == <desperado_id>)
+			///			  if (who.IsLocalPlayer && SuperModeIndex == <desperado_id> && !IsSuperModeActive)
 			///				  if (Game1.currentTime.TotalGameTime.TotalSeconds - this.pullStartTime <= GetDesperadoChargeTime()* breathingRoom) { SuperModeCounter += 10; v *= 1.5f; }
-			///				  else { ++SuperModeCounter }
+			///				  else { SuperModeCounter += 2 }
 			/// Before: if (ammunition.Category == -5) collisionSound = "slimedead";
 
 			var notQuickShot = iLGenerator.DefineLabel();
@@ -138,11 +139,6 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					.Retreat()
 					.GetLabels(out var labels) // backup branch labels
 					.StripLabels() // remove labels from here
-								   //.Insert(
-								   //	// prepare profession check
-								   //	new CodeInstruction(OpCodes.Ldarg_2) // arg 2 = Farmer who
-								   //)
-								   //.InsertProfessionCheckForPlayerOnStack(Util.Professions.IndexOf("Desperado"), resumeExecution)
 					.Insert(
 						// multiply ammunition damage by 1.5f
 						new CodeInstruction(OpCodes.Ldloc_S, damage),
@@ -160,6 +156,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(ModEntry).PropertyGetter(nameof(ModEntry.SuperModeIndex))),
 						new CodeInstruction(OpCodes.Ldc_I4_S, Util.Professions.IndexOf("Desperado")),
 						new CodeInstruction(OpCodes.Bne_Un_S, resumeExecution),
+						// check if IsSuperModeActive = true
+						new CodeInstruction(OpCodes.Call, typeof(ModEntry).PropertyGetter(nameof(ModEntry.IsSuperModeActive))),
+						new CodeInstruction(OpCodes.Brtrue_S, resumeExecution),
 						// check for quick shot (i.e. sling shot charge time <= required charge time * breathing room)
 						new CodeInstruction(OpCodes.Ldsfld,
 							typeof(Game1).Field(nameof(Game1.currentGameTime))),
@@ -175,7 +174,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						new CodeInstruction(OpCodes.Sub),
 						new CodeInstruction(OpCodes.Call,
 							typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetDesperadoChargeTime))),
-						new CodeInstruction(OpCodes.Ldc_R4, 1.1f), // <-- breathing room
+						new CodeInstruction(OpCodes.Ldc_R4, 1.2f), // <-- breathing room
 						new CodeInstruction(OpCodes.Mul),
 						new CodeInstruction(OpCodes.Bgt_S, notQuickShot),
 						// increment Cold Blood counter
@@ -191,7 +190,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(Vector2).Field(nameof(Vector2.X))),
 						new CodeInstruction(OpCodes.Dup),
 						new CodeInstruction(OpCodes.Ldind_R4),
-						new CodeInstruction(OpCodes.Ldc_R4, 1.5f),
+						new CodeInstruction(OpCodes.Ldc_R4, 1.8f),
 						new CodeInstruction(OpCodes.Mul),
 						new CodeInstruction(OpCodes.Stind_R4),
 						// v.Y *= GetDesperadoProjectileTravelSpeedModifier()
@@ -200,7 +199,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(Vector2).Field(nameof(Vector2.Y))),
 						new CodeInstruction(OpCodes.Dup),
 						new CodeInstruction(OpCodes.Ldind_R4),
-						new CodeInstruction(OpCodes.Ldc_R4, 1.5f),
+						new CodeInstruction(OpCodes.Ldc_R4, 1.8f),
 						new CodeInstruction(OpCodes.Mul),
 						new CodeInstruction(OpCodes.Stind_R4),
 						new CodeInstruction(OpCodes.Br_S, resumeExecution)
@@ -209,7 +208,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						// increment Cold Blood counter
 						new CodeInstruction(OpCodes.Call,
 							typeof(ModEntry).PropertyGetter(nameof(ModEntry.SuperModeCounter))),
-						new CodeInstruction(OpCodes.Ldc_I4_S, 1), // <-- increment amount
+						new CodeInstruction(OpCodes.Ldc_I4_S, 2), // <-- increment amount
 						new CodeInstruction(OpCodes.Add),
 						new CodeInstruction(OpCodes.Call,
 							typeof(ModEntry).PropertySetter(nameof(ModEntry.SuperModeCounter)))

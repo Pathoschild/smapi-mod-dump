@@ -216,7 +216,7 @@ namespace ItemBags.Helpers
             }
             else if (Item is Wallpaper WP)
             {
-                SourceTexture = Wallpaper.wallpaperTexture;
+                SourceTexture = null; // Wallpaper.wallpaperTexture; //Stardew Valley beta 1.5.5 no longer has a Wallpaper.wallpaperTexture field. No idea where it is now
                 SourceTextureRectangle = WP.sourceRect;
             }
             else

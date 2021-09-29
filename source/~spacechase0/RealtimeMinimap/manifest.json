@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Realtime Minimap",
+    "Author": "spacechase0",
+    "Version": "1.2.1",
+    "Description": "Adds a minimap which renders a live view of your current location.",
+    "UniqueID": "spacechase0.RealtimeMinimap",
+    "EntryDll": "RealtimeMinimap.dll",
+    "MinimumApiVersion": "3.12.5",
+    "UpdateKeys": [ "Nexus:9386" ]
+}

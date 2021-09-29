@@ -4,4 +4,10 @@
   "Edibility": -300,
   "Price": 0,
   "Recipe": null,
+  "NameLocalization": {
+	  "zh": "被诅咒的戒指"
+  },
+  "DescriptionLocalization": {
+	  "zh": "你多半不应该戴上，它看起来不吉利。"
+  },
 }
