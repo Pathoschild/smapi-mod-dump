@@ -5,8 +5,8 @@
     <RootNamespace>BuildOnAnyTile</RootNamespace>
     <Version>1.0.0</Version>
     <TargetFramework>net452</TargetFramework>
-    <Platforms>x86;AnyCPU</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU</Platforms>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="i18n\ko.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="i18n\zh.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

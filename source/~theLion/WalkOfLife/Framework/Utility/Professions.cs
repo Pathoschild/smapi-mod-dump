@@ -8,15 +8,19 @@
 **
 *************************************************/
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Tools;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using TheLion.Stardew.Common.Classes;
+using TheLion.Stardew.Common.Extensions;
 using SObject = StardewValley.Object;
+
+// ReSharper disable PossibleLossOfFraction
 
 namespace TheLion.Stardew.Professions.Framework.Util
 {
@@ -28,51 +32,51 @@ namespace TheLion.Stardew.Professions.Framework.Util
 		public static BiMap<string, int> IndexByName { get; } = new()
 		{
 			// farming
-			{ "Rancher", Farmer.rancher },              // 0
-			{ "Breeder", Farmer.butcher },              // 2 (coopmaster)
-			{ "Producer", Farmer.shepherd },            // 3
+			{"Rancher", Farmer.rancher}, // 0
+			{"Breeder", Farmer.butcher}, // 2 (coopmaster)
+			{"Producer", Farmer.shepherd}, // 3
 
-			{ "Harvester", Farmer.tiller },             // 1
-			{ "Artisan", Farmer.artisan },              // 4
-			{ "Agriculturist", Farmer.agriculturist },  // 5
+			{"Harvester", Farmer.tiller}, // 1
+			{"Artisan", Farmer.artisan}, // 4
+			{"Agriculturist", Farmer.agriculturist}, // 5
 
 			// fishing
-			{ "Fisher", Farmer.fisher },                // 6
-			{ "Angler", Farmer.angler },                // 8
-			{ "Aquarist", Farmer.pirate },              // 9
+			{"Fisher", Farmer.fisher}, // 6
+			{"Angler", Farmer.angler}, // 8
+			{"Aquarist", Farmer.pirate}, // 9
 
-			{ "Trapper", Farmer.trapper },              // 7
-			{ "Luremaster", Farmer.baitmaster },        // 10
-			{ "Conservationist", Farmer.mariner },      // 11
+			{"Trapper", Farmer.trapper}, // 7
+			{"Luremaster", Farmer.baitmaster}, // 10
+			{"Conservationist", Farmer.mariner}, // 11
 			/// Note: the vanilla game code has mariner and baitmaster IDs mixed up; i.e. effectively mariner is 10 and luremaster is 11.
 			/// Since we are completely replacing both professions, we take the opportunity to fix this inconsistency.
 
 			// foraging
-			{ "Lumberjack", Farmer.forester },          // 12
-			{ "Arborist", Farmer.lumberjack },          // 14
-			{ "Tapper", Farmer.tapper },                // 15
+			{"Lumberjack", Farmer.forester}, // 12
+			{"Arborist", Farmer.lumberjack}, // 14
+			{"Tapper", Farmer.tapper}, // 15
 
-			{ "Forager", Farmer.gatherer },             // 13
-			{ "Ecologist", Farmer.botanist },           // 16
-			{ "Scavenger", Farmer.tracker },            // 17
+			{"Forager", Farmer.gatherer}, // 13
+			{"Ecologist", Farmer.botanist}, // 16
+			{"Scavenger", Farmer.tracker}, // 17
 
 			// mining
-			{ "Miner", Farmer.miner },                  // 18
-			{ "Spelunker", Farmer.blacksmith },         // 20
-			{ "Prospector", Farmer.burrower },          // 21 (prospector)
+			{"Miner", Farmer.miner}, // 18
+			{"Spelunker", Farmer.blacksmith}, // 20
+			{"Prospector", Farmer.burrower}, // 21 (prospector)
 
-			{ "Blaster", Farmer.geologist },            // 19
-			{ "Demolitionist", Farmer.excavator },      // 22
-			{ "Gemologist", Farmer.gemologist },        // 23
+			{"Blaster", Farmer.geologist}, // 19
+			{"Demolitionist", Farmer.excavator}, // 22
+			{"Gemologist", Farmer.gemologist}, // 23
 
 			// combat
-			{ "Fighter", Farmer.fighter },              // 24
-			{ "Brute", Farmer.brute },                  // 26
-			{ "Poacher", Farmer.defender },             // 27
+			{"Fighter", Farmer.fighter}, // 24
+			{"Brute", Farmer.brute}, // 26
+			{"Poacher", Farmer.defender}, // 27
 
-			{ "Rascal", Farmer.scout },                 // 25
-			{ "Piper", Farmer.acrobat },                // 28
-			{ "Desperado", Farmer.desperado }           // 29
+			{"Rascal", Farmer.scout}, // 25
+			{"Piper", Farmer.acrobat}, // 28
+			{"Desperado", Farmer.desperado} // 29
 		};
 
 		#endregion look-up table
@@ -83,7 +87,7 @@ namespace TheLion.Stardew.Professions.Framework.Util
 		/// <param name="professionName">Case-sensitive profession name.</param>
 		public static int IndexOf(string professionName)
 		{
-			if (IndexByName.Forward.TryGetValue(professionName, out int professionIndex)) return professionIndex;
+			if (IndexByName.Forward.TryGetValue(professionName, out var professionIndex)) return professionIndex;
 			throw new ArgumentException($"Profession {professionName} does not exist.");
 		}
 
@@ -91,56 +95,55 @@ namespace TheLion.Stardew.Professions.Framework.Util
 		/// <param name="professionIndex">The index of the profession.</param>
 		public static string NameOf(int professionIndex)
 		{
-			if (IndexByName.Reverse.TryGetValue(professionIndex, out string professionName)) return professionName;
+			if (IndexByName.Reverse.TryGetValue(professionIndex, out var professionName)) return professionName;
 			throw new IndexOutOfRangeException($"Index {professionIndex} is not a valid profession index.");
 		}
 
-		/// <summary>Get the price multiplier for produce sold by Producer.</summary>
+		/// <summary>Affects the price of produce sold by Producer.</summary>
 		/// <param name="who">The player.</param>
 		public static float GetProducerPriceMultiplier(Farmer who)
 		{
 			return 1f + Game1.getFarm().buildings.Where(b =>
-				(b.owner.Value == who.UniqueMultiplayerID || !Game1.IsMultiplayer) &&
-				b.buildingType.Contains("Deluxe") && ((AnimalHouse)b.indoors.Value).isFull()).Sum(_ => 0.05f);
+				(b.owner.Value == who.UniqueMultiplayerID || !Context.IsMultiplayer) &&
+				b.buildingType.Contains("Deluxe") && ((AnimalHouse) b.indoors.Value).isFull()).Sum(_ => 0.05f);
 		}
 
-		/// <summary>Get the price multiplier for fish sold by Angler.</summary>
+		/// <summary>Affects the price of fish sold by Angler.</summary>
 		/// <param name="who">The player.</param>
 		public static float GetAnglerPriceMultiplier(Farmer who)
 		{
-			var fishData = Game1.content.Load<Dictionary<int, string>>(Path.Combine("Data", "Fish"));
+			var fishData = Game1.content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
+				.Where(p => !p.Key.AnyOf(152, 152, 157) && !p.Value.Contains("trap"))
+				.ToDictionary(p => p.Key, p => p.Value);
 			var multiplier = 1f;
-			foreach (var fish in who.fishCaught.Pairs)
+			foreach (var p in who.fishCaught.Pairs)
 			{
-				if (!fishData.TryGetValue(fish.Key, out var specificFishData) || specificFishData.Contains("trap")) continue;
+				if (!fishData.TryGetValue(p.Key, out var specificFishData)) continue;
 
-				var fields = specificFishData.Split('/');
-				if (Objects.LegendaryFishNames.Contains(fields[0]))
+				var dataFields = specificFishData.Split('/');
+				if (Objects.LegendaryFishNames.Contains(dataFields[0]))
 					multiplier += 0.05f;
-				else if (fish.Value[0] > Convert.ToInt32(fields[4]))
+				else if (p.Value[1] >= Convert.ToInt32(dataFields[4]))
 					multiplier += 0.01f;
 			}
 
 			return multiplier;
 		}
 
-		/// <summary>Get the price multiplier for items sold by Conservationist.</summary>
-		/// <param name="who">The player.</param>
-		public static float GetConservationistPriceMultiplier(Farmer who)
+		/// <summary>Affects the price all items sold by Conservationist.</summary>
+		public static float GetConservationistPriceMultiplier()
 		{
-			if (!who.IsLocalPlayer) return 1f;
-
 			return 1f + ModEntry.Data.ReadField<float>("ActiveTaxBonusPercent");
 		}
 
-		/// <summary>Get adjusted friendship for calculating the value of Breeder-owned farm animal.</summary>
+		/// <summary>Affects the price of animals sold by Breeder.</summary>
 		/// <param name="a">Farm animal instance.</param>
 		public static double GetProducerAdjustedFriendship(FarmAnimal a)
 		{
 			return Math.Pow(Math.Sqrt(2) * a.friendshipTowardFarmer.Value / 1000, 2) + 0.5;
 		}
 
-		/// <summary>Get the quality of forage for Ecologist.</summary>
+		/// <summary>Affects the quality of items foraged by Ecologist.</summary>
 		public static int GetEcologistForageQuality()
 		{
 			var itemsForaged = ModEntry.Data.ReadField<uint>("ItemsForaged");
@@ -150,123 +153,114 @@ namespace TheLion.Stardew.Professions.Framework.Util
 				: SObject.bestQuality;
 		}
 
-		/// <summary>Get the quality of mineral for Gemologist.</summary>
+		/// <summary>Affects the quality of minerals collected by Gemologist.</summary>
 		public static int GetGemologistMineralQuality()
 		{
 			var mineralsCollected = ModEntry.Data.ReadField<uint>("MineralsCollected");
 			return mineralsCollected < ModEntry.Config.MineralsNeededForBestQuality
-				? mineralsCollected < ModEntry.Config.MineralsNeededForBestQuality / 2 ? SObject.medQuality :
-				SObject.highQuality
+				? mineralsCollected < ModEntry.Config.MineralsNeededForBestQuality / 2
+					? SObject.medQuality
+					: SObject.highQuality
 				: SObject.bestQuality;
 		}
 
-		/// <summary>Get the bonus ladder spawn chance for Spelunker.</summary>
+		/// <summary>Affects that chance that a ladder or shaft will spawn for Spelunker.</summary>
 		public static double GetSpelunkerBonusLadderDownChance()
 		{
 			return ModEntry.SpelunkerLadderStreak * 0.01;
 		}
 
-		/// <summary>Get the bonus bobber bar height for Aquarist.</summary>
+		/// <summary>Affects the size of the green fishing bar for Aquarist.</summary>
 		public static int GetAquaristBonusBobberBarHeight()
 		{
 			return Game1.getFarm().buildings.Where(b =>
-				(b.owner.Value == Game1.player.UniqueMultiplayerID || !Game1.IsMultiplayer) && b is FishPond
+				(b.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) && b is FishPond
 				{
 					FishCount: >= 12
 				}).Sum(_ => 6);
 		}
 
-		/// <summary>Get the bonus raw damage that should be applied to Brute.</summary>
+		/// <summary>Affects the raw damage dealt by Brute.</summary>
 		/// <param name="who">The player.</param>
 		public static float GetBruteBonusDamageMultiplier(Farmer who)
 		{
 			return 1.15f +
-				   (who.IsLocalPlayer && ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == IndexOf("Brute")
-					   ? 0.65f + who.attackIncreaseModifier + who.CurrentTool.GetEnchantmentLevel<RubyEnchantment>() * 0.1f
-					   : ModEntry.SuperModeCounter / 10 * 0.005f) *
-				   (who.CurrentTool is MeleeWeapon weapon && weapon.type.Value == MeleeWeapon.club ? 1.5f : 1f);
+			       (who.IsLocalPlayer && ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == IndexOf("Brute")
+				       ? 0.65f + who.attackIncreaseModifier +
+				         (who.CurrentTool is not null ? who.CurrentTool.GetEnchantmentLevel<RubyEnchantment>() * 0.1f : 0f)
+				       : ModEntry.SuperModeCounter / 10 * 0.005f) *
+			       ((who.CurrentTool as MeleeWeapon)?.type.Value == MeleeWeapon.club ? 1.5f : 1f);
 		}
 
-		/// <summary>Get the bonus critical strike chance that should be applied to Poacher.</summary>
-		public static float GetPoacherBonusCritChance()
-		{
-			//var healthPercent = (double)who.health / who.maxHealth;
-			//return ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == Util.Professions.IndexOf("Poacher") ? 0.5f : (float)Math.Min(0.2 / (healthPercent + 0.2) - 0.2 / 1.2, 0.5f);
-			//return ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == Util.Professions.IndexOf("Poacher") ? 0.1f : (float)(1.0 / 9.0 * healthPercent - 1.0 / 90.0);
-			//return ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == Util.Professions.IndexOf("Poacher") ? 2f : (float)Math.Max(-18.0 / (healthPercent + 3.5) + 6.0, 1f);
-			return 0.1f;
-		}
-
-		/// <summary>Get the bonus critical strike damage that should be applied to Poacher.</summary>
-		/// <param name="who">The player.</param>
-		public static float GetPoacherCritDamageMultiplier(Farmer who)
-		{
-			var healthPercent = (double)who.health / who.maxHealth;
-			return ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == IndexOf("Poacher")
-				? 2f
-				: (float)Math.Max(-18.0 / (-healthPercent + 4.6) + 6.0, 1f);
-		}
-
-		/// <summary>Get the bonus item drop chance for Poacher.</summary>
-		/// <param name="who">The player.</param>
-		public static float GetPoacherStealChance(Farmer who)
-		{
-			return (ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == IndexOf("Poacher")
-					   ? 0.25f
-					   : ModEntry.SuperModeCounter / 10 * 0.005f) *
-				   ((who.CurrentTool as MeleeWeapon)?.type.Value == MeleeWeapon.dagger ? 1.5f : 1f);
-		}
-
-		///// <summary>Get the chance to instant-kill an enemy for Poacher.</summary>
-		///// <param name="who">The player.</param>
-		//public static float GetPoacherAssassinationChance(MeleeWeapon weapon, Farmer who)
+		//public static float GetPoacherBonusCritChance()
 		//{
-		//	//var critChance = weapon.critChance.Value + (1f + who.critChanceModifier) * Util.Professions.GetPoacherBonusCritChance(who);
-		//	var critPower = weapon.critMultiplier.Value * (1f + who.critPowerModifier) * GetPoacherCritDamageMultiplier(who);
-		//	return (critPower - 3f) / 6f + 0.1f;
+		//	var healthPercent = (double)who.health / who.maxHealth;
+		//	var bonusCrit = (float)Math.Max(-1.8 / (healthPercent - 4.6) - 0.4, 0f);
 		//}
 
-		/// <summary>Get bonus slingshot damage as function of projectile travel distance.</summary>
+		/// <summary>Affecsts the powerof critical strikes performed by Poacher.</summary>
+		public static float GetPoacherCritDamageMultiplier()
+		{
+			//var healthPercent = (double) who.health / who.maxHealth;
+			//var multiplier = (float)Math.Min(-18.0 / (-healthPercent + 4.6) + 6.0, 2f);
+			return ModEntry.IsSuperModeActive ? 3f : ModEntry.SuperModeCounter / 10 * 0.06f;
+		}
+
+		/// <summary>Affects the damage of projectiles fired by Rascal.</summary>
 		/// <param name="travelDistance">Distance travelled by the projectile.</param>
 		public static float GetRascalBonusDamageForTravelTime(int travelDistance)
 		{
-			const int MAX_DISTANCE = 800;
-			if (travelDistance > MAX_DISTANCE) return 1.5f;
-			return 0.5f / MAX_DISTANCE * travelDistance + 1f;
+			const int MAX_DISTANCE_I = 800;
+			if (travelDistance > MAX_DISTANCE_I) return 1.5f;
+			return 1f + 0.5f / MAX_DISTANCE_I * travelDistance;
 		}
 
-		/// <summary>Get the slingshot charge time modifier for Desperado.</summary>
+		/// <summary>Affects the chance to shoot twice consecutively for Desperado.</summary>
+		/// <param name="who">The player.</param>
+		public static float GetDesperadoDoubleStrafeChance(Farmer who)
+		{
+			var healthPercent = (double)who.health / who.maxHealth;
+			return (float)Math.Min(2 / (healthPercent + 1.5) - 0.75, 0.5f);
+		}
+
+		/// <summary>Affects projectile velocity, knockback, hitbox size and pierce chance for Desperado.</summary>
+		public static float GetDesperadoBulletPower()
+		{
+			return 1f + (ModEntry.IsSuperModeActive
+				? 1f
+				: ModEntry.SuperModeCounter / 10 * 0.01f);
+		}
+
+		/// <summary>Affects the time to prepare a shot for Desperado.</summary>
 		public static float GetDesperadoChargeTime()
 		{
 			return 0.3f * GetCooldownOrChargeTimeReduction();
 		}
 
-		/// <summary>Get the chance of Desperado double strafe.</summary>
-		public static float GetDesperadoDoubleStrafeChance()
-		{
-			return ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == IndexOf("Desperado")
-				? 0f
-				: ModEntry.SuperModeCounter / 10 * 0.005f;
-		}
-
-		/// <summary>Get the attack speed multiplier that should be applied to Piper Slimes.</summary>
+		/// <summary>Affects the maximum number of bonus Slimes that can be attracted by Piper.</summary>
 		public static int GetPiperSlimeSpawnAttempts()
 		{
-			return ModEntry.SuperModeCounter / 50 + 1;
+			return ModEntry.IsSuperModeActive
+				? 11
+				: ModEntry.SuperModeCounter / 50 + 1;
 		}
 
-		/// <summary>Get the attack speed multiplier that should be applied to Piper Slimes.</summary>
+		/// <summary>Affects the attack frequency of Slimes under Piper influence towards other enemies.</summary>
+		/// <returns>Returns a number between 0 (when <see cref="ModEntry.SuperModeCounter"/> is 0, and 0.15 when it is full.</returns>
 		public static float GetPiperSlimeAttackSpeedModifier()
 		{
-			return ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == IndexOf("Piper")
-				? 0.15f
-				: ModEntry.SuperModeCounter / 10 * 0.003f;
+			return ModEntry.IsSuperModeActive
+				? 0.75f
+				: 1f - ModEntry.SuperModeCounter / 10 * 0.003f;
 		}
 
-		/// <summary>Get the cooldown reduction multiplier that should be applied to Brute or Poacher cooldown reductions and Desperado charge time.</summary>
+		/// <summary>Affects the cooldown of Club or Hammer special attacks for Brute and Poacher, or the pull-back time of shots for Desperado.</summary>
+		/// <returns>Returns a number between 1 (when <see cref="ModEntry.SuperModeCounter"/> is 0, and 0.5 when it is full.</returns>
 		public static float GetCooldownOrChargeTimeReduction()
 		{
-			return ModEntry.IsSuperModeActive ? 0.5f : 1f - ModEntry.SuperModeCounter / 10 * 0.01f;
+			return ModEntry.IsSuperModeActive
+				? 0.5f
+				: 1f - ModEntry.SuperModeCounter / 10 * 0.01f;
 		}
 
 		#endregion public methods

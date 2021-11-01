@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/shekurika/DailySpecialOrders
+**
+*************************************************/
+
+{
+  "Name": "Daily Special Orders",
+  "Author": "shekurika",
+  "Version": "1.0.0",
+  "Description": "Allows to change specify how often the special order boards update.",
+  "UniqueID": "shekurika.DailySpecialOrders",
+  "EntryDll": "DailySpecialOrders.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:9693"],
+}

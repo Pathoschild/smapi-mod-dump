@@ -8,28 +8,21 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using System;
+using Microsoft.Xna.Framework;
+using StardewValley;
 
 namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 {
 	/// <summary>Base class for treasure hunts.</summary>
 	public abstract class TreasureHunt
 	{
-		public Vector2? TreasureTile { get; protected set; } = null;
-
-		protected string HuntStartedMessage { get; set; }
-		protected string HuntFailedMessage { get; set; }
-		protected Rectangle IconSourceRect { get; set; }
+		private readonly double _baseTriggerChance;
+		protected readonly Random Random = new(Guid.NewGuid().GetHashCode());
+		private double _accumulatedBonus = 1.0;
+		protected uint Elapsed;
 
 		protected uint TimeLimit;
-		protected uint Elapsed;
-		protected readonly Random Random = new(Guid.NewGuid().GetHashCode());
-
-		private readonly double _baseTriggerChance;
-		private double _accumulatedBonus = 1.0;
 
 		/// <summary>Construct an instance.</summary>
 		protected TreasureHunt()
@@ -37,11 +30,17 @@ namespace TheLion.Stardew.Professions.Framework.TreasureHunt
 			_baseTriggerChance = ModEntry.Config.ChanceToStartTreasureHunt;
 		}
 
+		public Vector2? TreasureTile { get; protected set; } = null;
+
+		protected string HuntStartedMessage { get; set; }
+		protected string HuntFailedMessage { get; set; }
+		protected Rectangle IconSourceRect { get; set; }
+
 		/// <summary>Check for completion or failure on every update tick.</summary>
 		/// <param name="ticks">The number of ticks Elapsed since the game started.</param>
 		internal void Update(uint ticks)
 		{
-			if (!Game1.shouldTimePass(ignore_multiplayer: true)) return;
+			if (!Game1.shouldTimePass(true)) return;
 
 			if (ticks % 60 == 0 && ++Elapsed > TimeLimit) Fail();
 			else CheckForCompletion();

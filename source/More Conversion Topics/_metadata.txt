@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/elizabethcd/MoreConversationTopics
+   Git: https://github.com/elizabethcd/MoreConversationTopics.git
+
+mods:
+   More Conversion Topics
+
+latest commit:
+   commit 89fb72e825fd9d882d82e8eb2b78d1e84e2820a2
+   Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
+   Date:   Sun Oct 31 18:43:58 2021 -0400
+   
+       Updating WeddingPatcher
+   

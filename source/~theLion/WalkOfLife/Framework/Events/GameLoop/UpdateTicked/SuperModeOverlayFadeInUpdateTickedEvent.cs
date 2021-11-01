@@ -14,7 +14,7 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public class SuperModeOverlayFadeInUpdateTickedEvent : UpdateTickedEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
 			ModEntry.SuperModeOverlayAlpha += 0.01f;

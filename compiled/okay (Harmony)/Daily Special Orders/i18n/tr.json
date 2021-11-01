@@ -1,0 +1,10 @@
+{
+    "Immediate.Refresh" : "Çabucak Yenile",
+    "Immediate.Paragraph": "Bir tanesi seçildikten sonra Özel Siparişleri yeniler. (Panoyu yeniden açmayı gerektirir)",
+    "Refresh.on.Tuesday" : "Salı günü yenile",
+    "Refresh.on.Wednesday" : "Çarşamba günü yenile",
+    "Refresh.on.Thursday" : "Perşembe günü yenile",
+    "Refresh.on.Friday" : "Cuma günü yenile",
+    "Refresh.on.Saturday" : "Cumartesi günü yenile",
+    "Refresh.on.Sunday" : "Pazar günü yenile",
+}

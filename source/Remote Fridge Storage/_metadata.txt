@@ -6,12 +6,9 @@ mods:
    Remote Fridge Storage
 
 latest commit:
-   commit 646ff5484e26c49b90bdd6f261611bd43a8006ff
-   Merge: 58a9949 cfa5a7a
-   Author: Arjan <arjan.seijs@gmail.com>
-   Date:   Sun Sep 20 19:29:13 2020 +0200
+   commit 81e29d670b18d9e44642a85c3f17103be62f536f
+   Author: ArjanSeijs <arjan.seijs@gmail.com>
+   Date:   Fri Oct 8 15:48:14 2021 +0200
    
-       Merge pull request #6 from SoapStuff/1.4/smapi-3.7.3-update
-       
-       1.4/smapi 3.7.3 update
+       Cooking skill compatibility and some debugging messages
    

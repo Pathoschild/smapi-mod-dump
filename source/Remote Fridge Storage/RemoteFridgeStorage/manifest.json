@@ -11,10 +11,10 @@
 {
   "Name": "Remote Fridge Storage",
   "Author": "EternalSoap",
-  "Version": "1.7.0",
+  "Version": "1.9.0",
   "Description": "Allows you to use ingredients inside chests while cooking",
   "UniqueID": "EternalSoap.RemoteFridgeStorage",
   "EntryDll": "RemoteFridgeStorage.dll",
-  "MinimumApiVersion": "2.10.1",
+  "MinimumApiVersion": "3.12.0",
   "UpdateKeys": [ "Nexus:2545" ]
 }

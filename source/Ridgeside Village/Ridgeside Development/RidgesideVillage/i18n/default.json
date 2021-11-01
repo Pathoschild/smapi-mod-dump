@@ -49,6 +49,7 @@
 	"MinecartLocation.2": "North - Ridgeside Village",
 	"MinecartLocation.3": "South - Ridgeside Village",
 	"MinecartLocation.4": "East - Ridgeside Village",
+	"MinecartLocation.5": "Summit Farm",
 	"Exit.Text": "Cancel",
 
 	"NotEnoughMoney": "You don't have enough money.",
@@ -89,6 +90,39 @@
 	"Clinic.Health": "Health Checkup",
 	"Clinic.Stamina": "Stamina Checkup",
 	"Clinic.Look": "Let's take a look at you...",
-	"Clinic.Done": "All better!"
+	"Clinic.Done": "All better!",
+	"Clinic.PaulaNotHere": "The clinician is out.",
+
+	"Offer.Question": "Do you really want to throw {{itemName}} into the water?",
+	"Offer.Yes": "Yes",
+	"Offer.No": "No",
+	"Offer.IllegalItem": "I better not throw this away.",
+
+	"Daia.BookOpen": "As you open the book, text and images slowly appear from the once blank pages.",
+	"Daia.BookClose": "Close book",
+	"Daia.BookPages": "Choose a page",
+	"Daia.Page1": "Page 1 - Cursed Artifacts I",
+	"Daia.Page2": "Page 2 - Cursed Artifacts II",
+	"Daia.Page3": "Page 3 - Cursed Artifacts III",
+	"Daia.Page4": "Page 4 - Cursed Artifacts IV",
+	"Daia.Page5": "Page 5 - Blessed Artifacts I",
+	"Daia.Page6": "Page 6 - Blessed Artifacts II",
+	"Daia.Page7": "Page 7 - Blessed Artifacts III",
+	"Daia.LegendFishes": "Page 8 - Legendary Fishes",
+	"Daia.RelicHint1": "'Mountain Fossils'^Inside the Forest of the Ridge,^Waterfalls wash up ancient fossils.^One of an inked remains of an ancient beast,^And one of silver bones from a fish.",
+	"Daia.RelicHint2": "'The Night and Monsters'^A diamond tinted with the night sky.^Hidden among the rich minerals of the mountain forest.^Be wary as you enter the place.^As cursed ancient serpentine beasts roam.^Eliminate them, and obtain the relics of an ancient race.",
+	"Daia.RelicHint3": "'Long Lost Lover'^During dates that are multiples of three,^A lost spirit roams the mountain forest among other ghosts.^Pale blue in color, but you�ll see,^That it�s friendly, and gives out the cursed rose.",
+	"Daia.RelicHint4": "'The Moose'^An animal hides behind the bench that looks at the sky,^In front of the tree that yearns to fly.^^'The Fox'^A sentence is an hour.^Patience is rewarded when in front of the fox�s purple gem.^Patience is rewarded when in front of the fox�s purple gem.",
+	"Daia.RelicHint5": "'Music behind the Walls'^An ancient singer is trapped behind a picture of a dancer,^Chop it down to free her.^^'The Forgotten Hero'^When you fish upon the rich�s well,^A forgotten figure is saved from where it fell.",
+
+	"CompleteCrystalsNotif": "The mountains seem to speak...#'Thank you, farmer... I'll take it from here...'#'Come back by tomorrow, and we'll finally meet...'#'Take care, my friend's grandchild...'",
+
+	"RSV.MyLetter": "To whoever is reading this,^It has been so long since we were sealed away from the rest of the world. It was a bright sunny day, when suddenly a fog of purple mist was approaching the farm until nature moved on here own encase us in high walls of soil, plants, and trees. Whenever we tried to take down the wall, it would grow back stronger. One may think that my wife and I would hold a grudge against the higher power that trapped us. But no, we didn't mind.^There must be a reason why nature trapped us, and we like to think that we were saved from that ominous mist. And for that, we thank Yoba for giving us the oppurtunity to live out the rest of our lives in peace.^It has been years and we are happy. One day, this land that was once full of crops my wife and I cherished like children, will all be gone.^And when that day comes, I know my wife and I would have already went back to Yoba's arms and the walls might have come down.^^To whoever's reading this, this land is yours to take.^All I ask is you give it love as we did before.^May Yoba bless you.^^- R",
+
+	"RSV.UndreyaError": "Only the host can access this!",
+	"RSV.UndreyaSchedStart": "Start playing Hide-and-seek with Undreya?",
+	"RSV.UndreyaSchedStop": "Stop playing Hide-and-seek with Undreya?",
+	"RSV.UndreyaWillPlay": "Undreya will hide tomorrow!",
+	"RSV.UndreyaWontPlay":  "Undreya will stay home tomorrow."
 
 }

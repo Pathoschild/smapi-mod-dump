@@ -1,0 +1,300 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TehPers.FishingOverhaul</name>
+    </assembly>
+    <members>
+        <member name="T:TehPers.FishingOverhaul.Config.ContentPacks.FishPack">
+            <summary>
+            Content which controls what fish are available to catch.
+            </summary>
+            <param name="Add">The fish entries to add.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Config.ContentPacks.FishPack.#ctor(System.Collections.Immutable.ImmutableArray{TehPers.FishingOverhaul.Api.Content.FishEntry})">
+            <summary>
+            Content which controls what fish are available to catch.
+            </summary>
+            <param name="Add">The fish entries to add.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.ContentPacks.FishTraitsPack">
+            <summary>
+            Content which modifies the behavior of fish.
+            </summary>
+            <param name="Add">The fish traits to add.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Config.ContentPacks.FishTraitsPack.#ctor(System.Collections.Immutable.ImmutableDictionary{TehPers.Core.Api.Items.NamespacedKey,TehPers.FishingOverhaul.Api.Content.FishTraits})">
+            <summary>
+            Content which modifies the behavior of fish.
+            </summary>
+            <param name="Add">The fish traits to add.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.ContentPacks.TrashPack">
+            <summary>
+            Content which controls what trash are available to catch.
+            </summary>
+            <param name="Add">The trash entries to add.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Config.ContentPacks.TrashPack.#ctor(System.Collections.Immutable.ImmutableArray{TehPers.FishingOverhaul.Api.Content.TrashEntry})">
+            <summary>
+            Content which controls what trash are available to catch.
+            </summary>
+            <param name="Add">The trash entries to add.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.ContentPacks.TreasurePack">
+            <summary>
+            Content which controls what treasure are available to catch.
+            </summary>
+            <param name="Add">The treasure entries to add.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Config.ContentPacks.TreasurePack.#ctor(System.Collections.Immutable.ImmutableArray{TehPers.FishingOverhaul.Api.Content.TreasureEntry})">
+            <summary>
+            Content which controls what treasure are available to catch.
+            </summary>
+            <param name="Add">The treasure entries to add.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.FishConfig">
+            <summary>
+            Configuration for fish.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Config.IModConfig"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.ShowFishInMinigame">
+            <summary>
+            Whether to show the fish being caught in the fishing minigame.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.CatchSpeed">
+            <summary>
+            Affects how fast you catch fish.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.DrainSpeed">
+            <summary>
+            Affects how fast the catch bar drains when the bobber isn't on the fish.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.StreakForIncreasedQuality">
+            <summary>
+            Required streak for an increase in quality. For example, 3 means that every 3
+            consecutive perfect catches increases your catch quality by 1.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.MaxFishQuality">
+            <summary>
+            The max quality fish that can be caught. 0 = normal, 1 = silver, 2 = gold, 3 = iridium,
+            4+ = beyond iridium.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.MaxNormalFishQuality">
+            <summary>
+            Determines the max quality fish a non-perfect catch can get, or null for no
+            restrictions.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishConfig.FishChances">
+            <summary>
+            The chance that you'll find a fish instead of trash.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.FishingChances">
+            <summary>
+            Configuration for the chances of catching something while fishing.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Config.IModConfig"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.BaseChance">
+            <summary>
+            The base chance. Total chance is calculated as
+            locationFactor * (baseChance + sum(factor * thing it's a factor of)), bounded in the
+            range [minChance, maxChance], then bounded once again in the range [0, 1].
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.StreakFactor">
+            <summary>
+            The effect that streak has on this chance.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.FishingLevelFactor">
+            <summary>
+            The effect that fishing level has on this chance.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.DailyLuckFactor">
+            <summary>
+            The effect that daily luck has on this chance.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.LuckLevelFactor">
+            <summary>
+            The effect that luck level has on this chance.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.MinChance">
+            <summary>
+            The minimum possible chance.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.MaxChance">
+            <summary>
+            The maximum possible chance.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.FishingChances.LocationFactors">
+            <summary>
+            The effects that specific locations have on this chance. Keys are location names and
+            values are their factors.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Config.FishingChances.GetChance(StardewValley.Farmer,System.Int32)">
+            <summary>
+            Calculates the specific chance for a farmer.
+            </summary>
+            <param name="farmer">The farmer to calculate the chance for.</param>
+            <param name="streak">The farmer's fishing streak.</param>
+            <returns>The calculated chance for that farmer.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.HudConfig">
+            <summary>
+            Configuration for the fishing HUD.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Config.IModConfig"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.HudConfig.ShowFishingHud">
+            <summary>
+            Whether or not to show current streak, chance for treasure, chance for each fish, etc.
+            while fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.HudConfig.TopLeftX">
+            <summary>
+            The X coordinate of the top left corner of the fishing HUD.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.HudConfig.TopLeftY">
+            <summary>
+            The Y coordinate of the top left corner of the fishing HUD.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.HudConfig.MaxFishTypes">
+            <summary>
+            The number of fish to show on the fishing HUD.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.JsonConfigRoot">
+            <summary>
+            A configuration.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.JsonConfigRoot.Schema">
+            <summary>
+            Optional '$schema' URL. This is ignored and exists entirely for convenience.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.TreasureChances">
+            <summary>
+            Configuration for the chances of catching treasure while fishing.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Config.FishingChances"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureChances.MagnetFactor">
+            <summary>
+            The effect that the magnet bait has.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureChances.TreasureHunterFactor">
+            <summary>
+            The effect that the treasure hunter tackle has.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureChances.PirateFactor">
+            <summary>
+            The effect that the pirate profession has. This is multiplied by your base chance
+            before being added.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Config.TreasureConfig">
+            <summary>
+            Configuration for treasure.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Config.IModConfig"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureConfig.MaxTreasureQuantity">
+            <summary>
+            Maximum amount of treasure you can find in a single chest while fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureConfig.AllowDuplicateLoot">
+            <summary>
+            Whether the treasure randomizer should be allowed to select the same loot option
+            multiple times. Some loot can't be repeated even if duplicate loot is enabled.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureConfig.CatchSpeed">
+            <summary>
+            Affects how fast you catch treasure.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureConfig.DrainSpeed">
+            <summary>
+            Affects how fast the treasure bar drains when the bobber isn't on the chest.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureConfig.TreasureChances">
+            <summary>
+            The chances of finding treasure while fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.TreasureConfig.AdditionalLootChances">
+            <summary>
+            The chances of getting additional loot when finding treasure. This is rolled until it
+            fails or the max number of items have been added to the loot.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Extensions.DrawingExtensions.DrawStringWithShadow(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Graphics.SpriteFont,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single)">
+            <summary>Draws a string with a shadow behind it.</summary>
+            <param name="batch">The batch to draw with.</param>
+            <param name="font">The font the text should use.</param>
+            <param name="text">The string to draw.</param>
+            <param name="position">The position of the string.</param>
+            <param name="color">The color of the string. The shadow is black.</param>
+            <param name="depth">The depth of the string.</param>
+            <param name="shadowDepth">The depth of the shadow.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Extensions.DrawingExtensions.DrawStringWithShadow(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Graphics.SpriteFont,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Color,Microsoft.Xna.Framework.Vector2,System.Single,System.Single)">
+            <summary>Draws a string with a shadow behind it.</summary>
+            <param name="batch">The batch to draw with.</param>
+            <param name="font">The font the text should use.</param>
+            <param name="text">The string to draw.</param>
+            <param name="position">The position of the string.</param>
+            <param name="color">The color of the string. The shadow is black.</param>
+            <param name="shadowColor">The color of the shadow.</param>
+            <param name="scale">The amount to scale the size of the string by.</param>
+            <param name="depth">The depth of the string.</param>
+            <param name="shadowDepth">The depth of the shadow.</param>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Gui.CustomBobberBar.CatchFish">
+            <summary>
+            Invoked whenever a fish is caught.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Gui.CustomBobberBar.StateChanged">
+            <summary>
+            Invoked whenever a perfect streak is lost.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Gui.CustomBobberBar.LostFish">
+            <summary>
+            Invoked whenever the fish is not caught.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Integrations.GenericModConfigMenu.IGenericModConfigMenuApi.TryGetCurrentMenu(StardewModdingAPI.IManifest@,System.String@)">
+            <summary>Get the currently-displayed mod config menu, if any.</summary>
+            <param name="mod">The manifest of the mod whose config menu is being shown, or <c>null</c> if not applicable.</param>
+            <param name="page">The page ID being shown for the current config menu, or <c>null</c> if not applicable. This may be <c>null</c> even if a mod config menu is shown (e.g. because the mod doesn't have pages).</param>
+            <returns>Returns whether a mod config menu is being shown.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Services.FishingApi">
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.IFishingApi" />
+        </member>
+    </members>
+</doc>

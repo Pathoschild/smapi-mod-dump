@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.vanilla-flowers-only.name": "Use Vanilla Flowers Only",
+    "config.vanilla-flowers-only.tooltip": "Whether to only use vanilla flowers in the flower rain."
+}

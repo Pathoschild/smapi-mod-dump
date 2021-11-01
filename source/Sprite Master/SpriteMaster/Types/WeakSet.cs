@@ -18,7 +18,7 @@ namespace SpriteMaster.Types {
 		private readonly ConditionalWeakTable<T, object> InternalTable = new ConditionalWeakTable<T, object>();
 		private readonly SharedLock Lock = new SharedLock();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		[SecuritySafeCritical]
 		public bool Contains(T obj) {
 			using (Lock.Shared) {
@@ -26,7 +26,7 @@ namespace SpriteMaster.Types {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		[SecuritySafeCritical]
 		public bool Remove(T obj) {
 			using (Lock.Exclusive) {
@@ -34,7 +34,7 @@ namespace SpriteMaster.Types {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		[SecuritySafeCritical]
 		public bool Add(T obj) {
 			try {

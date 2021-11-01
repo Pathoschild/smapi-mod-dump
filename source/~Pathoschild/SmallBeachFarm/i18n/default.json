@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.campfire.name": "Add campfire",
+    "config.campfire.tooltip": "Add a functional campfire in front of the farmhouse.",
+
+    "config.islands.name": "Add islands",
+    "config.islands.tooltip": "Add ocean islands with extra land area.",
+
+    "config.beach-sounds.name": "Play beach sounds",
+    "config.beach-sounds.tooltip": "Play the beach's background music (i.e. wave sounds) on the beach farm.",
+
+    "config.farm-type.name": "Replace farm type",
+    "config.farm-type.tooltip": "The farm layout to replace."
+}

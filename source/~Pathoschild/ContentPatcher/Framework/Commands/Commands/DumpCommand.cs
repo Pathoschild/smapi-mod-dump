@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.Patches;
-using Pathoschild.Stardew.Common.Utilities;
+using Pathoschild.Stardew.Common.Commands;
 using StardewModdingAPI;
 
 namespace ContentPatcher.Framework.Commands.Commands

@@ -11,19 +11,21 @@
 namespace XSPlus
 {
     using System.Collections.Generic;
+    using Common.Services;
     using StardewValley;
 
     /// <inheritdoc />
     internal abstract class FeatureWithParam<TParam> : BaseFeature
     {
-        private readonly IDictionary<KeyValuePair<string, string>, TParam> _values = new Dictionary<KeyValuePair<string, string>, TParam>();
-
-        /// <summary>Initializes a new instance of the <see cref="FeatureWithParam{TParam}"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="FeatureWithParam{TParam}" /> class.</summary>
         /// <param name="featureName">The name of the feature used for config/API.</param>
-        internal FeatureWithParam(string featureName)
-            : base(featureName)
+        /// <param name="serviceManager">Service manager to request shared services.</param>
+        internal FeatureWithParam(string featureName, ServiceManager serviceManager)
+            : base(featureName, serviceManager)
         {
         }
+
+        private IDictionary<KeyValuePair<string, string>, TParam> Values { get; } = new Dictionary<KeyValuePair<string, string>, TParam>();
 
         /// <summary>Stores feature parameter value for items containing ModData.</summary>
         /// <param name="key">The mod data key to enable feature for.</param>
@@ -32,13 +34,13 @@ namespace XSPlus
         public void StoreValueWithModData(string key, string value, TParam param)
         {
             var modDataKey = new KeyValuePair<string, string>(key, value);
-            if (this._values.ContainsKey(modDataKey))
+            if (this.Values.ContainsKey(modDataKey))
             {
-                this._values[modDataKey] = param;
+                this.Values[modDataKey] = param;
             }
             else
             {
-                this._values.Add(modDataKey, param);
+                this.Values.Add(modDataKey, param);
             }
         }
 
@@ -46,11 +48,11 @@ namespace XSPlus
         /// <param name="item">The item to test ModData against.</param>
         /// <param name="param">The stored value for this item.</param>
         /// <returns>Returns true if there is a stored value for this item.</returns>
-        protected virtual bool TryGetValueForItem(Item item, out TParam param)
+        internal virtual bool TryGetValueForItem(Item item, out TParam param)
         {
-            foreach (var modData in this._values)
+            foreach (var modData in this.Values)
             {
-                if (!item.modData.TryGetValue(modData.Key.Key, out string value) || value != modData.Key.Value)
+                if (!item.modData.TryGetValue(modData.Key.Key, out var value) || value != modData.Key.Value)
                 {
                     continue;
                 }

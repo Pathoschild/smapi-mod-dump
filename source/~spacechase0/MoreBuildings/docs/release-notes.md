@@ -9,6 +9,21 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.1.2
+Released 29 October 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Improved translations. Thanks to wally232 (added Korean)!
+
+## 1.1.1
+Released 16 October 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Fixed 'no longer compatible' error when playing in Stardew Valley 1.5.4.
+
+## 1.1.0
+Released 15 October 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Added full [translation](https://stardewvalleywiki.com/Modding:Translations) support.
+
 ## 1.0.9
 Released 11 September 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
 

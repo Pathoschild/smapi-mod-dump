@@ -5,9 +5,9 @@
   
   <PropertyGroup>
     <Authors>Chawol</Authors>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
-    <Version>1.0.0-beta</Version>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <Version>1.0.1-beta</Version>
     <Copyright>Copyright (c) 2021 Chawol</Copyright>
   </PropertyGroup>
   

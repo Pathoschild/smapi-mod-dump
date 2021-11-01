@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -25,14 +26,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal FishingRodStartMinigameEndFunctionPatch()
 		{
 			Original = typeof(FishingRod).MethodNamed(nameof(FishingRod.startMinigameEndFunction));
-			Transpiler = new HarmonyMethod(GetType(), nameof(FishingRodStartMinigameEndFunctionTranspiler));
+			Transpiler = new(GetType(), nameof(FishingRodStartMinigameEndFunctionTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to remove Pirate bonus treasure chance.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> FishingRodStartMinigameEndFunctionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> FishingRodStartMinigameEndFunctionTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -49,7 +51,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while removing vanilla Pirate bonus treasure chance.\nHelper returned {ex}");
+				Log($"Failed while removing vanilla Pirate bonus treasure chance.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

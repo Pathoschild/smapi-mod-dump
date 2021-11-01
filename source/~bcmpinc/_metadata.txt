@@ -16,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 30c759fba128b3b872ca61e2c684e14f955ee006
+   commit 883060af0d65009a0a174844b44941ebf3d964e8
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Sep 7 20:38:50 2021 +0200
+   Date:   Tue Oct 12 15:09:49 2021 +0200
    
-       Ignore MSB3277 warning
+       Support for latest SDV beta release
    

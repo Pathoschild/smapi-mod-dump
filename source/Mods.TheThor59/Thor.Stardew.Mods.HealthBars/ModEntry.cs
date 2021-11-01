@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using GenericModConfigMenu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -46,6 +47,52 @@ namespace Thor.Stardew.Mods.HealthBars
             new Color[] { Color.Crimson, Color.DarkOrange, Color.Gold, Color.YellowGreen, Color.LawnGreen },
         };
 
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // get Generic Mod Config Menu's API (if it's installed)
+            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+                return;
+
+            configMenu.Register(
+                mod: ModManifest,
+                reset: () => _config = new ModConfig(),
+                save: () => Helper.WriteConfig(_config)
+            );
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("ehb.config.enableXPNeeded.title"),
+                tooltip: () => Helper.Translation.Get("ehb.config.enableXPNeeded.desc"),
+                getValue: () => _config.EnableXPNeeded ,
+                setValue: value => _config.EnableXPNeeded = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("ehb.config.hideTextInfo.title"),
+                tooltip: () => Helper.Translation.Get("ehb.config.hideTextInfo.desc"),
+                getValue: () => _config.HideTextInfo,
+                setValue: value => _config.HideTextInfo = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("ehb.config.hideFullLifeBar.title"),
+                tooltip: () => Helper.Translation.Get("ehb.config.hideFullLifeBar.desc"),
+                getValue: () => _config.HideFullLifeBar,
+                setValue: value => _config.HideFullLifeBar = value
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("ehb.config.colorScheme.title"),
+                tooltip: () => Helper.Translation.Get("ehb.config.colorScheme.desc"),
+                min: 0f,
+                max: 1f,
+                interval: 1f,
+                getValue: () => _config.ColorScheme,
+                setValue: value => _config.ColorScheme = Convert.ToInt32(value)
+            );
+        }
+
         /// <summary>
         /// Mod initialization method
         /// </summary>
@@ -56,6 +103,7 @@ namespace Thor.Stardew.Mods.HealthBars
             EnsureCorrectConfig();
             lifebarBorder = helper.Content.Load<Texture2D>(@"assets/SDV_lifebar.png", ContentSource.ModFolder);
             helper.Events.Display.RenderedWorld += RenderLifeBars;
+            Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         }
 
         /// <summary>

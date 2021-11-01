@@ -11,7 +11,7 @@
 {
     "Name": "Custom Spouse Location",
     "Author": "barteke22",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "Description": "Stuff.",
     "UniqueID": "barteke22.CustomSpouseLocation",
     "EntryDll": "CustomSpouseLocation.dll",

@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 7879707c361f7309336caab433f9ec4d80418bee
+   commit c804bca637eea4291f65b64c3a4ea65d019ee91e
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Tue Sep 28 09:12:02 2021 +0800
+   Date:   Mon Nov 1 13:28:15 2021 +0800
    
-       World Map update! SHEKU U A BEAST
+       Added Jio and Daia's romance music
    

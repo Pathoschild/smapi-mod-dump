@@ -6,9 +6,9 @@ mods:
    Sprite Master
 
 latest commit:
-   commit 8678f9126413270d9b0a6e67b726010bcdacbf67
-   Author: Michael Kuklinski <14104310+ameisen@users.noreply.github.com>
-   Date:   Sun Feb 28 14:18:24 2021 -0600
+   commit 9b6ee6d2c48bc57e213849bc18b20ce8c149e399
+   Author: Ameisen <14104310+ameisen@users.noreply.github.com>
+   Date:   Sun Oct 10 17:58:28 2021 -0500
    
-       Various bug and crash fixes. 0.12.1-RC1
+       Added comment support and array newline support to the config toml.
    

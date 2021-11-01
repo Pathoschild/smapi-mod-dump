@@ -14,13 +14,13 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public abstract class ModMessageReceivedEvent : BaseEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void Hook()
 		{
 			ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
 		}
 
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void Unhook()
 		{
 			ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnModMessageReceived;

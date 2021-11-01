@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DecidedlyHuman/DialogueTester
+   Git: https://github.com/DecidedlyHuman/DialogueTester.git
+
+mods:
+   Dialogue Tester
+
+latest commit:
+   commit a1b40b18896470c5a668bc24e2365f250c562718
+   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
+   Date:   Sat Oct 16 11:01:01 2021 +0100
+   
+       This didn't need to exist yet.
+   

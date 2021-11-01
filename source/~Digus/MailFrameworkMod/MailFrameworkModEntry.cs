@@ -9,7 +9,8 @@
 *************************************************/
 
 using System;
-using Harmony;
+using HarmonyLib;
+using MailFrameworkMod.integrations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -22,6 +23,7 @@ namespace MailFrameworkMod
     {
         public static IModHelper ModHelper;
         public static IMonitor ModMonitor;
+        public static IManifest Manifest;
 
         /*********
         ** Public methods
@@ -35,6 +37,7 @@ namespace MailFrameworkMod
         {
             ModHelper = helper;
             ModMonitor = Monitor;
+            Manifest = ModManifest;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
@@ -55,8 +58,8 @@ namespace MailFrameworkMod
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            Helper.Content.AssetEditors.Add(new DataLoader());
-            var harmony = HarmonyInstance.Create("Digus.MailFrameworkMod");
+            Helper.Content.AssetEditors.Add(new DataLoader(Helper));
+            var harmony = new Harmony("Digus.MailFrameworkMod");
             
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),

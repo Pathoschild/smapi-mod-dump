@@ -44,21 +44,21 @@ namespace StatsAsTokens
 		****/
 
 		/// <summary>Get whether the token allows input arguments (e.g. an NPC name for a relationship token).</summary>
-		public bool AllowsInput()
+		public virtual bool AllowsInput()
 		{
 			return true;
 		}
 
 		/// <summary>Whether the token requires input arguments to work, and does not provide values without it (see <see cref="AllowsInput"/>).</summary>
 		/// <remarks>Default false.</remarks>
-		public bool RequiresInput()
+		public virtual bool RequiresInput()
 		{
 			return true;
 		}
 
 		/// <summary>Whether the token may return multiple values for the given input.</summary>
 		/// <param name="input">The input arguments, if applicable.</param>
-		public bool CanHaveMultipleValues(string input = null)
+		public virtual bool CanHaveMultipleValues(string input = null)
 		{
 			return false;
 		}
@@ -68,7 +68,7 @@ namespace StatsAsTokens
 		/// <param name="min">The minimum value this token may return.</param>
 		/// <param name="max">The maximum value this token may return.</param>
 		/// <remarks>Default false.</remarks>
-		public bool HasBoundedRangeValues(string input, out int min, out int max)
+		public virtual bool HasBoundedRangeValues(string input, out int min, out int max)
 		{
 			min = 0;
 			max = int.MaxValue;
@@ -108,7 +108,7 @@ namespace StatsAsTokens
 		protected abstract bool DidStatsChange();
 
 		/// <summary>Get whether the token is available for use.</summary>
-		public bool IsReady()
+		public virtual bool IsReady()
 		{
 			return SaveGame.loaded != null || Context.IsWorldReady;
 		}

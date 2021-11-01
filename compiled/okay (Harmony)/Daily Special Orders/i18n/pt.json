@@ -1,0 +1,10 @@
+{
+    "Immediate.Refresh" : "Atualização Imediata",
+    "Immediate.Paragraph": "Atualize imediatamente os pedidos especiais após escolher um. (Requer reabertura do quadro)",
+    "Refresh.on.Tuesday" : "Atualizar na terça",
+    "Refresh.on.Wednesday" : "Atualizar na quarta-feira",
+    "Refresh.on.Thursday" : "Atualizar na quinta",
+    "Refresh.on.Friday" : "Atualizar na sexta-feira",
+    "Refresh.on.Saturday" : "Atualizar no sábado",
+    "Refresh.on.Sunday" : "Atualizar no domingo",
+}

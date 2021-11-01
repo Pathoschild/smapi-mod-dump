@@ -1,6 +1,6 @@
 ﻿{
-  "Fruits": [ "Ancient Fruit", "Apple", "Apricot", "Banana", "Blackberry", "Blueberry", "Cactus Fruit", "Cherry", "Coconut", "Cranberries", "Crystal Fruit", "Grape", "Hot Pepper", "Mango", "Melon", "Orange", "Peach", "Pineapple", "Pomegranate", "Rhubarb", "Salmonberry", "Spice Berry", "Starfruit", "Strawberry", "Wild Plum", "_base" ],
-  "Vegetables": [ "Amaranth", "Artichoke", "Beet", "Bok Choy", "Cauliflower", "Corn", "Eggplant", "Fiddlehead Fern", "Garlic", "Ginger", "Green Bean", "Hops", "Kale", "Parsnip", "Potato", "Pumpkin", "Radish", "Red Cabbage", "Taro Root", "Tea Leaves", "Tomato", "Unmilled Rice", "Wheat", "Yam", "_base" ],
+  "Fruits": [ "Ancient Fruit", "Apple", "Apricot", "Banana", "Blackberry", "Blueberry", "Cactus Fruit", "Cherry", "Coconut", "Cranberries", "Crystal Fruit", "Grape", "Hot Pepper", "Mango", "Melon", "Orange", "Peach", "Pineapple", "Pomegranate", "Rhubarb", "Salmonberry", "Spice Berry", "Starfruit", "Strawberry", "Wild Plum" ],
+  "Vegetables": [ "Amaranth", "Artichoke", "Beet", "Bok Choy", "Cauliflower", "Corn", "Eggplant", "Fiddlehead Fern", "Garlic", "Ginger", "Green Bean", "Hops", "Kale", "Parsnip", "Potato", "Pumpkin", "Radish", "Red Cabbage", "Taro Root", "Tea Leaves", "Tomato", "Unmilled Rice", "Wheat", "Yam" ],
   "Flowers": [ "Blue Jazz", "Fairy Rose", "Poppy", "Summer Spangle", "Tulip", "Wild" ],
   "Honey": "assets/honey.png",
   "Jelly": "assets/jelly.png",

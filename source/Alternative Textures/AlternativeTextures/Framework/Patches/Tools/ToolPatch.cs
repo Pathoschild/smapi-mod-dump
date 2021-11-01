@@ -42,8 +42,54 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
         internal void Apply(Harmony harmony)
         {
+            harmony.Patch(AccessTools.Method(_object, "get_DisplayName", null), postfix: new HarmonyMethod(GetType(), nameof(GetNamePostfix)));
+            harmony.Patch(AccessTools.Method(_object, "get_description", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
+
+
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(BeginUsingPrefix)));
+        }
+
+        private static void GetNamePostfix(Tool __instance, ref string __result)
+        {
+            if (__instance.modData.ContainsKey(AlternativeTextures.PAINT_BUCKET_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.name.paint_bucket");
+                return;
+            }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.SCISSORS_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.name.scissors");
+                return;
+            }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.PAINT_BRUSH_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.name.paint_brush");
+                return;
+            }
+        }
+
+        private static void GetDescriptionPostfix(Tool __instance, ref string __result)
+        {
+            if (__instance.modData.ContainsKey(AlternativeTextures.PAINT_BUCKET_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.description.paint_bucket");
+                return;
+            }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.SCISSORS_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.description.scissors");
+                return;
+            }
+
+            if (__instance.modData.ContainsKey(AlternativeTextures.PAINT_BRUSH_FLAG))
+            {
+                __result = _helper.Translation.Get("tools.description.paint_brush");
+                return;
+            }
         }
 
         private static bool DrawInMenuPrefix(Tool __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
@@ -110,6 +156,28 @@ namespace AlternativeTextures.Framework.Patches.Tools
             if (location is Farm farm)
             {
                 var targetedBuilding = farm.getBuildingAt(new Vector2(x / 64, y / 64));
+                if (farm.GetHouseRect().Contains(x / 64, y / 64))
+                {
+                    targetedBuilding = new Building();
+                    targetedBuilding.buildingType.Value = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel}";
+                    targetedBuilding.tileX.Value = farm.GetHouseRect().X;
+                    targetedBuilding.tileY.Value = farm.GetHouseRect().Y;
+                    targetedBuilding.tilesWide.Value = farm.GetHouseRect().Width;
+                    targetedBuilding.tilesHigh.Value = farm.GetHouseRect().Height;
+
+                    if (!farm.modData.ContainsKey("AlternativeTextureName"))
+                    {
+                        var modelType = AlternativeTextureModel.TextureType.Building;
+                        var instanceSeasonName = $"{modelType}_{targetedBuilding.buildingType}_{Game1.currentSeason}";
+                        AssignDefaultModData(farm, instanceSeasonName, true);
+                    }
+
+                    foreach (string key in farm.modData.Keys)
+                    {
+                        targetedBuilding.modData[key] = farm.modData[key];
+                    }
+                }
+
                 if (targetedBuilding != null)
                 {
                     // Assign default data if none exists
@@ -128,7 +196,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                     if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                     {
-                        Game1.addHUDMessage(new HUDMessage($"{modelName} has no alternative textures for this season!", 3));
+                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                         return CancelUsing(who);
                     }
 
@@ -138,7 +206,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         TileLocation = new Vector2(targetedBuilding.tileX, targetedBuilding.tileY),
                         modData = targetedBuilding.modData
                     };
-                    Game1.activeClickableMenu = new PaintBucketMenu(buildingObj, buildingObj.TileLocation * 64f, GetTextureType(targetedBuilding), modelName, textureTileWidth: targetedBuilding.tilesWide);
+                    Game1.activeClickableMenu = new PaintBucketMenu(buildingObj, buildingObj.TileLocation * 64f, GetTextureType(targetedBuilding), modelName, _helper.Translation.Get("tools.name.paint_bucket"), textureTileWidth: targetedBuilding.tilesWide);
 
                     return CancelUsing(who);
                 }
@@ -162,12 +230,12 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                 {
-                    Game1.addHUDMessage(new HUDMessage($"{modelName} has no alternative textures for this season!", 3));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                     return CancelUsing(who);
                 }
 
                 // Display texture menu
-                Game1.activeClickableMenu = new PaintBucketMenu(targetedObject, new Vector2(x, y), GetTextureType(targetedObject), modelName);
+                Game1.activeClickableMenu = new PaintBucketMenu(targetedObject, new Vector2(x, y), GetTextureType(targetedObject), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
 
                 return CancelUsing(who);
             }
@@ -177,7 +245,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
             {
                 if (targetedTerrain is HoeDirt || targetedTerrain is GiantCrop || targetedTerrain is Grass)
                 {
-                    Game1.addHUDMessage(new HUDMessage($"You can't put paint on that!", 3));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.paint_not_placeable"), 3));
                     return CancelUsing(who);
                 }
 
@@ -216,7 +284,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                 {
-                    Game1.addHUDMessage(new HUDMessage($"{modelName} has no alternative textures for this season!", 3));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                     return CancelUsing(who);
                 }
 
@@ -226,7 +294,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     TileLocation = targetedTerrain.currentTileLocation,
                     modData = targetedTerrain.modData
                 };
-                Game1.activeClickableMenu = new PaintBucketMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedTerrain), modelName);
+                Game1.activeClickableMenu = new PaintBucketMenu(terrainObj, terrainObj.TileLocation * 64f, GetTextureType(targetedTerrain), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
 
                 return CancelUsing(who);
             }
@@ -259,8 +327,14 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                         if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                         {
-                            Game1.addHUDMessage(new HUDMessage($"{modelName} has no alternative textures for this season!", 3));
-                            return CancelUsing(who);
+                            var defaultModelName = $"{AlternativeTextureModel.TextureType.Decoration}_Wallpaper";
+                            if (AlternativeTextures.textureManager.GetAvailableTextureModels(defaultModelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                            {
+                                Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                                return CancelUsing(who);
+                            }
+
+                            modelName = defaultModelName;
                         }
 
                         // Display texture menu
@@ -269,7 +343,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                             TileLocation = Utility.PointToVector2(tile),
                             modData = decoratableLocation.modData
                         };
-                        Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName);
+                        Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
 
                         return CancelUsing(who);
                     }
@@ -294,8 +368,14 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                         if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                         {
-                            Game1.addHUDMessage(new HUDMessage($"{modelName} has no alternative textures for this season!", 3));
-                            return CancelUsing(who);
+                            var defaultModelName = $"{AlternativeTextureModel.TextureType.Decoration}_Floor";
+                            if (AlternativeTextures.textureManager.GetAvailableTextureModels(defaultModelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                            {
+                                Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
+                                return CancelUsing(who);
+                            }
+
+                            modelName = defaultModelName;
                         }
 
                         // Display texture menu
@@ -304,7 +384,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                             TileLocation = Utility.PointToVector2(tile),
                             modData = decoratableLocation.modData
                         };
-                        Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName);
+                        Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
 
                         return CancelUsing(who);
                     }
@@ -335,7 +415,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
                 if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
                 {
-                    Game1.addHUDMessage(new HUDMessage($"{modelName} has no alternative textures for this season!", 3));
+                    Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                     return CancelUsing(who);
                 }
 
@@ -347,7 +427,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     TileLocation = character.getTileLocation(),
                     modData = character.modData
                 };
-                Game1.activeClickableMenu = new PaintBucketMenu(obj, obj.TileLocation * 64f, GetTextureType(character), modelName, uiTitle: "Scissors");
+                Game1.activeClickableMenu = new PaintBucketMenu(obj, obj.TileLocation * 64f, GetTextureType(character), modelName, uiTitle: _helper.Translation.Get("tools.name.scissors"));
 
                 return CancelUsing(who);
             }

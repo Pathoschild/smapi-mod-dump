@@ -15,13 +15,12 @@ using JsonAssets.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using SpaceShared;
-using StardewValley;
 
 namespace JsonAssets.Data
 {
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = DiagnosticMessages.IsPublicApi)]
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = DiagnosticMessages.IsPublicApi)]
-    public class BigCraftableData : DataNeedsIdWithTexture
+    public class BigCraftableData : DataNeedsIdWithTexture, ITranslatableItem
     {
         /*********
         ** Accessors
@@ -32,6 +31,7 @@ namespace JsonAssets.Data
         public bool ReserveNextIndex { get; set; } = false; // Deprecated
         public int ReserveExtraIndexCount { get; set; } = 0;
 
+        /// <inheritdoc />
         public string Description { get; set; }
 
         public int Price { get; set; }
@@ -46,29 +46,19 @@ namespace JsonAssets.Data
         public IList<string> PurchaseRequirements { get; set; } = new List<string>();
         public IList<PurchaseData> AdditionalPurchaseData { get; set; } = new List<PurchaseData>();
 
+        /// <inheritdoc />
         public Dictionary<string, string> NameLocalization { get; set; } = new();
+
+        /// <inheritdoc />
         public Dictionary<string, string> DescriptionLocalization { get; set; } = new();
+
+        /// <inheritdoc />
+        public string TranslationKey { get; set; }
 
 
         /*********
         ** Public methods
         *********/
-        public string LocalizedName()
-        {
-            var lang = LocalizedContentManager.CurrentLanguageCode;
-            return this.NameLocalization.TryGetValue(lang.ToString(), out string localization)
-                ? localization
-                : this.Name;
-        }
-
-        public string LocalizedDescription()
-        {
-            var lang = LocalizedContentManager.CurrentLanguageCode;
-            return this.DescriptionLocalization.TryGetValue(lang.ToString(), out string localization)
-                ? localization
-                : this.Description;
-        }
-
         public int GetCraftableId()
         {
             return this.Id;

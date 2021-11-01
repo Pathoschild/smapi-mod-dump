@@ -11,41 +11,53 @@
 namespace XSPlus.Features
 {
     using System.Diagnostics.CodeAnalysis;
+    using Common.Services;
+    using CommonHarmony.Services;
     using HarmonyLib;
-    using StardewModdingAPI.Events;
     using SObject = StardewValley.Object;
 
     /// <inheritdoc />
     internal class UnplaceableFeature : FeatureWithParam<bool>
     {
         private static UnplaceableFeature Instance;
+        private HarmonyService _harmony;
 
-        /// <summary>Initializes a new instance of the <see cref="UnplaceableFeature"/> class.</summary>
-        public UnplaceableFeature()
-            : base("Unplaceable")
+        private UnplaceableFeature(ServiceManager serviceManager)
+            : base("Unplaceable", serviceManager)
         {
-            UnplaceableFeature.Instance = this;
+            // Init
+            UnplaceableFeature.Instance ??= this;
+
+            // Dependencies
+            this.AddDependency<HarmonyService>(
+                service =>
+                {
+                    // Init
+                    this._harmony = service as HarmonyService;
+
+                    // Patches
+                    this._harmony?.AddPatch(
+                        this.ServiceName,
+                        AccessTools.Method(typeof(SObject), nameof(SObject.placementAction)),
+                        typeof(UnplaceableFeature),
+                        nameof(UnplaceableFeature.Object_placementAction_prefix));
+                });
         }
 
-        /// <inheritdoc/>
-        public override void Activate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Activate()
         {
             // Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.placementAction)),
-                prefix: new HarmonyMethod(typeof(UnplaceableFeature), nameof(UnplaceableFeature.Object_placementAction_prefix)));
+            this._harmony.ApplyPatches(this.ServiceName);
         }
 
-        /// <inheritdoc/>
-        public override void Deactivate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Deactivate()
         {
             // Patches
-            harmony.Unpatch(
-                original: AccessTools.Method(typeof(SObject), nameof(SObject.placementAction)),
-                patch: AccessTools.Method(typeof(UnplaceableFeature), nameof(UnplaceableFeature.Object_placementAction_prefix)));
+            this._harmony.UnapplyPatches(this.ServiceName);
         }
 
-        [SuppressMessage("ReSharper", "SA1313", Justification = "Naming is determined by Harmony.")]
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
         [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
         [HarmonyPriority(Priority.High)]

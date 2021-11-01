@@ -14,13 +14,13 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public abstract class ReturnedToTitleEvent : BaseEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void Hook()
 		{
 			ModEntry.ModHelper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
 		}
 
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void Unhook()
 		{
 			ModEntry.ModHelper.Events.GameLoop.ReturnedToTitle -= OnReturnedToTitle;

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -24,14 +25,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal FarmAnimalPetPatch()
 		{
 			Original = typeof(FarmAnimal).MethodNamed(nameof(FarmAnimal.pet));
-			Transpiler = new HarmonyMethod(GetType(), nameof(FarmAnimalPetTranspiler));
+			Transpiler = new(GetType(), nameof(FarmAnimalPetTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch for Rancher to combine Shepherd and Coopmaster friendship bonus.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> FarmAnimalPetTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> FarmAnimalPetTranspiler(IEnumerable<CodeInstruction> instructions,
+			MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -51,10 +53,11 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					.GetOperand(out var hasRancher) // copy destination
 					.Return()
 					.ReplaceWith(
-						new CodeInstruction(OpCodes.Brtrue_S, (Label)hasRancher) // replace false case branch with true case branch
+						new(OpCodes.Brtrue_S,
+							(Label)hasRancher) // replace false case branch with true case branch
 					)
 					.Advance()
-					.FindProfessionCheck(Farmer.butcher, fromCurrentIndex: true) // find coopmaster check
+					.FindProfessionCheck(Farmer.butcher, true) // find coopmaster check
 					.Advance(3) // the branch to resume execution
 					.GetOperand(out var resumeExecution) // copy destination
 					.Return(2)
@@ -64,7 +67,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while moving combined vanilla Coopmaster + Shepherd friendship bonuses to Rancher.\nHelper returned {ex}");
+				Log(
+					$"Failed while moving combined vanilla Coopmaster + Shepherd friendship bonuses to Rancher.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

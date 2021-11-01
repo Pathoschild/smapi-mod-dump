@@ -128,28 +128,6 @@
 	"world.fisherman.talk_2": "Hiç nehir trölü gördünmü, çocuk? Heh heh he...$b#Ahh, peri masalları için çok yaşlısın",
 	"world.fisherman.talk_3": "Körfezdeki gezgin tacirlerde güzel bir yakalama yok...",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "Murfak",
-	"world.community_centre.reward": "Mutfak Malzemeleri",
-	"world.community_centre.bundle.1": "Fırıncı",
-	"world.community_centre.bundle.2": "Akşam Yemeği Yiyicisi",
-	"world.community_centre.bundle.3": "Piknikçiler",
-	"world.community_centre.newjunimoline": "Minnetarlığımızı göstermek için siz giderken toplayacağız...",
-
-	// Notifications strings
-	"notification.icon.inspect": "Love of Cooking Hatırlatmaları",
-	"notification.dismiss.inspect": "Bildirimi reddet",
-	"notification.empty.inspect": "Hepsi tamam!",
-	"notification.bundlemultiplayerwarning.inspect": "Topluluk merkezi yığınları devre dışı bırakıldı",
-	"notification.bundlemultiplayerwarning.message": "Çok oyunculu oyunlardaki problemleri önlemek için kabinli dünyalarda Topluluk Merkezi yığınları şimdilik devre dışı bırakıldı.\n\nEğer çok oyunculu oyun kuruyorsanız, you should leave the Kitchen bundles disabled.\n\nIf you're playing SINGLEPLAYER, you can load your saved progress by pressing OK.\n\n\n\nLoad saved progress for Kitchen bundles?",
-	"notification.cabinbuiltwarning.inspect": "Yeni oyuncular katılmadan önce kaydı tekrarlayın.",
-	"notification.cabinbuiltwarning.message": "Çok oyunculu oyunlardaki problemleri önlemek için kabinli dünyalarda Topluluk Merkezi yığınları şimdilik devre dışı bırakıldı\n\nEğer çok oyunculu oyun kuruyorsanız, please have new players wait until you've reloaded the save after sleeping and ending the day.\n\nYour cooking bundle progress will be saved and unloaded, and farmhands can then safely join. New bundles can still be played in singleplayer games!",
-	"menu.yes_option": "Evet",
-	"menu.no_option": "Hayır",
-	"menu.accept_option": "Kabul et",
-	"menu.decline_option": "Reddet",
-	"menu.cancel_option": "Geri dön",
-
 	// Object names
 
 	// recipes

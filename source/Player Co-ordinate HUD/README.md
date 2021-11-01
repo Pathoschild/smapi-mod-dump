@@ -7,7 +7,7 @@ for queries and analysis.**
 ----
 
 ## Player Co-ordinates Mod for Stardew Valley
-All releases can be found on my [Nexus page](https://www.nexusmods.com/stardewvalley/users/79440738). That is the only *official* place to find them.
+All releases can be found on my [Nexus page](https://www.nexusmods.com/stardewvalley/users/79440738), [ModDrop](https://www.moddrop.com/stardew-valley/profile/251772/mods) page, and here on GitHub. That is the only *official* place to find them.
 
 
 This mod currently does two very simple things:

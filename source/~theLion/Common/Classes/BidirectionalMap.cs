@@ -23,22 +23,25 @@ namespace TheLion.Stardew.Common.Classes
 		public Indexer<TReverseKey, TForwardKey> Reverse { get; } = new();
 
 		/// <summary>Construct an instance.</summary>
-		public BiMap() { }
+		public BiMap()
+		{
+		}
 
 		/// <summary>Construct an instance by copying <see cref="KeyValuePairs"/> from a one-way <see cref="IDictionary"/>.</summary>
 		/// <param name="oneWayMap">A one-way <see cref="IDictionary"/>.</param>
 		/// <remarks>Throws <see cref="ArgumentException"/> if <paramref name="oneWayMap"/> contains repeated values.</remarks>
 		public BiMap(IDictionary<TForwardKey, TReverseKey> oneWayMap)
 		{
-			Forward = new Indexer<TForwardKey, TReverseKey>(oneWayMap);
-			//var reversedOneWayMap = oneWayMap.ToDictionary(kvp => kvp.Value, kvp => kvp.Key);
+			Forward = new(oneWayMap);
+			//var reversedOneWayMap = oneWayMap.ToDictionary(p => p.Value, p => p.Key);
 			//Reverse = new Indexer<TReverseKey, TForwardKey>(reversedOneWayMap);
 
 			foreach (var forwardKey in oneWayMap.Keys)
 			{
 				var reverseKey = Forward[forwardKey];
 				if (Reverse.ContainsKey(reverseKey))
-					throw new ArgumentException("Cannot construct bidirectional map from a dictionary with non-unique values.");
+					throw new ArgumentException(
+						"Cannot construct bidirectional map from a dictionary with non-unique values.");
 
 				Reverse.Add(reverseKey, forwardKey);
 			}
@@ -51,9 +54,11 @@ namespace TheLion.Stardew.Common.Classes
 		public void Add(TForwardKey forwardKey, TReverseKey reverseKey)
 		{
 			if (Forward.ContainsKey(forwardKey))
-				throw new ArgumentException($"An entry with the same key {forwardKey?.ToString() ?? ""} already exists.");
+				throw new ArgumentException(
+					$"An entry with the same key {forwardKey?.ToString() ?? ""} already exists.");
 			if (Reverse.ContainsKey(reverseKey))
-				throw new ArgumentException($"An entry with the same key {reverseKey?.ToString() ?? ""} already exists.");
+				throw new ArgumentException(
+					$"An entry with the same key {reverseKey?.ToString() ?? ""} already exists.");
 
 			Forward.Add(forwardKey, reverseKey);
 			Reverse.Add(reverseKey, forwardKey);
@@ -121,7 +126,8 @@ namespace TheLion.Stardew.Common.Classes
 			return Forward.Count();
 		}
 
-		IEnumerator<KeyValuePair<TForwardKey, TReverseKey>> IEnumerable<KeyValuePair<TForwardKey, TReverseKey>>.GetEnumerator()
+		IEnumerator<KeyValuePair<TForwardKey, TReverseKey>> IEnumerable<KeyValuePair<TForwardKey, TReverseKey>>.
+			GetEnumerator()
 		{
 			return Forward.GetEnumerator();
 		}
@@ -150,7 +156,7 @@ namespace TheLion.Stardew.Common.Classes
 
 			public static implicit operator Dictionary<TKey, TValue>(Indexer<TKey, TValue> indexer)
 			{
-				return new Dictionary<TKey, TValue>(indexer._dictionary);
+				return new(indexer._dictionary);
 			}
 
 			internal void Add(TKey key, TValue value)
@@ -189,7 +195,7 @@ namespace TheLion.Stardew.Common.Classes
 
 			public Dictionary<TKey, TValue> ToDictionary()
 			{
-				return new Dictionary<TKey, TValue>(_dictionary);
+				return new(_dictionary);
 			}
 
 			public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()

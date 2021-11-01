@@ -1,0 +1,147 @@
+﻿{
+	"Nettle": {
+		"DrawShadow": false,
+		"EffectiveSize": 0,
+		"EffectiveGrowthSize": 0,
+		"GrowthStages": null,
+		"Health": 25,
+		"IsActionable": true,
+		"IsDestroyable": true,
+		"IsPassable": false,
+		"ItemsDroppedWhenDestroyed": [
+			{
+				"Object": "blueberry.cac.nettles",
+				"BaseQuantity": [
+					1,
+					2
+				]
+			}
+		],
+		"Produce": null,
+		"SeasonsToGrow": null,
+		"SeasonsToProduce": null,
+		"SoundWhenDestroyed": "cut",
+		"SoundWhenShaken": "leafrustle",
+		"SourceTexture": "Mods/blueberry.LoveOfCooking.Assets/BushSprites",
+		"SourceAreas": {
+			"spring": {
+				"X": 0,
+				"Y": 0,
+				"Width": 24,
+				"Height": 24
+			},
+			"summer": {
+				"X": 24,
+				"Y": 0,
+				"Width": 24,
+				"Height": 24
+			},
+			"fall": {
+				"X": 48,
+				"Y": 0,
+				"Width": 24,
+				"Height": 24
+			},
+			"winter": {
+				"X": 72,
+				"Y": 0,
+				"Width": 24,
+				"Height": 24
+			}
+		},
+		"TilesHigh": 1,
+		"TilesWide": 1,
+		"ToolsToDestroy": [
+			"Axe"
+		],
+		"ToolsToHarvest": null
+	},
+	"Redberry": {
+		"DrawShadow": false,
+		"EffectiveSize": 0,
+		"EffectiveGrowthSize": 1,
+		"GrowthStages": [
+			1,
+			2,
+			4,
+			8
+		],
+		"Health": 120,
+		"IsActionable": true,
+		"IsDestroyable": true,
+		"IsPassable": false,
+		"ItemsDroppedWhenDestroyed": [
+			{
+				"Object": "Fiber",
+				"BaseQuantity": [
+					1,
+					3
+				]
+			},
+			{
+				"Object": "Wood",
+				"BaseQuantity": [
+					3,
+					5
+				]
+			}
+		],
+		"Produce": [
+			{
+				"Object": "blueberry.cac.redberry",
+				"BaseQuantity": [
+					1,
+					4
+				],
+				"DaysToProduce": 4,
+				"DaysToAccumulateProduce": 2,
+				"MaximumAccumulatedProduce": 4,
+				"Conditions": null
+			}
+		],
+		"SeasonsToGrow": [
+			"spring",
+			"summer",
+			"fall"
+		],
+		"SeasonsToProduce": [
+			"spring",
+			"summer"
+		],
+		"SoundWhenDestroyed": "treethud",
+		"SoundWhenShaken": "leafrustle",
+		"SourceTexture": "Mods/blueberry.LoveOfCooking.Assets/BushSprites",
+		"SourceAreas": {
+			"spring": {
+				"X": 0,
+				"Y": 24,
+				"Width": 24,
+				"Height": 24
+			},
+			"summer": {
+				"X": 0,
+				"Y": 24,
+				"Width": 24,
+				"Height": 24
+			},
+			"fall": {
+				"X": 0,
+				"Y": 48,
+				"Width": 24,
+				"Height": 24
+			},
+			"winter": {
+				"X": 120,
+				"Y": 48,
+				"Width": 24,
+				"Height": 24
+			}
+		},
+		"TilesHigh": 1,
+		"TilesWide": 1,
+		"ToolsToDestroy": [
+			"Axe"
+		],
+		"ToolsToHarvest": null
+	}
+}

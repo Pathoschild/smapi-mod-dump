@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/3256
-IDs: TehPers.CoreMod, TehPers.Core
-update keys: Nexus:3256, GitHub:TehPers/StardewValleyMods

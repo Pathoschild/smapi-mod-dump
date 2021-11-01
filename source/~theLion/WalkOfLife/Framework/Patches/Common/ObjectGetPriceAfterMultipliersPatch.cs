@@ -24,8 +24,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal ObjectGetPriceAfterMultipliersPatch()
 		{
-			Original = typeof(SObject).MethodNamed(name: "getPriceAfterMultipliers");
-			Prefix = new HarmonyMethod(GetType(), nameof(ObjectGetPriceAfterMultipliersPrefix));
+			Original = typeof(SObject).MethodNamed("getPriceAfterMultipliers");
+			Prefix = new(GetType(), nameof(ObjectGetPriceAfterMultipliersPrefix));
 		}
 
 		#region harmony patches
@@ -33,7 +33,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Patch to modify price multipliers for various modded professions.</summary>
 		// ReSharper disable once RedundantAssignment
 		[HarmonyPrefix]
-		private static bool ObjectGetPriceAfterMultipliersPrefix(SObject __instance, ref float __result, float startPrice, long specificPlayerID)
+		private static bool ObjectGetPriceAfterMultipliersPrefix(SObject __instance, ref float __result,
+			float startPrice, long specificPlayerID)
 		{
 			var saleMultiplier = 1f;
 			try
@@ -44,11 +45,18 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					{
 						if (specificPlayerID == -1)
 						{
-							if (player.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID || !player.isActive()) continue;
+							if (player.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID || !player.isActive())
+								continue;
 						}
-						else if (player.UniqueMultiplayerID != specificPlayerID) continue;
+						else if (player.UniqueMultiplayerID != specificPlayerID)
+						{
+							continue;
+						}
 					}
-					else if (!player.isActive()) continue;
+					else if (!player.isActive())
+					{
+						continue;
+					}
 
 					var multiplier = 1f;
 
@@ -65,15 +73,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						multiplier *= 5f;
 
 					// tax bonus
-					if (Game1.player.HasProfession("Conservationist"))
-						multiplier *= Util.Professions.GetConservationistPriceMultiplier(player);
+					if (player.IsLocalPlayer && player.HasProfession("Conservationist"))
+						multiplier *= Util.Professions.GetConservationistPriceMultiplier();
 
 					saleMultiplier = Math.Max(saleMultiplier, multiplier);
 				}
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 

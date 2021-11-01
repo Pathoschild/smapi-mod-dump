@@ -14,6 +14,9 @@ namespace XSPlus.Features
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection.Emit;
+    using Common.Services;
+    using CommonHarmony.Enums;
+    using CommonHarmony.Services;
     using HarmonyLib;
     using StardewModdingAPI.Events;
     using StardewModdingAPI.Utilities;
@@ -24,97 +27,82 @@ namespace XSPlus.Features
     /// <inheritdoc />
     internal class VacuumItemsFeature : BaseFeature
     {
-        private static readonly PerScreen<bool> IsVacuuming = new();
-        private static VacuumItemsFeature Instance = null!;
-        private readonly PerScreen<List<Chest>?> _cachedEnabledChests = new();
+        private static VacuumItemsFeature Instance;
+        private readonly PerScreen<List<Chest>> _cachedEnabledChests = new();
+        private FilterItemsFeature _filterItems;
+        private HarmonyService _harmony;
 
-        /// <summary>Initializes a new instance of the <see cref="VacuumItemsFeature"/> class.</summary>
-        public VacuumItemsFeature()
-            : base("VacuumItems")
+        private VacuumItemsFeature(ServiceManager serviceManager)
+            : base("VacuumItems", serviceManager)
         {
-            VacuumItemsFeature.Instance = this;
+            // Init
+            VacuumItemsFeature.Instance ??= this;
+
+            // Dependencies
+            this.AddDependency<FilterItemsFeature>(service => this._filterItems = service as FilterItemsFeature);
+            this.AddDependency<HarmonyService>(
+                service =>
+                {
+                    // Init
+                    this._harmony = service as HarmonyService;
+
+                    // Patches
+                    this._harmony?.AddPatch(
+                        this.ServiceName,
+                        AccessTools.Method(typeof(Debris), nameof(Debris.collect)),
+                        typeof(VacuumItemsFeature),
+                        nameof(VacuumItemsFeature.Debris_collect_transpiler),
+                        PatchType.Transpiler);
+                });
         }
 
         private List<Chest> EnabledChests
         {
             get => this._cachedEnabledChests.Value ??= Game1.player.Items.OfType<Chest>()
-                .Where(this.IsEnabledForItem)
-                .ToList();
+                                                            .Where(this.IsEnabledForItem)
+                                                            .ToList();
         }
 
-        /// <inheritdoc/>
-        public override void Activate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Activate()
         {
             // Events
-            modEvents.Player.InventoryChanged += this.OnInventoryChanged;
+            this.Helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
 
             // Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Debris), nameof(Debris.collect)),
-                transpiler: new HarmonyMethod(typeof(VacuumItemsFeature), nameof(VacuumItemsFeature.Debris_collect_transpiler)));
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventory), new[] { typeof(Item), typeof(List<Item>) }),
-                prefix: new HarmonyMethod(typeof(VacuumItemsFeature), nameof(VacuumItemsFeature.Farmer_addItemToInventory_prefix)));
+            this._harmony.ApplyPatches(this.ServiceName);
         }
 
-        /// <inheritdoc/>
-        public override void Deactivate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Deactivate()
         {
             // Events
-            modEvents.Player.InventoryChanged -= this.OnInventoryChanged;
+            this.Helper.Events.Player.InventoryChanged -= this.OnInventoryChanged;
 
             // Patches
-            harmony.Unpatch(
-                original: AccessTools.Method(typeof(Debris), nameof(Debris.collect)),
-                patch: AccessTools.Method(typeof(VacuumItemsFeature), nameof(VacuumItemsFeature.Debris_collect_transpiler)));
-            harmony.Unpatch(
-                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventory), new[] { typeof(Item), typeof(List<Item>) }),
-                patch: AccessTools.Method(typeof(VacuumItemsFeature), nameof(VacuumItemsFeature.Farmer_addItemToInventory_prefix)));
+            this._harmony.UnapplyPatches(this.ServiceName);
+        }
+
+        /// <inheritdoc />
+        [SuppressMessage("ReSharper", "HeapView.BoxingAllocation", Justification = "Required for enumerating this collection.")]
+        internal override bool IsEnabledForItem(Item item)
+        {
+            return base.IsEnabledForItem(item) && item.Stack == 1 && item is Chest chest && chest.playerChest.Value;
         }
 
         private static IEnumerable<CodeInstruction> Debris_collect_transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            foreach (CodeInstruction instruction in instructions)
+            foreach (var instruction in instructions)
             {
                 if (instruction.opcode == OpCodes.Callvirt && instruction.operand.Equals(AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventoryBool))))
                 {
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(VacuumItemsFeature), nameof(VacuumItemsFeature.AddItemToInventoryBool)));
+                    yield return new(OpCodes.Call, AccessTools.Method(typeof(VacuumItemsFeature), nameof(VacuumItemsFeature.AddItemToInventoryBool)));
                 }
                 else
                 {
                     yield return instruction;
                 }
             }
-        }
-
-        [SuppressMessage("ReSharper", "SA1313", Justification = "Naming is determined by Harmony.")]
-        [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
-        [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
-        private static bool Farmer_addItemToInventory_prefix(ref Item __result, ref Item item)
-        {
-            if (!VacuumItemsFeature.IsVacuuming.Value)
-            {
-                return true;
-            }
-
-            Item? remaining = null;
-            int stack = item.Stack;
-            foreach (Chest chest in VacuumItemsFeature.Instance.EnabledChests)
-            {
-                remaining = chest.addItem(item);
-                if (remaining is null)
-                {
-                    __result = null!;
-                    return false;
-                }
-            }
-
-            if (remaining is not null && remaining.Stack != stack)
-            {
-                item = remaining;
-            }
-
-            return true;
         }
 
         private static bool AddItemToInventoryBool(Farmer farmer, Item item, bool makeActiveObject)
@@ -124,20 +112,24 @@ namespace XSPlus.Features
                 return farmer.addItemToInventoryBool(item, makeActiveObject);
             }
 
-            VacuumItemsFeature.IsVacuuming.Value = true;
-            bool success = farmer.addItemToInventoryBool(item, makeActiveObject);
-            VacuumItemsFeature.IsVacuuming.Value = false;
-            return success;
+            foreach (var chest in VacuumItemsFeature.Instance.EnabledChests.Where(chest => VacuumItemsFeature.Instance._filterItems.HasFilterItems(chest)))
+            {
+                item = chest.addItem(item);
+                if (item is null)
+                {
+                    break;
+                }
+            }
+
+            return item is null || farmer.addItemToInventoryBool(item, makeActiveObject);
         }
 
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
-            if (!e.IsLocalPlayer || (!e.Added.OfType<Chest>().Any() && !e.Removed.OfType<Chest>().Any()))
+            if (e.IsLocalPlayer && (e.Added.OfType<Chest>().Any() || e.Removed.OfType<Chest>().Any() || e.QuantityChanged.Any(stack => stack.Item is Chest && stack.NewSize == 1)))
             {
-                return;
+                this._cachedEnabledChests.Value = null;
             }
-
-            this._cachedEnabledChests.Value = null;
         }
     }
 }

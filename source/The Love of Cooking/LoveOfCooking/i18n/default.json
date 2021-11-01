@@ -165,28 +165,6 @@
 	"world.fisherman.talk_2": "You ever seen a river troll, kid? Heh heh...$b#Ahh, you're too old for fairy tales.",
 	"world.fisherman.talk_3": "There's no good catches with those travelling market folks in the bay...",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "Kitchen",
-	"world.community_centre.reward": "Cooking stuff",
-	"world.community_centre.bundle.1": "Baker's",
-	"world.community_centre.bundle.2": "Diner's",
-	"world.community_centre.bundle.3": "Picnicker's",
-	"world.community_centre.newjunimoline": "To show our gratitude... We'll tidy up as you go.",
-
-	// Notifications strings
-	"notification.icon.inspect": "Love of Cooking Notices",
-	"notification.dismiss.inspect": "Dismiss notification",
-	"notification.empty.inspect": "All caught up!",
-	"notification.bundlemultiplayerwarning.inspect": "Community Centre bundles are disabled",
-	"notification.bundlemultiplayerwarning.message": "To prevent problems in multiplayer games, the new Community Centre bundles are disabled in worlds with cabins for the time being!\n\nIf you're hosting MULTIPLAYER, you should leave the Kitchen bundles disabled.\n\nIf you're playing SINGLEPLAYER, you can load your saved progress by pressing OK.\n\n\n\nLoad saved progress for Kitchen bundles?",
-	"notification.cabinbuiltwarning.inspect": "Reload the save before new players join",
-	"notification.cabinbuiltwarning.message": "To prevent problems in multiplayer games, the new Community Centre bundles are disabled in worlds with cabins for the time being!\n\nIf you're hosting a farm for MULTIPLAYER, please have new players wait until you've reloaded the save after sleeping and ending the day.\n\nYour cooking bundle progress will be saved and unloaded, and farmhands can then safely join. New bundles can still be played in singleplayer games!",
-	"menu.yes_option": "Yes",
-	"menu.no_option": "No",
-	"menu.accept_option": "Accept",
-	"menu.decline_option": "Decline",
-	"menu.cancel_option": "Return",
-
 	// Object names
 
 	// recipes
@@ -316,7 +294,7 @@
 	"item.cabbage_seeds.description": "Plant these in the summer. Takes 9 days to produce a large cabbage.",
 	"item.carrot.description": "A cultured relative of the humble cave carrot.",
 	"item.carrot_seeds.description": "Plant these in the fall. Takes 4 days to mature.",
-	"item.nettles.description": "A vicious wild plant found growing near other weeds. Can be brewed into a nourishing herbal tea.",
+	"item.nettles.description": "A vicious wild plant found growing in patches of weeds. Can be brewed into a nourishing herbal tea.",
 	"item.nettles_seeds.description": "...",
 	"item.onion.description": "The culinary workhorse. Guaranteed to add a depth of flavour to anything, stewed or fried.",
 	"item.onion_seeds.description": "Plant these in the spring. Takes 4 days to mature.",

@@ -15,7 +15,7 @@ namespace SpriteMaster.Metadata {
 	internal static class Metadata {
 		private static readonly ConditionalWeakTable<Texture2D, MTexture2D> Texture2DMetaTable = new();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static MTexture2D Meta(this Texture2D @this) {
 			return Texture2DMetaTable.GetOrCreateValue(@this);
 		}

@@ -1,0 +1,7 @@
+{
+  "message.event.start": "{{playerName}} started an event",
+  "message.event.stop": "{{playerName}} stopped an event",
+  "message.time.start": ", Time has returned to flow.",
+  "message.time.stop": ", Time has stopped.",
+  "message.less.mod": "{{playerName}}  doesn't  install  {{ModManifestName}}  Mod"
+}

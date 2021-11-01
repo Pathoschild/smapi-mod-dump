@@ -25,23 +25,25 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal MonsterFindPlayerPatch()
 		{
-			Original = typeof(Monster).MethodNamed(name: "findPlayer");
-			Prefix = new HarmonyMethod(GetType(), nameof(MonsterFindPlayerPrefix));
+			Original = typeof(Monster).MethodNamed("findPlayer");
+			Prefix = new(GetType(), nameof(MonsterFindPlayerPrefix));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to override monster aggro.</summary>
 		[HarmonyPrefix]
+		[HarmonyAfter("FarmTypeManager.ModEntry.Monster_findPlayer_Prefix")]
 		private static bool MonsterFindPlayerPrefix(Monster __instance, ref Farmer __result)
 		{
 			try
 			{
 				__result = Game1.player;
-				if (__instance.currentLocation == null)
+				if (!Context.IsMultiplayer || __instance.currentLocation is null)
 					return false; // don't run original logic
 
-				if (__instance is GreenSlime && __instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers))
+				if (__instance is GreenSlime &&
+					__instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers))
 				{
 					var distanceToClosestPiper = double.MaxValue;
 					foreach (var piper in pipers)
@@ -93,7 +95,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

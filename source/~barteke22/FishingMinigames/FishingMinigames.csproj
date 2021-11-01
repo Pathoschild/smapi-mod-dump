@@ -9,11 +9,14 @@
     <GameModsPath>D:\Programs\Steam\steamapps\common\Stardew Valley 155\ModsTesting</GameModsPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="assets\audio\source\**" />
+    <EmbeddedResource Remove="assets\audio\source\**" />
+    <None Remove="assets\audio\source\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="i18n\default.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="itemConfigs\items_exampleMod.json" />
-    <None Include="itemConfigs\items_vanilla.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json">
@@ -22,7 +25,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\bait_magnet.png" />
-    <Content Include="assets\fishy.wav" />
     <Content Include="assets\rod_farmer.png" />
     <Content Include="assets\rod_sprites.png" />
     <Content Include="assets\tackle_basic.png" />

@@ -87,6 +87,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Examples\[CC] Example Pack\Companions\ExampleAlternativeWalkingCompanionEnableSpawnAtDayStart\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExamplePortraitCompanion\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleUpdateWhenPlayerNearbyCompanion\companion.json" />
     <None Include="Examples\[CC] Example Pack\Companions\ExampleAlternativeWanderWalkingChicken\companion.json" />
@@ -121,6 +122,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Examples\[CC] Example Pack\Companions\ExampleAlternativeWalkingCompanionEnableSpawnAtDayStart\companion.png" />
     <Content Include="Examples\[CC] Example Pack\Companions\ExampleAlternativeWalkingCompanion\companion.png" />
     <Content Include="Examples\[CC] Example Pack\Companions\ExamplePortraitCompanion\companion.png" />
     <Content Include="Examples\[CC] Example Pack\Companions\ExamplePortraitCompanion\portrait.png" />

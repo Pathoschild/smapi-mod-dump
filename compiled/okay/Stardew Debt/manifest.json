@@ -1,0 +1,10 @@
+{
+  "Name": "StardewTesting",
+  "Author": "Poison",
+  "Version": "1.0.0",
+  "Description": "Test mod.",
+  "UniqueID": "Poison.StardewTesting",
+  "EntryDll": "StardewTesting.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

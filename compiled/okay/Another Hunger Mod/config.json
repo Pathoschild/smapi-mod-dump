@@ -1,9 +1,10 @@
 {
   "FullnessUiX": 10,
   "FullnessUiY": 350,
+  "FullnessUiAlignment": "TopLeft",
   "MaxFullness": 100,
-  "EdibilityMultiplier": 1.0,
   "DrainPerMinute": 0.08,
+  "EdibilityMultiplier": 1.0,
   "PositiveBuffThreshold": 80,
   "NegativeBuffThreshold": 25,
   "StarvationDamagePerMinute": 1.0,

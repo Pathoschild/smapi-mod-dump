@@ -39,13 +39,14 @@ namespace StardewMods
             helper.Events.Display.Rendered += this.Rendered;
             helper.Events.Display.MenuChanged += this.OnMenuChanged;
             helper.Events.Display.RenderedActiveMenu += this.OnRenderMenu;
-            helper.Events.GameLoop.GameLaunched += this.GenericModConfigMenuIntegration;
+            helper.Events.Display.RenderedActiveMenu += GenericModConfigMenuIntegration;
             helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
         }
 
 
-        private void GenericModConfigMenuIntegration(object sender, GameLaunchedEventArgs e)     //Generic Mod Config Menu API
+        private void GenericModConfigMenuIntegration(object sender, RenderedActiveMenuEventArgs e)     //Generic Mod Config Menu API
         {
+            Helper.Events.Display.RenderedActiveMenu -= GenericModConfigMenuIntegration;
             if (Context.IsSplitScreen) return;
             translate = Helper.Translation;
             var GenericMC = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");

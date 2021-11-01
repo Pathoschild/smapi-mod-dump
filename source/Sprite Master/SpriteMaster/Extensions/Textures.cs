@@ -20,17 +20,17 @@ using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Extensions {
 	internal static class Textures {
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static int Area (this Texture2D texture) {
 			return texture.Width * texture.Height;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static Vector2I Extent (this Texture2D texture) {
 			return new Vector2I(texture.Width, texture.Height);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static long SizeBytes (this SurfaceFormat format, int texels) {
 			switch (format) {
 				case SurfaceFormat.Dxt1:
@@ -63,7 +63,7 @@ namespace SpriteMaster.Extensions {
 			return texels * elementSize;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsBlock(this SurfaceFormat format) {
 			switch (format) {
 				case SurfaceFormat.Dxt1:
@@ -75,7 +75,7 @@ namespace SpriteMaster.Extensions {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static int BlockEdge(this SurfaceFormat format) {
 			switch (format) {
 				case SurfaceFormat.Dxt1:
@@ -87,10 +87,10 @@ namespace SpriteMaster.Extensions {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static long SizeBytes (this Texture2D texture) => texture.Format.SizeBytes(texture.Area());
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static long SizeBytes (this ManagedTexture2D texture) => (long)texture.Area() * 4;
 
 		internal static Bitmap Resize (this Bitmap source, in Vector2I size, InterpolationMode filter = InterpolationMode.HighQualityBicubic, bool discard = true) {
@@ -121,18 +121,18 @@ namespace SpriteMaster.Extensions {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool Anonymous (this Texture2D texture) => texture.Name.IsBlank();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool Anonymous (this ScaledTexture texture) => texture.Name.IsBlank();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static string SafeName (this string name) => name.IsBlank() ? "Unknown" : name.Replace("\\", "/").Replace("//", "/");
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static string SafeName (this Texture2D texture) => texture.Name.SafeName();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static string SafeName (this ScaledTexture texture) => texture.Name.SafeName();
 
 		internal static Bitmap CreateBitmap (byte[] source, in Vector2I size, PixelFormat format = PixelFormat.Format32bppArgb) {
@@ -153,7 +153,7 @@ namespace SpriteMaster.Extensions {
 				var rowSize = newBitmapData.Stride;
 
 				int sourceOffset = 0;
-				foreach (int row in 0..newImage.Height) {
+				foreach (int row in 0.RangeTo(newImage.Height)) {
 					Marshal.Copy(source, sourceOffset, newBitmapPointer, rowElements * sizeof(int));
 					sourceOffset += rowElements;
 					newBitmapPointer += rowSize;
@@ -169,12 +169,12 @@ namespace SpriteMaster.Extensions {
 			return newImage;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsValid (this ScaledTexture texture) {
 			return texture != null && texture.Texture != null && !texture.Texture.IsDisposed;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsDisposed(this ScaledTexture texture) {
 			return texture == null || (texture.Texture != null && texture.Texture.IsDisposed);
 		}

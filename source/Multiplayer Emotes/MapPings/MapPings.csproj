@@ -1,88 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{99954D47-F761-48FF-A624-D9849E3C5068}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MapPings</RootNamespace>
+    <Authors>FerMod</Authors>
     <AssemblyName>MapPings</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
+    <RootNamespace>MapPings</RootNamespace>
+    <Version>1.0.0-beta</Version>
+    <TargetFramework>net452</TargetFramework>
+    
+    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug\</OutputPath>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="2.2.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>$(GamePath)\smapi-internal\0Harmony.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Framework\Constants\ChatMessageKind.cs" />
-    <Compile Include="Framework\Constants\Message.cs" />
-    <Compile Include="Framework\Constants\ModPaths.cs" />
-    <Compile Include="Framework\Constants\Sprites.cs" />
-    <Compile Include="Framework\Events\ChatMessageEventArgs.cs" />
-    <Compile Include="Framework\Events\PlayerConnectedEventArgs.cs" />
-    <Compile Include="Framework\Events\PlayerDisconnectedEventArgs.cs" />
-    <Compile Include="Framework\Events\ReceivedMapPingEventArgs.cs" />
-    <Compile Include="Framework\Extensions\MultiplayerExtension.cs" />
-    <Compile Include="Framework\Logger.cs" />
-    <Compile Include="Framework\Menu\MapOverlay.cs" />
-    <Compile Include="Framework\Network\DataSerialization.cs" />
-    <Compile Include="Framework\Patches\ClassPatch.cs" />
-    <Compile Include="Framework\Patches\IClassPatch.cs" />
-    <Compile Include="Framework\Patches\ModPatchControl.cs" />
-    <Compile Include="Framework\Patches\MultiplayerPatch.cs" />
-    <Compile Include="Framework\Ping.cs" />
-    <Compile Include="Framework\PlayerMapPings.cs" />
-    <Compile Include="Framework\Types\FixedQueue.cs" />
-    <Compile Include="Framework\Utilities\ImageUtilities.cs" />
-    <Compile Include="Framework\Utilities\ModUtilities.cs" />
-    <Compile Include="ModConfig.cs" />
-    <Compile Include="ModEntry.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="manifest.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="assets\ping.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,7 +11,7 @@
 {
    "Name": "Grass Growth",
    "Author": "bcmpinc",
-   "Version": "5.1",
+   "Version": "5.2-beta.0",
    "Description": "Allows long grass to spread everywhere on your farm.",
    "UniqueID": "bcmpinc.GrassGrowth",
    "EntryDll": "GrassGrowth.dll",

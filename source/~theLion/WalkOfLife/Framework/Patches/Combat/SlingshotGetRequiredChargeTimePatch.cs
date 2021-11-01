@@ -8,11 +8,11 @@
 **
 *************************************************/
 
+using System;
+using System.Reflection;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley.Tools;
-using System;
-using System.Reflection;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -23,7 +23,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal SlingshotGetRequiredChargeTimePatch()
 		{
 			Original = typeof(Slingshot).MethodNamed(nameof(Slingshot.GetRequiredChargeTime));
-			Postfix = new HarmonyMethod(GetType(), nameof(SlingshotGetRequiredChargeTimePostfix));
+			Postfix = new(GetType(), nameof(SlingshotGetRequiredChargeTimePostfix));
 		}
 
 		#region harmony patches
@@ -40,7 +40,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

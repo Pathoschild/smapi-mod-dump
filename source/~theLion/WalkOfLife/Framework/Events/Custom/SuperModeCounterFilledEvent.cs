@@ -30,7 +30,6 @@ namespace TheLion.Stardew.Professions.Framework.Events
 		public void OnSuperModeCounterFilled()
 		{
 			ModEntry.Subscriber.Subscribe(new SuperModeBarShakeTimerUpdateTickedEvent());
-
 		}
 	}
 }

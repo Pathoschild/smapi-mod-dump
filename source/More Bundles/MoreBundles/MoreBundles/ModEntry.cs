@@ -33,6 +33,15 @@ namespace MoreBundles
             helper.Events.GameLoop.SaveCreated += GameLoop_SaveCreated;
 
             helper.Content.AssetLoaders.Add(new BundleDataLoader());
+
+#if DEBUG
+            helper.ConsoleCommands.Add("junimoliteracy",
+                "Lets the player read bundles. Debug only.",
+                (string command, string[] args) =>
+                {
+                    Game1.addMailForTomorrow("canReadJunimoText");
+                });
+#endif
         }
 
         private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)

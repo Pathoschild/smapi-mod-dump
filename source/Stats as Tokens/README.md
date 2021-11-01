@@ -10,7 +10,8 @@ for queries and analysis.**
 ## Stats As Tokens
 *by Vertigon*
 
-[NexusMods Page](https://www.nexusmods.com/stardewvalley/mods/9659)
+[NexusMods](https://www.nexusmods.com/stardewvalley/mods/9659)  
+[GitHub](https://github.com/dtomlinson-ga/StatsAsTokens)
 
 This mod allows Content Patcher pack creators to access all stats tracked by the game through custom CP tokens, allowing for patches to trigger
 on various player milestones including number of seeds sown, truffles found, palm trees cut down, trash cans checked and many more! See below for a complete list.
@@ -19,7 +20,7 @@ on various player milestones including number of seeds sown, truffles found, pal
 Download this mod, place it in your Mods folder, and list it as a dependency in your `manifest.json` in order to access its custom tokens.
 
 ### Dependencies
-* [SMAPI](https://smapi.io/)  v3.9.5 or higher is a required dependency.
+* [SMAPI](https://smapi.io/)  v3.12.0 or higher is a required dependency.
 * [Content Patcher](https://www.nexusmods.com/stardewvalley/mods/1915) v1.23.0 or higher is a required dependency.
 
 ## Custom Tokens Provided
@@ -52,15 +53,15 @@ Here is a complete list of stats currently usable as arguments:
 * `cheeseMade`
 * `goatCheeseMade`
 * `trufflesFound`
-* `stoneGathered`
-* `rocksCrushed`
+* `stoneGathered` - Note: This is how many pieces of stone you have picked up, from any source.
+* `rocksCrushed` - This is how many rocks you have broken.
 * `dirtHoed`
 * `giftsGiven`
 * `timesUnconscious`
 * `averageBedtime`
 * `timesFished`
 * `fishCaught`
-* `bouldersCracked`
+* `bouldersCracked` - And this is how many boulders (big 2x2 clumps) you have broken.
 * `stumpsChopped`
 * `stepsTaken`
 * `monstersKilled`
@@ -97,7 +98,18 @@ Here is a complete list of stats currently usable as arguments:
 * `hardModeMonstersKilled`
 * `childrenTurnedToDoves`
 * `boatRidesToIsland`
-* `trashCansChecked`
+* `trashCansChecked`  
+\* Note that certain stats are broken (weren't properly being tracked by the game) and will not be accurate on existing saves. On new saves, they should work as intended since I have introduced a fix for these.
+
+And some custom stats that I have added support for (mostly stuff that seems to have been left out of the game for whatever reason):
+* `ostrichEggsLayed`
+* `dinosaurEggsLayed`
+* `duckFeathersDropped`
+* `rabbitsFeetDropped`
+* `mayonnaiseMade`
+* `duckMayonnaiseMade`
+* `voidMayonnaiseMade`
+* `dinosaurMayonnaiseMade`
 
 ### **`Vertigon.StatsAsTokens/MonstersKilled`**
 
@@ -212,12 +224,59 @@ Here is a complete list of tree types/names currently usable as arguments:
 * `palm2` (`9`) *
 \* For simplicity's sake, `palm` and `palm2` are condensed into one stored value under the hood. Inputting either as the type will give you the total number of palms felled.
 
+### **`Vertigon.StatsAsTokens/AnimalsOwned`**
+
+This is a set of three tokens, each of which takes exactly one named argument. The tokens are as follows:
+* **`AnimalNames`**: Returns a list of the names of all farm animals on the current farm (including horses).
+* **`AnimalAges`**: Returns a list of the ages of all farm animals on the current farm (including horses).
+* **`AnimalTypes`**: Returns a list of the types of all farm animals on the current farm (including horses).
+
+Each token takes a `type` argument: this is the type of animal by which the results are filtered. The argument is case-insensitive and space-insensitive. Valid types usable as arguments:
+
+* `White Chicken`
+* `Brown Chicken`
+* `Blue Chicken` 
+* `Void Chicken` 
+* `Golden Chicken`
+* `Duck`
+* `Rabbit`
+* `Dinosaur`
+* `White Cow`
+* `Brown Cow`
+* `Goat`
+* `Pig`
+* `Hog`
+* `Sheep`
+* `Ostrich`
+* `Horse`
+* `Barn` *
+* `Coop` *
+* `Any` *
+\* These values are special - see Notes below.
+
+#### Notes
+
+The `any` value will return a list of all animals owned on the farm. This includes horses and all forms of livestock (it does not include fish ponds currently).
+
+The `barn` and `coop` values will return a list of all animals that live in the specified building type.
+
+The `type` argument utilizes fuzzy string matching - for example, `type=Chicken` will return a list of every type of Chicken - White, Brown, Void, etc.
+
 ## Utilizing Tokens Effectively
 While the tokens provided allow for a wide range of new options, for maximum effect you will need to pair them with several core features provided by Content Patcher.
 
 Firstly, I highly recommend familiarizing yourself with the Content Patcher documentation. The [tokens guide](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-tokens-guide.md) in particular will come in handy as the global tokens provided are extremely powerful, especially in conjunction with those provided by this mod.
 
-As the majority of tokens provided by Stats As Tokens are numerical in nature, [number manipulation](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-tokens-guide.md#number-manipulation) tokens will allow you a greater range of expression, especially once more of the planned features have been implemented.
+As the majority of tokens provided by Stats As Tokens are numerical in nature, [number manipulation](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-tokens-guide.md#number-manipulation) tokens will allow you a greater range of expression. For example, tokens which return multiple values, such as the `AnimalsOwned` tokens, are best used with the `valueAt` argument, or the `Count` and `Random` tokens. Here is an example which selects the name of one animal from the list of animals owned on the current farm:
+
+    "AnimalName": {{Random: {{Vertigon.StatsAsTokens/AnimalNames:type=any}} }}
+
+This can be further utilized with [pinned keys](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-tokens-guide.md#pinned-keys) to, for example, get an animal's name and age randomly:
+
+    "AnimalName": {{Random: {{Vertigon.StatsAsTokens/AnimalNames:type=any}} |key=1}}
+	"AnimalAge": {{Random: {{Vertigon.StatsAsTokens/AnimalAges:type=any}} |key=1}}
+
+This works because the AnimalsOwned tokens are guaranteed to return the list in a consistent order, meaning that using the same key will result in the same index being selected.
 
 **[Query Expressions](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-tokens-guide.md#query-expressions)** allow you to evaluate mathematical and logical expressions within a When condition or inside a field or token. Here is an example which checks to see if the player has consumed 5 or more Joja Colas in order to determine whether or not to apply a patch:
 
@@ -226,16 +285,31 @@ As the majority of tokens provided by Stats As Tokens are numerical in nature, [
     }
 Note that the `food` argument attempts to match the item name using 'fuzzy string matching', as demonstrated here - it will match `joja` to `Joja Cola` automatically. However, to avoid unforeseen issues (i.e. what happens when somebody adds a `Joja Apple`?), it is best to fully write out the item name.
 
+Here is a slightly trickier condition which combines number manipulation with a Query expression, to determine if the player currently owns an animal of the specified type:
+
+	"When": {
+		"Query": {{Count: {{Vertigon.StatsAsTokens/AnimalNames:type=Blue Chicken}} }} >= 1: true
+	}
+
 **Query expressions, while powerful, are also unpredictable** - they are not fully validated ahead of time, and may just fail without warning if improperly formatted. Test your expressions thoroughly with the `patch parse` command.
 
 ### Upcoming Features
- * Track more custom stats! Message me on Discord (Vertigon#1851) if you have ideas for custom stats to track
-	* Number of items gifted by type - game already tracks total number
- * Track animals owned by players
- * Track spouse anniversaries/days married
- * Track children birthdays/days alive
+  * Rework argument handling to be more generic
+	* Pass in arguments in any order
+	* Take PlayerId as parameter (see Content Patcher 1.24.0)
+	* Support JA/DGA items
+  * Track more custom stats! Message me on Discord (Vertigon#1851) if you have ideas for custom stats to track
+    * Number of items gifted by type - game already tracks total number
+    * Number of items cooked/crafted - filterable by item name
+    * Number of trees planted - filterable by type
+    * Number of buildings built - filterable by type
+	* Items donated to the museum
+  * Track spouse anniversaries/days married
+  * Track children birthdays/days alive
+  * Previous day's weather
 
 #### If you have any issues:
-Make sure SMAPI and Content Patcher are up-to-date.
-You can reach me on the Stardew Valley discord (Vertigon#1851) or on the Nexus mod page.
-Please provide a SMAPI log, as well as your manifest.json and content.json, so that I can assist you better.
+* Read the documentation carefully. I have tried to be as thorough as possible.
+* Make sure SMAPI and Content Patcher are up-to-date.
+* You can reach me on the Stardew Valley discord (Vertigon#1851) or on the Nexus mod page.
+* Please provide a SMAPI log, as well as your manifest.json and content.json, so that I can assist you better.

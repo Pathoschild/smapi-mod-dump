@@ -19,14 +19,17 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /*********
         ** Fields
         *********/
+        /// <summary>Whether the value provider can only contain those values that are explicitly added as possible values.</summary>
+        private bool IsBounded;
+
         /// <summary>The allowed root values (or <c>null</c> if any value is allowed).</summary>
         private InvariantHashSet AllowedRootValues;
 
         /// <summary>The current values.</summary>
-        private InvariantHashSet Values = new InvariantHashSet();
+        private InvariantHashSet Values = new();
 
         /// <summary>The tokens which the values use.</summary>
-        private readonly InvariantHashSet TokensUsed = new InvariantHashSet();
+        private readonly InvariantHashSet TokensUsed = new();
 
 
         /*********
@@ -34,9 +37,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="name">The value provider name.</param>
-        public ManualValueProvider(string name)
+        /// <param name="isBounded">Whether the value provider can only contain those values that are explicitly added as possible values.</param>
+        public ManualValueProvider(string name, bool isBounded)
             : base(name, mayReturnMultipleValuesForRoot: false)
         {
+            this.IsBounded = isBounded;
+
             this.AllowedRootValues = new InvariantHashSet();
             this.SetReady(false); // not ready until initialized
         }
@@ -96,7 +102,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <inheritdoc />
         public override bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
         {
-            allowedValues = this.AllowedRootValues;
+            allowedValues = this.IsBounded
+                ? this.AllowedRootValues
+                : null;
             return allowedValues != null;
         }
 

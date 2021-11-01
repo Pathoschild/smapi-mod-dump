@@ -124,14 +124,6 @@
 	"world.fisherman.talk_2": "Hast du jemals einen Flusstroll gesehen, Bursche? Heh heh...$b#Ahh, du bist zu alt für Märchen.",
 	"world.fisherman.talk_3": "Du kannst nichts gescheites fangen mit diesen Wanderhändlern an der Küste...",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "Küche",
-	"world.community_centre.reward": "Kochzeugs",
-	"world.community_centre.bundle.1": "Bäcker",
-	"world.community_centre.bundle.2": "Imbiss",
-	"world.community_centre.bundle.3": "Picknick",
-	"world.community_centre.newjunimoline": "Um unsere Dankbarkeit zu zeigen... werden wir aufräumen sobald du gehst.",
-
 	// Object names
 
 	// recipes

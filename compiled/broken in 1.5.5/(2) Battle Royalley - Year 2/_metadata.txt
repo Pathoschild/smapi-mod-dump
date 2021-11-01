@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9891
+IDs: tylergibbs2.BattleRoyalleyYear2
+update keys: GitHub:tylergibbs2/BattleRoyalley-Year2, Nexus:9891

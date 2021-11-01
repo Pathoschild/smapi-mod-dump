@@ -15,6 +15,7 @@
    "Action": "EditData",
    "Target": "Characters/Dialogue/Anton",
    "Entries": {
+   	"Introduction": "{{i18n:{{TargetWithoutPath}}.Dialogue.Introduction}}",
 
 
 		//Spring

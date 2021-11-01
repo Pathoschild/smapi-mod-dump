@@ -1,0 +1,7 @@
+{
+  "QualityRing_ChancePerRing": 0.125,
+  "RingOfWideNets_BarSizeMultiplier": 1.5,
+  "RingOfRegeneration_RegenPerSecond": 0.25,
+  "RefreshingRing_RegenPerSecond": 0.25,
+  "RingOfFarReaching_TileDistance": 100
+}

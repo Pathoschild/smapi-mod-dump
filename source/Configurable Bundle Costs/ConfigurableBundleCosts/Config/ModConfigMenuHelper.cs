@@ -85,6 +85,17 @@ namespace ConfigurableBundleCosts
 				(bool var) => Globals.InitialValues.Joja.applyValues = var
 			);
 
+			AddLabel("Joja Costs");
+			AddIntUnclamped("Membership Cost", "Cost to purchase a Joja membership",
+				() => Globals.InitialValues.Joja.membershipCost,
+				(int var) => Globals.InitialValues.Joja.membershipCost = var
+			);
+
+			AddIntUnclamped("Movie Theater Cost", "Cost to purchase the Movie Theater from Joja",
+				() => Globals.InitialValues.Joja.movieTheaterCost,
+				(int var) => Globals.InitialValues.Joja.movieTheaterCost = var
+			);
+
 			AddLabel("Joja Bundle Costs");
 			AddIntUnclamped("Bus Cost", "Cost to repair the bus to Calico Desert",
 				() => Globals.InitialValues.Joja.busCost,
@@ -109,11 +120,6 @@ namespace ConfigurableBundleCosts
 			AddIntUnclamped("Panning Cost", "Cost to remove the glittering boulder on the mountain",
 				() => Globals.InitialValues.Joja.panningCost,
 				(int var) => Globals.InitialValues.Joja.panningCost = var
-			);
-
-			AddIntUnclamped("Movie Theater Cost", "Cost to purchase the Movie Theater from Joja",
-				() => Globals.InitialValues.Joja.movieTheaterCost,
-				(int var) => Globals.InitialValues.Joja.movieTheaterCost = var
 			);
 
 			AddLabel("");

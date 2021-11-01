@@ -58,6 +58,9 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                     if (floors[j].Contains(tile))
                     {
                         decoratableLocation.modData[$"AlternativeTexture.Floor.Owner_{j}"] = AlternativeTextures.DEFAULT_OWNER;
+                        decoratableLocation.modData[$"AlternativeTexture.Floor.Name_{j}"] = String.Concat(AlternativeTextures.DEFAULT_OWNER, ".", $"{AlternativeTextureModel.TextureType.Decoration}_Floor_{Game1.GetSeasonForLocation(decoratableLocation)}");
+                        decoratableLocation.modData[$"AlternativeTexture.Floor.Dirty_{j}"] = false.ToString();
+                        decoratableLocation.modData[$"AlternativeTexture.Floor.Variation_{j}"] = "-1";
                         DecoratableLocationPatch.ResetFloorTiles(decoratableLocation, j, true);
                         return;
                     }
@@ -76,6 +79,9 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                     if (wall.Contains(tile))
                     {
                         decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Owner_{i}"] = AlternativeTextures.DEFAULT_OWNER;
+                        decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Name_{i}"] = String.Concat(AlternativeTextures.DEFAULT_OWNER, ".", $"{AlternativeTextureModel.TextureType.Decoration}_Wallpaper_{Game1.GetSeasonForLocation(decoratableLocation)}");
+                        decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Dirty_{i}"] = false.ToString();
+                        decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Variation_{i}"] = "-1";
                         DecoratableLocationPatch.ResetWallTiles(decoratableLocation, i, true);
                         return;
                     }

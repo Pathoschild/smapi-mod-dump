@@ -1,9 +1,0 @@
-﻿{
-  "Name": "Fishing Overhaul",
-  "Author": "TehPers",
-  "Version": "2.1.5-unofficial.5-strobe",
-  "Description": "A complete overhaul of vanilla fishing, with a huge amount of customization.",
-  "UniqueID": "TehPers.FishingOverhaul",
-  "EntryDll": "TehPers.FishingOverhaul.dll",
-  "UpdateKeys": ["866"]
-}

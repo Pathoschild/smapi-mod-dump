@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "object.Honeysuckle.name": "spanish honeysuckle (name)",
+    "object.Honeysuckle.description": "spanish honeysuckle (desc)",
+    "object.Cooking Tester.name": "spanish rt1 (name)",
+    "object.Cooking Tester.description": "spanish rt1 (desc)",
+    "object.Crafting Tester 2.name": "spanish rt2 (name)",
+    "object.Crafting Tester 2.description": "spanish rt2 (desc)",
+    "object.Honeysuckle Seeds.name": "spanish seed (name)",
+    "object.Honeysuckle Seeds.description": "spanish seed (desc)",
+    "object.Spooky Sapling.name": "spanish ftree (name)",
+    "object.Spooky Sapling.description": "spanish ftree (desc)",
+    "big-craftable.Iridium Brazier.name": "spanish bc (name)",
+    "big-craftable.Iridium Brazier.description": "spanish bc (desc)"
+}

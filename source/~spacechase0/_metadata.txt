@@ -55,9 +55,10 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit b68a7b3b8484a2aeffdd5e4eb2eb2a5e68088021
+   commit 88de0e72cd15b685b3348b6f641aa609fcbd30fa
+   Merge: 0eaf6aae f5282124
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Sep 25 12:23:00 2021 -0400
+   Date:   Fri Oct 29 19:54:12 2021 -0400
    
-       rewrite Statue of Generosity gift logic to handle edge cases
+       Merge branch 'develop'
    

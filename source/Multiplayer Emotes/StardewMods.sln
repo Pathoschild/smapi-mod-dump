@@ -1,47 +1,70 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2018
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplayerEmotes", "MultiplayerEmotes\MultiplayerEmotes.csproj", "{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiplayerEmotes", "MultiplayerEmotes\MultiplayerEmotes.csproj", "{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEmojis", "CustomEmojis\CustomEmojis.csproj", "{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomEmojis", "CustomEmojis\CustomEmojis.csproj", "{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomEmojis.Tests", "CustomEmojis.Tests\CustomEmojis.Tests.csproj", "{B2AEB792-62F6-421D-B64D-5065A2F8250B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomEmojis.Tests", "CustomEmojis.Tests\CustomEmojis.Tests.csproj", "{B2AEB792-62F6-421D-B64D-5065A2F8250B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dummy", "Dummy\Dummy.csproj", "{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dummy", "Dummy\Dummy.csproj", "{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}"
 	ProjectSection(ProjectDependencies) = postProject
 		{99954D47-F761-48FF-A624-D9849E3C5068} = {99954D47-F761-48FF-A624-D9849E3C5068}
 		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF} = {DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}
 		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D} = {23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}
+		{090E86CB-55D1-479A-9D10-2CD820507297} = {090E86CB-55D1-479A-9D10-2CD820507297}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapPings", "MapPings\MapPings.csproj", "{99954D47-F761-48FF-A624-D9849E3C5068}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapPings", "MapPings\MapPings.csproj", "{99954D47-F761-48FF-A624-D9849E3C5068}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CryptOfTheNecrodancerEnemies", "CryptOfTheNecrodancerEnemies\CryptOfTheNecrodancerEnemies.csproj", "{090E86CB-55D1-479A-9D10-2CD820507297}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HarmonyPatchLib", "HarmonyPatchLib\HarmonyPatchLib.shproj", "{A0AD4111-2DAE-45B6-BF5B-732FE2BD0E19}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StardewValley", "..\StardewValley\StardewValley.csproj", "{F7FF106B-9A87-4A57-BCB0-BAA282DB8CAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThinHorse", "ThinHorse\ThinHorse.csproj", "{A47B7781-CD28-45FC-9E00-082816385DB4}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		HarmonyPatchLib\HarmonyPatchLib.projitems*{23f1da89-0c7f-4015-96f3-5c4a6fd5500d}*SharedItemsImports = 5
+		HarmonyPatchLib\HarmonyPatchLib.projitems*{a0ad4111-2dae-45b6-bf5b-732fe2bd0e19}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Debug|x86.ActiveCfg = Debug|x86
-		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Debug|x86.Build.0 = Debug|x86
-		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Release|x86.ActiveCfg = Release|x86
-		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Release|x86.Build.0 = Release|x86
-		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Debug|x86.ActiveCfg = Debug|x86
-		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Debug|x86.Build.0 = Debug|x86
-		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Release|x86.ActiveCfg = Release|x86
-		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Release|x86.Build.0 = Release|x86
-		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Debug|x86.ActiveCfg = Debug|x86
-		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Debug|x86.Build.0 = Debug|x86
-		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Release|x86.ActiveCfg = Release|x86
-		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Release|x86.Build.0 = Release|x86
-		{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}.Debug|x86.ActiveCfg = Debug|x86
-		{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}.Release|x86.ActiveCfg = Release|x86
-		{99954D47-F761-48FF-A624-D9849E3C5068}.Debug|x86.ActiveCfg = Debug|x86
-		{99954D47-F761-48FF-A624-D9849E3C5068}.Debug|x86.Build.0 = Debug|x86
-		{99954D47-F761-48FF-A624-D9849E3C5068}.Release|x86.ActiveCfg = Release|x86
-		{99954D47-F761-48FF-A624-D9849E3C5068}.Release|x86.Build.0 = Release|x86
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23F1DA89-0C7F-4015-96F3-5C4A6FD5500D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBBDBD72-9FBD-4594-AFED-5CE4501CD5DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2AEB792-62F6-421D-B64D-5065A2F8250B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB944FF1-1AC4-4131-A8D0-A3F3E85CC249}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99954D47-F761-48FF-A624-D9849E3C5068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090E86CB-55D1-479A-9D10-2CD820507297}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090E86CB-55D1-479A-9D10-2CD820507297}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090E86CB-55D1-479A-9D10-2CD820507297}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090E86CB-55D1-479A-9D10-2CD820507297}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7FF106B-9A87-4A57-BCB0-BAA282DB8CAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7FF106B-9A87-4A57-BCB0-BAA282DB8CAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47B7781-CD28-45FC-9E00-082816385DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A47B7781-CD28-45FC-9E00-082816385DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47B7781-CD28-45FC-9E00-082816385DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47B7781-CD28-45FC-9E00-082816385DB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

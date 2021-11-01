@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using Newtonsoft.Json.Linq;
+
 using SpriteMaster.Extensions;
 using System;
 using System.ComponentModel;
@@ -31,105 +33,128 @@ namespace SpriteMaster.Types {
 		IEquatable<XTileRectangle> {
 		public static readonly Bounds Empty = new Bounds(0, 0, 0, 0);
 
+		private Vector2I ExtentReal;
+
 		public Vector2I Offset;
-		public Vector2I Extent;
+		public Vector2I Extent {
+			readonly get => ExtentReal;
+			set {
+				if (value.X < 0) {
+					Invert.X = true;
+					ExtentReal.X = -value.X;
+				}
+				else {
+					ExtentReal.X = value.X;
+				}
+
+				if (value.Y < 0) {
+					Invert.Y = true;
+					ExtentReal.Y = -value.Y;
+				}
+				else {
+					ExtentReal.Y = value.Y;
+				}
+			}
+		}
 		public Vector2B Invert;
 
 		public Vector2I Position {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set { Offset = value; }
 		}
 
 		public Vector2I Location {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set { Offset = value; }
 		}
 
 		[Browsable(false)]
 		public Vector2I Size {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Extent; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Extent = value; }
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
+			set {
+				Extent = value;
+			}
 		}
 
 		public int X {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset.X; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set { Offset.X = value; }
 		}
 
 		public int Y {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset.Y; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set { Offset.Y = value; }
 		}
 
 		public int Width {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Extent.X; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Extent.X = value; }
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
+			set { Extent = Vector2I.From(value, Extent.Y); }
 		}
 
 		public readonly int InvertedWidth {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get { return Invert.X ? -Extent.X : Extent.X; }
 		}
 
 		public int Height {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Extent.Y; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set { Extent.Y = value; }
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
+			set { Extent = Vector2I.From(Extent.X, value); }
 		}
 
 		public readonly int InvertedHeight {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get { return Invert.Y ? -Extent.Y : Extent.Y; }
 		}
 
 		[Browsable(false)]
 		public int Left {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset.X; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set {
-				Extent.X += (Offset.X - value);
+				Width += (Offset.X - value);
 				Offset.X = value;
 			}
 		}
 
 		[Browsable(false)]
 		public int Top {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset.Y; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set {
-				Extent.Y += (Offset.Y - value);
+				Height += (Offset.Y - value);
 				Offset.Y = value;
 			}
 		}
 
 		[Browsable(false)]
 		public int Right {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset.X + Extent.X; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set { Width = value - Offset.X; }
 		}
 
 		[Browsable(false)]
 		public int Bottom {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get { return Offset.Y + Extent.Y; }
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set { Height = value - Offset.Y; }
 		}
 
@@ -139,55 +164,55 @@ namespace SpriteMaster.Types {
 
 		public readonly bool IsEmpty => Area == 0;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (Vector2I offset, Vector2I extent) {
 			//Contract.AssertNotZero(extent.Width, $"{nameof(extent.Width)} is zero");
 			//Contract.AssertNotZero(extent.Height, $"{nameof(extent.Height)} is zero");
 			Offset = offset;
-			Extent = extent;
+			ExtentReal = extent;
 			Invert = new();
-			if (Extent.X < 0) {
-				Extent.X = -Extent.X;
+			if (ExtentReal.X < 0) {
+				ExtentReal.X = -ExtentReal.X;
 				Invert.X = true;
 			}
-			if (Extent.Y < 0) {
-				Extent.Y = -Extent.Y;
+			if (ExtentReal.Y < 0) {
+				ExtentReal.Y = -ExtentReal.Y;
 				Invert.Y = true;
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (int x, int y, int width, int height) : this(new Vector2I(x, y), new Vector2I(width, height)) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (int width, int height) : this(0, 0, width, height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (Vector2I extent) : this(Vector2I.Zero, extent) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (in Bounds bounds) {
 			Offset = bounds.Offset;
-			Extent = bounds.Extent;
+			ExtentReal = bounds.Extent;
 			Invert = bounds.Invert;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (in DrawingRectangle rect) : this(rect.X, rect.Y, rect.Width, rect.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (in XNARectangle rect) : this(rect.X, rect.Y, rect.Width, rect.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (in XTileRectangle rect) : this(rect.X, rect.Y, rect.Width, rect.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (Microsoft.Xna.Framework.Graphics.Texture2D tex) : this(tex.Width, tex.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Bounds (System.Drawing.Bitmap bmp) : this(bmp.Width, bmp.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public bool Overlaps (in Bounds other) =>
 		!(
 			other.Left > Right ||
@@ -196,33 +221,33 @@ namespace SpriteMaster.Types {
 			other.Bottom < Top
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Bounds Clone () => this;
 
 		readonly object ICloneable.Clone () => this;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator DrawingRectangle (in Bounds bounds) => new DrawingRectangle(bounds.X, bounds.Y, bounds.InvertedWidth, bounds.InvertedHeight);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator XNARectangle (in Bounds bounds) => new XNARectangle(bounds.X, bounds.Y, bounds.InvertedWidth, bounds.InvertedHeight);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator XTileRectangle (in Bounds bounds) => new XTileRectangle(bounds.X, bounds.Y, bounds.InvertedWidth, bounds.InvertedHeight);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Bounds (in DrawingRectangle rect) => new Bounds(rect);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Bounds (in XNARectangle rect) => new Bounds(rect);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Bounds (in XTileRectangle rect) => new Bounds(rect);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public override readonly string ToString () => $"[[{X}, {Y}] [{InvertedWidth}, {InvertedHeight}]]";
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (Bounds other) {
 			var result = Offset.CompareTo(other.Offset);
 			if (result != 0) {
@@ -231,13 +256,13 @@ namespace SpriteMaster.Types {
 			return Extent.CompareTo(other.Extent);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (DrawingRectangle other) => CompareTo((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (XNARectangle other) => CompareTo((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (XTileRectangle other) => CompareTo((Bounds)other);
 
 		readonly int IComparable.CompareTo (object other) => other switch {
@@ -248,10 +273,10 @@ namespace SpriteMaster.Types {
 			_ => throw new ArgumentException(),
 		};
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly override int GetHashCode () => unchecked((int)Hash.Combine(Offset.GetHashCode(), Extent.GetHashCode()));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly override bool Equals (object other) => other switch {
 			Bounds bounds => Equals(bounds),
 			DrawingRectangle rect => Equals(rect),
@@ -260,71 +285,71 @@ namespace SpriteMaster.Types {
 			_ => throw new ArgumentException(),
 		};
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (Bounds other) => Offset == other.Offset && Extent == other.Extent;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (DrawingRectangle other) => Equals((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (XNARectangle other) => Equals((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (XTileRectangle other) => Equals((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (in Bounds other) => Offset != other.Offset || Extent != other.Extent;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (in DrawingRectangle other) => NotEquals((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (in XNARectangle other) => NotEquals((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (in XTileRectangle other) => NotEquals((Bounds)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in Bounds lhs, in Bounds rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in Bounds lhs, in Bounds rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in Bounds lhs, in DrawingRectangle rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in Bounds lhs, in DrawingRectangle rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in DrawingRectangle lhs, in Bounds rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in DrawingRectangle lhs, in Bounds rhs) => rhs.NotEquals(lhs);
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in Bounds lhs, in XNARectangle rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in Bounds lhs, in XNARectangle rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in XNARectangle lhs, in Bounds rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in XNARectangle lhs, in Bounds rhs) => rhs.NotEquals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in Bounds lhs, in XTileRectangle rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in Bounds lhs, in XTileRectangle rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (in XTileRectangle lhs, in Bounds rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in XTileRectangle lhs, in Bounds rhs) => rhs.NotEquals(lhs);
 	}
 }

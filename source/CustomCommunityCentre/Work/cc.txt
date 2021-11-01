@@ -1,0 +1,315 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CustomCommunityCentre
+**
+*************************************************/
+
+======================================
+COMPLETION PROGRESS KEY
+
+	Condition that now holds true
+	Relevant game method check that now returns true
+	Relevant game method behaviour that may now be invoked
+	Debug console command for equivalent progress
+			|
+	>	condition required to proceed
+			|
+			v
+	Subsequent condition that now holds true
+	etc.
+
+======================================
+JOJA WAREHOUSE COMPLETION PROGRESS
+
+	Conditions("j 0")
+			|
+	>	enter JojaMart
+			|
+			v
+	Mail("JojaGreeting")
+			|
+	>	1 day min.
+			|
+			v
+	Mail("JojaMember")
+			|
+	>	1 day min.
+			|
+			v
+	Event(502261)
+	Town.refurbishCommunityCenter()
+			|
+	>	GameLocation.checkJojaCompletePrerequisite() -> Utility.hasFinishedJojaRoute()
+			|
+			v
+	Conditions("Hn jojaFishTank/Hn jojaBulletin/Hn jojaPantry/Hn jojaVault/Hn jojaBoilerRoom/Hn jojaCraftsRoom/Hn JojaMember")
+	Debug("completejoja")
+			|
+	>	JojaMart.buyMovieTheater()
+			|
+			v
+	WorldChangeEvent(10)
+	Mail("ccMovieTheater")
+	Mail("ccMovieTheaterJoja")
+	Mail("jojaMovieTheater")
+	GameLocation.ApplyMapOverride("Town-TheaterCC")
+
+======================================
+COMMUNITY CENTER COMPLETION PROGRESS
+
+	Conditions("j 0")
+			|
+	>	4 days min.
+			|
+			v
+	Event(611439)
+	Debug("resetjunimonotes")
+			|
+	>	CommunityCenter._isWatchingJunimoGoodbye
+			|
+			v
+	CommunityCenter.areAllAreasComplete()
+	Mail("ccIsComplete")
+	Debug("allbundles")
+			|
+	>	1 day min.
+			|
+			v
+	Conditions("Hn ccFishTank/Hn ccBulletin/Hn ccPantry/Hn ccVault/Hn ccBoilerRoom/Hn ccCraftsRoom")
+	Game1.hasCompletedCommunityCenter()
+	Town.refurbishCommunityCenter()
+			|
+	>	enter Town
+			|
+			v
+	Event(191393)
+			|
+	>	1 day min.
+			|
+			v
+	WorldChangeEvent(12)
+	Town.showDestroyedJoja()
+			|
+	>	1 day min.
+			|
+			v
+	Mail("abandonedJojaMartAccessible")
+	Town.crackOpenAbandonedJojaMartDoor()
+	Debug("completecc")
+			|
+	>	JunimoNoteMenu.setUpMenu() -> whichArea == 6
+			|
+			v
+	Mail("hasSeenAbandonedJunimoNote")
+			|
+	>	Game1.netWorldState.Value.Bundles.ContainsKey(36)
+		&& Game1.netWorldState.Value.Bundles[36].All(b => b)
+			|
+			v
+	Event(192393)
+	AbandonedJojaMart.doRestoreAreaCutscene()
+			|
+	>	1 day min.
+			|
+			v
+	WorldChangeEvent(11)
+	Mail("ccMovieTheater")
+	GameLocation.ApplyMapOverride("Town-Theater")
+
+
+
+======================================
+Mail
+
+	// Joja:
+	"JojaGreeting"					// Enter JojaMart
+	"JojaMember"					// Mail("JojaGreeting") AND Response("JojaSignUp_Yes")
+	"ccMovieTheater"				// JojaMart.buyMovieTheater()
+	"ccMovieTheater%&NL&%"			// ^
+	"ccMovieTheaterJoja"			// JojaMart.buyMovieTheater()
+	"ccMovieTheaterJoja%&NL&%"		// ^
+	"jojaMovieTheater"				// Unused
+
+	// CC:
+	"ccDoorUnlock"					// Event(611439)
+	"ccIsComplete"					// CommunityCenter.areAllAreasComplete()
+	"transferredObjectsJojaMart"	// Event(191393)
+	"abandonedJojaMartAccessible"	// WorldChangeEvent(12)
+	"hasSeenAbandonedJunimoNote"	// Enter AbandonedJojaMart
+	"ccMovieTheater"				// Event(192393)
+	"ccMovieTheater%&NL&%"			// ^
+
+======================================
+Event
+
+	611439							// CC lewis door unlock cutscene
+		Conditions: "j 4/t 800 1300/w sunny/a 0 54/H"
+		Invoked: ---
+		1 reference
+			JojaMart.checkAction()
+		1 match
+			Data/Events/Town
+
+	191393							// CC complete celebration cutscene
+		Conditions: "Hn ccFishTank/Hn ccBulletin/Hn ccPantry/Hn ccVault/Hn ccBoilerRoom/Hn ccCraftsRoom/Hl jojaFishTank/Hl jojaPantry/Hl jojaVault/Hl jojaBoilerRoom/Hl jojaCraftsRoom/Hl JojaMember/w sunny/H"
+		Invoked: ---
+		14 references:
+			Game1._newDayAfterFade()
+			Game1.isLocationAccessible()
+			Game1.isLocationAccessible()
+			GameLocation.setUpLocationSpecificFlair()
+			GameLocation.lockedDoorWarp()
+			GameLocation.checkEventPrecondition()
+			GameLocation.checkEventPrecondition() -> 
+			CommunityCenter.shouldNoteAppearInArea() -> case 6: return true
+			Town.checkAction() -> garbage item = 167
+			Town.checkAction() -> Game1.drawObjectDialogue(...)
+			Town.MakeMapModifications() -> showDestroyedJoja()
+
+	"Punch"							// CC pierre/morris event, fork from Event(191393)
+		Invoked: Event(191393)
+		0 references
+		1 match
+			Data/Events/CommunityCenter
+
+	502261							// Joja Warehouse complete celebration cutscene
+		Conditions: "J/w sunny/H"
+		Invoked: ---
+		5 references
+			GameLocation.checkAction()
+			GameLocation.checkAction()
+			JojaMart.checkAction()
+			JojaMart.checkAction()
+			Utility.getJojaStock()
+		1 match
+			Data/Events/Town
+
+	192393							// Has completed Bundle(6)
+		Conditions: ---
+		Invoked: AbandonedJojaMart.doRestoreAreaCutscene
+		1 reference
+			AbandonedJojaMart.doRestoreAreaCutscene
+		1 match
+			Data/Events/AbandonedJojaMart:missingBundleComplete
+
+======================================
+Bundle
+
+	0	// Pantry
+	1	// CraftsRoom
+	2	// FishTank
+	3	// BoilerRoom
+	4	// Vault
+	5	// Bulletin
+	6	// AbandonedJojaMart
+	7	// Bulletin2
+	8	// JunimoHut
+
+======================================
+WorldChangeEvent
+
+	0	// Pantry (JOJA) complete
+	1	// Pantry complete
+	2	// BoilerRoom (JOJA) complete
+	3	// BoilerRoom complete
+	4	// CraftsRoom (JOJA) complete
+	5	// CraftsRoom complete
+	6	// Vault (JOJA) complete
+	7	// Vault complete
+	8	// FishTank (JOJA) complete
+	9	// FishTank complete
+	10	// MovieTheater (JOJA) unlocked
+	11	// MovieTheater unlocked
+	12	// AbandonedJojaMart unlocked
+
+======================================
+ConversationTopic/DialogueEvent
+
+	"joja_Begin"					// Has Mail("JojaMember")
+		Invoked: JojaMart.viewJojaNote()
+		1 reference
+			JojaMart.viewJojaNote()
+		3 matches
+			Characters/Dialogue/George
+			Characters/Dialogue/Lewis
+			Characters/Dialogue/Pierre
+	"cc_Complete"					// Has seen Event(191393)
+		Invoked: 191393:addConversationTopic
+		0 references
+		3 matches
+			Characters/Dialogue/Lewis
+			Characters/Dialogue/Pierre
+			Characters/Dialogue/Robin
+	"movieTheater"					// Has seen WorldChangeEvent(10/11)
+		Invoked: WorldChangeEvent.setup()
+		0 references
+		0 matches
+
+======================================
+Game1
+
+	public bool hasCompletedCommunityCenter()
+		12 references
+
+
+======================================
+Characters.Junimo
+
+	public void returnToJunimoHutToFetchStar(GameLocation location)
+		2 references
+			CommunityCenter.UpdateWhenCurrentLocation()
+			Game1.parseDebugInput()
+		// if (CommunityCenter.areAllAreasComplete()): Send Mail("ccIsComplete")
+
+======================================
+Locations.AbandonedJojaMart
+
+	private void doRestoreAreaCutscene()
+		1 reference
+			AbandonedJojaMart.ctor()
+		// Start Event(192393)
+		// Send Mail("ccMovieTheater")
+
+======================================
+Locations.CommunityCenter
+
+	public NetArray<bool> areasComplete
+
+	public bool areAllAreasComplete()
+
+	private int getNumberOfAreasComplete()
+		1 reference
+
+	public NetBundles bundles => Game1.netWorldState.Value.Bundles;
+		14 references
+
+	public Dictionary<int, bool[]> bundlesDict()
+		5 references
+
+======================================
+Locations.JojaMart
+
+	private bool buyMovieTheater(int response)
+		1 reference
+			JojaMart.CheckAction
+		// Send Mail("ccMovieTheater")
+		// Send Mail("ccMovieTheaterJoja")
+
+======================================
+Menus.Bundle
+
+
+
+======================================
+Menus.JojaCDMenu
+
+
+
+======================================
+Menus.JunimoNoteMenu
+
+

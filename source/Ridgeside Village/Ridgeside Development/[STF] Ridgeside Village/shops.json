@@ -734,6 +734,7 @@
 			"ItemType": "Object",
 			"IsRecipe": true,
 			"ItemNames": [
+				"Summit Iced Tea",
 				"Ridgeside Shaketini",
 				"Autumn Dew Drop Juice",
 				"Cherry Berry Shakey",
@@ -759,11 +760,10 @@
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -7,-98 ],
 	"PortraitPath": "assets/LolaShop.png",
-	"Quote": "How can I help you, dear?",
-	"ClosedMessage": "Sorry, I'm too tired, dear.",
+	"Quote": "Weapons available today.",
+	"MaxNumItemsSoldInStore": 2,
 	"ShopPrice": -1,
 	"DefaultSellPriceMultiplier": 1.0,
-	"When": ["t 600 2600"],
     "LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
@@ -793,20 +793,16 @@
         //"zh": "PLACEHOLDER",
     	},	
 	"ItemStocks": [
-		//Bars
-		{
-			"ItemType": "Object",
-			"ItemNames": [
-				"Copper Bar",
-				"Iron Bar",
-				"Gold Bar",
-				],
-			"Stock": 100,
-		},
 		//Weapons
 		{
 			"ItemType": "Weapon",
 			"ItemNames": [
+				"Blade of Rubies",
+				"Celestine Sword",
+				"Frost Queen's Blade",
+				"Pearlskin Blade",
+				"Reaper Bane",
+				"Runic Greatsword",
 				"Lava Katana",
 				"Steel Falchion",
 				"Bone Sword",
@@ -1451,7 +1447,7 @@
 	"Quote": "Welcome! What would you like, dear?",
 	"ClosedMessage": "Sorry, we're closed!",
 	"ShopPrice": -1,
-	"MaxNumItemsSoldInStore": 5,
+	"MaxNumItemsSoldInStore": 7,
 	"DefaultSellPriceMultiplier": 0.7,
 	"PriceMultiplierWhen": {
 		"0.6": ["f Malaya 2000"] 
@@ -1527,6 +1523,23 @@
 				"Hundred Flavor Doughnut"
 				],
 			"Stock": 1,
+		},
+		//Pastry Recipes
+		{
+			"ItemType": "Object",
+			"IsRecipe": true,
+			"ItemNames": [
+				"Kedi Delight",
+				"Keks Style Shortcake",
+				"Kek's Small Dream",
+				"Pillowsoft Cheezy Sandwich",
+				"Pink Frosted Sprinkled Doughnut",
+				"Hundred Flavor Doughnut",
+				"Apricot Juice",
+				"Clementine Juice",
+				"Wild Apple Juice"
+				],
+			"When": [ "y 2" ], 
 		},
 	],
 	},
@@ -1613,7 +1626,7 @@
 	"PriceMultiplierWhen": {
 		"0.6": ["f Lorenzo 2000"] 
 		},
-	"When": ["t 900 1600"],
+	"When": ["t 900 1600/d Sat"],
 	"ClosedMessage": "Sorry, we're closed!",
     "LocalizedQuote": {
     	//remove the "//" from your language
@@ -1729,19 +1742,12 @@
 	"ItemStocks": [
 		{
 			"ItemType": "Clothing",
-			"ItemNames": [ "Juninja Shirt", ],
-			"StockPrice": 3000,
-			"Stock": 1,
-		},
-		{
-			"ItemType": "Clothing",
-			"ItemNames": [ "Pika Impersonation Shirt", ],
-			"StockPrice": 3000,
-			"Stock": 1,
-		},
-		{
-			"ItemType": "Clothing",
-			"ItemNames": [ "Village Color Shirt", ],
+			"ItemNames": [ 
+				"Juninja Shirt",
+				"Flora Golda Shirt",
+				"Pika Impersonation Shirt",
+				"Village Color Shirt",
+				 ],
 			"StockPrice": 3000,
 			"Stock": 1,
 		},

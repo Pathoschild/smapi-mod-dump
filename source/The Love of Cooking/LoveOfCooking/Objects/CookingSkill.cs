@@ -20,9 +20,8 @@ namespace LoveOfCooking.Objects
 	public class CookingSkill : SpaceCore.Skills.Skill
 	{
 		private static ITranslationHelper i18n => ModEntry.Instance.Helper.Translation;
-		public static readonly string InternalName = ModEntry.AssetPrefix + "CookingSkill";
+		public static readonly string InternalName = ModEntry.AssetPrefix + "CookingSkill"; // DO NOT EDIT
 
-		public static double GlobalExperienceRate;
 		public static int MaxFoodStackPerDayForExperienceGains;
 		public static int CraftNettleTeaLevel;
 

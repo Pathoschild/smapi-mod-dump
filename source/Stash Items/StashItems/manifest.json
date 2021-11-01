@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/zack-hill/stardew-valley-stash-items
+**
+*************************************************/
+
+{
+	"Name": "Stash Items",
+	"Author": "ZackHill",
+	"Version": "1.0.0",
+	"Description": "Adds a hotkey that moves items from your inventory into nearby chests that contain that item.",
+	"UniqueID": "ZackHill.StashItems",
+	"EntryDll": "StashItems.dll",
+	"MinimumApiVersion": "3.12.6",
+	"UpdateKeys": [ "Nexus:9624" ]
+}

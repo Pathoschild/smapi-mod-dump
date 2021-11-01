@@ -13,21 +13,20 @@ namespace Common.Helpers.ItemMatcher
     using System.Collections.Generic;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using ItemRepository;
     using StardewValley;
 
     /// <summary>
-    /// Matches item name/tags against a set of search phrases.
+    ///     Matches item name/tags against a set of search phrases.
     /// </summary>
     internal class ItemMatcher
     {
-        private readonly IDictionary<string, SearchPhrase> _searchPhrases = new Dictionary<string, SearchPhrase>();
-        private readonly IList<string> _searchValues = new List<string>();
-        private readonly string _searchTagSymbol;
         private readonly bool _exact;
-        private string _search = string.Empty;
+        private readonly IDictionary<string, SearchPhrase> _searchPhrases = new Dictionary<string, SearchPhrase>();
+        private readonly string _searchTagSymbol;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ItemMatcher"/> class.
+        ///     Initializes a new instance of the <see cref="ItemMatcher" /> class.
         /// </summary>
         /// <param name="searchTagSymbol">Prefix to denote search is based on an item's context tags.</param>
         /// <param name="exact">Set true to disallow partial matches.</param>
@@ -38,39 +37,38 @@ namespace Common.Helpers.ItemMatcher
         }
 
         /// <summary>
-        /// The current search expression as a single search expression.
+        ///     The current search expression as a single search expression.
         /// </summary>
-        public string Search
+        public string Search { get; private set; } = string.Empty;
+
+        /// <summary>
+        ///     The current search expression as a list of search values.
+        /// </summary>
+        public IList<string> SearchValues { get; } = new List<string>();
+
+        public bool Matches(SearchableItem item)
         {
-            get => this._search;
+            return this.Matches(item.Item);
         }
 
         /// <summary>
-        /// The current search expression as a list of search values.
-        /// </summary>
-        public IList<string> SearchValues
-        {
-            get => this._searchValues;
-        }
-
-        /// <summary>
-        /// Checks if an item matches the search phrases.
+        ///     Checks if an item matches the search phrases.
         /// </summary>
         /// <param name="item">The item to check.</param>
         /// <returns>Returns true if item matches any search phrase unless a NotMatch search phrase was matched.</returns>
         public bool Matches(Item item)
         {
-            if (this._searchValues.Count == 0)
+            if (this.SearchValues.Count == 0)
             {
                 return true;
             }
 
-            bool matchesAny = false;
-            foreach (string searchValue in this._searchValues)
+            var matchesAny = false;
+            foreach (var searchValue in this.SearchValues)
             {
-                if (!this._searchPhrases.TryGetValue(searchValue, out SearchPhrase searchPhrase))
+                if (!this._searchPhrases.TryGetValue(searchValue, out var searchPhrase))
                 {
-                    searchPhrase = new SearchPhrase(searchValue, this._searchTagSymbol, this._exact);
+                    searchPhrase = new(searchValue, this._searchTagSymbol, this._exact);
                     this._searchPhrases.Add(searchValue, searchPhrase);
                 }
 
@@ -91,90 +89,90 @@ namespace Common.Helpers.ItemMatcher
         }
 
         /// <summary>
-        /// Adds a new search expression to the current expression.
+        ///     Adds a new search expression to the current expression.
         /// </summary>
         /// <param name="searchParts">The search expression represented as a list of parts.</param>
         public void AddSearch(IEnumerable<string> searchParts)
         {
-            foreach (string searchPart in searchParts)
+            foreach (var searchPart in searchParts)
             {
-                if (string.IsNullOrWhiteSpace(searchPart) || this._searchValues.Contains(searchPart))
+                if (string.IsNullOrWhiteSpace(searchPart) || this.SearchValues.Contains(searchPart))
                 {
                     continue;
                 }
 
-                this._searchValues.Add(searchPart);
+                this.SearchValues.Add(searchPart);
             }
 
-            this._search = string.Join(" ", this._searchValues);
+            this.Search = string.Join(" ", this.SearchValues);
         }
 
         /// <summary>
-        /// Adds a new search expression to the current expression.
+        ///     Adds a new search expression to the current expression.
         /// </summary>
         /// <param name="search">The search expression to add.</param>
         public void AddSearch(string search)
         {
-            IEnumerable<string> searchValues = Regex.Split(search, @"\s+").AsEnumerable();
+            var searchValues = Regex.Split(search, @"\s+").AsEnumerable();
             this.AddSearch(searchValues);
         }
 
         /// <summary>
-        /// Removes a search expression from the current expression.
+        ///     Removes a search expression from the current expression.
         /// </summary>
         /// <param name="searchParts">The search expressions to remove as a list of parts.</param>
         public void RemoveSearch(IEnumerable<string> searchParts)
         {
-            foreach (string searchPart in searchParts)
+            foreach (var searchPart in searchParts)
             {
-                this._searchValues.Remove(searchPart);
+                this.SearchValues.Remove(searchPart);
             }
 
-            this._search = string.Join(" ", this._searchValues);
+            this.Search = string.Join(" ", this.SearchValues);
         }
 
         /// <summary>
-        /// Removes a search expression from the current expression.
+        ///     Removes a search expression from the current expression.
         /// </summary>
         /// <param name="search">The search expression to remove.</param>
         public void RemoveSearch(string search)
         {
-            IEnumerable<string> searchValues = Regex.Split(search, @"\s+").AsEnumerable();
+            var searchValues = Regex.Split(search, @"\s+").AsEnumerable();
             this.RemoveSearch(searchValues);
         }
 
         /// <summary>
-        /// Assign a new search expression.
+        ///     Assign a new search expression.
         /// </summary>
         /// <param name="searchParts">The search expression represented as a list of parts.</param>
         public void SetSearch(IEnumerable<string> searchParts)
         {
             IList<string> searchValues = searchParts.ToList();
-            string search = string.Join(" ", searchValues);
-            if (this._search == search)
+            var search = string.Join(" ", searchValues);
+            if (this.Search == search)
             {
                 return;
             }
 
-            this._search = search;
-            this._searchValues.Clear();
+            this.Search = search;
+            this.SearchValues.Clear();
             if (string.IsNullOrWhiteSpace(search))
             {
                 return;
             }
 
-            foreach (string searchValue in searchValues)
+            foreach (var searchValue in searchValues)
             {
                 if (!string.IsNullOrWhiteSpace(searchValue))
                 {
-                    this._searchValues.Add(searchValue);
+                    this.SearchValues.Add(searchValue);
                 }
             }
 
             searchValues = this._searchPhrases.Keys.ToList();
-            foreach (string searchValue in searchValues)
+            foreach (var searchValue in searchValues)
             {
-                if (!this._searchValues.Contains(searchValue))
+                if (!this.SearchValues.Contains(searchValue))
                 {
                     this._searchPhrases.Remove(searchValue);
                 }
@@ -182,27 +180,27 @@ namespace Common.Helpers.ItemMatcher
         }
 
         /// <summary>
-        /// Assign a new search expression.
+        ///     Assign a new search expression.
         /// </summary>
         /// <param name="search">The search expression.</param>
         public void SetSearch(string search)
         {
-            if (this._search == search)
+            if (this.Search == search)
             {
                 return;
             }
 
-            IEnumerable<string> searchValues = Regex.Split(search, @"\s+").AsEnumerable();
+            var searchValues = Regex.Split(search, @"\s+").AsEnumerable();
             this.SetSearch(searchValues);
         }
 
         /// <summary>
-        /// Assign a new search expression.
+        ///     Assign a new search expression.
         /// </summary>
         /// <param name="searchParts">The search expression represented as a dictionary of parts.</param>
         public void SetSearch(IDictionary<string, bool> searchParts)
         {
-            IEnumerable<string> searchValues = searchParts.Select(searchPart => searchPart.Value ? searchPart.Key : $"!{searchPart.Key}").AsEnumerable();
+            var searchValues = searchParts.Select(searchPart => searchPart.Value ? searchPart.Key : $"!{searchPart.Key}").AsEnumerable();
             this.SetSearch(searchValues);
         }
     }

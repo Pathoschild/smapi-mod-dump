@@ -15,6 +15,7 @@ namespace JsonAssets.Data
         /*********
         ** Accessors
         *********/
+        /// <summary>The default item name.</summary>
         public string Name { get; set; }
 
         public string EnableWithMod { get; set; }

@@ -5,9 +5,9 @@ urls:
 mods:
    Shroom Spotter
    Stardew Content Compatibility Layer (SCCL)
-   Teh's Core Mod
    Teh's Festive Slimes
    Teh's Fishing Overhaul
+   TehCore
 
 latest commit:
    commit 5429d52b9dd9848705f8a9b2c0789e6bc9ff029f

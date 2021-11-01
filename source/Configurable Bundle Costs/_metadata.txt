@@ -6,9 +6,9 @@ mods:
    Configurable Bundle Costs
 
 latest commit:
-   commit 7fc9132c415bc56ee8a62d415edf63477ad84ceb
-   Author: dtomlinson-ga <dtomlinson.ga@gmail.com>
-   Date:   Sun Sep 12 12:02:01 2021 -0400
+   commit 72f51948dd5774c93f064674899a5c0ecd6ec299
+   Author: dtomlinson-ga <dtomlinson-ga@users.noreply.github.com>
+   Date:   Mon Oct 4 17:52:47 2021 -0400
    
-       Added note about Target values.
+       Added ability to set cost of Joja membership.
    

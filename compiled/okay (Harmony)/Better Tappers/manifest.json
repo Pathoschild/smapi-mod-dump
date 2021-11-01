@@ -1,0 +1,14 @@
+{
+  "Name": "BetterTappers",
+  "Author": "CaptainSully",
+  "Version": "1.0.2",
+  "Description": "Changes the time tappers take to produce",
+  "UniqueID": "CaptainSully.BetterTappers",
+  "EntryDll": "BetterTappers.dll",
+  "UpdateKeys": [ "Nexus:9875" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
+}

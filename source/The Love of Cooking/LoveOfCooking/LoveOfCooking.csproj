@@ -1,48 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>LoveOfCooking</AssemblyName>
-    <RootNamespace>LoveOfCooking</RootNamespace>
-    <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
-    <Platforms>x86;AnyCPU</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
-    <EnableHarmony>true</EnableHarmony>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>LoveOfCooking</AssemblyName>
+		<RootNamespace>LoveOfCooking</RootNamespace>
+		<Version>1.0.0</Version>
+		<TargetFramework>net452</TargetFramework>
+		<Platforms>AnyCPU</Platforms>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<LangVersion>8.0</LangVersion>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<AnalysisLevel>5.0</AnalysisLevel>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="assets\CookingBundlePack\**" />
-    <Compile Remove="assets\NewCropsPack\Objects\Sugar Cane\**" />
-    <Compile Remove="assets\NewRecipesPack\Objects\Buttered Corn\**" />
-    <EmbeddedResource Remove="assets\CookingBundlePack\**" />
-    <EmbeddedResource Remove="assets\NewCropsPack\Objects\Sugar Cane\**" />
-    <EmbeddedResource Remove="assets\NewRecipesPack\Objects\Buttered Corn\**" />
-    <None Remove="assets\CookingBundlePack\**" />
-    <None Remove="assets\NewCropsPack\Objects\Sugar Cane\**" />
-    <None Remove="assets\NewRecipesPack\Objects\Buttered Corn\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Remove="assets\CookingBundlePack\**" />
+		<Compile Remove="assets\NewCropsPack\Objects\Sugar Cane\**" />
+		<Compile Remove="assets\NewRecipesPack\Objects\Buttered Corn\**" />
+		<EmbeddedResource Remove="assets\CookingBundlePack\**" />
+		<EmbeddedResource Remove="assets\NewCropsPack\Objects\Sugar Cane\**" />
+		<EmbeddedResource Remove="assets\NewRecipesPack\Objects\Buttered Corn\**" />
+		<None Remove="assets\CookingBundlePack\**" />
+		<None Remove="assets\NewCropsPack\Objects\Sugar Cane\**" />
+		<None Remove="assets\NewRecipesPack\Objects\Buttered Corn\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="PyTK">
-      <HintPath>$(GamePath)\Mods\[CORE]\PyTK\PyTK.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="SpaceCore">
-      <HintPath>$(GamePath)\Mods\[CORE]\SpaceCore\SpaceCore.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="SpaceCore">
+			<HintPath>SpaceCore-1-5-11.dll</HintPath>
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 </Project>

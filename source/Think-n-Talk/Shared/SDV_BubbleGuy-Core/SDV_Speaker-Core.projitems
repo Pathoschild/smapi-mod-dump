@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0e0dec22-18d8-42c8-b627-c430123cc26b</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SDV_Speaker_Core</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BubbleGuy\BubbleChat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BubbleGuy\BubbleGuy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BubbleGuy\BubbleGuyManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BubbleGuy\BubbleGuyStatics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BubbleGuy\BubbleRecorder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BubbleGuy\SpeakerItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMAPI\BubbleGuyAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMAPI\IModAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SMAPI\SMAPIHelpers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)assets\bubbleguy\talk_bubble.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)assets\bubbleguy\think_bubble.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

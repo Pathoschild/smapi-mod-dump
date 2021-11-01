@@ -20,6 +20,9 @@ namespace SpaceShared.UI
 {
     internal class Dropdown : Element
     {
+        /*********
+        ** Accessors
+        *********/
         public int RequestWidth { get; set; }
         public int MaxValuesAtOnce { get; set; }
         public Texture2D Texture { get; set; } = Game1.mouseCursors;
@@ -31,10 +34,15 @@ namespace SpaceShared.UI
             get => this.Choices[this.ActiveChoice];
             set { if (this.Choices.Contains(value)) this.ActiveChoice = Array.IndexOf(this.Choices, value); }
         }
+
+        public string Label => this.Labels[this.ActiveChoice];
+
         public int ActiveChoice { get; set; }
 
         public int ActivePosition { get; set; }
         public string[] Choices { get; set; } = new[] { "null" };
+
+        public string[] Labels { get; set; } = new[] { "null" };
 
         public bool Dropped;
 
@@ -42,10 +50,20 @@ namespace SpaceShared.UI
 
         public static Dropdown ActiveDropdown;
 
+        /// <inheritdoc />
         public override int Width => Math.Max(300, Math.Min(500, this.RequestWidth));
+
+        /// <inheritdoc />
         public override int Height => 44;
+
+        /// <inheritdoc />
         public override string ClickedSound => "shwip";
 
+
+        /*********
+        ** Public methods
+        *********/
+        /// <inheritdoc />
         public override void Update(bool hidden = false)
         {
             base.Update(hidden);
@@ -112,7 +130,7 @@ namespace SpaceShared.UI
         public override void Draw(SpriteBatch b)
         {
             IClickableMenu.drawTextureBox(b, this.Texture, this.BackgroundTextureRect, (int)this.Position.X, (int)this.Position.Y, this.Width - 48, this.Height, Color.White, 4, false);
-            b.DrawString(Game1.smallFont, this.Value, new Vector2(this.Position.X + 4, this.Position.Y + 8), Game1.textColor);
+            b.DrawString(Game1.smallFont, this.Label, new Vector2(this.Position.X + 4, this.Position.Y + 8), Game1.textColor);
             b.Draw(this.Texture, new Vector2(this.Position.X + this.Width - 48, this.Position.Y), this.ButtonTextureRect, Color.White, 0, Vector2.Zero, 4, SpriteEffects.None, 0);
 
             if (this.Dropped)
@@ -126,7 +144,7 @@ namespace SpaceShared.UI
                 {
                     if (i == this.ActiveChoice)
                         b.Draw(Game1.staminaRect, new Rectangle((int)this.Position.X + 4, (int)this.Position.Y + (i - this.ActivePosition) * this.Height, this.Width - 48 - 8, this.Height), null, Color.Wheat, 0, Vector2.Zero, SpriteEffects.None, 0.98f);
-                    b.DrawString(Game1.smallFont, this.Choices[i], new Vector2(this.Position.X + 4, this.Position.Y + (i - this.ActivePosition) * this.Height + 8), Game1.textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+                    b.DrawString(Game1.smallFont, this.Labels[i], new Vector2(this.Position.X + 4, this.Position.Y + (i - this.ActivePosition) * this.Height + 8), Game1.textColor, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
                 }
             }
         }

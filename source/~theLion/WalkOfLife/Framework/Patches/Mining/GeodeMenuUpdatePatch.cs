@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -25,14 +26,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal GeodeMenuUpdatePatch()
 		{
 			Original = typeof(GeodeMenu).MethodNamed(nameof(GeodeMenu.update));
-			Transpiler = new HarmonyMethod(GetType(), nameof(GeodeMenuUpdateTranspiler));
+			Transpiler = new(GetType(), nameof(GeodeMenuUpdateTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to increment Gemologist counter for geodes cracked at Clint's.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> GeodeMenuUpdateTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+		private static IEnumerable<CodeInstruction> GeodeMenuUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+			ILGenerator iLGenerator, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -56,13 +58,14 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(ModEntry).PropertyGetter(nameof(ModEntry.Data))),
 						new CodeInstruction(OpCodes.Ldstr, "MineralsCollected"),
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModData).MethodNamed(nameof(ModData.IncrementField), new[] { typeof(string) }).MakeGenericMethod(typeof(uint)))
+							typeof(ModData).MethodNamed(nameof(ModData.IncrementField), new[] { typeof(string) })
+								.MakeGenericMethod(typeof(uint)))
 					)
 					.AddLabels(dontIncreaseGemologistCounter);
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Gemologist counter increment.\nHelper returned {ex}");
+				Log($"Failed while adding Gemologist counter increment.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

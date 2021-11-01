@@ -39,12 +39,12 @@ namespace SpriteMaster.Extensions.Compressors {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static int CompressedLengthEstimate(byte[] data) {
 			return data.Length >> 1;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static byte[] Compress(byte[] data) {
 			using var val = new MemoryStream(CompressedLengthEstimate(data));
 			using (var compressor = new ZlibStream(val, CompressionMode.Compress, CompressionLevel.BestCompression)) {
@@ -54,12 +54,12 @@ namespace SpriteMaster.Extensions.Compressors {
 			return val.ToArray();
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static byte[] Decompress(byte[] data) {
 			return ZlibStream.UncompressBuffer(data);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static byte[] Decompress(byte[] data, int size) {
 			using var dataStream = new MemoryStream(data);
 			var output = new byte[size];

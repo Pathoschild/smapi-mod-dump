@@ -50,7 +50,8 @@ Spouse Room (Auto):
     SpouseRoom_Auto_Facing_TileOffset: X, Y offset ("-1.1, 0")
 		This is the 'interesting' tile used by Automation to determine where the spouse will be looking towards upon spawning, when not sitting. By default it's offset to 1.1 tile left of their spawn point.
 		"Default" is the profile is used by all spouses without a named profile. It uses your main spouse (or Emily) for preview.
-		 The "sebastianFrog" profile is a special hardcoded case, as Sebastian's spawn point changes a bit after a certain event - the interesting tile in his room is then around the middle. 
+		 The "sebastianFrog" profile is a special hardcoded case - ignore it IF you have Multiple Spouses installed.
+		Sebastian's spawn point changes a bit after a certain event - the interesting tile in his room is then around the middle. 
 
 
 
@@ -74,9 +75,9 @@ Keep in mind that making them spawn somewhere with 0 empty adjacent tiles might 
 
     SpouseRoom_Manual_TileOffsets: Key = Sprite (or Sequence), Value = X, Y Offset ("Key": "Up",   "Value": "0, 0")
 	
-		This is triggered when the spouse spawns on the standard spouse room tile. The "sebastianFrog" profile is a special hardcoded case, as Sebastian's spawn point changes a bit after a certain event.
-		 Manual tile offsets are not limited to their room, and allow you to offset the location to anywhere in the house. 
-	
+		This is triggered when the spouse spawns on the standard spouse room tile. Manual tile offsets are not limited to their room, and allow you to offset the location to anywhere in the house. 
+		The "sebastianFrog" profile is a special hardcoded case - ignore it IF you have Multiple Spouses installed. Sebastian's spawn point changes a bit after a certain event.
+			
 	
     Kitchen_Manual_TileOffsets:    Key = Sprite (or Sequence), Value = X, Y Offset ("Key": "Down", "Value": "0, 0")
 	

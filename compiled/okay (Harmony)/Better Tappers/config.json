@@ -1,0 +1,20 @@
+{
+  "DisableAllModEffects": false,
+  "ChangeTapperTimes": true,
+  "TappersUseQuality": true,
+  "TapperXP": 10,
+  "GathererAffectsTappers": true,
+  "BotanistAffectsTappers": true,
+  "DaysForSyrups": 7.0,
+  "DaysForSap": 1.0,
+  "DaysForMushroom": 7.0,
+  "OverrideHeavyTapperDefault": false,
+  "HeavyTapperMultiplier": 0.5,
+  "DaysForSyrupsHeavy": 3.5,
+  "DaysForSapHeavy": 0.5,
+  "DaysForMushroomHeavy": 3.5,
+  "ForageLevelAffectsQuality": true,
+  "TimesHarvestedAffectsQuality": true,
+  "TreeAgeAffectsQuality": true,
+  "DebugMode": false
+}

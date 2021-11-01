@@ -23,7 +23,7 @@ namespace SpriteMaster {
 			private ReaderWriterLock Lock;
 
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public SharedCookie (ReaderWriterLock rwlock, int timeout) {
 				Lock = null;
 				rwlock.AcquireReaderLock(timeout);
@@ -31,13 +31,13 @@ namespace SpriteMaster {
 			}
 
 			public bool IsDisposed {
-				[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[SecuritySafeCritical]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				get { return Lock == null; }
 			}
 
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public void Dispose () {
 				if (Lock == null) {
 					return;
@@ -52,7 +52,7 @@ namespace SpriteMaster {
 			private ReaderWriterLock Lock;
 
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public ExclusiveCookie (ReaderWriterLock rwlock, int timeout) {
 				Lock = null;
 				rwlock.AcquireWriterLock(timeout);
@@ -60,13 +60,13 @@ namespace SpriteMaster {
 			}
 
 			public bool IsDisposed {
-				[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[SecuritySafeCritical]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				get { return Lock == null; }
 			}
 
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public void Dispose () {
 				if (Lock == null) {
 					return;
@@ -83,7 +83,7 @@ namespace SpriteMaster {
 			private LockCookie Cookie;
 
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public PromotedCookie (ReaderWriterLock rwlock, int timeout) {
 				Lock = null;
 				this.Cookie = rwlock.UpgradeToWriterLock(timeout);
@@ -91,13 +91,13 @@ namespace SpriteMaster {
 			}
 
 			public bool IsDisposed {
-				[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[SecuritySafeCritical]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				get { return Lock == null; }
 			}
 
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public void Dispose () {
 				if (Lock == null) {
 					return;
@@ -109,39 +109,39 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		~SharedLock () {
 			Dispose();
 			Lock = null;
 		}
 
 		public bool IsLocked {
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get { return Lock.IsReaderLockHeld || Lock.IsWriterLockHeld; }
 		}
 
 		public bool IsSharedLock {
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get { return Lock.IsReaderLockHeld; }
 		}
 
 		public bool IsExclusiveLock {
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get { return Lock.IsWriterLockHeld; }
 		}
 
 		public bool IsDisposed {
-			[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[SecuritySafeCritical]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get { return Lock == null; }
 		}
 
 		public SharedCookie Shared {
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				return new SharedCookie(Lock, -1);
 			}
@@ -149,7 +149,7 @@ namespace SpriteMaster {
 
 		public SharedCookie? TryShared {
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				try {
 					return new SharedCookie(Lock, 0);
@@ -162,7 +162,7 @@ namespace SpriteMaster {
 
 		public ExclusiveCookie Exclusive {
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				return new ExclusiveCookie(Lock, -1);
 			}
@@ -170,7 +170,7 @@ namespace SpriteMaster {
 
 		public ExclusiveCookie? TryExclusive {
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				try {
 					return new ExclusiveCookie(Lock, 0);
@@ -183,7 +183,7 @@ namespace SpriteMaster {
 
 		public PromotedCookie Promote {
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				//Contract.Assert(!IsExclusiveLock && IsSharedLock);
 				return new PromotedCookie(Lock, -1);
@@ -192,7 +192,7 @@ namespace SpriteMaster {
 
 		public PromotedCookie? TryPromote {
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				//Contract.Assert(!IsExclusiveLock && IsSharedLock);
 				try {
@@ -204,8 +204,8 @@ namespace SpriteMaster {
 			}
 		}
 
-		[SecuritySafeCritical, ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[SecuritySafeCritical]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Dispose () {
 			if (Lock == null) {
 				return;

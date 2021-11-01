@@ -215,7 +215,7 @@ namespace DynamicGameAssets.Patches
         /// <summary>The method to call after <see cref="Sewer.generateKrobusStock"/>.</summary>
         private static void After_Sewer_GenerateKrobusStock(Dictionary<ISalable, int[]> __result)
         {
-            PatchCommon.DoShopStock("IslandMerchant", __result);
+            PatchCommon.DoShopStock("Krobus", __result);
         }
 
         /****

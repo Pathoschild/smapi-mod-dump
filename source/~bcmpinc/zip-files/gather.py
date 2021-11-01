@@ -1,7 +1,7 @@
 import os
 import glob
 
-files = glob.glob("../*/bin/Release/net452/*.zip")
+files = glob.glob("../*/bin/Release/net5.0/*.zip")
 print(files)
 
 for f in files:

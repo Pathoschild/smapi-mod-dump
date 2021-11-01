@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -24,18 +25,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal CrabPotPerformObjectDropInActionPatch()
 		{
 			Original = typeof(CrabPot).MethodNamed(nameof(CrabPot.performObjectDropInAction));
-			Transpiler = new HarmonyMethod(GetType(), nameof(CrabPotPerformObjectDropInActionTranspiler));
+			Transpiler = new(GetType(), nameof(CrabPotPerformObjectDropInActionTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to allow Conservationist to place bait.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> CrabPotPerformObjectDropInActionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> CrabPotPerformObjectDropInActionTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
-			/// Removed: ... && (owner_farmer == null || !owner_farmer.professions.Contains(11)
+			/// Removed: ... && (owner_farmer is null || !owner_farmer.professions.Contains(11)
 
 			try
 			{
@@ -53,7 +55,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while removing Conservationist bait restriction.\nHelper returned {ex}");
+				Log($"Failed while removing Conservationist bait restriction.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

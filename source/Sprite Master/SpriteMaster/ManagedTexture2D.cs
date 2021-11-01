@@ -33,7 +33,7 @@ namespace SpriteMaster {
 			output.Add($"\t\tTotal Texture Size     : {TotalAllocatedSize.AsDataSize()}");
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public ManagedTexture2D (
 			ScaledTexture texture,
 			Texture2D reference,
@@ -60,14 +60,14 @@ namespace SpriteMaster {
 			};
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		~ManagedTexture2D() {
 			if (!IsDisposed) {
 				Dispose(false);
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private void OnParentDispose() {
 			if (!IsDisposed) {
 				Debug.TraceLn($"Disposing ManagedTexture2D '{Name}'");

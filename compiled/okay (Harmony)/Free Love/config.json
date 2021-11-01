@@ -1,0 +1,16 @@
+{
+  "EnableMod": true,
+  "BuyPendantsAnytime": false,
+  "MinPointsToMarry": 2500,
+  "MinPointsToDate": 2000,
+  "DaysUntilMarriage": 3,
+  "PreventHostileDivorces": true,
+  "ComplexDivorce": true,
+  "RoommateRomance": true,
+  "RomanceAllVillagers": false,
+  "ShowParentNames": false,
+  "SpouseSleepOrder": "Abigail",
+  "PercentChanceForSpouseInBed": 25,
+  "PercentChanceForSpouseInKitchen": 25,
+  "PercentChanceForSpouseAtPatio": 25
+}

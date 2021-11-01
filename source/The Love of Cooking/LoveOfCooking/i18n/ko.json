@@ -163,28 +163,6 @@
 	"world.fisherman.inspect_2": "강 괴물을 본 적 있니, 꼬마야? 헤헤...$b#아, 동화를 믿는 나이는 아니구나.",
 	"world.fisherman.inspect_3": "만에서 여행하고 있는 시장 사람들한테는 썩 좋은 물건이 없어....",
 
-	// Notifications strings
-	"notification.icon.inspect": "Love of Cooking 알림",
-	"notification.dismiss.inspect": "알림 해제",
-	"notification.empty.inspect": "모든 알림을 읽었다!",
-	"notification.bundlemultiplayerwarning.inspect": "마을회관 꾸러미 비활성화되었다.",
-	"notification.bundlemultiplayerwarning.message": "멀티 플레이어 게임에서 발생하는 문제를 방지하기 위해, 새로운 마을회관 번들은 당분간 객실이 있는 환경에서 사용할 수 없습니다!\n\n멀티 플레이어용 농장을 호스팅하는 경우, 부엌 꾸러미를 비활성화해야 합니다.\n\n싱글 플레이의 경우, OK버튼을 눌러 부엌 꾸러미 진행상황을 불러올 수 있습니다.\n\n\n\n이전에 저장된 부엌 꾸러미 진행상황을 불러오겠습니까?",
-	"notification.cabinbuiltwarning.inspect": "새 플레이어가 가입하기 전에 저장 다시 불러오기",
-	"notification.cabinbuiltwarning.message": "멀티 플레이어 게임에서 발생하는 문제를 방지하기 위해, 새로운 마을회관 번들은 당분간 객실이 있는 환경에서 사용할 수 없습니다!\n\n멀티 플레이어용 농장을 호스팅하는 경우, 새로 온 플레이어가 잠을 자고 하루를 마감한 후 저장을 다시 불러올 때까지 기다리도록 하십시오.\n\n요리 꾸러미 진행 상황이 저장되며, 그 후 농장주가 안전하게 가입할 수 있습니다. 단일 플레이어 게임에서도 새 꾸러미를 불러올 수 있습니다.!",
-	"menu.yes_option": "예",
-	"menu.no_option": "아니오",
-	"menu.accept_option": "승인",
-	"menu.decline_option": "거절",
-	"menu.cancel_option": "돌아가기",
-
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "부엌",
-	"world.community_centre.reward": "요리물품",
-	"world.community_centre.bundle.1": "제빵사의",
-	"world.community_centre.bundle.2": "식당의",
-	"world.community_centre.bundle.3": "소풍객의",
-	"world.community_centre.newjunimoline": "정말 고맙다모... 우리가 치워주겠다모.",
-
 	// Object names
 
 	// recipes

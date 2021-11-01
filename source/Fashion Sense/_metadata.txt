@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Floogen/FashionSense
+   Git: https://github.com/Floogen/FashionSense.git
+
+mods:
+   Fashion Sense
+
+latest commit:
+   commit 67b4538ea3d86691c237904993603beff765af1d
+   Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
+   Date:   Thu Oct 28 18:28:20 2021 -0500
+   
+       v1.0.1 released
+   

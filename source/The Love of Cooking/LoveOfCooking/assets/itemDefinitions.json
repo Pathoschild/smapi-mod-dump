@@ -49,23 +49,44 @@
 	"NettlesUsableLevel": [
 		"2"
 	],
-	"NettlesUsableMachines": [
-		"Keg"
+	"NettlesDamage": [
+		"5"
 	],
-	"NettlesHarvestingTools": [
-		"Axe"
+	"ShopDiscounts": [
+		"Saloon:35"
 	],
 	"RegenSkillModifiers": [
-		"Combat:0.02",
-		"Foraging:0.0012",
-		"Cooking:0.005",
-		"blueberry.LoveOfCooking.CookingSkill:0.005"
+		"Combat:0.025",
+		"Foraging:0.0025",
+		"Cooking:0.01",
+		"blueberry.LoveOfCooking.CookingSkill:0.01"
 	],
 	"BurnChanceBase": [
 		"0.22"
 	],
 	"BurnChancePerIngredient": [
 		"0.0035"
+	],
+	"CookingSkillExperienceGlobalScaling": [
+		"1.0"
+	],
+	"CookingSkillExperienceNewRecipeBonus": [
+		"34"
+	],
+	"CookingSkillExperienceDailyBonus": [
+		"12"
+	],
+	"CookingSkillExperienceIngredientsBaseValue": [
+		"1.0"
+	],
+	"CookingSkillExperienceIngredientsBonusScaling": [
+		"0.2"
+	],
+	"CookingSkillExperienceIngredientsFinalBaseValue": [
+		"5.0"
+	],
+	"CookingSkillExperienceIngredientsBonusFinalMultiplier": [
+		"4.0"
 	],
 	"FoodsThatGiveLeftovers": [
 		"Pizza",

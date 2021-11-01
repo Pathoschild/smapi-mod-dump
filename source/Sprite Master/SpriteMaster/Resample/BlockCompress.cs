@@ -22,10 +22,10 @@ namespace SpriteMaster.Resample {
 		// We set this to false if block compression fails, as we assume that for whatever reason nvtt does not work on that system.
 		private static bool BlockCompressionFunctional = true;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static void FlipColorBytes (byte[] p) {
-			var span = new Span<byte>(p).As<uint>();
-			foreach (int i in 0..span.Length) {
+			var span = new FixedSpan<byte>(p).As<uint>();
+			foreach (int i in 0.RangeTo(span.Length)) {
 				var color = span[i];
 				color =
 					(color & 0xFF000000U) |
@@ -36,7 +36,7 @@ namespace SpriteMaster.Resample {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static unsafe byte[] Compress (byte[] data, ref TextureFormat format, Vector2I dimensions, bool HasAlpha, bool IsPunchThroughAlpha, bool IsMasky, bool HasR, bool HasG, bool HasB) {
 			if (!BlockCompressionFunctional) {
 				return null;
@@ -104,7 +104,7 @@ namespace SpriteMaster.Resample {
 			return null;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static unsafe bool Compress (ref byte[] data, ref TextureFormat format, Vector2I dimensions, bool HasAlpha, bool IsPunchThroughAlpha, bool IsMasky, bool HasR, bool HasG, bool HasB) {
 			var oldFormat = format;
 
@@ -123,17 +123,17 @@ namespace SpriteMaster.Resample {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsBlockMultiple(int value) {
 			return (value % 4) == 0;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsBlockMultiple (uint value) {
 			return (value % 4) == 0;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsBlockMultiple (Vector2I value) {
 			return IsBlockMultiple(value.X) && IsBlockMultiple(value.Y);
 		}
@@ -303,9 +303,9 @@ namespace SpriteMaster.Resample {
 
 			switch (format) {
 				case SurfaceFormat.Dxt1: {
-					var blocks = data.AsSpan().As<ColorBlock>();
+					var blocks = data.AsFixedSpan().As<ColorBlock>();
 					var outData = new byte[width * height * sizeof(uint)];
-					var outDataPacked = outData.AsSpan().As<uint>();
+					var outDataPacked = outData.AsFixedSpan().As<uint>();
 					var widthBlocks = width / 4;
 
 					uint blockIndex = 0;
@@ -314,9 +314,9 @@ namespace SpriteMaster.Resample {
 						var xOffset = (uint)(index % widthBlocks) * 4;
 						var yOffset = (uint)(index / widthBlocks) * 4;
 
-						foreach (uint y in 0..4) {
+						foreach (uint y in 0.RangeTo(4)) {
 							var yOffsetInternal = yOffset + y;
-							foreach (uint x in 0..4) {
+							foreach (uint x in 0.RangeTo(4)) {
 								var xOffsetInternal = xOffset + x;
 								var offset = (yOffsetInternal * (uint)width) + xOffsetInternal;
 								outDataPacked[(int)offset] = block.GetColor(x, y) | 0xFF000000U;
@@ -327,9 +327,9 @@ namespace SpriteMaster.Resample {
 					return outData;
 				} break;
 				case SurfaceFormat.Dxt3: {
-					var blocks = data.AsSpan().As<ColorBlockDxt3>();
+					var blocks = data.AsFixedSpan().As<ColorBlockDxt3>();
 					var outData = new byte[width * height * sizeof(uint)];
-					var outDataPacked = outData.AsSpan().As<uint>();
+					var outDataPacked = outData.AsFixedSpan().As<uint>();
 					var widthBlocks = width / 4;
 
 					uint blockIndex = 0;
@@ -338,9 +338,9 @@ namespace SpriteMaster.Resample {
 						var xOffset = (uint)(index % widthBlocks) * 4;
 						var yOffset = (uint)(index / widthBlocks) * 4;
 
-						foreach (uint y in 0..4) {
+						foreach (uint y in 0.RangeTo(4)) {
 							var yOffsetInternal = yOffset + y;
-							foreach (uint x in 0..4) {
+							foreach (uint x in 0.RangeTo(4)) {
 								var xOffsetInternal = xOffset + x;
 								var offset = (yOffsetInternal * (uint)width) + xOffsetInternal;
 								outDataPacked[(int)offset] = block.GetColor(x, y);

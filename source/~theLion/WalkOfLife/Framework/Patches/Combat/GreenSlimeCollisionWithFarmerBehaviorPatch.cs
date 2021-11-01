@@ -8,13 +8,13 @@
 **
 *************************************************/
 
+using System;
+using System.Reflection;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
-using System;
-using System.Reflection;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -25,7 +25,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal GreenSlimeCollisionWithFarmerBehaviorPatch()
 		{
 			Original = typeof(GreenSlime).MethodNamed(nameof(GreenSlime.collisionWithFarmerBehavior));
-			Postfix = new HarmonyMethod(GetType(), nameof(GreenSlimeCollisionWithFarmerBehaviorPostfix));
+			Postfix = new(GetType(), nameof(GreenSlimeCollisionWithFarmerBehaviorPostfix));
 		}
 
 		#region harmony patches
@@ -37,7 +37,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			try
 			{
 				var who = __instance.Player;
-				if (!who.IsLocalPlayer || ModEntry.SuperModeIndex != Util.Professions.IndexOf("Piper") || ModEntry.SlimeContactTimer > 0) return;
+				if (!who.IsLocalPlayer || ModEntry.SuperModeIndex != Util.Professions.IndexOf("Piper") ||
+				    ModEntry.SlimeContactTimer > 0) return;
 
 				int healed;
 				if (ModEntry.IsSuperModeActive)
@@ -51,7 +52,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				}
 
 				who.health = Math.Min(who.health + healed, who.maxHealth);
-				__instance.currentLocation.debris.Add(new Debris(healed, new Vector2(who.getStandingX() + 8, who.getStandingY()), Color.Lime, 1f, who));
+				__instance.currentLocation.debris.Add(new(healed,
+					new(who.getStandingX() + 8, who.getStandingY()), Color.Lime, 1f, who));
 
 				if (!ModEntry.IsSuperModeActive) ModEntry.SuperModeCounter += Game1.random.Next(1, 10);
 
@@ -59,7 +61,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

@@ -1,0 +1,14 @@
+{
+	"BuildOnAllTerrainFeatures.Name": "모든 지형 건설",
+	"BuildOnAllTerrainFeatures.Description": "농작물, 나무 및 이와 유사한 물체 위에 건물을 배치하려면 이 항목을 체크 하십시오.\n\n주의: 건물을 배치할 때 해당 물체들은 즉시 삭제 됩니다!",
+	"BuildOnOtherBuildings.Name": "다른 건물에 건설",
+	"BuildOnOtherBuildings.Description": "이미 다른 건물이 포함된 타일에 건물을 배치하려면 이 항목을 체크 하십시오.",
+	"BuildOnWater.Name": "물 위에 건설",
+	"BuildOnWater.Description": "물 타일에 건물을 배치하려면 이 항목을 체크 하십시오.",
+	"BuildOnImpassableTiles.Name": "지나갈 수 없는 타일 위에 건설",
+	"BuildOnImpassableTiles.Description": "통과할 수 없는 타일에 건물을 배치하려면 이 항목을 체크 하십시오.\n\n절벽 및 기타 장애물",
+	"BuildOnNoFurnitureTiles.Name": "\"NoFurniture\"타일 위에 건설",
+	"BuildOnNoFurnitureTiles.Description": "\"NoFurniture\" 속성이 있는 타일에 건물을 배치하려면 이 항목을 체크 하십시오.",
+	"BuildOnCaveAndShippingZones.Name": "동굴 및 배송 지역에 건설",
+	"BuildOnCaveAndShippingZones.Description": "이미 설정된 동굴 입구 및 배송 상자 영역의 타일에 건물을 배치하려면 이 항목을 체크 하십시오.",
+}

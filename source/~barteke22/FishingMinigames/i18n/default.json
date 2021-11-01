@@ -16,6 +16,8 @@
 
     "GenericMC.Volume": "Voice Volume",
     "GenericMC.VolumeDesc": "Allows fine-tuning of the \"Here Fishy!\" max volume. The actual volume increases a bit with fishing level, starting at 80% of this value. After Saving a preview of the volume at fishing level 10 (98% of max volume, 11-15 make up the last 2%) will play.",
+    "GenericMC.VoiceType": "Voice Type",
+    "GenericMC.VoiceTypeDesc": "Changes the base type of your \"Here Fishy!\" voice. If you select a .wav file that other players don't have, they won't be able to hear you. You can scroll the list while it's open with the mouse wheel, or touchpad. \"Silent\" disables your voice. Save to preview.",
     "GenericMC.Pitch": "Voice Pitch",
     "GenericMC.PitchDesc": "Changes the pitch of your \"Here Fishy!\" voice. Starts randomized for multiplayer diversity. The original is right in the middle. Save to preview.",
 
@@ -28,7 +30,7 @@
     "GenericMC.StartMinigameStyle": "Minigame Style (Start)",
     "GenericMC.StartMinigameStyleDesc": "This minigame determines whether you catch the fish at all\n (non-fish catches skip this part), and contributes to total score. \nDDR Arrows: The classic rhythm game where you match\n arrow directions with your Movement buttons as they reach a specific area. \nMinigame2: WIP \nMinigame3: WIP",
     "GenericMC.StartMinigameStyle1": "DDR Arrows",
-    "GenericMC.StartMinigameStyle2": "todo",
+    "GenericMC.StartMinigameStyle2": "Hangman",
     "GenericMC.StartMinigameStyle3": "todo",
 
     "GenericMC.EndMinigameStyle": "Minigame Style (End)",

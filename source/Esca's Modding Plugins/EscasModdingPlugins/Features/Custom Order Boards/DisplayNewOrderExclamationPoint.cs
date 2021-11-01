@@ -9,21 +9,13 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using xTile;
-using xTile.Tiles;
-using xTile.ObjectModel;
-using xTile.Format;
-using xTile.Display;
-using xTile.Dimensions;
 using xTile.Layers;
-using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace EscasModdingPlugins
 {

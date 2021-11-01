@@ -41,7 +41,7 @@ namespace SpriteMaster.Metadata {
 
 		public bool ScaleValid = true;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void PurgeDataCache() {
 			if (!Config.MemoryCache.Enabled) {
 				return;
@@ -61,7 +61,7 @@ namespace SpriteMaster.Metadata {
 		private readonly WeakReference<byte[]> _CachedData = (Config.MemoryCache.Enabled) ? new WeakReference<byte[]>(null) : null;
 
 		public bool HasCachedData {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				if (!Config.MemoryCache.Enabled)
 					return false;
@@ -72,7 +72,7 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public unsafe void Purge (Texture2D reference, Bounds? bounds, DataRef<byte> data) {
 			using (Lock.Exclusive) {
 				if (data.IsNull) {
@@ -90,17 +90,17 @@ namespace SpriteMaster.Metadata {
 						forcePurge = true;
 					}
 					else if (!bounds.HasValue && data.Offset == 0 && data.Length == refSize) {
-						Debug.TraceLn("Overriding MTexture2D Cache in Purge");
+						Debug.TraceLn($"Overriding MTexture2D '{reference.SafeName()}' Cache in Purge: {bounds.HasValue}, {data.Offset}, {data.Length}");
 						CachedData = data.Data;
 					}
 					// TODO : This doesn't update the compressed cache.
 					else if (!bounds.HasValue && CachedData is var currentData && currentData != null) {
-						Debug.TraceLn("Updating MTexture2D Cache in Purge");
+						Debug.TraceLn($"Updating MTexture2D '{reference.SafeName()}' Cache in Purge: {bounds.HasValue}, {currentData}");
 						var byteSpan = data.Data;
 						using (DataCacheLock.Exclusive) {
 							/*using (Lock.Exclusive)*/ {
 								var untilOffset = Math.Min(currentData.Length - data.Offset, data.Length);
-								foreach (int i in 0..untilOffset) {
+								foreach (int i in 0.RangeTo(untilOffset)) {
 									currentData[i + data.Offset] = byteSpan[i];
 								}
 								Hash = Hashing.Default;
@@ -109,7 +109,7 @@ namespace SpriteMaster.Metadata {
 						}
 					}
 					else {
-						Debug.TraceLn("Forcing full MTexture2D Purge");
+						Debug.TraceLn($"Forcing full MTexture2D '{reference.SafeName()}' Purge");
 						forcePurge = true;
 					}
 				}
@@ -125,7 +125,7 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private bool CheckUpdateToken(ulong referenceToken) {
 			using (Lock.Shared) {
 				return UpdateToken == referenceToken;
@@ -135,7 +135,7 @@ namespace SpriteMaster.Metadata {
 		public static readonly byte[] BlockedSentinel = new byte[1] { 0xFF };
 
 		public byte[] CachedDataNonBlocking {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				if (!Config.MemoryCache.Enabled)
 					return null;
@@ -182,7 +182,7 @@ namespace SpriteMaster.Metadata {
 		}
 
 		public byte[] CachedData {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				if (!Config.MemoryCache.Enabled)
 					return null;
@@ -196,7 +196,7 @@ namespace SpriteMaster.Metadata {
 								using (Lock.Promote) {
 									int count = CompressorCount;
 									if (count > 0) {
-										foreach (int i in 0..count) {
+										foreach (int i in 0.RangeTo(count)) {
 											CompressionSemaphore.WaitOne();
 										}
 										CompressionSemaphore.Release(count);
@@ -220,7 +220,7 @@ namespace SpriteMaster.Metadata {
 					return target;
 				}
 			}
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set {
 				try {
 					CachedDataLength = (value != null) ? value.Length : -1;
@@ -299,12 +299,12 @@ namespace SpriteMaster.Metadata {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void UpdateLastAccess() {
 			LastAccessFrame = DrawState.CurrentFrame;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public ulong GetHash(SpriteInfo info) {
 			using (Lock.Shared) {
 				ulong hash = Hash;

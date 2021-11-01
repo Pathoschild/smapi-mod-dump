@@ -8,12 +8,13 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using StardewModdingAPI;
+using StardewValley;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -24,14 +25,18 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal FarmerTakeDamagePatch()
 		{
 			Original = typeof(Farmer).MethodNamed(nameof(Farmer.takeDamage));
-			Transpiler = new HarmonyMethod(GetType(), nameof(FarmerTakeDamageTranspiler));
+			Transpiler = new(GetType(), nameof(FarmerTakeDamageTranspiler));
 		}
 
 		#region harmony patches
 
-		/// <summary>Patch to make Poacher untargetable during super mode + increment Brute Fury for damage taken + add Brute super mode immortality.</summary>
+		/// <summary>
+		///     Patch to make Poacher untargetable during super mode + increment Brute Fury for damage taken + add Brute super
+		///     mode immortality.
+		/// </summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> FarmerTakeDamageTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+		private static IEnumerable<CodeInstruction> FarmerTakeDamageTranspiler(
+			IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -71,7 +76,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Poacher untargetability during super mode.\nHelper returned {ex}");
+				Log($"Failed while adding Poacher untargetability during super mode.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 
@@ -117,7 +122,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Brute super mode immortality.\nHelper returned {ex}");
+				Log($"Failed while adding Brute super mode immortality.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 
@@ -153,7 +158,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Brute Fury counter for damage taken.\nHelper returned {ex}");
+				Log($"Failed while adding Brute Fury counter for damage taken.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

@@ -8,12 +8,13 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
@@ -23,14 +24,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal ProfessionsCheatSetProfessionPatch()
 		{
 			Original = AccessTools.Method("CJBCheatsMenu.Framework.Cheats.Skills.ProfessionsCheat:SetProfession");
-			Transpiler = new HarmonyMethod(GetType(), nameof(ProfessionsCheatSetProfessionTranspiler));
+			Transpiler = new(GetType(), nameof(ProfessionsCheatSetProfessionTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to move bonus health from Defender to Brute.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> ProfessionsCheatSetProfessionTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> ProfessionsCheatSetProfessionTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -47,7 +49,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while moving CJB Profession Cheat health bonus from Defender to Brute.\nHelper returned {ex}");
+				Log(
+					$"Failed while moving CJB Profession Cheat health bonus from Defender to Brute.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

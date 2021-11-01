@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9976
+IDs: DecidedlyHuman.GiveMeMyCursorBack
+update keys: Nexus:9976, GitHub:DecidedlyHuman/GiveMeMyCursorBack

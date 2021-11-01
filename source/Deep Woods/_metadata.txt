@@ -6,15 +6,12 @@ mods:
    Deep Woods
 
 latest commit:
-   commit e8884bdac26fee01a515c0b1dee25788b03d174a
-   Author: maxvollmer <maxvollmer@users.noreply.github.com>
-   Date:   Thu Sep 23 14:38:30 2021 +0200
+   commit dca1c77ae84f76d15544f1d4228b655a6c60573a
+   Merge: e8884bd 9209fb4
+   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
+   Date:   Fri Oct 8 09:17:52 2021 +0200
    
-       * Updated for NET5.0 and SDV1.5.5 (64bit)
-       * Gingerbread house textures for winter and rest of year were switched
-       * Removed external nuget package, instead DeepWoodsModAPI is now included here
-       * Improved luck check for excalibur sword
-       * Added more monsters
-       * Added new and improved settings
-       * Made all classes public for better compatibility with other mods
+       Merge pull request #12 from chibranche/main
+       
+       fr translation : Finished translation
    

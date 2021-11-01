@@ -31,8 +31,12 @@ The fish size and quality is determined by the combined score of Start and End m
     VoiceVolume: 0-100 (100)
 	Allows fine-tuning of the "Here Fishy!" max volume. The actual volume increases a bit with fishing level, starting at 80% of this value.
 
+    VoiceType: "" ("TTS Brian") - per screen
+    	Changes the base type of your "Here Fishy!" voice. If you select a .wav file that other players don't have, they won't be able to hear you.
+	You can scroll the list while it's open with the mouse wheel, or touchpad. "Silent" disables your voice
+
     VoicePitch: -100-100 (random) - per screen
-	Changes the pitch of your "Here Fishy!" voice. Starts randomized for multiplayer diversity. The original is right in the middle (0).
+	Changes the pitch of your "Here Fishy!" voice. Starts randomized for multiplayer diversity. The original is 0.
 
     KeyBinds: "" ("MouseLeft, Space, ControllerX") - per screen
 	Button(s) used to trigger the minigame. If the same as Tool Use buttons, the Vanilla Fishing Minigame will be overwritten by this.

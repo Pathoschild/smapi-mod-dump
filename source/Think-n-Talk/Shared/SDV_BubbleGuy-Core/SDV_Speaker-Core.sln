@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_Speaker-Core", "SDV_Speaker-Core.shproj", "{0E0DEC22-18D8-42C8-B627-C430123CC26B}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SDV_Speaker-Core.projitems*{0e0dec22-18d8-42c8-b627-c430123cc26b}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2D5CA22C-4AE0-4A1B-8808-6F43B85A3B72}
+	EndGlobalSection
+EndGlobal

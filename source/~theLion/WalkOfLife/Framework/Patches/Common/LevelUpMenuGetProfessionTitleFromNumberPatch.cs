@@ -24,7 +24,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal LevelUpMenuGetProfessionTitleFromNumberPatch()
 		{
 			Original = typeof(LevelUpMenu).MethodNamed(nameof(LevelUpMenu.getProfessionTitleFromNumber));
-			Prefix = new HarmonyMethod(GetType(), nameof(LevelUpMenuGetProfessionTitleFromNumberPrefix));
+			Prefix = new(GetType(), nameof(LevelUpMenuGetProfessionTitleFromNumberPrefix));
 		}
 
 		#region harmony patches
@@ -37,12 +37,13 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				if (!Util.Professions.IndexByName.Contains(whichProfession)) return true; // run original logic
 
-				__result = ModEntry.ModHelper.Translation.Get(Util.Professions.NameOf(whichProfession) + ".name." + (Game1.player.IsMale ? "male" : "female"));
+				__result = ModEntry.ModHelper.Translation.Get(Util.Professions.NameOf(whichProfession) + ".name." +
+															  (Game1.player.IsMale ? "male" : "female"));
 				return false; // don't run original logic
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

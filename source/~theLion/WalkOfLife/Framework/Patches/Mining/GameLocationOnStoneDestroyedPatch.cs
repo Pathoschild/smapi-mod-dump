@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -24,14 +25,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal GameLocationOnStoneDestroyedPatch()
 		{
 			Original = typeof(GameLocation).MethodNamed(nameof(GameLocation.OnStoneDestroyed));
-			Transpiler = new HarmonyMethod(GetType(), nameof(GameLocationOnStoneDestroyedTranspiler));
+			Transpiler = new(GetType(), nameof(GameLocationOnStoneDestroyedTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to remove Prospector double coal chance.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> GameLocationOnStoneDestroyedTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> GameLocationOnStoneDestroyedTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -49,7 +51,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
+				Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

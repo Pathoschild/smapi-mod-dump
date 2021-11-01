@@ -115,7 +115,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
 
             var instanceName = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(__instance)}").ToLower();
             var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}".ToLower();
-            if (__instance is Pet pet && pet.modData["AlternativeTextureName"].ToLower() != instanceName && pet.modData["AlternativeTextureName"].ToLower() != instanceSeasonName)
+            if (__instance is Pet pet && !String.Equals(pet.modData["AlternativeTextureName"], instanceName, StringComparison.OrdinalIgnoreCase) && !String.Equals(pet.modData["AlternativeTextureName"], instanceSeasonName, StringComparison.OrdinalIgnoreCase))
             {
                 pet.modData["AlternativeTextureName"] = String.Concat(pet.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(pet)}");
                 if (pet.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]))

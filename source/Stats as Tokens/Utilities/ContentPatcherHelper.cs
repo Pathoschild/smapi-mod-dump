@@ -80,6 +80,9 @@ namespace StatsAsTokens
 			RegisterToken("MonstersKilled", new MonstersKilledToken());
 			RegisterToken("FoodEaten", new FoodEatenToken());
 			RegisterToken("TreesFelled", new TreesFelledToken());
+			RegisterToken("AnimalNames", new AnimalsOwnedToken("name"));
+			RegisterToken("AnimalAges", new AnimalsOwnedToken("age"));
+			RegisterToken("AnimalTypes", new AnimalsOwnedToken("type"));
 		}
 
 		public static void RegisterToken(string name, object token)

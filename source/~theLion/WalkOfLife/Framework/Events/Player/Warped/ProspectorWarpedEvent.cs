@@ -16,12 +16,15 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public class ProspectorWarpedEvent : WarpedEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void OnWarped(object sender, WarpedEventArgs e)
 		{
 			if (!e.IsLocalPlayer) return;
-			if (ModEntry.ProspectorHunt.TreasureTile != null) ModEntry.ProspectorHunt.End();
-			if (Game1.CurrentEvent == null && e.NewLocation is MineShaft) ModEntry.ProspectorHunt.TryStartNewHunt(e.NewLocation);
+
+			ModEntry.ProspectorHunt ??= new();
+			if (ModEntry.ProspectorHunt.TreasureTile is not null) ModEntry.ProspectorHunt.End();
+			if (Game1.CurrentEvent is null && e.NewLocation is MineShaft)
+				ModEntry.ProspectorHunt.TryStartNewHunt(e.NewLocation);
 		}
 	}
 }

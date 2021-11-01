@@ -41,7 +41,7 @@
             "Height": 46
           },
           "Inhabitants": "Jeric",
-          "Text": "Blooming Hill Farm"
+          "Text": "{{i18n:RSV.Map.Text.BloomingHillFarm}}"
         },
         "JericCoop": {
           "Area": {
@@ -51,7 +51,7 @@
             "Height": 48
           },
           "Inhabitants": "A:Brown Chicken/A:White Chicken/A:White Chicken/A:Brown Chicken",
-          "Text": "Jeric's Chicken Coop"
+          "Text": "{{i18n:RSV.Map.Text.JericChickens}}"
         },
         "Heaps": {
           "Area": {
@@ -61,7 +61,7 @@
             "Height": 69
           },
           "Inhabitants": "Lorenzo/Shanice/Anton/Kiarra",
-          "Text": "Heaps Convenience Store"
+          "Text": "{{i18n:RSV.Map.Text.Heaps}}"
         },
         "Daniels": {
           "Area": {
@@ -71,7 +71,7 @@
             "Height": 58
           },
           "Inhabitants": "Corine/Ezekiel/Helen",
-          "Text": "Daniels Residence"
+          "Text": "{{i18n:RSV.Map.Text.Daniels}}"
         },
         "Pickens": {
           "Area": {
@@ -81,7 +81,7 @@
             "Height": 44
           },
           "Inhabitants": "Maddie",
-          "Text": "Pickens Residence"
+          "Text": "{{i18n:RSV.Map.Text.Pickens}}"
         },
         "LogCabinHotel": {
           "Area": {
@@ -91,7 +91,7 @@
             "Height": 71
           },
           "Inhabitants": "Richard/Ysabelle/Flor/Philip",
-          "Text": "Log Cabin Hotel"
+          "Text": "{{i18n:RSV.Map.Text.LogCabinHotel}}"
         },
         "OddJobs": {
           "Area": {
@@ -101,7 +101,7 @@
             "Height": 56
           },
           "Inhabitants": "Ian/Sean",
-          "Text": "Odd Jobs"
+          "Text": "{{i18n:RSV.Map.Text.OddJobs}}"
         },
         "VillageOffice": {
           "Area": {
@@ -111,7 +111,7 @@
             "Height": 50
           },
           "Inhabitants": "Lenny",
-          "Text": "Village Office"
+          "Text": "{{i18n:RSV.Map.Text.VillageOffice}}"
         },
         "Clinic": {
           "Area": {
@@ -121,7 +121,7 @@
             "Height": 51
           },
           "Inhabitants": "Paula",
-          "Text": "Ridgeside Clinic"
+          "Text": "{{i18n:RSV.Map.Text.Clinic}}"
         },
         "Kobayashi": {
           "Area": {
@@ -131,7 +131,7 @@
             "Height": 47
           },
           "Inhabitants": "Shiro/Yuuma/Naomi",
-          "Text": " Kobayashi Residence"
+          "Text": " {{i18n:RSV.Map.Text.Kobayashi}}"
         },
         "Amethyne": {
           "Area": {
@@ -141,7 +141,7 @@
             "Height": 92
           },
           "Inhabitants": "Maive/Zayne/Ariah/Louie/Sonny/Irene",
-          "Text": "Amethyne Mansion       "
+          "Text": "{{i18n:RSV.Map.Text.Amethyne}}"
         },
         "Yojeong": {
           "Area": {
@@ -151,7 +151,7 @@
             "Height": 52
           },
           "Inhabitants": "Faye",
-          "Text": "Yojeong Residence and Clothing Shop"
+          "Text": "{{i18n:RSV.Map.Text.Yojeong}}"
         },
         "Akina": {
           "Area": {
@@ -161,7 +161,7 @@
             "Height": 42
           },
           "Inhabitants": "Pika/Keahi",
-          "Text": "Akina Residence"
+          "Text": "{{i18n:RSV.Map.Text.Akina}}"
         },
         "Rivera": {
           "Area": {
@@ -171,7 +171,7 @@
             "Height": 52
           },
           "Inhabitants": "Carmen/Blair",
-          "Text": "Rivera Residence"
+          "Text": "{{i18n:RSV.Map.Text.Rivera}}"
         },
         "Bladebane": {
           "Area": {
@@ -181,16 +181,16 @@
             "Height": 44
           },
           "Inhabitants": "Freddie/Lola",
-          "Text": "Bladebane Residence"
+          "Text": "{{i18n:RSV.Map.Text.Bladebane}}"
         },
-        "LolaCabin": {
+        "LolaShed": {
           "Area": {
             "X": 20,
             "Y": 200,
             "Width": 40,
             "Height": 44
           },
-          "Text": "Lola's Cabin"
+          "Text": "{{i18n:RSV.Map.Text.LolaShed}}"
         },
         "Nightingale": {
           "Area": {
@@ -200,7 +200,7 @@
             "Height": 72
           },
           "Inhabitants": "Alissa/Kimpoi/Malaya",
-          "Text": "Nightingale Orchard"
+          "Text": "{{i18n:RSV.Map.Text.Nightingale}}"
         },
         "Liden": {
           "Area": {
@@ -210,7 +210,7 @@
             "Height": 50
           },
           "Inhabitants": "Bert/Olga/Trinnie",
-          "Text": "Lidens Residence"
+          "Text": "{{i18n:RSV.Map.Text.Lidens}}"
         },
         "WaterResearch": {
           "Area": {
@@ -220,7 +220,7 @@
             "Height": 90
           },
           "Inhabitants": "Aguar",
-          "Text": "Water Research Facility"
+          "Text": "{{i18n:RSV.Map.Text.WaterResearch}}"
         },
         "GreenHouse": {
           "Area": {
@@ -229,7 +229,7 @@
             "Width": 64,
             "Height": 58
           },
-          "Text": "Community Greenhouse"
+          "Text": "{{i18n:RSV.Map.Text.CommunityGreenhouse}}"
         },
         "Pikas": {
           "Area": {
@@ -238,7 +238,7 @@
             "Width": 64,
             "Height": 48
           },
-          "Text": "Pika's Restaurant"
+          "Text": "{{i18n:RSV.Map.Text.Pikas}}"
         },
         "Stage": {
           "Area": {
@@ -247,7 +247,7 @@
             "Width": 86,
             "Height": 70
           },
-          "Text": "Starbound Stage"
+          "Text": "{{i18n:RSV.Map.Text.Starbound}}"
         }
       }
     },
@@ -265,7 +265,7 @@
             "Width": 179,
             "Height": 65
           },
-          "Text": "Ridge Forest"
+          "Text": "{{i18n:RSV.Map.Text.RidgeForest}}"
         },
 
         "Ridge": {
@@ -276,7 +276,7 @@
             "Height": 86
           },
           "Inhabitants": "Jio/Kiwi/Daia/Bliss",
-          "Text": "Ridge"
+          "Text": "{{i18n:RSV.Map.Text.Ridge}}"
         },
 
         "RidgeFalls": {
@@ -286,7 +286,7 @@
             "Width": 144,
             "Height": 126
           },
-          "Text": "Ridge Falls"
+          "Text": "{{i18n:RSV.Map.Text.RidgeFalls}}"
         },
 
         "BloomingHill": {
@@ -297,7 +297,7 @@
             "Height": 134
           },
           "Inhabitants": "Jeric",
-          "Text": "Blooming Hill Farm"
+          "Text": "{{i18n:RSV.Map.Text.BloomingHillFarm}}"
         },
 
         "Heaps": {
@@ -308,7 +308,7 @@
             "Height": 64
           },
           "Inhabitants": "Lorenzo/Shanice/Anton/Kiarra",
-          "Text": "Heaps Convenience Store"
+          "Text": "{{i18n:RSV.Map.Text.Heaps}}"
         },
 
         "Daniels": {
@@ -319,7 +319,7 @@
             "Height": 45
           },
           "Inhabitants": "Ezekiel/Corine/Helen",
-          "Text": "Daniels Residence"
+          "Text": "{{i18n:RSV.Map.Text.Daniels}}"
         },
 
         "LogCabinHotel": {
@@ -330,7 +330,7 @@
             "Height": 72
           },
           "Inhabitants": "Richard/Ysabelle/Flor/Philip",
-          "Text": "Log Cabin Hotel"
+          "Text": "{{i18n:RSV.Map.Text.LogCabinHotel}}"
         },
 
         "OddJobs": {
@@ -341,7 +341,7 @@
             "Height": 48
           },
           "Inhabitants": "Ian/Sean",
-          "Text": "Odd Jobs"
+          "Text": "{{i18n:RSV.Map.Text.OddJobs}}"
         },
 
         "Pickens": {
@@ -352,7 +352,7 @@
             "Height": 37
           },
           "Inhabitants": "Maddie",
-          "Text": "Pickens Residence"
+          "Text": "{{i18n:RSV.Map.Text.Pickens}}"
         },
 
         "CableCar": {
@@ -362,7 +362,7 @@
             "Width": 42,
             "Height": 32
           },
-          "Text": "Cable Car to Pelican Town"
+          "Text": "{{i18n:RSV.Map.Text.CableCar}}"
         },
 
         "Electrician": {
@@ -373,7 +373,7 @@
             "Height": 34
           },
           "Inhabitants": "Kenneth",
-          "Text": "Electrician's House"
+          "Text": "{{i18n:RSV.Map.Text.Electrician}}"
         },
 
         "Hike": {
@@ -384,7 +384,7 @@
             "Height": 237
           },
           "Inhabitants": "Undreya/Pipo/Sari/Acorn",
-          "Text": "Hike trail"
+          "Text": "{{i18n:RSV.Map.Text.Hike}}"
         },
 
         "Starbound": {
@@ -394,7 +394,7 @@
             "Width": 75,
             "Height": 64
           },
-          "Text": "Starbound Stage"
+          "Text": "{{i18n:RSV.Map.Text.Starbound}}"
         },
 
         "Pikas": {
@@ -404,7 +404,7 @@
             "Width": 57,
             "Height": 45
           },
-          "Text": "Pika's Outdoor Restaurant"
+          "Text": "{{i18n:RSV.Map.Text.Pikas}}"
         },
 
         "VillageOffice": {
@@ -415,7 +415,7 @@
             "Height": 56
           },
           "Inhabitants": "Lenny",
-          "Text": "Village Office"
+          "Text": "{{i18n:RSV.Map.Text.VillageOffice}}"
         },
 
         "Clinic": {
@@ -426,7 +426,7 @@
             "Height": 41
           },
           "Inhabitants": "Paula",
-          "Text": "Ridgeside Clinic"
+          "Text": "{{i18n:RSV.Map.Text.Clinic}}"
         },
 
         "Kobayashi": {
@@ -437,7 +437,7 @@
             "Height": 45
           },
           "Inhabitants": "Shiro/Yuuma/Naomi",
-          "Text": "Kobayashi Residence"
+          "Text": "{{i18n:RSV.Map.Text.Kobayashi}}"
         },
 
         "Amethyne": {
@@ -448,7 +448,7 @@
             "Height": 92
           },
           "Inhabitants": "Maive/Zayne/Ariah/Louie/Sonny/Irene",
-          "Text": "Amethyne Mansion"
+          "Text": "{{i18n:RSV.Map.Text.Amethyne}}"
         },
 
         "Yojeong": {
@@ -459,7 +459,7 @@
             "Height": 42
           },
           "Inhabitants": "Faye",
-          "Text": "Yojeong Residence and Clothing Store"
+          "Text": "{{i18n:RSV.Map.Text.Yojeong}}"
         },
 
         "Community": {
@@ -469,7 +469,7 @@
             "Width": 53,
             "Height": 45
           },
-          "Text": "Community Greenhouse"
+          "Text": "{{i18n:RSV.Map.Text.CommunityGreenhouse}}"
         },
 
         "Akina": {
@@ -480,7 +480,7 @@
             "Height": 39
           },
           "Inhabitants": "Pika/Keahi",
-          "Text": "Akina Residence"
+          "Text": "{{i18n:RSV.Map.Text.Akina}}"
         },
 
         "Rivera": {
@@ -491,7 +491,7 @@
             "Height": 45
           },
           "Inhabitants": "Carmen/Blair",
-          "Text": "Rivera Residence"
+          "Text": "{{i18n:RSV.Map.Text.Rivera}}"
         },
 
         "LolaShed": {
@@ -501,7 +501,7 @@
             "Width": 42,
             "Height": 40
           },
-          "Text": "Lola's Shed"
+          "Text": "{{i18n:RSV.Map.Text.LolaShed}}"
         },
 
         "Bladebane": {
@@ -512,7 +512,7 @@
             "Height": 39
           },
           "Inhabitants": "Freddie/Lola",
-          "Text": "Bladebane Residence"
+          "Text": "{{i18n:RSV.Map.Text.Bladebane}}"
         },
 
         "Nightingale": {
@@ -523,7 +523,7 @@
             "Height": 166
           },
           "Inhabitants": "Kimpoi/Malaya/Alissa",
-          "Text": "Nightingale Orchard"
+          "Text": "{{i18n:RSV.Map.Text.Nightingale}}"
         },
 
         "Lidens": {
@@ -534,7 +534,7 @@
             "Height": 68
           },
           "Inhabitants": "Bert/Olga/Trinnie",
-          "Text": "Lidens Residence"
+          "Text": "{{i18n:RSV.Map.Text.Lidens}}"
         },
 
         "WaterResearch": {
@@ -545,7 +545,7 @@
             "Height": 89
           },
           "Inhabitants": "Aguar",
-          "Text": "Water Research Facility"
+          "Text": "{{i18n:RSV.Map.Text.WaterResearch}}"
         },
 
         "ExtraRSV": {
@@ -555,7 +555,7 @@
             "Width": 5,
             "Height": 5
           },
-          "Text": "Raf's Hiding Spot"
+          "Text": "{{i18n:RSV.Map.Text.RafIsHungryAndSleepDeprived}}"
         },
 
       }

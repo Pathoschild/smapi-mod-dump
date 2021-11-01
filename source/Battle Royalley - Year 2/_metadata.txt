@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tylergibbs2/BattleRoyalley-Year2
+   Git: https://github.com/tylergibbs2/BattleRoyalley-Year2.git
+
+mods:
+   Battle Royalley - Year 2
+
+latest commit:
+   commit 45c0d486a5d506afbd8232855a8f4f2ea4adcf18
+   Author: Tyler <gibbstyler7@gmail.com>
+   Date:   Fri Oct 15 20:48:50 2021 -0500
+   
+       slows down storm on island north
+   

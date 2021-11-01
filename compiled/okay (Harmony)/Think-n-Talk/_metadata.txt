@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9546
+IDs: prism99.thinkntalk
+update keys: Nexus:9546, GitHub:Prism-99/Think-n-Talk

@@ -20,13 +20,13 @@ namespace SpriteMaster.Harmonize.Patches {
 	[SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
 	internal static class Cleanup {
-		[Harmonize("~GraphicsResource", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last, platform: HarmonizeAttribute.Platform.Windows)]
+		[Harmonize("~GraphicsResource", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last, platform: HarmonizeAttribute.Platform.XNA)]
 		private static void Finalize (GraphicsResource __instance) {
 			FinalizePost(__instance);
 		}
 
 		private static readonly ThreadLocal<object> CurrentFinalizer = new ThreadLocal<object>();
-		[Harmonize("Finalize", HarmonizeAttribute.Fixation.Prefix, PriorityLevel.First, platform: HarmonizeAttribute.Platform.Windows)]
+		[Harmonize("Finalize", HarmonizeAttribute.Fixation.Prefix, PriorityLevel.First, platform: HarmonizeAttribute.Platform.All)]
 		private static bool FinalizePre (object __instance) {
 			try {
 				return (CurrentFinalizer.Value != __instance);
@@ -34,7 +34,7 @@ namespace SpriteMaster.Harmonize.Patches {
 			catch (ObjectDisposedException) { return true; }
 		}
 
-		[Harmonize("Finalize", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last, platform: HarmonizeAttribute.Platform.Windows)]
+		[Harmonize("Finalize", HarmonizeAttribute.Fixation.Postfix, PriorityLevel.Last, platform: HarmonizeAttribute.Platform.All)]
 		private static void FinalizePost (object __instance) {
 			try {
 				if (CurrentFinalizer.Value == __instance) {

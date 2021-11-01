@@ -25,7 +25,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 		private const bool Continue = true;
 		private const bool Stop = false;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static bool Cleanup (this ref Bounds sourceRectangle, Texture2D reference) {
 			if (Config.ClampInvalidBounds) {
 				sourceRectangle = sourceRectangle.ClampTo(new Bounds(reference.Width, reference.Height));
@@ -35,7 +35,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			return !sourceRectangle.Degenerate;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static bool FetchScaledTexture (
 			this Texture2D reference,
 			uint expectedScale,
@@ -92,12 +92,12 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			return null;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static bool Validate(this ManagedTexture2D @this) {
 			return @this?.IsDisposed == false;
 		}
 
-		[Conditional("DEBUG"), MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[Conditional("DEBUG"), MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static void Validate (this in Rectangle sourceRect, Texture2D reference) {
 			Bounds source = sourceRect;
 			if (source.Left < 0 || source.Top < 0 || source.Right >= reference.Width || source.Bottom >= reference.Height) {
@@ -109,7 +109,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static bool IsWater(in Bounds bounds, Texture2D texture) {
 			if (bounds.Right <= 640 && bounds.Top >= 2000 && texture.SafeName() == "LooseSprites/Cursors") {
 				return true;
@@ -117,7 +117,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			return false;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static void GetDrawParameters(Texture2D texture, in Rectangle? source, out Bounds bounds, out float scaleFactor) {
 			texture.Meta().UpdateLastAccess();
 			var sourceRectangle = source.GetValueOrDefault(new Rectangle(0, 0, texture.Width, texture.Height));
@@ -219,7 +219,7 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch {
 			return Continue;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool OnDraw (
 			this SpriteBatch @this,
 			ref Texture2D texture,

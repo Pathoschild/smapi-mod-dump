@@ -20,7 +20,7 @@ namespace CommonHarmony
         private readonly Assembly _assembly;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyPatch"/> class.
+        ///     Initializes a new instance of the <see cref="AssemblyPatch" /> class.
         /// </summary>
         /// <param name="name"></param>
         public AssemblyPatch(string name)
@@ -29,7 +29,7 @@ namespace CommonHarmony
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AssemblyPatch"/> class.
+        ///     Initializes a new instance of the <see cref="AssemblyPatch" /> class.
         /// </summary>
         /// <param name="matcher"></param>
         public AssemblyPatch(Func<Assembly, bool> matcher)

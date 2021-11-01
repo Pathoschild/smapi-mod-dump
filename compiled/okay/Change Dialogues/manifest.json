@@ -1,7 +1,7 @@
 {
   "Name": "ChangeDialogues",
   "Author": "mardrest",
-  "Version": "2.2.2",
+  "Version": "2.2.6",
   "Description": "Replaces the character sprites and dialogues",
   "UniqueID": "mardrest.ChangeDialogues",
   "EntryDll": "ChangeDialogues.dll",

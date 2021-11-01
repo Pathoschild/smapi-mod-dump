@@ -18,7 +18,8 @@
     "GenericMC.MapChairsDesc": "Małżonkowie których nie ma na tej liście, mogą próbować usiąść na dowolnym\n siedzeniu mapy (na którym może usiąść gracz) patrząc w dół (na południe).\n Ze względu na brak Sprite'ów siedzenia, może to w niektórych przypadkach wyglądać trochę głupio.\n Jeśli czas nie zmieni się naturalnie z 8:20 na 8:30 (przeskok czasu),\n małżonek może utknąć przy krześle na resztę dnia.\n\nTa czarna lista wyłączy to zachowanie dla wymienionych profili.\n Prawidłowe wpisy: All (wszystkie) lub listę nazw profili (np. Default, Sam).",
 
     "GenericMC.SpouseRoomTile": "Auto: Kafelka Zwrotu",
-    "GenericMC.SpouseRoomTileDesc": "'Interesujący' kafelek używany przez Automatykę do określenia,\n gdzie małżonek będzie spoglądał kiedy nie siedzi.\n Domyślnie jest to kafelek 1.1 na lewo od spawn-pointu.\n Profil sebastianFrog jest specjalnym przypadkiem,\n ponieważ spawn-point Sebastiana zmienia się nieco po pewnym zdarzeniu\n - 'interesujący' kafelek w jego pokoju znajduje się wtedy pośrodku.",
+    "GenericMC.SpouseRoomTileDesc": "'Interesujący' kafelek używany przez Automatykę do określenia,\n gdzie małżonek będzie spoglądał kiedy nie siedzi.\n Domyślnie jest to kafelek 1.1 na lewo od spawn-pointu.",
+    "GenericMC.SpouseRoomTileDesc2": "Profil sebastianFrog jest specjalnym przypadkiem,\n ponieważ spawn-point Sebastiana zmienia się nieco po pewnym zdarzeniu\n - 'interesujący' kafelek w jego pokoju znajduje się wtedy pośrodku.",
 
     "GenericMC.Manual": "Tryb Ręczny",
     "GenericMC.Hover": "Najedź dla info", //: Instrukcje //: Kuchnia itp.
@@ -28,7 +29,8 @@
     "GenericMC.InstructionsDesc": "Default jest używany przez wszystkich małżonków bez nazwanego profilu.\n Używa twojego głównego małżonka (lub Emily) do Podglądu.\n Kliknij imię, aby dodać jego profil. Kliknij je ponownie, aby dodać kolejny wpis do jego listy. Kliknij wpis, aby go edytować.\n Jeśli profil ma wiele wpisów, wybiera losowo jeden każdego dnia.\n Zielone wpisy są prawidłowe, a czerwone nie (będą zresetowane), wpisy z z przesunięciem o -999,-999 są ignorowane.\n Jeśli najedziesz kursorem na wpis/profil i naciśniesz Ctrl + X, zostanie on usunięty.\n\nPrawidłowy wpis: 1 Sprite (lub Sekwencja Sprite'ów) / Przesunięcie Kafelka\n 1 Sprite:         Up/Down/Left/Right lub określony SpriteIndex (np. 20). Patio ma ekstra info w tym przypadku.\n Sekwencja:      Oddzielona przecinkami lista SpriteIndex:Sekundy (:f po SpriteIndex obraca go).\n Przesunięcie:   / x, y kafelka przesuwa się względem jej normalnej pozycji, np.: / 0, 2.5\n\nTrzy przykłady wpisów (spacje między symbolami są ignorowane):\n 2 / 1,1\n 0:1, 4:1, 8:2.5, 12:0.5 / 1, 1.5\n 40:f:0.5, 41:0.5, 42:f:1 / 0,0",
 
     "GenericMC.SpouseRoomManual": "Pokój Małżonka",
-    "GenericMC.SpouseRoomManualDesc": "Gdy małżonek pojawia się na standardowym kafelku pokoju małżonka.\n Profil sebastianFrog jest specjalnym przypadkiem, ponieważ spawn-point\n Sebastiana zmienia się nieco po pewnym zdarzeniu.\n Ręczne przesunięcie kafelka nie ogranicza go do ich pokoju i\n umożliwia przesunięcie lokalizacji w dowolne miejsce w domu.",
+    "GenericMC.SpouseRoomManualDesc": "Gdy małżonek pojawia się na standardowym kafelku pokoju małżonka.\n Ręczne przesunięcie kafelka nie ogranicza go do ich pokoju i\n umożliwia przesunięcie lokalizacji w dowolne miejsce w domu.",
+    "GenericMC.SpouseRoomManualDesc2": "Profil sebastianFrog jest specjalnym przypadkiem, ponieważ spawn-point\n Sebastiana zmienia się nieco po pewnym zdarzeniu.",
     "GenericMC.Kitchen": "Kuchnia",
     "GenericMC.KitchenDesc": "Gdy małżonek pojawia się na standardowym kafelku w kuchni.\n Ręczne przesunięcie kafelka nie ogranicza go do kuchni i pozwala na przesunięcie lokalizacji w dowolne miejsce w domu.",
     "GenericMC.Patio": "Patio",

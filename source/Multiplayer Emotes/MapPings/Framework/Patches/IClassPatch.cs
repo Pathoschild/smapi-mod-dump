@@ -9,7 +9,7 @@
 *************************************************/
 
 
-using Harmony;
+using HarmonyLib;
 using System.Reflection;
 
 namespace MapPings.Framework.Patches {
@@ -22,8 +22,8 @@ namespace MapPings.Framework.Patches {
 		MethodInfo Postfix { get; }
 		MethodInfo Transpiler { get; }
 
-		void Register(HarmonyInstance harmony);
-		void Remove(HarmonyInstance harmony, HarmonyPatchType patchType = HarmonyPatchType.All);
+		void Register(Harmony harmony);
+		void Remove(Harmony harmony, HarmonyPatchType patchType = HarmonyPatchType.All);
 
 	}
 

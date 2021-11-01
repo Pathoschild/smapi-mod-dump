@@ -58,11 +58,11 @@ namespace SpriteMaster.Types {
 		public ulong Packed;
 
 
-		public int Width { [MethodImpl(MethodImplOptions.AggressiveInlining)] readonly get => X; [MethodImpl(MethodImplOptions.AggressiveInlining)] set { X = value; } }
-		public int Height { [MethodImpl(MethodImplOptions.AggressiveInlining)] readonly get => Y; [MethodImpl(MethodImplOptions.AggressiveInlining)] set { Y = value; } }
+		public int Width { [MethodImpl(Runtime.MethodImpl.Optimize)] readonly get => X; [MethodImpl(Runtime.MethodImpl.Optimize)] set { X = value; } }
+		public int Height { [MethodImpl(Runtime.MethodImpl.Optimize)] readonly get => Y; [MethodImpl(Runtime.MethodImpl.Optimize)] set { Y = value; } }
 
 		public int this[int index] {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			readonly get {
 #if DEBUG
 				if (index < 0 || index >= 2) {
@@ -71,7 +71,7 @@ namespace SpriteMaster.Types {
 #endif
 				return Value[index];
 			}
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			set {
 #if DEBUG
 				if (index < 0 || index >= 2) {
@@ -89,335 +89,335 @@ namespace SpriteMaster.Types {
 		public readonly int MinOf => Math.Min(X, Y);
 		public readonly int MaxOf => Math.Max(X, Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (ulong Packed) : this() => this.Packed = Packed;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I From (ulong Packed) => new Vector2I(Packed: Packed);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (int X, int Y) : this() {
 			this.X = X;
 			this.Y = Y;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I From (int X, int Y) => new Vector2I(X, Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (int Value) : this(Value, Value) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I From (int Value) => new Vector2I(Value);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (in Vector2 Vector, bool Round = true) : this(Round ? Vector.NearestInt() : Vector.TruncateInt()) {}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (Vector2I vec) : this(vec.Packed) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (DrawingPoint v) : this(v.X, v.Y) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (XNAPoint v) : this(v.X, v.Y) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (XTilePoint v) : this(v.X, v.Y) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (DrawingSize v) : this(v.Width, v.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (XTileSize v) : this(v.Width, v.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (Microsoft.Xna.Framework.Graphics.Texture2D tex) : this(tex.Width, tex.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I (System.Drawing.Bitmap bmp) : this(bmp.Width, bmp.Height) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (int x, int y) {
 			X = x;
 			Y = y;
 			return this;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (int v) => Set(v, v);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (Vector2I vec) {
 			Packed = vec.Packed;
 			return this;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (DrawingPoint vec) => Set(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (XNAPoint vec) => Set(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (XTilePoint vec) => Set(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (DrawingSize vec) => Set(vec.Width, vec.Height);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Vector2I Set (XTileSize vec) => Set(vec.Width, vec.Height);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator DrawingPoint (Vector2I vec) => new DrawingPoint(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator XNAPoint (Vector2I vec) => new XNAPoint(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator XTilePoint (Vector2I vec) => new XTilePoint(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator DrawingSize (Vector2I vec) => new DrawingSize(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator XTileSize (Vector2I vec) => new XTileSize(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Vector2 (Vector2I vec) => new Vector2(vec.X, vec.Y);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Vector2I (DrawingPoint vec) => new Vector2I(vec);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Vector2I (XNAPoint vec) => new Vector2I(vec);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Vector2I (XTilePoint vec) => new Vector2I(vec);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Vector2I (DrawingSize vec) => new Vector2I(vec);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Vector2I (XTileSize vec) => new Vector2I(vec);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator Bounds (Vector2I vec) => new Bounds(vec);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Min () => new Vector2I(Math.Min(X, Y));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Max () => new Vector2I(Math.Max(X, Y));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Min (Vector2I v) => new Vector2I(
 			Math.Min(X, v.X),
 			Math.Min(Y, v.Y)
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Max (Vector2I v) => new Vector2I(
 			Math.Max(X, v.X),
 			Math.Max(Y, v.Y)
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Clamp (Vector2I min, Vector2I max) => new Vector2I(
 			X.Clamp(min.X, max.X),
 			Y.Clamp(min.Y, max.Y)
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Min (int v) => new Vector2I(
 			Math.Min(X, v),
 			Math.Min(Y, v)
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Max (int v) => new Vector2I(
 			Math.Max(X, v),
 			Math.Max(Y, v)
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Clamp (int min, int max) => new Vector2I(
 			X.Clamp(min, max),
 			Y.Clamp(min, max)
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly Vector2I Clone () => this;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		readonly object ICloneable.Clone () => this;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator + (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X + rhs.X,
 			lhs.Y + rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator - (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X - rhs.X,
 			lhs.Y - rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator * (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X * rhs.X,
 			lhs.Y * rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator / (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X / rhs.X,
 			lhs.Y / rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator % (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X % rhs.X,
 			lhs.Y % rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator & (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X & rhs.X,
 			lhs.Y & rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator | (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X | rhs.X,
 			lhs.Y | rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator ^ (Vector2I lhs, Vector2I rhs) => new Vector2I(
 			lhs.X ^ rhs.X,
 			lhs.Y ^ rhs.Y
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator + (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X + rhs,
 			lhs.Y + rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator - (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X - rhs,
 			lhs.Y - rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator * (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X * rhs,
 			lhs.Y * rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator / (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X / rhs,
 			lhs.Y / rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator % (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X % rhs,
 			lhs.Y % rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator & (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X & rhs,
 			lhs.Y & rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator | (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X | rhs,
 			lhs.Y | rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator ^ (Vector2I lhs, int rhs) => new Vector2I(
 			lhs.X ^ rhs,
 			lhs.Y ^ rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator + (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X + (int)rhs,
 			lhs.Y + (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator - (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X - (int)rhs,
 			lhs.Y - (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator * (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X * (int)rhs,
 			lhs.Y * (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator / (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X / (int)rhs,
 			lhs.Y / (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator % (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X % (int)rhs,
 			lhs.Y % (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator & (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X & (int)rhs,
 			lhs.Y & (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator | (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X | (int)rhs,
 			lhs.Y | (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I operator ^ (Vector2I lhs, uint rhs) => new Vector2I(
 			lhs.X ^ (int)rhs,
 			lhs.Y ^ (int)rhs
 		);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public override readonly string ToString () => $"{{{X}, {Y}}}";
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (Vector2I other) => Packed.CompareTo(other.Packed);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (DrawingPoint other) => CompareTo((Vector2I)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (XNAPoint other) => CompareTo((Vector2I)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (XTilePoint other) => CompareTo((Vector2I)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (DrawingSize other) => CompareTo((Vector2I)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly int CompareTo (XTileSize other) => CompareTo((Vector2I)other);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		readonly int IComparable.CompareTo (object other) => other switch {
 			Vector2I vec => CompareTo(vec),
 			DrawingPoint vec => CompareTo(vec),
@@ -429,10 +429,10 @@ namespace SpriteMaster.Types {
 		};
 
 		// C# GetHashCode on all integer primitives, even longs, just returns it truncated to an int.
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly override int GetHashCode () => unchecked((int)Hash.Combine(X.GetHashCode(), Y.GetHashCode()));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly override bool Equals (object other) => other switch {
 			Vector2I vec => Equals(vec),
 			DrawingPoint vec => Equals(vec),
@@ -443,105 +443,105 @@ namespace SpriteMaster.Types {
 			_ => throw new ArgumentException(),
 		};
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (Vector2I other) => Packed == other.Packed;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (DrawingPoint other) => this == (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (XNAPoint other) => this == (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (XTilePoint other) => this == (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (DrawingSize other) => this == (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (XTileSize other) => this == (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (Vector2I other) => Packed != other.Packed;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (DrawingPoint other) => this != (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (XNAPoint other) => this != (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (XTilePoint other) => this != (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (DrawingSize other) => this != (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool NotEquals (XTileSize other) => this != (Vector2I)other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (Vector2I lhs, Vector2I rhs) => lhs.Packed == rhs.Packed;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (Vector2I lhs, Vector2I rhs) => lhs.Packed != rhs.Packed;
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (Vector2I lhs, DrawingPoint rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (Vector2I lhs, DrawingPoint rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (DrawingPoint lhs, Vector2I rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (DrawingPoint lhs, Vector2I rhs) => rhs.NotEquals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (Vector2I lhs, XNAPoint rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (Vector2I lhs, XNAPoint rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (XNAPoint lhs, Vector2I rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (XNAPoint lhs, Vector2I rhs) => rhs.NotEquals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (Vector2I lhs, XTilePoint rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (Vector2I lhs, XTilePoint rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (XTilePoint lhs, Vector2I rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (XTilePoint lhs, Vector2I rhs) => rhs.NotEquals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (Vector2I lhs, DrawingSize rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (Vector2I lhs, DrawingSize rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (DrawingSize lhs, Vector2I rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (DrawingSize lhs, Vector2I rhs) => rhs.NotEquals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (Vector2I lhs, XTileSize rhs) => lhs.Equals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (in Vector2I lhs, XTileSize rhs) => lhs.NotEquals(rhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (XTileSize lhs, Vector2I rhs) => rhs.Equals(lhs);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (XTileSize lhs, Vector2I rhs) => rhs.NotEquals(lhs);
 	}
 }

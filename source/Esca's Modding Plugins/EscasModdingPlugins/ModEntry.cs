@@ -27,7 +27,7 @@ namespace EscasModdingPlugins
             AssetHelper.Initialize(helper);
             TileData.Monitor = Monitor;
 
-            //apply patches, enable events and console commands
+            //initialize Harmony and mod features
             Harmony harmony = new Harmony(ModManifest.UniqueID);
 
             //fish locations
@@ -37,6 +37,17 @@ namespace EscasModdingPlugins
             HarmonyPatch_CustomOrderBoards.ApplyPatch(harmony, Monitor);
             DisplayNewOrderExclamationPoint.Enable(helper, Monitor);
             Command_CustomBoard.Enable(helper, Monitor);
+
+            //destroyable bushes
+            HarmonyPatch_DestroyableBushes.ApplyPatch(harmony, Monitor);
+
+            //bed placement
+            HarmonyPatch_BedPlacement.ApplyPatch(harmony, Monitor);
+            HarmonyPatch_PassOutSafely.ApplyPatch(harmony, Monitor);
+
+            //kitchen features
+            HarmonyPatch_ActionKitchen.ApplyPatch(harmony, Monitor);
+            HarmonyPatch_AllowMiniFridges.ApplyPatch(harmony, Monitor);
         }
 
         /************************/
@@ -45,5 +56,14 @@ namespace EscasModdingPlugins
 
         public bool CanLoad<T>(IAssetInfo asset) => AssetHelper.CanLoad<T>(asset); //use AssetHelper
         public T Load<T>(IAssetInfo asset) => AssetHelper.Load<T>(asset); //use AssetHelper
+
+        /**************/
+        /* API method */
+        /**************/
+
+        /// <summary>Generates an API instance for another SMAPI mod.</summary>
+        /// <remarks>See <see cref="IEmpApi"/> for documentation.</remarks>
+        /// <returns>A new API instance.</returns>
+        public override object GetApi() => new EmpApi();
     }
 }

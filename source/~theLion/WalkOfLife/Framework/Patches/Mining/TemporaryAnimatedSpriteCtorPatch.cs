@@ -24,8 +24,12 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal TemporaryAnimatedSpriteCtorPatch()
 		{
-			Original = typeof(TemporaryAnimatedSprite).Constructor(new[] { typeof(int), typeof(float), typeof(int), typeof(int), typeof(Vector2), typeof(bool), typeof(bool), typeof(GameLocation), typeof(Farmer) });
-			Postfix = new HarmonyMethod(GetType(), nameof(TemporaryAnimatedSpriteCtorPostfix));
+			Original = typeof(TemporaryAnimatedSprite).Constructor(new[]
+			{
+				typeof(int), typeof(float), typeof(int), typeof(int), typeof(Vector2), typeof(bool), typeof(bool),
+				typeof(GameLocation), typeof(Farmer)
+			});
+			Postfix = new(GetType(), nameof(TemporaryAnimatedSpriteCtorPostfix));
 		}
 
 		#region harmony patches
@@ -40,7 +44,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

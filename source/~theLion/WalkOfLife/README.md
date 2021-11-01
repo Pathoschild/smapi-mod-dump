@@ -9,15 +9,13 @@ for queries and analysis.**
 <table align="center"><tr><td align="center" width="9999">
 
 <!-- LOGO, TITLE, DESCRIPTION -->
+![](https://gitlab.com/theLion/smapi-mods/-/raw/master/WalkOfLife/title_2.png)
+# A Professions Overhaul
 ![](https://stardewcommunitywiki.com/mediawiki/images/8/82/Farming_Skill_Icon.png)
 ![](https://stardewcommunitywiki.com/mediawiki/images/2/2f/Mining_Skill_Icon.png)
 ![](https://stardewcommunitywiki.com/mediawiki/images/f/f1/Foraging_Skill_Icon.png)
 ![](https://stardewcommunitywiki.com/mediawiki/images/e/e7/Fishing_Skill_Icon.png)
 ![](https://stardewcommunitywiki.com/mediawiki/images/c/cf/Combat_Skill_Icon.png)
-
-# Walk Of Life
-
-**A Professions Overhaul**
 
 <br/>
 
@@ -36,9 +34,11 @@ for queries and analysis.**
         <li><a href="#combat">Combat</a></li>
       </ul>
     </li>
-    <li><a href="#compatibility">Compatbility</a></li>
-    <li><a href="#recommended-mods">Recommended Mods</a></li>
+    <li><a href="#compatibility">Compatibility</a></li>
     <li><a href="#installation">Installation</a></li>
+	<li><a href="#configs">Configs</a></li>
+    <li><a href="#console-commands">Console Commands</a></li>
+    <li><a href="#recommended-mods">Recommended Mods</a></li>
     <li><a href="#special-thanks">Special Thanks</a></li>
     <li><a href="#license">License</a></li>
   </ol>
@@ -88,7 +88,8 @@ Ever wondered why there aren't any profession overhaul mods on the Nexus? Me too
 - **Lv10 - Ecologist** - Wild berries restore 50% more health and energy. Progressively identify forage of higher quality.
     - All foraged items will have the same deterministic quality. This immediate gives inventory convenience. However the quality will start off at silver, and progress to iridium when enough items have been foraged. Applies to Mushroom Boxes, but only if the cave owner (i.e. the host player) has the profession.
 - **Lv10 - Scavenger** - Location of forageable items revealed. Occasionally detect buried treasure.
-    - On switching maps while outside you will occasionally detect hidden buried treasure. Find it and dig it up (with a hoe) within the time limit to obtain your reward. The larger your win streak the better your odds of obtaining rare items. _Bonus: hold LeftShift (or LeftShoulder on gamepad) to reveal all forageables on-screen._
+    - On switching maps while outside you will occasionally detect hidden buried treasure. Find it and dig it up (with a hoe) within the time limit to obtain your reward. The larger your win streak the better your odds of obtaining rare items.
+    - _Bonus: holding [ModKey](#configs) will highlight all forageables on-screen._
 - **Lv5 - Lumberjack** - Felled trees yield 25% more wood.
     - _Unchanged effect from vanilla. Only the name is changed._
 - **Lv10 - Arborist** - All trees grow faster and can drop hardwood.
@@ -103,7 +104,8 @@ Ever wondered why there aren't any profession overhaul mods on the Nexus? Me too
 - **Lv10 - Spelunker** - Chance to find ladders and shafts increases by 1% every mine level. +1 speed every 10 levels.
     - Bonus ladder chance resets every time you leave the mines. **This includes taking the stairs back to the mine entrance.**
 - **Lv10 - Prospector** - Location of ladders and mining nodes revealed. Occasionally detect rocks with valuable minerals.
-    - Analogous to Scavenger. Tracks any mining nodes or mineral forages off-screen with a yellow pointer, and any ladders or shafts with a green pointer. On entering a new mine floor you will occasionally detect stones with prospective treasure. Find the stone and break it within the time limit to obtain a reward. The larger your win streak the better your odds of obtaining rare items. _Bonus: hold LeftShift to highlight nodes and ladders on-screen._
+    - Analogous to Scavenger. Tracks any mining nodes or mineral forages off-screen with a yellow pointer, and any ladders or shafts with a green pointer. On entering a new mine floor you will occasionally detect stones with prospective treasure. Find the stone and break it within the time limit to obtain a reward. The larger your win streak the better your odds of obtaining rare items.
+    - _Bonus: holding [ModKey](#configs) will highlight all nodes and ladders on-screen._
 - **Lv5 - Blaster** - Bombs are cheaper to craft. Exploded rocks yield twice as much coal.
     - New recipe: x2 ore (copper, iron, gold) and x1 coal.
 - **Lv10 - Demolitionist** - Bomb radius +1. Exploded rocks yield 20% more resources.
@@ -137,46 +139,42 @@ The combat tree has received a much more extensive overhaul. Each level 10 profe
 - **Lv5 - Fighter** - Damage +10%. +15 HP.
     - _Unchanged from vanilla._
 - **Lv10 - Brute** - Damage +15%. +25 HP. Build fury in combat, further increasing damage.
-    - Damage bonus caps at +40%. If wielding a club the cap is 60%. Also gain up to 50% cooldown reduction to club smash attack.
-    - **Undying Rage:** Doubles all damage bonuses. Immune to passing out.
-        - Doubles damage bonus from all sources, including profession, rings and enchantments.
-- **Lv10 - Bushwhacker** - +10% crit. chance. Crit. strikes are deadlier at low HP and build chance to poach an item on hit.
-    - Crit. Power increases up to x2 at 10% HP. Monsters can only be poached once. Also gain upto 50% cooldown reduction to dagger quick-stab attack.
-    - **Ambuscade:** Become invisible and untargetable. Back stabs cause lethal damage.
-		- Missing a back stab will cancel the status and reveal your position once again.
+    - **Fury:**
+        - Damage bonus caps at +40%. If wielding a club the cap is 60%.
+        - Additionally builds up to 50% cooldown reduction on club smash attack.
+    - Unleash all pent-up fury to enter an **Undying Rage:** Doubles all damage bonuses. Immune to passing out.
+        - Doubled damage bonuses include all sources, such as professions, rings and enchantments.
+- **Lv10 - Bushwhacker** - +10% crit. chance. Crit. strikes can poach items. Your blood cools in battle, increasing lethality of crit. strikes.
+    - Monsters can only be poached once.
+    - **Cold Blood:**
+        - Crit. power bonus caps at x3.
+        - Additionally builds up to 50% cooldown reduction on dagger quick-stab attack.
+    - Your cold blood masks your presence, allowing you to mount an **Ambuscade:** Become invisible and untargetable. Back stabs are deadly.
+		- Failing to assassinate an enemy will make them aware of your position, canceling the effect.
 - **Lv 5 - Rascal** - Slingshots deal up to 50% more damage from afar. 60% chance to recover spent ammo.
-- **Lv10 - Desperado** - 35% ammo damage modifier. Ranged hits build chance to perform a double shot.
-    - Better ammo will gain a much higher damage bonus. Also reduce slingshot pull-back time by up to 50% (requires hold-to-charge mode).
-    - **Death Blossom:** Enable auto-reload. Fire in eight directions at once.
-- **Lv10 - Slimed Piper** - Slimes damage other enemies. Slime drops improve for every Slime raised on the farm. Increase spawned Slimes in dungeons.
+    - In Vanilla, slingshots are unable to hit enemies that are near the Farmer. As a way to improve slingshot combat, this mod also removes the grace period before a shot is allowed to deal damage. All professions are affected.
+    -_Bonus: holding [ModKey](#configs) will fire a trick shot, which is weaker but will bounce off walls._
+- **Lv10 - Desperado** - Chance to fire a double shot, increasing at lower HP. Projectile power increases with built-up temerity.
+    - **Temerity:**
+        - Projectiles are fired with gradually increasing velocity. Higher velocity projectiles have several properties:
+            - Increased knockback (up to 1.5x).
+            - Chance to pierce through enemies (up to 25%).
+            - Increased hitbox, by affecting the air around them, damaging nearby enemies even if they miss (up to 50% on either side).
+        - Additionally builds slingshot pull-back time reduction up to 50% (requires hold-to-charge mode).
+    - Your temerity culminates in one final desperate **Death Blossom:** Enables auto-reload. Fire eight shots around you at once.
+- **Lv10 - Slimed Piper** - Slimes damage other enemies and drop more items the more Slimes are raised on the farm. Gathered eubstance attracts more Slimes in dungeons.
     - Slimes cannot damage flying enemies.
-    - Each Slime raised on the farm, either in a hutch or outside, increase the chance for Slimes to drop additional items.
-    - Every dungeon floor can spawn up to 11 additional Slimes, based on the Super Mode meter.
-    - The Piper will recover 1 HP on contact with Slimes. **This does not negate Slime damage. A Slime Charmer ring is still required.**
-    - **Superfluidity:** Cause Slimes to grow up to twice their size. Large enough Slimes break into smaller Slimes when defeated.
+    - Each Slime raised on the farm, either in a hutch or outside, increases the chance for Slimes to drop additional items.
+    - Pipers are immune to the Slimed debuff.
+    - Pipers recover 1 HP on contact with Slimes. **This does not negate Slime damage. A Slime Charmer ring is still required.**
+    - **Eubstance:**
+        - Every dungeon floor can spawn up to 11 additional Slimes.
+        - Additionally increases the attack frequency of Slimes up to +15%.
+    - Spread all gathered Eubstance to nearby Slimes, allowing them to enter a state of **Superfluidity:** Engorge and empower nearby Slimes.
+        - Causes Slimes to grow up to twice their size and gain a proportional damage boost.
+        - Healed amount reflects the Slime's actual damage.
+        - Large enough Slimes can hit flying enemies, and break into smaller Slimes if defeated.
         - Low chance to convert Slimes to a special variant. If "Prismatic Jelly" special order is active, low chance to convert Slimes to prismatic variant.
-        - Giant Slimes can hit flying enemies.
-        - Also increases healed amount based on the Slime's actual damage.
-
-## Console Commands
-
-The mod provides the following console commands, which you can enter in the SMAPI console for testing, checking or cheating:
-
-- **player_checkprofessions** - List the player's current professions.
-- **player_addprofessions** - Add the specified professions to the local player.
-- **player_resetprofessions** - Reset all skills and professions for the local player.
-- **player_setultmeter** - Set the super mode meter to the desired value.
-- **player_readyult** - Max-out the super mode meter.
-- **player_maxanimalfriendship** - Max-out the friendship of all owned animals, which affects their sale value as Breeder.
-- **player_maxanimalmood** - Max-out the mood of all owned animals, which affects production frequency as Producer.
-- **player_getfishaudit** - Check your fishing progress and bonus fish value as Angler.
-- **wol_checkdata** - Check current value of all mod data fields (ItemsForaged, MineralsCollected, ProspectorStreak, ScavengerStreak, WaterTrashCollectedThisSeason, ActiveTaxBonusPercent.
-- **wol_setitemsforaged** - Set a new value for ItemsForaged field, which determines the quality of items foraged as Ecologist.
-- **wol_setmineralscollected** - Set a new value for MineralsCollected field, which determines the quality of minerals mines as Gemologist.
-- **wol_setprospectorstreak** - Set a new value for ProspectorStreak field.
-- **wol_setscavengerstreak** - Set a new value for ScavengerStreak field.
-- **wol_settrashcollected** - Set a new value for WaterTrashCollectedThisSeason field, which determines your tax bracket the following season as Conservationist.
-- **wol_checkevents** - List currently subscribed mod events (for debugging).
 
 ## Compatbility
 
@@ -185,10 +183,10 @@ The mod is compatible with the following popular mods:
 - [Automate](https://www.nexusmods.com/stardewvalley/mods/1063) (for craftable machines, the machine's owner's professions will apply; for terrain features, i.e. berry bushes, only the session host's professions will apply)
 - [CJB Cheats Menu] (https://www.nexusmods.com/stardewvalley/mods/4) (you will have to manually change that mod's localization file to fix incorrect profession names, if you care about that)
 - [Multi Yield Crops](https://www.nexusmods.com/stardewvalley/mods/6069)
+- Custom SpaceCore skills (e.g. [Luck](https://www.nexusmods.com/stardewvalley/mods/521), [Magic](https://www.nexusmods.com/stardewvalley/mods/2007)) or [Love Of Cooking](https://www.nexusmods.com/stardewvalley/mods/6830))
 - [Capstone Professions](https://www.nexusmods.com/stardewvalley/mods/7636)
 - [All Professions](https://www.nexusmods.com/stardewvalley/mods/174) (profession perks will not be applied immediately, but the following morning)
 - [Skill Prestige](https://www.nexusmods.com/stardewvalley/mods/569#) (same as above; the Prestige menu also won't reflect modded profession names or descriptions)
-- Any mod that adds SpaceCore custom skills (e.g. [Love Of Cooking](https://www.nexusmods.com/stardewvalley/mods/6830))
 
 The mod is not compatible with the following mods:
 
@@ -197,12 +195,6 @@ The mod is not compatible with the following mods:
 - [Quality Artisan Products](https://www.moddrop.com/stardew-valley/mods/707502-quality-artisan-products) and [Quality Artisan Products for Artisan Valley](https://www.moddrop.com/stardew-valley/mods/726947-quality-artisan-products-for-artisan-valley) (won't break anything, but makes Artisan profession redundant; all features are already included). 
 - [Forage Fantasy](https://www.nexusmods.com/stardewvalley/mods/7554) (mushroom box quality is already included; other features may cause bad interactions with foraging professions).
 
-## Recommended Mods
-
-- Recommended use with [Advanced Casks](https://www.nexusmods.com/stardewvalley/mods/8413) (if you miss Oenologist profession perk).
-- Recommended use with [Artisan Valley](https://www.nexusmods.com/stardewvalley/mods/1926) (add variety to Artisan products and Producer).
-- Recommended use with [Slime Produce](https://www.nexusmods.com/stardewvalley/mods/7634) (make Slime ranching more interesting and profitable).
-
 ## Installation
 
 - You can install this mod on an existing save; all perks will be retroactively applied upon loading a saved game.
@@ -210,12 +202,70 @@ The mod is not compatible with the following mods:
 - To update make sure to delete the old version first and only then install the new version.
 - There are no dependencies outside of SMAPI.
 
+## Configs
+
+While the vast majority of professions bonuses are non-configurable, some of the more radical changes have been given configuration options to give the user some degree of control. As such the mod provides the following config options, which can be modified either in-game via Generic Mod Config Menu or by manually editing the configs.json file:
+
+- **Modkey** (keybind) - The Prospector and Scavenger professions use this key to reveal the locations of key objects currently on the screen. If playing on a large screen with wide field of view, this can help locate forageables of mine nodes in large or busy maps. The default key is LeftShift for keyboards and LeftShoulder for controllers.
+- **SuperModeKey** (keybind) - This is the key that activates Super Mode for level 10 combat professions. By default this is the same key as Modkey, but can also be set to a different key.
+- **HoldKeyToActivateSuperMode** (boolean) - If set to true, then Super Mode will be activated after holding the above key for a short amount of time. If set to false, then Super Mode will activate immediately upon pressing the key. This is settings is useful if SuperModeKey is set to a key already bound to a different on-press action, such as if keeping the default keybind settings for Modkey and SuperModeKey which will allowing tracking on-screen items without activating Super Mode. Default value is true. 
+- **SuperModeActivationDelay** (decimal) - If HoldKeyToActivateSuperMode is set to true, this represents the number of seconds between pressing SuperModeKey and activating Super Mode. Set to a higher value if you use Prospector profession and find yourself accidentally wasting your Super Mode in the Mines.
+- **SuperModeDrainFactor** (integer) - Determines how quickly the Super Mode resource bar drains during Super Mode. This number represents the amount of game update ticks between each tick of the Super Mode resource bar. The default value is 3, which means that 1 point is deduced every 3 / 60 = 0.05 seconds, giving a total Super Mode duration of 0.05 * 500 = 25 seconds. 
+- **ForagesNeededForBestQuality** (integer) - Determines the number of items foraged from the ground, bushes or mushroom boxes, required to reach permanent iridium-quality forage as an Ecologist. Default is 500.
+- **MineralsNeededForBestQuality** (integer) - As above. Determines the number of minerals (gems or foraged minerals) mined or collected from geode crushers or crystalariums, required to reach permanent iridium-quality minerals as a Gemologist. Default it 500.
+- **ChanceToStartTreasureHunt** (decimal) - The percent chance of triggering a treasure hunt when entering a new map as Prospector or Scavenger. Note that this only affects that chance the game will try to start a treasure hunt, and the actual chance is slightly lower as the game might fail to choose a valid treasure tile. Increase this value if you don't see enough treasure hunts, or decrease it if you find treasure hunts cumbersome and don't want to lose your streak. Default is 0.2 (20%).
+- **TreasureHuntHandicap** (decimal) - This number multiplies the treasure hunt time limit. Increase this number if you find that treasure hunts end too quickly.
+- **TreasureDetectionDistance** (decimal) - Represents the minimum number of adjacent tiles between the player and the treasure tile before the treasure tile will be revealed by a floating arrow. Increase this value is you find treasure hunts too difficult. Default is 3.
+- **TrashNeededPerTaxLevel** (integer) - Represents the number of trash items the Conservationist must collect in order to gain a 1% tax deduction the following season. Use this value to balance your game if you use or don't use Automate. Default is 100.
+- **TrashNeededPerFriendshipPoint** (integer) - Represents the number of trash items the Conservationist must collect in order to gain 1 point of friendship towards all villagers. Default is 100.
+- **TaxDeductionCeiling** (decimal) - Represents the maximum allowed tax deduction by the Ferngill Revenue Service. Set this to a sensible value to avoid breaking your game. Default is 0.25 (25% bonus value on every item).
+- **EnableILCodeExport** (boolean) - If during launch you see red text in SMAPI that looks like this: "Failed to patch _____", then enabling this setting will create a '.cil' file in the mod folder for every patching error. This is mostly to help myself fix patching bugs, but submitting this along with your SMAPI log in a bug report can be very helpful.
+
+## Console Commands
+
+The mod provides the following console commands, which you can enter in the SMAPI console for testing, checking or cheating:
+
+- **player_checkprofessions** - List the player's current professions.
+- **player_addprofessions** - Add the specified professions to the local player.
+- **player_resetprofessions** - Reset all skills and professions for the local player.
+- **setultmeter** - Set the super mode meter to the desired value.
+- **readyult** - Max-out the super mode meter.
+- **registersupermode** - Change the currently registered Super Mode profession.
+- **maxanimalfriendship** - Max-out the friendship of all owned animals, which affects their sale value as Breeder.
+- **maxanimalmood** - Max-out the mood of all owned animals, which affects production frequency as Producer.
+- **checkfishingprogress** - Check your fishing progress and bonus fish value as Angler.
+- **checkdata** - Check current value of all mod data fields (ItemsForaged, MineralsCollected, ProspectorStreak, ScavengerStreak, WaterTrashCollectedThisSeason, ActiveTaxBonusPercent).
+- **setitemsforaged** - Set a new value for ItemsForaged field, which determines the quality of items foraged as Ecologist.
+- **setmineralscollected** - Set a new value for MineralsCollected field, which determines the quality of minerals mines as Gemologist.
+- **setprospectorstreak** - Set a new value for ProspectorStreak field.
+- **setscavengerstreak** - Set a new value for ScavengerStreak field.
+- **settrashcollected** - Set a new value for WaterTrashCollectedThisSeason field, which determines your tax bracket the following season as Conservationist.
+- **checkevents** - List currently subscribed mod events (for debugging).
+
+## Recommended Mods
+
+- [Advanced Casks](https://www.nexusmods.com/stardewvalley/mods/8413) (if you miss Oenologist profession perk).
+- [Artisan Valley](https://www.nexusmods.com/stardewvalley/mods/1926) (add variety to Artisan products and Producer).
+- [Slime Produce](https://www.nexusmods.com/stardewvalley/mods/7634) (make Slime ranching more interesting and profitable).
+- [Ostrich Mayo and Golden Mayo](https://www.nexusmods.com/stardewvalley/mods/7660) (better consistency between Ostrich and Golden eggs for Artisan profession).
+
 ## Special Thanks
 
 - [Bpendragon](https://www.nexusmods.com/stardewvalley/users/20668164) for [Forage Pointers](https://www.nexusmods.com/stardewvalley/mods/7781).
 - [IllogicalMoodSwing](https://forums.nexusmods.com/index.php?/user/38784845-illogicalmoodswing/) for [Profession Icons Redone](https://www.nexusmods.com/stardewvalley/mods/4163).
+- Himetarts for the title logo.
 - [Pathoschild](https://www.nexusmods.com/stardewvalley/users/1552317) for SMAPI support.
 - **ConcernedApe** for Stardew Valley.
+- [JetBrains](https://jb.gg/OpenSource) for providing a free license to their tools.
+
+<table>
+  <tr>
+    <td><img width="64" src="https://smapi.io/Content/images/pufferchick.png" alt="Pufferchick"></td>
+    <td><img width="80" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains logo."></td>
+  </tr>
+</table>
+
+
 
 ## License
 

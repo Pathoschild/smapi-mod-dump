@@ -8,11 +8,11 @@
 **
 *************************************************/
 
+using System;
+using System.Reflection;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using System.Reflection;
 using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 
@@ -24,7 +24,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal FarmAnimalGetSellPricePatch()
 		{
 			Original = typeof(FarmAnimal).MethodNamed(nameof(FarmAnimal.getSellPrice));
-			Prefix = new HarmonyMethod(GetType(), nameof(FarmAnimalGetSellPricePrefix));
+			Prefix = new(GetType(), nameof(FarmAnimalGetSellPricePrefix));
 		}
 
 		#region harmony patches
@@ -43,11 +43,11 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 
-			__result = (int)(__instance.price.Value * adjustedFriendship);
+			__result = (int) (__instance.price.Value * adjustedFriendship);
 			return false; // don't run original logic
 		}
 

@@ -8,15 +8,14 @@
 **
 *************************************************/
 
-
+using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MultiplayerEmotes.Framework.Constants;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
 
 namespace MultiplayerEmotes.Menus {
 
@@ -24,25 +23,28 @@ namespace MultiplayerEmotes.Menus {
 
 		public bool IsOpen { get; set; }
 
-		private List<ClickableComponent> emoteSelectionButtons;
-		private Texture2D EmotesMenuBoxTexture;
-		private Texture2D EmotesTexture;
-		private Texture2D EmotesMenuArrowsTexture;
+		private readonly List<ClickableComponent> emoteSelectionButtons;
+		private readonly Texture2D EmotesMenuBoxTexture;
+		private readonly Texture2D EmotesTexture;
+		private readonly Texture2D EmotesMenuArrowsTexture;
 		private int firstComponentIndex;
-		private ClickableComponent upArrow;
-		private ClickableComponent downArrow;
+		private readonly ClickableComponent upArrow;
+		private readonly ClickableComponent downArrow;
 		private readonly EmotesMenuButton EmotesMenuButton;
 		public int totalEmotes;
 
-		public int emoteSize = 16;
-		public int animationFrames = 4;
+		public int emoteSize = Sprites.Emotes.Size;
+		public int animationFrames = Sprites.Emotes.AnimationFrames;
 		public int maxRowComponents = 3;
 		public int maxColComponents = 3;
 
 		private Rectangle EmotesMenuBoxArrow;
 		private Rectangle EmotesMenuBoxArrowPosition;
 
+		private readonly IModHelper helper;
+
 		public EmotesMenuBox(IModHelper helper, EmotesMenuButton emotesMenuButton, Texture2D emotesTexture) {
+			this.helper = helper;
 
 			this.EmotesMenuButton = emotesMenuButton;
 			this.EmotesTexture = emotesTexture;
@@ -76,16 +78,16 @@ namespace MultiplayerEmotes.Menus {
 
 			List<ClickableComponent> componentList = new List<ClickableComponent>();
 
-			for(int i = 0; i < rows; ++i) {
-				for(int j = 0; j < cols; j++) {
+			for (int i = 0; i < rows; ++i) {
+				for (int j = 0; j < cols; j++) {
 
 					Rectangle bounds = new Rectangle(x + j * width, y + i * height, width, height);
 
-					if(j > 0) {
+					if (j > 0) {
 						bounds.X += j * horizontalSpacing;
 					}
 
-					if(i > 0) {
+					if (i > 0) {
 						bounds.Y += i * verticalSpacing;
 					}
 
@@ -98,22 +100,30 @@ namespace MultiplayerEmotes.Menus {
 		public override bool isWithinBounds(int x, int y) {
 
 			// Check if is within the box arrow
-			if(EmotesMenuBoxArrowPosition.Contains(x, y)) {
+			if (EmotesMenuBoxArrowPosition.Contains(x, y)) {
 				return true;
 			}
 
+			// Check if x and y coordinates are within bounds
+			Rectangle component = new Rectangle(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height);
+			return component.Contains(x, y);
+			//return x >= this.xPositionOnScreen && x < this.xPositionOnScreen + this.width
+			//	&& y >= this.yPositionOnScreen && y < this.yPositionOnScreen + this.height;
+
+			/*
 			// Check if X coord is within bounds
-			if((this.xPositionOnScreen > x) || (x >= (this.xPositionOnScreen + this.width))) {
+			if ((this.xPositionOnScreen > x) || (x >= (this.xPositionOnScreen + this.width))) {
 				return false;
 			}
 
 			// Check if Y coord is within bounds
-			if((this.yPositionOnScreen > y) || (y >= (this.yPositionOnScreen + this.height))) {
+			if ((this.yPositionOnScreen > y) || (y >= (this.yPositionOnScreen + this.height))) {
 				return false;
 			}
 
 			// X and Y coords are within bounds
 			return true;
+			*/
 		}
 
 		private int GetMaxAmmountComponentShowing() {
@@ -122,19 +132,19 @@ namespace MultiplayerEmotes.Menus {
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true) {
 
-			if(isWithinBounds(x, y)) {
+			if (isWithinBounds(x, y)) {
 
 				int x1 = x - this.xPositionOnScreen;
 				int y1 = y - this.yPositionOnScreen;
 
-				if(this.upArrow.containsPoint(x1, y1)) {
+				if (this.upArrow.containsPoint(x1, y1)) {
 					this.upArrowPressed(GetMaxAmmountComponentShowing());
-				} else if(this.downArrow.containsPoint(x1, y1)) {
+				} else if (this.downArrow.containsPoint(x1, y1)) {
 					this.downArrowPressed(GetMaxAmmountComponentShowing());
 				}
 
-				foreach(ClickableComponent emoteSelectionButton in this.emoteSelectionButtons) {
-					if(emoteSelectionButton.containsPoint(x1, y1)) {
+				foreach (ClickableComponent emoteSelectionButton in this.emoteSelectionButtons) {
+					if (emoteSelectionButton.containsPoint(x1, y1)) {
 						Game1.player.IsEmoting = false;
 						int emote = this.firstComponentIndex + int.Parse(emoteSelectionButton.name);
 						Game1.player.doEmote(emote * 4);
@@ -148,7 +158,7 @@ namespace MultiplayerEmotes.Menus {
 		}
 
 		private void upArrowPressed(int amountToScroll) {
-			if(this.firstComponentIndex != 0) {
+			if (this.firstComponentIndex != 0) {
 				Game1.playSound("Cowboy_Footstep");
 			}
 			this.firstComponentIndex = Math.Max(0, this.firstComponentIndex - amountToScroll);
@@ -156,7 +166,7 @@ namespace MultiplayerEmotes.Menus {
 		}
 
 		private void downArrowPressed(int amountToScroll) {
-			if(this.firstComponentIndex != totalEmotes - GetMaxAmmountComponentShowing()) {
+			if (this.firstComponentIndex != totalEmotes - GetMaxAmmountComponentShowing()) {
 				Game1.playSound("Cowboy_Footstep");
 			}
 			this.firstComponentIndex = Math.Min(totalEmotes - GetMaxAmmountComponentShowing(), this.firstComponentIndex + amountToScroll);
@@ -164,9 +174,9 @@ namespace MultiplayerEmotes.Menus {
 		}
 
 		public override void receiveScrollWheelAction(int direction) {
-			if(direction < 0) {
+			if (direction < 0) {
 				this.downArrowPressed(maxRowComponents);
-			} else if(direction > 0) {
+			} else if (direction > 0) {
 				this.upArrowPressed(maxRowComponents);
 			}
 		}
@@ -176,7 +186,7 @@ namespace MultiplayerEmotes.Menus {
 		}
 
 		public void Toggle() {
-			if(IsOpen) {
+			if (IsOpen) {
 				Close();
 			} else {
 				Open();
@@ -185,14 +195,14 @@ namespace MultiplayerEmotes.Menus {
 
 		public void Open(bool playSound = true) {
 			IsOpen = true;
-			if(playSound) {
+			if (playSound) {
 				Game1.playSound("shwip");
 			}
 		}
 
 		public void Close(bool playSound = true) {
 			IsOpen = false;
-			if(playSound) {
+			if (playSound) {
 				Game1.playSound("shwip");
 			}
 		}
@@ -201,7 +211,7 @@ namespace MultiplayerEmotes.Menus {
 		}
 
 		public override void clickAway() {
-			if(this.IsOpen && !this.isWithinBounds(Game1.getMouseX(), Game1.getMouseY())) {
+			if (this.IsOpen && !this.isWithinBounds(Game1.getMouseX(), Game1.getMouseY())) {
 				Close();
 			}
 		}
@@ -218,12 +228,13 @@ namespace MultiplayerEmotes.Menus {
 
 			// Emotes menu box position
 			this.xPositionOnScreen = buttonXPosition + buttonWidth + EmotesMenuBoxArrowPosition.Width - 8;
-			this.yPositionOnScreen = buttonYPosition + (buttonHeight / 2) - (this.height / 2);
+			this.yPositionOnScreen = buttonYPosition + (buttonHeight - this.height) / 2;
 
 			// Emotes menu box reposition inside game screen
-			if(this.xPositionOnScreen < 0) {
+			var viewport = Game1.uiMode ? Game1.uiViewport : Game1.viewport;
+			if (this.xPositionOnScreen < 0) {
 				this.xPositionOnScreen = 0;
-			} else if((this.xPositionOnScreen + this.width) >= Game1.viewport.Width) {
+			} else if (this.xPositionOnScreen + this.width >= viewport.Width) {
 				this.EmotesMenuBoxArrow = Sprites.MenuBox.RightArrow.SourceRectangle;
 				this.EmotesMenuBoxArrowPosition.X = buttonXPosition - EmotesMenuBoxArrowPosition.Width;
 				this.xPositionOnScreen = buttonXPosition - this.width - EmotesMenuBoxArrowPosition.Width + 8;
@@ -231,10 +242,10 @@ namespace MultiplayerEmotes.Menus {
 				this.EmotesMenuBoxArrow = Sprites.MenuBox.LeftArrow.SourceRectangle;
 			}
 
-			if(this.yPositionOnScreen < 0) {
+			if (this.yPositionOnScreen < 0) {
 				this.yPositionOnScreen = 0;
-			} else if((this.yPositionOnScreen + this.height) >= Game1.viewport.Height) {
-				this.yPositionOnScreen = Game1.viewport.Height - this.height;
+			} else if ((this.yPositionOnScreen + this.height) >= viewport.Height) {
+				this.yPositionOnScreen = viewport.Height - this.height;
 			}
 
 			// Up arrow position
@@ -256,15 +267,15 @@ namespace MultiplayerEmotes.Menus {
 			b.Draw(this.EmotesMenuBoxTexture, new Rectangle(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height), new Rectangle?(Sprites.MenuBox.SourceRectangle), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 			b.Draw(this.EmotesMenuBoxTexture, EmotesMenuBoxArrowPosition, new Rectangle?(EmotesMenuBoxArrow), Color.White, 0f, Vector2.Zero, SpriteEffects.None, 1f);
 
-			for(int index = 0; index < this.emoteSelectionButtons.Count; ++index) {
+			for (int index = 0; index < this.emoteSelectionButtons.Count; ++index) {
 				b.Draw(this.EmotesTexture, new Vector2(this.emoteSelectionButtons[index].bounds.X + this.xPositionOnScreen, this.emoteSelectionButtons[index].bounds.Y + this.yPositionOnScreen), new Rectangle?(new Rectangle(emoteSize * (animationFrames - 1), (this.firstComponentIndex + index + 1) * emoteSize, emoteSize, emoteSize)), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.9f);
 			}
 
-			if((double)this.upArrow.scale < 1.0) {
+			if (this.upArrow.scale < 1.0) {
 				this.upArrow.scale += 0.05f;
 			}
 
-			if((double)this.downArrow.scale < 1.0) {
+			if (this.downArrow.scale < 1.0) {
 				this.downArrow.scale += 0.05f;
 			}
 
@@ -272,7 +283,7 @@ namespace MultiplayerEmotes.Menus {
 			b.Draw(this.EmotesMenuArrowsTexture, new Vector2(this.downArrow.bounds.X + this.xPositionOnScreen, this.downArrow.bounds.Y + this.yPositionOnScreen), new Rectangle?(Sprites.MenuArrow.DownSourceRectangle), Color.White * (this.firstComponentIndex == this.totalEmotes - GetMaxAmmountComponentShowing() ? 0.25f : 1f), 0.0f, Vector2.Zero, this.downArrow.scale, SpriteEffects.None, 0.9f);
 
 			//TODO: Change cursor to indicate clicable element. Investigate further
-			if(this.isWithinBounds(Game1.getMouseX(), Game1.getMouseY()) && !Game1.options.hardwareCursor) {
+			if (this.isWithinBounds(Game1.getMouseX(), Game1.getMouseY()) && !Game1.options.hardwareCursor) {
 				//ModEntry.ModMonitor.Log($"Cursor: {Game1.mouseCursor}");
 				//Game1.mouseCursor = 44;
 				//Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 16, 16, 16);

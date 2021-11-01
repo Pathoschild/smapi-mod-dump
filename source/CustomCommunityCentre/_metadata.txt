@@ -1,0 +1,25 @@
+urls:
+   web: https://github.com/b-b-blueberry/CustomCommunityCentre
+   Git: https://github.com/b-b-blueberry/CustomCommunityCentre.git
+
+mods:
+   Community Kitchen
+   Custom Community Centre
+
+latest commit:
+   commit 36db35882d5e29ae9be5070e76f475e6406fa438
+   Author: b-b-blueberry <pocketsathome@gmail.com>
+   Date:   Mon Nov 1 17:08:44 2021 +1100
+   
+       1.0.3-a:
+       Rewrite custom content solution from IAssetEditor-based to IContentPack-based.
+       Add Events.Content namespace for custom content to subscribe for loading.
+       Add LoadContentPack method to API for SMAPI mods with optional content packs.
+       Move Events class contents into new Events.Game namespace.
+       Combine all bundle data asset files for each content pack into a single content asset file.
+       Restructure bundle data to use unique dictionaries rather than game structures.
+       Replace [CP] Community Lounge with [CCC] content pack.
+       Finish API interface implementation.
+       Add Kitchen optional implementation for mod Esca's Modding Plugins.
+       Fix area index key-missing errors on entering CommunityCenter location.
+   

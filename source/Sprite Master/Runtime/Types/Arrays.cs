@@ -23,21 +23,21 @@ namespace SpriteMaster.Types {
 			internal static readonly T[] Value = new T[0];
 		}
 
-		[Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
 		[ImmutableObject(true)]
 		public static T[] Empty<T> () => EmptyArrayStatic<T>.Value;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static T[] Singleton<T> (T value) => new T[] { value };
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static T[] Of<T> (params T[] values) => values;
 
 		private sealed class WrappedUnmanagedMemoryStream<T> : UnmanagedMemoryStream {
 			private readonly GCHandle Handle;
 			private volatile bool IsDisposed = false;
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			private unsafe WrappedUnmanagedMemoryStream (GCHandle handle, int offset, int size, FileAccess access) :
 				base(
 					(byte*)(handle.AddrOfPinnedObject() + (Marshal.SizeOf(typeof(T)) * offset)),
@@ -48,7 +48,7 @@ namespace SpriteMaster.Types {
 				Handle = handle;
 			}
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			public static unsafe WrappedUnmanagedMemoryStream<T> Get (T[] data, int offset, int size, FileAccess access) {
 				var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
 				try {
@@ -60,13 +60,13 @@ namespace SpriteMaster.Types {
 				}
 			}
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			~WrappedUnmanagedMemoryStream () {
 				Dispose(true);
 			}
 
 			[SecuritySafeCritical]
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			protected override void Dispose (bool disposing) {
 				if (!IsDisposed) {
 					Handle.Free();
@@ -75,12 +75,12 @@ namespace SpriteMaster.Types {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static unsafe UnmanagedMemoryStream Stream<T> (this T[] data) where T : struct {
 			return WrappedUnmanagedMemoryStream<T>.Get(data, 0, data.Length, FileAccess.ReadWrite);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static UnmanagedMemoryStream Stream<T> (this T[] data, int offset = 0, int length = -1, FileAccess access = FileAccess.ReadWrite) {
 			if (length == -1) {
 				length = data.Length - offset;
@@ -88,12 +88,12 @@ namespace SpriteMaster.Types {
 			return WrappedUnmanagedMemoryStream<T>.Get(data, offset, length, access);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static MemoryStream Stream (this byte[] data) {
 			return new MemoryStream(data, 0, data.Length, true, true);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static MemoryStream Stream (this byte[] data, int offset = 0, int length = -1, FileAccess access = FileAccess.ReadWrite) {
 			if (length == -1) {
 				length = data.Length - offset;
@@ -101,17 +101,17 @@ namespace SpriteMaster.Types {
 			return new MemoryStream(data, offset, length, (access != FileAccess.Read), true);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static Span<U> CastAs<T, U> (this T[] data) where T : unmanaged where U : unmanaged => new Span<T>(data).As<U>();
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
+		public static FixedSpan<U> CastAs<T, U> (this T[] data) where T : unmanaged where U : unmanaged => new FixedSpan<T>(data).As<U>();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static T[] Reverse<T> (this T[] array) {
 			//Contract.AssertNotNull(array);
 			Array.Reverse(array);
 			return array;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static T[] Reversed<T> (this T[] array) {
 			//Contract.AssertNotNull(array);
 			var result = (T[])array.Clone();
@@ -124,10 +124,10 @@ namespace SpriteMaster.Types {
 		[ImmutableObject(true)]
 		public static readonly T[] Empty = Arrays.Empty<T>();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static T[] Singleton (T value) => Arrays.Singleton<T>(value);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static T[] Of (params T[] values) => Arrays.Of<T>(values);
 	}
 }

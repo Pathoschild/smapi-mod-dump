@@ -38,43 +38,52 @@ namespace LoveOfCooking
 			{ "Defense", 10},
 			{ "Attack", 11}
 		};
-		internal static readonly Rectangle NotificationIconTargetArea = new Rectangle(506, 372, 11, 14);
+		internal static readonly Rectangle RegenBarArea = new Rectangle(117, 0, 10, 38);
+		internal static readonly Rectangle CookingSkillIconArea = new Rectangle(31, 4, 10, 10);
+		internal static readonly Rectangle NotificationIconArea = new Rectangle(101, 11, 11, 14);
+		internal static bool IsCurrentHoveredItemHidingBuffs;
+		internal const int DummyIndexForHidingBuffs = 49;
 
 		// Assets
+
 		// Game content paths: asset keys sent as requests to Game1.content.Load<T>()
 		// These can be intercepted and modified by AssetLoaders/Editors, eg. Content Patcher.
-		private readonly List<string> _gameContentAssetPaths;
-		public static readonly string RootGameContentPath = PathUtilities.NormalizePath("Mods/blueberry.LoveOfCooking.Assets");
-		public static readonly string GameContentSpriteSheetPath = Path.Combine(RootGameContentPath, "Sprites");
-		public static readonly string GameContentBundleDataPath = Path.Combine(RootGameContentPath, "Bundles");
-		public static readonly string GameContentIngredientBuffDataPath = Path.Combine(RootGameContentPath, "IngredientBuffChart");
-		public static readonly string GameContentDefinitionsPath = Path.Combine(RootGameContentPath, "ItemDefinitions");
-		public static readonly string GameContentSkillValuesPath = Path.Combine(RootGameContentPath, "CookingSkillValues");
-		public static readonly string GameContentSkillRecipeTablePath = Path.Combine(RootGameContentPath, "CookingSkillLevelUpRecipes");
-		public static readonly string GameContentContextTagDataPath = Path.Combine(RootGameContentPath, "ContextTags");
+		private static readonly List<string> _gameContentAssetPaths = new List<string>();
+		public static readonly string RootGameContentPath = PathUtilities.NormalizeAssetName("Mods/blueberry.LoveOfCooking.Assets");
+		public static string GameContentSpriteSheetPath { get; private set; } = "Sprites";
+		public static string GameContentBushDataPath { get; private set; } = "BushDefinitions";
+		public static string GameContentBushSpriteSheetPath { get; private set; } = "BushSprites";
+		public static string GameContentIngredientBuffDataPath { get; private set; } = "IngredientBuffChart";
+		public static string GameContentDefinitionsPath { get; private set; } = "ItemDefinitions";
+		public static string GameContentSkillValuesPath { get; private set; } = "CookingSkillValues";
+		public static string GameContentSkillRecipeTablePath { get; private set; } = "CookingSkillLevelUpRecipes";
+		public static string GameContentContextTagDataPath { get; private set; } = "ContextTags";
+
 		// Local paths: filepaths without extension passed to Helper.Content.Load<T>()
 		// These are the paths for our default data files bundled with the mod in our assets folder.
-		public static readonly string RootLocalContentPath = PathUtilities.NormalizePath("assets");
-		public static readonly string LocalSpriteSheetPath = Path.Combine(RootLocalContentPath, "sprites");
-		public static readonly string LocalBundleDataPath = Path.Combine(RootLocalContentPath, "bundles");
-		public static readonly string LocalIngredientBuffDataPath = Path.Combine(RootLocalContentPath, "ingredientBuffChart");
-		public static readonly string LocalDefinitionsPath = Path.Combine(RootLocalContentPath, "itemDefinitions");
-		public static readonly string LocalSkillValuesPath = Path.Combine(RootLocalContentPath, "cookingSkillValues");
-		public static readonly string LocalSkillRecipeTablePath = Path.Combine(RootLocalContentPath, "cookingSkillLevelUpRecipes");
-		public static readonly string LocalContextTagDataPath = Path.Combine(RootLocalContentPath, "contextTags");
+		public static readonly string RootLocalContentPath = "assets";
+		public static string LocalSpriteSheetPath { get; private set; } = "sprites";
+		public static string LocalBushDataPath { get; private set; } = "bushDefinitions";
+		public static string LocalBushSpriteSheetPath { get; private set; } = "bushSprites";
+		public static string LocalIngredientBuffDataPath { get; private set; } = "ingredientBuffChart";
+		public static string LocalDefinitionsPath { get; private set; } = "itemDefinitions";
+		public static string LocalSkillValuesPath { get; private set; } = "cookingSkillValues";
+		public static string LocalSkillRecipeTablePath { get; private set; } = "cookingSkillLevelUpRecipes";
+		public static string LocalContextTagDataPath { get; private set; } = "contextTags";
+
 		// Content pack paths: filepaths without extension passed to JsonAssets.LoadAssets()
 		// These are again bundled with the mod, but aren't intended to be intercepted or changed.
-		public static readonly string RootContentPackPath = PathUtilities.NormalizePath("assets");
-		public static readonly string BasicObjectsPack = Path.Combine(RootContentPackPath, "BasicObjectsPack");
-		public static readonly string NewRecipesPackPath = Path.Combine(RootContentPackPath, "NewRecipesPack");
-		public static readonly string NewCropsPackPath = Path.Combine(RootContentPackPath, "NewCropsPack");
-		public static readonly string NettlesPackPath = Path.Combine(RootContentPackPath, "NettlesPack");
-		public static readonly string ProducerFrameworkPackPath = Path.Combine(RootContentPackPath, "ProducerFrameworkPack");
+		public static readonly string RootContentPackPath = "assets";
+		public static string BasicObjectsPackPath { get; private set; } = "BasicObjectsPack";
+		public static string NewRecipesPackPath { get; private set; } = "NewRecipesPack";
+		public static string NewCropsPackPath { get; private set; } = "NewCropsPack";
+		public static string NettlesPackPath { get; private set; } = "NettlesPack";
+		public static string ProducerFrameworkPackPath { get; private set; } = "[PFM] ProducerFrameworkPack";
+		public static string CommunityCentreContentPackPath { get; private set; } = "[CCC] KitchenContentPack";
 
-		private static readonly string[] AssetsToEdit = new string[]
+		// Assets to edit: asset keys passed to CanEdit<T>()
+		private static readonly List<string> AssetsToEdit = new List<string>
 		{
-			GameContentSpriteSheetPath,
-			@"Data/Bundles",
 			@"Data/BigCraftablesInformation",
 			@"Data/CookingRecipes",
 			@"Data/mail",
@@ -85,45 +94,69 @@ namespace LoveOfCooking
 			@"Data/Events/JoshHouse",
 			@"Data/Events/Town",
 			@"LooseSprites/Cursors",
-			@"LooseSprites/JunimoNote",
 			@"Maps/Beach",
 			@"Maps/springobjects",
-			@"Maps/townInterior",
-			@"Strings/UI",
-			@"Strings/Locations",
 			@"TileSheets/tools",
 		};
 
 
 		public AssetManager()
 		{
+		}
+
+		internal static void Init()
+		{
+			List<System.Reflection.PropertyInfo> properties = typeof(AssetManager)
+				.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+				.Where(property => property.Name.EndsWith("Path"))
+				.ToList();
+
+			// Build and normalise all asset paths
+			Dictionary<System.Reflection.PropertyInfo, string> propertyDict = properties
+				.ToDictionary(property => property, property => (string)property.GetValue(null));
+			foreach (KeyValuePair<System.Reflection.PropertyInfo, string> propertyAndValue in propertyDict)
+			{
+				string key = propertyAndValue.Key.Name;
+				string basename = propertyAndValue.Value;
+				string path = key.StartsWith("GameContent")
+					? RootGameContentPath
+					: key.StartsWith("Local")
+						? RootLocalContentPath
+						: RootContentPackPath;
+				propertyAndValue.Key.SetValue(null, PathUtilities.NormalizeAssetName(Path.Combine(path, basename)));
+			}
+
 			// Populate all custom asset paths from GameContentPath values
-			_gameContentAssetPaths = typeof(AssetManager)
-				.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
-				.Where(field => field.Name.StartsWith("GameContent") && field.Name.EndsWith("Path"))
-				.Select(field => (string)field.GetValue(this)).ToList();
+			List<string> listy_list = properties
+				.Where(property => property.Name.StartsWith("GameContent"))
+				.Select(property => (string)property.GetValue(null))
+				.ToList();
+			_gameContentAssetPaths.AddRange(listy_list);
 		}
 
 		public bool CanLoad<T>(IAssetInfo asset)
 		{
-			return _gameContentAssetPaths.Contains(asset.AssetName);
+			return _gameContentAssetPaths.Any(path => asset.AssetNameEquals(path));
 		}
 
 		public T Load<T>(IAssetInfo asset)
 		{
-			Log.D($"Loading custom asset {asset.AssetName}",
-				ModEntry.Config.DebugMode);
+			return this.LoadAsset<T>(asset);
+		}
+
+		private T LoadAsset<T>(IAssetInfo asset)
+		{
 			if (asset.AssetNameEquals(GameContentSpriteSheetPath))
 			{
 				return (T)(object)ModEntry.Instance.Helper.Content.Load<Texture2D>($"{LocalSpriteSheetPath}.png");
 			}
-			if (asset.AssetNameEquals(GameContentBundleDataPath))
-			{
-				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, Dictionary<string, List<string>>>>($"{LocalBundleDataPath}.json");
-			}
 			if (asset.AssetNameEquals(GameContentIngredientBuffDataPath))
 			{
 				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, string>>($"{LocalIngredientBuffDataPath}.json");
+			}
+			if (asset.AssetNameEquals(GameContentBushSpriteSheetPath))
+			{
+				return (T)(object)ModEntry.Instance.Helper.Content.Load<Texture2D>($"{LocalBushSpriteSheetPath}.png");
 			}
 			if (asset.AssetNameEquals(GameContentDefinitionsPath))
 			{
@@ -141,7 +174,7 @@ namespace LoveOfCooking
 			{
 				return (T)(object)ModEntry.Instance.Helper.Content.Load<Dictionary<string, string>>($"{LocalContextTagDataPath}.json");
 			}
-			return (T) (object) null;
+			return (T)(object)null;
 		}
 
 		public bool CanEdit<T>(IAssetInfo asset)
@@ -158,15 +191,8 @@ namespace LoveOfCooking
 		{
 			if (asset.DataType == typeof(Texture2D) && asset.AsImage().Data.IsDisposed)
 				return;
-			if (asset.AssetNameEquals(@"Data/Bundles"))
-			{
-				// Make no changes for the new community centre bundle, but set our base values from the data
-				// Do this even with community centre changes disabled, in case we join as farmhand to a player who has it enabled
-				
-				var data = asset.AsDictionary<string, string>().Data;
-				Bundles.BundleStartIndex = 1 + data.Keys.ToList().Max(key => int.Parse(key.Split('/')[1]));
-			}
-			else if (asset.AssetNameEquals(@"Data/BigCraftablesInformation"))
+
+			if (asset.AssetNameEquals(@"Data/BigCraftablesInformation"))
 			{
 				var data = asset.AsDictionary<int, string>().Data;
 
@@ -184,8 +210,9 @@ namespace LoveOfCooking
 				}
 
 				asset.AsDictionary<int, string>().ReplaceWith(data);
+				return;
 			}
-			else if (asset.AssetNameEquals(@"Data/CookingRecipes"))
+			if (asset.AssetNameEquals(@"Data/CookingRecipes"))
 			{
 				// Edit fields of vanilla recipes to use new ingredients
 				// Do NOT call RebuildBuffs from within this block
@@ -446,7 +473,6 @@ namespace LoveOfCooking
 
 				return;
 			}
-
 			if (asset.AssetNameEquals(@"Data/mail"))
 			{
 				var data = asset.AsDictionary<string, string>().Data;
@@ -545,7 +571,6 @@ namespace LoveOfCooking
 
 				return;
 			}
-
 			if (asset.AssetNameEquals(@"Data/Events/Town"))
 			{
 				var data = asset.AsDictionary<string, string>().Data;
@@ -557,7 +582,6 @@ namespace LoveOfCooking
 				
 				asset.AsDictionary<string, string>().ReplaceWith(data);
 			}
-
 			if (asset.AssetNameEquals(@"Data/Monsters"))
 			{
 				if (Interface.Interfaces.JsonAssets == null || Game1.currentLocation == null)
@@ -604,161 +628,127 @@ namespace LoveOfCooking
 
 				return;
 			}
-
 			if (asset.AssetNameEquals(@"LooseSprites/Cursors"))
 			{
-				// Home-cook a notification icon for under the HUD money tray:
-
 				if (ModEntry.SpriteSheet == null)
 					return;
 
-				// Prime a canvas as a clipboard to hold in sequence both a copy of the vanilla icon
-				// and our custom icon to merge together into some particular open space in Cursors
-				var data = asset.AsImage().Data;
-				Color[] canvas = new Color[NotificationIconTargetArea.Width * NotificationIconTargetArea.Height];
-				Texture2D texture = new Texture2D(Game1.graphics.GraphicsDevice, NotificationIconTargetArea.Width, NotificationIconTargetArea.Height);
-				Rectangle vanillaIconArea = new Rectangle(383, 493, NotificationIconTargetArea.Width, NotificationIconTargetArea.Height);
-				Rectangle targetArea = NotificationIconTargetArea;
+				Texture2D data = asset.AsImage().Data;
 
-				// Patch in a copy of the vanilla quest log icon
-				data.GetData(0, vanillaIconArea, canvas, 0, canvas.Length);
-				texture.SetData(canvas);
-				asset.AsImage().PatchImage(texture, null, targetArea, PatchMode.Replace);
-
-				// Chroma-key our custom icon with colours from the vanilla icon
-				Color colorSampleA = canvas[NotificationIconTargetArea.Width * 5 + 1];
-				Color colorSampleB = canvas[NotificationIconTargetArea.Width * 11 + 1];
-
-				Color colorR = new Color(255, 0, 0);
-				Color colorC = new Color(255, 0, 255);
-				Color colorG = new Color(0, 255, 0);
-				Color colorA = new Color(0, 0, 0, 0);
-
-				ModEntry.SpriteSheet.GetData(0, new Rectangle(0, 0, NotificationIconTargetArea.Width, NotificationIconTargetArea.Height), canvas, 0, canvas.Length);
-
-				for (int i = 0; i < canvas.Length; ++i)
+				// Add 'unknown buffs' icon to cursors sheet in line with buff icons
 				{
-					if (canvas[i] == colorC)
-						canvas[i] = colorA;
-					else if (canvas[i] == colorG)
-						canvas[i] = colorSampleA;
-					else if (canvas[i] == colorR)
-						canvas[i] = colorSampleB;
+					int size = 10;
+					asset.AsImage().PatchImage(
+						source: ModEntry.SpriteSheet,
+						sourceArea: new Rectangle(101, 0, size, size),
+						targetArea: new Rectangle(size + (size * AssetManager.DummyIndexForHidingBuffs), 428, size, size),
+						patchMode: PatchMode.Replace);
 				}
 
-				// Patch in the custom icon over the vanilla icon copy
-				texture.SetData(canvas);
-				asset.AsImage().PatchImage(texture, null, targetArea, PatchMode.Overlay);
-
-				// Patch in an alpha-shaded copy of the custom icon to use for the pulse animation
-				Color colorShade = new Color(0, 0, 0, 0.35f);
-
-				for (int i = 0; i < canvas.Length; ++i)
+				// Make changes to our own Spritesheet with elements from Cursors:
 				{
-					if (canvas[i] == colorSampleB)
-						canvas[i] = colorShade;
-					else if (canvas[i] == colorSampleA)
-						canvas[i] = colorA;
-				}
+					Texture2D texture;
 
-				// Apply changes to the Cursors sheet
-				texture.SetData(canvas);
-				targetArea.X -= targetArea.Width;
-				asset.AsImage().PatchImage(texture, null, targetArea, PatchMode.Overlay);
+					// Add regen bar for Food Healing Over Time:
+
+					IAssetData customSpriteSheet = ModEntry.Instance.Helper.Content.GetPatchHelper<Texture2D>(ModEntry.SpriteSheet);
+					texture = customSpriteSheet.AsImage().Data;
+					int yOffset = CookingSkillIconArea.Height - 1;
+					int width = AssetManager.RegenBarArea.Width;
+					int height = AssetManager.RegenBarArea.Height - CookingSkillIconArea.Height;
+					Rectangle originalArea = new Rectangle(256, 416, 12, 48);
+					Rectangle sourceArea = new Rectangle(originalArea.X, originalArea.Y, width / 2, height / 2);
+					Rectangle destArea = new Rectangle(AssetManager.RegenBarArea.X, AssetManager.RegenBarArea.Y + yOffset, sourceArea.Width, sourceArea.Height);
+
+					Point[] sourceOffsets = new Point[]
+					{
+						Point.Zero,
+						new Point(originalArea.Width - sourceArea.Width, 0),
+						new Point(0, originalArea.Height - sourceArea.Height),
+						new Point(originalArea.Width - sourceArea.Width, originalArea.Height - sourceArea.Height)
+					};
+					Point[] destOffsets = new Point[]
+					{
+						Point.Zero,
+						new Point(destArea.Width, 0),
+						new Point(0, destArea.Height),
+						new Point(destArea.Width, destArea.Height)
+					};
+					for (int i = 0; i < 4; ++i)
+					{
+						Rectangle newSourceArea = sourceArea;
+						newSourceArea.X += sourceOffsets[i].X;
+						newSourceArea.Y += sourceOffsets[i].Y;
+						Rectangle newDestArea = destArea;
+						newDestArea.X += destOffsets[i].X;
+						newDestArea.Y += destOffsets[i].Y;
+
+						customSpriteSheet.AsImage().PatchImage(source: data, sourceArea: newSourceArea, targetArea: newDestArea, patchMode: PatchMode.Replace);
+					}
+					sourceArea = CookingSkillIconArea;
+					destArea = new Rectangle(destArea.X, destArea.Y - yOffset, sourceArea.Width, sourceArea.Height);
+					customSpriteSheet.AsImage().PatchImage(source: texture, sourceArea: sourceArea, targetArea: destArea, patchMode: PatchMode.Overlay);
+
+					// Home-cook a notification icon for under the HUD money tray:
+
+					// Prime a canvas as a clipboard to hold in sequence both a copy of the vanilla icon
+					// and our custom icon to merge together into some particular open space in Cursors
+					Color[] canvas = new Color[NotificationIconArea.Width * NotificationIconArea.Height];
+					texture = AssetManager.MakeTexture(
+						width: NotificationIconArea.Width,
+						height: NotificationIconArea.Height);
+					Rectangle vanillaIconArea = new Rectangle(383, 493, NotificationIconArea.Width, NotificationIconArea.Height);
+					Rectangle targetArea = NotificationIconArea;
+
+					// Patch in a copy of the vanilla quest log icon
+					data.GetData(level: 0, rect: vanillaIconArea, data: canvas, startIndex: 0, elementCount: canvas.Length);
+					texture.SetData(canvas);
+					customSpriteSheet.AsImage().PatchImage(source: texture, sourceArea: null, targetArea: targetArea, patchMode: PatchMode.Replace);
+
+					// Chroma-key our custom icon with colours from the vanilla icon
+					Color colorSampleA = canvas[NotificationIconArea.Width * 5 + 1];
+					Color colorSampleB = canvas[NotificationIconArea.Width * 11 + 1];
+
+					Color colorR = new Color(255, 0, 0);
+					Color colorC = new Color(255, 0, 255);
+					Color colorG = new Color(0, 255, 0);
+					Color colorA = new Color(0, 0, 0, 0);
+
+					ModEntry.SpriteSheet.GetData(0, new Rectangle(0, 0, NotificationIconArea.Width, NotificationIconArea.Height), canvas, 0, canvas.Length);
+
+					for (int i = 0; i < canvas.Length; ++i)
+					{
+						if (canvas[i] == colorC)
+							canvas[i] = colorA;
+						else if (canvas[i] == colorG)
+							canvas[i] = colorSampleA;
+						else if (canvas[i] == colorR)
+							canvas[i] = colorSampleB;
+					}
+
+					// Patch in the custom icon over the vanilla icon copy
+					texture.SetData(canvas);
+					customSpriteSheet.AsImage().PatchImage(source: texture, sourceArea: null, targetArea: targetArea, patchMode: PatchMode.Overlay);
+
+					// Patch in an alpha-shaded copy of the custom icon to use for the pulse animation
+					Color colorShade = new Color(0, 0, 0, 0.35f);
+
+					for (int i = 0; i < canvas.Length; ++i)
+					{
+						if (canvas[i] == colorSampleB)
+							canvas[i] = colorShade;
+						else if (canvas[i] == colorSampleA)
+							canvas[i] = colorA;
+					}
+
+					// Apply changes to the Cursors sheet
+					targetArea.X -= targetArea.Width;
+					texture.SetData(canvas);
+					customSpriteSheet.AsImage().PatchImage(source: texture, sourceArea: null, targetArea: targetArea, patchMode: PatchMode.Overlay);
+				}
+				return;
 			}
-			else if (asset.AssetNameEquals(@"LooseSprites/JunimoNote"))
-			{
-				// Add icons for a new community centre bundle
-				
-				if (!ModEntry.Config.AddCookingCommunityCentreBundles)
-				{
-					Log.D($"Did not edit {asset.AssetName}: Community centre edits are disabled in config file.",
-						ModEntry.Config.DebugMode);
-					return;
-				}
-
-				Rectangle sourceArea = new Rectangle(160, 208, 32 * 3, 32);
-				Rectangle destArea = new Rectangle(544, 212, 32 * 3, 32);
-				IAssetDataForImage destImage = asset.AsImage();
-				destImage.PatchImage(ModEntry.SpriteSheet, sourceArea, destArea, PatchMode.Replace);
-				asset.ReplaceWith(destImage.Data);
-			}
-			else if (asset.AssetNameEquals(@"Maps/townInterior"))
-			{
-				// Patch in changes for the community centre
-
-				if (!(Game1.currentLocation is StardewValley.Locations.CommunityCenter))
-					return;
-
-				var image = asset.AsImage();
-
-				// Openable fridge in the kitchen
-				Rectangle destArea = Bundles.FridgeOpenedSpriteArea; // Target some unused area of the sheet for this location
-
-				Rectangle sourceArea = new Rectangle(320, 224, destArea.Width, destArea.Height); // Apply base fridge sprite
-				image.PatchImage(image.Data, sourceArea, destArea, PatchMode.Replace);
-
-				sourceArea = new Rectangle(0, 192, 16, 32); // Patch in opened-door fridge sprite from mouseCursors sheet
-				image.PatchImage(Game1.mouseCursors2, sourceArea, destArea, PatchMode.Overlay);
-
-				// New star on the community centre bundle tracker wall
-				if (!ModEntry.Config.AddCookingCommunityCentreBundles)
-				{
-					Log.D($"Did not edit {asset.AssetName}: Community centre edits are disabled in config file.",
-						ModEntry.Config.DebugMode);
-				}
-				else
-				{
-					sourceArea = new Rectangle(370, 705, 7, 7);
-					destArea = new Rectangle(380, 710, sourceArea.Width, sourceArea.Height);
-					image.PatchImage(image.Data, sourceArea, destArea, PatchMode.Replace);
-				}
-
-				asset.ReplaceWith(image.Data);
-			}
-			else if (asset.AssetNameEquals(@"Strings/Locations"))
-			{
-				// Make changes to facilitate a new community centre bundle
-
-				if (!ModEntry.Config.AddCookingCommunityCentreBundles)
-				{
-					Log.D($"Did not edit {asset.AssetName}: Community centre edits are disabled in config file.",
-						ModEntry.Config.DebugMode);
-					return;
-				}
-
-				var data = asset.AsDictionary<string, string>().Data;
-
-				// Add area name
-				data["CommunityCenter_AreaName_" + Bundles.CommunityCentreAreaName] = i18n.Get("world.community_centre.kitchen");
-
-				// Insert a new AreaCompletion line to account for our extra bundle
-				const int newJunimoLineNumber = 3;
-				for (int i = Bundles.CommunityCentreAreaNumber + 1; i > newJunimoLineNumber; --i)
-				{
-					string below = data["CommunityCenter_AreaCompletion" + (i - 1)];
-					data["CommunityCenter_AreaCompletion" + i] = below;
-				}
-				data["CommunityCenter_AreaCompletion" + newJunimoLineNumber] = i18n.Get("world.community_centre.newjunimoline");
-
-				asset.AsDictionary<string, string>().ReplaceWith(data);
-			}
-			else if (asset.AssetNameEquals(@"Strings/UI"))
-			{
-				// Make changes to facilitate a new community centre bundle
-
-				if (!ModEntry.Config.AddCookingCommunityCentreBundles)
-				{
-					Log.D($"Did not edit {asset.AssetName}: Community centre edits are disabled in config file.",
-						ModEntry.Config.DebugMode);
-					return;
-				}
-
-				var data = asset.AsDictionary<string, string>().Data;
-				data["JunimoNote_Reward" + Bundles.CommunityCentreAreaName] = i18n.Get("world.community_centre.reward");
-				asset.AsDictionary<string, string>().ReplaceWith(data);
-			}
-			else if (asset.AssetNameEquals(@"TileSheets/tools"))
+			if (asset.AssetNameEquals(@"TileSheets/tools"))
 			{
 				// Patch in tool sprites for cooking equipment
 
@@ -777,6 +767,7 @@ namespace LoveOfCooking
 				Rectangle destArea = new Rectangle(272, 0, sourceArea.Width, sourceArea.Height);
 				destImage.PatchImage(ModEntry.SpriteSheet, sourceArea, destArea, PatchMode.Replace);
 				asset.ReplaceWith(destImage.Data);
+				return;
 			}
 		}
 
@@ -871,6 +862,14 @@ namespace LoveOfCooking
 
 				data[key] = Utils.UpdateEntry(data[key], newData);
 			}
+		}
+
+		private static Texture2D MakeTexture(int width, int height)
+		{
+			return new Texture2D(
+				graphicsDevice: Game1.graphics.GraphicsDevice,
+				width: width,
+				height: height);
 		}
 	}
 }

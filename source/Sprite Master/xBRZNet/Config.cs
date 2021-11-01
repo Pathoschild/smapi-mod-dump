@@ -31,7 +31,7 @@ namespace SpriteMaster.xBRZ {
 		// Precalculated
 		internal readonly double EqualColorTolerancePow2;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Config (
 			Vector2B wrapped,
 			bool Gamma = true,

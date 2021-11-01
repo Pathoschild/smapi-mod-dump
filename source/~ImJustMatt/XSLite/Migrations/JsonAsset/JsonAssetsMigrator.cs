@@ -18,23 +18,23 @@ namespace XSLite.Migrations.JsonAsset
     using StardewModdingAPI;
 
     /// <summary>
-    /// Migrate XS content packs created from JA to DGA
+    ///     Migrate XS content packs created from JA to DGA
     /// </summary>
     internal class JsonAssetsMigrator
     {
         /// <summary>
-        /// Gets a list of JsonAsset objects.
+        ///     Gets a list of JsonAsset objects.
         /// </summary>
         public IList<JsonAsset> JsonAssets { get; } = new List<JsonAsset>();
 
         /// <summary>
-        /// Gets textures for each JsonAsset object.
+        ///     Gets textures for each JsonAsset object.
         /// </summary>
         public IList<TextureMigrator> Textures { get; } = new List<TextureMigrator>();
 
         public static JsonAssetsMigrator FromContentPack(IContentPack contentPack)
         {
-            string path = Path.Combine(contentPack.DirectoryPath, "BigCraftables");
+            var path = Path.Combine(contentPack.DirectoryPath, "BigCraftables");
             if (!Directory.Exists(path))
             {
                 return null;
@@ -42,12 +42,12 @@ namespace XSLite.Migrations.JsonAsset
 
             // Generate content.json and default.json
             var jsonAssets = new JsonAssetsMigrator();
-            foreach (string folder in Directory.GetDirectories(path))
+            foreach (var folder in Directory.GetDirectories(path))
             {
                 var folderInfo = new DirectoryInfo(folder);
-                string folderName = folderInfo.Name;
-                JsonAsset jsonAsset = contentPack.ReadJsonFile<JsonAsset>($"BigCraftables/{folderName}/big-craftable.json");
-                string texturePath = $"BigCraftables/{folderName}/big-craftable.png";
+                var folderName = folderInfo.Name;
+                var jsonAsset = contentPack.ReadJsonFile<JsonAsset>($"BigCraftables/{folderName}/big-craftable.json");
+                var texturePath = $"BigCraftables/{folderName}/big-craftable.png";
                 if (string.IsNullOrWhiteSpace(jsonAsset.Name) || string.IsNullOrWhiteSpace(jsonAsset.Description) || !contentPack.HasFile(texturePath))
                 {
                     continue;
@@ -55,10 +55,10 @@ namespace XSLite.Migrations.JsonAsset
 
                 jsonAssets.JsonAssets.Add(jsonAsset);
                 var textureMigrator = new TextureMigrator(contentPack, jsonAsset.Name);
-                Texture2D texture = contentPack.LoadAsset<Texture2D>(texturePath);
+                var texture = contentPack.LoadAsset<Texture2D>(texturePath);
                 textureMigrator.AddTexture("big-craftable.png", texture);
 
-                for (int frame = 1; frame <= 18; frame++)
+                for (var frame = 1; frame <= 18; frame++)
                 {
                     texturePath = $"BigCraftables/{folderName}/big-craftable-{frame.ToString()}.png";
                     if (!contentPack.HasFile(texturePath))
@@ -111,12 +111,12 @@ namespace XSLite.Migrations.JsonAsset
                 // Additional Localizations
                 if (jsonAsset.NameLocalization is not null && jsonAsset.DescriptionLocalization is not null)
                 {
-                    IEnumerable<string> localizationKeys = jsonAsset.NameLocalization.Keys.Union(jsonAsset.DescriptionLocalization.Keys).Distinct();
-                    foreach (string localizationKey in localizationKeys)
+                    var localizationKeys = jsonAsset.NameLocalization.Keys.Union(jsonAsset.DescriptionLocalization.Keys).Distinct();
+                    foreach (var localizationKey in localizationKeys)
                     {
                         if (!jsonFiles.TryGetValue(localizationKey, out var jsonFile))
                         {
-                            jsonFile = new StringBuilder("{");
+                            jsonFile = new("{");
                             jsonFiles.Add(localizationKey, jsonFile);
                         }
 
@@ -227,17 +227,18 @@ namespace XSLite.Migrations.JsonAsset
             File.WriteAllText(Path.Combine(contentPack.DirectoryPath, "content.json"), contentJson.ToString());
 
             // Complete localization and write file(s)
-            string path = Path.Combine(contentPack.DirectoryPath, "i18n");
+            var path = Path.Combine(contentPack.DirectoryPath, "i18n");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
 
-            foreach (KeyValuePair<string, StringBuilder> jsonFile in jsonFiles)
+            foreach (var jsonFile in jsonFiles)
             {
                 jsonFile.Value.Append(
                     @"
 }");
+
                 File.WriteAllText(Path.Combine(contentPack.DirectoryPath, "i18n", $"{jsonFile.Key}.json"), jsonFile.Value.ToString());
             }
 
@@ -248,7 +249,7 @@ namespace XSLite.Migrations.JsonAsset
                 Directory.CreateDirectory(path);
             }
 
-            foreach (TextureMigrator texture in this.Textures)
+            foreach (var texture in this.Textures)
             {
                 texture.UpdateTextureFormat();
             }
@@ -272,5 +273,5 @@ namespace XSLite.Migrations.JsonAsset
                 _ => jaShop,
             };
         }
-        }
+    }
 }

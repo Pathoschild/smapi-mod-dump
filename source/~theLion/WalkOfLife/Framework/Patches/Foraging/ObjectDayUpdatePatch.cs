@@ -25,7 +25,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal ObjectDayUpdatePatch()
 		{
 			Original = typeof(SObject).MethodNamed(nameof(SObject.DayUpdate));
-			Postfix = new HarmonyMethod(GetType(), nameof(ObjectDayUpdatePostfix));
+			Postfix = new(GetType(), nameof(ObjectDayUpdatePostfix));
 		}
 
 		#region harmony patches
@@ -36,14 +36,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				if (!__instance.bigCraftable.Value || __instance.ParentSheetIndex != 128 || __instance.heldObject.Value == null || !Game1.MasterPlayer.HasProfession("Ecologist"))
+				if (!__instance.bigCraftable.Value || __instance.ParentSheetIndex != 128 ||
+					__instance.heldObject.Value is null || !Game1.MasterPlayer.HasProfession("Ecologist"))
 					return;
 
 				__instance.heldObject.Value.Quality = Util.Professions.GetEcologistForageQuality();
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

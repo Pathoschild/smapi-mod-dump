@@ -116,8 +116,8 @@ namespace ConfigurableBundleCosts
 				{
 					if (Context.IsWorldReady)
 					{
+						Globals.Monitor.Log("Reloading config values from file."); 
 						ContentPackHelper.ProcessConfigOverrides(forceReload: true);
-						Globals.Monitor.Log("Reloading config values from file.");
 					}
 					else
 					{

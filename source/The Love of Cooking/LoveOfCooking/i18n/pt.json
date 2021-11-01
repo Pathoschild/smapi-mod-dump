@@ -129,14 +129,6 @@
 	"world.fisherman.talk_2": "Você já viu um troll do rio, garoto? Heh heh ... $b# Ahh, você está velho demais para contos de fadas.",
 	"world.fisherman.talk_3": "Não há boas pegadinhas com aqueles caras do mercado itinerante na baía ...",
 
-	// Community Centre edits when using the Cooking bundle 
-	"world.community_centre.kitchen": "Cozinha",
-	"world.community_centre.reward": "Coisas de culinária",
-	"world.community_centre.bundle.1": "Padeiro",
-	"world.community_centre.bundle.2": "Janta",
-	"world.community_centre.bundle.3": "Piquenique",
-	"world.community_centre.newjunimoline": "Para mostrar nossa gratidão ... Vamos arrumar enquanto você avança.",
-
 	// Object names
 
 	// recipes

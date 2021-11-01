@@ -71,15 +71,15 @@ namespace StatsAsTokens
 				}
 				else if (args[0].IndexOf('=') == args[0].Length - 1)
 				{
-					error += "Named argument 'player' not provided a value. Must be one of the following values: 'host', 'local'. ";
+					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
 				}
 				else
 				{
 					// accept hostplayer or host, localplayer or local
-					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().Replace("player", "");
+					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim();
 					if (!(playerType.Equals("host") || playerType.Equals("local")))
 					{
-						error += "Named argument 'player' must be one of the following values: 'host', 'local'. ";
+						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
 					}
 				}
 
@@ -165,10 +165,10 @@ namespace StatsAsTokens
 
 			string[] args = input.Split('|');
 
-			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace("player", "").Replace(" ", "");
+			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 			string monster = args[1].Substring(args[1].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 
-			if (playerType.Equals("host"))
+			if (playerType.Equals("hostPlayer"))
 			{
 				bool found = TryGetMonsterStat(monster, host, out string monsterNum);
 
@@ -177,7 +177,7 @@ namespace StatsAsTokens
 					output.Add(monsterNum);
 				}
 			}
-			else if (playerType.Equals("local"))
+			else
 			{
 				bool found = TryGetMonsterStat(monster, loc, out string monsterNum);
 

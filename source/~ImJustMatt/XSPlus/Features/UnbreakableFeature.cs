@@ -11,41 +11,53 @@
 namespace XSPlus.Features
 {
     using System.Diagnostics.CodeAnalysis;
+    using Common.Services;
+    using CommonHarmony.Services;
     using HarmonyLib;
-    using StardewModdingAPI.Events;
     using StardewValley.Objects;
 
     /// <inheritdoc />
     internal class UnbreakableFeature : FeatureWithParam<bool>
     {
         private static UnbreakableFeature Instance;
+        private HarmonyService _harmony;
 
-        /// <summary>Initializes a new instance of the <see cref="UnbreakableFeature"/> class.</summary>
-        public UnbreakableFeature()
-            : base("Unbreakable")
+        private UnbreakableFeature(ServiceManager serviceManager)
+            : base("Unbreakable", serviceManager)
         {
-            UnbreakableFeature.Instance = this;
+            // Init
+            UnbreakableFeature.Instance ??= this;
+
+            // Dependencies
+            this.AddDependency<HarmonyService>(
+                service =>
+                {
+                    // Init
+                    this._harmony = service as HarmonyService;
+
+                    // Patches
+                    this._harmony?.AddPatch(
+                        this.ServiceName,
+                        AccessTools.Method(typeof(Chest), nameof(Chest.performToolAction)),
+                        typeof(UnbreakableFeature),
+                        nameof(UnbreakableFeature.Chest_performToolAction_prefix));
+                });
         }
 
-        /// <inheritdoc/>
-        public override void Activate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Activate()
         {
             // Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Chest), nameof(Chest.performToolAction)),
-                prefix: new HarmonyMethod(typeof(UnbreakableFeature), nameof(UnbreakableFeature.Chest_performToolAction_prefix)));
+            this._harmony.ApplyPatches(this.ServiceName);
         }
 
-        /// <inheritdoc/>
-        public override void Deactivate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Deactivate()
         {
             // Patches
-            harmony.Unpatch(
-                original: AccessTools.Method(typeof(Chest), nameof(Chest.performToolAction)),
-                patch: AccessTools.Method(typeof(UnbreakableFeature), nameof(UnbreakableFeature.Chest_performToolAction_prefix)));
+            this._harmony.UnapplyPatches(this.ServiceName);
         }
 
-        [SuppressMessage("ReSharper", "SA1313", Justification = "Naming is determined by Harmony.")]
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
         [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
         [HarmonyPriority(Priority.High)]

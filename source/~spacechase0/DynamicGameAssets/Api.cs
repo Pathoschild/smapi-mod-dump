@@ -9,6 +9,7 @@
 *************************************************/
 
 using DynamicGameAssets.Game;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 
 namespace DynamicGameAssets
@@ -25,9 +26,20 @@ namespace DynamicGameAssets
         }
 
         /// <inheritdoc/>
+        public object SpawnDGAItem(string fullId, Color? color)
+        {
+            object spawnDgaItem = this.SpawnDGAItem(fullId);
+            if(color.HasValue && spawnDgaItem is CustomObject obj)
+            {
+                obj.ObjectColor = color;
+            }
+            return spawnDgaItem;
+        }
+
+        /// <inheritdoc/>
         public object SpawnDGAItem(string fullId)
         {
-            return Mod.Find(fullId).ToItem();
+            return Mod.Find(fullId)?.ToItem();
         }
 
         /// <inheritdoc/>

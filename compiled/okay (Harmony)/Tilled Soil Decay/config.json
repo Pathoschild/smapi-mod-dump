@@ -3,10 +3,6 @@
     "DryingRate": 0.5,
     "Delay": 2
   },
-  "FirstOfMonth": {
-    "DryingRate": 1.0,
-    "Delay": 1
-  },
   "Greenhouse": {
     "DryingRate": 1.0,
     "Delay": 1

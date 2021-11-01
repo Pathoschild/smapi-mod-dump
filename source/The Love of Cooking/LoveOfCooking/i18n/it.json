@@ -129,28 +129,6 @@
 	"world.fisherman.talk_2": "Hai mai visto un troll del fiume? Heh heh...$b#Ahh, sei troppo vecchio per le storielle.",
 	"world.fisherman.talk_3": "Non ci sono buone catture con quelle persone del mercato itinerante nella baia...",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "Cucina",
-	"world.community_centre.reward": "Roba da cucina",
-	"world.community_centre.bundle.1": "del Fornaio",
-	"world.community_centre.bundle.2": "del Diner",
-	"world.community_centre.bundle.3": "del Picnic",
-	"world.community_centre.newjunimoline": "Per mostrare la nostra gratitudine... Riordineremo mentre vai avanti.",
-
-	// Notifications strings
-	"notification.icon.inspect": "Avvisi di Love for Cooking",
-	"notification.dismiss.inspect": "Rimuovi le notifiche",
-	"notification.empty.inspect": "Hai preso tutto!",
-	"notification.bundlemultiplayerwarning.inspect": "I bundle del Centro della Comunità sono disabilitati",
-	"notification.bundlemultiplayerwarning.message": "Per impedire problemi nelle partite multigiocatore, i nuovi bundle del Centro della Comunità sono disabilitati nei mondi con delle cabine d'ora in avanti!\n\nSe stai ospitando una partita MULTIGIOCATORE, dovresti lasciare i bundle da cucina disabilitati.\n\nSe stai giocando una partita GIOCATORE SINGOLO, puoi caricare i tuoi progressi cliccando OK.\n\n\n\nCaricare i progressi salvati per i bundle da cucina?",
-	"notification.cabinbuiltwarning.inspect": "Ricarica il salvataggio prima che si unisca il giocatore",
-	"notification.cabinbuiltwarning.message": "Per impedire problemi nelle partite multigiocatore, i nuovi bundle del Centro della Comunità sono disabilitati nei mondi con delle cabine d'ora in avanti!\n\nSe stai ospitando una fattoria MULTIGIOCATORE, fai attendere i nuovi giocatori fino a quando hai ricaricato il salvataggio dopo aver dormito e terminato la giornata.\n\nIl progresso del tuo bundle da cucina verrà salvato e disattivato, dopodichè i braccianti potranno unirsi in sicurezza. I nuovi bundle possono ancora essere utilizzati nelle partite a giocatore singolo!",
-	"menu.yes_option": "Sì",
-	"menu.no_option": "No",
-	"menu.accept_option": "Accetta",
-	"menu.decline_option": "Rifiuta",
-	"menu.cancel_option": "Annulla",
-
 	// Object names
 
 	// recipes

@@ -39,6 +39,7 @@ namespace ConfigurableBundleCosts
 
 		public class JojaConfig : SubConfig
 		{
+			public int membershipCost = 5000;
 			public int busCost = 40000;         // button 0
 			public int minecartsCost = 15000;   // button 1
 			public int bridgeCost = 25000;      // button 2
@@ -63,6 +64,7 @@ namespace ConfigurableBundleCosts
 		public override string ToString()
 		{
 			return $"\nJoja values applied: {Joja.applyValues}" +
+				$"\nMembership cost: {Joja.membershipCost}" +
 				$"\nBus Cost: {Joja.busCost}" +
 				$"\nMinecarts Cost: {Joja.minecartsCost}" +
 				$"\nBridge Cost: {Joja.bridgeCost}" +
@@ -107,6 +109,7 @@ namespace ConfigurableBundleCosts
 
 		public class JojaConfig : SubConfig
 		{
+			public int? membershipCost = null;
 			public int? busCost = null;         // button 0
 			public int? minecartsCost = null;   // button 1
 			public int? bridgeCost = null;      // button 2

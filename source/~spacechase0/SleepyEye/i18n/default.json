@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    // tent tool
+    "tent.name": "Tent",
+    "tent.description": "Sleep here. Sleep there. Sleep everywhere!",
+
+    // HUD messages
+    "messages.slept-at-lost-location": "You camped somewhere strange, so you've returned home.",
+    "messages.slept-at-festival": "You camped on the festival grounds, so you've returned home.",
+
+    // Generic Mod Config Menu UI
+    "config.seconds-until-save.name": "Seconds Until Save",
+    "config.seconds-until-save.tooltip": "The number of seconds until the tent tool should trigger a save."
+}

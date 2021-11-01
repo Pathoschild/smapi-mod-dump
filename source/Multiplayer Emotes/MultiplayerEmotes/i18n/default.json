@@ -1,0 +1,34 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FerMod/StardewMods
+**
+*************************************************/
+
+{
+	"menu.emotes-button.hover-text": "Emotes",
+
+	// Console command documentation. Dont require translation to other locales.
+	"command.play_emote": "Play the emote animation with the passed id.",
+	"command.play_emote.usage": "Usage: play_emote <value>\n- value: a integer representing the animation id.",
+	"command.play_emote_npc": "Force a npc to play the emote animation with the given id.",
+	"command.play_emote_npc.usage": "Usage: play_emote_npc <name> <value>\n- name: a string representing the npc name.\n- value: a integer representing the animation id.",
+	"command.play_emote_animal": "Force a farm animal to play the emote animation with the given id.",
+	"command.play_emote_animal.usage": "Usage: play_emote_animal <name> <value>\n- name: a string representing the farm animal name.\n- value: a integer representing the animation id.",
+	"command.stop_emote": "Stop any emote being played by you.",
+	"command.stop_emote.usage": "Usage: stop_emote",
+	"command.stop_emote_npc": "Stop any emote being played by an NPC.",
+	"command.stop_emote_npc.usage": "Usage: stop_emote_npc <name>",
+	"command.stop_emote_animal": "Stop any emote being played by a farm animal.",
+	"command.stop_emote_animal.usage": "Usage: stop_emote_animal <name>",
+	"command.stop_all_emotes": "Stop any emote being played.",
+	"command.stop_all_emotes.usage": "Usage: stop_all_emotes",
+	"command.multiplayer_emotes": "List all the players that have this mod and can send and receive emotes.",
+	"command.multiplayer_emotes.usage": "Usage: multiplayer_emotes",
+
+	"command.missing_parameters": "Missing parameters.",
+	"command.permissions_denied": "Permission denied. You dont have enough permissions to run this command."
+}

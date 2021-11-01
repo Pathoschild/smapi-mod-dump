@@ -44,7 +44,6 @@ for queries and analysis.**
 - Added mod configurations
 - Improved the way the emotes send and receive
 
-
 ## 1.0.0-beta
 
 - First release

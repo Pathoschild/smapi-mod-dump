@@ -33,7 +33,7 @@ namespace SpriteMaster {
 		internal byte[] Data = default;
 		private VolatileULong _Hash = Hashing.Default;
 		public ulong Hash {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				ulong hash = _Hash;
 				if (hash == Hashing.Default) {
@@ -46,17 +46,17 @@ namespace SpriteMaster {
 
 		// Attempt to update the bytedata cache for the reference texture, or purge if it that makes more sense or if updating
 		// is not plausible.
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static unsafe void Purge(Texture2D reference, Bounds? bounds, DataRef<byte> data) {
 			reference.Meta().Purge(reference, bounds, data);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool IsCached(Texture2D reference) {
 			return reference.Meta().CachedDataNonBlocking != null;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal SpriteInfo (Texture2D reference, in Bounds dimensions, uint expectedScale) {
 			ReferenceSize = new Vector2I(reference);
 			ExpectedScale = expectedScale;
@@ -93,7 +93,7 @@ namespace SpriteMaster {
 			);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Dispose () {
 			Data = default;
 			_Hash = Hashing.Default;

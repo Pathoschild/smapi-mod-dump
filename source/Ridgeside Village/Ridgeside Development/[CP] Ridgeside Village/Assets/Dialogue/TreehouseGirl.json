@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	{
+   
+   "Action": "EditData",
+   "Target": "Characters/Dialogue/TreehouseGirl",
+   "Entries": {
+
+	"Mon": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+	"Tue": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+	"Wed": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+	"Thu": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+	"Fri": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+	"Sat": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+	"Sun": "... [{{spacechase0.JsonAssets/ObjectId:Hollowed Bear}}]#$e#...$h",
+		},
+	},
+]
+}

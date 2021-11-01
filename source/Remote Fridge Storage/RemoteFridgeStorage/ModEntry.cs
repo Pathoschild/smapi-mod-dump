@@ -50,7 +50,7 @@ namespace RemoteFridgeStorage
             SaveManager = new SaveManager(ChestController,Config);
 
             Helper.Events.Display.MenuChanged += OnMenuChanged;
-            Helper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
+            Helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
             Helper.Events.Input.ButtonPressed += OnButtonPressed;
             Helper.Events.GameLoop.SaveLoaded += SaveManager.SaveLoaded;
             Helper.Events.GameLoop.Saving += SaveManager.Saving;
@@ -152,10 +152,10 @@ namespace RemoteFridgeStorage
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
+        private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             if (!Context.IsWorldReady) return;
-            ChestController.DrawFridgeIcon();
+            ChestController.DrawFridgeIcon(e);
         }
 
         /// <summary>
@@ -171,11 +171,12 @@ namespace RemoteFridgeStorage
                 return;
 
             // If The (Cooking) Crafting page is opened
-            if (!_compatibilityInfo.CookingSkillLoaded && e.NewMenu is StardewValley.Menus.CraftingPage &&
+            if (e.NewMenu is StardewValley.Menus.CraftingPage &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
                 Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue())
             {
                 FridgeController.InjectItems();
+                return;
             }
 
             // If the Cooking Skill Page is opened.
@@ -183,7 +184,15 @@ namespace RemoteFridgeStorage
                 e.NewMenu.GetType().ToString() == "CookingSkill.NewCraftingPage")
             {
                 FridgeController.InjectItems();
+                return;
             }
+
+            if (Helper.Reflection.GetField<bool>(e.NewMenu, "cooking", false) != null &&
+                Helper.Reflection.GetField<bool>(e.NewMenu, "cooking").GetValue())
+            {
+                Monitor.Log("Menu changed to " + e.NewMenu.GetType() + " which is a unrecognized type. Is it from an incompatible mod?",LogLevel.Warn);    
+            }
+            
         }
 
         /// <summary>

@@ -21,9 +21,10 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 4e94c62cc6e3b5ee2b09db98ad43007f46dc128e
+   commit 41cb56f4640553dff46dc442d756cc448f2eafa2
+   Merge: 380cc470 5a19e3bb
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Mon Sep 27 18:53:47 2021 -0400
+   Date:   Sun Oct 31 20:58:47 2021 -0400
    
-       add naming convention to editorconfig
+       Merge branch 'develop' into stable
    

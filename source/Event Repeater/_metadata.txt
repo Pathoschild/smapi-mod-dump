@@ -6,9 +6,9 @@ mods:
    Event Repeater
 
 latest commit:
-   commit a71dcde79967f6a1bb09f3e7d7389ca627ac2646
+   commit f53539c1370b76e41dc4e3c792b18c80830aa76b
    Author: Omega Terra Coriel <44127678+MissCoriel@users.noreply.github.com>
-   Date:   Sun Feb 14 20:36:06 2021 -0600
+   Date:   Fri Oct 8 07:35:21 2021 -0500
    
-       Update to 6.0
+       update to 6.3.2
    

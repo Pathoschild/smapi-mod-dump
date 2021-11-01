@@ -9,6 +9,16 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.0.8
+Released 29 October 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Improved translations. Thanks to wally232 (added Korean)!
+
+## 1.0.7
+Released 15 October 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Internal refactoring to translation and input handling.
+
 ## 1.0.6
 Released 11 September 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
 

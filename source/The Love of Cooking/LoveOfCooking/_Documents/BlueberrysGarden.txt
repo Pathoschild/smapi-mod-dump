@@ -15,7 +15,7 @@ Things I'd like:
 	Idea credits:
 		[goboking] Cooking overhaul - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/
 		✔	[Denfro] Cook in bulk - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbuho3a/
-			[chichago_] Cooking competition - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbsxg76/
+		?	[chichago_] Cooking competition - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbsxg76/
 		?	[Deltron_Zed] Queen of Sauce event - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbszsxh/
 		?	[meFalloutnerd93] Mix-and-match cooking - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fcjq2zn/
 		✔	[helenaneedshugs] Community centre kitchen - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbt5tbf/
@@ -24,7 +24,7 @@ Things I'd like:
 		✔	[SaltyHeathen] Cooking animation - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbu69py/
 		✔	[Ruittsorf] Select ingredients - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbu0j81/
 		✔	[Realbadatnames] Make a mod - https://www.reddit.com/r/StardewValley/comments/eecpzy/cooking_could_use_an_overhaul/fbtnf3l/
-		[YorikTheDestroyer] Cooking festival - https://github.com/StardewModders/mod-ideas/issues/490
+	?	[YorikTheDestroyer] Cooking festival - https://github.com/StardewModders/mod-ideas/issues/490
 	✔	[killkrazed] Filter, search, sort, grid - https://github.com/StardewModders/mod-ideas/issues/470
 
 	COOK! Sprite translations:
@@ -35,10 +35,10 @@ Things I'd like:
 	✔	Spanish
 	✔	Portuguese
 		Hungarian
-		Turkish
+	✔	Turkish
 	✔	Russian
-		Italian
-		German
+	✔	Italian
+	✔	German
 
 	Concepts to think on:
 	✔	Cooking levels
@@ -51,13 +51,7 @@ Things I'd like:
 		✔	Sprites for copper/steel/gold/iridium upgrades
 	✔	Limited Campfire Cooking compatibility
 	✔	Cooking range in the Saloon with a level increasing through questline progression
-	?	Rebalance ingredients to foods
-		Community centre cooking bundle items and rewards + big reward
-		✔	Picnicker's Bundle
-		✔	Baker's Bundle
-		✔	Diner's Bundle
-			Reward
-				???
+	✔	Rebalance ingredients to foods
 	✔	Cooking level bonuses
 		✔	Skill professions
 		✔	Skill profession icons
@@ -67,7 +61,7 @@ Things I'd like:
 			✔	Five Star Cook
 			✔	Gourmet
 			✔	Glutton
-	?	Rework ingredients slots sprites
+	✔	Rework ingredients slots sprites
 
 	Events:
 		UPDATE: Cooking festival
@@ -84,9 +78,8 @@ Things I'd like:
 
 	Patches:
 	✔	Cider -> Keg + Apple
-	✔	Vinegar -> Keg + Wine/Cider
+	?	Vinegar -> Keg + Wine/Cider
 	✔	Nettle Tea -> Keg + Nettles
-	?	Marmalade -> Keg + Orange/Lemon/Lime/Citron/Yuzu/Grapefruit/Pomelo
 
 	Ingredients:
 w!	🍰	Sugar Cane

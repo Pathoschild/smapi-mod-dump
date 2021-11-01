@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "Festive Big Key (A)",
+    "Category": "Gem",
+    "Edibility": -300,
+    "CategoryTextOverride": "Treasure",
+    "CanTrash": false,
+    "CanSell": false,
+    "CanBeGifted": false,
+    "TranslationKey": "item.festive-big-key-a"
+}

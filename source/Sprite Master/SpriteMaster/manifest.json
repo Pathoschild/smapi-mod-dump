@@ -11,11 +11,11 @@
 {
   "Name": "SpriteMaster",
   "Author": "mkukli",
-  "Version": "0.12.1",
+  "Version": "0.13.0",
   "Description": "Resamples sprites on the fly using xBRZ to improve resolution and crispness.",
   "UniqueID": "DigitalCarbide.SpriteMaster",
   "EntryDll": "SpriteMaster.dll",
-  "MinimumApiVersion": "3.7.4",
+  "MinimumApiVersion": "3.13.0-beta",
   "UpdateKeys": [
     "Nexus:4922",
     "GitHub:ameisen/SV-SpriteMaster"

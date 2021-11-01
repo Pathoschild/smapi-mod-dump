@@ -169,6 +169,12 @@ namespace CustomCompanions
 
             // Check for any Content Patcher changes from OnDayStart
             this.ValidateModelCache(null, true, true);
+
+            // Spawn any required companions
+            foreach (var location in Game1.locations)
+            {
+                this.SpawnSceneryCompanions(location, spawnOnlyRequiredCompanions: true);
+            }
         }
 
         private void OnCustomLoad(object sender, EventArgs e)
@@ -427,74 +433,87 @@ namespace CustomCompanions
             CompanionManager.sceneryCompanions = new List<SceneryCompanions>();
         }
 
-        private void SpawnSceneryCompanions(GameLocation location)
+        private void SpawnSceneryCompanions(GameLocation location, bool spawnOnlyRequiredCompanions = false)
         {
-            var backLayer = location.map.GetLayer("Back");
-            for (int x = 0; x < backLayer.LayerWidth; x++)
+            try
             {
-                for (int y = 0; y < backLayer.LayerHeight; y++)
+                var backLayer = location.map.GetLayer("Back");
+                for (int x = 0; x < backLayer.LayerWidth; x++)
                 {
-                    var tile = backLayer.Tiles[x, y];
-                    if (tile is null)
+                    for (int y = 0; y < backLayer.LayerHeight; y++)
                     {
-                        continue;
-                    }
-
-                    if (tile.Properties.ContainsKey("CustomCompanions"))
-                    {
-                        if (String.IsNullOrEmpty(tile.Properties["CustomCompanions"]))
+                        var tile = backLayer.Tiles[x, y];
+                        if (tile is null)
                         {
-                            if (CompanionManager.sceneryCompanions.Any(s => s.Location == location && s.Tile == new Vector2(x, y)))
+                            continue;
+                        }
+
+                        if (tile.Properties.ContainsKey("CustomCompanions"))
+                        {
+                            if (String.IsNullOrEmpty(tile.Properties["CustomCompanions"]))
                             {
-                                Monitor.Log($"Removing cached SceneryCompanions on tile ({x}, {y}) for map {location.NameOrUniqueName}!", LogLevel.Trace);
-                                CompanionManager.RemoveSceneryCompanionsAtTile(location, new Vector2(x, y));
+                                if (CompanionManager.sceneryCompanions.Any(s => s.Location == location && s.Tile == new Vector2(x, y)))
+                                {
+                                    Monitor.Log($"Removing cached SceneryCompanions on tile ({x}, {y}) for map {location.NameOrUniqueName}!", LogLevel.Trace);
+                                    CompanionManager.RemoveSceneryCompanionsAtTile(location, new Vector2(x, y));
+                                }
+                                continue;
                             }
-                            continue;
-                        }
 
-                        string command = tile.Properties["CustomCompanions"].ToString();
-                        if (command.Split(' ')[0].ToUpper() != "SPAWN")
-                        {
-                            if (!String.IsNullOrEmpty(command))
+                            string command = tile.Properties["CustomCompanions"].ToString();
+                            if (command.Split(' ')[0].ToUpper() != "SPAWN")
                             {
-                                Monitor.Log($"Unknown CustomCompanions command ({command.Split(' ')[0]}) given on tile ({x}, {y}) for map {location.NameOrUniqueName}!", LogLevel.Warn);
+                                if (!String.IsNullOrEmpty(command))
+                                {
+                                    Monitor.Log($"Unknown CustomCompanions command ({command.Split(' ')[0]}) given on tile ({x}, {y}) for map {location.NameOrUniqueName}!", LogLevel.Warn);
+                                }
+                                continue;
                             }
-                            continue;
-                        }
 
-                        string companionKey = command.Substring(command.IndexOf(' ') + 2).TrimStart();
-                        if (!Int32.TryParse(command.Split(' ')[1], out int amountToSummon))
-                        {
-                            amountToSummon = 1;
-                            companionKey = command.Substring(command.IndexOf(' ') + 1);
-                        }
+                            string companionKey = command.Substring(command.IndexOf(' ') + 2).TrimStart();
+                            if (!Int32.TryParse(command.Split(' ')[1], out int amountToSummon))
+                            {
+                                amountToSummon = 1;
+                                companionKey = command.Substring(command.IndexOf(' ') + 1);
+                            }
 
-                        var companion = CompanionManager.companionModels.FirstOrDefault(c => String.Concat(c.Owner, ".", c.Name) == companionKey);
-                        if (companion is null)
-                        {
-                            Monitor.Log($"Unable to find companion match for {companionKey} given on tile ({x}, {y}) for map {location.NameOrUniqueName}!", LogLevel.Warn);
-                            continue;
-                        }
+                            var companion = CompanionManager.companionModels.FirstOrDefault(c => String.Concat(c.Owner, ".", c.Name) == companionKey);
+                            if (companion is null)
+                            {
+                                Monitor.Log($"Unable to find companion match for {companionKey} given on tile ({x}, {y}) for map {location.NameOrUniqueName}!", LogLevel.Warn);
+                                continue;
+                            }
 
-                        // Check if it is already spawned
-                        if (location.characters.Any(c => CompanionManager.IsSceneryCompanion(c) && (c as MapCompanion).targetTile == new Vector2(x, y) * 64f && (c as MapCompanion).companionKey == companion.GetId()))
-                        {
-                            continue;
-                        }
+                            if (spawnOnlyRequiredCompanions && !companion.EnableSpawnAtDayStart)
+                            {
+                                continue;
+                            }
 
-                        // Check if the companion is allowed to be spawned
-                        if (CompanionManager.denyRespawnCompanions.Any(s => s.Location == location && s.Tile == new Vector2(x, y) && s.Companions.Any(c => c.companionKey == companion.GetId())))
-                        {
-                            continue;
-                        }
+                            // Check if it is already spawned
+                            if (location.characters.Any(c => CompanionManager.IsSceneryCompanion(c) && (c as MapCompanion).targetTile == new Vector2(x, y) * 64f && (c as MapCompanion).companionKey == companion.GetId()))
+                            {
+                                continue;
+                            }
 
-                        Monitor.Log($"Spawning [{companionKey}] x{amountToSummon} on tile ({x}, {y}) for map {location.NameOrUniqueName}");
-                        CompanionManager.SummonCompanions(companion, amountToSummon, new Vector2(x, y), location);
+                            // Check if the companion is allowed to be spawned
+                            if (CompanionManager.denyRespawnCompanions.Any(s => s.Location == location && s.Tile == new Vector2(x, y) && s.Companions.Any(c => c.companionKey == companion.GetId())))
+                            {
+                                continue;
+                            }
+
+                            Monitor.Log($"Spawning [{companionKey}] x{amountToSummon} on tile ({x}, {y}) for map {location.NameOrUniqueName}");
+                            CompanionManager.SummonCompanions(companion, amountToSummon, new Vector2(x, y), location);
+                        }
                     }
                 }
-            }
 
-            CompanionManager.RefreshLights(location);
+                CompanionManager.RefreshLights(location);
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Unable to spawn companions on {location.NameOrUniqueName}, likely due to a bad map. See log for more details.", LogLevel.Warn);
+                Monitor.Log(ex.ToString());
+            }
         }
 
         private void RemoveAllCompanions(string owner = null, GameLocation targetLocation = null)

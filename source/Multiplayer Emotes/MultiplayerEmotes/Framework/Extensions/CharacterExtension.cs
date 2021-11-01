@@ -1,0 +1,128 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FerMod/StardewMods
+**
+*************************************************/
+
+using System;
+using System.Linq;
+using MultiplayerEmotes.Framework.Network;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Network;
+
+namespace MultiplayerEmotes.Extensions {
+
+  public static class CharacterExtension {
+
+    public static void PlayEmote(this Character character, int emoteIndex) {
+      character.IsEmoting = false;
+      character.doEmote(emoteIndex);
+    }
+
+    public static void BroadcastEmote(this Character character, int emoteIndex) {
+      if (!Game1.IsMultiplayer) {
+        return;
+      }
+
+      EmoteMessage message = new EmoteMessage {
+        EmoteIndex = emoteIndex
+      };
+
+      switch (character) {
+        case Farmer farmer:
+          message.EmoteSourceId = farmer.UniqueMultiplayerID.ToString();
+          message.EmoteSourceType = CharacterType.Farmer;
+          break;
+        case NPC npc:
+          message.EmoteSourceId = npc.Name;
+          message.EmoteSourceType = CharacterType.NPC;
+          break;
+        case FarmAnimal farmAnimal:
+          message.EmoteSourceId = farmAnimal.myID.Value.ToString();
+          message.EmoteSourceType = CharacterType.FarmAnimal;
+          break;
+      }
+
+      ModEntry.MultiplayerMessage.Send(message);
+    }
+
+#if DEBUG
+    public static void TestFunc(string name, bool mustBeVillager = false) {
+
+      if (Game1.currentLocation != null) {
+        ModEntry.ModMonitor.Log($"- Loop1");
+        foreach (NPC character in Game1.currentLocation.getCharacters()) {
+          ModEntry.ModMonitor.Log($"Character: {character.Name}. IsVillager: {character.isVillager()}");
+          if (character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
+            ModEntry.ModMonitor.Log($"### Found Character: {character}");
+        }
+      }
+      ModEntry.ModMonitor.Log($"- Loop2");
+      for (int index = 0; index < Game1.locations.Count; ++index) {
+        foreach (NPC character in Game1.locations[index].getCharacters()) {
+          ModEntry.ModMonitor.Log($"Character: {character.Name}. IsVillager: {character.isVillager()}");
+          if (character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
+            ModEntry.ModMonitor.Log($"### Found Character: {character.Name}");
+        }
+      }
+      if (Game1.getFarm() != null) {
+        ModEntry.ModMonitor.Log($"- Loop3");
+        foreach (Building building in Game1.getFarm().buildings) {
+          if (building.indoors.Value != null) {
+            foreach (NPC character in building.indoors.Value.characters) {
+              ModEntry.ModMonitor.Log($"Character: {character.Name}. IsVillager: {character.isVillager()}");
+              if (character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
+                ModEntry.ModMonitor.Log($"### Found Character: {character.Name}");
+            }
+          }
+        }
+      }
+    }
+#endif
+
+    [Obsolete("This method removal is planned. Is not longer in use.", true)]
+    public static void ReceiveEmoteBroadcast(this Multiplayer multiplayer, IncomingMessage msg) {
+      if (msg.Data.Length <= 0) return;
+      int emoteIndex = msg.Reader.ReadInt32();
+      msg.SourceFarmer.PlayEmote(emoteIndex);
+
+#if DEBUG
+      ModEntry.ModMonitor.Log($"Received player emote broadcast. (Name: \"{msg.SourceFarmer.Name}\", Emote: {emoteIndex})");
+#endif
+    }
+
+    [Obsolete("This method removal is planned. Is not longer in use.", true)]
+    public static void ReceiveCharacterEmoteBroadcast(this Multiplayer multiplayer, IncomingMessage msg) {
+      if (!Context.IsPlayerFree || msg.Data.Length <= 0) return;
+
+      int emoteIndex = msg.Reader.ReadInt32();
+      string characterId = msg.Reader.ReadString();
+
+      Character sourceCharacter = null;
+
+      if (long.TryParse(characterId, out long id)) {
+        sourceCharacter = (Game1.currentLocation as AnimalHouse).animals.Values.FirstOrDefault(x => x.myID.Value == id);
+      } else {
+        sourceCharacter = Game1.getCharacterFromName(characterId);
+      }
+
+#if DEBUG
+      TestFunc(characterId);
+      ModEntry.ModMonitor.Log($"Received character emote broadcast. (Name: \"{sourceCharacter.Name}\", Emote: {emoteIndex})");
+#endif
+
+      if (sourceCharacter != null && !sourceCharacter.IsEmoting) {
+        sourceCharacter.doEmote(emoteIndex, true);
+      }
+
+    }
+
+  }
+
+}

@@ -58,7 +58,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
 
             var instanceName = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Building}_{GetBuildingName(__instance)}");
             var instanceSeasonName = $"{instanceName}_{Game1.currentSeason}";
-            if (__instance.modData["AlternativeTextureName"].ToLower() != instanceName && __instance.modData["AlternativeTextureName"].ToLower() != instanceSeasonName)
+            if (!String.Equals(__instance.modData["AlternativeTextureName"], instanceName, StringComparison.OrdinalIgnoreCase) && !String.Equals(__instance.modData["AlternativeTextureName"], instanceSeasonName, StringComparison.OrdinalIgnoreCase))
             {
                 __instance.modData["AlternativeTextureName"] = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Building}_{GetBuildingName(__instance)}");
                 if (__instance.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]))
@@ -69,8 +69,6 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                     BuildingPatch.ResetTextureReversePatch(__instance);
                 }
             }
-
-            ResetTexturePrefix(__instance);
         }
 
         internal static void CondensedDrawInMenu(Building building, Texture2D texture, SpriteBatch b, int x, int y, float scale, float alpha = 1f)
@@ -128,6 +126,12 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                 case ShippingBin shippingBin:
                 case Stable stable:
                 default:
+                    if (building.buildingType.Value.ToLower().Contains("farmhouse"))
+                    {
+                        b.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 160, 144), building.color, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 0.89f);
+                        return;
+                    }
+
                     //building.drawShadow(b, x, y);
                     b.Draw(texture, new Vector2(x, y), building.getSourceRect(), building.color, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 0.89f);
 
@@ -139,7 +143,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
             }
         }
 
-        private static bool ResetTexturePrefix(Building __instance)
+        internal static bool ResetTexturePrefix(Building __instance)
         {
             if (__instance.modData.ContainsKey("AlternativeTextureName"))
             {
@@ -165,11 +169,11 @@ namespace AlternativeTextures.Framework.Patches.Buildings
             return true;
         }
 
-        internal static Texture2D GetBuildingTextureWithPaint(Building building, AlternativeTextureModel textureModel, int textureVariation)
+        internal static Texture2D GetBuildingTextureWithPaint(Building building, AlternativeTextureModel textureModel, int textureVariation, bool canBePaintedOverride = false)
         {
             var xOffset = building.tilesWide * 16;
             var yOffset = textureVariation * textureModel.TextureHeight;
-            var textureWidth = building.CanBePainted() ? xOffset : textureModel.TextureWidth;
+            var textureWidth = building.CanBePainted() || canBePaintedOverride ? xOffset : textureModel.TextureWidth;
 
             var texture2D = textureModel.GetTexture(textureVariation).CreateSelectiveCopy(Game1.graphics.GraphicsDevice, new Rectangle(0, yOffset, textureWidth, textureModel.TextureHeight));
             if (building.paintedTexture != null)
@@ -177,7 +181,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                 building.paintedTexture = null;
             }
 
-            if (building.CanBePainted() && xOffset * 2 <= textureModel.GetTexture(textureVariation).Width)
+            if ((building.CanBePainted() || canBePaintedOverride) && xOffset * 2 <= textureModel.GetTexture(textureVariation).Width)
             {
                 var paintedTexture2D = textureModel.GetTexture(textureVariation).CreateSelectiveCopy(Game1.graphics.GraphicsDevice, new Rectangle(xOffset, yOffset, xOffset, textureModel.TextureHeight));
                 building.paintedTexture = GetPaintedOverlay(building, texture2D, paintedTexture2D, building.netBuildingPaintColor.Value);
@@ -190,7 +194,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
             return texture2D;
         }
 
-        private static Texture2D GetPaintedOverlay(Building building, Texture2D base_texture, Texture2D paint_mask_texture, BuildingPaintColor color)
+        internal static Texture2D GetPaintedOverlay(Building building, Texture2D base_texture, Texture2D paint_mask_texture, BuildingPaintColor color)
         {
             List<List<int>> paint_indices = null;
             try

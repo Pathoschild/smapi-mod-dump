@@ -250,7 +250,7 @@ namespace ConfigurableBundleCosts
 
 		private static void UpdateExtraDialogue(IAssetData asset)
 		{
-			if (Globals.CurrentValues.Joja.movieTheaterCost == 500000)
+			if (Globals.CurrentValues.Joja.movieTheaterCost == 500000 && Globals.CurrentValues.Joja.membershipCost == 5000)
 			{
 				return;
 			}
@@ -259,10 +259,13 @@ namespace ConfigurableBundleCosts
 			CultureInfo culture = CultureInfo.GetCultureInfo(Globals.Helper.Translation.Locale);
 
 			string newValue = Globals.CurrentValues.Joja.movieTheaterCost.ToString("#,###", culture);
+			string joinCost = Globals.CurrentValues.Joja.membershipCost.ToString("#,###", culture);
 
 			data["Morris_BuyMovieTheater"] = Globals.Helper.Translation.Get("Morris_BuyMovieTheater", new { buyValue = newValue });
 			data["Morris_TheaterBought"] = Globals.Helper.Translation.Get("Morris_TheaterBought", new { buyValue = newValue });
-		}
+			data["Morris_WeekendGreeting_MembershipAvailable"] = Globals.Helper.Translation.Get("Morris_WeekendGreeting_MembershipAvailable", new { membershipCost = joinCost });
+			data["Morris_FirstGreeting_MembershipAvailable"] = Globals.Helper.Translation.Get("Morris_FirstGreeting_MembershipAvailable", new { membershipCost = joinCost });
+		}						
 
 		private static Vector2 GetDestStartPos(string key)
 		{

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Pathoschild.Stardew.Common.Commands;
 using StardewModdingAPI;
 
 namespace ContentPatcher.Framework.Commands.Commands

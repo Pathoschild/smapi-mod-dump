@@ -16,6 +16,8 @@
 
     "GenericMC.Volume": "Głośność Głosu",
     "GenericMC.VolumeDesc": "Pozwala na precyzyjne ustawienie maksymalnej głośności \"Here Fishy!\". Rzeczywista głośność zwiększa się nieco wraz z poziomem łowienia, zaczynając od 80% tej wartości. Po zapisaniu odworzy się podgląd głośności na poziomie połowu 10 (98% maksymalnej głośności, poziom 11-15 to ostatnie 2%).",
+    "GenericMC.VoiceType": "Typ Głosu",
+    "GenericMC.VoiceTypeDesc": "Zmienia podstawę twojego głosu \"Here Fishy!\". Jeśli wybierzesz plik .wav, którego inni gracze nie posiadają, nie będą cię słyszeć. Możesz przewinąć liste gdy jest otwarta kółkiem myszki, lub touchpadem. \"Silent\" wyłącza twój głos. Zapisanie odtworzy podgląd.",
     "GenericMC.Pitch": "Ton Głosu",
     "GenericMC.PitchDesc": "Zmienia ton twojego głosu \"Here Fishy!\". Rozpoczyna się losowo w celu zróżnicowania dla wielu graczy. Oryginalny głos jest całkiem pośrodku. Zapisanie odtworzy podgląd.",
 
@@ -28,7 +30,7 @@
     "GenericMC.StartMinigameStyle": "Styl Minigry (Start)",
     "GenericMC.StartMinigameStyleDesc": "Ta minigra określa, czy w ogóle złapiesz rybę (tylko ryby\n mają tę część) i przyczynia się do ogólnego wyniku. \nStrzałki DDR: Klasyczna gra rytmiczna, w której dopasowujesz kierunek\n strzałek za pomocą przycisków ruchu, gdy dotrą do określonego obszaru. \nMinigame2: Do zrobienia \nMinigame3: Do zrobienia",
     "GenericMC.StartMinigameStyle1": "Strzałki DDR",
-    "GenericMC.StartMinigameStyle2": "todo",
+    "GenericMC.StartMinigameStyle2": "Wisielec",
     "GenericMC.StartMinigameStyle3": "todo",
 
     "GenericMC.EndMinigameStyle": "Styl Minigry (Koniec)",

@@ -14,13 +14,13 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public abstract class RenderedWorldEvent : BaseEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void Hook()
 		{
 			ModEntry.ModHelper.Events.Display.RenderedWorld += OnRenderedWorld;
 		}
 
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void Unhook()
 		{
 			ModEntry.ModHelper.Events.Display.RenderedWorld -= OnRenderedWorld;

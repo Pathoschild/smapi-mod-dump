@@ -21,12 +21,12 @@ namespace SpriteMaster {
 		private readonly SharedLock Lock = new();
 		private readonly WeakCollection<ScaledTexture> ScaledTextureReferences = new();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		static private ulong SpriteHash (Texture2D texture, Bounds source, uint expectedScale) {
 			return Hash.Combine(source.Hash(), expectedScale.GetHashCode());
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void Add (Texture2D reference, ScaledTexture texture, Bounds source, uint expectedScale) {
 			var rectangleHash = SpriteHash(texture: reference, source: source, expectedScale: expectedScale);
 
@@ -39,7 +39,7 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal bool TryGet (Texture2D texture, Bounds source, uint expectedScale, out ScaledTexture result) {
 			result = null;
 			var rectangleHash = SpriteHash(texture: texture, source: source, expectedScale: expectedScale);
@@ -65,7 +65,7 @@ namespace SpriteMaster {
 			return false;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void Remove (ScaledTexture scaledTexture, Texture2D texture) {
 			try {
 				var meta = texture.Meta();
@@ -99,7 +99,7 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void Purge (Texture2D reference, Bounds? sourceRectangle = null) {
 			try {
 				var meta = reference.Meta();
@@ -149,7 +149,7 @@ namespace SpriteMaster {
 			catch { }
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void SeasonPurge (string season) {
 			try {
 				var purgeList = new List<ScaledTexture>();

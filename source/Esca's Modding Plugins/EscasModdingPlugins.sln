@@ -7,8 +7,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EscasModdingPlugins", "Esca
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B06AAD49-B9B9-434A-A2D8-2C5B7C095A03}"
 	ProjectSection(SolutionItems) = preProject
+		docs\images\ActionKitchen_TileProperty.png = docs\images\ActionKitchen_TileProperty.png
+		docs\images\AllowMiniFridges_MapProperty.png = docs\images\AllowMiniFridges_MapProperty.png
+		docs\images\BedPlacement_MapProperty.png = docs\images\BedPlacement_MapProperty.png
+		docs\images\CustomOrderBoards_TileProperty.png = docs\images\CustomOrderBoards_TileProperty.png
+		docs\images\DestroyableBushes_MapProperty.png = docs\images\DestroyableBushes_MapProperty.png
+		docs\emp-modding-guide.md = docs\emp-modding-guide.md
 		docs\images\FishLocations_TileProperty.png = docs\images\FishLocations_TileProperty.png
 		LICENSE = LICENSE
+		docs\images\PassOutSafely_MapProperty.png = docs\images\PassOutSafely_MapProperty.png
 		docs\readme.md = docs\readme.md
 	EndProjectSection
 EndProject

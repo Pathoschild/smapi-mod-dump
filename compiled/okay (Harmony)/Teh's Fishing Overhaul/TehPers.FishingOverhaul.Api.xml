@@ -1,0 +1,778 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TehPers.FishingOverhaul.Api</name>
+    </assembly>
+    <members>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo">
+            <summary>
+            Information about the availability of a catchable item.
+            </summary>
+            <param name="BaseChance">
+            The base chance this will be caught. This is not a percentage chance, but rather a weight
+            relative to all available entries.
+            </param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.#ctor(System.Double)">
+            <summary>
+            Information about the availability of a catchable item.
+            </summary>
+            <param name="BaseChance">
+            The base chance this will be caught. This is not a percentage chance, but rather a weight
+            relative to all available entries.
+            </param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.StartTime">
+            <summary>
+            Time this becomes available (inclusive).
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.EndTime">
+            <summary>
+            Time this is no longer available (exclusive).
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.SeasonsSplit">
+            <summary>
+            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Seasons"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Seasons">
+            <summary>
+            Seasons this can be caught in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WeathersSplit">
+            <summary>
+            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Weathers"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Weathers">
+            <summary>
+            Weathers this can be caught in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WaterTypesSplit">
+            <summary>
+            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WaterTypes"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WaterTypes">
+            <summary>
+            The type of water this can be caught in. Each location handles this differently.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.MinFishingLevel">
+            <summary>
+            Required fishing level to see this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.MaxFishingLevel">
+            <summary>
+            Maximum fishing level required to see this, or null for no max.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.IncludeLocations">
+            <summary>
+            List of locations this should be available in. Leaving this empty will make this
+            available everywhere. Some locations have special handling. For example, the mines use
+            the location names "UndergroundMine" and "UndergroundMine/N", where N is the floor
+            number (both location names are valid for the floor).
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.ExcludeLocations">
+            <summary>
+            List of locations this should not be available in. This takes priority over
+            <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.IncludeLocations"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Position">
+            <summary>
+            Constraints on the position of the bobber in the map when fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.When">
+            <summary>
+            Content Patcher conditions for when this is available.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.GetWeightedChance(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Gets the weighted chance of this being caught, if any. This does not test the
+            conditions in <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.When"/>.
+            </summary>
+            <param name="fishingInfo">Information about the farmer that is fishing.</param>
+            <returns>The weighted chance of this being caught, or <see langword="null"/> if not available.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.CatchActions">
+            <summary>
+            Actions to be executed on catch.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CatchActions.CustomEvents">
+            <summary>
+            Raise custom events with this name to notify SMAPI mods that this was caught. Event key
+            format is "namespace:key" (for example "TehPers.FishingOverhaul:GoldenWalnut").
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CatchActions.SetFlags">
+            <summary>
+            Sets one or more mail flags.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CatchActions.StartQuests">
+            <summary>
+            Sets one or more quests as active.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CatchActions.AddMail">
+            <summary>
+            Adds mail entries to the player's mail tomorrow.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CatchActions.StartConversations">
+            <summary>
+            Starts conversations. The key is the conversation ID and the value is the number of days.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.CatchActions.OnCatch(TehPers.FishingOverhaul.Api.IFishingApi,TehPers.FishingOverhaul.Api.CatchInfo)">
+            <summary>
+            Executes these actions.
+            </summary>
+            <param name="fishingApi">The fishing API.</param>
+            <param name="catchInfo">The catch information.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.CaughtItem">
+            <summary>
+            An item caught from fishing.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.CaughtItem.#ctor(StardewValley.Item)">
+            <summary>
+            An item caught from fishing.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.CoordinateConstraint">
+            <summary>
+            A set of constraints for coordinates.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CoordinateConstraint.GreaterThan">
+            <summary>
+            Coordinate value must be greater than this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CoordinateConstraint.GreaterThanEq">
+            <summary>
+            Coordinate value must be greater than or equal to this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CoordinateConstraint.LessThan">
+            <summary>
+            Coordinate value must be less than this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.CoordinateConstraint.LessThanEq">
+            <summary>
+            Coordinate value must be less than or equal to this.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.CoordinateConstraint.Matches(System.Single)">
+            <summary>
+            Checks whether a coordinate value matches these constraints.
+            </summary>
+            <param name="value">The value of the coordinate.</param>
+            <returns><see langword="true"/> if the value matches, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.Entry`1">
+            <summary>
+            An entry for a fishing item.
+            </summary>
+            <typeparam name="T">The type of availability for this entry.</typeparam>
+            <param name="AvailabilityInfo">The availability information.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.Entry`1.#ctor(`0)">
+            <summary>
+            An entry for a fishing item.
+            </summary>
+            <typeparam name="T">The type of availability for this entry.</typeparam>
+            <param name="AvailabilityInfo">The availability information.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.Entry`1.OnCatch">
+            <summary>
+            Actions to perform when this is caught.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.Entry`1.TryCreateItem(TehPers.FishingOverhaul.Api.FishingInfo,TehPers.Core.Api.Items.INamespaceRegistry,TehPers.FishingOverhaul.Api.Content.CaughtItem@)">
+            <summary>
+            Tries to create an instance of the item this entry represents.
+            </summary>
+            <param name="fishingInfo">Information about the farmer that is fishing.</param>
+            <param name="namespaceRegistry">The namespace registry.</param>
+            <param name="item">The item that was created, if possible.</param>
+            <returns><see langword="true"/> if the item was created, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo">
+            <summary>
+            Information about the availability of a catchable fish.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo"/>
+            <param name="BaseChance">The base chance of this being caught.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo"/>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.#ctor(System.Double)">
+            <summary>
+            Information about the availability of a catchable fish.
+            </summary>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo"/>
+            <param name="BaseChance">The base chance of this being caught.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.DepthMultiplier">
+            <summary>
+            Effect that sending the bobber by less than the max distance has on the chance. This
+            value should be no more than 1.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.MaxDepth">
+            <summary>
+            The required fishing depth to maximize the chances of catching the fish.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.FishEntry">
+            <summary>
+            A fish availability entry.
+            </summary>
+            <param name="FishKey">The item key.</param>
+            <param name="AvailabilityInfo">The availability information.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.Entry`1"/>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.FishEntry.#ctor(TehPers.Core.Api.Items.NamespacedKey,TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo)">
+            <summary>
+            A fish availability entry.
+            </summary>
+            <param name="FishKey">The item key.</param>
+            <param name="AvailabilityInfo">The availability information.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.Entry`1"/>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.FishingContent">
+            <summary>
+            Content which affects fishing.
+            </summary>
+            <param name="Mod">The manifest of the mod that created this content.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.FishingContent.#ctor(StardewModdingAPI.IManifest)">
+            <summary>
+            Content which affects fishing.
+            </summary>
+            <param name="Mod">The manifest of the mod that created this content.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.FishTraits">
+            <summary>
+            Gets the fish traits this content is trying to add.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.FishEntries">
+            <summary>
+            Gets the new fish entries this content wants to create.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.TrashEntries">
+            <summary>
+            Gets the new trash entries this content wants to create.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.TreasureEntries">
+            <summary>
+            Gets the new treasure entries this content wants to create.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.FishTraits">
+            <summary>
+            Definition for a fish's traits.
+            </summary>
+            <param name="DartFrequency">How often the fish darts in the fishing minigame.</param>
+            <param name="DartBehavior">How the fish moves during the fishing minigame.</param>
+            <param name="MinSize">The minimum size the fish can be.</param>
+            <param name="MaxSize">The maximum size the fish can be.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.FishTraits.#ctor(System.Int32,TehPers.FishingOverhaul.Api.DartBehavior,System.Int32,System.Int32)">
+            <summary>
+            Definition for a fish's traits.
+            </summary>
+            <param name="DartFrequency">How often the fish darts in the fishing minigame.</param>
+            <param name="DartBehavior">How the fish moves during the fishing minigame.</param>
+            <param name="MinSize">The minimum size the fish can be.</param>
+            <param name="MaxSize">The maximum size the fish can be.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishTraits.IsLegendary">
+            <summary>
+            Whether the fish is legendary.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.IFishingContentSource">
+            <summary>
+            Content source for fishing data. Registering a global binding for this interface will allow
+            custom fishing content to be added to the game.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.IFishingContentSource.Reload">
+            <summary>
+            Reloads the fishing data.
+            </summary>
+            <returns>The reloaded fishing data.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.PositionConstraint">
+            <summary>
+            A set of constraints for positions.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.PositionConstraint.X">
+            <summary>
+            Constraints for the x-coordinate.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.PositionConstraint.Y">
+            <summary>
+            Constraints for the Y-coordinate.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.PositionConstraint.Matches(Microsoft.Xna.Framework.Vector2)">
+            <summary>
+            Checks whether a position matches these constraints.
+            </summary>
+            <param name="position">The position.</param>
+            <returns><see langword="true"/> if the position matches, <see langword="false"/> otherwise.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.TrashEntry">
+            <summary>
+            A trash availability entry.
+            </summary>
+            <param name="ItemKey">The item key.</param>
+            <param name="AvailabilityInfo">The availability information.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.Entry`1"/>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.TrashEntry.#ctor(TehPers.Core.Api.Items.NamespacedKey,TehPers.FishingOverhaul.Api.Content.AvailabilityInfo)">
+            <summary>
+            A trash availability entry.
+            </summary>
+            <param name="ItemKey">The item key.</param>
+            <param name="AvailabilityInfo">The availability information.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.Entry`1"/>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.TreasureEntry">
+            <summary>
+            An entry for treasure loot.
+            </summary>
+            <param name="AvailabilityInfo">The availability information.</param>
+            <param name="ItemKeys">The possible namespaced keys for the loot. The item key is chosen randomly.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.Entry`1"/>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.TreasureEntry.#ctor(TehPers.FishingOverhaul.Api.Content.AvailabilityInfo,System.Collections.Immutable.ImmutableArray{TehPers.Core.Api.Items.NamespacedKey})">
+            <summary>
+            An entry for treasure loot.
+            </summary>
+            <param name="AvailabilityInfo">The availability information.</param>
+            <param name="ItemKeys">The possible namespaced keys for the loot. The item key is chosen randomly.</param>
+            <inheritdoc cref="T:TehPers.FishingOverhaul.Api.Content.Entry`1"/>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.TreasureEntry.MinQuantity">
+            <summary>
+            The minimum quantity of this item. This is only valid for stackable items.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.TreasureEntry.MaxQuantity">
+            <summary>
+            The maximum quantity of this item. This is only valid for stackable items.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.TreasureEntry.AllowDuplicates">
+            <summary>
+            Whether this can be found multiple times in one chest.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.CustomEvent">
+            <summary>
+            A custom fishing event.
+            </summary>
+            <param name="Catch">The catch info.</param>
+            <param name="EventKey">The key for the event.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.CustomEvent.#ctor(TehPers.FishingOverhaul.Api.CatchInfo,TehPers.Core.Api.Items.NamespacedKey)">
+            <summary>
+            A custom fishing event.
+            </summary>
+            <param name="Catch">The catch info.</param>
+            <param name="EventKey">The key for the event.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Collections.Generic.IEnumerable`1"/> for weighted random item selection.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.ChooseOrDefault``1(System.Collections.Generic.IEnumerable{``0},System.Random)">
+            <summary>Chooses a random item using the items' weights, or a default value if there are no items.</summary>
+            <typeparam name="T">The type of item in the <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <param name="rand">The <see cref="T:System.Random"/> to use.</param>
+            <returns>The chosen item.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.Choose``1(System.Collections.Generic.IEnumerable{``0},System.Random)">
+            <summary>Chooses a random item using the items' weights.</summary>
+            <typeparam name="T">The type of item in the <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <param name="rand">The <see cref="T:System.Random"/> to use.</param>
+            <returns>The chosen item.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.ToWeighted``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double})">
+            <summary>Converts the items in an <see cref="T:System.Collections.Generic.IEnumerable`1"/> to <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/>.</summary>
+            <typeparam name="T">The type of item in the source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <param name="weightSelector">A callback which maps each item to its weight.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> with all the items converted to <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/>.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.ToWeighted``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Double},System.Func{``0,``1})">
+            <summary>Converts the items in an <see cref="T:System.Collections.Generic.IEnumerable`1"/> to <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/>.</summary>
+            <typeparam name="TSource">The type of item in the source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</typeparam>
+            <typeparam name="TEntry">The type of values in the resulting <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <param name="weightSelector">A callback which maps each item to its weight.</param>
+            <param name="elementSelector">A callback which maps each item to its value.</param>
+            <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> with all the items converted to <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/>.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.Normalize``1(System.Collections.Generic.IEnumerable{``0},System.Double)">
+            <summary>Normalizes the weights of each item and returns a new <see cref="T:System.Collections.Generic.IEnumerable`1"/> with the normalized items.</summary>
+            <typeparam name="T">The type of item in the <see cref="T:System.Collections.Generic.IEnumerable`1"/>. It must implement <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeighted"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <param name="weight">The weight to normalize to.</param>
+            <returns>A new <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing new, normalized items in the same order.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.Normalize``1(System.Collections.Generic.IEnumerable{TehPers.FishingOverhaul.Api.Weighted.IWeightedValue{``0}},System.Double)">
+            <summary>Normalizes the weights of each <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/> and returns a new <see cref="T:System.Collections.Generic.IEnumerable`1"/> with the normalized items.</summary>
+            <typeparam name="T">The type of value in the <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <param name="weight">The weight to normalize to.</param>
+            <returns>A new <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing new, normalized items in the same order.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.Condense``1(System.Collections.Generic.IEnumerable{TehPers.FishingOverhaul.Api.Weighted.IWeightedValue{``0}})">
+            <summary>
+            Groups equivalent values together and calculates the condensed weights of each value.
+            </summary>
+            <typeparam name="T">The type of value in the <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <returns>A new <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing each value only once and the sum of the weights for those values from the source.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.SumWeights``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>Sums all of the weights of the items in the <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</summary>
+            <typeparam name="T">The type of item in the <see cref="T:System.Collections.Generic.IEnumerable`1"/>. It must implement <see cref="T:TehPers.FishingOverhaul.Api.Weighted.IWeighted"/>.</typeparam>
+            <param name="source">The source <see cref="T:System.Collections.Generic.IEnumerable`1"/>.</param>
+            <returns>The sum of the weights.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.Shuffle``1(System.Collections.Generic.IList{``0})">
+            <summary>Shuffles a list.</summary>
+            <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">An <see cref="T:System.Collections.Generic.IList`1"/> to shuffle.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Extensions.WeightedExtensions.Shuffle``1(System.Collections.Generic.IList{``0},System.Random)">
+            <summary>Shuffles a list.</summary>
+            <typeparam name="T">The type of the elements of <paramref name="source"/>.</typeparam>
+            <param name="source">An <see cref="T:System.Collections.Generic.IList`1"/> to shuffle.</param>
+            <param name="rand">The <see cref="T:System.Random"/> to use while shuffling.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.FishingInfo">
+            <summary>
+            Information about a <see cref="T:StardewValley.Farmer"/> that is fishing.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.FishingInfo.#ctor(StardewValley.Farmer)">
+            <summary>
+            Information about a <see cref="T:StardewValley.Farmer"/> that is fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.Time">
+            <summary>
+            The time of day being fished at.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.Seasons">
+            <summary>
+            The seasons being fished in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.Weathers">
+            <summary>
+            The weathers being fished in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.WaterTypes">
+            <summary>
+            The water types being fished in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.FishingLevel">
+            <summary>
+            The fishing level of the <see cref="T:StardewValley.Farmer"/> that is fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.BobberDepth">
+            <summary>
+            The bobber depth.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.Locations">
+            <summary>
+            The names of the locations being fished in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.FishingInfo.BobberPosition">
+            <summary>
+            The fishing rod's bobber position.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.FishingInfo.GetDefaultLocationNames(StardewValley.GameLocation)">
+             <summary>
+             Gets the location names associated with a <see cref="T:StardewValley.GameLocation"/>. Some locations
+             have names in addition to their normal names:
+            
+             <list type="bullet">
+                 <item>
+                     <term><see cref="T:StardewValley.Locations.MineShaft"/></term>
+                     <description>"UndergroundMine/#", where # is the floor number.</description>
+                 </item>
+                 <item>
+                     <term><see cref="T:StardewValley.Farm"/></term>
+                     <description>
+                         "Farm/X", where X is one of "Standard", "Riverland", "Forest", "Hills",
+                         "Wilderness", or "FourCorners". Only vanilla farms have this name.
+                     </description>
+                 </item>
+                 <item>
+                     <term><see cref="T:StardewValley.Locations.IslandLocation"/></term>
+                     <description>"Island".</description>
+                 </item>
+             </list>
+             </summary>
+             <param name="location">The location to get the names of.</param>
+             <returns>The location's names.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.IFishingApi">
+            <summary>
+            API for working with fishing.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CaughtItem">
+            <summary>
+            Invoked whenever an item is caught from the water.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.OpenedChest">
+            <summary>
+            Invoked whenever a treasure chest is opened.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CustomEvent">
+            <summary>
+            Invoked whenever an item is caught and raises a custom event.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.GetFishChances(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Gets the weighted chances of catching any fish. This does not take into account fish
+            ponds.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>The catchable fish and their chances of being caught.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.GetFishPondFish(StardewValley.Farmer,Microsoft.Xna.Framework.Vector2,System.Boolean)">
+            <summary>
+            Gets the fish from a <see cref="T:StardewValley.Buildings.FishPond"/> at the given tile if possible.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <param name="bobberTile">The tile the bobber is on.</param>
+            <param name="takeFish">If <see langword="false"/>, simulates taking the fish. Otherwise, actually pulls the fish from the pond.</param>
+            <returns>The fish to get from the pond, if any.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.GetTrashChances(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Gets the weighted chances of catching any trash.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>The catchable trash and their chances of being caught.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.GetTreasureChances(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Gets the weighted chances of catching any treasure.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>The catchable treasure and their chances of being caught.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.TryGetFishTraits(TehPers.Core.Api.Items.NamespacedKey,TehPers.FishingOverhaul.Api.Content.FishTraits@)">
+            <summary>
+            Tries to get the traits for a fish.
+            </summary>
+            <param name="fishKey">The fish's <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</param>
+            <param name="traits">The fish's traits.</param>
+            <returns><see langword="true"/> if the fish has registered traits, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.IsLegendary(TehPers.Core.Api.Items.NamespacedKey)">
+            <summary>
+            Gets whether a fish is legendary.
+            </summary>
+            <param name="fishKey">The item key of the fish.</param>
+            <returns>Whether that fish is legendary.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.GetPossibleCatch(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Selects a random catch. A player may catch either a fish or trash item.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>A possible catch.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.GetPossibleTreasure(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Selects random treasure.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>Possible loot from a treasure chest.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.RaiseCustomEvent(TehPers.FishingOverhaul.Api.CustomEvent)">
+            <summary>
+            Raises a custom event for other mods to handle.
+            </summary>
+            <param name="customEvent">The event to raise.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.RequestReload">
+            <summary>
+            Requests fishing data to be reloaded.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi">
+            <summary>
+            Simplified API for working with fishing. Prefer <see cref="T:TehPers.FishingOverhaul.Api.IFishingApi"/> if possible.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetCatchableFish(StardewValley.Farmer,System.Int32)">
+            <summary>
+            Gets the fish that can be caught. This does not take into account fish ponds.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <param name="depth">The bobber depth.</param>
+            <returns>The catchable fish as stringified namespaced keys.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetCatchableTrash(StardewValley.Farmer)">
+            <summary>
+            Gets the trash that can be caught.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>The catchable trash as stringified namespaced keys.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetCatchableTreasure(StardewValley.Farmer)">
+            <summary>
+            Gets the treasure that can be caught.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>The catchable treasure as stringified namespaced keys.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetChanceForFish(StardewValley.Farmer)">
+            <summary>
+            Gets the chance that a fish would be caught. This does not take into account whether
+            there are actually fish to catch at the <see cref="T:StardewValley.Farmer"/>'s location. If no fish
+            can be caught, then the <see cref="T:StardewValley.Farmer"/> will always catch trash.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> catching the fish.</param>
+            <returns>The chance a fish would be caught instead of trash.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetChanceForTreasure(StardewValley.Farmer)">
+            <summary>
+            Gets the chance that treasure will be found during the fishing minigame.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> catching the treasure.</param>
+            <returns>The chance for treasure to appear during the fishing minigame.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.IsLegendary(System.String)">
+            <summary>
+            Gets whether a fish is legendary.
+            </summary>
+            <param name="fishKey">The item key of the fish as a stringified namespaced key.</param>
+            <returns>Whether that fish is legendary.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetStreak(StardewValley.Farmer)">
+            <summary>
+            Gets a <see cref="T:StardewValley.Farmer"/>'s current fishing streak.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> to get the streak of.</param>
+            <returns>The <see cref="T:StardewValley.Farmer"/>'s streak.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.SetStreak(StardewValley.Farmer,System.Int32)">
+            <summary>
+            Sets a <see cref="T:StardewValley.Farmer"/>'s current fishing streak.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> to set the streak of.</param>
+            <param name="streak">The <see cref="T:StardewValley.Farmer"/>'s streak.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetPossibleCatch(StardewValley.Farmer,System.Int32,System.Boolean@)">
+            <summary>
+            Selects a random catch. A player may catch either a fish or trash item.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <param name="bobberDepth">The bobber's water depth.</param>
+            <param name="isFish">Whether the caught item is a fish.</param>
+            <returns>A possible catch.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.ISimplifiedFishingApi.GetPossibleTreasure(StardewValley.Farmer)">
+            <summary>
+            Selects random treasure.
+            </summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <returns>Possible loot from a treasure chest.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.PossibleCatch">
+            <summary>
+            A possible catch from fishing. This may or may not be a fish.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.PossibleCatch.Fish">
+            <summary>
+            A fish catch.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.PossibleCatch.Fish.#ctor(TehPers.FishingOverhaul.Api.Content.FishEntry)">
+            <summary>
+            A fish catch.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.PossibleCatch.Trash">
+            <summary>
+            A trash catch.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.PossibleCatch.Trash.#ctor(TehPers.FishingOverhaul.Api.Content.TrashEntry)">
+            <summary>
+            A trash catch.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.WaterTypes">
+            <summary>
+            Type of water that fish can be caught in. Each location handles these values differently.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Weighted.IWeighted">
+            <summary>Defines a weighted chance for an object, allowing easy weighted choosing of a random element from a list of the object.</summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Weighted.IWeighted.Weight">
+            <summary>Gets returns the positive weighted chance of this object being selected (in comparison to other objects).</summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1">
+            <summary>A wrapper for objects that assigns a weighted chance to them.</summary>
+            <typeparam name="T">The type of object being wrapped.</typeparam>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Weighted.IWeightedValue`1.Value">
+            <summary>Gets the value wrapped by this element.</summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Weighted.WeightedValue`1.#ctor(`0,System.Double)">
+            <summary>Initializes a new instance of the <see cref="T:TehPers.FishingOverhaul.Api.Weighted.WeightedValue`1"/> class.</summary>
+            <param name="value">The value of this <see cref="T:TehPers.FishingOverhaul.Api.Weighted.WeightedValue`1"/>.</param>
+            <param name="weight">The weighted chance for this <see cref="T:TehPers.FishingOverhaul.Api.Weighted.WeightedValue`1"/>.</param>
+        </member>
+    </members>
+</doc>

@@ -1,9 +1,22 @@
 {
-  "RefreshAfterPicking": true,
-  "RefreshTuesday": true,
-  "RefreshWednesday": true,
-  "RefreshThursday": true,
-  "RefreshFriday": true,
-  "RefreshSaturday": true,
-  "RefreshSunday": true
+  "SORefreshes": [
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "QiRefreshes": [
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ]
 }

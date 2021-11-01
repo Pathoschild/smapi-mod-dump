@@ -14,12 +14,12 @@ namespace XSLite
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Common.Helpers;
     using Common.Helpers.ItemMatcher;
     using Common.Integrations.DynamicGameAssets;
     using Common.Integrations.GenericModConfigMenu;
     using Common.Integrations.XSLite;
     using Common.Integrations.XSPlus;
-    using Common.Services;
     using Microsoft.Xna.Framework.Graphics;
     using Migrations.JsonAsset;
     using StardewModdingAPI;
@@ -38,44 +38,45 @@ namespace XSLite
             "Mini-Fridge",
             "Auto-Grabber",
         };
+        private readonly DynamicGameAssetsIntegration _dynamicAssets;
 
         private readonly IModHelper _helper;
-        private readonly DynamicGameAssetsIntegration _dynamicAssets;
+        private readonly ItemMatcher _itemMatcher = new(string.Empty);
         private readonly GenericModConfigMenuIntegration _modConfigMenu;
         private readonly XSPlusIntegration _xsPlus;
-        private readonly ItemMatcher _itemMatcher = new(string.Empty);
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="XSLiteAPI"/> class.
+        ///     Initializes a new instance of the <see cref="XSLiteAPI" /> class.
         /// </summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         internal XSLiteAPI(IModHelper helper)
         {
             this._helper = helper;
-            this._dynamicAssets = new DynamicGameAssetsIntegration(helper.ModRegistry);
-            this._modConfigMenu = new GenericModConfigMenuIntegration(helper.ModRegistry);
-            this._xsPlus = new XSPlusIntegration(helper.ModRegistry);
+            this._dynamicAssets = new(helper.ModRegistry);
+            this._modConfigMenu = new(helper.ModRegistry);
+            this._xsPlus = new(helper.ModRegistry);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadContentPack(IManifest manifest, string path)
         {
-            IContentPack contentPack = this._helper.ContentPacks.CreateTemporary(
+            var contentPack = this._helper.ContentPacks.CreateTemporary(
                 path,
                 manifest.UniqueID,
                 manifest.Name,
                 manifest.Description,
                 manifest.Author,
                 manifest.Version);
+
             return this.LoadContentPack(contentPack);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadContentPack(IContentPack contentPack)
         {
             Log.Info($"Loading {contentPack.Manifest.Name} {contentPack.Manifest.Version}");
 
-            IDictionary<string, Storage> storages = contentPack.ReadJsonFile<IDictionary<string, Storage>>("expanded-storage.json");
+            var storages = contentPack.ReadJsonFile<IDictionary<string, Storage>>("expanded-storage.json");
 
             if (storages is null)
             {
@@ -84,7 +85,7 @@ namespace XSLite
             }
 
             // Remove any duplicate storages
-            foreach (KeyValuePair<string, Storage> storage in storages.Where(storage => XSLite.Storages.ContainsKey(storage.Key)))
+            foreach (var storage in storages.Where(storage => XSLite.Storages.ContainsKey(storage.Key)))
             {
                 Log.Warn($"Duplicate storage {storage.Key} in {contentPack.Manifest.UniqueID}.");
                 storages.Remove(storage.Key);
@@ -102,48 +103,43 @@ namespace XSLite
             {
                 if (this._modConfigMenu.IsLoaded)
                 {
-                    void RevertToDefault()
+                    void Reset()
                     {
-                        foreach (KeyValuePair<string, Storage> storage in storages)
+                        foreach (var storage in storages)
                         {
                             storage.Value.Config.Capacity = storage.Value.Capacity;
                             storage.Value.Config.EnabledFeatures = storage.Value.EnabledFeatures;
                         }
                     }
 
-                    void SaveToFile()
+                    void Save()
                     {
-                        contentPack.WriteJsonFile("config.json", storages.ToDictionary(
-                            storage => storage.Key,
-                            storage => storage.Value.Config));
+                        contentPack.WriteJsonFile(
+                            "config.json",
+                            storages.ToDictionary(
+                                storage => storage.Key,
+                                storage => storage.Value.Config));
                     }
-
-                    this._modConfigMenu.API.RegisterModConfig(
-                        mod: contentPack.Manifest,
-                        revertToDefault: RevertToDefault,
-                        saveToFile: SaveToFile);
-                    this._modConfigMenu.API.SetDefaultIngameOptinValue(
-                        mod: contentPack.Manifest,
-                        optedIn: true);
+                    
+                    this._modConfigMenu.API.Register(contentPack.Manifest, Reset, Save);
 
                     // Add a page for each storage
-                    foreach (KeyValuePair<string, Storage> storage in storages)
+                    foreach (var storage in storages)
                     {
-                        this._modConfigMenu.API.RegisterPageLabel(
-                            mod: contentPack.Manifest,
-                            labelName: storage.Key,
-                            labelDesc: string.Empty,
-                            newPage: storage.Key);
+                        this._modConfigMenu.API.AddPageLink(
+                            contentPack.Manifest,
+                            storage.Key,
+                            () => storage.Key);
                     }
                 }
 
                 config = contentPack.ReadJsonFile<Dictionary<string, ModConfig>>("config.json");
             }
 
-            config ??= new Dictionary<string, ModConfig>();
+            config ??= new();
 
             // Load expanded storages
-            foreach (KeyValuePair<string, Storage> storage in storages)
+            foreach (var storage in storages)
             {
                 storage.Value.Name = storage.Key;
                 storage.Value.Manifest = contentPack.Manifest;
@@ -157,18 +153,26 @@ namespace XSLite
 
                 if (!string.IsNullOrWhiteSpace(storage.Value.Image) && contentPack.HasFile(storage.Value.Image))
                 {
-                    Texture2D texture = contentPack.LoadAsset<Texture2D>(storage.Value.Image);
+                    var texture = contentPack.LoadAsset<Texture2D>(storage.Value.Image);
                     XSLite.Textures.Add(storage.Key, texture);
+                    storage.Value.ReloadTexture(texture);
+                }
+
+                if ((storage.Value.Width > 16 || storage.Value.Height > 32) && !this._xsPlus.IsLoaded)
+                {
+                    Log.Warn($"Cannot load {storage.Key} from {contentPack.Manifest.Name} {contentPack.Manifest.Version}\nXSPlus is required for bigger storages!");
+                    continue;
                 }
 
                 // Add to config
-                if (!config.TryGetValue(storage.Key, out ModConfig storageConfig))
+                if (!config.TryGetValue(storage.Key, out var storageConfig))
                 {
-                    storageConfig = new ModConfig
+                    storageConfig = new()
                     {
                         Capacity = storage.Value.Capacity,
                         EnabledFeatures = storage.Value.EnabledFeatures,
                     };
+
                     config.Add(storage.Key, storageConfig);
                 }
 
@@ -180,6 +184,12 @@ namespace XSLite
                     // Opt-in to Expanded Menu
                     this._xsPlus.API.EnableWithModData("ExpandedMenu", $"{XSLite.ModPrefix}/Storage", storage.Key, true);
 
+                    // Enable bigger chests
+                    if (storage.Value.Width > 16 || storage.Value.Height > 32)
+                    {
+                        this._xsPlus.API.EnableWithModData("BiggerChest", $"{XSLite.ModPrefix}/Storage", storage.Key, new Tuple<int, int, int>(storage.Value.Width, storage.Value.Height, storage.Value.Depth));
+                    }
+
                     // Enable filtering items
                     if (storage.Value.FilterItems.Any())
                     {
@@ -187,9 +197,15 @@ namespace XSLite
                     }
 
                     // Enable additional capacity
-                    else if (storageConfig.Capacity != 0)
+                    if (storageConfig.Capacity != 0)
                     {
                         this._xsPlus.API.EnableWithModData("Capacity", $"{XSLite.ModPrefix}/Storage", storage.Key, storageConfig.Capacity);
+                    }
+
+                    // Enable Open Nearby
+                    if (storage.Value.OpenNearby > 0)
+                    {
+                        this._xsPlus.API.EnableWithModData("OpenNearby", $"{XSLite.ModPrefix}/Storage", storage.Key, storage.Value.OpenNearby);
                     }
 
                     // Disable color picker if storage does not support player color
@@ -199,9 +215,15 @@ namespace XSLite
                     }
 
                     // Enable other toggleable features
-                    foreach (string featureName in storageConfig.EnabledFeatures)
+                    foreach (var featureName in storageConfig.EnabledFeatures)
                     {
                         this._xsPlus.API.EnableWithModData(featureName, $"{XSLite.ModPrefix}/Storage", storage.Key, true);
+                    }
+
+                    // Disable features from
+                    foreach (var featureName in storage.Value.DisabledFeatures)
+                    {
+                        this._xsPlus.API.EnableWithModData(featureName, $"{XSLite.ModPrefix}/Storage", storage.Key, false);
                     }
                 }
 
@@ -230,53 +252,61 @@ namespace XSLite
                         };
                     }
 
-                    this._modConfigMenu.API.StartNewPage(
-                        mod: contentPack.Manifest,
-                        pageName: storage.Key);
-                    this._modConfigMenu.API.RegisterLabel(
-                        mod: contentPack.Manifest,
-                        labelName: storage.Key,
-                        labelDesc: string.Empty);
-                    this._modConfigMenu.API.RegisterSimpleOption(
-                        mod: contentPack.Manifest,
-                        optionName: "Capacity",
-                        optionDesc: "The carrying capacity for this chests.",
-                        optionGet: () => storageConfig.Capacity,
-                        optionSet: value =>
+                    this._modConfigMenu.API.AddPage(contentPack.Manifest, storage.Key);
+                    this._modConfigMenu.API.AddSectionTitle(contentPack.Manifest, () => storage.Key);
+
+                    this._modConfigMenu.API.AddNumberOption(
+                        contentPack.Manifest,
+                        name: () => this._helper.Translation.Get("config.capacity.name"),
+                        tooltip: () => this._helper.Translation.Get("config.capacity.tooltip"),
+                        getValue: () => storageConfig.Capacity,
+                        setValue: value =>
                         {
                             storageConfig.Capacity = value;
                             this._xsPlus.API?.EnableWithModData("Capacity", $"{XSLite.ModPrefix}/Storage", storage.Key, value);
                         });
-                    this._modConfigMenu.API.RegisterSimpleOption(
-                        mod: contentPack.Manifest,
-                        optionName: "Access Carried",
-                        optionDesc: "Open this chest inventory while it's being carried.",
-                        optionGet: OptionGet("AccessCarried"),
-                        optionSet: OptionSet("AccessCarried"));
-                    this._modConfigMenu.API.RegisterSimpleOption(
-                        mod: contentPack.Manifest,
-                        optionName: "Carry Chest",
-                        optionDesc: "Carry this chest even while it's holding items.",
-                        optionGet: OptionGet("CanCarry"),
-                        optionSet: OptionSet("CanCarry"));
-                    this._modConfigMenu.API.RegisterSimpleOption(
-                        mod: contentPack.Manifest,
-                        optionName: "Craft from Chest",
-                        optionDesc: "Allows chest to be crafted from remotely.",
-                        optionGet: OptionGet("CraftFromChest"),
-                        optionSet: OptionSet("CraftFromChest"));
-                    this._modConfigMenu.API.RegisterSimpleOption(
-                        mod: contentPack.Manifest,
-                        optionName: "Stash to Chest",
-                        optionDesc: "Allows chest to be stashed into remotely.",
-                        optionGet: OptionGet("StashToChest"),
-                        optionSet: OptionSet("StashToChest"));
-                    this._modConfigMenu.API.RegisterSimpleOption(
-                        mod: contentPack.Manifest,
-                        optionName: "Vacuum Items",
-                        optionDesc: "Allows chest to pick up dropped items while in player inventory.",
-                        optionGet: OptionGet("VacuumItems"),
-                        optionSet: OptionSet("VacuumItems"));
+
+                    this._modConfigMenu.API.AddBoolOption(
+                        contentPack.Manifest,
+                        name: () => this._helper.Translation.Get("config.access-carried.name"),
+                        tooltip: () => this._helper.Translation.Get("config.access-carried.tooltip"),
+                        getValue: OptionGet("AccessCarried"),
+                        setValue: OptionSet("AccessCarried"));
+
+                    this._modConfigMenu.API.AddBoolOption(
+                        contentPack.Manifest,
+                        name: () => this._helper.Translation.Get("config.can-carry.name"),
+                        tooltip: () => this._helper.Translation.Get("config.can-carry.tooltip"),
+                        getValue: OptionGet("CanCarry"),
+                        setValue: OptionSet("CanCarry"));
+
+                    this._modConfigMenu.API.AddBoolOption(
+                        contentPack.Manifest,
+                        name: () => this._helper.Translation.Get("config.craft-from-chest.name"),
+                        tooltip: () => this._helper.Translation.Get("config.craft-from-chest.tooltip"),
+                        getValue: OptionGet("CraftFromChest"),
+                        setValue: OptionSet("CraftFromChest"));
+
+                    this._modConfigMenu.API.AddBoolOption(
+                        contentPack.Manifest,
+                        name: () => this._helper.Translation.Get("config.stash-to-chest.name"),
+                        tooltip: () => this._helper.Translation.Get("config.stash-to-chest.tooltip"),
+                        getValue: OptionGet("StashToChest"),
+                        setValue: OptionSet("StashToChest"));
+
+                    this._modConfigMenu.API.AddBoolOption(
+                        contentPack.Manifest,
+                        name: () => this._helper.Translation.Get("config.vacuum-items.name"),
+                        tooltip: () => this._helper.Translation.Get("config.vacuum-items.tooltip"),
+                        getValue: OptionGet("VacuumItems"),
+                        setValue: OptionSet("VacuumItems"));
+                }
+
+                // Alternative Textures Compat
+                if (this._helper.ModRegistry.IsLoaded("PeacefulEnd.AlternativeTextures"))
+                {
+                    storage.Value.ModData.Add("AlternativeTextureOwner", "Stardew.Default");
+                    storage.Value.ModData.Add("AlternativeTextureVariation", "-1");
                 }
 
                 XSLite.Storages.Add(storage.Key, storage.Value);
@@ -299,7 +329,7 @@ namespace XSLite
                 {
                     foreach (var jsonAsset in migrator.JsonAssets)
                     {
-                        if (!storages.TryGetValue(jsonAsset.Name, out Storage storage) || !string.IsNullOrWhiteSpace(storage.Image))
+                        if (!storages.TryGetValue(jsonAsset.Name, out var storage) || !string.IsNullOrWhiteSpace(storage.Image))
                         {
                             continue;
                         }
@@ -309,7 +339,7 @@ namespace XSLite
                             continue;
                         }
 
-                        Texture2D texture = contentPack.LoadAsset<Texture2D>($"assets/{jsonAsset.Name}.png");
+                        var texture = contentPack.LoadAsset<Texture2D>($"assets/{jsonAsset.Name}.png");
                         XSLite.Textures.Add(jsonAsset.Name, texture);
                         storage.Format = Storage.AssetFormat.JsonAssets;
                         storage.Frames = texture.Width / 16;
@@ -318,7 +348,7 @@ namespace XSLite
                 }
             }
 
-            foreach (KeyValuePair<string, Storage> storage in storages)
+            foreach (var storage in storages)
             {
                 storage.Value.DisplayName = contentPack.Translation.Get($"big-craftable.{storage.Key}.name");
                 storage.Value.Description = contentPack.Translation.Get($"big-craftable.{storage.Key}.description");
@@ -333,18 +363,23 @@ namespace XSLite
                 },
                 ExtraFields = new Dictionary<string, object>
                 {
-                    { "DGA.FormatVersion", "2" },
-                    { "DGA.ConditionsFormatVersion", "1.23.0" },
+                    {
+                        "DGA.FormatVersion", "2"
+                    },
+                    {
+                        "DGA.ConditionsFormatVersion", "1.23.0"
+                    },
                 },
             };
+
             this._dynamicAssets.API.AddEmbeddedPack(manifest, contentPack.DirectoryPath);
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool AcceptsItem(Chest chest, Item item)
         {
-            if (!chest.TryGetStorage(out Storage storage))
+            if (!chest.TryGetStorage(out var storage))
             {
                 return true;
             }
@@ -353,13 +388,13 @@ namespace XSLite
             return this._itemMatcher.Matches(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> GetAllStorages()
         {
             return XSLite.Storages.Keys;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> GetOwnedStorages(IManifest manifest)
         {
             foreach (var storage in XSLite.Storages.Values)

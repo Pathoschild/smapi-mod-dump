@@ -13,7 +13,6 @@ using System.Globalization;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using Pathoschild.Stardew.Common.Utilities;
-using StardewModdingAPI;
 using StardewValley;
 
 namespace ContentPatcher.Framework.Tokens.ValueProviders
@@ -24,6 +23,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /*********
         ** Fields
         *********/
+        /// <summary>Handles reading info from the current save.</summary>
+        private readonly TokenSaveReader SaveReader;
+
         /// <summary>The relationships by NPC.</summary>
         private readonly SortedDictionary<string, string> Values = new(HumanSortComparer.DefaultIgnoreCase);
 
@@ -32,9 +34,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
-        public VillagerHeartsValueProvider()
+        /// <param name="saveReader">Handles reading info from the current save.</param>
+        public VillagerHeartsValueProvider(TokenSaveReader saveReader)
             : base(ConditionType.Hearts, mayReturnMultipleValuesForRoot: false)
         {
+            this.SaveReader = saveReader;
+
             this.EnableInputArguments(required: false, mayReturnMultipleValues: false, maxPositionalArgs: 1);
         }
 
@@ -44,17 +49,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             return this.IsChanged(this.Values, () =>
             {
                 this.Values.Clear();
-                if (this.MarkReady(Context.IsWorldReady))
+                if (this.MarkReady(this.SaveReader.IsReady))
                 {
-                    // met NPCs
-                    foreach (KeyValuePair<string, Friendship> pair in Game1.player.friendshipData.Pairs)
-                        this.Values[pair.Key] = (pair.Value.Points / NPC.friendshipPointsPerHeartLevel).ToString(CultureInfo.InvariantCulture);
-
-                    // unmet NPCs
-                    foreach (NPC npc in this.GetSocialVillagers())
+                    foreach (KeyValuePair<string, Friendship> pair in this.SaveReader.GetFriendships())
                     {
-                        if (!this.Values.ContainsKey(npc.Name))
-                            this.Values[npc.Name] = "0";
+                        int points = pair.Value?.Points ?? 0;
+                        this.Values[pair.Key] = (points / NPC.friendshipPointsPerHeartLevel).ToString(CultureInfo.InvariantCulture);
                     }
                 }
             });

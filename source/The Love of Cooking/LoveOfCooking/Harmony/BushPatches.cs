@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 {
 	public static class BushPatches
 	{
-		public static void Patch(HarmonyInstance harmony)
+		public static void Patch(Harmony harmony)
 		{
 			System.Type type = typeof(Bush);
 			var prefixes = new List<KeyValuePair<string, string>>
@@ -40,11 +40,11 @@ namespace LoveOfCooking.Core.HarmonyPatches
 			}
 		}
 		
-		public static bool InBloom_Prefix(Bush __instance, ref bool __result, string season, int dayOfMonth)
+		public static bool InBloom_Prefix(Bush __instance, ref bool __result)
 		{
 			if (!(__instance is CustomBush bush))
 				return true;
-			__result = CustomBush.InBloomBehaviour(bush, season, dayOfMonth);
+			__result = CustomBush.InBloomBehaviour(bush);
 			return false;
 		}
 

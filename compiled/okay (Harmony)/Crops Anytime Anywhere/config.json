@@ -2,13 +2,13 @@
   "InLocations": {
     "*": {
       "GrowCrops": true,
-      "GrowCropsOutOfSeason": true
+      "GrowCropsOutOfSeason": true,
+      "ForceTillable": {
+        "Dirt": true,
+        "Grass": true,
+        "Stone": false,
+        "Other": false
+      }
     }
-  },
-  "ForceTillable": {
-    "Dirt": true,
-    "Grass": true,
-    "Stone": false,
-    "Other": false
   }
 }

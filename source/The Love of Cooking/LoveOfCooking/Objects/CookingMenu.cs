@@ -13,17 +13,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace LoveOfCooking.Objects
 {
-	public class CookingMenu : ItemGrabMenu
+    public class CookingMenu : ItemGrabMenu
 	{
 		private static IModHelper Helper => ModEntry.Instance.Helper;
 		private static Config Config => ModEntry.Config;
@@ -48,10 +46,10 @@ namespace LoveOfCooking.Objects
 		private static readonly Rectangle FavouriteIconSource = new Rectangle(247, 178, 9, 9);
 		private static readonly Rectangle AutofillButtonSource = new Rectangle(112, 272, 16, 16);
 		private static readonly Rectangle InventoryTabButtonSource = new Rectangle(240, 80, 16, 21);
-		private static readonly Rectangle InventoryBackpackIconSource = new Rectangle(244, 102, 11, 14);
-		private static readonly Rectangle InventoryFridgeIconSource = new Rectangle(244, 118, 11, 14);
-		private static readonly Rectangle InventoryMinifridgeIconSource = new Rectangle(244, 134, 11, 14);
-		private static readonly Rectangle InventoryChestIconSource = new Rectangle(244, 148, 11, 14);
+		private static readonly Rectangle InventoryBackpackIconSource = new Rectangle(244, 102, 12, 14);
+		private static readonly Rectangle InventoryFridgeIconSource = new Rectangle(244, 118, 12, 14);
+		private static readonly Rectangle InventoryMinifridgeIconSource = new Rectangle(244, 134, 12, 14);
+		private static readonly Rectangle InventoryChestIconSource = new Rectangle(244, 148, 12, 14);
 		// MouseCursors sheet
 		private static readonly Rectangle DownButtonSource = new Rectangle(0, 64, 64, 64);
 		private static readonly Rectangle UpButtonSource = new Rectangle(64, 64, 64, 64);
@@ -73,17 +71,17 @@ namespace LoveOfCooking.Objects
 		private static readonly Point CookTextSourceOrigin = new Point(0, 240);
 		private static readonly Dictionary<string, int> CookTextSourceWidths = new Dictionary<string, int>
 		{
-			{"en", 32},
-			{"fr", 45},
-			{"es", 42},
-			{"pt", 48},
-			{"ja", 50},
-			{"zh", 36},
-			{"ko", 48},
-			{"ru", 53},
-			{"de", 40},
-			{"it", 48},
-			{"tr", 27 }
+			{ "en", 32 },
+			{ "fr", 45 },
+			{ "es", 42 },
+			{ "pt", 48 },
+			{ "ja", 50 },
+			{ "zh", 36 },
+			{ "ko", 48 },
+			{ "ru", 53 },
+			{ "de", 40 },
+			{ "it", 48 },
+			{ "tr", 27 }
 		};
 		private const int CookTextSourceHeight = 16;
 		private const int CookTextSideSourceWidth = 5;
@@ -225,14 +223,13 @@ namespace LoveOfCooking.Objects
 		// inventories
 		private int _inventoryId;
 		private readonly List<IList<Item>> _allInventories = new List<IList<Item>>();
+		public List<Chest> _materialContainers;
 		internal const int BackpackInventoryId = 0;
-		internal const int FridgeInventoryId = 1;
 		internal const int MaximumExtraInventories = 24;
-		internal static readonly int InventoryIdsBeforeMinifridges = new int[]
-			{ BackpackInventoryId, FridgeInventoryId }.Length;
-		private readonly int _inventoryIdsBeforeChests;
-		private readonly int _numberOfMinifridges;
-		private readonly int _numberOfChests;
+		private int _inventoryIdsBeforeMinifridges = 0;
+		private int _inventoryIdsBeforeChests = 0;
+		private int _numberOfMinifridges = 0;
+		private int _numberOfChests = 0;
 		private bool _showInventoriesPopup;
 		private readonly List<KeyValuePair<Color, bool>> _chestColours = new List<KeyValuePair<Color, bool>>();
 		private bool ShouldShowInventoryElements { get => _inventorySelectButtons.Count > 1; }
@@ -275,34 +272,41 @@ namespace LoveOfCooking.Objects
 		}
 
 
-		public CookingMenu(List<CraftingRecipe> recipes, bool addDummyState = false, string initialRecipe = null)
+		public CookingMenu(CraftingPage craftingPage, string initialRecipe = null) 
+			: this(recipes: Utils.TakeRecipesFromCraftingPage(craftingPage), materialContainers: craftingPage._materialContainers, initialRecipe: initialRecipe)
+        {}
+
+		public CookingMenu(List<CraftingRecipe> recipes = null, List<Chest> materialContainers = null, string initialRecipe = null)
 			: base(inventory: null, context: null)
 		{
 			this.width = CookbookSource.Width * Scale;
 			this.height = 720;
 
 			Game1.displayHUD = true; // Prevents hidden HUD on crash when initialising menu, set to false at the end of this method
-			_locale = LocalizedContentManager.CurrentLanguageCode.ToString();
-			if (!CookTextSourceWidths.ContainsKey(_locale))
+			this._locale = LocalizedContentManager.CurrentLanguageCode.ToString();
+			if (!CookTextSourceWidths.ContainsKey(this._locale))
 			{
-				_locale = "en";
+				this._locale = "en";
 			}
-			_resizeKoreanFonts = Config.ResizeKoreanFonts;
+			this._resizeKoreanFonts = Config.ResizeKoreanFonts;
 			this.initializeUpperRightCloseButton();
-			trashCan = null;
-			_cookingManager = new CookingManager(cookingMenu: this)
+			this.trashCan = null;
+			this._cookingManager = new CookingManager(cookingMenu: this)
 			{
 				MaxIngredients = Utils.GetNearbyCookingStationLevel()
 			};
 
-			_iconShakeTimerField = Helper.Reflection.GetField<Dictionary<int, double>>(inventory, "_iconShakeTimer");
+			this._iconShakeTimerField = Helper.Reflection.GetField<Dictionary<int, double>>(inventory, "_iconShakeTimer");
 
-			_recipesAvailable = recipes != null
+			// Set initial material containers for additional inventories
+			this._materialContainers = materialContainers ?? new List<Chest>();
+
+			this._recipesAvailable = recipes != null
 				// Recipes may be populated by those of any CraftingMenu that this menu supercedes
 				// Should guarantee Limited Campfire Cooking compatibility
 				? recipes.Where(recipe => Game1.player.cookingRecipes.ContainsKey(recipe.name)).ToList()
 				// Otherwise start off the list of cooking recipes with all those the player has unlocked
-				: _recipesAvailable = Utility.GetAllPlayerUnlockedCookingRecipes()
+				: this._recipesAvailable = Utility.GetAllPlayerUnlockedCookingRecipes()
 					.Select(str => new CraftingRecipe(str, true))
 					.Where(recipe => recipe.name != "Torch").ToList();
 
@@ -318,73 +322,73 @@ namespace LoveOfCooking.Objects
 
 			// Apply default filter to the default recipe list
 			bool reverseDefaultFilter = ModEntry.Instance.States.Value.LastFilterReversed;
-			_recipesAvailable = this.FilterRecipes();
+			this._recipesAvailable = this.FilterRecipes();
 
 			// Initialise filtered search lists
-			_recipesFiltered = _recipesAvailable;
-			_recipeSearchResults = new List<CraftingRecipe>();
+			this._recipesFiltered = _recipesAvailable;
+			this._recipeSearchResults = new List<CraftingRecipe>();
 
 			// Clickables and elements
-			_navDownButton = new ClickableTextureComponent(
+			this._navDownButton = new ClickableTextureComponent(
 				"navDown", new Rectangle(-1, -1, DownButtonSource.Width, DownButtonSource.Height),
 				null, null, Game1.mouseCursors, DownButtonSource, 1f, true);
-			_navUpButton = new ClickableTextureComponent(
+			this._navUpButton = new ClickableTextureComponent(
 				"navUp", new Rectangle(-1, -1, UpButtonSource.Width, UpButtonSource.Height),
 				null, null, Game1.mouseCursors, UpButtonSource, 1f, true);
-			_navRightButton = new ClickableTextureComponent(
+			this._navRightButton = new ClickableTextureComponent(
 				"navRight", new Rectangle(-1, -1, RightButtonSource.Width, RightButtonSource.Height),
 				null, null, Game1.mouseCursors, RightButtonSource, 1f, true);
-			_navLeftButton = new ClickableTextureComponent(
+			this._navLeftButton = new ClickableTextureComponent(
 				"navLeft", new Rectangle(-1, -1, LeftButtonSource.Width, LeftButtonSource.Height),
 				null, null, Game1.mouseCursors, LeftButtonSource, 1f, true);
-			_cookButton = new ClickableComponent(Rectangle.Empty, "cook");
-			_cookQuantityUpButton = new ClickableTextureComponent(
+			this._cookButton = new ClickableComponent(Rectangle.Empty, "cook");
+			this._cookQuantityUpButton = new ClickableTextureComponent(
 				"quantityUp", new Rectangle(-1, -1, PlusButtonSource.Width * Scale, PlusButtonSource.Height * Scale),
 				null, null, Game1.mouseCursors, PlusButtonSource, Scale, true);
-			_cookQuantityDownButton = new ClickableTextureComponent(
+			this._cookQuantityDownButton = new ClickableTextureComponent(
 				"quantityDown", new Rectangle(-1, -1, MinusButtonSource.Width * Scale, MinusButtonSource.Height * Scale),
 				null, null, Game1.mouseCursors, MinusButtonSource, Scale, true);
-			_cookConfirmButton = new ClickableTextureComponent(
+			this._cookConfirmButton = new ClickableTextureComponent(
 				"confirm", new Rectangle(-1, -1, OkButtonSource.Width, OkButtonSource.Height),
 				null, null, Game1.mouseCursors, OkButtonSource, 1f, true);
-			_cookCancelButton = new ClickableTextureComponent(
+			this._cookCancelButton = new ClickableTextureComponent(
 				"cancel", new Rectangle(-1, -1, NoButtonSource.Width, NoButtonSource.Height),
 				null, null, Game1.mouseCursors, NoButtonSource, 1f, true);
-			_toggleFilterButton = new ClickableTextureComponent(
+			this._toggleFilterButton = new ClickableTextureComponent(
 				"toggleFilter", new Rectangle(-1, -1, ToggleFilterButtonSource.Width * SmallScale, ToggleFilterButtonSource.Height * SmallScale),
 				null, i18n.Get("menu.cooking_search.filter_label"),
 				Texture, ToggleFilterButtonSource, SmallScale, true);
-			_toggleOrderButton = new ClickableTextureComponent(
+			this._toggleOrderButton = new ClickableTextureComponent(
 				"toggleOrder", new Rectangle(-1, -1, ToggleOrderButtonSource.Width * SmallScale, ToggleOrderButtonSource.Height * SmallScale),
 				null, i18n.Get("menu.cooking_search.order_label"),
 				Texture, ToggleOrderButtonSource, SmallScale, true);
-			_toggleViewButton = new ClickableTextureComponent(
+			this._toggleViewButton = new ClickableTextureComponent(
 				"toggleView", new Rectangle(-1, -1, ToggleViewButtonSource.Width * SmallScale, ToggleViewButtonSource.Height * SmallScale),
 				null, i18n.Get("menu.cooking_search.view."
-				               + (this.UsingRecipeGridView ? "grid" : "list")),
+							   + (this.UsingRecipeGridView ? "grid" : "list")),
 				Texture, ToggleViewButtonSource, SmallScale, true);
-			_searchButton = new ClickableTextureComponent(
+			this._searchButton = new ClickableTextureComponent(
 				"search", new Rectangle(-1, -1, SearchButtonSource.Width * SmallScale, SearchButtonSource.Height * SmallScale),
 				null, i18n.Get("menu.cooking_recipe.search_label"),
 				Texture, SearchButtonSource, SmallScale, true);
-			_toggleAutofillButton = new ClickableTextureComponent(
+			this._toggleAutofillButton = new ClickableTextureComponent(
 				"autofill", new Rectangle(-1, -1, AutofillButtonSource.Width * SmallScale, AutofillButtonSource.Height * SmallScale),
 				null, i18n.Get("menu.cooking_recipe.autofill_label"),
 				Texture, AutofillButtonSource, SmallScale, true);
-			_recipeIconButton = new ClickableTextureComponent(
+			this._recipeIconButton = new ClickableTextureComponent(
 				"recipeIcon", new Rectangle(-1, -1, 64, 64),
 				null, null,
 				Game1.objectSpriteSheet, new Rectangle(0, 0, 64, 64), Scale, true);
-			_searchBarClickable = new ClickableComponent(Rectangle.Empty, "searchbox");
-			_searchTabButton = new ClickableTextureComponent(
+			this._searchBarClickable = new ClickableComponent(Rectangle.Empty, "searchbox");
+			this._searchTabButton = new ClickableTextureComponent(
 				"searchTab", new Rectangle(-1, -1, SearchTabButtonSource.Width * Scale, SearchTabButtonSource.Height * Scale),
 				null, null, Texture, SearchTabButtonSource, Scale, true);
-			_ingredientsTabButton = new ClickableTextureComponent(
+			this._ingredientsTabButton = new ClickableTextureComponent(
 				"ingredientsTab", new Rectangle(-1, -1, IngredientsTabButtonSource.Width * Scale, IngredientsTabButtonSource.Height * Scale),
 				null, null, Texture, IngredientsTabButtonSource, Scale, true);
-			for (int i = (int) Filter.Alphabetical; i < Enum.GetNames(typeof(Filter)).Length; ++i)
+			for (int i = (int)Filter.Alphabetical; i < Enum.GetNames(typeof(Filter)).Length; ++i)
 			{
-				_filterButtons.Add(new ClickableTextureComponent(
+				this._filterButtons.Add(new ClickableTextureComponent(
 					$"filter{i}", new Rectangle(-1, -1, FilterIconSource.Width * SmallScale, FilterIconSource.Height * SmallScale),
 					null, i18n.Get($"menu.cooking_search.filter.{i}"
 						+ (Config.HideFoodBuffsUntilEaten && i == 4 ? "_alt" : "")),
@@ -394,9 +398,15 @@ namespace LoveOfCooking.Objects
 					SmallScale));
 			}
 
-			_toggleButtonClickables.AddRange(new []{ _toggleFilterButton, _toggleOrderButton, _toggleViewButton, _toggleAutofillButton });
+			this._toggleButtonClickables.AddRange(new[]
+			{
+				this._toggleFilterButton,
+				this._toggleOrderButton,
+				this._toggleViewButton,
+				this._toggleAutofillButton
+			});
 
-			_searchBarTextBox = new TextBox(
+			this._searchBarTextBox = new TextBox(
 				Game1.content.Load<Texture2D>("LooseSprites\\textBox"),
 				null, Game1.smallFont, Game1.textColor)
 			{
@@ -404,7 +414,7 @@ namespace LoveOfCooking.Objects
 				Selected = false,
 				Text = i18n.Get("menu.cooking_recipe.search_label"),
 			};
-			_quantityTextBox = new TextBox(
+			this._quantityTextBox = new TextBox(
 				Game1.content.Load<Texture2D>("LooseSprites\\textBox"),
 				null, Game1.smallFont, Game1.textColor)
 			{
@@ -414,8 +424,8 @@ namespace LoveOfCooking.Objects
 				Text = QuantityTextBoxDefaultText,
 			};
 
-			_quantityTextBox.OnEnterPressed += this.ValidateNumericalTextBox;
-			_searchBarTextBox.OnEnterPressed += sender => { this.CloseTextBox(sender, reapplyFilters: true); };
+			this._quantityTextBox.OnEnterPressed += this.ValidateNumericalTextBox;
+			this._searchBarTextBox.OnEnterPressed += sender => { this.CloseTextBox(sender, reapplyFilters: true); };
 
 			// 'Cook!' button localisations
 			int xOffset = 0;
@@ -437,156 +447,121 @@ namespace LoveOfCooking.Objects
 			// Search results clickables
 			for (int i = 0; i < ListRows; ++i)
 			{
-				_searchListClickables.Add(new ClickableComponent(new Rectangle(-1, -1, -1, -1), "searchList" + i));
+				this._searchListClickables.Add(new ClickableComponent(new Rectangle(-1, -1, -1, -1), "searchList" + i));
 			}
 			for (int i = 0; i < GridRows * GridColumns; ++i)
 			{
-				_searchGridClickables.Add(new ClickableComponent(new Rectangle(-1, -1, -1, -1), "searchGrid" + i));
+				this._searchGridClickables.Add(new ClickableComponent(new Rectangle(-1, -1, -1, -1), "searchGrid" + i));
 			}
 
-			// Determine extra inventories:
-			_inventoryTabButton = new ClickableTextureComponent(name: "inventoryTab",
+			this._inventoryTabButton = new ClickableTextureComponent(name: "inventoryTab",
 				bounds: new Rectangle(-1, -1, InventoryTabButtonSource.Width * Scale, InventoryTabButtonSource.Height * Scale),
 				label: null, hoverText: null, texture: Texture, sourceRect: InventoryTabButtonSource, scale: Scale);
-			_inventoryUpButton = new ClickableTextureComponent(name: "inventoryUp",
+			this._inventoryUpButton = new ClickableTextureComponent(name: "inventoryUp",
 				bounds: new Rectangle(-1, -1, UpSmallButtonSource.Width * Scale, UpSmallButtonSource.Height * Scale),
 				label: null, hoverText: null, texture: Texture, sourceRect: UpSmallButtonSource, scale: Scale);
-			_inventoryDownButton = new ClickableTextureComponent(name: "inventoryDown",
+			this._inventoryDownButton = new ClickableTextureComponent(name: "inventoryDown",
 				bounds: new Rectangle(-1, -1, DownSmallButtonSource.Width * Scale, DownSmallButtonSource.Height * Scale),
 				label: null, hoverText: null, texture: Texture, sourceRect: DownSmallButtonSource, scale: Scale);
-			_inventoryId = BackpackInventoryId;
-			// Add player inventory
-			_allInventories.Add(Game1.player.Items);
-			if (Game1.currentLocation is CommunityCenter cc)
+
+			// Add base player inventories:
+			this._inventoryId = BackpackInventoryId;
+			this._allInventories.Add(Game1.player.Items);
+
+			// Determine extra inventories:
+			this._inventoryIdsBeforeMinifridges = this._allInventories.Count;
+
+			if (this._materialContainers.Any())
 			{
-				// Check to recognise community centre fridge
-				if (!cc.Objects.ContainsKey(Bundles.FridgeChestPosition))
-				{
-					cc.Objects.Add(Bundles.FridgeChestPosition, new Chest(true, Bundles.FridgeChestPosition));
-				}
-				if (Bundles.IsCommunityCentreKitchenComplete())
-				{
-					// Add fridge inventory
-					_allInventories.Add(((Chest)(cc.Objects[Bundles.FridgeChestPosition])).items);
-				}
-			}
-			if (Game1.currentLocation is FarmHouse farmHouse && Utils.GetFarmhouseKitchenLevel(farmHouse) > 0)
-			{
-				// Recognise farmhouse fridge
-				_allInventories.Add(farmHouse.fridge.Value.items);
-			}
-			if (Game1.currentLocation is IslandFarmHouse islandFarmHouse)
-			{
-				// Recognise island farmhouse fridge
-				_allInventories.Add(islandFarmHouse.fridge.Value.items);
-			}
-			if (_allInventories.Count > 0)
-			{
-				// Check for extra inventories, starting with minifridges
-				_allInventories.AddRange(Game1.currentLocation.Objects.Values.Where(o => Utils.IsMinifridge(o))
-					.Select(o => ((Chest)o).items).Take(MaximumExtraInventories).Cast<IList<Item>>().ToList());
-				_numberOfMinifridges = _allInventories.Count - InventoryIdsBeforeMinifridges;
-				
-				List<Chest> chestsToTry = new List<Chest>();
-				Type mod_ConvenientChests = Interface.Interfaces.GetMod_ConvenientChests();
-				Type mod_RemoteFridgeStorage = Interface.Interfaces.GetMod_RemoteFridgeStorage();
-				if (mod_RemoteFridgeStorage != null)
-				{
-					// Check for chests from Remote Fridge Storage
-					object instance = mod_RemoteFridgeStorage.GetProperty("Instance",
-						bindingAttr: BindingFlags.Public | BindingFlags.Static)
-						.GetValue(null);
-					object field = mod_RemoteFridgeStorage.GetField("ChestController")
-						.GetValue(instance);
-					HashSet<Chest> chests = field.GetType().InvokeMember("GetChests",
-						invokeAttr: BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Instance,
-						binder: null,
-						target: field,
-						args: null) as HashSet<Chest>;
-					chestsToTry.AddRange(chests);
-				}
-				else if (mod_ConvenientChests != null)
-				{
-					// Check for chests from Convenient Chests
-					object config = mod_ConvenientChests
-						.GetProperty("Config",
-							bindingAttr: BindingFlags.Public | BindingFlags.Static)
-						.GetValue(null);
-					bool craftFromChests = (bool)config
-						.GetType()
-						.GetProperty("CraftFromChests",
-							bindingAttr: BindingFlags.Public | BindingFlags.Instance)
-						.GetValue(config);
-					if (craftFromChests)
+				// Secure container mutexes that were lost after replacing the original crafting menu
+				List<StardewValley.Network.NetMutex> mutexes = this._materialContainers
+					.Select(chest => chest.mutex)
+					.ToList();
+				MultipleMutexRequest multipleMutexRequest = null;
+				multipleMutexRequest = new MultipleMutexRequest(
+					mutexes: mutexes,
+					success_callback: delegate
 					{
-						int craftRadius = (int)config
-							.GetType()
-							.GetProperty("CraftRadius",
-								bindingAttr: BindingFlags.Public | BindingFlags.Instance)
-							.GetValue(config);
-						var stashToChestsModule = Type.GetType("ConvenientChests.StashToChests.StackLogic, ConvenientChests", throwOnError: true);
-						var invoked = stashToChestsModule
-							.InvokeMember("GetNearbyChests",
-								invokeAttr: BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.Static,
-								binder: null,
-								target: Game1.player,
-								args: new object[] { Game1.player, craftRadius });
-						List<Chest> chests = ((IEnumerable<Chest>)(invoked))
-							.Where(c => c.items.Any(i => i != null)).ToList();
-						chestsToTry.AddRange(chests);
-					}
-				}
-				if (chestsToTry.Count > 0)
+						this.exitFunction = delegate
+						{
+							multipleMutexRequest.ReleaseLocks();
+							Log.D("Freeing mutexes.");
+						};
+					},
+					failure_callback: delegate
+					{
+						Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:Kitchen_InUse"));
+					});
+
+				// Populate inventory lists
+				this._materialContainers = this._materialContainers
+					// place fridge first if one exists:
+					.OrderByDescending(chest => Utils.IsFridgeOrMinifridge(chest))
+					// then minifridges, then chests, if any exist
+					.ThenByDescending(chest => !Utils.IsMinifridge(chest))
+					.ToList();
+				while (this._materialContainers.Count >= MaximumExtraInventories)
 				{
-					chestsToTry.RemoveAll(c => Utils.IsMinifridge(c) || c.TileLocation == Vector2.Zero);
-					_allInventories.AddRange(chestsToTry.Select(c => c.items).Take(MaximumExtraInventories - _numberOfMinifridges));
-					_chestColours.AddRange(chestsToTry.Select(c => new KeyValuePair<Color, bool>(c.playerChoiceColor.Value,
-						c.playerChest.Value && (c.ParentSheetIndex == 130 || c.ParentSheetIndex == 232)
-						&& !c.playerChoiceColor.Value.Equals(Color.Black))));
+					this._materialContainers.Remove(this._materialContainers.Last());
 				}
-				_inventoryIdsBeforeChests = _numberOfMinifridges + InventoryIdsBeforeMinifridges;
-				_numberOfChests = _allInventories.Count - _inventoryIdsBeforeChests;
-				for (int i = 0; i < _numberOfMinifridges + _numberOfChests; ++i)
-				{
-					_inventorySelectButtons.Add(new ClickableTextureComponent(
-						$"inventorySelectExtra{i}",
-						new Rectangle(-1, -1, 16 * Scale, 16 * Scale), null, null,
-						ModEntry.SpriteSheet, i >= _numberOfMinifridges ? InventoryChestIconSource : InventoryMinifridgeIconSource, Scale, false));
-				}
+				var items = this._materialContainers
+					.Select(chest => chest.items)
+					.ToList();
+				this._allInventories.AddRange(items);
+				this._chestColours.AddRange(this._materialContainers.Select(
+					c => new KeyValuePair<Color, bool>(
+						key: c.playerChoiceColor.Value,
+						value: c.playerChest.Value
+							&& (c.ParentSheetIndex == 130 || c.ParentSheetIndex == 232) // Colourable chests
+							&& !c.playerChoiceColor.Value.Equals(Color.Black)))); // Coloured chests
+				this._numberOfMinifridges = this._materialContainers.Count(chest => Utils.IsMinifridge(chest));
 			}
-			// Populate list of inventories
-			if (_allInventories.Count > 1)
+
+			this._inventoryIdsBeforeChests = this._inventoryIdsBeforeMinifridges + this._numberOfMinifridges;
+			this._numberOfChests = this._allInventories.Count - this._inventoryIdsBeforeChests;
+
+			// Populate clickable inventories list
 			{
-				_inventorySelectButtons.Insert(0, new ClickableTextureComponent("inventorySelectFridge",
-					new Rectangle(-1, -1, 14 * Scale, 14 * Scale), null, null,
-					ModEntry.SpriteSheet, InventoryFridgeIconSource, Scale, false));
-				_inventorySelectButtons.Insert(0, new ClickableTextureComponent("inventorySelectBackpack",
-					new Rectangle(-1, -1, 14 * Scale, 14 * Scale), null, null,
-					ModEntry.SpriteSheet, InventoryBackpackIconSource, Scale, false));
+				Rectangle sourceRect = InventoryBackpackIconSource;
+				Rectangle destRect = new Rectangle(-1, -1, 16 * Scale, 16 * Scale);
+				this._inventorySelectButtons.Add(new ClickableTextureComponent("inventorySelectBackpack",
+					destRect, null, null,
+					ModEntry.SpriteSheet, sourceRect, Scale, false));
+				for (int i = 0; i < this._materialContainers.Count; ++i)
+				{
+					sourceRect = Utils.IsFridgeOrMinifridge(this._materialContainers[i])
+						? Utils.IsMinifridge(this._materialContainers[i])
+							? InventoryMinifridgeIconSource
+							: InventoryFridgeIconSource
+						: InventoryChestIconSource;
+					this._inventorySelectButtons.Add(new ClickableTextureComponent(
+						$"inventorySelectContainer{i}",
+						destRect, null, null,
+						ModEntry.SpriteSheet, sourceRect, Scale, false));
+				}
 			}
 
 			// Setup menu elements layout
 			this.RealignElements();
 			this.InitialiseControllerFlow();
 
-			if (addDummyState)
-				_stack.Push(State.Opening);
+			// Go to landing page by default
 			this.OpenSearchPage();
 
 			if (ModEntry.Instance.States.Value.LastFilterThisSession != Filter.None)
 			{
 				// Apply previously-used filter
-				_recipesFiltered = this.FilterRecipes(ModEntry.Instance.States.Value.LastFilterThisSession);
+				this._recipesFiltered = this.FilterRecipes(ModEntry.Instance.States.Value.LastFilterThisSession);
 			}
 			else
 			{
 				// Apply default filter if no other filter was used this session
-				_recipesFiltered = this.FilterRecipes((Filter)Enum.Parse(typeof(Filter), ModEntry.Config.DefaultSearchFilter));
+				this._recipesFiltered = this.FilterRecipes((Filter)Enum.Parse(typeof(Filter), ModEntry.Config.DefaultSearchFilter));
 			}
 			if (reverseDefaultFilter)
 			{
 				// Reverse the filter if required
-				_recipesFiltered = this.ReverseRecipeList(_recipesFiltered);
+				this._recipesFiltered = this.ReverseRecipeList(this._recipesFiltered);
 			}
 			this.UpdateSearchRecipes();
 
@@ -598,6 +573,15 @@ namespace LoveOfCooking.Objects
 			}
 
 			Game1.displayHUD = false;
+
+			if (Game1.options.gamepadControls || Game1.options.SnappyMenus)
+			{
+				Game1.delayedActions.Add(new DelayedAction(timeUntilAction: 0, behavior: delegate
+				{
+					// Snap to default
+					this.snapToDefaultClickableComponent();
+				}));
+			}
 		}
 
 		private void InitialiseControllerFlow()
@@ -744,18 +728,6 @@ namespace LoveOfCooking.Objects
 
 			// Add clickables to implicit navigation
 			this.populateClickableComponentList();
-
-			Helper.Events.GameLoop.UpdateTicked += this.Event_SnapOnOpen;
-		}
-
-		private void Event_SnapOnOpen(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
-		{
-			Helper.Events.GameLoop.UpdateTicked -= this.Event_SnapOnOpen;
-
-			if (Game1.options.gamepadControls || Game1.options.SnappyMenus)
-			{
-				this.snapToDefaultClickableComponent();
-			}
 		}
 
 		private void RealignElements()
@@ -819,8 +791,8 @@ namespace LoveOfCooking.Objects
 
 			// toggle button group
 			_toggleButtonClickables.First().bounds.X = _cookbookRightRect.X
-			                              - _toggleButtonClickables.Sum(c => c.bounds.Width)
-										  - (extraOffset * _toggleButtonClickables.Count) - (6 * Scale);
+			    - _toggleButtonClickables.Sum(c => c.bounds.Width)
+				- (extraOffset * _toggleButtonClickables.Count) - (6 * Scale);
 			for (int i = 0; i < _toggleButtonClickables.Count; ++i)
 			{
 				_toggleButtonClickables[i].bounds.Y = _leftContent.Y + yOffset;
@@ -1056,8 +1028,7 @@ namespace LoveOfCooking.Objects
 				int wideSideLength = 2;
 				int xLength = (isHorizontal ? longSideLength : wideSideLength);
 				int yLength = (isHorizontal ? wideSideLength : longSideLength);
-				int cardHeight = (int)(_inventorySelectButtons[0].bounds.Height * (yLength + 0.5f))
-					+ (isHorizontal ? areaPadding : 0);
+				int cardHeight = (int)(_inventorySelectButtons[0].bounds.Height * (yLength + 0.5f)) + areaPadding;
 
 				// Backpack and fridge
 				{
@@ -1076,13 +1047,13 @@ namespace LoveOfCooking.Objects
 					int itemHeight = _inventorySelectButtons[0].bounds.Height;
 					float itemsPerScreen = maximumHeight / itemHeight;
 					float itemRatio = (yLength - 1) / itemsPerScreen;
-					int verticalPositionY = _inventoryTabButton.bounds.Y + (4 * Scale);
+					int verticalPositionY = _inventoryTabButton.bounds.Y + ((_inventoryTabButton.bounds.Height - itemHeight) / 2);
 					int heightDifference = maximumHeight - verticalPositionY + (areaPadding * 2);
 					float offsetToFillSpaceBelow = (heightDifference + (itemHeight / 2)) * itemRatio / 2;
 					verticalPositionY += (this.yPositionOnScreen / 2);
 					verticalPositionY += (int)(offsetToFillSpaceBelow);
 					_inventorySelectButtons[0].bounds.Y = isHorizontal
-							? inventory.yPositionOnScreen + inventory.height + longSideSpacing + addedSpacing + (1 * Scale)
+							? inventory.yPositionOnScreen + inventory.height + longSideSpacing + addedSpacing
 							: verticalPositionY - ((yLength - 1) * itemHeight);
 					_inventorySelectButtons[1].bounds.Y = _inventorySelectButtons[0].bounds.Y
 						+ (isHorizontal
@@ -1091,7 +1062,7 @@ namespace LoveOfCooking.Objects
 				}
 
 				// Mini-fridges
-				for (int i = InventoryIdsBeforeMinifridges; i < _inventorySelectButtons.Count; ++i)
+				for (int i = _inventoryIdsBeforeMinifridges + 1; i < _inventorySelectButtons.Count; ++i)
 				{
 					int shortSideIndex = i % 2;
 					int shortSidePlacement = 0;
@@ -1110,7 +1081,7 @@ namespace LoveOfCooking.Objects
 				// Area to draw inventory buttons popup
 				_inventoriesPopupArea = new Rectangle(
 					_inventorySelectButtons[0].bounds.X - addedSpacing,
-					_inventorySelectButtons[0].bounds.Y - areaPadding + (1 * Scale),
+					_inventorySelectButtons[0].bounds.Y - areaPadding - addedSpacing,
 					(_inventorySelectButtons[0].bounds.Width + addedSpacing) * xLength + areaPadding,
 					cardHeight);
 
@@ -1143,7 +1114,8 @@ namespace LoveOfCooking.Objects
 			//Game1.activeClickableMenu = null; // not work!
 
 			string name = recipe.name.ToLower();
-			bool isBaked = ModEntry.ItemDefinitions["BakeyFoods"].Any(o => name.StartsWith(o) || ModEntry.ItemDefinitions["CakeyFoods"].Any(o => name.EndsWith(o)));
+			bool isBaked = ModEntry.ItemDefinitions["BakeyFoods"].Any(o => name.StartsWith(o)
+				|| ModEntry.ItemDefinitions["CakeyFoods"].Any(o => name.EndsWith(o)));
 			string startSound, sound, endSound;
 			if (ModEntry.ItemDefinitions["SoupyFoods"].Any(x => name.EndsWith(x)))
 			{
@@ -1408,6 +1380,7 @@ namespace LoveOfCooking.Objects
 			_searchTabButton.sourceRect.X = SearchTabButtonSource.X;
 			_ingredientsTabButton.sourceRect.X = IngredientsTabButtonSource.X;
 			this.ToggleFilterPopup(playSound: false, forceToggleTo: false);
+			this.TryAutoFillIngredients();
 
 			if (Game1.options.SnappyMenus)
 			{
@@ -1612,20 +1585,20 @@ namespace LoveOfCooking.Objects
 
 		private void ToggleInventoriesPopup(bool playSound, bool? forceToggleTo = null)
 		{
-			if (!ShouldShowInventoryElements)
+			if (!this.ShouldShowInventoryElements)
 				return;
 
-			if (forceToggleTo.HasValue && forceToggleTo.Value == _showInventoriesPopup)
+			if (forceToggleTo.HasValue && forceToggleTo.Value == this._showInventoriesPopup)
 				return;
 
 			if (playSound)
-				Game1.playSound(_showInventoriesPopup ? "bigSelect" : "bigDeSelect");
+				Game1.playSound(this._showInventoriesPopup ? "bigSelect" : "bigDeSelect");
 
-			_showInventoriesPopup = forceToggleTo ?? !_showInventoriesPopup;
+			this._showInventoriesPopup = forceToggleTo ?? !this._showInventoriesPopup;
 
 			if (Game1.options.SnappyMenus)
 			{
-				this.setCurrentlySnappedComponentTo(_showInventoriesPopup ? _inventorySelectButtons.First().myID : _inventoryTabButton.myID);
+				this.setCurrentlySnappedComponentTo(this._showInventoriesPopup ? this._inventorySelectButtons.First().myID : this._inventoryTabButton.myID);
 			}
 		}
 
@@ -1634,113 +1607,109 @@ namespace LoveOfCooking.Objects
 			int.TryParse(sender.Text.Trim(), out int value);
 			value = value > 0 ? value : 1;
 			sender.Text = Math.Max(1, Math.Min(99,
-				Math.Min(value, _recipeReadyToCraftCount))).ToString();
+				Math.Min(value, this._recipeReadyToCraftCount))).ToString();
 			sender.Text = sender.Text.PadLeft(sender.Text.Length == 2 ? 3 : 2, ' ');
 			sender.Selected = false;
 		}
 
 		private void KeepRecipeIndexInSearchBounds()
 		{
-			_recipeIndex = Math.Max(_recipeSearchResults.Count / 2,
-				Math.Min(_recipesFiltered.Count - _recipeSearchResults.Count / 2 - 1, _recipeIndex));
+			this._recipeIndex = Math.Max(this._recipeSearchResults.Count / 2,
+				Math.Min(this._recipesFiltered.Count - this._recipeSearchResults.Count / 2 - 1, this._recipeIndex));
 
 			// Avoid showing whitespace after end of list
 			if (this.UsingRecipeGridView)
 			{
-				_recipeIndex = GridColumns * (_recipeIndex / GridColumns) + GridColumns;
-				if (_recipesFiltered.Count - 1 - _recipeIndex < _recipeSearchResults.Count / 2)
+				this._recipeIndex = GridColumns * (this._recipeIndex / GridColumns) + GridColumns;
+				if (this._recipesFiltered.Count - 1 - this._recipeIndex < this._recipeSearchResults.Count / 2)
 				{
-					_recipeIndex -= GridColumns;
+					this._recipeIndex -= GridColumns;
 				}
 			}
 			else
 			{
-				if (_recipesFiltered.Count - _recipeIndex <= (_recipeSearchResults.Count + 1) / 2)
-					--_recipeIndex;
+				if (this._recipesFiltered.Count - this._recipeIndex <= (this._recipeSearchResults.Count + 1) / 2)
+					--this._recipeIndex;
 			}
 		}
 
 		private void ChangeCurrentRecipe(bool selectNext)
 		{
-			if (!_stack.Any())
+			if (!this._stack.Any())
 				return;
-			State state = _stack.Peek();
+			State state = this._stack.Peek();
 
 			ClickableTextureComponent clickable = selectNext
-				? state == State.Search ? _navDownButton : _navRightButton
-				: state == State.Search ? _navUpButton : _navLeftButton;
+				? state == State.Search ? this._navDownButton : this._navRightButton
+				: state == State.Search ? this._navUpButton : this._navLeftButton;
 			this.TryClickNavButton(clickable.bounds.X, clickable.bounds.Y, state == State.Recipe);
 		}
 
 		private void ChangeCurrentRecipe(int index)
 		{
-			if (!_recipesFiltered.Any())
+			if (!this._recipesFiltered.Any())
 				return;
-			index = Math.Max(0, Math.Min(_recipesFiltered.Count - 1, index));
-			this.ChangeCurrentRecipe(_recipesFiltered[index].name);
+			index = Math.Max(0, Math.Min(this._recipesFiltered.Count - 1, index));
+			this.ChangeCurrentRecipe(this._recipesFiltered[index].name);
 		}
 
 		private void ChangeCurrentRecipe(string name)
 		{
-			if (!_recipesFiltered.Any())
+			if (!this._recipesFiltered.Any())
 				return;
 			CraftingRecipe recipe = new CraftingRecipe(name, isCookingRecipe: true);
-			_recipeIndex = _recipesFiltered.FindIndex(recipe => recipe.name == name);
-			_recipeAsItem = recipe.createItem();
-			string[] info = Game1.objectInformation[_recipeAsItem.ParentSheetIndex].Split('/');
+			this._recipeIndex = this._recipesFiltered.FindIndex(recipe => recipe.name == name);
+			this._recipeAsItem = recipe.createItem();
+			string[] info = Game1.objectInformation[this._recipeAsItem.ParentSheetIndex].Split('/');
 			List<int> buffs = info.Length >= 7
 				? info[7].Split(' ').ToList().ConvertAll(int.Parse)
 				: null;
-			_recipeBuffs = buffs != null && !buffs.All(b => b == 0)
+			this._recipeBuffs = buffs != null && !buffs.All(b => b == 0)
 				? buffs
 				: null;
-			_recipeBuffDuration = _recipeBuffs != null && info.Length >= 8
+			this._recipeBuffDuration = this._recipeBuffs != null && info.Length >= 8
 				? (int.Parse(info[8]) * 7 / 10 / 10) * 10
 				: -1;
-			if (_stack.Count > 0 && _stack.Peek() != State.Search)
+			if (this._stack.Count > 0 && this._stack.Peek() != State.Search)
 			{
 				this.TryAutoFillIngredients();
 			}
-			this.UpdateCraftableCounts(recipe: recipe);
 		}
 
 		private void UpdateCraftableCounts(CraftingRecipe recipe)
 		{
-			_recipeIngredientQuantitiesHeld.Clear();
+			this._recipeIngredientQuantitiesHeld.Clear();
 			for (int i = 0; i < CurrentRecipe?.getNumberOfIngredients(); ++i)
 			{
 				int id = CurrentRecipe.recipeList.Keys.ElementAt(i);
 				int requiredQuantity = CurrentRecipe.recipeList.Values.ElementAt(i);
 				int heldQuantity = 0;
-				List<CookingManager.Ingredient> ingredients = CookingManager.GetMatchingIngredients(id: id, sourceItems: _allInventories, required: requiredQuantity);
+				List<CookingManager.Ingredient> ingredients = CookingManager.GetMatchingIngredients(id: id, sourceItems: this._allInventories, required: requiredQuantity);
 				if (ingredients != null && ingredients.Count > 0)
 				{
-					heldQuantity = ingredients.Sum(ing => _cookingManager.GetItemForIngredient(ingredient: ing, sourceItems: _allInventories).Stack);
+					heldQuantity = ingredients.Sum(ing => this._cookingManager.GetItemForIngredient(ingredient: ing, sourceItems: this._allInventories).Stack);
 					requiredQuantity -= heldQuantity;
 				}
 
-				_recipeIngredientQuantitiesHeld.Add(heldQuantity);
+				this._recipeIngredientQuantitiesHeld.Add(heldQuantity);
 			}
-			_recipeCraftableCount = _cookingManager.GetAmountCraftable(recipe: recipe, sourceItems: _allInventories, limitToCurrentIngredients: false);
-			_recipeReadyToCraftCount = _cookingManager.GetAmountCraftable(recipe: recipe, sourceItems: _allInventories, limitToCurrentIngredients: true);
+			this._recipeCraftableCount = this._cookingManager.GetAmountCraftable(recipe: recipe, sourceItems: this._allInventories, limitToCurrentIngredients: false);
+			this._recipeReadyToCraftCount = this._cookingManager.GetAmountCraftable(recipe: recipe, sourceItems: this._allInventories, limitToCurrentIngredients: true);
 		}
 
 		private void ChangeInventory(bool selectNext)
 		{
 			int delta = selectNext ? 1 : -1;
-			int index = _inventoryId;
-			if (_allInventories.Count > 1)
+			int index = this._inventoryId;
+			if (this._allInventories.Count > 1)
 			{
 				// Navigate in given direction
 				index += delta;
 				// Negative-delta navigation cycles around to end
 				if (index < BackpackInventoryId)
-					index = _allInventories.Count - 1;
-				// Positive-delta navigation without further elements cycles around to start
-				if (index > FridgeInventoryId && _allInventories.Count <= InventoryIdsBeforeMinifridges)
-					index = BackpackInventoryId;
+					index = this._allInventories.Count - 1;
 				// Positive-delta navigation cycles around to start
-				if (index == _allInventories.Count)
+				if (index == this._allInventories.Count)
 					index = BackpackInventoryId;
 			}
 
@@ -1749,56 +1718,58 @@ namespace LoveOfCooking.Objects
 
 		private void ChangeInventory(int index)
 		{
-			_inventoryId = index;
-			inventory.actualInventory = _allInventories[_inventoryId];
-			inventory.showGrayedOutSlots = _inventoryId == BackpackInventoryId;
+			this._inventoryId = index;
+			this.inventory.actualInventory = this._allInventories[this._inventoryId];
+			this.inventory.showGrayedOutSlots = this._inventoryId == BackpackInventoryId;
 			if (Interface.Interfaces.UsingBigBackpack)
 				this.RealignElements();
 		}
 
 		private void TryAutoFillIngredients()
 		{
-			if (!IsUsingAutofill)
-				return;
+			if (this.IsUsingAutofill)
+			{
+				// Remove all items from ingredients slots
+				this._cookingManager.ClearCurrentIngredients();
 
-			// Remove all items from ingredients slots
-			_cookingManager.ClearCurrentIngredients();
+				// Don't fill slots if the player can't cook the recipe
+				if (this._stack.Any() && this._recipeIndex >= 0 && this._recipesFiltered.Count >= this._recipeIndex - 1)
+				{
+					this._cookingManager.AutoFillIngredients(recipe: CurrentRecipe, sourceItems: this._allInventories);
+				}
+			}
 
-			// Don't fill slots if the player can't cook the recipe
-			if (_recipeIndex < 0 || _recipesFiltered.Count < _recipeIndex - 1 || !_stack.Any())
-				return;
-
-			_cookingManager.AutoFillIngredients(recipe: CurrentRecipe, sourceItems: _allInventories);
+			this.UpdateCraftableCounts(recipe: this.CurrentRecipe);
 		}
 
 		private void TryClickNavButton(int x, int y, bool playSound)
 		{
-			if (!_stack.Any())
+			if (!this._stack.Any())
 				return;
-			int lastRecipe = _recipeIndex;
-			State state = _stack.Peek();
-			int max = _recipesFiltered.Count - 1;
+			int lastRecipe = this._recipeIndex;
+			State state = this._stack.Peek();
+			int max = this._recipesFiltered.Count - 1;
 			if (this.UsingRecipeGridView)
 			{
 				max = GridColumns * (max / GridColumns) + GridColumns;
 			}
 			int delta = Game1.isOneOfTheseKeysDown(Game1.oldKBState, new[] {new InputButton(Keys.LeftShift)})
-				? _searchResultsPerPage
-				: this.UsingRecipeGridView && state == State.Search ? _searchResultsArea.Width / _recipeDisplayHeight : 1;
+				? this._searchResultsPerPage
+				: this.UsingRecipeGridView && state == State.Search ? this._searchResultsArea.Width / this._recipeDisplayHeight : 1;
 			switch (state)
 			{
 				case State.Search:
-					if (!_recipeSearchResults.Any())
+					if (!this._recipeSearchResults.Any())
 						break;
 
 					// Search up/down nav buttons
-					if (_navUpButton.containsPoint(x, y))
+					if (this._navUpButton.containsPoint(x, y))
 					{
-						_recipeIndex = Math.Max(_recipeSearchResults.Count / 2, _recipeIndex - delta);
+						this._recipeIndex = Math.Max(this._recipeSearchResults.Count / 2, this._recipeIndex - delta);
 					}
 					else if (_navDownButton.containsPoint(x, y))
 					{
-						_recipeIndex = Math.Min(max - _recipeSearchResults.Count / 2, _recipeIndex + delta);
+						this._recipeIndex = Math.Min(max - this._recipeSearchResults.Count / 2, this._recipeIndex + delta);
 					}
 					else
 					{
@@ -1808,15 +1779,15 @@ namespace LoveOfCooking.Objects
 
 				case State.Recipe:
 					// Recipe next/prev nav buttons
-					if (_navLeftButton.containsPoint(x, y))
+					if (this._navLeftButton.containsPoint(x, y))
 					{
-						this.ChangeCurrentRecipe(_recipeIndex - delta);
-						_showCookingConfirmPopup = false;
+						this.ChangeCurrentRecipe(this._recipeIndex - delta);
+						this._showCookingConfirmPopup = false;
 					}
-					else if (_navRightButton.containsPoint(x, y))
+					else if (this._navRightButton.containsPoint(x, y))
 					{
-						this.ChangeCurrentRecipe(_recipeIndex + delta);
-						_showCookingConfirmPopup = false;
+						this.ChangeCurrentRecipe(this._recipeIndex + delta);
+						this._showCookingConfirmPopup = false;
 					}
 					else
 						return;
@@ -1830,19 +1801,19 @@ namespace LoveOfCooking.Objects
 					return;
 			}
 
-			if (Game1.options.SnappyMenus && currentlySnappedComponent != null && !this.IsNavButtonActive(currentlySnappedComponent.myID))
+			if (Game1.options.SnappyMenus && this.currentlySnappedComponent != null && !this.IsNavButtonActive(this.currentlySnappedComponent.myID))
 			{
-				if (currentlySnappedComponent.myID == _navLeftButton.myID || currentlySnappedComponent.myID == _navRightButton.myID)
-					this.setCurrentlySnappedComponentTo(_recipeIconButton.myID);
-				if (currentlySnappedComponent.myID == _navUpButton.myID || currentlySnappedComponent.myID == _navDownButton.myID)
-					this.setCurrentlySnappedComponentTo(_recipeSearchResults.Count > 0
+				if (this.currentlySnappedComponent.myID == this._navLeftButton.myID || this.currentlySnappedComponent.myID == this._navRightButton.myID)
+					this.setCurrentlySnappedComponentTo(this._recipeIconButton.myID);
+				if (this.currentlySnappedComponent.myID == this._navUpButton.myID || this.currentlySnappedComponent.myID == this._navDownButton.myID)
+					this.setCurrentlySnappedComponentTo(this._recipeSearchResults.Count > 0
 						? this.UsingRecipeGridView
-							? _searchGridClickables.First().myID
-							: _searchListClickables.First().myID
-						: _toggleFilterButton.myID);
+							? this._searchGridClickables.First().myID
+							: this._searchListClickables.First().myID
+						: this._toggleFilterButton.myID);
 			}
 
-			if (playSound && _recipeIndex != lastRecipe)
+			if (playSound && this._recipeIndex != lastRecipe)
 				Game1.playSound(state == State.Search ? ClickCue : "newRecipe");
 		}
 
@@ -1893,7 +1864,7 @@ namespace LoveOfCooking.Objects
 				{
 					this.ToggleCookingConfirmPopup(playSound: false);
 				}
-				this.UpdateCraftableCounts(recipe: CurrentRecipe);
+				this.UpdateCraftableCounts(recipe: this.CurrentRecipe);
 			}
 
 			// Snap to the Cook! button if appropriate
@@ -1921,7 +1892,7 @@ namespace LoveOfCooking.Objects
 			if (!itemWasMoved && CookingManager.CanBeCooked(item: item) && !_cookingManager.AreAllIngredientSlotsFilled)
 			{
 				// Try add inventory item to an empty ingredient slot
-				itemWasMoved = _cookingManager.AddToIngredients(inventoryId: _inventoryId, itemIndex: itemIndex);
+				itemWasMoved = _cookingManager.AddToIngredients(whichInventory: _inventoryId, whichItem: itemIndex, itemId: item.ParentSheetIndex);
 			}
 			if (itemWasMoved)
 			{
@@ -2504,25 +2475,15 @@ namespace LoveOfCooking.Objects
 							int index = clickable.name == "inventorySelectBackpack"
 								// Player backpack
 								? BackpackInventoryId
-								: clickable.name == "inventorySelectFridge"
-									// Fridge
-									? FridgeInventoryId
-									// Minifridges and chests
-									: int.Parse(clickable.name.Substring(clickable.name.IndexOf(clickable.name.First(c => char.IsDigit(c)))))
-										+ InventoryIdsBeforeMinifridges;
+								// Fridges, minifridges and chests
+								: int.Parse(clickable.name.Substring(clickable.name.IndexOf(clickable.name.First(c => char.IsDigit(c)))))
+									+ this._inventoryIdsBeforeMinifridges;
 							this.ChangeInventory(index);
 							Game1.playSound(ClickCue);
 							break;
 						}
 					}
 				}
-				/*
-				if (!_inventoriesScrollableArea.Contains(x, y))
-				{
-					// Clicking off the inventories popup will close it
-					this.ToggleInventoriesPopup(playSound: true, forceToggleTo: false);
-				}
-				*/
 			}
 
 			// Up/down/left/right contextual navigation buttons
@@ -3719,50 +3680,54 @@ namespace LoveOfCooking.Objects
 			}
 		}
 
-		private void DrawInventoryMenu(SpriteBatch b)
+		private void drawInventoryIcon(SpriteBatch b, int which, Vector2 position, float scale)
 		{
-			void drawInventoryIcon(int which, Vector2 position, float scale)
+			Rectangle destRect = new Rectangle(
+				(int)(position.X + _inventorySelectButtons[which].bounds.Width / 2),
+				(int)(position.Y + _inventorySelectButtons[which].bounds.Height / 2),
+				(int)(_inventorySelectButtons[which].sourceRect.Width * scale),
+				(int)(_inventorySelectButtons[which].sourceRect.Height * scale));
+			b.Draw(
+				texture: Texture,
+				destinationRectangle: destRect,
+				sourceRectangle: _inventorySelectButtons[which].sourceRect,
+				color: Color.White,
+				rotation: 0f,
+				origin: new Vector2(
+					_inventorySelectButtons[which].sourceRect.Width,
+					_inventorySelectButtons[which].sourceRect.Height) / 2,
+				effects: SpriteEffects.None,
+				layerDepth: 1f);
+			if (which >= _inventoryIdsBeforeChests)
 			{
-				Rectangle destRect = new Rectangle(
-					(int)(position.X + _inventorySelectButtons[which].bounds.Width / 2),
-					(int)(position.Y + _inventorySelectButtons[which].bounds.Height / 2),
-					(int)(_inventorySelectButtons[which].sourceRect.Width * scale),
-					(int)(_inventorySelectButtons[which].sourceRect.Height * scale));
-				b.Draw(
-					texture: Texture,
-					destinationRectangle: destRect,
-					sourceRectangle: _inventorySelectButtons[which].sourceRect,
-					color: Color.White,
-					rotation: 0f,
-					origin: new Vector2(
-						_inventorySelectButtons[which].sourceRect.Width,
-						_inventorySelectButtons[which].sourceRect.Height) / 2,
-					effects: SpriteEffects.None,
-					layerDepth: 1f);
-				if (which >= _inventoryIdsBeforeChests)
+				// chest button tint
+				KeyValuePair<Color, bool> tintAndEnabled = _chestColours[which - _inventoryIdsBeforeChests];
+				if (tintAndEnabled.Value)
 				{
-					// chest button tint
-					KeyValuePair<Color, bool> tintAndEnabled = _chestColours[which - _inventoryIdsBeforeChests];
-					if (tintAndEnabled.Value)
-					{
-						b.Draw(
-							texture: Texture,
-							destinationRectangle: destRect,
-							sourceRectangle: new Rectangle(
-								_inventorySelectButtons[which].sourceRect.X,
-								_inventorySelectButtons[which].sourceRect.Y + _inventorySelectButtons[which].sourceRect.Height,
-								_inventorySelectButtons[which].sourceRect.Width,
-								_inventorySelectButtons[which].sourceRect.Height),
-							color: tintAndEnabled.Key,
-							rotation: 0f,
-							origin: new Vector2(
-								_inventorySelectButtons[which].sourceRect.Width,
-								_inventorySelectButtons[which].sourceRect.Height) / 2,
-							effects: SpriteEffects.None,
-							layerDepth: 1f);
-					}
+					b.Draw(
+						texture: Texture,
+						destinationRectangle: destRect,
+						sourceRectangle: new Rectangle(
+							_inventorySelectButtons[which].sourceRect.X,
+							_inventorySelectButtons[which].sourceRect.Y + _inventorySelectButtons[which].sourceRect.Height,
+							_inventorySelectButtons[which].sourceRect.Width,
+							_inventorySelectButtons[which].sourceRect.Height),
+						color: tintAndEnabled.Key,
+						rotation: 0f,
+						origin: new Vector2(
+							_inventorySelectButtons[which].sourceRect.Width,
+							_inventorySelectButtons[which].sourceRect.Height) / 2,
+						effects: SpriteEffects.None,
+						layerDepth: 1f);
 				}
 			}
+		}
+
+
+		private void DrawInventoryMenu(SpriteBatch b)
+		{
+			if (!_inventorySelectButtons.Any())
+				return;
 
 			// Actual inventory card
 			Game1.DrawBox(x: _inventoryCardArea.X, y: _inventoryCardArea.Y,
@@ -3770,11 +3735,11 @@ namespace LoveOfCooking.Objects
 
 			// Inventory select tab
 			_inventoryTabButton.draw(b);
-			drawInventoryIcon(
+			drawInventoryIcon(b,
 				which: _inventoryId,
 				position: new Vector2(
-					_inventoryTabButton.bounds.X + (3 * _inventoryTabButton.baseScale),
-					_inventoryTabButton.bounds.Y + (3 * _inventoryTabButton.baseScale)),
+					_inventoryTabButton.bounds.X + (2 * _inventoryTabButton.baseScale),
+					_inventoryTabButton.bounds.Y + (2 * _inventoryTabButton.baseScale)),
 				scale: _inventoryTabButton.scale);
 
 			// Inventory nav buttons
@@ -3793,7 +3758,8 @@ namespace LoveOfCooking.Objects
 				for (int i = 0; i < _inventorySelectButtons.Count; ++i)
 				{
 					// nav button icon
-					drawInventoryIcon(which: i,
+					drawInventoryIcon(b,
+						which: i,
 						position: Utility.PointToVector2(_inventorySelectButtons[i].bounds.Location),
 						scale: _inventorySelectButtons[i].scale);
 				}
@@ -3805,7 +3771,7 @@ namespace LoveOfCooking.Objects
 				b.Draw(
 					texture: Game1.mouseCursors,
 					destinationRectangle: new Rectangle(
-						currentButton.X + (Scale * (((currentButton.Width / 2) - (w * Scale / 2)) / Scale)),
+						currentButton.X + (Scale * (((currentButton.Width) - (w * Scale)) / Scale / 2)),
 						currentButton.Y - (w * Scale) + (4 * Scale),
 						w * Scale,
 						w * Scale),

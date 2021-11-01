@@ -37,7 +37,11 @@ namespace CommonHarmony
         public PatternPatches(IEnumerable<CodeInstruction> instructions, PatternPatch patch)
         {
             this._instructions = instructions;
-            this._patternPatches = new Queue<PatternPatch>(new[] { patch });
+            this._patternPatches = new(
+                new[]
+                {
+                    patch,
+                });
         }
 
         /// <summary>Gets a value indicating whether gets whether all patches were successfully applied.</summary>
@@ -46,15 +50,15 @@ namespace CommonHarmony
             get => this._patternPatches.Count == 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerator<CodeInstruction> GetEnumerator()
         {
-            PatternPatch currentOperation = this._patternPatches.Dequeue();
+            var currentOperation = this._patternPatches.Dequeue();
             var rawStack = new LinkedList<CodeInstruction>();
-            int skipped = 0;
-            bool done = false;
+            var skipped = 0;
+            var done = false;
 
-            foreach (CodeInstruction instruction in this._instructions)
+            foreach (var instruction in this._instructions)
             {
                 // Skipped instructions
                 if (skipped > 0)
@@ -72,7 +76,7 @@ namespace CommonHarmony
 
                 rawStack.AddLast(instruction);
                 currentOperation.Patches(rawStack);
-                foreach (CodeInstruction patch in rawStack)
+                foreach (var patch in rawStack)
                 {
                     yield return patch;
                 }
@@ -97,13 +101,13 @@ namespace CommonHarmony
                 }
             }
 
-            foreach (CodeInstruction instruction in rawStack)
+            foreach (var instruction in rawStack)
             {
                 yield return instruction;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();

@@ -369,7 +369,7 @@ namespace ToDew {
                 }
                 // seasons
                 spriteBatch.DrawString(Game1.smallFont, I18n.Menu_Edit_OnlySeason(), new Vector2(bounds.X + margin + leftPadding, seasonsCheckboxes[0].Y), Color.Black);
-                for (int season = 0; season < seasons.Length; season++ ) {
+                for (int season = 0; season < seasons.Length; season++) {
                     DrawCheckbox(spriteBatch, seasonsCheckboxes[season], todoItem.DayOfWeekVisibility.HasFlag(seasons[season]), Utility.getSeasonNameFromNumber(season));
                 }
 
@@ -504,8 +504,21 @@ namespace ToDew {
         /// <summary>Force the CurrentScroll to the bottom (MaxScroll) after rendering all items</summary>
         /// Set after adding an item because adding is asynchronous for farmhands.  Cleared on other actions.
         private bool forceScrollToBottom = false;
+
         /// <summary>The area where list items are rendered (used to filter mouse clicks)</summary>
         private Rectangle contentArea = Rectangle.Empty;
+
+        /// <summary>spacing between the menu edge and content area</summary>
+        private const int gutter = 15;
+        /// <summary>width of the content area (not including gutter)</summary>
+        private int contentWidth;
+        /// <summary>height of the content area (not including gutter)</summary>
+        private int contentHeight;
+
+        private Rectangle scrollUpRect;
+        private bool scrollUpVisible = false;
+        private Rectangle scrollDownRect;
+        private bool scrollDownVisible = false;
 
         public ToDoMenu(ModEntry theMod, ToDoList theList) {
             this.theMod = theMod;
@@ -514,11 +527,17 @@ namespace ToDew {
             // update size
             this.width = Math.Min(Game1.tileSize * 14, Game1.viewport.Width);
             this.height = Math.Min((int)((float)Sprites.Letter.Sprite.Height / Sprites.Letter.Sprite.Width * this.width), Game1.viewport.Height);
+            this.contentWidth = this.width - gutter * 2;
+            this.contentHeight = this.height - gutter * 2;
 
             // update position
             Vector2 origin = Utility.getTopLeftPositionForCenteringOnScreen(this.width, this.height);
             this.xPositionOnScreen = (int)origin.X;
             this.yPositionOnScreen = (int)origin.Y;
+
+            // initialize the scroll button location rectangles
+            scrollDownRect = new Rectangle(xPositionOnScreen + gutter, yPositionOnScreen + contentHeight - CommonSprites.Icons.DownArrow.Height, CommonSprites.Icons.DownArrow.Width, CommonSprites.Icons.DownArrow.Height);
+            scrollUpRect = new Rectangle(xPositionOnScreen + gutter, scrollDownRect.Top - gutter - CommonSprites.Icons.UpArrow.Height, CommonSprites.Icons.UpArrow.Width, CommonSprites.Icons.UpArrow.Height);
 
             // create the text box
             this.Textbox = new TextBox(Sprites.Textbox.Sheet, null, Game1.smallFont, Color.Black);
@@ -555,12 +574,9 @@ namespace ToDew {
         public override void draw(SpriteBatch b) {
             int x = this.xPositionOnScreen;
             int y = this.yPositionOnScreen;
-            const int gutter = 15;
             float leftOffset = gutter;
             float topOffset = gutter;
-            float contentWidth = this.width - gutter * 2;
-            float contentHeight = this.height - gutter * 2;
-            float bodyWidth = this.width - leftOffset - gutter;
+            float bodyWidth = this.width - leftOffset - gutter; // same as contentWidth
 
 
             // get font
@@ -605,7 +621,7 @@ namespace ToDew {
                 Rectangle prevScissorRectangle = device.ScissorRectangle;
                 try {
                     // begin draw
-                    device.ScissorRectangle = new Rectangle(x + gutter, y + headerHeight, (int)contentWidth, (int)contentHeight - headerHeight);
+                    device.ScissorRectangle = new Rectangle(x + gutter, y + headerHeight, contentWidth, contentHeight - headerHeight);
                     contentArea = device.ScissorRectangle;
                     contentBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, new RasterizerState { ScissorTestEnable = true });
 
@@ -614,10 +630,11 @@ namespace ToDew {
                     this.CurrentScroll = Math.Min(this.MaxScroll, this.CurrentScroll); // don't scroll past bottom
                     topOffset -= this.CurrentScroll; // scrolled down == move text up
 
+                    int mouseX = Game1.getMouseX();
+                    int mouseY = Game1.getMouseY();
+
                     // draw fields
                     {
-                        int mouseX = Game1.getMouseX();
-                        int mouseY = Game1.getMouseY();
                         if (currentItemEditor == null) {
                             foreach (MenuItem item in this.menuItemList) {
                                 var objSize = item.Draw(contentBatch, x + (int)leftOffset, y + (int)topOffset, (int)bodyWidth, mouseX, mouseY);
@@ -636,10 +653,12 @@ namespace ToDew {
                     }
 
                     // draw scroll icons
-                    if (this.MaxScroll > 0 && this.CurrentScroll > 0)
-                        contentBatch.DrawSprite(CommonSprites.Icons.Sheet, CommonSprites.Icons.UpArrow, x + gutter, y + contentHeight - CommonSprites.Icons.DownArrow.Height - gutter - CommonSprites.Icons.UpArrow.Height);
-                    if (this.MaxScroll > 0 && this.CurrentScroll < this.MaxScroll)
-                        contentBatch.DrawSprite(CommonSprites.Icons.Sheet, CommonSprites.Icons.DownArrow, x + gutter, y + contentHeight - CommonSprites.Icons.DownArrow.Height);
+                    scrollUpVisible = this.MaxScroll > 0 && this.CurrentScroll > 0;
+                    scrollDownVisible = this.MaxScroll > 0 && this.CurrentScroll < this.MaxScroll;
+                    if (scrollUpVisible)
+                        contentBatch.DrawSprite(CommonSprites.Icons.Sheet, CommonSprites.Icons.UpArrow, scrollUpRect.X, scrollUpRect.Y, null, scrollUpRect.Contains(mouseX, mouseY) ? 1.1f : 1.0f);
+                    if (scrollDownVisible)
+                        contentBatch.DrawSprite(CommonSprites.Icons.Sheet, CommonSprites.Icons.DownArrow, scrollDownRect.X, scrollDownRect.Y, null, scrollDownRect.Contains(mouseX, mouseY) ? 1.1f : 1.0f);
 
                     // end draw
                     contentBatch.End();
@@ -709,8 +728,17 @@ namespace ToDew {
         /// <param name="y">The Y-position of the cursor.</param>
         /// <param name="playSound">Whether to enable sound.</param>
         public override void receiveLeftClick(int x, int y, bool playSound = true) {
+            const int scrollAmount = 120;
             this.forceScrollToBottom = false;
             if (!contentArea.Contains(x, y)) return;
+            if (scrollUpRect.Contains(x, y)) {
+                this.CurrentScroll -= scrollAmount;
+                return;
+            }
+            if (scrollDownRect.Contains(x, y)) {
+                this.CurrentScroll += scrollAmount;
+                return;
+            }
             if (currentItemEditor == null) {
                 foreach (MenuItem match in this.menuItemList) {
                     if (match.containsPoint(x, y)) {

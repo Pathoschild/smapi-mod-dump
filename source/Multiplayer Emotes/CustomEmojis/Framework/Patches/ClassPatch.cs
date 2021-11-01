@@ -10,7 +10,7 @@
 
 
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 
 namespace CustomEmojis.Framework.Patches {
 
@@ -21,11 +21,11 @@ namespace CustomEmojis.Framework.Patches {
 		public virtual MethodInfo Postfix => null;
 		public virtual MethodInfo Transpiler => null;
 
-		public void Register(HarmonyInstance harmony) {			
+		public void Register(Harmony harmony) {			
 			harmony.Patch(Original, Prefix == null ? null : new HarmonyMethod(Prefix), Postfix == null ? null : new HarmonyMethod(Postfix), Transpiler == null ? null : new HarmonyMethod(Transpiler));
 		}
 
-		public void Remove(HarmonyInstance harmony, HarmonyPatchType patchType = HarmonyPatchType.All) {
+		public void Remove(Harmony harmony, HarmonyPatchType patchType = HarmonyPatchType.All) {
 			harmony.Unpatch(Original, patchType, harmony.Id);
 		}
 

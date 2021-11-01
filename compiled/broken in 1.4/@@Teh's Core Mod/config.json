@@ -1,4 +1,0 @@
-{
-    /* When crafting items, allows multiple recipes to be crafted at once, storing all the results under the cursor. */
-    "AllowMultiCrafting": false
-}

@@ -1,0 +1,24 @@
+﻿{
+    "Substitutes": {
+        "blueberry.LoveOfCooking": {
+            "Custom_blueberry_Kitchen_Area0_Bundle0": {
+                "Items": "1 Rhubarb Pie, 1 Strange Bun, 1 blueberry.cac.applepie, 1 Chocolate Cake, 1 Maple Bar",
+                "Pick": null,
+                "RequiredItems": 5,
+                "Reward": null
+            },
+            "Custom_blueberry_Kitchen_Area0_Bundle1": {
+                "Items": "1 Glazed Yams, 1 blueberry.cac.waffles, 1 Blueberry Tart, 1 Pepper Poppers",
+                "Pick": -1,
+                "RequiredItems": 4,
+                "Reward": null
+            },
+            "Custom_blueberry_Kitchen_Area0_Bundle2": {
+                "Items": "1 Hashbrowns, 1 Cheese Cauliflower, 1 blueberry.cac.burrito, 1 Farmer's Lunch",
+                "Pick": -1,
+                "RequiredItems": 4,
+                "Reward": "5 blueberry.cac.chocolate"
+            }
+        }
+    }
+}

@@ -20,7 +20,7 @@ namespace SpriteMaster {
 		private static DoubleBuffer<ActionList> PendingActions = Config.AsyncScaling.Enabled ? new() : null;
 		private static DoubleBuffer<LoadList> PendingLoads = Config.AsyncScaling.Enabled ? new() : null;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void AddPendingAction (in Action action) {
 			var current = PendingActions.Current;
 			lock (current) {
@@ -28,7 +28,7 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void AddPendingLoad (in Action action, int texels) {
 			var current = PendingLoads.Current;
 			lock (current) {
@@ -38,9 +38,9 @@ namespace SpriteMaster {
 
 		private static readonly TexelTimer TexelAverage = new TexelTimer();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void ProcessPendingActions (TimeSpan remainingTime) {
-			var startTime = DateTime.Now;
+			var watch = System.Diagnostics.Stopwatch.StartNew();
 			{
 				var pendingActions = PendingActions.Current;
 				bool invoke;
@@ -73,14 +73,14 @@ namespace SpriteMaster {
 							int processed = 0;
 							foreach (var action in pendingLoads) {
 								var estimate = TexelAverage.Estimate(action);
-								if (DrawState.PushedUpdateWithin(1) && (DateTime.Now - startTime) + estimate > remainingTime) {
+								if (DrawState.PushedUpdateWithin(1) && watch.Elapsed + estimate > remainingTime) {
 									break;
 								}
 
 								DrawState.PushedUpdateThisFrame = true;
-								var start = DateTime.Now;
+								var start = watch.Elapsed;
 								action.Invoke();
-								var duration = DateTime.Now - start;
+								var duration = watch.Elapsed - start;
 								TexelAverage.Add(action, duration);
 
 								++processed;

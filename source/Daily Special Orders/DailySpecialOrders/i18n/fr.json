@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/shekurika/DailySpecialOrders
+**
+*************************************************/
+
+{
+    "Immediate.Refresh" : "Actualisation immédiate",
+    "Immediate.Paragraph": "Met à jour immédiatement les commandes spéciales après en avoir choisi une. (Nécessite la réouverture du panneau)",
+    "Refresh.on.Tuesday" : "Actualisation le Mardi",
+    "Refresh.on.Wednesday" : "Actualisation le Mercredi",
+    "Refresh.on.Thursday" : "Actualisation le Jeudi",
+    "Refresh.on.Friday" : "Actualisation le Vendredi",
+    "Refresh.on.Saturday" : "Actualisation le Samedi",
+    "Refresh.on.Sunday" : "Actualisation le Dimanche",
+}

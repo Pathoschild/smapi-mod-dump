@@ -2,7 +2,7 @@
     "MinimumApiVersion": "3.12.0",
     "Name": "[DLL] Arena Challenges Mod",
     "Author": "XxHarvzBackxX",
-    "Version": "1.0.2",
+    "Version": "1.1.0",
     "Description": "Adds a challenging arena with monsters for loot.",
     "UniqueID": "harvz.ACM.SMAPI",
     "EntryDll": "ACM.dll",
@@ -12,9 +12,9 @@
          "UniqueID": "Platonymous.Toolkit",
          "IsRequired": true
       },
-      {
+      /*{
         "UniqueID": "harvz.ACM.CP",
-        "IsRequired": false // changed locally
-     }
+        "IsRequired": true
+     }*/ // disabled locally
    ]
   }

@@ -11,3 +11,4 @@ for queries and analysis.**
 # Release notes
 ## Upcoming release
 * Initial release.
+* Improved translations. Thanks to Evelyon (added Spanish)!

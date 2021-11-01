@@ -27,8 +27,7 @@ namespace SpriteMaster {
 				if (!(device?.IsDisposed).GetValueOrDefault(false)) {
 					var adapter = device?.Adapter;
 					if (adapter != null) {
-						Debug.MessageLn($"\tGraphics Adapter Name: {adapter.DeviceName}");
-						Debug.MessageLn($"\tGraphics Adapter ID: {adapter.DeviceId}");
+						Debug.MessageLn($"\tGraphics Adapter: {adapter}");
 						Debug.MessageLn($"\tGraphics Adapter Description: {adapter.Description}");
 					}
 				}

@@ -25,7 +25,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal FruitTreeDayUpdatePatch()
 		{
 			Original = typeof(FruitTree).MethodNamed(nameof(FruitTree.dayUpdate));
-			Postfix = new HarmonyMethod(GetType(), nameof(FruitTreeDayUpdatePostfix));
+			Postfix = new(GetType(), nameof(FruitTreeDayUpdatePostfix));
 		}
 
 		#region harmony patches
@@ -36,12 +36,13 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				if (Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out _) && __instance.daysUntilMature.Value % 4 == 0)
+				if (Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out _) &&
+					__instance.daysUntilMature.Value % 4 == 0)
 					--__instance.daysUntilMature.Value;
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

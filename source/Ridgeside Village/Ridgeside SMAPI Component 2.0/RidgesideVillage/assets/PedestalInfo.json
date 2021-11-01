@@ -1,0 +1,48 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+[
+  {
+    "tilePosition": "13, 47",
+    "RequiredItemName": "Moose Statue"
+  },
+  {
+    "tilePosition": "12, 45",
+    "RequiredItemName": "Relic Fox Mask"
+  },
+  {
+    "tilePosition": "12, 43",
+    "RequiredItemName": "Sapphire Pearl"
+  },
+  {
+    "tilePosition": "13, 41",
+    "RequiredItemName": "Ancient Music Box"
+  },
+  {
+    "tilePosition": "15, 41",
+    "RequiredItemName": "Everfrost Stone"
+  },
+  {
+    "tilePosition": "17, 41",
+    "RequiredItemName": "Village Hero Sculpture"
+  },
+  {
+    "tilePosition": "18, 43",
+    "RequiredItemName": "Pale Candelabrum"
+  },
+  {
+    "tilePosition": "18, 45",
+    "RequiredItemName": "Elven Comb"
+  },
+  {
+    "tilePosition": "17, 47",
+    "RequiredItemName": "Opal Halo"
+  }
+]

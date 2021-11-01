@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
@@ -24,152 +25,355 @@ namespace LoveOfCooking
 	[XmlType("Mods_blueberry_cac_custombush")] // SpaceCore serialisation signature
 	public class CustomBush : Bush
 	{
-		public enum BushVariety
+		public class ItemRule
 		{
-			Nettle,
-			Redberry
+			public string Object;
+			public string Conditions = null;
+			public int[] BaseQuantity = null;
 		}
 
+		public class ProduceRule : ItemRule
+		{
+			public int DaysToProduce = 0;
+			public int DaysToAccumulateProduce = 0;
+			public int MaximumAccumulatedProduce = 0;
+			public int[] AccumulatedQuantity = null;
+		}
+
+		public class BushDefinition
+		{
+			public int Health = 99999;
+			public bool DrawShadow = false;
+			public int EffectiveSize = 0;
+			public int EffectiveGrowthSize = 0;
+			public int[] GrowthStages = new int[0];
+			public bool IsActionable = false;
+			public bool IsDestroyable = false;
+			public bool IsPassable = false;
+			public ItemRule[] ItemsDroppedWhenDestroyed = null;
+			public ItemRule[] ItemsProduced = null;
+			public string[] SeasonsToGrow = null;
+			public string[] SeasonsToProduce = null;
+			public string SoundWhenDestroyed = null;
+			public string SoundWhenShaken = null;
+			public int TilesHigh = 1;
+			public int TilesWide = 1;
+			public string[] ToolsToDestroy;
+			public string[] ToolsToHarvest;
+
+			// Textures
+			private string _sourceTexture;
+			public string SourceTexture
+			{
+				get => _sourceTexture;
+				set => _sourceTexture = StardewModdingAPI.Utilities.PathUtilities.NormalizeAssetName(value);
+			}
+			public Dictionary<string, Rectangle> SourceAreas = new Dictionary<string, Rectangle>();
+		}
+
+		// Definitions
 		[XmlIgnore]
-		protected Texture2D CustomTexture => ModEntry.SpriteSheet;
+		public static Dictionary<string, BushDefinition> BushDefinitions;
 		[XmlIgnore]
-		protected Rectangle SourceRectangle;
+		public static List<Texture2D> BushTextures;
+
+		// Preserved values
+		public readonly NetStringDictionary<int, NetInt> HeldProduce = new NetStringDictionary<int, NetInt>();
+		public readonly NetInt GrowthDays = new NetInt();
+		public readonly NetInt DaysSinceLastProduce = new NetInt();
+
+		// Reflected fields
 		[XmlIgnore]
 		protected IReflectedField<float> AlphaField, ShakeField, MaxShakeField;
 		[XmlIgnore]
 		protected IReflectedMethod ShakeMethod;
 
+		// Temp fields
 		[XmlIgnore]
-		public static readonly Point NettleSize = new Point(24, 24);
+		private readonly NetString _variety = new NetString();
 		[XmlIgnore]
-		public static readonly Point RedberrySize = new Point(32, 32);
+		public BushDefinition Definition;
+		[XmlIgnore]
+		public Rectangle? SourceRectangle;
+		public bool HasProduce => this.HeldProduce.Keys.Any(p => this.HeldProduce[p] > 0);
+		public bool IsMature => this.Definition.GrowthStages != null
+			&& (this.GrowthStage > this.Definition.GrowthStages.Length
+				|| this.GrowthDays.Value >= this.Definition.GrowthStages.Sum());
+		public int GrowthStage
+		{
+			get
+			{
+				if (this.HasProduce)
+					return this.Definition.GrowthStages.Length;
+				if (this.Definition.GrowthStages == null)
+					return 0;
+				
+				int i, days = 0;
+				for (i = 0; i < this.Definition.GrowthStages.Length && days < this.GrowthDays.Value; ++i)
+				{
+					days += this.Definition.GrowthStages[i];
+				}
+				return i;
+			}
+		}
 
-		public bool IsMature => this.getAge() >= DaysToMature;
-		public readonly NetInt DaysToMature = new NetInt();
-		public readonly NetInt DaysBetweenProduceWhenEmpty = new NetInt();
-		public readonly NetInt DaysBetweenAdditionalProduce = new NetInt();
-		public readonly NetInt HeldItemId = new NetInt();
-		public readonly NetInt HeldItemQuantity = new NetInt();
-		public readonly NetInt EffectiveSize = new NetInt();
-		private readonly NetInt _variety = new NetInt();
+		// Const values
+		public const int HealthRemovedOnHit = 50;
+		private const int DummyConditionEventId = 87008;
+
+		// Huge issues
 		public object Variety
 		{
-			get => _variety;
+			// we've all made mistakes in life
+			get => _variety.Value;
 			set
 			{
-				int? variety = null;
+				// i know i have
+				string variety = null;
 				if (value is System.Xml.XmlNode[] xml)
 				{
 					value = xml[0].Value;
 				}
-				if (value is BushVariety b)
-				{
-					variety = (int)b;
-				}
+
 				if (value is string s && !string.IsNullOrEmpty(s))
 				{
-					if (Enum.IsDefined(typeof(BushVariety), s))
-						variety = (int)Enum.Parse(typeof(BushVariety), s);
+					if (CustomBush.BushDefinitions.ContainsKey(s))
+						variety = s;
 					if (int.TryParse(s, out int i1))
 						value = i1;
 				}
-				if (value is int i && Enum.IsDefined(typeof(BushVariety), i))
+
+				if (string.IsNullOrEmpty(variety))
 				{
-					variety = i;
-				}
-				if (value is NetInt ni && Enum.IsDefined(typeof(BushVariety), ni.Value))
-				{
-					variety = ni.Value;
+					variety = ModEntry.BushNameNettle;
+					Log.W($"Undefined value for {nameof(this.Variety)}: {value.GetType().Name} {value}."
+						+ $" Defaulted to {variety.GetType().Name} {variety}");
 				}
 
-				if (variety.HasValue)
-				{
-					_variety.Value = variety.Value;
-				}
-				else
-				{
-					_variety.Value = (int)BushVariety.Nettle;
-					Log.W($"Undefined value for {nameof(Variety)}: {value.GetType()} {value.ToString()}." +
-						$" Defaulted to {_variety.GetType()} {_variety.ToString()}");
-				}
+				Log.D($"Set {nameof(CustomBush)}.{nameof(this.Variety)} to {variety.GetType().Name} {variety}",
+					ModEntry.Config.DebugMode);
+
+				this.SetForVariety(variety: variety, setNetField: true);
 			}
 		}
-
-		// Nettles unique values
-		public const int NettlesDamage = 4;
-		public const string NettleBuffSource = ModEntry.ObjectPrefix + "NettleBuff";
 
 		public CustomBush()
 			: base()
 		{
-			this.GetFields();
-			this.NetFields.AddFields(DaysToMature, DaysBetweenProduceWhenEmpty, DaysBetweenAdditionalProduce, HeldItemId, HeldItemQuantity, EffectiveSize);
-			HeldItemId.Value = -1;
+			this.Init();
 		}
 
-		public CustomBush(Vector2 tile, GameLocation location, BushVariety variety)
-			: base(tileLocation: tile, size: variety == BushVariety.Redberry ? 2 : 3, location: location)
+		public CustomBush(Vector2 tile, GameLocation location, string variety)
+			: base(tileLocation: tile, size: 0, location: location)
 		{
-			currentTileLocation = tile;
-			currentLocation = location;
-			_variety.Value = (int)variety;
-			this.GetFields();
-			this.FirstTimeSetup();
+			this.Init();
+			this.currentTileLocation = tile;
+			this.currentLocation = location;
+			this.SetForVariety(variety: variety, setNetField: true);
 		}
 
-		private void GetFields()
+		private void Init()
 		{
-			AlphaField = ModEntry.Instance.Helper.Reflection.GetField<float>(this, "alpha");
-			ShakeField = ModEntry.Instance.Helper.Reflection.GetField<float>(this, "shakeRotation");
-			MaxShakeField = ModEntry.Instance.Helper.Reflection.GetField<float>(this, "maxShake");
-
-			ShakeMethod = ModEntry.Instance.Helper.Reflection.GetMethod(this, "shake");
+			this.AddNetFields();
+			this.GetReflectedMembers();
 		}
 
-		private void FirstTimeSetup()
+		private void AddNetFields()
 		{
-			drawShadow.Set(false);
-			flipped.Set(Game1.random.NextDouble() < 0.5);
-			if (currentLocation.IsGreenhouse)
-				greenhouseBush.Value = true;
-
-			if (_variety == (int)BushVariety.Nettle)
+            this._variety.fieldChangeEvent += (NetString field, string oldValue, string newValue) =>
 			{
-				health = 20;
-				EffectiveSize.Value = 0;
-				DaysToMature.Value = -1;
-				DaysBetweenProduceWhenEmpty.Value = -1;
-				DaysBetweenAdditionalProduce.Value = -1;
-				HeldItemId.Value = Interface.Interfaces.JsonAssets.GetObjectId(ModEntry.Instance.NettleName);
-				HeldItemQuantity.Value = 1;
-			}
-			else if (_variety == (int)BushVariety.Redberry)
+				this.SetForVariety(variety: newValue, setNetField: false);
+			};
+
+			this.NetFields.AddFields(this._variety, this.HeldProduce);
+		}
+
+        private void GetReflectedMembers()
+		{
+			// Fields
+			this.AlphaField = ModEntry.Instance.Helper.Reflection.GetField<float>(this, "alpha");
+			this.ShakeField = ModEntry.Instance.Helper.Reflection.GetField<float>(this, "shakeRotation");
+			this.MaxShakeField = ModEntry.Instance.Helper.Reflection.GetField<float>(this, "maxShake");
+			// Properties
+			// . . .
+			// Methods
+			this.ShakeMethod = ModEntry.Instance.Helper.Reflection.GetMethod(this, "shake");
+		}
+
+		public bool IsInSeason(string season)
+		{
+			return this.Definition.SeasonsToProduce != null
+				&& this.Definition.SeasonsToProduce.Any(s => s.Equals(season, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		public string GetSeason(GameLocation location)
+		{
+			return this.overrideSeason.Value == -1
+				? Game1.GetSeasonForLocation(location)
+				: Utility.getSeasonNameFromNumber(this.overrideSeason.Value);
+		}
+
+		public bool CanProduce(string season)
+		{
+			bool isInSeason = this.IsInSeason(season: season);
+			return this.IsMature && isInSeason;
+		}
+
+		public bool CanGrow(string season)
+		{
+			bool isInSeason = this.IsInSeason(season: season);
+			int growthRadius = this.Definition.EffectiveGrowthSize < 0 || this.Definition.EffectiveGrowthSize > 5
+					? 0
+					: this.Definition.EffectiveGrowthSize;
+			if (!isInSeason)
+				return false;
+			if (growthRadius < 1)
+				return true;
+
+			bool isGrowthAreaClear = true;
+			int growthRectSize = ((growthRadius * 2) + 1) * Game1.tileSize;
+			Rectangle growthRect = new Rectangle(
+			(int)((this.tilePosition.Value.X - growthRadius) * Game1.tileSize),
+			(int)((this.tilePosition.Value.Y - growthRadius) * Game1.tileSize),
+			growthRectSize,
+			growthRectSize);
+			if (this.currentLocation.largeTerrainFeatures.Any(ltf => ltf.getBoundingBox(ltf.tilePosition.Value).Intersects(growthRect)))
 			{
-				health = 80;
-				EffectiveSize.Value = 1;
-				DaysToMature.Value = 17;
-				DaysBetweenProduceWhenEmpty.Value = 4;
-				DaysBetweenAdditionalProduce.Value = 2;
-				HeldItemId.Value = Interface.Interfaces.JsonAssets.GetObjectId(ModEntry.ObjectPrefix + "redberry");
-				HeldItemQuantity.Value = 0;
+				isGrowthAreaClear = false;
+			}
+			else
+			{
+				foreach (KeyValuePair<Vector2, TerrainFeature> pair in this.currentLocation.terrainFeatures.Pairs
+					.Where(pair => pair.Value.getBoundingBox(pair.Key).Intersects(growthRect)))
+				{
+					if (!pair.Value.Equals(this)
+						&& (pair.Value is Tree || pair.Value is Bush || pair.Value is CustomBush || (pair.Value is HoeDirt h && h.crop != null)))
+					{
+						isGrowthAreaClear = false;
+						break;
+					}
+				}
+			}
+
+			return isGrowthAreaClear;
+		}
+
+		private void SetForVariety(string variety, bool setNetField)
+		{
+			if (setNetField)
+			{
+				this._variety.Set(variety);
+			}
+
+			this.Definition = CustomBush.BushDefinitions[variety];
+			this.Definition.SourceTexture = StardewModdingAPI.Utilities.PathUtilities.NormalizePath(this.Definition.SourceTexture);
+
+			this.health = this.Definition.Health;
+			this.size.Set(this.Definition.EffectiveSize);
+			this.drawShadow.Set(this.Definition.DrawShadow);
+			this.flipped.Set(Game1.random.NextDouble() < 0.5);
+			this.loadSprite();
+		}
+
+		public void Shake(GameLocation location, Vector2 tileLocation, bool doEvenIfStillShaking)
+		{
+			bool isShaking = Math.Abs(0f - this.MaxShakeField.GetValue()) > 0.001f;
+			if (isShaking || (!this.greenhouseBush.Value && Game1.currentSeason.Equals("winter")))
+			{
+				return;
+			}
+
+			this.ShakeMethod.Invoke(tileLocation, doEvenIfStillShaking);
+		}
+
+		public void TossItems(bool isDestroyed)
+		{
+			// Harvest produce
+
+			// 'Botanist' profession improves harvest quality to best
+			int quality = Game1.player.professions.Contains(Farmer.botanist)
+				? StardewValley.Object.bestQuality
+				: StardewValley.Object.lowQuality;
+			Point centre = this.getBoundingBox().Center;
+
+			foreach (string produce in this.HeldProduce.Keys.Where(p => this.HeldProduce[p] > 0))
+			{
+				StardewValley.Object o = Utility.fuzzyItemSearch(query: produce) as StardewValley.Object;
+				o.Quality = quality;
+				for (int i = 0; i < this.HeldProduce[produce]; ++i)
+				{
+					Game1.createItemDebris(
+						item: o,
+						origin: Utility.PointToVector2(centre),
+						direction: Game1.random.Next(1, 4));
+				}
+			}
+
+			if (!isDestroyed)
+				return;
+
+			foreach (ItemRule dropItem in this.Definition.ItemsDroppedWhenDestroyed)
+			{
+				// Ignore profession bonuses to quality
+				StardewValley.Object o = Utility.fuzzyItemSearch(query: dropItem.Object) as StardewValley.Object;
+				int quantity = Game1.random.Next(dropItem.BaseQuantity[0], dropItem.BaseQuantity[1] + 1);
+				for (int i = 0; i < quantity; ++i)
+				{
+					Game1.createItemDebris(
+						item: o,
+						origin: Utility.PointToVector2(centre),
+						direction: Game1.random.Next(1, 4));
+				}
 			}
 		}
 
-		public void Shake(Vector2 tileLocation, bool doEvenIfStillShaking)
+		public void TryGrowProduce(GameLocation location)
 		{
-			ShakeMethod.Invoke(tileLocation, doEvenIfStillShaking);
+			string season = this.GetSeason(location: location);
+			if (this.CanGrow(season: season))
+			{
+				++this.GrowthDays.Value;
+			}
+			if (this.CanProduce(season: season))
+			{
+				foreach (ProduceRule produceRule in this.Definition.ItemsProduced)
+				{
+					// Require produce preconditions to be met if not null
+					if (!string.IsNullOrWhiteSpace(produceRule.Conditions))
+					{
+						string precondition = $"{CustomBush.DummyConditionEventId}/{produceRule.Conditions}";
+						if (this.currentLocation.checkEventPrecondition(precondition: precondition) < 0)
+							continue;
+					}
+
+					if ((!this.HasProduce && this.DaysSinceLastProduce.Value < produceRule.DaysToProduce)
+						|| (this.HasProduce && this.DaysSinceLastProduce.Value < produceRule.DaysToAccumulateProduce
+							&& produceRule.AccumulatedQuantity != null))
+						continue;
+
+					// Add to held stacks of each produce if valid
+					int quantity;
+					if (!this.HeldProduce.ContainsKey(produceRule.Object))
+					{
+						quantity = Game1.random.Next(produceRule.BaseQuantity[0], produceRule.BaseQuantity[1] + 1);
+						this.HeldProduce[produceRule.Object] = quantity;
+					}
+					else
+					{
+						quantity = Game1.random.Next(produceRule.AccumulatedQuantity[0], produceRule.AccumulatedQuantity[1] + 1);
+						this.HeldProduce[produceRule.Object] += quantity;
+					}
+
+					this.DaysSinceLastProduce.Set(0);
+				}
+			}
 		}
 
 		public override void dayUpdate(GameLocation environment, Vector2 tileLocation)
 		{
-			if (_variety == (int)BushVariety.Redberry
-			    && tileSheetOffset == 0
-			    && Game1.random.NextDouble() < 0.2
-			    && this.inBloom(Game1.currentSeason, Game1.dayOfMonth))
-				tileSheetOffset.Value = 1;
-			else if (!Game1.currentSeason.Equals("summer") && !this.inBloom(Game1.currentSeason, Game1.dayOfMonth))
-				tileSheetOffset.Value = 0;
+			this.greenhouseBush.Value = environment.IsGreenhouse;
 
+			this.TryGrowProduce(location: environment);
 			this.SetUpSourceRectangle();
 		}
 
@@ -177,10 +381,7 @@ namespace LoveOfCooking
 		{
 			if (!Game1.IsMultiplayer || Game1.IsServer)
 			{
-				if (_variety == (int)BushVariety.Redberry && Game1.currentSeason.Equals("summer") && Game1.random.NextDouble() < 0.5)
-					tileSheetOffset.Value = 1;
-				else
-					tileSheetOffset.Value = 0;
+				this.tileSheetOffset.Value = 0;
 				this.loadSprite();
 			}
 			return false;
@@ -188,106 +389,93 @@ namespace LoveOfCooking
 
 		public override bool isActionable()
 		{
-			return true;
+			return this.Definition.IsActionable;
 		}
-		
+
+		public override bool isPassable(Character c = null)
+		{
+			return this.Definition.IsPassable || base.isPassable(c);
+		}
+
 		public override bool performUseAction(Vector2 tileLocation, GameLocation location)
 		{
-			if (Math.Abs(0f - MaxShakeField.GetValue()) < 0.001f
-			    && (greenhouseBush || _variety == (int)BushVariety.Redberry || !Game1.currentSeason.Equals("winter")))
+			bool canShake = !this.HasProduce || this.Definition.ToolsToHarvest == null
+				|| (Game1.player.CurrentTool != null && this.Definition.ToolsToHarvest.Any(
+					tool => Game1.player.CurrentTool.GetType().Name.Equals(tool, StringComparison.InvariantCultureIgnoreCase)));
+			if (canShake)
 			{
-				location.localSound("leafrustle");
+				this.Shake(location: location, tileLocation: tileLocation, doEvenIfStillShaking: true);
 			}
-
-			if (_variety == (int)BushVariety.Nettle)
+			else
 			{
-				DelayedAction.playSoundAfterDelay("leafrustle", 100);
-				Game1.player.takeDamage(damage: NettlesDamage + Game1.player.resilience, overrideParry: true, damager: null);
-				if (Game1.player.health < 1)
-					Game1.player.health = 1;
-				Buff existingBuff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(b => b.source == NettleBuffSource);
-				if (existingBuff == null)
-				{
-					Game1.buffsDisplay.addOtherBuff(new Buff(
-						0, 0, 0, 0, 0, 0, 0,
-						0, 0, speed: -1, 0, 0,
-						minutesDuration: 10,
-						source: NettleBuffSource,
-						displaySource: ModEntry.Instance.Helper.Translation.Get("buff.nettles.inspect")));
-				}
-				else
-				{
-					existingBuff.millisecondsDuration = 6000;
-				}
+				Game1.playSound("cancel");
 			}
-
-			this.Shake(tileLocation: tileLocation, doEvenIfStillShaking: true);
 			return true;
 		}
 
 		public override bool performToolAction(Tool t, int explosion, Vector2 tileLocation, GameLocation location)
 		{
-			if (location == null)
-			{
-				location = Game1.currentLocation;
-			}
+			location ??= this.currentLocation;
+			
 			if (explosion > 0)
 			{
-				this.Shake(tileLocation, doEvenIfStillShaking: true);
+				this.Shake(location: location, tileLocation, doEvenIfStillShaking: true);
 				return false;
 			}
-			if (t != null && ModEntry.ItemDefinitions["NettlesHarvestingTools"].Any(n => n == t.GetType().Name) && this.isDestroyable(location, tileLocation))
-			{
-				location.playSound("leafrustle");
-				this.Shake(tileLocation, doEvenIfStillShaking: true);
-				
-				if (_variety == (int)BushVariety.Nettle)
-					health = -100;
-				else
-					health -= 50;
 
-				if (health <= -1f)
+			Events.InvokeOnBushToolUsed(bush: this, tool: t, explosion: explosion, tileLocation: tileLocation, location: location);
+
+			if (t != null
+				&& this.Definition.ToolsToDestroy.Any(n => n.Equals(t.GetType().Name, StringComparison.InvariantCultureIgnoreCase))
+				&& this.isDestroyable(location, tileLocation))
+			{
+				this.health -= CustomBush.HealthRemovedOnHit;
+
+				if (this.health > 0)
 				{
-					int quantity = Game1.random.Next(HeldItemQuantity, HeldItemQuantity + 1) + (Game1.player.ForagingLevel / 4);
-					StardewValley.Object heldObject = new StardewValley.Object(
-						parentSheetIndex: HeldItemId,
-						initialStack: 1,
-						quality: Game1.player.professions.Contains(16) ? 4 : 0);
-					for (int i = 0; i < quantity; ++i)
-					{
-						Game1.createItemDebris(item: heldObject, origin: Utility.PointToVector2(this.getBoundingBox().Center), direction: Game1.random.Next(1, 4));
-					}
-					if (_variety != (int)BushVariety.Nettle)
-						location.playSound("treethud");
-					DelayedAction.playSoundAfterDelay("leafrustle", 100);
-					Color leafColour = Color.Green;
-					string season = (overrideSeason == -1) ? Game1.GetSeasonForLocation(location) : Utility.getSeasonNameFromNumber(overrideSeason);
+					this.Shake(location: location, tileLocation, doEvenIfStillShaking: true);
+				}
+				else
+				{
+					this.TossItems(isDestroyed: true);
+
+					string season = this.GetSeason(location: location);
+
+					if (!string.IsNullOrEmpty(this.Definition.SoundWhenDestroyed))
+						location.playSound(this.Definition.SoundWhenDestroyed);
+
+					if (!string.IsNullOrEmpty(this.Definition.SoundWhenShaken))
+						DelayedAction.playSoundAfterDelay(this.Definition.SoundWhenShaken, 100);
+					Color leafColour;
 					switch (season)
 					{
-						case "spring":
-							leafColour = Color.Green;
-							break;
-						case "summer":
-							leafColour = Color.ForestGreen;
+						case "winter":
+							leafColour = Color.Cyan;
 							break;
 						case "fall":
 							leafColour = Color.IndianRed;
 							break;
-						case "winter":
-							leafColour = Color.Cyan;
+						case "summer":
+							leafColour = Color.ForestGreen;
+							break;
+						default:
+							leafColour = Color.Green;
 							break;
 					}
 					Multiplayer multiplayer = ModEntry.Instance.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-					Rectangle sourceRect = new Rectangle(355, 1200 + (season.Equals("fall") ? 16 : (season.Equals("winter") ? (-16) : 0)), 16, 16);
-					int leafCount = _variety == (int)BushVariety.Nettle ? 6 : 10;
-					for (int j = 0; j <= EffectiveSize; j++)
+					const int leafSize = 16;
+					Rectangle leafSource = new Rectangle(355, 1200 + (season == "fall" ? leafSize : (season == "winter" ? (-leafSize) : 0)), leafSize, leafSize);
+					Rectangle bushArea = this.getBoundingBox();
+					const int leafCount = 6;
+					for (int j = 0; j <= this.Definition.EffectiveSize; j++)
 					{
 						for (int i = 0; i < leafCount; i++)
 						{
 							multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(
 								textureName: "LooseSprites\\Cursors",
-								sourceRect: sourceRect,
-								position: Utility.getRandomPositionInThisRectangle(getBoundingBox(), Game1.random) - new Vector2(0f, Game1.random.Next(64)),
+								sourceRect: leafSource,
+								position: Utility.getRandomPositionInThisRectangle(bushArea, Game1.random)
+									- new Vector2(0f, Game1.random.Next(Game1.tileSize)),
 								flipped: false,
 								alphaFade: 0.01f,
 								color: leafColour)
@@ -296,7 +484,7 @@ namespace LoveOfCooking
 								acceleration = new Vector2(0f, Game1.random.Next(13, 17) / 100f),
 								accelerationChange = new Vector2(0f, -0.001f),
 								scale = 2f,
-								layerDepth = (tileLocation.Y + 1f) * 64f / 10000f,
+								layerDepth = (tileLocation.Y + 1) * Game1.tileSize / 10000f,
 								animationLength = 11,
 								totalNumberOfLoops = 99,
 								interval = Game1.random.Next(10, 40),
@@ -304,103 +492,84 @@ namespace LoveOfCooking
 							});
 							if (i % leafCount == 0)
 							{
-								multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(
-									50, Utility.getRandomPositionInThisRectangle(getBoundingBox(), Game1.random) - new Vector2(32f, Game1.random.Next(32, 64)), leafColour));
-								multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite(
-									12, Utility.getRandomPositionInThisRectangle(getBoundingBox(), Game1.random) - new Vector2(32f, Game1.random.Next(32, 64)), Color.White));
+								multiplayer.broadcastSprites(
+									location: location,
+									sprites: new TemporaryAnimatedSprite(
+										rowInAnimationTexture: 50,
+										position: Utility.getRandomPositionInThisRectangle(bushArea, Game1.random)
+											- new Vector2(bushArea.Width / 2, bushArea.Height * (float)((Game1.random.NextDouble() / 2) + 0.5f)),
+										color: leafColour));
+								multiplayer.broadcastSprites(
+									location: location,
+									sprites: new TemporaryAnimatedSprite(
+										rowInAnimationTexture: 12,
+										position: Utility.getRandomPositionInThisRectangle(bushArea, Game1.random)
+											- new Vector2(bushArea.Width / 2, Game1.random.Next(1, 2)),
+										color: Color.White));
 							}
 						}
 					}
 					return true;
 				}
-				location.playSound("axchop");
-				
 			}
 			return false;
 		}
 
 		public override Rectangle getBoundingBox(Vector2 tileLocation)
 		{
-			if (_variety == (int)BushVariety.Nettle)
-				return new Rectangle(
-					(int)tileLocation.X * Game1.tileSize,
-					(int)tileLocation.Y * Game1.tileSize,
-					Game1.tileSize,
-					Game1.tileSize);
-			if (_variety == (int)BushVariety.Redberry)
-				return new Rectangle(
-					(int) tileLocation.X * Game1.tileSize,
-					(int) tileLocation.Y * Game1.tileSize,
-					Game1.tileSize * 2,
-					Game1.tileSize);
-			return Rectangle.Empty;
+			return new Rectangle(
+				(int)tileLocation.X * Game1.tileSize,
+				(int)tileLocation.Y * Game1.tileSize,
+				Game1.tileSize * this.Definition.TilesWide,
+				Game1.tileSize * this.Definition.TilesHigh);
 		}
 
 		public override void loadSprite()
 		{
-			Random r = new Random((int)Game1.stats.DaysPlayed
-			                   + (int)Game1.uniqueIDForThisGame + (int)tilePosition.X + (int)tilePosition.Y * 777);
-			if (_variety == (int)BushVariety.Nettle && r.NextDouble() < 0.5)
-			{
-				tileSheetOffset.Value = 1;
-			}
-			else if (_variety == (int)BushVariety.Redberry)
-			{
-				tileSheetOffset.Value = this.inBloom(Game1.currentSeason, Game1.dayOfMonth) ? 1 : 0;
-			}
+			this.tileSheetOffset.Value = this.inBloom(Game1.currentSeason, Game1.dayOfMonth) ? 1 : 0;
 			this.SetUpSourceRectangle();
 		}
-		
+
 		public void SetUpSourceRectangle()
 		{
-			if (_variety == (int)BushVariety.Nettle)
+			string season = this.GetSeason(this.currentLocation);
+			if (this.Definition != null && this.Definition.SourceAreas.ContainsKey(season))
 			{
-				SourceRectangle = new Rectangle(
-					0 + (tileSheetOffset * NettleSize.X),
-					16,
-					NettleSize.X,
-					NettleSize.Y);
+				Rectangle sourceRectangle = this.Definition.SourceAreas[this.GetSeason(this.currentLocation)];
+				sourceRectangle.X += (sourceRectangle.Width * this.GrowthStage);
+				this.SourceRectangle = sourceRectangle;
 			}
-			else if (_variety == (int)BushVariety.Redberry)
+			else
 			{
-				int seasonNumber = greenhouseBush.Value ? 0 : Utility.getSeasonNumber(Game1.currentSeason);
-				int age = this.getAge();
-				SourceRectangle = new Rectangle(
-					(seasonNumber * RedberrySize.X) + (Math.Min(2, age / 10) * RedberrySize.X) + (tileSheetOffset * RedberrySize.X),
-					16 + 16,
-					RedberrySize.X,
-					RedberrySize.Y);
+				this.SourceRectangle = null;
 			}
 		}
 		
-		public override Rectangle getRenderBounds(Vector2 tileLocation)
-		{
-			if (_variety == (int)BushVariety.Nettle)
-				return new Rectangle((int)tileLocation.X * 64, (int)(tileLocation.Y - 1f) * 64, 64, 160);
-			if (_variety == (int)BushVariety.Redberry)
-				return new Rectangle((int)tileLocation.X * 64, (int)(tileLocation.Y - 2f) * 64, 128, 256);
-			return Rectangle.Empty;
-		}
-
 		public override void draw(SpriteBatch spriteBatch, Vector2 tileLocation)
 		{
-			Vector2 screenPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(
-				tileLocation.X * 64f + 64f / 2,
-				(tileLocation.Y + 1f) * 64f));
+			if (!this.SourceRectangle.HasValue)
+				return;
+			Rectangle bounds = this.getBoundingBox(tileLocation);
+			Vector2 screenPosition = Game1.GlobalToLocal(
+				viewport: Game1.viewport,
+				globalPosition: new Vector2(
+					tileLocation.X * Game1.tileSize + (bounds.Width / 2),
+					(tileLocation.Y + this.Definition.TilesHigh) * Game1.tileSize));
 			spriteBatch.Draw(
-				texture: CustomTexture,
+				texture: CustomBush.BushTextures.First(tx => tx.Name == this.Definition.SourceTexture),
 				position: screenPosition,
-				sourceRectangle: SourceRectangle,
-				color: Color.White * AlphaField.GetValue(),
-				rotation: ShakeField.GetValue(),
+				sourceRectangle: this.SourceRectangle.Value,
+				color: Color.White * this.AlphaField.GetValue(),
+				rotation: this.ShakeField.GetValue(),
 				origin: new Vector2(
-					SourceRectangle.Width / 2,
-					SourceRectangle.Height),
+					this.SourceRectangle.Value.Width / 2,
+					this.SourceRectangle.Value.Height),
 				scale: Game1.pixelZoom,
-				effects: flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-				layerDepth: (this.getBoundingBox(tileLocation).Center.Y + 48) / 10000f - tileLocation.X / 1000000f);
+				effects: this.flipped.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+				layerDepth: ((bounds.Center.Y + ((this.Definition.TilesHigh * Game1.tileSize) - Game1.tileSize / Game1.pixelZoom)) / 10000f) - (tileLocation.X / 1000000f));
 		}
-		
+
+		/*
 		public override void drawInMenu(SpriteBatch spriteBatch, Vector2 positionOnScreen,
 			Vector2 tileLocation, float scale, float layerDepth)
 		{
@@ -416,119 +585,57 @@ namespace LoveOfCooking
 				effects: flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
 				layerDepth: layerDepth + (positionOnScreen.Y + 448f * scale - 1f) / 20000f);
 		}
-		
-		/* HarmonyPatch behaviours */
+		*/
 
-		public static bool InBloomBehaviour(CustomBush bush, string season, int dayOfMonth)
+		// HarmonyPatch behaviours 
+
+		public static bool InBloomBehaviour(CustomBush bush)
 		{
-			if (bush._variety.Value == (int)BushVariety.Nettle)
-				return false;
-			bool inSeason = dayOfMonth >= 22 && (!season.Equals("winter") || bush.greenhouseBush.Value);
-			return bush.IsMature && inSeason;
+			return bush.HasProduce;
 		}
 
 		public static int GetEffectiveSizeBehaviour(CustomBush bush)
 		{
-			return bush.EffectiveSize.Value;
+			return bush.Definition.EffectiveSize;
 		}
 
 		public static bool IsDestroyableBehaviour(CustomBush bush)
 		{
-			return true;
+			return bush.Definition.IsDestroyable;
 		}
 
 		public static void ShakeBehaviour(CustomBush bush, Vector2 tileLocation)
 		{
-			if (bush._variety.Value == (int)BushVariety.Redberry)
-			{
-				for (int i = 0; i < bush.HeldItemQuantity.Value; ++i)
-					Game1.createObjectDebris(bush.HeldItemId.Value, (int)tileLocation.X, (int)tileLocation.Y);
-			}
+			bush.currentLocation.localSound(bush.Definition.SoundWhenShaken);
+
+			bush.TossItems(isDestroyed: false);
+
+			// Shake actions
+			Events.InvokeOnBushShaken(bush: bush);
 		}
 
-		internal static void SpawnNettles(bool force = false)
+		internal static void FindBushesGlobally(string variety, bool remove)
 		{
-			foreach (string l in ModEntry.ItemDefinitions["NettlesLocations"])
+			IEnumerable<GameLocation> locations = variety == ModEntry.BushNameNettle
+				? ModEntry.ItemDefinitions["NettlesLocations"].Select(name => Game1.getLocationFromName(name))
+				: Game1.locations;
+			foreach (GameLocation location in locations)
 			{
-				if (!force && Game1.random.NextDouble() > float.Parse(ModEntry.ItemDefinitions["NettlesDailyChancePerLocation"][0]))
-				{
-					// Skip the location if we didn't succeed the roll to add nettles
-					Log.D($"Did not add nettles to {l}.",
-						ModEntry.Config.DebugMode);
-					continue;
-				}
-
-				// Spawn a random number of nettles between some upper and lower bounds, reduced by the number of nettles already in this location
-				GameLocation location = Game1.getLocationFromName(l);
-				int nettlesToAdd = Game1.random.Next(int.Parse(ModEntry.ItemDefinitions["NettlesAddedRange"][0]), int.Parse(ModEntry.ItemDefinitions["NettlesAddedRange"][1]));
-				int nettlesAlreadyInLocation = force ? 0 : location.Objects.Values.Count(o => o.Name.ToLower().EndsWith("nettles")); // location.largeTerrainFeatures.Count(ltf => ltf is CustomBush);
-				nettlesToAdd -= nettlesAlreadyInLocation;
-				int nettlesAdded = 0;
-
-				List<Vector2> shuffledWeedsTiles = location.Objects.Keys.Where(
-					tile => location.Objects.TryGetValue(tile, out StardewValley.Object o) && o.Name == "Weeds").ToList();
-				Utility.Shuffle(Game1.random, shuffledWeedsTiles);
-				foreach (Vector2 tile in shuffledWeedsTiles)
-				{
-					if (nettlesAdded >= nettlesToAdd)
-					{
-						// Move to the next location if this location's quota is met
-						break;
-					}
-					Vector2 nearbyTile = Utility.getRandomAdjacentOpenTile(tile, location);
-					if (nearbyTile == Vector2.Zero)
-					{
-						// Skip weeds without any free spaces to spawn nettles upon
-						continue;
-					}
-					// Spawn nettles around other weeds
-					CustomBush nettleBush = new CustomBush(tile: nearbyTile, location: location, variety: BushVariety.Nettle);
-					location.largeTerrainFeatures.Add(nettleBush);
-					++nettlesAdded;
-					Log.D($"Adding to {nearbyTile}...",
-						force || ModEntry.Config.DebugMode);
-				}
-
-				Log.D($"Added {nettlesAdded} nettles to {l}.",
-					force || ModEntry.Config.DebugMode);
-			}
-		}
-
-		internal static void TrySpawnNettles()
-		{
-			// Only master player should make changes to the world
-			if (Game1.MasterPlayer.UniqueMultiplayerID != Game1.player.UniqueMultiplayerID)
-				return;
-
-			// Attempt to place a wild nettle as forage around other weeds
-			bool spawnNettlesToday = Game1.currentSeason == "summer" || ((Game1.currentSeason == "spring" || Game1.currentSeason == "fall") && Game1.dayOfMonth % 3 == 1);
-			if (ModEntry.NettlesEnabled && spawnNettlesToday)
-			{
-				SpawnNettles();
-			}
-		}
-
-		internal static void FindNettlesGlobally(bool remove)
-		{
-			foreach (string l in ModEntry.ItemDefinitions["NettlesLocations"])
-			{
-				GameLocation location = Game1.getLocationFromName(l);
-				List<CustomBush> nettles = location.largeTerrainFeatures
+				List<CustomBush> bushes = location.largeTerrainFeatures
 					.OfType<CustomBush>()
-					.Where(cb => cb._variety.Value == (int)BushVariety.Nettle)
 					.ToList();
-				Log.D($"Found {nettles.Count} nettles in {location.Name}"
-					+ (nettles.Count > 0
-						? nettles.Aggregate("\n=> ",
-							(str, nb) => $"{str} ({nb.currentTileLocation.X},{nb.currentTileLocation.Y})")
-						: ""),
+				Log.D($"Found {bushes.Count} bushes in {location.Name} ({variety})"
+					+ (bushes.Any()
+						? bushes.Aggregate("\n=> ",
+							(str, nb) => $"{str} ({nb.tilePosition.Value.X},{nb.tilePosition.Value.Y})")
+						: string.Empty),
 					ModEntry.Config.DebugMode);
 				if (remove)
 				{
 					for (int i = location.largeTerrainFeatures.Count - 1; i >= 0; --i)
 					{
 						LargeTerrainFeature ltf = location.largeTerrainFeatures[i];
-						if (ltf is CustomBush customBush && customBush._variety.Value == (int)BushVariety.Nettle)
+						if (ltf is CustomBush customBush)
 						{
 							Log.D($"Removing from {ltf.currentTileLocation}...",
 								ModEntry.Config.DebugMode);
@@ -537,6 +644,18 @@ namespace LoveOfCooking
 					}
 				}
 			}
+		}
+
+		internal static void Reload()
+		{
+			CustomBush.BushDefinitions = ModEntry.Instance.Helper.Data.ReadJsonFile
+				<Dictionary<string, CustomBush.BushDefinition>>
+				(path: $"{AssetManager.LocalBushDataPath}.json");
+			CustomBush.BushTextures = CustomBush.BushDefinitions.Values
+				.Select(d => d.SourceTexture)
+				.Distinct()
+				.Select(assetKey => Game1.content.Load<Texture2D>(assetKey))
+				.ToList();
 		}
 	}
 }

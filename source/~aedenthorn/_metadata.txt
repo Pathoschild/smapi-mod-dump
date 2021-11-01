@@ -7,7 +7,9 @@ mods:
    Advanced Melee Framework
    Animated Parrot and Perch
    Another Jump Mod
+   Bed Tweaks
    Boss Creatures
+   Coin Collector
    Craftable Butterfly Hutches
    Craftable Terrarium
    Custom Chest Types
@@ -29,6 +31,7 @@ mods:
    Fire Breath
    Fishing Chests Expanded
    Flowing Mine Rocks
+   Free Love
    Friendly Divorce
    Fruit Tree Shaker
    Gem Isles
@@ -72,9 +75,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 4dcb5986cc05c34972751fee86d9047258899a62
+   commit 826255014705b24b7f6b0f80a5b8bb0b483e5e45
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sat Sep 18 14:02:48 2021 -0400
+   Date:   Sun Oct 31 12:22:13 2021 -0400
    
        etc
    

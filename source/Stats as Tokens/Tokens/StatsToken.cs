@@ -22,9 +22,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see https://www.gnu.org/licenses/.
 
-using StardewModdingAPI;
 using StardewValley;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -38,9 +36,11 @@ namespace StatsAsTokens
 		*********/
 
 		/// <summary>The game stats as of the last context update.</summary>
-		private readonly Dictionary<string, Stats> statsDict;
+		private readonly Dictionary<string, Stats> statsDict = new();
 		/// <summary>Array of public fields in the type StardewValley.Stats.</summary>
 		private readonly FieldInfo[] statFields;
+
+		private bool statsInitialized = false;
 
 		/*********
 		** Constructor
@@ -48,17 +48,6 @@ namespace StatsAsTokens
 
 		public StatsToken()
 		{
-			statsDict = new(StringComparer.OrdinalIgnoreCase)
-			{
-				[host] = new Stats(),
-				[loc] = new Stats()
-			};
-
-			foreach (KeyValuePair<string, Stats> pair in statsDict)
-			{
-				InitializeOtherStatFields(pair.Value);
-			}
-
 			statFields = typeof(Stats).GetFields();
 		}
 
@@ -83,15 +72,15 @@ namespace StatsAsTokens
 				}
 				else if (args[0].IndexOf('=') == args[0].Length - 1)
 				{
-					error += "Named argument 'player' not provided a value. Must be one of the following values: 'host', 'local'. ";
+					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
 				}
 				else
 				{
-					// accept hostplayer or host, localplayer or local
-					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().Replace("player", "");
-					if (!(playerType.Equals("host") || playerType.Equals("local")))
+					// accepts only hostPlayer or currentPlayer
+					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim();
+					if (!(playerType.Equals("hostPlayer") || playerType.Equals("local")))
 					{
-						error += "Named argument 'player' must be one of the following values: 'host', 'local'. ";
+						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
 					}
 				}
 
@@ -131,6 +120,18 @@ namespace StatsAsTokens
 
 			string pType;
 
+			// on the very first context update, need to initialize statsDict and any non-initialized stats
+			if (!statsInitialized)
+			{
+				Game1.player.stats = InitializeOtherStatFields(Game1.player.stats);
+
+				// it's fine if these resolve to the same player
+				statsDict[host] = Game1.MasterPlayer.stats;
+				statsDict[loc] = Game1.player.stats;
+
+				statsInitialized = true;
+			}
+
 			// check cached local player stats against Game1's local player stats
 			// only needs to happen if player is local and not master
 			if (!Game1.IsMasterGame)
@@ -150,7 +151,7 @@ namespace StatsAsTokens
 					else if (field.FieldType.Equals(typeof(SerializableDictionary<string, uint>)))
 					{
 						SerializableDictionary<string, uint> otherStats = (SerializableDictionary<string, uint>)field.GetValue(Game1.stats);
-						SerializableDictionary<string, uint> cachedOtherStats = statsDict[loc].stat_dictionary;
+						SerializableDictionary<string, uint> cachedOtherStats = statsDict[pType].stat_dictionary;
 
 						foreach (KeyValuePair<string, uint> pair in otherStats)
 						{
@@ -213,10 +214,10 @@ namespace StatsAsTokens
 
 			string[] args = input.Split('|');
 
-			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace("player", "").Replace(" ", "");
+			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 			string stat = args[1].Substring(args[1].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 
-			if (playerType.Equals("host"))
+			if (playerType.Equals("hostPlayer"))
 			{
 				bool found = TryGetField(stat, host, out string hostStat);
 
@@ -225,7 +226,7 @@ namespace StatsAsTokens
 					output.Add(hostStat);
 				}
 			}
-			else if (playerType.Equals("local"))
+			else if (playerType.Equals("currentPlayer"))
 			{
 				bool found = TryGetField(stat, loc, out string hostStat);
 
@@ -246,24 +247,42 @@ namespace StatsAsTokens
 		/// Initializes stat fields for internal stat dictionary. These stats are not fields in the <c>Stats</c> object and so do not show up normally until they have been incremented at least once.
 		/// </summary>
 		/// <param name="stats">The <c>Stats</c> object to initialize the internal stat dictionary of.</param>
-		private void InitializeOtherStatFields(Stats stats)
+		private Stats InitializeOtherStatFields(Stats stats)
 		{
-			stats.stat_dictionary = new SerializableDictionary<string, uint>()
+			List<string> otherStats = new()
 			{
-				["timesEnchanted"] = 0,
-				["beachFarmSpawns"] = 0,
-				["childrenTurnedToDoves"] = 0,
-				["boatRidesToIsland"] = 0,
-				["hardModeMonstersKilled"] = 0,
-				["trashCansChecked"] = 0
+				"timesEnchanted",
+				"beachFarmSpawns",
+				"childrenTurnedToDoves",
+				"boatRidesToIsland",
+				"hardModeMonstersKilled",
+				"trashCansChecked",
+				"ostrichEggsLayed",
+				"dinosaurEggsLayed",
+				"rabbitsFeetDropped",
+				"duckFeathersDropped",
+				"mayonnaiseMade",
+				"duckMayonnaiseMade",
+				"voidMayonnaiseMade",
+				"dinosaurMayonnaiseMade",
 			};
+
+			foreach (string stat in otherStats)
+			{
+				if (!stats.stat_dictionary.ContainsKey(stat))
+				{
+					stats.stat_dictionary[stat] = 0;
+				}
+			}
+
+			return stats;
 		}
 
 		/// <summary>
 		/// Attempts to find the specified stat field for the specified player type, and if located, passes the value out via <c>foundStat</c>.
 		/// </summary>
 		/// <param name="statField">The stat to look for</param>
-		/// <param name="playerType">The player type to check - host or local</param>
+		/// <param name="playerType">The player type to check - hostPlayer or currentPlayer</param>
 		/// <param name="foundStat">The string to pass the value to if located.</param>
 		/// <returns><c>True</c> if located, <c>False</c> otherwise.</returns>
 		private bool TryGetField(string statField, string playerType, out string foundStat)
@@ -282,6 +301,12 @@ namespace StatsAsTokens
 				{
 					found = true;
 					foundStat = field.GetValue(statsDict[playerType]).ToString();
+
+#if DEBUG
+					Globals.Monitor.Log($"Matched {statField} to {field.Name}");
+					Globals.Monitor.Log($"Expected value: {field.GetValue(Game1.stats)}");
+					Globals.Monitor.Log($"Actual value: {foundStat}");
+#endif
 				}
 			}
 
@@ -293,6 +318,12 @@ namespace StatsAsTokens
 					{
 						found = true;
 						foundStat = statsDict[playerType].stat_dictionary[key].ToString();
+
+#if DEBUG
+						Globals.Monitor.Log($"Matched {statField} to {key}");
+						Globals.Monitor.Log($"Expected value: {Game1.stats.stat_dictionary[key]}");
+						Globals.Monitor.Log($"Actual value: {foundStat}");
+#endif
 					}
 				}
 			}

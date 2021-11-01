@@ -103,6 +103,7 @@ namespace CookingSkill
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            I18n.Init(helper.Translation);
             Mod.Instance = this;
             Log.Monitor = this.Monitor;
 
@@ -112,7 +113,8 @@ namespace CookingSkill
 
             HarmonyPatcher.Apply(this,
                 new CraftingPagePatcher(),
-                new CraftingRecipePatcher()
+                new CraftingRecipePatcher(),
+                new ObjectPatcher()
             );
         }
 

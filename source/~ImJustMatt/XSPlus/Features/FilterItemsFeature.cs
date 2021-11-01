@@ -13,10 +13,12 @@ namespace XSPlus.Features
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Common.Helpers.ItemMatcher;
+    using Common.Services;
+    using CommonHarmony;
+    using CommonHarmony.Models;
+    using CommonHarmony.Services;
     using HarmonyLib;
-    using Models;
-    using Services;
-    using StardewModdingAPI.Events;
+    using StardewModdingAPI;
     using StardewModdingAPI.Utilities;
     using StardewValley;
     using StardewValley.Objects;
@@ -24,67 +26,110 @@ namespace XSPlus.Features
     /// <inheritdoc cref="FeatureWithParam{TParam}" />
     internal class FilterItemsFeature : FeatureWithParam<Dictionary<string, bool>>
     {
-        private readonly ItemGrabMenuChangedService _itemGrabMenuChangedService;
-        private readonly HighlightItemsService _highlightPlayerItemsService;
-        private readonly PerScreen<bool> _attached = new();
-        private readonly PerScreen<Chest> _chest = new();
-        private readonly PerScreen<Dictionary<string, bool>?> _filterItems = new();
-        private readonly PerScreen<ItemMatcher> _itemMatcher = new() { Value = new ItemMatcher(string.Empty, true) };
+        private static FilterItemsFeature Instance;
+        private readonly ItemMatcher _addItemMatcher = new(string.Empty, true);
+        private readonly PerScreen<ItemMatcher> _itemMatcher = new(() => new(string.Empty, true));
+        private readonly PerScreen<ItemGrabMenuEventArgs> _menu = new();
+        private HarmonyService _harmony;
+        private HighlightItemsService _highlightItems;
+        private ItemGrabMenuChangedService _itemGrabMenuChanged;
 
-        /// <summary>Initializes a new instance of the <see cref="FilterItemsFeature"/> class.</summary>
-        /// <param name="itemGrabMenuChangedService">Service to handle creation/invocation of ItemGrabMenuChanged event.</param>
-        /// <param name="highlightPlayerItemsService">Service to handle creation/invocation of HighlightPlayerItems delegates.</param>
-        public FilterItemsFeature(
-            ItemGrabMenuChangedService itemGrabMenuChangedService,
-            HighlightItemsService highlightPlayerItemsService)
-            : base("FilterItems")
+        private FilterItemsFeature(ServiceManager serviceManager)
+            : base("FilterItems", serviceManager)
         {
-            FilterItemsFeature.Instance = this;
-            this._itemGrabMenuChangedService = itemGrabMenuChangedService;
-            this._highlightPlayerItemsService = highlightPlayerItemsService;
+            FilterItemsFeature.Instance ??= this;
+
+            // Dependencies
+            this.AddDependency<ItemGrabMenuChangedService>(service => this._itemGrabMenuChanged = service as ItemGrabMenuChangedService);
+            this.AddDependency<HighlightItemsService>(service => this._highlightItems = service as HighlightItemsService);
+            this.AddDependency<HarmonyService>(
+                service =>
+                {
+                    // Init
+                    this._harmony = service as HarmonyService;
+
+                    // Patches
+                    this._harmony?.AddPatch(
+                        this.ServiceName,
+                        AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
+                        typeof(FilterItemsFeature),
+                        nameof(FilterItemsFeature.Chest_addItem_prefix));
+
+                    if (this.Helper.ModRegistry.IsLoaded("Pathochild.Automate"))
+                    {
+                        this._harmony?.AddPatch(
+                            this.ServiceName,
+                            new AssemblyPatch("Automate").Method("Pathoschild.Stardew.Automate.Framework.Storage.ChestContainer", "Store"),
+                            typeof(FilterItemsFeature),
+                            nameof(FilterItemsFeature.Automate_Store_prefix));
+                    }
+                });
         }
 
-        /// <summary>Gets the instance of <see cref="FilterItemsFeature"/>.</summary>
-        protected internal static FilterItemsFeature Instance { get; private set; } = null!;
-
-        /// <inheritdoc/>
-        public override void Activate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Activate()
         {
             // Events
-            this._itemGrabMenuChangedService.AddHandler(this.OnItemGrabMenuChangedEvent);
+            this._highlightItems.AddHandler(this.HighlightMethod);
+            this._itemGrabMenuChanged.AddHandler(this.OnItemGrabMenuChangedEvent);
 
             // Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
-                prefix: new HarmonyMethod(typeof(FilterItemsFeature), nameof(FilterItemsFeature.Chest_addItem_prefix)));
+            this._harmony.ApplyPatches(this.ServiceName);
         }
 
-        /// <inheritdoc/>
-        public override void Deactivate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Deactivate()
         {
             // Events
-            this._itemGrabMenuChangedService.RemoveHandler(this.OnItemGrabMenuChangedEvent);
+            this._itemGrabMenuChanged.RemoveHandler(this.OnItemGrabMenuChangedEvent);
+            this._highlightItems.RemoveHandler(this.HighlightMethod);
 
             // Patches
-            harmony.Unpatch(
-                original: AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
-                patch: AccessTools.Method(typeof(FilterItemsFeature), nameof(FilterItemsFeature.Chest_addItem_prefix)));
+            this._harmony.UnapplyPatches(this.ServiceName);
         }
 
-        [SuppressMessage("ReSharper", "SA1313", Justification = "Naming is determined by Harmony.")]
+        /// <inheritdoc />
+        internal override bool IsEnabledForItem(Item item)
+        {
+            return base.IsEnabledForItem(item) || item is Chest chest && chest.playerChest.Value && chest.modData.TryGetValue($"{XSPlus.ModPrefix}/FilterItems", out var filterItems) && !string.IsNullOrWhiteSpace(filterItems);
+        }
+
+        public bool HasFilterItems(Chest chest)
+        {
+            return this.IsEnabledForItem(chest);
+        }
+
+        public bool Matches(Chest chest, Item item, ItemMatcher itemMatcher = null)
+        {
+            if (!this.IsEnabledForItem(chest))
+            {
+                return true;
+            }
+
+            itemMatcher ??= this._addItemMatcher;
+
+            // Mod configured filter
+            if (this.TryGetValueForItem(chest, out var modFilterItems))
+            {
+                itemMatcher.SetSearch(modFilterItems);
+            }
+            else
+            {
+                itemMatcher.SetSearch(string.Empty);
+            }
+
+            // Player configured filter
+            itemMatcher.AddSearch(chest.GetFilterItems());
+
+            return itemMatcher.Matches(item);
+        }
+
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
         [SuppressMessage("ReSharper", "SuggestBaseTypeForParameter", Justification = "Type is determined by Harmony.")]
         [HarmonyPriority(Priority.High)]
         private static bool Chest_addItem_prefix(Chest __instance, ref Item __result, Item item)
         {
-            if (!FilterItemsFeature.Instance.TryGetValueForItem(__instance, out Dictionary<string, bool> filterItems))
-            {
-                return true;
-            }
-
-            var itemMatcher = new ItemMatcher(string.Empty, true);
-            itemMatcher.SetSearch(filterItems);
-            if (itemMatcher.Matches(item))
+            if (FilterItemsFeature.Instance.Matches(__instance, item))
             {
                 return true;
             }
@@ -93,39 +138,45 @@ namespace XSPlus.Features
             return false;
         }
 
+        [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
+        private static bool Automate_Store_prefix(Chest ___Chest, object stack)
+        {
+            return FilterItemsFeature.Instance.Matches(
+                ___Chest,
+                FilterItemsFeature.Instance.Helper.Reflection.GetProperty<Item>(stack, "Sample").GetValue());
+        }
+
         private void OnItemGrabMenuChangedEvent(object sender, ItemGrabMenuEventArgs e)
         {
             if (e.ItemGrabMenu is null || e.Chest is null || !this.IsEnabledForItem(e.Chest))
             {
-                this._highlightPlayerItemsService.RemoveHandler(this.HighlightMethod);
-                this._attached.Value = false;
-                this._filterItems.Value = null;
-                this._itemMatcher.Value.SetSearch(string.Empty);
+                this._menu.Value = null;
                 return;
             }
 
-            if (!this._attached.Value)
+            this._menu.Value = e;
+
+            // Mod configured filter
+            if (this.TryGetValueForItem(e.Chest, out var modFilterItems))
             {
-                this._highlightPlayerItemsService.AddHandler(this.HighlightMethod);
-                this._attached.Value = true;
+                this._itemMatcher.Value.SetSearch(modFilterItems);
+            }
+            else
+            {
+                this._itemMatcher.Value.SetSearch(string.Empty);
             }
 
-            if (!ReferenceEquals(this._chest.Value, e.Chest))
-            {
-                this._chest.Value = e.Chest;
-                if (this.TryGetValueForItem(e.Chest, out Dictionary<string, bool> filterItems))
-                {
-                    this._itemMatcher.Value.SetSearch(filterItems);
-                }
-                else
-                {
-                    this._itemMatcher.Value.SetSearch(string.Empty);
-                }
-            }
+            // Player configured filter
+            this._itemMatcher.Value.AddSearch(e.Chest.GetFilterItems());
         }
 
         private bool HighlightMethod(Item item)
         {
+            if (this._menu.Value is null || this._menu.Value.ScreenId != Context.ScreenId || !this.IsEnabledForItem(this._menu.Value.Chest))
+            {
+                return true;
+            }
+
             return this._itemMatcher.Value.Matches(item);
         }
     }

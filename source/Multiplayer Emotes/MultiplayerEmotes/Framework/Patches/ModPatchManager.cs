@@ -8,32 +8,28 @@
 **
 *************************************************/
 
-using Harmony;
-using StardewModdingAPI;
+using System;
 using System.Collections.Generic;
+using HarmonyLib;
+using StardewModdingAPI;
 
 namespace MultiplayerEmotes.Framework.Patches {
 
 	public class ModPatchManager {
 
-		public List<IClassPatch> PatchList { get; set; }
-		public static HarmonyInstance Harmony { get; set; }
+		public List<IClassPatch> PatchList { get; set; } = new List<IClassPatch>();
+		public static Harmony HarmonyInstance { get; set; }
 
 		public ModPatchManager(IModHelper helper) {
-			Harmony = HarmonyInstance.Create(helper.ModRegistry.ModID);
-			PatchList = new List<IClassPatch>();
+			HarmonyInstance = new Harmony(helper.ModRegistry.ModID);
 		}
 
 		public void ApplyPatch() {
-			foreach(IClassPatch patch in PatchList) {
-				patch.Register(Harmony);
-			}
+			this.PatchList.ForEach(patch => patch.Register(HarmonyInstance));
 		}
 
 		public void RemovePatch() {
-			foreach(IClassPatch patch in PatchList) {
-				patch.Remove(Harmony);
-			}
+			this.PatchList.ForEach(patch => patch.Remove(HarmonyInstance));
 		}
 
 	}

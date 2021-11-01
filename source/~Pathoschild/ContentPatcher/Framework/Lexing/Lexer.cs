@@ -219,7 +219,7 @@ namespace ContentPatcher.Framework.Lexing
             for (LinkedListNode<ILexToken> node = tokens.First; node != null; node = node.Next)
             {
                 // fetch info
-                if (!(node.Value is LexTokenLiteral current))
+                if (node.Value is not LexTokenLiteral current)
                     continue;
                 ILexToken previous = node.Previous?.Value;
                 ILexToken next = node.Next?.Value;
@@ -296,7 +296,7 @@ namespace ContentPatcher.Framework.Lexing
             if (input.Any())
             {
                 var next = input.Peek().Type;
-                if (next == LexBitType.PositionalInputArgSeparator || next == LexBitType.NamedInputArgSeparator)
+                if (next is LexBitType.PositionalInputArgSeparator or LexBitType.NamedInputArgSeparator)
                 {
                     if (next == LexBitType.PositionalInputArgSeparator)
                         input.Dequeue();

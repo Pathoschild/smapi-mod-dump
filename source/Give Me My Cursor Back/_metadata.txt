@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DecidedlyHuman/GiveMeMyCursorBack
+   Git: https://github.com/DecidedlyHuman/GiveMeMyCursorBack.git
+
+mods:
+   Give Me My Cursor Back
+
+latest commit:
+   commit 2c021539cba2b7aa52708529f7e39190e01a493b
+   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
+   Date:   Wed Oct 27 21:43:46 2021 +0100
+   
+       Oops. Added Nexus Mods update key.
+   

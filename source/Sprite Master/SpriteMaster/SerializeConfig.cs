@@ -21,6 +21,16 @@ namespace SpriteMaster {
 	internal static class SerializeConfig {
 		private const BindingFlags StaticFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
+		private static void AddTrailingTrivia(this SyntaxNode node, TokenKind kind, string text) {
+			node.TrailingTrivia ??= new List<SyntaxTrivia>();
+			node.TrailingTrivia.Add(new SyntaxTrivia(kind, text));
+		}
+
+		private static void AddLeadingTrivia(this SyntaxNode node, TokenKind kind, string text) {
+			node.LeadingTrivia ??= new List<SyntaxTrivia>();
+			node.LeadingTrivia.Add(new SyntaxTrivia(kind, text));
+		}
+
 		private static ulong HashClass (Type type) {
 			ulong hash = default;
 
@@ -181,7 +191,7 @@ namespace SpriteMaster {
 											var configValue = ((StringValueSyntax)value.Value).Value.Trim();
 
 											bool found = false;
-											foreach (int index in 0..enumNames.Length) {
+											foreach (int index in 0.RangeTo(enumNames.Length)) {
 												if (enumNames[index] == configValue) {
 													field.SetValue(null, values.GetValue(index));
 													found = true;
@@ -279,6 +289,15 @@ namespace SpriteMaster {
 						else if (fieldValue.GetType().IsEnum) {
 							value = new StringValueSyntax(fieldValue.GetType().GetEnumName(fieldValue));
 						}
+
+						if (value is ArraySyntax valueSyntax) {
+							foreach (var item in valueSyntax.Items) {
+								item.AddLeadingTrivia(TokenKind.NewLine, "\n\t");
+							}
+							if (valueSyntax.Items.ChildrenCount != 0) {
+								valueSyntax.CloseBracket.AddLeadingTrivia(TokenKind.NewLine, "\n");
+							}
+						}
 						break;
 				}
 
@@ -290,14 +309,17 @@ namespace SpriteMaster {
 					value
 				);
 
-				//if (field.GetAttribute<Config.CommentAttribute>(out var attribute)) {
-				//keyValue.GetChildren(Math.Max(0, keyValue.ChildrenCount - 2)).AddComment(attribute.Message);
-				//}
+				if (field.GetAttribute<Config.CommentAttribute>(out var attribute)) {
+					keyValue.AddLeadingTrivia(TokenKind.Comment, $"# {attribute.Message}\n");
+				}
 
 				tableItems.Add(keyValue);
 			}
 
 			if (table.Items.ChildrenCount != 0) {
+				if (document.Tables.ChildrenCount != 0) {
+					table.AddLeadingTrivia(TokenKind.NewLine, "\n");
+				}
 				document.Tables.Add(table);
 			}
 

@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_Logger", "SDV_Logger.shproj", "{AD53B60A-7E08-462A-B29D-DDB7A6F74B85}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SDV_Logger.projitems*{ad53b60a-7e08-462a-b29d-ddb7a6f74b85}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EEA411F2-4280-4109-AF10-1ED64B993ACA}
+	EndGlobalSection
+EndGlobal

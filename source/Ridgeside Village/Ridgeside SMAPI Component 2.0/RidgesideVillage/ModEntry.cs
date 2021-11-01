@@ -29,6 +29,8 @@ namespace RidgesideVillage
         private CustomCPTokens CustomCPTokens;
         private Patcher Patcher;
 
+        private SpiritShrine SpiritShrine;
+
         public override void Entry(IModHelper helper)
         {
             ModMonitor = Monitor;
@@ -38,21 +40,26 @@ namespace RidgesideVillage
             CustomCPTokens = new CustomCPTokens(this);
             Patcher = new Patcher(this);
 
+            Patcher.PerformPatching();
+
             HotelMenu.Initialize(this);
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
 
             Minecarts.Initialize(this);
+            SpiritRealm.Initialize(this);
 
             SpecialOrders.Initialize(this);
 
             IanShop.Initialize(this);
 
+            Elves.Initialize(this);
+
             Greenhouses.Initialize(this);
 
             PaulaClinic.Initialize(this);
-
+            Offering.OfferingTileAction.Initialize(this);
             //not done (yet?)
             //new CliffBackground();
 
@@ -93,7 +100,7 @@ namespace RidgesideVillage
                 return;
             }
             GameLocation location = Game1.getLocationFromName(arg2[0]);
-            if(location != null)
+            if (location != null)
             {
                 foreach(var key in location.modData.Keys)
                 {
@@ -105,13 +112,13 @@ namespace RidgesideVillage
 
         private void OnGameLaunched(object sender, EventArgs e)
         {
-            TileActionHandler.Initialize(this);
+            TileActionHandler.Initialize(Helper);
             ImageMenu.Setup(Helper);
             MapMenu.Setup(Helper);
             TrashCans.Setup(Helper);
             RSVWorldMap.Setup(Helper);
-            //var mapData = new MapData();
-            //Helper.Data.WriteJsonFile("MapData.json", mapData);
+            ExternalAPIs.Initialize(Helper);
+
 
 
             Config = Helper.ReadConfig<ModConfig>();
@@ -121,13 +128,31 @@ namespace RidgesideVillage
                 Log.Error("JSON Assets is not loaded! This mod *requires* JSON Assets!");
                 return;
             }
-            Patcher.PerformPatching();
 
             // Custom CP Token Set-up
             CustomCPTokens.RegisterTokens();
 
+            Helper.ConsoleCommands.Add("RSV_reset_pedestals", "", this.ResetPedestals);
+            Helper.ConsoleCommands.Add("RSV_open_portal", "", this.OpenPortal);
+
             // Generic Mod Config Menu setup
             //ConfigMenu.RegisterMenu();
+        }
+
+        private void OpenPortal(string arg1, string[] arg2)
+        {
+            if (Context.IsWorldReady && this.SpiritShrine != null)
+            {
+                this.SpiritShrine.OpenPortal(arg1, arg2);
+            }
+        }
+
+        private void ResetPedestals(string arg1, string[] arg2)
+        {
+            if (Context.IsWorldReady && this.SpiritShrine != null)
+            {
+                this.SpiritShrine.ResetPedestals(arg1, arg2);
+            }
         }
 
         private void OnSaveLoaded(object sender, EventArgs ex)
@@ -141,6 +166,9 @@ namespace RidgesideVillage
                 Log.Debug($"Failed to load config settings. Will use default settings instead. Error: {e}");
                 Config = new ModConfig();
             }
+
+
+            SpiritShrine = new SpiritShrine(this);
 
 
             //mark greenhouses as greenhouses, so trees can be planted

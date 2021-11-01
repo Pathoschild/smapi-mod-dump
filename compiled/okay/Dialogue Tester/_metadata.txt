@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9887
+IDs: DecidedlyHuman.DialogueTester
+update keys: Nexus:9887, GitHub:DecidedlyHuman/DialogueTester

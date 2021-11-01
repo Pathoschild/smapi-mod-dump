@@ -8,12 +8,11 @@
 **
 *************************************************/
 
+using System;
+using System.Reflection;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 
@@ -24,8 +23,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal CraftingRecipeCtorPatch()
 		{
-			Original = typeof(CraftingRecipe).Constructor(new[] { typeof(string), typeof(bool) });
-			Postfix = new HarmonyMethod(GetType(), nameof(CraftingRecipeCtorPostfix));
+			Original = typeof(CraftingRecipe).Constructor(new[] {typeof(string), typeof(bool)});
+			Postfix = new(GetType(), nameof(CraftingRecipeCtorPostfix));
 		}
 
 		#region harmony patches
@@ -37,39 +36,35 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			try
 			{
 				if (__instance.name == "Tapper" && Game1.player.HasProfession("Tapper"))
-				{
-					__instance.recipeList = new Dictionary<int, int>
+					__instance.recipeList = new()
 					{
-						{ 388, 25 },	// wood
-						{ 334, 1 }		// copper bar
+						{388, 25}, // wood
+						{334, 1} // copper bar
 					};
-				}
 				else if (__instance.name.Contains("Bomb") && Game1.player.HasProfession("Blaster"))
-				{
 					__instance.recipeList = __instance.name switch
 					{
-						"Cherry Bomb" => new Dictionary<int, int>
+						"Cherry Bomb" => new()
 						{
-							{ 378, 2 },	// copper ore
-							{ 382, 1 }	// coal
+							{378, 2}, // copper ore
+							{382, 1} // coal
 						},
-						"Bomb" => new Dictionary<int, int>
+						"Bomb" => new()
 						{
-							{ 380, 2 },	// iron ore
-							{ 382, 1 }	// coal
+							{380, 2}, // iron ore
+							{382, 1} // coal
 						},
-						"Mega Bomb" => new Dictionary<int, int>
+						"Mega Bomb" => new()
 						{
-							{ 384, 2 },	// gold ore
-							{ 382, 1 }	// coal
+							{384, 2}, // gold ore
+							{382, 1} // coal
 						},
 						_ => __instance.recipeList
 					};
-				}
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

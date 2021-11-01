@@ -129,28 +129,6 @@
 	"world.fisherman.talk_2": "川のトロールを見た事はあるか？へへへ…$b#あー、おとぎ話をするには年を取りすぎたな。",
 	"world.fisherman.talk_3": "桟橋に乗り付けてる商人らのおかげで今日の釣果はさっぱりだよ…",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "キッチン",
-	"world.community_centre.reward": "調理器具",
-	"world.community_centre.bundle.1": "パン屋",
-	"world.community_centre.bundle.2": "ダイナー",
-	"world.community_centre.bundle.3": "ピクニック",
-	"world.community_centre.newjunimoline": "感謝の気持ちとして…。お片付けをしておきます。",
-
-	// Notifications strings
-	"notification.icon.inspect": "Love of Cookingからの通知",
-	"notification.dismiss.inspect": "通知を却下する",
-	"notification.empty.inspect": "未読の通知はありません",
-	"notification.bundlemultiplayerwarning.inspect": "コミュニティセンターのキッチンバンドルを無効にしました",
-	"notification.bundlemultiplayerwarning.message": "マルチプレイヤーゲームでの問題を防ぐために、新しいコミュニティセンターバンドルは当面の間、小屋が設置されているセーブデータでは無効になっています！ \n\nマルチプレイヤーのホストになっている場合はキッチンバンドルを無効にしておく必要が有ります。\n\nシングルプレイヤーで遊んでいる場合は「OK」ボタンを押して保存したデータを読み込む事ができます。\n\n\n\n保存されているキッチンバンドルのデータを読み込みますか？",
-	"notification.cabinbuiltwarning.inspect": "新しいプレイヤーが参加する前にセーブをリロードします",
-	"notification.cabinbuiltwarning.message": "マルチプレイヤーゲームでの問題を防ぐために、新しいコミュニティセンターバンドルは当面の間、小屋が設置されているセーブデータでは無効になっています！\n\nマルチプレイヤーのホストになっている場合は、ベッドで寝て一日を終えた後、セーブデータを再読み込みしてから新しいプレイヤーを待ってください。\n\nキッチンバンドルの進行状況は保存された後に現在の状況から除外され、マルチプレイに安全に参加できるようになります。 新しいバンドルは引き続きシングルプレイゲームでお楽しみください！",
-	"menu.yes_option": "はい",
-	"menu.no_option": "いいえ",
-	"menu.accept_option": "決定",
-	"menu.decline_option": "辞退する",
-	"menu.cancel_option": "もどる",
-
 	// Object names
 
 	// recipes

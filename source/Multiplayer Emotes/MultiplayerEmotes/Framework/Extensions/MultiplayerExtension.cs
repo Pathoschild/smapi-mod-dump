@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +23,7 @@ namespace MultiplayerEmotes.Extensions {
 
 		public static void BroadcastEmote(this Multiplayer multiplayer, int emoteIndex, Character character) {
 
-			if (!Game1.IsMultiplayer) {
+			if (!Game1.IsMultiplayer && !Context.IsSplitScreen) {
 				return;
 			}
 
@@ -54,29 +53,29 @@ namespace MultiplayerEmotes.Extensions {
 #if DEBUG
 		public static void TestFunc(string name, bool mustBeVillager = false) {
 
-			if(Game1.currentLocation != null) {
+			if (Game1.currentLocation != null) {
 				ModEntry.ModMonitor.Log($"- Loop1");
-				foreach(NPC character in (IEnumerable<NPC>)Game1.currentLocation.getCharacters()) {
+				foreach (NPC character in (IEnumerable<NPC>)Game1.currentLocation.getCharacters()) {
 					ModEntry.ModMonitor.Log($"Character: {character.Name}. IsVillager: {character.isVillager()}");
-					if(character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
+					if (character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
 						ModEntry.ModMonitor.Log($"### Found Character: {character}");
 				}
 			}
 			ModEntry.ModMonitor.Log($"- Loop2");
-			for(int index = 0; index < Game1.locations.Count; ++index) {
-				foreach(NPC character in (IEnumerable<NPC>)Game1.locations[index].getCharacters()) {
+			for (int index = 0; index < Game1.locations.Count; ++index) {
+				foreach (NPC character in (IEnumerable<NPC>)Game1.locations[index].getCharacters()) {
 					ModEntry.ModMonitor.Log($"Character: {character.Name}. IsVillager: {character.isVillager()}");
-					if(character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
+					if (character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
 						ModEntry.ModMonitor.Log($"### Found Character: {character.Name}");
 				}
 			}
-			if(Game1.getFarm() != null) {
+			if (Game1.getFarm() != null) {
 				ModEntry.ModMonitor.Log($"- Loop3");
-				foreach(Building building in Game1.getFarm().buildings) {
-					if(building.indoors.Value != null) {
-						foreach(NPC character in building.indoors.Value.characters) {
+				foreach (Building building in Game1.getFarm().buildings) {
+					if (building.indoors.Value != null) {
+						foreach (NPC character in building.indoors.Value.characters) {
 							ModEntry.ModMonitor.Log($"Character: {character.Name}. IsVillager: {character.isVillager()}");
-							if(character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
+							if (character.Name.Equals(name) && (!mustBeVillager || character.isVillager()))
 								ModEntry.ModMonitor.Log($"### Found Character: {character.Name}");
 						}
 					}
@@ -87,7 +86,7 @@ namespace MultiplayerEmotes.Extensions {
 
 		[Obsolete("This method removal is planned. Is not longer in use.", true)]
 		public static void ReceiveEmoteBroadcast(this Multiplayer multiplayer, IncomingMessage msg) {
-			if(msg.Data.Length > 0) {
+			if (msg.Data.Length > 0) {
 				int emoteIndex = msg.Reader.ReadInt32();
 				msg.SourceFarmer.IsEmoting = false;
 				msg.SourceFarmer.doEmote(emoteIndex);
@@ -101,14 +100,14 @@ namespace MultiplayerEmotes.Extensions {
 
 		[Obsolete("This method removal is planned. Is not longer in use.", true)]
 		public static void ReceiveCharacterEmoteBroadcast(this Multiplayer multiplayer, IncomingMessage msg) {
-			if(Context.IsPlayerFree && msg.Data.Length > 0) {
+			if (Context.IsPlayerFree && msg.Data.Length > 0) {
 
 				int emoteIndex = msg.Reader.ReadInt32();
 				string characterId = msg.Reader.ReadString();
 
 				Character sourceCharacter = null;
 
-				if(long.TryParse(characterId, out long id)) {
+				if (long.TryParse(characterId, out long id)) {
 					sourceCharacter = (Game1.currentLocation as AnimalHouse).animals.Values.FirstOrDefault(x => x.myID.Value == id);
 				} else {
 					sourceCharacter = Game1.getCharacterFromName(characterId);
@@ -119,7 +118,7 @@ namespace MultiplayerEmotes.Extensions {
 				ModEntry.ModMonitor.Log($"Received character emote broadcast. (Name: \"{sourceCharacter.Name}\", Emote: {emoteIndex})");
 #endif
 
-				if(sourceCharacter != null && !sourceCharacter.IsEmoting) {
+				if (sourceCharacter != null && !sourceCharacter.IsEmoting) {
 					sourceCharacter.doEmote(emoteIndex, true);
 				}
 

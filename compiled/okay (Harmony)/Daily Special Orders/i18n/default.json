@@ -1,10 +1,12 @@
 {
-    "Immediate.Refresh" : "Immediate Refresh",
+    "Special.Order.Board": "Special Order Board",
+    "Qi.Board":  "Qi's Board",
+    "Immediate.Refresh": "Immediate Refresh",
     "Immediate.Paragraph": "Immediately refresh Special Orders after picking one. (Requires reopening of the board)",
-    "Refresh.on.Tuesday" : "Refresh on Tuesday",
-    "Refresh.on.Wednesday" : "Refresh on Wednesday",
-    "Refresh.on.Thursday" : "Refresh on Thursday",
-    "Refresh.on.Friday" : "Refresh on Friday",
-    "Refresh.on.Saturday" : "Refresh on Saturday",
-    "Refresh.on.Sunday" : "Refresh on Sunday",
+    "Refresh.on.Tuesday": "Refresh on Tuesday",
+    "Refresh.on.Wednesday": "Refresh on Wednesday",
+    "Refresh.on.Thursday": "Refresh on Thursday",
+    "Refresh.on.Friday": "Refresh on Friday",
+    "Refresh.on.Saturday": "Refresh on Saturday",
+    "Refresh.on.Sunday": "Refresh on Sunday"
 }

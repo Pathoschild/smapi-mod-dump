@@ -17,3 +17,6 @@ csharp_style_unused_value_expression_statement_preference = discard_variable:sil
 
 # IDE0047: Remove unnecessary parentheses
 dotnet_diagnostic.IDE0047.severity = silent
+
+# CA2211: Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = none

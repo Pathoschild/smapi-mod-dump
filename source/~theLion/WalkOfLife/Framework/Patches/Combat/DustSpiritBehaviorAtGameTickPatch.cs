@@ -23,7 +23,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal DustSpiritBehaviorAtGameTickPatch()
 		{
 			Original = typeof(DustSpirit).MethodNamed(nameof(DustSpirit.behaviorAtGameTick));
-			Postfix = new HarmonyMethod(GetType(), nameof(DustSpiritBehaviorAtGameTickPostfix));
+			Postfix = new(GetType(), nameof(DustSpiritBehaviorAtGameTickPostfix));
 		}
 
 		#region harmony patches
@@ -34,12 +34,13 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				if (!__instance.Player.IsLocalPlayer || !ModEntry.IsSuperModeActive || ModEntry.SuperModeIndex != Util.Professions.IndexOf("Poacher")) return;
+				if (!__instance.Player.IsLocalPlayer || !ModEntry.IsSuperModeActive ||
+					ModEntry.SuperModeIndex != Util.Professions.IndexOf("Poacher")) return;
 				___seenFarmer = false;
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

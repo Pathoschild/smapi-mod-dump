@@ -42,7 +42,10 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             harmony.Patch(AccessTools.Method(_object, nameof(Object.draw), new[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.drawPlacementBounds), new[] { typeof(SpriteBatch), typeof(GameLocation) }), prefix: new HarmonyMethod(GetType(), nameof(DrawPlacementBoundsPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.DayUpdate), new[] { typeof(GameLocation) }), postfix: new HarmonyMethod(GetType(), nameof(DayUpdatePostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Object.rot), null), postfix: new HarmonyMethod(GetType(), nameof(RotPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Object.placementAction), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), postfix: new HarmonyMethod(GetType(), nameof(PlacementActionPostfix)));
+
+            harmony.Patch(AccessTools.Constructor(_object, new[] { typeof(Vector2), typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(ObjectPostfix)));
 
             if (PatchTemplate.IsDGAUsed())
             {
@@ -163,13 +166,12 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     if ((int)__instance.parentSheetIndex == 590)
                     {
-                        Texture2D mouseCursors = Game1.mouseCursors;
                         Vector2 position2 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + 32 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), y * 64 + 32 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0)));
-                        Rectangle? sourceRectangle = new Rectangle(368 + ((Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 1200.0 <= 400.0) ? ((int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 400.0 / 100.0) * 16) : 0), 32, 16, 16);
                         Color color = Color.White * alpha;
                         Vector2 origin = new Vector2(8f, 8f);
 
-                        spriteBatch.Draw(mouseCursors, position2, sourceRectangle, color, 0f, origin, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.getBoundingBox(new Vector2(x, y)).Top : __instance.getBoundingBox(new Vector2(x, y)).Bottom) / 10000f);
+                        int artifactOffset = ((Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 1200.0 <= 400.0) ? ((int)(Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 400.0 / 100.0) * 16) : 0);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), position2, new Rectangle(artifactOffset, textureOffset, 16, 16), color, 0f, origin, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.getBoundingBox(new Vector2(x, y)).Top : __instance.getBoundingBox(new Vector2(x, y)).Bottom) / 10000f);
                         return false;
                     }
                     if ((int)__instance.fragility != 2)
@@ -177,9 +179,14 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                         spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + 32, y * 64 + 51 + 4)), Game1.shadowTexture.Bounds, Color.White * alpha, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, (float)__instance.getBoundingBox(new Vector2(x, y)).Bottom / 15000f);
                     }
 
-                    Vector2 position3 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + 32 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), y * 64 + 32 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0)));
                     Color color2 = Color.White * alpha;
                     Vector2 origin2 = new Vector2(8f, 8f);
+                    Vector2 position3 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + 32 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), y * 64 + 32 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0)));
+                    if (__instance.ParentSheetIndex == 746)
+                    {
+                        origin2 = Vector2.Zero;
+                        position3 = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+                    }
 
                     spriteBatch.Draw(textureModel.GetTexture(textureVariation), position3, new Rectangle(xTileOffset, textureOffset, textureModel.TextureWidth, textureModel.TextureHeight), color2, 0f, origin2, (__instance.scale.Y > 1f) ? __instance.getScale().Y : 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.isPassable() ? __instance.getBoundingBox(new Vector2(x, y)).Top : __instance.getBoundingBox(new Vector2(x, y)).Bottom) / 10000f);
                     if (__instance.heldObject.Value != null && __instance.IsSprinkler())
@@ -246,6 +253,14 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     __instance.modData["AlternativeTextureSheetId"] = __instance.ParentSheetIndex.ToString();
                 }
+            }
+        }
+
+        internal static void RotPostfix(Object __instance)
+        {
+            if (__instance.modData.ContainsKey("AlternativeTextureName"))
+            {
+                __instance.modData["AlternativeTextureVariation"] = "-1";
             }
         }
 
@@ -317,6 +332,40 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             }
 
             AssignDefaultModData(placedObject, instanceSeasonName, true, placedObject.bigCraftable);
+        }
+
+        private static void ObjectPostfix(Object __instance, Vector2 tileLocation, int parentSheetIndex, int initialStack)
+        {
+            // Handle only artifact spots
+            if (__instance.parentSheetIndex != 590)
+            {
+                return;
+            }
+
+            var instanceName = $"{AlternativeTextureModel.TextureType.Craftable}_{GetObjectName(__instance)}";
+            var instanceSeasonName = $"{instanceName}_{Game1.currentSeason}";
+
+            if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName) && AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
+            {
+                var result = Game1.random.Next(2) > 0 ? AssignModData(__instance, instanceSeasonName, true, __instance.bigCraftable) : AssignModData(__instance, instanceName, false, __instance.bigCraftable);
+                return;
+            }
+            else
+            {
+                if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceName))
+                {
+                    AssignModData(__instance, instanceName, false, __instance.bigCraftable);
+                    return;
+                }
+
+                if (AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(instanceSeasonName))
+                {
+                    AssignModData(__instance, instanceSeasonName, true, __instance.bigCraftable);
+                    return;
+                }
+            }
+
+            AssignDefaultModData(__instance, instanceSeasonName, true, __instance.bigCraftable);
         }
     }
 }

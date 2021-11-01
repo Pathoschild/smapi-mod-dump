@@ -112,7 +112,7 @@ The `content.json` file has four main fields:
 The Content Patcher version the content pack is designed for (ignoring the third number in the
 version), to enable backwards compatibility.
 
-**You should use the latest format version (currently `1.23.0`), and update it when updating the
+**You should use the latest format version (currently `1.24.0`), and update it when updating the
 content pack.** This enables the latest features, avoids undocumented obsolete behavior, and
 reduces startup time. When updating an older content pack, see the [migration
 guide](author-migration-guide.md) in case any changes are needed.
@@ -155,7 +155,7 @@ You can list any number of patches (surrounded by `{` and `}` in the `Changes` f
 few sections for more info about the format. For example:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "Load",
@@ -286,7 +286,7 @@ Required fields: `FromFile`.
 For example, this replaces the dinosaur sprite with your own image:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "Load",
@@ -317,7 +317,7 @@ Required fields: `FromFile`.
 For example, this changes one object sprite:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditImage",
@@ -369,7 +369,7 @@ description fields for an existing entry (item #70):
 
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -392,7 +392,7 @@ You can also delete entries entirely by setting their value to `null`. For examp
 used to change event conditions:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -418,7 +418,7 @@ structures instead of strings.
 For example, this renames a movie to _The Brave Little Pikmin_ and adds a new movie:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -476,7 +476,7 @@ Here's an example showing all possible reorder options. (If you specify a `Befor
 that doesn't match any entry, a warning will be shown.)
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -613,7 +613,7 @@ Here's how that would be merged with each patch mode (black areas are the empty 
 For example, this replaces the town square with the one in another map:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditMap",
@@ -699,7 +699,7 @@ For example, this changes the `Outdoors` tile for the farm cave and adds a warp 
 [map documentation](https://stardewvalleywiki.com/Modding:Maps) for the warp syntax):
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditMap",
@@ -765,7 +765,7 @@ field | purpose
 For example, this extends the farm path one extra tile to the shipping bin:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditMap",
@@ -786,7 +786,7 @@ You can use tokens in all of the fields. For example, this adds a warp in front 
 that leads to a different location each day:
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditMap",
@@ -861,7 +861,7 @@ In the simplest case, you can use this to organize your patches into subfiles:
 
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "Include",
@@ -879,7 +879,7 @@ You can combine this with tokens and conditions to load files dynamically:
 
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "Include",
@@ -924,7 +924,7 @@ Here's how you'd do that:
 
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
 
    "CustomLocations": [
       // add the in-game location
@@ -1013,7 +1013,7 @@ For example:
 
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "CustomLocations": [
       {
          "Name": "Custom_ExampleMod_AbigailCloset",
@@ -1062,7 +1062,7 @@ in any Content Patcher field that allows tokens:
 
 ```js
 {
-   "Format": "1.23.0",
+   "Format": "1.24.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1347,11 +1347,13 @@ Example Content Pack:
       TerrainFeatures/tree_palm | edited image
 ```
 
-You can also optionally specify one or more content pack IDs, in which case it'll only show data
-for those content packs:
-```
-> patch summary "LemonEx.HobbitHouse" "Another.Content.Pack"
-```
+You can specify these arguments in any order (e.g. `patch summary "LemonEx.HobbitHouse" "Another.Content.Pack" full`):
+
+argument            | effect
+:------------------ | :-----
+`"content pack ID"` | One or more content pack IDs for which to show data. If omitted, all content packs will be shown.
+`full`              | Don't truncate very long token values.
+`unsorted`          | Don't sort the values for display. This is mainly useful for checking the real order for `valueAt`.
 
 #### patch update
 `patch update` immediately updates Content Patcher's condition context and rechecks all patches.

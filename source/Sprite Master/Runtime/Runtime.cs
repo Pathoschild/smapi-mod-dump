@@ -13,10 +13,17 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace SpriteMaster {
 	public static class Runtime {
+		public static class MethodImpl {
+			public const MethodImplOptions Optimize = MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization;
+		}
+
 		[Pure]
 		private static string ArgVToString(string[] args) {
 			if (args.Length == 0) {
@@ -105,19 +112,73 @@ namespace SpriteMaster {
 			}
 		}
 
+		private static readonly (GameFrameworkType Framework, string Prefix)[] GameFrameworkPairs = {
+			( GameFrameworkType.MonoGame, "MonoGame.Framework" ), // this is first as Mono aliases the XNA frameworks.
+			( GameFrameworkType.XNA, "Microsoft.XNA.Framework" )
+		};
+
 		static Runtime() {
 			// Figure out the executing platform
 			Platform = Environment.OSVersion.Platform switch
 			{
 				PlatformID.Win32NT => PlatformType.Windows,
 				PlatformID.Unix => GetUnixType(),
+				PlatformID.MacOSX => GetUnixType(),
 				_ => throw new ApplicationException($"Unknown Platform: {Environment.OSVersion.Platform}"),
 			};
-			Framework = Platform switch
-			{
-				PlatformType.Windows => FrameworkType.DotNET,
-				_ => FrameworkType.Mono,
-			};
+
+			// Check for Mono
+			if (Type.GetType("Mono.Runtime") != null) {
+				Framework = FrameworkType.Mono;
+			}
+			else {
+				// Otherwise, determine which dotNET we're on.
+				var runtimeVersion = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+				switch (true) {
+					case var _ when runtimeVersion.StartsWith(".NET Framework"):
+						Framework = FrameworkType.DotNETFramework;
+						break;
+					default:
+						Framework = FrameworkType.DotNET;
+						break;
+				}
+			}
+
+			// Determine the game framework.
+			// Set a base default based on the platform and bits
+			GameFramework = (!IsWindows || Bits == 64) ? GameFrameworkType.MonoGame : GameFrameworkType.XNA;
+			foreach (var frameworkPair in GameFrameworkPairs) {
+				var exists = AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name.StartsWith(frameworkPair.Prefix));
+				if (exists) {
+					GameFramework = frameworkPair.Framework;
+					break;
+				}
+			}
+
+			// Determine the renderer
+			// https://community.monogame.net/t/solved-how-to-determine-if-the-app-is-using-desktop-gl-or-dx/10494/2
+			if (GameFramework == GameFrameworkType.XNA) {
+				// XNA is built upon D3D9
+				Renderer = RendererType.D3D9;
+			}
+			else {
+				try {
+					var gameAssembly = AppDomain.CurrentDomain.GetAssemblies().Single(assembly => assembly.GetName().Name == "MonoGame.Framework");
+					var shaderType = gameAssembly.GetType("Microsoft.Xna.Framework.Graphics.Shader");
+					var profileProperty = shaderType.GetProperty("Profile");
+					var profile = (int)profileProperty.GetValue(null);
+					Renderer = profile switch {
+						0 => RendererType.OpenGL,
+						1 => RendererType.D3D11,
+						_ => throw new ApplicationException($"Unknown Shader Profile: {profile}")
+					};
+				}
+				catch {
+					// Uh, I guess default to D3D9?
+					// It will never be 'right', but it will probably be 'safe'
+					Renderer = RendererType.D3D9;
+				}
+			}
 
 			try {
 				FullSystem = Platform switch
@@ -144,15 +205,30 @@ namespace SpriteMaster {
 
 		public enum FrameworkType {
 			// Windows uses .NET
+			DotNETFramework,
+			// Newer SDV uses .NET 5
 			DotNET,
 			// Everything else uses Mono
 			Mono
+		}
+
+		public enum GameFrameworkType {
+			XNA,
+			MonoGame
+		}
+
+		public enum RendererType {
+			OpenGL,
+			D3D9,
+			D3D11
 		}
 
 		[ImmutableObject(true)]
 		public static readonly string FullSystem;
 
 		public static readonly FrameworkType Framework;
+		public static readonly GameFrameworkType GameFramework;
+		public static readonly RendererType Renderer;
 		public static readonly PlatformType Platform;
 		public static readonly int Bits = IntPtr.Size * 8;
 
@@ -162,8 +238,12 @@ namespace SpriteMaster {
 		public static bool IsBSD => Platform == PlatformType.BSD;
 		public static bool IsMacintosh => Platform == PlatformType.Macintosh;
 
-		public static bool IsMonoGame => Framework == FrameworkType.Mono;
+		public static bool IsMonoGame => GameFramework == GameFrameworkType.MonoGame;
+		public static bool IsXNA => GameFramework == GameFrameworkType.XNA;
 
-		public static bool IsXNA => Framework == FrameworkType.DotNET;
+		public static class Capabilities {
+			public static bool AsyncStores => Renderer != RendererType.OpenGL;
+			public static bool AsynchronousRenderingAPI => Renderer == RendererType.D3D11;
+		}
 	}
 }

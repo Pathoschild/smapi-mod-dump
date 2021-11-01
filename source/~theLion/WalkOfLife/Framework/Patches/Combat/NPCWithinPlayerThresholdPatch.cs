@@ -24,7 +24,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal NPCWithinPlayerThresholdPatch()
 		{
 			Original = typeof(NPC).MethodNamed(nameof(NPC.withinPlayerThreshold), new[] { typeof(int) });
-			Prefix = new HarmonyMethod(GetType(), nameof(NPCWithinPlayerThresholdPrefix));
+			Prefix = new(GetType(), nameof(NPCWithinPlayerThresholdPrefix));
 		}
 
 		#region harmony patch
@@ -37,7 +37,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				if (__instance is not Monster) return true; // run original method
 
-				var foundPlayer = ModEntry.ModHelper.Reflection.GetMethod(__instance, name: "findPlayer").Invoke<Farmer>();
+				var foundPlayer = ModEntry.ModHelper.Reflection.GetMethod(__instance, "findPlayer").Invoke<Farmer>();
 				if (!foundPlayer.IsLocalPlayer || !ModEntry.IsSuperModeActive ||
 					ModEntry.SuperModeIndex != Util.Professions.IndexOf("Poacher")) return true; // run original method
 
@@ -46,7 +46,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

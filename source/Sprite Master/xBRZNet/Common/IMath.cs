@@ -19,31 +19,31 @@ namespace SpriteMaster.xBRZ.Common {
 			public readonly T Value;
 			public readonly string Name;
 
-			[DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[DebuggerStepThrough, DebuggerHidden(), MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal Argument (T value, string name) {
 				Value = value;
 				Name = name;
 			}
 
-			[DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[DebuggerStepThrough, DebuggerHidden(), MethodImpl(Runtime.MethodImpl.Optimize)]
 			public static implicit operator T (in Argument<T> arg) {
 				return arg.Value;
 			}
 		}
 
-		[DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[DebuggerStepThrough, DebuggerHidden(), MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static Argument<T> AsArg<T> (this T value, string name) where T : unmanaged {
 			return new Argument<T>(value, name);
 		}
 
-		[DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[DebuggerStepThrough, DebuggerHidden(), MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static string GetCheckNotNegativeMessage<T> (in Argument<T> argument, string memberName) where T : unmanaged {
 			return memberName != null ?
 				$"Argument {argument.Name} with value {argument.Value} from method {memberName} was less than zero" :
 				$"Argument {argument.Name} with value {argument.Value} was less than zero";
 		}
 
-		[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden(), MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static void CheckNotNegative (
 			this in Argument<int> argument,
 			[CallerMemberName] string memberName = null
@@ -53,7 +53,7 @@ namespace SpriteMaster.xBRZ.Common {
 			}
 		}
 
-		[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden(), MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden(), MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static void CheckNotNegative (
 			this in Argument<long> argument,
 			[CallerMemberName] string memberName = null

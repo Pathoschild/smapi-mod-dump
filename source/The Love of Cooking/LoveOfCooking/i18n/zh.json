@@ -129,14 +129,6 @@
 	"world.fisherman.talk_2": "孩子, 你见过河流巨魔吗? 哈哈...$b#啊, 你已经过了听童话故事的年纪了.",
 	"world.fisherman.talk_3": "由于这些旅行商队停留在海湾，这趟渔猎看来是不会有好收成了...",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "厨房",
-	"world.community_centre.reward": "料理道具",
-	"world.community_centre.bundle.1": "烘焙",
-	"world.community_centre.bundle.2": "餐厅",
-	"world.community_centre.bundle.3": "野餐",
-	"world.community_centre.newjunimoline": "为了表示我们对你的感谢... 在你走后我们将会把这里打扫干净.",
-
 	// Object names
 
 	// recipes

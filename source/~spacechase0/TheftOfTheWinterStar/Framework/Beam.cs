@@ -20,6 +20,9 @@ namespace TheftOfTheWinterStar.Framework
 {
     internal class Beam
     {
+        /*********
+        ** Fields
+        *********/
         private readonly Farmer Shooter;
         private readonly Vector2 BasePos;
         private readonly float Angle;
@@ -27,6 +30,10 @@ namespace TheftOfTheWinterStar.Framework
 
         private int Timer = 30;
 
+
+        /*********
+        ** Public methods
+        *********/
         public Beam(Farmer who, Vector2 aim)
         {
             this.Shooter = who;
@@ -46,9 +53,12 @@ namespace TheftOfTheWinterStar.Framework
 
             Mod.Instance.Helper.Events.GameLoop.UpdateTicked += this.Update;
             Mod.Instance.Helper.Events.Display.RenderedWorld += this.Render;
-
         }
 
+
+        /*********
+        ** Private methods
+        *********/
         private void Update(object sender, UpdateTickedEventArgs e)
         {
             if (this.Timer-- <= 0)

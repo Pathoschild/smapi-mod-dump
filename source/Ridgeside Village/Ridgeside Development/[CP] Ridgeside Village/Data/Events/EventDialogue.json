@@ -10,16 +10,16 @@
 
 {
 "Changes": [
-	
+        
 
-	//Event Dialogues
+        //Event Dialogues
         {
                 "Action": "EditData",
                 "Target": "Characters/Dialogue/Aguar",
                 "Entries": {   
                         //Event dialogue Aguar 2 hearts                     
                         "aguar1_1": "{{i18n:event-75160061.AguarFork1}}",
-                        "aguar1_2": "{{i18n:event-75160061.AguarFork2}}",                        
+                        "aguar1_2": "{{i18n:event-75160061.AguarFork2}}",               
                 }
         },
 
@@ -90,6 +90,19 @@
                         "ian2_1": "{{i18n:event-75160148.Fork1}}",
                         "ian2_2": "{{i18n:event-75160148.Fork2}}",
                         "ian2_3": "{{i18n:event-75160148.Fork3}}",
+
+                        //14 heart event
+                        "ian14_word1": "{{i18n:ian.14heart.1}}",
+                        "ian14_word2": "{{i18n:ian.14heart.2}}",
+                        "ian14_word3": "{{i18n:ian.14heart.3}}",
+
+                        "ian14_word4": "{{i18n:ian.14heart.4}}",
+                        "ian14_word5": "{{i18n:ian.14heart.5}}",
+                        "ian14_word6": "{{i18n:ian.14heart.6}}",
+
+                        "ian14_word7": "{{i18n:ian.14heart.7}}",
+                        "ian14_word8": "{{i18n:ian.14heart.8}}",
+                        "ian14_word9": "{{i18n:ian.14heart.9}}",
                 }
         },
 
@@ -217,6 +230,6 @@
         },
 
 
-	
+        
 ]
 }

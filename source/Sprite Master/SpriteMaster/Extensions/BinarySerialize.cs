@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
 	internal static class BinarySerialize {
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void Write<T> (this BinaryWriter stream, T value) {
 			switch (value) {
 				case string v:
@@ -80,7 +80,7 @@ namespace SpriteMaster.Extensions {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static Action<BinaryWriter, object> GetWriter (this Type type) {
 			return type switch {
 				var _ when type == typeof(string) => (stream, obj) => stream.Write((string)obj),
@@ -107,10 +107,10 @@ namespace SpriteMaster.Extensions {
 			};
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static object Read (this BinaryReader stream, Type type) => GetReader(type)(stream);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static Func<BinaryReader, object> GetReader (this Type type) {
 			return type switch
 			{
@@ -138,7 +138,7 @@ namespace SpriteMaster.Extensions {
 			};
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static object Read<T> (this BinaryReader stream, Type<T> type) => (T)Read(stream, type);
 
 		internal static uint GetSerializedSize (this Type type) {
@@ -166,7 +166,7 @@ namespace SpriteMaster.Extensions {
 			};
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static T Read<T> (this BinaryReader stream) {
 			return (T)Read(stream, typeof(T));
 		}

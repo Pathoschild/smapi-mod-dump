@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FerMod/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Thin Horse",
+  "Author": "FerMod",
+  "Version": "1.2.0",
+  "MinimumApiVersion": "3.8.0",
+  "Description": "Makes the horse have a smaller bounding box, allowing it to pass trough smaller spaces.",
+  "UniqueID": "FerMod.ThinHorse",
+  "EntryDll": "ThinHorse.dll",
+  "UpdateKeys": []
+}

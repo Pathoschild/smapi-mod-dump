@@ -79,6 +79,22 @@
         }
       },
       "Update": "OnLocationChange, OnTimeChange"
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Woods",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 29,
+            "Y": 16
+          },
+          "Layer": "Back",
+          "SetProperties": {
+            "CustomCompanions": "Spawn 1 ExampleAuthor.ExamplePack.ExampleAlternativeWalkingCompanionEnableSpawnAtDayStart"
+          }
+        }
+      ]
     }
   ]
 }

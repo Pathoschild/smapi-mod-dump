@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+using System;
+
+namespace GenericModConfigMenu.Framework.ModOption
+{
+    /// <summary>The base implementation for a readonly config option.</summary>
+    internal abstract class ReadOnlyModOption : BaseModOption
+    {
+        /*********
+        ** Public methods
+        *********/
+        /// <inheritdoc />
+        public override void GetLatest() { }
+
+        /// <inheritdoc />
+        public override void Save() { }
+
+
+        /*********
+        ** Protected methods
+        *********/
+        /// <summary>Construct an instance.</summary>
+        /// <param name="name">The label text to show in the form.</param>
+        /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+        /// <param name="mod">The mod config UI that contains this option.</param>
+        protected ReadOnlyModOption(Func<string> name, Func<string> tooltip, ModConfig mod)
+            : base(null, name, tooltip, mod) { }
+    }
+}

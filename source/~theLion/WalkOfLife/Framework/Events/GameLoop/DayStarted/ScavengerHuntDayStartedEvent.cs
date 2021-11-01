@@ -14,10 +14,10 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public class ScavengerHuntDayStartedEvent : DayStartedEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			if (ModEntry.ScavengerHunt != null) ModEntry.ScavengerHunt.ResetAccumulatedBonus();
+			if (ModEntry.ScavengerHunt is not null) ModEntry.ScavengerHunt.ResetAccumulatedBonus();
 		}
 	}
 }

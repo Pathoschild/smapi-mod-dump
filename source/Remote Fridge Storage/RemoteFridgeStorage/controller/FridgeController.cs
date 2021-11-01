@@ -11,7 +11,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Menus;
 using StardewValley.Objects;
 
 namespace RemoteFridgeStorage.controller
@@ -41,21 +43,15 @@ namespace RemoteFridgeStorage.controller
             if (!nearbyChests.Any())
                 return;
 
-            // Add them as material containers to current CraftingPage
-            var prop = page.GetType().GetField("_materialContainers", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (prop == null)
+            if (page is CraftingPage craftingPage)
             {
-                ModEntry.Instance.Log($"CraftFromChests failed: {page.GetType()}._materialContainers not found.");
-                return;
+                craftingPage._materialContainers.AddRange(nearbyChests);
             }
-
-            var original = prop.GetValue(page) as List<Chest>;
-            var modified = new List<Chest>();
-            if (original?.Count > 0)
-                modified.AddRange(original);
-            modified.AddRange(nearbyChests);
-
-            prop.SetValue(page, modified.Distinct().ToList());
+            else
+            {
+                ModEntry.Instance.Monitor.Log($"Failed to inject items into: {page.GetType()}. Is it from an incompatible mod?",
+                    LogLevel.Warn);
+            }
         }
     }
 }

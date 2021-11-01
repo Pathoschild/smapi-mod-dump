@@ -11,17 +11,17 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using JsonAssets.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using SpaceShared;
-using StardewValley;
 
 namespace JsonAssets.Data
 {
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = DiagnosticMessages.IsPublicApi)]
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = DiagnosticMessages.IsPublicApi)]
-    public class ClothingData : DataSeparateTextureIndex
+    public class ClothingData : DataSeparateTextureIndex, ITranslatableItem
     {
         /*********
         ** Accessors
@@ -32,6 +32,7 @@ namespace JsonAssets.Data
         [JsonIgnore]
         public Texture2D TextureFemale { get; set; }
 
+        /// <inheritdoc />
         public string Description { get; set; }
         public bool HasFemaleVariant { get; set; } = false;
 
@@ -42,29 +43,19 @@ namespace JsonAssets.Data
 
         public string Metadata { get; set; } = "";
 
+        /// <inheritdoc />
         public Dictionary<string, string> NameLocalization { get; set; } = new();
+
+        /// <inheritdoc />
         public Dictionary<string, string> DescriptionLocalization { get; set; } = new();
+
+        /// <inheritdoc />
+        public string TranslationKey { get; set; }
 
 
         /*********
         ** Public methods
         *********/
-        public string LocalizedName()
-        {
-            var lang = LocalizedContentManager.CurrentLanguageCode;
-            return this.NameLocalization.TryGetValue(lang.ToString(), out string localization)
-                ? localization
-                : this.Name;
-        }
-
-        public string LocalizedDescription()
-        {
-            var lang = LocalizedContentManager.CurrentLanguageCode;
-            return this.DescriptionLocalization.TryGetValue(lang.ToString(), out string localization)
-                ? localization
-                : this.Description;
-        }
-
         public int GetClothingId()
         {
             return this.Id;

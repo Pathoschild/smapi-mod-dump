@@ -23,9 +23,9 @@ namespace Common.Extensions
         /// <param name="action">The action to perform on items within chests.</param>
         public static void RecursiveIterate(this Item item, Action<Item> action)
         {
-            if (item is Chest { SpecialChestType: Chest.SpecialChestTypes.None } chest)
+            if (item is Chest {SpecialChestType: Chest.SpecialChestTypes.None} chest)
             {
-                foreach (Item chestItem in chest.items.Where(chestItem => chestItem is not null))
+                foreach (var chestItem in chest.items.Where(chestItem => chestItem is not null))
                 {
                     chestItem.RecursiveIterate(action);
                 }

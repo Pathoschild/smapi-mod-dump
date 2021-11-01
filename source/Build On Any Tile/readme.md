@@ -57,4 +57,5 @@ See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.c
 Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/BuildOnAnyTile/blob/master/BuildOnAnyTile/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
+Korean | [ko.json](https://github.com/Esca-MMC/BuildOnAnyTile/blob/master/BuildOnAnyTile/i18n/zh.json) | [wally232](https://github.com/wally232)
 Simplified Chinese | [zh.json](https://github.com/Esca-MMC/BuildOnAnyTile/blob/master/BuildOnAnyTile/i18n/zh.json) | [chasqiu](https://forums.nexusmods.com/index.php?/user/72860268-chasqiu/)

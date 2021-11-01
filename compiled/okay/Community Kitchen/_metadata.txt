@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/9851
+IDs: blueberry.CommunityKitchen
+update keys: Nexus:9851, GitHub:b-b-blueberry/CustomCommunityCentre

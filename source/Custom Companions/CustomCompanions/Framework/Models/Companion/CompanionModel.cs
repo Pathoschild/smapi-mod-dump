@@ -23,6 +23,7 @@ namespace CustomCompanions.Framework.Models.Companion
         public ITranslationHelper Translations { get; set; }
         public string Type { get; set; }
         public bool EnablePeriodicPatchCheck { get; set; }
+        public bool EnableSpawnAtDayStart { get; set; }
         public bool EnableFarmerCollision { get; set; }
         public bool EnableCharacterCollision { get; set; } = true;
         public bool EnableShadow { get; set; }

@@ -25,7 +25,7 @@ namespace SpriteMaster.Types {
 
 		public static DataRef<T> Null => new DataRef<T>(null);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public DataRef (T[] data, int offset = 0, int length = 0) {
 			Contract.AssertPositiveOrZero(offset);
 
@@ -34,32 +34,32 @@ namespace SpriteMaster.Types {
 			Length = (length == 0 && Data != null) ? Data.Length : length;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator DataRef<T> (T[] data) {
 			if (data == null)
 				return Null;
 			return new DataRef<T>(data);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (DataRef<T> lhs, DataRef<T> rhs) => lhs.Data == rhs.Data && lhs.Offset == rhs.Offset;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator == (DataRef<T> lhs, object rhs) => lhs.Data == rhs;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (DataRef<T> lhs, DataRef<T> rhs) => lhs.Data == rhs.Data && lhs.Offset == rhs.Offset;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static bool operator != (DataRef<T> lhs, object rhs) => lhs.Data != rhs;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly bool Equals (DataRef<T> other) => this == other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly override bool Equals (object other) => this == other;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public readonly override int GetHashCode () {
 			// TODO : This isn't right. We need to hash Data _from_ the offset.
 			return unchecked((int)Hash.Combine(Data.GetHashCode(), Offset.GetHashCode()));

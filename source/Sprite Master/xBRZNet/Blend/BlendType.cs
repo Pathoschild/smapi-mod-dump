@@ -19,17 +19,17 @@ namespace SpriteMaster.xBRZ.Blend {
 	}
 
 	internal static class BlendTypeExtension {
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static byte Byte (this BlendType type) {
 			return unchecked((byte)type);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static BlendType BlendType (this byte value) {
 			return unchecked((BlendType)value);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static BlendType BlendType (this int value) {
 			return unchecked((BlendType)value);
 		}

@@ -52,9 +52,11 @@ namespace SpriteMaster {
 
 		internal static string ConfigVersion = "";
 		[ConfigIgnore]
-		internal static string ClearConfigBefore = "0.12.0.0";
+		internal static string ClearConfigBefore = "0.13.0.0";
 
+		[Comment("Should SpriteMaster be enabled?")]
 		internal static bool Enabled = true;
+		[Comment("Button to toggle SpriteMaster")]
 		internal static SButton ToggleButton = SButton.F11;
 
 		internal const int MaxSamplers = 16;
@@ -93,14 +95,21 @@ namespace SpriteMaster {
 			ModuleName
 		);
 		internal static string LocalRoot => (DataStoreOverride.Length == 0) ? LocalRootDefault : DataStoreOverride;
+		[Comment("If the data cache is preferred to be elsewhere, it can be set here")]
 		internal static string DataStoreOverride = "";
 
 		internal static class Garbage {
+			[Comment("Should unowned textures be marked in the garbage collector's statistics?")]
 			internal static bool CollectAccountUnownedTextures = true;
+			[Comment("Should owned textures be marked in the garbage collector's statistics?")]
 			internal static bool CollectAccountOwnedTextures = true;
+			[Comment("Should SM attempt to detect and prevent texture memory leaks?")]
 			internal static bool LeakPreventTexture = false;
+			[Comment("Should SM attempt to detect and prevent disposable object memory leaks?")]
 			internal static bool LeakPreventAll = false;
+			[Comment("The amount of free memory required by SM after which it triggers recovery operations")]
 			internal static int RequiredFreeMemory = 64;
+			[Comment("Hysterisis applied to RequiredFreeMemory")]
 			internal static double RequiredFreeMemoryHysterisis = 1.5;
 		}
 
@@ -121,22 +130,37 @@ namespace SpriteMaster {
 		}
 
 		internal static class DrawState {
+			[Comment("Enable linear sampling for sprites")]
 			internal static bool SetLinear = true;
+			[Comment("Enable MSAA")]
 			internal static bool EnableMSAA = false;
+			[Comment("Disable the depth buffer (unused in this game)")]
 			internal static bool DisableDepthBuffer = false;
+			[Comment("The default backbuffer format to request")]
 			internal static SurfaceFormat BackbufferFormat = SurfaceFormat.Color;
 		}
 
 		internal static class Resample {
-			internal static bool Smoothing = true;
-			internal static bool Scale = Smoothing;
+			[Comment("Should resampling be enabled?")]
+			internal static bool Enabled = true;
+			[Comment("Should texture rescaling be enabled?")]
+			internal static bool Scale = Enabled;
+			[Comment("What scaling algorithm should be used?")]
 			internal const Upscaler.Scaler Scaler = Upscaler.Scaler.xBRZ;
+			[Comment("Should dynamic scaling be used (scaling based upon apparent sprite size)")]
 			internal const bool EnableDynamicScale = true;
+			[Comment("Should the scale factor of water be adjusted to account for water sprites being unusual?")]
 			internal static bool TrimWater = true;
+			[Comment("Positive bias applied to sprite scaling calculations")]
 			internal static float ScaleBias = 0.1f;
+			[Comment("Maximum scale factor of sprites")]
 			internal static uint MaxScale = 6;
+			[Comment("Minimum edge length of a sprite to be considered for resampling")]
 			internal static int MinimumTextureDimensions = 4;
+			[Comment("Should wrapped addressing be enabled for sprite resampling (when analysis suggests it)?")]
 			internal static bool EnableWrappedAddressing = true;
+			[Comment("Should resampling be stalled if it is determined that it will cause hitches?")]
+			internal static bool UseFrametimeStalling = true;
 			internal static readonly List<SurfaceFormat> SupportedFormats = new() {
 				SurfaceFormat.Color,
 				SurfaceFormat.Dxt5,
@@ -145,27 +169,38 @@ namespace SpriteMaster {
 				SurfaceFormatExt.HasSurfaceFormat("Dxt1a") ? SurfaceFormatExt.GetSurfaceFormat("Dxt1a") : SurfaceFormat.Color
 			};
 			internal static class BlockCompression {
+				[Comment("Should block compression of sprites be enabled?")]
 				internal static bool Enabled = DevEnabled && ((!Runtime.IsMacintosh && !Debug.MacOSTestMode) || MacSupported) && true; // I cannot build a proper libnvtt for OSX presently.
 				[ConfigIgnore]
 				private const bool MacSupported = false;
 				private const bool DevEnabled = true;
+				[Comment("Should block compression of sprites be synchronous?")]
 				internal static bool Synchronized = false;
+				[Comment("What quality level should be used?")]
 				internal static CompressionQuality Quality = CompressionQuality.Highest;
+				[Comment("What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?")]
 				internal static int HardAlphaDeviationThreshold = 7;
 			}
+			[Comment("What spritesheets will absolutely not be resampled or processed?")]
 			internal static List<string> Blacklist = new() {
 				"LooseSprites/Lighting/",
 				"LooseSprites/Cloudy_Ocean_BG",
 				"LooseSprites/Cloudy_Ocean_BG_Night"
 			};
 			internal static class Padding {
+				[Comment("Should padding be applied to sprites to allow resampling to extend beyond the natural sprite boundaries?")]
 				internal static bool Enabled = DevEnabled && true;
 				private const bool DevEnabled = true;
+				[Comment("What is the minimum edge size of a sprite for padding to be enabled?")]
 				internal static int MinimumSizeTexels = 4;
+				[Comment("Should unknown (unnamed) sprites be ignored by the padding system?")]
 				internal static bool IgnoreUnknown = false;
+
+				[Comment("What spritesheets should have a stricter edge-detection algorithm applied?")]
 				internal static List<string> StrictList = new() {
 					"LooseSprites/Cursors"
 				};
+				[Comment("What spritesheets should always be padded?")]
 				internal static List<string> Whitelist = new() {
 					"LooseSprites/font_bold",
 					"Characters/Farmer/hairstyles",
@@ -195,6 +230,8 @@ namespace SpriteMaster {
 					"TerrainFeatures/tree2_winter",
 					"TerrainFeatures/tree3_winter",
 				};
+
+				[Comment("What spritesheets should never be padded?")]
 				internal static List<string> Blacklist = new() {
 				"LooseSprites/Cloudy_Ocean_BG",
 				"LooseSprites/Cloudy_Ocean_BG_Night"
@@ -203,37 +240,52 @@ namespace SpriteMaster {
 		}
 
 		internal static class WrapDetection {
+			[Comment("Should edge-wrap analysis be enabled?")]
 			internal const bool Enabled = true;
+			[Comment("What is the threshold percentage of alpha values to be used to determine if it is a wrapping edge?")]
 			internal static float edgeThreshold = 0.2f;
+			[Comment("What is the minimum alpha value assumed to be opaque?")]
 			internal static byte alphaThreshold = 1;
 		}
 
 		internal static class AsyncScaling {
 			internal const bool Enabled = true;
+			[Comment("Should asynchronous scaling be enabled for unknown textures?")]
 			internal static bool EnabledForUnknownTextures = false;
-			internal static bool ForceSynchronousLoads = Runtime.IsUnix;
+			[Comment("Should synchronous stores always be used?")]
+			internal static bool ForceSynchronousStores = !Runtime.Capabilities.AsyncStores;
+			[Comment("Should synchronous stores be throttled?")]
 			internal static bool ThrottledSynchronousLoads = true;
+			[Comment("Should we fetch and load texture data within the same frame?")]
 			internal static bool CanFetchAndLoadSameFrame = true;
-			internal static int MaxLoadsPerFrame = int.MaxValue;
+			[Comment("What is the minimum number of texels in a sprite to be considered for asynchronous scaling?")]
 			internal static long MinimumSizeTexels = 0;
 		}
 
 		internal static class MemoryCache {
+			[Comment("Should the memory cache be enabled?")]
 			internal static bool Enabled = DevEnabled && true;
 			private const bool DevEnabled = true;
+			[Comment("Should memory cache elements always be flushed upon update?")]
 			internal static bool AlwaysFlush = false;
-			internal static Compression.Algorithm Compress = Compression.BestAlgorithm;
+			[Comment("Should memory compression algorithm should be used?")]
+			internal static Compression.Algorithm Compress = (Runtime.Bits == 64) ? Compression.Algorithm.None : Compression.BestAlgorithm;
+			[Comment("Should the memory cache be asynchronous?")]
 			internal static bool Async = true;
 		}
 
 		internal static class FileCache {
 			internal const bool Purge = false;
+			[Comment("Should the file cache be enabled?")]
 			internal static bool Enabled = DevEnabled && true;
 			private const bool DevEnabled = true;
 			internal const int LockRetries = 32;
 			internal const int LockSleepMS = 32;
+			[Comment("What compression algorithm should be used?")]
 			internal static Compression.Algorithm Compress = Compression.BestAlgorithm;
+			[Comment("Should files be compressed regardless of if it would be beneficial?")]
 			internal static bool ForceCompress = false;
+			[Comment("Should system compression (such as NTFS compression) be preferred?")]
 			internal static bool PreferSystemCompression = false;
 			internal const bool Profile = false;
 		}

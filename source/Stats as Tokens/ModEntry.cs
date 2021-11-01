@@ -43,6 +43,7 @@ namespace StatsAsTokens
 		{
 			Globals.Helper.Events.GameLoop.GameLaunched += (_, _) =>
 			{
+				HarmonyPatches.PerformHarmonyPatches();
 				ContentPatcherHelper.TryLoadContentPatcherAPI();
 				ContentPatcherHelper.RegisterSimpleTokens();
 				ContentPatcherHelper.RegisterAdvancedTokens();

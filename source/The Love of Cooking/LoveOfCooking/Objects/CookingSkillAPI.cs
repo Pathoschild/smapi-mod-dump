@@ -18,7 +18,7 @@ namespace LoveOfCooking.Objects
 {
 	public interface ICookingSkillAPI
 	{
-		public enum Profession
+		public enum Profession // DO NOT EDIT
 		{
 			ImprovedOil,
 			Restoration,
@@ -188,24 +188,30 @@ namespace LoveOfCooking.Objects
 		/// <returns>Experience gained.</returns>
 		public int CalculateExperienceGainedFromCookingItem(Item item, int ingredientsCount, int numCooked, bool apply)
 		{
-			// Magical numbers live here
-
 			// Reward players for cooking brand new recipes
-			int newBonus = Game1.player.recipesCooked.ContainsKey(item.ParentSheetIndex) ? 0 : 34;
+			int newBonus = Game1.player.recipesCooked.ContainsKey(item.ParentSheetIndex)
+				? 0
+				: int.Parse(ModEntry.ItemDefinitions["CookingSkillExperienceNewRecipeBonus"][0]);
 
 			// Gain more experience for the first time cooking a meal each day
-			int dailyBonus = ModEntry.Instance.States.Value.FoodCookedToday.ContainsKey(item.Name) ? 0 : 12;
+			int dailyBonus = ModEntry.Instance.States.Value.FoodCookedToday.ContainsKey(item.Name)
+				? 0
+				: int.Parse(ModEntry.ItemDefinitions["CookingSkillExperienceDailyBonus"][0]);
+
 			if (!ModEntry.Instance.States.Value.FoodCookedToday.ContainsKey(item.Name))
 				ModEntry.Instance.States.Value.FoodCookedToday[item.Name] = 0;
 
 			// Gain less experience the more that the same food is cooked for this day
+			// magic-ass numbas
 			float stackBonus // (Quantity * (Rate of decay per quantity towards roughly 50%) / Some divisor for experience rate)
 				= Math.Min(numCooked, CookingSkill.MaxFoodStackPerDayForExperienceGains)
 					* Math.Max(6f, 12f - ModEntry.Instance.States.Value.FoodCookedToday[item.Name]) / 8f;
 
 			// Gain more experience for recipe complexity
-			float ingredientsBonus = 1f + ingredientsCount * 0.2f;
-			float experienceFromIngredients = 5 + 4f * ingredientsBonus;
+			float ingredientsBonus = float.Parse(ModEntry.ItemDefinitions["CookingSkillExperienceIngredientsBaseValue"][0])
+				+ (ingredientsCount * float.Parse(ModEntry.ItemDefinitions["CookingSkillExperienceIngredientsBonusScaling"][0]));
+			float experienceFromIngredients = float.Parse(ModEntry.ItemDefinitions["CookingSkillExperienceIngredientsFinalBaseValue"][0])
+				+ (ingredientsBonus * float.Parse(ModEntry.ItemDefinitions["CookingSkillExperienceIngredientsBonusFinalMultiplier"][0]));
 
 			// Sum up experience
 			int currentLevel = this.GetLevel();
@@ -223,7 +229,12 @@ namespace LoveOfCooking.Objects
 			{
 				int remainingExperience = this.GetExperienceRemainingUntilLevel(nextLevel);
 				int requiredExperience = this.GetExperienceRequiredForLevel(nextLevel);
-				int summedExperience = (int)(newBonus + dailyBonus + experienceFromIngredients * stackBonus * (ModEntry.Config.DebugMode ? CookingSkill.GlobalExperienceRate : 1));
+				int summedExperience = (int)(newBonus + dailyBonus + (experienceFromIngredients * stackBonus));
+				summedExperience = (int)(summedExperience * float.Parse((ModEntry.ItemDefinitions)["CookingSkillExperienceGlobalScaling"][0]));
+				if (ModEntry.Config.DebugMode)
+                {
+					summedExperience = (int)(summedExperience * ModEntry.DebugGlobalExperienceRate);
+				}
 				finalExperience = maxLevel - currentLevel == 1
 					? Math.Min(remainingExperience, summedExperience)
 					: summedExperience;

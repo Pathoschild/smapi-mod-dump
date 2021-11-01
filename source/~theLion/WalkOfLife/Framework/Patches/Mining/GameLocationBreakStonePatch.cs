@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -23,15 +24,16 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal GameLocationBreakStonePatch()
 		{
-			Original = typeof(GameLocation).MethodNamed(name: "breakStone");
-			Transpiler = new HarmonyMethod(GetType(), nameof(GameLocationBreakStoneTranspiler));
+			Original = typeof(GameLocation).MethodNamed("breakStone");
+			Transpiler = new(GetType(), nameof(GameLocationBreakStoneTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to remove Geologist extra gem chance + remove Prospector double coal chance.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> GameLocationBreakStoneTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> GameLocationBreakStoneTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -57,7 +59,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}");
+				Log($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 
@@ -79,7 +81,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
+				Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

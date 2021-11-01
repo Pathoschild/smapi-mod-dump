@@ -11,18 +11,15 @@
 {
 	"Name": "Love of Cooking",
 	"Author": "blueberry",
-	"Version": "1.0.18",
+	"Version": "1.0.23",
 	"Description": "Cooking overhaul suite. Enter a world of food!",
 	"UniqueID": "blueberry.LoveOfCooking",
 	"EntryDll": "LoveOfCooking.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "3.12.0",
 	"UpdateKeys": [ "Nexus:6830" ],
 	"Dependencies": [
 		{
 			"UniqueID": "spacechase0.JsonAssets"
-		},
-		{
-			"UniqueID": "Platonymous.Toolkit"
 		}
 	]
 }

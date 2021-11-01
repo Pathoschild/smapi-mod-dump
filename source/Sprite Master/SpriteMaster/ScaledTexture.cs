@@ -29,12 +29,12 @@ namespace SpriteMaster {
 
 		private static readonly LinkedList<WeakReference<ScaledTexture>> MostRecentList = new();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static bool LegalFormat(Texture2D texture) {
 			return AllowedFormats.Contains(texture.Format);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static bool Validate(Texture2D texture) {
 			var meta = texture.Meta();
 			if (!meta.ScaleValid) {
@@ -122,7 +122,7 @@ namespace SpriteMaster {
 			return true;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		static internal ScaledTexture Fetch (Texture2D texture, Bounds source, uint expectedScale) {
 			if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture)) {
 				return scaleTexture;
@@ -136,7 +136,9 @@ namespace SpriteMaster {
 		private static readonly TexelTimer TexelAverageSync = new();
 		private static readonly TexelTimer TexelAverageCachedSync = new();
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private static readonly TimeSpan MinTimeSpan = TimeSpan.FromMilliseconds(-64.0);
+
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static TexelTimer GetTimer(bool cached, bool async) {
 			if (async) {
 				return cached ? TexelAverageCached : TexelAverage;
@@ -146,13 +148,13 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static TexelTimer GetTimer(Texture2D texture, bool async) {
 			var IsCached = SpriteInfo.IsCached(texture);
 			return GetTimer(IsCached, async);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		static internal ScaledTexture Get (Texture2D texture, Bounds source, uint expectedScale) {
 			using var _ = Performance.Track();
 
@@ -164,18 +166,24 @@ namespace SpriteMaster {
 				return null;
 			}
 
-			bool useAsync = (Config.AsyncScaling.EnabledForUnknownTextures || !texture.Anonymous()) && (texture.Area() >= Config.AsyncScaling.MinimumSizeTexels);
+			bool useAsync = (Config.AsyncScaling.EnabledForUnknownTextures || !texture.Anonymous()) && (source.Area >= Config.AsyncScaling.MinimumSizeTexels);
 			// !texture.Meta().HasCachedData
 
-			var estimatedDuration = GetTimer(texture: texture, async: useAsync).Estimate(texture.Area());
-			const float multiplier = 0.75f;
-			var remainingTime = DrawState.RemainingFrameTime(multiplier: multiplier);
-			if (DrawState.PushedUpdateWithin(1) && estimatedDuration >= remainingTime) {
-				return null;
+			if (Config.Resample.UseFrametimeStalling && DrawState.PushedUpdateWithin(0)) {
+				var estimatedDuration = GetTimer(texture: texture, async: useAsync).Estimate(source.Area);
+				const float multiplier = 1.0f;
+				var remainingTime = DrawState.RemainingFrameTime(multiplier: multiplier);
+				if (estimatedDuration.Ticks != 0 && estimatedDuration >= remainingTime && remainingTime > MinTimeSpan) {
+					Debug.TraceLn($"Not enough frame time left to begin resampling '{texture.SafeName()}' ({estimatedDuration.TotalMilliseconds} >= {remainingTime.TotalMilliseconds})");
+					return null;
+				}
+				else {
+					Debug.TraceLn($"Remaining Time: {remainingTime.TotalMilliseconds}");
+				}
 			}
 
 			// TODO : We should really only populate the average when we are performing an expensive operation like GetData.
-			var begin = DateTime.Now;
+			var watch = System.Diagnostics.Stopwatch.StartNew();
 
 			TextureType textureType;
 			if (!source.Offset.IsZero || source.Extent != texture.Extent()) {
@@ -187,19 +195,24 @@ namespace SpriteMaster {
 			SpriteInfo textureWrapper;
 			ulong hash;
 
-			using (Performance.Track("new SpriteInfo"))
+			using (Performance.Track("new SpriteInfo")) {
 				textureWrapper = new SpriteInfo(reference: texture, dimensions: source, expectedScale: expectedScale);
+			}
 
 			// If this is null, it can only happen due to something being blocked, so we should try again later.
 			if (textureWrapper.Data == null) {
+				Debug.TraceLn($"Texture Data fetch for '{texture.SafeName()}' was blocked; retrying later");
 				return null;
 			}
+
+			Debug.TraceLn($"Beginning Rescale Process for '{texture.SafeName()}'");
 
 			DrawState.PushedUpdateThisFrame = true;
 
 			try {
-				using (Performance.Track("Upscaler.GetHash"))
+				using (Performance.Track("Upscaler.GetHash")) {
 					hash = Upscaler.GetHash(textureWrapper, textureType);
+				}
 
 				var newTexture = new ScaledTexture(
 					assetName: texture.SafeName(),
@@ -222,8 +235,10 @@ namespace SpriteMaster {
 				}
 			}
 			finally {
+				watch.Stop();
+				var duration = watch.Elapsed;
 				var averager = GetTimer(cached: textureWrapper.WasCached, async: useAsync);
-				averager.Add(texture.Area(), DateTime.Now - begin);
+				averager.Add(source.Area, duration);
 			}
 		}
 
@@ -258,7 +273,7 @@ namespace SpriteMaster {
 		private LinkedListNode<WeakReference<ScaledTexture>> CurrentRecentNode = null;
 		private volatile bool Disposed = false;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		~ScaledTexture() {
 			if (!Disposed) {
 				Dispose();
@@ -268,7 +283,7 @@ namespace SpriteMaster {
 		internal static volatile uint TotalMemoryUsage = 0;
 
 		internal long MemorySize {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				if (!IsReady || Texture == null) {
 					return 0;
@@ -278,25 +293,25 @@ namespace SpriteMaster {
 		}
 
 		internal long OriginalMemorySize {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				return originalSize.Width * originalSize.Height * sizeof(int);
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void Purge (Texture2D reference) {
 			Purge(reference, null, DataRef<byte>.Null);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void Purge (Texture2D reference, Bounds? bounds, DataRef<byte> data) {
 			SpriteInfo.Purge(reference, bounds, data);
 			SpriteMap.Purge(reference, bounds);
 			Upscaler.PurgeHash(reference);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static void PurgeTextures(long _purgeTotalBytes) {
 			Contract.AssertPositive(_purgeTotalBytes);
 
@@ -343,7 +358,7 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal ScaledTexture (string assetName, SpriteInfo textureWrapper, Bounds sourceRectangle, ulong hash, TextureType textureType, bool async, uint expectedScale) {
 			using var _ = Performance.Track();
 
@@ -417,7 +432,7 @@ namespace SpriteMaster {
 		}
 
 		// Async Call
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void Finish () {
 			ManagedTexture2D texture;
 			lock (this) {
@@ -435,16 +450,16 @@ namespace SpriteMaster {
 
 			switch (TexType) {
 				case TextureType.Sprite:
-					Debug.TraceLn($"Creating HD Sprite [{texture.Format} x{refScale}]: {this.SafeName()} {sourceRectangle}");
+					Debug.TraceLn($"Creating Sprite [{texture.Format} x{refScale}]: {this.SafeName()} {sourceRectangle}");
 					break;
 				case TextureType.Image:
-					Debug.TraceLn($"Creating HD Image [{texture.Format} x{refScale}]: {this.SafeName()}");
+					Debug.TraceLn($"Creating Image [{texture.Format} x{refScale}]: {this.SafeName()}");
 					break;
 				case TextureType.SlicedImage:
-					Debug.TraceLn($"Creating HD Sliced Image [{texture.Format} x{refScale}]: {this.SafeName()}");
+					Debug.TraceLn($"Creating Sliced Image [{texture.Format} x{refScale}]: {this.SafeName()}");
 					break;
 				default:
-					Debug.TraceLn($"Creating HD UNKNOWN [{texture.Format} x{refScale}]: {this.SafeName()}");
+					Debug.TraceLn($"Creating UNKNOWN [{texture.Format} x{refScale}]: {this.SafeName()}");
 					break;
 			}
 
@@ -453,7 +468,7 @@ namespace SpriteMaster {
 			IsReady = true;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void UpdateReferenceFrame () {
 			if (Disposed) {
 				return;
@@ -472,7 +487,7 @@ namespace SpriteMaster {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Dispose (bool disposeChildren) {
 			if (disposeChildren && Texture != null) {
 				if (!Texture.IsDisposed) {
@@ -483,7 +498,7 @@ namespace SpriteMaster {
 			Dispose();
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Dispose () {
 			if (Disposed) {
 				return;
@@ -501,7 +516,7 @@ namespace SpriteMaster {
 			Disposed = true;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private void OnParentDispose (Texture2D texture) {
 			Debug.TraceLn($"Parent Texture Disposing: {texture.SafeName()}");
 

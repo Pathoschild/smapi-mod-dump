@@ -15,8 +15,10 @@ using System.Reflection;
 namespace SpriteMaster.Resample {
 	internal sealed class NTFS {
 		internal static bool CompressDirectory(string path) {
-			if (!Runtime.IsWindows)
+			if (!Runtime.IsWindows) {
 				return false;
+			}
+
 			try {
 				var dir = new DirectoryInfo(path);
 				if ((dir.Attributes & FileAttributes.Compressed) == 0) {

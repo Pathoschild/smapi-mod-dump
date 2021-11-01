@@ -14,30 +14,30 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
 	public static class Common {
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static void ConditionalSet<T> (this ref T obj, bool conditional, in T value) where T : struct {
 			if (conditional) {
 				obj = value;
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static void ConditionalSet<T> (this ref T obj, in T? value) where T : struct {
 			if (value.HasValue) {
 				obj = value.Value;
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static WeakReference<T> MakeWeak<T> (this T obj) where T : class => new WeakReference<T>(obj);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static int ClampDimension (this int value) => Math.Min(value, Config.ClampDimension);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static Vector2I ClampDimension (this Vector2I value) => value.Min(Config.ClampDimension);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static void Swap<T> (ref T l, ref T r) {
 			var temp = l;
 			l = r;

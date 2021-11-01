@@ -9,12 +9,12 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -25,12 +25,13 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal GreenSlimeOnDealContactDamagePatch()
 		{
 			Original = typeof(GreenSlime).MethodNamed(nameof(GreenSlime.onDealContactDamage));
-			Transpiler = new HarmonyMethod(GetType(), nameof(GreenSlimeOnDealContactDamageTranspiler));
+			Transpiler = new(GetType(), nameof(GreenSlimeOnDealContactDamageTranspiler));
 		}
 
 		/// <summary>Patch to make Piper immune to slimed debuff.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> GreenSlimeOnDealContactDamageTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> GreenSlimeOnDealContactDamageTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -40,18 +41,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				Helper
 					.FindFirst(
-						new CodeInstruction(ModEntry.GameFramework.Equals(GameFramework.Xna) ? OpCodes.Bge_Un_S : OpCodes.Bge_Un) // find index of first branch instruction
+						new CodeInstruction(OpCodes.Bge_Un_S) // find index of first branch instruction
 					)
 					.GetOperand(out var returnLabel) // get return label
 					.Return()
 					.Insert(
 						new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
 					)
-					.InsertProfessionCheckForPlayerOnStack(Util.Professions.IndexOf("Piper"), (Label)returnLabel, useBrtrue: true);
+					.InsertProfessionCheckForPlayerOnStack(Util.Professions.IndexOf("Piper"), (Label)returnLabel,
+						true);
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Piper slime debuff immunity.\nHelper returned {ex}");
+				Log($"Failed while adding Piper slime debuff immunity.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

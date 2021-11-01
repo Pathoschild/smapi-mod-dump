@@ -22,8 +22,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal LevelUpMenuGetProfessionNamePatch()
 		{
-			Original = typeof(LevelUpMenu).MethodNamed(name: "getProfessionName");
-			Prefix = new HarmonyMethod(GetType(), nameof(LevelUpMenuGetProfessionNamePrefix));
+			Original = typeof(LevelUpMenu).MethodNamed("getProfessionName");
+			Prefix = new(GetType(), nameof(LevelUpMenuGetProfessionNamePrefix));
 		}
 
 		#region harmony patches
@@ -41,7 +41,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

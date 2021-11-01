@@ -1,0 +1,111 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CustomCommunityCentre
+**
+*************************************************/
+
+✔	❌
+
+✔	Custom content appears on new game
+	✔	Data loaded
+	✔	Junimo notes appear
+
+✔	Load custom data
+	✔	Add CC values
+	✔	Add NetWorldState values
+	✔	Add multiplayer values
+		✔	Join as peer
+
+✔	Unload custom data
+	✔	Clear CC values
+	✔	Clear NetWorldState values
+	✔	Clear multiplayer values
+
+✔	Donate item
+	✔	Persistent bundle progress
+		✔	Overnight
+		✔	Unload bundle
+		✔	Reinstall
+	✔	Preserved donated items
+	✔	Multiplayer synchronised progress
+
+✔	Complete bundle
+	✔	Persistent bundle progress
+		✔	Overnight
+		✔	Unload bundle
+		✔	Reinstall
+	✔	Preserved rewards
+	✔	Multiplayer synchronised progress
+
+✔	Complete area
+	✔	Persistent area progress
+		✔	Overnight
+		✔	Unload area
+		✔	Reinstall
+	✔	Bundles complete
+		✔	All bundles fields true
+	✔	Multiplayer synchronised progress
+		✔	Area complete night event sync
+	✔	Mail received
+		✔	ccArea
+		✔	Area_completed_followup
+
+✔	Complete base areas only
+	✔	CC must not complete while custom metadata loaded
+
+✔	Complete custom areas only
+	✔	CC must not complete while custom metadata loaded
+
+✔	Complete all areas
+	✔	CC must complete
+
+✔	Complete CC
+
+✔	Load 1 custom area
+
+✔	Load 2 custom areas
+
+✔	Change custom areas during play
+
+	Complete JMWH
+
+	Complete AJM
+		Complete AJM without load/save between CC and AJM
+		Complete AJM with load/save
+
+✔	Load save with AJM complete
+	✔	Custom areas not loaded
+
+✔	Junimo Note Menu
+	✔	Open
+	✔	Mutex
+	✔	Navigate
+		✔	Host
+			✔	1 area
+			✔	2 areas
+			✔	4 areas
+		✔	Peer
+			✔	1 area
+			✔	2 areas
+			✔	4 areas
+
+✔	Gus delivery
+	✔	Singleplayer
+		✔	1 item
+		✔	4 items
+		✔	Sound plays indoors
+	✔	Multiplayer
+		✔	1 item
+		✔	4 items
+		✔	Gus appears per player
+		✔	Sounds played per player
+		✔	Items per player
+		✔	Multiple items per order
+		✔	Order from indoors
+		✔	Place new order while old order in transit
+		✔	Place new order while old order leaving
+		✔	Try take other player's box

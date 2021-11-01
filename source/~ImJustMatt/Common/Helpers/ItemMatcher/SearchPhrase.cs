@@ -19,7 +19,7 @@ namespace Common.Helpers.ItemMatcher
     using SObject = StardewValley.Object;
 
     /// <summary>
-    /// A search phrase for an Item name or tags.
+    ///     A search phrase for an Item name or tags.
     /// </summary>
     public class SearchPhrase
     {
@@ -27,13 +27,13 @@ namespace Common.Helpers.ItemMatcher
         private const string CategoryArtifact = "category_artifact";
         private const string DonateMuseum = "donate_museum";
         private const string DonateBundle = "donate_bundle";
+        private readonly bool _exact;
 
         private readonly string _search;
         private readonly bool _tag;
-        private readonly bool _exact;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SearchPhrase"/> class.
+        ///     Initializes a new instance of the <see cref="SearchPhrase" /> class.
         /// </summary>
         /// <param name="searchPhrase">The phrase to search.</param>
         /// <param name="searchTagSymbol">Prefix to denote search is based on an item's context tags.</param>
@@ -57,28 +57,34 @@ namespace Common.Helpers.ItemMatcher
         }
 
         /// <summary>
-        /// Gets a value indicating whether this is a "Not" search phrase.
+        ///     Gets a value indicating whether this is a "Not" search phrase.
         /// </summary>
         public bool NotMatch { get; }
 
-        public static HashSet<string> GetContextTags(Item item)
+        public static IEnumerable<string> GetContextTags(Item item)
         {
-            HashSet<string> contextTags = item.GetContextTags();
+            var contextTags = item.GetContextTags();
+            foreach (var contextTag in contextTags)
+            {
+                if (!contextTag.StartsWith("id_"))
+                {
+                    yield return contextTag;
+                }
+            }
+
             if (item is SObject obj && SearchPhrase.CanDonateToBundle(obj))
             {
-                contextTags.Add(SearchPhrase.DonateBundle);
+                yield return SearchPhrase.DonateBundle;
             }
 
             if (SearchPhrase.CanDonateToMuseum(item))
             {
-                contextTags.Add(SearchPhrase.DonateMuseum);
+                yield return SearchPhrase.DonateMuseum;
             }
-
-            return contextTags;
         }
 
         /// <summary>
-        /// Checks if item matches this search phrase.
+        ///     Checks if item matches this search phrase.
         /// </summary>
         /// <param name="item">The item to check.</param>
         /// <returns>Returns true if item matches the search phrase.</returns>
@@ -92,9 +98,9 @@ namespace Common.Helpers.ItemMatcher
             return item switch
             {
                 Furniture when this.Matches(SearchPhrase.CategoryFurniture) => true,
-                SObject { Type: "Arch" } when this.Matches(SearchPhrase.CategoryArtifact) => true,
-                SObject { Type: "Arch" } when this.Matches(SearchPhrase.DonateMuseum) => SearchPhrase.CanDonateToMuseum(item),
-                SObject { Type: "Minerals" } when this.Matches(SearchPhrase.DonateMuseum) => SearchPhrase.CanDonateToMuseum(item),
+                SObject {Type: "Arch"} when this.Matches(SearchPhrase.CategoryArtifact) => true,
+                SObject {Type: "Arch"} when this.Matches(SearchPhrase.DonateMuseum) => SearchPhrase.CanDonateToMuseum(item),
+                SObject {Type: "Minerals"} when this.Matches(SearchPhrase.DonateMuseum) => SearchPhrase.CanDonateToMuseum(item),
                 SObject obj when this.Matches(SearchPhrase.DonateBundle) => SearchPhrase.CanDonateToBundle(obj),
                 _ => item.GetContextTags().Any(this.Matches) != this.NotMatch,
             };

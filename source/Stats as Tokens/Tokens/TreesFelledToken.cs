@@ -67,8 +67,6 @@ namespace StatsAsTokens
 				["8"] = "mahogany",
 				//[9] = "palm2"
 			};
-
-			HarmonyPatches.TreeFelledPatch();
 		}
 
 		/****
@@ -88,15 +86,15 @@ namespace StatsAsTokens
 				}
 				else if (args[0].IndexOf('=') == args[0].Length - 1)
 				{
-					error += "Named argument 'player' not provided a value. Must be one of the following values: 'host', 'local'. ";
+					error += "Named argument 'player' not provided a value. Must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
 				}
 				else
 				{
 					// accept hostplayer or host, localplayer or local
-					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().Replace("player", "");
-					if (!(playerType.Equals("host") || playerType.Equals("local")))
+					string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim();
+					if (!(playerType.Equals("hostPlayer") || playerType.Equals("currentPlayer")))
 					{
-						error += "Named argument 'player' must be one of the following values: 'host', 'local'. ";
+						error += "Named argument 'player' must be one of the following values: 'hostPlayer', 'currentPlayer'. ";
 					}
 				}
 
@@ -183,10 +181,10 @@ namespace StatsAsTokens
 			string[] args = input.Split('|');
 
 			// sanitize inputs
-			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace("player", "").Replace(" ", "");
+			string playerType = args[0].Substring(args[0].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 			string treeType = args[1].Substring(args[1].IndexOf('=') + 1).Trim().ToLower().Replace(" ", "");
 
-			string pType = playerType.Equals("host") ? host : loc;
+			string pType = playerType.Equals("hostPlayer") ? host : loc;
 
 			if (TryGetTreesFelled(treeType, pType, out string treeNum))
 			{

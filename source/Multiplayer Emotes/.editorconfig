@@ -1,2 +1,15 @@
-[*.{cs,json}]
-indent_style = tab
+# https://editorconfig.org/
+
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+
+[*.{bash,zsh,sh}]
+end_of_line = lf
+
+[*.{csproj,tt}]
+insert_final_newline = false

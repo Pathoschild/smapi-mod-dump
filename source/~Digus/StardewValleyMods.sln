@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnimalHusbandryMod", "ButcherMod\AnimalHusbandryMod.csproj", "{FA6A5BA1-8983-4982-B746-ADF42EC01795}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailFrameworkMod", "MailFrameworkMod\MailFrameworkMod.csproj", "{9AB101DD-FB56-4441-8180-783405D2D2F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailFrameworkMod", "MailFrameworkMod\MailFrameworkMod.csproj", "{9AB101DD-FB56-4441-8180-783405D2D2F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EverlastingBaitsAndUnbreakableTacklesMod", "EverlastingBaitsUnbreakableTacklesMod\EverlastingBaitsAndUnbreakableTacklesMod.csproj", "{3A15291C-575C-49DC-928F-F88BF8F91C53}"
 EndProject
@@ -57,12 +57,12 @@ Global
 		{FA6A5BA1-8983-4982-B746-ADF42EC01795}.Release|x86.Build.0 = Release|x86
 		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Debug|x86.ActiveCfg = Debug|x86
-		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Debug|x86.Build.0 = Debug|x86
+		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Debug|x86.Build.0 = Debug|Any CPU
 		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Release|x86.ActiveCfg = Release|x86
-		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Release|x86.Build.0 = Release|x86
+		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{9AB101DD-FB56-4441-8180-783405D2D2F0}.Release|x86.Build.0 = Release|Any CPU
 		{3A15291C-575C-49DC-928F-F88BF8F91C53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3A15291C-575C-49DC-928F-F88BF8F91C53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A15291C-575C-49DC-928F-F88BF8F91C53}.Debug|x86.ActiveCfg = Debug|Any CPU

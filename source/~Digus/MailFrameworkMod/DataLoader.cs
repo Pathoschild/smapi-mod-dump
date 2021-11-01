@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MailFrameworkMod.ContentPack;
+using MailFrameworkMod.integrations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -31,6 +32,18 @@ namespace MailFrameworkMod
 
         private static readonly List<string> NoUpgradeLevelTools = new List<string>() {"Scythe", "Shears", "Milk Pail", "Fishing Rod", "Golden Scythe", "Pan", "Return Scepter" };
         private static readonly List<int> SlingshotIndexes = new List<int>() {32, 33, 34};
+
+        public static IModHelper Helper;
+        public static IDynamicGameAssetsApi DgaApi;
+        public static IConditionsChecker ConditionsCheckerApi;
+
+        public DataLoader(IModHelper helper)
+        {
+            Helper = helper;
+            DgaApi = MailFrameworkModEntry.ModHelper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
+            ConditionsCheckerApi = Helper.ModRegistry.GetApi<IConditionsChecker>("Cherry.ExpandedPreconditionsUtility");
+            ConditionsCheckerApi?.Initialize(false, MailFrameworkModEntry.Manifest.UniqueID);
+        }
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
@@ -123,6 +136,8 @@ namespace MailFrameworkMod
                             && (mailItem.EventsNotSeen == null ||  !mailItem.EventsNotSeen.Intersect(Game1.player.eventsSeen).Any())
                             && (mailItem.RecipeKnown == null || (mailItem.RequireAllRecipeKnown ? mailItem.RecipeKnown.All(r=> Game1.player.knowsRecipe(r)) : mailItem.RecipeKnown.Any(r => Game1.player.knowsRecipe(r))))
                             && (mailItem.RecipeNotKnown == null || mailItem.RecipeNotKnown.All(r=>!Game1.player.knowsRecipe(r)))
+                            && (mailItem.ExpandedPrecondition == null || (ConditionsCheckerApi != null && ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPrecondition)))
+                            && (mailItem.ExpandedPreconditions == null || (ConditionsCheckerApi != null && ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPreconditions)))
                         ;
 
                         if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
@@ -340,6 +355,41 @@ namespace MailFrameworkMod
                                             MailFrameworkModEntry.ModMonitor.Log($"An index value is required to attach a boots for letter {mailItem.Id}.", LogLevel.Warn);
                                         }
                                         break;
+                                    case ItemType.DGA:
+                                        if (DgaApi != null)
+                                        {
+                                            try
+                                            {
+                                                object dgaObject = DgaApi.SpawnDGAItem(i.Name);
+                                                if (dgaObject is StardewValley.Item dgaItem)
+                                                {
+                                                    if (dgaItem is StardewValley.Object)
+                                                    {
+                                                        dgaItem.Stack = i.Stack ?? 1;
+                                                    }
+                                                    else
+                                                    {
+                                                        dgaItem.Stack = 1;
+                                                    }
+
+                                                    attachments.Add(dgaItem);
+                                                }
+                                                else
+                                                {
+                                                    MailFrameworkModEntry.ModMonitor.Log($"No DGA item found with the ID {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                MailFrameworkModEntry.ModMonitor.Log($"Error trying to create item with the DGA ID {i.Name} for letter {mailItem.Id}.", LogLevel.Warn);
+                                                MailFrameworkModEntry.ModMonitor.Log(ex.Message, LogLevel.Trace);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            MailFrameworkModEntry.ModMonitor.Log($"No DGA API found, so item with the ID {i.Name} for letter {mailItem.Id} will be ignored.", LogLevel.Warn);
+                                        }
+                                        break;
                                     default:
                                         MailFrameworkModEntry.ModMonitor.Log($"Invalid attachment type '{i.Type}' found in letter {mailItem.Id}.", LogLevel.Warn);
                                         break;
@@ -351,7 +401,11 @@ namespace MailFrameworkMod
                                     , hasTranslation && mailItem.Text != null ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
                                     , attachments
                                     , Condition
-                                    , (l) => Game1.player.mailReceived.Add(l.Id)
+                                    , (l) =>
+                                    {
+                                        Game1.player.mailReceived.Add(l.Id);
+                                        if (mailItem.AdditionalMailReceived != null) Game1.player.mailReceived.AddRange(mailItem.AdditionalMailReceived);
+                                    }
                                     , mailItem.WhichBG
                                 )
                                 {
@@ -371,7 +425,11 @@ namespace MailFrameworkMod
                                     , hasTranslation && mailItem.Text != null ? contentPack.Translation.Get(mailItem.Text) : mailItem.Text
                                     , mailItem.Recipe
                                     , Condition
-                                    , (l) => Game1.player.mailReceived.Add(l.Id)
+                                    , (l) =>
+                                    {
+                                        Game1.player.mailReceived.Add(l.Id);
+                                        if (mailItem.AdditionalMailReceived != null) Game1.player.mailReceived.AddRange(mailItem.AdditionalMailReceived);
+                                    }
                                     , mailItem.WhichBG
                                 )
                                 {

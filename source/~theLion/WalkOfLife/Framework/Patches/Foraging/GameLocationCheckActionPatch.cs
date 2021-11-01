@@ -8,14 +8,14 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
-using StardewValley.Network;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Network;
 using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 using SObject = StardewValley.Object;
@@ -27,15 +27,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal GameLocationCheckActionPatch()
 		{
-			Original = TargetMethod();
-			Transpiler = new HarmonyMethod(GetType(), nameof(GameLocationCheckActionTranspiler));
+			Original = typeof(GameLocation).MethodNamed(nameof(GameLocation.checkAction));
+			Transpiler = new(GetType(), nameof(GameLocationCheckActionTranspiler));
 		}
 
 		#region harmony patches
 
-		/// <summary>Patch to nerf Ecologist forage quality + add quality to foraged minerals for Gemologist + increment respective mod data fields.</summary>
+		/// <summary>
+		///     Patch to nerf Ecologist forage quality + add quality to foraged minerals for Gemologist + increment respective
+		///     mod data fields.
+		/// </summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> GameLocationCheckActionTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+		private static IEnumerable<CodeInstruction> GameLocationCheckActionTranspiler(
+			IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -51,7 +55,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					)
 					.ToBufferUntil( // copy objects[key]
 						new CodeInstruction(OpCodes.Callvirt,
-							typeof(OverlaidDictionary).PropertyGetter(propertyName: "Item"))
+							typeof(OverlaidDictionary).PropertyGetter("Item"))
 					)
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Brfalse_S) // end of check
@@ -62,19 +66,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					.Insert( // check if is foraged mineral and branch if true
 						new CodeInstruction(OpCodes.Call,
 							typeof(SObjectExtensions).MethodNamed(nameof(SObjectExtensions.IsForagedMineral))),
-						new CodeInstruction(OpCodes.Brtrue_S, (Label)shouldntSetCustomQuality)
+						new CodeInstruction(OpCodes.Brtrue_S, (Label) shouldntSetCustomQuality)
 					)
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Ldc_I4_4) // start of objects[key].Quality = 4
 					)
 					.ReplaceWith( // replace with custom quality
-						new CodeInstruction(OpCodes.Call,
+						new(OpCodes.Call,
 							typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetEcologistForageQuality)))
 					);
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while patching modded Ecologist forage quality.\nHelper returned {ex}");
+				Log($"Failed while patching modded Ecologist forage quality.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 
@@ -84,13 +88,12 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			try
 			{
 				Helper
-
 					.FindProfessionCheck(Farmer.botanist) // return to botanist check
-					.Retreat(2) // retreat to start of check
+					.Retreat() // retreat to start of check
 					.ToBufferUntil( // copy entire section until done setting quality
-						stripLabels: true,
-						advance: false,
-						new CodeInstruction(OpCodes.Br)
+						true,
+						false,
+						new CodeInstruction(OpCodes.Br_S)
 					)
 					.AdvanceUntil( // change previous section branch destinations to injected section
 						new CodeInstruction(OpCodes.Brfalse_S)
@@ -105,7 +108,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					)
 					.SetOperand(gemologistCheck)
 					.AdvanceUntil(
-						new CodeInstruction(OpCodes.Br)
+						new CodeInstruction(OpCodes.Br_S)
 					)
 					.Advance()
 					.InsertBuffer() // insert copy
@@ -127,21 +130,23 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					)
 					.RemoveUntil( // right before call to IsForagedMineral()
 						new CodeInstruction(OpCodes.Callvirt,
-							typeof(OverlaidDictionary).PropertyGetter(propertyName: "Item"))
+							typeof(OverlaidDictionary).PropertyGetter("Item"))
 					)
 					.Advance()
 					.ReplaceWith( // remove 'not' and set correct branch destination
-						new CodeInstruction(OpCodes.Brfalse_S, (Label)shouldntSetCustomQuality)
+						new(OpCodes.Brfalse_S, (Label) shouldntSetCustomQuality)
 					)
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Call,
 							typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetEcologistForageQuality)))
 					)
-					.SetOperand(typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetGemologistMineralQuality))); // set correct custom quality method call
+					.SetOperand(
+						typeof(Util.Professions).MethodNamed(nameof(Util.Professions
+							.GetGemologistMineralQuality))); // set correct custom quality method call
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding modded Gemologist foraged mineral quality.\nHelper returned {ex}");
+				Log($"Failed while adding modded Gemologist foraged mineral quality.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 
@@ -155,17 +160,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(Stats).PropertySetter(nameof(Stats.ItemsForaged)))
 					)
 					.Advance()
-					.InsertBuffer(index: 6, length: 5) // SObject objects[key]
-					.InsertBuffer(index: 6, length: 2) // GameLocation this
-					.InsertBuffer(index: 0, length: 2) // Farmer who
+					.InsertBuffer(5, 4) // SObject objects[key]
+					.Insert(
+						new CodeInstruction(OpCodes.Ldarg_0),
+						new CodeInstruction(OpCodes.Ldarg_3)
+					)
 					.Insert(
 						new CodeInstruction(OpCodes.Call,
-							typeof(GameLocationCheckActionPatch).MethodNamed(nameof(CheckActionIncrementModData)))
+							typeof(GameLocationCheckActionPatch).MethodNamed(nameof(CheckActionSubroutine)))
 					);
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Ecologist and Gemologist counter increment.\nHelper returned {ex}");
+				Log($"Failed while adding Ecologist and Gemologist counter increment.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 
@@ -176,22 +183,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 		#region private methods
 
-		/// <summary>Get the inner method to patch.</summary>
-		[HarmonyTargetMethod]
-		private static MethodBase TargetMethod()
-		{
-			var targetMethod = typeof(GameLocation).InnerMethodsStartingWith("<checkAction>b__0").First();
-			if (targetMethod == null)
-				throw new MissingMethodException("Target method '<checkAction>b__0' was not found.");
-
-			return targetMethod;
-		}
-
-		/// <summary>Increment one of the mod data fields if applicable.</summary>
-		/// <param name="obj">The picked up object.</param>
-		/// <param name="location">The player's location.</param>
-		/// <param name="who">The player.</param>
-		private static void CheckActionIncrementModData(SObject obj, GameLocation location, Farmer who)
+		private static void CheckActionSubroutine(SObject obj, GameLocation location, Farmer who)
 		{
 			if (who.HasProfession("Ecologist") && obj.isForage(location) && !obj.IsForagedMineral())
 				ModEntry.Data.IncrementField<uint>("ItemsForaged");

@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_StardewBitmap", "SDV_StardewBitmap.shproj", "{C3338739-F026-41B9-BB8D-E3E15573F19A}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SDV_StardewBitmap.projitems*{c3338739-f026-41b9-bb8d-e3e15573f19a}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEAE64DF-582E-4478-A11B-082F6CF266DE}
+	EndGlobalSection
+EndGlobal

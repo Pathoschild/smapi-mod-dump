@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "camera.name": "Camara",
+    "camera.description": "¡Haz una foto de un NPC! Compra cartuchos en la tienda de Pierre en los Jueves.",
+    "error.no-matching-portrait": "Te olvidaste de quitar la tapa de la lente.\n(No se encontro ningún retrato coincidente.)"
+}

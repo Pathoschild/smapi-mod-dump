@@ -48,7 +48,7 @@ namespace SpriteMaster.xBRZ.Scalers {
 		public readonly uint O => Data[14];
 		public readonly uint P => Data[15];
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal Kernel4x4 (
 			uint _0,
 			uint _1,

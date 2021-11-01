@@ -50,7 +50,7 @@ namespace MultipleSpouses
             }
             foreach (string friend in farmer.friendshipData.Keys)
             {
-                if (farmer.friendshipData[friend].IsMarried() && (all > 0 || friend != farmer.spouse))
+                if (Game1.getCharacterFromName(friend, true) != null && farmer.friendshipData[friend].IsMarried() && (all > 0 || friend != farmer.spouse))
                 {
                     spouses.Add(friend, Game1.getCharacterFromName(friend, true));
                 }
@@ -269,7 +269,10 @@ namespace MultipleSpouses
                 else if(ModEntry.config.BuildAllSpousesRooms && roomSpouses.Contains(j.Name))
                 {
                     int offset = roomSpouses.IndexOf(j.Name) * 7;
-                    j.setTilePosition((int)spot.X + offset, (int)spot.Y);
+                    if (j.Name == "Sebastian" && Game1.netWorldState.Value.hasWorldStateID("sebastianFrog"))
+                        j.setTilePosition((int)spot.X + offset - 1, (int)spot.Y + 1);
+                    else
+                        j.setTilePosition((int)spot.X + offset, (int)spot.Y);
                     j.faceDirection(ModEntry.myRand.Next(0, 4));
                     j.setSpouseRoomMarriageDialogue();
                     Monitor.Log($"{j.Name} loc: {(spot.X + offset)},{spot.Y}");
@@ -397,6 +400,7 @@ namespace MultipleSpouses
             Rectangle bed = new Rectangle(bedStart.X * 64, bedStart.Y * 64, bedWidth * 64, 3 * 64);
             return box.Intersects(bed);
         }
+
         public static Vector2 GetSpouseBedPosition(FarmHouse fh, List<string> allBedmates, string name)
         {
             int bedWidth = GetBedWidth(fh);
@@ -404,6 +408,7 @@ namespace MultipleSpouses
             int x = 64 + (int)((allBedmates.IndexOf(name) + 1) / (float)(allBedmates.Count + 1) * (bedWidth - 1) * 64);
             return new Vector2(bedStart.X * 64 + x, bedStart.Y * 64 + ModEntry.bedSleepOffset - (GetTopOfHeadSleepOffset(name) * 4));
         }
+
         public static Vector2 GetFarmerBedPosition(FarmHouse fh)
         {
             Point bedStart = GetBedStart(fh);
@@ -421,7 +426,6 @@ namespace MultipleSpouses
         {
             if (ModEntry.config.CustomBed)
             {
-                bool up = fh.upgradeLevel > 1;
                 return Math.Max(ModEntry.config.BedWidth, 3);
             }
             else

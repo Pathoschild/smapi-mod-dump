@@ -1,0 +1,71 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Think-n-Talk", "32bit\Think-n-Talk.csproj", "{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{73EEFBFC-2861-49F4-B695-3120DF5AE96A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Think-n-Talk-64bit", "64bit\Think-n-Talk-64bit.csproj", "{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_BubbleGuy", "Shared\SDV_BubbleGuy\SDV_BubbleGuy.shproj", "{E5FC34CA-7A9D-4E8E-BDEF-12AFA09E66CD}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_Speaker-Core", "Shared\SDV_BubbleGuy-Core\SDV_Speaker-Core.shproj", "{0E0DEC22-18D8-42C8-B627-C430123CC26B}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_StardewBitmap", "Shared\SDV_StardewBitmap\SDV_StardewBitmap.shproj", "{C3338739-F026-41B9-BB8D-E3E15573F19A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SDV_Logger", "Shared\SDV_Logger\SDV_Logger.shproj", "{AD53B60A-7E08-462A-B29D-DDB7A6F74B85}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\SDV_BubbleGuy-Core\SDV_Speaker-Core.projitems*{0e0dec22-18d8-42c8-b627-c430123cc26b}*SharedItemsImports = 13
+		Shared\SDV_BubbleGuy-Core\SDV_Speaker-Core.projitems*{168dd5c2-bb1d-4288-bfab-bbd67b2c45aa}*SharedItemsImports = 5
+		Shared\SDV_BubbleGuy\SDV_BubbleGuy.projitems*{168dd5c2-bb1d-4288-bfab-bbd67b2c45aa}*SharedItemsImports = 5
+		Shared\SDV_Logger\SDV_Logger.projitems*{168dd5c2-bb1d-4288-bfab-bbd67b2c45aa}*SharedItemsImports = 5
+		Shared\SDV_StardewBitmap\SDV_StardewBitmap.projitems*{168dd5c2-bb1d-4288-bfab-bbd67b2c45aa}*SharedItemsImports = 5
+		Shared\SDV_Logger\SDV_Logger.projitems*{ad53b60a-7e08-462a-b29d-ddb7a6f74b85}*SharedItemsImports = 13
+		Shared\SDV_BubbleGuy-Core\SDV_Speaker-Core.projitems*{bea4b0c5-ded1-4774-a4d2-d6716fcdff62}*SharedItemsImports = 4
+		Shared\SDV_BubbleGuy\SDV_BubbleGuy.projitems*{bea4b0c5-ded1-4774-a4d2-d6716fcdff62}*SharedItemsImports = 4
+		Shared\SDV_Logger\SDV_Logger.projitems*{bea4b0c5-ded1-4774-a4d2-d6716fcdff62}*SharedItemsImports = 4
+		Shared\SDV_StardewBitmap\SDV_StardewBitmap.projitems*{bea4b0c5-ded1-4774-a4d2-d6716fcdff62}*SharedItemsImports = 4
+		Shared\SDV_StardewBitmap\SDV_StardewBitmap.projitems*{c3338739-f026-41b9-bb8d-e3e15573f19a}*SharedItemsImports = 13
+		Shared\SDV_BubbleGuy\SDV_BubbleGuy.projitems*{e5fc34ca-7a9d-4e8e-bdef-12afa09e66cd}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Debug|x64.Build.0 = Debug|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Release|x64.ActiveCfg = Release|Any CPU
+		{BEA4B0C5-DED1-4774-A4D2-D6716FCDFF62}.Release|x64.Build.0 = Release|Any CPU
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Debug|Any CPU.Build.0 = Debug|x64
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Debug|x64.ActiveCfg = Debug|x64
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Debug|x64.Build.0 = Debug|x64
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Release|x64.ActiveCfg = Release|x64
+		{168DD5C2-BB1D-4288-BFAB-BBD67B2C45AA}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E5FC34CA-7A9D-4E8E-BDEF-12AFA09E66CD} = {73EEFBFC-2861-49F4-B695-3120DF5AE96A}
+		{0E0DEC22-18D8-42C8-B627-C430123CC26B} = {73EEFBFC-2861-49F4-B695-3120DF5AE96A}
+		{C3338739-F026-41B9-BB8D-E3E15573F19A} = {73EEFBFC-2861-49F4-B695-3120DF5AE96A}
+		{AD53B60A-7E08-462A-B29D-DDB7A6F74B85} = {73EEFBFC-2861-49F4-B695-3120DF5AE96A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F57551E5-7CF3-463B-AC24-CA36789593B6}
+	EndGlobalSection
+EndGlobal

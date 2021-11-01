@@ -1,0 +1,124 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/CustomCommunityCentre
+**
+*************************************************/
+
+{
+	"Metadata": {
+		"Custom_blueberry_Lounge_Area0": {
+			"BundlesRequired": 1,
+			"JunimoColourName": "SkyBlue",
+			"AreaBounds": {
+				"X": 35,
+				"Y": 13,
+				"Width": 8,
+				"Height": 9
+			},
+			"NoteTileLocation": {
+				"X": 38,
+				"Y": 19
+			},
+			"JunimoOffsetFromNoteTileLocation": {
+				"X": 1,
+				"Y": -1
+			},
+			"AreaCompleteCutscene": {
+				"CameraTileLocation": {
+					"X": 40,
+					"Y": 17
+				},
+				"Actors": [
+					{
+						"ColourName": "White",
+						"TileLocation": {
+							"X": 38,
+							"Y": 20
+						},
+						"SourceTexture": "LooseSprites/Cursors",
+						"SourceRectangle": {
+							"X": 558,
+							"Y": 1422,
+							"Width": 20,
+							"Height": 30
+						},
+						"AnimationFrames": 3,
+						"AnimationInterval": 300,
+						"Scale": 4.0,
+						"FloatHorizontally": false,
+						"FloatVertically": false
+					}
+				],
+				"Duration": 8000,
+				"Music": "stardrop",
+				"Sound": "",
+				"SoundInterval": 999999,
+				"DrawEffects": false,
+				"LocationName": "CommunityCenter"
+			},
+			"AreaDisplayName": {
+				"en": "Lounge"
+			},
+			"AreaRewardMessage": {
+				"en": "Reward: Comfy couch"
+			},
+			"AreaCompleteDialogue": {
+				"en": "Wow... Now we have to bring the sofa back, too."
+			},
+			"BundleDisplayNames": {
+				"Custom_blueberry_Lounge_Area0_Bundle0": {
+					"en": "Comfy"
+				},
+				"Custom_blueberry_Lounge_Area0_Bundle1": {
+					"en": "Lazy"
+				}
+			}
+		}
+	},
+	"Definitions": {
+		"Custom_blueberry_Lounge_Area0": {
+			"BundleSets": [
+			],
+			"Bundles": {
+				"Custom_blueberry_Lounge_Area0_Bundle0": {
+					"Index": 0,
+					"Sprite": "sprites:0",
+					"Colour": "Purple",
+					"Items": "1 Pumpkin Pie",
+					"Pick": -1,
+					"RequiredItems": 1,
+					"Reward": "1 Blue Couch"
+				},
+				"Custom_blueberry_Lounge_Area0_Bundle1": {
+					"Index": 0,
+					"Sprite": "sprites:1",
+					"Colour": "Yellow",
+					"Items": "1 Survival Burger",
+					"Pick": -1,
+					"RequiredItems": 1,
+					"Reward": "1 Yellow Couch"
+				}
+			}
+		}
+	},
+	"Substitutes": {
+		"Platonymous.CustomMusic": {
+			"Custom_blueberry_Lounge_Area0_Bundle0": {
+				"Items": "1 Vinegar",
+				"Pick": -1,
+				"RequiredItems": 1,
+				"Reward": "1 Green Couch"
+			},
+			"Custom_blueberry_Lounge_Area0_Bundle1": {
+				"Items": "1 Oil",
+				"Pick": -1,
+				"RequiredItems": 1,
+				"Reward": "1 Red Couch"
+			}
+		}
+	}
+}

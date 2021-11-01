@@ -6,9 +6,9 @@ mods:
    Halt Event Time
 
 latest commit:
-   commit 3c7442dbc89ea637b58a851459084c8ebfbc46a3
+   commit 41630bcc0c1cb667e89dea544101e0acb4a17931
    Author: chawol <chawolbaka@hotmail.com>
-   Date:   Mon Jul 5 12:47:41 2021 +0800
+   Date:   Mon Oct 4 14:43:12 2021 +0800
    
-       Add more config
+       Release 1.0.1
    

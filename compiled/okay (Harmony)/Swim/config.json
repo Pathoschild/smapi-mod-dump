@@ -2,6 +2,7 @@
   "EnableMod": true,
   "ReadyToSwim": true,
   "SwimSuitAlways": false,
+  "NoAutoSwimSuit": false,
   "JumpTimeInMilliseconds": 500,
   "SwimKey": "J",
   "SwimSuitKey": "K",

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -24,14 +25,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal QuestionEventSetUpPatch()
 		{
 			Original = typeof(QuestionEvent).MethodNamed(nameof(QuestionEvent.setUp));
-			Transpiler = new HarmonyMethod(GetType(), nameof(QuestionEventSetUpTranspiler));
+			Transpiler = new(GetType(), nameof(QuestionEventSetUpTranspiler));
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch for Breeder to increase barn animal pregnancy chance.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> QuestionEventSetUpTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+		private static IEnumerable<CodeInstruction> QuestionEventSetUpTranspiler(
+			IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
@@ -50,7 +52,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					.Advance()
 					.AddLabels(resumeExecution) // branch here to resume execution
 					.Retreat()
-					.InsertProfessionCheckForLocalPlayer(Util.Professions.IndexOf("Breeder"), branchDestination: isNotBreeder)
+					.InsertProfessionCheckForLocalPlayer(Util.Professions.IndexOf("Breeder"), isNotBreeder)
 					.Insert( // if player is breeder load adjusted pregancy chance
 						new CodeInstruction(OpCodes.Ldc_R8, 0.0165),
 						new CodeInstruction(OpCodes.Br_S, resumeExecution)
@@ -58,7 +60,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while adding Breeder bonus animal pregnancy chance.\nHelper returned {ex}");
+				Log($"Failed while adding Breeder bonus animal pregnancy chance.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

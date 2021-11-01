@@ -46,8 +46,8 @@
 	},
 
 
-	/*{
-   	//After starting storyline
+	{
+   	//stay home flag
    "Action": "EditData",
    "Target": "Characters/Dialogue/Undreya",
    "Entries": {
@@ -107,6 +107,10 @@
 	"Sat10": "{{i18n:Undreya.Dialogue.Sat10}}",
 	"Sun10": "{{i18n:Undreya.Dialogue.Sun10}}",
 		},
-	},*/
+	"When": {
+				"HasFlag: hostPlayer |contains=RSV.UndreyaStayHome": true,
+			},
+	},
+
 ]		
 }

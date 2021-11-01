@@ -1,0 +1,21 @@
+{
+  "EnableMod": true,
+  "BlipAudioPath": "assets/blip.wav",
+  "BlipAudioPathLeft": "assets/blip_left.wav",
+  "BlipAudioPathRight": "assets/blip_right.wav",
+  "BlipAudioVolume": 1.0,
+  "BlipAudioIncreasePitch": true,
+  "RequireMetalDetector": true,
+  "MetalDetectorID": "MetalDetector",
+  "RequireMetalDetectorSwing": false,
+  "EnableIndicator": true,
+  "SecondsPerPoll": 1,
+  "MapHasCoinsChance": 0.5,
+  "MinCoinsPerMap": 1,
+  "MaxCoinsPerMap": 5,
+  "IndicatorSprite": 7,
+  "IndicatorLength": 3.0,
+  "IndicatorSpeed": 10.0,
+  "LuckFactor": 0.1,
+  "MaxPixelPingDistance": 800.0
+}

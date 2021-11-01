@@ -59,7 +59,6 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             }
         }
 
-
         [HarmonyBefore(new string[] { "spacechase0.DynamicGameAssets" })]
         private static bool DrawPrefix(Crop __instance, Vector2 ___origin, Vector2 ___drawPosition, Rectangle ___sourceRect, Rectangle ___coloredSourceRect, float ___coloredLayerDepth, Vector2 ___smallestTileSizeOrigin, float ___layerDepth, SpriteBatch b, Vector2 tileLocation, Color toTint, float rotation)
         {
@@ -73,7 +72,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 }
 
                 var textureVariation = Int32.Parse(hoeDirt.modData["AlternativeTextureVariation"]);
-                if (textureVariation == -1 || AlternativeTextures.modConfig.IsTextureVariationDisabled(textureModel.GetId(), textureVariation))
+                if (__instance.dead || textureVariation == -1 || AlternativeTextures.modConfig.IsTextureVariationDisabled(textureModel.GetId(), textureVariation))
                 {
                     return true;
                 }
@@ -120,7 +119,6 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             return true;
         }
 
-
         [HarmonyBefore(new string[] { "spacechase0.DynamicGameAssets" })]
         private static bool DrawWithOffsetPrefix(Crop __instance, Vector2 ___origin, Vector2 ___drawPosition, Rectangle ___sourceRect, Rectangle ___coloredSourceRect, SpriteBatch b, Vector2 tileLocation, Color toTint, float rotation, Vector2 offset)
         {
@@ -140,7 +138,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 }
 
                 var textureVariation = Int32.Parse(hoeDirt.modData["AlternativeTextureVariation"]);
-                if (textureVariation == -1 || AlternativeTextures.modConfig.IsTextureVariationDisabled(textureModel.GetId(), textureVariation))
+                if (__instance.dead || textureVariation == -1 || AlternativeTextures.modConfig.IsTextureVariationDisabled(textureModel.GetId(), textureVariation))
                 {
                     return true;
                 }

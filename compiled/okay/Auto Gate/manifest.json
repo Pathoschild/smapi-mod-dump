@@ -1,0 +1,10 @@
+﻿{
+    "Name": "AutoGate",
+    "Author": "Teban100",
+    "Version": "1.2.0",
+    "Description": "Makes passing through gates automatic.",
+    "UniqueID": "AutoGate",
+    "EntryDll": "AutoGate.dll",
+    "MinimumApiVersion": "3.12.0",
+    "UpdateKeys": [ "Nexus:820" ]
+}

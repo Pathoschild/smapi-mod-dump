@@ -8,12 +8,14 @@
 **
 *************************************************/
 
+using System;
+using System.Linq;
+using Microsoft.Xna.Framework.Content;
 using Netcode;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-using System;
-using System.Linq;
 using TheLion.Stardew.Common.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Events
@@ -22,7 +24,7 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 	public class SuperModeEnabledEvent : BaseEvent
 	{
-		private const int SHEET_INDEX_OFFSET = 22;
+		private const int SHEET_INDEX_OFFSET_I = 22;
 
 		/// <summary>Hook this event to the event listener.</summary>
 		public override void Hook()
@@ -42,16 +44,27 @@ namespace TheLion.Stardew.Professions.Framework.Events
 			var whichSuperMode = Util.Professions.NameOf(ModEntry.SuperModeIndex);
 
 			// remove bar shake timer
-			ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBarShakeTimerUpdateTickedEvent));
+			ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBuffDisplayUpdateTickedEvent),
+				typeof(SuperModeBarShakeTimerUpdateTickedEvent));
 			ModEntry.ShouldShakeSuperModeBar = false;
 
 			// fade in overlay
-			ModEntry.Subscriber.Subscribe(new SuperModeRenderedWorldEvent(), new SuperModeOverlayFadeInUpdateTickedEvent());
+			ModEntry.Subscriber.Subscribe(new SuperModeRenderedWorldEvent(),
+				new SuperModeOverlayFadeInUpdateTickedEvent());
 
-			// play sfx
-			if (!ModEntry.SfxLoader.SfxByName.TryGetValue(ModEntry.SuperModeSfx, out var sfx))
-				throw new ArgumentException($"Sound asset '{ModEntry.SuperModeSfx}' could not be found.");
-			sfx.CreateInstance().Play();
+			// play sound effect
+			try
+			{
+				if (ModEntry.SoundFX.SoundByName.TryGetValue(ModEntry.SuperModeSFX, out var sfx))
+					sfx.Play(Game1.options.soundVolumeLevel, 0f, 0f);
+				else throw new ContentLoadException();
+			}
+			catch (Exception ex)
+			{
+				ModEntry.Log(
+					$"Couldn't play sound asset file '{ModEntry.SuperModeSFX}'. Make sure the file exists. {ex}",
+					LogLevel.Error);
+			}
 
 			// add countdown event
 			ModEntry.Subscriber.Subscribe(new SuperModeCountdownUpdateTickedEvent());
@@ -62,10 +75,11 @@ namespace TheLion.Stardew.Professions.Framework.Events
 			var professionName = Util.Professions.NameOf(professionIndex);
 
 			var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffID);
-			if (buff == null)
+			if (buff is null)
 			{
+				Game1.buffsDisplay.otherBuffs.Clear();
 				Game1.buffsDisplay.addOtherBuff(
-					new Buff(0,
+					new(0,
 						0,
 						0,
 						0,
@@ -74,83 +88,101 @@ namespace TheLion.Stardew.Professions.Framework.Events
 						0,
 						0,
 						0,
+						professionName == "Poacher" ? -1 : 0,
 						0,
 						0,
-						0,
-						minutesDuration: 1,
-						source: "SuperMode",
-						displaySource: ModEntry.ModHelper.Translation.Get(professionName.ToLower() + ".superm"))
+						1,
+						"SuperMode",
+						ModEntry.ModHelper.Translation.Get(professionName.ToLower() + ".superm"))
 					{
 						which = buffID,
-						sheetIndex = professionIndex + SHEET_INDEX_OFFSET,
+						sheetIndex = professionIndex + SHEET_INDEX_OFFSET_I,
 						glow = ModEntry.SuperModeGlowColor,
-						millisecondsDuration = (int)(ModEntry.Config.SuperModeDrainFactor / 60f * ModEntry.SuperModeCounterMax * 1000f),
+						millisecondsDuration = (int) (ModEntry.Config.SuperModeDrainFactor / 60f *
+						                              ModEntry.SuperModeCounterMax * 1000f),
 						description = ModEntry.ModHelper.Translation.Get(professionName.ToLower() + ".supermdesc")
 					}
 				);
 			}
 
 			// notify peers
-			ModEntry.ModHelper.Multiplayer.SendMessage(message: ModEntry.SuperModeIndex, messageType: "SuperModeActivated", modIDs: new[] { ModEntry.UniqueID });
+			ModEntry.ModHelper.Multiplayer.SendMessage(ModEntry.SuperModeIndex, "SuperModeActivated",
+				new[] {ModEntry.UniqueID});
 
-			// apply immediate effects
-			if (whichSuperMode == "Poacher") DoEnablePoacherSuperMode();
-			else if (whichSuperMode == "Piper") DoEnablePiperSuperMode();
+			switch (whichSuperMode)
+			{
+				// apply immediate effects
+				case "Poacher":
+					DoEnablePoacherSuperMode();
+					break;
+
+				case "Piper":
+					DoEnablePiperSuperMode();
+					break;
+			}
 		}
 
 		/// <summary>Hide the player from monsters that may have already seen him/her.</summary>
-		private void DoEnablePoacherSuperMode()
+		private static void DoEnablePoacherSuperMode()
 		{
-			foreach (var monster in Game1.currentLocation.characters.OfType<Monster>().Where(m => m.Player.IsLocalPlayer))
+			foreach (var monster in Game1.currentLocation.characters.OfType<Monster>()
+				.Where(m => m.Player.IsLocalPlayer))
 			{
 				monster.focusedOnFarmers = false;
 				switch (monster)
 				{
 					case DustSpirit dustSpirit:
-						ModEntry.ModHelper.Reflection.GetField<bool>(dustSpirit, name: "chargingFarmer").SetValue(false);
-						ModEntry.ModHelper.Reflection.GetField<bool>(dustSpirit, name: "seenFarmer").SetValue(false);
+						ModEntry.ModHelper.Reflection.GetField<bool>(dustSpirit, "chargingFarmer").SetValue(false);
+						ModEntry.ModHelper.Reflection.GetField<bool>(dustSpirit, "seenFarmer").SetValue(false);
 						break;
+
 					case AngryRoger angryRoger:
-						ModEntry.ModHelper.Reflection.GetField<NetBool>(angryRoger, name: "seenPlayer").GetValue().Set(false);
+						ModEntry.ModHelper.Reflection.GetField<NetBool>(angryRoger, "seenPlayer").GetValue().Set(false);
 						break;
+
 					case Bat bat:
-						ModEntry.ModHelper.Reflection.GetField<NetBool>(bat, name: "seenPlayer").GetValue().Set(false);
+						ModEntry.ModHelper.Reflection.GetField<NetBool>(bat, "seenPlayer").GetValue().Set(false);
 						break;
+
 					case Ghost ghost:
-						ModEntry.ModHelper.Reflection.GetField<NetBool>(ghost, name: "seenPlayer").GetValue().Set(false);
+						ModEntry.ModHelper.Reflection.GetField<NetBool>(ghost, "seenPlayer").GetValue().Set(false);
 						break;
+
 					case RockGolem rockGolem:
-						ModEntry.ModHelper.Reflection.GetField<NetBool>(rockGolem, name: "seenPlayer").GetValue().Set(false);
+						ModEntry.ModHelper.Reflection.GetField<NetBool>(rockGolem, "seenPlayer").GetValue().Set(false);
 						break;
 				}
 			}
 		}
 
 		/// <summary>Enflate Slimes and apply mutations.</summary>
-		private void DoEnablePiperSuperMode()
+		private static void DoEnablePiperSuperMode()
 		{
-			foreach (var greenSlime in Game1.currentLocation.characters.OfType<GreenSlime>().Where(slime => slime.Scale < 2f))
+			foreach (var greenSlime in Game1.currentLocation.characters.OfType<GreenSlime>()
+				.Where(slime => slime.Scale < 2f))
 			{
 				if (Game1.random.NextDouble() <= 0.012 + Game1.player.team.AverageDailyLuck() / 10.0)
 				{
-					if (Game1.currentLocation is MineShaft && Game1.player.team.SpecialOrderActive("Wizard2")) greenSlime.makePrismatic();
+					if (Game1.currentLocation is MineShaft && Game1.player.team.SpecialOrderActive("Wizard2"))
+						greenSlime.makePrismatic();
 					else greenSlime.hasSpecialItem.Value = true;
 				}
 
-				ModEntry.PipedSlimesScales.Add(greenSlime, greenSlime.Scale);
+				ModEntry.PipedSlimeScales.Add(greenSlime, greenSlime.Scale);
 			}
 
 			var bigSlimes = Game1.currentLocation.characters.OfType<BigSlime>().ToList();
-			for (int i = bigSlimes.Count - 1; i >= 0; --i)
+			for (var i = bigSlimes.Count - 1; i >= 0; --i)
 			{
 				bigSlimes[i].Health = 0;
 				bigSlimes[i].deathAnimation();
-				int toCreate = Game1.random.Next(2, 5);
+				var toCreate = Game1.random.Next(2, 5);
 				while (toCreate-- > 0)
 				{
 					Game1.currentLocation.characters.Add(new GreenSlime(bigSlimes[i].Position, Game1.CurrentMineLevel));
-					var justCreated = Game1.currentLocation.characters[Game1.currentLocation.characters.Count - 1];
-					justCreated.setTrajectory((int)(bigSlimes[i].xVelocity / 8 + Game1.random.Next(-2, 3)), (int)(bigSlimes[i].yVelocity / 8 + Game1.random.Next(-2, 3)));
+					var justCreated = Game1.currentLocation.characters[^1];
+					justCreated.setTrajectory((int) (bigSlimes[i].xVelocity / 8 + Game1.random.Next(-2, 3)),
+						(int) (bigSlimes[i].yVelocity / 8 + Game1.random.Next(-2, 3)));
 					justCreated.willDestroyObjectsUnderfoot = false;
 					justCreated.moveTowardPlayer(4);
 					justCreated.Scale = 0.75f + Game1.random.Next(-5, 10) / 100f;

@@ -8,13 +8,13 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Locations;
+using StardewValley.Monsters;
 using TheLion.Stardew.Common.Extensions;
 using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
@@ -28,21 +28,25 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 		internal GreenSlimeGetExtraDropItemsPatch()
 		{
 			Original = typeof(GreenSlime).MethodNamed(nameof(GreenSlime.getExtraDropItems));
-			Postfix = new HarmonyMethod(GetType(), nameof(GreenSlimeGetExtraDropItemsPostfix));
+			Postfix = new(GetType(), nameof(GreenSlimeGetExtraDropItemsPostfix));
 		}
 
-		#region harmony patches 
+		#region harmony patches
 
 		/// <summary>Patch Slime drop table for Piper.</summary>
 		private static void GreenSlimeGetExtraDropItemsPostfix(GreenSlime __instance, ref List<Item> __result)
 		{
-			if (!__instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers) || !Game1.MasterPlayer.mailReceived.Contains("slimeHutchBuilt")) return;
+			if (!__instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers) ||
+			    !Game1.MasterPlayer.mailReceived.Contains("slimeHutchBuilt")) return;
 
-			var slimeCount = Game1.getFarm().buildings.Where(b => (b.owner.Value.AnyOf(pipers.Select(p => p.UniqueMultiplayerID).ToArray()) || !Game1.IsMultiplayer) && b.indoors.Value is SlimeHutch && !b.isUnderConstruction() && b.indoors.Value.characters.Any()).Sum(b => b.indoors.Value.characters.Count(npc => npc is GreenSlime)) + Game1.getFarm().characters.Count(npc => npc is GreenSlime);
+			var slimeCount =
+				Game1.getFarm().buildings.Where(b =>
+						(b.owner.Value.AnyOf(pipers.Select(p => p.UniqueMultiplayerID)) ||
+						 !Context.IsMultiplayer) && b.indoors.Value is SlimeHutch && !b.isUnderConstruction() &&
+						b.indoors.Value.characters.Any())
+					.Sum(b => b.indoors.Value.characters.Count(npc => npc is GreenSlime)) +
+				Game1.getFarm().characters.Count(npc => npc is GreenSlime);
 			if (slimeCount <= 0) return;
-
-			var color = __instance.color;
-			var name = __instance.Name;
 
 			var r = new Random(Guid.NewGuid().GetHashCode());
 			var baseChance = -1 / (0.02 * (slimeCount + 50)) + 1;
@@ -52,18 +56,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 			while (r.NextDouble() < baseChance && count < 10)
 			{
 				__result.Add(new SObject(766, 1)); // slime
-				if (r.NextDouble() < 5 / 8) __result.Add(new SObject(92, 1)); // sap
+				if (r.NextDouble() < 5f / 8f) __result.Add(new SObject(92, 1)); // sap
 				++count;
 			}
 
-			if (MineShaft.lowestLevelReached >= 120 && (__instance.currentLocation is MineShaft || __instance.currentLocation is VolcanoDungeon))
+			if (MineShaft.lowestLevelReached >= 120 && __instance.currentLocation is MineShaft or VolcanoDungeon)
 			{
 				if (r.NextDouble() < baseChance / 8) __result.Add(new SObject(72, 1)); // diamond
 				if (r.NextDouble() < baseChance / 10) __result.Add(new SObject(74, 1)); // prismatic shard
 			}
 
 			// color drops
-			if (name != "Tiger Slime")
+			var color = __instance.color;
+			if (__instance.Name != "Tiger Slime")
 			{
 				if (color.R < 80 && color.G < 80 && color.B < 80) // black
 				{
@@ -76,7 +81,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 					while (r.NextDouble() < baseChance / 2) __result.Add(new SObject(384, 1)); // gold ore
 					if (r.NextDouble() < baseChance / 3) __result.Add(new SObject(336, 1)); // gold bar
 				}
-				else if (color.R > 220 && color.G > 90 && color.G < 150 && color.B < 50) // red
+				else if (color.R > 220 && color.G is > 90 and < 150 && color.B < 50) // red
 				{
 					while (r.NextDouble() < baseChance / 2) __result.Add(new SObject(378, 1)); // copper ore
 					if (r.NextDouble() < baseChance / 3) __result.Add(new SObject(334, 1)); // copper bar
@@ -103,44 +108,45 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 					if (r.NextDouble() < baseChance / 4) __result.Add(new SObject(337, 1)); // iridium bar
 				}
 
+				if (!(r.NextDouble() < baseChance / 5)) return;
+
 				// slime eggs
-				if (r.NextDouble() < baseChance / 5)
+				switch (__instance.Name)
 				{
-					switch (__instance.Name)
-					{
-						case "Green Slime":
-							__result.Add(new SObject(680, 1));
-							break;
-						case "Frost Jelly":
-							__result.Add(new SObject(413, 1));
-							break;
-						case "Sludge":
-							if (color.B < 200) __result.Add(new SObject(437, 1));
-							else __result.Add(new SObject(439, 1));
-							break;
-					}
+					case "Green Slime":
+						__result.Add(new SObject(680, 1));
+						break;
+
+					case "Frost Jelly":
+						__result.Add(new SObject(413, 1));
+						break;
+
+					case "Sludge":
+						__result.Add(color.B < 200 ? new(437, 1) : new SObject(439, 1));
+						break;
 				}
 			}
 			else
 			{
 				while (r.NextDouble() < baseChance)
-				{
 					switch (r.Next(4))
 					{
 						case 0:
 							__result.Add(new SObject(831, 1)); // taro tuber
 							break;
+
 						case 1:
 							__result.Add(new SObject(829, 1)); // ginger
 							break;
+
 						case 2:
 							__result.Add(new SObject(833, 1)); // pineapple seeds
 							break;
+
 						case 3:
 							__result.Add(new SObject(835, 1)); // mango sapling
 							break;
 					}
-				}
 
 				// tiger slime egg
 				if (r.NextDouble() < baseChance / 5) __result.Add(new SObject(857, 1));

@@ -1,0 +1,91 @@
+﻿{
+  "text.treasure": "Treasure: {{chance}}",
+  "text.trash": "Trash: {{chance}}",
+  "text.fish": "{{name}} - {{chance}}%",
+  "text.fish.unknownName": "<Unknown: {{key}}>",
+  "text.fish.more": "+{{quantity}}...",
+  "text.streak": "Streak: {{streak}}",
+  "text.streak.lost": "You lost your perfect fishing streak of {{streak}}.",
+  "text.streak.warning": "Catch the treasure and the fish to keep your streak of {{streak}}!",
+  "text.streak.restored": "You kept your perfect fishing streak!",
+  // HUD config
+  "text.config.hud.name": "HUD",
+  "text.config.hud.desc": "Configure how the fishing HUD looks",
+  "text.config.hud.showFishingHud.name": "Show fishing HUD",
+  "text.config.hud.showFishingHud.desc":
+    "Whether or not to show current streak, chance for treasure, chance for each fish, etc. while fishing.",
+  "text.config.hud.topLeftX.name": "Top left X",
+  "text.config.hud.topLeftX.desc": "The X coordinate of the top left corner of the fishing HUD.",
+  "text.config.hud.topLeftY.name": "Top left Y",
+  "text.config.hud.topLeftY.desc": "The Y coordinate of the top left corner of the fishing HUD.",
+  "text.config.hud.maxFishTypes.name": "Max fish types",
+  "text.config.hud.maxFishTypes.desc": "The number of fish to show on the fishing HUD.",
+  // Fish config
+  "text.config.fish.name": "Fish",
+  "text.config.fish.desc": "Configure how fishing works",
+  "text.config.fish.showFishInMinigame.name": "Show fish in minigame",
+  "text.config.fish.showFishInMinigame.desc": "Whether to show the fish being caught in the fishing minigame.",
+  "text.config.fish.catchSpeed.name": "Catch speed",
+  "text.config.fish.catchSpeed.desc": "Affects how fast you catch fish.",
+  "text.config.fish.drainSpeed.name": "Drain speed",
+  "text.config.fish.drainSpeed.desc": "Affects how fast the catch bar drains when the bobber isn't on the fish.",
+  "text.config.fish.streakForIncreasedQuality.name": "Streak for quality increase",
+  "text.config.fish.streakForIncreasedQuality.desc":
+    "Required streak for an increase in quality. For example, 3 means that every 3 consecutive perfect catches increases your catch quality by 1.",
+  "text.config.fish.maxNormalFishQuality.enabled.name": "Max normal fish quality (enabled)",
+  "text.config.fish.maxNormalFishQuality.enabled.desc":
+    "Determines the max quality fish a non-perfect catch can get, or null for no restrictions.",
+  "text.config.fish.maxNormalFishQuality.name": "Max normal fish quality",
+  "text.config.fish.maxNormalFishQuality.desc": "The chance that you'll find a fish instead of trash.",
+  "text.config.fish.maxFishQuality.name": "Max fish quality",
+  "text.config.fish.maxFishQuality.desc":
+    "The max quality fish that can be caught. 0 = normal, 1 = silver, 2 = gold, 3 = iridium, 4+ = beyond iridium.",
+  "text.config.fish.fishChances.name": "Chances of hitting a fish",
+  "text.config.fish.fishChances.desc": "Configuration options for how likely it is to hit a fish instead of trash.",
+  // Treasure config
+  "text.config.treasure.name": "Treasure",
+  "text.config.treasure.desc": "Configure how treasure caught while fishing works",
+  "text.config.treasure.maxTreasureQuantity.name": "Max treasure",
+  "text.config.treasure.maxTreasureQuantity.desc":
+    "Maximum amount of treasure you can find in a single chest while fishing.",
+  "text.config.treasure.allowDuplicateLoot.name": "Allow duplicate loot",
+  "text.config.treasure.allowDuplicateLoot.desc":
+    "Whether the treasure randomizer should be allowed to select the same loot option multiple times. Some loot can't be repeated even if duplicate loot is enabled.",
+  "text.config.treasure.catchSpeed.name": "Catch speed",
+  "text.config.treasure.catchSpeed.desc": "Affects how fast you catch treasure.",
+  "text.config.treasure.drainSpeed.name": "Drain speed",
+  "text.config.treasure.drainSpeed.desc":
+    "Affects how fast the treasure bar drains when the bobber isn't on the chest.",
+  "text.config.treasure.treasureChances.name": "Chances of finding treasure",
+  "text.config.treasure.treasureChances.desc": "The chances of finding treasure while fishing.",
+  "text.config.treasure.additionalLootChances.name": "Chances for additional loot",
+  "text.config.treasure.additionalLootChances.desc":
+    "The chances of getting additional loot when finding treasure. This is rolled until it fails or the max number of items have been added to the loot.",
+  // Fishing chances config options
+  "text.config.chances.baseChance.name": "Base chance",
+  "text.config.chances.baseChance.desc": "The base chance.",
+  "text.config.chances.streakFactor.name": "Streak factor",
+  "text.config.chances.streakFactor.desc":
+    "The effect that streak has on this chance. This is multiplied by the streak and added to the chance.",
+  "text.config.chances.fishingLevelFactor.name": "Fishing level factor",
+  "text.config.chances.fishingLevelFactor.desc":
+    "The effect that fishing level has on this chance. This is multiplied by the fishing level and added to the chance.",
+  "text.config.chances.dailyLuckFactor.name": "Daily luck factor",
+  "text.config.chances.dailyLuckFactor.desc":
+    "The effect that daily luck has on this chance. This is multiplied by the daily luck and added to the chance.",
+  "text.config.chances.luckLevelFactor.name": "Luck level factor",
+  "text.config.chances.luckLevelFactor.desc":
+    "The effect that luck level has on this chance. This is multiplied by the luck level and added to the chance.",
+  "text.config.chances.minChance.name": "Minimum chance",
+  "text.config.chances.minChance.desc": "The minimum possible chance.",
+  "text.config.chances.maxChance.name": "Maximum chance",
+  "text.config.chances.maxChance.desc": "The maximum possible chance.",
+  "text.config.chances.locationFactors.desc":
+    "The effects that specific locations have on the chance must be edited directly in the config file. They are added to the final chance.",
+  "text.config.chances.treasure.magnetFactor.name": "Magnet factor",
+  "text.config.chances.treasure.magnetFactor.desc":
+    "The effect that the magnet bait has. This is added to the chance if fishing with a magnet.",
+  "text.config.chances.treasure.treasureHunterFactor.name": "Treasure hunter factor",
+  "text.config.chances.treasure.treasureHunterFactor.desc":
+    "The effect that the treasure hunter tackle has. This is added to the chance if fishing with the treasure hunter tackle."
+}

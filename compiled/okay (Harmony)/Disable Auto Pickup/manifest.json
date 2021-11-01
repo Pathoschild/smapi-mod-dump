@@ -1,7 +1,7 @@
 {
-  "Name": "DisableAutoPickup",
-  "Author": "Copyright (c) 2021 Kubichek E.V.",
-  "Version": "1.0.0",
+  "Name": "Disable Auto Pickup",
+  "Author": "Kubichek E.V.",
+  "Version": "1.0.2",
   "Description": "Disables automatic pickup of items from the ground.",
   "UniqueID": "KubichekEV.DisableAutoPickup",
   "EntryDll": "DisableAutoPickup.dll",

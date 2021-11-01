@@ -7,9 +7,10 @@
 		<PackageId>SpriteMaster Runtime</PackageId>
 		<ProjectGuid>{D8AB0188-41C5-4669-AD33-231DA9401FA0}</ProjectGuid>
 		<OutputType>Library</OutputType>
-		<Version>0.12.1-RC2</Version>
-		<FileVersion>0.12.1.0</FileVersion>
-		<AssemblyVersion>0.12.1.*</AssemblyVersion>
+		<Version>0.13.0</Version>
+		<FileVersion>0.13.0.0</FileVersion>
+		<AssemblyVersion>0.13.0.*</AssemblyVersion>
+		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">

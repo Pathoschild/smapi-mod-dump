@@ -24,13 +24,13 @@ namespace SpriteMaster.xBRZ {
 		public const uint MinScale = 2;
 		public const uint MaxScale = Config.MaxScale;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public Scaler (
 			uint scaleMultiplier,
-			in Span<uint> sourceData,
+			in FixedSpan<uint> sourceData,
 			in Point sourceSize,
 			in Rectangle? sourceTarget,
-			ref Span<uint> targetData,
+			ref FixedSpan<uint> targetData,
 			in Config configuration
 		) {
 			if (scaleMultiplier < MinScale || scaleMultiplier > MaxScale) {
@@ -81,8 +81,8 @@ namespace SpriteMaster.xBRZ {
 		private readonly int targetHeight;
 
 		//fill block with the given color
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void FillBlock<T> (ref Span<T> trg, int trgi, int pitch, T col, int blockSize) where T : unmanaged {
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
+		private static void FillBlock<T> (ref FixedSpan<T> trg, int trgi, int pitch, T col, int blockSize) where T : unmanaged {
 			for (var y = 0; y < blockSize; ++y, trgi += pitch) {
 				for (var x = 0; x < blockSize; ++x) {
 					trg[trgi + x] = col;
@@ -92,7 +92,7 @@ namespace SpriteMaster.xBRZ {
 
 		//detect blend direction
 		[Pure]
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private BlendResult PreProcessCorners (in Kernel4x4 ker) {
 			var result = new BlendResult();
 
@@ -137,7 +137,7 @@ namespace SpriteMaster.xBRZ {
 				-------------
 				blendInfo: result of preprocessing all four corners of pixel "e"
 		*/
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private unsafe void ScalePixel (IScaler scaler, RotationDegree rotDeg, in Kernel3x3 ker, int trgi, byte blendInfo) {
 			var blend = blendInfo.Rotate(rotDeg);
 
@@ -216,7 +216,7 @@ namespace SpriteMaster.xBRZ {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private int clampX (int x) {
 			x -= sourceTarget.Left;
 			if (configuration.Wrapped.X) {
@@ -228,7 +228,7 @@ namespace SpriteMaster.xBRZ {
 			return x + sourceTarget.Left;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private int clampY (int y) {
 			y -= sourceTarget.Top;
 			if (configuration.Wrapped.Y) {
@@ -240,7 +240,7 @@ namespace SpriteMaster.xBRZ {
 			return y + sourceTarget.Top;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private bool legalX (int x) {
 			return true;
 			/*
@@ -251,7 +251,7 @@ namespace SpriteMaster.xBRZ {
 			*/
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private bool legalY (int y) {
 			return true;
 			/*
@@ -262,24 +262,24 @@ namespace SpriteMaster.xBRZ {
 			*/
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private int getX (int x) {
 			return legalX(x) ? clampX(x) : -clampX(x);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private int getY (int y) {
 			return legalY(y) ? clampY(y) : -clampY(y);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static uint Mask (uint value, uint mask) {
 			return value & mask;
 		}
 
 		//scaler policy: see "Scaler2x" reference implementation
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private unsafe void Scale (in Span<uint> source, ref Span<uint> destination) {
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
+		private unsafe void Scale (in FixedSpan<uint> source, ref FixedSpan<uint> destination) {
 			fixed (uint* destinationPtr = &destination.GetPinnableReference()) {
 
 				int yFirst = sourceTarget.Top;
@@ -291,7 +291,7 @@ namespace SpriteMaster.xBRZ {
 				//temporary buffer for "on the fly preprocessing"
 				var preProcBuffer = stackalloc byte[sourceTarget.Width];
 
-				static uint GetPixel (in Span<uint> src, int stride, int offset) {
+				static uint GetPixel (in FixedSpan<uint> src, int stride, int offset) {
 					// We can try embedded a distance calculation as well. Perhaps instead of a negative stride/offset, we provide a 
 					// negative distance from the edge and just recalculate the stride/offset in that case.
 					// We can scale the alpha reduction by the distance to hopefully correct the edges.

@@ -7,9 +7,9 @@ mods:
    Walk Of Life
 
 latest commit:
-   commit 8f7d5bb2a1447ea078e85183eedcad5d62388905
+   commit 28fc0a7ad6acad2f52fc1cc91396898c5ce524f8
    Author: The Lion <matheus_is@live.com>
-   Date:   Wed Sep 29 14:46:56 2021 -0300
+   Date:   Fri Oct 29 18:58:11 2021 -0300
    
-       Typo in fish audit cc. Caught profession index out of range exceptions.
+       1.5.5 final commit.
    

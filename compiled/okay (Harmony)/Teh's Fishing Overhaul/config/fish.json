@@ -1,0 +1,19 @@
+{
+    "ShowFishInMinigame": false,
+    "CatchSpeed": 1,
+    "DrainSpeed": 1,
+    "StreakForIncreasedQuality": 3,
+    "MaxFishQuality": 3,
+    "MaxNormalFishQuality": null,
+    "FishChances": {
+        "BaseChance": 0.5,
+        "StreakFactor": 0.005,
+        "FishingLevelFactor": 0.025,
+        "DailyLuckFactor": 1,
+        "LuckLevelFactor": 0.01,
+        "MinChance": 0.1,
+        "MaxChance": 0.9,
+        "LocationFactors": {
+        }
+    }
+}

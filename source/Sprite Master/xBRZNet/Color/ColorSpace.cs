@@ -18,7 +18,7 @@ namespace SpriteMaster.xBRZ.Color {
 			public readonly double G;
 			public readonly double B;
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal Double3 (double r, double g, double b) {
 				R = r;
 				G = g;
@@ -30,7 +30,7 @@ namespace SpriteMaster.xBRZ.Color {
 			public readonly double R;
 			public readonly double B;
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal ScaleDouble (double r, double b) {
 				R = 0.5 / (1.0 - r);
 				B = 0.5 / (1.0 - b);

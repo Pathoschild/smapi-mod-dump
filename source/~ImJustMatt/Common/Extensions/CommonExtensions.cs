@@ -22,7 +22,7 @@ namespace Common.Extensions
         /// <param name="caller">The calling object.</param>
         public static void InvokeAll(this EventHandler eventHandler, object caller)
         {
-            foreach (Delegate @delegate in eventHandler.GetInvocationList())
+            foreach (var @delegate in eventHandler.GetInvocationList())
             {
                 @delegate.DynamicInvoke(caller, null);
             }
@@ -43,7 +43,7 @@ namespace Common.Extensions
         /// <returns>Returns a shuffled list.</returns>
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
         {
-            return source.Shuffle(new Random());
+            return source.Shuffle(new());
         }
 
         private static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source, Random rng)
@@ -64,9 +64,9 @@ namespace Common.Extensions
         private static IEnumerable<T> ShuffleIterator<T>(this IEnumerable<T> source, Random rng)
         {
             var buffer = source.ToList();
-            for (int i = 0; i < buffer.Count; i++)
+            for (var i = 0; i < buffer.Count; i++)
             {
-                int j = rng.Next(i, buffer.Count);
+                var j = rng.Next(i, buffer.Count);
                 yield return buffer[j];
                 buffer[j] = buffer[i];
             }

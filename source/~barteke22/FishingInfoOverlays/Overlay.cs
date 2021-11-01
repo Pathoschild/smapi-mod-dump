@@ -44,7 +44,7 @@ namespace StardewMods
         private int fishChancesModulo;
         private List<int> oldGeneric;
         private Dictionary<int, int> fishFailed;
-
+        private bool isMinigameOther = false;
 
         private bool isMinigame = false;    //minigame fish preview data, Reflection
         private int miniFish;
@@ -98,15 +98,6 @@ namespace StardewMods
         }
 
 
-        /*  Travel direction, maxIcons + maxIconsPerRow DONE
-         *  make config update on day start + f5 only: update function. DONE
-         *  Tackle + bait preview with values? DONE
-         *  2ndary check for modded fish: Bad performance, setting is Check Frequency: 1-300 slider? DONE
-         *  
-         *  Dark preview (???) if fish not caught. DONE
-         *  Crab Pot preview? DONE
-         *  Minigame: Preview, if not caught dark. Full, simple, just on preview, off. DONE
-         */
 
         public void Rendered(object sender, RenderedEventArgs e)
         {
@@ -428,8 +419,12 @@ namespace StardewMods
         {
             if (e.FromModID == "barteke22.FishingMinigames")
             {
-                //if (e.Type == "fishCaught" && Game1.player.UniqueMultiplayerID == e.ReadAs<long>()) oldTime = -1;
-                if (e.Type == "whichFish") miniFish = e.ReadAs<int>();
+                if (e.Type == "whichFish")
+                {
+                    miniFish = e.ReadAs<int>();
+                    if (miniFish == -1) isMinigameOther = false;
+                    else isMinigameOther = true;
+                }
                 if (e.Type == "hideText") hideText = e.ReadAs<bool>();
             }
         }
@@ -515,7 +510,7 @@ namespace StardewMods
         }
         private void AddFishToListDynamic()                            //very performance intensive check for fish fish available in this area - simulates fishing
         {
-            int freq = (isMinigame) ? 6 / totalPlayersOnThisPC : extraCheckFrequency / totalPlayersOnThisPC; //minigame lowers frequency
+            int freq = (isMinigame || isMinigameOther) ? 6 / totalPlayersOnThisPC : extraCheckFrequency / totalPlayersOnThisPC; //minigame lowers frequency
             for (int i = 0; i < freq; i++)
             {
                 Game1.stats.TimesFished++;

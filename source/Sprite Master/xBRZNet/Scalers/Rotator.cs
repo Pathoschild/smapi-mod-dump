@@ -23,7 +23,7 @@ namespace SpriteMaster.xBRZ.Scalers {
 		// g = 6, h = 7, i = 8;
 		private static readonly int[] RotationsArray = new int[MaxRotations * MaxPositions];
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static int Get(int index) {
 			return RotationsArray[index];
 		}

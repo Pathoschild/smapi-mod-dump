@@ -8,28 +8,31 @@
 **
 *************************************************/
 
+using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using System;
-using System.IO;
+using StardewModdingAPI.Utilities;
 
 namespace TheLion.Stardew.Professions.Framework.AssetEditors
 {
 	public class IconEditor : IAssetEditor
 	{
-		private readonly Texture2D _tileSheet = ModEntry.ModHelper.Content.Load<Texture2D>(Path.Combine("assets", "sprites", "tilesheet.png"));
+		private readonly Texture2D _tileSheet =
+			ModEntry.ModHelper.Content.Load<Texture2D>(Path.Combine("assets", "sprites", "tilesheet.png"));
 
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public bool CanEdit<T>(IAssetInfo asset)
 		{
-			return asset.AssetNameEquals(Path.Combine("LooseSprites", "Cursors")) || asset.AssetNameEquals(Path.Combine("TileSheets", "BuffsIcons"));
+			return asset.AssetNameEquals(PathUtilities.NormalizeAssetName("LooseSprites/Cursors")) ||
+			       asset.AssetNameEquals(PathUtilities.NormalizeAssetName("TileSheets/BuffsIcons"));
 		}
 
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public void Edit<T>(IAssetData asset)
 		{
-			if (asset.AssetNameEquals(Path.Combine("LooseSprites", "Cursors")))
+			if (asset.AssetNameEquals(PathUtilities.NormalizeAssetName("LooseSprites/Cursors")))
 			{
 				// patch modded profession icons
 				var editor = asset.AsImage();
@@ -38,7 +41,7 @@ namespace TheLion.Stardew.Professions.Framework.AssetEditors
 
 				editor.PatchImage(_tileSheet, srcArea, targetArea);
 			}
-			else if (asset.AssetNameEquals(Path.Combine("TileSheets", "BuffsIcons")))
+			else if (asset.AssetNameEquals(PathUtilities.NormalizeAssetName("TileSheets/BuffsIcons")))
 			{
 				// patch modded profession buff icons
 				var editor = asset.AsImage();

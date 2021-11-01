@@ -19,7 +19,7 @@ namespace SpriteMaster.xBRZ.Scalers {
 
 		public readonly uint this[int index] => Data[index];
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal Kernel3x3(uint _0, uint _1, uint _2, uint _3, uint _4, uint _5, uint _6, uint _7, uint _8) {
 			Data[0] = _0;
 			Data[1] = _1;

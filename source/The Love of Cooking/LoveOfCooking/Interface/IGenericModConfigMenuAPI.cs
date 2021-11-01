@@ -19,5 +19,6 @@ namespace LoveOfCooking
         void RegisterLabel(IManifest mod, string labelName, string labelDesc);
         void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
         void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
+        void SubscribeToChange(IManifest mod, Action<string, bool> changeHandler);
     }
 }

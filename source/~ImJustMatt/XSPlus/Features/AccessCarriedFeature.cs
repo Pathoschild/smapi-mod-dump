@@ -11,6 +11,10 @@
 namespace XSPlus.Features
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using Common.Helpers;
+    using Common.Services;
+    using CommonHarmony.Services;
     using HarmonyLib;
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
@@ -20,43 +24,51 @@ namespace XSPlus.Features
     /// <inheritdoc />
     internal class AccessCarriedFeature : BaseFeature
     {
-        private readonly IInputHelper _inputHelper;
+        private HarmonyService _harmony;
 
-        /// <summary>Initializes a new instance of the <see cref="AccessCarriedFeature"/> class.</summary>
-        /// <param name="inputHelper">Provides an API for checking and changing input state.</param>
-        public AccessCarriedFeature(IInputHelper inputHelper)
-            : base("AccessCarried")
+        private AccessCarriedFeature(ServiceManager serviceManager)
+            : base("AccessCarried", serviceManager)
         {
-            this._inputHelper = inputHelper;
+            // Dependencies
+            this.AddDependency<HarmonyService>(
+                service =>
+                {
+                    // Init
+                    this._harmony = service as HarmonyService;
+
+                    // Patches
+                    this._harmony?.AddPatch(
+                        this.ServiceName,
+                        AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
+                        typeof(AccessCarriedFeature),
+                        nameof(AccessCarriedFeature.Chest_addItem_prefix));
+                });
         }
 
-        /// <inheritdoc/>
-        public override void Activate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Activate()
         {
             // Events
-            modEvents.Input.ButtonPressed += this.OnButtonPressed;
+            this.Helper.Events.GameLoop.UpdateTicked += AccessCarriedFeature.OnUpdateTicked;
+            this.Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
 
             // Patches
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
-                prefix: new HarmonyMethod(typeof(AccessCarriedFeature), nameof(AccessCarriedFeature.Chest_addItem_prefix)));
+            this._harmony.ApplyPatches(this.ServiceName);
         }
 
-        /// <inheritdoc/>
-        public override void Deactivate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Deactivate()
         {
             // Events
-            modEvents.Input.ButtonPressed -= this.OnButtonPressed;
+            this.Helper.Events.GameLoop.UpdateTicked -= AccessCarriedFeature.OnUpdateTicked;
+            this.Helper.Events.Input.ButtonPressed -= this.OnButtonPressed;
 
             // Patches
-            harmony.Unpatch(
-                original: AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
-                patch: AccessTools.Method(typeof(AccessCarriedFeature), nameof(AccessCarriedFeature.Chest_addItem_prefix)));
+            this._harmony.UnapplyPatches(this.ServiceName);
         }
 
         /// <summary>Prevent adding chest into itself.</summary>
         [HarmonyPriority(Priority.High)]
-        [SuppressMessage("ReSharper", "SA1313", Justification = "Naming is determined by Harmony.")]
         [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Naming is determined by Harmony.")]
         private static bool Chest_addItem_prefix(Chest __instance, ref Item __result, Item item)
         {
@@ -69,6 +81,19 @@ namespace XSPlus.Features
             return false;
         }
 
+        private static void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (!Context.IsPlayerFree)
+            {
+                return;
+            }
+
+            foreach (var chest in Game1.player.Items.Take(12).OfType<Chest>())
+            {
+                chest.updateWhenCurrentLocation(Game1.currentGameTime, Game1.player.currentLocation);
+            }
+        }
+
         /// <summary>Open inventory for currently held chest.</summary>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
@@ -77,8 +102,17 @@ namespace XSPlus.Features
                 return;
             }
 
-            chest.checkForAction(Game1.player);
-            this._inputHelper.Suppress(e.Button);
+            Log.Trace($"Opening Menu for Carried ${chest.Name}.");
+            if (Context.IsMainPlayer)
+            {
+                chest.checkForAction(Game1.player);
+            }
+            else
+            {
+                chest.ShowMenu();
+            }
+
+            this.Helper.Input.Suppress(e.Button);
         }
     }
 }

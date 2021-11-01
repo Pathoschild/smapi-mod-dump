@@ -9,11 +9,11 @@
 *************************************************/
 
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System.Collections.Generic;
 
 namespace MultiplayerEmotes.Framework {
 
@@ -35,7 +35,7 @@ namespace MultiplayerEmotes.Framework {
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
 		private void OnRendered(object sender, RenderedEventArgs e) {
-			foreach(TemporaryAnimatedSprite animatedSprite in temporaryAnimationList) {
+			foreach (TemporaryAnimatedSprite animatedSprite in temporaryAnimationList) {
 				//animatedSprite.update(Game1.currentGameTime);
 				animatedSprite.Position = new Vector2(Game1.player.Position.X, Game1.player.Position.Y - 160);
 			}
@@ -92,11 +92,10 @@ namespace MultiplayerEmotes.Framework {
 
 			Multiplayer multiplayer = Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
 			multiplayer.broadcastSprites(Game1.player.currentLocation, temporaryAnimationList);
-
 		}
 
 		private void FinishedAnimation(int extraInfo) {
-			switch(extraInfo) {
+			switch (extraInfo) {
 				case 0:
 					ModEntry.ModMonitor.Log($"Finished animation 0!");
 					break;

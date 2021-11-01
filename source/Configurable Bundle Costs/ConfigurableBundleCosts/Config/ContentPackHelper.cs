@@ -44,6 +44,7 @@ namespace ConfigurableBundleCosts
 
 		private static readonly List<string> validTargets = new()
 		{
+			"membershipcost",
 			"buscost",
 			"minecartscost",
 			"bridgecost",
@@ -136,29 +137,62 @@ namespace ConfigurableBundleCosts
 			{
 				savedVal = new ModConfig();
 
-				foreach (ContentPackData pack in packDataList)
+				// if any content packs loaded, hierarchical config includes pack data
+				if (packDataList.Any()) {
+					foreach (ContentPackData pack in packDataList)
+					{
+						ContentPackConfig packVal = pack.Default;
+
+						// set actual config values to:
+						// 									override values if they exist		->		content pack values if provided ->	base config values as a last resort
+						savedVal.Joja.applyValues		  =	Globals.Override?.Joja.applyValues		 ??	packVal.Joja.applyValues		 ??	initVal.Joja.applyValues;
+						savedVal.Joja.membershipCost	  = Globals.Override?.Joja.membershipCost	 ?? packVal.Joja.membershipCost		 ?? initVal.Joja.membershipCost;
+						savedVal.Joja.busCost			  =	Globals.Override?.Joja.busCost			 ??	packVal.Joja.busCost			 ??	initVal.Joja.busCost;
+						savedVal.Joja.minecartsCost		  =	Globals.Override?.Joja.minecartsCost	 ??	packVal.Joja.minecartsCost		 ??	initVal.Joja.minecartsCost;
+						savedVal.Joja.bridgeCost		  =	Globals.Override?.Joja.bridgeCost		 ??	packVal.Joja.bridgeCost			 ??	initVal.Joja.bridgeCost;
+						savedVal.Joja.greenhouseCost	  =	Globals.Override?.Joja.greenhouseCost	 ??	packVal.Joja.greenhouseCost		 ??	initVal.Joja.greenhouseCost;
+						savedVal.Joja.panningCost		  =	Globals.Override?.Joja.panningCost		 ??	packVal.Joja.panningCost		 ??	initVal.Joja.panningCost;
+						savedVal.Joja.movieTheaterCost    =	Globals.Override?.Joja.movieTheaterCost  ?? packVal.Joja.movieTheaterCost	 ??	initVal.Joja.movieTheaterCost;
+
+						savedVal.Vault.applyValues		  =	Globals.Override?.Vault.applyValues		 ??	packVal.Vault.applyValues		 ??	initVal.Vault.applyValues;
+						savedVal.Vault.bundle1			  =	Globals.Override?.Vault.bundle1			 ??	packVal.Vault.bundle1			 ??	initVal.Vault.bundle1;
+						savedVal.Vault.bundle2			  =	Globals.Override?.Vault.bundle2			 ??	packVal.Vault.bundle2			 ??	initVal.Vault.bundle2;
+						savedVal.Vault.bundle3			  =	Globals.Override?.Vault.bundle3			 ??	packVal.Vault.bundle3			 ??	initVal.Vault.bundle3;
+						savedVal.Vault.bundle4			  =	Globals.Override?.Vault.bundle4			 ??	packVal.Vault.bundle4			 ??	initVal.Vault.bundle4;
+					}
+				}
+				// if no content packs loaded, just reconcile config values with config.override values
+				else
 				{
-					ContentPackConfig packVal = pack.Default;
-
 					// set actual config values to:
-					// 									override values if they exist		->		content pack values if provided ->	base config values as a last resort
-					savedVal.Joja.applyValues		  =	Globals.Override?.Joja.applyValues		 ??	packVal.Joja.applyValues		 ??	initVal.Joja.applyValues;
-					savedVal.Joja.busCost			  =	Globals.Override?.Joja.busCost			 ??	packVal.Joja.busCost			 ??	initVal.Joja.busCost;
-					savedVal.Joja.minecartsCost		  =	Globals.Override?.Joja.minecartsCost	 ??	packVal.Joja.minecartsCost		 ??	initVal.Joja.minecartsCost;
-					savedVal.Joja.bridgeCost		  =	Globals.Override?.Joja.bridgeCost		 ??	packVal.Joja.bridgeCost			 ??	initVal.Joja.bridgeCost;
-					savedVal.Joja.greenhouseCost	  =	Globals.Override?.Joja.greenhouseCost	 ??	packVal.Joja.greenhouseCost		 ??	initVal.Joja.greenhouseCost;
-					savedVal.Joja.panningCost		  =	Globals.Override?.Joja.panningCost		 ??	packVal.Joja.panningCost		 ??	initVal.Joja.panningCost;
-					savedVal.Joja.movieTheaterCost    =	Globals.Override?.Joja.movieTheaterCost  ?? packVal.Joja.movieTheaterCost	 ??	initVal.Joja.movieTheaterCost;
+					// 								    override values if they exist		->		base config values
+					savedVal.Joja.applyValues		  = Globals.Override?.Joja.applyValues		 ?? initVal.Joja.applyValues;
+					savedVal.Joja.membershipCost	  = Globals.Override?.Joja.membershipCost	 ?? initVal.Joja.membershipCost;
+					savedVal.Joja.busCost			  = Globals.Override?.Joja.busCost			 ?? initVal.Joja.busCost;
+					savedVal.Joja.minecartsCost		  = Globals.Override?.Joja.minecartsCost	 ?? initVal.Joja.minecartsCost;
+					savedVal.Joja.bridgeCost		  = Globals.Override?.Joja.bridgeCost		 ?? initVal.Joja.bridgeCost;
+					savedVal.Joja.greenhouseCost	  = Globals.Override?.Joja.greenhouseCost	 ?? initVal.Joja.greenhouseCost;
+					savedVal.Joja.panningCost		  = Globals.Override?.Joja.panningCost		 ?? initVal.Joja.panningCost;
+					savedVal.Joja.movieTheaterCost	  = Globals.Override?.Joja.movieTheaterCost  ?? initVal.Joja.movieTheaterCost;
 
-					savedVal.Vault.applyValues		  =	Globals.Override?.Vault.applyValues		 ??	packVal.Vault.applyValues		 ??	initVal.Vault.applyValues;
-					savedVal.Vault.bundle1			  =	Globals.Override?.Vault.bundle1			 ??	packVal.Vault.bundle1			 ??	initVal.Vault.bundle1;
-					savedVal.Vault.bundle2			  =	Globals.Override?.Vault.bundle2			 ??	packVal.Vault.bundle2			 ??	initVal.Vault.bundle2;
-					savedVal.Vault.bundle3			  =	Globals.Override?.Vault.bundle3			 ??	packVal.Vault.bundle3			 ??	initVal.Vault.bundle3;
-					savedVal.Vault.bundle4			  =	Globals.Override?.Vault.bundle4			 ??	packVal.Vault.bundle4			 ??	initVal.Vault.bundle4;
+					savedVal.Vault.applyValues		  = Globals.Override?.Vault.applyValues		 ?? initVal.Vault.applyValues;
+					savedVal.Vault.bundle1			  = Globals.Override?.Vault.bundle1			 ?? initVal.Vault.bundle1;
+					savedVal.Vault.bundle2			  = Globals.Override?.Vault.bundle2			 ?? initVal.Vault.bundle2;
+					savedVal.Vault.bundle3			  = Globals.Override?.Vault.bundle3			 ?? initVal.Vault.bundle3;
+					savedVal.Vault.bundle4			  = Globals.Override?.Vault.bundle4			 ?? initVal.Vault.bundle4;
 				}
 			}
 
 			Globals.CurrentValues = savedVal;
+
+			#if DEBUG
+			Globals.Monitor.Log(Globals.CurrentValues.ToString());
+			#endif
+
+			if (forceReload)
+			{
+				AssetEditor.InvalidateCache();
+			}
 		}
 
 		/// <summary>

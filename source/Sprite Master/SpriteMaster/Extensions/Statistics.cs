@@ -15,14 +15,14 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions {
 	public static class Statistics {
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static unsafe double StandardDeviation (this in Types.Span<int> data, int startIndex = 0, int count = 0) {
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
+		public static unsafe double StandardDeviation (this in FixedSpan<int> data, int startIndex = 0, int count = 0) {
 			return StandardDeviation((int*)data.Pointer, data.Length, startIndex, count);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static unsafe double StandardDeviation (int* data, int length, int startIndex = 0, int count = 0) {
-			//return StandardDeviation(new Span<int>(data, length), startIndex: startIndex, count: count);
+			//return StandardDeviation(new FixedSpan<int>(data, length), startIndex: startIndex, count: count);
 
 			Contract.AssertPositiveOrZero(startIndex);
 			Contract.AssertLess(startIndex, length);
@@ -31,13 +31,13 @@ namespace SpriteMaster.Extensions {
 			Contract.AssertLess(endIndex, length);
 
 			double sum = 0.0;
-			foreach (int i in startIndex..endIndex) {
+			foreach (int i in startIndex.RangeTo(endIndex)) {
 				sum += data[i];
 			}
 			sum /= count;
 
 			double meanDifference = 0.0;
-			foreach (int i in startIndex..endIndex) {
+			foreach (int i in startIndex.RangeTo(endIndex)) {
 				var difference = Math.Abs(data[i] - sum);
 				meanDifference = difference * difference;
 			}

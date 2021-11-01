@@ -22,7 +22,7 @@ CustomRemindersButton:	This is the button you press to bring up the reminder men
 SubtlerReminderSound:	Set this to "true" (no caps) to turn the sound played when a reminder notifies to a subtler version. 
 						Default: false
 
-FarmhandInventoryButton:This is the button you press to bring up the game's main menu / inventory. Set this to whatever button you are using in-game for some minor multiplayer UX improvement. 
+FarmhandInventoryButton:This is the button you press to bring up the game's main menu / inventory. Set this to whatever button you are using in-game; for some minor multiplayer UX improvement. 
 						Default: "E" - default menu button, change it if you use different button.
 						Remarks: This setting is only needed if you use other buttons than "E" to open the inventory and only has effect when you are a co-op farmhand.
 

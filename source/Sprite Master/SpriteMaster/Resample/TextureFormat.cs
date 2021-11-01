@@ -21,23 +21,23 @@ namespace SpriteMaster.Resample {
 		private readonly SurfaceFormat surfaceFormat;
 		private readonly CompressionFormat compressionFormat;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal TextureFormat (SurfaceFormat surfaceFormat, CompressionFormat compressionFormat) {
 			this.surfaceFormat = surfaceFormat;
 			this.compressionFormat = compressionFormat;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator SurfaceFormat (TextureFormat format) {
 			return format.surfaceFormat;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator CompressionFormat (TextureFormat format) {
 			return format.compressionFormat;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal readonly long SizeBytes(int area) {
 			return surfaceFormat.SizeBytes(area);
 		}
@@ -60,7 +60,7 @@ namespace SpriteMaster.Resample {
 		internal static readonly TextureFormat WithPunchthroughAlpha = SupportedOr(DXT1a, WithHardAlpha);
 		internal static readonly TextureFormat NoAlpha = SupportedOr(DXT1, WithPunchthroughAlpha);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static TextureFormat? Get (CompressionFormat format) {
 			var fields = typeof(TextureFormat).GetFields(BindingFlags.Static | BindingFlags.NonPublic);
 			foreach (var field in fields) {

@@ -8,13 +8,13 @@
 **
 *************************************************/
 
+using System;
+using System.Reflection;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
-using System;
-using System.IO;
-using System.Reflection;
 using TheLion.Stardew.Common.Extensions;
 using TheLion.Stardew.Common.Harmony;
 using SObject = StardewValley.Object;
@@ -27,7 +27,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal FarmerShowItemIntakePatch()
 		{
 			Original = typeof(Farmer).MethodNamed(nameof(Farmer.showItemIntake));
-			Prefix = new HarmonyMethod(GetType(), nameof(FarmerShowItemIntakePrefix));
+			Prefix = new(GetType(), nameof(FarmerShowItemIntakePrefix));
 		}
 
 		#region harmony patches
@@ -40,112 +40,134 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				if (!who.mostRecentlyGrabbedItem.ParentSheetIndex.AnyOf(14, 51)) return true; // run original logic
 
-				var toShow = (SObject)who.mostRecentlyGrabbedItem;
-				var tempSprite = who.FacingDirection switch
+				var toShow = (SObject) who.mostRecentlyGrabbedItem;
+				TemporaryAnimatedSprite tempSprite = who.FacingDirection switch
 				{
 					2 => who.FarmerSprite.currentAnimationIndex switch
 					{
-						1 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(0f, -32f), flicker: false, flipped: false,
+						1 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(0f, -32f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						2 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(0f, -43f), flicker: false, flipped: false,
+						2 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(0f, -43f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						3 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(0f, -128f), flicker: false, flipped: false,
+						3 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(0f, -128f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						4 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -120f), flicker: false, flipped: false,
+						4 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -120f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						5 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -120f), flicker: false, flipped: false,
+						5 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -120f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0.02f, Color.White, 4f, -0.02f, 0f, 0f),
 						_ => null
 					},
 					1 => who.FarmerSprite.currentAnimationIndex switch
 					{
-						1 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(28f, -64f), flicker: false, flipped: false,
+						1 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(28f, -64f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						2 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(24f, -72f), flicker: false, flipped: false,
+						2 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(24f, -72f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						3 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(4f, -128f), flicker: false, flipped: false,
+						3 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(4f, -128f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						4 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -124f), flicker: false, flipped: false,
+						4 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -124f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						5 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -124f), flicker: false, flipped: false,
+						5 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -124f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0.02f, Color.White, 4f, -0.02f, 0f, 0f),
 						_ => null
 					},
 					0 => who.FarmerSprite.currentAnimationIndex switch
 					{
-						1 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(0f, -32f), flicker: false, flipped: false,
+						1 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(0f, -32f), false, false,
 							who.getStandingY() / 10000f - 0.001f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						2 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(0f, -43f), flicker: false, flipped: false,
+						2 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(0f, -43f), false, false,
 							who.getStandingY() / 10000f - 0.001f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						3 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(0f, -128f), flicker: false, flipped: false,
+						3 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(0f, -128f), false, false,
 							who.getStandingY() / 10000f - 0.001f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						4 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -120f), flicker: false, flipped: false,
+						4 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -120f), false, false,
 							who.getStandingY() / 10000f - 0.001f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						5 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -120f), flicker: false, flipped: false,
+						5 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -120f), false, false,
 							who.getStandingY() / 10000f - 0.001f, 0.02f, Color.White, 4f, -0.02f, 0f, 0f),
 						_ => null
 					},
 					3 => who.FarmerSprite.currentAnimationIndex switch
 					{
-						1 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(-32f, -64f), flicker: false, flipped: false,
+						1 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(-32f, -64f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						2 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(-28f, -76f), flicker: false, flipped: false,
+						2 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(-28f, -76f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						3 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							100f, 1, 0, who.Position + new Vector2(-16f, -128f), flicker: false, flipped: false,
+						3 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							100f, 1, 0, who.Position + new Vector2(-16f, -128f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						4 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -124f), flicker: false, flipped: false,
+						4 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -124f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0f, Color.White, 4f, 0f, 0f, 0f),
-						5 => new TemporaryAnimatedSprite(Path.Combine("TileSheets", "weapons"),
-							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16, 16),
-							200f, 1, 0, who.Position + new Vector2(0f, -124f), flicker: false, flipped: false,
+						5 => new(PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+							Game1.getSourceRectForStandardTileSheet(Tool.weaponsTexture, toShow.ParentSheetIndex, 16,
+								16),
+							200f, 1, 0, who.Position + new Vector2(0f, -124f), false, false,
 							who.getStandingY() / 10000f + 0.01f, 0.02f, Color.White, 4f, -0.02f, 0f, 0f),
 						_ => null
 					},
 					_ => null
 				};
 
-				if ((toShow.Equals(who.ActiveObject) || (who.ActiveObject != null && toShow != null && toShow.ParentSheetIndex == who.ActiveObject.ParentSheetIndex)) && who.FarmerSprite.currentAnimationIndex == 5)
+				if ((toShow.Equals(who.ActiveObject) || who.ActiveObject is not null && toShow is not null &&
+					    toShow.ParentSheetIndex == who.ActiveObject.ParentSheetIndex) &&
+				    who.FarmerSprite.currentAnimationIndex == 5)
 					tempSprite = null;
 
-				if (tempSprite != null) who.currentLocation.temporarySprites.Add(tempSprite);
+				if (tempSprite is not null) who.currentLocation.temporarySprites.Add(tempSprite);
 
 				if (who.FarmerSprite.currentAnimationIndex != 5) return false; // don't run original logic
 
@@ -155,7 +177,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

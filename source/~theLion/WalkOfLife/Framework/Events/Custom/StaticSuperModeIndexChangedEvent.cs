@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
 using System;
-using TheLion.Stardew.Common.Extensions;
+using Microsoft.Xna.Framework;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
@@ -39,32 +38,39 @@ namespace TheLion.Stardew.Professions.Framework.Events
 			ModEntry.Data.WriteField("SuperModeIndex", ModEntry.SuperModeIndex.ToString());
 			if (ModEntry.SuperModeIndex < 0) return;
 
-			var whichSuperMode = Util.Professions.NameOf(newIndex);
-			if (!whichSuperMode.AnyOf("Brute", "Poacher", "Desperado", "Piper")) throw new ArgumentException($"Unexpected super mode {whichSuperMode}");
+			if (newIndex is < 26 or >= 30)
+			{
+				ModEntry.SuperModeIndex = -1;
+				throw new ArgumentException($"Unexpected super mode index {newIndex}.");
+			}
 
+			var whichSuperMode = Util.Professions.NameOf(newIndex);
 			switch (whichSuperMode)
 			{
 				case "Brute":
 					ModEntry.SuperModeGlowColor = Color.OrangeRed;
 					ModEntry.SuperModeOverlayColor = Color.OrangeRed;
-					ModEntry.SuperModeSfx = "brute_rage";
+					ModEntry.SuperModeSFX = "brute_rage";
 					break;
+
 				case "Poacher":
-					ModEntry.SuperModeGlowColor = Color.GhostWhite;
-					ModEntry.SuperModeOverlayColor = Color.Black;
-					ModEntry.SuperModeSfx = "poacher_ambush";
+					ModEntry.SuperModeGlowColor = Color.MediumPurple;
+					ModEntry.SuperModeOverlayColor = Color.MidnightBlue;
+					ModEntry.SuperModeSFX = "poacher_ambush";
 					ModEntry.MonstersStolenFrom ??= new();
 					break;
+
 				case "Desperado":
 					ModEntry.SuperModeGlowColor = Color.DarkGoldenrod;
 					ModEntry.SuperModeOverlayColor = Color.SandyBrown;
-					ModEntry.SuperModeSfx = "desperado_cockgun";
+					ModEntry.SuperModeSFX = "desperado_cockgun";
 					break;
+
 				case "Piper":
-					ModEntry.SuperModeGlowColor = Color.LightSeaGreen;
-					ModEntry.SuperModeOverlayColor = Color.Green;
-					ModEntry.SuperModeSfx = "piper_provoke";
-					ModEntry.PipedSlimesScales ??= new();
+					ModEntry.SuperModeGlowColor = Color.LimeGreen;
+					ModEntry.SuperModeOverlayColor = Color.DarkGreen;
+					ModEntry.SuperModeSFX = "piper_provoke";
+					ModEntry.PipedSlimeScales ??= new();
 					break;
 			}
 

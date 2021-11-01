@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Item data
+    *********/
+    "seeds.name": "Garsnip Seeds",
+    "seeds.description": "How did this happen? Grows in spring, takes 4 days.",
+
+    "produce.name": "Garsnip",
+    "produce.description": "A gross combination of garlic and parsnips.",
+}

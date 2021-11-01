@@ -1,0 +1,10 @@
+{
+    "Immediate.Refresh" : "立即刷新",
+    "Immediate.Paragraph": "接取任务后立即刷新特殊订单（需要重新打开特别任务板）",
+    "Refresh.on.Tuesday" : "周二刷新",
+    "Refresh.on.Wednesday" : "周三刷新",
+    "Refresh.on.Thursday" : "周四刷新",
+    "Refresh.on.Friday" : "周五刷新",
+    "Refresh.on.Saturday" : "周六刷新",
+    "Refresh.on.Sunday" : "周日刷新",
+}

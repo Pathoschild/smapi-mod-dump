@@ -50,13 +50,67 @@ namespace ConfigurableBundleCosts
 					original: AccessTools.Method(typeof(JojaMart), "buyMovieTheater"),
 					prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(buyMovieTheater_Prefix))
 				);
+				
+				harmony.Patch(
+					original: typeof(JojaMart).GetMethod("answerDialogue"),
+					prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(answerDialogue_Prefix))
+				);
 
+				harmony.Patch(
+					original: typeof(JojaMart).GetMethod("answerDialogue"),
+					postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(answerDialogue_Postfix))
+				);
+				
 				return true;
 			}
 			catch (Exception e)
 			{
 				Globals.Monitor.Log(e.ToString(), LogLevel.Error);
 				return false;
+			}
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony method - maintain case from original")]
+		public static void answerDialogue_Prefix(Response answer, bool __result, out bool __state)
+		{
+			try
+			{
+				if (Game1.player.Money >= Globals.CurrentValues.Joja.membershipCost)
+				{
+					__state = true;
+					Game1.player.Money += 5000;
+				}
+				else
+				{
+					__state = false;
+				}
+				return;
+
+			}
+			catch (Exception ex)
+			{
+				Globals.Monitor.Log($"Failed in {nameof(buyMovieTheater_Prefix)}:\n{ex}", LogLevel.Error);
+				__state = false;
+				return; // run original logic
+			}
+		}
+
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Harmony method - maintain case from original")]
+		public static void answerDialogue_Postfix(Response answer, bool __result, bool __state)
+		{
+			try
+			{
+				if (__state)
+				{
+					Game1.player.Money -= Globals.CurrentValues.Joja.membershipCost;
+				}
+
+				return;
+			}
+			catch (Exception ex)
+			{
+				Globals.Monitor.Log($"Failed in {nameof(buyMovieTheater_Prefix)}:\n{ex}", LogLevel.Error);
+				return; // run original logic
 			}
 		}
 

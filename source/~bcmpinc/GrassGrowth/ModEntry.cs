@@ -39,7 +39,7 @@ namespace StardewHack.GrassGrowth
             if (config.DailyGrowth > 10) config.DailyGrowth = 10;
             if (config.MonthlyGrowth > 100) config.MonthlyGrowth = 100;
             
-            Patch((Farm f) => f.DayUpdate(0), Farm_DayUpdate);
+            Patch((GameLocation gl) => gl.HandleGrassGrowth(0), GameLocation_HandleGrassGrowth);
             Patch((GameLocation gl) => gl.growWeedGrass(0), GameLocation_growWeedGrass);
         }
 
@@ -57,18 +57,22 @@ namespace StardewHack.GrassGrowth
         static int getDailyGrowth() => getInstance().config.DailyGrowth;
 
         // Change the rate at which new grass spawns during the night. 
-        void Farm_DayUpdate() {
+        void GameLocation_HandleGrassGrowth() {
             var code = FindCode(
+                // growWeedGrass(40);
                 OpCodes.Ldarg_0,
                 OpCodes.Ldc_I4_S,
-                Instructions.Call(typeof(GameLocation), nameof(GameLocation.growWeedGrass), typeof(int)),
+                Instructions.Call(typeof(GameLocation), nameof(GameLocation.growWeedGrass), typeof(int))
+            );
+            code[1] = Instructions.Call(GetType(), nameof(getMonthlyGrowth));
+            code = code.FindNext(        
+                // growWeedGrass(1);
                 OpCodes.Ldarg_0,
                 OpCodes.Ldc_I4_1,
                 Instructions.Call(typeof(GameLocation), nameof(GameLocation.growWeedGrass), typeof(int)),
                 OpCodes.Ret
             );
-            code[1] = Instructions.Call(GetType(), nameof(getMonthlyGrowth));
-            code[4] = Instructions.Call(GetType(), nameof(getDailyGrowth));
+            code[1] = Instructions.Call(GetType(), nameof(getDailyGrowth));
         }
         
         static bool getDisableGrowth() => getInstance().config.DisableGrowth;

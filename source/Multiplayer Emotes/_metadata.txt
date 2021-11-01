@@ -6,9 +6,12 @@ mods:
    Multiplayer Emotes
 
 latest commit:
-   commit d703d4617f58b632c6be5a48fce47fcf0e7fdd04
+   commit 066cdbc981ee4b59d81d1487695a0d645a685d1d
+   Merge: 70e2225 f509b2e
    Author: Ferran Tudela <tudelaigarcia@gmail.com>
-   Date:   Fri Apr 12 18:24:02 2019 +0200
+   Date:   Thu Oct 28 16:16:47 2021 +0200
    
-       Update release-notes.md
+       Merge pull request #9 from FerMod/FerMod
+       
+       Add new mods
    

@@ -34,7 +34,8 @@ namespace StardewHack.HarvestWithScythe
     
         public class HarvestModeClass {
             /** How should flowers be harvested? 
-             * Any Crop that is `programColored` is considered a flower. */
+             * Any Crop that is `programColored` is considered a flower.
+             * In addition, sunflowers are also considered flowers. */
             public HarvestModeEnum Flowers = HarvestModeEnum.BOTH;
             
             /** How should forage be harvested? 
@@ -147,6 +148,7 @@ namespace StardewHack.HarvestWithScythe
 #region CanHarvest methods
         public const int HARVEST_PLUCKING = Crop.grabHarvest;
         public const int HARVEST_SCYTHING = Crop.sickleHarvest;
+        public const int SUNFLOWER = 421;
 
         static public bool IsScythe(Tool t) {
             if (t is MeleeWeapon) {
@@ -183,7 +185,7 @@ namespace StardewHack.HarvestWithScythe
             // Get harvest settings from config
             ModConfig.HarvestModeClass config = getInstance().config.HarvestMode;
             HarvestModeEnum mode;
-            if (crop.programColored.Value) {
+            if (crop.programColored.Value || crop.indexOfHarvest.Value == SUNFLOWER) {
                 mode = config.Flowers;
             } else if (crop.forageCrop.Value) {
                 mode = config.SpringOnion;
@@ -679,83 +681,50 @@ namespace StardewHack.HarvestWithScythe
         }
 
         void GameLocation_checkAction() {
-            // The code we need to patch is contained in a delegate, so use chain patching.
-            MethodInfo method = (MethodInfo)FindCode(
-                OpCodes.Ldftn
-            )[0].operand;
-            ChainPatch(method, AccessTools.Method(typeof(ModEntry), nameof(GameLocation_checkAction_Chain)));
-        }
-
-        void GameLocation_checkAction_Chain() {
             var var_object = generator.DeclareLocal(typeof(StardewValley.Object));
             InstructionRange code;
             Label cant_harvest;
-            try {
-                code = FindCode(
-                    // if (who.couldInventoryAcceptThisItem (objects [vector])) {
-                    OpCodes.Ldarg_0,
-                    OpCodes.Ldfld, // who
-                    OpCodes.Ldarg_0,
-                    OpCodes.Ldfld, // objects
-                    Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
-                    null, // Either LdLoc_1 or LdLoc_S(8).
-                    OpCodes.Callvirt,
-                    // <- Insert is here.
-                    Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item)),
-                    OpCodes.Brfalse,
-                    null // To make this InstructionRange have the same length as the one below for android.
-                );
-                cant_harvest = (Label)code[8].operand;
-            } catch (Exception err) {
-                LogException(err, LogLevel.Trace);
-                
-                // Android adds a boolean to the couldInventoryAcceptThisItem method.
-                code = FindCode(
-                    // if (who.couldInventoryAcceptThisItem (objects [vector], true)) {
-                    OpCodes.Ldarg_0,
-                    OpCodes.Ldfld, // who
-                    OpCodes.Ldarg_0,
-                    OpCodes.Ldfld, // objects
-                    Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
-                    null, // Either LdLoc_1 or LdLoc_S(8).
-                    OpCodes.Callvirt,
-                    // <- Insert is here.
-                    OpCodes.Ldc_I4_1,
-                    Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item), typeof(bool)),
-                    OpCodes.Brfalse
-                );
-                cant_harvest = (Label)code[9].operand;
-            }
+            code = FindCode(
+                // if (who.couldInventoryAcceptThisItem (objects [vector])) {
+                OpCodes.Ldarg_3, // who
+                OpCodes.Ldarg_0,
+                Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
+                OpCodes.Ldloc_1,
+                OpCodes.Callvirt,
+                // <- Insert is here.
+                Instructions.Callvirt(typeof(Farmer), nameof(Farmer.couldInventoryAcceptThisItem), typeof(Item)),
+                OpCodes.Brfalse
+            );
+            cant_harvest = (Label)code[6].operand;
+
             // Check whether harvesting forage by hand is allowed.
             code.Replace(
                 // var object = objects [vector];
-                code[0],
-                code[3], // objects
+                code[1], // objects
+                code[2],
+                code[3],
                 code[4],
-                code[5],
-                code[6],
                 Instructions.Stloc_S(var_object),
-                // if (ModEntry.CanHarvestObject(object, 0)) {
+
+                // if (ModEntry.CanHarvestObject(object, location, 0)) {
                 Instructions.Ldloc_S(var_object),
                 Instructions.Ldarg_0(),
                 Instructions.Ldc_I4_0(),
                 Instructions.Call(typeof(ModEntry), nameof(CanHarvestObject), typeof(StardewValley.Object), typeof(GameLocation), typeof(int)),
                 Instructions.Brfalse(cant_harvest),
+
                 // if (who.couldInventoryAcceptThisItem (object)) {
-                code[2],
-                code[1], // who
+                code[0], // who
                 Instructions.Ldloc_S(var_object),
-                code[7], // true or couldInventoryAcceptThisItem
-                code[8],
-                code[9]
+                code[5], // couldInventoryAcceptThisItem
+                code[6]
             );
 
             // Move to this.objects [vector].Quality = quality;
             code = code.FindNext(
                 OpCodes.Ldarg_0,
-                OpCodes.Ldfld,
                 Instructions.Ldfld(typeof(GameLocation), nameof(GameLocation.objects)),
-                null, // Either LdLoc_1 or LdLoc_S(8).
+                OpCodes.Ldloc_1,
                 OpCodes.Callvirt,
                 OpCodes.Ldloc_S,
                 Instructions.Callvirt_set(typeof(StardewValley.Object), nameof(StardewValley.Object.Quality))
@@ -763,7 +732,7 @@ namespace StardewHack.HarvestWithScythe
             var label_dont_scythe = AttachLabel(code.End[0]);
             // Append code to handle trigger harvest with scythe.
             code.Append(
-                // if (ModEntry.CanHarvestObject(object, HARVEST_SCYTHING) {
+                // if (ModEntry.CanHarvestObject(object, location, HARVEST_SCYTHING) {
                 Instructions.Ldloc_S(var_object),
                 Instructions.Ldarg_0(),
                 Instructions.Ldc_I4_1(), // HARVEST_SCYTHING

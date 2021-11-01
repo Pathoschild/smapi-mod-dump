@@ -32,6 +32,7 @@ namespace JsonAssets.Data
 
         public Dictionary<string, string> SaplingNameLocalization { get; set; } = new();
         public Dictionary<string, string> SaplingDescriptionLocalization { get; set; } = new();
+        public string SaplingTranslationKey { get; set; }
 
         internal ObjectData Sapling { get; set; }
 

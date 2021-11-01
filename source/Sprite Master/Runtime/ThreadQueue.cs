@@ -25,19 +25,19 @@ namespace SpriteMaster {
 			public readonly WaitCallback Callback;
 			public readonly object State;
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			private Functor(WaitCallback callback, object state) {
 				Callback = callback;
 				State = state;
 			}
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal static Functor Of (WaitCallback callback, object state) => new Functor(callback, state);
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal static Functor Of<T> (QueueFunctor<T> callback, T state) where T : class => new Functor((object o) => callback((T)o), state);
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal static Functor Of (WaitCallback callback) => new Functor(callback, null);
 		}
 
@@ -76,7 +76,7 @@ namespace SpriteMaster {
 		}
 #endif
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static void Enqueue(Functor functor) {
 #if THREADQUEUE_PARALLEL
 			// TODO : PROFILE MAIN THREAD
@@ -95,13 +95,13 @@ namespace SpriteMaster {
 #endif
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static void Queue<T> (QueueFunctor<T> functor, T argument) where T : class => Enqueue(Functor.Of(functor, argument));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static void Queue (WaitCallback functor, object argument) => Enqueue(Functor.Of(functor, argument));
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static void Queue (WaitCallback functor) => Enqueue(Functor.Of(functor));
 	}
 }

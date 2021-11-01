@@ -137,6 +137,9 @@ namespace Pathoschild.Stardew.DataLayers.Framework
             /// <summary>The unique key for a translation equivalent to "Speed-Gro".</summary>
             public const string CropFertilizer_SpeedGro = "crop-fertilizer.speed-gro";
 
+            /// <summary>The unique key for a translation equivalent to "Multiple fertilizer types".</summary>
+            public const string CropFertilizer_Multiple = "crop-fertilizer.multiple";
+
             /// <summary>The unique key for a translation equivalent to "Machine Processing".</summary>
             public const string Machines_Name = "machines.name";
 
@@ -381,6 +384,12 @@ namespace Pathoschild.Stardew.DataLayers.Framework
         public static string CropFertilizer_SpeedGro()
         {
             return I18n.GetByKey(Keys.CropFertilizer_SpeedGro);
+        }
+
+        /// <summary>Get a translation equivalent to "Multiple fertilizer types".</summary>
+        public static string CropFertilizer_Multiple()
+        {
+            return I18n.GetByKey(Keys.CropFertilizer_Multiple);
         }
 
         /// <summary>Get a translation equivalent to "Machine Processing".</summary>

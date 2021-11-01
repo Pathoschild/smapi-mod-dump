@@ -23,8 +23,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal ObjectLoadDisplayNamePatch()
 		{
-			Original = typeof(SObject).MethodNamed(name: "loadDisplayName");
-			Postfix = new HarmonyMethod(GetType(), nameof(ObjectLoadDisplayNamePostfix));
+			Original = typeof(SObject).MethodNamed("loadDisplayName");
+			Postfix = new(GetType(), nameof(ObjectLoadDisplayNamePostfix));
 		}
 
 		/// <summary>Patch to add honey-specific mead names.</summary>
@@ -35,12 +35,12 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			{
 				if (!__instance.name.Contains("Mead") || __instance.preservedParentSheetIndex.Value <= 0) return;
 
-				string prefix = Game1.objectInformation[__instance.preservedParentSheetIndex.Value].Split('/')[4];
+				var prefix = Game1.objectInformation[__instance.preservedParentSheetIndex.Value].Split('/')[4];
 				__result = prefix + " " + __result;
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 	}

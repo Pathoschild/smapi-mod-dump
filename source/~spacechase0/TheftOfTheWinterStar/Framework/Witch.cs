@@ -22,6 +22,9 @@ namespace TheftOfTheWinterStar.Framework
 {
     public class Witch : Monster
     {
+        /*********
+        ** Fields
+        *********/
         private const int StunTime = 800;
         private const int ShootDelay = 4000;
         private const int SpawnRocksDelay = 10000;
@@ -32,8 +35,6 @@ namespace TheftOfTheWinterStar.Framework
         private const int TexWidth = 34;
         private const int TexHeight = 30;
 
-        public const int WitchHealth = 1000;
-
         private readonly NetBool FacingRight = new(false);
         private readonly NetInt ShootPlayerTimer = new(Witch.ShootDelay);
         private readonly NetInt SpawnRocksTimer = new(Witch.SpawnRocksDelay);
@@ -41,6 +42,16 @@ namespace TheftOfTheWinterStar.Framework
         private readonly NetInt StunTimer = new(0);
         private int AnimTimer;
 
+
+        /*********
+        ** Accessors
+        *********/
+        public static int WitchHealth { get; } = 1000;
+
+
+        /*********
+        ** Public methods
+        *********/
         public Witch()
             : base("Serpent", new Vector2(-1000, -1000))
         {
@@ -50,12 +61,6 @@ namespace TheftOfTheWinterStar.Framework
             this.Health = Witch.WitchHealth;
             this.speed = 7;
             this.Portrait = Mod.Instance.Helper.Content.Load<Texture2D>("assets/witch-portrait.png");
-        }
-
-        protected override void initNetFields()
-        {
-            base.initNetFields();
-            this.NetFields.AddFields(this.FacingRight, this.ShootPlayerTimer, this.SpawnRocksTimer, this.SpawnEnemyTimer, this.StunTimer);
         }
 
         public override Rectangle GetBoundingBox()
@@ -165,6 +170,16 @@ namespace TheftOfTheWinterStar.Framework
             b.Draw(Game1.mouseCursors, this.getLocalPosition(Game1.viewport), new Rectangle(Witch.CursorsPosX, Witch.CursorsPosY + (this.AnimTimer < 20 ? Witch.TexHeight : 0), Witch.TexWidth, Witch.TexHeight), Color.White, 0, Vector2.Zero, 4, this.FacingRight.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None, 1);
             if (++this.AnimTimer >= 40)
                 this.AnimTimer = 0;
+        }
+
+
+        /*********
+        ** Protected methods
+        *********/
+        protected override void initNetFields()
+        {
+            base.initNetFields();
+            this.NetFields.AddFields(this.FacingRight, this.ShootPlayerTimer, this.SpawnRocksTimer, this.SpawnEnemyTimer, this.StunTimer);
         }
     }
 }

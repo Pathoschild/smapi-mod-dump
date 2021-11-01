@@ -1,0 +1,27 @@
+﻿{
+  "Name": "KeyBindUI",
+  "Author": "Enaium",
+  "Version": "1.0.0",
+  "Description": "Key bind UI",
+  "UniqueID": "Enaium.KeyBindUI",
+  "EntryDll": "KeyBindUI.dll",
+  "MinimumApiVersion": "3.9.0",
+  "UpdateKeys": [
+    "GitHub:Enaium-StardewValleyMods/KeyBindUI"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Enaium.EnaiumToolKit",
+      "MinimumVersion": "1.4.2"
+    }
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Contact": {
+        "HomePage": "https://github.com/Enaium-StardewValleyMods/KeyBindUI",
+        "Issues": "https://github.com/Enaium-StardewValleyMods/KeyBindUI/issues"
+      },
+      "Setting": "KeyBindUI.Framework.Gui.KeyBindGui"
+    }
+  }
+}

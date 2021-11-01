@@ -58,7 +58,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
 
             var instanceName = String.Concat(__instance.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(__instance)}").ToLower();
             var instanceSeasonName = $"{instanceName}_{Game1.GetSeasonForLocation(__instance.currentLocation)}".ToLower();
-            if (__instance is Child child && child.modData["AlternativeTextureName"].ToLower() != instanceName && child.modData["AlternativeTextureName"].ToLower() != instanceSeasonName)
+            if (__instance is Child child && !String.Equals(child.modData["AlternativeTextureName"], instanceName, StringComparison.OrdinalIgnoreCase) && !String.Equals(child.modData["AlternativeTextureName"], instanceSeasonName, StringComparison.OrdinalIgnoreCase))
             {
                 child.modData["AlternativeTextureName"] = String.Concat(child.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(child)}");
                 if (child.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]))
@@ -69,7 +69,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
 
                 __instance.Sprite.loadedTexture = String.Empty;
             }
-            if (__instance is Horse horse && horse.modData["AlternativeTextureName"].ToLower() != instanceName && horse.modData["AlternativeTextureName"].ToLower() != instanceSeasonName)
+            if (__instance is Horse horse && !String.Equals(horse.modData["AlternativeTextureName"], instanceName, StringComparison.OrdinalIgnoreCase) && !String.Equals(horse.modData["AlternativeTextureName"], instanceSeasonName, StringComparison.OrdinalIgnoreCase))
             {
                 horse.modData["AlternativeTextureName"] = String.Concat(horse.modData["AlternativeTextureOwner"], ".", $"{AlternativeTextureModel.TextureType.Character}_{GetCharacterName(horse)}");
                 if (horse.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(__instance.modData["AlternativeTextureSeason"]))

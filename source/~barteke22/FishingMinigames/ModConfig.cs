@@ -16,6 +16,7 @@ namespace FishingMinigames
     public class ModConfig
     {
         public int VoiceVolume { get; set; } = 100;
+        public string[] VoiceType { get; set; } = { "TTS Brian", "TTS Brian", "TTS Brian", "TTS Brian" };
         public int[] VoicePitch { get; set; }
         public string[] Voice_Test_Ignore_Me { get; set; }//internal for voice setting change check
         public string[] KeyBinds { get; set; } = { "MouseLeft, C, ControllerX", "MouseLeft, C, ControllerX", "MouseLeft, C, ControllerX", "MouseLeft, C, ControllerX" };
@@ -69,7 +70,7 @@ namespace FishingMinigames
             {
                 int rnd = StardewValley.Game1.random.Next(-70, 71);
                 VoicePitch[i] = rnd;
-                Voice_Test_Ignore_Me[i] = "100/" + rnd;
+                Voice_Test_Ignore_Me[i] = "100/TTS Brian/" + rnd;
             }
         }
     }

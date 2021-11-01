@@ -1,0 +1,6 @@
+pause 400
+speak Clint "There you are, @! Gunther just brought this over, he said you donated it? I've read about these in Metallurgist Monthly, this is quite a find! Look here, one end has a sharp blade used to cut through thick roots and plants and the other end is a sturdy pick, strong as any pickaxe!  You could probably chop a tree down with this thing!"
+pause 500
+speak Dwarf "This is all that remains of an ancient mining tool used by my ancestors. It is said that every dwarf was given one when they came of age, and this tool is what gave us our reputation as the world's best miners. It has been a long time since tools like this were made, seeing one brings happiness to my heart."
+pause 1000
+end

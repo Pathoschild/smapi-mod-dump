@@ -96,29 +96,29 @@ namespace SpriteMaster.Extensions.Compressors {
 			internal static readonly ZstdNet.DecompressionOptions DecompressionDefault = new(null);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static Compressor GetEncoder() {
 			return new Compressor(Options.CompressionDefault);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private static Decompressor GetDecoder() {
 			return new Decompressor(Options.DecompressionDefault);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static byte[] Compress(byte[] data) {
 			using var encoder = GetEncoder();
 			return encoder.Wrap(data);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static unsafe byte[] Decompress(byte[] data) {
 			using var decoder = GetDecoder();
 			return decoder.Unwrap(data);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static byte[] Decompress(byte[] data, int size) {
 			using var decoder = GetDecoder();
 			return decoder.Unwrap(data, size);

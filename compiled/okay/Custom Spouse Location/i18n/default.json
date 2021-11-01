@@ -18,7 +18,8 @@
     "GenericMC.MapChairsDesc": "Spouses not on this list can try to sit on any map chairs (ones the player can sit on)\n facing down (South), due to lack of sitting spites it can look a bit silly in some cases.\n If time doesn't change from 8:20am to 8:30am naturally (time skip),\n the spouse can get stuck by the chair for the rest of the day.\n\nThis blacklist will disable this behaviour for the specific profiles.\n Valid entries: All, or a list of profile names (like Default, Sam).",
 
     "GenericMC.SpouseRoomTile": "Auto: Facing Tile",
-    "GenericMC.SpouseRoomTileDesc": "This is the 'interesting' tile used by Automation to\n determine where the spouse will be looking towards upon spawning, when not sitting.\n By default it's a 1.1 tile left of their spawn point.\n The sebastianFrog profile is a special hardcoded case, as Sebastian's\n spawn point changes a bit after a certain event - \nthe interesting tile in his room is then around the middle.",
+    "GenericMC.SpouseRoomTileDesc": "This is the 'interesting' tile used by Automation to\n determine where the spouse will be looking towards upon spawning, when not sitting.\n By default it's a 1.1 tile left of their spawn point.",
+    "GenericMC.SpouseRoomTileDesc2": "The sebastianFrog profile is a special hardcoded case, as Sebastian's\n spawn point changes a bit after a certain event - \nthe interesting tile in his room is then around the middle.",
 
     "GenericMC.Manual": "Manual Mode",
     "GenericMC.Hover": "Hover for info", //: Instructions //: Kitchen etc.
@@ -28,7 +29,8 @@
     "GenericMC.InstructionsDesc": "Default is used by all spouses without a named profile. It uses your main spouse (or Emily) for preview.\n Click a name to add its profile. Click it again to add another entry to its list. Click an entry to edit it.\n If a profile has multiple entries, it picks one at random each day.\n Green entries are valid, red are not (will reset to default), -999,-999 offset entries are ignored.\n If you hover over an entry/profile and press Ctrl + X it'll be removed.\n\nValid Entry: 1 Sprite (or Sprite Sequence) / Tile Offset\n\n 1 Sprite:     Up/Down/Left/Right, or specific sprite index (like 20). See Patio's hover for extra info in its case.\n Sequence:   Comma separated list of SpriteIndex:Seconds (:f after SpriteIndex flips the sprite).\n Offset:       / x, y tile offset from their regular position, like: / 0, 2.5\n\nThree Entry examples (spaces between symbols are ignored):\n 2 / 1,1\n 0:1, 4:1, 8:2.5, 12:0.5 / 1, 1.5\n 40:f:0.5, 41:0.5, 42:f:1 / 0,0",
 
     "GenericMC.SpouseRoomManual": "Spouse Room",
-    "GenericMC.SpouseRoomManualDesc": "This is triggered when the spouse spawns on the standard spouse room tile.\n The sebastianFrog profile is a special hardcoded case,\n as Sebastian's spawn point changes a bit after a certain event.\n Manual tile offsets are not limited to their room, and allow you to\n offset the location to anywhere in the house.",
+    "GenericMC.SpouseRoomManualDesc": "This is triggered when the spouse spawns on the standard spouse room tile.\n Manual tile offsets are not limited to their room, and allow you to\n offset the location to anywhere in the house.",
+    "GenericMC.SpouseRoomManualDesc2": "The sebastianFrog profile is a special hardcoded case,\n as Sebastian's spawn point changes a bit after a certain event.",
     "GenericMC.Kitchen": "Kitchen",
     "GenericMC.KitchenDesc": "This is triggered when the spouse spawns on the standard tile in the kitchen.\n Manual tile offsets are not limited to the kitchen, and allow you to\n offset the location to anywhere in the house.",
     "GenericMC.Patio": "Patio",

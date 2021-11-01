@@ -9,6 +9,11 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.1.0
+Released 15 October 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
+
+* Added full [translation](https://stardewvalleywiki.com/Modding:Translations) support.
+
 ## 1.0.3
 Released 11 September 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
 

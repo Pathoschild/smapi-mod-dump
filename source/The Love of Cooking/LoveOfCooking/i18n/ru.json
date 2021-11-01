@@ -131,14 +131,6 @@
 	"world.fisherman.talk_2": "Ты когда-нибудь видел речного тролля, сынок? Хех...$b#Эхх, ты уже взрослый для сказок.",
 	"world.fisherman.talk_3": "Эти торговцы всю рыбу распугали!!! ",
 
-	// Community Centre edits when using the Cooking bundle
-	"world.community_centre.kitchen": "Кухня",
-	"world.community_centre.reward": "Кухонные принадлежности",
-	"world.community_centre.bundle.1": "Пекарский",
-	"world.community_centre.bundle.2": "Обеденный",
-	"world.community_centre.bundle.3": "Пикниковый",
-	"world.community_centre.newjunimoline": "Чтобы выразить нашу благодарность... Мы приберемся после твоего ухода.",
-
 	// Object names
 
 	// recipes

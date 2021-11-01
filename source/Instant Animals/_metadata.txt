@@ -6,9 +6,9 @@ mods:
    Instant Animals
 
 latest commit:
-   commit 021e7d900f44330a3062f395214ce0b804fd13d7
+   commit 4fe2663be1290916f4f46a245a6ee0480c4684c7
    Author: joisse1101 <thoiwei@gmail.com>
-   Date:   Thu Sep 9 00:26:15 2021 +0800
+   Date:   Thu Oct 28 12:10:22 2021 +0800
    
-       Initial commit
+       minor changes
    

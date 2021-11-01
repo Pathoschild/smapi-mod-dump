@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using StardewModdingAPI;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
@@ -24,9 +25,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		/// <summary>Construct an instance.</summary>
 		internal MeleeWeaponDoAnimateSpecialMovePatch()
 		{
-			Original = typeof(MeleeWeapon).MethodNamed(name: "doAnimateSpecialMove");
-			Postfix = new HarmonyMethod(GetType(), nameof(MeleeWeaponDoAnimateSpecialMovePostfix));
-			Transpiler = new HarmonyMethod(GetType(), nameof(MeleeWeaponDoAnimateSpecialMoveTranspiler));
+			Original = typeof(MeleeWeapon).MethodNamed("doAnimateSpecialMove");
+			Postfix = new(GetType(), nameof(MeleeWeaponDoAnimateSpecialMovePostfix));
+			Transpiler = new(GetType(), nameof(MeleeWeaponDoAnimateSpecialMoveTranspiler));
 		}
 
 		#region harmony patches
@@ -41,28 +42,32 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			switch (__instance.type.Value)
 			{
 				case MeleeWeapon.club when ModEntry.SuperModeIndex == Util.Professions.IndexOf("Brute"):
-					MeleeWeapon.clubCooldown = (int)(MeleeWeapon.clubCooldown * Util.Professions.GetCooldownOrChargeTimeReduction());
+					MeleeWeapon.clubCooldown =
+						(int)(MeleeWeapon.clubCooldown * Util.Professions.GetCooldownOrChargeTimeReduction());
 					break;
+
 				case MeleeWeapon.dagger when ModEntry.SuperModeIndex == Util.Professions.IndexOf("Poacher"):
-					MeleeWeapon.daggerCooldown = (int)(MeleeWeapon.daggerCooldown * Util.Professions.GetCooldownOrChargeTimeReduction());
+					MeleeWeapon.daggerCooldown = (int)(MeleeWeapon.daggerCooldown *
+														Util.Professions.GetCooldownOrChargeTimeReduction());
 					break;
 			}
 		}
 
 		/// <summary>Patch to remove Acrobat cooldown reduction.</summary>
 		[HarmonyTranspiler]
-		private static IEnumerable<CodeInstruction> MeleeWeaponDoAnimateSpecialMoveTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+		private static IEnumerable<CodeInstruction> MeleeWeaponDoAnimateSpecialMoveTranspiler(
+			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
 			Helper.Attach(original, instructions);
 
 			/// Skipped: if (lastUser.professions.Contains(<acrobat_id>) cooldown /= 2
 
-			int i = 0;
+			var i = 0;
 			repeat:
 			try
 			{
 				Helper // find index of acrobat check
-					.FindProfessionCheck(Farmer.acrobat, fromCurrentIndex: i != 0)
+					.FindProfessionCheck(Farmer.acrobat, i != 0)
 					.Retreat(2)
 					.GetLabels(out var labels) // backup branch labels
 					.StripLabels() // remove labels from here
@@ -80,7 +85,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Helper.Error($"Failed while removing vanilla Acrobat cooldown reduction.\nHelper returned {ex}");
+				Log($"Failed while removing vanilla Acrobat cooldown reduction.\nHelper returned {ex}", LogLevel.Error);
 				return null;
 			}
 

@@ -54,7 +54,7 @@
         "Index": 4,
         "Sprite": "17",
         "Color": "Red",
-        "Items": "999 Wood, 999 Wood, 999 Stone, 99 Hardwood, 1 Marble Brazier",
+        "Items": "999 Wood, 999 Wood, 999 Stone, 99 Hardwood",
         "Pick": -1,
         "RequiredItems": -1,
         "Reward": "1 Charcoal Kiln"
@@ -268,9 +268,9 @@
         "Index": 5,
         "Sprite": "10",
         "Color": "Red",
-        "Items": "1 IQ Pufferfish, 1 IQ Ghostfish, 1 IQ Sandfish, 1 IQ Woodskip, 1 IQ Slimejack, 1 IQ Void Salmon",
+        "Items": "1 IQ Pufferfish, 1 IQ Dorado, 1 IQ Ghostfish, 1 IQ Sandfish, 1 IQ Woodskip",
         "Pick": -1,
-        "RequiredItems": 5,
+        "RequiredItems": -1,
         "Reward": "1 Dish O' The Sea"
       },
       {
@@ -278,7 +278,7 @@
         "Index": 5,
         "Sprite": "LooseSprites\\BundleSprites:4",
         "Color": "Red",
-        "Items": "10 IQ Red Mullet, 10 IQ Shad, 10 IQ Largemouth Bass, 10 IQ Bream, 10 IQ Slimejack",
+        "Items": "10 IQ Red Mullet, 10 IQ Shad, 10 IQ Largemouth Bass, 10 IQ Bream, 20 IQ Carp",
         "Pick": -1,
         "RequiredItems": 3,
         "Reward": "1 Dish O' The Sea"

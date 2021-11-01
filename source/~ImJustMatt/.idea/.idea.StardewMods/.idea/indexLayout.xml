@@ -12,7 +12,6 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders>
-      <Path>.</Path>
       <Path>build</Path>
     </attachedFolders>
     <explicitIncludes />

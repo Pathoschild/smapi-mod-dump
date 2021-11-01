@@ -107,7 +107,7 @@ namespace CustomDecorationAreas
                     }
                 }
             }
-            Monitor.Log($"Loaded {floorsWallsDataDict.Count} floors.");
+            Monitor.Log($"Loaded floors and walls for {floorsWallsDataDict.Count} locations.");
         }
     }
 }

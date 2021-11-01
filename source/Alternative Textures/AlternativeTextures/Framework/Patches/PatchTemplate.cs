@@ -43,7 +43,7 @@ namespace AlternativeTextures.Framework.Patches
 
         internal static GenericTool GetPaintBucketTool()
         {
-            var paintBucket = new GenericTool("Paint Bucket", "Allows you to apply different textures to supported objects.", -1, 6, 6);
+            var paintBucket = new GenericTool(_helper.Translation.Get("tools.name.paint_bucket"), _helper.Translation.Get("tools.description.paint_bucket"), -1, 6, 6);
             paintBucket.modData[AlternativeTextures.PAINT_BUCKET_FLAG] = true.ToString();
 
             return paintBucket;
@@ -51,7 +51,7 @@ namespace AlternativeTextures.Framework.Patches
 
         internal static GenericTool GetScissorsTool()
         {
-            var scissors = new GenericTool("Scissors", "Allows you to apply different textures to entities.", -1, 6, 6);
+            var scissors = new GenericTool(_helper.Translation.Get("tools.name.scissors"), _helper.Translation.Get("tools.description.scissors"), -1, 6, 6);
             scissors.modData[AlternativeTextures.SCISSORS_FLAG] = true.ToString();
 
             return scissors;
@@ -59,7 +59,7 @@ namespace AlternativeTextures.Framework.Patches
 
         internal static GenericTool GetPaintBrushTool()
         {
-            var paintBrush = new GenericTool("Paint Brush", "Allows you to copy a texture and apply it other objects of the same type.", -1, 6, 6);
+            var paintBrush = new GenericTool(_helper.Translation.Get("tools.name.paint_brush"), _helper.Translation.Get("tools.description.paint_brush"), -1, 6, 6);
             paintBrush.modData[AlternativeTextures.PAINT_BRUSH_FLAG] = null;
 
             return paintBrush;
@@ -426,6 +426,9 @@ namespace AlternativeTextures.Framework.Patches
 
                     AssignFloorModData(decoratableLocation, modelName, textureModel, -1, trackSeason);
                     return true;
+                case Farm farm:
+                    AssignFarmModData(farm, modelName, textureModel, -1, trackSeason);
+                    return true;
             }
 
             return false;
@@ -585,6 +588,19 @@ namespace AlternativeTextures.Framework.Patches
             }
 
             AssignDecoratableLocationModData(decoratableLocation, modelName, textureModel, variation, trackSeason);
+        }
+
+        private static void AssignFarmModData(Farm farm, string modelName, AlternativeTextureModel textureModel, int variation, bool trackSeason = false)
+        {
+            farm.modData["AlternativeTextureOwner"] = textureModel.Owner;
+            farm.modData["AlternativeTextureName"] = String.Concat(textureModel.Owner, ".", modelName);
+
+            if (trackSeason && !String.IsNullOrEmpty(textureModel.Season))
+            {
+                farm.modData["AlternativeTextureSeason"] = Game1.currentSeason;
+            }
+
+            farm.modData["AlternativeTextureVariation"] = variation.ToString();
         }
     }
 }

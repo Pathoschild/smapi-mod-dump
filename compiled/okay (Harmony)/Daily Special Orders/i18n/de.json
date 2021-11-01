@@ -1,0 +1,10 @@
+{
+    "Immediate.Refresh" : "Sofortige Aktualisierung",
+    "Immediate.Paragraph": "Aktualisiert sofort die Spezialaufträge, nachdem ein Auftrag ausgewählt wurde. (Das Aufgabenbrett muss neu geöffnet werden)",
+    "Refresh.on.Tuesday" : "Aktualisiert am Dienstag",
+    "Refresh.on.Wednesday" : "Aktualisiert am Mittwoch",
+    "Refresh.on.Thursday" : "Aktualisiert am Donnerstag",
+    "Refresh.on.Friday" : "Aktualisiert am Freitag",
+    "Refresh.on.Saturday" : "Aktualisiert am Samstag",
+    "Refresh.on.Sunday" : "Aktualisiert am Sonntag",
+} 

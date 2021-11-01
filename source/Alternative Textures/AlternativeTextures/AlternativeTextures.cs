@@ -147,6 +147,7 @@ namespace AlternativeTextures
                 // Start of location patches
                 new GameLocationPatch(monitor, helper).Apply(harmony);
                 new DecoratableLocationPatch(monitor, helper).Apply(harmony);
+                new FarmPatch(monitor, helper).Apply(harmony);
 
                 // Paint tool related patches
                 new UtilityPatch(monitor, helper).Apply(harmony);
@@ -216,7 +217,7 @@ namespace AlternativeTextures
                             PatchTemplate.AssignDefaultModData(flooring, instanceSeasonName, true);
                         }
 
-                        Game1.addHUDMessage(new HUDMessage($"Texture copied!", 2) { timeLeft = 1000 });
+                        Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.info.texture_copied"), 2) { timeLeft = 1000 });
                         tool.modData[PAINT_BRUSH_FLAG] = $"{modelType}_{PatchTemplate.GetFlooringName(flooring)}";
                         tool.modData[PAINT_BRUSH_SCALE] = 0.5f.ToString();
                         tool.modData["AlternativeTextureOwner"] = flooring.modData["AlternativeTextureOwner"];
@@ -229,11 +230,11 @@ namespace AlternativeTextures
                         tool.modData[PAINT_BRUSH_SCALE] = 0.5f.ToString();
                         if (terrainFeature != null)
                         {
-                            Game1.addHUDMessage(new HUDMessage($"The brush doesn't support copying textures from this object.", 3) { timeLeft = 2000 });
+                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.info.brush_not_supported"), 3) { timeLeft = 2000 });
                         }
                         else
                         {
-                            Game1.addHUDMessage(new HUDMessage($"Cleared brush!", 2) { timeLeft = 1000 });
+                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.info.cleared_brush"), 2) { timeLeft = 1000 });
                         }
                     }
                 }
@@ -246,7 +247,7 @@ namespace AlternativeTextures
                         PatchTemplate.AssignDefaultModData(placedObject, instanceSeasonName, true);
                     }
 
-                    Game1.addHUDMessage(new HUDMessage($"Texture copied!", 2) { timeLeft = 1000 });
+                    Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.info.texture_copied"), 2) { timeLeft = 1000 });
                     tool.modData[PAINT_BRUSH_FLAG] = $"{modelType}_{PatchTemplate.GetObjectName(placedObject)}";
                     tool.modData[PAINT_BRUSH_SCALE] = 0.5f.ToString();
                     tool.modData["AlternativeTextureOwner"] = placedObject.modData["AlternativeTextureOwner"];
@@ -265,7 +266,7 @@ namespace AlternativeTextures
 
                 if (String.IsNullOrEmpty(tool.modData[PAINT_BRUSH_FLAG]))
                 {
-                    Game1.addHUDMessage(new HUDMessage($"The brush doesn't have a copied texture! Right click on an object to copy a texture.", 3) { timeLeft = 2000 });
+                    Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.brush_is_empty"), 3) { timeLeft = 2000 });
                 }
                 else
                 {
@@ -285,12 +286,12 @@ namespace AlternativeTextures
                             }
                             else
                             {
-                                Game1.addHUDMessage(new HUDMessage($"The copied texture {tool.modData[PAINT_BRUSH_FLAG]} isn't valid for this object!", 3) { timeLeft = 2000 });
+                                Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.invalid_copied_texture", new { textureName = tool.modData[PAINT_BRUSH_FLAG] }), 3) { timeLeft = 2000 });
                             }
                         }
                         else if (terrainFeature != null)
                         {
-                            Game1.addHUDMessage(new HUDMessage($"You can't paint that!", 3) { timeLeft = 2000 });
+                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.paint_not_placeable"), 3) { timeLeft = 2000 });
                         }
                     }
                     else
@@ -304,7 +305,7 @@ namespace AlternativeTextures
                         }
                         else
                         {
-                            Game1.addHUDMessage(new HUDMessage($"The copied texture {tool.modData[PAINT_BRUSH_FLAG]} isn't valid for this object!", 3) { timeLeft = 2000 });
+                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.invalid_copied_texture", new { textureName = tool.modData[PAINT_BRUSH_FLAG] }), 3) { timeLeft = 2000 });
                         }
                     }
                 }
@@ -412,6 +413,7 @@ namespace AlternativeTextures
                             configApi.RegisterImage(ModManifest, $"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{model.GetTokenId()}", sourceRect, scale);
 
                             // Add our custom widget, which passes over the required data needed to flag the TextureId with the appropriate Variation 
+                            bool wasClicking = false;
                             var textureWidget = new TextureWidget() { TextureId = model.GetId(), Variation = variation, Enabled = !modConfig.IsTextureVariationDisabled(model.GetId(), variation) };
                             Func<Vector2, object, object> widgetUpdate = (Vector2 pos, object state) =>
                             {
@@ -423,10 +425,13 @@ namespace AlternativeTextures
 
                                 var bounds = new Rectangle((int)pos.X, (int)pos.Y, OptionsCheckbox.sourceRectChecked.Width * 4, OptionsCheckbox.sourceRectChecked.Width * 4);
                                 bool isHovering = bounds.Contains(Game1.getOldMouseX(), Game1.getOldMouseY());
-                                if (isHovering && Game1.oldMouseState.LeftButton == ButtonState.Released && Game1.input.GetMouseState().LeftButton == ButtonState.Pressed)
+
+                                bool isClicking = Game1.input.GetMouseState().LeftButton == ButtonState.Pressed;
+                                if (isHovering && isClicking && !wasClicking)
                                 {
                                     widget.Enabled = !widget.Enabled;
                                 }
+                                wasClicking = isClicking;
 
                                 return widget;
                             };
@@ -590,39 +595,15 @@ namespace AlternativeTextures
                                     Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: There are less split texture files compared to variations ({textureFilePaths.Count()} file(s) vs {textureModel.GetVariations()} variation(s))", LogLevel.Warn);
                                     continue;
                                 }
+                                if (textureModel.GetVariations() < textureFilePaths.Count())
+                                {
+                                    Monitor.Log($"Warning for alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: There are less variations specified in texture.json than split textures files", LogLevel.Warn);
+                                }
 
                                 // Load in the first texture_#.png to get its dimensions for creating stitchedTexture
-                                int maxVariationsPerTexture = AlternativeTextureModel.MAX_TEXTURE_HEIGHT / textureModel.TextureHeight;
-                                Texture2D baseTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(parentFolderName, textureFolder.Name, textureFilePaths.First()));
-                                for (int t = 0; t <= (textureModel.GetVariations() * textureModel.TextureHeight) / AlternativeTextureModel.MAX_TEXTURE_HEIGHT; t++)
+                                if (!StitchTexturesToModel(textureModel, contentPack, Path.Combine(parentFolderName, textureFolder.Name), textureFilePaths.Take(textureModel.GetVariations())))
                                 {
-                                    int variationLimit = Math.Min(maxVariationsPerTexture, textureModel.GetVariations() - (maxVariationsPerTexture * t));
-                                    if (variationLimit < 0)
-                                    {
-                                        variationLimit = 0;
-                                    }
-                                    Texture2D stitchedTexture = new Texture2D(Game1.graphics.GraphicsDevice, baseTexture.Width, Math.Min(textureModel.TextureHeight * variationLimit, AlternativeTextureModel.MAX_TEXTURE_HEIGHT));
-
-                                    // Now stitch together the split textures into a single texture
-                                    Color[] pixels = new Color[stitchedTexture.Width * stitchedTexture.Height];
-                                    for (int x = 0; x < variationLimit; x++)
-                                    {
-                                        var fileName = textureFilePaths.ElementAt(x + (variationLimit * t));
-                                        Monitor.Log($"Stitching together {textureModel.TextureId}: {fileName}", LogLevel.Trace);
-
-                                        var offset = x * baseTexture.Width * baseTexture.Height;
-                                        var subTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(parentFolderName, textureFolder.Name, fileName));
-
-                                        Color[] subPixels = new Color[subTexture.Width * subTexture.Height];
-                                        subTexture.GetData(subPixels);
-                                        for (int i = 0; i < subPixels.Length; i++)
-                                        {
-                                            pixels[i + offset] = subPixels[i];
-                                        }
-                                    }
-
-                                    stitchedTexture.SetData(pixels);
-                                    textureModel.Textures.Add(stitchedTexture);
+                                    continue;
                                 }
 
                                 textureModel.TileSheetPath = contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, textureFilePaths.First()));
@@ -656,6 +637,75 @@ namespace AlternativeTextures
                     Monitor.Log($"Error loading content pack {contentPack.Manifest.Name}: {ex}", LogLevel.Error);
                 }
             }
+        }
+
+        private bool StitchTexturesToModel(AlternativeTextureModel textureModel, IContentPack contentPack, string rootPath, IEnumerable<string> textureFilePaths)
+        {
+            int maxVariationsPerTexture = AlternativeTextureModel.MAX_TEXTURE_HEIGHT / textureModel.TextureHeight;
+            Texture2D baseTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(rootPath, textureFilePaths.First()));
+
+            // If there is only one split texture file, skip the rest of the logic to avoid issues
+            if (textureFilePaths.Count() == 1)
+            {
+                textureModel.Textures.Add(baseTexture);
+                return true;
+            }
+
+            try
+            {
+                for (int t = 0; t <= (textureModel.GetVariations() * textureModel.TextureHeight) / AlternativeTextureModel.MAX_TEXTURE_HEIGHT; t++)
+                {
+                    int variationLimit = Math.Min(maxVariationsPerTexture, textureModel.GetVariations() - (maxVariationsPerTexture * t));
+                    if (variationLimit < 0)
+                    {
+                        variationLimit = 0;
+                    }
+                    Texture2D stitchedTexture = new Texture2D(Game1.graphics.GraphicsDevice, baseTexture.Width, Math.Min(textureModel.TextureHeight * variationLimit, AlternativeTextureModel.MAX_TEXTURE_HEIGHT));
+
+                    // Now stitch together the split textures into a single texture
+                    Color[] pixels = new Color[stitchedTexture.Width * stitchedTexture.Height];
+                    for (int x = 0; x < variationLimit; x++)
+                    {
+                        int textureIndex = x + (variationLimit * t);
+                        if (textureFilePaths.ElementAtOrDefault(textureIndex) is null)
+                        {
+                            Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: Attempted to add variation {textureIndex} from split texture, but the texture image doesn't exist!", LogLevel.Warn);
+                            return false;
+                        }
+
+                        var fileName = textureFilePaths.ElementAt(textureIndex);
+                        Monitor.Log($"Stitching together {textureModel.TextureId}: {fileName}", LogLevel.Trace);
+
+                        var offset = x * baseTexture.Width * baseTexture.Height;
+                        var subTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(rootPath, fileName));
+
+                        try
+                        {
+                            Color[] subPixels = new Color[subTexture.Width * subTexture.Height];
+                            subTexture.GetData(subPixels);
+                            for (int i = 0; i < subPixels.Length; i++)
+                            {
+                                pixels[i + offset] = subPixels[i];
+                            }
+                        }
+                        catch (IndexOutOfRangeException)
+                        {
+                            Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: Failed to add variation from split texture {fileName}, it has a different image size [{subTexture.Width}x{subTexture.Height}] compared to the first texture [{baseTexture.Width}x{baseTexture.Height}]!", LogLevel.Warn);
+                            return false;
+                        }
+                    }
+
+                    stitchedTexture.SetData(pixels);
+                    textureModel.Textures.Add(stitchedTexture);
+                }
+            }
+            catch (Exception exception)
+            {
+                Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: Unhandled framework error: {exception}", LogLevel.Warn);
+                return false;
+            }
+
+            return true;
         }
 
         private void DebugSpawnGiantCrop(string command, string[] args)

@@ -9,7 +9,9 @@
 *************************************************/
 
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using SpaceShared;
 using StardewModdingAPI;
@@ -66,7 +68,7 @@ namespace Magic.Framework.Integrations
             // add channel
             try
             {
-                addChannel.Invoke(null, new object[] { "magic", (string)Mod.Instance.Helper.Translation.Get("tv.analyzehints.name"), (Action<TV, TemporaryAnimatedSprite, Farmer, string>)OnTvChannelSelected });
+                addChannel.Invoke(null, new object[] { "magic", I18n.Tv_Analyzehints_Name(), (Action<TV, TemporaryAnimatedSprite, Farmer, string>)OnTvChannelSelected });
             }
             catch (Exception ex)
             {
@@ -81,10 +83,28 @@ namespace Magic.Framework.Integrations
                 TemporaryAnimatedSprite screen = new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(540, 305, 42, 28), 150f, 2, 999999, tv.getScreenPosition(), false, false, (float)((tv.boundingBox.Bottom - 1) / 10000.0 + 9.99999974737875E-06), 0.0f, Color.White, tv.getScreenSizeModifier(), 0.0f, 0.0f, 0.0f);
 
                 // get channel text
-                string transKey = "tv.analyzehints.notmagical";
-                Random r = new Random((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2));
+                string channelText = I18n.Tv_Analyzehints_Notmagical();
                 if (Game1.player.GetMaxMana() > 0)
-                    transKey = "tv.analyzehints." + (r.Next(12) + 1);
+                {
+                    // get base key
+                    string baseKey = Regex.Replace(nameof(I18n.Tv_Analyzehints_1), "_1$", "");
+                    if (baseKey == nameof(I18n.Tv_Analyzehints_1))
+                    {
+                        Log.Error("Could not get the Magic TV analyze hint base key. This is a bug in the Magic mod."); // key format changed?
+                        return;
+                    }
+
+                    // get possible analyze hints
+                    string[] channelTexts = typeof(I18n)
+                        .GetMethods()
+                        .Where(p => Regex.IsMatch(p.Name, $@"^{baseKey}_\d+$"))
+                        .Select(p => (string)p.Invoke(null, new object[0]))
+                        .ToArray();
+
+                    // choose hint
+                    Random random = new Random((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2));
+                    channelText = channelTexts[random.Next(channelTexts.Length)];
+                }
 
                 // get showProgram method
                 var showProgram = customTv.GetMethod("showProgram", BindingFlags.Public | BindingFlags.Static, null, CallingConventions.Any, new[] { typeof(TemporaryAnimatedSprite), typeof(string), typeof(Action), typeof(TemporaryAnimatedSprite) }, new ParameterModifier[0]);
@@ -97,7 +117,7 @@ namespace Magic.Framework.Integrations
                 // register with PyTK
                 try
                 {
-                    showProgram.Invoke(null, new object[] { screen, (string)Mod.Instance.Helper.Translation.Get(transKey), null, null });
+                    showProgram.Invoke(null, new object[] { screen, channelText, null, null });
                 }
                 catch (Exception ex)
                 {

@@ -1,0 +1,20 @@
+{
+  // Tools
+  "tools.name.paint_bucket": "Paint Bucket",
+  "tools.name.paint_brush": "Paint Brush",
+  "tools.name.scissors": "Scissors",
+
+  "tools.description.paint_bucket": "Allows you to apply different textures to supported objects.",
+  "tools.description.paint_brush": "Allows you to copy a texture and apply it other objects of the same type.",
+  "tools.description.scissors": "Allows you to apply different textures to entities.",
+
+  // Messages
+  "messages.warning.no_textures_for_season": "{{itemName}} has no alternative textures for this season!",
+  "messages.warning.paint_not_placeable": "You can't put paint on that!",
+  "messages.warning.brush_is_empty": "The brush doesn't have a copied texture! Right click on an object to copy a texture.",
+  "messages.warning.brush_not_supported": "The brush doesn't support copying textures from this object.",
+  "messages.warning.invalid_copied_texture": "The copied texture {{textureName}} isn't valid for this object!",
+
+  "messages.info.texture_copied": "Texture copied!",
+  "messages.info.cleared_brush": "Cleared brush!"
+}

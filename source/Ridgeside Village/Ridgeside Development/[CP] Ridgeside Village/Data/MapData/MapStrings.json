@@ -509,6 +509,14 @@
 				"rsv.blairhouse6": "{{i18n:MapString.rsv.blairhouse6}}",
 				"rsv.blairhouse7": "{{i18n:MapString.rsv.blairhouse7}}",
 				"rsv.blairhouse8": "{{i18n:MapString.rsv.blairhouse8}}",
+
+				"rsv.lockedninja": "{{i18n:MapString.rsv.lockedninja}}",
+
+				"rsv.summitgrave1": "{{i18n:MapString.rsv.summitgrave1}}",
+				"rsv.summitgrave2": "{{i18n:MapString.rsv.summitgrave2}}",
+				"rsv.summitmail": "{{i18n:MapString.rsv.summitmail}}",
+
+				"rsv.hikenote": "{{i18n:MapString.rsv.hikenote}}",
 				},
 	},
 

@@ -15,7 +15,7 @@ namespace TheLion.Stardew.Professions.Framework.Events
 {
 	public class PiperUpdateTickedEvent : UpdateTickedEvent
 	{
-		/// <inheritdoc/>
+		/// <inheritdoc />
 		public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
 			if (ModEntry.SlimeContactTimer > 0 && Game1.shouldTimePass()) --ModEntry.SlimeContactTimer;

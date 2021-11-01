@@ -26,7 +26,7 @@ namespace SpriteMaster.xBRZ.Scalers {
 			public readonly int i;
 			public readonly int j;
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal IntPair(int i, int j) {
 				this.i = i;
 				this.j = j;
@@ -36,7 +36,7 @@ namespace SpriteMaster.xBRZ.Scalers {
 		private const int MaxScale = Config.MaxScale; // Highest possible scale
 		private const int MaxScaleSquared = MaxScale * MaxScale;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public OutputMatrix (int scale, uint* outPtr, int outWidth) {
 			_n = (scale - 2) * (Rotator.MaxRotations * MaxScaleSquared);
 			_out = outPtr;
@@ -45,30 +45,30 @@ namespace SpriteMaster.xBRZ.Scalers {
 			_nr = 0;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Move (RotationDegree rotDeg, int outi) {
 			_nr = _n + (int)rotDeg * MaxScaleSquared;
 			_outi = outi;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private int GetIndex (int i, int j) {
 			var rot = MatrixRotation[_nr + i * MaxScale + j];
 			return (_outi + rot.j + rot.i * _outWidth);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Set (int i, int j, uint value) {
 			_out[GetIndex(i, j)] = value;
 		}
 
 		// TODO : I _really_ don't like this but I don't want to fully refactor ScalerImplementations.cs right now.
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public ref uint Ref (int i, int j) {
 			return ref _out[GetIndex(i, j)];
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public uint Get (int i, int j) {
 			return _out[GetIndex(i, j)];
 		}

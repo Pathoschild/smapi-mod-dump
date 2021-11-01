@@ -1,0 +1,15 @@
+﻿{
+	"mail.areacompletedfollowup.gus": "Selam @!^Yalnızca sana salonun şimdi telefondan gel-al ve eve teslim siparişlerine açık olduğunu haber vermek için yazıyorum! Evde ne zaman acıkırsan açık olduğumuz saatlerde bizi ara.^Eski çiftlik evinde bir telefonun var... değil mi?^   -Gus",
+	"mail.saloondeliverysurchargewaived": "Hey @!^Bedava bir pizza siparişine aç mısın? Herkes Halkevi yenilendiğinden dolayı çok mutlu olduğundan, telefondan sipariş ücretinden feragat ediyorum! Açık olduğumuz herhangi bir zamanda Salon'u bir ara.^   -Gus",
+	"dialogue.phone.invalid": "Cevapsız. Görünüşe bakılırsa Gus şuanda dışarıda.",
+	"dialogue.phone.delivery.0": "Tamamdır! Siparişin bir dakika içinde orada olacak.",
+	"dialogue.phone.delivery.1": "Teşekkürler @! Yakında çiftliğe teslim edilecek.",
+	"dialogue.phone.delivery.2": "Hepsi bitti! Oraya getireceğim.",
+	"dialogue.phone.delivery.3": "Sıcak, taze bir {{ItemName}} hemen geliyor!",
+	"dialogue.phone.delivery.4": "Yalnızca {{ItemName}} yemeğini paketleyip yola çıkacağım.",
+	"dialogue.phone.delivery.5": "Elbette @! Kapına teslim edilecek.",
+	"response.phone.delivery": "Telefondan sipariş menüsü",
+	"response.phone.delivery_surcharge": "Telefondan sipariş menüsü (50g ek ücret)",
+	"label.phone.delivery.title": "Siparişin:",
+	//"response.phone.dailydish": "Günün yemeği"
+}

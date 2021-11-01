@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Fishing Minigames",
   "Author": "barteke22 (Here Fishy base by aedenthorn)",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "Alternative fishing minigames, including Here Fishy!",
   "UniqueID": "barteke22.FishingMinigames",
   "EntryDll": "FishingMinigames.dll",

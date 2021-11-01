@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/shekurika/DailySpecialOrders
+   Git: https://github.com/shekurika/DailySpecialOrders.git
+
+mods:
+   Daily Special Orders
+
+latest commit:
+   commit 9b0ba8cc80c71e8762e64d62df81385095dd17cd
+   Author: shekurika <shekurika@gmail.com>
+   Date:   Mon Oct 4 14:10:52 2021 +0200
+   
+       updated german translations (by Diniriy), added spanish (Trengolis), portuguese(Akane), turkish(Kedi)
+   

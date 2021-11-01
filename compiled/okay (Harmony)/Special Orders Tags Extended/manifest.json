@@ -1,0 +1,10 @@
+{
+   "Name": "Special Orders Tags Extended",
+   "Author": "atravita",
+   "Version": "1.0.2",
+   "Description": "Extends the number of tags available for special orders",
+   "UniqueID": "atravita.SpecialOrdersExtended",
+   "EntryDll": "SpecialOrdersExtended.dll",
+   "UpdateKeys": ["Nexus:9855"],
+   "MinimumApiVersion": "3.0",
+}

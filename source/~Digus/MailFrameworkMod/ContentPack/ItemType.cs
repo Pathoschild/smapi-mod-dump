@@ -19,6 +19,7 @@ namespace MailFrameworkMod.ContentPack
         Ring,
         Furniture,
         Weapon,
-        Boots
+        Boots,
+        DGA
     }
 }

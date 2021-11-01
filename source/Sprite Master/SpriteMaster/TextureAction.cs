@@ -16,13 +16,13 @@ namespace SpriteMaster {
 		private readonly Action Executor;
 		public readonly int Texels;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal TextureAction(Action executor, int texels) {
 			Executor = executor;
 			Texels = texels;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal void Invoke() {
 			Executor.Invoke();
 		}

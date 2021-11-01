@@ -932,7 +932,7 @@ namespace ContentPatcher.Framework
                 }
 
                 // parse condition key
-                if (lexTokens.Length != 1 || !(lexTokens[0] is LexTokenToken lexToken))
+                if (lexTokens.Length != 1 || lexTokens[0] is not LexTokenToken lexToken)
                     return Fail($"'{name}' isn't a valid token name", out error, out condition);
                 keyLexToken = lexToken;
             }
@@ -961,7 +961,7 @@ namespace ContentPatcher.Framework
                 return Fail($"invalid {keyLexToken.Name} condition: {customError}", out error, out condition);
 
             // create condition
-            condition = new Condition(name: token.Name, input: keyInputStr, values: values);
+            condition = new Condition(name: token.Name, input: keyInputStr, values: values, isTokenMutable: token.IsMutable);
             if (!tokenParser.Migrator.TryMigrate(condition, out error))
                 return Fail(error, out error, out condition);
 

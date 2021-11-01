@@ -6,9 +6,9 @@ mods:
    Esca's Modding Plugins
 
 latest commit:
-   commit 44941a7081155f16831ce44cc00e7ee8f735bced
+   commit 12f5a4f6b6894688c90c138b3a6debd21b6eaef5
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Thu Sep 23 17:38:07 2021 -0500
+   Date:   Wed Oct 20 15:19:34 2021 -0500
    
-       Move readme to docs folder
+       Fix redundant casting in decompile-based code
    

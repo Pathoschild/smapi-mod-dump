@@ -25,7 +25,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		internal AnimalHouseAddNewHatchedAnimalPatch()
 		{
 			Original = typeof(AnimalHouse).MethodNamed(nameof(AnimalHouse.addNewHatchedAnimal));
-			Postfix = new HarmonyMethod(GetType(), nameof(AnimalHouseAddNewHatchedAnimalPostfix));
+			Postfix = new(GetType(), nameof(AnimalHouseAddNewHatchedAnimalPostfix));
 		}
 
 		#region harmony patches
@@ -40,12 +40,13 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				if (!who.HasProfession("Rancher")) return;
 
 				var a = __instance.Animals?.Values.Last();
-				if (a == null || a.age.Value != 0 || a.friendshipTowardFarmer.Value != 0) return;
-				a.friendshipTowardFarmer.Value = 200 + new Random(__instance.GetHashCode() + a.GetHashCode()).Next(-50, 51);
+				if (a is null || a.age.Value != 0 || a.friendshipTowardFarmer.Value != 0) return;
+				a.friendshipTowardFarmer.Value =
+					200 + new Random(__instance.GetHashCode() + a.GetHashCode()).Next(-50, 51);
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
+				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
 			}
 		}
 

@@ -13,8 +13,8 @@ namespace XSPlus.Features
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Common.Helpers.ItemMatcher;
-    using HarmonyLib;
+    using Common.Helpers;
+    using Common.Services;
     using Services;
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
@@ -25,55 +25,42 @@ namespace XSPlus.Features
     /// <inheritdoc />
     internal class StashToChestFeature : FeatureWithParam<string>
     {
-        private readonly IInputHelper _inputHelper;
-        private readonly ModConfigService _modConfigService;
-        private readonly PerScreen<List<Chest>?> _cachedEnabledChests = new();
-        private readonly PerScreen<IList<Chest>?> _cachedPlayerChests = new();
-        private readonly PerScreen<IList<Chest>?> _cachedGameChests = new();
+        private readonly PerScreen<IList<Chest>> _cachedPlayerChests = new();
+        private IList<Chest> _cachedGameChests;
+        private FilterItemsFeature _filterItems;
+        private ModConfigService _modConfig;
 
-        /// <summary>Initializes a new instance of the <see cref="StashToChestFeature"/> class.</summary>
-        /// <param name="inputHelper">API for changing state of input.</param>
-        /// <param name="modConfigService">Service to handle read/write to ModConfig.</param>
-        public StashToChestFeature(IInputHelper inputHelper, ModConfigService modConfigService)
-            : base("StashToChest")
+        private StashToChestFeature(ServiceManager serviceManager)
+            : base("StashToChest", serviceManager)
         {
-            this._inputHelper = inputHelper;
-            this._modConfigService = modConfigService;
+            // Dependencies
+            this.AddDependency<ModConfigService>(service => this._modConfig = service as ModConfigService);
+            this.AddDependency<FilterItemsFeature>(service => this._filterItems = service as FilterItemsFeature);
         }
 
-        private List<Chest> EnabledChests
-        {
-            get
-            {
-                this._cachedPlayerChests.Value ??= Game1.player.Items.OfType<Chest>().Where(this.IsEnabledForItem).ToList();
-                this._cachedGameChests.Value ??= XSPlus.AccessibleChests.Where(this.IsEnabledForItem).ToList();
-                return this._cachedEnabledChests.Value ??= this._cachedPlayerChests.Value.Union(this._cachedGameChests.Value).ToList();
-            }
-        }
-
-        /// <inheritdoc/>
-        public override void Activate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Activate()
         {
             // Events
-            modEvents.Player.InventoryChanged += this.OnInventoryChanged;
-            modEvents.Player.Warped += this.OnWarped;
-            modEvents.Input.ButtonsChanged += this.OnButtonsChanged;
+            this.Helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
+            this.Helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
+            this.Helper.Events.Player.Warped += this.OnWarped;
         }
 
-        /// <inheritdoc/>
-        public override void Deactivate(IModEvents modEvents, Harmony harmony)
+        /// <inheritdoc />
+        public override void Deactivate()
         {
             // Events
-            modEvents.Player.InventoryChanged -= this.OnInventoryChanged;
-            modEvents.Player.Warped -= this.OnWarped;
-            modEvents.Input.ButtonsChanged -= this.OnButtonsChanged;
+            this.Helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
+            this.Helper.Events.Player.InventoryChanged -= this.OnInventoryChanged;
+            this.Helper.Events.Player.Warped -= this.OnWarped;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("ReSharper", "HeapView.BoxingAllocation", Justification = "Required for enumerating this collection.")]
-        protected internal override bool IsEnabledForItem(Item item)
+        internal override bool IsEnabledForItem(Item item)
         {
-            if (!base.IsEnabledForItem(item) || item is not Chest chest || !chest.playerChest.Value || !this.TryGetValueForItem(item, out string range))
+            if (!base.IsEnabledForItem(item) || item is not Chest chest || !chest.playerChest.Value || !this.TryGetValueForItem(item, out var range) || !this._filterItems.HasFilterItems(chest))
             {
                 return false;
             }
@@ -87,16 +74,29 @@ namespace XSPlus.Features
             };
         }
 
-        /// <inheritdoc/>
-        protected override bool TryGetValueForItem(Item item, out string param)
+        /// <inheritdoc />
+        internal override bool TryGetValueForItem(Item item, out string param)
         {
             if (base.TryGetValueForItem(item, out param))
             {
                 return true;
             }
 
-            param = this._modConfigService.ModConfig.StashingRange;
+            param = this._modConfig.ModConfig.StashingRange;
             return !string.IsNullOrWhiteSpace(param);
+        }
+
+        internal void ResetCachedChests(bool playerChest = false, bool gameChest = false)
+        {
+            if (playerChest)
+            {
+                this._cachedPlayerChests.Value = null;
+            }
+
+            if (gameChest)
+            {
+                this._cachedGameChests = null;
+            }
         }
 
         private void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
@@ -106,63 +106,91 @@ namespace XSPlus.Features
                 return;
             }
 
-            this._cachedPlayerChests.Value = null;
-            this._cachedEnabledChests.Value = null;
+            this.ResetCachedChests(true);
         }
 
         private void OnWarped(object sender, WarpedEventArgs e)
         {
-            this._cachedGameChests.Value = null;
-            this._cachedEnabledChests.Value = null;
+            this.ResetCachedChests(gameChest: true);
         }
 
         /// <summary>Stash inventory items into all supported chests.</summary>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
         {
-            if (!Context.IsPlayerFree || !this._modConfigService.ModConfig.StashItems.JustPressed() || !this.EnabledChests.Any())
+            if (!Context.IsPlayerFree || !this._modConfig.ModConfig.StashItems.JustPressed())
             {
                 return;
             }
 
-            for (int i = Game1.player.Items.Count - 1; i >= 0; i--)
+            this._cachedPlayerChests.Value ??= Game1.player.Items.OfType<Chest>().Where(this.IsEnabledForItem).ToList();
+            this._cachedGameChests ??= XSPlus.AccessibleChests.Where(this.IsEnabledForItem).ToList();
+
+            if (!this._cachedGameChests.Any() && !this._cachedPlayerChests.Value.Any())
             {
-                Item item = Game1.player.Items[i];
+                Log.Trace("No eligible chests found to stash items into");
+                return;
+            }
+
+            Log.Trace("Trying to stash items into chest");
+            for (var i = Game1.player.Items.Count - 1; i >= 0; i--)
+            {
+                var item = Game1.player.Items[i];
                 if (item is not null)
                 {
                     Game1.player.Items[i] = this.TryAddItem(item);
+                    if (Game1.player.Items[i] is not null)
+                    {
+                        if (Game1.player.Items[i].Stack != item.Stack)
+                        {
+                            Log.Trace($"Ran out of available space for {item.Name}");
+                        }
+                        else
+                        {
+                            Log.Trace($"No eligible storage found for {item.Name}");
+                        }
+                    }
                 }
             }
 
             Game1.playSound("Ship");
-            this._inputHelper.SuppressActiveKeybinds(this._modConfigService.ModConfig.StashItems);
+            this.Helper.Input.SuppressActiveKeybinds(this._modConfig.ModConfig.StashItems);
         }
 
-        private Item? TryAddItem(Item item)
+        private Item TryAddItem(Item item)
         {
-            var itemMatcher = new ItemMatcher(this._modConfigService.ModConfig.SearchTagSymbol);
-            uint stack = (uint)item.Stack;
-            foreach (Chest chest in this.EnabledChests)
+            var stack = (uint)item.Stack;
+
+            foreach (var chest in this._cachedPlayerChests.Value)
             {
-                bool allowList = FilterItemsFeature.Instance.IsEnabledForItem(chest);
-
-                if (chest.modData.TryGetValue($"{XSPlus.ModPrefix}/FilterItems", out string filterItems))
+                if (!this._filterItems.Matches(chest, item))
                 {
-                    itemMatcher.SetSearch(filterItems);
-
-                    // Skip chest if per-chest filter does not match
-                    if (!itemMatcher.Matches(item))
-                    {
-                        continue;
-                    }
-                }
-                else if (!allowList)
-                {
-                    // Skip chest if no built-in filter and no per-chest filter
                     continue;
                 }
 
                 // Attempt to add item into chest
-                Item tmp = chest.addItem(item);
+                Log.Trace($"Adding {item.Name} to chest in player inventory: {chest.DisplayName}");
+                var tmp = chest.addItem(item);
+                if (tmp is null || tmp.Stack <= 0)
+                {
+                    return null;
+                }
+
+                if (tmp.Stack != stack)
+                {
+                    item.Stack = tmp.Stack;
+                }
+            }
+
+            foreach (var chest in this._cachedGameChests)
+            {
+                if (!this._filterItems.Matches(chest, item))
+                {
+                    continue;
+                }
+
+                // Attempt to add item into chest
+                Log.Trace($"Adding {item.Name} to chest at location: {chest.DisplayName}");
+                var tmp = chest.addItem(item);
                 if (tmp is null || tmp.Stack <= 0)
                 {
                     return null;

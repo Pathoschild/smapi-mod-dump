@@ -56,55 +56,55 @@
 			private readonly object Reference;
 
 			public Vector4 Source {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (Vector4)SourceInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => SourceInfo.SetValue(Reference, value);
 			}
 
 			public Vector4 Destination {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (Vector4)DestinationInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => DestinationInfo.SetValue(Reference, value);
 			}
 
 			public Vector2 Origin {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (Vector2)OriginInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => OriginInfo.SetValue(Reference, value);
 			}
 
 			public float Rotation {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (float)RotationInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => RotationInfo.SetValue(Reference, value);
 			}
 
 			public float Depth {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (float)DepthInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => DepthInfo.SetValue(Reference, value);
 			}
 
 			public SpriteEffects Effects {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (SpriteEffects)EffectsInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => EffectsInfo.SetValue(Reference, value);
 			}
 
 			public Color Color {
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				readonly get => (Color)ColorInfo.GetValue(Reference);
-				[MethodImpl(MethodImplOptions.AggressiveInlining)]
+				[MethodImpl(Runtime.MethodImpl.Optimize)]
 				set => ColorInfo.SetValue(Reference, value);
 			}
 
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			internal SpriteInfo(object reference) {
 				Reference = reference;
 			}

@@ -38,12 +38,12 @@ namespace SpriteMaster.Extensions.Compressors {
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static int CompressedLengthEstimate(byte[] data) {
 			return data.Length >> 1;
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		internal static int DecompressedLengthEstimate(byte[] data) {
 			return data.Length << 1;
 		}

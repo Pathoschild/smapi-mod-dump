@@ -1,7 +1,7 @@
 ﻿{
     "Name": "More Bundles",
     "Author": "TwinBuilderOne",
-    "Version": "1.0.1",
+    "Version": "1.1.0",
     "Description": "Adds a new difficulty setting for the community center.",
     "UniqueID": "TwinBuilderOne.MoreBundles",
     "EntryDll": "MoreBundles.dll",

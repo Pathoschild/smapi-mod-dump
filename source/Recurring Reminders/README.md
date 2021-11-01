@@ -11,7 +11,7 @@ for queries and analysis.**
 Collection of few reminder mods for Stardew Valley.
 
 * CustomReminders
-* RecurringReminders
+* ~~RecurringReminder~~
 
 ## CustomReminders
 

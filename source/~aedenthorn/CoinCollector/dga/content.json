@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+[
+	{
+		"$ItemType": "MeleeWeapon",
+		"ID": "MetalDetector",
+		"Texture": "assets/metaldetector.png",
+		"Type": "Club",
+		"MinimumDamage": 1,
+		"MaximumDamage": 10
+	},
+	{
+		"$ItemType": "ShopEntry",
+		"Item": {
+			"Type": "DGAItem",
+			"Value": "aedenthorn.CoinCollectorDGA/MetalDetector"
+		},
+		"MaxSold": 1,
+		"ShopId": "SeedShop",
+		"Cost": 1000
+	}
+]

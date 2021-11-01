@@ -18,12 +18,12 @@ namespace SpriteMaster.Types {
 		public const uint BufferCount = 2;
 		public const int StartingIndex = 0;
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private uint GetIndex (uint index) {
 			return (index & 1U);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		private T GetBuffer(uint index) {
 			return (GetIndex(index) == 0U) ? Buffer0 : Buffer1;
 		}
@@ -42,21 +42,21 @@ namespace SpriteMaster.Types {
 #pragma warning restore CS0420
 
 		public uint CurrentBuffer {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get => GetIndex(CurrentBufferAtomic);
 		}
 
 		public uint NextBuffer {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get => GetIndex(CurrentBufferAtomic + 1U);
 		}
 
 		public T Current {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get => GetBuffer(CurrentBufferAtomic);
 		}
 		public T Next {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get => GetBuffer(CurrentBufferAtomic + 1U);
 		}
 
@@ -64,7 +64,7 @@ namespace SpriteMaster.Types {
 		public T this[uint index] => GetBuffer(index);
 
 		public Tuple<T, T> Both {
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			[MethodImpl(Runtime.MethodImpl.Optimize)]
 			get {
 				var currentIndex = CurrentBufferAtomic;
 				return Tuple.Create(
@@ -92,10 +92,10 @@ namespace SpriteMaster.Types {
 			Reflection.CreateInstance<T>(parameters)
 		) { }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public void Swap() => Interlocked.Increment(ref _CurrentBuffer);
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(Runtime.MethodImpl.Optimize)]
 		public static implicit operator T (in DoubleBuffer<T> buffer) => buffer.Current;
 	}
 }

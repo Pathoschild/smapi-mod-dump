@@ -103,6 +103,30 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			return false;
 		}
 
+		[Harmonize(
+			typeof(NvTextureToolsLibrary),
+			new[] { "TeximpNet.Unmanaged.UnmanagedLibrary", "UnmanagedWindowsLibraryImplementation" },
+			"get_DllExtension",
+			HarmonizeAttribute.Fixation.Prefix,
+			Harmonize.PriorityLevel.First,
+			platform: HarmonizeAttribute.Platform.Windows
+		)]
+		internal static bool DllExtension_Windows(UnmanagedLibrary __instance, ref string __result) {
+			switch (Runtime.Bits) {
+				case 32:
+					__result = ".32.dll";
+					break;
+				case 64:
+					__result = ".64.dll";
+					break;
+				default:
+					Debug.Warning($"Unknown Runtime Bits value: {Runtime.Bits}");
+					return true;
+			}
+
+			return false;
+		}
+
 		private const int RTLD_NOW = 2;
 
 		[Harmonize(
