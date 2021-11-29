@@ -1,0 +1,10 @@
+{
+  "Name": "Telephone Purchasing",
+  "Author": "Stingray",
+  "Version": "1.1.2",
+  "Description": "Allows the player to purchase from the telephone",
+  "UniqueID": "Stingray.TP",
+  "EntryDll": "Telephone Purchasing.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus: 10190" ]
+}

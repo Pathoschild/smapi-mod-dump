@@ -16,7 +16,7 @@ using StardewValley.Locations;
 using StardewModdingAPI.Utilities;
 using Microsoft.Xna.Framework;
 using TwilightShards.Common;
-using Harmony;
+using HarmonyLib;
 using System.Reflection;
 using CustomizableTravelingCart.Patches;
 using System.Collections.Generic;
@@ -42,7 +42,7 @@ namespace CustomizableTravelingCart
             Logger = Monitor;
             APIItemsToBeAdded = new Dictionary<StardewValley.Object, int[]>();
 
-            var harmony = HarmonyInstance.Create("koihimenakamura.customizablecart");
+            var harmony = new Harmony("koihimenakamura.customizablecart");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             MethodInfo CheckAction = AccessTools.Method(typeof(Forest), "checkAction");

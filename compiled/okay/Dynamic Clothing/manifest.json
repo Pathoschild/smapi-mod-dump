@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Dynamic Clothing",
+  "Author": "hilovids",
+  "Version": "1.1.0",
+  "Description": "Be able to swap between stored outfits based on world conditions.",
+  "UniqueID": "hilovids.DynamicClothing",
+  "EntryDll": "DynamicClothing.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

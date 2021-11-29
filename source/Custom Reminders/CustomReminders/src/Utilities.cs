@@ -191,7 +191,7 @@ namespace Dem1se.CustomReminders.Utilities
         /// <param name="time">The time of the reminder in 24hrs format</param>
         public static void Write(string reminderMessage, int daysSinceStart, int time, int interval)
         {
-            ReminderModel ReminderData = new ReminderModel(reminderMessage, daysSinceStart, time, interval);
+            ReminderModel ReminderData = new(reminderMessage, daysSinceStart, time, interval);
             string pathToWrite = Path.Combine(Globals.Helper.DirectoryPath, "data", Globals.SaveFolderName);
             string serializedReminderData = JsonConvert.SerializeObject(ReminderData, Formatting.Indented);
             int reminderCount = 0;

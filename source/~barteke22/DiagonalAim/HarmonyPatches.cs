@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,7 @@ namespace DiagonalAim
 {
     class HarmonyPatches
     {
+        public static bool toggleOff = false;
 
         public static void GetToolLocation_Diagonals(ref Vector2 __result, Character __instance, Vector2 target_position, bool ignoreClick = false)
         {
@@ -85,5 +87,78 @@ namespace DiagonalAim
                 Log.Error("Error in harmony patch: " + e.Message);
             }
         }
+
+        public static bool GetToolLocation2_Diagonals(ref Vector2 __result, Character __instance, bool ignoreClick = false)
+        {
+            try
+            {
+                if (!Game1.wasMouseVisibleThisFrame || Game1.isAnyGamePadButtonBeingHeld())
+                {
+                    ignoreClick = true;
+                }
+                GetToolLocation_Diagonals(ref __result, __instance, __instance.lastClick, ignoreClick);
+                return false;
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error in harmony patch: " + e.Message);
+            }
+            return true;
+        }
+
+
+        public static void GetToolLocation_Diagonals2(ref Vector2 __result, Character __instance, Vector2 target_position, bool ignoreClick = false)
+        {
+            try
+            {
+                if (!toggleOff && __instance == Game1.player) {
+                    int direction = __instance.FacingDirection;
+
+                    if ((Game1.player.CurrentTool == null || (!Game1.player.CurrentTool.CanUseOnStandingTile()) && !ModEntry.config.AllowAnyToolOnStandingTile) && (int)(target_position.X / 64f) == Game1.player.getTileX() && (int)(target_position.Y / 64f) == Game1.player.getTileY()) return;
+                    
+                    if (!ignoreClick && !target_position.Equals(Vector2.Zero))
+                    {
+                        //bool allow_clicking_on_same_tile = false;
+                        //if (ModEntry.config.AllowAnyToolOnStandingTile || (Game1.player.CurrentTool != null && Game1.player.CurrentTool.CanUseOnStandingTile()))
+                        //{
+                        //    allow_clicking_on_same_tile = true;
+                        //}
+                        //if (Utility.withinRadiusOfPlayer((int)target_position.X, (int)target_position.Y, 1, Game1.player))
+                        //{
+                        //    direction = Game1.player.getGeneralDirectionTowards(new Vector2((int)target_position.X, (int)target_position.Y));
+                        //    if (allow_clicking_on_same_tile || Math.Abs(target_position.X - (float)Game1.player.getStandingX()) >= 32f || Math.Abs(target_position.Y - (float)Game1.player.getStandingY()) >= 32f)
+                        //    {
+                        //        __result = target_position;
+                        //        return;
+                        //    }
+                        //}
+                        if (Game1.player.CurrentTool == null || !Game1.player.CurrentTool.Name.Equals("Fishing Rod", StringComparison.Ordinal))
+                        {
+                            int extraReach = ModEntry.config.ExtraReachRadius;
+
+                            List<Vector2> tiles = new List<Vector2>();
+                            int endX = __instance.getTileX() + extraReach + 2;
+                            int endY = __instance.getTileY() + extraReach + 2;
+                            for (int x = __instance.getTileX() - extraReach - 1; x < endX; x++)
+                            {
+                                for (int y = __instance.getTileY() - extraReach - 1; y < endY; y++)
+                                {
+                                    tiles.Add(new Vector2(x, y));
+                                }
+                            }
+                            foreach (var tile in tiles)
+                            {
+                                if (Vector2.DistanceSquared(tile, Game1.currentCursorTile) < Vector2.DistanceSquared(__result / 64, Game1.currentCursorTile)) __result = tile * 64;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("Error in harmony patch: " + e.Message);
+            }
+        }
+
     }
 }

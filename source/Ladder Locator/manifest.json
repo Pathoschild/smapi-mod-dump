@@ -11,7 +11,7 @@
 {
     "Name": "LadderLocator",
     "Author": "ChaosEnergy",
-    "Version": "1.4.0",
+    "Version": "1.4.2",
     "Description": "Finds ladders and ores in the mines.",
     "UniqueID": "ChaosEnergy.LadderLocator",
     "EntryDll": "LadderLocator.dll",

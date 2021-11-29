@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7C24D0E5-470A-4815-ADEE-BECD6E70B3D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ItemPipes</RootNamespace>
+    <AssemblyName>ItemPipes</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Lib.Harmony.2.1.1\lib\net45\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Framework\API\ApiManager.cs" />
+    <Compile Include="Framework\API\IDynamicGameAssetsApi.cs" />
+    <Compile Include="Framework\API\IJsonAssetsApi3.cs" />
+    <Compile Include="Framework\Connector.cs" />
+    <Compile Include="Framework\Container.cs" />
+    <Compile Include="Framework\ContentPackUtil\CPManifestExtra.cs" />
+    <Compile Include="Framework\ContentPackUtil\CPManifest.cs" />
+    <Compile Include="Framework\ContentPackUtil\Manifest.cs" />
+    <Compile Include="Framework\Globals.cs" />
+    <Compile Include="Framework\Helper.cs" />
+    <Compile Include="Framework\IOPipe.cs" />
+    <Compile Include="Framework\ModConfig.cs" />
+    <Compile Include="Framework\Objects\ChestContainer.cs" />
+    <Compile Include="Framework\Objects\FilterPipe.cs" />
+    <Compile Include="Framework\Input.cs" />
+    <Compile Include="Framework\Objects\InserterPipe.cs" />
+    <Compile Include="Framework\Network.cs" />
+    <Compile Include="Framework\NetworkBuilder.cs" />
+    <Compile Include="Framework\NetworkManager.cs" />
+    <Compile Include="Framework\Printer.cs" />
+    <Compile Include="Framework\Model\DataModel.cs" />
+    <Compile Include="Framework\Model\Side.cs" />
+    <Compile Include="Framework\Model\SideStruct.cs" />
+    <Compile Include="Framework\DataAccess.cs" />
+    <Compile Include="Framework\Model\NodeFactory.cs" />
+    <Compile Include="Framework\Model\Node.cs" />
+    <Compile Include="Framework\Objects\ExtractorPipe.cs" />
+    <Compile Include="Framework\Output.cs" />
+    <Compile Include="Framework\Patches\ChestPatcher.cs" />
+    <Compile Include="Framework\Patches\FencePatcher.cs" />
+    <Compile Include="Framework\Objects\ConnectorPipe.cs" />
+    <Compile Include="Framework\Objects\PolymorphicPipe.cs" />
+    <Compile Include="Framework\Objects\ShippingBinContainer.cs" />
+    <Compile Include="ModEntry.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\BigCraftables\" />
+    <Folder Include="docs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\content-pack.json" />
+    <None Include="assets\data.json" />
+    <None Include="assets\Fences\Extractor Pipe\fence.json" />
+    <None Include="assets\Objects\Extractor Pipe E\big-craftable.json" />
+    <None Include="assets\Objects\Extractor Pipe N\big-craftable.json" />
+    <None Include="assets\Objects\Extractor Pipe S\big-craftable.json" />
+    <None Include="assets\Objects\Extractor Pipe W\big-craftable.json" />
+    <None Include="assets\Objects\Glue\object.json" />
+    <None Include="config.json" />
+    <None Include="manifest.json" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

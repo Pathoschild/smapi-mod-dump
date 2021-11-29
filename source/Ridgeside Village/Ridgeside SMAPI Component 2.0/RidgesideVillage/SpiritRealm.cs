@@ -57,8 +57,8 @@ namespace RidgesideVillage
             int Ycoord = (int)arg2.Y;
 
             string key = $"cleansed {Xcoord} {Ycoord}";
-            if (location.modData.ContainsKey($"cleansed {Xcoord} {Ycoord}")){
-                //return;
+            if (location.modData.ContainsKey(key)){
+                return;
             }
             location.modData[key] = "t";
             Game1.playSound("shadowpeep");
@@ -112,7 +112,7 @@ namespace RidgesideVillage
             {
                 if (key.StartsWith("cleansed"))
                 {
-                    var split = key.Split('/');
+                    var split = key.Split(' ');
                     int xCoord = int.Parse(split[1]);
                     int yCoord = int.Parse(split[2]);
                     location.removeTile(xCoord, yCoord - 1, "Front");
@@ -147,7 +147,10 @@ namespace RidgesideVillage
                 }
                 if (!String.IsNullOrEmpty(eventScript))
                 {
-                    Log.Error($"{eventScript}");
+                    if (Game1.player.eventsSeen.Contains(75160263))
+                    {
+                        return;
+                    }
                     UtilFunctions.StartEvent(new Event(eventScript, 75160263), "Custom_Ridgeside_RSVSpiritRealm", 10, 10);
                 }
                 else
@@ -167,7 +170,7 @@ namespace RidgesideVillage
         private static void OpenBook()
         {
             Game1.activeClickableMenu = new DialogueBox(Helper.Translation.Get("Daia.BookOpen"));
-            if (Game1.player.eventsSeen.Contains(HasUnsealedRae) == false)
+            if (!Game1.player.eventsSeen.Contains(HasUnsealedRae))
             {
                 var responses = new List<Response>
                 {
@@ -175,7 +178,42 @@ namespace RidgesideVillage
                     new Response("page2", Helper.Translation.Get("Daia.Page2")),
                     new Response("page3", Helper.Translation.Get("Daia.Page3")),
                     new Response("page4", Helper.Translation.Get("Daia.Page4")),
-                    new Response("page8", Helper.Translation.Get("Daia.LegendFishes")),
+                    new Response("cancel", Helper.Translation.Get("Daia.BookClose")),
+                };
+                var responseActions = new List<Action>
+                {
+                    delegate
+                    {
+                        Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Daia.RelicHint1"));
+                    },
+                    delegate
+                    {
+                        Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Daia.RelicHint2"));
+                    },
+                    delegate
+                    {
+                        Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Daia.RelicHint3"));
+                    },
+                    delegate
+                    {
+                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage4\" 4f", Vector2.Zero);
+                    },
+                    delegate{}
+                };
+
+                Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("Daia.BookPages"), responses, responseActions);
+            }
+            else if (Game1.player.eventsSeen.Contains(HasUnsealedRae) && !Game1.player.eventsSeen.Contains(75160265))
+            {
+                var responses = new List<Response>
+                {
+                    new Response("page1", Helper.Translation.Get("Daia.Page1")),
+                    new Response("page2", Helper.Translation.Get("Daia.Page2")),
+                    new Response("page3", Helper.Translation.Get("Daia.Page3")),
+                    new Response("page4", Helper.Translation.Get("Daia.Page4")),
+                    new Response("page5", Helper.Translation.Get("Daia.Page5")),
+                    new Response("page6", Helper.Translation.Get("Daia.Page6")),
+                    new Response("page7", Helper.Translation.Get("Daia.Page7")),
                     new Response("cancel", Helper.Translation.Get("Daia.BookClose")),
                 };
                 var responseActions = new List<Action>
@@ -198,14 +236,22 @@ namespace RidgesideVillage
                     },
                     delegate
                     {
-                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage8\" 4f", Vector2.Zero);
+                        Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Daia.RelicHint4"));
+                    },
+                    delegate
+                    {
+                        Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Daia.RelicHint5"));
+                    },
+                    delegate
+                    {
+                        ImageMenu.Open("ShowImage \"LooseSprites/RSVDaiaPage7\" 4f", Vector2.Zero);
                     },
                     delegate{}
                 };
 
                 Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("Daia.BookPages"), responses, responseActions);
             }
-            else
+            else if (Game1.player.eventsSeen.Contains(75160265))
             {
                 var responses = new List<Response>
                 {

@@ -1,0 +1,42 @@
+﻿body{
+    height: 100%;
+    margin: 0px;
+    line-height: normal;
+}
+
+.hud_data-bs {
+     text-align: center;
+    background-color: #595959;
+    border-top: 1px solid #737373;
+    border-right: 1px solid #737373;
+    border-bottom: 1px solid #999999;
+    border-left: 1px solid #999999;
+}
+
+.message_board_list {
+    background-image: url('/images/message_board.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    font-size: 20pt;
+}
+
+.message_paper_board {
+    background-image: url('/images/message_board_paper.png');
+    margin: 5px;
+    background-size: 100% 100%;
+    padding: 35px 35px 30px 50px;
+    /*   display: inline-flex;*/
+}
+
+.message_board_title {
+    border-image: url('/images/title_box.png') 0 fill;
+    /*  background-image: url('/images/title_box.png');*/
+    margin: 5px 5px 5px 5px;
+    background-size: 100% 100%;
+    padding: 10px 5px 10px 5px;
+    font-family: stardew,'Times New Roman', Times, serif;
+    text-align: center;
+    font-size: 28pt;
+}

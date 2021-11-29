@@ -8,34 +8,35 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley.Tools;
 using System;
 using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewModdingAPI;
+using StardewValley.Tools;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class SlingshotCanAutoFirePatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal SlingshotCanAutoFirePatch()
 		{
-			Original = typeof(Slingshot).MethodNamed(nameof(Slingshot.CanAutoFire));
+			Original = RequireMethod<Slingshot>(nameof(Slingshot.CanAutoFire));
 			Prefix = new(GetType(), nameof(SlingshotCanAutoFirePrefix));
 		}
 
 		#region harmony patches
 
-		/// <summary>Patch to allow auto-fire during Desperado super mode.</summary>
+		/// <summary>Patch to allow auto-fire during Desperado Super Mode.</summary>
 		[HarmonyPrefix]
 		private static bool SlingshotCanAutoFirePrefix(Slingshot __instance, ref bool __result)
 		{
 			try
 			{
 				var who = __instance.getLastFarmerToUse();
-				if (ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == Util.Professions.IndexOf("Desperado"))
+				if (ModState.IsSuperModeActive && ModState.SuperModeIndex == Utility.Professions.IndexOf("Desperado"))
 					__result = true;
 				else
 					__result = false;
@@ -43,7 +44,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

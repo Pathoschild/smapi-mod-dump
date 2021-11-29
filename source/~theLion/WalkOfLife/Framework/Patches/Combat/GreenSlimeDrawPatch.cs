@@ -8,16 +8,15 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
-using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Monsters;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches.Combat
@@ -27,8 +26,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 		/// <summary>Construct an instance.<w/ summary>
 		internal GreenSlimeDrawPatch()
 		{
-			Original = typeof(GreenSlime).MethodNamed(nameof(GreenSlime.draw), new[] { typeof(SpriteBatch) });
-			//Transpiler = new HarmonyMethod(GetType(), nameof(GreenSlimeDrawTranspiler));
+			Original = null;
+			Transpiler = new(GetType(), nameof(GreenSlimeDrawTranspiler));
 		}
 
 		#region harmony patches
@@ -37,14 +36,14 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 		private static IEnumerable<CodeInstruction> GreenSlimeDrawTranspiler(IEnumerable<CodeInstruction> instructions,
 			ILGenerator iLGenerator, MethodBase original)
 		{
-			Helper.Attach(original, instructions);
+			var helper = new ILHelper(original, instructions);
 
 			/// Injected: antenna position += GetAntennaOffset(this)
 			///			  eyes position += GetEyesOffset(this)
 
 			try
 			{
-				Helper
+				helper
 					.FindFirst( // find main sprite draw call
 						new CodeInstruction(OpCodes.Ldarg_1),
 						new CodeInstruction(OpCodes.Ldarg_0),
@@ -77,7 +76,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 					.Insert( // insert custom offset
 						new CodeInstruction(OpCodes.Ldarg_0),
 						new CodeInstruction(OpCodes.Call,
-							typeof(GreenSlimeDrawPatch).MethodNamed(nameof(GetAntennaOffset)))
+							typeof(GreenSlimeDrawPatch).MethodNamed(nameof(GetAntennaeOffset)))
 					)
 					.InsertBuffer() // insert addition
 					.FindNext( // find eyes draw call
@@ -104,18 +103,19 @@ namespace TheLion.Stardew.Professions.Framework.Patches.Combat
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while patching inflated Green Slime sprite.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while patching inflated Green Slime sprite.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
-			return Helper.Flush();
+			return helper.Flush();
 		}
 
 		#endregion harmony patches
 
 		#region private methods
 
-		private static Vector2 GetAntennaOffset(GreenSlime slime)
+		private static Vector2 GetAntennaeOffset(GreenSlime slime)
 		{
 			if (slime.Scale <= 1f) return Vector2.Zero;
 

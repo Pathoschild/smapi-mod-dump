@@ -26,6 +26,8 @@
 	"config.option.foodcanburn_description": "You have a chance to have your food burn to a crisp when cooking!\nBurnt food can still be eaten or sold for a modest refund.\nFoods will burn individually, not as a whole stack.\nBurn chance decreases with your Cooking skill level.\n\nNot recommended unless you enjoy failure.",
 	"config.option.rememberlastsearchfilter_name": "Remember last search filter",
 	"config.option.rememberlastsearchfilter_description": "With the new cooking menu enabled, you can search for recipes with filters.\nThe menu already saves your last-used search filter,\nbut it resets for when you next play.\nYou can disable this here to always use start with the default filter.",
+	"config.option.showfoodregenbar_name": "Show food healing regen bar",
+	"config.option.showfoodregenbar_description": "With food healing over time enabled, you can optionally hide the new contextual bar.\nThe bar appears beside the health and energy bars to show your collected food healing remaining.",
 	"config.option.defaultsearchfilter_name": "Default search filter",
 	"config.option.defaultsearchfilter_description": "With the new cooking menu enabled, you can search for recipes with filters.\nThe menu already saves your last-used search filter,\nbut it resets for when you next play.\nYou can set a default filter for all play sessions here.",
 	"config.option.resizekoreanfonts_name": "Resize Korean fonts",

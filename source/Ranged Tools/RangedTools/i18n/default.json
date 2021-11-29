@@ -1,0 +1,70 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/vgperson/RangedTools
+**
+*************************************************/
+
+{
+	// Option Headers
+	"headerRanges": "Ranges",
+	"headerUseOnTile": "Usability",
+	"headerFaceClick": "Turn Toward Click",
+	"headerMisc": "Miscellaneous",
+	
+	// Ranges
+	"optionRangeName": "{{subject}} Range",
+	"optionRangeTooltip": "Maximum range of {{subject}}, in tiles from player.",
+	
+	"axeForRangeName": "Axe",
+	"axeForRangeTooltip": "the Axe",
+	"pickaxeForRangeName": "Pickaxe",
+	"pickaxeForRangeTooltip": "the Pickaxe",
+	"hoeForRangeName": "Hoe",
+	"hoeForRangeTooltip": "the Hoe",
+	"wateringCanForRangeName": "Watering Can",
+	"wateringCanForRangeTooltip": "the Watering Can",
+	"seedsForRangeName": "Seed",
+	"seedsForRangeTooltip": "placing seeds/fertilizer",
+	"objectsForRangeName": "Object Place",
+	"objectsForRangeTooltip": "placing objects",
+	
+	"rangeUnlimited": "Unlimited",
+	"rangeDefault": "1 tile (normal)",
+	"rangeExtended": "{{tiles}} tiles",
+	
+	// Usability
+	"optionSelfUsabilityName": "{{tool}} Usable on Player Tile",
+	"optionSelfUsabilityTooltip": "Allows using {{tool}} on the same tile the player is currently on.",
+	
+	"axeForUsabilityName": "Axe",
+	"axeForUsabilityTooltip": "the Axe",
+	"pickaxeForUsabilityName": "Pickaxe",
+	"pickaxeForUsabilityTooltip": "the Pickaxe",
+	"hoeForUsabilityName": "Hoe",
+	"hoeForUsabilityTooltip": "the Hoe",
+	
+	// Turn To Click
+	"optionToolFaceClickName": "Tools Always Face Click",
+	"optionToolFaceClickTooltip": "Automatically turns player toward the cursor when using tools.",
+	
+	"optionWeaponFaceClickName": "Weapons Always Face Click",
+	"optionWeaponFaceClickTooltip": "Automatically turns player toward the cursor when using weapons.",
+	
+	// Miscellaneous
+	"optionToolHitLocationName": "Tool Hit Location Display",
+	"optionToolHitLocationTooltip": "Affects how Tool Hit Location indicator works (if enabled).\nOriginal Logic: Follow base game ranges.\nNew Logic: Account for extended ranges.\nCombination: Indicate both types at once.",
+	
+	"locationLogicOriginal": "Original Logic",
+	"locationLogicNew": "New Logic (default)",
+	"locationLogicCombined": "Combination",
+	
+	"optionAllowRangedChargeName": "Allow Ranged Charge Effects",
+	"optionAllowRangedChargeTooltip": "Allows charged tool actions at extended ranges, which will originate from the cursor position instead of the player.",
+	
+	"optionOnClickOnlyName": "Custom Range on Click Only",
+	"optionOnClickOnlyTooltip": "If enabled, extended ranges only apply when using tools by clicking. If disabled, they will apply for all forms of tool use.",
+}

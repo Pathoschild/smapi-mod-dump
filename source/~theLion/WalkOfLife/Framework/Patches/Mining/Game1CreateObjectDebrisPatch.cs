@@ -11,20 +11,21 @@
 using System;
 using System.Reflection;
 using HarmonyLib;
+using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 using SObject = StardewValley.Object;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class Game1CreateObjectDebrisPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal Game1CreateObjectDebrisPatch()
 		{
-			Original = typeof(Game1).MethodNamed(nameof(Game1.createObjectDebris),
+			Original = RequireMethod<Game1>(nameof(Game1.createObjectDebris),
 				new[] {typeof(int), typeof(int), typeof(int), typeof(long), typeof(GameLocation)});
 			Prefix = new(GetType(), nameof(Game1CreateObjectDebrisPrefix));
 		}
@@ -45,15 +46,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				location.debris.Add(new(objectIndex, new(xTile * 64 + 32, yTile * 64 + 32),
 					who.getStandingPosition())
 				{
-					itemQuality = Util.Professions.GetGemologistMineralQuality()
+					itemQuality = Utility.Professions.GetGemologistMineralQuality()
 				});
 
-				ModEntry.Data.IncrementField<uint>("MineralsCollected");
+				ModEntry.Data.Increment<uint>("MineralsCollected");
 				return false; // don't run original logic
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

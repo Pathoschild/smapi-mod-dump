@@ -49,12 +49,14 @@ namespace FarmTypeManager
                         }
                         else if (obj is string name) //if the object is a string, cast it as one
                         {
+                            string farmTypeID = Helper.Reflection.GetMethod(typeof(Game1), "GetFarmTypeID", false)?.Invoke<string>(); //get the farm type ID string (null in SDV 1.5.4 or older) 
+
                             if (name.Equals("All", StringComparison.OrdinalIgnoreCase) || name.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if this is "all" or "any"
                             {
                                 validType = true;
                                 break; //skip checking the rest of the farm types
                             }
-                            else if (name.Equals(Game1.GetFarmTypeID(), StringComparison.OrdinalIgnoreCase)) //if this is the name of the player's custom farm type (added with SDV 1.5.5+ features)
+                            else if (name.Equals(farmTypeID, StringComparison.OrdinalIgnoreCase)) //if this is the name of the player's SDV-supported custom farm type (SDV 1.5.5 or newer)
                             {
                                 validType = true;
                                 break; //skip checking the rest of the farm types

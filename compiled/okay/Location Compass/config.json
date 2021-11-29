@@ -1,6 +1,7 @@
 {
   "HoldToToggle": true,
   "ToggleKeyCode": "LeftAlt",
+  "HideHud": true,
   "SameLocationOnly": true,
   "SameLocationToggleKey": "H",
   "ShowQuestsAndBirthdaysOnly": false,

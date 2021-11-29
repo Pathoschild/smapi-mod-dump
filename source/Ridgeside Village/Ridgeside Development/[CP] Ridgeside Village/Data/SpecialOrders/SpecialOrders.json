@@ -180,7 +180,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective3_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective2_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -191,7 +191,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective4_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective3_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -202,7 +202,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective5_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective4_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -213,7 +213,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective6_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective5_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -224,7 +224,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective7_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective6_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -235,7 +235,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective8_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective7_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -246,7 +246,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective9_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective8_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -257,7 +257,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective10_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective9_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -268,7 +268,7 @@
                },
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective2_Text]",
+                  "Text": "[RSV.SpecialOrder.DaiaQuest_Objective10_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",
@@ -523,7 +523,7 @@
                      "DropBox": "RSVPurpleCrystal",
                      "DropBoxGameLocation": "Custom_Ridgeside_RidgeForest",
                      "DropBoxIndicatorLocation": "18 74.4",
-                     "AcceptedContextTags": "color_prismatic/color_purple/color_dark_pink/color_dark_purple/color_pale_violet_red/color_poppyseed/color_iridium"
+                     "AcceptedContextTags": "color_prismatic/color_purple/color_light_purple/color_dark_pink/color_dark_purple/color_pale_violet_red/color_poppyseed/color_iridium"
                   }
                },
             ],
@@ -649,7 +649,7 @@
                {
                   "Type": "Collect",
                   "Text": "[RSV.SpecialOrder.CleanUp_Objective1_Text]",
-                  "RequiredCount": "90",
+                  "RequiredCount": "120",
                   "Data": {
                      "AcceptedContextTags": "trash_item"
                   }
@@ -779,7 +779,7 @@
                      "DropBox": "RSVPikaHouse",
                      "DropBoxGameLocation": "Custom_Ridgeside_PikaHouse",
                      "DropBoxIndicatorLocation": "8.5 8.4",
-                     "AcceptedContextTags": "item_lava_lilly"
+                     "AcceptedContextTags": "item_lava_lily"
                   }
                },
                {
@@ -903,7 +903,7 @@
                {
                   "Type": "Money",
                   "Data": {
-                     "Amount": "60000"
+                     "Amount": "80000"
                   }
                },
             ]
@@ -1055,17 +1055,6 @@
                      "AcceptedContextTags": "item_lullaby_carp"
                   }
                },
-               {
-                  "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.LinkedFishes_Objective10_Text]",
-                  "RequiredCount": "1",
-                  "Data": {
-                     "DropBox": "RSVNinja",
-                     "DropBoxGameLocation": "Custom_Ridgeside_RSVNinjaHouse",
-                     "DropBoxIndicatorLocation": "13.5 4.4",
-                     "AcceptedContextTags": "item_pebble_back_crab"
-                  }
-               },
             ],
             "Rewards": [
                {
@@ -1093,7 +1082,7 @@
             "Objectives": [
                {
                   "Type": "Donate",
-                  "Text": "[RSV.SpecialOrder.MythFlower_Objective10_Text]",
+                  "Text": "[RSV.SpecialOrder.MythFlower_Objective1_Text]",
                   "RequiredCount": "1",
                   "Data": {
                      "DropBox": "RSVNinja",

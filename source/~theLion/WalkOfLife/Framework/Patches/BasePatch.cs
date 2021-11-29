@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using StardewModdingAPI;
@@ -17,44 +16,21 @@ using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
-	/// <summary>Harmony patch base class.</summary>
-	public abstract class BasePatch
+	/// <summary>Base implementation for Harmony patch classes.</summary>
+	internal abstract class BasePatch : IPatch
 	{
-		protected static ILHelper Helper { get; private set; }
-		protected static Action<string, LogLevel> Log { get; private set; }
-
 		protected MethodBase Original { get; set; }
 		protected HarmonyMethod Prefix { get; set; }
-		protected HarmonyMethod Transpiler { get; set; }
 		protected HarmonyMethod Postfix { get; set; }
+		protected HarmonyMethod Transpiler { get; set; }
 
-		/// <summary>Initialize the ILHelper.</summary>
-		internal static void Init(Action<string, LogLevel> log, bool enableILCodeExport, string modPath)
+		/// <inheritdoc />
+		public virtual void Apply(Harmony harmony)
 		{
-			Helper = new(log, enableILCodeExport, modPath);
-			Log = log;
-		}
-
-		/// <summary>Apply internally-defined Harmony patches.</summary>
-		/// <param name="harmony">The Harmony instance for this mod.</param>
-		/// <returns>Returns an array of bools representation of patch results.</returns>
-		public virtual Dictionary<string, int> Apply(Harmony harmony)
-		{
-			var results = new Dictionary<string, int>
-			{
-				{ "patched", 0},
-				{ "failed", 0},
-				{ "ignored", 0},
-				{ "prefixed", 0},
-				{ "postfixed", 0},
-				{ "transpiled", 0},
-			};
-			
 			if (Original is null)
 			{
 				ModEntry.Log($"[Patch]: Ignoring {GetType().Name}. The patch target was not found.", LogLevel.Trace);
-				++results["ignored"];
-				return results;
+				return;
 			}
 
 			try
@@ -62,19 +38,32 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				ModEntry.Log($"[Patch]: Applying {GetType().Name} to {Original.DeclaringType}::{Original.Name}.",
 					LogLevel.Trace);
 				harmony.Patch(Original, Prefix, Postfix, Transpiler);
-				if (Prefix is not null) ++results["prefixed"];
-				if (Postfix is not null) ++results["postfixed"];
-				if (Transpiler is not null) ++results["transpiled"];
-				++results["patched"];
 			}
 			catch (Exception ex)
 			{
-				ModEntry.Log($"[Patch]: Failed to patch {Original.DeclaringType}::{Original.Name}.\nHarmony returned {ex}",
+				ModEntry.Log(
+					$"[Patch]: Failed to patch {Original.DeclaringType}::{Original.Name}.\nHarmony returned {ex}",
 					LogLevel.Error);
-				++results["failed"];
 			}
+		}
 
-			return results;
+		/// <summary>Get a method and assert that it was found.</summary>
+		/// <typeparam name="TTarget">The type containing the method.</typeparam>
+		/// <param name="parameters">The method parameter types, or <c>null</c> if it's not overloaded.</param>
+		/// <remarks>Credit to Pathoschild.</remarks>
+		protected ConstructorInfo RequireConstructor<TTarget>(params Type[] parameters)
+		{
+			return typeof(TTarget).Constructor(parameters);
+		}
+
+		/// <summary>Get a method and assert that it was found.</summary>
+		/// <typeparam name="TTarget">The type containing the method.</typeparam>
+		/// <param name="name">The method name.</param>
+		/// <param name="parameters">The method parameter types, or <c>null</c> if it's not overloaded.</param>
+		/// <remarks>Credit to Pathoschild.</remarks>
+		protected MethodInfo RequireMethod<TTarget>(string name, Type[] parameters = null)
+		{
+			return typeof(TTarget).MethodNamed(name, parameters);
 		}
 	}
 }

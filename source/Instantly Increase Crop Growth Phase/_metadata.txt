@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/RyanJesky/IncreaseCropGrowthPhase
+   Git: https://github.com/RyanJesky/IncreaseCropGrowthPhase.git
+
+mods:
+   Instantly Increase Crop Growth Phase
+
+latest commit:
+   commit 50aac21a19332d73f04ec4c49d22bb35267252a8
+   Author: RyanJesky <57146630+RyanJesky@users.noreply.github.com>
+   Date:   Wed Nov 17 13:29:05 2021 -0600
+   
+       Add files via upload
+   

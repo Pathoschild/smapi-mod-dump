@@ -24,6 +24,8 @@
 					"item.description.indoors": "Allows for planting seasonal crops on unsuitable ground.",
 					"item.description.default": "Dummy object, not spawnable with CJB Item Spawner. Type 'rgb.give' or 'rgb.giveall' into the SMAPI console to get some!",
 
+					"item.inspect.broken": "This garden bed is broken and needs replacing.",
+
 					"menu.title.new": "New blueprints",
 
 					"config.raisedbedsmaybreakwithage.name": "Garden beds break with age",

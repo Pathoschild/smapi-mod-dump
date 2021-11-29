@@ -29,7 +29,7 @@ namespace RidgesideVillage
         {
             Helper = helper;
 
-            Log.Trace($"Applying Harmony Patch \"{nameof(ShowGlobalMessage_Prefix)}\" prefixing SDV method \"SpecialOrders.IsTimedQuest()\".");
+            Log.Trace($"Applying Harmony Patch \"{nameof(ShowGlobalMessage_Prefix)}.");
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), nameof(Game1.showGlobalMessage)),
                 prefix: new HarmonyMethod(typeof(HarmonyPatch_EventMessage), nameof(ShowGlobalMessage_Prefix))

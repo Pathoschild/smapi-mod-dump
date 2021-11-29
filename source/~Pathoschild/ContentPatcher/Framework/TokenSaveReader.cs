@@ -228,7 +228,7 @@ namespace ContentPatcher.Framework
         /// <summary>Get the day of week.</summary>
         public DayOfWeek GetDayOfWeek()
         {
-            return this.GetDay() switch
+            return (this.GetDay() % 7) switch
             {
                 1 => DayOfWeek.Monday,
                 2 => DayOfWeek.Tuesday,
@@ -281,7 +281,7 @@ namespace ContentPatcher.Framework
             // get from weather data
             LocationWeather model = this.GetForState(
                 loaded: () => Game1.netWorldState.Value.GetWeatherForLocation((GameLocation.LocationContext)context),
-                reading: save => save.locationWeather.TryGetValue((GameLocation.LocationContext)context, out LocationWeather temp) ? temp : null
+                reading: save => save.locationWeather != null && save.locationWeather.TryGetValue((GameLocation.LocationContext)context, out LocationWeather weather) ? weather : null
             );
             if (model != null)
             {
@@ -467,7 +467,6 @@ namespace ContentPatcher.Framework
                             name = spouse.Name;
                             gender = spouse.IsMale ? Gender.Male : Gender.Female;
                             isPlayer = true;
-                            valid = true;
                         }
                     }
                     else
@@ -478,9 +477,9 @@ namespace ContentPatcher.Framework
                             name = spouse.Name;
                             gender = spouse.Gender == NPC.male ? Gender.Male : Gender.Female;
                             isPlayer = false;
-                            valid = true;
                         }
                     }
+                    valid = name != null && friendship != null;
 
                     // create cache entry
                     return Tuple.Create(name, friendship, gender, isPlayer, valid);

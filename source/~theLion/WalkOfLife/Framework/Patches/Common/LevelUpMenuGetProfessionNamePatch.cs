@@ -8,21 +8,22 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley.Menus;
 using System;
 using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewModdingAPI;
+using StardewValley.Menus;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class LevelUpMenuGetProfessionNamePatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal LevelUpMenuGetProfessionNamePatch()
 		{
-			Original = typeof(LevelUpMenu).MethodNamed("getProfessionName");
+			Original = RequireMethod<LevelUpMenu>("getProfessionName");
 			Prefix = new(GetType(), nameof(LevelUpMenuGetProfessionNamePrefix));
 		}
 
@@ -34,14 +35,14 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				if (!Util.Professions.IndexByName.Contains(whichProfession)) return true; // run original logic
+				if (!Utility.Professions.IndexByName.Contains(whichProfession)) return true; // run original logic
 
-				__result = Util.Professions.IndexByName.Reverse[whichProfession];
+				__result = Utility.Professions.IndexByName.Reverse[whichProfession];
 				return false; // don't run original logic
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

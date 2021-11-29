@@ -176,6 +176,7 @@ namespace FarmTypeManager
                     case SavedObject.ObjectType.Object:
                     case SavedObject.ObjectType.Item:
                     case SavedObject.ObjectType.Container:
+                    case SavedObject.ObjectType.DGA:
                         //these are valid item types
                         break;
                     default:
@@ -209,6 +210,66 @@ namespace FarmTypeManager
                     };
                     Monitor.VerboseLog($"Parsed \"{item.Category}\" as a container type.");
                     return saved;
+                }
+
+                if (item.Type == SavedObject.ObjectType.DGA) //if this is a DGA item
+                {
+                    if (DGAItemAPI != null) //if DGA's API is loaded
+                    {
+                        try
+                        {
+                            object testItem = DGAItemAPI.SpawnDGAItem(item.Name); //confirm that this item can be created
+
+                            if (testItem != null) //if this item was created successfully
+                            {
+                                if (testItem is Item) //if the item is an Item or any subclass of it (SDV object, etc)
+                                {
+                                    SavedObject saved = new SavedObject() //generate a saved object with these settings
+                                    {
+                                        Type = item.Type,
+                                        Name = item.Name,
+                                        ConfigItem = item
+                                    };
+                                    Monitor.VerboseLog($"Parsed \"{item.Name}\" as a DGA item.");
+                                    return saved;
+                                }
+                                else //if this item not an Item
+                                {
+                                    Monitor.Log($"An area's item list contains a Dynamic Game Assets (DGA) item of a type that FTM does not recognize.", LogLevel.Info);
+                                    Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
+                                    Monitor.Log($"Item name: \"{item.Name}\"", LogLevel.Info);
+                                    Monitor.Log($"This may be caused by an error in the item list or a type of custom item that FTM cannot spawn. The affected item will be skipped.", LogLevel.Info);
+                                    return null;
+                                }
+                            }
+                            else
+                            {
+                                Monitor.Log($"An area's item list contains a Dynamic Game Assets (DGA) item name that does not match any loaded DGA items.", LogLevel.Info);
+                                Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
+                                Monitor.Log($"Item name: \"{item.Name}\"", LogLevel.Info);
+                                Monitor.Log($"This may be caused by an error in the item list or a modded object that wasn't loaded. The affected item will be skipped.", LogLevel.Info);
+                                return null;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"An area's item list contains a Dynamic Game Assets (DGA) item, but an error occurred while test-spawning the item.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
+                            Monitor.Log($"Item name: \"{item.Name}\"", LogLevel.Info);
+                            Monitor.Log($"The affected item will be skipped. The auto-generated error message has been added to the log.", LogLevel.Info);
+                            Monitor.Log($"----------", LogLevel.Trace);
+                            Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                            return null;
+                        }
+                    }
+                    else //if DGA's API is unavailable
+                    {
+                        Monitor.Log($"An area's item list contains a Dynamic Game Assets (DGA) item, but that mod's interface is unavailable.", LogLevel.Info);
+                        Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
+                        Monitor.Log($"Item name: \"{item.Name}\"", LogLevel.Info);
+                        Monitor.Log($"If DGA is not installed, please install it. If FTM displayed an error about DGA's interface, please report this to FTM's developer. The affected item will be skipped.", LogLevel.Info);
+                        return null;
+                    }
                 }
 
                 string savedName = item.Category + ":" + item.Name;

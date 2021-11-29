@@ -6,10 +6,9 @@ mods:
    Raised Garden Beds
 
 latest commit:
-   commit 632be90bcf3daeba8e70eee69f5423da1910c3e0
+   commit 2f2322d4804de1b365eb2da322bff32a903324f2
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Fri Aug 20 20:15:59 2021 +1000
+   Date:   Thu Nov 4 11:12:31 2021 +1100
    
-       1.0.1-c:
-       Update content pack manifest versions.
+       Fix object crafting recipes not being added to game data dictionaries when no other loaded mods are invalidating the data assets.
    

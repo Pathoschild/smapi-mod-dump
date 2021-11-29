@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static StardewValley.Menus.CharacterCustomization;
+using FashionSense.Framework.Models.Hair;
 
 namespace FashionSense.Framework.Patches.Menus
 {
@@ -40,7 +41,7 @@ namespace FashionSense.Framework.Patches.Menus
             harmony.Patch(AccessTools.Method(_menu, "setUpPositions", null), postfix: new HarmonyMethod(GetType(), nameof(SetUpPositionsPostfix)));
             harmony.Patch(AccessTools.Method(_menu, "selectionClick", new[] { typeof(string), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(SelectionClickPostfix)));
 
-            harmony.Patch(AccessTools.Method(_menu, nameof(CharacterCustomization.performHoverAction), new[] { typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(PerformHoverAction)));
+            harmony.Patch(AccessTools.Method(_menu, nameof(CharacterCustomization.performHoverAction), new[] { typeof(int), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(PerformHoverActionPostfix)));
             harmony.Patch(AccessTools.Method(_menu, nameof(CharacterCustomization.draw), new[] { typeof(SpriteBatch) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPostfix)));
         }
 
@@ -65,7 +66,7 @@ namespace FashionSense.Framework.Patches.Menus
                 rightNeighborID = -99998,
                 downNeighborID = -99998
             });
-            ___labels.Add(new ClickableComponent(new Rectangle(__instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 280 - 48 + IClickableMenu.borderWidth + 64 + 8, ___accLabel.bounds.Y, 1, 1), _helper.Translation.Get("ui.fashion_sense.title")));
+            ___labels.Add(new ClickableComponent(new Rectangle(__instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 280 - 48 + IClickableMenu.borderWidth + 64 + 8, ___accLabel.bounds.Y, 1, 1), _helper.Translation.Get("ui.fashion_sense.title.hair")));
             ___rightSelectionButtons.Add(new ClickableTextureComponent("fashion_sense", new Rectangle(__instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + 280 - 48 + IClickableMenu.borderWidth + 200, ___leftSelectionButtons.First(b => b.name == "Acc").bounds.Y, 64, 64), null, "", Game1.mouseCursors, Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 33), 1f)
             {
                 myID = 517,
@@ -87,8 +88,8 @@ namespace FashionSense.Framework.Patches.Menus
             {
                 case "fashion_sense":
                     {
-                        List<AppearanceModel> hairModels = FashionSense.textureManager.GetAllAppearanceModels();
-                        var currentCustomHair = FashionSense.textureManager.GetSpecificAppearanceModel(Game1.player.modData[ModDataKeys.CUSTOM_HAIR_ID]);
+                        var hairModels = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is HairContentPack).ToList();
+                        var currentCustomHair = FashionSense.textureManager.GetSpecificAppearanceModel<HairContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_HAIR_ID]);
 
                         int current_index = -1;
                         if (currentCustomHair != null)
@@ -113,7 +114,7 @@ namespace FashionSense.Framework.Patches.Menus
             }
         }
 
-        private static void PerformHoverAction(CharacterCustomization __instance, List<ClickableComponent> ___labels, ref string ___hoverText, int x, int y)
+        private static void PerformHoverActionPostfix(CharacterCustomization __instance, List<ClickableComponent> ___labels, ref string ___hoverText, int x, int y)
         {
             if (__instance.source != Source.NewGame)
             {
@@ -124,7 +125,7 @@ namespace FashionSense.Framework.Patches.Menus
             {
                 if (label.name == HandMirrorMenu.GetColorPickerLabel(true, true) && label.containsPoint(x, y))
                 {
-                    ___hoverText = FashionSense.modHelper.Translation.Get("ui.fashion_sense.hair_color_info");
+                    ___hoverText = FashionSense.modHelper.Translation.Get("ui.fashion_sense.color_info.hair");
                 }
             }
         }
@@ -137,7 +138,7 @@ namespace FashionSense.Framework.Patches.Menus
             }
 
             // Get the custom hair object, if it exists
-            var currentCustomHair = FashionSense.textureManager.GetSpecificAppearanceModel(Game1.player.modData[ModDataKeys.CUSTOM_HAIR_ID]);
+            var currentCustomHair = FashionSense.textureManager.GetSpecificAppearanceModel<HairContentPack>(Game1.player.modData[ModDataKeys.CUSTOM_HAIR_ID]);
 
             // Draw labels
             foreach (ClickableComponent c in ___labels)
@@ -150,7 +151,7 @@ namespace FashionSense.Framework.Patches.Menus
                 float offset = 0f;
                 float subYOffset = 0f;
                 Color color = Game1.textColor;
-                if (c.name == _helper.Translation.Get("ui.fashion_sense.title"))
+                if (c.name == _helper.Translation.Get("ui.fashion_sense.title.hair"))
                 {
                     offset = Game1.smallFont.MeasureString(c.name).X / 2f - 20;
                     if (!c.name.Contains("Color"))
@@ -165,7 +166,7 @@ namespace FashionSense.Framework.Patches.Menus
                 else if (c.name == HandMirrorMenu.GetColorPickerLabel(false, true) || c.name == HandMirrorMenu.GetColorPickerLabel(true, true))
                 {
                     var name = HandMirrorMenu.GetColorPickerLabel(false, true);
-                    if (currentCustomHair != null && currentCustomHair.GetHairFromFacingDirection(Game1.player.facingDirection) is HairModel model && model != null && model.DisableGrayscale)
+                    if (currentCustomHair != null && currentCustomHair.GetHairFromFacingDirection(Game1.player.facingDirection) is HairModel model && model != null && model.IsPlayerColorChoiceIgnored())
                     {
                         name = HandMirrorMenu.GetColorPickerLabel(true, true);
                     }

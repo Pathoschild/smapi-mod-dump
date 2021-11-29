@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Extractor Pipe",
+  "Description": "Type: IO Pipe | Extracts items from an adjacent container, and sends them through the network.",
+  "Category": "Crafting",
+  "MaxHealth": 100,
+  "BreakTool": "Pickaxe",
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": "Connector Pipe",
+        "Count": 1
+      },
+      {
+        "Object": 64,
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "CrumbleCavern": "LeftShift + D1",
+  "SlipperySlopes": "LeftShift + D2",
+  "Bonus": "LeftShift + D3",
+  "TheGemSeaGiant": "LeftShift + D4",
+  "SlompsStomp": "LeftShift + D5",
+  "GhastlyGalleon": "LeftShift + D6",
+  "GlowshroomGrotto": "LeftShift + D7",
+  "RedHotRollercoaster": "LeftShift + D8",
+  "SunsetSpeedway": "LeftShift + D9",
+  "CycleCompletionsIncrease": "Add",
+  "CycleCompletionsDecrease": "Subtract",
+  "RetryLevel": "F5"
+}

@@ -23,13 +23,17 @@ namespace FashionSense.Framework.Models
         {
             Unknown,
             Idle,
-            Moving
+            Moving,
+            Uniform
         }
 
         public int Frame { get; set; }
         public bool OverrideStartingIndex { get; set; }
+        public LightModel Light { get; set; }
         public List<Condition> Conditions { get; set; } = new List<Condition>();
         public int Duration { get; set; } = 1000;
+        public bool EndWhenFarmerFrameUpdates { get; set; }
+        internal bool WasDisplayed { get; set; }
 
         internal bool HasCondition(Condition.Type type)
         {
@@ -39,6 +43,11 @@ namespace FashionSense.Framework.Models
         internal Condition GetConditionByType(Condition.Type type)
         {
             return Conditions.FirstOrDefault(c => c.Name == type);
+        }
+
+        internal void Reset()
+        {
+            WasDisplayed = false;
         }
     }
 }

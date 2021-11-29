@@ -13,18 +13,18 @@ using StardewModdingAPI.Events;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class SuperModeButtonsChangedEvent : ButtonsChangedEvent
+	internal class SuperModeButtonsChangedEvent : ButtonsChangedEvent
 	{
 		/// <inheritdoc />
 		public override void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
 		{
-			if (ModEntry.Config.SuperModeKey.JustPressed() && !ModEntry.IsSuperModeActive &&
-				ModEntry.SuperModeCounter >= ModEntry.SuperModeCounterMax)
+			if (ModEntry.Config.SuperModeKey.JustPressed() && !ModState.IsSuperModeActive &&
+			    ModState.SuperModeGaugeValue >= ModState.SuperModeGaugeMaxValue)
 			{
 				if (ModEntry.Config.HoldKeyToActivateSuperMode)
 					ModEntry.Subscriber.Subscribe(new SuperModeActivationTimerUpdateTickedEvent());
 				else
-					ModEntry.IsSuperModeActive = true;
+					ModState.IsSuperModeActive = true;
 			}
 			else if (ModEntry.Config.SuperModeKey.GetState() == SButtonState.Released)
 			{

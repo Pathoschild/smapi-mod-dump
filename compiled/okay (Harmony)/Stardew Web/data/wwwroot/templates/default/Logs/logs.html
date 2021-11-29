@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    #HEAD#
+
+    <script>
+        /**
+* HTML entities encode
+*
+* @param {string} str Input text
+* @return {string} Filtered text
+*/
+        function htmlencode(str) {
+
+            var div = document.createElement('div');
+            div.appendChild(document.createTextNode(str));
+            return div.innerHTML;
+        }
+        function GetLog() {
+            //
+            //  fetch the selected log type
+            //
+            var logType = document.getElementById("logtype").value;
+            var sUrl = "/json/logs/" + logType;
+            document.body.style.cursor = 'wait';
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            switch (logType) {
+                                case "web":
+                                case "smapi":
+                                    document.getElementById('logcontent').innerHTML = JSON.parse(data.Content);
+                                    break;
+                                case "config":
+                                    var configHTML = "";
+                                    //var obj = JSON.parse(data);
+                                    for (var key in data) {
+                                        configHTML += "<b>" + key + "</b></br>";
+                                        if (data.hasOwnProperty(key)) {
+                                            var value = data[key];
+                                            // work with key and value
+                                            for (var subkey in value) {
+                                                configHTML += htmlencode(value[subkey]) + "<br>";
+                                            }
+                                            configHTML += "</br>";
+                                        }
+                                    }
+                                    document.getElementById('logcontent').innerHTML = configHTML;
+                                    break;
+                            }
+                            document.body.style.cursor = 'default';
+                        });
+                    } else {
+                        document.getElementById('logcontent').innerHTML = 'Error.  See logs for details';
+                        document.body.style.cursor = 'default';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('logcontent').innerHTML = 'Error.  See logs for details';
+                    document.body.style.cursor = 'default';
+                }
+                );
+        }
+    </script>
+</head>
+<body onload="SubPageLoaded('Help','Logs');">
+    #MENUBAR#
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+        <div class="container">
+            <div class="message_board_title_flex" style="padding-bottom:30px; padding-top:20px;">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-xxl-2">
+                            Logs
+                        </div>
+                        <div class="col col-xxl-6 offset-xxl-4">
+                            Log Type <select name="logtype" id="logtype" style="font-size:18pt;">
+                                <option value="config">Configuration Issues</option>
+                                <option value="web">StardewWeb Logs</option>
+                                <option value="smapi">SMAPI Logs</option>
+                                <option value="catalog">Stardew Catalog</option>
+                            </select> <button style="font-size:18pt;" onclick="GetLog();">Display</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="message_board_flex">
+                <div class="message_board_flex_inside">
+                    <div style="height:500px;overflow:auto;background-color:white;" id="logcontent">
+
+                    </div>
+                    <div style="width:100%;padding:5px 0 0 10px;border-top:2px solid black;"><button onclick="window.location = '/Log?dl=1';">Download Stardew Web Log</button> #SMAPI# <button onclick="window.location = '/Log?dl=library';">Download Stardew Catalog</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

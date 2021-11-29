@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Custom Community Centre",
     "Author": "blueberry",
-    "Version": "1.0.2",
+    "Version": "1.0.5",
     "Description": "Modding tool - Adds new areas and bundles to the Community Centre.",
     "UniqueID": "blueberry.CustomCommunityCentre",
     "EntryDll": "CustomCommunityCentre.dll",

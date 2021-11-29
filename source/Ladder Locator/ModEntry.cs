@@ -10,10 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
@@ -105,7 +102,7 @@ namespace LadderLocator
                 var r = new Random((int)pair.Key.X * 1000 + (int)pair.Key.Y + mine.mineLevel + (int)Game1.uniqueIDForThisGame / 2);
                 r.NextDouble();
                 var next = r.NextDouble();
-                if (netStonesLeftOnThisLevel == 0 || next < chance) _ladderStones.Add(new LadderStone(obj));
+                if ((netStonesLeftOnThisLevel == 0 || next < chance) && obj.ParentSheetIndex / 24 < Game1.objectSpriteSheet.Height) _ladderStones.Add(new LadderStone(obj));
             }
             if (_config.ForceShafts && mine.getMineArea() == StardewValley.Locations.MineShaft.desertArea
                 && !_nextIsShaft && _ladderStones.Count > 0) ForceShaft(mine);
@@ -115,7 +112,7 @@ namespace LadderLocator
         private void ForceShaft(StardewValley.Locations.MineShaft mine)
         {
             var mineRandom = Helper.Reflection.GetField<Random>(mine, "mineRandom").GetValue();
-            var r = Clone(mineRandom);
+            var r = Cloner.Clone(mineRandom);
             var next = r.NextDouble();
             while (next >= 0.2)
             {
@@ -250,18 +247,6 @@ namespace LadderLocator
         {
             if (_config.HighlightTypes.Contains(type)) _config.HighlightTypes.Remove(type);
             else _config.HighlightTypes.Add(type);
-        }
-
-        private static T Clone<T>(T source)
-        {
-            IFormatter fmt = new BinaryFormatter();
-            Stream stream = new MemoryStream();
-            using (stream)
-            {
-                fmt.Serialize(stream, source);
-                stream.Seek(0, SeekOrigin.Begin);
-                return (T)fmt.Deserialize(stream);
-            }
         }
 
         class Stone

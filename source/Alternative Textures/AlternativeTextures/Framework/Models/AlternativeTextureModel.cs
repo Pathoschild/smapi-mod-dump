@@ -121,6 +121,16 @@ namespace AlternativeTextures.Framework.Models
             return Textures[0];
         }
 
+        public int GetTextureOffset(int variation)
+        {
+            int maxVariationsPerTexture = MAX_TEXTURE_HEIGHT / TextureHeight;
+            if (variation >= maxVariationsPerTexture)
+            {
+                return (variation - maxVariationsPerTexture) * TextureHeight;
+            }
+            return variation * TextureHeight;
+        }
+
         public Color GetRandomTint(int variation)
         {
             if (!HasTint(variation))

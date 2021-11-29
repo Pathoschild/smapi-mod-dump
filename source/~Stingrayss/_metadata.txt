@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Stingrayss/StardewValley
+   Git: https://github.com/Stingrayss/StardewValley.git
+
+mods:
+   Community Center Anywhere
+   Telephone Purchasing
+
+latest commit:
+   commit f6c60d673560687adc67aee47febe7a0547b6477
+   Author: Cade Duncan <cadeduncan72@gmail.com>
+   Date:   Sat Nov 27 18:43:42 2021 -0800
+   
+       Added GenericModConfig Support
+   

@@ -26,7 +26,7 @@ namespace FreeLove
         private static ModConfig Config;
 
         // call this method from your Entry class
-        public static void Initialize(IMonitor monitor, IModHelper helper, ModConfig config)
+        public static void Initialize(IMonitor monitor, ModConfig config, IModHelper helper)
         {
             Monitor = monitor;
             Helper = helper;
@@ -55,9 +55,7 @@ namespace FreeLove
             {
                 if(ReferenceEquals(location.GetType(),typeof(FarmHouse)))
                 {
-                    FarmHouse fh = (location as FarmHouse);
-                    Misc.PlaceSpousesInFarmhouse(fh);
-                    //location.resetForPlayerEntry();
+                    Misc.PlaceSpousesInFarmhouse(location as FarmHouse);
                 }
             }
             if (Game1.IsMasterGame)
@@ -112,7 +110,7 @@ namespace FreeLove
                                 if (Misc.IsInBed(fh, character.GetBoundingBox()))
                                 {
                                     character.farmerPassesThrough = true;
-                                    if (!character.isMoving() && (Integrations.kissingAPI == null || !Integrations.kissingAPI.IsKissing(character.Name)))
+                                    if (!character.isMoving() && (Integrations.kissingAPI == null || Integrations.kissingAPI.LastKissed(character.Name) > 2))
                                     {
                                         Vector2 bedPos = Misc.GetSpouseBedPosition(fh, character.Name);
                                         if (Game1.timeOfDay >= 2000 || Game1.timeOfDay <= 600)

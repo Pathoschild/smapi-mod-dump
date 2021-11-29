@@ -13,23 +13,25 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
-using TheLion.Stardew.Professions.Framework.Util;
+using TheLion.Stardew.Professions.Framework.Utility;
 using SObject = StardewValley.Object;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class Game1DrawHUDPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal Game1DrawHUDPatch()
 		{
-			Original = typeof(Game1).MethodNamed("drawHUD");
+			Original = RequireMethod<Game1>("drawHUD");
 			Postfix = new(GetType(), nameof(Game1DrawHUDPostfix));
 			Transpiler = new(GetType(), nameof(Game1DrawHUDTranspiler));
 		}
@@ -40,16 +42,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		[HarmonyPostfix]
 		private static void Game1DrawHUDPostfix()
 		{
-			try
-			{
-				if (!Game1.player.HasProfession("Prospector") || Game1.currentLocation is not MineShaft shaft) return;
-				foreach (var tile in Tiles.GetLadderTiles(shaft))
-					HUD.DrawTrackingArrowPointer(tile, Color.Lime);
-			}
-			catch (Exception ex)
-			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
-			}
+			if (!Game1.player.HasProfession("Prospector") || Game1.currentLocation is not MineShaft shaft) return;
+			foreach (var tile in Tiles.GetLadderTiles(shaft))
+				HUD.DrawTrackingArrowPointer(tile, Color.Lime);
 		}
 
 		/// <summary>Patch for Scavenger and Prospector to track different stuff.</summary>
@@ -57,7 +52,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		private static IEnumerable<CodeInstruction> Game1DrawHUDTranspiler(IEnumerable<CodeInstruction> instructions,
 			ILGenerator iLGenerator, MethodBase original)
 		{
-			Helper.Attach(original, instructions);
+			var helper = new ILHelper(original, instructions);
 
 			/// From: if (!player.professions.Contains(<scavenger_id>) || !currentLocation.IsOutdoors) return
 			/// To: if (!(player.professions.Contains(<scavenger_id>) || player.professions.Contains(<prospector_id>)) return
@@ -65,7 +60,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			var isProspector = iLGenerator.DefineLabel();
 			try
 			{
-				Helper
+				helper
 					.FindProfessionCheck(Farmer.tracker) // find index of tracker check
 					.Retreat()
 					.ToBufferUntil(
@@ -76,7 +71,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Ldc_I4_S)
 					)
-					.SetOperand(Util.Professions.IndexOf("Prospector")) // change to prospector check
+					.SetOperand(Utility.Professions.IndexOf("Prospector")) // change to prospector check
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Brfalse)
 					)
@@ -94,7 +89,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
@@ -103,7 +99,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 			try
 			{
-				Helper
+				helper
 					.FindNext(
 						new CodeInstruction(OpCodes.Bne_Un) // find branch to loop head
 					)
@@ -126,11 +122,12 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
-			return Helper.Flush();
+			return helper.Flush();
 		}
 
 		#endregion harmony patches

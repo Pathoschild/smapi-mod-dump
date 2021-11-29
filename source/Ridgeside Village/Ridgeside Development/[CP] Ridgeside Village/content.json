@@ -48,14 +48,14 @@
 		"FullFestivals": {
 			"AllowValues": "true, false",
 			"Default": "false",
-			"Description": "The true RSV experience. Almost all of RSV NPCs attend the vanilla festivals. Might be incompatible with some mods."
+			"Description": "The true RSV experience. Almost all of RSV NPCs attend the vanilla festivals. Might be incompatible with other mods, especially SVE."
 		},
 
 		"EnableBetterBusStop": {
 			"AllowValues": "true, false",
 			"Default": "false",
-			"Description": "Uses Ridgeside Village's official patch for the Bus Stop. Might be incompatible with some mods."
-		}			
+			"Description": "Uses Ridgeside Village's official patch for the Bus Stop. Might be incompatible with other mods."
+		},
 },
 
 	/*********
@@ -68,7 +68,7 @@
 		// Ridgeside
 		{
 			"Name": "PossibleCableCarNPCs",
-			"Value": "Aguar, Alissa, Bert, Corine, Ezekiel, Flor, Freddie, Ian, Jeric, Keahi, Kenneth, Lenny, Lola, Maddie, Olga, Philip, Pika, Richard, Shiro, Trinnie, Ysabelle, Yuuma"
+			"Value": "Aguar, Alissa, Bert, Corine, Ezekiel, Flor, Freddie, Ian, Jeric, Keahi, Kenneth, Lenny, Lola, Maddie, Olga, Philip, Pika, Richard, Shiro, Trinnie, Ysabelle, Yuuma, Anton, Ariah, Blair, Carmen, Faye, Irene, Kiarra, Lorenzo, Louie, Paula, Sean, Shanice, Sonny"
 		},
 
 		// Vanilla
@@ -111,6 +111,20 @@
 			}
 		},
 
+		//World State
+		{
+			"Name": "RSVWorldState",
+			"Value": "firstYear",
+		},
+
+		{
+			"Name": "RSVWorldState",
+			"Value": "naomiArrived",
+			"When": {
+				"HasSeenEvent": "75160249"
+			}
+		},
+
 		/*********
 		** Choose random cable car NPC
 		*********/
@@ -125,7 +139,7 @@
 		//Alone
 		{
 			"Name": "BONFIREEVENT",
-			"Value": "/warp farmer1 40 49/warp farmer2 39 49/warp farmer3 38 49/warp farmer4 41 49/faceDirection farmer1 0/faceDirection farmer2 0/faceDirection farmer3 0/faceDirection farmer4 0/faceDirection farmer 0/fade/viewport 39 46/pause 2000/move farmer1 0 -5 0/pause 1000/playSound backpackIN/addObject 40 42 294/pause 2000/message \"{{i18n:EoR.19}}\"/pause 3000/emote farmer1 32/pause 1000/globalFade/viewport -1000 -1000/warp farmer1 40 49/warp farmer2 39 49/warp farmer3 38 49/warp farmer4 41 49/faceDirection farmer1 0/faceDirection farmer2 0/faceDirection farmer3 0/faceDirection farmer4 0/",
+			"Value": "/warp farmer1 40 49/warp farmer2 39 49/warp farmer3 38 49/warp farmer4 41 49/faceDirection farmer1 0/faceDirection farmer2 0/faceDirection farmer3 0/faceDirection farmer4 0/fade/viewport 39 46/pause 2000/advancedMove farmer1 false 0 -5/pause 3000/faceDirection farmer1 0/playSound backpackIN/addObject 40 42 294/pause 2000/message \"{{i18n:EoR.19}}\"/pause 3000/emote farmer1 32/pause 1000/globalFade/viewport -1000 -1000/warp farmer1 40 49/faceDirection farmer1 0/",
 		},
 		
 		/*********
@@ -231,7 +245,7 @@
 		//Random Undreya Spawn
 		{
 			"Name": "RANDOMUNDREYA",
-			"Value": "{{Random:0 Custom_Ridgeside_RidgesideVillage 47 22 0, 0 Custom_Ridgeside_RidgesideVillage 73 69 0, 0 Town 98 85 0, 0 Custom_Ridgeside_RSVCliff 21 11 0, 0 BusStop 29 16 0, 0 Custom_Ridgeside_Ridge 39 14, 0 Custom_Ridgeside_RSVCableCar 9 14 0, 0 Custom_Ridgeside_RidgesideVillage 131 105 0, 0 Mountain 31 5 0, 0 Mountain 87 33 0, 0 Mountain 51 37 0, 0 Beach 69 5 0, 0 Beach 37 31 0, 0 Custom_Ridgeside_RidgesideVillage 141 45 0, 0 Town 46 15 0, 0 Custom_Ridgeside_RidgesideVillage 13 82 0, 0 Custom_Ridgeside_RidgesideVillage 127 31 0, 0 Custom_Ridgeside_RidgesideVillage 57 44 0, 0 Town 18 8 0, 0 Town 6 78 0}}",
+			"Value": "{{Random:0 Custom_Ridgeside_RidgesideVillage 47 22 0/610 Custom_Ridgeside_RidgesideVillage 47 22 0, 0 Custom_Ridgeside_RidgesideVillage 73 69 0/610 Custom_Ridgeside_RidgesideVillage 73 69 0, 0 Town 98 85 0/610 Town 98 85 0, 0 Custom_Ridgeside_RSVCliff 21 11 0/610 Custom_Ridgeside_RSVCliff 21 11 0, 0 BusStop 29 16 0/610 BusStop 29 16 0, 0 Custom_Ridgeside_Ridge 39 14 0/610 Custom_Ridgeside_Ridge 39 14 0, 0 Custom_Ridgeside_RSVCableCar 9 14 0/610 Custom_Ridgeside_RSVCableCar 9 14 0, 0 Custom_Ridgeside_RidgesideVillage 131 105 0/610 Custom_Ridgeside_RidgesideVillage 131 105 0, 0 Mountain 31 5 0/610 Mountain 31 5 0, 0 Mountain 87 33 0/610 Mountain 87 33 0, 0 Mountain 51 37 0/610 Mountain 51 37 0, 0 Beach 69 5 0/610 Beach 69 5 0, 0 Beach 37 31 0/610 Beach 37 31 0, 0 Custom_Ridgeside_RidgesideVillage 141 45 0/610 Custom_Ridgeside_RidgesideVillage 141 45 0, 0 Town 46 15 0/610 Town 46 15 0, 0 Custom_Ridgeside_RidgesideVillage 13 82 0/610 Custom_Ridgeside_RidgesideVillage 13 82 0, 0 Custom_Ridgeside_RidgesideVillage 127 31 0/610 Custom_Ridgeside_RidgesideVillage 127 31 0, 0 Custom_Ridgeside_RidgesideVillage 57 44 0/610 Custom_Ridgeside_RidgesideVillage 57 44 0, 0 Town 18 8 0/610 Town 18 8 0, 0 Town 6 78 0/610 Town 6 78 0}}",
 		},
 
 		//Spouse Genders	
@@ -680,11 +694,11 @@
 
 	//Include Dependency Data
 	/*
-		Loads cp code for Custom Companions, Farm Type Manager, NPCMapLocations, Questframework, AntisocialNPCs, and Custom NPC Exclusions.
+		Loads cp code for Custom Companions, Farm Type Manager, Questframework, AntisocialNPCs, and Custom NPC Exclusions.
 	*/
 	{
 		"Action": "Include",
-		"FromFile": "Data/DependencyData/CustomCompanions.json, Data/DependencyData/CustomCompanionsTourists.json, Data/DependencyData/FarmTypeManager.json, Data/DependencyData/NPCMapLocations.json, Data/DependencyData/QuestFramework.json, Data/DependencyData/AntiSocialNPCs.json, Data/DependencyData/CustomNPCExclusions.json",
+		"FromFile": "Data/DependencyData/CustomCompanions.json, Data/DependencyData/CustomCompanionsTourists.json, Data/DependencyData/FarmTypeManager.json, Data/DependencyData/QuestFramework.json, Data/DependencyData/AntiSocialNPCs.json, Data/DependencyData/CustomNPCExclusions.json",
 	},
 
 	//Include Event Data
@@ -785,7 +799,12 @@
 		"LogName": "Include Context Tags",
    		"Action": "Include",
    		"FromFile": "Data/Extras/ContextTags.json",
-  	}, 
+  	},
+	{
+		"LogName": "Include SecretSanta Gifts",
+   		"Action": "Include",
+   		"FromFile": "Data/Extras/SantaGiftData.json",
+  	},
 
   	//Includes Tilesheets
 	/*

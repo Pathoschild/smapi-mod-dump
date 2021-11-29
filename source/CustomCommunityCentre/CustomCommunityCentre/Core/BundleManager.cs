@@ -607,20 +607,19 @@ namespace CustomCommunityCentre
 				// Save donated bundle items to world storage
 				{
 					Vector2 tileLocation = Utility.PointToVector2(Bundles.CustomBundleDonationsChestTile);
-					Chest chest = cc.Objects.TryGetValue(tileLocation, out StardewValley.Object o) && o is Chest
+					Chest existingChest = cc.Objects.TryGetValue(tileLocation, out StardewValley.Object o) && o is Chest
 						? o as Chest
-						: new(playerChest: true, tileLocation: tileLocation);
+						: null;
+					Chest chest = existingChest ?? new(playerChest: true, tileLocation: tileLocation);
 					chest.clearNulls();
 
 					if (Bundles.CustomBundleDonations.Any())
 					{
-						if (cc.Objects.ContainsKey(tileLocation))
+						if (o != null && existingChest == null)
 						{
 							// Replace any existing object with this chest
-							if (o != null)
-							{
-								chest.items.Add(cc.Objects[tileLocation]);
-							}
+							Log.I($"Bundle donations safekeeping chest now contains {o.Name}.");
+							chest.items.Add(cc.Objects[tileLocation]);
 						}
 						foreach (Item item in Bundles.CustomBundleDonations.ToList())
 						{
@@ -646,7 +645,7 @@ namespace CustomCommunityCentre
 						.SelectMany(s => s)
 						.ToDictionary(
 							keySelector: bundleKey => bundleKey.Split(Bundles.BundleKeyDelim).First(),
-							elementSelector: bundleKey => cc.bundleRewards[int.Parse(bundleKey.Split(Bundles.BundleKeyDelim).Last())]);
+							elementSelector: bundleKey => cc.bundleRewards.TryGetValue(key: int.Parse(bundleKey.Split(Bundles.BundleKeyDelim).Last()), out bool isComplete) && isComplete);
 
 					string serialisedAreasCompleteData = string.Join(
 						Bundles.ModDataKeyDelim.ToString(),
@@ -661,9 +660,19 @@ namespace CustomCommunityCentre
 			}
 
 			// Reset world state to exclude custom content
-			BundleManager.Generate(isLoadingCustomContent: false);
-			BundleManager.ReplaceAreaBundleConversions(cc: cc);
-			cc.refreshBundlesIngredientsInfo();
+			try
+			{
+				BundleManager.Generate(isLoadingCustomContent: false);
+			}
+			catch (Exception e)
+            {
+				Log.E($"Error while unloading area-bundle data: {e}");
+            }
+			finally
+			{
+				BundleManager.ReplaceAreaBundleConversions(cc: cc);
+				cc.refreshBundlesIngredientsInfo();
+			}
 
 			Log.D("Unloaded bundle data.",
 				Config.DebugMode);

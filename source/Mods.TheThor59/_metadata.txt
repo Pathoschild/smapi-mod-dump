@@ -4,11 +4,12 @@ urls:
 
 mods:
    Enemy Health Bars
+   Hoe and Water Direction
 
 latest commit:
-   commit 709b49755c1f65931f7352e1b0076d0ff0b2196c
+   commit bda3966daa52654400c80bdd9cfe5e980d7ea181
    Author: TheThor59 <ethanhol@yahoo.fr>
-   Date:   Thu Oct 28 23:10:13 2021 +0200
+   Date:   Mon Nov 8 21:47:35 2021 +0100
    
-       Added implementation of Generic Mod Config compatibility
+       Finalized the Hoe and Water Direction mod 0.1.0 version
    

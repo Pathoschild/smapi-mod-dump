@@ -9,39 +9,30 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
+using JetBrains.Annotations;
 using StardewValley.Monsters;
-using System;
-using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class DustSpiritBehaviorAtGameTickPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal DustSpiritBehaviorAtGameTickPatch()
 		{
-			Original = typeof(DustSpirit).MethodNamed(nameof(DustSpirit.behaviorAtGameTick));
+			Original = RequireMethod<DustSpirit>(nameof(DustSpirit.behaviorAtGameTick));
 			Postfix = new(GetType(), nameof(DustSpiritBehaviorAtGameTickPostfix));
 		}
 
 		#region harmony patches
 
-		/// <summary>Patch to hide Poacher from Dust Spirits during super mode.</summary>
+		/// <summary>Patch to hide Poacher from Dust Spirits during Super Mode.</summary>
 		[HarmonyPostfix]
 		private static void DustSpiritBehaviorAtGameTickPostfix(DustSpirit __instance, ref bool ___seenFarmer)
 		{
-			try
-			{
-				if (!__instance.Player.IsLocalPlayer || !ModEntry.IsSuperModeActive ||
-					ModEntry.SuperModeIndex != Util.Professions.IndexOf("Poacher")) return;
-				___seenFarmer = false;
-			}
-			catch (Exception ex)
-			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
-			}
+			if (!__instance.Player.IsLocalPlayer || !ModState.IsSuperModeActive ||
+			    ModState.SuperModeIndex != Utility.Professions.IndexOf("Poacher")) return;
+			___seenFarmer = false;
 		}
 
 		#endregion harmony patches

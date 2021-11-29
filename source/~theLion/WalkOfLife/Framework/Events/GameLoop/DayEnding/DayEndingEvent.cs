@@ -12,7 +12,7 @@ using StardewModdingAPI.Events;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public abstract class DayEndingEvent : BaseEvent
+	internal abstract class DayEndingEvent : BaseEvent
 	{
 		/// <inheritdoc />
 		public override void Hook()

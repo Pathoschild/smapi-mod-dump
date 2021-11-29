@@ -37,33 +37,38 @@ namespace AnimalHusbandryMod.animals
             }
         }
 
-        public static bool IsLikedTreat(int id)
+        public static bool IsLikedTreat(Object item)
         {
-            return DataLoader.AnimalData.Chicken.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Duck.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Rabbit.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Cow.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Goat.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Sheep.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Pig.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Pet.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.Dinosaur.LikedTreatsId.Contains(id)
-                || DataLoader.AnimalData.CustomAnimals.Exists(c=> c.LikedTreatsId.Contains(id))
+            return IsLikedTreat(DataLoader.AnimalData.Chicken, item)
+                || IsLikedTreat(DataLoader.AnimalData.Duck, item)
+                || IsLikedTreat(DataLoader.AnimalData.Rabbit, item)
+                || IsLikedTreat(DataLoader.AnimalData.Cow, item)
+                || IsLikedTreat(DataLoader.AnimalData.Goat, item)
+                || IsLikedTreat(DataLoader.AnimalData.Sheep, item)
+                || IsLikedTreat(DataLoader.AnimalData.Pig, item)
+                || IsLikedTreat(DataLoader.AnimalData.Pet, item)
+                || IsLikedTreat(DataLoader.AnimalData.Dinosaur, item)
+                || DataLoader.AnimalData.CustomAnimals.Exists(c=> IsLikedTreat(c, item))
                 ;
         }
 
-        public static bool IsLikedTreat(Character character, int itemId)
+        public static bool IsLikedTreat(Character character, Object item)
         {
             try
             {
-                if (character is Pet)
+                TreatItem treatItem = null;
+                switch (character)
                 {
-                    return DataLoader.AnimalData.Pet.LikedTreatsId.Contains(itemId);
+                    case Pet _:
+                        treatItem = DataLoader.AnimalData.Pet;
+                        break;
+                    case FarmAnimal farmAnimal:
+                        treatItem = GetTreatItem(farmAnimal);
+                        break;
                 }
-                else if (character is FarmAnimal farmAnimal)
+                if (treatItem != null)
                 {
-
-                    return GetTreatItem(farmAnimal).LikedTreatsId.Contains(itemId);
+                    return IsLikedTreat(treatItem, item);
                 }
             }
             catch (Exception)
@@ -71,6 +76,13 @@ namespace AnimalHusbandryMod.animals
                 // ignored
             }
             return false;
+        }
+
+        private static bool IsLikedTreat(TreatItem treatItem, Object item)
+        {
+            return treatItem.LikedTreatsId.Contains(item.ParentSheetIndex) || treatItem.LikedTreatsId.Contains(item.Category) ||
+                   (item.ParentSheetIndex == 1720 && DataLoader.DgaApi != null &&
+                    treatItem.LikedTreats.Contains(DataLoader.DgaApi.GetDGAItemId(item)));
         }
 
         public static bool IsReadyForTreat(Character character)

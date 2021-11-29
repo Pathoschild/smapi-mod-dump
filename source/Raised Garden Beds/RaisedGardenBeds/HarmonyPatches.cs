@@ -13,44 +13,82 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace RaisedGardenBeds
 {
 	public static class HarmonyPatches
 	{
+		internal class PatchTemplate
+		{
+			public readonly HarmonyPatchType type;
+			public readonly MethodInfo original;
+			public readonly string patch;
+			public readonly HarmonyMethod method;
+
+			public PatchTemplate(HarmonyPatchType type, MethodInfo original, string patch = null, HarmonyMethod method = null)
+			{
+				this.type = type;
+				this.original = original;
+				this.patch = patch ?? method.methodName;
+				this.method = method ?? new HarmonyMethod(
+					methodType: typeof(HarmonyPatches),
+					methodName: patch);
+			}
+		}
+
 		internal static void Patch(string id)
 		{
 			Harmony harmony = new Harmony(id);
 
-			Log.T(typeof(HarmonyPatches).GetMethods().Take(typeof(HarmonyPatches).GetMethods().Count() - 4).Select(mi => mi.Name)
-				.Aggregate("Applying Harmony patches:", (str, s) => $"{str}{Environment.NewLine}{s}"));
+			List<PatchTemplate> patches = new List<PatchTemplate>
+			{
+				// Utility
+				new PatchTemplate(
+					type: HarmonyPatchType.Prefix,
+					original: AccessTools.Method(typeof(StardewValley.Utility), "isThereAnObjectHereWhichAcceptsThisItem"),
+					patch: nameof(HarmonyPatches.Utility_IsThereAnObjectHereWhichAcceptsThisItem_Prefix)),
+				new PatchTemplate(
+					type: HarmonyPatchType.Prefix,
+					original: AccessTools.Method(typeof(StardewValley.Utility), "isViableSeedSpot"),
+					patch: nameof(HarmonyPatches.Utility_IsViableSeedSpot_Prefix)),
+				
+				// Object
+				new PatchTemplate(
+					type: HarmonyPatchType.Prefix,
+					original: AccessTools.Method(typeof(StardewValley.Object), "ApplySprinkler"),
+					patch: nameof(HarmonyPatches.Object_ApplySprinkler_Prefix)),
+				
+				// GameLocation
+				new PatchTemplate(
+					type: HarmonyPatchType.Postfix,
+					original: AccessTools.Method(typeof(StardewValley.GameLocation), "isTileOccupiedForPlacement"),
+					patch: nameof(HarmonyPatches.GameLocation_IsTileOccupiedForPlacement_Postfix)),
+				
+				// CraftingPage
+				new PatchTemplate(
+					type: HarmonyPatchType.Postfix,
+					original: AccessTools.Method(typeof(StardewValley.Menus.CraftingPage), "layoutRecipes"),
+					patch: nameof(HarmonyPatches.CraftingPage_LayoutRecipes_Postfix)),
+				new PatchTemplate(
+					type: HarmonyPatchType.Prefix,
+					original: AccessTools.Method(typeof(StardewValley.Menus.CraftingPage), "clickCraftingRecipe"),
+					patch: nameof(HarmonyPatches.CraftingPage_ClickCraftingRecipe_Prefix)),
+			};
 
-			// Utility
-			harmony.Patch(
-				original: AccessTools.Method(typeof(Utility), "isThereAnObjectHereWhichAcceptsThisItem"),
-				prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Utility_IsThereAnObjectHereWhichAcceptsThisItem_Prefix)));
-			harmony.Patch(
-				original: AccessTools.Method(typeof(Utility), "isViableSeedSpot"),
-				prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Utility_IsViableSeedSpot_Prefix)));
+			Log.T(patches.Aggregate("Applying Harmony patches:", (str, p) => $"{str}{Environment.NewLine}{p.patch}"));
 
-			// Object
-			harmony.Patch(
-				original: AccessTools.Method(typeof(StardewValley.Object), "ApplySprinkler"),
-				prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Object_ApplySprinkler_Prefix)));
-
-			// GameLocation
-			harmony.Patch(
-				original: AccessTools.Method(typeof(GameLocation), "isTileOccupiedForPlacement"),
-				postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(GameLocation_IsTileOccupiedForPlacement_Postfix)));
-
-			// Crafting
-			harmony.Patch(
-				original: AccessTools.Method(typeof(CraftingPage), "layoutRecipes"),
-				postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CraftingPage_LayoutRecipes_Postfix)));
-			harmony.Patch(
-				original: AccessTools.Method(typeof(CraftingPage), "clickCraftingRecipe"),
-				prefix: new HarmonyMethod(typeof(HarmonyPatches), nameof(CraftingPage_ClickCraftingRecipe_Prefix)));
+			foreach (PatchTemplate patch in patches)
+			{
+				harmony.Patch(
+					original: patch.original,
+					prefix: patch.type == HarmonyPatchType.Prefix ? patch.method : null,
+					postfix: patch.type == HarmonyPatchType.Postfix ? patch.method : null,
+					transpiler: patch.type == HarmonyPatchType.Transpiler ? patch.method : null,
+					finalizer: patch.type == HarmonyPatchType.Finalizer ? patch.method : null);
+			}
 		}
 
 		private static void ErrorHandler(Exception e)
@@ -166,22 +204,29 @@ namespace RaisedGardenBeds
 		public static void CraftingPage_LayoutRecipes_Postfix(
 			CraftingPage __instance)
 		{
-			__instance.pagesOfCraftingRecipes
-				.ForEach(dict => dict
+			int unlockedCount = Game1.player.craftingRecipes.Keys.Count(c => c.StartsWith(OutdoorPot.GenericName));
+			int[] matchesPerDict = new int[__instance.pagesOfCraftingRecipes.Count];
+			int i = 0;
+			foreach (Dictionary<ClickableTextureComponent, CraftingRecipe> dict in __instance.pagesOfCraftingRecipes)
+			{
+				List<KeyValuePair<ClickableTextureComponent, CraftingRecipe>> matches = dict
 					.Where(pair => pair.Value.name.StartsWith(OutdoorPot.GenericName))
-					.ToList()
-					.ForEach(pair =>
-					{
-						string variantKey = OutdoorPot.GetVariantKeyFromName(name: pair.Value.name);
+					.ToList();
+				matches.ForEach(pair =>
+				{
+					string variantKey = OutdoorPot.GetVariantKeyFromName(name: pair.Value.name);
 
-						// Sprite
-						pair.Key.texture = ModEntry.Sprites[ModEntry.ItemDefinitions[variantKey].SpriteKey];
-						pair.Key.sourceRect = OutdoorPot.GetSpriteSourceRectangle(spriteIndex: ModEntry.ItemDefinitions[variantKey].SpriteIndex);
+					// Sprite
+					pair.Key.texture = ModEntry.Sprites[ModEntry.ItemDefinitions[variantKey].SpriteKey];
+					pair.Key.sourceRect = OutdoorPot.GetSpriteSourceRectangle(spriteIndex: ModEntry.ItemDefinitions[variantKey].SpriteIndex);
 
-						// Strings
-						pair.Value.DisplayName = OutdoorPot.GetDisplayNameFromName(pair.Value.name);
-						pair.Value.description = OutdoorPot.GetRawDescription();
-					}));
+					// Strings
+					pair.Value.DisplayName = OutdoorPot.GetDisplayNameFromName(pair.Value.name);
+					pair.Value.description = OutdoorPot.GetRawDescription();
+				});
+				matchesPerDict[i++] = matches.Count();
+			}
+			Log.T($"Found {string.Join("/", matchesPerDict)} garden beds in crafting menu pages ({unlockedCount} unlocked).");
 		}
 
 		/// <summary>
@@ -210,7 +255,9 @@ namespace RaisedGardenBeds
 				// Behaviours as from base method
 				recipe.consumeIngredients(null);
 				if (playSound)
+				{
 					Game1.playSound("coin");
+				}
 				if (___heldItem == null)
 				{
 					___heldItem = item;
@@ -220,7 +267,9 @@ namespace RaisedGardenBeds
 					___heldItem.addToStack(item);
 				}
 				if (Game1.player.craftingRecipes.ContainsKey(recipe.name))
+				{
 					Game1.player.craftingRecipes[recipe.name] += recipe.numberProducedPerCraft;
+				}
 				Game1.stats.checkForCraftingAchievements();
 				if (Game1.options.gamepadControls && ___heldItem != null && Game1.player.couldInventoryAcceptThisItem(___heldItem))
 				{

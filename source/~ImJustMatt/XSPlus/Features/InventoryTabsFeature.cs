@@ -188,7 +188,7 @@ namespace XSPlus.Features
                 return;
             }
 
-            if (e.Button != SButton.MouseLeft && e.IsDown(SButton.MouseLeft))
+            if (e.Button != SButton.MouseLeft && !e.IsDown(SButton.MouseLeft))
             {
                 return;
             }

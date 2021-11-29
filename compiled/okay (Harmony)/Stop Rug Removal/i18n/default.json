@@ -1,0 +1,5 @@
+﻿{
+    "mod.description": "Prevents rugs from being removed if there's something on the rug.",
+    "enabled.title":  "Enabled",
+    "rug-removal-message": "Remove all items on rug before removing rug!"
+}

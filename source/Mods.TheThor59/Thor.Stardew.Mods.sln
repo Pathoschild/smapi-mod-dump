@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thor.Stardew.Mods.HealthBars", "Thor.Stardew.Mods.HealthBars\Thor.Stardew.Mods.HealthBars.csproj", "{7FEC4C11-4C49-4E0F-B7E2-FA999E17C4A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Thor.Stardew.Mods.HoeWaterDirection", "Thor.Stardew.Mods.HoeWaterDirection\Thor.Stardew.Mods.HoeWaterDirection.csproj", "{3F232C8F-313F-40AE-9EAF-949C262B97F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7FEC4C11-4C49-4E0F-B7E2-FA999E17C4A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FEC4C11-4C49-4E0F-B7E2-FA999E17C4A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FEC4C11-4C49-4E0F-B7E2-FA999E17C4A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F232C8F-313F-40AE-9EAF-949C262B97F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F232C8F-313F-40AE-9EAF-949C262B97F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F232C8F-313F-40AE-9EAF-949C262B97F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F232C8F-313F-40AE-9EAF-949C262B97F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

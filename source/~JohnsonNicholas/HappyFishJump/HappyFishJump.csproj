@@ -4,17 +4,12 @@
     <AssemblyName>HappyFishJump</AssemblyName>
     <RootNamespace>HappyFishJump</RootNamespace>
     <Version>1.1.1</Version>
-    <TargetFramework>net452</TargetFramework>
-    <UseHarmony>yes</UseHarmony>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="1.2.0.1" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0-beta.20210916" />
   </ItemGroup>
 
   <Import Project="..\TwilightCoreShared\TwilightCoreShared.projitems" Label="Shared" />

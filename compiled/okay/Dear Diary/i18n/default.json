@@ -1,0 +1,5 @@
+﻿{
+  "date": "Day {{day}} of {{season}} Year {{year}}",
+  "veiwing-entry": "Viewing Entry: {{number}}",
+  "page": "Page {{number}}"
+}

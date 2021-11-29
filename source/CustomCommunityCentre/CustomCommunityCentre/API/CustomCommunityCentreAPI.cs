@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewValley;
 using System.Collections.Generic;
 
 namespace CustomCommunityCentre.API
@@ -16,6 +17,7 @@ namespace CustomCommunityCentre.API
 	public interface ICustomCommunityCentreAPI
 	{
 		public void LoadContentPack(string absoluteDirectoryPath);
+		public void ReloadContentPacks();
 		public StardewValley.Locations.CommunityCenter GetCommunityCentre();
 		public Dictionary<string, int> GetCustomAreaNamesAndNumbers();
 		public bool IsCommunityCentreCompleteEarly();
@@ -48,7 +50,17 @@ namespace CustomCommunityCentre.API
 				{
 					e.LoadContentPack(absoluteDirectoryPath: absoluteDirectoryPath);
 				};
-        }
+		}
+
+		public void ReloadContentPacks()
+        {
+			if (Context.IsWorldReady || Game1.gameMode >= Game1.loadingMode)
+            {
+				throw new System.Exception("Attempted to reload content packs while a save is loaded.");
+            }
+
+			CustomCommunityCentre.Events.Content.InvokeOnLoadingContentPacks();
+		}
 
 		public StardewValley.Locations.CommunityCenter GetCommunityCentre()
 		{

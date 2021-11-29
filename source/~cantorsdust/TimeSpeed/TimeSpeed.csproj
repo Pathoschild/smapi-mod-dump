@@ -2,12 +2,12 @@
   <PropertyGroup>
     <AssemblyName>TimeSpeed</AssemblyName>
     <RootNamespace>TimeSpeed</RootNamespace>
-    <Version>2.5.0</Version>
+    <Version>2.5.1</Version>
     <TargetFramework>net452</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
   </ItemGroup>
 </Project>

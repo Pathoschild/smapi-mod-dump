@@ -16,15 +16,15 @@ namespace XSPlus
     using Common.Services;
 
     /// <inheritdoc />
-    public class XSPlusAPI : IXSPlusAPI
+    public class XSPlusApi : IXSPlusApi
     {
         private readonly ServiceManager _serviceManager;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="XSPlusAPI" /> class.
+        ///     Initializes a new instance of the <see cref="XSPlusApi" /> class.
         /// </summary>
         /// <param name="mod">The mod instance.</param>
-        public XSPlusAPI(XSPlus mod)
+        public XSPlusApi(XSPlus mod)
         {
             this._serviceManager = mod.ServiceManager;
         }

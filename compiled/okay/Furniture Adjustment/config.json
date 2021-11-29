@@ -1,0 +1,10 @@
+{
+  "EnableMod": true,
+  "RaiseButton": "NumPad8",
+  "LowerButton": "NumPad2",
+  "LeftButton": "NumPad4",
+  "RightButton": "NumPad6",
+  "ModKey": "LeftAlt",
+  "ModSpeed": 5,
+  "MoveSpeed": 10
+}

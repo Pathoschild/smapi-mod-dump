@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Dear Diary, Journal Keeping Mod",
   "Author": "MissCoriel",
-  "Version": "1.4.3",
+  "Version": "1.5.5",
   "Description": "Dear diary, you won't believe what I am about to write in you today...",
   "UniqueID": "misscoriel.diary",
   "EntryDll": "DearDiary.dll",

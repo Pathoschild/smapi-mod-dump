@@ -8,15 +8,12 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Objects;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace MobileCalendar
 {
@@ -57,16 +54,15 @@ namespace MobileCalendar
         private void OpenApp()
         {
             Monitor.Log("Opening App");
-            DelayedOpen();
-            
+            Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked; 
+
         }
 
-        private async void DelayedOpen()
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            await Task.Delay(50);
+            Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
             Monitor.Log("Really opening app");
             Game1.activeClickableMenu = new Billboard(false);
         }
-
     }
 }

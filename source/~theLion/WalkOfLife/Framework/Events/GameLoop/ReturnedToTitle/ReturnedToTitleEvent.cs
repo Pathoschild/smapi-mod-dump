@@ -12,7 +12,7 @@ using StardewModdingAPI.Events;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public abstract class ReturnedToTitleEvent : BaseEvent
+	internal abstract class ReturnedToTitleEvent : BaseEvent
 	{
 		/// <inheritdoc />
 		public override void Hook()

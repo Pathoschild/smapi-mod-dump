@@ -626,7 +626,7 @@ namespace CustomCommunityCentre
 
 		public static List<int> GetBundleNumbersForArea(string areaName)
 		{
-			List<int> bundleNumbers = Bundles.CustomAreaBundleKeys.TryGetValue(areaName, out string[] bundles)
+			List<int> bundleNumbers = Bundles.CustomAreaBundleKeys.TryGetValue(areaName ?? "", out string[] bundles)
 				&& bundles != null && bundles.Length > 0
 				? bundles
 				.Select(bundle => int.Parse(bundle.Split(Bundles.BundleKeyDelim).Last()))

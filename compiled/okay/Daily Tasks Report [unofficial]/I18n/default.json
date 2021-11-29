@@ -1,0 +1,71 @@
+﻿{
+//
+  //  daily tasks
+  //
+  "tasks.complete": "All done!.",
+  "tasks.nothingtodo": "Nothing to do.",
+  //
+  //  animal tasks
+  //
+  "tasks.animal.notpettedanimals": "Not petted animals",
+  "tasks.animal.uncollectedanimalproduct": "Uncollected animal products",
+  "tasks.animal.emptyhay": "Empty hay spots on feeding benches",
+  "tasks.animal.at": " at ",
+  "tasks.animal.has": " has ",
+  "tasks.animal.missinghay": "Hay missing at",
+  "tasks.animal.missinghays": " hays missing at ",
+  "tasks.animal.ponds.attention": "Ponds needing attention",
+  "tasks.animal.ponds.collect": "Ponds with items to collect",
+  //
+  //  crop tasks
+  //
+  "tasks.crop.notwatered": "Crops not watered",
+  "tasks.crop.readytoharvest": "Crops ready to harvest",
+  "tasks.crop.dead": "Dead crops in the ",
+  "tasks.crop.fruits": "Fruit trees with fruits in the ",
+  "tasks.crop.label.unwatered": "Unwatered crops",
+  "tasks.crop.label.harvest": "Ready to harvest crops",
+  "tasks.crop.label.crops": "Dead crops",
+  "tasks.crop.label.fruits": "Fruit trees with fruits",
+  "tasks.crop.treeat": " tree at ",
+  "tasks.crop.with": " with ",
+  "tasks.crop.withfruit": " fruit ",
+  "tasks.crop.withfruits": " fruits ",
+  "tasks.crop.at": " at ",
+  //
+  //  cave tasks
+  //
+  "tasks.cave.incave": " in the farm cave",
+  "tasks.cave.itemname.fruits": "Fruits",
+  "tasks.cave.itemname.mushrooms": "Mushrooms",
+  //
+  // misc tasks
+  //
+  "tasks.misc.queen": "There's a new recipe on The Queen of Sauce.",
+  "tasks.misc.merchant": "The traveling merchant is in town.",
+  "tasks.misc.birthday": "It's {{NPCName}} birthday!",
+  "tasks.misc.nohay": "You have no hay left.",
+  "tasks.misc.hay": "You only have {{count}} hay left.",
+  "tasks.misc.lastday": "It's the last day of the season, make sure to harvest all of your applicable crops.",
+  //
+  //  object tasks
+  //
+  "tasks.object.crab": "Crabpots ready to collect",
+  "tasks.object.crabpot": "Crabpots not baited",
+  "tasks.object.machine": "Uncollected machines",
+  "tasks.object.silver": "Silver ",
+  "tasks.object.gold": "Gold ",
+  "tasks.object.iridium": "Iridium ",
+  "tasks.object.with": " with ",
+  //
+  //  pet tasks
+  //
+  "tasks.pet.pet": "You did not pet your pet today.",
+  "tasks.pet.bowl": "You did not fill your pet's bowl.",
+  "tasks.at": " at ",
+  //
+  //  terrain tasks
+  //
+  "tasks.terrain.fence": "Damaged Fence at Farm",
+  "tasks.terrain.damaged": "Damaged Fences: "
+}

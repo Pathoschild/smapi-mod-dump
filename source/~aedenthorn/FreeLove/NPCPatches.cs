@@ -262,7 +262,7 @@ namespace FreeLove
 
                 // dialogues
 
-                if (__instance.currentMarriageDialogue == null || __instance.currentMarriageDialogue.Count == 0)
+                if (__instance.currentMarriageDialogue is null || __instance.currentMarriageDialogue.Count == 0)
                     return;
 
                 bool gotDialogue = false;
@@ -395,26 +395,7 @@ namespace FreeLove
         }
         public static void NPC_engagementResponse_Postfix(NPC __instance, Farmer who, bool asRoommate = false)
         {
-            Monitor.Log($"engagement response for {__instance.Name}");
-            if (asRoommate)
-            {
-                Monitor.Log($"{__instance.Name} is roomate");
-                return;
-            }
-            if (!who.friendshipData.ContainsKey(__instance.Name))
-            {
-                Monitor.Log($"{who.Name} has no friendship data for {__instance.Name}", LogLevel.Error);
-                return;
-            }
             Misc.ResetSpouses(who);
-            Friendship friendship = who.friendshipData[__instance.Name];
-            WorldDate weddingDate = new WorldDate(Game1.Date);
-            weddingDate.TotalDays += Math.Max(1,Config.DaysUntilMarriage);
-            while (!Game1.canHaveWeddingOnDay(weddingDate.DayOfMonth, weddingDate.Season))
-            {
-                weddingDate.TotalDays++;
-            }
-            friendship.WeddingDate = weddingDate;
         }
 
         public static bool NPC_isRoommate_Prefix(NPC __instance, ref bool __result)
@@ -529,39 +510,52 @@ namespace FreeLove
 
         public static bool NPC_checkAction_Prefix(ref NPC __instance, ref Farmer who, GameLocation l, ref bool __result)
         {
+            if (!Config.EnableMod || __instance.IsInvisible || __instance.isSleeping.Value || !who.canMove || who.checkForQuestComplete(__instance, -1, -1, who.ActiveObject, null, -1, 5) || (who.pantsItem.Value?.ParentSheetIndex == 15 && (__instance.Name.Equals("Lewis") || __instance.Name.Equals("Marnie"))) || (__instance.Name.Equals("Krobus") && who.hasQuest(28)))
+                return true;
+
             try
             {
-                if(__instance.IsInvisible || __instance.isSleeping.Value || !who.CanMove)
-
                 Misc.ResetSpouses(who);
 
-                if (((__instance.Name.Equals(who.spouse) && Integrations.kissingAPI != null) || Misc.GetSpouses(who, 1).ContainsKey(__instance.Name)) && who.IsLocalPlayer)
+                if ((__instance.Name.Equals(who.spouse) || Misc.GetSpouses(who, 1).ContainsKey(__instance.Name)) && __instance.Sprite.CurrentAnimation == null && who.IsLocalPlayer)
                 {
-                    int timeOfDay = Game1.timeOfDay;
-                    if (__instance.Sprite.CurrentAnimation == null)
+                    Monitor.Log($"{__instance.Name} is married to {who.Name}");
+
+                    __instance.faceDirection(-3);
+
+                    if (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points >= 3125 && !who.mailReceived.Contains("CF_Spouse"))
                     {
-                        __instance.faceDirection(-3);
-                    }
-                    if (__instance.Sprite.CurrentAnimation == null && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points >= 3125 && !who.mailReceived.Contains("CF_Spouse"))
-                    {
+                        Monitor.Log($"getting starfruit");
                         __instance.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString(Game1.player.isRoommate(who.spouse) ? "Strings\\StringsFromCSFiles:Krobus_Stardrop" : "Strings\\StringsFromCSFiles:NPC.cs.4001"), __instance));
                         Game1.player.addItemByMenuIfNecessary(new Object(Vector2.Zero, 434, "Cosmic Fruit", false, false, false, false), null);
                         __instance.shouldSayMarriageDialogue.Value = false;
                         __instance.currentMarriageDialogue.Clear();
                         who.mailReceived.Add("CF_Spouse");
-                        return true;
+                        __result = true;
+                        return false;
                     }
                     if (__instance.Sprite.CurrentAnimation == null && !__instance.hasTemporaryMessageAvailable() && __instance.currentMarriageDialogue.Count == 0 && __instance.CurrentDialogue.Count == 0 && Game1.timeOfDay < 2200 && !__instance.isMoving() && who.ActiveObject == null)
                     {
-                        if (Integrations.kissingAPI != null)
-                        {
-                            Integrations.kissingAPI.FarmerKiss(who, __instance);
-                            return false;
-                        }
-                        __instance.faceGeneralDirection(who.getStandingPosition(), 0, false, false);
-                        who.faceGeneralDirection(__instance.getStandingPosition(), 0, false, false);
+                        Monitor.Log($"Trying to kiss/hug {__instance.Name}");
+
+                        __instance.faceGeneralDirection(who.getStandingPosition(), 0, false);
+                        who.faceGeneralDirection(__instance.getStandingPosition(), 0, false);
                         if (__instance.FacingDirection == 3 || __instance.FacingDirection == 1)
                         {
+                            if (Integrations.kissingAPI != null)
+                            {
+                                Monitor.Log($"Handing over to Hugs and Kisses");
+
+                                Integrations.kissingAPI.PlayerNPCKiss(who, __instance);
+                                __result = true;
+                                return false;
+                            }
+                            if (!__instance.hasBeenKissedToday.Value)
+                            {
+                                Monitor.Log($"{__instance.Name} has been kissed today");
+                                return true;
+                            }
+
                             int spouseFrame = 28;
                             bool facingRight = true;
                             string name = __instance.Name;
@@ -626,48 +620,55 @@ namespace FreeLove
                                 facingRight = false;
                             }
                             bool flip = (facingRight && __instance.FacingDirection == 3) || (!facingRight && __instance.FacingDirection == 1);
-                            if (who.getFriendshipHeartLevelForNPC(__instance.Name) > 9 && __instance.sleptInBed.Value)
+                            if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= 9)
                             {
+                                Monitor.Log($"Can kiss/hug {__instance.Name}");
+
                                 int delay = Game1.IsMultiplayer ? 1000 : 10;
                                 __instance.movementPause = delay;
                                 __instance.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
-                            {
-                                new FarmerSprite.AnimationFrame(spouseFrame, delay, false, flip, new AnimatedSprite.endOfAnimationBehavior(__instance.haltMe), true)
-                            });
+                                {
+                                    new FarmerSprite.AnimationFrame(spouseFrame, delay, false, flip, new AnimatedSprite.endOfAnimationBehavior(__instance.haltMe), true)
+                                });
                                 if (!__instance.hasBeenKissedToday.Value)
                                 {
                                     who.changeFriendship(10, __instance);
-                                    if (who.hasCurrentOrPendingRoommate())
+                                    if (who.friendshipData[__instance.Name].RoommateMarriage)
                                     {
+                                        Monitor.Log($"Hugging {__instance.Name}");
                                         ModEntry.mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[]
                                         {
-                                        new TemporaryAnimatedSprite("LooseSprites\\emojis", new Microsoft.Xna.Framework.Rectangle(0, 0, 9, 9), 2000f, 1, 0, new Vector2((float)__instance.getTileX(), (float)__instance.getTileY()) * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
-                                        {
-                                            motion = new Vector2(0f, -0.5f),
-                                            alphaFade = 0.01f
-                                        }
+                                            new TemporaryAnimatedSprite("LooseSprites\\emojis", new Microsoft.Xna.Framework.Rectangle(0, 0, 9, 9), 2000f, 1, 0, new Vector2((float)__instance.getTileX(), (float)__instance.getTileY()) * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
+                                            {
+                                                motion = new Vector2(0f, -0.5f),
+                                                alphaFade = 0.01f
+                                            }
                                         });
                                     }
                                     else
                                     {
+                                        Monitor.Log($"Kissing {__instance.Name}");
                                         ModEntry.mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[]
                                         {
-                                        new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(211, 428, 7, 6), 2000f, 1, 0, new Vector2((float)__instance.getTileX(), (float)__instance.getTileY()) * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
-                                        {
-                                            motion = new Vector2(0f, -0.5f),
-                                            alphaFade = 0.01f
-                                        }
+                                            new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(211, 428, 7, 6), 2000f, 1, 0, new Vector2((float)__instance.getTileX(), (float)__instance.getTileY()) * 64f + new Vector2(16f, -64f), false, false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f, false)
+                                            {
+                                                motion = new Vector2(0f, -0.5f),
+                                                alphaFade = 0.01f
+                                            }
                                         });
                                     }
-                                    l.playSound("dwop", NetAudio.SoundContext.NPC);
+                                    __instance.currentLocation.playSound("dwop", NetAudio.SoundContext.NPC);
                                     who.exhausted.Value = false;
+
                                 }
                                 __instance.hasBeenKissedToday.Value = true;
                                 __instance.Sprite.UpdateSourceRect();
                             }
                             else
                             {
-                                __instance.faceDirection((Game1.random.NextDouble() < 0.5) ? 2 : 0);
+                                Monitor.Log($"Kiss/hug rejected by {__instance.Name}");
+
+                                __instance.faceDirection((ModEntry.myRand.NextDouble() < 0.5) ? 2 : 0);
                                 __instance.doEmote(12, true);
                             }
                             int playerFaceDirection = 1;
@@ -681,7 +682,6 @@ namespace FreeLove
                         }
                     }
                 }
-                return true;
             }
             catch (Exception ex)
             {
@@ -695,6 +695,34 @@ namespace FreeLove
         {
             try
             {
+                if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name) && Game1.NPCGiftTastes.ContainsKey(__instance.Name))
+                {
+                    Monitor.Log($"Gift to spouse {__instance.Name}");
+                    __state = new List<int> {
+                        who.friendshipData[__instance.Name].GiftsToday,
+                        who.friendshipData[__instance.Name].GiftsThisWeek,
+                        0,
+                        0
+                    };
+                    if (Config.MaxGiftsPerSpousePerDay < 0 || who.friendshipData[__instance.Name].GiftsToday < Config.MaxGiftsPerSpousePerDay)
+                    {
+                        who.friendshipData[__instance.Name].GiftsToday = 0;
+                    }
+                    else
+                    {
+                        who.friendshipData[__instance.Name].GiftsToday = 1;
+                        __state[2] = 1; // flag to say we set it to 1
+                    }
+                    if (Config.MaxGiftsPerSpousePerWeek < 0 || who.friendshipData[__instance.Name].GiftsThisWeek < Config.MaxGiftsPerSpousePerWeek)
+                    {
+                        who.friendshipData[__instance.Name].GiftsThisWeek = 0;
+                    }
+                    else
+                    {
+                        who.friendshipData[__instance.Name].GiftsThisWeek = 2;
+                        __state[3] = 1; // flag to say we set it to 1
+                    }
+                }
                 if (who.ActiveObject.ParentSheetIndex == 808 && __instance.Name.Equals("Krobus"))
                 {
                     Monitor.Log($"Void pendant to {__instance.Name}");
@@ -704,7 +732,7 @@ namespace FreeLove
                         return false;
                     }
                 }
-                if (who.ActiveObject.ParentSheetIndex == 458)
+                else if (who.ActiveObject.ParentSheetIndex == 458)
                 {
                     Monitor.Log($"Try give bouquet to {__instance.Name}");
 
@@ -811,7 +839,7 @@ namespace FreeLove
                             who.friendshipData[__instance.Name].ProposalRejected = true;
                             return false;
                         }
-                        __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3974") : Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3975"), __instance));
+                        __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3974") : Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3975"), __instance));
                         Game1.drawDialogue(__instance);
                         who.changeFriendship(-50, __instance);
                         return false;
@@ -887,13 +915,29 @@ namespace FreeLove
                     }
                     return true;
                 }
-
             }
             catch (Exception ex)
             {
                 Monitor.Log($"Failed in {nameof(NPC_tryToReceiveActiveObject_Prefix)}:\n{ex}", LogLevel.Error);
             }
             return true;
+        }
+        public static void NPC_tryToReceiveActiveObject_Postfix(NPC __instance, ref Farmer who, List<int> __state)
+        {
+            try
+            {
+                if (__state != null && __state.Count > 0)
+                {
+                    who.friendshipData[__instance.Name].GiftsToday += __state[0] - (__state[2] == 1 ? 1 : 0);
+                    who.friendshipData[__instance.Name].GiftsThisWeek += __state[1] - (__state[3] == 1 ? 2 : 0);
+                    Monitor.Log($"gifts this week {who.friendshipData[__instance.Name].GiftsThisWeek}");
+                    Monitor.Log($"gifts today {who.friendshipData[__instance.Name].GiftsToday}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(NPC_tryToReceiveActiveObject_Postfix)}:\n{ex}", LogLevel.Error);
+            }
         }
 
         public static IEnumerable<CodeInstruction> NPC_tryToReceiveActiveObject_Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -908,7 +952,7 @@ namespace FreeLove
                     if(codes[i].opcode == OpCodes.Ldc_I4_S && int.Parse(codes[i].operand.ToString()) < -10)
                     {
                         Monitor.Log($"got int!");
-                        codes[i] = new CodeInstruction(OpCodes.Ldc_I4_S, 30);
+                        codes[i] = new CodeInstruction(OpCodes.Ldc_I4_S, 10);
                         break;
                     }
                 }
@@ -945,60 +989,18 @@ namespace FreeLove
             }
         }
         
-        public static void Character_displayName_Getter_Postfix(ref Child __instance, ref string __result)
+        public static void Character_displayName_Getter_Postfix(ref Character __instance, ref string __result)
         {
             try
             {
-                if (__instance.Name == null || !(__instance is Child))
+                if (__instance.Name == null || !(__instance is Child) || !Config.ShowParentNames || !__instance.modData.ContainsKey("aedenthorn.FreeLove/OtherParent"))
                     return;
-                string[] names = __instance.Name.Split(' ');
-                if (names.Length < 2 || names[names.Length - 1].Length < 3)
-                {
-                    return;
-                }
-                if (!Config.ShowParentNames && __instance.Name.EndsWith(")"))
-                {
-                    __result = Regex.Replace(string.Join(" ", names), @" \([^)]+\)", "");
-                    //Monitor.Log($"set child display name to: {__result}");
-                }
+                __result = $"{__result} ({__instance.modData["aedenthorn.FreeLove/OtherParent"]})";
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed in {nameof(Child_reloadSprite_Postfix)}:\n{ex}", LogLevel.Error);
+                Monitor.Log($"Failed in {nameof(Character_displayName_Getter_Postfix)}:\n{ex}", LogLevel.Error);
             }
         }
-        public static void Child_reloadSprite_Postfix(ref Child __instance)
-        {
-            try
-            {
-                if (__instance.Name == null)
-                    return;
-                string[] names = __instance.Name.Split(' ');
-                string parent;
-                if (names.Length > 1 && __instance.displayName.EndsWith(")"))
-                {
-                    parent = names[names.Length - 1].Substring(1, names[names.Length - 1].Length - 2);
-                    __instance.modData["aedenthorn.MultipleSpouses/OtherParent"] = parent;
-                }
-
-                if (!__instance.modData.ContainsKey("aedenthorn.MultipleSpouses/OtherParent"))
-                    return;
-
-                parent = __instance.modData["aedenthorn.MultipleSpouses/OtherParent"];
-
-                if (!Config.ShowParentNames && __instance.displayName.EndsWith(")"))
-                {
-                    __instance.displayName = Regex.Replace(string.Join(" ", names), @" \([^)]+\)", "");
-                }
-
-                __instance.Sprite.textureName.Value += $"_{parent}";
-                Monitor.Log($"set child {__instance.name}, parent {parent} texture to: {__instance.Sprite.textureName.Value}");
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed in {nameof(Child_reloadSprite_Postfix)}:\n{ex}", LogLevel.Error);
-            }
-        }
-
     }
 }

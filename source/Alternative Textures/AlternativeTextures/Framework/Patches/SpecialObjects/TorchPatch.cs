@@ -57,7 +57,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 if (Game1.eventUp && (Game1.currentLocation == null || Game1.currentLocation.currentEvent == null || !Game1.currentLocation.currentEvent.showGroundObjects) && !Game1.currentLocation.IsFarm)
                 {

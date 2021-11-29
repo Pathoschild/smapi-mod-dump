@@ -148,7 +148,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
         /// <param name="building">A sample building constructed by the blueprint.</param>
         public RecipeModel(BluePrint blueprint, Building building)
             : this(
-                key: blueprint.name,
+                key: blueprint.displayName,
                 type: RecipeType.BuildingBlueprint,
                 displayType: I18n.Building_Construction(),
                 ingredients: blueprint.itemsRequired
@@ -161,8 +161,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             )
         {
             this.SpecialOutput = new RecipeItemEntry(
-                new SpriteInfo(building.texture.Value, building.getSourceRectForMenu()),
-                building.buildingType.Value
+                sprite: new SpriteInfo(building.texture.Value, building.getSourceRectForMenu()),
+                displayText: blueprint.displayName ?? building.buildingType.Value
             );
         }
 

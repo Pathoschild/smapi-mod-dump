@@ -85,7 +85,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 // Get the current X index for the source tile
                 var xTileOffset = __instance.modData.ContainsKey("AlternativeTextureSheetId") ? __instance.ParentSheetIndex - Int32.Parse(__instance.modData["AlternativeTextureSheetId"]) : 0;

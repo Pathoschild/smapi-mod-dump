@@ -8,19 +8,15 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using TwilightShards.Stardew.Common;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices;
 
 namespace HappyFishJump
 {
@@ -44,7 +40,7 @@ namespace HappyFishJump
             _jumpingFish = new List<JumpFish>();
             _validFishLocations = new Dictionary<Vector2, int>();
 
-            var harmony = HarmonyInstance.Create("koihimenakamura.happyfishjump");
+            var harmony = new Harmony("koihimenakamura.happyfishjump");
             harmony.PatchAll();
             Monitor.Log("Patching JumpingFish.Splash with a transpiler", LogLevel.Trace);
 
@@ -233,14 +229,14 @@ namespace HappyFishJump
             if (Game1.currentLocation.waterTiles is null)
                 return;
 
-            for (int j = 0; j < Game1.currentLocation.waterTiles.GetLength(0); j++)
+            for (int j = 0; j < Game1.currentLocation.map.Layers[0].LayerWidth; j++)
             {
-                for (int k = 0; k < Game1.currentLocation.waterTiles.GetLength(1); k++)
+                for (int k = 0; k < Game1.currentLocation.map.Layers[0].LayerHeight; k++)
                 {
                     if (Game1.currentLocation.waterTiles[j, k])
                     {
-                        if ((j + 2) >= Game1.currentLocation.waterTiles.GetLength(0) ||
-                            (k + 2) >= Game1.currentLocation.waterTiles.GetLength(1))
+                        if ((j + 2) >= Game1.currentLocation.map.Layers[0].LayerWidth ||
+                            (k + 2) >= Game1.currentLocation.map.Layers[0].LayerHeight)
                             continue;
 
                         if (Game1.currentLocation.waterTiles[j + 2, k + 2])

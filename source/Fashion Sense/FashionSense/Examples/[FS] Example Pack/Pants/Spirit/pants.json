@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FashionSense
+**
+*************************************************/
+
+{
+  "Name": "Spirit",
+  "FrontPants": {
+    "HideLegs": true,
+    "StartingPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": -23
+    },
+    "PantsSize": {
+      "Width": 16,
+      "Length": 8
+    },
+    "UniformAnimation": [
+      {
+        "Frame": 0,
+        "Duration": 100
+      },
+      {
+        "Frame": 1,
+        "Duration": 100
+      },
+      {
+        "Frame": 2,
+        "Duration": 100
+      },
+      {
+        "Frame": 3,
+        "Duration": 100
+      },
+      {
+        "Frame": 4,
+        "Duration": 100
+      },
+      {
+        "Frame": 5,
+        "Duration": 100
+      },
+      {
+        "Frame": 6,
+        "Duration": 100
+      }
+    ]
+  }
+}

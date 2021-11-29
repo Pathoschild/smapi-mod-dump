@@ -63,7 +63,8 @@ namespace FarmTypeManager
                             }
                         }
 
-                        Game1.createItemDebris(Utility.CreateItem(loot), lootPosition, Utility.RNG.Next(4), monster.currentLocation); //create and "drop" the loot at the monster's location
+                        if (Utility.CreateItem(loot) is Item lootItem) //if this loot is created successfully
+                            Game1.createItemDebris(lootItem, lootPosition, Utility.RNG.Next(4), monster.currentLocation); //create and "drop" the loot at the monster's location
                     }
                 }
             }

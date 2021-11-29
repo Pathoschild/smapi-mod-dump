@@ -1,0 +1,10 @@
+{
+  "Name": "CommunityCenterAnywhere",
+  "Author": "Stingray",
+  "Version": "2.1.0",
+  "Description": "Allows the player to input items for the bundles from their inventory",
+  "UniqueID": "Stingray.CCA",
+  "EntryDll": "CommunityCenterAnywhere.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:10150" ]
+}

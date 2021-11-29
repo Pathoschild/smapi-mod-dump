@@ -8,16 +8,15 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using Netcode;
-using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using Netcode;
+using StardewValley;
 using TheLion.Stardew.Common.Extensions;
 
 namespace TheLion.Stardew.Common.Harmony
@@ -25,14 +24,24 @@ namespace TheLion.Stardew.Common.Harmony
 	/// <summary>Provides an interface for abstracting common transpiler operations.</summary>
 	public class ILHelper
 	{
-		private Action<string, LogLevel> Log { get; }
-
-		private MethodBase _original;
-		private List<CodeInstruction> _instructionList;
-		private List<CodeInstruction> _instructionBuffer;
+		private readonly string _exportDir;
 		private readonly Stack<int> _indexStack;
 		private readonly bool _shouldExport;
-		private readonly string _exportDir;
+		private List<CodeInstruction> _instructionBuffer;
+		private List<CodeInstruction> _instructionList;
+		private MethodBase _original;
+
+		/// <summary>Construct an instance.</summary>
+		/// <param name="enableExport">Whether the instruction list should be saved to disk in case an error is thrown.</param>
+		/// <param name="path">The root path where instruction lists will be saved.</param>
+		public ILHelper(MethodBase original, IEnumerable<CodeInstruction> instructions, bool enableExport = false,
+			string path = "")
+		{
+			_indexStack = new();
+			Attach(original, instructions);
+			_shouldExport = enableExport;
+			_exportDir = Path.Combine(path, "exports");
+		}
 
 		/// <summary>The index currently at the top of the index stack.</summary>
 		public int CurrentIndex
@@ -46,7 +55,7 @@ namespace TheLion.Stardew.Common.Harmony
 			}
 		}
 
-		/// <summary>The index of the last <see cref="CodeInstruction"/> in the current instruction list.</summary>
+		/// <summary>The index of the last <see cref="CodeInstruction" /> in the current instruction list.</summary>
 		public int LastIndex
 		{
 			get
@@ -58,26 +67,9 @@ namespace TheLion.Stardew.Common.Harmony
 			}
 		}
 
-		/// <summary>Construct an instance.</summary>
-		/// <param name="log">Interface for writing to the SMAPI console.</param>
-		public ILHelper(Action<string, LogLevel> log)
-			: this(log, false, "") { }
-
-		/// <summary>Construct an instance.</summary>
-		/// <param name="log">Interface for writing to the SMAPI console.</param>
-		/// <param name="enableExport">Whether the instruction list should be saved to disk in case an error is thrown.</param>
-		/// <param name="path">The root path where instruction lists will be saved.</param>
-		public ILHelper(Action<string, LogLevel> log, bool enableExport, string path)
-		{
-			Log = log;
-			_shouldExport = enableExport;
-			_exportDir = Path.Combine(path, "exports");
-			_indexStack = new();
-		}
-
 		/// <summary>Attach a new list of code instructions to this instance.</summary>
-		/// <param name="original"><see cref="MethodBase"/> representation of the original method.</param>
-		/// <param name="instructions">Collection of <see cref="CodeInstruction"/> objects.</param>
+		/// <param name="original"><see cref="MethodBase" /> representation of the original method.</param>
+		/// <param name="instructions">Collection of <see cref="CodeInstruction" /> objects.</param>
 		public ILHelper Attach(MethodBase original, IEnumerable<CodeInstruction> instructions)
 		{
 			_original = original;
@@ -90,14 +82,15 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Find the first occurrence of a pattern in the active code instruction list and move the index pointer to it.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper FindFirst(params CodeInstruction[] pattern)
 		{
 			var index = _instructionList.IndexOf(pattern);
 			if (index < 0)
 			{
 				if (_shouldExport) Export(pattern.ToList());
-				throw new IndexOutOfRangeException($"Couldn't find instruction pattern {pattern}.");
+				throw new IndexOutOfRangeException(
+					$"Couldn't find instruction pattern.\n---- BEGIN ----\n{string.Join("\n", pattern.ToArray<object>())}\n----- END -----");
 			}
 
 			_indexStack.Push(index);
@@ -105,17 +98,18 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Find the last occurrence of a pattern in the active code instruction list and move the index pointer to it.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper FindLast(params CodeInstruction[] pattern)
 		{
 			var reversedInstructions = _instructionList.Clone();
 			reversedInstructions.Reverse();
 
-			var index = _instructionList.Count - reversedInstructions.IndexOf(pattern) - 1;
+			var index = _instructionList.Count - reversedInstructions.IndexOf(pattern.Reverse().ToArray()) - 1;
 			if (index < 0)
 			{
 				if (_shouldExport) Export(pattern.ToList());
-				throw new IndexOutOfRangeException($"Couldn't find instruction pattern {pattern}.");
+				throw new IndexOutOfRangeException(
+					$"Couldn't find instruction pattern:\n---- BEGIN ----\n{string.Join("\n", pattern.ToArray<object>())}\n----- END -----");
 			}
 
 			_indexStack.Push(index);
@@ -123,33 +117,38 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Find the next occurrence of a pattern in the active code instruction list and move the index pointer to it.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper FindNext(params CodeInstruction[] pattern)
 		{
 			var index = _instructionList.IndexOf(pattern, CurrentIndex + 1);
 			if (index < 0)
 			{
 				if (_shouldExport) Export(pattern.ToList());
-				throw new IndexOutOfRangeException($"Couldn't find instruction pattern {pattern}.");
+				throw new IndexOutOfRangeException(
+					$"Couldn't find instruction pattern:\n---- BEGIN ----\n{string.Join("\n", pattern.ToArray<object>())}\n----- END -----");
 			}
 
 			_indexStack.Push(index);
 			return this;
 		}
 
-		/// <summary>Find the previous occurrence of a pattern in the active code instruction list and move the index pointer to it.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <summary>
+		///     Find the previous occurrence of a pattern in the active code instruction list and move the index pointer to
+		///     it.
+		/// </summary>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper FindPrevious(params CodeInstruction[] pattern)
 		{
 			var reversedInstructions = _instructionList.Clone();
 			reversedInstructions.Reverse();
 
 			var index = _instructionList.Count -
-						reversedInstructions.IndexOf(pattern, _instructionList.Count - CurrentIndex - 1) - 1;
+			            reversedInstructions.IndexOf(pattern, _instructionList.Count - CurrentIndex - 1) - 1;
 			if (index < 0)
 			{
 				if (_shouldExport) Export(pattern.ToList());
-				throw new IndexOutOfRangeException($"Couldn't find instruction pattern {pattern}.");
+				throw new IndexOutOfRangeException(
+					$"Couldn't find instruction pattern:\n---- BEGIN ----\n{string.Join("\n", pattern.ToArray<object>())}\n----- END -----");
 			}
 
 			_indexStack.Push(index);
@@ -157,7 +156,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Find a specific label in the active code instruction list and move the index pointer to it.</summary>
-		/// <param name="label">The <see cref="Label"/> object to match.</param>
+		/// <param name="label">The <see cref="Label" /> object to match.</param>
 		/// <param name="fromCurrentIndex">Whether to begin search from the currently pointed index.</param>
 		public ILHelper FindLabel(Label label, bool fromCurrentIndex = false)
 		{
@@ -165,14 +164,17 @@ namespace TheLion.Stardew.Common.Harmony
 			if (index < 0)
 			{
 				if (_shouldExport) Export(label);
-				throw new IndexOutOfRangeException($"Couldn't find label {label}.");
+				throw new IndexOutOfRangeException($"Couldn't find label: {label}.");
 			}
 
 			_indexStack.Push(index);
 			return this;
 		}
 
-		/// <summary>Find the first or next occurrence of the pattern corresponding to `player.professions.Contains()` in the active code instruction list and move the index pointer to it.</summary>
+		/// <summary>
+		///     Find the first or next occurrence of the pattern corresponding to `player.professions.Contains()` in the
+		///     active code instruction list and move the index pointer to it.
+		/// </summary>
 		/// <param name="whichProfession">The profession id.</param>
 		/// <param name="fromCurrentIndex">Whether to begin search from currently pointed index.</param>
 		public ILHelper FindProfessionCheck(int whichProfession, bool fromCurrentIndex = false)
@@ -204,15 +206,15 @@ namespace TheLion.Stardew.Common.Harmony
 			return this;
 		}
 
-		/// <summary>Alias for <see cref="FindNext(CodeInstruction[])"/>.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <summary>Alias for <see cref="FindNext(CodeInstruction[])" />.</summary>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper AdvanceUntil(params CodeInstruction[] pattern)
 		{
 			return FindNext(pattern);
 		}
 
-		/// <summary>Alias for <see cref="FindLabel(Label, bool)"/> with parameter <c>fromCurrentIndex = true</c>.</summary>
-		/// <param name="label">The <see cref="Label"/> object to match.</param>
+		/// <summary>Alias for <see cref="FindLabel(Label, bool)" /> with parameter <c>fromCurrentIndex = true</c>.</summary>
+		/// <param name="label">The <see cref="Label" /> object to match.</param>
 		public ILHelper AdvanceUntilLabel(Label label)
 		{
 			return FindLabel(label, true);
@@ -225,8 +227,8 @@ namespace TheLion.Stardew.Common.Harmony
 			return Advance(-steps);
 		}
 
-		/// <summary>Alias for <see cref="FindPrevious(CodeInstruction[])"/>.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <summary>Alias for <see cref="FindPrevious(CodeInstruction[])" />.</summary>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper RetreatUntil(params CodeInstruction[] pattern)
 		{
 			return FindPrevious(pattern);
@@ -265,7 +267,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Replace the code instruction at the currently pointed index.</summary>
-		/// <param name="instruction">The <see cref="CodeInstruction"/> object to replace with.</param>
+		/// <param name="instruction">The <see cref="CodeInstruction" /> object to replace with.</param>
 		public ILHelper ReplaceWith(CodeInstruction instruction)
 		{
 			_instructionList[CurrentIndex] = instruction;
@@ -273,8 +275,11 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Insert a sequence of code instructions at the currently pointed index.</summary>
-		/// <param name="instructions">Sequence of <see cref="CodeInstruction"/> objects to insert.</param>
-		/// <remarks>The instruction originally at this location is pushed forward. After insertion, the index pointer still points to this same instruction.</remarks>
+		/// <param name="instructions">Sequence of <see cref="CodeInstruction" /> objects to insert.</param>
+		/// <remarks>
+		///     The instruction originally at this location is pushed forward. After insertion, the index pointer still points
+		///     to this same instruction.
+		/// </remarks>
 		public ILHelper Insert(params CodeInstruction[] instructions)
 		{
 			_instructionList.InsertRange(CurrentIndex, instructions);
@@ -283,10 +288,44 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Insert a sequence of code instructions at the currently pointed index.</summary>
-		/// <param name="instructions">Sequence of <see cref="CodeInstruction"/> objects to insert.</param>
-		/// <remarks>The instruction originally at this location is pushed forward. After insertion, the index pointer still points to this same instruction.</remarks>
+		/// <param name="labels">Any labels to add at the start of the insertion.</param>
+		/// <param name="instructions">Sequence of <see cref="CodeInstruction" /> objects to insert.</param>
+		/// <remarks>
+		///     The instruction originally at this location is pushed forward. After insertion, the index pointer still points
+		///     to this same instruction.
+		/// </remarks>
+		public ILHelper Insert(Label[] labels, params CodeInstruction[] instructions)
+		{
+			instructions[0].labels.AddRange(labels);
+			_instructionList.InsertRange(CurrentIndex, instructions);
+			_indexStack.Push(CurrentIndex + instructions.Length);
+			return this;
+		}
+
+		/// <summary>Insert a sequence of code instructions at the currently pointed index.</summary>
+		/// <param name="instructions">Sequence of <see cref="CodeInstruction" /> objects to insert.</param>
+		/// <remarks>
+		///     The instruction originally at this location is pushed forward. After insertion, the index pointer still points
+		///     to this same instruction.
+		/// </remarks>
 		public ILHelper Insert(ICollection<CodeInstruction> instructions)
 		{
+			_instructionList.InsertRange(CurrentIndex, instructions);
+			_indexStack.Push(CurrentIndex + instructions.Count);
+			return this;
+		}
+
+		/// <summary>Insert a sequence of code instructions at the currently pointed index.</summary>
+		/// ///
+		/// <param name="labels">Any labels to add at the start of the insertion.</param>
+		/// <param name="instructions">Sequence of <see cref="CodeInstruction" /> objects to insert.</param>
+		/// <remarks>
+		///     The instruction originally at this location is pushed forward. After insertion, the index pointer still points
+		///     to this same instruction.
+		/// </remarks>
+		public ILHelper Insert(Label[] labels, ICollection<CodeInstruction> instructions)
+		{
+			instructions.First().labels.AddRange(labels);
 			_instructionList.InsertRange(CurrentIndex, instructions);
 			_indexStack.Push(CurrentIndex + instructions.Count);
 			return this;
@@ -308,9 +347,12 @@ namespace TheLion.Stardew.Common.Harmony
 			return this;
 		}
 
-		/// <summary>Insert a sequence of code instructions at the currently pointed index to test if the local player has a given profession.</summary>
+		/// <summary>
+		///     Insert a sequence of code instructions at the currently pointed index to test if the local player has a given
+		///     profession.
+		/// </summary>
 		/// <param name="whichProfession">The profession id.</param>
-		/// <param name="branchDestination">The destination <see cref="Label"/> to branch to when the check returns false.</param>
+		/// <param name="branchDestination">The destination <see cref="Label" /> to branch to when the check returns false.</param>
 		/// <param name="useBrtrue">Whether to end on a true-case branch isntead of default false-case branch.</param>
 		/// <param name="useLongFormBranch">Whether to use a long-form branch instead of default short-form branch.</param>
 		public ILHelper InsertProfessionCheckForLocalPlayer(int whichProfession, Label branchDestination,
@@ -333,9 +375,12 @@ namespace TheLion.Stardew.Common.Harmony
 			);
 		}
 
-		/// <summary>Insert a sequence of code instructions at the currently pointed index to test if the player at the top of the stack has a given profession.</summary>
+		/// <summary>
+		///     Insert a sequence of code instructions at the currently pointed index to test if the player at the top of the
+		///     stack has a given profession.
+		/// </summary>
 		/// <param name="whichProfession">The profession id.</param>
-		/// <param name="branchDestination">The destination <see cref="Label"/> to branch to when the check returns false.</param>
+		/// <param name="branchDestination">The destination <see cref="Label" /> to branch to when the check returns false.</param>
 		/// <param name="useBrtrue">Whether to end on a true-case branch isntead of default false-case branch.</param>
 		/// <param name="useLongFormBranch">Whether to use a long-form branch instead of default short-form branch.</param>
 		public ILHelper InsertProfessionCheckForPlayerOnStack(int whichProfession, Label branchDestination,
@@ -390,7 +435,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Remove code instructions starting from the currently pointed index until a specific pattern is found.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper RemoveUntil(params CodeInstruction[] pattern)
 		{
 			AdvanceUntil(pattern);
@@ -403,7 +448,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Remove code instructions starting from the currently pointed index until a specific label is found.</summary>
-		/// <param name="label">The <see cref="Label"/> object to match.</param>
+		/// <param name="label">The <see cref="Label" /> object to match.</param>
 		public ILHelper RemoveUntilLabel(Label label)
 		{
 			AdvanceUntilLabel(label);
@@ -430,8 +475,11 @@ namespace TheLion.Stardew.Common.Harmony
 			return this;
 		}
 
-		/// <summary>Copy code instructions starting from the currently pointed index until a specific pattern is found to the buffer.</summary>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <summary>
+		///     Copy code instructions starting from the currently pointed index until a specific pattern is found to the
+		///     buffer.
+		/// </summary>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper ToBufferUntil(params CodeInstruction[] pattern)
 		{
 			AdvanceUntil(pattern);
@@ -443,10 +491,13 @@ namespace TheLion.Stardew.Common.Harmony
 			return this;
 		}
 
-		/// <summary>Copy code instructions starting from the currently pointed index until a specific pattern is found to the buffer.</summary>
+		/// <summary>
+		///     Copy code instructions starting from the currently pointed index until a specific pattern is found to the
+		///     buffer.
+		/// </summary>
 		/// <param name="stripLabels">Whether to remove the labels from the copied instructions.</param>
 		/// <param name="advance">Whether to advance the index pointer.</param>
-		/// <param name="pattern">Sequence of <see cref="CodeInstruction"/> objects to match.</param>
+		/// <param name="pattern">Sequence of <see cref="CodeInstruction" /> objects to match.</param>
 		public ILHelper ToBufferUntil(bool stripLabels, bool advance, params CodeInstruction[] pattern)
 		{
 			AdvanceUntil(pattern);
@@ -463,15 +514,15 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Get the labels from the code instruction at the currently pointed index.</summary>
-		/// <param name="labels">The returned list of <see cref="Label"/> objects.</param>
-		public ILHelper GetLabels(out List<Label> labels)
+		/// <param name="labels">The returned list of <see cref="Label" /> objects.</param>
+		public ILHelper GetLabels(out Label[] labels)
 		{
-			labels = _instructionList[CurrentIndex].labels.ToList();
+			labels = _instructionList[CurrentIndex].labels.ToArray();
 			return this;
 		}
 
 		/// <summary>Add one or more labels to the code instruction at the currently pointed index.</summary>
-		/// <param name="labels">A sequence of <see cref="Label"/> objects to add.</param>
+		/// <param name="labels">A sequence of <see cref="Label" /> objects to add.</param>
 		public ILHelper AddLabels(params Label[] labels)
 		{
 			_instructionList[CurrentIndex].labels.AddRange(labels);
@@ -479,7 +530,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Add one or more labels to the code instruction at the currently pointed index.</summary>
-		/// <param name="labels">A sequence of <see cref="Label"/> objects to add.</param>
+		/// <param name="labels">A sequence of <see cref="Label" /> objects to add.</param>
 		public ILHelper AddLabels(ICollection<Label> labels)
 		{
 			_instructionList[CurrentIndex].labels.AddRange(labels);
@@ -487,7 +538,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Set the labels of the code instruction at the currently pointed index.</summary>
-		/// <param name="labels">A list of <see cref="Label"/> objects.</param>
+		/// <param name="labels">A list of <see cref="Label" /> objects.</param>
 		public ILHelper SetLabels(params Label[] labels)
 		{
 			_instructionList[CurrentIndex].labels = labels.ToList();
@@ -495,7 +546,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Set the labels of the code instruction at the currently pointed index.</summary>
-		/// <param name="labels">A list of <see cref="Label"/> objects.</param>
+		/// <param name="labels">A list of <see cref="Label" /> objects.</param>
 		public ILHelper SetLabels(ICollection<Label> labels)
 		{
 			_instructionList[CurrentIndex].labels = labels.ToList();
@@ -509,6 +560,14 @@ namespace TheLion.Stardew.Common.Harmony
 			return this;
 		}
 
+		/// <summary>Remove labels from the code instruction at the currently pointed index.</summary>
+		public ILHelper StripLabels(out Label[] labels)
+		{
+			GetLabels(out labels);
+			_instructionList[CurrentIndex].labels.Clear();
+			return this;
+		}
+
 		/// <summary>Remove any labels from code instructions currently in the buffer.</summary>
 		private void StripBufferLabels()
 		{
@@ -516,7 +575,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Return the opcode of the code instruction at the currently pointed index.</summary>
-		/// <param name="opcode">The returned <see cref="OpCode"/> object.</param>
+		/// <param name="opcode">The returned <see cref="OpCode" /> object.</param>
 		public ILHelper GetOpCode(out OpCode opcode)
 		{
 			opcode = _instructionList[CurrentIndex].opcode;
@@ -524,7 +583,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Change the opcode of the code instruction at the currently pointed index.</summary>
-		/// <param name="opcode">The new <see cref="OpCode"/> object.</param>
+		/// <param name="opcode">The new <see cref="OpCode" /> object.</param>
 		public ILHelper SetOpCode(OpCode opcode)
 		{
 			_instructionList[CurrentIndex].opcode = opcode;
@@ -532,7 +591,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Return the operand of the code instruction at the currently pointed index.</summary>
-		/// <param name="operand">The returned operand <see cref="object"/>.</param>
+		/// <param name="operand">The returned operand <see cref="object" />.</param>
 		public ILHelper GetOperand(out object operand)
 		{
 			operand = _instructionList[CurrentIndex].operand;
@@ -540,7 +599,7 @@ namespace TheLion.Stardew.Common.Harmony
 		}
 
 		/// <summary>Change the operand of the code instruction at the currently pointed index.</summary>
-		/// <param name="operand">The new <see cref="object"/> operand.</param>
+		/// <param name="operand">The new <see cref="object" /> operand.</param>
 		public ILHelper SetOperand(object operand)
 		{
 			_instructionList[CurrentIndex].operand = operand;
@@ -570,16 +629,12 @@ namespace TheLion.Stardew.Common.Harmony
 
 			var path = Path.Combine(_exportDir,
 				($"{_original.DeclaringType}.{_original.Name}".Replace('.', '_') + ".cil").RemoveInvalidChars());
-			using (var writer = File.CreateText(path))
-			{
-				writer.WriteLine("Searching for:");
-				pattern.ForEach(l => writer.WriteLine(l.ToString()));
-				writer.WriteLine("\n <-- START OF INSTRUCTION LIST -->\n");
-				_instructionList.ForEach(l => writer.WriteLine(l.ToString()));
-				writer.WriteLine("\n<-- END OF INSTRUCTION LIST -->");
-			}
-
-			Log($"Exported IL instruction list to {path}.", LogLevel.Info);
+			using var writer = File.CreateText(path);
+			writer.WriteLine("Searching for:");
+			pattern.ForEach(l => writer.WriteLine(l.ToString()));
+			writer.WriteLine("\n <-- START OF INSTRUCTION LIST -->\n");
+			_instructionList.ForEach(l => writer.WriteLine(l.ToString()));
+			writer.WriteLine("\n<-- END OF INSTRUCTION LIST -->");
 		}
 
 		/// <summary>Export the failed search target and active code instruction list to a text file.</summary>
@@ -589,16 +644,12 @@ namespace TheLion.Stardew.Common.Harmony
 
 			var path = Path.Combine(_exportDir,
 				($"{_original.DeclaringType}.{_original.Name}".Replace('.', '_') + ".cil").RemoveInvalidChars());
-			using (var writer = File.CreateText(path))
-			{
-				writer.WriteLine("Searching for:\n");
-				writer.WriteLine(label.ToString());
-				writer.WriteLine("\n <-- START OF INSTRUCTION LIST -->\n");
-				_instructionList.ForEach(l => writer.WriteLine(l.ToString()));
-				writer.WriteLine("\n<-- END OF INSTRUCTION LIST -->");
-			}
-
-			Log($"Exported IL instruction list to {path}.", LogLevel.Info);
+			using var writer = File.CreateText(path);
+			writer.WriteLine("Searching for:\n");
+			writer.WriteLine(label.ToString());
+			writer.WriteLine("\n <-- START OF INSTRUCTION LIST -->\n");
+			_instructionList.ForEach(l => writer.WriteLine(l.ToString()));
+			writer.WriteLine("\n<-- END OF INSTRUCTION LIST -->");
 		}
 
 		/// <summary>Get the corresponding IL code instruction which loads a given integer.</summary>

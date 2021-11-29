@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Filter Pipe",
+  "Description": "Type: IO Pipe | Inserts items to an adjacent container, it filters only the items already on the Filter Pipe Inventory. Right click the Filter Pipe to open the Inventory.",
+  "Category": "Crafting",
+  "MaxHealth": 100,
+  "BreakTool": "Pickaxe",
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": "Connector Pipe",
+        "Count": 1
+      },
+      {
+        "Object": 60,
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  }
+}

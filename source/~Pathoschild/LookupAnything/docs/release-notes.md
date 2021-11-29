@@ -9,6 +9,17 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.35.6
+Released 27 November 2021 for SMAPI 3.12.5 or later.
+
+* Fixed some untranslated text (building names in recipes, farm animal and horse types).
+* Improved translations. Thanks to TwelveYO (updated Japanese)!
+
+## 1.35.5
+Released 12 November 2021 for SMAPI 3.12.6 or later.
+
+* Fixed lookup for Stardew Valley Expanded's Marlon not showing social info when looking him up through the calendar.
+
 ## 1.35.4
 Released 31 October 2021 for SMAPI 3.12.5 or later.
 

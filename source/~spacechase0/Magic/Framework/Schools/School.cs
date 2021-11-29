@@ -8,8 +8,11 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Magic.Framework.Spells;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Magic.Framework.Schools
 {
@@ -19,12 +22,18 @@ namespace Magic.Framework.Schools
         ** Fields
         *********/
         private static Dictionary<string, School> Schools;
+        private readonly Lazy<Texture2D> IconImpl;
 
 
         /*********
         ** Accessors
         *********/
         public string Id { get; }
+
+        /// <summary>The display name for the school.</summary>
+        public string DisplayName => I18n.GetByKey($"school.{this.Id}.name");
+
+        public Texture2D Icon => this.IconImpl.Value;
 
 
         /*********
@@ -33,6 +42,13 @@ namespace Magic.Framework.Schools
         public virtual Spell[] GetSpellsTier1() { return new Spell[0]; }
         public virtual Spell[] GetSpellsTier2() { return new Spell[0]; }
         public virtual Spell[] GetSpellsTier3() { return new Spell[0]; }
+
+        /// <summary>Get all spell tiers.</summary>
+        public IEnumerable<Spell[]> GetAllSpellTiers()
+        {
+            return new[] { GetSpellsTier1(), GetSpellsTier2(), GetSpellsTier3() }
+                .Where(p => p?.Length > 0);
+        }
 
         public static void RegisterSchool(School school)
         {
@@ -65,6 +81,7 @@ namespace Magic.Framework.Schools
         protected School(string id)
         {
             this.Id = id;
+            this.IconImpl = new(() => Content.LoadTexture($"magic/{id}/school-icon.png"));
         }
 
         private static void Init()

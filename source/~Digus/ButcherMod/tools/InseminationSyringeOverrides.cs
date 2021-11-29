@@ -54,7 +54,7 @@ namespace AnimalHusbandryMod.tools
             __result = DataLoader.i18n.Get("Tool.InseminationSyringe.Description");
         }
 
-        public static void canBeTrashed(Tool __instance, ref bool __result)
+        public static void canBeTrashed(Item __instance, ref bool __result)
         {
             if (!IsInseminationSyringe(__instance)) return;
 
@@ -234,7 +234,7 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static bool canThisBeAttached(MilkPail __instance, SObject o, ref bool __result)
+        public static bool canThisBeAttached(Tool __instance, SObject o, ref bool __result)
         {
             if (!IsInseminationSyringe(__instance)) return true;
 
@@ -242,7 +242,7 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static bool attach(MilkPail __instance, SObject o, ref SObject __result)
+        public static bool attach(Tool __instance, SObject o, ref SObject __result)
         {
             if (!IsInseminationSyringe(__instance)) return true;
 
@@ -277,23 +277,25 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        public static bool drawAttachments(MilkPail __instance, SpriteBatch b, int x, int y)
+        public static bool drawAttachments(Tool __instance, SpriteBatch b, int x, int y)
         {
             if (!IsInseminationSyringe(__instance)) return true;
 
+            y += (__instance.enchantments.Any() ? 8 : 4);
+
             if (__instance.attachments[0] != null)
             {
-                b.Draw(Game1.menuTexture, new Vector2(x, y), Game1.getSourceRectForStandardTileSheet(Game1.menuTexture, 10), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.86f);
+                b.Draw(Game1.menuTexture, new Vector2(x, y), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.menuTexture, 10)), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.86f);
                 __instance.attachments[0].drawInMenu(b, new Vector2(x, y), 1f);
             }
             else
             {
-                b.Draw(Game1.menuTexture, new Vector2(x, y), Game1.getSourceRectForStandardTileSheet(Game1.menuTexture, AttachmentMenuTile), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.86f);
+                b.Draw(Game1.menuTexture, new Vector2(x, y), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.menuTexture, AttachmentMenuTile)), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.86f);
             }
             return false;
         }
 
-        private static bool IsInseminationSyringe(Tool tool)
+        private static bool IsInseminationSyringe(Item tool)
         {
             return tool.modData.ContainsKey(InseminationSyringeKey);
         }

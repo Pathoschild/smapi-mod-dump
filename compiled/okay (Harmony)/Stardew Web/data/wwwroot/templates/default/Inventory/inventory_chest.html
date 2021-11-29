@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    #HEAD#
+
+    <script>
+        var bPageLoaded = #PAGELOADED#;
+        //var sTemplate = '<div class="" role="tooltip"><div class=""></div><div class="tooltip-inner bs_tooltip_div"></div></div>';
+
+        function LocalPageLoaded() {
+            SubPageLoaded('Farm', 'ChestMan');
+            if (bPageLoaded) {
+                document.getElementById("topCategory").selectedIndex = 2;
+                TopCategorySelected();
+                document.getElementById("bCategory").selectedIndex = 0;
+                BCategorySelected();
+
+            }
+
+            bPageLoaded = true;
+        }
+
+
+        function LoadTopChest(sChestId) {
+
+            var sUrl = '/Inventory?cfetch=' + sChestId;
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            document.getElementById('topbox').innerHTML = data.ChestContents;
+                            document.getElementById('Name').innerHTML = data.Name;
+                            document.getElementById('Category').innerHTML = data.Category;
+                        });
+                    } else document.getElementById('topbox').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error =>
+                    document.getElementById('topbox').innerHTML = 'Fetch error: ' + error
+                );
+        }
+
+        function LoadTopChestByName(sChestName) {
+
+            var sUrl = '/Inventory?cname=' + encodeURIComponent(sChestName);
+
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            document.getElementById('topbox').innerHTML = data.ChestContents;
+                            //$('[data-bs-toggle="tooltip"]').tooltip({ html: true, sanitize: false, template: sTemplate, placement: 'right', offset: [10, 10] });
+                        });
+                    } else document.getElementById('topbox').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error =>
+                    document.getElementById('topbox').innerHTML = 'Fetch error: ' + error
+                );
+        }
+
+        function LoadBChestByName(sChestName) {
+
+            var sUrl = '/Inventory?cname=' + encodeURIComponent(sChestName);
+
+            fetch(sUrl)
+                .then(response => {
+                    if (response.ok) {
+                        response.json().then(data => {
+                            document.getElementById('bbox').innerHTML = data.ChestContents;
+                            //$('[data-bs-toggle="tooltip"]').tooltip({ html: true, sanitize: false, template: sTemplate, placement: 'right', offset: [10, 10] });
+                        });
+                    } else document.getElementById('bbox').innerHTML = 'Network response was not ok.';
+                })
+                .catch(error =>
+                    document.getElementById('bbox').innerHTML = 'Fetch error: ' + error
+                );
+        }
+
+
+        function TopCategorySelected() {
+            if (bPageLoaded) {
+
+                var sCat = document.getElementById("topCategory").value;
+                removeOptions(document.getElementById('topName'));
+
+                if (sCat.indexOf("--") == 0) {
+                    LoadTopChestByName(sCat.replaceAll("--", ""));
+                }
+                else {
+                    var sUrl = '/Inventory?getnames=' + encodeURIComponent(sCat);
+                    fetch(sUrl).then(function (response) {
+                        return response.text();
+                    }).then(function (html) {
+                        var oSelect = document.getElementById('topName');
+                        oSelect.innerHTML = html;
+                        if (oSelect.length > 0) {
+                            oSelect.selectedIndex = 0;
+                            TopNameSelected();
+                        }
+                    }).catch(function (err) {
+                        console.warn('Something went wrong.', err);
+                    });
+                }
+            }
+        }
+
+        function BCategorySelected() {
+            if (bPageLoaded) {
+
+                var sCat = document.getElementById("bCategory").value;
+                removeOptions(document.getElementById('bName'));
+
+                if (sCat.indexOf("--") == 0) {
+                    LoadBChestByName(sCat.replaceAll("--", ""));
+                }
+                else {
+                    var sUrl = '/Inventory?getnames=' + encodeURIComponent(sCat);
+                    fetch(sUrl).then(function (response) {
+                        return response.text();
+                    }).then(function (html) {
+                        var oSelect = document.getElementById('bName');
+                        oSelect.innerHTML = html;
+                        if (oSelect.length > 0) {
+                            oSelect.selectedIndex = 0;
+                            BNameSelected();
+                        }
+                    }).catch(function (err) {
+                        console.warn('Something went wrong.', err);
+                    });
+                }
+            }
+        }
+
+        function BNameSelected() {
+            if (bPageLoaded) {
+                var sCat = document.getElementById("bCategory").value.replaceAll("--", "");
+                var sName = document.getElementById("bName").value;
+                //
+                LoadBChestByName(sCat + "!" + sName);
+            }
+        }
+
+        function TopNameSelected() {
+
+            if (bPageLoaded) {
+                var sCat = document.getElementById("topCategory").value.replaceAll("--", "");
+                var sName = document.getElementById("topName").value;
+                //
+                LoadTopChestByName(sCat + "!" + sName);
+            }
+        }
+    </script>
+</head>
+<body onload="LocalPageLoaded();">
+    #MENUBAR#
+
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+
+        #CONTENT#
+    </div>
+
+</body>
+</html>

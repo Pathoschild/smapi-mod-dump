@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Linq;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -16,7 +15,7 @@ using TheLion.Stardew.Common.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class SuperModeBuffDisplayUpdateTickedEvent : UpdateTickedEvent
+	internal class SuperModeBuffDisplayUpdateTickedEvent : UpdateTickedEvent
 	{
 		private const int
 			SHEET_INDEX_OFFSET =
@@ -25,17 +24,17 @@ namespace TheLion.Stardew.Professions.Framework.Events
 		/// <inheritdoc />
 		public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
-			if (ModEntry.SuperModeIndex <= 0)
+			if (ModState.SuperModeIndex <= 0)
 			{
 				ModEntry.Subscriber.Unsubscribe(GetType());
 				return;
 			}
 
-			if (ModEntry.SuperModeCounter < 10) return;
+			if (ModState.SuperModeGaugeValue < 10) return;
 
-			var buffID = ModEntry.UniqueID.Hash() + ModEntry.SuperModeIndex;
-			var professionIndex = ModEntry.SuperModeIndex;
-			var professionName = Util.Professions.NameOf(professionIndex);
+			var buffID = ModEntry.Manifest.UniqueID.Hash() + ModState.SuperModeIndex;
+			var professionIndex = ModState.SuperModeIndex;
+			var professionName = Utility.Professions.NameOf(professionIndex);
 			var magnitude1 = GetSuperModePrimaryBuffMagnitude(professionName);
 			var magnitude2 = GetSuperModeSecondaryBuffMagnitude(professionName);
 			var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffID);
@@ -67,22 +66,23 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 		private static string GetSuperModePrimaryBuffMagnitude(string professionName)
 		{
+#pragma warning disable 8509
 			return professionName switch
+#pragma warning restore 8509
 			{
-				"Brute" => ((Util.Professions.GetBruteBonusDamageMultiplier(Game1.player) - 1.15f) * 100f)
+				"Brute" => ((Utility.Professions.GetBruteBonusDamageMultiplier(Game1.player) - 1.15f) * 100f)
 					.ToString("0.0"),
-				"Poacher" => Util.Professions.GetPoacherCritDamageMultiplier().ToString("0.0"),
-				"Desperado" => ((Util.Professions.GetDesperadoBulletPower() - 1f) * 100f).ToString("0.0"),
-				"Piper" => Util.Professions.GetPiperSlimeSpawnAttempts().ToString("0"),
-				_ => throw new ArgumentException($"Unexpected profession name {professionName}")
+				"Poacher" => Utility.Professions.GetPoacherCritDamageMultiplier().ToString("0.0"),
+				"Desperado" => ((Utility.Professions.GetDesperadoBulletPower() - 1f) * 100f).ToString("0.0"),
+				"Piper" => Utility.Professions.GetPiperSlimeSpawnAttempts().ToString("0")
 			};
 		}
 
 		private static string GetSuperModeSecondaryBuffMagnitude(string professionName)
 		{
 			return professionName == "Piper"
-				? ((1f - Util.Professions.GetPiperSlimeAttackSpeedModifier()) * 100f).ToString("0.0")
-				: ((1f - Util.Professions.GetCooldownOrChargeTimeReduction()) * 100f).ToString("0.0");
+				? ((1f - Utility.Professions.GetPiperSlimeAttackSpeedModifier()) * 100f).ToString("0.0")
+				: ((1f - Utility.Professions.GetCooldownOrChargeTimeReduction()) * 100f).ToString("0.0");
 		}
 	}
 }

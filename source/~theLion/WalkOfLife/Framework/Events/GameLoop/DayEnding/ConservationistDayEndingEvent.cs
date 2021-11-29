@@ -18,7 +18,7 @@ using TheLion.Stardew.Professions.Framework.AssetEditors;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class ConservationistDayEndingEvent : DayEndingEvent
+	internal class ConservationistDayEndingEvent : DayEndingEvent
 	{
 		/// <inheritdoc />
 		public override void OnDayEnding(object sender, DayEndingEventArgs e)
@@ -28,22 +28,22 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 			uint trashCollectedThisSeason;
 			if (Game1.dayOfMonth != 28 ||
-			    (trashCollectedThisSeason = ModEntry.Data.ReadField<uint>("WaterTrashCollectedThisSeason")) <=
+			    (trashCollectedThisSeason = ModEntry.Data.Read<uint>("WaterTrashCollectedThisSeason")) <=
 			    0) return;
 
 			var taxBonusNextSeason =
 				// ReSharper disable once PossibleLossOfFraction
 				Math.Min(trashCollectedThisSeason / ModEntry.Config.TrashNeededPerTaxLevel / 100f,
 					ModEntry.Config.TaxDeductionCeiling);
-			ModEntry.Data.WriteField("ActiveTaxBonusPercent",
+			ModEntry.Data.Write("ActiveTaxBonusPercent",
 				taxBonusNextSeason.ToString(CultureInfo.InvariantCulture));
 			if (taxBonusNextSeason > 0)
 			{
 				ModEntry.ModHelper.Content.InvalidateCache(PathUtilities.NormalizeAssetName("Data/mail"));
-				Game1.addMailForTomorrow($"{ModEntry.UniqueID}/ConservationistTaxNotice");
+				Game1.addMailForTomorrow($"{ModEntry.Manifest.UniqueID}/ConservationistTaxNotice");
 			}
 
-			ModEntry.Data.WriteField("WaterTrashCollectedThisSeason", "0");
+			ModEntry.Data.Write("WaterTrashCollectedThisSeason", "0");
 		}
 	}
 }

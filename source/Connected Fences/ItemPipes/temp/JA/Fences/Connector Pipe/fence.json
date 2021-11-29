@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Connector Pipe",
+  "Description": "Type: Connector Pipe | The link between IO pipes. It moves items at 2 tiles-1 second.",
+  "Category": "Crafting",
+  "MaxHealth": 100,
+  "BreakTool": "Pickaxe",
+  "Recipe": {
+    "ResultCount": 5,
+    "Ingredients": [
+      {
+        "Object": 335,
+        "Count": 2
+      },
+      {
+        "Object": "Glue",
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  }
+}

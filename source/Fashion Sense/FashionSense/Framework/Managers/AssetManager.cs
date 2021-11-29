@@ -25,7 +25,18 @@ namespace FashionSense.Framework.Managers
         internal string assetFolderPath;
         internal Dictionary<string, Texture2D> toolNames = new Dictionary<string, Texture2D>();
 
+        // Tool textures
         private Texture2D _handMirrorTexture;
+
+        // UI textures
+        internal readonly Texture2D scissorsButtonTexture;
+        internal readonly Texture2D accessoryButtonTexture;
+        internal readonly Texture2D hatButtonTexture;
+        internal readonly Texture2D shirtButtonTexture;
+        internal readonly Texture2D pantsButtonTexture;
+        internal readonly Texture2D optionOneButton;
+        internal readonly Texture2D optionTwoButton;
+        internal readonly Texture2D optionThreeButton;
 
         public AssetManager(IModHelper helper)
         {
@@ -34,6 +45,14 @@ namespace FashionSense.Framework.Managers
 
             // Load in the assets
             _handMirrorTexture = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "HandMirror.png"));
+            scissorsButtonTexture = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "HairButton.png"));
+            accessoryButtonTexture = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "AccessoryButton.png"));
+            hatButtonTexture = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "HatButton.png"));
+            shirtButtonTexture = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "ShirtButton.png"));
+            pantsButtonTexture = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "PantsButton.png"));
+            optionOneButton = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "OptionOneButton.png"));
+            optionTwoButton = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "OptionTwoButton.png"));
+            optionThreeButton = helper.Content.Load<Texture2D>(Path.Combine(assetFolderPath, "UI", "OptionThreeButton.png"));
 
             // Setup toolNames
             toolNames.Add("HandMirror", _handMirrorTexture);

@@ -28,9 +28,9 @@ namespace CustomOreNodes
 
         public static ModEntry context;
 
-        internal static ModConfig Config;
-        private static List<CustomOreNode> CustomOreNodes = new List<CustomOreNode>();
-        private static IMonitor SMonitor;
+        public static ModConfig Config;
+        public static List<CustomOreNode> customOreNodesList = new List<CustomOreNode>();
+        public static IMonitor SMonitor;
         
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
@@ -48,7 +48,7 @@ namespace CustomOreNodes
             );
 
             harmony.Patch(
-               original: AccessTools.Method(typeof(MineShaft), "breakStone"),
+               original: AccessTools.Method(typeof(GameLocation), "breakStone"),
                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.breakStone_Postfix))
             );
 
@@ -71,9 +71,14 @@ namespace CustomOreNodes
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
         }
 
+        public override object GetApi()
+        {
+            return new CustomOreNodesAPI();
+        }
+
         private static bool Object_draw_Prefix(Object __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
-            CustomOreNode node = CustomOreNodes.Find(n => n.parentSheetIndex == __instance.parentSheetIndex);
+            CustomOreNode node = customOreNodesList.Find(n => n.parentSheetIndex == __instance.ParentSheetIndex);
             if (node == null)
                 return true;
 
@@ -93,7 +98,7 @@ namespace CustomOreNodes
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
-            CustomOreNodes.Clear();
+            customOreNodesList.Clear();
             CustomOreData data;
             int id = 42424000;
             Dictionary<int, int> existingPSIs = new Dictionary<int, int>();
@@ -157,10 +162,10 @@ namespace CustomOreNodes
                         }
                         conf.parentSheetIndexes[add] = node.parentSheetIndex;
 
-                        CustomOreNodes.Add(node);
+                        customOreNodesList.Add(node);
                         add++;
                     }
-                    Monitor.Log($"Got {CustomOreNodes.Count} ores from mod", LogLevel.Debug);
+                    Monitor.Log($"Got {customOreNodesList.Count} ores from mod", LogLevel.Debug);
                     Helper.Data.WriteJsonFile("ore_config.json", conf);
 
                 }
@@ -222,7 +227,7 @@ namespace CustomOreNodes
                             node.parentSheetIndex = id++;
                         }
                         conf.parentSheetIndexes[add] = node.parentSheetIndex;
-                        CustomOreNodes.Add(node);
+                        customOreNodesList.Add(node);
                         add++;
                     }
                     contentPack.WriteJsonFile("ore_config.json", conf);
@@ -233,12 +238,12 @@ namespace CustomOreNodes
                     SMonitor.Log($"Error processing custom_ore_nodes.json in content pack {contentPack.Manifest.Name} {ex}", LogLevel.Error);
                 }
             }
-            Monitor.Log($"Got {CustomOreNodes.Count} ores total", LogLevel.Debug);
+            Monitor.Log($"Got {customOreNodesList.Count} ores total", LogLevel.Debug);
         }
 
         private static void chooseStoneType_Postfix(MineShaft __instance, ref Object __result, Vector2 tile)
         {
-            if (__result == null || __result.ParentSheetIndex == null)
+            if (__result == null)
                 return;
 
             int difficulty = __instance.mineLevel > 120 ? Game1.netWorldState.Value.SkullCavesDifficulty : Game1.netWorldState.Value.MinesDifficulty;
@@ -247,9 +252,9 @@ namespace CustomOreNodes
             if (!ores.Contains(__result.ParentSheetIndex))
             {
                 float totalChance = 0;
-                for (int i = 0; i < CustomOreNodes.Count; i++)
+                for (int i = 0; i < customOreNodesList.Count; i++)
                 {
-                    CustomOreNode node = CustomOreNodes[i];
+                    CustomOreNode node = customOreNodesList[i];
                     foreach(OreLevelRange range in node.oreLevelRanges)
                     {
                         if ((range.minLevel < 1 || __instance.mineLevel >= range.minLevel) && (range.maxLevel < 1 || __instance.mineLevel <= range.maxLevel) && (range.minDifficulty <= difficulty) && (range.maxDifficulty < 0 || range.maxDifficulty >= difficulty))
@@ -264,9 +269,9 @@ namespace CustomOreNodes
                 {
                     // SMonitor.Log($"Chance of custom ore: {ourChance}%");
                     float cumulativeChance = 0f;
-                    for (int i = 0; i < CustomOreNodes.Count; i++)
+                    for (int i = 0; i < customOreNodesList.Count; i++)
                     {
-                        CustomOreNode node = CustomOreNodes[i];
+                        CustomOreNode node = customOreNodesList[i];
                         OreLevelRange gotRange = null;
                         foreach (OreLevelRange range in node.oreLevelRanges)
                         {
@@ -308,9 +313,9 @@ namespace CustomOreNodes
             if (Givenname == "Stone" || parentSheetIndex == 294 || parentSheetIndex == 295)
             {
                 float currentChance = 0;
-                for (int i = 0; i < CustomOreNodes.Count; i++)
+                for (int i = 0; i < customOreNodesList.Count; i++)
                 {
-                    CustomOreNode node = CustomOreNodes[i];
+                    CustomOreNode node = customOreNodesList[i];
                     OreLevelRange gotRange = null;
                     foreach (OreLevelRange range in node.oreLevelRanges)
                     {
@@ -339,11 +344,11 @@ namespace CustomOreNodes
         {
             if (Givenname == "Stone")
             {
-                for (int i = 0; i < CustomOreNodes.Count; i++)
+                for (int i = 0; i < customOreNodesList.Count; i++)
                 {
-                    if(parentSheetIndex == CustomOreNodes[i].parentSheetIndex)
+                    if(parentSheetIndex == customOreNodesList[i].parentSheetIndex)
                     {
-                        __instance.MinutesUntilReady = CustomOreNodes[i].durability;
+                        __instance.MinutesUntilReady = customOreNodesList[i].durability;
                         break;
                     }
                 }
@@ -355,7 +360,7 @@ namespace CustomOreNodes
         {
             SMonitor.Log($"Checking for custom ore in stone {indexOfStone}");
 
-            CustomOreNode node = CustomOreNodes.Find(n => n.parentSheetIndex == indexOfStone);
+            CustomOreNode node = customOreNodesList.Find(n => n.parentSheetIndex == indexOfStone);
 
             if (node == null)
                 return;
@@ -399,7 +404,7 @@ namespace CustomOreNodes
                         }
                     }
 
-                    Game1.createMultipleObjectDebris(itemId, x, y, addedOres + (int)Math.Round(r.Next(item.minAmount, (Math.Max(item.minAmount + 1, item.maxAmount + 1)) + ((r.NextDouble() < who.LuckLevel / 100f) ? item.luckyAmount : 0) + ((r.NextDouble() < who.MiningLevel / 100f) ? item.minerAmount : 0)) * gotRange.dropMult), who.uniqueMultiplayerID, __instance);
+                    Game1.createMultipleObjectDebris(itemId, x, y, addedOres + (int)Math.Round(r.Next(item.minAmount, (Math.Max(item.minAmount + 1, item.maxAmount + 1)) + ((r.NextDouble() < who.LuckLevel / 100f) ? item.luckyAmount : 0) + ((r.NextDouble() < who.MiningLevel / 100f) ? item.minerAmount : 0)) * gotRange.dropMult), who.UniqueMultiplayerID, __instance);
                 }
             }
             int experience = (int)Math.Round(node.exp * gotRange.expMult);

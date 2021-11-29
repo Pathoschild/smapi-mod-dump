@@ -17,5 +17,6 @@
   "PercentualAjustOnFriendshipInscreaseFromProfessions": 0.25,
   "DisableContestBonus": false,
   "DisableMeatToolLetter": false,
-  "DisableMeatInBlundle": false
+  "DisableMeatInBlundle": false,
+  "ForceDrawAttachmentOnAnyOS": false
 }

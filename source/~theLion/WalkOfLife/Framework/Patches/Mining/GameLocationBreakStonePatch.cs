@@ -8,23 +8,25 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using JetBrains.Annotations;
 using StardewModdingAPI;
+using StardewValley;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class GameLocationBreakStonePatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal GameLocationBreakStonePatch()
 		{
-			Original = typeof(GameLocation).MethodNamed("breakStone");
+			Original = RequireMethod<GameLocation>("breakStone");
 			Transpiler = new(GetType(), nameof(GameLocationBreakStoneTranspiler));
 		}
 
@@ -35,39 +37,39 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		private static IEnumerable<CodeInstruction> GameLocationBreakStoneTranspiler(
 			IEnumerable<CodeInstruction> instructions, MethodBase original)
 		{
-			Helper.Attach(original, instructions);
+			var helper = new ILHelper(original, instructions);
 
-			/// Skipped: if (who.professions.Contains(<geologist_id>)...
+			/// Skipped: if (who.professions.Contains(<geologist_id> && r.NextDouble() < 0.5) switch(indexOfStone) ...
 
 			try
 			{
-				Helper
+				helper
 					.FindProfessionCheck(Farmer.geologist) // find index of geologist check
 					.Retreat()
-					.GetLabels(out var labels) // backup branch labels
-					.StripLabels() // remove labels from here
+					.StripLabels(out var labels) // backup and remove branch labels
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Brfalse) // the false case branch
 					)
 					.GetOperand(out var isNotGeologist) // copy destination
 					.Return()
 					.Insert( // insert uncoditional branch to skip this check
-						new CodeInstruction(OpCodes.Br, (Label)isNotGeologist)
+						new CodeInstruction(OpCodes.Br, (Label) isNotGeologist)
 					)
 					.Retreat()
 					.AddLabels(labels); // restore backed-up labels to inserted branch
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
-			/// Skipped: if (who.professions.Contains(<prospector_id>))...
+			/// Skipped: if (who.professions.Contains(<prospector_id>)) ...
 
 			try
 			{
-				Helper
+				helper
 					.FindProfessionCheck(Farmer.burrower) // find index of prospector check
 					.Retreat()
 					.AdvanceUntil(
@@ -76,16 +78,17 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					.GetOperand(out var isNotProspector) // copy destination
 					.Return()
 					.Insert( // insert uncoditional branch to skip this check
-						new CodeInstruction(OpCodes.Br_S, (Label)isNotProspector)
+						new CodeInstruction(OpCodes.Br_S, (Label) isNotProspector)
 					);
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
-			return Helper.Flush();
+			return helper.Flush();
 		}
 
 		#endregion harmony patches

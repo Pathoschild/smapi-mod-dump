@@ -1,0 +1,10 @@
+{
+  "Name": "Increase Crop Growth Phase",
+  "Author": "RyanJesky",
+  "Version": "1.0.0",
+  "Description": "Hover your mouse cursor over any crop and use a keyboard hotkey to instantly increase the crops growth phase to the next phase.",
+  "UniqueID": "Ryanjesky.IncreaseCropGrowthPhase",
+  "EntryDll": "IncreaseCropGrowthPhase.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

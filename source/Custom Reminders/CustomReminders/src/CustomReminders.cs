@@ -26,7 +26,7 @@ namespace Dem1se.CustomReminders
         private string NotificationSound;
 
         /// <summary> List of absolute file paths to reminders that have matured and are awaiting cleanup </summary>
-        private Queue<string> DeleteQueue = new Queue<string>();
+        private Queue<string> DeleteQueue = new();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>

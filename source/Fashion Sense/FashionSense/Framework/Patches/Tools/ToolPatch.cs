@@ -33,7 +33,7 @@ namespace FashionSense.Framework.Patches.Tools
         {
             harmony.Patch(AccessTools.Method(_object, "get_DisplayName", null), postfix: new HarmonyMethod(GetType(), nameof(GetNamePostfix)));
             harmony.Patch(AccessTools.Method(_object, "get_description", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
-
+            harmony.Patch(AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed), null), postfix: new HarmonyMethod(GetType(), nameof(CanBeTrashedPostfix)));
 
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(BeginUsingPrefix)));
@@ -57,6 +57,15 @@ namespace FashionSense.Framework.Patches.Tools
             }
         }
 
+        private static void CanBeTrashedPostfix(Tool __instance, ref bool __result)
+        {
+            if (__instance.modData.ContainsKey(ModDataKeys.HAND_MIRROR_FLAG))
+            {
+                __result = true;
+                return;
+            }
+        }
+
         private static bool DrawInMenuPrefix(Tool __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.HAND_MIRROR_FLAG))
@@ -71,7 +80,7 @@ namespace FashionSense.Framework.Patches.Tools
 
         private static bool BeginUsingPrefix(Tool __instance, ref bool __result, GameLocation location, int x, int y, Farmer who)
         {
-            if (__instance.modData.ContainsKey(ModDataKeys.HAND_MIRROR_FLAG))
+            if (__instance.modData.ContainsKey(ModDataKeys.HAND_MIRROR_FLAG) && who == Game1.player)
             {
                 __result = true;
                 return UseHandMirror(location, x, y, who);

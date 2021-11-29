@@ -72,7 +72,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 Vector2 shake = Vector2.Zero;
                 if (!__instance.isTemporarilyInvisible)

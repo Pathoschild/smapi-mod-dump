@@ -1,0 +1,32 @@
+﻿<div class="message_board_title_lg">Daily Screenshots</div>
+<div class="message_board_list_lg" style="display:inline-block;">
+    <div style="height:600px; width:100%; overflow:auto;background-color:white;">
+        <table style="margin-left:auto; margin-right:auto;">
+            #PICS#
+        </table>
+
+    </div>
+    <div style="padding:10px; padding-bottom:20px;">
+        <div class="message_board_title_lg" style="width:100%;">Donwload an animated Gif of your Screen Shots.</div>
+        <div class="warning_div">
+            <table style="margin-left:auto; margin-right:auto; width:600px; position:relative; ">
+                <tr>
+                    <td style="width: 110px;">Gif Width</td>
+                    <td style="width:100px;"><input type="text" id="gifWidth" size="4" value="800" /> px</td>
+                    <td style="padding-left:20px; text-align:right;">Frame Time</td>
+                    <td><input type="text" id="gifDelay" size="4" value="500" /> milliseconds</td>
+                </tr>
+                <tr>
+                    <td>Gif Height</td>
+                    <td><input type="text" id="gifHeight" size="4" value="600" /> px</td>
+                    <td>Date Watermark</td>
+                    <td  style="text-align:left;padding-left:20px;"><input type="checkbox" name="dmark" id="dmark" /></td>
+                </tr>
+                <tr><td colspan="4" style="padding-top:10px; padding-bottom:10px;"><button onclick="DownloadDailyScreenShot();">Create</button></td></tr>
+            </table>
+        </div>
+    </div>
+    <div style="padding-bottom:10px;padding-left:50px;">This is specifically for the <a href="https://www.nexusmods.com/stardewvalley/mods/4779">Daily Screenshot</a> mod.  It is also configured
+    to assume the default rule settings.  I do not read the value of the rules in this release.  Coming soon...</div>
+</div>
+<br />

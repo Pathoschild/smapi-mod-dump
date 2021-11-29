@@ -32,18 +32,16 @@ namespace TimeSpeed
         /// <summary>The mod configuration.</summary>
         private ModConfig Config;
 
-        /// <summary>Whether time should be frozen everywhere.</summary>
-        private bool FrozenGlobally;
+        /// <summary>Whether the player has manually frozen (<c>true</c>) or resumed (<c>false</c>) time.</summary>
+        private bool? ManualFreeze;
 
-        /// <summary>Whether time should be frozen at the current location.</summary>
-        private bool FrozenAtLocation;
+        /// <summary>The reason time would be frozen automatically if applicable, regardless of <see cref="ManualFreeze"/>.</summary>
+        private AutoFreezeReason AutoFreeze = AutoFreezeReason.None;
 
         /// <summary>Whether time should be frozen.</summary>
-        private bool Frozen
-        {
-            get => this.FrozenGlobally || this.FrozenAtLocation;
-            set => this.FrozenGlobally = this.FrozenAtLocation = value;
-        }
+        private bool IsTimeFrozen =>
+            this.ManualFreeze == true
+            || (this.AutoFreeze != AutoFreezeReason.None && this.ManualFreeze != false);
 
         /// <summary>Whether the flow of time should be adjusted.</summary>
         private bool AdjustTime;
@@ -84,7 +82,8 @@ namespace TimeSpeed
                 helper.Events.Display.RenderingHud += (_, _) =>
                 {
                     wasPaused = Game1.paused;
-                    if (this.Frozen) Game1.paused = true;
+                    if (this.IsTimeFrozen)
+                        Game1.paused = true;
                 };
 
                 helper.Events.Display.RenderedHud += (_, _) =>
@@ -119,6 +118,7 @@ namespace TimeSpeed
                 return;
 
             this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
+            this.UpdateTimeFreeze(clearPreviousOverrides: true);
             this.UpdateSettingsForLocation(Game1.currentLocation);
         }
 
@@ -159,7 +159,7 @@ namespace TimeSpeed
             if (!this.ShouldEnable())
                 return;
 
-            this.UpdateFreezeForTime(Game1.timeOfDay);
+            this.UpdateFreezeForTime();
         }
 
         /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
@@ -181,7 +181,7 @@ namespace TimeSpeed
             if (!this.ShouldEnable())
                 return;
 
-            if (this.Frozen)
+            if (this.IsTimeFrozen)
                 this.TimeHelper.TickProgress = e.TimeChanged ? 0 : e.PreviousProgress;
             else
             {
@@ -259,27 +259,28 @@ namespace TimeSpeed
         /// <summary>Toggle whether time is frozen.</summary>
         private void ToggleFreeze()
         {
-            if (!this.Frozen)
+            if (!this.IsTimeFrozen)
             {
-                this.FrozenGlobally = true;
+                this.UpdateTimeFreeze(manualOverride: true);
                 this.Notifier.QuickNotify(this.Helper.Translation.Get("message.time-stopped"));
                 this.Monitor.Log("Time is frozen globally.", LogLevel.Info);
             }
             else
             {
-                this.Frozen = false;
+                this.UpdateTimeFreeze(manualOverride: false);
                 this.Notifier.QuickNotify(this.Helper.Translation.Get("message.time-resumed"));
-                this.Monitor.Log($"Time is temporarily unfrozen at \"{Game1.currentLocation.Name}\".", LogLevel.Info);
+                this.Monitor.Log($"Time is resumed at \"{Game1.currentLocation.Name}\".", LogLevel.Info);
             }
         }
 
         /// <summary>Update the time freeze settings for the given time of day.</summary>
-        /// <param name="time">The time of day in 24-hour military format (e.g. 1600 for 8pm).</param>
-        private void UpdateFreezeForTime(int time)
+        private void UpdateFreezeForTime()
         {
-            if (this.Config.ShouldFreeze(time))
+            bool wasFrozen = this.IsTimeFrozen;
+            this.UpdateTimeFreeze();
+
+            if (!wasFrozen && this.IsTimeFrozen)
             {
-                this.FrozenGlobally = true;
                 this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-time-change.time-stopped"));
                 this.Monitor.Log($"Time automatically set to frozen at {Game1.timeOfDay}.", LogLevel.Info);
             }
@@ -293,20 +294,56 @@ namespace TimeSpeed
                 return;
 
             // update time settings
-            this.FrozenAtLocation = this.FrozenGlobally || this.Config.ShouldFreeze(location);
+            this.UpdateTimeFreeze();
             if (this.Config.GetTickInterval(location) != null)
                 this.TickInterval = this.Config.GetTickInterval(location) ?? this.TickInterval;
 
             // notify player
             if (this.Config.LocationNotify)
             {
-                if (this.FrozenGlobally)
-                    this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-globally"));
-                else if (this.FrozenAtLocation)
-                    this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-here"));
-                else
-                    this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-speed-here", new { seconds = this.TickInterval / 1000 }));
+                switch (this.AutoFreeze)
+                {
+                    case AutoFreezeReason.FrozenAtTime when this.IsTimeFrozen:
+                        this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-globally"));
+                        break;
+
+                    case AutoFreezeReason.FrozenForLocation when this.IsTimeFrozen:
+                        this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-here"));
+                        break;
+
+                    default:
+                        this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-speed-here", new { seconds = this.TickInterval / 1000 }));
+                        break;
+                }
             }
+        }
+
+        /// <summary>Update the <see cref="AutoFreeze"/> and <see cref="ManualFreeze"/> flags based on the current context.</summary>
+        /// <param name="manualOverride">An explicit freeze (<c>true</c>) or unfreeze (<c>false</c>) requested by the player, if applicable.</param>
+        /// <param name="clearPreviousOverrides">Whether to clear any previous explicit overrides.</param>
+        private void UpdateTimeFreeze(bool? manualOverride = null, bool clearPreviousOverrides = false)
+        {
+            bool? wasManualFreeze = this.ManualFreeze;
+            AutoFreezeReason wasAutoFreeze = this.AutoFreeze;
+
+            // update auto freeze
+            this.AutoFreeze = this.GetAutoFreezeType();
+
+            // update manual freeze
+            if (manualOverride.HasValue)
+                this.ManualFreeze = manualOverride.Value;
+            else if (clearPreviousOverrides)
+                this.ManualFreeze = null;
+
+            // clear manual unfreeze if it's no longer needed
+            if (this.ManualFreeze == false && this.AutoFreeze == AutoFreezeReason.None)
+                this.ManualFreeze = null;
+
+            // log change
+            if (wasAutoFreeze != this.AutoFreeze)
+                this.Monitor.Log($"Auto freeze changed from {wasAutoFreeze} to {this.AutoFreeze}.");
+            if (wasManualFreeze != this.ManualFreeze)
+                this.Monitor.Log($"Manual freeze changed from {wasManualFreeze?.ToString() ?? "null"} to {this.ManualFreeze?.ToString() ?? "null"}.");
         }
 
         /// <summary>Update the time settings for the given date.</summary>
@@ -323,6 +360,18 @@ namespace TimeSpeed
         private double ScaleTickProgress(double progress, int newTickInterval)
         {
             return progress * this.TimeHelper.CurrentDefaultTickInterval / newTickInterval;
+        }
+
+        /// <summary>Get the freeze type which applies for the current context, ignoring overrides by the player.</summary>
+        private AutoFreezeReason GetAutoFreezeType()
+        {
+            if (this.Config.ShouldFreeze(Game1.currentLocation))
+                return AutoFreezeReason.FrozenForLocation;
+
+            if (this.Config.ShouldFreeze(Game1.timeOfDay))
+                return AutoFreezeReason.FrozenAtTime;
+
+            return AutoFreezeReason.None;
         }
     }
 }

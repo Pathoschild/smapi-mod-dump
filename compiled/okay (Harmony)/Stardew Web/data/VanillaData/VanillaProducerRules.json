@@ -1,0 +1,465 @@
+[
+  { // tiger Slime
+    "ProducerName": "Slime Incubator",
+    "InputIdentifier": "857",
+    "InputStack": 1,
+    "OutputIdentifier": "Tiger Slime"
+  },
+  { // red Slime
+    "ProducerName": "Slime Incubator",
+    "InputIdentifier": "437",
+    "InputStack": 1,
+    "OutputIdentifier": "766"
+  },
+  { // purple Slime
+    "ProducerName": "Slime Incubator",
+    "InputIdentifier": "439",
+    "InputStack": 1,
+    "OutputIdentifier": "766"
+  },
+  { // blue Slime
+    "ProducerName": "Slime Incubator",
+    "InputIdentifier": "413",
+    "InputStack": 1,
+    "OutputIdentifier": "766"
+  },
+  { // green Slime
+    "ProducerName": "Slime Incubator",
+    "InputIdentifier": "680",
+    "InputStack": 1,
+    "OutputIdentifier": "Green Slime"
+  },
+  { // Ostrich Incubator
+    "ProducerName": "Ostrich Incubator",
+    "InputIdentifier": "289",
+    "InputStack": 1,
+    "OutputIdentifier": "Ostrich"
+  },
+  { // Solar Panel
+    "ProducerName": "Solar Panel",
+    "OutputIdentifier": "787"
+  },
+  { // lightning rod
+    "ProducerName": "Lightning Rod",
+    "OutputIdentifier": "787"
+  },
+  { // coal
+    "ProducerName": "Charcoal Kiln",
+    "InputIdentifier": "388",
+    "InputStack": 10,
+    "OutputIdentifier": "382"
+  },
+  { // copper bar
+    "ProducerName": "Furnace",
+    "InputIdentifier": "378",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "334"
+  },
+  { // refined quartz
+    "ProducerName": "Furnace",
+    "InputIdentifier": "80",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "338"
+  },
+  { // fire quartz
+    "ProducerName": "Furnace",
+    "InputIdentifier": "82",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "338",
+    "OutputStack": 3
+  },
+  { // iron bar
+    "ProducerName": "Furnace",
+    "InputIdentifier": "380",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "335"
+  },
+  { // gold bar
+    "ProducerName": "Furnace",
+    "InputIdentifier": "384",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "336"
+  },
+  { // iridium bar
+    "ProducerName": "Furnace",
+    "InputIdentifier": "386",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "337"
+  },
+  { // radioactive bar
+    "ProducerName": "Furnace",
+    "InputIdentifier": "909",
+    "InputStack": 5,
+    "FuelIdentifier": "Coal",
+    "FuelStack": 1,
+    "OutputIdentifier": "910"
+  },
+  { // mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "176",
+    "InputStack": 1,
+    "OutputIdentifier": "306"
+  },
+  { // mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "180",
+    "InputStack": 1,
+    "OutputIdentifier": "306"
+  },
+  { // mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "174",
+    "InputStack": 1,
+    "OutputIdentifier": "306"
+  },
+  { // pale ale
+    "ProducerName": "Keg",
+    "InputIdentifier": "304",
+    "InputStack": 1,
+    "OutputIdentifier": "303"
+  },
+  { // beer
+    "ProducerName": "Keg",
+    "InputIdentifier": "262",
+    "InputStack": 1,
+    "OutputIdentifier": "346"
+  },
+  { // wine
+    "ProducerName": "Keg",
+    "InputIdentifier": "-79",
+    "InputStack": 1,
+    "OutputIdentifier": "348"
+  },
+  { // juice
+    "ProducerName": "Keg",
+    "InputIdentifier": "-75",
+    "InputStack": 1,
+    "OutputIdentifier": "350"
+  },
+  { // mead
+    "ProducerName": "Keg",
+    "InputIdentifier": "340",
+    "InputStack": 1,
+    "OutputIdentifier": "459"
+  },
+  { // green tea
+    "ProducerName": "Keg",
+    "InputIdentifier": "815",
+    "InputStack": 1,
+    "OutputIdentifier": "614"
+  },
+  { // coffee
+    "ProducerName": "Keg",
+    "InputIdentifier": "433",
+    "InputStack": 5,
+    "OutputIdentifier": "395"
+  },
+  { // aged cheese
+    "ProducerName": "Cask",
+    "InputIdentifier": "424",
+    "InputStack": 1,
+    "OutputIdentifier": "424",
+    "OutputQuality": 4
+  },
+  { // aged wine
+    "ProducerName": "Cask",
+    "InputIdentifier": "348",
+    "InputStack": 1,
+    "OutputIdentifier": "348",
+    "OutputQuality": 4
+  },
+  { // cheese
+    "ProducerName": "Cheese Press",
+    "InputIdentifier": "184",
+    "InputStack": 1,
+    "OutputIdentifier": "424"
+  },
+  { // gold cheese
+    "ProducerName": "Cheese Press",
+    "InputIdentifier": "186",
+    "InputStack": 1,
+    "OutputIdentifier": "424",
+    "OutputQuality": 3
+  },
+  { // goat cheese
+    "ProducerName": "Cheese Press",
+    "InputIdentifier": "436",
+    "InputStack": 1,
+    "OutputIdentifier": "426"
+  },
+  { // gold goat cheese
+    "ProducerName": "Cheese Press",
+    "InputIdentifier": "438",
+    "InputStack": 1,
+    "OutputIdentifier": "426",
+    "OutputQuality": 3
+  },
+  { // duck mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "442",
+    "InputStack": 1,
+    "OutputIdentifier": "307"
+  },
+  { // void mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "305",
+    "InputStack": 1,
+    "OutputIdentifier": "308"
+  },
+  { // dino mayonnaise
+    "ProducerName": "Mayonnaise Machine",
+    "InputIdentifier": "107",
+    "InputStack": 1,
+    "OutputIdentifier": "807"
+  },
+  { // honey
+    "ProducerName": "Bee House",
+    "InputIdentifier": "-1",
+    "InputStack": 0,
+    "OutputIdentifier": "340"
+  },
+  { // pickles
+    "ProducerName": "Preserves Jar",
+    "InputIdentifier": "-75",
+    "InputStack": 1,
+    "OutputIdentifier": "342"
+  },
+  { // jelly
+    "ProducerName": "Preserves Jar",
+    "InputIdentifier": "-79",
+    "InputStack": 1,
+    "OutputIdentifier": "344"
+  },
+  { // aged roe
+    "ProducerName": "Preserves Jar",
+    "InputIdentifier": "812",
+    "InputStack": 1,
+    "OutputIdentifier": "447"
+  },
+  { // cavier
+    "ProducerName": "Preserves Jar",
+    "InputIdentifier": "812",
+    "InputStack": 1,
+    "OutputIdentifier": "445"
+  },
+  { // cloth
+    "ProducerName": "Loom",
+    "InputIdentifier": "440",
+    "InputStack": 1,
+    "OutputIdentifier": "428"
+  },
+  { // truffle oil
+    "ProducerName": "Oil Maker",
+    "InputIdentifier": "430",
+    "InputStack": 1,
+    "OutputIdentifier": "432"
+  },
+  { // corn oil
+    "ProducerName": "Oil Maker",
+    "InputIdentifier": "270",
+    "InputStack": 1,
+    "OutputIdentifier": "247"
+  },
+  { // sunflower seed oil
+    "ProducerName": "Oil Maker",
+    "InputIdentifier": "431",
+    "InputStack": 1,
+    "OutputIdentifier": "247"
+  },
+  { // sunflower oil
+    "ProducerName": "Oil Maker",
+    "InputIdentifier": "421",
+    "InputStack": 1,
+    "OutputIdentifier": "247"
+  },
+  { // trash input
+    "ProducerName": "Recycling Machine",
+    "InputIdentifier": "168",
+    "InputStack": 1,
+    "AdditionalOutputs": [
+      { //stone
+        "OutputIdentifier": "390",
+        "OutputProbability": 0.49
+      },
+      { //coal
+        "OutputIdentifier": "382",
+        "OutputProbability": 0.30
+      },
+      { //iron ore
+        "OutputIdentifier": "380",
+        "OutputProbability": 0.21
+      }
+    ]
+  },
+  { // driftwood input
+    "ProducerName": "Recycling Machine",
+    "InputIdentifier": "169",
+    "InputStack": 1,
+    "AdditionalOutputs": [
+      { //wood
+        "OutputIdentifier": "388",
+        "OutputProbability": 0.75
+      },
+      { //coal
+        "OutputIdentifier": "382",
+        "OutputProbability": 0.25
+      }
+    ]
+  },
+  { //  Refined Quartz
+    "ProducerName": "Recycling Machine",
+    "InputIdentifier": "171",
+    "InputStack": 1,
+    "OutputIdentifier": "338"
+  },
+  { //  Refined Quartz
+    "ProducerName": "Recycling Machine",
+    "InputIdentifier": "170",
+    "InputStack": 1,
+    "OutputIdentifier": "338"
+  },
+  { //  slime egg-press
+    "ProducerName": "Slime Egg-Press",
+    "InputIdentifier": "766",
+    "InputStack": 100,
+    "AdditionalOutputs": [
+      { //green slime
+        "OutputIdentifier": "680",
+        "OutputProbability": 0.64
+      },
+      { //blue slime
+        "OutputIdentifier": "413",
+        "OutputProbability": 0.21
+      },
+      { //red slime
+        "OutputIdentifier": "437",
+        "OutputProbability": 0.10
+      },
+      { //purpe slime
+        "OutputIdentifier": "439",
+        "OutputProbability": 0.05
+      }
+    ]
+  },
+  { //  Wood Chipper
+    "ProducerName": "Wood Chipper",
+    "InputIdentifier": "709",
+    "InputStack": 1,
+    "AdditionalOutputs": [
+      { //wood
+        "OutputIdentifier": "388",
+        "OutputProbability": 0.97
+      },
+      { //maple syrup
+        "OutputIdentifier": "724",
+        "OutputProbability": 0.01
+      },
+      { //oak resin
+        "OutputIdentifier": "725",
+        "OutputProbability": 0.01
+      },
+      { //pine tar
+        "OutputIdentifier": "726",
+        "OutputProbability": 0.01
+      }
+    ]
+  },
+  { //  mill - wheat
+    "ProducerName": "Mill",
+    "InputIdentifier": "262",
+    "InputStack": 1,
+    "OutputIdentifier": "246"
+  },
+  { //  mill - rice
+    "ProducerName": "Mill",
+    "InputIdentifier": "271",
+    "InputStack": 1,
+    "OutputIdentifier": "423"
+  },
+  { //  mill - beets
+    "ProducerName": "Mill",
+    "InputIdentifier": "284",
+    "InputStack": 1,
+    "OutputIdentifier": "245",
+    "OutputStack": 3
+  },
+  { //  Wood Chipper
+    "ProducerName": "Wood Chipper",
+    "InputIdentifier": "169",
+    "InputStack": 1,
+    "OutputIdentifier": "388"
+  },
+  { //  Worm Bin
+    "ProducerName": "Worm Bin",
+    "OutputIdentifier": "685",
+    "OutputStack": 1
+  },
+  { //  Duck egg
+    "ProducerName": "Duck",
+    "OutputIdentifier": "442"
+  },
+  { //  white egg
+    "ProducerName": "White Chicken",
+    "OutputIdentifier": "176"
+  },
+  { //  white egg
+    "ProducerName": "White Chicken",
+    "OutputIdentifier": "174"
+  },
+  { //  brown egg
+    "ProducerName": "Brown Chicken",
+    "OutputIdentifier": "180"
+  },
+  { //  dino egg
+    "ProducerName": "Dinosaur",
+    "OutputIdentifier": "107"
+  },
+  { //  Ostrich egg
+    "ProducerName": "Ostrich",
+    "OutputIdentifier": "289"
+  },
+  { //  joja cola
+    "ProducerName": "Sode Machine",
+    "OutputIdentifier": "167"
+  },
+  { //  bone mill
+    "ProducerName": "Bone Mill",
+    "InputIdentifier": "587", // amphibian fosil
+    "InputStack": 1,
+    "AdditionalOutputs": [
+      { // deluxe speed gro
+        "OutputIdentifier": "466",
+        "OutputProbability": 0.25,
+        "OutputStack": 3
+      },
+      { // quality fertilizer
+        "OutputIdentifier": "369",
+        "OutputProbability": 0.25,
+        "OutputStack": 10
+      },
+      { // speed-gro
+        "OutputIdentifier": "465",
+        "OutputProbability": 0.25,
+        "OutputStack": 5
+      },
+      { // tree fertilizer
+        "OutputIdentifier": "805",
+        "OutputProbability": 0.25,
+        "OutputStack": 5
+      }
+    ]
+  }
+
+]

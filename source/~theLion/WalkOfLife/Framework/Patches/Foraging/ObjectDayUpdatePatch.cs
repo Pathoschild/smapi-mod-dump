@@ -9,22 +9,20 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
+using JetBrains.Annotations;
 using StardewValley;
-using System;
-using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 using SObject = StardewValley.Object;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class ObjectDayUpdatePatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal ObjectDayUpdatePatch()
 		{
-			Original = typeof(SObject).MethodNamed(nameof(SObject.DayUpdate));
+			Original = RequireMethod<SObject>(nameof(SObject.DayUpdate));
 			Postfix = new(GetType(), nameof(ObjectDayUpdatePostfix));
 		}
 
@@ -34,18 +32,11 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		[HarmonyPostfix]
 		private static void ObjectDayUpdatePostfix(SObject __instance)
 		{
-			try
-			{
-				if (!__instance.bigCraftable.Value || __instance.ParentSheetIndex != 128 ||
-					__instance.heldObject.Value is null || !Game1.MasterPlayer.HasProfession("Ecologist"))
-					return;
+			if (!__instance.bigCraftable.Value || __instance.ParentSheetIndex != 128 ||
+			    __instance.heldObject.Value is null || !Game1.MasterPlayer.HasProfession("Ecologist"))
+				return;
 
-				__instance.heldObject.Value.Quality = Util.Professions.GetEcologistForageQuality();
-			}
-			catch (Exception ex)
-			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
-			}
+			__instance.heldObject.Value.Quality = Utility.Professions.GetEcologistForageQuality();
 		}
 
 		#endregion harmony patches

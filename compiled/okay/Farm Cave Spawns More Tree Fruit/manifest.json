@@ -1,0 +1,10 @@
+{
+   "Name": "FarmCaveSpawn",
+   "Author": "atravita",
+   "Version": "1.0.3",
+   "Description": "Spawn more tree fruit in the fruit cave",
+   "UniqueID": "atravita.FarmCaveSpawn",
+   "EntryDll": "FarmCaveSpawn.dll",
+   "UpdateKeys": ["Nexus:10186"],
+   "MinimumApiVersion": "3.0"
+}

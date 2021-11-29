@@ -1,14 +1,31 @@
 {
   // Tools
   "tools.name.hand_mirror": "Hand Mirror",
-  "tools.description.hand_mirror": "Allows you to change your hairstyle into a more lively one.",
+  "tools.description.hand_mirror": "Allows you to change your appearance into a more lively one.",
 
   // Messages
   "messages.warning.no_content_packs": "You don't have any Fashion Sense content packs installed!",
 
-  // UI
-  "ui.fashion_sense.title": "Hairstyles",
-  "ui.fashion_sense.hair_color_active": "Hair Color",
-  "ui.fashion_sense.hair_color_disabled": "(Ignored)",
-  "ui.fashion_sense.hair_color_info": "The player's hair color will not affect this hairstyle."
+  // UI - Titles
+  "ui.fashion_sense.title.search": "Select a Fashion Sense Pack",
+  "ui.fashion_sense.title.hair": "Hairstyles",
+  "ui.fashion_sense.title.accessory": "Accessories",
+  "ui.fashion_sense.title.hat": "Hats",
+  "ui.fashion_sense.title.shirt": "Shirts",
+  "ui.fashion_sense.title.pants": "Pants",
+
+  // UI - Etc
+  "ui.fashion_sense.search_button": "Search for a specific Fashion Sense pack.",
+  "ui.fashion_sense.clear_button": "Clears the currently selected Fashion Sense item.",
+  "ui.fashion_sense.color_active.hair": "Hair Color",
+  "ui.fashion_sense.color_active.hat": "Hat Color",
+  "ui.fashion_sense.color_active.shirt": "Shirt Color",
+  "ui.fashion_sense.color_active.pants": "Pants Color",
+  "ui.fashion_sense.color_active.accessory": "Acc. Color",
+  "ui.fashion_sense.color_disabled.generic": "(Ignored)",
+  "ui.fashion_sense.color_info.hair": "Color overlays will not affect this hairstyle.",
+  "ui.fashion_sense.color_info.hat": "Color overlays will not affect this hat.",
+  "ui.fashion_sense.color_info.shirt": "Color overlays will not affect this shirt.",
+  "ui.fashion_sense.color_info.pants": "Color overlays will not affect these pants.",
+  "ui.fashion_sense.color_info.accessory": "Color overlays will not affect this accessory."
 }

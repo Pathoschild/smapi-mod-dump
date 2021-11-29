@@ -22,16 +22,50 @@ namespace QuestEssentials.Tasks
     [JsonConverter(typeof(QuestTaskConverter))]
     public abstract class QuestTask
     {
-        internal static readonly Dictionary<string, Type> knownTypes;
+        private static readonly Dictionary<string, Type> _knownTypes;
         private AdventureQuest _quest;
         protected bool _complete;
 
+        /// <summary>
+        /// Unique task name (in the quest scope)
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Task type
+        /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// Task description. Visible in quest objective
+        /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Pre-conditions must be matched for successful completion of this task
+        /// </summary>
         public Dictionary<string, string> When { get; set; }
+
+        /// <summary>
+        /// Other tasks must be completed to activate this task. 
+        /// If some tasks defined here are not completed, this task is not shown
+        /// in the quest objective list and can't be completed.
+        /// </summary>
         public List<string> RequiredTasks { get; set; }
-        public int Goal { get; set; } = 1;
+
+        /// <summary>
+        /// How much pieces of subject of this task (by type) must be reached to complete this task.
+        /// </summary>
+        public int Count { get; set; } = 1;
+        
+        /// <summary>
+        /// Alias for count (for keep it compatible with QE beta content packs)
+        /// </summary>
+        public int Goal
+        {
+            get => this.Count;
+            set => this.Count = value;
+        }
 
         [JsonIgnore]
         public int CurrentCount
@@ -65,7 +99,7 @@ namespace QuestEssentials.Tasks
 
         static QuestTask()
         {
-            knownTypes = new Dictionary<string, Type>();
+            _knownTypes = new Dictionary<string, Type>();
 
             RegisterTaskType<BasicTask>("Basic");
             RegisterTaskType<EnterSpotTask>("EnterSpot");
@@ -119,8 +153,8 @@ namespace QuestEssentials.Tasks
         {
             int newCurrent = this.CurrentCount + amount;
 
-            if (newCurrent > this.Goal)
-                this.CurrentCount = this.Goal;
+            if (newCurrent > this.Count)
+                this.CurrentCount = this.Count;
             else
                 this.CurrentCount = newCurrent;
         }
@@ -132,7 +166,7 @@ namespace QuestEssentials.Tasks
 
         public void ForceComplete(bool playSound = true)
         {
-            this.CurrentCount = this.Goal;
+            this.CurrentCount = this.Count;
         }
 
         public virtual void Load()
@@ -169,7 +203,7 @@ namespace QuestEssentials.Tasks
 
             bool wasJustCompleted = false;
 
-            if (this.CurrentCount >= this.Goal && !this.IsCompleted())
+            if (this.CurrentCount >= this.Count && !this.IsCompleted())
             {
                 wasJustCompleted = true;
                 this._complete = true;
@@ -205,22 +239,27 @@ namespace QuestEssentials.Tasks
         /// <param name="name">Name of task type</param>
         public static void RegisterTaskType<T>(string name) where T : QuestTask
         {
-            knownTypes.Add(name, typeof(T));
+            _knownTypes.Add(name, typeof(T));
         }
 
         public static bool IsKnownTaskType(string name)
         {
-            return knownTypes.ContainsKey(name);
+            return _knownTypes.ContainsKey(name);
         }
 
         public static bool IsKnownTaskType(Type type)
         {
-            return knownTypes.ContainsValue(type);
+            return _knownTypes.ContainsValue(type);
         }
 
         public static bool IsKnownTaskType<T>() where T : QuestTask
         {
-            return knownTypes.ContainsValue(typeof(T));
+            return _knownTypes.ContainsValue(typeof(T));
+        }
+
+        public static Type GetTaskType(string typeName)
+        {
+            return _knownTypes[typeName];
         }
     }
 

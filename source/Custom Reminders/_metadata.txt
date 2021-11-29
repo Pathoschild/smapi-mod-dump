@@ -6,11 +6,9 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 8328d40918b498a4155e5bf97ed70f5cd1a6098b
+   commit 6cf509b00ec8052f1dfad1e3e900ba670f6ad20b
    Author: Dem1se <dem1se.io@protonmail.com>
-   Date:   Tue Oct 26 18:28:01 2021 +0530
+   Date:   Tue Nov 9 16:41:30 2021 +0530
    
-       Update fr.json
-       
-       Update README.md
+       Minor formatting changes
    

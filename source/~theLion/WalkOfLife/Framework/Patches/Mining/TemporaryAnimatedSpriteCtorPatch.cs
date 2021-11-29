@@ -9,26 +9,21 @@
 *************************************************/
 
 using HarmonyLib;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
-using System;
-using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class TemporaryAnimatedSpriteCtorPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal TemporaryAnimatedSpriteCtorPatch()
 		{
-			Original = typeof(TemporaryAnimatedSprite).Constructor(new[]
-			{
-				typeof(int), typeof(float), typeof(int), typeof(int), typeof(Vector2), typeof(bool), typeof(bool),
-				typeof(GameLocation), typeof(Farmer)
-			});
+			Original = RequireConstructor<TemporaryAnimatedSprite>(typeof(int), typeof(float), typeof(int), typeof(int),
+				typeof(Vector2), typeof(bool), typeof(bool), typeof(GameLocation), typeof(Farmer));
 			Postfix = new(GetType(), nameof(TemporaryAnimatedSpriteCtorPostfix));
 		}
 
@@ -38,14 +33,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		[HarmonyPostfix]
 		private static void TemporaryAnimatedSpriteCtorPostfix(ref TemporaryAnimatedSprite __instance, Farmer owner)
 		{
-			try
-			{
-				if (owner.HasProfession("Demolitionist")) ++__instance.bombRadius;
-			}
-			catch (Exception ex)
-			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
-			}
+			if (owner.HasProfession("Demolitionist")) ++__instance.bombRadius;
 		}
 
 		#endregion harmony patches

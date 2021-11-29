@@ -19,6 +19,7 @@ namespace AlternativeTextures.Framework.Models
     public class VariationModel
     {
         public int Id { get; set; }
+        public string Name { get; set; }
         public float ChanceWeight { get; set; } = 1f;
         public List<string> Keywords { get; set; } = new List<string>();
         public List<AnimationModel> Animation { get; set; } = new List<AnimationModel>();

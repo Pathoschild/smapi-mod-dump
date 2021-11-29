@@ -57,7 +57,7 @@ namespace TimeSpeed.Framework
             { LocationType.Indoors.ToString(), 14 },
             { LocationType.Outdoors.ToString(), 7 },
             { LocationType.Mine.ToString(), 7 },
-            { LocationType.SkullCavern.ToString(), 7 },
+            { LocationType.SkullCavern.ToString(), 9 }, // Skull Cavern time passes slower in-game by default
             { LocationType.VolcanoDungeon.ToString(), 7 }
         };
 
@@ -88,7 +88,7 @@ namespace TimeSpeed.Framework
         /// <param name="time">The time of day in 24-hour military format (e.g. 1600 for 8pm).</param>
         public bool ShouldFreeze(int time)
         {
-            return this.FreezeTimeAt == time;
+            return time >= this.FreezeTimeAt;
         }
 
         /// <summary>Get whether time settings should be applied on a given day.</summary>

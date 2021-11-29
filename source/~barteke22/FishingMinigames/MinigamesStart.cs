@@ -494,7 +494,6 @@ namespace FishingMinigames
 
         private void DrawHangman(SpriteBatch batch)
         {
-            Log.Error("hi", "bye", new Vector2(9), new List<int>() { 1,2,3}, new Dictionary<string, int>() { { "lol", 1 }, { "ey", 5 } });
             if (minigameStage == 1)//fade in (opacity calc)
             {
                 minigameData[5]++;

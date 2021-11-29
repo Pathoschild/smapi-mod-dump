@@ -60,7 +60,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
                 monster.Sprite.loadedTexture = String.Empty;
                 return;
             }
-            var textureOffset = textureVariation * textureModel.TextureHeight;
+            var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
             monster.Sprite.spriteTexture = textureModel.GetTexture(textureVariation);
             monster.Sprite.sourceRect.Y = textureOffset + (monster.Sprite.currentFrame * monster.Sprite.SpriteWidth / monster.Sprite.Texture.Width * monster.Sprite.SpriteHeight);

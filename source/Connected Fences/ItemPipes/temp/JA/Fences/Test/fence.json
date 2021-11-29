@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Test",
+  "Description": "Test",
+  "Category": "Crafting",
+  "Edibility": -300,
+  "EdibleBuffs": null,
+  "IsColored": false,
+  "MaxHealth": 100,
+  "RepairMaterial": 335,
+  "BreakTool": "Pickaxe",
+  "PlacementSound": "cut",
+  "RepairSound": "cut",
+  "Recipe": {
+    "ResultCount": 10,
+    "Ingredients": [
+      {
+        "Object": 709,
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  }
+}

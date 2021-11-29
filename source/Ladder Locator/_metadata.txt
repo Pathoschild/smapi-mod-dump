@@ -6,9 +6,9 @@ mods:
    Ladder Locator
 
 latest commit:
-   commit 546ad53722b05e4f59c1d12d18d98baac7b9571c
+   commit 1e52aabc4e297380973e0e1e42f9849d31a78e71
    Author: Yuri Moens <yuri.moens@gmail.com>
-   Date:   Wed Feb 17 15:17:44 2021 +0100
+   Date:   Tue Nov 16 10:12:35 2021 +0100
    
-       Revert version number to 1.4.0
+       Ignore sprite sheet indexes making things to out of bounds
    

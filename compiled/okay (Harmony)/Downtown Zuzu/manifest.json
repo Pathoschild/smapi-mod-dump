@@ -1,0 +1,16 @@
+﻿{
+  "Name": "[DLL] Downtown Zuzu",
+  "Author": "Zuzu Development Team",
+  "Version": "0.7.1",
+  "Description": "Adds a medium location that is supposed to be the outskirts of Zuzu City. It runs via BusLocations and CP.",
+  "UniqueID": "DTZ.DowntownZuzuDLL",
+  "EntryDll": "Downtown_Zuzu.dll",
+  "MinimumApiVersion": "3.5.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "IsRequired": true
+    }
+  ],
+  "UpdateKeys": [ "Nexus:8587" ]
+}

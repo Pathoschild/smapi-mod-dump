@@ -13,7 +13,7 @@ namespace Common.Integrations.BetterChests
     using System;
     using System.Collections.Generic;
 
-    public interface IBetterChestsAPI
+    public interface IBetterChestsApi
     {
         public void EnableWithModData(string featureName, string key, string value, bool param);
 

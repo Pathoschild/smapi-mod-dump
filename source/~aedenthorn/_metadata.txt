@@ -12,31 +12,39 @@ mods:
    Coin Collector
    Craftable Butterfly Hutches
    Craftable Terrarium
+   Custom Achievements
    Custom Chest Types
    Custom Decoration Areas
    Custom Dungeon Floors
    Custom Fixed Dialogue
    Custom Locks
+   Custom Object Production
    Custom Ore Nodes
    Custom Renovations
    Custom Resource Clumps
    Custom Spouse Patio
    Custom Spouse Patio Wizard
+   Custom Spouse Rooms
    Custom Warp Points
    Dialogue Trees
    Enhanced Loot Magnet
    Expert Sitting
    Extra Map Layers
    Familiars
+   Farmer Helper
    Fire Breath
    Fishing Chests Expanded
    Flowing Mine Rocks
    Free Love
    Friendly Divorce
    Fruit Tree Shaker
+   Furniture Adjustment
    Gem Isles
+   Groundhog Day
    Here Fishy
+   Hugs and Kisses
    Instant Growth Powder
+   Longer Seasons
    Loose Audio Files
    Map Editor
    Map Teleport
@@ -56,6 +64,7 @@ mods:
    Overworld Chests
    Pacifist Valley
    Persistent Grange Display
+   Pipe Irrigation
    Placeable Mine Shafts
    Quick Load
    Quick Responses
@@ -63,6 +72,7 @@ mods:
    Random NPCs
    Realistic Random Names
    Show Players Behind Buildings
+   Simple Screenshots
    Sixty-Nine Shirt
    Social Page Order Button
    Swim
@@ -70,14 +80,16 @@ mods:
    Trash Can Reactions
    Treasure Chests Expanded
    Underground Secrets
+   Utility Grid
    Video Player
+   Wedding Tweaks
    Witcher Mod
    Zombie Outbreak
 
 latest commit:
-   commit 826255014705b24b7f6b0f80a5b8bb0b483e5e45
+   commit 69a0678ac9b5274920af5d0b785c6f193e2d75e8
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun Oct 31 12:22:13 2021 -0400
+   Date:   Sun Nov 28 14:51:56 2021 -0500
    
        etc
    

@@ -157,9 +157,6 @@ namespace RaisedGardenBeds
 				if (ModEntry.ItemDefinitions == null)
 					return;
 
-				// Json Assets only adds our generic object to the craftables dictionary, so we need to
-				// patch in the rest to have them added and localised.
-
 				string[] fields;
 				var data = asset.AsDictionary<int, string>().Data;
 

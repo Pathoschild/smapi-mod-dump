@@ -104,8 +104,11 @@ namespace FarmTypeManager
             /// <summary>A series of object lists to be spawned during the current in-game day.</summary>
             public static List<List<TimedSpawn>> TimedSpawns = new List<List<TimedSpawn>>();
 
-            /// <summary>The API for Expanded Preconditions Utility, used to check precondition strings. Null if unavailable.</summary>
+            /// <summary>The API for Expanded Preconditions Utility (EPU), used to check precondition strings. Null if unavailable.</summary>
             public static IConditionsChecker EPUConditionsChecker { get; set; } = null;
+
+            /// <summary>The API for Dynamic Game Assets (DGA), used to spawn its custom items. Null if unavailable.</summary>
+            public static IDynamicGameAssetsApi DGAItemAPI { get; set; } = null;
 
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
             public static ModConfig MConfig { get; set; }

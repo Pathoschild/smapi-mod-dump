@@ -17,7 +17,7 @@ using TheLion.Stardew.Common.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class SpelunkerBuffDisplayUpdateTickedEvent : UpdateTickedEvent
+	internal class SpelunkerBuffDisplayUpdateTickedEvent : UpdateTickedEvent
 	{
 		private const int SHEET_INDEX = 40;
 
@@ -26,7 +26,7 @@ namespace TheLion.Stardew.Professions.Framework.Events
 		/// <summary>Construct an instance.</summary>
 		internal SpelunkerBuffDisplayUpdateTickedEvent()
 		{
-			_buffID = (ModEntry.UniqueID + Util.Professions.IndexOf("Spelunker")).Hash();
+			_buffID = (ModEntry.Manifest.UniqueID + Utility.Professions.IndexOf("Spelunker")).Hash();
 		}
 
 		/// <inheritdoc />
@@ -36,9 +36,9 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 			var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == _buffID);
 			if (buff is not null) return;
-			
-			var bonusLadderChance = ModEntry.SpelunkerLadderStreak;
-			var bonusSpeed = Math.Min(ModEntry.SpelunkerLadderStreak / 5 + 1, 10);
+
+			var bonusLadderChance = ModState.SpelunkerLadderStreak;
+			var bonusSpeed = Math.Min(ModState.SpelunkerLadderStreak / 5 + 1, 10);
 			Game1.buffsDisplay.addOtherBuff(
 				new(0,
 					0,

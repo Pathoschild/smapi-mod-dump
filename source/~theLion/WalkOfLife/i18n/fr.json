@@ -103,7 +103,7 @@
 
 	// Combat
 	"fighter.name.male": "Combattant",
-	"fighter.name.femlae": "Combattante",
+	"fighter.name.female": "Combattante",
 	"fighter.desc": "Dégâts +10%. +15 HP.",
 	"brute.name.male": "Brute",
 	"brute.name.female": "Amazone",
@@ -136,5 +136,18 @@
 	"piper.buff": "Eubstance",
 	"piper.buffdesc": "Attire jusqu'à {{magnitude1}} Slimes supplémentaires. Fréquence d'attaque des Slimes +{{magnitude2}}%.",
 	"piper.superm": "Superfluidité",
-	"piper.supermdesc": "Engorge et renforce les Slimes à proximité."
+	"piper.supermdesc": "Engorge et renforce les Slimes à proximité.",
+
+	// Prestige
+	"prestige.dogstatue.first": "-Statue de Prestige-^La statue peut prestigier une compétence.^Cela ramènera le niveau de la compétence à 0 tout en conservant tous les métiers acquises.^Toutes les recettes associées seront oubliées.^Faire une offrande ?",
+	"prestige.dogstatue.question": "Quelle compétence voudriez-vous prestigier ?",
+	"prestige.dogstatue.cost": "{{cost}} po",
+	"prestige.skillpage.tooltip": "{{count}}/4 métiers acquis:",
+	"prestige.levelup.tooltip:5": "Vous avez déjà tous les métiers dans cette branche.",
+	"prestige.levelup.tooltip:10": "Vous avez déjà ce métier.",
+	"prestige.levelup.question": "Actuellement enregistré à la / au {{oldBuff}} de {{oldProfession}}. Remplacer par la / le {{newBuff}} de {{newProfession}}?",
+	"prestige.levelup.unlocked": "Vous pouvez désormais continuer à développer votre compétence {{whichSkill}} encore plus.",
+	"prestige.achievement.name.male": "Touche-à-tout",
+	"prestige.achievement.name.female": "Touche-à-tout",
+	"prestige.achievement.desc": "Acquérir tous les métiers dans toutes les compétences."
 }

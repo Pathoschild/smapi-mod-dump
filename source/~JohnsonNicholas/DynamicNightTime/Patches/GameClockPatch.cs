@@ -225,7 +225,7 @@ namespace DynamicNightTime.Patches
                         blueTarget = 228 - blueTarget;
                         //Goes from [0,98,193] <-former, now from [35,87,228] 
                         
-                        var destColor = new Color(r: (byte)(35 + (redTarget * percentage)), g: (byte)(87 + (greenTarget * percentage)), b: (byte)(228 - (blueTarget * percentage)), a: (byte)(255 - (alphaTarget * percentage)));
+                        var destColor = new Color(r: (byte)(35 + (redTarget * percentage)), g: (byte)(87 + (greenTarget * percentage)), b: (byte)(228 - (blueTarget * percentage)), alpha: (byte)(255 - (alphaTarget * percentage)));
 
 
                         //[222,222,15]

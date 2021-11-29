@@ -9,22 +9,20 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
+using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using System;
-using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class TreeDayUpdatePatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal TreeDayUpdatePatch()
 		{
-			Original = typeof(Tree).MethodNamed(nameof(Tree.dayUpdate));
+			Original = RequireMethod<Tree>(nameof(Tree.dayUpdate));
 			Prefix = new(GetType(), nameof(TreeDayUpdatePrefix));
 			Postfix = new(GetType(), nameof(TreeDayUpdatePostfix));
 		}
@@ -33,7 +31,6 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 		/// <summary>Patch to increase Abrorist tree growth odds.</summary>
 		[HarmonyPrefix]
-		// ReSharper disable once RedundantAssignment
 		private static bool TreeDayUpdatePrefix(Tree __instance, ref int __state)
 		{
 			__state = __instance.growthStage.Value;
@@ -44,25 +41,18 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		[HarmonyPostfix]
 		private static void TreeDayUpdatePostfix(ref Tree __instance, int __state)
 		{
-			try
-			{
-				var anyPlayerIsArborist = Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out var n);
-				if (__instance.growthStage.Value > __state || !anyPlayerIsArborist || !__instance.CanGrow()) return;
+			var anyPlayerIsArborist = Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out var n);
+			if (__instance.growthStage.Value > __state || !anyPlayerIsArborist || !__instance.CanGrow()) return;
 
-				if (__instance.treeType.Value == Tree.mahoganyTree)
-				{
-					if (Game1.random.NextDouble() < 0.075 * n ||
-						__instance.fertilized.Value && Game1.random.NextDouble() < 0.3 * n)
-						++__instance.growthStage.Value;
-				}
-				else if (Game1.random.NextDouble() < 0.1 * n)
-				{
-					++__instance.growthStage.Value;
-				}
-			}
-			catch (Exception ex)
+			if (__instance.treeType.Value == Tree.mahoganyTree)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				if (Game1.random.NextDouble() < 0.075 * n ||
+				    __instance.fertilized.Value && Game1.random.NextDouble() < 0.3 * n)
+					++__instance.growthStage.Value;
+			}
+			else if (Game1.random.NextDouble() < 0.1 * n)
+			{
+				++__instance.growthStage.Value;
 			}
 		}
 

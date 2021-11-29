@@ -6,10 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 3943d0b3d3387bbebc2d94cd00621debcca059ee
-   Merge: 9a0ed4b 68fabc4
+   commit ab6f96f8f818621c130b1af011011b0e7792fb44
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Sep 15 10:59:58 2021 -0500
+   Date:   Tue Nov 9 17:18:58 2021 -0600
    
-       Merge branch 'master' of https://github.com/Esca-MMC/FarmTypeManager
+       Fix DGA category name in readme
    

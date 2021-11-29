@@ -1,0 +1,10 @@
+﻿{
+  "Name": "LockedMaps",
+  "Author": "Edu Anttunes",
+  "Version": "1.0.0",
+  "Description": "There is some cool locked maps to explore.",
+  "UniqueID": "LockedMaps",
+  "EntryDll": "LockedMaps.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:10089" ]
+}

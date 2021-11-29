@@ -57,7 +57,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 float draw_x = x;
                 float draw_y = y;
@@ -110,7 +110,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
 
                 if ((bool)__instance.playerChest)
                 {
-                    var textureOffset = textureVariation * textureModel.TextureHeight;
+                    var textureOffset = textureModel.GetTextureOffset(textureVariation);
                     spriteBatch.Draw(textureModel.GetTexture(textureVariation), local ? new Vector2(x, y - 64) : Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y - 1) * 64 + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0))), new Rectangle(0, textureOffset, 16, 32), __instance.playerChoiceColor.Value * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, local ? 0.9f : ((float)(y * 64 + 4) / 10000f));
                 }
 

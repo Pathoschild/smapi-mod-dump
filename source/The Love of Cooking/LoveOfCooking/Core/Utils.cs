@@ -282,6 +282,11 @@ namespace LoveOfCooking
 				&& !ModEntry.Instance.States.Value.FoodsEaten.Contains(o.Name);
 		}
 
+		public static bool AreNewCropsActive()
+        {
+			return ModEntry.Config.AddNewCropsAndStuff && !Interface.Interfaces.UsingPPJACrops;
+        }
+
 		public static bool AreNettlesActive()
 		{
 			return ModEntry.NettlesEnabled && !Interface.Interfaces.UsingNettlesCrops;

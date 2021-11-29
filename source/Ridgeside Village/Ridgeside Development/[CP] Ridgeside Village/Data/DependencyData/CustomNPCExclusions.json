@@ -35,21 +35,22 @@
 				"Daia": "TownEvent TownQuest OtherEvent",
 				"Jio": "TownEvent TownQuest OtherEvent",
 				"TreehouseGirl": "ALL",
+				"RelicSpirit": "ALL",
 
-				"Anton": "MovieInvite IslandEvent",
-				"Ariah": "MovieInvite IslandEvent",
-				"Blair": "MovieInvite IslandEvent",
-				"Carmen": "MovieInvite IslandEvent",
-				"Faye": "MovieInvite IslandEvent",
-				"Irene": "MovieInvite IslandEvent",
-				"Kiarra": "MovieInvite IslandEvent",
-				"Lorenzo": "MovieInvite IslandEvent",
-				"Louie": "MovieInvite IslandEvent",
-				"Maive": "MovieInvite IslandEvent",
-				"Paula": "MovieInvite IslandEvent",
-				"Sean": "MovieInvite IslandEvent",
-				"Shanice": "MovieInvite IslandEvent",
-				"Sonny": "MovieInvite IslandEvent",
+				"Anton": "MovieInvite IslandEvent WinterStar",
+				"Ariah": "MovieInvite IslandEvent WinterStar",
+				"Blair": "MovieInvite IslandEvent WinterStar",
+				"Carmen": "MovieInvite IslandEvent WinterStar",
+				"Faye": "MovieInvite IslandEvent WinterStar",
+				"Irene": "MovieInvite IslandEvent WinterStar",
+				"Kiarra": "MovieInvite IslandEvent WinterStar",
+				"Lorenzo": "MovieInvite IslandEvent WinterStar",
+				"Louie": "MovieInvite IslandEvent WinterStar",
+				"Maive": "MovieInvite IslandEvent WinterStar",
+				"Paula": "MovieInvite IslandEvent WinterStar",
+				"Sean": "MovieInvite IslandEvent WinterStar",
+				"Shanice": "MovieInvite IslandEvent WinterStar",
+				"Sonny": "MovieInvite IslandEvent WinterStar",
 			}
 		},
 
@@ -68,6 +69,7 @@
 				"Philip": "Socialize",
 				"Shiro": "Socialize",
 				"Alissa": "Socialize",
+				"Corine": "Socialize",
 				"Flor": "Socialize",
 				"Maddie": "Socialize",
 				"Ysabelle": "Socialize",
@@ -78,6 +80,7 @@
 				"Keahi": "Socialize",
 				"Lenny": "Socialize",
 				"Lola": "Socialize",
+				"Olga": "Socialize",
 				"Pika": "Socialize",
 				"Richard": "Socialize",
 				"Trinnie": "Socialize",
@@ -98,6 +101,100 @@
 				"Sonny": "Socialize MovieInvite IslandEvent",
 			}
 		},
+
+		{
+			"Action": "EditData",
+			"Target": "Data/CustomNPCExclusions",
+			"When": {
+				"FullFestivals": false
+			},
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Anton"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Ariah"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Blair"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Carmen"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Faye"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Irene"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Kiarra"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Lorenzo"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Louie"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Maive"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Paula"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Sean"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Shanice"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Sonny"],
+					"Value": "WinterStar",
+					"Delimiter": " "
+				},
+			]
+		}
 
 ],
 }

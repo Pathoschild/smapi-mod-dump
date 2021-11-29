@@ -44,7 +44,7 @@ namespace QuestEssentials.Tasks
 
                 if (Helper.CheckItemContextTags(deliverMessage.Item, this.Data.AcceptedContextTags))
                 {
-                    int requiredAmount = this.Goal - this.CurrentCount;
+                    int requiredAmount = this.Count - this.CurrentCount;
                     int donatedAmount = Math.Min(deliverMessage.Item.Stack, requiredAmount);
                     string reaction = this.Data.Message;
                     

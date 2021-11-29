@@ -29,8 +29,8 @@ namespace LoveOfCooking.Core.HarmonyPatches
 				original: AccessTools.Method(typeof(CraftingPage), "clickCraftingRecipe"),
 				postfix: new HarmonyMethod(typeof(CraftingPagePatches), nameof(CraftItem_Postfix)));
 		}
-		
-		public static void CraftItem_Prefix()
+
+        public static void CraftItem_Prefix()
 		{
 			ItemsCooked = Game1.stats.ItemsCooked;
 		}

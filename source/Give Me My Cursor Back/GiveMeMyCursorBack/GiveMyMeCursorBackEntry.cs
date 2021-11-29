@@ -81,7 +81,7 @@ namespace GiveMeMyCursorBack
                 return;
 
             _tickCounter = 0;
-            Game1.options.hardwareCursor = !Game1.game1.IsActive;
+            Game1.options.hardwareCursor = (!Game1.game1.IsActive || !Game1.displayHUD);
         }
     }
 }

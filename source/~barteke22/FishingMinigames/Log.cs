@@ -55,7 +55,7 @@ namespace FishingMinigames
         {
             string s = "";
             if (text == null) return "null";
-            else if (text is Vector2 vector) return vector.X + "," + vector.Y;
+            //else if (text is Vector2 vector) return vector.X + "," + vector.Y;//V2 has a ToString()
             else if (text is Point p) return p.X + "," + p.Y;
             else if (text is Rectangle r) return r.X + "," + r.Y + " ," + r.Width + "," + r.Height;
             else if (text is IList list)

@@ -8,24 +8,26 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewValley;
-using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using HarmonyLib;
+using JetBrains.Annotations;
 using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Locations;
 using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class MineShaftCheckStoneForItemsPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal MineShaftCheckStoneForItemsPatch()
 		{
-			Original = typeof(MineShaft).MethodNamed(nameof(MineShaft.checkStoneForItems));
+			Original = RequireMethod<MineShaft>(nameof(MineShaft.checkStoneForItems));
 			Transpiler = new(GetType(), nameof(MineShaftCheckStoneForItemsTranspiler));
 		}
 
@@ -39,7 +41,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		private static IEnumerable<CodeInstruction> MineShaftCheckStoneForItemsTranspiler(
 			IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
 		{
-			Helper.Attach(original, instructions);
+			var helper = new ILHelper(original, instructions);
 
 			/// Injected: if (who.professions.Contains(<spelunker_id>) chanceForLadderDown += Util.Professions.GetSpelunkerBonusLadderDownChance()
 			/// After: if (EnemyCount == 0) chanceForLadderDown += 0.04;
@@ -47,34 +49,34 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			var isNotSpelunker = iLGenerator.DefineLabel();
 			try
 			{
-				Helper
+				helper
 					.FindFirst( // find ladder spawn segment
 						new CodeInstruction(OpCodes.Ldfld,
 							typeof(MineShaft).Field("ladderHasSpawned"))
 					)
 					.Retreat()
-					.GetLabels(out var labels) // backup branch labels
-					.StripLabels() // remove labels from here
+					.StripLabels(out var labels) // backup and remove branch labels
 					.AddLabels(isNotSpelunker) // branch here to resume execution
 					.Insert(
+						// restore backed-up labels
+						labels,
 						// prepare profession check
-						new CodeInstruction(OpCodes.Ldarg_S, (byte)4) // arg 4 = Farmer who
+						new CodeInstruction(OpCodes.Ldarg_S, (byte) 4) // arg 4 = Farmer who
 					)
-					.InsertProfessionCheckForPlayerOnStack(Util.Professions.IndexOf("Spelunker"), isNotSpelunker)
+					.InsertProfessionCheckForPlayerOnStack(Utility.Professions.IndexOf("Spelunker"), isNotSpelunker)
 					.Insert(
 						new CodeInstruction(OpCodes.Ldloc_3), // local 3 = chanceForLadderDown
 						new CodeInstruction(OpCodes.Call,
-							typeof(Util.Professions).MethodNamed(nameof(Util.Professions
+							typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
 								.GetSpelunkerBonusLadderDownChance))),
 						new CodeInstruction(OpCodes.Add),
 						new CodeInstruction(OpCodes.Stloc_3)
-					)
-					.Return(3)
-					.AddLabels(labels); // restore backed-up labels to inserted spelunker check
+					);
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while adding Spelunker bonus ladder down chance.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while adding Spelunker bonus ladder down chance.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
@@ -84,11 +86,10 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			repeat1:
 			try
 			{
-				Helper // find index of geologist check
+				helper // find index of geologist check
 					.FindProfessionCheck(Farmer.geologist, i != 0)
 					.Retreat()
-					.GetLabels(out var labels) // backup branch labels
-					.StripLabels() // remove labels from here
+					.StripLabels(out var labels) // backup and remove branch labels
 					.AdvanceUntil(
 						new CodeInstruction(OpCodes.Brfalse_S) // the false case branch
 					)
@@ -102,7 +103,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while removing vanilla Geologist paired gem chance.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while removing vanilla Geologist paired gem chance.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
@@ -116,7 +118,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			repeat2:
 			try
 			{
-				Helper // find index of excavator check
+				helper // find index of excavator check
 					.FindProfessionCheck(Farmer.excavator, i != 0)
 					.Retreat()
 					.RemoveUntil(
@@ -125,7 +127,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while removing vanilla Excavator double geode chance.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while removing vanilla Excavator double geode chance.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
@@ -137,7 +140,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 			try
 			{
-				Helper
+				helper
 					.FindProfessionCheck(Farmer.burrower, true) // find index of prospector check
 					.Retreat()
 					.RemoveUntil(
@@ -146,11 +149,12 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
-			return Helper.Flush();
+			return helper.Flush();
 		}
 
 		#endregion harmony patches

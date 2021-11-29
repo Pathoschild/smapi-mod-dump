@@ -15,7 +15,7 @@ using AnimalHusbandryMod.farmer;
 using AnimalHusbandryMod.meats;
 using AnimalHusbandryMod.recipes;
 using AnimalHusbandryMod.tools;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -120,7 +120,7 @@ namespace AnimalHusbandryMod
                     Helper.Events.Input.ButtonPressed += this.OnButtonPressed;
                 }
 
-                var harmony = HarmonyInstance.Create("Digus.AnimalHusbandryMod");
+                var harmony = new Harmony("Digus.AnimalHusbandryMod");
 
                 try
                 {
@@ -177,7 +177,7 @@ namespace AnimalHusbandryMod
                         postfix: new HarmonyMethod(typeof(MeatCleaverOverrides), nameof(MeatCleaverOverrides.loadDescription))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(Tool), nameof(Tool.canBeTrashed)),
+                        original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(MeatCleaverOverrides), nameof(MeatCleaverOverrides.canBeTrashed))
                     );
                     harmony.Patch(
@@ -205,7 +205,7 @@ namespace AnimalHusbandryMod
                         postfix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.loadDescription))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(Tool), nameof(Tool.canBeTrashed)),
+                        original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.canBeTrashed))
                     );
                     harmony.Patch(
@@ -217,17 +217,20 @@ namespace AnimalHusbandryMod
                         prefix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.DoFunction))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.canThisBeAttached)),
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.canThisBeAttached)),
                         prefix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.canThisBeAttached))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.attach)),
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.attach)),
                         prefix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.attach))
                     );
-                    harmony.Patch(
-                        original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.drawAttachments)),
-                        prefix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.drawAttachments))
-                    );
+                    if ((Constants.TargetPlatform != GamePlatform.Linux && Constants.TargetPlatform != GamePlatform.Mac) || DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS)
+                    {
+                        harmony.Patch(
+                            original: AccessTools.Method(typeof(Item), nameof(Item.drawAttachments)),
+                            prefix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.drawAttachments))
+                        );
+                    }
                 }
 
                 if (!DataLoader.ModConfig.DisableTreats)
@@ -245,7 +248,7 @@ namespace AnimalHusbandryMod
                         postfix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.loadDescription))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(Tool), nameof(Tool.canBeTrashed)),
+                        original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.canBeTrashed))
                     );
                     harmony.Patch(
@@ -257,17 +260,20 @@ namespace AnimalHusbandryMod
                         prefix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.DoFunction))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.canThisBeAttached)),
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.canThisBeAttached)),
                         prefix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.canThisBeAttached))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.attach)),
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.attach)),
                         prefix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.attach))
                     );
-                    harmony.Patch(
-                        original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.drawAttachments)),
-                        prefix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.drawAttachments))
-                    );
+                    if ((Constants.TargetPlatform != GamePlatform.Linux && Constants.TargetPlatform != GamePlatform.Mac) || DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS)
+                    {
+                        harmony.Patch(
+                            original: AccessTools.Method(typeof(Item), nameof(Item.drawAttachments)),
+                            prefix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.drawAttachments))
+                        );
+                    }
                 }
 
                 harmony.Patch(
@@ -319,7 +325,7 @@ namespace AnimalHusbandryMod
                         postfix: new HarmonyMethod(typeof(ParticipantRibbonOverrides), nameof(ParticipantRibbonOverrides.loadDescription))
                     );
                     harmony.Patch(
-                        original: AccessTools.Method(typeof(Tool), nameof(Tool.canBeTrashed)),
+                        original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(ParticipantRibbonOverrides), nameof(ParticipantRibbonOverrides.canBeTrashed))
                     );
                     harmony.Patch(
@@ -334,7 +340,7 @@ namespace AnimalHusbandryMod
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.createQuestionDialogue), new Type[]{ typeof(string), typeof(Response[]), typeof(GameLocation.afterQuestionBehavior), typeof(NPC) }),
-                    prefix: new HarmonyMethod(typeof(TvOverrides), nameof(TvOverrides.createQuestionDialogue))
+                    prefix: new HarmonyMethod(typeof(TvOverrides), nameof(TvOverrides.createQuestionDialogue)) { priority = Priority.First }
                 );
                 harmony.Patch(
                     original: AccessTools.Method(typeof(TV), nameof(TV.checkForAction)),

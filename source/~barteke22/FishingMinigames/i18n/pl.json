@@ -66,10 +66,10 @@
     "GenericMC.FestivalDesc2": "Oznacza to, że animacje mogą być trochę niezgrabne, i pełne minigry mogą być trudne do balansowania. Oto alternatywne opcje dla nich.",
     "GenericMC.FestivalMode": "Tryb Festiwalowy",
     "GenericMC.FestivalModeDesc": "Stardew: Użyj zwykłej minigry wędkarskiej na obu tych festiwalach. INACZEJ: \n\nProsta: Tylko minigra Końcowa, tylko ryby się liczą. Trochę niezgrabne animacje. \nTylko Perfekt: Tylko Końcowa minigra (jeśli jest włączona), liczy\n się tylko perfekcyjny połów ryb (bardzo trudna). Trochę niezgrabne animacje. \nTylko Start: Odtwarza tylko specjalną wersję minigry Startu,\n ta opcja powinna być najlepiej zrównoważona pod względem punktów za wysiłek. ",
-    "GenericMC.FestivalModeVanilla": "Stardew",
-    "GenericMC.FestivalModeSimple": "Prosta",
-    "GenericMC.FestivalModePerfectOnly": "Tylko Perfekt",
-    "GenericMC.FestivalModeStartOnly": "Tylko Start",
+    "GenericMC.FestivalMode0": "Stardew",
+    "GenericMC.FestivalMode1": "Prosta",
+    "GenericMC.FestivalMode2": "Tylko Perfekt",
+    "GenericMC.FestivalMode3": "Tylko Start",
 
     "GenericMC.Disabled": "Wyłącz",
 

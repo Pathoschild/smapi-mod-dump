@@ -14,17 +14,17 @@ using StardewModdingAPI.Events;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class SlimeDeflationUpdateTickedEvent : UpdateTickedEvent
+	internal class SlimeDeflationUpdateTickedEvent : UpdateTickedEvent
 	{
 		/// <inheritdoc />
 		public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
 		{
-			var undeflatedSlimes = ModEntry.PipedSlimeScales.Keys.ToList();
+			var undeflatedSlimes = ModState.PipedSlimeScales.Keys.ToList();
 			for (var i = undeflatedSlimes.Count - 1; i >= 0; --i)
 			{
 				undeflatedSlimes[i].Scale = Math.Max(undeflatedSlimes[i].Scale / 1.1f,
-					ModEntry.PipedSlimeScales[undeflatedSlimes[i]]);
-				if (!(undeflatedSlimes[i].Scale <= ModEntry.PipedSlimeScales[undeflatedSlimes[i]])) continue;
+					ModState.PipedSlimeScales[undeflatedSlimes[i]]);
+				if (!(undeflatedSlimes[i].Scale <= ModState.PipedSlimeScales[undeflatedSlimes[i]])) continue;
 
 				undeflatedSlimes[i].willDestroyObjectsUnderfoot = false;
 				undeflatedSlimes.RemoveAt(i);
@@ -32,7 +32,7 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 			if (undeflatedSlimes.Any()) return;
 
-			ModEntry.PipedSlimeScales.Clear();
+			ModState.PipedSlimeScales.Clear();
 			ModEntry.Subscriber.Unsubscribe(GetType());
 		}
 	}

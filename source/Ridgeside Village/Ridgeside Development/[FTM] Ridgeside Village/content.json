@@ -351,13 +351,21 @@
         ],
         "UniqueAreaID": "RSV Foxbloom RidgeForest",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 0,
+        "MinimumSpawnsPerDay": 1,
         "MaximumSpawnsPerDay": 1,
         "IncludeTerrainTypes": [
           "Grass"
         ],
         "ExcludeTerrainTypes": [],
-        "IncludeCoordinates": [],
+        "IncludeCoordinates": [
+          "54, 22",
+          "153, 21",
+          "32, 79",
+          "158, 60",
+          "33, 110",
+          "61, 95",
+          "162, 123",
+        ],
         "ExcludeCoordinates": [],
         "StrictTileChecking": "High",
         "SpawnTiming": {
@@ -380,7 +388,7 @@
           ],
           "WeatherTomorrow": [],
           "EPUPreconditions": [
-            "HasItem Fox Mask" 
+            "HasItem Relic Fox Mask" 
           ],
           "LimitedNumberOfSpawns": null
         },
@@ -613,7 +621,7 @@
           ],
           "WeatherTomorrow": [],
           "EPUPreconditions": [],
-          "LimitedNumberOfSpawns": 1
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
@@ -634,8 +642,8 @@
         ],
         "UniqueAreaID": "RSV RidgeForest Silver Fish Bones",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 1,
-        "MaximumSpawnsPerDay": 1,
+        "MinimumSpawnsPerDay": 2,
+        "MaximumSpawnsPerDay": 2,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -673,7 +681,7 @@
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "EPUPreconditions": [],
-          "LimitedNumberOfSpawns": 1
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
@@ -694,8 +702,8 @@
         ],
         "UniqueAreaID": "RSV RidgeForest Inked Fossil",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 1,
-        "MaximumSpawnsPerDay": 1,
+        "MinimumSpawnsPerDay": 2,
+        "MaximumSpawnsPerDay": 2,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -733,7 +741,7 @@
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "EPUPreconditions": [],
-          "LimitedNumberOfSpawns": 1
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
@@ -754,8 +762,8 @@
         ],
         "UniqueAreaID": "RSV RidgeForest Nightblack Diamond",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 1,
-        "MaximumSpawnsPerDay": 1,
+        "MinimumSpawnsPerDay": 2,
+        "MaximumSpawnsPerDay": 2,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -769,8 +777,8 @@
         "ExcludeCoordinates": [],
         "StrictTileChecking": "None",
         "SpawnTiming": {
-          "StartTime": 600,
-          "EndTime": 600,
+          "StartTime": 1800,
+          "EndTime": 2550,
           "MinimumTimeBetweenSpawns": 10,
           "MaximumSimultaneousSpawns": null,
           "OnlySpawnIfAPlayerIsPresent": false,
@@ -784,7 +792,7 @@
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "EPUPreconditions": [],
-          "LimitedNumberOfSpawns": 1
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
@@ -832,7 +840,7 @@
           ],
           "WeatherTomorrow": [],
           "EPUPreconditions": [],
-          "LimitedNumberOfSpawns": 1
+          "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
@@ -960,7 +968,23 @@
         ],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [],
-        "ExcludeCoordinates": [],
+        "ExcludeCoordinates": [
+          "72,98/72,98",
+          "77,78/77,78",
+          "66,55/66,55",
+          "29,59/29,59",
+          "28,53/28,53",
+          "23,39/23,39",
+          "27,17/27,17",
+          "70,68/70,68",
+          "72,55/72,55",
+          "128,36/128,36",
+          "146,53/146,53",
+          "141,61/141,61",
+          "148,82/148,82",
+          "129,96/129,96",
+          "131,110/131,110"
+        ],
         "StrictTileChecking": "Maximum",
         "SpawnTiming": {
           "StartTime": 600,
@@ -980,7 +1004,7 @@
           "EPUPreconditions": [],
           "LimitedNumberOfSpawns": null
         },
-        "DaysUntilSpawnsExpire": 7
+        "DaysUntilSpawnsExpire": 1
       },
     ],
     "PercentExtraSpawnsPerMiningLevel": 0,
@@ -1056,7 +1080,7 @@
           {
             "MonsterName": "ghost",
             "Settings": {
-              "SpawnWeight": 2,
+              "SpawnWeight": 3,
               "RelatedSkill": "Combat",
               "SeesPlayersAtSpawn": false,
               "Loot": [
@@ -1068,7 +1092,7 @@
         "UniqueAreaID": "RSV RidgeForest Ghost",
         "MapName": "Custom_Ridgeside_RidgeForest",
         "MinimumSpawnsPerDay": 20,
-        "MaximumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 30,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -1079,9 +1103,9 @@
         "SpawnTiming": {
           "StartTime": 600,
           "EndTime": 2300,
-          "MinimumTimeBetweenSpawns": 10,
+          "MinimumTimeBetweenSpawns": 20,
           "MaximumSimultaneousSpawns": 2,
-          "OnlySpawnIfAPlayerIsPresent": false,
+          "OnlySpawnIfAPlayerIsPresent": true,
           "SpawnSound": ""
         },
         "ExtraConditions": {
@@ -1091,7 +1115,9 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "EPUPreconditions": [],
+          "EPUPreconditions": [
+            "!HasItem Pale Candelabrum" 
+          ],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -1103,11 +1129,11 @@
           {
             "MonsterName": "ghost",
             "Settings": {
-              "SpawnWeight": 3,
-              "HP": 100,
-              "Damage": 30,
+              "SpawnWeight": 4,
+              "HP": 60,
+              "Damage": 40,
               "SeesPlayersAtSpawn": false,
-              "DodgeChance": 30,
+              "DodgeChance": 40,
               "RelatedSkill": "Combat",
               "Sprite": "Characters/Monsters/RSVCorruptSpirit",
               "Loot": [
@@ -1118,7 +1144,7 @@
         ],
         "UniqueAreaID": "RSV RidgeForest Corrupted Spirit",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 50,
+        "MinimumSpawnsPerDay": 40,
         "MaximumSpawnsPerDay": 50,
         "IncludeTerrainTypes": [
           "All"
@@ -1132,7 +1158,7 @@
           "EndTime": 2300,
           "MinimumTimeBetweenSpawns": 10,
           "MaximumSimultaneousSpawns": 2,
-          "OnlySpawnIfAPlayerIsPresent": false,
+          "OnlySpawnIfAPlayerIsPresent": true,
           "SpawnSound": ""
         },
         "ExtraConditions": {
@@ -1142,7 +1168,9 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "EPUPreconditions": [],
+          "EPUPreconditions": [
+            "!HasItem Pale Candelabrum" 
+          ],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
@@ -1154,7 +1182,7 @@
           {
             "MonsterName": "putrid ghost",
             "Settings": {
-              "SpawnWeight": 2,
+              "SpawnWeight": 3,
               "HP": 200,
               "Damage": 10,
               "SeesPlayersAtSpawn": false,
@@ -1169,8 +1197,8 @@
         ],
         "UniqueAreaID": "RSV RidgeForest Wraith",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 10,
-        "MaximumSpawnsPerDay": 20,
+        "MinimumSpawnsPerDay": 30,
+        "MaximumSpawnsPerDay": 40,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -1183,7 +1211,7 @@
           "EndTime": 2300,
           "MinimumTimeBetweenSpawns": 20,
           "MaximumSimultaneousSpawns": 2,
-          "OnlySpawnIfAPlayerIsPresent": false,
+          "OnlySpawnIfAPlayerIsPresent": true,
           "SpawnSound": ""
         },
         "ExtraConditions": {
@@ -1193,35 +1221,40 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "EPUPreconditions": [],
+          "EPUPreconditions": [
+            "!HasItem Everfrost Stone" 
+          ],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
 
   //Viperial
+   //Golden Skull Coral and Entombed Ring
       {
         "MonsterTypes": [
           {
             "MonsterName": "pepper rex",
             "Settings": {
               "SpawnWeight": 1,
-              "HP": 2000,
-              "Damage": 20,
+              "HP": 3000,
+              "Damage": 30,
               "SeesPlayersAtSpawn": false,
               "DodgeChance": 0,
               "RelatedSkill": "Combat",
               "Sprite": "Characters/Monsters/RSVViperial",
               "Loot": [
-                "Spiritual Essence"
+                "Spiritual Essence",
+                "Golden Skull Coral",
+                "Entombed Ring"
               ]
             }
           },
         ],
         "UniqueAreaID": "RSV RidgeForest Viperial",
         "MapName": "Custom_Ridgeside_RidgeForest",
-        "MinimumSpawnsPerDay": 3,
-        "MaximumSpawnsPerDay": 8,
+        "MinimumSpawnsPerDay": 5,
+        "MaximumSpawnsPerDay": 10,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -1232,9 +1265,9 @@
         "SpawnTiming": {
           "StartTime": 600,
           "EndTime": 2300,
-          "MinimumTimeBetweenSpawns": 30,
+          "MinimumTimeBetweenSpawns": 50,
           "MaximumSimultaneousSpawns": 1,
-          "OnlySpawnIfAPlayerIsPresent": false,
+          "OnlySpawnIfAPlayerIsPresent": true,
           "SpawnSound": ""
         },
         "ExtraConditions": {
@@ -1244,13 +1277,15 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "EPUPreconditions": [],
+          "EPUPreconditions": [
+            "!HasItem Ancient Music Box" 
+          ],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
       },
 
-  //Beasts
+  //Serpentine Beasts
       {
         "MonsterTypes": [
           {
@@ -1258,7 +1293,7 @@
             "Settings": {
               "SpawnWeight": 2,
               "HP": 400,
-              "Damage": 15,
+              "Damage": 25,
               "SeesPlayersAtSpawn": false,
               "DodgeChance": 10,
               "RelatedSkill": "Combat",
@@ -1273,7 +1308,7 @@
             "Settings": {
               "SpawnWeight": 1,
               "HP": 550,
-              "Damage": 35,
+              "Damage": 45,
               "SeesPlayersAtSpawn": false,
               "DodgeChance": 10,
               "RelatedSkill": "Combat",
@@ -1288,7 +1323,7 @@
             "Settings": {
               "SpawnWeight": 1,
               "HP": 700,
-              "Damage": 50,
+              "Damage": 60,
               "SeesPlayersAtSpawn": false,
               "DodgeChance": 10,
               "RelatedSkill": "Combat",
@@ -1298,42 +1333,6 @@
               ]
             }
           },
-
-          //Entombed Ring & Golden Skull Coral Drop
-          {
-            "MonsterName": "shadow brute",
-            "Settings": {
-              "SpawnWeight": 1,
-              "HP": 550,
-              "Damage": 35,
-              "SeesPlayersAtSpawn": false,
-              "DodgeChance": 10,
-              "RelatedSkill": "Combat",
-              "Sprite": "Characters/Monsters/RSVBeast2",
-              "Loot": [
-                "Spiritual Essence",
-                "Entombed Ring"
-              ]
-            }
-          },
-          {
-            "MonsterName": "shadow brute",
-            "Settings": {
-              "SpawnWeight": 1,
-              "HP": 700,
-              "Damage": 50,
-              "SeesPlayersAtSpawn": false,
-              "DodgeChance": 10,
-              "RelatedSkill": "Combat",
-              "Sprite": "Characters/Monsters/RSVBeast3",
-              "Loot": [
-                "Spiritual Essence",
-                "Golden Skull Coral"
-              ]
-            }
-          },
-
-
         ],
         "UniqueAreaID": "RSV RidgeForest Beasts",
         "MapName": "Custom_Ridgeside_RidgeForest",
@@ -1349,9 +1348,9 @@
         "SpawnTiming": {
           "StartTime": 600,
           "EndTime": 2300,
-          "MinimumTimeBetweenSpawns": 10,
+          "MinimumTimeBetweenSpawns": 20,
           "MaximumSimultaneousSpawns": 2,
-          "OnlySpawnIfAPlayerIsPresent": false,
+          "OnlySpawnIfAPlayerIsPresent": true,
           "SpawnSound": ""
         },
         "ExtraConditions": {
@@ -1361,7 +1360,9 @@
           "WeatherYesterday": [],
           "WeatherToday": [],
           "WeatherTomorrow": [],
-          "EPUPreconditions": [],
+          "EPUPreconditions": [
+            "!HasItem Village Hero Sculpture" 
+          ],
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": null
@@ -1406,7 +1407,7 @@
           "EndTime": 2300,
           "MinimumTimeBetweenSpawns": 10,
           "MaximumSimultaneousSpawns": 5,
-          "OnlySpawnIfAPlayerIsPresent": false,
+          "OnlySpawnIfAPlayerIsPresent": true,
           "SpawnSound": ""
         },
         "ExtraConditions": {
@@ -1432,7 +1433,7 @@
           {
             "MonsterName": "ghost",
             "Settings": {
-              "SpawnWeight": 3,
+              "SpawnWeight": 4,
               "HP": 100,
               "Damage": 30,
               "SeesPlayersAtSpawn": false,
@@ -1500,8 +1501,8 @@
         ],
         "UniqueAreaID": "RSV SpiritRealm Wraith",
         "MapName": "Custom_Ridgeside_RSVSpiritRealm",
-        "MinimumSpawnsPerDay": 10,
-        "MaximumSpawnsPerDay": 20,
+        "MinimumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 30,
         "IncludeTerrainTypes": [
           "All"
         ],

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tylergibbs2/LiveProgressBar
+   Git: https://github.com/tylergibbs2/LiveProgressBar.git
+
+mods:
+   Live Progress Bar
+
+latest commit:
+   commit 1f09afde014c7b46b684787e5232d89efa9b4ea6
+   Author: Tyler Gibbs <gibbstyler7@gmail.com>
+   Date:   Mon Dec 28 00:39:42 2020 -0600
+   
+       minor reorganization
+   

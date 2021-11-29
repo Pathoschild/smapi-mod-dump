@@ -91,7 +91,7 @@
             "Height": 71
           },
           "Inhabitants": "Richard/Ysabelle/Flor/Philip",
-          "Text": "{{i18n:RSV.Map.Text.LogCabinHotel}}"
+          "Text": "{{i18n:RSV.Map.Text.LogCabinHotel.{{RSVWorldState}}}}"
         },
         "OddJobs": {
           "Area": {
@@ -330,7 +330,7 @@
             "Height": 72
           },
           "Inhabitants": "Richard/Ysabelle/Flor/Philip",
-          "Text": "{{i18n:RSV.Map.Text.LogCabinHotel}}"
+          "Text": "{{i18n:RSV.Map.Text.LogCabinHotel.{{RSVWorldState}}}}"
         },
 
         "OddJobs": {

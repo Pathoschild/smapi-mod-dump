@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TwitchLib.Client.Enums</name>
+    </assembly>
+    <members>
+        <member name="T:TwitchLib.Client.Enums.BadgeColor">
+            <summary>Color enum representing color based on cheer amount.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.BadgeColor.Red">
+            <summary>Red = 10000+</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.BadgeColor.Blue">
+            <summary>Blue = 5000 -> 9999</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.BadgeColor.Green">
+            <summary>Green = 1000 -> 4999</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.BadgeColor.Purple">
+            <summary>Purple = 100 -> 999</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.BadgeColor.Gray">
+            <summary>Gray = 1 -> 99</summary>
+        </member>
+        <member name="T:TwitchLib.Client.Enums.ChatColorPresets">
+            <summary>Enum representing the available chat name color presets.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.Blue">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.Coral">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.DodgerBlue">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.SpringGreen">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.YellowGreen">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.Green">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.OrangeRed">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.Red">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.GoldenRod">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.HotPink">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.CadetBlue">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.SeaGreen">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.Chocolate">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.BlueViolet">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ChatColorPresets.Firebrick">
+            <summary>Chat color name.</summary>
+        </member>
+        <member name="T:TwitchLib.Client.Enums.CommercialLength">
+            <summary>A list of valid commercial lengths.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.CommercialLength.Seconds30">
+            <summary>30 second commercial</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.CommercialLength.Seconds60">
+            <summary>60 second commercial</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.CommercialLength.Seconds90">
+            <summary>90 second commercial</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.CommercialLength.Seconds120">
+            <summary>120 second commercial</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.CommercialLength.Seconds150">
+            <summary>150 second commercial</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.CommercialLength.Seconds180">
+            <summary>180 second commercial</summary>
+        </member>
+        <member name="T:TwitchLib.Client.Enums.SendReceiveDirection">
+            <summary>Enum to show which direction the message was detected from.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.SendReceiveDirection.Sent">
+            <summary>Used for logging, direction of data.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.SendReceiveDirection.Received">
+            <summary>Used for logging, direction of data.</summary>
+        </member>
+        <member name="T:TwitchLib.Client.Enums.StringEnum">
+            <summary>Really cool way of doing string enums, credits to RogueException (https://github.com/RogueException)</summary>
+        </member>
+        <member name="P:TwitchLib.Client.Enums.StringEnum.Value">
+            <summary>Value of enum</summary>
+        </member>
+        <member name="M:TwitchLib.Client.Enums.StringEnum.#ctor(System.String)">
+            <summary>StringEnum constructor.</summary>
+        </member>
+        <member name="M:TwitchLib.Client.Enums.StringEnum.ToString">
+            <summary>Returns string value for overriden ToString()</summary>
+            <returns>Enum value</returns>
+        </member>
+        <member name="T:TwitchLib.Client.Enums.ThrottleType">
+            <summary>Enum representing the available throttle types.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ThrottleType.MessageTooShort">
+            <summary>Throttle based on message being too short.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.ThrottleType.MessageTooLong">
+            <summary>Throttle based on message being too long.</summary>
+        </member>
+        <member name="T:TwitchLib.Client.Enums.UserType">
+            <summary>Enum representing various user-types.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.UserType.Viewer">
+            <summary>The standard user-type representing a standard viewer.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.UserType.Moderator">
+            <summary>User-type representing viewers with channel-specific moderation powers.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.UserType.GlobalModerator">
+            <summary>User-type representing viewers with Twitch-wide moderation powers.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.UserType.Broadcaster">
+            <summary>User-type representing the broadcaster of the channel</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.UserType.Admin">
+            <summary>User-type representing viewers with Twitch-wide moderation powers that are paid.</summary>
+        </member>
+        <member name="F:TwitchLib.Client.Enums.UserType.Staff">
+            <summary>User-type representing viewers that are Twitch employees.</summary>
+        </member>
+    </members>
+</doc>

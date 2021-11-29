@@ -1,7 +1,7 @@
 {
   "Name": "Give Me My Cursor Back!",
   "Author": "DecidedlyHuman",
-  "Version": "0.0.2",
+  "Version": "0.0.3",
   "Description": "Are you tired of your cursor being invisible in the game window when alt-tabbed if you don't have the hardware cursor setting enabled? This solves that problem!",
   "UniqueID": "DecidedlyHuman.GiveMeMyCursorBack",
   "EntryDll": "GiveMeMyCursorBack.dll",

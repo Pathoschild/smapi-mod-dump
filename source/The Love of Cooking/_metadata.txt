@@ -6,19 +6,13 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit ffdf7e53c453c954ee067dba55aa36ecf44befb2
+   commit c5cf6a9ee1a3654c57733734f0561071f1c5317d
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Sun Oct 31 18:25:29 2021 +1100
+   Date:   Mon Nov 22 14:47:39 2021 +1100
    
-       RELEASE 1.0.23:
-       Migrate Custom Community Centre mod bundle substitute data into project.
-       Change handling of extra inventories and crafting menu replacements for CookingMenu to be more flexible with other custom content.
-       Fix bad entries in bush definitions data file for Redberry.
-       Fix shop data entry conflicts with other mods adding new shops to target locations.
-       Fix CustomBush definition not being synced between players in multiplayer games.
-       Fix CustomBush source texture mismatch between master and beta game branches.
-       Move CanUseKitchens check from OpenCookingMenu to ButtonPressed to ensure kitchen check only occurs on player actions in the world, instead of when replacing expected menus.
-       Minor refactoring in CookingMenu.
-       Reposition inventory icons in spritesheet.
-       Remove Newtonsoft project dependency.
+       RELEASE 1.0.24:
+       Remove hardcoded level limit from CookingSkillAPI in CalculateExperienceGainedFromCookingItem.
+       Remove debug logging for menu closed mutexes freed and Custom Community Centre interface calls.
+       Replace Community Kitchen Baker's Bundle requirement substitute for Apple Pie with Cake.
+       Allow opening cooking menu from cooking tile indexes in CommunityCenter locations.
    

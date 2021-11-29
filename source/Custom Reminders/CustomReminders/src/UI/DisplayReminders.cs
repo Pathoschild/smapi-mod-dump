@@ -24,46 +24,40 @@ namespace Dem1se.CustomReminders.UI
     /// <summary> UI to display the currently set reminders </summary>
     public class DisplayReminders : IClickableMenu
     {
-        private readonly int XPos = (int)(Game1.viewport.Width * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (632 + IClickableMenu.borderWidth * 2) / 2;
-        private readonly int YPos = (int)(Game1.viewport.Height * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize;
-        private readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
-        private readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
+        public readonly int XPos = (int)(Game1.viewport.Width * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (632 + IClickableMenu.borderWidth * 2) / 2;
+        public readonly int YPos = (int)(Game1.viewport.Height * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize;
+        public readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
+        public readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
+        int PageIndex = 0;
 
-        private readonly List<ClickableTextureComponent> DeleteButtons = new List<ClickableTextureComponent>();
-        private readonly List<ClickableTextureComponent> RecurringIcons = new List<ClickableTextureComponent>();
-        private readonly List<ClickableComponent> ReminderMessages = new List<ClickableComponent>();
-        private readonly List<ClickableTextureComponent> Boxes = new List<ClickableTextureComponent>();
-        private readonly List<ReminderModel> Reminders = new List<ReminderModel>();
+        readonly List<ClickableTextureComponent> DeleteButtons = new();
+        readonly List<ClickableTextureComponent> RecurringIcons = new();
+        readonly List<ClickableTextureComponent> Boxes = new();
+        readonly List<ClickableComponent> ReminderMessages = new();
+        readonly List<ReminderModel> Reminders = new();
 
-        private readonly ClickableTextureComponent NextPageButton;
-        private readonly ClickableTextureComponent PrevPageButton;
-        private readonly ClickableTextureComponent NewReminderButton;
-        private readonly ClickableComponent NoRemindersWarning;
+        ClickableTextureComponent NextPageButton, PrevPageButton, NewReminderButton;
+        ClickableComponent NoRemindersWarning;
 
-        ///<summary>This is required for switching to New Reminders menu (As its constructor requires this call back function)</summary>
-        private readonly Action<string, string, int, bool> Page1OnChangeBehaviour;
+        /// <summary> This is required for switching to New Reminders menu (As its constructor requires this call back function)</summary>
+        readonly Action<string, string, int, bool> Page1OnChangeBehaviour;
 
-        private ICursorPosition CursorPosition;
-        private int PageIndex = 0;
-
-        /// <summary>Construct an instance.</summary>
         /// <param name="page1OnChangeBehaviour">Required to switch to the New Reminder menu (as its constructor requires this callback function)</param>
         public DisplayReminders(Action<string, string, int, bool> page1OnChangeBehaviour)
         {
             base.initialize(XPos, YPos, UIWidth, UIHeight);
-            this.Page1OnChangeBehaviour = page1OnChangeBehaviour;
+            Page1OnChangeBehaviour = page1OnChangeBehaviour;
 
             SetUpUI();
-
-            NextPageButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Game1.tileSize - Game1.tileSize / 2, yPositionOnScreen + height - Game1.tileSize, Game1.tileSize, Game1.tileSize), Utilities.Globals.Helper.Content.Load<Texture2D>("assets/rightArrow.png", ContentSource.ModFolder), new Rectangle(), 1.5f);
-            PrevPageButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen - Game1.tileSize, yPositionOnScreen + height - Game1.tileSize, Game1.tileSize, Game1.tileSize), Utilities.Globals.Helper.Content.Load<Texture2D>("assets/leftArrow.png", ContentSource.ModFolder), new Rectangle(), 1.5f);
-
-            NoRemindersWarning = new ClickableComponent(new Rectangle(xPositionOnScreen + width / 2 - width / 4 + Game1.tileSize / 2, yPositionOnScreen + height / 2, width, Game1.tileSize), Utilities.Globals.Helper.Translation.Get("display-reminder.zero-reminders"));
-            NewReminderButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen - Game1.tileSize * 5 - IClickableMenu.spaceToClearSideBorder * 2, yPositionOnScreen + IClickableMenu.spaceToClearTopBorder, Game1.tileSize * 5 + Game1.tileSize / 4 + Game1.tileSize / 8, Game1.tileSize + Game1.tileSize / 8), Utilities.Globals.Helper.Content.Load<Texture2D>("assets/NewReminder.png", ContentSource.ModFolder), new Rectangle(), 1.5f);
         }
-
+            
         public void SetUpUI()
         {
+            NextPageButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + Game1.tileSize - Game1.tileSize / 2, yPositionOnScreen + height - Game1.tileSize, Game1.tileSize, Game1.tileSize), Utilities.Globals.Helper.Content.Load<Texture2D>("assets/rightArrow.png", ContentSource.ModFolder), new Rectangle(), 1.5f);
+            PrevPageButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen - Game1.tileSize, yPositionOnScreen + height - Game1.tileSize, Game1.tileSize, Game1.tileSize), Utilities.Globals.Helper.Content.Load<Texture2D>("assets/leftArrow.png", ContentSource.ModFolder), new Rectangle(), 1.5f);
+            NewReminderButton = new ClickableTextureComponent(new Rectangle(xPositionOnScreen - Game1.tileSize * 5 - IClickableMenu.spaceToClearSideBorder * 2, yPositionOnScreen + IClickableMenu.spaceToClearTopBorder, Game1.tileSize * 5 + Game1.tileSize / 4 + Game1.tileSize / 8, Game1.tileSize + Game1.tileSize / 8), Utilities.Globals.Helper.Content.Load<Texture2D>("assets/NewReminder.png", ContentSource.ModFolder), new Rectangle(), 1.5f);
+            NoRemindersWarning = new ClickableComponent(new Rectangle(xPositionOnScreen + width / 2 - width / 4 + Game1.tileSize / 2, yPositionOnScreen + height / 2, width, Game1.tileSize), Utilities.Globals.Helper.Translation.Get("display-reminder.zero-reminders"));
+            
             Reminders.Clear();
             Boxes.Clear();
             ReminderMessages.Clear();
@@ -133,12 +127,6 @@ namespace Dem1se.CustomReminders.UI
             }
         }
 
-        /// <summary>
-        /// Handles the left click on the UI elements
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="playSound"></param>
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
             // clicked next page
@@ -150,6 +138,7 @@ namespace Dem1se.CustomReminders.UI
                     SetUpUI();
                 }
             }
+
             // clicked previous page
             else if (PrevPageButton.containsPoint(x, y))
             {
@@ -179,19 +168,18 @@ namespace Dem1se.CustomReminders.UI
             }
         }
 
-        /// <summary>Defines what to do when hovering over UI elements</summary>
         public override void performHoverAction(int x, int y)
         {
             NewReminderButton.scale = NewReminderButton.containsPoint(x, y)
                 ? Math.Min(NewReminderButton.scale + 0.02f, NewReminderButton.baseScale + 0.1f)
                 : Math.Max(NewReminderButton.scale - 0.02f, NewReminderButton.baseScale);
+
+            // The hover text boxes are handled in the draw() method, as it's justsimpler to just directly
+            // do the drawing than to split up the creation of hover text and the drawing of it.
         }
 
-        /// <summary>The draw calls for the UI elements</summary>
         public override void draw(SpriteBatch b)
         {
-            CursorPosition = Utilities.Globals.Helper.Input.GetCursorPosition();
-
             // suppress the Menu button
             Utilities.Globals.Helper.Input.Suppress(Utilities.Globals.MenuButton);
 
@@ -256,13 +244,13 @@ namespace Dem1se.CustomReminders.UI
             // draw the boxes hover text
             foreach (ClickableTextureComponent box in Boxes)
             {
-                if (box.containsPoint((int)CursorPosition.ScreenPixels.X, (int)CursorPosition.ScreenPixels.Y))
+                if (box.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
                 {
                     if (box.hoverText != null)
                     {
                         int height;
-                        int x = Game1.getMouseX() + 32;
-                        int y = Game1.getMouseY() + 32 + 16;
+                        int x = Game1.getMousePosition(true).X + 32;
+                        int y = Game1.getMousePosition(true).Y + 32 + 16;
                         if (Game1.viewport.Width - (x + Utilities.Extras.EstimateStringDimension(box.hoverText)) < 0)
                             height = Game1.tileSize * 2 + 16;
                         else
@@ -273,7 +261,7 @@ namespace Dem1se.CustomReminders.UI
                 }
             }
 
-            // draw cursor
+            // draw cursor at last
             drawMouse(b);
         }
     }

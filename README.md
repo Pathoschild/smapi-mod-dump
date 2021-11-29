@@ -2,10 +2,10 @@ This repository contains all SMAPI mods in the [SMAPI compatibility list](https:
 It's used to update that page, find mods using specific APIs, etc.
 
 ## Mod stats
-* Last updated 2021-11-01 (SMAPI 3.13.0-beta.20211018 and Stardew Valley 1.5.5-beta).
-* 1494 mods in the SMAPI compatibility list.
-* 1014 mods (68%) have a valid Git repository.
-* 454 repositories (45%) contain multiple mods.
+* Last updated 2021-11-29 (SMAPI 3.13.0-beta.20211127 and Stardew Valley 1.5.5-beta).
+* 1521 mods in the SMAPI compatibility list.
+* 1032 mods (68%) have a valid Git repository.
+* 466 repositories (45%) contain multiple mods.
 
 ## What's in this repository
 * `compiled` has the latest download for each mod, grouped into these categories:
@@ -16,7 +16,7 @@ It's used to update that page, find mods using specific APIs, etc.
   broken in \*   | Mods which broke in that game version.
   okay           | Mods which work fine in the latest versions (and don't fit one of the next two categories).
   okay (Harmony) | Mods which work fine in the latest versions, and use Harmony to patch the game code. Using many Harmony mods together often causes conflicts, so these are separate for testing.
-  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game) and [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492) (which spams fake errors).
+  okay (special groups) | Mods which work fine in the latest version, but need to be tested separately from other mods. That include [Betwitched](https://www.nexusmods.com/stardewvalley/mods/10172) (which prevents loading a save without a Twich username + auth token configured), [Please Fix Error](https://www.nexusmods.com/stardewvalley/mods/6492) (which spams fake errors), and [Pong](https://www.nexusmods.com/stardewvalley/mods/1994) (which overrides the entire game).
 
 * `source` has the latest source code for each open-source SMAPI mod. This only has the _code_, it
   doesn't mirror the Git history. Since many repositories contain multiple mods, mods in `compiled`

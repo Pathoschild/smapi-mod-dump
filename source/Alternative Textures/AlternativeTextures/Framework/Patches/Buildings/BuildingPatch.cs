@@ -134,11 +134,6 @@ namespace AlternativeTextures.Framework.Patches.Buildings
 
                     //building.drawShadow(b, x, y);
                     b.Draw(texture, new Vector2(x, y), building.getSourceRect(), building.color, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 0.89f);
-
-                    if (building is ShippingBin)
-                    {
-                        b.Draw(Game1.mouseCursors, new Vector2(x + 4, y - 20), new Rectangle(134, 226, 30, 25), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
-                    }
                     return;
             }
         }
@@ -172,7 +167,8 @@ namespace AlternativeTextures.Framework.Patches.Buildings
         internal static Texture2D GetBuildingTextureWithPaint(Building building, AlternativeTextureModel textureModel, int textureVariation, bool canBePaintedOverride = false)
         {
             var xOffset = building.tilesWide * 16;
-            var yOffset = textureVariation * textureModel.TextureHeight;
+            var yOffset = textureModel.GetTextureOffset(textureVariation);
+
             var textureWidth = building.CanBePainted() || canBePaintedOverride ? xOffset : textureModel.TextureWidth;
 
             var texture2D = textureModel.GetTexture(textureVariation).CreateSelectiveCopy(Game1.graphics.GraphicsDevice, new Rectangle(0, yOffset, textureWidth, textureModel.TextureHeight));

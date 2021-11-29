@@ -1,0 +1,24 @@
+﻿<div class="message_board_title_lg">Chest Manager<div style="float:right; padding-right: 60px;"><a href="/Custom/StardewWeb/chestman.html">Help</a></div></div>
+<div class="message_paper_board_lg base_font">
+    <table>
+        <tr><td colspan="2" class="chest_header">Category  <select id="topCategory" onchange="TopCategorySelected()">#TOPLOCS#</select> Name <select id="topName" onchange="TopNameSelected()">#TOPNAMES#</select> <button onclick="RefreshTopChest(); return false;">Refresh</button></td></tr>
+        <tr>
+            <td colspan="2"><div class="chest_content" id="topbox">#CONTAINER#</div></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding-right:30px;">
+                <div style="position:relative;">
+                    <div  ondragover="allowDrop(event)"  ondrop="shippingbindrop(event)">
+                        <img src="/images/icons/chest.png" style=" float:right;cursor:move;"  id="ShippingBin"  />
+                        <div style="color:white; position:absolute;top: 40px;right:20px;"  id="ShippingText" >Shipping</div>
+                    </div>
+                    <img src="/images/icons/trash_can.png" style=" float:right; padding-right:40px; padding-top:10px;cursor:move;" ondragover="allowDrop(event)" id="TrashCan" ondrop="trashdrop(event)" />
+                </div>
+            </td>
+        </tr>
+        <tr><td colspan="2" class="chest_header">Category  <select id="bCategory" onchange="BCategorySelected()">#BCATS#</select> Name <select id="bName" onchange="BNameSelected()">#BNAMES#</select> <button onclick="RefreshBottomChest(); return false;">Refresh</button></td></tr>
+        <tr>
+            <td colspan="2"><div class="chest_content" id="bbox">#BCONTAINER#</div></td>
+        </tr>
+    </table>
+</div>

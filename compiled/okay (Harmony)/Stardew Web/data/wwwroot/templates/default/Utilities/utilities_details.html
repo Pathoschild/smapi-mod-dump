@@ -1,0 +1,73 @@
+﻿<div class="message_board_title_lg">Modder Utilities</div>
+
+<div class="message_board_title">Debug Console</div>
+<div class="message_board_title">Debug Commands</div>
+<div class="message_board_list" style="float:left;">
+    <div style="height:375px;">
+        <table>
+            <tr><td>Command</td></tr>
+            <tr><td><input type="text" size="36" id="dcom" /><button onclick="SendDebug();">Send</button></td></tr>
+            <tr><td>Command Output</td></tr>
+            <tr><td><div style="width:100%;height:130px;overflow:auto; border: 1px solid black;background-color:white;" id="dout"></div></td></tr>
+            <tr><td style="height:10px;"></td></tr>
+            <tr><td style="padding:10px; border:4px solid red; text-align:center;"><span style="font-weight: 900; text-decoration:underline;">Warning:</span> These commands are intended for testing and troubleshooting rather than general playing. Some have permanent side effects and may cause crashes or other problems.</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="message_board_list">
+    <div style="height:375px; overflow:auto;">
+        <table style="font-size:20pt;">
+            <thead>
+                <tr><td class="stardew_header fixed_header">Full List</td><td class="stardew_header fixed_header"><a href="https://stardewvalleywiki.com/Modding:Debug_commands" target="_blank">Stardew Wiki</a></td></tr>
+            </thead>
+            <tbody>
+                <tr><td>clearfarm</td><td>Removes nearly everything from the Farm map such as grass, trees, debris, paths, and placed objects (including working machines and filled chests.</td></tr>
+                <tr><td>apt</td><td>Brings up an in game menu to preview character animations.</td></tr>
+                <tr><td>animalinfo</td><td>Displays the animal count in an in game popup.</td></tr>
+                <tr><td>build</td><td>Builds the specified building on the Farm.</td></tr>
+                <tr><td>buildcoop x y</td><td>Build a coop at the specified location</td></tr>
+                <tr><td>characterinfo</td><td>Displays the number of characters in the current map.</td></tr>
+                <tr><td>deletearch</td><td>Clears museum, fish caught, minerals and mail.</td></tr>
+                <tr><td>doesitemexist x</td><td>Searches to see if x is in inventory anywhere.</td></tr>
+                <tr><td>everythingshop</td><td>Opens in game menu with everything for sale.</td></tr>
+                <tr><td>eventseen x</td><td>Marks Event x as seen.</td></tr>
+                <tr><td>friend x y</td><td>Sets friendship points with x to y.</td></tr>
+                <tr><td>specials</td><td>Sets all items in your wallet.</td></tr>
+                <tr><td>clearspecials</td><td>Clears all items in your wallet.</td></tr>
+                <tr><td>localInfo</td><td>Describes the current location.</td></tr>
+                <tr><td>netlog</td><td>Toggles multiplayer logging.</td></tr>
+                <tr><td>netclear</td><td>Clears the multiplayer log.</td></tr>
+                <tr><td>netdump</td><td>Dumps the contents of the multiplayer log to the console.</td></tr>
+                <tr><td>logbandwidth</td><td>Toggle multiplayer bandwidth logging.</td></tr>
+                <tr><td>movie</td><td>Sends player to the movies with random NPCs.</td></tr>
+                <tr><td>nethost</td><td>Starts the multiplayer server.</td></tr>
+                <tr><td>netjoin</td><td>Brings up the join game menu.</td></tr>
+                <tr><td>pm</td><td>Turns the in game display into pan mode.</td></tr>
+                <tr><td>exit</td><td>Exits pan display mode.</td></tr>
+                <tr><td>getallquests</td><td>Adds all quests to the players journal.</td></tr>
+                <tr><td>pausetime</td><td>Pauses the in game time.</td></tr>
+                <tr><td>phone</td><td>Brings up the in game phone call menu.</td></tr>
+                <tr><td>ppp</td><td>Outputs the palyer's position to the console.</td></tr>
+                <tr><td>pgb</td><td>Outputs the locations of the 4 gem birds.</td></tr>
+                <tr><td>pstm</td><td>Warps your spouse to your location.</td></tr>
+                <tr><td>removebuildings</td><td>Removes all buildings from the Farm.</td></tr>
+                <tr><td>runmacro</td><td>Run debug commands from the specified text file.</td></tr>
+                <tr><td>sb x</td><td>Will put text bubble above NPC x.</td></tr>
+                <tr><td>setupfarm</td><td>Clears the Farm and sets up a new one.</td></tr>
+                <tr><td>sleep</td><td>Puts the player to sleep.</td></tr>
+                <tr><td>spreaddirt</td><td>Places dirt on the Farm.</td></tr>
+                <tr><td>spreadseeds x</td><td>Spreads seeds x on the all hoed land on the Farm.</td></tr>
+                <tr><td>trlt</td><td>Brings up an in game menu to preview tailoring things.</td></tr>
+                <tr><td>warpshop</td><td>Warps you to the shop of the specified NPC.</td></tr>
+                <tr><td>wct</td><td>Warps specified NPC to specified location.</td></tr>
+                <tr><td>wctm</td><td>Warps specificed NPC to you.</td></tr>
+                <tr><td>wtc</td><td>Warps you to the specified NPC.</td></tr>
+                <tr><td>wtp</td><td>Warps you to another player.</td></tr>
+                <tr><td>setupfishpondfarm</td><td>Creates farm full of fish ponds</td></tr>
+                <tr><td>spawncoopsandbarns x</td><td>Spawns x number of coops and barns</td></tr>
+                <tr><td>setupbigfarm</td><td>Creates a big farm.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -23,9 +23,9 @@ Also, nothing else about your tools is affected. They still use the same animati
 2. Unzip the mod folder into Stardew Valley/Mods.
 3. Run the game using SMAPI.
 
-## User Configuration (edit config.json)
+## User Configuration
 
-**NOTE:** Not much is affected under the default settings, so make sure to change these to what you want!
+**NOTE:** Not much is affected under the default settings, so make sure to change these to what you want! Either edit the **config.json** file directly, or if you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed, open Mod Config from the title screen or options menu.
 
 **AxeRange / PickaxeRange / HoeRange / WateringCanRange (1 or greater, -1 for unlimited range)**
 

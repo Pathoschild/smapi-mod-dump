@@ -191,7 +191,7 @@ namespace Swim
                 Monitor.Log($"assets/swim-map-content.json file read error. Exception: {ex}", LogLevel.Warn);
             }
 
-            if (!SwimUtils.IsWearingScubaGear() && Config.SwimSuitAlways)
+            if (!SwimUtils.IsWearingScubaGear() && Config.SwimSuitAlways && !Config.NoAutoSwimSuit)
                 Game1.player.changeIntoSwimsuit();
 
             bubbleTexture = Helper.Content.Load<Texture2D>("LooseSprites/temporary_sprites_1", ContentSource.GameContent);
@@ -713,7 +713,7 @@ namespace Swim
 
                 if (Game1.player.bathingClothes.Value && SwimUtils.IsWearingScubaGear() && !Config.SwimSuitAlways)
                     Game1.player.changeOutOfSwimSuit();
-                else if (!Game1.player.bathingClothes.Value && (!SwimUtils.IsWearingScubaGear() || Config.SwimSuitAlways))
+                else if (!Game1.player.bathingClothes.Value && !Config.NoAutoSwimSuit && (!SwimUtils.IsWearingScubaGear() || Config.SwimSuitAlways))
                     Game1.player.changeIntoSwimsuit();
 
                 if (Game1.player.boots.Value != null && ModEntry.scubaFinsID.Value != -1 && Game1.player.boots.Value.indexInTileSheet.Value == ModEntry.scubaFinsID.Value)
@@ -746,7 +746,7 @@ namespace Swim
 
 
                     Game1.player.swimming.Value = true;
-                    if (!Game1.player.bathingClothes.Value && !SwimUtils.IsWearingScubaGear())
+                    if (!Game1.player.bathingClothes.Value && !SwimUtils.IsWearingScubaGear() && !Config.NoAutoSwimSuit)
                         Game1.player.changeIntoSwimsuit();
                 }
 
@@ -876,7 +876,7 @@ namespace Swim
                 else
                 {
                     ModEntry.willSwim.Value = true;
-                    if(!SwimUtils.IsWearingScubaGear())
+                    if(!SwimUtils.IsWearingScubaGear() && !Config.NoAutoSwimSuit)
                         Game1.player.changeIntoSwimsuit();
                     
                     Game1.player.freezePause = Config.JumpTimeInMilliseconds;

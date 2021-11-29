@@ -1,0 +1,60 @@
+{
+	// Option Headers
+	"headerRanges": "範囲の設定",
+	"headerUseOnTile": "使用の設定",
+	"headerFaceClick": "クリックへ向かう",
+	"headerMisc": "他の設定",
+	
+	// Ranges
+	"optionRangeName": "{{subject}}範囲",
+	"optionRangeTooltip": "{{subject}}範囲（プレイヤーからの最大距離）。",
+	
+	"axeForRangeName": "オノの",
+	"axeForRangeTooltip": "オノの",
+	"pickaxeForRangeName": "ツルハシの",
+	"pickaxeForRangeTooltip": "ツルハシの",
+	"hoeForRangeName": "クワの",
+	"hoeForRangeTooltip": "クワの",
+	"wateringCanForRangeName": "ジュウロの",
+	"wateringCanForRangeTooltip": "ジュウロの",
+	"seedsForRangeName": "タネの",
+	"seedsForRangeTooltip": "タネを植える、肥料をまける",
+	"objectsForRangeName": "置物の置く",
+	"objectsForRangeTooltip": "置物を置ける",
+	
+	"rangeUnlimited": "無限",
+	"rangeDefault": "1マス（普通）",
+	"rangeExtended": "{{tiles}}マス",
+	
+	// Usability
+	"optionSelfUsabilityName": "{{tool}}が自分のタイルにも使用",
+	"optionSelfUsabilityTooltip": "プレイヤーがいるタイルにも{{tool}}が使える。",
+	
+	"axeForUsabilityName": "オノ",
+	"axeForUsabilityTooltip": "オノ",
+	"pickaxeForUsabilityName": "ツルハシ",
+	"pickaxeForUsabilityTooltip": "ツルハシ",
+	"hoeForUsabilityName": "クワ",
+	"hoeForUsabilityTooltip": "クワ",
+	
+	// Turn To Click
+	"optionToolFaceClickName": "ツール使用時クリックへ向かう",
+	"optionToolFaceClickTooltip": "ツールを使用する時、自動的にカーソルの方へ向かう。",
+	
+	"optionWeaponFaceClickName": "ブキ使用時クリックへ向かう",
+	"optionWeaponFaceClickTooltip": "ブキを使用する時、自動的にカーソルの方へ向かう。",
+	
+	// Miscellaneous
+	"optionToolHitLocationName": "使用先タイル表示",
+	"optionToolHitLocationTooltip": "「ツールの使用先タイルを表示」オプションの動作。\n普通の範囲表示：普通の範囲により使用先を決める。\nカスタム範囲表示：カスタム範囲により使用先を決める。\nどっちも表示：同時にどっちのタイプも表示する。",
+	
+	"locationLogicOriginal": "普通の範囲表示",
+	"locationLogicNew": "カスタム範囲表示（おススメ）",
+	"locationLogicCombined": "どっちも表示",
+	
+	"optionAllowRangedChargeName": "遠くチャージ使用",
+	"optionAllowRangedChargeTooltip": "普通より遠く距離でもツールのチャージ行動が使える。この場合、プレイヤーじゃなくてカーソル位置から出ます。",
+	
+	"optionOnClickOnlyName": "範囲設定はクリック時のみ",
+	"optionOnClickOnlyTooltip": "オン時、カスタム範囲設定はクリックのみで有効。オフ時、どんなどうぐ使用ボタンでも有効。",
+}

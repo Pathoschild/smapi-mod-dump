@@ -38,6 +38,7 @@ namespace FarmTypeManager
                     case SavedObject.ObjectType.Object:
                     case SavedObject.ObjectType.Item:
                     case SavedObject.ObjectType.Container:
+                    case SavedObject.ObjectType.DGA:
                         //these are valid item types
                         break;
                     default:
@@ -46,7 +47,7 @@ namespace FarmTypeManager
                         return null;
                 }   
 
-                if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container) //if this save doesn't have an ID (and isn't a container)
+                if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container && save.Type != SavedObject.ObjectType.DGA) //if this save doesn't have an ID (and isn't a container or a DGA item)
                 {
                     Monitor.Log("Failed to create an item. Saved object contained no ID.", LogLevel.Debug);
                     Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
@@ -132,6 +133,28 @@ namespace FarmTypeManager
                     case "crate":
                     case "crates":
                         item = new BreakableContainerFTM(tile, contents, false); //create a mineshaft-style breakable crate with the given contents
+                        break;
+                    case "dga":
+                        try
+                        {
+                            object rawDGA = DGAItemAPI.SpawnDGAItem(save.Name); //create an item with DGA's API
+
+                            if (rawDGA is Item itemDGA) //if this is a non-null Item
+                                item = itemDGA; //use it
+                            else
+                            {
+                                Monitor.Log("Failed to create an item. Dynamic Game Assets (DGA) item was null or an unrecognized type.", LogLevel.Debug);
+                                Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                                return null;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.LogOnce($"Error spawning a Dynamic Game Assets (DGA) item. The auto-generated error message has been added to the log.", LogLevel.Info);
+                            Monitor.Log($"----------", LogLevel.Trace);
+                            Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                            return null;
+                        }
                         break;
                     case "furniture":
                         item = new Furniture(save.ID.Value, tile);

@@ -24,9 +24,9 @@ namespace Dem1se.CustomReminders.UI
         readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
         readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
 
-        private ClickableTextureComponent OkButton;
-        private TextBox IntervalTextBox;
-        private List<ClickableComponent> Labels = new List<ClickableComponent>();
+        ClickableTextureComponent OkButton;
+        TextBox IntervalTextBox;
+        List<ClickableComponent> Labels = new();
 
         Action<int> OnChanged;
 

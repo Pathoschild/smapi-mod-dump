@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    #HEAD#
+    <script>
+
+        function LocalPageLoaded() {
+            var input = document.getElementById("searchbox");
+
+            input.addEventListener("keyup", function (event) {
+
+                Search();
+            });
+            SubPageLoaded('Mods', 'MyMods');
+            FetchData('');
+        }
+
+
+        function FetchData(sQuery) {
+
+            var sUrl = '/ModInfo?query=' + sQuery;
+            fetch(sUrl)
+                .then(function (response) {
+                    return response.text();
+                }).then(function (text) {
+                    document.getElementById('results').innerHTML = text;
+                    //document.getElementById('alphabar').innerHTML = data.AlphaBar;
+                })
+                .catch(error =>
+                    document.getElementById('results').innerHTML = 'Fetch error: ' + error
+                );
+
+
+        }
+
+        function Search() {
+            FetchData(document.getElementById("searchbox").value)
+        }
+    </script>
+</head>
+<body onload="LocalPageLoaded();">
+
+    #MENUBAR#
+    <div class="stardew_container top_margin_50 med_bottom_pad">
+        <div class="container">
+            <div class="message_board_title_flex">Mod Custom Pages</div>
+            <div class="message_paper_board_flex base_font_flex">
+                <div style="max-height:200px;overflow:auto;">
+                    #CUSTOM#
+                </div>
+            </div>
+            <div class="message_board_title_lg">Installed Mods (#COUNT#)</div>
+            <div class="message_board_title_lg">
+                <div style="width: 90%;">
+                    <div class="" style="padding-top: 15px; padding-bottom:20px; text-align:left; padding-left:60px;">
+                        Search for <input type="text" width="15" id="searchbox" /><button onclick="Search(); return false;">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="message_board_flex">
+                <div class="message_board_flex_inside" id="results">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br /><br />
+</body>
+</html>

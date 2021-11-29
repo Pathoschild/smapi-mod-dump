@@ -1,0 +1,277 @@
+{
+  "gameloaded": "Game is loaded.",
+  "gamenotloaded": "Game is not loaded.",
+  //
+  //  nav bar captions
+  //
+  "navbar.home": "Today",
+  "navbar.tasks": "Daily Tasks",
+  "navbar.production": "Production",
+  "navbar.inventory": "Inventory",
+  "navbar.shipping": "Basic Shipments",
+  "navbar.social": "Social",
+  "navbar.collections": "Collections",
+  "navbar.bundles": "Bundles",
+  "navbar.quests": "Quests",
+  "navbar.stats": "Stats",
+  "navbar.mods": "My Mods",
+  "navbar.logs": "Logs",
+  "navbar.about": "About",
+  "navbar.multi": "Multiplayer",
+  "navbar.modderutils": "Utilities",
+  "navbar.warps": "Warps",
+  "navbar.dailypic": "Daily Screenshot",
+  "navbar.events": "Events",
+  "navbar.locations": "Locations",
+  "navbar.chestman": "Chest Manager",
+  "navbar.farm": "Farm",
+  "navbar.farmer": "Farmer",
+  "navbar.console": "Console",
+  "navbar.map": "Map",
+  "navbar.xnb": "XNB Files",
+  "navbar.planning": "Planning",
+  "navbar.machines": "Machines",
+  "navbar.fish": "Fish",
+  "navbar.flowers": "Flowers",
+  "navbar.fruits": "Fruits",
+  "navbar.vegetables": "Vegetables",
+  "navbar.tools": "Tools",
+  "navbar.weapons": "Weapons",
+  "navbar.crafting": "Crafting",
+  "navbar.artisan": "Artisan Goods",
+  "navbar.bigcraftable": "Big Craftable",
+  "navbar.crops": "Crops",
+  "navbar.livestock": "Livestock",
+  //
+  //  web messages
+  //
+  "dailytasks.noquests": "You have no active quests at the moment.",
+  "wm.cachecleared": "The server cache has been cleared.",
+  "wm.enablewarps": "Warping is disabled.  If you wish to use Warps select 'Warping Enabled' in the Config view.",
+  "wm.potential.notenabled": "This option is disabled. To view this information enable 'Show Potential Events List' in the <a href='/Config'>Config</a> view.",
+  "wm.weather.any": "Any",
+  "wm.additem.okay": "{{qty}} {{prod}} added to your inventory.",
+  "wm.additem.full": "Cannot be added, your inventory is full.",
+  "wm.search.edible": "Edible. Energy Restored: {{energy}}  Health Restored {{health}}",
+  "wm.search.value": "(Gross profit: {{increase}}g)",
+  "wm.search.sells": "Sells for {{price}}g.",
+  "wm.search.nothing": "Nothing.",
+  "wm.search.planted": "They can be planted in {{season}}.",
+  "wm.search.tree": "The tree will produce {{crop}}s during the {{season}}.",
+  "wm.search.category": "[Category] {{category}}",
+  "wm.search.type": "[Type] {{type}}",
+  "wm.search.name": "[Name] {{name}}",
+  "wm.search.query": "No items were found matching your query '{{query}}'.",
+  "wm.search.noreqs": "No requirements.",
+  "wm.calendar.cart": "The Travelling Cart is in Cindersap Forest today from 06:00 to 20:00.",
+  "wm.calendar.blackberry": "Blackberries are in season.",
+  "wm.calendar.salmonberry": "Salmonberries are in season.",
+  "wm.eventtype.bday": "Birthday",
+  "wm.eventtype.bberry": "Blackberry Season",
+  "wm.eventtype.festival": "Festival",
+  "wm.eventtype.other": "Other",
+  "wm.eventtype.sberry": "Salmonberry Season",
+  "wm.eventtype.cart": "Travelling Cart",
+  "wm.calendar.birthday": "It's {{NPC}} birthday today.",
+  "wm.mods.jamod": "This is a Json Asset Content Pack and adds the following items to the game:",
+  "wm.mods.dgamod": "This is a Dynamic Game Asset Content Pack and adds the following items to the game:",
+  "wm.mods.ja.crops": "Crops",
+  "wm.mods.ja.objects": "Objects",
+  "wm.mods.ja.bc": "Big Craftables",
+  "wm.mods.ja.other": "Other",
+  "wm.mods.ja.trees": "Trees",
+  "wm.mods.ja.weapons": "Weapons",
+  "wm.mods.ja.clothing": "Clothing",
+  "wm.mods.ja.hats": "Hats",
+  "wm.mods.pfmmod": "This is a Producer Framework Mod and it adds crafting recipes to machines.",
+  "wm.achieve.prereq": "You must complete the Achievement '{{achieve}} first.",
+  "wm.achieve.unknown": "You must complete an unknown Achievement, key {{key}}.",
+  "wm.crops.multiple.crops": "There is a chance of yeilding multiple {{crop}}.",
+  "wm.crops.continue.grow": "The crop will continue to grow after the first harvest.",
+  "wm.crops.inseason": "The seeds are in season and can be planted.",
+  "wm.crops.inventory": "You have {{quantity}} {{name}} in inventory.",
+  "wm.blueprints.upgrades": "Upgrades a {{thing}}",
+  "wm.blueprints.ismagical": "Is magical.",
+  "wm.crafting.ina": "Craft in a {{thing}}",
+  "wm.queen.sauce": "Will be shown on Queen of Sauce",
+  "wm.sold.at": "Recipe sold at {{shop}} for {{details}}g.",
+  "wm.error.fetching": "An error occurred fetching your request.  Check the <a href='/Logs'>logs</a> for details.",
+  "wm.defnces.up": "Defense (+{{strength}})",
+  //
+  //  preconditions
+  //
+  "precon.location": "The Player is in the location '{{l}}'.",
+  "precon.sunny": "Weather must be sunny.",
+  "precon.rainy": "Weather must be rainy.",
+  "precon.pass": "Pass: ",
+  "precon.fail": "Fail: ",
+  "precon.or": " or ",
+  "precon.any": "Any",
+  "precon.a": "Player is at tile position {{x}},{{y}}.",
+  "precon.a.maybe": "Move to position {{x}},{{y}}.",
+  "precon.b": "Player has reached the bottom floor of the mine at least {{b}} times.",
+  "precon.c": "The Player has at least {{c}} free inveontory slots.",
+  "precon.c.maybe": "If the Player frees up {{c}} inventory slots.",
+  "precon.d": "Today must not be {{d}}.",
+  "precon.e": "The Player has seen the event(s) {{e}}.",
+  "precon.f.pass": "Have reached required friendhsip level with {{f}}.",
+  "precon.f.fail": "Have not reached the required friendship level with {{f}}.",
+  "precon.g": "Player must be {{g}}.",
+  "precon.i": "Player must have item {{i}} in inventory.",
+  "precon.j": "The Player has played for more than {{j}} game days.",
+  "precon.k": "The player has not seen the event(s) {{k}}.",
+  "precon.l": "The Player has not seen the mail or mail flag {{l}}.",
+  "precon.m": "The Player must have earned at least {{m}} money.",
+  "precon.n": "The Player has seen the mail or mail flag {{n}}.",
+  "precon.o": "The Player is not married to {{o}}.",
+  "precon.p": "{{p}} is in the current location.",
+  "precon.p.maybe": "When {{p}} is in location {{l}}",
+  "precon.q": "The Player has chosen the follwoing dialogue Ids: {{q}}.",
+  "precon.s": "The Player has shipped the following items and quantities: {{s}}.",
+  "precon.t": "The Game time must be between {{min}} and {{max}}.",
+  "precon.t.maybe": "Between the hours of {{min}} and {{max}}.",
+  "precon.u": "The day of the month must be {{u}}.",
+  "precon.v": "Tne NPC {{v}} is not invisible.",
+  "precon.x": "For the Player mark the Event as seen send the mail '{{x}}'",
+  "precon.y": "Year is at least year {{y}}.",
+  "precon.z": "Season must not be {{z}}.",
+  "precon.cA": "Dialogue {{A}} is not in progress.",
+  "precon.cC": "Host Player has not finished the communitty centre or has not seen the grand re-opening.",
+  "precon.cD": "Current playing is dating {{D}}.",
+  "precon.cF": "Today is not a Festival day.",
+  "precon.cH": "Current Player is the host player.",
+  "precon.cHl": "The Host Player has not received mail or non-mail flag {{Hl}}.",
+  "precon.cHn": "The Host Player has received mail or non-mail flag {{Hn}}.",
+  "precon.cM": " Player has at least {M}} money.",
+  "precon.cM.maybe": "Increase your balance to {{M}}",
+  "precon.cO": "Player is married to {{O}}.",
+  "precon.cS": "Player has seen Secret Note {{S}}.",
+  "precon.cU": "No Festivals with {{U}} days.",
+  "precon._l": "Host Player and current Player have not received the mail or non-mail flag {{l}}.",
+  "precon._n": "Host Player and current Player have received the mail or non-mail flag {{n}}.",
+  //
+  //  product modifiers
+  //
+  "prod.egg.brown": "(Brown)",
+  //
+  //  error messages
+  //
+  "plugin.old": "One of your Plugins are out of date.  Please check for any plugin updates.",
+  "plugin.error": "Possible plugin issue, error updating cache for plugins: ",
+  "error.seelog": "An error occured, see log for details.",
+  //
+  //  farmer details
+  //
+  "farmer.status.married": "Married",
+  "farmer.status.divorced": "Divorced",
+  "farmer.status.engaged": "Engaged",
+  "farmer.status.single": "Single",
+  "farmer.gender.male": "Male",
+  "farmer.gender.femal": "Female",
+  //
+  //  friendship
+  //
+  "farmer.friendship.dating.girlfriend": "Girlfriend",
+  "farmer.friendship.dating.boyfriend": "Boyfriend",
+  "farmer.friendship.divorced": "Divorced",
+  "farmer.friendship.engaged": "Engaged",
+  "farmer.friendship.friendly": "Single",
+  "farmer.friendship.married": "Married",
+  //
+  //  answers
+  //
+  "answer.yes": "Yes",
+  "answer.no": "No",
+  //
+  //  skills table
+  //
+  "skills.farming": "Farming",
+  "skills.mining": "Mining",
+  "skills.foraging": "Foraging",
+  "skills.fishing": "Fishing",
+  "skills.combat": "Combat",
+  //
+  //  tooltips
+  //
+  "tooltip.canunderstanddwarves": "Unlocks the ability to speak to the Dwarf in The Mines",
+  "tooltip.hasrustykey": "Used to enter The Sewers",
+  "tooltip.hasmagnifyingglass": "Unlocks the ability to find Secret Notes",
+  "tooltip.hasclubcard": "Used to enter the Casino",
+  "tooltip.hasspecialcharm": "Permanently increases daily Luck",
+  "tooltip.hasskullkey": "Unlocks the door to the Skull Cavern and unlocks the Junimo Kart machine in The Stardrop Saloon",
+  "tooltip.hasdarktalisman": "Quest item",
+  "tooltip.hasmagicink": "Quest item",
+  "tooltip.hasbearpaw": "Increases sell price of blackberries and salmonberries by 3x",
+  "tooltip.springonionbugs": "Increases sell price of Spring Onions by 5x",
+  "tooltip.hastownkey": "Allows access to all buildings in town, at any time of day",
+  "tooltip.hasjojacard": "Has a Joja membership card.",
+  //
+  //  daily tasks
+  //
+  "tasks.complete": "All done!.",
+  "tasks.nothingtodo": "Nothing to do.",
+  //
+  //  animal tasks
+  //
+  "tasks.animal.notpettedanimals": "Not petted animals",
+  "tasks.animal.uncollectedanimalproduct": "Uncollected animal products",
+  "tasks.animal.emptyhay": "Empty hay spots on feeding benches",
+  "tasks.animal.at": " at ",
+  "tasks.animal.has": " has ",
+  "tasks.animal.missinghay": " hay missing at ",
+  "tasks.animal.missinghays": " hays missing at ",
+  "tasks.animal.ponds.attention": "Ponds needing attention",
+  "tasks.animal.ponds.collect": "Ponds with items to collect",
+  //
+  //  crop tasks
+  //
+  "tasks.crop.notwatered": " crops not watered",
+  "tasks.crop.readytoharvest": " crops ready to harvest",
+  "tasks.crop.dead": "Dead crops in the ",
+  "tasks.crop.fruits": "Fruit trees with fruits in the ",
+  "tasks.crop.label.unwatered": "Unwatered crops",
+  "tasks.crop.label.harvest": "Ready to harvest crops",
+  "tasks.crop.label.crops": "Dead crops",
+  "tasks.crop.label.fruits": "Fruit trees with fruits",
+  "tasks.crop.treeat": " tree at ",
+  "tasks.crop.with": " with ",
+  "tasks.crop.withfruit": " fruit ",
+  "tasks.crop.withfruits": " fruits ",
+  "tasks.crop.at": " at ",
+  //
+  //  cave tasks
+  //
+  "tasks.cave.incave": " in the farm cave",
+  "tasks.cave.itemname.fruits": "Fruits",
+  "tasks.cave.itemname.mushrooms": "Mushrooms",
+  //
+  // misc tasks
+  //
+  "tasks.misc.queen": "There's a new recipe on The Queen of Sauce.",
+  "tasks.misc.merchant": "The traveling merchant is in town.",
+  "tasks.misc.birthday": "It's {{NPCName}} birthday!",
+  "tasks.misc.nohay": "You have no hay left.",
+  "tasks.misc.hay": "You only have {{count}} hay left.",
+  "tasks.misc.lastday": "It's the last day of the season, make sure to harvest all of your applicable crops.",
+  //
+  //  object tasks
+  //
+  "tasks.object.crab": "Crabpots ready to collect",
+  "tasks.object.crabpot": "Crabpots not baited",
+  "tasks.object.machine": "Uncollected machines",
+  "tasks.object.silver": "Silver ",
+  "tasks.object.gold": "Gold ",
+  "tasks.object.iridium": "Iridium ",
+  "tasks.object.with": " with ",
+  //
+  //  pet tasks
+  //
+  "tasks.pet.pet": "You did not pet your pet today.",
+  "tasks.pet.bowl": "You did not fill your pet's bowl.",
+  "tasks.at": " at ",
+  //
+  //  terrain tasks
+  //
+  "tasks.terrain.fence": "Damaged Fence at Farm",
+  "tasks.terrain.damaged": "Damaged Fences: "
+}

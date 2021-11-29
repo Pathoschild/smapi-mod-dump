@@ -73,7 +73,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     }
                 }
 
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
                 var sourceRect = new Rectangle(Math.Min(2, __instance.getAge() / 10) * 16 + __instance.tileSheetOffset.Value * 16, textureOffset, 16, 32);
                 spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + (float)((effectiveSize + 1) * 64 / 2), (tileLocation.Y + 1f) * 64f - (float)((effectiveSize > 0 && (!__instance.townBush || effectiveSize != 1) && (int)__instance.size != 4) ? 64 : 0) + ___yDrawOffset)), sourceRect, Color.White * ___alpha, ___shakeRotation, new Vector2((effectiveSize + 1) * 16 / 2, 32f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox(tileLocation).Center.Y + 48) / 10000f - tileLocation.X / 1000000f);
 

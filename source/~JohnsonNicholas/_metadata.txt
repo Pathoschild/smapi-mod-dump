@@ -8,11 +8,12 @@ mods:
    Time Reminder
 
 latest commit:
-   commit 21eddc296ae3ddd814491306e96bc22a03cfaa3c
+   commit 6c6974cd7c2b64da1eb46116a267cc1b1d9f26e6
+   Merge: 13681ad 6cc34f0
    Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
-   Date:   Sat Jul 3 11:08:24 2021 -0700
+   Date:   Thu Nov 25 20:14:48 2021 -0800
    
-       Update LICENSE
+       Merge pull request #101 from ImJustMatt/develop
        
-       Thanks, Nexus.
+       Update for successful compilation to SDV 1.5.5
    

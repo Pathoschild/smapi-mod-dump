@@ -46,13 +46,13 @@ namespace QuestEssentials.Framework
 
             QuestTask task;
             string type = jObject["Type"].ToString();
-            if (!QuestTask.knownTypes.ContainsKey(type))
+            if (!QuestTask.IsKnownTaskType(type))
             {
                 throw new JsonException($"Unknown story quest type `{type}`");
             }
 
-            QuestEssentialsMod.ModMonitor.Log($"StoryQuestTaskConverter: Using class type <{QuestTask.knownTypes[type].FullName}> for `{type}`");
-            task = (QuestTask)jObject.ToObject(QuestTask.knownTypes[type], serializer);
+            QuestEssentialsMod.ModMonitor.Log($"StoryQuestTaskConverter: Using class type <{QuestTask.GetTaskType(type).FullName}> for `{type}`");
+            task = (QuestTask)jObject.ToObject(QuestTask.GetTaskType(type), serializer);
             this._inside = false;
 
             return task;

@@ -1,0 +1,108 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FashionSense
+**
+*************************************************/
+
+{
+  "Name": "Mage's Robe",
+  "FrontShirt": {
+    "IsPrismatic": true,
+    "PrismaticAnimationSpeedMultiplier": 2.0,
+    "SleeveColors": [
+      [ 9, 9, 10 ],
+      [ 107, 84, 79 ],
+      [ 198, 157, 131 ]
+    ],
+    "ColorMasks": [
+      [ 93, 92, 83 ],
+      [ 68, 68, 62 ]
+    ],
+    "StartingPosition": {
+      "X": 1,
+      "Y": 2
+    },
+    "BodyPosition": {
+      "X": 3,
+      "Y": 2
+    },
+    "ShirtSize": {
+      "Width": 16,
+      "Length": 14
+    }
+  },
+  "RightShirt": {
+    "IsPrismatic": true,
+    "PrismaticAnimationSpeedMultiplier": 2.0,
+    "SleeveColors": [
+      [ 9, 9, 10 ],
+      [ 107, 84, 79 ],
+      [ 198, 157, 131 ]
+    ],
+    "ColorMasks": [
+      [ 93, 92, 83 ],
+      [ 68, 68, 62 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 16
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "ShirtSize": {
+      "Width": 8,
+      "Length": 8
+    }
+  },
+  "LeftShirt": {
+    "Flipped": true,
+    "IsPrismatic": true,
+    "PrismaticAnimationSpeedMultiplier": 2.0,
+    "SleeveColors": [
+      [ 9, 9, 10 ],
+      [ 107, 84, 79 ],
+      [ 198, 157, 131 ]
+    ],
+    "ColorMasks": [
+      [ 93, 92, 83 ],
+      [ 68, 68, 62 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 16
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "ShirtSize": {
+      "Width": 8,
+      "Length": 8
+    }
+  },
+  "BackShirt": {
+    "SleeveColors": [
+      [ 9, 9, 10 ],
+      [ 107, 84, 79 ],
+      [ 198, 157, 131 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 24
+    },
+    "BodyPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "ShirtSize": {
+      "Width": 8,
+      "Length": 8
+    }
+  }
+}

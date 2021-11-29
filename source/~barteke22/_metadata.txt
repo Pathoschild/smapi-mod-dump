@@ -9,9 +9,9 @@ mods:
    Fishing Minigames
 
 latest commit:
-   commit 28219515137f22d1520c8ceb7cafed5a9a276340
+   commit 9fe0e11275a1049dd7b39a73f67dcd64be64b5df
    Author: barteke22 <bartosz2008@hotmail.com>
-   Date:   Thu Oct 28 01:56:03 2021 +0200
+   Date:   Thu Nov 11 12:57:07 2021 +0100
    
-       Stuff
+       GMCM
    

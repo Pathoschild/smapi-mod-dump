@@ -1,0 +1,256 @@
+﻿{
+	"Metadata": {
+		"Custom_blueberry_Kitchen_Area0": {
+			"BundlesRequired": 1,
+			"JunimoColourName": "MediumPurple",
+			"AreaBounds": {
+				"X": 0,
+				"Y": 0,
+				"Width": 10,
+				"Height": 11
+			},
+			"NoteTileLocation": {
+				"X": 7,
+				"Y": 6
+			},
+			"JunimoOffsetFromNoteTileLocation": {
+				"X": 0,
+				"Y": 2
+			},
+			"AreaCompleteCutscene": {
+				"CameraTileLocation": {
+					"X": 43,
+					"Y": 70
+				},
+				"Actors": [
+					{
+						"ColourName": "MediumPurple",
+						"TileLocation": {
+							"X": 39,
+							"Y": 72
+						}
+					},
+					{
+						"TileLocation": {
+							"X": 47,
+							"Y": 72
+						}
+					}
+				],
+				"LocationName": "Town"
+			},
+			"AreaDisplayName": {
+				"en": "Kitchen",
+				"de": "Küche",
+				"es": "Cocina",
+				"fr": "Cuisine",
+				"hu": "Konyha",
+				"it": "Cucina",
+				"ja": "キッチン",
+				"ko": "부엌",
+				"pt": "Cozinha",
+				"ru": "Кухня",
+				"tr": "Mutfak",
+				"zh": "厨房"
+			},
+			"AreaRewardMessage": {
+				"en": "Reward: Saloon delivery",
+				"de": "Belohnung: Kneipe telefonzustelldienst",
+				"es": "Recompensa: Entrega de salón",
+				"fr": "Récompense : Livraison de saloon",
+				"hu": "Jutalom: Szállítás a szalonból",
+				"it": "Premio: Consegna de saloon",
+				"ja": "ごほうび： サルーンの配達",
+				"ko": "보상: 주점의 배달 서비스",
+				"pt": "Recompensa: Entrega de saloon",
+				"ru": "Награда: Cалуна доставка",
+				"tr": "Ödül: Salon'dan siparişler",
+				"zh": "奖励：吧的格送餐服务"
+			},
+			"AreaCompleteDialogue": {
+				"en": "To show our gratitude... We'll tidy up as you go.",
+				"de": "Um unsere Dankbarkeit zu zeigen... werden wir aufräumen, sobald du gehst.",
+				"es": "Para mostrar nuestra gratitud... Lo ordenaremos sobre la marcha.",
+				"fr": "Pour montrer notre gratitude... Nous rangerons au fur et à mesure.",
+				"hu": "Hálánk kifejezése érdekében takarítunk amíg dolgozik...",
+				"it": "Per mostrare la nostra gratitudine... Riordineremo mentre vai avanti.",
+				"ja": "感謝の気持ちとして…。お片付けをしておきます。",
+				"ko": "정말 고맙다모... 우리가 치워주겠다모.",
+				"pt": "Para mostrar nossa gratidão ... Vamos arrumar enquanto você avança.",
+				"ru": "Чтобы выразить нашу благодарность... Мы приберемся после твоего ухода.",
+				"tr": "Minnetarlığımızı göstermek için sen giderken biz toparlayacağız...",
+				"zh": "为了表示我们对你的感谢... 在你走后我们将会把这里打扫干净."
+			},
+			"BundleDisplayNames": {
+				"Custom_blueberry_Kitchen_Area0_Bundle0": {
+					"en": "Baker's",
+					"de": "Bäcker",
+					"es": "Panadería",
+					"fr": "Boulangerie",
+					"hu": "Pék",
+					"it": "del Fornaio",
+					"ja": "パン屋",
+					"ko": "제빵사의",
+					"pt": "Padeiro",
+					"ru": "Пекарский",
+					"tr": "Fırın",
+					"zh": "烘焙"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle1": {
+					"en": "Diner's",
+					"de": "Imbiss",
+					"es": "Comida",
+					"fr": "Restauranteur",
+					"hu": "Vacsoraevő",
+					"it": "del Diner",
+					"ja": "ダイナー",
+					"ko": "식당의",
+					"pt": "Janta",
+					"ru": "Обеденный",
+					"tr": "Lokanta",
+					"zh": "餐厅"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle2": {
+					"en": "Picnicker's",
+					"de": "Picknick",
+					"es": "Excursionista",
+					"fr": "Pique-niqueur",
+					"hu": "Piknik",
+					"it": "del Picnic",
+					"ja": "ピクニック",
+					"ko": "소풍객의",
+					"pt": "Piquenique",
+					"ru": "Пикниковый",
+					"tr": "Piknik",
+					"zh": "野餐"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle3": {
+					"en": "Seafood",
+					"de": "Meeresfrüchte",
+					"es": "Mariscos",
+					"fr": "Fruits-de-mer",
+					"hu": "Tenger Gyümölcsei",
+					"it": "Frutti di Mare",
+					"ja": "シーフード",
+					"ko": "해물",
+					"pt": "Frutos do Mar",
+					"ru": "Морепродукты",
+					"tr": "Deniz Ürünleri",
+					"zh": "海鲜"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle4": {
+					"en": "Fresh-Picked",
+					"de": "Frisch Gepflückt",
+					"es": "Recién-Cosechado",
+					"fr": "Fraîchement Cueillis",
+					"hu": "Friss Ételek",
+					"it": "Appena Raccolto",
+					"ja": "採れたての",
+					"ko": "신선한 음식",
+					"pt": "Recém-Colhido",
+					"ru": "Свежесобранный",
+					"tr": "Taze Toplanmış",
+					"zh": "新鲜食品"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle5": {
+					"en": "Inedible",
+					"de": "Ungenießbar",
+					"es": "Incomible",
+					"fr": "Immangeable",
+					"hu": "Ehetetlen",
+					"it": "Immangiabile",
+					"ja": "食べられない",
+					"ko": "먹을 수 없는",
+					"pt": "Não Comestível",
+					"ru": "Несъедобный",
+					"tr": "Yenmeyen",
+					"zh": "不可食用"
+				}
+			}
+		}
+	},
+	"Definitions": {
+		"Custom_blueberry_Kitchen_Area0": {
+			"BundleSets": [
+			],
+			"Bundles": {
+				"Custom_blueberry_Kitchen_Area0_Bundle0": {
+					"Index": 0,
+					"Sprite": "bundleSprites:0",
+					"Colour": "Purple",
+					"Items": "1 Rhubarb Pie, 1 Strange Bun, 1 Fruit Salad, 1 Chocolate Cake, 1 Maple Bar",
+					"Pick": -1,
+					"RequiredItems": 4,
+					"Reward": "2 Cookout Kit"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle1": {
+					"Index": 1,
+					"Sprite": "bundleSprites:1",
+					"Colour": "Yellow",
+					"Items": "1 Glazed Yams, 1 Survival Burger, 1 Blueberry Tart, 1 Pepper Poppers",
+					"Pick": -1,
+					"RequiredItems": 4,
+					"Reward": "1 Oil Maker"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle2": {
+					"Index": 2,
+					"Sprite": "bundleSprites:2",
+					"Colour": "Teal",
+					"Items": "1 Hashbrowns, 1 Cheese Cauliflower, 1 Cookie, 1 Farmer's Lunch",
+					"Pick": -1,
+					"RequiredItems": 4,
+					"Reward": "5 Sugar"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle3": {
+					"Index": 0,
+					"Sprite": "bundleSprites:3",
+					"Colour": "Orange",
+					"Items": "1 Fried Calamari, 1 Crab Cakes, 1 Trout Soup, 1 Crispy Bass, 1 Dish O' The Sea, 1 Fried Eel",
+					"Pick": -1,
+					"RequiredItems": 4,
+					"Reward": "1 Worm Bin"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle4": {
+					"Index": 1,
+					"Sprite": "bundleSprites:4",
+					"Colour": "Blue",
+					"Items": "1 Radish Salad, 1 Salmon Dinner, 1 Fish Taco, 1 Coleslaw",
+					"Pick": -1,
+					"RequiredItems": 3,
+					"Reward": "5 Vinegar"
+				},
+				"Custom_blueberry_Kitchen_Area0_Bundle5": {
+					"Index": 2,
+					"Sprite": "bundleSprites:5",
+					"Colour": "Green",
+					"Items": "3 Algae Soup, 1 Oil of Garlic, 5 Bug Steak",
+					"Pick": -1,
+					"RequiredItems": 3,
+					"Reward": "20 Wild Bait"
+				}
+			}
+		}
+	},
+	"Substitutes": {
+		"PPJA.FruitsAndVeggies": {
+			"Custom_blueberry_Kitchen_Area0_Bundle0": {
+				"Items": "1 Rhubarb Pie, 1 Strange Bun, 1 Cherry Pie, 1 Chocolate Cake, 1 Maple Bar",
+				"Pick": -1,
+				"RequiredItems": 5,
+				"Reward": null
+			},
+			"Custom_blueberry_Kitchen_Area0_Bundle1": {
+				"Items": "1 Glazed Yams, 1 Key Lime Pie, 1 Blueberry Tart, 1 Pepper Poppers",
+				"Pick": -1,
+				"RequiredItems": 4,
+				"Reward": null
+			},
+			"Custom_blueberry_Kitchen_Area0_Bundle2": {
+				"Items": "1 Hashbrowns, 1 Cheese Cauliflower, 1 Rice Pilaf, 1 Farmer's Lunch",
+				"Pick": -1,
+				"RequiredItems": 4,
+				"Reward": "5 Chocolate"
+			}
+		}
+	}
+}

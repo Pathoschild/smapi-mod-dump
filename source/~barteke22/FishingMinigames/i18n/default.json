@@ -66,10 +66,10 @@
     "GenericMC.FestivalDesc2": "Meaning that the animations can look a little glitchy, and full lenght minigames might be hard to balance. So here are the options for those.",
     "GenericMC.FestivalMode": "Festival Mode",
     "GenericMC.FestivalModeDesc": "Vanilla: Use the regular fishing minigame for both festivals. OTHERWISE: \n\nSimple: Only does the End Minigame, only fish count. A bit janky animations. \nPerfect Only: Only does the End Minigame (if enabled), only\n \"perfect catch\" fish count (better balance). A bit janky animations. \nStart Only: Plays the Start Minigame portion only,\n this one should be the most balanced in terms of points for effort.",
-    "GenericMC.FestivalModeVanilla": "Vanilla",
-    "GenericMC.FestivalModeSimple": "Simple",
-    "GenericMC.FestivalModePerfectOnly": "Perfect Only",
-    "GenericMC.FestivalModeStartOnly": "Start Only",
+    "GenericMC.FestivalMode0": "Vanilla",
+    "GenericMC.FestivalMode1": "Simple",
+    "GenericMC.FestivalMode2": "Perfect Only",
+    "GenericMC.FestivalMode3": "Start Only",
 
     "GenericMC.Disabled": "Disabled",
 

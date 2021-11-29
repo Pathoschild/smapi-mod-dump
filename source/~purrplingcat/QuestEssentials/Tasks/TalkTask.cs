@@ -93,7 +93,7 @@ namespace QuestEssentials.Tasks
 
                 speaker.CurrentDialogue.Push(dialogue);
                 Game1.drawDialogue(speaker);
-                this.IncrementCount(this.Goal);
+                this.IncrementCount(this.Count);
 
                 return true;
             }

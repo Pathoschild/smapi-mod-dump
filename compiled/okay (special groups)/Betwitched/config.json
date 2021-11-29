@@ -1,0 +1,27 @@
+{
+  "Enabled": true,
+  "ProposedListLimit": 10,
+  "TwitchUsername": "",
+  "TwitchAuthToken": "",
+  "TwitchChannel": "",
+  "NamePrefix": "Twitch.",
+  "ResetListWhenEmpty": false,
+  "SelectionMethod": "roundrobin",
+  "Blacklisted": [
+    "StreamElements",
+    "Nightbot",
+    "Streamlabs",
+    "Fossabot"
+  ],
+  "DisableSpeechBubbles": false,
+  "SpeechBubbleOpacity": 0.9,
+  "SpeechBubbleMsDuration": 4000,
+  "SpeechBubbleMsFadeInOut": 500,
+  "NewSubText": "Welcome onboard {0}",
+  "ReSubText": "Enjoy your resub, {0}!",
+  "PrimePaidSubText": "{0}, thank you for your sub!",
+  "GiftedSubText": "GiftedSub {0}",
+  "CommunitySubText": "CommunitySub {0}",
+  "FarmerCmdTooLessBit": "Not enough bits! You need to spend at least {0} bits for using this command",
+  "FarmerCmdMinBits": -1
+}

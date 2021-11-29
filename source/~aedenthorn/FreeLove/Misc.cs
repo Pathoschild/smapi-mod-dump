@@ -30,7 +30,7 @@ namespace FreeLove
         private static ModConfig Config;
 
         // call this method from your Entry class
-        public static void Initialize(IMonitor monitor, IModHelper helper, ModConfig config)
+        public static void Initialize(IMonitor monitor, ModConfig config, IModHelper helper)
         {
             Monitor = monitor;
             Helper = helper;
@@ -171,8 +171,17 @@ namespace FreeLove
             { 
                 Monitor.Log("placing " + j.Name);
 
-                Point kitchenSpot = farmHouse.getKitchenStandingSpot();
-                Vector2 spouseRoomSpot = (farmHouse.upgradeLevel == 1) ? new Vector2(32f, 5f) : new Vector2(38f, 14f);
+                Point spouseRoomSpot = new Point(-1, -1); 
+                
+                if(Integrations.customSpouseRoomsAPI != null)
+                {
+                    spouseRoomSpot = Integrations.customSpouseRoomsAPI.GetSpouseTile(j);
+                    Monitor.Log($"Got custom spouse spot {spouseRoomSpot}");
+                }
+                else if(farmer.spouse == j.Name)
+                {
+                    spouseRoomSpot = farmHouse.GetSpouseRoomSpot();
+                }
 
                 if (!farmHouse.Equals(j.currentLocation))
                 {
@@ -187,26 +196,44 @@ namespace FreeLove
                 {
                     Monitor.Log($"putting {j.Name} in bed");
                     j.position.Value = GetSpouseBedPosition(farmHouse, j.Name);
-
-                    if (HasSleepingAnimation(j.Name) && Game1.timeOfDay >= 2000)
-                    {
-                        j.playSleepingAnimation();
-                    }
                 }
-                else if (kitchenSpouse == j.Name)
+                else if (kitchenSpouse == j.Name && !IsTileOccupied(farmHouse, farmHouse.getKitchenStandingSpot(), j.Name))
                 {
                     Monitor.Log($"{j.Name} is in kitchen");
+
                     j.setTilePosition(farmHouse.getKitchenStandingSpot());
                     j.setRandomAfternoonMarriageDialogue(Game1.timeOfDay, farmHouse, false);
                 }
-                else
+                else if (spouseRoomSpot.X > -1 && !IsTileOccupied(farmHouse, spouseRoomSpot, j.Name))
                 {
+                    Monitor.Log($"{j.Name} is in spouse room");
+                    j.setTilePosition(spouseRoomSpot);
+                    j.setSpouseRoomMarriageDialogue();
+                }
+                else 
+                { 
                     j.setTilePosition(farmHouse.getRandomOpenPointInHouse(ModEntry.myRand));
                     j.faceDirection(ModEntry.myRand.Next(0, 4));
                     Monitor.Log($"{j.Name} spouse random loc {j.getTileLocationPoint()}");
                     j.setRandomAfternoonMarriageDialogue(Game1.timeOfDay, farmHouse, false);
                 }
             }
+        }
+
+        private static bool IsTileOccupied(GameLocation location, Point tileLocation, string characterToIgnore)
+        {
+            Rectangle tileLocationRect = new Rectangle(tileLocation.X * 64 + 1, tileLocation.Y * 64 + 1, 62, 62);
+
+            for (int i = 0; i < location.characters.Count; i++)
+            {
+                if (location.characters[i] != null && !location.characters[i].Name.Equals(characterToIgnore) && location.characters[i].GetBoundingBox().Intersects(tileLocationRect))
+                {
+                    Monitor.Log($"Tile {tileLocation} is occupied by {location.characters[i].Name}");
+
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static Point GetSpouseBedEndPoint(FarmHouse fh, string name)
@@ -459,7 +486,7 @@ namespace FreeLove
             foreach (string friend in f.friendshipData.Keys)
             {
                 NPC npc = Game1.getCharacterFromName(friend);
-                if (npc != null && !npc.datable && npc is NPC && !(npc is Child) && (npc.Age == 0 || npc.Age == 1))
+                if (npc != null && !npc.datable.Value && npc is NPC && !(npc is Child) && (npc.Age == 0 || npc.Age == 1))
                 {
                     Monitor.Log($"Making {npc.Name} datable.");
                     npc.datable.Value = true;

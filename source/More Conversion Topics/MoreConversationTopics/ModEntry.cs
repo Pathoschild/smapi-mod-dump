@@ -39,12 +39,14 @@ namespace MoreConversationTopics
             WeddingPatcher.Initialize(this.Monitor, this.Config);
             LuauPatcher.Initialize(this.Monitor, this.Config);
             BirthPatcher.Initialize(this.Monitor, this.Config);
+            DivorcePatcher.Initialize(this.Monitor, this.Config);
 
             // Do the Harmony things
             var harmony = new Harmony(this.ModManifest.UniqueID);
             WeddingPatcher.Apply(harmony);
             LuauPatcher.Apply(harmony);
             BirthPatcher.Apply(harmony);
+            DivorcePatcher.Apply(harmony);
 
             // Adds a command to check current active conversation topics
             helper.ConsoleCommands.Add("current_conversation_topics", "Dumps currently active dialogue events", (str, strs) =>

@@ -6,9 +6,9 @@ mods:
    Custom Winter Star Gifts
 
 latest commit:
-   commit 2d01b9b050dafa91b5952c99a5e1185085550017
-   Author: XxHarvzBackxX <Stampylongharv@gmail.com>
-   Date:   Sun Oct 31 19:37:01 2021 +0000
+   commit ac9c633a06136240b7eaf0f66b89b1339efe8180
+   Author: Harvey Wells <82781376+XxHarvzBackxX@users.noreply.github.com>
+   Date:   Sat Nov 27 14:05:13 2021 +0000
    
-       fix
+       Update Content-Pack-Guide.md
    

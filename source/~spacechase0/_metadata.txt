@@ -55,10 +55,10 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 88de0e72cd15b685b3348b6f641aa609fcbd30fa
-   Merge: 0eaf6aae f5282124
+   commit 53c9da647fe6554d47fb37e60361cbabd9d03c37
+   Merge: 88de0e72 5f723abf
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Oct 29 19:54:12 2021 -0400
+   Date:   Sat Nov 27 12:07:37 2021 -0500
    
        Merge branch 'develop'
    

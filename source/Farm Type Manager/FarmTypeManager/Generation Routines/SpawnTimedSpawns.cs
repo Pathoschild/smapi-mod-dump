@@ -147,6 +147,7 @@ namespace FarmTypeManager
                             case SavedObject.ObjectType.Object:
                             case SavedObject.ObjectType.Item:
                             case SavedObject.ObjectType.Container:
+                            case SavedObject.ObjectType.DGA:
                                 spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:

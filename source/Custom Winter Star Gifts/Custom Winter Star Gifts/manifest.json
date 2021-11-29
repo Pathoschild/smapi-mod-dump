@@ -11,7 +11,7 @@
 {
   "Name": "Custom Winter Star Gifts",
   "Author": "XxHarvzBackxX",
-  "Version": "1.0.1",
+  "Version": "1.2.0",
   "Description": "Allows you to add to or replace Winter Star gifts via content packs.",
   "UniqueID": "harvz.CWSG",
   "EntryDll": "CWSG.dll",

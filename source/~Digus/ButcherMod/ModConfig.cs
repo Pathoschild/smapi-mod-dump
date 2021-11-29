@@ -33,5 +33,6 @@ namespace AnimalHusbandryMod
         public bool DisableContestBonus;
         public bool DisableMeatToolLetter;
         public bool DisableMeatInBlundle;
+        public bool ForceDrawAttachmentOnAnyOS;
     }
 }

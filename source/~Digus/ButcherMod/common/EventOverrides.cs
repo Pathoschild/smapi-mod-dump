@@ -575,38 +575,46 @@ namespace AnimalHusbandryMod.common
 
         public static void skipEvent(Event __instance)
         {
-            if (__instance.id == AnimalContestEventBuilder.GetEventId(SDate.Now()))
+            try
             {
-                void OnClose(Farmer who = null)
+                if (__instance.id == AnimalContestEventBuilder.GetEventId(SDate.Now()))
                 {
-                    Game1.exitActiveMenu();
-                    _shouldTimePass = true;
-                    if (Context.IsMainPlayer && FarmerLoader.FarmerData != null)
+                    void OnClose(Farmer who = null)
                     {
-                        AnimalContestItem lastAnimalContest = FarmerLoader.FarmerData.AnimalContestData.LastOrDefault();
-                        if (lastAnimalContest != null && lastAnimalContest.EventId == __instance.id)
+                        Game1.exitActiveMenu();
+                        _shouldTimePass = true;
+                        if (Context.IsMainPlayer && FarmerLoader.FarmerData != null)
                         {
-                            AnimalContestController.EndEvent(lastAnimalContest);
+                            AnimalContestItem lastAnimalContest = FarmerLoader.FarmerData.AnimalContestData.LastOrDefault();
+                            if (lastAnimalContest != null && lastAnimalContest.EventId == __instance.id)
+                            {
+                                AnimalContestController.EndEvent(lastAnimalContest);
+                            }
                         }
                     }
-                }
-                if (Game1.IsMultiplayer)
-                {
-                    Game1.player.team.SetLocalReady("animalContestEnd", ready: true);
-                    if (!Game1.player.team.IsReady("animalContestEnd"))
+                    if (Game1.IsMultiplayer)
                     {
-                        ReadyCheckDialog readyCheckDialog = new ReadyCheckDialog("animalContestEnd", allowCancel: false, onConfirm: OnClose);
-                        Game1.activeClickableMenu = readyCheckDialog;
+                        Game1.player.team.SetLocalReady("animalContestEnd", ready: true);
+                        if (!Game1.player.team.IsReady("animalContestEnd"))
+                        {
+                            ReadyCheckDialog readyCheckDialog = new ReadyCheckDialog("animalContestEnd", allowCancel: false, onConfirm: OnClose);
+                            Game1.activeClickableMenu = readyCheckDialog;
+                        }
+                        else
+                        {
+                            _shouldTimePass = true;
+                        }
                     }
                     else
                     {
-                        _shouldTimePass = true;
+                        OnClose();
                     }
                 }
-                else
-                {
-                    OnClose();
-                }
+            }
+            catch (Exception e)
+            {
+                AnimalHusbandryModEntry.monitor.Log($"Error while skipping an event. If it was the Animal Contest, report the problem, otherwise you can ignore this message.", LogLevel.Error);
+                AnimalHusbandryModEntry.monitor.Log($"Details of the error above: {e}", LogLevel.Trace);
             }
         }
 

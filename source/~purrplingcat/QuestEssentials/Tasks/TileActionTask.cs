@@ -45,7 +45,7 @@ namespace QuestEssentials.Tasks
 
                 if (this.Data.ItemAcceptedContextTags == null)
                 {
-                    this.IncrementCount(this.Goal);
+                    this.IncrementCount(this.Count);
 
                     if (this.Data.Message != null)
                     {
@@ -59,7 +59,7 @@ namespace QuestEssentials.Tasks
 
                 if (Helper.CheckItemContextTags(farmer.ActiveObject, this.Data.ItemAcceptedContextTags))
                 {
-                    int requiredAmount = this.Goal - this.CurrentCount;
+                    int requiredAmount = this.Count - this.CurrentCount;
                     int donatedAmount = Math.Min(farmer.ActiveObject.Stack, requiredAmount);
 
                     if (donatedAmount < requiredAmount)

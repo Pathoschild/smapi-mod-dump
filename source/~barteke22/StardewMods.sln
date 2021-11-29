@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kars", "Kars\Kars.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderExterior", "RenderExterior\RenderExterior.csproj", "{4FEFD8A3-BB95-4638-BB3B-2B9499C152E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagonalAim", "DiagonalAim\DiagonalAim.csproj", "{DE757AF3-D8E8-41B0-B462-15F1644C539B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagonalAim", "DiagonalAim\DiagonalAim.csproj", "{DE757AF3-D8E8-41B0-B462-15F1644C539B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

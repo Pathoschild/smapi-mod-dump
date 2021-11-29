@@ -675,7 +675,7 @@ namespace CustomCompanions.Framework.Companions
 
         internal void PlayRequiredSounds(GameTime time, bool currentlyMoving)
         {
-            if (this.soundAlwaysTimer != null)
+            if (this.soundAlwaysTimer != null && alwaysSound != null)
             {
                 this.soundAlwaysTimer = Math.Max(0, (int)this.soundAlwaysTimer - time.ElapsedGameTime.Milliseconds);
                 if (soundAlwaysTimer <= 0)
@@ -688,7 +688,7 @@ namespace CustomCompanions.Framework.Companions
                 }
             }
 
-            if (currentlyMoving && this.soundMovingTimer != null)
+            if (currentlyMoving && this.soundMovingTimer != null && movingSound != null)
             {
                 this.soundMovingTimer = Math.Max(0, (int)this.soundMovingTimer - time.ElapsedGameTime.Milliseconds);
                 if (soundMovingTimer <= 0)
@@ -701,7 +701,7 @@ namespace CustomCompanions.Framework.Companions
                 }
             }
 
-            if (!currentlyMoving && this.soundIdleTimer != null)
+            if (!currentlyMoving && this.soundIdleTimer != null && idleSound != null)
             {
                 this.soundIdleTimer = Math.Max(0, (int)this.soundIdleTimer - time.ElapsedGameTime.Milliseconds);
                 if (soundIdleTimer <= 0)

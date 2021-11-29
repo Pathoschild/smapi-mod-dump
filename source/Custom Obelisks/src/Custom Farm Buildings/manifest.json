@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/XxHarvzBackxX/Custom-Obelisks
+**
+*************************************************/
+
+{
+  "Name": "Custom Obelisks",
+  "Author": "XxHarvzBackxX",
+  "Version": "1.1.0",
+  "Description": "Allows you to add custom obelisks to be sold at the wizard's shop.",
+  "UniqueID": "harvz.CustomObelisks",
+  "EntryDll": "Custom Obelisks.dll",
+  "MinimumApiVersion": "3.5.0",
+  "UpdateKeys": [ "Nexus:10202" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher"
+    }
+  ]
+}

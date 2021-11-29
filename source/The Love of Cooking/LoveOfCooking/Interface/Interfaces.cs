@@ -124,14 +124,16 @@ namespace LoveOfCooking.Interface
 			ICustomCommunityCentreAPI ccc = Helper.ModRegistry
 				.GetApi<ICustomCommunityCentreAPI>
 				("blueberry.CustomCommunityCentre");
-			if (ccc != null)
+			if (ccc != null && Utils.AreNewCropsActive())
 			{
-				Log.D("Registering CustomCommunityCentre content.");
+				Log.D("Registering CustomCommunityCentre content.",
+					ModEntry.Config.DebugMode);
 				ccc.LoadContentPack(absoluteDirectoryPath: Path.Combine(Helper.DirectoryPath, AssetManager.CommunityCentreContentPackPath));
 			}
 			else
             {
-				Log.D("Did not register CustomCommunityCentre content.");
+				Log.D("Did not register CustomCommunityCentre content.",
+					ModEntry.Config.DebugMode);
 			}
 		}
 
@@ -222,6 +224,13 @@ namespace LoveOfCooking.Interface
 				{
 					Log.D($"Config check: {key} => {value}",
 						ModEntry.Config.DebugMode);
+
+					if (key == i18n.Get($"config.option.{"AddNewCropsAndStuff".ToLower()}_name")
+						&& Helper.ModRegistry.IsLoaded("blueberry.CommunityKitchen"))
+                    {
+						// Show warning when using 
+						Log.W("Changes to Community Kitchen bundles won't be applied until you reopen the game.");
+                    }
 				});
 
 			string[] entries = new[]

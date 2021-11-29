@@ -12,12 +12,12 @@ using StardewModdingAPI.Events;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class ScavengerHuntDayStartedEvent : DayStartedEvent
+	internal class ScavengerHuntDayStartedEvent : DayStartedEvent
 	{
 		/// <inheritdoc />
 		public override void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			if (ModEntry.ScavengerHunt is not null) ModEntry.ScavengerHunt.ResetAccumulatedBonus();
+			if (ModState.ScavengerHunt is not null) ModState.ScavengerHunt.ResetAccumulatedBonus();
 		}
 	}
 }

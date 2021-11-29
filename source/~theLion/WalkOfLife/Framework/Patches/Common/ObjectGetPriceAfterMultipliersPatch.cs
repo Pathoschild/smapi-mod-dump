@@ -8,23 +8,24 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewModdingAPI;
+using StardewValley;
 using TheLion.Stardew.Professions.Framework.Extensions;
 using SObject = StardewValley.Object;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class ObjectGetPriceAfterMultipliersPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal ObjectGetPriceAfterMultipliersPatch()
 		{
-			Original = typeof(SObject).MethodNamed("getPriceAfterMultipliers");
+			Original = RequireMethod<SObject>("getPriceAfterMultipliers");
 			Prefix = new(GetType(), nameof(ObjectGetPriceAfterMultipliersPrefix));
 		}
 
@@ -62,9 +63,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 					// professions
 					if (player.HasProfession("Producer") && __instance.IsAnimalProduct())
-						multiplier *= Util.Professions.GetProducerPriceMultiplier(player);
+						multiplier *= Utility.Professions.GetProducerPriceMultiplier(player);
 					else if (player.HasProfession("Angler") && __instance.IsFish())
-						multiplier *= Util.Professions.GetAnglerPriceMultiplier(player);
+						multiplier *= Utility.Professions.GetAnglerPriceMultiplier(player);
 
 					// events
 					else if (player.eventsSeen.Contains(2120303) && __instance.IsWildBerry())
@@ -74,14 +75,14 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 
 					// tax bonus
 					if (player.IsLocalPlayer && player.HasProfession("Conservationist"))
-						multiplier *= Util.Professions.GetConservationistPriceMultiplier();
+						multiplier *= Utility.Professions.GetConservationistPriceMultiplier();
 
 					saleMultiplier = Math.Max(saleMultiplier, multiplier);
 				}
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 

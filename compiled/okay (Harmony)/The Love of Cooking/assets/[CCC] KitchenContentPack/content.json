@@ -2,7 +2,7 @@
     "Substitutes": {
         "blueberry.LoveOfCooking": {
             "Custom_blueberry_Kitchen_Area0_Bundle0": {
-                "Items": "1 Rhubarb Pie, 1 Strange Bun, 1 blueberry.cac.applepie, 1 Chocolate Cake, 1 Maple Bar",
+                "Items": "1 Rhubarb Pie, 1 Strange Bun, 1 blueberry.cac.cake, 1 Chocolate Cake, 1 Maple Bar",
                 "Pick": null,
                 "RequiredItems": 5,
                 "Reward": null

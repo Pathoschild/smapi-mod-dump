@@ -15,7 +15,9 @@ namespace FreeLove
 {
     public interface ICustomSpouseRoomsAPI
     {
-        Point GetSpouseRoomPoint(NPC spouse);
-        int GetSpouseRoomOffset(NPC spouse);
+        public Point GetSpouseTileOffset(NPC spouse);
+        public Point GetSpouseTile(NPC spouse);
+
+        public Point GetSpouseRoomCornerTile(NPC spouse);
     }
 }

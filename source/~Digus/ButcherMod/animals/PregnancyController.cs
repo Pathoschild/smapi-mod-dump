@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.common;
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI.Utilities;
 
 namespace AnimalHusbandryMod.animals

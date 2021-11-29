@@ -11,7 +11,7 @@
 {
 	"Name": "Ridgeside Village Items",
     "Author": "Rafseazz",
-    "Version": "2.0",
+    "Version": "2.0.2",
     "Description": "Adds items to Ridgeside Village",
     "UniqueID": "Rafseazz.RSVJA",
 	"UpdateKeys": [ "Nexus:???" ],

@@ -21,21 +21,16 @@ namespace FreeLove
     {
         private static IMonitor Monitor;
         private static IModHelper Helper;
-        private static List<int[]> weddingPositions = new List<int[]>
-        {
-            new int[]{26,63,1},
-            new int[]{29,63,3},
-            new int[]{25,63,1},
-            new int[]{30,63,3}
-        };
-        public static bool startingLoadActors = false;
+        private static ModConfig Config;
 
         // call this method from your Entry class
-        public static void Initialize(IMonitor monitor, IModHelper helper)
+        public static void Initialize(IMonitor monitor, ModConfig config, IModHelper helper)
         {
             Monitor = monitor;
             Helper = helper;
+            Config = config;
         }
+
         public static bool Event_answerDialogueQuestion_Prefix(Event __instance, NPC who, string answerKey)
         {
             try
@@ -90,5 +85,6 @@ namespace FreeLove
             }
             return true;
         }
+
     }
 }

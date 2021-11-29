@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+#HEAD#
+  <script>
+      function LoadPageLoaded() {
+
+
+          document.getElementById("silo").src = "/asset/silo_usage.png?" + new Date().getTime();
+
+          SubPageLoaded('Farm', 'Tasks');
+      }
+
+  </script>
+
+</head>
+<body onload="LoadPageLoaded();">
+   
+        #MENUBAR#
+
+        <div class="stardew_container top_margin_50 med_bottom_pad">
+            <div class="container">
+                #TASKS#
+            </div>
+        </div>
+    
+</body>
+</html>

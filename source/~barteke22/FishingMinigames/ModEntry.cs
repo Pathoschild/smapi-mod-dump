@@ -35,6 +35,8 @@ namespace FishingMinigames
         private Dictionary<string, int> itemIDs = new Dictionary<string, int>();
         private bool canStartEditingAssets = false;
 
+        private enum StartMinigame { DDR, Hangman }
+
 
         public override void Entry(IModHelper helper)
         {
@@ -107,7 +109,8 @@ namespace FishingMinigames
 
                     GenericMC.AddPage(ModManifest, "colors", () => translate.Get("GenericMC.Colors"));
                     GenericMCColorPicker(GenericMC, ModManifest);
-                    GenericMC.AddBoolOption(ModManifest, () => config.BossTransparency, (bool val) => config.BossTransparency = val, () => translate.Get("GenericMC.BossTransparency"), () => translate.Get("GenericMC.BossTransparencyDesc"));
+                    GenericMC.AddBoolOption(ModManifest, () => config.BossTransparency, (bool val) => config.BossTransparency = val,
+                        () => translate.Get("GenericMC.BossTransparency"), () => translate.Get("GenericMC.BossTransparencyDesc"));
 
                     GenericMC.AddPage(ModManifest, "itemData", () => translate.Get("GenericMC.ItemData"));
                     GenericMC.AddParagraph(ModManifest, () => translate.Get("GenericMC.ItemDataDesc1"));
@@ -164,7 +167,7 @@ namespace FishingMinigames
                     }
 
                     //dummy value validation trigger - must be the last thing, so all values are saved before validation
-                    GenericMC.AddComplexOption(ModManifest, () => "", () => "", null, () => UpdateConfig(true));
+                    GenericMC.AddComplexOption(ModManifest, () => "", () => "", (SpriteBatch b, Vector2 pos) => { }, () => UpdateConfig(true));
                 }
                 catch (Exception)
                 {
@@ -190,13 +193,17 @@ namespace FishingMinigames
             GenericMC.AddBoolOption(ModManifest, () => config.FreeAim[screen], (bool val) => config.FreeAim[screen] = val,
                 () => translate.Get("GenericMC.FreeAim"), () => translate.Get("GenericMC.FreeAimDesc"));
 
-            GenericMC.AddTextOption(ModManifest, () => (config.StartMinigameStyle[screen] == 0) ? translate.Get("GenericMC.Disabled") : (config.StartMinigameStyle[screen] == 1) ? translate.Get("GenericMC.StartMinigameStyle1") : (config.StartMinigameStyle[screen] == 2) ? translate.Get("GenericMC.StartMinigameStyle2") : translate.Get("GenericMC.StartMinigameStyle3"),
-                (string val) => config.StartMinigameStyle[screen] = Int32.Parse((val.Equals(translate.Get("GenericMC.Disabled"), StringComparison.Ordinal)) ? "0" : (val.Equals(translate.Get("GenericMC.StartMinigameStyle1"), StringComparison.Ordinal)) ? "1" : (val.Equals(translate.Get("GenericMC.StartMinigameStyle2"), StringComparison.Ordinal)) ? "2" : "3"),
-                 () => translate.Get("GenericMC.StartMinigameStyle"), () => translate.Get("GenericMC.StartMinigameStyleDesc"), new string[] { translate.Get("GenericMC.Disabled"), translate.Get("GenericMC.StartMinigameStyle1"), translate.Get("GenericMC.StartMinigameStyle2") });//, translate.Get("GenericMC.StartMinigameStyle3") });//small 'hack' so options appear as name strings, while config.json stores them as integers
+            GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.StartMinigameStyle"),  tooltip: () => translate.Get("GenericMC.StartMinigameStyleDesc"),
+                getValue: () => config.StartMinigameStyle[screen].ToString(),
+                setValue: value => config.StartMinigameStyle[screen] = int.Parse(value),
+                allowedValues: new string[] { "0", "1", "2" },
+                formatAllowedValue: value => value == "0" ? translate.Get($"GenericMC.Disabled") : translate.Get($"GenericMC.StartMinigameStyle{value}"));
 
-            GenericMC.AddTextOption(ModManifest, () => (config.EndMinigameStyle[screen] == 0) ? translate.Get("GenericMC.Disabled") : (config.EndMinigameStyle[screen] == 1) ? translate.Get("GenericMC.EndMinigameStyle1") : (config.EndMinigameStyle[screen] == 2) ? translate.Get("GenericMC.EndMinigameStyle2") : translate.Get("GenericMC.EndMinigameStyle3"),
-                (string val) => config.EndMinigameStyle[screen] = Int32.Parse((val.Equals(translate.Get("GenericMC.Disabled"), StringComparison.Ordinal)) ? "0" : (val.Equals(translate.Get("GenericMC.EndMinigameStyle1"), StringComparison.Ordinal)) ? "1" : (val.Equals(translate.Get("GenericMC.EndMinigameStyle2"), StringComparison.Ordinal)) ? "2" : "3"),
-                () => translate.Get("GenericMC.EndMinigameStyle"), () => translate.Get("GenericMC.EndMinigameStyleDesc"), new string[] { translate.Get("GenericMC.Disabled"), translate.Get("GenericMC.EndMinigameStyle1"), translate.Get("GenericMC.EndMinigameStyle2"), translate.Get("GenericMC.EndMinigameStyle3") });
+            GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.EndMinigameStyle"), tooltip: () => translate.Get("GenericMC.EndMinigameStyleDesc"),
+                getValue: () => config.EndMinigameStyle[screen].ToString(),
+                setValue: value => config.EndMinigameStyle[screen] = int.Parse(value),
+                allowedValues: new string[] { "0", "1", "2", "3" },
+                formatAllowedValue: value => value == "0" ? translate.Get($"GenericMC.Disabled") : translate.Get($"GenericMC.EndMinigameStyle{value}"));
 
             GenericMC.AddBoolOption(ModManifest, () => config.EndLoseTreasureIfFailed[screen], (bool val) => config.EndLoseTreasureIfFailed[screen] = val,
                 () => translate.Get("GenericMC.EndLoseTreasure"), () => translate.Get("GenericMC.EndLoseTreasureDesc"));
@@ -226,9 +233,12 @@ namespace FishingMinigames
                 GenericMC.AddParagraph(ModManifest, () => translate.Get("GenericMC.FestivalDesc"));
                 GenericMC.AddParagraph(ModManifest, () => translate.Get("GenericMC.FestivalDesc2"));
             }
-            GenericMC.AddTextOption(ModManifest, () => (config.FestivalMode[screen] == 0) ? translate.Get("GenericMC.FestivalModeVanilla") : (config.FestivalMode[screen] == 1) ? translate.Get("GenericMC.FestivalModeSimple") : (config.FestivalMode[screen] == 2) ? translate.Get("GenericMC.FestivalModePerfectOnly") : translate.Get("GenericMC.FestivalModeStartOnly"),
-                (string val) => config.FestivalMode[screen] = Int32.Parse((val.Equals(translate.Get("GenericMC.FestivalModeVanilla"), StringComparison.Ordinal)) ? "0" : (val.Equals(translate.Get("GenericMC.FestivalModeSimple"), StringComparison.Ordinal)) ? "1" : (val.Equals(translate.Get("GenericMC.FestivalModePerfectOnly"), StringComparison.Ordinal)) ? "2" : "3"),
-                () => translate.Get("GenericMC.FestivalMode"), () => translate.Get("GenericMC.FestivalModeDesc"), new string[] { translate.Get("GenericMC.FestivalModeVanilla"), translate.Get("GenericMC.FestivalModeSimple"), translate.Get("GenericMC.FestivalModePerfectOnly"), translate.Get("GenericMC.FestivalModeStartOnly") });
+
+            GenericMC.AddTextOption(ModManifest, name: () => translate.Get("GenericMC.FestivalMode"), tooltip: () => translate.Get("GenericMC.FestivalModeDesc"),
+                getValue: () => config.FestivalMode[screen].ToString(),
+                setValue: value => config.FestivalMode[screen] = int.Parse(value),
+                allowedValues: new string[] { "0", "1", "2", "3" },
+                formatAllowedValue: value => translate.Get($"GenericMC.FestivalMode{value}"));
         }
         private void GenericMCColorPicker(IGenericModConfigMenuApi GenericMC, IManifest mod)
         {

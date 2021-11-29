@@ -24,7 +24,7 @@ using TwilightShards.Common;
 using Microsoft.Xna.Framework.Graphics;
 using EnumsNET;
 using PyTK.CustomTV;
-using Harmony;
+using HarmonyLib;
 using System.Reflection;
 using ClimatesOfFerngillRebuild.Patches; 
 
@@ -123,7 +123,7 @@ namespace ClimatesOfFerngillRebuild
 
             if (Disabled) return;
 
-            var harmony = HarmonyInstance.Create("koihimenakamura.climatesofferngill");
+            var harmony = new Harmony("koihimenakamura.climatesofferngill");
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), "drawAboveAlwaysFrontLayer"),
                 transpiler: new HarmonyMethod(AccessTools.Method(typeof(GameLocationPatches), "DAAFLTranspiler")));
@@ -460,7 +460,7 @@ namespace ClimatesOfFerngillRebuild
             Conditions.TenMinuteUpdate();
 
             if (Game1.currentLocation.IsOutdoors && Conditions.HasWeather(CurrentWeather.Lightning) && !Conditions.HasWeather(CurrentWeather.Rain) && Game1.timeOfDay < 2400)
-                Utility.performLightningUpdate();
+                Utility.performLightningUpdate(Game1.timeOfDay);
 
             //queued messages clear
             if (Game1.timeOfDay == 610 && queuedMsg != null)

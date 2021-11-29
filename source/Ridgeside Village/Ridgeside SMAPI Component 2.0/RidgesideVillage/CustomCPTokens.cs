@@ -130,31 +130,28 @@ namespace RidgesideVillage
                 return null;
             });
 
-            cp.RegisterToken(this.ModManifest, "NPCBirthday", () =>
-            {
-                // or save is currently loading
-                if (SaveGame.loaded?.player != null || Context.IsWorldReady)
-                {
-                    List<string> birthDays = new List<string>();
-                    foreach (NPC k in Utility.getAllCharacters())
-                    {
-                        if (k.isVillager() && Game1.player.friendshipData.ContainsKey(k.Name) && k.Birthday_Season != null && k.Birthday_Season.Equals(Game1.currentSeason) && k.Birthday_Day.Equals(Game1.dayOfMonth))
-                        {
-                            birthDays.Add(k.Name);
-                        }
-                    }
-                    return birthDays;
-                }
-                // no save loaded (e.g. on the title screen)
-                return null;
-            });
-
             cp.RegisterToken(this.ModManifest, "Celebrant", () =>
             {
                 // or save is currently loading
                 if (SaveGame.loaded?.player != null || Context.IsWorldReady)
                 {
                     return new[] { HotelMenu.GetTodaysBirthdayNPC() };
+                }
+                // no save loaded (e.g. on the title screen)
+                return new[] { "" };
+            });
+
+            cp.RegisterToken(this.ModManifest, "CelebrantDisplayName", () =>
+            {
+                // or save is currently loading
+                if (SaveGame.loaded?.player != null || Context.IsWorldReady)
+                {
+                    string NPCName = HotelMenu.GetTodaysBirthdayNPC();
+                    NPC npc = Game1.getCharacterFromName(NPCName);
+                    if(npc != null)
+                    {
+                        return new[] { npc.displayName };
+                    }
                 }
                 // no save loaded (e.g. on the title screen)
                 return new[] { "" };

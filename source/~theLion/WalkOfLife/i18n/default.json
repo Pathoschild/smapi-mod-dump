@@ -90,7 +90,7 @@
 	"aquarist.desc": "Fish pond max capacity +2. Fishing bar height increases for every fish pond at max capacity.",
 
 	"trapper.name.male": "Trapper",
-	"trapper.name.femlae": "Trapper",
+	"trapper.name.female": "Trapper",
 	"trapper.desc": "Crab pots are cheaper to craft. Can trap higher-quality fish.",
 	"luremaster.name.male": "Luremaster",
 	"luremaster.name.female": "Luremaster",
@@ -136,5 +136,18 @@
 	"piper.buff": "Eubstance",
 	"piper.buffdesc": "Attract up to {{magnitude1}} extra Slimes. Slime attack frequency +{{magnitude2}}%.",
 	"piper.superm": "Superfluidity",
-	"piper.supermdesc": "Engorges and empowers nearby Slimes."
+	"piper.supermdesc": "Engorges and empowers nearby Slimes.",
+
+	// Prestige
+	"prestige.dogstatue.first": "-Statue Of Prestige-^The statue can prestige a skill.^This will revert the skill's level to 0 while keeping all acquired professions.^All associated recipes will be forgotten.^Make an offering?",
+	"prestige.dogstatue.question": "Which skill would you like to prestige?",
+	"prestige.dogstatue.cost": "{{cost}}g",
+	"prestige.skillpage.tooltip": "{{count}}/4 professions acquired:",
+	"prestige.levelup.tooltip:5": "Already acquired all professions in this branch.",
+	"prestige.levelup.tooltip:10": "Already acquired this profession.",
+	"prestige.levelup.question": "Currently registered to {{oldProfession}}'s {{oldBuff}}. Replace with {{newProfession}}'s {{newBuff}}?",
+	"prestige.levelup.unlocked": "You can now continue to develop your {{whichSkill}} skill further.",
+	"prestige.achievement.name.male": "Jack-Of-All-Trades",
+	"prestige.achievement.name.female": "Jill-Of-All-Trades",
+	"prestige.achievement.desc": "Acquire all professions in every skill."
 }

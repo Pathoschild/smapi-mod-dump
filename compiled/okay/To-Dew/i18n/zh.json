@@ -1,11 +1,11 @@
 {
     //通用Mod Config菜单配置的字符串
-    "config.hotkey": "热键",
-    "config.hotkey.desc": "显示待办事项清单的钥匙",
+    "config.hotkey": "快捷键",
+    "config.hotkey.desc": "显示待办事项清单的快捷键",
     "config.secondary-close-button": "第二关闭按钮",
-    "config.secondary-close-button.desc": "备用键（除了ESC以外）用于关闭待办事项",
+    "config.secondary-close-button.desc": "用于关闭待办事项的备用键（除了ESC以外）",
     "config.debug": "调试",
-    "config.debug.desc": "在日志中启用调试输出",
+    "config.debug.desc": "输出调试日志",
     "config.overlay": "叠加",
     "config.overlay.desc": "配置显示列表的永远在线覆盖",
     "config.overlay.enabled": "Enabled",
@@ -20,7 +20,7 @@
     "config.overlay.max-items.desc": "在叠加层中显示的最大项目数",
 
     //叠加
-    "overlay.header": "露珠清单",
+    "overlay.header": "待办清单",
 
     //控制台日志消息
     "message.save-version-newer": "此保存中的列表信息使用的是比此版本的{{modName}}使用的版本（{{modFormatVersion}}）更新的格式版本（{{saveFormatVersion}}）。下一次保存将使用该旧版本,这将导致丢失在新版本中添加的所有属性。",
@@ -34,30 +34,30 @@
     "message.current-item-deleted": "项目{{itemId}}已被其他玩家删除",
 
     //清单选单
-    "menu.list.title-bold-part": "露珠清单",
-    "menu.list.title-rest": "用于{{farmName}}农场",
+    "menu.list.title-bold-part": "待办清单",
+    "menu.list.title-rest": "处于{{farmName}}农场",
     "menu.textbox.title": "添加待办事项", //不确定TitleText是否实际显示在任何地方
     //项目配置（编辑）菜单
-    "menu.edit.title": "编辑项",
+    "menu.edit.title": "编辑",
     "menu.edit.header": "标题",
     "menu.edit.bold": "粗体",
     "menu.edit.repeating": "重复",
-    "menu.edit.hide-in-overlay": "隐藏在叠加中",
-    "menu.edit.show-when": "显示项目何时: ",
-    "menu.edit.raining-on-farm": "在农场上雨",
-    "menu.edit.not-raining-on-farm": "农场没有下雨",
-    "menu.edit.raining-on-island": "在岛上下雨",
-    "menu.edit.not-raining-on-island": "岛上没有下雨",
+    "menu.edit.hide-in-overlay": "在叠加中隐藏",
+    "menu.edit.show-when": "何时显示项目: ",
+    "menu.edit.raining-on-farm": "农村里下雨",
+    "menu.edit.not-raining-on-farm": "农村里没有下雨",
+    "menu.edit.raining-on-island": "姜岛里下雨",
+    "menu.edit.not-raining-on-island": "姜岛里没有下雨",
     "menu.edit.only-days": "仅在以下日子显示: ",
     "menu.edit.week": "周: ",
     "menu.edit.only-season": "仅显示在: ",
 
     //全日名称（因为游戏仅对短名称进行翻译）
     "sunday": "星期日",
-    "monday": "周一",
+    "monday": "星期一",
     "tuesday": "星期二",
     "wednesday": "星期三",
-    "thursday": "周四",
+    "thursday": "星期四",
     "friday": "星期五",
-    "saturday": "周六"
+    "saturday": "星期六"
 }

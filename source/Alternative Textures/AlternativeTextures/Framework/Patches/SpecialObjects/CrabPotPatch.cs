@@ -55,7 +55,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 if (__instance.heldObject.Value != null)
                 {

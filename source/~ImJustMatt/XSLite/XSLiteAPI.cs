@@ -27,7 +27,7 @@ namespace XSLite
     using StardewValley.Objects;
 
     /// <inheritdoc />
-    public class XSLiteAPI : IXSLiteAPI
+    public class XSLiteApi : IXSLiteApi
     {
         private static readonly HashSet<string> VanillaNames = new()
         {
@@ -46,10 +46,10 @@ namespace XSLite
         private readonly XSPlusIntegration _xsPlus;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="XSLiteAPI" /> class.
+        ///     Initializes a new instance of the <see cref="XSLiteApi" /> class.
         /// </summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
-        internal XSLiteAPI(IModHelper helper)
+        internal XSLiteApi(IModHelper helper)
         {
             this._helper = helper;
             this._dynamicAssets = new(helper.ModRegistry);
@@ -143,7 +143,7 @@ namespace XSLite
             {
                 storage.Value.Name = storage.Key;
                 storage.Value.Manifest = contentPack.Manifest;
-                storage.Value.Format = XSLiteAPI.VanillaNames.Contains(storage.Value.Name) ? Storage.AssetFormat.Vanilla : Storage.AssetFormat.DynamicGameAssets;
+                storage.Value.Format = XSLiteApi.VanillaNames.Contains(storage.Value.Name) ? Storage.AssetFormat.Vanilla : Storage.AssetFormat.DynamicGameAssets;
 
                 // Load base texture
                 if (!string.IsNullOrWhiteSpace(storage.Value.Image) && !contentPack.HasFile($"{storage.Value.Image}") && contentPack.HasFile($"assets/{storage.Value.Image}"))

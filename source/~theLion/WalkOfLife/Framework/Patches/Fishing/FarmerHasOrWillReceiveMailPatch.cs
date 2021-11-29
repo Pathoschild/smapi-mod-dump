@@ -8,21 +8,22 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 using System;
 using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class FarmerHasOrWillReceiveMailPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal FarmerHasOrWillReceiveMailPatch()
 		{
-			Original = typeof(Farmer).MethodNamed(nameof(Farmer.hasOrWillReceiveMail));
+			Original = RequireMethod<Farmer>(nameof(Farmer.hasOrWillReceiveMail));
 			Prefix = new(GetType(), nameof(FarmerHasOrWillReceiveMailPrefix));
 		}
 
@@ -34,7 +35,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				if (id != $"{ModEntry.UniqueID}/ConservationistTaxNotice")
+				if (id != $"{ModEntry.Manifest.UniqueID}/ConservationistTaxNotice")
 					return true; // run original logic
 
 				__result = false;
@@ -42,7 +43,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

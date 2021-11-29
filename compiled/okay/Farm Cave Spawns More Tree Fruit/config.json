@@ -1,0 +1,12 @@
+{
+  "MaxDailySpawns": 6,
+  "SpawnChance": 5.0,
+  "TreeFruitChance": 50.0,
+  "IgnoreFarmCaveType": false,
+  "EarlyFarmCave": false,
+  "UseMineCave": false,
+  "SeasonalOnly": false,
+  "AllowAnyTreeProduct": true,
+  "EdiblesOnly": true,
+  "NoBananasBeforeShrine": true
+}

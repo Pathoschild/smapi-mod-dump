@@ -21,6 +21,7 @@
     },
     {
       "Id": 0,
+      "Name": "Pink Armor",
       "ChanceWeight": 0.1,
       "Keywords": [ "Pink" ]
     },

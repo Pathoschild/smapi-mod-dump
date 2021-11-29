@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/sergiomadd/StardewValleyMods
+   Git: https://github.com/sergiomadd/StardewValleyMods.git
+
+mods:
+   Connected Fences
+
+latest commit:
+   commit 5f08c22ffdac1550739fd11f0f6be73944bb8b08
+   Author: Sergio CortÃ©s <sergiocortmon@gmail.com>
+   Date:   Mon Nov 29 00:20:59 2021 +0100
+   
+       Update README.md
+   

@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "PolymorphicPipe",
+  "Description": "Type: Input Pipe\nInserts items into an adjacent container, it filters only the items already on the adjacent container.",
+  "Category": "Crafting",
+  "MaxHealth": 100,
+  "BreakTool": "Pickaxe",
+  "PlacementSound": "hammer",
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": "ConnectorPipe",
+        "Count": 1
+      },
+      {
+        "Object": 68,
+        "Count": 1
+      }
+    ],
+    "IsDefault": true
+  }
+}

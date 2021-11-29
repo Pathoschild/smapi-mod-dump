@@ -8,32 +8,35 @@
 **
 *************************************************/
 
-using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Monsters;
 using System;
 using System.Linq;
 using System.Reflection;
+using HarmonyLib;
+using JetBrains.Annotations;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.Monsters;
 using TheLion.Stardew.Common.Harmony;
 using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class MonsterFindPlayerPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal MonsterFindPlayerPatch()
 		{
-			Original = typeof(Monster).MethodNamed("findPlayer");
-			Prefix = new(GetType(), nameof(MonsterFindPlayerPrefix));
+			Original = RequireMethod<Monster>("findPlayer");
+			Prefix = new(GetType().MethodNamed(nameof(MonsterFindPlayerPrefix)),
+				before: new[] {"Esca.FarmTypeManager"});
 		}
 
 		#region harmony patches
 
 		/// <summary>Patch to override monster aggro.</summary>
 		[HarmonyPrefix]
-		[HarmonyAfter("FarmTypeManager.ModEntry.Monster_findPlayer_Prefix")]
+		[HarmonyBefore("Esca.FarmTypeManager")]
 		private static bool MonsterFindPlayerPrefix(Monster __instance, ref Farmer __result)
 		{
 			try
@@ -42,8 +45,9 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				if (!Context.IsMultiplayer || __instance.currentLocation is null)
 					return false; // don't run original logic
 
+				// Slimes prefer Pipers
 				if (__instance is GreenSlime &&
-					__instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers))
+				    __instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers))
 				{
 					var distanceToClosestPiper = double.MaxValue;
 					foreach (var piper in pipers)
@@ -58,6 +62,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					return false; // don't run original logic
 				}
 
+				// prefer Brutes
 				//if (__instance.currentLocation.DoesAnyPlayerHereHaveProfession("Brute", out var brutes))
 				//{
 				//	var distanceToClosestBrute = double.MaxValue;
@@ -74,10 +79,11 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				//	return false; // don't run original logic
 				//}
 
+				// avoid Poachers in Ambuscade
 				var distanceToClosestPlayer = double.MaxValue;
 				foreach (var farmer in __instance.currentLocation.farmers)
 				{
-					if (ModEntry.ActivePeerSuperModes.TryGetValue(Util.Professions.IndexOf("Poacher"),
+					if (ModState.ActivePeerSuperModes.TryGetValue(Utility.Professions.IndexOf("Poacher"),
 						out var peerIDs) && peerIDs.Any(id => id == farmer.UniqueMultiplayerID)) continue;
 
 					var distanceToThisPlayer = __instance.DistanceToCharacter(farmer);
@@ -87,15 +93,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 					distanceToClosestPlayer = distanceToThisPlayer;
 				}
 
-				//if (__result.IsLocalPlayer && ModEntry.IsSuperModeActive &&
-				//    ModEntry.SuperModeIndex == Util.Professions.IndexOf("Poacher"))
+				//if (__result.IsLocalPlayer && ModState.IsSuperModeActive &&
+				//    ModState.SuperModeIndex == Util.Professions.IndexOf("Poacher"))
 				//	__result = null;
 
 				return false; // run original logic
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

@@ -8,22 +8,23 @@
 **
 *************************************************/
 
+using System;
+using System.Reflection;
 using HarmonyLib;
+using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System;
-using System.Reflection;
-using TheLion.Stardew.Common.Harmony;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class LevelUpMenuGetProfessionTitleFromNumberPatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal LevelUpMenuGetProfessionTitleFromNumberPatch()
 		{
-			Original = typeof(LevelUpMenu).MethodNamed(nameof(LevelUpMenu.getProfessionTitleFromNumber));
+			Original = RequireMethod<LevelUpMenu>(nameof(LevelUpMenu.getProfessionTitleFromNumber));
 			Prefix = new(GetType(), nameof(LevelUpMenuGetProfessionTitleFromNumberPrefix));
 		}
 
@@ -35,15 +36,15 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 		{
 			try
 			{
-				if (!Util.Professions.IndexByName.Contains(whichProfession)) return true; // run original logic
+				if (!Utility.Professions.IndexByName.Contains(whichProfession)) return true; // run original logic
 
-				__result = ModEntry.ModHelper.Translation.Get(Util.Professions.NameOf(whichProfession) + ".name." +
-															  (Game1.player.IsMale ? "male" : "female"));
+				__result = ModEntry.ModHelper.Translation.Get(Utility.Professions.NameOf(whichProfession) + ".name." +
+				                                              (Game1.player.IsMale ? "male" : "female"));
 				return false; // don't run original logic
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+				ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod().Name}:\n{ex}", LogLevel.Error);
 				return true; // default to original logic
 			}
 		}

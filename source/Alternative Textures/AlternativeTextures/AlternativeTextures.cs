@@ -143,6 +143,8 @@ namespace AlternativeTextures
 
                 // Start of building patches
                 new BuildingPatch(monitor, helper).Apply(harmony);
+                new StablePatch(monitor, helper).Apply(harmony); // Specifically for Tractor Mod, to allow texture variations
+                new ShippingBinPatch(monitor, helper).Apply(harmony);
 
                 // Start of location patches
                 new GameLocationPatch(monitor, helper).Apply(harmony);
@@ -391,7 +393,7 @@ namespace AlternativeTextures
                             configApi.RegisterLabel(ModManifest, $"Variation: {variation}", description);
 
                             // Add the reference image for the alternative texture
-                            var sourceRect = new Rectangle(0, variation * model.TextureHeight, model.TextureWidth, model.TextureHeight);
+                            var sourceRect = new Rectangle(0, model.GetTextureOffset(variation), model.TextureWidth, model.TextureHeight);
                             switch (model.GetTextureType())
                             {
                                 case "Decoration":
@@ -645,8 +647,13 @@ namespace AlternativeTextures
             Texture2D baseTexture = contentPack.LoadAsset<Texture2D>(Path.Combine(rootPath, textureFilePaths.First()));
 
             // If there is only one split texture file, skip the rest of the logic to avoid issues
-            if (textureFilePaths.Count() == 1)
+            if (textureFilePaths.Count() == 1 || textureModel.GetVariations() == 1)
             {
+                if (textureModel.GetVariations() == 1 && textureFilePaths.Count() > 1)
+                {
+                    Monitor.Log($"Detected more split textures ({textureFilePaths.Count()}) than specified variations ({textureModel.GetVariations()}) for {textureModel.TextureId} from {contentPack.Manifest.Name}", LogLevel.Warn);
+                }
+
                 textureModel.Textures.Add(baseTexture);
                 return true;
             }
@@ -666,7 +673,7 @@ namespace AlternativeTextures
                     Color[] pixels = new Color[stitchedTexture.Width * stitchedTexture.Height];
                     for (int x = 0; x < variationLimit; x++)
                     {
-                        int textureIndex = x + (variationLimit * t);
+                        int textureIndex = x + (maxVariationsPerTexture * t);
                         if (textureFilePaths.ElementAtOrDefault(textureIndex) is null)
                         {
                             Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: Attempted to add variation {textureIndex} from split texture, but the texture image doesn't exist!", LogLevel.Warn);

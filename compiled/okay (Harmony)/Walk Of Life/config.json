@@ -1,6 +1,7 @@
 {
   "Modkey": "LeftShift, LeftShoulder",
   "SuperModeKey": "LeftShift, LeftShoulder",
+  "DebugKey": "LeftControl",
   "HoldKeyToActivateSuperMode": true,
   "SuperModeActivationDelay": 1.0,
   "SuperModeDrainFactor": 3,
@@ -12,5 +13,11 @@
   "TrashNeededPerTaxLevel": 100,
   "TrashNeededPerFriendshipPoint": 10,
   "TaxDeductionCeiling": 0.25,
-  "EnableILCodeExport": true
+  "EnablePrestige": true,
+  "PrestigeCostMultiplier": 1.0,
+  "ForgetRecipesOnPrestige": true,
+  "ExperienceBonusOnPrestige": 0.2,
+  "EnableExtendedProgression": true,
+  "RequiredExpPerExtendedLevel": 10000,
+  "EnableUIDebug": false
 }

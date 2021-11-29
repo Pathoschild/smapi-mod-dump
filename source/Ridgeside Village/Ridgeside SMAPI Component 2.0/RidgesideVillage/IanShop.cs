@@ -200,7 +200,7 @@ namespace RidgesideVillage
             {
                 var responses = new List<Response>
                 {
-                    new Response("petAnimals", n + Helper.Translation.Get("IanShop.PetAnimalsSelection") + (n * perAnimalPrice) + "$"),
+                    new Response("petAnimals", Helper.Translation.Get("IanShop.PetAnimalsSelection") + (n * perAnimalPrice) + "$"),
                     new Response("cancel", Helper.Translation.Get("IanShop.Cancel"))
                 };
                 var responseActions = new List<Action>
@@ -310,7 +310,7 @@ namespace RidgesideVillage
                 {
                     break;
                 }
-                if (pair.Value is HoeDirt dirt && dirt.state.Value == 0)
+                if (pair.Value is HoeDirt dirt && dirt.state.Value == 0 && dirt.crop != null)
                 {
                     dirt.state.Value = 1;
                     n++;

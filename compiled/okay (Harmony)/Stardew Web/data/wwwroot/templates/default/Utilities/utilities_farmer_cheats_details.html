@@ -1,0 +1,133 @@
+﻿<div class="message_board_title_lg">Farmer Cheats</div>
+<div class="message_paper_board_lg base_font inline">
+    <table>
+        <tr>
+            <td style="vertical-align:top;">
+                <div style="border:2px solid black; border-radius: 10px;padding: 5px; background: tan;margin-left:10px;">
+                    <table>
+                        <tr>
+                            <td class="mechanics_cell">Gold</td>
+                            <td class="mechanics_cell">
+                                <input type="text" id="GOLD" size="8" value="100000" />
+                            </td>
+                            <td class="mechanics_cell"><button onclick="AddGold('GOLD');">Add</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Backpack Size</td>
+                            <td class="mechanics_cell">
+                                <select id="BPACK">
+                                    <option value="12">12</option>
+                                    <option value="24">24</option>
+                                    <option value="36">36</option>
+                                </select>
+                            </td>
+                            <td class="mechanics_cell"><button onclick="SetBackpack();">Set</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Health</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('instaheal','popup');">Instant Heal</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Achieve Perfection</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('perfection','popup');">Perfection</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Complete Community Centre</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('fullcc','popup');">Complete</button></td>
+                        </tr>
+                        <tr>
+                            <td class="mechanics_cell">Complete JoJa</td>
+                            <td class="mechanics_cell" colspan="2"><button onclick="RunDebugCommand('fulljoja','popup');">Complete</button></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td style="width:40px;">&nbsp;</td>
+            <td>
+                <div style="border:2px solid black; border-radius: 10px;padding: 5px; background: tan;">
+                    <table style="padding: 5px;">
+                        <tr><td colspan="2" class="center">Wallet Contents</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_dwarf" #key_dwarf# onclick="ToggleKey(this);" /></td><td class="wallet_items">Dwarvish Translation Guide</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_rusty" #key_rusty# onclick="ToggleKey(this);" /></td><td class="wallet_items">Rusty Key</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_club" #key_club# onclick="ToggleKey(this);" /></td><td class="wallet_items">Club Card</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_charm" #key_charm# onclick="ToggleKey(this);" /></td><td class="wallet_items">Special Charm</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_skull" #key_skull# onclick="ToggleKey(this);" /></td><td class="wallet_items">Skull Key</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_magnify" #key_magnify# onclick="ToggleKey(this);" /></td><td class="wallet_items">Magnifying Glass</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_talisman" #key_talisman# onclick="ToggleKey(this);" /></td><td class="wallet_items">Dark Talisman</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_ink" #key_ink# onclick="ToggleKey(this);" /></td><td class="wallet_items">Magic Ink</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_bear" #key_bear# onclick="ToggleKey(this);" /></td><td class="wallet_items">Bear's Knowledge</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_onion" #key_onion# onclick="ToggleKey(this);" /></td><td class="wallet_items">Spring Onion Mastery</td></tr>
+                        <tr><td class="wallet_items"><input type="checkbox" id="key_town" #key_town# onclick="ToggleKey(this);" /></td><td class="wallet_items">Key To The Town</td></tr>
+                    </table>
+                </div>
+            </td>
+            <td style="width:40px;">&nbsp;</td>
+            <td class="top">
+                <div style="border:2px solid black; border-radius: 10px;padding: 5px; background: tan;">
+                    <table>
+                        <tr><td colspan="3" class="center">Skill Level</td></tr>
+                        <tr>
+                            <td class="wallet_items" style="width:40px;">Farming</td>
+                            <td class="wallet_items" style="width:36px;"><input type="text" size="2" id="lv_farming" value="#LV_FARMING#"  /></td>
+                            <td class="wallet_items" style="width:140px;">
+                                <button onclick="SetLevel('lv_farming','Farming');" class="cheat_skill_button">Set</button>
+                                <button onclick="DecreaseSkillLevel('lv_farming','Farming');" class="cheat_skill_button">-</button>
+                                <button onclick="IncreaseSkillLevel('lv_farming','Farming');" class="cheat_skill_button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="wallet_items">Mining</td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_mining" value="#LV_MINING#"  /></td>
+                            <td class="wallet_items">
+                                <button onclick="SetLevel('lv_mining','Mining');" class="cheat_skill_button">Set</button>
+                                <button onclick="DecreaseSkillLevel('lv_mining','Mining');" class="cheat_skill_button">-</button>
+                                <button onclick="IncreaseSkillLevel('lv_mining','Mining');" class="cheat_skill_button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="wallet_items">Foraging</td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_forage" value="#LV_FORAGE#"  /></td>
+                            <td class="wallet_items">
+                                <button onclick="SetLevel('lv_forage','Foraging');" class="cheat_skill_button">Set</button>
+                                <button onclick="DecreaseSkillLevel('lv_forage','Foraging');" class="cheat_skill_button">-</button>
+                                <button onclick="IncreaseSkillLevel('lv_forage','Foraging');" class="cheat_skill_button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="wallet_items">Fishing</td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_fishing" value="#LV_FISHING#"  /></td>
+                            <td class="wallet_items">
+                                <button onclick="SetLevel('lv_fishing','Fishing');" class="cheat_skill_button">Set</button>
+                                <button onclick="DecreaseSkillLevel('lv_fishing','Fishing');" class="cheat_skill_button">-</button>
+                                <button onclick="IncreaseSkillLevel('lv_fishing','Fishing');" class="cheat_skill_button">+</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="wallet_items">Combat</td>
+                            <td class="wallet_items"><input type="text" size="2" id="lv_combat" value="#LV_COMBAT#"  /></td>
+                            <td class="wallet_items">
+                                <button onclick="SetLevel('lv_combat','Combat');" class="cheat_skill_button">Set</button>
+                                <button onclick="DecreaseSkillLevel('lv_combat','Combat');" class="cheat_skill_button">-</button>
+                                <button onclick="IncreaseSkillLevel('lv_combat','Combat');" class="cheat_skill_button">+</button>
+                            </td>
+                        </tr>
+                        <tr><td colspan="3">Setting straight to a Skill level may not unlock the things that going up 1 level at time will.</td></tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table>
+        <tr>
+            <td class="mechanics_cell" style="padding-top:15px;"><button onclick="RunDebugCommand('train','popup');">Spawn Train</button></td>
+            <td class="mechanics_cell"><button onclick="RunDebugCommand('everythingshop', 'popup');">Open Everything Shop</button></td>
+            <td class="mechanics_cell"><button onclick="RunDebugCommand('phone', 'popup');">Phone</button></td>
+            <td class="mechanics_cell"><button onclick="RunDebugCommand('qb', null);">Qi Board</button></td>
+            <td class="mechanics_cell"><button onclick="RunDebugCommand('ordersboard', null);">Special Orders</button></td>
+            <td class="mechanics_cell"><button onclick="RunDebugCommand('renovate', null);">Renovations</button></td>
+
+        </tr>
+    </table>
+    <div class="warning_div">Warning, as with any fiddling with the game from the backend, care should be taken when using these options.</div>
+</div>

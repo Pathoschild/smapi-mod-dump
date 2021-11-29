@@ -213,7 +213,7 @@ namespace AlternativeTextures.Framework.Patches.GameLocations
                 ResetWallTiles(__instance, whichRoom);
                 return;
             }
-            var textureOffset = textureVariation * textureModel.TextureHeight;
+            var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
             var texturePath = _helper.Content.GetActualAssetKey($"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{textureModel.GetTokenId()}", ContentSource.GameContent);
             var tileSheet = new TileSheet($"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{textureModel.GetTokenId()}", __instance.map, texturePath, new xTile.Dimensions.Size(textureModel.Textures.First().Width, textureModel.Textures.First().Height), new xTile.Dimensions.Size(16));

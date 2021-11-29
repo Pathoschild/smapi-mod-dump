@@ -77,57 +77,58 @@ namespace Shoplifter
         {
             foreach(string character in which)
             {
-                NPC npc = Game1.getCharacterFromName(character);
-
-                // Is NPC in range?
-                if (npc != null && npc.currentLocation == who.currentLocation && Utility.tileWithinRadiusOfPlayer(npc.getTileX(), npc.getTileY(), 5, who))
+                foreach (var npc in location.characters)
                 {
-                    string dialogue;
-                    string banneddialogue = (config.DaysBannedFor == 1)
-                        ? ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/BanFromShop"].Replace("{0} days", "a day")
-                        : string.Format(ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/BanFromShop"], config.DaysBannedFor.ToString());
-
-                    fineamount = Math.Min(Game1.player.Money, (int)config.MaxFine);
-
-                    try
+                    // Is NPC in range?
+                    if (npc.Name == character && npc.currentLocation == who.currentLocation && Utility.tileWithinRadiusOfPlayer(npc.getTileX(), npc.getTileY(), 5, who))
                     {
-                        // Is NPC primary shopowner
-                        if (character == "Pierre" || character == "Willy" || character == "Robin" || character == "Marnie" || character == "Gus" || character == "Harvey" || character == "Clint" || character == "Sandy" || character == "Alex")
+                        string dialogue;
+                        string banneddialogue = (config.DaysBannedFor == 1)
+                            ? ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/BanFromShop"].Replace("{0} days", "a day")
+                            : string.Format(ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/BanFromShop"], config.DaysBannedFor.ToString());
+
+                        fineamount = Math.Min(Game1.player.Money, (int)config.MaxFine);
+
+                        try
                         {
-                            // Yes, they have special dialogue
-                            dialogue = (fineamount > 0)
-                                ? string.Format(ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/Caught{character}"], fineamount.ToString())
-                                : ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/Caught{character}_NoMoney"];
+                            // Is NPC primary shopowner
+                            if (character == "Pierre" || character == "Willy" || character == "Robin" || character == "Marnie" || character == "Gus" || character == "Harvey" || character == "Clint" || character == "Sandy" || character == "Alex")
+                            {
+                                // Yes, they have special dialogue
+                                dialogue = (fineamount > 0)
+                                    ? string.Format(ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/Caught{character}"], fineamount.ToString())
+                                    : ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/Caught{character}_NoMoney"];
 
 
+                            }
+
+                            else
+                            {
+                                // No, use generic dialogue
+                                dialogue = (fineamount > 0)
+                                    ? string.Format(ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/CaughtGeneric"], fineamount.ToString())
+                                    : ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney"];
+                            }
+
+                            // Is the player now banned? (uses catch before as dialogue is loaded before count is adjusted) Append additional dialogue
+                            dialogue = (Game1.player.modData.ContainsKey($"{manifest.UniqueID}_{location.NameOrUniqueName}") == true && Game1.player.modData[$"{manifest.UniqueID}_{location.NameOrUniqueName}"].StartsWith($"{config.CatchesBeforeBan - 1}") == true)
+                                ? dialogue + banneddialogue
+                                : dialogue;
+
+                            npc.setNewDialogue(dialogue, add: true);
+                        }
+                        catch
+                        {
+                            // If any string could not be found, use placeholder
+                            npc.setNewDialogue(ModEntry.shopliftingstrings["Placeholder"], add: true);
                         }
 
-                        else
-                        {
-                            // No, use generic dialogue
-                            dialogue = (fineamount > 0)
-                                ? string.Format(ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/CaughtGeneric"], fineamount.ToString())
-                                : ModEntry.shopliftingstrings[$"TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney"];
-                        }
+                        // Draw dialogue for NPC, dialogue box opens
+                        Game1.drawDialogue(npc);
+                        monitor.Log($"{character} caught you shoplifting... You were fined {fineamount}g");
 
-                        // Is the player now banned? (uses catch before as dialogue is loaded before count is adjusted) Append additional dialogue
-                        dialogue = (Game1.player.modData.ContainsKey($"{manifest.UniqueID}_{location.NameOrUniqueName}") == true && Game1.player.modData[$"{manifest.UniqueID}_{location.NameOrUniqueName}"].StartsWith($"{config.CatchesBeforeBan - 1}") == true)
-                            ? dialogue + banneddialogue
-                            : dialogue;
-
-                        npc.setNewDialogue(dialogue, add: true);
+                        return true;
                     }
-                    catch
-                    {
-                        // If any string could not be found, use placeholder
-                        npc.setNewDialogue(ModEntry.shopliftingstrings["Placeholder"], add: true);
-                    }
-
-                    // Draw dialogue for NPC, dialogue box opens
-                    Game1.drawDialogue(npc);
-                    monitor.Log($"{character} caught you shoplifting... You were fined {fineamount}g");
-
-                    return true;
                 }
             }           
             return false;

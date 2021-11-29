@@ -4,8 +4,12 @@
 		<AssemblyName>AwesomeTools</AssemblyName>
 		<RootNamespace>TheLion.Stardew.Tools</RootNamespace>
 		<Version>1.3.0</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net452</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GamePath>C:\Games\Steam\steamapps\common\Stardew Valley</GamePath>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -13,7 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0-beta.20210916" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
 	</ItemGroup>
   
 	<Import Project="..\Common\Common.projitems" Label="Shared" Condition="Exists('..\Common\Common.projitems')" />

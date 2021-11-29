@@ -37,7 +37,7 @@ namespace MultipleSpouses
             if (Misc.GetSpouses(Game1.player, 1).ContainsKey(whichAnswer))
             {
                 Monitor.Log("divorcing " + whichAnswer);
-                string s2 = Game1.content.LoadStringReturnNullIfNotFound("Strings\\Locations:ManorHouse_DivorceBook_Question_" + Game1.player.spouse);
+                string s2 = Game1.content.LoadString("Strings\\Locations:ManorHouse_DivorceBook_Question_" + Game1.player.spouse);
                 if (s2 == null)
                 {
                     s2 = Game1.content.LoadStringReturnNullIfNotFound("Strings\\Locations:ManorHouse_DivorceBook_Question");
@@ -70,7 +70,7 @@ namespace MultipleSpouses
                     }
                     ModEntry.spouseToDivorce = spouse;
                     Game1.player.divorceTonight.Value = true;
-                    string s = Game1.content.LoadStringReturnNullIfNotFound("Strings\\Locations:ManorHouse_DivorceBook_Filed_" + spouse);
+                    string s = Game1.content.LoadString("Strings\\Locations:ManorHouse_DivorceBook_Filed_" + spouse, spouse);
                     if (s == null)
                     {
                         s = Game1.content.LoadStringReturnNullIfNotFound("Strings\\Locations:ManorHouse_DivorceBook_Filed");

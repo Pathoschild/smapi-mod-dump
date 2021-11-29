@@ -169,7 +169,7 @@ namespace Shoplifter
 
         private void Action(object sender, ButtonPressedEventArgs e)
         {
-            GameLocation location = Game1.currentLocation;
+            GameLocation location = Game1.player.currentLocation;
 
             if ((e.Button.IsActionButton() == true || e.Button == SButton.ControllerA) && Game1.dialogueUp == false && Context.CanPlayerMove == true && Context.IsWorldReady == true)
             {

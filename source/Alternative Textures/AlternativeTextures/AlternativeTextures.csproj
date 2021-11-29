@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <LangVersion>latest</LangVersion>
     <EnableHarmony>true</EnableHarmony>
     <EnableModZip>false</EnableModZip>
     <EnableModDeploy>false</EnableModDeploy>
@@ -67,6 +68,8 @@
     <Compile Include="Framework\Models\AnimationModel.cs" />
     <Compile Include="Framework\Models\DisabledTextureModel.cs" />
     <Compile Include="Framework\Models\VariationModel.cs" />
+    <Compile Include="Framework\Patches\Buildings\ShippingBinPatch.cs" />
+    <Compile Include="Framework\Patches\Buildings\StablePatch.cs" />
     <Compile Include="Framework\Patches\Buildings\BuildingPatch.cs" />
     <Compile Include="Framework\Patches\Entities\MonsterPatch.cs" />
     <Compile Include="Framework\Patches\Entities\PetPatch.cs" />
@@ -110,6 +113,7 @@
     <None Include="Examples\[AT] Example Pack\Textures\Buildings\BigBarn\texture.json" />
     <None Include="Examples\[AT] Example Pack\Textures\Buildings\Barn\texture.json" />
     <None Include="Examples\[AT] Example Pack\Textures\Buildings\Farmhouse_0\texture.json" />
+    <None Include="Examples\[AT] Example Pack\Textures\Buildings\ShippingBin\texture.json" />
     <None Include="Examples\[AT] Example Pack\Textures\Craftables\AnimatedRecyclingMachine\texture.json" />
     <None Include="Examples\[AT] Example Pack\Textures\DynamicGameAssetExampleItem\texture.json" />
     <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\GreenSlime\texture.json" />
@@ -234,6 +238,7 @@
     <Content Include="Examples\[AT] Example Pack\Textures\Buildings\DeluxeCoop\texture.png" />
     <Content Include="Examples\[AT] Example Pack\Textures\Buildings\DeluxeBarn\texture.png" />
     <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Farmhouse_0\texture.png" />
+    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\ShippingBin\texture.png" />
     <Content Include="Examples\[AT] Example Pack\Textures\Buildings\JunimoHut\texture.png" />
     <Content Include="Examples\[AT] Example Pack\Textures\Buildings\FishPond\texture.png" />
     <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Greenhouse\texture.png" />

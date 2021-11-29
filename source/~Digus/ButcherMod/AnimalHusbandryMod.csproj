@@ -122,6 +122,7 @@
     <Compile Include="common\ItemUtility.cs" />
     <Compile Include="common\TvController.cs" />
     <Compile Include="common\TvOverrides.cs" />
+    <Compile Include="integrations\IDynamicGameAssetsApi.cs" />
     <Compile Include="meats\MeatOverrides.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="animals\data\RabbitItem.cs" />

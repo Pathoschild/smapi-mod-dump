@@ -8,9 +8,9 @@
 **
 *************************************************/
 
+using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
-using System;
 
 namespace TheLion.Stardew.Common.Integrations
 {
@@ -20,14 +20,14 @@ namespace TheLion.Stardew.Common.Integrations
 	internal class GenericModConfigMenuIntegration<TConfig> : BaseIntegration
 		where TConfig : new()
 	{
-		/// <summary>The mod's public API.</summary>
-		private readonly IGenericModConfigMenuAPI _modAPI;
-
 		/// <summary>The manifest for the mod consuming the API.</summary>
 		private readonly IManifest _consumerManifest;
 
 		/// <summary>Get the current config model.</summary>
 		private readonly Func<TConfig> _getConfig;
+
+		/// <summary>The mod's public API.</summary>
+		private readonly IGenericModConfigMenuAPI _modAPI;
 
 		/// <summary>_reset the config model to the default values.</summary>
 		private readonly Action _reset;
@@ -205,7 +205,8 @@ namespace TheLion.Stardew.Common.Integrations
 		/// <param name="max">The maximum value.</param>
 		/// <param name="enable">Whether the field is enabled.</param>
 		public GenericModConfigMenuIntegration<TConfig> AddNumberField(string label, string description,
-			Func<TConfig, float> get, Action<TConfig, float> set, float min, float max, bool enable = true)
+			Func<TConfig, float> get, Action<TConfig, float> set, float min, float max, float interval,
+			bool enable = true)
 		{
 			AssertLoaded();
 
@@ -217,7 +218,8 @@ namespace TheLion.Stardew.Common.Integrations
 					() => get(_getConfig()),
 					val => set(_getConfig(), val),
 					min,
-					max
+					max,
+					interval
 				);
 
 			return this;

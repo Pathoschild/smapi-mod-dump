@@ -8,11 +8,13 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class StaticReturnedToTitleEvent : ReturnedToTitleEvent
+	[UsedImplicitly]
+	internal class StaticReturnedToTitleEvent : ReturnedToTitleEvent
 	{
 		/// <inheritdoc />
 		public override void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
@@ -20,11 +22,11 @@ namespace TheLion.Stardew.Professions.Framework.Events
 			// release mod data
 			ModEntry.Data.Unload();
 
-			// reset super mode
-			if (ModEntry.SuperModeIndex > 0) ModEntry.SuperModeIndex = -1;
-
-			// unsubscribe player's profession events
+			// unsubscribe events
 			ModEntry.Subscriber.UnsubscribeLocalPlayerEvents();
+
+			// reset Super Mode
+			if (ModState.SuperModeIndex > 0) ModState.SuperModeIndex = -1;
 		}
 	}
 }

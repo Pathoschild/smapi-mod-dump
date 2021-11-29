@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
@@ -27,23 +28,25 @@ using TheLion.Stardew.Professions.Framework.Extensions;
 
 namespace TheLion.Stardew.Professions.Framework.Patches
 {
+	[UsedImplicitly]
 	internal class SlingshotPerformFirePatch : BasePatch
 	{
 		/// <summary>Construct an instance.</summary>
 		internal SlingshotPerformFirePatch()
 		{
-			Original = typeof(Slingshot).MethodNamed(nameof(Slingshot.PerformFire));
+			Original = RequireMethod<Slingshot>(nameof(Slingshot.PerformFire));
 			Postfix = new(GetType(), nameof(SlingshotPerformFirePostfix));
 			Transpiler = new(GetType(), nameof(SlingshotPerformFireTranspiler));
 		}
 
 		#region harmony patches
 
-		/// <summary>Patch to perform Desperado super mode.</summary>
+		/// <summary>Patch to perform Desperado Super Mode.</summary>
 		[HarmonyPostfix]
 		private static void SlingshotPerformFirePostfix(GameLocation location, Farmer who)
 		{
-			if (!who.HasProfession("Desperado") || location.projectiles.LastOrDefault() is not BasicProjectile mainProjectile) return;
+			if (!who.HasProfession("Desperado") ||
+			    location.projectiles.LastOrDefault() is not BasicProjectile mainProjectile) return;
 
 			// get bullet properties
 			var damage = mainProjectile.damageToFarmer;
@@ -63,10 +66,10 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			var velocity = new Vector2(xVelocity * -1f, yVelocity * -1f);
 			var speed = velocity.Length();
 			velocity.Normalize();
-			if (who.IsLocalPlayer && ModEntry.IsSuperModeActive && ModEntry.SuperModeIndex == Util.Professions.IndexOf("Desperado"))
+			if (who.IsLocalPlayer && ModState.IsSuperModeActive &&
+			    ModState.SuperModeIndex == Utility.Professions.IndexOf("Desperado"))
 			{
 				// do Death Blossom
-				;
 				for (var i = 0; i < 7; ++i)
 				{
 					velocity.Rotate(45);
@@ -93,7 +96,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 				//	IgnoreLocationCollision = (Game1.currentLocation.currentEvent is not null || Game1.currentMinigame is not null)
 				//});
 			}
-			else if (Game1.random.NextDouble() < Util.Professions.GetDesperadoDoubleStrafeChance(who))
+			else if (Game1.random.NextDouble() < Utility.Professions.GetDesperadoDoubleStrafeChance(who))
 			{
 				// do Double Strafe
 				DelayedAction doubleStrafe = new(50, () =>
@@ -111,17 +114,17 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			}
 		}
 
-		/// <summary>Patch to increment Desperado Cold Blood counter + add Desperado quick fire projectile velocity bonus.</summary>
+		/// <summary>Patch to increment Desperado Temerity gauge + add Desperado quick fire projectile velocity bonus.</summary>
 		[HarmonyTranspiler]
 		private static IEnumerable<CodeInstruction> SlingshotPerformFireTranspiler(
 			IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
 		{
-			Helper.Attach(original, instructions);
+			var helper = new ILHelper(original, instructions);
 
-			/// Injected: if (who.IsLocalPlayer && location.IsCombatZone() && SuperModeIndex == <desperado_id> && !IsSuperModeActive)
+			/// Injected: if (who.IsLocalPlayer && location.IsCombatZone() && ModStateIndex == <desperado_id> && !IsModStateActive)
 			///				v *= GetDesperadoBulletPower();
-			///				if (Game1.currentTime.TotalGameTime.TotalSeconds - this.pullStartTime <= GetDesperadoChargeTime()* breathingRoom) { SuperModeCounter += 10; }
-			///				else { SuperModeCounter += 2 }
+			///				if (Game1.currentTime.TotalGameTime.TotalSeconds - this.pullStartTime <= GetDesperadoChargeTime()* breathingRoom) { ModStateCounter += 10; }
+			///				else { ModStateCounter += 2 }
 			/// Before: if (ammunition.Category == -5) collisionSound = "slimedead";
 
 			var notQuickShot = iLGenerator.DefineLabel();
@@ -129,7 +132,7 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 			var chargeTime = iLGenerator.DeclareLocal(typeof(TimeSpan));
 			try
 			{
-				Helper
+				helper
 					.FindFirst(
 						new CodeInstruction(OpCodes.Stloc_S, $"{typeof(int)} (5)")
 					)
@@ -142,9 +145,10 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(Item).PropertyGetter(nameof(Item.Category)))
 					)
 					.Retreat()
-					.GetLabels(out var labels) // backup branch labels
-					.StripLabels() // remove labels from here
+					.StripLabels(out var labels) // backup and remove branch labels
 					.Insert(
+						// restore backed-up labels
+						labels,
 						// check if who.IsLocalPlayer)
 						new CodeInstruction(OpCodes.Ldarg_2), // arg 2 = Farmer who
 						new CodeInstruction(OpCodes.Callvirt,
@@ -155,14 +159,14 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						new CodeInstruction(OpCodes.Call,
 							typeof(GameLocationExtensions).MethodNamed(nameof(GameLocationExtensions.IsCombatZone))),
 						new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
-						// check if SuperModeIndex == <desperado_id>
+						// check if ModStateIndex == <desperado_id>
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModEntry).PropertyGetter(nameof(ModEntry.SuperModeIndex))),
-						new CodeInstruction(OpCodes.Ldc_I4_S, Util.Professions.IndexOf("Desperado")),
+							typeof(ModState).PropertyGetter(nameof(ModState.SuperModeIndex))),
+						new CodeInstruction(OpCodes.Ldc_I4_S, Utility.Professions.IndexOf("Desperado")),
 						new CodeInstruction(OpCodes.Bne_Un_S, resumeExecution),
-						// check if IsSuperModeActive = true
+						// check if IsModStateActive = true
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModEntry).PropertyGetter(nameof(ModEntry.IsSuperModeActive))),
+							typeof(ModState).PropertyGetter(nameof(ModState.IsSuperModeActive))),
 						new CodeInstruction(OpCodes.Brtrue_S, resumeExecution),
 						// v.X *= GetDesperadoBulletPower()
 						new CodeInstruction(OpCodes.Ldloca_S, velocity),
@@ -171,7 +175,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						new CodeInstruction(OpCodes.Dup),
 						new CodeInstruction(OpCodes.Ldind_R4),
 						new CodeInstruction(OpCodes.Call,
-							typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetDesperadoBulletPower))),
+							typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
+								.GetDesperadoBulletPower))),
 						new CodeInstruction(OpCodes.Mul),
 						new CodeInstruction(OpCodes.Stind_R4),
 						// v.Y *= GetDesperadoBulletPower()
@@ -181,7 +186,8 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 						new CodeInstruction(OpCodes.Dup),
 						new CodeInstruction(OpCodes.Ldind_R4),
 						new CodeInstruction(OpCodes.Call,
-							typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetDesperadoBulletPower))),
+							typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
+								.GetDesperadoBulletPower))),
 						new CodeInstruction(OpCodes.Mul),
 						new CodeInstruction(OpCodes.Stind_R4),
 						// check for quick shot (i.e. sling shot charge time <= required charge time * breathing room)
@@ -198,43 +204,53 @@ namespace TheLion.Stardew.Professions.Framework.Patches
 							typeof(Slingshot).Field(nameof(Slingshot.pullStartTime))),
 						new CodeInstruction(OpCodes.Sub),
 						new CodeInstruction(OpCodes.Call,
-							typeof(Util.Professions).MethodNamed(nameof(Util.Professions.GetDesperadoChargeTime))),
+							typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
+								.GetDesperadoChargeTime))),
 						new CodeInstruction(OpCodes.Ldc_R4, 1.2f), // <-- breathing room
 						new CodeInstruction(OpCodes.Mul),
 						new CodeInstruction(OpCodes.Bgt_S, notQuickShot),
-						// increment Cold Blood counter
+						// increment Temerity gauge
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModEntry).PropertyGetter(nameof(ModEntry.SuperModeCounter))),
-						new CodeInstruction(OpCodes.Ldc_I4_S, 10), // <-- increment amount
+							typeof(ModState).PropertyGetter(nameof(ModState.SuperModeGaugeValue))),
+						new CodeInstruction(OpCodes.Ldc_R8, 10.0), // <-- increment amount
+						new CodeInstruction(OpCodes.Call, typeof(ModState).PropertyGetter(nameof(ModState.SuperModeGaugeMaxValue))),
+						new CodeInstruction(OpCodes.Conv_R8),
+						new CodeInstruction(OpCodes.Ldc_R8, 500.0),
+						new CodeInstruction(OpCodes.Div),
+						new CodeInstruction(OpCodes.Mul),
+						new CodeInstruction(OpCodes.Conv_I4),
 						new CodeInstruction(OpCodes.Add),
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModEntry).PropertySetter(nameof(ModEntry.SuperModeCounter))),
-						
+							typeof(ModState).PropertySetter(nameof(ModState.SuperModeGaugeValue))),
 						new CodeInstruction(OpCodes.Br_S, resumeExecution)
 					)
 					.Insert(
-						// increment Cold Blood counter
+						new[] {notQuickShot},
+						// increment Temerity gauge
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModEntry).PropertyGetter(nameof(ModEntry.SuperModeCounter))),
-						new CodeInstruction(OpCodes.Ldc_I4_S, 2), // <-- increment amount
+							typeof(ModState).PropertyGetter(nameof(ModState.SuperModeGaugeValue))),
+						new CodeInstruction(OpCodes.Ldc_R8, 2.0), // <-- increment amount
+						new CodeInstruction(OpCodes.Call, typeof(ModState).PropertyGetter(nameof(ModState.SuperModeGaugeMaxValue))),
+						new CodeInstruction(OpCodes.Conv_R8),
+						new CodeInstruction(OpCodes.Ldc_R8, 500.0),
+						new CodeInstruction(OpCodes.Div),
+						new CodeInstruction(OpCodes.Mul),
+						new CodeInstruction(OpCodes.Conv_I4),
 						new CodeInstruction(OpCodes.Add),
 						new CodeInstruction(OpCodes.Call,
-							typeof(ModEntry).PropertySetter(nameof(ModEntry.SuperModeCounter)))
+							typeof(ModState).PropertySetter(nameof(ModState.SuperModeGaugeValue)))
 					)
-					.AddLabels(resumeExecution) // branch here if is not desperado or can't quick fire
-					.Return()
-					.AddLabels(notQuickShot)
-					.Return()
-					.AddLabels(labels); // restore backed-up labels to inserted checks
+					.AddLabels(resumeExecution); // branch here if is not desperado or can't quick fire
 			}
 			catch (Exception ex)
 			{
-				Log(
-					$"Failed while injecting modded Desperado ammunition damage modifier, Cold Blood counter and quick shots.\nHelper returned {ex}", LogLevel.Error);
+				ModEntry.Log(
+					$"Failed while injecting modded Desperado ammunition damage modifier, Temerity gauge and quick shots.\nHelper returned {ex}",
+					LogLevel.Error);
 				return null;
 			}
 
-			return Helper.Flush();
+			return helper.Flush();
 		}
 
 		#endregion harmony patches

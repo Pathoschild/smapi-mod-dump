@@ -97,7 +97,7 @@ namespace AlternativeTextures.Framework.Patches.Entities
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 __instance.Sprite.spriteTexture = textureModel.GetTexture(textureVariation);
                 __instance.Sprite.sourceRect.Y = textureOffset + (__instance.Sprite.currentFrame * __instance.Sprite.SpriteWidth / __instance.Sprite.Texture.Width * __instance.Sprite.SpriteHeight);

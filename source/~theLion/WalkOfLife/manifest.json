@@ -11,7 +11,7 @@
 {
 	"Name": "Walk Of Life",
 	"Author": "VonLoewe",
-	"Version": "1.1.0",
+	"Version": "1.3.0",
 	"Description": "An awesome overhaul of Stardew professions.",
 	"UniqueID": "thelion.AwesomeProfessions",
 	"EntryDll": "AwesomeProfessions.dll",

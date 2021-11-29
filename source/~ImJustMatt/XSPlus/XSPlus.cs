@@ -33,7 +33,7 @@ namespace XSPlus
 
         private static Func<IEnumerable<GameLocation>> GetActiveLocations;
 
-        private IXSPlusAPI _api;
+        private IXSPlusApi _api;
 
         internal ServiceManager ServiceManager { get; private set; }
 
@@ -112,7 +112,7 @@ namespace XSPlus
             // Activate
             this.ServiceManager.ActivateFeatures();
 
-            this._api = new XSPlusAPI(this);
+            this._api = new XSPlusApi(this);
         }
 
         /// <inheritdoc />

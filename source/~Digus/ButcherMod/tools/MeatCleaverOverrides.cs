@@ -53,7 +53,7 @@ namespace AnimalHusbandryMod.tools
             __result = DataLoader.i18n.Get("Tool.MeatCleaver.Description" + Suffix);
         }
 
-        public static void canBeTrashed(Tool __instance, ref bool __result)
+        public static void canBeTrashed(Item __instance, ref bool __result)
         {
             if (!IsMeatCleaver(__instance)) return;
 
@@ -261,7 +261,7 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        private static bool IsMeatCleaver(Tool tool)
+        private static bool IsMeatCleaver(Item tool)
         {
             return tool.modData.ContainsKey(MeatCleaverKey);
         }

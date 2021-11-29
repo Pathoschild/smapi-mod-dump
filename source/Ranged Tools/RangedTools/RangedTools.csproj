@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModConfig.cs" />
+    <Compile Include="ModConfigMenu.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -89,6 +90,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\default.json" />
+    <None Include="i18n\ja-JP.json" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
   </ItemGroup>

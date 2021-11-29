@@ -1,11 +1,11 @@
 ﻿{
   "Name": "ThunderstormTotem",
   "Author": "justastranger",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Using a Rain Totem when rain is already forecasted will cause it to storm.",
   "UniqueID": "jas.ThunderstormTotem",
   "EntryDll": "ThunderstormTotem.dll",
-  "MinimumApiVersion": "3.9.0",
+  "MinimumApiVersion": "3.12.8",
   "Dependencies": [
     {
       "UniqueID": "Platonymous.Toolkit"

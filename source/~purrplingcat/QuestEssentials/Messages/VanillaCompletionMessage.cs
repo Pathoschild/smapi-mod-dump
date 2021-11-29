@@ -48,6 +48,6 @@ namespace QuestEssentials.Messages
 
         public int CompletionType { get; }
 
-        public string Name => "StardewValley.Quest:CompletionArgs";
+        public new string Name => "StardewValley.Quest:CompletionArgs";
     }
 }

@@ -188,6 +188,8 @@ namespace LoveOfCooking.Objects
 		/// <returns>Experience gained.</returns>
 		public int CalculateExperienceGainedFromCookingItem(Item item, int ingredientsCount, int numCooked, bool apply)
 		{
+			CookingSkill skill = this.GetSkill();
+
 			// Reward players for cooking brand new recipes
 			int newBonus = Game1.player.recipesCooked.ContainsKey(item.ParentSheetIndex)
 				? 0
@@ -215,18 +217,16 @@ namespace LoveOfCooking.Objects
 
 			// Sum up experience
 			int currentLevel = this.GetLevel();
-			int nextLevel = currentLevel + 1; // TODO: COMPAT: Level Extender affects max level in API
-			//int maxLevel = ModEntry.UsingLevelExtender ? 100 : 10;
-			int maxLevel = 10;
 			int finalExperience = 0;
 
-			if (currentLevel >= maxLevel)
+			if (currentLevel >= skill.ExperienceCurve.Length)
 			{
 				Log.D($"No experience was applied: Skill is at max level.",
 					ModEntry.Config.DebugMode);
 			}
 			else
 			{
+				int nextLevel = currentLevel + 1;
 				int remainingExperience = this.GetExperienceRemainingUntilLevel(nextLevel);
 				int requiredExperience = this.GetExperienceRequiredForLevel(nextLevel);
 				int summedExperience = (int)(newBonus + dailyBonus + (experienceFromIngredients * stackBonus));
@@ -235,7 +235,7 @@ namespace LoveOfCooking.Objects
                 {
 					summedExperience = (int)(summedExperience * ModEntry.DebugGlobalExperienceRate);
 				}
-				finalExperience = maxLevel - currentLevel == 1
+				finalExperience = skill.ExperienceCurve.Length - currentLevel == 1
 					? Math.Min(remainingExperience, summedExperience)
 					: summedExperience;
 				Log.D($"Cooked up {item.Name} with {ingredientsCount} ingredients.",

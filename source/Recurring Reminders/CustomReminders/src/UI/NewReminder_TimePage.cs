@@ -25,15 +25,15 @@ namespace Dem1se.CustomReminders.UI
     public class NewReminder_TimePage : IClickableMenu
     {
         // title and the error message
-        private readonly List<ClickableComponent> Labels = new List<ClickableComponent>();
+        private readonly List<ClickableComponent> Labels = new();
 
         private readonly int XPos = (int)(Game1.viewport.Width * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (632 + IClickableMenu.borderWidth * 2) / 2;
         private readonly int YPos = (int)(Game1.viewport.Height * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize;
         private readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
         private readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
 
-        private readonly List<ClickableTextureComponent> MinutesAndMeridiemList = new List<ClickableTextureComponent>();
-        private readonly List<ClickableTextureComponent> HoursButtons = new List<ClickableTextureComponent>();
+        private readonly List<ClickableTextureComponent> MinutesAndMeridiemList = new();
+        private readonly List<ClickableTextureComponent> HoursButtons = new();
         private ClickableComponent CurrentChoiceDisplay;
         private ClickableTextureComponent OkButton;
 

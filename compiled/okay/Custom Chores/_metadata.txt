@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/5315
 IDs: furyx639.CustomChores
-update keys: Nexus:5315, GitHub:StardewMods/SDVCustomChores
+update keys: Nexus:5315

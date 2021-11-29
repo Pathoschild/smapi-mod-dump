@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/StopRugRemoval
+   Git: https://github.com/atravita-mods/StopRugRemoval.git
+
+mods:
+   Stop Rug Removal
+
+latest commit:
+   commit c9fd644a123027423ba64016f4edea52f3d2ecdc
+   Author: atravia <nightshadequeen@gmail.com>
+   Date:   Wed Nov 24 12:27:50 2021 -0500
+   
+       Adds GMCM integration.
+   

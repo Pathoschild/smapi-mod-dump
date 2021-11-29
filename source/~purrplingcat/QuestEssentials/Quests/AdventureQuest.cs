@@ -132,9 +132,9 @@ namespace QuestEssentials.Quests
 
                     StringBuilder text = new StringBuilder(task.Description);
 
-                    if (task.ShouldShowProgress() && task.Goal > 1)
+                    if (task.ShouldShowProgress() && task.Count > 1)
                     {
-                        text.Append($" ({task.CurrentCount}/{task.Goal})");
+                        text.Append($" ({task.CurrentCount}/{task.Count})");
                     }
 
                     currentObjectives.Add(new CustomQuestObjective(task.Name, text.ToString())

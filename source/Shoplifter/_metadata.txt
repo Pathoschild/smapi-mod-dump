@@ -6,9 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit e380b82b073f2ece593c6e9cc771ec0cabff4641
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Wed May 19 20:14:00 2021 +1000
+   commit 56891644a468e0604929e3a08a62bb0b92eb806f
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Sat Nov 6 16:43:48 2021 +1100
    
-       Update README.md
+       fixed multiplayer bug where farmhands were incorrectly being caught by shopkeepers
    

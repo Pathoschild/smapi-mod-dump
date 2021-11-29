@@ -758,6 +758,8 @@ namespace CustomCommunityCentre
 		{
 			if (Bundles.IsCustomBundle(bundleName: __instance.name) && slot?.item != null)
 			{
+				Log.D($"Adding item to bundle donations: {slot.item} => {__instance.name}",
+					CustomCommunityCentre.ModEntry.Config.DebugMode);
 				Bundles.CustomBundleDonations.Add(slot.item);
 			}
 		}

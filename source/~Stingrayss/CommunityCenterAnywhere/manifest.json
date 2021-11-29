@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Stingrayss/StardewValley
+**
+*************************************************/
+
+{
+  "Name": "CommunityCenterAnywhere",
+  "Author": "Stingray",
+  "Version": "2.1.1",
+  "Description": "Allows the player to input items for the bundles from their inventory",
+  "UniqueID": "Stingray.CCA",
+  "EntryDll": "CommunityCenterAnywhere.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:10150" ]
+}

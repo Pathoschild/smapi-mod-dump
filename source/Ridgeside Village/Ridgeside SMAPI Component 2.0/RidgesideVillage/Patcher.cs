@@ -44,6 +44,8 @@ namespace RidgesideVillage
             HarmonyPatch_TreasureItems.ApplyPatch(harmony, Helper);
             HarmonyPatch_SummitFarm.ApplyPatch(harmony, Helper);
             HarmonyPatch_WeddingGuests.ApplyPatch(harmony, Helper);
+            HarmonyPatch_Animations.ApplyPatch(harmony, Helper);
+            HarmonyPatch_SecretSantaGift.ApplyPatch(harmony, Helper);
         }
     }        
 }

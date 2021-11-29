@@ -15,9 +15,9 @@
 
 	"GenericMC.barIconMode": "Tryb ikon",
 	"GenericMC.barIconModeDesc": "Kierunek, w którym będą podróżować ikony przynęty/spławika/śmieci/ryb, zanim zostaną podzielone na rzędy/kolumny.",
-	"GenericMC.barIconModeHor": "Ikony poziome",
-	"GenericMC.barIconModeVert": "Ikony pionowe",
-	"GenericMC.barIconModeVertText": "Ikony pionowe z tekstem",
+	"GenericMC.barIconMode0": "Ikony poziome",
+	"GenericMC.barIconMode1": "Ikony pionowe",
+	"GenericMC.barIconMode2": "Ikony pionowe z tekstem",
 
 	"GenericMC.Disabled": "Wyłącz",
 
@@ -36,8 +36,8 @@
 
 	"GenericMC.barBackgroundMode": "Tryb tła",
 	"GenericMC.barBackgroundModeDesc": "Ciemne tło za ikonami, przydatne głównie w trybie ikon z tekstem. Okrągłe są dodane za każdą ikoną, a Prostokąt jest dodany za wszystkim (szybszy).",
-	"GenericMC.barBackgroundModeCircles": "Okrągłe",
-	"GenericMC.barBackgroundModeRect": "Prostokąt",
+	"GenericMC.barBackgroundMode0": "Okrągłe",
+	"GenericMC.barBackgroundMode1": "Prostokąt",
 
 	"GenericMC.barShowBaitTackle": "Pokaż przynętę i spławik",
 	"GenericMC.barShowBaitTackleDesc": "Włącza ikony, które pokazują status przynęty i spławika twojej wędki (jeśli je ma).",
@@ -47,8 +47,8 @@
 
 	"GenericMC.barSortMode": "Tryb Sortowania",
 	"GenericMC.barSortModeDesc": "Sortowanie według Nazwy aranżuje ikony alfabetycznie.\nSortowanie według Szansy Złapania bardzo zależy od Częstotliwości Ekstra Testów, im większa, tym lepiej.\nBez sortowania ikony mają daną kolejność: Śmieci, według ID, i ekstra.",
-	"GenericMC.barSortModeName": "Nazwa",
-	"GenericMC.barSortModeChance": "Szansa Złapania",
+	"GenericMC.barSortMode0": "Nazwa",
+	"GenericMC.barSortMode1": "Szansa Złapania",
 
 	"GenericMC.barExtraCheckFrequency": "Częstotliwość Ekstra Testów",
 	"GenericMC.barExtraCheckFrequencyDesc": "Testy intensywnej wydajności, które symulują łowienie w tym miejscu. Im wyższa liczba, tym więcej testów (tym większa dokładność i mniej migotania ikon). Dokładne nawet jeśli masz inne mody, ale wysoka liczba testów może spowolnić grę. W trybie podzielonego ekranu ta liczba jest podzielona przez ilość ekranów, aby nie powodować spowolnień.",
@@ -71,9 +71,9 @@
 
 	"GenericMC.MinigameMode": "Tryb minigry",
 	"GenericMC.MinigameModeDesc": "Pełny: Kopiuje wiele warstw minigry, aby wyglądać lepiej.\nProsty: Kopiuje tylko rybę. Wygląda gorzej, ale może działać lepiej.\nTylko pasek (również zawarty w powyższych dwóch trybach): Wyróżnia rybę w Pasky Info (jeśli jest włączony).",
-	"GenericMC.MinigameModeFull": "Pełny",
-	"GenericMC.MinigameModeSimple": "Prosty",
-	"GenericMC.MinigameModeBarOnly": "Tylko pasek",
+	"GenericMC.MinigameMode0": "Pełny",
+	"GenericMC.MinigameMode1": "Prosty",
+	"GenericMC.MinigameMode2": "Tylko pasek",
 
 	"GenericMC.SplitScreenDesc": "Opcje dla trybu dzielonego ekranu, nie są ważne w innych trybach. Tylko główny użytkownik powinien je zmieniać.",
 	"GenericMC.SplitScreen2": "Podzielony Ekran 2: Prawy (Górny)",

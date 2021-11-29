@@ -1,0 +1,10 @@
+{
+  "Name": "Hoe and Water Direction",
+  "Author": "TheThor59",
+  "Version": "0.1.0",
+  "Description": "Mods that allow you to change direction while using hoe or watering",
+  "UniqueID": "Thor.HoeWaterDirection",
+  "EntryDll": "Thor.Stardew.Mods.HoeWaterDirection.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:10052" ]
+}

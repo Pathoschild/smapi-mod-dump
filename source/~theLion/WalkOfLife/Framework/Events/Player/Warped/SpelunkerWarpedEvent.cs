@@ -13,7 +13,7 @@ using StardewValley.Locations;
 
 namespace TheLion.Stardew.Professions.Framework.Events
 {
-	public class SpelunkerWarpedEvent : WarpedEvent
+	internal class SpelunkerWarpedEvent : WarpedEvent
 	{
 		private static readonly SpelunkerBuffDisplayUpdateTickedEvent SpelunkerUpdateTickedEvent = new();
 
@@ -24,12 +24,12 @@ namespace TheLion.Stardew.Professions.Framework.Events
 
 			if (e.NewLocation is MineShaft)
 			{
-				++ModEntry.SpelunkerLadderStreak;
+				++ModState.SpelunkerLadderStreak;
 				ModEntry.Subscriber.Subscribe(SpelunkerUpdateTickedEvent);
 			}
 			else
 			{
-				ModEntry.SpelunkerLadderStreak = 0;
+				ModState.SpelunkerLadderStreak = 0;
 				ModEntry.Subscriber.Unsubscribe(SpelunkerUpdateTickedEvent.GetType());
 			}
 

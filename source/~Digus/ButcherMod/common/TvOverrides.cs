@@ -9,7 +9,7 @@
 *************************************************/
 
 using System;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -19,7 +19,6 @@ namespace AnimalHusbandryMod.common
 {
     internal class TvOverrides
     {
-        [HarmonyPriority(Priority.First)]
         public static bool createQuestionDialogue(string question, ref Response[] answerChoices)
         {
             if (question == Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13120"))

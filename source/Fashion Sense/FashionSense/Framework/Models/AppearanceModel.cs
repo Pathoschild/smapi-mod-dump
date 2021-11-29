@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework.Graphics;
+using FashionSense.Framework.Models.Generic;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,36 +20,73 @@ namespace FashionSense.Framework.Models
 {
     public class AppearanceModel
     {
-        internal string Owner { get; set; }
-        internal string Author { get; set; }
-        public string Name { get; set; }
-        internal string Id { get; set; }
-        internal Texture2D Texture { get; set; }
-        public HairModel BackHair { get; set; }
-        public HairModel RightHair { get; set; }
-        public HairModel FrontHair { get; set; }
-        public HairModel LeftHair { get; set; }
+        public Position StartingPosition { get; set; }
+        public bool Flipped { get; set; }
+        public bool RequireAnimationToFinish { get; set; }
+        public bool DisableGrayscale { get; set; }
+        public bool IsPrismatic { get; set; }
+        public float PrismaticAnimationSpeedMultiplier { get; set; } = 1f;
+        public List<int[]> ColorMasks { get; set; } = new List<int[]>();
+        public List<AnimationModel> UniformAnimation { get; set; } = new List<AnimationModel>();
+        public List<AnimationModel> IdleAnimation { get; set; } = new List<AnimationModel>();
+        public List<AnimationModel> MovementAnimation { get; set; } = new List<AnimationModel>();
 
-        internal HairModel GetHairFromFacingDirection(int facingDirection)
+        internal bool IsPlayerColorChoiceIgnored()
         {
-            HairModel hairModel = null;
-            switch (facingDirection)
+            return DisableGrayscale || IsPrismatic;
+        }
+
+        internal bool IsMaskedColor(Color color)
+        {
+            foreach (Color maskedColor in ColorMasks.Select(c => new Color(c[0], c[1], c[2])))
             {
-                case 0:
-                    hairModel = BackHair;
-                    break;
-                case 1:
-                    hairModel = RightHair;
-                    break;
-                case 2:
-                    hairModel = FrontHair;
-                    break;
-                case 3:
-                    hairModel = LeftHair;
-                    break;
+                if (maskedColor == color)
+                {
+                    return true;
+                }
             }
 
-            return hairModel;
+            return false;
+        }
+
+        internal bool HasColorMask()
+        {
+            return ColorMasks.Count > 0;
+        }
+
+        internal bool HasUniformAnimation()
+        {
+            return UniformAnimation.Count > 0;
+        }
+
+        internal bool HasIdleAnimation()
+        {
+            return IdleAnimation.Count > 0;
+        }
+
+        internal bool HasMovementAnimation()
+        {
+            return MovementAnimation.Count > 0;
+        }
+
+        private AnimationModel GetAnimationData(List<AnimationModel> animation, int frame)
+        {
+            return animation.FirstOrDefault(a => a.Frame == frame);
+        }
+
+        internal AnimationModel GetUniformAnimationAtFrame(int frame)
+        {
+            return GetAnimationData(UniformAnimation, frame);
+        }
+
+        internal AnimationModel GetIdleAnimationAtFrame(int frame)
+        {
+            return GetAnimationData(IdleAnimation, frame);
+        }
+
+        internal AnimationModel GetMovementAnimationAtFrame(int frame)
+        {
+            return GetAnimationData(MovementAnimation, frame);
         }
     }
 }

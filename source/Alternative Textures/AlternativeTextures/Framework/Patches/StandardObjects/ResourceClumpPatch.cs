@@ -65,7 +65,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     position.X += (float)Math.Sin(Math.PI * 2.0 / (double)___shakeTimer) * 4f;
                 }
 
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
                 Rectangle sourceRect = new Rectangle(0, textureOffset, 32, 32);
 
                 spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, position), sourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (__instance.tile.Y + 1f) * 64f / 10000f + __instance.tile.X / 100000f);

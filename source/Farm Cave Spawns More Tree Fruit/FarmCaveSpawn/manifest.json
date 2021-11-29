@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/FarmCaveSpawn
+**
+*************************************************/
+
+{
+   "Name": "FarmCaveSpawn",
+   "Author": "atravita",
+   "Version": "1.0.3",
+   "Description": "Spawn more tree fruit in the fruit cave",
+   "UniqueID": "atravita.FarmCaveSpawn",
+   "EntryDll": "FarmCaveSpawn.dll",
+   "UpdateKeys": ["Nexus:10186"],
+   "MinimumApiVersion": "3.0"
+}

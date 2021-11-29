@@ -71,6 +71,7 @@ namespace XSPlus.Features
             this.Helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             this.Helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
             this.Helper.Events.Player.Warped += this.OnWarped;
+            this.Helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             this.Helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
 
             // Patches
@@ -84,6 +85,7 @@ namespace XSPlus.Features
             this.Helper.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
             this.Helper.Events.Player.InventoryChanged -= this.OnInventoryChanged;
             this.Helper.Events.Player.Warped -= this.OnWarped;
+            this.Helper.Events.World.ObjectListChanged -= this.OnObjectListChanged;
             this.Helper.Events.Input.ButtonsChanged -= this.OnButtonsChanged;
 
             // Patches
@@ -178,6 +180,11 @@ namespace XSPlus.Features
         }
 
         private void OnWarped(object sender, WarpedEventArgs e)
+        {
+            this._cachedGameChests = null;
+        }
+
+        private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             this._cachedGameChests = null;
         }

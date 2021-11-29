@@ -9,6 +9,7 @@
 *************************************************/
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
@@ -20,12 +21,17 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
         ** Accessors
         *********/
         /// <summary>The per-location settings.</summary>
-        public IDictionary<string, PerLocationConfig> InLocations { get; set; } = new Dictionary<string, PerLocationConfig>
+        public IDictionary<string, PerLocationConfig> Locations { get; set; } = new Dictionary<string, PerLocationConfig>
         {
-            ["*"] = new PerLocationConfig
+            ["*"] = new()
             {
                 GrowCrops = true,
-                GrowCropsOutOfSeason = true
+                GrowCropsOutOfSeason = true,
+                ForceTillable = new()
+                {
+                    Dirt = true,
+                    Grass = true
+                }
             }
         };
 
@@ -38,16 +44,11 @@ namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
-            this.InLocations ??= new Dictionary<string, PerLocationConfig>();
+            this.Locations ??= new Dictionary<string, PerLocationConfig>();
 
-            foreach (var entry in this.InLocations.Values)
-            {
-                entry.ForceTillable ??= new ModConfigForceTillable
-                {
-                    Dirt = true,
-                    Grass = true
-                };
-            }
+            // remove null values
+            foreach (string key in this.Locations.Where(p => p.Value == null).Select(p => p.Key).ToArray())
+                this.Locations.Remove(key);
         }
     }
 }

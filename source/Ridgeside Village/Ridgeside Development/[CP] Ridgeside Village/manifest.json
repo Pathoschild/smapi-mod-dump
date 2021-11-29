@@ -11,7 +11,7 @@
 {
 	"Name": "Ridgeside Village",
 	"Author": "Rafseazz",
-	"Version": "2.0",
+	"Version": "2.0.2",
 	"Description": "Adds Ridgeside Village to the game. A Stardew Valley Expansion mod.",
 	"UniqueID": "Rafseazz.RSVCP",
 	"MinimumApiVersion": "3.0.0",
@@ -42,6 +42,10 @@
 	   },
 	   {
         "UniqueID": "PurrplingCat.QuestFramework",
+        "IsRequired": true,
+	   },
+	   {
+        "UniqueID": "DIGUS.MailFrameworkMod",
         "IsRequired": true,
 	   },
 	   {

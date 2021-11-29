@@ -6,9 +6,9 @@ mods:
    Alternative Textures
 
 latest commit:
-   commit 74ff033b30d1c993124f1cd88db9ea6687296027
+   commit 87eeebe5e8991f812b479a70d616e5cdbc84ca2e
    Author: Mr. Automation <31755155+Floogen@users.noreply.github.com>
-   Date:   Wed Oct 27 19:10:27 2021 -0500
+   Date:   Sat Nov 27 20:07:31 2021 -0600
    
-       Increased Artifact Spot example variation by one
+       v4.5.5 released
    

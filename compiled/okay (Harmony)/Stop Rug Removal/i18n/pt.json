@@ -1,0 +1,6 @@
+﻿{
+    "mod.description": "Impede que os tapetes sejam removidos se houver algo em cima dele.",
+    "enabled.title": "Habilitado",
+    "rug-removal-message": "Remova todos os itens em cima do tapete antes de remove-lo!"
+}
+

@@ -15,9 +15,10 @@ namespace FreeLove
 {
     public interface IKissingAPI
     {
-        void FarmerKiss(Farmer farmer, NPC npc);
-        void NPCKiss(NPC kisser, NPC kissee);
-        SoundEffect GetKissSound();
-        bool IsKissing(string name);
+        public void PlayerNPCKiss(Farmer farmer, NPC npc);
+        public void NPCKiss(NPC kisser, NPC kissee);
+        public SoundEffect GetKissSound();
+        public SoundEffect GetHugSound();
+        public int LastKissed(string name);
     }
 }

@@ -1,5 +1,5 @@
 {
-  "InLocations": {
+  "Locations": {
     "*": {
       "GrowCrops": true,
       "GrowCropsOutOfSeason": true,

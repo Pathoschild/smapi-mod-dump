@@ -11,7 +11,7 @@
 {
   "Name": "RSV - Mail Framework Assets",
   "Author": "Rafseazz",
-  "Version": "2.0",
+  "Version": "2.0.2",
   "Description": "Adds mail related assets for RSV.",
   "UniqueID": "Rafseazz.RSVMFM",
   "MinimumApiVersion": "3.4.0",

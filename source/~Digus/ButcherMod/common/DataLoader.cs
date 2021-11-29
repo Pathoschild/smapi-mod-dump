@@ -15,6 +15,7 @@ using System.Linq;
 using AnimalHusbandryMod.animals;
 using AnimalHusbandryMod.animals.data;
 using AnimalHusbandryMod.cooking;
+using AnimalHusbandryMod.integrations;
 using AnimalHusbandryMod.meats;
 using AnimalHusbandryMod.recipes;
 using AnimalHusbandryMod.tools;
@@ -53,12 +54,15 @@ namespace AnimalHusbandryMod.common
         public static Dictionary<string, object> AssetsToLoad = new Dictionary<string, object>();
 
         public static bool isLoadingFarmAnimals =  false;
-        
+
+        public static IDynamicGameAssetsApi DgaApi;
+
         public DataLoader(IModHelper helper)
         {
             Helper = helper;
             ModConfig = helper.ReadConfig<ModConfig>();
             i18n = Helper.Translation;
+            DgaApi = DataLoader.Helper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
 
             LooseSpritesName = Helper.Content.GetActualAssetKey("common/LooseSprites.png", ContentSource.ModFolder);
             LooseSprites = Helper.Content.Load<Texture2D>("common/LooseSprites.png");

@@ -55,7 +55,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                 {
                     return true;
                 }
-                var textureOffset = textureVariation * textureModel.TextureHeight;
+                var textureOffset = textureModel.GetTextureOffset(textureVariation);
 
                 Vector2 scaleFactor = __instance.getScale();
                 scaleFactor *= 4f;

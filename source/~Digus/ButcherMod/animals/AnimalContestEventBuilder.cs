@@ -774,7 +774,7 @@ namespace AnimalHusbandryMod.animals
 
         public static int GetEventId(SDate date)
         {
-            return Convert.ToInt32($"6572{date.Year:00}{Utility.getSeasonNumber(date.Season)}{date.Day:00}");
+            return Convert.ToInt32($"{6572+date.Year/100}{date.Year%100:00}{Utility.getSeasonNumber(date.Season)}{date.Day:00}");
         }
     }
 }

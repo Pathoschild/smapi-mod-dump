@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/StopRugRemoval
+**
+*************************************************/
+
+{
+    "mod.description": "Prevents rugs from being removed if there's something on the rug.",
+    "enabled.title":  "Enabled",
+    "rug-removal-message": "Remove all items on rug before removing rug!"
+}

@@ -22,29 +22,27 @@ namespace Dem1se.CustomReminders.UI
     /// <summary>The menu which lets the set new reminders.</summary>
     public class NewReminder_DatePage : IClickableMenu
     {
-        private ClickableTextureComponent DisplayRemindersButton;
+        ClickableTextureComponent DisplayRemindersButton;
 
-        private readonly int XPos = (int)(Game1.viewport.Width * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (632 + IClickableMenu.borderWidth * 2) / 2;
-        private readonly int YPos = (int)(Game1.viewport.Height * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize;
-        private readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
-        private readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
+        public readonly int XPos = (int)(Game1.viewport.Width * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (632 + IClickableMenu.borderWidth * 2) / 2;
+        public readonly int YPos = (int)(Game1.viewport.Height * Game1.options.zoomLevel * (1 / Game1.options.uiScale)) / 2 - (600 + IClickableMenu.borderWidth * 2) / 2 - Game1.tileSize;
+        public readonly int UIWidth = 632 + IClickableMenu.borderWidth * 2;
+        public readonly int UIHeight = 600 + IClickableMenu.borderWidth * 2 + Game1.tileSize;
 
-        private readonly List<ClickableComponent> Labels = new List<ClickableComponent>();
-        private readonly List<ClickableTextureComponent> SeasonButtons = new List<ClickableTextureComponent>();
-        private readonly List<ClickableTextureComponent> DayButtons = new List<ClickableTextureComponent>();
+        readonly List<ClickableComponent> Labels = new();
+        readonly List<ClickableTextureComponent> SeasonButtons = new();
+        readonly List<ClickableTextureComponent> DayButtons = new();
         
-        private TextBox ReminderTextBox;
-        private CheckBox RecurringCheckBox;
-        protected ClickableTextureComponent OkButton;
+        TextBox ReminderTextBox;
+        CheckBox RecurringCheckBox;
+        ClickableTextureComponent OkButton;
 
-        private string ReminderMessage;
-        private string ReminderSeason;
-        private int ReminderDate;
+        string ReminderMessage, ReminderSeason;
+        int ReminderDate;
 
         /// <summary>The callback to invoke when the ok button is pressed</summary>
         private readonly Action<string, string, int, bool> OnChanged;
 
-        /// <summary>Construct an instance of the first page.</summary>
         /// <param name="onChanged">
         /// Delegate to call once once the ok button is pressed.
         /// Contains 3 parameters for message, season and date.
@@ -56,9 +54,6 @@ namespace Dem1se.CustomReminders.UI
             SetUpUI();
         }
 
-        /// <summary>The method called when the game window changes size.</summary>
-        /// <param name="oldBounds">The former viewport.</param>
-        /// <param name="newBounds">The new viewport.</param>
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
         {
             base.gameWindowSizeChanged(oldBounds, newBounds);
@@ -197,7 +192,6 @@ namespace Dem1se.CustomReminders.UI
         /// <param name="playSound">Whether to enable sound.</param>
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
-
             ReminderTextBox.Update();
 
             if (ReminderSeason == "Spring" || ReminderSeason == "Summer" || ReminderSeason == "Fall" || ReminderSeason == "Winter")

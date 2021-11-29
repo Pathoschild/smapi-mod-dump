@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tylergibbs2/LiveProgressBar
+**
+*************************************************/
+
+{
+  "Name": "LiveProgressBar",
+  "Author": "Tyler Gibbs <gibbstyler7@gmail.com>",
+  "Version": "0.0.6",
+  "Description": "Always displays your total progress bar.",
+  "UniqueID": "tylergibbs2.liveprogressbar",
+  "EntryDll": "LiveProgressBar.dll",
+  "MinimumApiVersion": "3.8.1",
+  "UpdateKeys": [ "Nexus:7330" ]
+}

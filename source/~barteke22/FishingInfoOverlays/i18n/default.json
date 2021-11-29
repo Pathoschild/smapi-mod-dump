@@ -15,9 +15,9 @@
 
 	"GenericMC.barIconMode": "Icon Mode",
 	"GenericMC.barIconModeDesc": "The direction in which the bait/tackle/trash/fish icons will travel, before being split into rows/columns.",
-	"GenericMC.barIconModeHor": "Horizontal Icons",
-	"GenericMC.barIconModeVert": "Vertical Icons",
-	"GenericMC.barIconModeVertText": "Vertical Icons + Text",
+	"GenericMC.barIconMode0": "Horizontal Icons",
+	"GenericMC.barIconMode1": "Vertical Icons",
+	"GenericMC.barIconMode2": "Vertical Icons + Text",
 
 	"GenericMC.Disabled": "Disabled",
 
@@ -36,8 +36,8 @@
 
 	"GenericMC.barBackgroundMode": "Background Mode",
 	"GenericMC.barBackgroundModeDesc": "The dark background behind the icons, mostly useful for text icon mode. The Circles are painted behind each icon, Rectangle is drawn behind everything (better performance).",
-	"GenericMC.barBackgroundModeCircles": "Circles",
-	"GenericMC.barBackgroundModeRect": "Rectangle",
+	"GenericMC.barBackgroundMode0": "Circles",
+	"GenericMC.barBackgroundMode1": "Rectangle",
 
 	"GenericMC.barShowBaitTackle": "Show Bait and Tackle Icons",
 	"GenericMC.barShowBaitTackleDesc": "Enables icons that show how much bait and tackle durability your current fishing rod has (if any).",
@@ -47,8 +47,8 @@
 
 	"GenericMC.barSortMode": "Sorting Mode",
 	"GenericMC.barSortModeDesc": "Sorting by Name arranges icons alphabetically.\nSorting by Catch Chance (%) relies heavily on Extra Check Frequency, the higher, the better.\nWithout sorting, the order is: Trash, by ID, and extras.",
-	"GenericMC.barSortModeName": "Name",
-	"GenericMC.barSortModeChance": "Catch Chance",
+	"GenericMC.barSortMode0": "Name",
+	"GenericMC.barSortMode1": "Catch Chance",
 
 	"GenericMC.barExtraCheckFrequency": "Extra Check Frequency",
 	"GenericMC.barExtraCheckFrequencyDesc": "Performance intensive check that simulates fishing in current location. The higher the number, the more attempts (more accuracy and less flickering). Should be accurate with any mod, but can tank performance if high. In split screen mode, divided by the screen amount to help performance.",
@@ -71,9 +71,9 @@
 
 	"GenericMC.MinigameMode": "Minigame Mode",
 	"GenericMC.MinigameModeDesc": "Full: Copies multiple layers to look better.\nSimple: Only overlays the fish, looks worse, but might perform/work better.\nBar Only (included in the above two): Outlines the fish in the regular location bar (if it's enabled).",
-	"GenericMC.MinigameModeFull": "Full",
-	"GenericMC.MinigameModeSimple": "Simple",
-	"GenericMC.MinigameModeBarOnly": "Bar Only",
+	"GenericMC.MinigameMode0": "Full",
+	"GenericMC.MinigameMode1": "Simple",
+	"GenericMC.MinigameMode2": "Bar Only",
 
 	"GenericMC.SplitScreenDesc": "Split Screen-specific settings, these only matter for Split Screen players. Only the main player should change these.",
 	"GenericMC.SplitScreen2": "Split Screen 2: (Top) Right",

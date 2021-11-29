@@ -59,13 +59,13 @@ namespace QuestEssentials.Tasks
 
                 if (this.Data.Tile.HasValue && this.Data.Tile.Value == movedMessage.TilePosition)
                 {
-                    this.IncrementCount(this.Goal);
+                    this.IncrementCount(this.Count);
                     return true;
                 }
 
                 if (this.Data.Area.HasValue && this.Data.Area.Value.Contains((int)movedMessage.Position.X, (int)movedMessage.Position.Y))
                 {
-                    this.IncrementCount(this.Goal);
+                    this.IncrementCount(this.Count);
                     return true;
                 }
             }

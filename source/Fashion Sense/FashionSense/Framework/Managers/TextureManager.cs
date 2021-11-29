@@ -9,6 +9,7 @@
 *************************************************/
 
 using FashionSense.Framework.Models;
+using FashionSense.Framework.Models.Hair;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using System;
@@ -22,12 +23,12 @@ namespace FashionSense.Framework.Managers
     class TextureManager
     {
         private IMonitor _monitor;
-        private List<AppearanceModel> _appearanceTextures;
+        private List<AppearanceContentPack> _appearanceTextures;
 
         public TextureManager(IMonitor monitor, IModHelper helper)
         {
             _monitor = monitor;
-            _appearanceTextures = new List<AppearanceModel>();
+            _appearanceTextures = new List<AppearanceContentPack>();
         }
 
         public void Reset()
@@ -35,11 +36,11 @@ namespace FashionSense.Framework.Managers
             _appearanceTextures.Clear();
         }
 
-        public void AddAppearanceModel(AppearanceModel model)
+        public void AddAppearanceModel(AppearanceContentPack model)
         {
-            if (_appearanceTextures.Any(t => t.Id == model.Id))
+            if (_appearanceTextures.Any(t => t.Id == model.Id && t.PackType == model.PackType))
             {
-                var replacementIndex = _appearanceTextures.IndexOf(_appearanceTextures.First(t => t.Id == model.Id));
+                var replacementIndex = _appearanceTextures.IndexOf(_appearanceTextures.First(t => t.Id == model.Id && t.PackType == model.PackType));
                 _appearanceTextures[replacementIndex] = model;
             }
             else
@@ -48,14 +49,19 @@ namespace FashionSense.Framework.Managers
             }
         }
 
-        public List<AppearanceModel> GetAllAppearanceModels()
+        public List<AppearanceContentPack> GetAllAppearanceModels()
         {
             return _appearanceTextures;
         }
 
-        public AppearanceModel GetSpecificAppearanceModel(string appearanceId)
+        public List<T> GetAllAppearanceModels<T>() where T : AppearanceContentPack
         {
-            return _appearanceTextures.FirstOrDefault(t => String.Equals(t.Id, appearanceId, StringComparison.OrdinalIgnoreCase));
+            return _appearanceTextures.Where(t => t is T) as List<T>;
+        }
+
+        public T GetSpecificAppearanceModel<T>(string appearanceId) where T : AppearanceContentPack
+        {
+            return (T)_appearanceTextures.FirstOrDefault(t => String.Equals(t.Id, appearanceId, StringComparison.OrdinalIgnoreCase) && t is T);
         }
     }
 }

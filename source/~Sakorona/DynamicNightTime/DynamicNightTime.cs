@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
@@ -68,7 +68,7 @@ namespace DynamicNightTime
             if (NightConfig.Latitude < -64)
                 NightConfig.Latitude = -64;
     
-            var harmony = HarmonyInstance.Create("koihimenakamura.dynamicnighttime");
+            var harmony = new Harmony("koihimenakamura.dynamicnighttime");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             //patch getStartingToGetDarkTime

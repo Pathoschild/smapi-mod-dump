@@ -20,11 +20,16 @@ Next, create a `content.json` file. It should look similar to this:
 {
   "NPCGifts": [
     {
-      "NameOfNPC": "...",
       "ItemNames": [
-        "..."
+        {
+          "Name": "...",
+          "Quantity": 1,
+          "Type": "Vanilla"
+        }
       ],
-      "Mode": "..."
+      "NameOfNPC": "...",
+      "Mode": "...",
+      "Priority": 100
     }
   ]
 }
@@ -34,9 +39,10 @@ Next, create a `content.json` file. It should look similar to this:
 
 Field                | Valid Entries                        
 -------------------- | ------------------------------- 
-NameOfNPC            | (string) The internal name of the NPC you are targeting.<small>(Can also put 'All' if you want to apply to every NPC)</small>
-ItemNames            | (string array) Names of the items you wish to add for this target.    
-Mode                 | (string) Which mode to use. Accepts "Add" <small>(adds to existing list for this target)</small> or "Overwrite" <small>(overwrites existing list for this target).</small>   
+NameOfNPC            | `(string)` The internal name of the NPC you are targeting. <small>(Can also put 'All' if you want to apply to every NPC)</small>
+ItemNames            | `(string, int, string)` The information about the items. `Type` being whether the item is 'Vanilla', 'JA' or 'DGA'.
+Mode                 | `(string)` Which mode to use. Accepts "AddToExisting" <small>(adds to existing list for this target)</small>, "AddToVanilla" <small>(adds to the vanilla list for this target)</small>, or "Overwrite" <small>(overwrites existing list for this target).</small>
+Priority             | `(int)` The order in the stack of which this should be patched (carries over to multiple content packs). This should be any number above 0, but you usually won't need to go much higher than 200.
 
 An example content pack can be found on the [Nexus page under files tab](https://www.nexusmods.com/stardewvalley/mods/10024?tab=files).
 
@@ -46,46 +52,76 @@ To add multiple targets, simply add multiple 'NPCGifts' entries. Copy and paste 
 {
   "NPCGifts": [
     {
-      "NameOfNPC": "Robin",
       "ItemNames": [
-        "Apple", "Parsnip"
+        {
+          "Name": "Apple",
+          "Quantity": 5,
+          "Type": "Vanilla"
+        }
       ],
-      "Mode": "Add"
+      "NameOfNPC": "Robin",
+      "Mode": "Overwrite",
+      "Priority": 100
     },
     {
-      "NameOfNPC": "Clint",
       "ItemNames": [
-        "Prismatic Shard"
+        {
+          "Name": "Apple",
+          "Quantity": 5,
+          "Type": "Vanilla"
+        }
       ],
-      "Mode": "Overwrite"
+      "NameOfNPC": "Clint",
+      "Mode": "AddToExisting",
+      "Priority": 100
     }
   ]
 }
 ```
 
 ## Variety
-Have a combination of many modes, items and NPCs to make a fun collection of items, ideal for your vision. Example:
+Have a combination of many modes, items, quantities, NPCs, and custom / non-custom items to make a fun collection of items, ideal for your vision. Example:
 ```js
 {
   "NPCGifts": [
     {
-      "NameOfNPC": "All",
       "ItemNames": [
-        "Apple", "Parsnip"
+        {
+          "Name": "Apple",
+          "Quantity": 5,
+          "Type": "Vanilla"
+        },
+        {
+          "Name": "Parsnip",
+          "Quantity": 4,
+          "Type": "Vanilla"
+        }
       ],
-      "Mode": "Overwrite"
+      "NameOfNPC": "All",
+      "Mode": "Overwrite",
+      "Priority": 100
     },
     {
-      "NameOfNPC": "Robin",
       "ItemNames": [
-        "Iridium Bar"
+        {
+          "Name": "Iridium Bar",
+          "Quantity": 1,
+          "Type": "Vanilla"
+        },
+        {
+          "Name": "Pathos Cookies",
+          "Quantity": 1,
+          "Type": "JA"
+        }
       ],
-      "Mode": "Add"
+      "NameOfNPC": "Robin",
+      "Mode": "AddToExisting",
+      "Priority": 100
     }
   ]
 }
 ```
-This setup would make everyone give either an apple or a parsnip, except Robin, who could give an apple, a parsnip, or an iridium bar.
+This setup would make everyone give either 5 apples, or 4 parsnips, except Robin, who could give 5 apples, 4 parsnips, 1 iridium bar or 1 'Pathos Cookies' which is a custom JA item.
 Make sure to combine many factors for some real variety!
 
 
