@@ -11,10 +11,10 @@
 {
     "Name": "Range Highlight",
     "Author": "Jamie Taylor",
-    "Version": "2.8.0",
+    "Version": "3.0.0",
     "Description": "Highlights ranges for scarecrows, sprinklers, etc.",
     "UniqueID": "jltaylor-us.RangeHighlight",
     "EntryDll": "RangeHighlight.dll",
-    "MinimumApiVersion": "3.9.0",
+    "MinimumApiVersion": "3.13.0",
     "UpdateKeys": [ "Nexus:6752", "GitHub:jltaylor-us/StardewRangeHighlight" ]
 }

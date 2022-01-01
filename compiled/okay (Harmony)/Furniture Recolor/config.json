@@ -1,0 +1,8 @@
+{
+  "EnableMod": true,
+  "RedButton": "NumPad1",
+  "GreenButton": "NumPad7",
+  "BlueButton": "NumPad9",
+  "ResetButton": "NumPad3",
+  "ModKey": "LeftAlt"
+}

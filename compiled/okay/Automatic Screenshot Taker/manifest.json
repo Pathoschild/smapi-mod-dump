@@ -1,0 +1,10 @@
+{
+  "Name": "AutomaticScreenshotTaker",
+  "Author": "Zamiel",
+  "Version": "1.0.0",
+  "Description": "Automatically takes a screenshot upon entering an area",
+  "UniqueID": "Zamiel.AutomaticScreenshotTaker",
+  "EntryDll": "AutomaticScreenshotTaker.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["GitHub:Zamiell/AutomaticScreenshotTaker"]
+}

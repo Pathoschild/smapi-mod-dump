@@ -13,8 +13,10 @@ using AlternativeTextures.Framework.Models;
 using AlternativeTextures.Framework.UI;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
@@ -23,6 +25,7 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -156,7 +159,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
             if (location is Farm farm)
             {
                 var targetedBuilding = farm.getBuildingAt(new Vector2(x / 64, y / 64));
-                if (farm.GetHouseRect().Contains(x / 64, y / 64))
+                if (farm.GetHouseRect().Contains(new Vector2(x / 64, y / 64)))
                 {
                     targetedBuilding = new Building();
                     targetedBuilding.buildingType.Value = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel}";
@@ -165,9 +168,9 @@ namespace AlternativeTextures.Framework.Patches.Tools
                     targetedBuilding.tilesWide.Value = farm.GetHouseRect().Width;
                     targetedBuilding.tilesHigh.Value = farm.GetHouseRect().Height;
 
-                    if (!farm.modData.ContainsKey("AlternativeTextureName"))
+                    var modelType = AlternativeTextureModel.TextureType.Building;
+                    if (!farm.modData.ContainsKey("AlternativeTextureName") || !farm.modData["AlternativeTextureName"].Contains(targetedBuilding.buildingType.Value))
                     {
-                        var modelType = AlternativeTextureModel.TextureType.Building;
                         var instanceSeasonName = $"{modelType}_{targetedBuilding.buildingType}_{Game1.currentSeason}";
                         AssignDefaultModData(farm, instanceSeasonName, true);
                     }
@@ -200,6 +203,21 @@ namespace AlternativeTextures.Framework.Patches.Tools
                         return CancelUsing(who);
                     }
 
+                    // Verify this building has a texture we can target
+                    if (!farm.GetHouseRect().Contains(new Vector2(x / 64, y / 64)))
+                    {
+                        var texturePath = PathUtilities.NormalizePath(Path.Combine(targetedBuilding.textureName() + ".png"));
+                        try
+                        {
+                            _ = _helper.Content.Load<Texture2D>(Path.Combine(targetedBuilding.textureName()), ContentSource.GameContent);
+                            _monitor.Log($"{modelName} has a targetable texture within Buildings: {texturePath}", LogLevel.Trace);
+                        }
+                        catch (ContentLoadException ex)
+                        {
+                            Game1.addHUDMessage(new HUDMessage(AlternativeTextures.modHelper.Translation.Get("messages.warning.custom_building_not_supported", new { itemName = modelName }), 3));
+                            return CancelUsing(who);
+                        }
+                    }
                     // Display texture menu
                     var buildingObj = new Object(100, 1, isRecipe: false, -1)
                     {
@@ -303,91 +321,68 @@ namespace AlternativeTextures.Framework.Patches.Tools
             {
                 Point tile = new Point(x / 64, y / 64);
 
-                List<Rectangle> walls = decoratableLocation.getWalls();
-                for (int i = 0; i < walls.Count; i++)
+                var wallId = decoratableLocation.getWallForRoomAt(tile);
+                if (wallId != -1)
                 {
-                    Rectangle wall = walls[i];
-                    if (wall.Height == 2)
+                    if (!decoratableLocation.modData.ContainsKey("AlternativeTextureName") || !decoratableLocation.modData["AlternativeTextureName"].Contains("Wallpaper"))
                     {
-                        wall.Height = 3;
+                        var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Decoration}_Wallpaper_{Game1.GetSeasonForLocation(decoratableLocation)}";
+                        AssignDefaultModData(decoratableLocation, instanceSeasonName, true);
                     }
-                    if (wall.Contains(tile))
+
+                    var modelName = decoratableLocation.modData["AlternativeTextureName"].Replace($"{decoratableLocation.modData["AlternativeTextureOwner"]}.", String.Empty);
+                    if (decoratableLocation.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(decoratableLocation.modData["AlternativeTextureSeason"]))
                     {
-                        if (!decoratableLocation.modData.ContainsKey($"AlternativeTexture.Wallpaper.Name_{i}"))
-                        {
-                            var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Decoration}_Wallpaper_{Game1.GetSeasonForLocation(decoratableLocation)}";
-                            AssignDefaultModData(decoratableLocation, instanceSeasonName, true, isWallpaper: true);
-                        }
+                        modelName = modelName.Replace($"_{decoratableLocation.modData["AlternativeTextureSeason"]}", String.Empty);
+                    }
 
-                        var modelName = decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Name_{i}"].Replace($"{decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Owner_{i}"]}.", String.Empty);
-                        if (decoratableLocation.modData.ContainsKey($"AlternativeTexture.Wallpaper.Season_{i}") && !String.IsNullOrEmpty(decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Season_{i}"]))
-                        {
-                            modelName = modelName.Replace($"_{decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Season_{i}"]}", String.Empty);
-                        }
-
-                        if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
-                        {
-                            var defaultModelName = $"{AlternativeTextureModel.TextureType.Decoration}_Wallpaper";
-                            if (AlternativeTextures.textureManager.GetAvailableTextureModels(defaultModelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
-                            {
-                                Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
-                                return CancelUsing(who);
-                            }
-
-                            modelName = defaultModelName;
-                        }
-
-                        // Display texture menu
-                        var locationObj = new Object(100, 1, isRecipe: false, -1)
-                        {
-                            TileLocation = Utility.PointToVector2(tile),
-                            modData = decoratableLocation.modData
-                        };
-                        Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
-
+                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                    {
+                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                         return CancelUsing(who);
                     }
+
+                    // Display texture menu
+                    var locationObj = new Object(100, 1, isRecipe: false, -1)
+                    {
+                        TileLocation = Utility.PointToVector2(tile),
+                        modData = decoratableLocation.modData
+                    };
+                    Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
+
+                    return CancelUsing(who);
                 }
 
-                List<Rectangle> floors = decoratableLocation.getFloors();
-                for (int j = 0; j < floors.Count; j++)
+                var floorId = decoratableLocation.getFloorAt(tile);
+                if (floorId != -1)
                 {
-                    if (floors[j].Contains(tile))
+                    if (!decoratableLocation.modData.ContainsKey("AlternativeTextureName") || !decoratableLocation.modData["AlternativeTextureName"].Contains("Floor"))
                     {
-                        if (!decoratableLocation.modData.ContainsKey($"AlternativeTexture.Floor.Name_{j}"))
-                        {
-                            var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Decoration}_Floor_{Game1.GetSeasonForLocation(decoratableLocation)}";
-                            AssignDefaultModData(decoratableLocation, instanceSeasonName, true, isWallpaper: false);
-                        }
+                        var instanceSeasonName = $"{AlternativeTextureModel.TextureType.Decoration}_Floor_{Game1.GetSeasonForLocation(decoratableLocation)}";
+                        AssignDefaultModData(decoratableLocation, instanceSeasonName, true);
+                    }
 
-                        var modelName = decoratableLocation.modData[$"AlternativeTexture.Floor.Name_{j}"].Replace($"{decoratableLocation.modData[$"AlternativeTexture.Floor.Owner_{j}"]}.", String.Empty);
-                        if (decoratableLocation.modData.ContainsKey($"AlternativeTexture.Floor.Season_{j}") && !String.IsNullOrEmpty(decoratableLocation.modData[$"AlternativeTexture.Floor.Season_{j}"]))
-                        {
-                            modelName = modelName.Replace($"_{decoratableLocation.modData[$"AlternativeTexture.Floor.Season_{j}"]}", String.Empty);
-                        }
+                    var modelName = decoratableLocation.modData["AlternativeTextureName"].Replace($"{decoratableLocation.modData["AlternativeTextureOwner"]}.", String.Empty);
+                    if (decoratableLocation.modData.ContainsKey("AlternativeTextureSeason") && !String.IsNullOrEmpty(decoratableLocation.modData["AlternativeTextureSeason"]))
+                    {
+                        modelName = modelName.Replace($"_{decoratableLocation.modData["AlternativeTextureSeason"]}", String.Empty);
+                    }
 
-                        if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
-                        {
-                            var defaultModelName = $"{AlternativeTextureModel.TextureType.Decoration}_Floor";
-                            if (AlternativeTextures.textureManager.GetAvailableTextureModels(defaultModelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
-                            {
-                                Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
-                                return CancelUsing(who);
-                            }
-
-                            modelName = defaultModelName;
-                        }
-
-                        // Display texture menu
-                        var locationObj = new Object(100, 1, isRecipe: false, -1)
-                        {
-                            TileLocation = Utility.PointToVector2(tile),
-                            modData = decoratableLocation.modData
-                        };
-                        Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
-
+                    if (AlternativeTextures.textureManager.GetAvailableTextureModels(modelName, Game1.GetSeasonForLocation(Game1.currentLocation)).Count == 0)
+                    {
+                        Game1.addHUDMessage(new HUDMessage(_helper.Translation.Get("messages.warning.no_textures_for_season", new { itemName = modelName }), 3));
                         return CancelUsing(who);
                     }
+
+                    // Display texture menu
+                    var locationObj = new Object(100, 1, isRecipe: false, -1)
+                    {
+                        TileLocation = Utility.PointToVector2(tile),
+                        modData = decoratableLocation.modData
+                    };
+                    Game1.activeClickableMenu = new PaintBucketMenu(locationObj, locationObj.TileLocation, GetTextureType(decoratableLocation), modelName, _helper.Translation.Get("tools.name.paint_bucket"));
+
+                    return CancelUsing(who);
                 }
             }
 

@@ -372,7 +372,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                     text = name;
 
                 // chance
-                if (chance > 0 && chance < 100)
+                if (chance is > 0 and < 100)
                     text += $" ({I18n.Generic_Percent(chance)})";
 
                 // output suffix

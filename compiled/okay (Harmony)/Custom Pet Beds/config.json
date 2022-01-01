@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "IsBed": true,
+  "BedChance": 100,
+  "IndoorBedName": "Ped Bed",
+  "OutdoorBedName": "Ped Bed",
+  "IndoorBedOffset": "0,0",
+  "OutdoorBedOffset": "0,0"
+}

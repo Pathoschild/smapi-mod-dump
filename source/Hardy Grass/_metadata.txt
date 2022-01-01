@@ -6,9 +6,11 @@ mods:
    Hardy Grass
 
 latest commit:
-   commit 9bfa6160041b2f9addffba9d4614f484dff9bb46
+   commit b4c9831dd7087a5a8ebe8a55346a78c3cf6f5078
    Author: DiscipleOfEris <discipleoferis1@gmail.com>
-   Date:   Mon May 24 22:57:51 2021 -0700
+   Date:   Thu Dec 2 19:23:06 2021 -0800
    
-       Change version to 1.0.2
+       Migrate to SDV 1.5.5
+       
+       Also migrate to SMAPI 3.13.0 and Harmony 2.1.
    

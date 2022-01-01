@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -178,7 +179,18 @@ namespace SpaceCore
             foreach (var asset in TileSheetExtensions.ExtendedTextureAssets)
             {
                 Texture2D oldTexture = asset.Value.BaseTileSheet;
-                asset.Value.BaseTileSheet = Game1.content.Load<Texture2D>(asset.Key);
+
+                try
+                {
+                    asset.Value.BaseTileSheet = Game1.content.Load<Texture2D>(asset.Key);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Failed updating tilesheet reference '{asset.Key}'. Technical details:\n{ex}");
+                    TileSheetExtensions.ExtendedTextures.Remove(oldTexture);
+                    continue;
+                }
+
                 if (asset.Value.BaseTileSheet == null)
                 {
                     Log.Error("WHAT? null " + asset.Key);

@@ -44,7 +44,7 @@ namespace BattleRoyale.Utils
 
         public static void SendDamageToPlayer(Farmer who, DamageSource source, int damage, long? damagerID = null, string monster = "")
         {
-            List<object> data = new List<object>()
+            List<object> data = new()
             {
                 source, damage
             };
@@ -66,7 +66,7 @@ namespace BattleRoyale.Utils
             if (!Game1.IsServer)
                 return;
 
-            List<object> data = new List<object>()
+            List<object> data = new()
             {
                 numberOfPlayers, stormIndex
             };
@@ -82,7 +82,7 @@ namespace BattleRoyale.Utils
 
         public static void BroadcastRoundEnd(long? winnerId)
         {
-            List<object> data = new List<object>();
+            List<object> data = new();
             if (winnerId != null)
                 data.Add(winnerId);
 
@@ -137,7 +137,7 @@ namespace BattleRoyale.Utils
 
         public static void AnnounceClientDeath(DamageSource source, string monster, long? killerId)
         {
-            List<object> data = new List<object>() { (int)source, monster };
+            List<object> data = new() { (int)source, monster };
             if (killerId.HasValue)
                 data.Add(killerId);
 

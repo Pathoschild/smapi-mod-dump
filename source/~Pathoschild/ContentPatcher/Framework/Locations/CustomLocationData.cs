@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.IO;
 using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;

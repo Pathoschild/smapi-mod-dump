@@ -79,7 +79,7 @@ namespace BattleRoyale.UI
 
             if (Player.isEmoting)
             {
-                Vector2 emotePosition = new Vector2(xPositionOnScreen + width / 2 - 32, yPositionOnScreen + height - 64);
+                Vector2 emotePosition = new(xPositionOnScreen + width / 2 - 32, yPositionOnScreen + height - 64);
                 emotePosition.Y -= 160f;
                 b.Draw(Game1.emoteSpriteSheet, emotePosition, new Rectangle(Player.CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, Player.CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16), Color.White * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.81f);
             }

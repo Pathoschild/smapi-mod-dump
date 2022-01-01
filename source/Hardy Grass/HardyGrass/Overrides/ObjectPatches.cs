@@ -12,17 +12,28 @@ using System;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using Harmony;
+using HarmonyLib;
 
 namespace HardyGrass
 {
-    [HarmonyPatch(typeof(StardewValley.Object))]
-    [HarmonyPatch("placementAction", new Type[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) })]
-    public class Object_placementAction_Patch
+    public static class ObjectPatches
     {
-        public static bool Prefix(StardewValley.Object __instance, ref bool __result, GameLocation location, int x, int y, Farmer who)
+        public static void ApplyPatches(Harmony harmony)
         {
-            if (__instance.bigCraftable || __instance is StardewValley.Objects.Furniture || (__instance.ParentSheetIndex != ModEntry.GrassStarterObjectId && __instance.ParentSheetIndex != ModEntry.QuickGrassStarterObjectId))
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Object), nameof(StardewValley.Object.placementAction)),
+                prefix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.placementAction_Prefix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Object), nameof(StardewValley.Object.isPlaceable)),
+                postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.isPlaceable_Postfix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.Object), nameof(StardewValley.Object.isPassable)),
+                postfix: new HarmonyMethod(typeof(ObjectPatches), nameof(ObjectPatches.isPassable_Postfix)));
+        }
+
+        public static bool placementAction_Prefix(StardewValley.Object __instance, ref bool __result, GameLocation location, int x, int y, Farmer who)
+        {
+            if (__instance.bigCraftable.Value || __instance is StardewValley.Objects.Furniture || (__instance.ParentSheetIndex != ModEntry.GrassStarterObjectId && __instance.ParentSheetIndex != ModEntry.QuickGrassStarterObjectId))
             {
                 return true;
             }
@@ -46,29 +57,19 @@ namespace HardyGrass
             __result = true;
             return false;
         }
-    }
 
-    [HarmonyPatch(typeof(StardewValley.Object))]
-    [HarmonyPatch("isPlaceable", new Type[] { })]
-    public class Object_isPlaceable_Patch
-    {
-        public static void Postfix(StardewValley.Object __instance, ref bool __result)
+        public static void isPlaceable_Postfix(StardewValley.Object __instance, ref bool __result)
         {
-            if (!__instance.bigCraftable && __instance.ParentSheetIndex == ModEntry.QuickGrassStarterObjectId)
+            if (!__instance.bigCraftable.Value && __instance.ParentSheetIndex == ModEntry.QuickGrassStarterObjectId)
             {
                 __result = true;
                 return;
             }
         }
-    }
 
-    [HarmonyPatch(typeof(StardewValley.Object))]
-    [HarmonyPatch("isPassable", new Type[] { })]
-    public class Object_isPassable_Patch
-    {
-        public static void Postfix(StardewValley.Object __instance, ref bool __result)
+        public static void isPassable_Postfix(StardewValley.Object __instance, ref bool __result)
         {
-            if (!__instance.bigCraftable && __instance.ParentSheetIndex == ModEntry.QuickGrassStarterObjectId)
+            if (!__instance.bigCraftable.Value && __instance.ParentSheetIndex == ModEntry.QuickGrassStarterObjectId)
             {
                 __result = true;
                 return;

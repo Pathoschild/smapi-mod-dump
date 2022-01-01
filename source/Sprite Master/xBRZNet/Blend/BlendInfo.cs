@@ -8,40 +8,38 @@
 **
 *************************************************/
 
-using System.Runtime.CompilerServices;
 using SpriteMaster.xBRZ.Common;
+using System.Runtime.CompilerServices;
 
-namespace SpriteMaster.xBRZ.Blend {
-	internal static class BlendInfo {
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static BlendType GetTopL (this byte b) { unchecked { return (b & 0x3).BlendType(); } }
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static BlendType GetTopR (this byte b) { unchecked { return ((byte)(b >> 2) & 0x3).BlendType(); } }
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static BlendType GetBottomR (this byte b) { unchecked { return ((byte)(b >> 4) & 0x3).BlendType(); } }
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static BlendType GetBottomL (this byte b) { unchecked { return ((byte)(b >> 6) & 0x3).BlendType(); } }
+namespace SpriteMaster.xBRZ.Blend;
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static byte SetTopL (this byte b, BlendType bt) { unchecked { return (byte)(b | bt.Byte()); } }
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static byte SetTopR (this byte b, BlendType bt) { unchecked { return (byte)(b | (bt.Byte() << 2)); } }
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static byte SetBottomR (this byte b, BlendType bt) { unchecked { return (byte)(b | (bt.Byte() << 4)); } }
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static byte SetBottomL (this byte b, BlendType bt) { unchecked { return (byte)(b | (bt.Byte() << 6)); } }
+static class BlendInfo {
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static BlendType GetTopL(this byte b) => (b & 0x3).BlendType();
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static BlendType GetTopR(this byte b) => ((byte)(b >> 2) & 0x3).BlendType();
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static BlendType GetBottomR(this byte b) => ((byte)(b >> 4) & 0x3).BlendType();
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static BlendType GetBottomL(this byte b) => ((byte)(b >> 6) & 0x3).BlendType();
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static bool BlendingNeeded(this byte b) { return b != 0; }
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte SetTopL(this byte b, BlendType bt) => (byte)(b | bt.Byte());
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte SetTopR(this byte b, BlendType bt) => (byte)(b | (bt.Byte() << 2));
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte SetBottomR(this byte b, BlendType bt) => (byte)(b | (bt.Byte() << 4));
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte SetBottomL(this byte b, BlendType bt) => (byte)(b | (bt.Byte() << 6));
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static byte Rotate (this byte b, RotationDegree rotDeg) {
-			unchecked {
-				var l = (byte)((byte)rotDeg << 1);
-				var r = (byte)(8 - l);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool BlendingNeeded(this byte b) => b != 0;
 
-				return unchecked((byte)(b << l | b >> r));
-			}
-		}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte Rotate(this byte b, RotationDegree rotDeg) {
+		var l = (byte)((byte)rotDeg << 1);
+		var r = (byte)(8 - l);
+
+		return (byte)(b << l | b >> r);
 	}
 }

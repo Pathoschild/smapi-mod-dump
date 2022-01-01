@@ -17,6 +17,29 @@ And these archived mods which are no longer actively maintained:
 * ~~[All Crops All Seasons](archived/AllCropsAllSeasons) ([Nexus](http://www.nexusmods.com/stardewvalley/mods/170))~~ (see [alternatives](https://mods.smapi.io/#All_Crops_All_Seasons))
 * ~~[Skull Cave Saver](_archived/SkullCaveSaver) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/175))~~ (see [alternatives](https://mods.smapi.io/#Skull_Cave_Saver))
 
+## Translating the mods
+The mods can be translated into any language supported by the game, and SMAPI will automatically
+use the right translations.
+
+Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
+on the wiki for help contributing translations.
+
+(❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
+
+&nbsp;     | All Professions | Instant Grow Trees | Recatch Legendary Fish | TimeSpeed
+---------- | :-------------- | :----------------- | :--------------------- | :--------------------------
+Chinese    | ❑               | ❑                  | ❑                      | [↻](TimeSpeed/i18n/pt.json)
+French     | ❑               | ❑                  | ❑                      | ❑
+German     | ❑               | ❑                  | ❑                      | ❑
+Hungarian  | ❑               | ❑                  | ❑                      | ❑
+Italian    | ❑               | ❑                  | ❑                      | ❑
+Japanese   | ❑               | ❑                  | ❑                      | ❑
+Korean     | ❑               | ❑                  | ❑                      | ❑
+Portuguese | ❑               | ❑                  | ❑                      | [↻](TimeSpeed/i18n/pt.json)
+Russian    | ❑               | ❑                  | ❑                      | ❑
+Spanish    | ❑               | ❑                  | ❑                      | [↻](TimeSpeed/i18n/es.json)
+Turkish    | ❑               | ❑                  | ❑                      | ❑
+
 ## Compiling the mods
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to
 compile the mod yourself, read on.
@@ -38,4 +61,4 @@ To package a mod for release:
 
 1. Switch to `Release` build configuration.
 2. Recompile the mod per the previous section.
-3. Upload the generated `<mod name>-<version>.zip` file from the project's `bin` folder.
+3. Upload the generated `<mod name>-<version>.zip` file from the solution's `_releases` folder.

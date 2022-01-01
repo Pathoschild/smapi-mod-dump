@@ -20,6 +20,7 @@ mods:
    Custom Locks
    Custom Object Production
    Custom Ore Nodes
+   Custom Pet Beds
    Custom Renovations
    Custom Resource Clumps
    Custom Spouse Patio
@@ -39,6 +40,7 @@ mods:
    Friendly Divorce
    Fruit Tree Shaker
    Furniture Adjustment
+   Furniture Recolor
    Gem Isles
    Groundhog Day
    Here Fishy
@@ -66,6 +68,7 @@ mods:
    Persistent Grange Display
    Pipe Irrigation
    Placeable Mine Shafts
+   Plant and Fertilize All
    Quick Load
    Quick Responses
    Quotes
@@ -87,9 +90,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 69a0678ac9b5274920af5d0b785c6f193e2d75e8
+   commit e266947834c1b3898c37bdbc84fc8a8cd988c586
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun Nov 28 14:51:56 2021 -0500
+   Date:   Thu Dec 30 22:01:26 2021 -0500
    
        etc
    

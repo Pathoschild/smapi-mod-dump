@@ -1,10 +1,10 @@
 ﻿{
 	"Name": "Slime Produce",
 	"Author": "exotico",
-	"Version": "1.2.1",
+	"Version": "1.2.2",
 	"Description": "Slime balls in the Slime Hutch drop extra items depending on the color of the slimes in the Hutch.",
 	"UniqueID": "exotico.SlimeProduce",
 	"EntryDll": "SlimeProduce.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "3.13.0",
 	"UpdateKeys": [ "Nexus:7634" ]
 }

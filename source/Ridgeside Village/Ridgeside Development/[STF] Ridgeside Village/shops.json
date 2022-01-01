@@ -10,9 +10,9 @@
 
 {
   "Shops": [
-  
+
 	//------------
-	//JericShop   
+	//JericShop
 	//------------
 	{
 	"ShopName": "RSVJericShop",
@@ -25,7 +25,7 @@
 	"MaxNumItemsSoldInStore": 5,
 	"DefaultSellPriceMultiplier": 0.7,
 	"PriceMultiplierWhen": {
-		"0.6": ["f Jeric 2000"] 
+		"0.6": ["f Jeric 2000"]
 		},
 	"When": ["NPCAt Jeric 2 13/t 900 1600"],
 	"LocalizedQuote": {
@@ -42,7 +42,7 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
+	"LocalizedClosedMessage": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -55,7 +55,7 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
+    	},
 	"ItemStocks": [
 		//Spring Jeric less than 8 hearts
 		{
@@ -67,7 +67,7 @@
 				"Parsnip Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z spring" ] 
+			"When": [ "!z spring" ]
 		},
 		//Spring Jeric 8 hearts
 		{
@@ -77,7 +77,7 @@
 				],
 			"Stock": 6,
 			"StockPrice": 100,
-			"When": [ "f Jeric 2000/!z spring" ] 
+			"When": [ "f Jeric 2000/!z spring" ]
 		},
 		//Summer
 		{
@@ -90,7 +90,7 @@
 				"Tomato Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z summer" ] 
+			"When": [ "!z summer" ]
 		},
 		//Summer Jeric 8 hearts
 		{
@@ -100,7 +100,7 @@
 				],
 			"Stock": 6,
 			"StockPrice": 100,
-			"When": [ "f Jeric 2000/!z summer" ] 
+			"When": [ "f Jeric 2000/!z summer" ]
 		},
 		//Fall
 		{
@@ -112,7 +112,7 @@
 				"Pumpkin Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z fall" ] 
+			"When": [ "!z fall" ]
 		},
 		//Winter
 		{
@@ -122,7 +122,7 @@
 				],
 			"Stock": 6,
 			"StockPrice": 100,
-			"When": [ "!z winter" ] 
+			"When": [ "!z winter" ]
 		},
 		//PPJA Fruit & Veg - Spring Jeric less than 8 hearts Y1
 		{
@@ -135,17 +135,17 @@
 				"Spinach Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z spring" ] 
+			"When": [ "!z spring" ]
 		},
 		//PPJA Fruit & Veg - Spring Jeric 8 hearts Y1
 		{
 			"ItemType": "Object",
 			"ItemNames": [
-				"Passion Fruit Seeds",	
+				"Passion Fruit Seeds",
 				],
 			"Stock": 6,
 			"StockPrice": 100,
-			"When": [ "f Jeric 2000/!z spring" ] 
+			"When": [ "f Jeric 2000/!z spring" ]
 		},
 		//PPJA Fruit & Veg - Spring Y2
 		{
@@ -157,7 +157,7 @@
 				"Sweet Canary Melon Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z spring/y 2" ] 
+			"When": [ "!z spring/y 2" ]
 		},
 		//PPJA Fruit & Veg - Spring Y3
 		{
@@ -167,7 +167,7 @@
 				"Rapeseed Flower Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z spring/y 3" ] 
+			"When": [ "!z spring/y 3" ]
 		},
 		//PPJA Fruit & Veg - Spring Y4
 		{
@@ -180,7 +180,7 @@
 				"Shiitake Mushroom Starter",
 				],
 			"Stock": 6,
-			"When": [ "!z spring/y 4" ] 
+			"When": [ "!z spring/y 4" ]
 		},
 		//PPJA Fruit & Veg - Summer Jeric less than 8 hearts Y1
 		{
@@ -194,7 +194,7 @@
 				"Perilla Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z summer" ] 
+			"When": [ "!z summer" ]
 		},
 		//PPJA Fruit & Veg - Summer Jeric 8 hearts Y1
 		{
@@ -205,7 +205,7 @@
 				"Wasabi Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 2000/!z summer" ] 
+			"When": [ "f Jeric 2000/!z summer" ]
 		},
 		//PPJA Fruit & Veg - Summer Y2
 		{
@@ -217,7 +217,7 @@
 				"Raspberry Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z summer/y 2" ] 
+			"When": [ "!z summer/y 2" ]
 		},
 		//PPJA Fruit & Veg - Summer Y3
 		{
@@ -229,7 +229,7 @@
 				"Zucchini Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z summer/y 3" ] 
+			"When": [ "!z summer/y 3" ]
 		},
 		//PPJA Fruit & Veg - Summer Y4
 		{
@@ -244,7 +244,7 @@
 				"Sulfur Shelf Mushroom Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z summer/y 4" ] 
+			"When": [ "!z summer/y 4" ]
 		},
 		//PPJA Fruit & Veg - Fall Jeric less than 8 hearts y1
 		{
@@ -259,7 +259,7 @@
 				"Thyme Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z fall" ] 
+			"When": [ "!z fall" ]
 		},
 		//PPJA Fruit & Veg - Fall Jeric 8 hearts y1
 		{
@@ -271,7 +271,7 @@
 				"Watermelon Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 2000/!z fall" ] 
+			"When": [ "f Jeric 2000/!z fall" ]
 		},
 		//PPJA Fruit & Veg - Fall Jeric less than 8 hearts y2
 		{
@@ -282,7 +282,7 @@
 				"Celery Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z fall/y 2" ] 
+			"When": [ "!z fall/y 2" ]
 		},
 		//PPJA Fruit & Veg - Fall Jeric 8 hearts y2
 		{
@@ -294,7 +294,7 @@
 				"Soybean Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 2000/!z fall/y 2" ] 
+			"When": [ "f Jeric 2000/!z fall/y 2" ]
 		},
 		//PPJA Fruit & Veg - Fall y3
 		{
@@ -307,7 +307,7 @@
 				"Tabasco Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z fall/y 3" ] 
+			"When": [ "!z fall/y 3" ]
 		},
 		//PPJA Fruit & Veg - Fall y4
 		{
@@ -319,7 +319,7 @@
 				"Sulfur Shelf Mushroom Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z fall/y 4" ] 
+			"When": [ "!z fall/y 4" ]
 		},
 		//PPJA Fruit & Veg - Winter Y1
 		{
@@ -329,7 +329,7 @@
 				"Mint Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z winter" ] 
+			"When": [ "!z winter" ]
 		},
 		//PPJA Fruit & Veg - Winter Y2
 		{
@@ -338,9 +338,9 @@
 				"Elderberry Seeds",
 				],
 			"Stock": 6,
-			"When": [ "!z winter/y 2" ] 
+			"When": [ "!z winter/y 2" ]
 		},
-		//Grapes of Ferngill - All year 
+		//Grapes of Ferngill - All year
 		{
 			"ItemType": "Object",
 			"ItemNames": [
@@ -358,7 +358,7 @@
 				"Crackle Berry Grape Grappa",
 				],
 			"Stock": 6,
-			"When": [ "!z summer" ] 
+			"When": [ "!z summer" ]
 		},
 		//Grapes of Ferngill - Winter
 		{
@@ -369,7 +369,7 @@
 				"Crackle Berry Grape Sweet Wine",
 				],
 			"Stock": 6,
-			"When": [ "!z winter" ] 
+			"When": [ "!z winter" ]
 		},
 		//PPJA More Trees - Spring Y1
 		{
@@ -382,7 +382,7 @@
 				"Vanilla Sapling",
 				],
 			"Stock": 6,
-			"When": [ "!z spring" ] 
+			"When": [ "!z spring" ]
 		},
 		//PPJA More Trees - Spring Y2
 		{
@@ -391,7 +391,7 @@
 				"Cocoa Sapling",
 				],
 			"Stock": 6,
-			"When": [ "!z spring/y 2" ] 
+			"When": [ "!z spring/y 2" ]
 		},
 		//PPJA More Trees - Summer
 		{
@@ -400,7 +400,7 @@
 				"Ume Sapling",
 				],
 			"Stock": 6,
-			"When": [ "!z summer" ] 
+			"When": [ "!z summer" ]
 		},
 		//PPJA More Trees - Summer Y2
 		{
@@ -409,7 +409,7 @@
 				"Avocado Sapling",
 				],
 			"Stock": 6,
-			"When": [ "!z summer/y 2" ] 
+			"When": [ "!z summer/y 2" ]
 		},
 		//PPJA More Trees - fall Y1
 		{
@@ -422,7 +422,7 @@
 				"Walnut Sapling",
 				],
 			"Stock": 2,
-			"When": [ "!z fall" ] 
+			"When": [ "!z fall" ]
 		},
 		//PPJA More Trees - fall Y2
 		{
@@ -432,7 +432,7 @@
 				"Olive Sapling",
 				],
 			"Stock": 2,
-			"When": [ "!z fall/y 2" ] 
+			"When": [ "!z fall/y 2" ]
 		},
 		//PPJA More Trees - fall Y3
 		{
@@ -441,7 +441,7 @@
 				"Pecan Sapling",
 				],
 			"Stock": 2,
-			"When": [ "!z fall/y 3" ] 
+			"When": [ "!z fall/y 3" ]
 		},
 		//PPJA More Trees - Winter
 		{
@@ -451,7 +451,7 @@
 				"Yuzu Sapling",
 				],
 			"Stock": 2,
-			"When": [ "!z winter" ] 
+			"When": [ "!z winter" ]
 		},
 		//PPJA More Trees - Winter Y2
 		{
@@ -463,7 +463,7 @@
 				"Pomelo Sapling",
 				],
 			"Stock": 2,
-			"When": [ "!z winter/y 2" ] 
+			"When": [ "!z winter/y 2" ]
 		},
 		//PPJA More Trees - Winter Y3
 		{
@@ -472,7 +472,7 @@
 				"Camphor Sapling",
 				],
 			"Stock": 2,
-			"When": [ "!z winter/y 3" ] 
+			"When": [ "!z winter/y 3" ]
 		},
 		//Bonsters Crops - Spring Jeric 4 hearts Y2
 		{
@@ -484,7 +484,7 @@
 				"White Apline Strawberry Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 1000/!z spring/y 2" ] 
+			"When": [ "f Jeric 1000/!z spring/y 2" ]
 		},
 		//Bonsters Crops - Spring Jeric 8 hearts Y3
 		{
@@ -495,7 +495,7 @@
 				"Rose Hip Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 2000/z spring/y 3" ] 
+			"When": [ "f Jeric 2000/z spring/y 3" ]
 		},
 		//Bonsters Crops - Summer Jeric 4 hearts Y2
 		{
@@ -513,7 +513,7 @@
 				"Sunchoke Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 1000/!z summer/y 2" ] 
+			"When": [ "f Jeric 1000/!z summer/y 2" ]
 		},
 		//Bonsters Crops - Summer Jeric 8 hearts Y3
 		{
@@ -525,7 +525,7 @@
 				"Roselle Hibiscus Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 2000/!z summer/y 3" ] 
+			"When": [ "f Jeric 2000/!z summer/y 3" ]
 		},
 		//Bonsters Crops - Fall Jeric 4 hearts Y2
 		{
@@ -542,7 +542,7 @@
 				"Sunchoke Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 1000/!z fall/y 2" ] 
+			"When": [ "f Jeric 1000/!z fall/y 2" ]
 		},
 		//Bonsters Crops - Fall Jeric 8 hearts Y3
 		{
@@ -551,7 +551,7 @@
 				"White Currant Seeds",
 				],
 			"Stock": 6,
-			"When": [ "f Jeric 2000/!z fall/y 3" ] 
+			"When": [ "f Jeric 2000/!z fall/y 3" ]
 		},
 		//Bonsters Trees - Spring Jeric 4 hearts Y2
 		{
@@ -565,7 +565,7 @@
 				"Tamarind Sapling",
 				],
 			"Stock": 2,
-			"When": [ "f Jeric 1000/!z spring/y 2" ] 
+			"When": [ "f Jeric 1000/!z spring/y 2" ]
 		},
 		//Bonsters Trees - Summer Jeric 4 hearts Y2
 		{
@@ -577,7 +577,7 @@
 				"Purple Pluot Sapling",
 				],
 			"Stock": 2,
-			"When": [ "f Jeric 1000/!z summer/y 2" ] 
+			"When": [ "f Jeric 1000/!z summer/y 2" ]
 		},
 		//Bonsters Trees - Fall Jeric 4 hearts Y2
 		{
@@ -590,7 +590,7 @@
 				"Pawpaw Sapling",
 				],
 			"Stock": 2,
-			"When": [ "f Jeric 1000/!z fall/y 2" ] 
+			"When": [ "f Jeric 1000/!z fall/y 2" ]
 		},
 		//Bonsters Trees - Winter Jeric 4 hearts Y2
 		{
@@ -600,12 +600,12 @@
 				"Quince Sapling",
 				],
 			"Stock": 2,
-			"When": [ "f Jeric 1000/!z winter/y 2" ] 
+			"When": [ "f Jeric 1000/!z winter/y 2" ]
 		},
 	],
 	},
 	//------------
-	//PikaShop    
+	//PikaShop
 	//------------
 	{
 	"ShopName": "RSVPikaShop",
@@ -618,10 +618,10 @@
 	"MaxNumItemsSoldInStore": 5,
 	"DefaultSellPriceMultiplier": 0.7,
 	"PriceMultiplierWhen": {
-		"0.6": ["f Pika 2000"] 
+		"0.6": ["f Pika 2000"]
 		},
 	"When": ["t 930 2300/w sunny"],
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -635,7 +635,7 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
+	"LocalizedClosedMessage": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -648,7 +648,7 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
+    	},
 	"ItemStocks": [
 		//Food
 		{
@@ -685,7 +685,7 @@
 	],
 	},
 	//------------
-	//PikaShop Recipes 
+	//PikaShop Recipes
 	//------------
 	{
 	"ShopName": "RSVPikaRecipes",
@@ -697,10 +697,10 @@
 	"ShopPrice": -1,
 	"DefaultSellPriceMultiplier": 0.5,
 	"PriceMultiplierWhen": {
-		"0.6": ["f Pika 2000"] 
+		"0.6": ["f Pika 2000"]
 		},
 	"When": ["t 930 2300/w sunny"],
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -714,7 +714,7 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
+	"LocalizedClosedMessage": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -727,7 +727,7 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
+    	},
 	"ItemStocks": [
 		//Food
 		{
@@ -753,7 +753,7 @@
 	},
 
 	//------------
-	//LolaShop    
+	//LolaShop
 	//------------
 	{
 	"ShopName": "RSVLolaShop",
@@ -764,7 +764,7 @@
 	"MaxNumItemsSoldInStore": 2,
 	"ShopPrice": -1,
 	"DefaultSellPriceMultiplier": 1.0,
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -778,20 +778,6 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
-    	//remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    	},	
 	"ItemStocks": [
 		//Weapons
 		{
@@ -814,16 +800,16 @@
 		},
 	],
 	},
-	
-	//------------      
-	//Mystic Falls 1    
-	//------------      
+
+	//------------
+	//Mystic Falls 1
+	//------------
 	{
 	"ShopName": "RSVMysticFalls1",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -98 ],
 	"Quote": "Mystic Falls of Companions: 'Those who bond with their neighbors and share their joy and sorrow are blessed by Yoba.'",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -838,7 +824,7 @@
         //"zh": "PLACEHOLDER",
     	},
 	"ShopPrice": 0,
-	
+
 	"ItemStocks": [
 		//Weapons
 		{
@@ -1019,16 +1005,16 @@
 
 	],
 	},
-	
-	//------------      
-	//Mystic Falls 2    
-	//------------      
+
+	//------------
+	//Mystic Falls 2
+	//------------
 	{
 	"ShopName": "RSVMysticFalls2",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -98 ],
 	"Quote": "Mystic Falls of Love: 'Being able to capture the heart of someone is both a blessing and a curse. But in the presence of these waterfalls, love prefers to be a blessing.'",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1043,7 +1029,7 @@
         //"zh": "PLACEHOLDER",
     	},
 	"ShopPrice": 0,
-	
+
 	"ItemStocks": [
 		//Weapons
 		{
@@ -1118,16 +1104,16 @@
 		},
 	],
 	},
-	
-	//------------      
-	//Mystic Falls 3    
-	//------------      
+
+	//------------
+	//Mystic Falls 3
+	//------------
 	{
 	"ShopName": "RSVMysticFalls3",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -98, -95 ],
 	"Quote": "Mystic Falls of Sacrifice: 'Among the heaviest of burdens are those carried by those who fight for the greater good.'",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1142,7 +1128,7 @@
         //"zh": "PLACEHOLDER",
     	},
 	"ShopPrice": 0,
-	
+
 	"ItemStocks": [
 		//Weapons
 		{
@@ -1164,7 +1150,7 @@
 			"ItemNames": [ "Dusked Kunai", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
-			"When": [ "e 75160081/f Daia 2500" ],
+			"When": [ "e 75160205/f Daia 2500" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1196,20 +1182,33 @@
 		},
 	],
 	},
-	
-	//------------      
-	//RSVFestPika   
-	//------------      
+
+	//------------
+	//RSVFestPika
+	//------------
 	{
 	"ShopName": "RSVFestPika",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -7 ],
 	"Quote": "Welcome to Gus and Pika's!",
-	"LocalizedQuote": { "en": "Welcome to Gus and Pika's!" },
+	"LocalizedQuote": {
+    	//remove the "//" from your language
+        //"es": "PLACEHOLDER",
+        //"ko": "PLACEHOLDER",
+        //"de": "PLACEHOLDER",
+        //"fr": "PLACEHOLDER",
+        //"hu": "PLACEHOLDER",
+        //"it": "PLACEHOLDER",
+        //"ja": "PLACEHOLDER",
+        //"pt": "PLACEHOLDER",
+        //"ru": "PLACEHOLDER",
+        //"tr": "PLACEHOLDER",
+        //"zh": "PLACEHOLDER",
+    	},
 	"DefaultSellPriceMultiplier": 0.8,
 	"MaxNumItemsSoldInStore": 20,
 	"ShopPrice": -1,
-	
+
 	"ItemStocks": [
 		{
 			"ItemType": "Object",
@@ -1256,16 +1255,16 @@
 		},
 	],
 	},
-	
-	//------------      
-	//RSVFestGirls   
-	//------------      
+
+	//------------
+	//RSVFestGirls
+	//------------
 	{
 	"ShopName": "RSVFestGirls",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -7 ],
 	"Quote": "Girls rule!!",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1282,7 +1281,7 @@
 	"ShopPrice": -1,
 	"MaxNumItemsSoldInStore": 8,
 	"DefaultSellPriceMultiplier": 1.0,
-	
+
 	"ItemStocks": [
 		{
 			"ItemType": "Object",
@@ -1389,16 +1388,16 @@
 		},
 	],
 	},
-	
-	//------------      
-	//RSVFestBoys   
-	//------------      
+
+	//------------
+	//RSVFestBoys
+	//------------
 	{
 	"ShopName": "RSVFestBoys",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -7 ],
 	"Quote": "Boys rule!!",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1415,7 +1414,7 @@
 	"ShopPrice": -1,
 	"MaxNumItemsSoldInStore": 8,
 	"DefaultSellPriceMultiplier": 1.0,
-	
+
 	"ItemStocks": [
 		{
 			"ItemType": "Object",
@@ -1516,16 +1515,16 @@
 		},
 	],
 	},
-	
-	//------------      
-	//Jio Shop    
-	//------------      
+
+	//------------
+	//Jio Shop
+	//------------
 	{
 	"ShopName": "RSVJioShop",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -98, -95 ],
 	"Quote": "What do you desire?",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1540,7 +1539,7 @@
         //"zh": "PLACEHOLDER",
     	},
 	"ShopPrice": 0,
-	
+
 	"ItemStocks": [
 		{
 			"ItemType": "Hat",
@@ -1564,7 +1563,7 @@
 	},
 
 	//------------
-	//MalayaShop  
+	//MalayaShop
 	//------------
 	{
 	"ShopName": "RSVMalayaShop",
@@ -1577,10 +1576,10 @@
 	"MaxNumItemsSoldInStore": 7,
 	"DefaultSellPriceMultiplier": 0.7,
 	"PriceMultiplierWhen": {
-		"0.6": ["f Malaya 2000"] 
+		"0.6": ["f Malaya 2000"]
 		},
 	"When": ["t 900 1600"],
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1594,7 +1593,7 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
+	"LocalizedClosedMessage": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1607,7 +1606,7 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
+    	},
 	"ItemStocks": [
 		//Food
 		{
@@ -1631,7 +1630,7 @@
 				"Holiday Ice",
 				"Jumpy Coffee Cake",
 				"Kedi Delight",
-				"Keks Style Shortcake",
+				"Kek's Style Shortcake",
 				"Kek's Small Dream",
 				"Pillowsoft Cheezy Sandwich",
 				"Pink Frosted Sprinkled Doughnut",
@@ -1657,7 +1656,7 @@
 			"IsRecipe": true,
 			"ItemNames": [
 				"Kedi Delight",
-				"Keks Style Shortcake",
+				"Kek's Style Shortcake",
 				"Kek's Small Dream",
 				"Pillowsoft Cheezy Sandwich",
 				"Pink Frosted Sprinkled Doughnut",
@@ -1666,13 +1665,13 @@
 				"Clementine Juice",
 				"Wild Apple Juice"
 				],
-			"When": [ "y 2" ], 
+			"When": [ "y 2" ],
 		},
 	],
 	},
 
 	//------------
-	//KimpoiShop   
+	//KimpoiShop
 	//------------
 	{
 	"ShopName": "RSVKimpoiShop",
@@ -1683,11 +1682,11 @@
 	"ShopPrice": -1,
 	"DefaultSellPriceMultiplier": 0.5,
 	"PriceMultiplierWhen": {
-		"0.3": ["f Kimpoi 2000"] 
+		"0.3": ["f Kimpoi 2000"]
 		},
 	"When": ["t 900 1600"],
 	"ClosedMessage": "Sorry, we're closed!",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1701,7 +1700,7 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
+	"LocalizedClosedMessage": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1714,8 +1713,8 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
-	
+    	},
+
 	"ItemStocks": [
 		{
 			"ItemType": "Object",
@@ -1735,13 +1734,13 @@
 				"Desert Tangelo Sapling",
 				"Ember Blood Lime Sapling",
 				],
-			"When": [ "y 2" ] 
+			"When": [ "y 2" ]
 		},
 	],
 	},
 
 	//------------
-	//HeapsShop 
+	//HeapsShop
 	//------------
 	{
 	"ShopName": "RSVHeapsStore",
@@ -1751,11 +1750,11 @@
 	"Quote": "Welcome! You can sell almost anything here too!",
 	"DefaultSellPriceMultiplier": 0.8,
 	"PriceMultiplierWhen": {
-		"0.6": ["f Lorenzo 2000"] 
+		"0.6": ["f Lorenzo 2000"]
 		},
 	"When": ["t 900 1800/d Sat"],
 	"ClosedMessage": "Sorry, we're closed!",
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1769,7 +1768,7 @@
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
     	},
-   "LocalizedClosedMessage": {
+	"LocalizedClosedMessage": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1782,8 +1781,8 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
-	
+    	},
+
 	"ItemStocks": [
 		{
 			"ItemType": "Object",
@@ -1838,21 +1837,21 @@
 			],
 			"StockPrice": 150,
 			//"Stock": 6,
-			"When": [ "y 2" ] 
+			"When": [ "y 2" ]
 		}
 	],
 	},
 
-	//------------      
-	//Faye Shop   
-	//------------      
+	//------------
+	//Faye Shop
+	//------------
 	{
 	"ShopName": "RSVFayeShop",
 	"StoreCurrency": "Money",
 	"CategoriesToSell": [ -98, -95 ],
 	"Quote": "Place your order! Designs change everyday!",
 	"MaxNumItemsSoldInStore": 2,
-    "LocalizedQuote": {
+	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -1865,11 +1864,11 @@
         //"ru": "PLACEHOLDER",
         //"tr": "PLACEHOLDER",
         //"zh": "PLACEHOLDER",
-    	},	
+    	},
 	"ItemStocks": [
 		{
 			"ItemType": "Clothing",
-			"ItemNames": [ 
+			"ItemNames": [
 				"Juninja Shirt",
 				"Flora Golda Shirt",
 				"Pika Impersonation Shirt",

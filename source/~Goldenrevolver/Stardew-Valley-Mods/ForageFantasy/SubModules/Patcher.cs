@@ -10,7 +10,7 @@
 
 namespace ForageFantasy
 {
-    using Harmony;
+    using HarmonyLib;
     using StardewValley;
     using StardewValley.TerrainFeatures;
     using System;
@@ -25,29 +25,25 @@ namespace ForageFantasy
         {
             mod = forageFantasy;
 
-            var harmony = HarmonyInstance.Create(mod.ModManifest.UniqueID);
+            var harmony = new Harmony(mod.ModManifest.UniqueID);
 
             try
             {
                 harmony.Patch(
                    original: AccessTools.Method(typeof(StardewObject), "checkForAction"),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchTapperAndMushroomQuality))
-                );
+                   prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchTapperAndMushroomQuality)));
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Crop), "getRandomWildCropForSeason"),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchSummerWildSeedResult))
-                );
+                   prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchSummerWildSeedResult)));
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Bush), "shake"),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(DetectHarvestableBerryBush))
-                );
+                   prefix: new HarmonyMethod(typeof(Patcher), nameof(DetectHarvestableBerryBush)));
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Bush), "shake"),
-                   postfix: new HarmonyMethod(typeof(Patcher), nameof(FixBerryQuality))
-                );
+                   postfix: new HarmonyMethod(typeof(Patcher), nameof(FixBerryQuality)));
             }
             catch (Exception e)
             {
@@ -85,18 +81,15 @@ namespace ForageFantasy
 
                     harmony.Patch(
                        original: AccessTools.Method(tapper, "GetOutput"),
-                       prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchTapperMachineOutput))
-                    );
+                       prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchTapperMachineOutput)));
 
                     harmony.Patch(
                        original: AccessTools.Method(mushroomBox, "GetOutput"),
-                       prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchMushroomBoxMachineOutput))
-                    );
+                       prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchMushroomBoxMachineOutput)));
 
                     harmony.Patch(
                        original: AccessTools.Method(berryBush, "GetOutput"),
-                       postfix: new HarmonyMethod(typeof(Patcher), nameof(PatchPostBushMachineXP))
-                    );
+                       postfix: new HarmonyMethod(typeof(Patcher), nameof(PatchPostBushMachineXP)));
                 }
                 catch (Exception e)
                 {
@@ -133,18 +126,15 @@ namespace ForageFantasy
 
                     harmony.Patch(
                        original: AccessTools.Method(handler, "TryAddItemToPlayerInventory"),
-                       prefix: new HarmonyMethod(typeof(Patcher), nameof(TryAddItemToPlayerInventory_Pre))
-                    );
+                       prefix: new HarmonyMethod(typeof(Patcher), nameof(TryAddItemToPlayerInventory_Pre)));
 
                     harmony.Patch(
                        original: AccessTools.Method(handler, "TryAddItemToPlayerInventory"),
-                       postfix: new HarmonyMethod(typeof(Patcher), nameof(TryAddItemToPlayerInventory_Post))
-                    );
+                       postfix: new HarmonyMethod(typeof(Patcher), nameof(TryAddItemToPlayerInventory_Post)));
 
                     harmony.Patch(
                        original: AccessTools.Method(entry, "HarvestAllItemsInBuilding"),
-                       postfix: new HarmonyMethod(typeof(Patcher), nameof(ReduceQualityAfterHarvest))
-                    );
+                       postfix: new HarmonyMethod(typeof(Patcher), nameof(ReduceQualityAfterHarvest)));
                 }
                 catch (Exception e)
                 {
@@ -203,7 +193,7 @@ namespace ForageFantasy
                 {
                     if (TapperAndMushroomQualityLogic.IsMushroomBox(item))
                     {
-                        if (item.heldObject != null && item.heldObject.Value != null)
+                        if (item.heldObject.Value != null)
                         {
                             item.heldObject.Value.Quality = StardewObject.lowQuality;
                         }
@@ -220,7 +210,7 @@ namespace ForageFantasy
         {
             try
             {
-                if (!justCheckingForActivity && __instance != null && __instance.minutesUntilReady <= 0 && __instance.heldObject != null && __instance.heldObject.Value != null)
+                if (!justCheckingForActivity && __instance != null && __instance.MinutesUntilReady <= 0 && __instance.heldObject.Value != null)
                 {
                     if (TapperAndMushroomQualityLogic.IsTapper(__instance))
                     {
@@ -228,20 +218,19 @@ namespace ForageFantasy
 
                         if (mod.Config.TapperQualityOptions <= 0 && mod.Config.TapperQualityOptions > 4)
                         {
-                            __instance.heldObject.Value.quality.Value = 0;
+                            __instance.heldObject.Value.Quality = 0;
                             return true;
                         }
 
-                        TerrainFeature terrain;
-                        who.currentLocation.terrainFeatures.TryGetValue(__instance.TileLocation, out terrain);
+                        who.currentLocation.terrainFeatures.TryGetValue(__instance.TileLocation, out TerrainFeature terrain);
 
                         if (terrain != null && terrain is Tree tree)
                         {
-                            __instance.heldObject.Value.quality.Value = TapperAndMushroomQualityLogic.DetermineTapperQuality(mod, who, __instance, tree);
+                            __instance.heldObject.Value.Quality = TapperAndMushroomQualityLogic.DetermineTapperQuality(mod, who, tree);
                         }
                         else
                         {
-                            __instance.heldObject.Value.quality.Value = 0;
+                            __instance.heldObject.Value.Quality = 0;
                         }
 
                         return true;
@@ -253,11 +242,11 @@ namespace ForageFantasy
 
                         if (!mod.Config.MushroomBoxQuality)
                         {
-                            __instance.heldObject.Value.quality.Value = 0;
+                            __instance.heldObject.Value.Quality = 0;
                         }
                         else
                         {
-                            __instance.heldObject.Value.quality.Value = ForageFantasy.DetermineForageQuality(who);
+                            __instance.heldObject.Value.Quality = ForageFantasy.DetermineForageQuality(who);
                         }
 
                         return true;
@@ -301,7 +290,7 @@ namespace ForageFantasy
             try
             {
                 // if other mods also define a __state variable of type bool they will have different values (aka harmony does not make us fight over the __state variable)
-                __state = BerryBushLogic.IsHarvestableBush(__instance) && __instance.tileSheetOffset == 1;
+                __state = BerryBushLogic.IsHarvestableBush(__instance) && __instance.tileSheetOffset.Value == 1;
 
                 return true;
             }
@@ -318,7 +307,7 @@ namespace ForageFantasy
             try
             {
                 // config calls are in ChangeBerryQualityAndGiveExp
-                if (__state && BerryBushLogic.IsHarvestableBush(__instance) && __instance.tileSheetOffset == 0)
+                if (__state && BerryBushLogic.IsHarvestableBush(__instance) && __instance.tileSheetOffset.Value == 0)
                 {
                     var maxShake = mod.Helper.Reflection.GetField<float>(__instance, "maxShake");
 
@@ -347,11 +336,11 @@ namespace ForageFantasy
 
                 if (!mod.Config.MushroomBoxQuality)
                 {
-                    mushroomBox.heldObject.Value.quality.Value = 0;
+                    mushroomBox.heldObject.Value.Quality = 0;
                 }
                 else
                 {
-                    mushroomBox.heldObject.Value.quality.Value = ForageFantasy.DetermineForageQuality(Game1.player);
+                    mushroomBox.heldObject.Value.Quality = ForageFantasy.DetermineForageQuality(Game1.player);
                 }
 
                 return true;
@@ -378,11 +367,11 @@ namespace ForageFantasy
 
                 if (mod.Config.TapperQualityOptions > 0 && mod.Config.TapperQualityOptions <= 4 && tree != null && tree is Tree)
                 {
-                    tapper.heldObject.Value.quality.Value = TapperAndMushroomQualityLogic.DetermineTapperQuality(mod, Game1.player, tapper, tree);
+                    tapper.heldObject.Value.Quality = TapperAndMushroomQualityLogic.DetermineTapperQuality(mod, Game1.player, tree);
                 }
                 else
                 {
-                    tapper.heldObject.Value.quality.Value = 0;
+                    tapper.heldObject.Value.Quality = 0;
                 }
 
                 return true;

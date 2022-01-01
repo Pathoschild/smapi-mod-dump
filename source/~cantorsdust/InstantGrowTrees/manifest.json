@@ -11,10 +11,10 @@
 {
     "Name": "Instant Grow Trees",
     "Author": "cantorsdust and Pathoschild",
-    "Version": "1.5.3",
+    "Version": "1.6.0",
     "Description": "Makes trees grow instantly overnight if they have enough space.",
     "UniqueID": "cantorsdust.InstantGrowTrees",
     "EntryDll": "InstantGrowTrees.dll",
-    "MinimumApiVersion": "3.9.5",
+    "MinimumApiVersion": "3.13.0",
     "UpdateKeys": [ "Nexus:173" ]
 }

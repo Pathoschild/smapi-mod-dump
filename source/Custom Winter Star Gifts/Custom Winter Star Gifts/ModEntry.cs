@@ -49,6 +49,18 @@ public class ModEntry : Mod
             {
                 ModData modData = contentPack.ReadJsonFile<ModData>("content.json");
                 Data.Add(modData);
+                Monitor.Log($"Added ModData to Data.");
+                foreach (ModData m in Data)
+                {
+                    foreach (NPCGifts n in m.NPCGifts)
+                    {
+                        foreach (ItemNames i in n.ItemNames)
+                        {
+                            Monitor.Log($"ItemNames is null: {i == null}");
+                            Monitor.Log($"Priority: {n.Priority}");
+                        }
+                    }
+                }
             }
         }
         ObjectPatches.Initialize(Monitor, helper);
@@ -87,7 +99,7 @@ public class ModEntry : Mod
     public class NPCGifts
     {
         public string NameOfNPC { get; set; } = "Robin";
-        public ItemNames[] ItemNames = new ItemNames[] { new ItemNames() };
+        public ItemNames[] ItemNames { get; set; } = new ItemNames[] { new ItemNames() };
         public string Mode { get; set; } = "Overwrite"; // possibles: "Overwrite" or "Add"
         public int Priority { get; set; } = 100;
         public NPCGifts()
@@ -107,9 +119,26 @@ public class ModEntry : Mod
             Monitor = monitor;
             Helper = helper;
         }
-        public static NPCGifts[] OrderPatches(NPCGifts[] Data)
+        public static List<NPCGifts> OrderPatches(List<NPCGifts> Data)
         {
-            return Data.OrderByDescending(d => d.Priority).ToArray();
+            Monitor.Log($"Inside OrderPatches.");
+            List<NPCGifts> list = Data.OrderByDescending(d => d.Priority).ToList();
+            Monitor.Log($"Created the array:");
+            foreach (NPCGifts n in list)
+            {
+                foreach (ItemNames i in n.ItemNames)
+                {
+                    Monitor.Log($"Array contains {i.Name}");
+                }
+            }
+            foreach (NPCGifts n in list)
+            {
+                foreach (ItemNames i in n.ItemNames)
+                {
+                    Monitor.Log($"Ordered {i.Name} successfully.");
+                }
+            }
+            return list;
         }
 
         public static bool getGiftFromNPC_Prefix(NPC who, ref Item __result)
@@ -118,20 +147,26 @@ public class ModEntry : Mod
             {
                 Random r = new Random((int)Game1.uniqueIDForThisGame / 2 + Game1.year + Game1.dayOfMonth + Utility.getSeasonNumber(Game1.currentSeason) + who.getTileX());
                 List<Item> possibleObjects = new List<Item>();
-                NPCGifts[] unorderedGifts = new NPCGifts[] { };
-                foreach (ModData g in Data)
+                List<NPCGifts> unorderedGifts = new List<NPCGifts> { };
+                Monitor.Log($"ModData count = {Data.Count}");
+                foreach (ModData m in Data)
                 {
-                    foreach (NPCGifts e in g.NPCGifts)
+                    foreach (NPCGifts e in m.NPCGifts)
                     {
-                        unorderedGifts.AddItem(e);
+                        foreach (ItemNames i in e.ItemNames)
+                        {
+                            Monitor.Log($"About to add {i.Name} into order stack.");
+                        }
+                        unorderedGifts.Add(e);
                     }
                 }
-                NPCGifts[] orderedGifts = OrderPatches(unorderedGifts);
+                List<NPCGifts> orderedGifts = OrderPatches(unorderedGifts);
                 foreach (NPCGifts g in orderedGifts)
                 {
-                            if (g.Mode == "AddToVanilla")
+                    Monitor.Log($"Mode = {g.Mode}");
+                    if (g.Mode == "AddToVanilla")
                             {
-                                switch (who.Name)
+                        switch (who.Name)
                                 {
                                     case "Clint":
                                         possibleObjects.Add(new Object(337, 1));
@@ -182,11 +217,14 @@ public class ModEntry : Mod
                             }
                     if (g.Mode == "Overwrite")
                     {
-                        possibleObjects.Clear();
+                        Monitor.Log($"Entered Overwrite. Name = {g.NameOfNPC}");
                         if (g.NameOfNPC == who.Name || g.NameOfNPC == "All")
                         {
+                            Monitor.Log($"Clearing possibleObjects.");
+                            possibleObjects.Clear();
                             foreach (ItemNames it in g.ItemNames)
                             {
+                                Monitor.Log($"Reached overwrite. Adding {it.Name}.");
                                 if (it.Type == "Vanilla")
                                 {
                                     foreach (KeyValuePair<int, string> kvp in Game1.objectInformation)
@@ -194,6 +232,8 @@ public class ModEntry : Mod
                                         if (kvp.Value.Split('/')[4] == it.Name)
                                         {
                                             possibleObjects.Add(new Object(kvp.Key, it.Quantity));
+                                            Monitor.Log($"Reached overwrite. Added {it.Name}.");
+                                            break;
                                         }
                                     }
                                 }
@@ -223,6 +263,7 @@ public class ModEntry : Mod
                                         Monitor.Log($"The item {it.Name} does not exist in the DGA registry. Are you sure it is a DGA item?", LogLevel.Error);
                                     }
                                 }
+                                Monitor.Log($"possibleObjects is empty = {possibleObjects.Count > 0}");
                             }
                         }
                     }
@@ -272,13 +313,14 @@ public class ModEntry : Mod
                         }
                     }
                 }
+                Monitor.Log($"There are {possibleObjects.Count} in possibleObjects");
                 if (possibleObjects.Count >= 1)
                 {
                     __result = possibleObjects[r.Next(possibleObjects.Count)];
                 }
                 else
                 {
-                    __result = possibleObjects[0];
+                    __result = possibleObjects.First();
                 }
                 return false; // don't run original logic
             }

@@ -74,3 +74,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 5.2:
 * Less invasive method to allow using swords as scythe, to fix issues with swords' stats being invisible and being unable to trash or sell them.
+
+#### 5.3:
+* Sunflowers are now considered flowers.

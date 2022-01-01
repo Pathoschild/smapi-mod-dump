@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class RemoveExtraMobDropsSerpent : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Serpent), "getExtraDropItems");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Serpent), "getExtraDropItems");
 
         public static bool Prefix(ref List<Item> __result)
         {
@@ -27,7 +27,7 @@ namespace BattleRoyale.Patches
 
     class RemoveExtraMobDropsMetalHead : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(MetalHead), "getExtraDropItems");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MetalHead), "getExtraDropItems");
 
         public static bool Prefix(ref List<Item> __result)
         {
@@ -39,7 +39,7 @@ namespace BattleRoyale.Patches
 
     class RemoveExtraMobDropsGreenSlime : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(GreenSlime), "getExtraDropItems");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GreenSlime), "getExtraDropItems");
 
         public static bool Prefix(ref List<Item> __result)
         {
@@ -50,7 +50,7 @@ namespace BattleRoyale.Patches
 
     class RemoveExtraMobDropsBat : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Bat), "getExtraDropItems");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Bat), "getExtraDropItems");
 
         public static bool Prefix(ref List<Item> __result)
         {

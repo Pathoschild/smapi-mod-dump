@@ -1,10 +1,10 @@
 {
   "Name": "HM-FoMT-like Watering Can And Hoe Area",
   "Author": "Goldenrevolver",
-  "Version": "1.1.1",
+  "Version": "1.1.2",
   "Description": "Changed watering can and hoe area to be more like in Harvest Moon FoMT",
   "UniqueID": "Goldenrevolver.ChangedWateringCanAndHoeArea",
   "EntryDll": "ChangedWateringCanAndHoeArea.dll",
-  "MinimumApiVersion": "3.9.1",
+  "MinimumApiVersion": "3.13.2",
   "UpdateKeys": [ "Nexus:7851" ]
 }

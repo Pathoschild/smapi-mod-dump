@@ -292,7 +292,7 @@ namespace ClimatesOfFerngillRebuild
             return text;
         }
 
-        internal string GenerateTVForecast(WeatherConditions Current, MersenneTwister Dice, double fogOdds, string MoonPhase = "", bool IsMoonUp = false)
+        internal string GenerateTVForecast(WeatherConditions Current, Random Dice, double fogOdds, string MoonPhase = "", bool IsMoonUp = false)
         {
             string ret = "";
 

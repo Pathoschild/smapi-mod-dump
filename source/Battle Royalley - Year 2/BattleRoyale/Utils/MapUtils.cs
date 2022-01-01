@@ -21,7 +21,7 @@ namespace BattleRoyale.Utils
     internal class MapUtils
     {
         // Used to replant trees after match
-        private readonly static List<TileLocation> trees = new List<TileLocation>();
+        private readonly static List<TileLocation> trees = new();
         private readonly static int SlugFestWall = 3; // Iron fence
 
         private readonly static Point[] SlugFestWallCorners = new Point[2]
@@ -49,7 +49,7 @@ namespace BattleRoyale.Utils
 
         public static void ReplantTrees()
         {
-            Random random = new Random();
+            Random random = new();
             // Delete all trees
             foreach (GameLocation gameLocation in Game1.locations)
             {
@@ -134,7 +134,7 @@ namespace BattleRoyale.Utils
         {
             foreach (GameLocation location in Game1.locations)
             {
-                if (!(location is IslandLocation))
+                if (location is not IslandLocation)
                     return;
 
                 IslandLocation islandLocation = location as IslandLocation;
@@ -151,31 +151,31 @@ namespace BattleRoyale.Utils
 
                 Point topLeft = SlugFestWallCorners[0];
                 Point bottomRight = SlugFestWallCorners[1];
-                Point topRight = new Point(bottomRight.X, topLeft.Y);
-                Point bottomLeft = new Point(topLeft.X, bottomRight.Y);
+                Point topRight = new(bottomRight.X, topLeft.Y);
+                Point bottomLeft = new(topLeft.X, bottomRight.Y);
 
                 for (int i = topLeft.X; i <= topRight.X; i++)
                 {
-                    Vector2 pos = new Vector2(i, topLeft.Y);
-                    Fence fence = new Fence(pos, SlugFestWall, false);
+                    Vector2 pos = new(i, topLeft.Y);
+                    Fence fence = new(pos, SlugFestWall, false);
                     town.setObject(pos, fence);
                 }
                 for (int i = bottomLeft.X; i <= bottomRight.X; i++)
                 {
-                    Vector2 pos = new Vector2(i, bottomLeft.Y);
-                    Fence fence = new Fence(pos, SlugFestWall, false);
+                    Vector2 pos = new(i, bottomLeft.Y);
+                    Fence fence = new(pos, SlugFestWall, false);
                     town.setObject(pos, fence);
                 }
                 for (int i = topLeft.Y; i <= bottomLeft.Y; i++)
                 {
-                    Vector2 pos = new Vector2(topLeft.X, i);
-                    Fence fence = new Fence(pos, SlugFestWall, false);
+                    Vector2 pos = new(topLeft.X, i);
+                    Fence fence = new(pos, SlugFestWall, false);
                     town.setObject(pos, fence);
                 }
                 for (int i = topRight.Y; i <= bottomRight.Y; i++)
                 {
-                    Vector2 pos = new Vector2(topRight.X, i);
-                    Fence fence = new Fence(pos, SlugFestWall, false);
+                    Vector2 pos = new(topRight.X, i);
+                    Fence fence = new(pos, SlugFestWall, false);
                     town.setObject(pos, fence);
                 }
             }

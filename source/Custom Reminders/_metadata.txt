@@ -6,9 +6,10 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 6cf509b00ec8052f1dfad1e3e900ba670f6ad20b
+   commit 52b55a0564ae822f44eb01c89585d95fab7a01f7
    Author: Dem1se <dem1se.io@protonmail.com>
-   Date:   Tue Nov 9 16:41:30 2021 +0530
+   Date:   Sun Dec 19 16:48:14 2021 +0530
    
-       Minor formatting changes
+       Release for 2.1.2
+       - Fix Filename for one of the UI textures, for case sensitive FS
    

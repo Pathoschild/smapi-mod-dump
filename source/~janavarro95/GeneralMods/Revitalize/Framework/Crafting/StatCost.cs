@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Revitalize;
 using StardewValley;
 
 namespace Revitalize.Framework.Crafting
@@ -37,7 +38,7 @@ namespace Revitalize.Framework.Crafting
         /// <returns></returns>
         public bool canAffordCost() {
 
-            if (Game1.player.stamina >= this.stamina && Game1.player.health >= this.health && Game1.player.Money >= this.gold && Revitalize.ModCore.playerInfo.magicManager.currentMagic >= this.magic) return true;
+            if (Game1.player.stamina >= this.stamina && Game1.player.health >= this.health && Game1.player.Money >= this.gold && ModCore.playerInfo.magicManager.currentMagic >= this.magic) return true;
             return false;
 
         }
@@ -48,7 +49,7 @@ namespace Revitalize.Framework.Crafting
         /// <returns></returns>
         public bool canSafelyAffordCost()
         {
-            if (Game1.player.stamina > this.stamina && Game1.player.health > this.health && Game1.player.Money >= this.gold && Revitalize.ModCore.playerInfo.magicManager.currentMagic >= this.magic) return true;
+            if (Game1.player.stamina > this.stamina && Game1.player.health > this.health && Game1.player.Money >= this.gold && ModCore.playerInfo.magicManager.currentMagic >= this.magic) return true;
             return false;
         }
 
@@ -62,7 +63,7 @@ namespace Revitalize.Framework.Crafting
                 Game1.player.stamina -= this.stamina;
                 Game1.player.health -= this.health;
                 Game1.player.Money = Game1.player.Money - this.gold;
-                Revitalize.ModCore.playerInfo.magicManager.currentMagic -= this.magic;
+                ModCore.playerInfo.magicManager.currentMagic -= this.magic;
             }
         }
     }

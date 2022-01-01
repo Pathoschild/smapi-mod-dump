@@ -139,7 +139,7 @@ namespace DynamicGameAssets.PackData
             public object Clone() => this.MemberwiseClone();
         }
 
-        public FoodBuffsData EdibleBuffs { get; set; } = new FoodBuffsData();
+        public FoodBuffsData EdibleBuffs { get; set; } = new();
 
         public bool ShouldSerializeEdibleBuffs() { return !this.EdibleBuffs.Equals(new FoodBuffsData()); }
 
@@ -170,7 +170,7 @@ namespace DynamicGameAssets.PackData
         [DefaultValue(null)]
         public List<Vector2> UpgradedSprinklerTiles { get; set; } = null;
 
-        public List<string> ContextTags { get; set; } = new List<string>();
+        public List<string> ContextTags { get; set; } = new();
 
         public bool ShouldSerializeContextTags() { return this.ContextTags.Count > 0; }
 

@@ -7,11 +7,12 @@ mods:
    Self Service
 
 latest commit:
-   commit 8ac19abb251d1c6bc0fcaba9e76fff674d209c74
-   Author: S2SKY <45951943+S2SKY@users.noreply.github.com>
-   Date:   Fri Mar 29 08:44:37 2019 +1300
+   commit b5de7a31433ca13b2f42c53a75ce302ae6eb3189
+   Merge: 8ac19ab 4ed6768
+   Author: JarvieK <3547456+Jarvie8176@users.noreply.github.com>
+   Date:   Sun Dec 26 02:18:10 2021 -0500
    
-       Create ko.json (#9)
+       Merge pull request #10 from S2SKY/patch-3
        
-       Add Korean localisation!
+       Create ko.json
    

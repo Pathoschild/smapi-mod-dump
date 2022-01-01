@@ -46,7 +46,7 @@ namespace DynamicGameAssets.PackData
         public DynamicFieldData[] DynamicFields { get; set; }
 
         [JsonExtensionData]
-        public Dictionary<string, object> ExtensionData { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, object> ExtensionData { get; set; } = new();
 
         public virtual void PostLoad() { }
 

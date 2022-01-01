@@ -9,6 +9,27 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed _Coverage: Sprinklers_ layer not showing coverage for a held sprinkler.
+
+## 1.15.2
+Released 25 December 2021 for SMAPI 3.13.0 or later.
+
+* Fixed load error in the previous update.
+
+## 1.15.1
+Released 25 December 2021 for SMAPI 3.13.0 or later.
+
+* Fixed scarecrow radius being one tile too wide in Stardew Valley 1.5.5.
+* Internal optimizations.
+
+## 1.15.0
+Released 30 November 2021 for SMAPI 3.13.0 or later.
+
+* Updated for Stardew Valley 1.5.5 and SMAPI 3.13.0, including...
+  * custom scarecrows using the new `obj.IsScarecrow()` and `obj.GetRadiusForScarecrow()` methods;
+  * new `TouchAction Warp` tile property.
+
 ## 1.14.8
 Released 27 November 2021 for SMAPI 3.12.5 or later.
 

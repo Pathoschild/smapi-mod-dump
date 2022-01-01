@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Pause Sync",
   "Author": "Tb",
-  "Version": "1.0.0",
+  "Version": "1.0.2",
   "Description": "One button time freeze synced between all players.",
   "UniqueID": "Tb.Stardew_Pause_Sync",
   "EntryDll": "Pause Sync.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:10160" ]
 }

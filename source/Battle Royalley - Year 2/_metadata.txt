@@ -6,9 +6,9 @@ mods:
    Battle Royalley - Year 2
 
 latest commit:
-   commit 45c0d486a5d506afbd8232855a8f4f2ea4adcf18
+   commit f62f570047c52bed3b55f0b5af82cada52ef2986
    Author: Tyler <gibbstyler7@gmail.com>
-   Date:   Fri Oct 15 20:48:50 2021 -0500
+   Date:   Thu Dec 9 00:35:45 2021 -0600
    
-       slows down storm on island north
+       bump version
    

@@ -16,7 +16,8 @@
     "PolymorphicPipe",
     "FilterPipe",
     "Chest",
-    "Shipping Bin"
+    "Shipping Bin",
+    "Mini-Fridge"
   ],
   "NetworkItems": [
     "ConnectorPipe",
@@ -39,7 +40,8 @@
     "FilterPipe"
   ],
   "ExtraNames": [
-    "Chest"
+    "Chest",
+    "Mini-Fridge"
   ],
   "Buildings": [
     "Shipping Bin"

@@ -8,5 +8,6 @@
   "SeasonalOnly": false,
   "AllowAnyTreeProduct": true,
   "EdiblesOnly": true,
-  "NoBananasBeforeShrine": true
+  "NoBananasBeforeShrine": true,
+  "PriceCap": 200
 }

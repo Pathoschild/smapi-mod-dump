@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -55,7 +56,7 @@ namespace ContentPatcher.Framework.Tokens
         private string PositionalSegment;
 
         /// <summary>The backing field for <see cref="PositionalArgs"/>.</summary>
-        private string[] PositionalArgsImpl = new string[0];
+        private string[] PositionalArgsImpl = Array.Empty<string>();
 
         /// <summary>The backing field for <see cref="NamedArgs"/>.</summary>
         private IDictionary<string, IInputArgumentValue> NamedArgsImpl = new InvariantDictionary<IInputArgumentValue>();
@@ -64,7 +65,7 @@ namespace ContentPatcher.Framework.Tokens
         private IDictionary<string, IInputArgumentValue> ReservedArgsImpl = new InvariantDictionary<IInputArgumentValue>();
 
         /// <summary>The backing field for <see cref="ReservedArgsList"/>.</summary>
-        private KeyValuePair<string, IInputArgumentValue>[] ReservedArgsListImpl = new KeyValuePair<string, IInputArgumentValue>[0];
+        private KeyValuePair<string, IInputArgumentValue>[] ReservedArgsListImpl = Array.Empty<KeyValuePair<string, IInputArgumentValue>>();
 
 
         /*********

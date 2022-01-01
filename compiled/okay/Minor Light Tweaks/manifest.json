@@ -1,0 +1,10 @@
+{
+  "Name": "Minor Light Tweaks",
+  "Author": "greentodd",
+  "Version": "1.0.0",
+  "Description": "Several indoor night-time lighting tweaks + Automatic fireplaces",
+  "UniqueID": "greentodd.MinorLightTweaks",
+  "EntryDll": "MinorLightTweaks.dll",
+  "MinimumApiVersion": "3.12.8",
+  "UpdateKeys": [ "Nexus: 10223" ]
+}

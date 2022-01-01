@@ -18,7 +18,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Tools;
 using StardewValley.TerrainFeatures;
-using Harmony;
+using HarmonyLib;
 
 namespace HardyGrass
 {
@@ -63,8 +63,12 @@ namespace HardyGrass
             Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
-            harmony.PatchAll();
+            var harmony = new Harmony(this.ModManifest.UniqueID);
+
+            FarmAnimalPatches.ApplyPatches(harmony);
+            GameLocationPatches.ApplyPatches(harmony);
+            GrassPatches.ApplyPatches(harmony);
+            ObjectPatches.ApplyPatches(harmony);
         }
 
         /*********

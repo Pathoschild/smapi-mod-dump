@@ -10,7 +10,7 @@
 
 {
   "ui-fail": "Nothing happens...",
-  "ui-label": "Where would you like to go?",
+  "ui-label": "Choose Destination",
   "ui-cancel": "Cancel",
   "cfg-warpsenabled.label": "Vanilla Warps Enabled",
   "cfg-warpsenabled.desc": "When to enable the vanilla warps.",

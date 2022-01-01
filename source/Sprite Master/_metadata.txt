@@ -6,9 +6,9 @@ mods:
    Sprite Master
 
 latest commit:
-   commit 9b6ee6d2c48bc57e213849bc18b20ce8c149e399
+   commit bac8e6cb7235bbd2bdf037868a7760414d35d231
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Sun Oct 10 17:58:28 2021 -0500
+   Date:   Mon Dec 27 04:30:48 2021 -0600
    
-       Added comment support and array newline support to the config toml.
+       Adding clang-cl support to FI.
    

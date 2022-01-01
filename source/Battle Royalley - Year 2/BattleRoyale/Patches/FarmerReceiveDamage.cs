@@ -18,7 +18,7 @@ namespace BattleRoyale.Patches
 {
     class FarmerReceiveDamage : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(GameLocation), "damageMonster",
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "damageMonster",
             new Type[] { typeof(Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float), typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) });
 
         public static void Prefix(

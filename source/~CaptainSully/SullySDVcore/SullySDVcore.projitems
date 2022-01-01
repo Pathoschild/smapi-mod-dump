@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>08fa5f02-0a48-4e9f-898c-2c5913be4bbe</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SullySDVcore</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ExampleFiles\ModName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExampleFiles\Config.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExternalAPIs\IGenericModConfigAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExternalAPIs\ISpaceCoreAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Log.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)ExampleFiles\manifest.json" />
+  </ItemGroup>
+</Project>

@@ -52,7 +52,7 @@ namespace DynamicGameAssets
 
         public Color ObjectColor { get; set; }
 
-        public bool ShouldSerializeObjectColor() { return this.ObjectColor != default(Color); }
+        public bool ShouldSerializeObjectColor() { return this.ObjectColor != default; }
 
         [JsonIgnore]
         public virtual Texture2D Icon
@@ -114,7 +114,7 @@ namespace DynamicGameAssets
                         return found.GetTexture().Rect ?? new Rectangle(0, 0, found.GetTexture().Texture.Width, found.GetTexture().Texture.Height);
                     case ItemType.DGARecipe:
                         Log.Error("Recipes don't have an icon subrect.");
-                        return default(Rectangle);
+                        return default;
                     case ItemType.VanillaObject:
                     case ItemType.VanillaObjectColored:
                         if (valAsInt.HasValue)
@@ -196,11 +196,11 @@ namespace DynamicGameAssets
                         break;
                     case ItemType.ContextTag:
                         Log.Error("Context tag ItemAbstraction instances have no icon rect!");
-                        return default(Rectangle);
+                        return default;
                 }
 
                 Log.Error("Failed getting ItemAbstraction icon rect for " + this.Type + " " + this.Value + "!");
-                return default(Rectangle);
+                return default;
             }
         }
 
@@ -254,14 +254,29 @@ namespace DynamicGameAssets
                         if (ret == null)
                         {
                             Log.Error($"Failed to create item for {this.Value}! Does it exist and is an item (ie. not a crop or fruit tree or something)?");
-                            return new StardewValley.Object(1720, 1);
+                            return new StardewValley.Object(Mod.BaseFakeObjectId, 1);
                         }
                         if (ret is CustomObject obj && this.ObjectColor.A > 0)
                             obj.ObjectColor = this.ObjectColor;
                         return ret;
                     }
+
                 case ItemType.DGARecipe:
-                    return new CustomCraftingRecipe(Mod.Find(this.Value) as CraftingRecipePackData);
+                    {
+                        CommonPackData data = Mod.Find(this.Value);
+
+                        if (data is not CraftingRecipePackData recipeData)
+                        {
+                            Log.Error($"Failed to create recipe for '{this.Value}': " + (data is null
+                                ? "no such data could be found."
+                                : $"unexpected data type {data.GetType().Name}, expected {nameof(CraftingRecipePackData)}."
+                            ));
+                            return new StardewValley.Object(Mod.BaseFakeObjectId, 1);
+                        }
+
+                        return new CustomCraftingRecipe(recipeData);
+                    }
+
                 case ItemType.VanillaObject:
                     if (valAsInt.HasValue)
                         return new StardewValley.Object(valAsInt.Value, this.Quantity);
@@ -271,6 +286,7 @@ namespace DynamicGameAssets
                             return new StardewValley.Object(info.Key, this.Quantity);
                     }
                     break;
+
                 case ItemType.VanillaObjectColored:
                     if (valAsInt.HasValue)
                         return new ColoredObject(valAsInt.Value, this.Quantity, this.ObjectColor);
@@ -280,6 +296,7 @@ namespace DynamicGameAssets
                             return new ColoredObject(info.Key, this.Quantity, this.ObjectColor);
                     }
                     break;
+
                 case ItemType.VanillaBigCraftable:
                     if (valAsInt.HasValue)
                         return new StardewValley.Object(Vector2.Zero, valAsInt.Value) { Stack = this.Quantity };
@@ -289,6 +306,7 @@ namespace DynamicGameAssets
                             return new StardewValley.Object(Vector2.Zero, info.Key) { Stack = this.Quantity };
                     }
                     break;
+
                 case ItemType.VanillaWeapon:
                     if (valAsInt.HasValue)
                         return new StardewValley.Tools.MeleeWeapon(valAsInt.Value);
@@ -298,6 +316,7 @@ namespace DynamicGameAssets
                             return new StardewValley.Tools.MeleeWeapon(info.Key);
                     }
                     break;
+
                 case ItemType.VanillaHat:
                     if (valAsInt.HasValue)
                         return new Hat(valAsInt.Value);
@@ -307,6 +326,7 @@ namespace DynamicGameAssets
                             return new Hat(info.Key);
                     }
                     break;
+
                 case ItemType.VanillaClothing:
                     if (valAsInt.HasValue)
                         return new Clothing(valAsInt.Value);
@@ -316,6 +336,7 @@ namespace DynamicGameAssets
                             return new Clothing(info.Key);
                     }
                     break;
+
                 case ItemType.VanillaBoots:
                     if (valAsInt.HasValue)
                         return new Boots(valAsInt.Value);
@@ -325,6 +346,7 @@ namespace DynamicGameAssets
                             return new Boots(info.Key);
                     }
                     break;
+
                 case ItemType.VanillaFurniture:
                     if (valAsInt.HasValue)
                         return Furniture.GetFurnitureInstance(valAsInt.Value);
@@ -334,13 +356,14 @@ namespace DynamicGameAssets
                             return Furniture.GetFurnitureInstance(info.Key);
                     }
                     break;
+
                 case ItemType.ContextTag:
                     Log.Error("Context tag ItemAbstraction instances cannot be created!");
-                    return new StardewValley.Object(1720, 1);
+                    return new StardewValley.Object(Mod.BaseFakeObjectId, 1);
             }
 
             Log.Error($"Unknown item {this.Type} {this.Value} x {this.Quantity}");
-            return new StardewValley.Object(1720, 1);
+            return new StardewValley.Object(Mod.BaseFakeObjectId, 1);
         }
 
         public virtual object Clone() => this.MemberwiseClone();

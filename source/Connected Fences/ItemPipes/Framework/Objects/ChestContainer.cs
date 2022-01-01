@@ -30,6 +30,8 @@ namespace ItemPipes.Framework.Objects
             if (obj is Chest)
             {
                 Chest = (Chest)obj;
+                Printer.Info(obj.name);
+                Printer.Info(Chest.fridge.ToString());
             }
             Type = "Chest";
         }

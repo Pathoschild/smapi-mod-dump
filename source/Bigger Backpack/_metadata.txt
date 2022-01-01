@@ -6,9 +6,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 04dd7574a3516e03401d9e085d98af27e7040de9
+   commit 4527fb4fcfa5ced5a1c41f287810be644484ffab
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Sep 7 20:49:06 2021 +0200
+   Date:   Thu Dec 23 07:08:40 2021 +0100
    
-       Â–Ignore MSB3277 warning
+       Updated ModBuildConfig
    

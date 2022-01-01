@@ -1,0 +1,10 @@
+{
+    "Name": "Sonic Shoes",
+    "Author": "lilico",
+    "Version": "1.0.0",
+    "Description": "boots go nyoom",
+    "UniqueID": "lilico.SonicShoes",
+    "EntryDll": "SonicShoes.dll",
+    "MinimumApiVersion": "3.12.5",
+    "UpdateKeys": ["Nexus:10226"]
+}

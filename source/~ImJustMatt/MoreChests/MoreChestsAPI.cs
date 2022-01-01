@@ -16,11 +16,11 @@ namespace MoreChests
     using Services;
     using StardewModdingAPI;
 
-    public class MoreChestsAPI : IMoreChestsAPI
+    public class MoreChestsApi : IMoreChestsApi
     {
         private readonly ServiceManager _serviceManager;
 
-        public MoreChestsAPI(ModEntry mod)
+        public MoreChestsApi(ModEntry mod)
         {
             this._serviceManager = mod.ServiceManager;
         }

@@ -14,14 +14,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using WarpNetwork.models;
 
 namespace WarpNetwork
 {
     class CommandHandler
     {
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
 
         private static readonly Dictionary<string, string> CmdDescs = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
         {
@@ -56,14 +54,9 @@ namespace WarpNetwork
             {"menu", WarpMenu},
             {"debug", PrintDebug}
         };
-        internal static void Init(IMonitor monitor, IModHelper helper)
-        {
-            Helper = helper;
-            Monitor = monitor;
-        }
         public static void Main(string cmd, string[] args)
         {
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 ShowHelp(args);
                 return;
@@ -71,18 +64,19 @@ namespace WarpNetwork
             if (Cmds.ContainsKey(args[0]))
             {
                 Cmds[args[0]](args.Skip(1).ToArray());
-            } else
+            }
+            else
             {
                 print("\nCommand not recognized.\n");
             }
         }
         private static void print(object what)
         {
-            Monitor.Log(what.ToString(), LogLevel.Debug);
+            ModEntry.monitor.Log(what.ToString(), LogLevel.Debug);
         }
         private static void ShowHelp(string[] args)
         {
-            if(args.Length > 0)
+            if (args.Length > 0)
             {
                 if (CmdHelp.ContainsKey(args[0]))
                 {
@@ -91,7 +85,7 @@ namespace WarpNetwork
                 }
             }
             StringBuilder builder = new StringBuilder(4 * CmdHelp.Count);
-            foreach(string key in CmdHelp.Keys)
+            foreach (string key in CmdHelp.Keys)
             {
                 builder.AppendLine();
                 builder.Append(key);
@@ -102,12 +96,12 @@ namespace WarpNetwork
         }
         private static void TP(string[] args)
         {
-            if(Game1.currentLocation is null || Game1.player is null)
+            if (Game1.currentLocation is null || Game1.player is null)
             {
                 print("\nGame not loaded, cannot warp!\n");
                 return;
             }
-            if(args.Length == 0)
+            if (args.Length == 0)
             {
                 print("\nMust specify warp network location\n");
                 return;
@@ -117,10 +111,9 @@ namespace WarpNetwork
         private static void GetLocations(string[] args)
         {
             Dictionary<string, WarpLocation> dict = Utils.GetWarpLocations();
-            StringBuilder builder = new StringBuilder(14 * dict.Count + 6 * WarpHandler.CustomLocs.Count);
-            foreach (string key in dict.Keys)
+            StringBuilder builder = new StringBuilder(16 * dict.Count);
+            foreach ((string key, WarpLocation loc) in dict)
             {
-                WarpLocation loc = dict[key];
                 builder.AppendLine();
                 builder.Append(key).AppendLine(":");
                 builder.Append("\tLocation: ").Append(loc.Location);
@@ -128,14 +121,7 @@ namespace WarpNetwork
                 builder.Append(", X: ").Append(loc.X);
                 builder.Append(", Y: ").Append(loc.Y);
                 builder.Append(", Label: '").Append(loc.Label).AppendLine("'");
-            }
-            foreach(string key in WarpHandler.CustomLocs.Keys)
-            {
-                CustomLocationHandler handler = WarpHandler.CustomLocs[key];
-                builder.AppendLine();
-                builder.Append(key).AppendLine(":");
-                builder.Append("\t<Custom Handler>");
-                builder.Append(", Enabled: ").AppendLine(handler.GetEnabled(key).ToString());
+                builder.Append(", Is Custom Handler: ").Append(loc is CustomWarpLocation ? "Yes" : "No");
             }
             print(builder.ToString());
         }
@@ -143,7 +129,7 @@ namespace WarpNetwork
         {
             Dictionary<string, WarpItem> dict = Utils.GetWarpItems();
             StringBuilder builder = new StringBuilder(10 * dict.Count);
-            foreach(string key in dict.Keys)
+            foreach (string key in dict.Keys)
             {
                 WarpItem item = dict[key];
                 builder.AppendLine();
@@ -158,7 +144,7 @@ namespace WarpNetwork
         {
             GameLocation loc = Game1.currentLocation;
             Farmer who = Game1.player;
-            if(loc is null || who is null)
+            if (loc is null || who is null)
             {
                 print("\nPlayer not loaded!\n");
                 return;
@@ -185,12 +171,12 @@ namespace WarpNetwork
         private static void GetHeldID(string[] args)
         {
             Farmer who = Game1.player;
-            if(who is null)
+            if (who is null)
             {
                 print("\nPlayer not loaded!\n");
                 return;
             }
-            if(who.ActiveObject is null)
+            if (who.ActiveObject is null)
             {
                 print("\nHand is empty!\n");
                 return;
@@ -213,13 +199,12 @@ namespace WarpNetwork
             GetLocations(args);
             GetItems(args);
             GetHeldID(args);
-            print(ModEntry.Config.AsText());
-            StringBuilder sb = new StringBuilder(17);
+            print(ModEntry.config.AsText());
+            StringBuilder sb = new StringBuilder(15);
             sb.AppendLine();
             sb.Append("Location: ").AppendLine(Game1.player.currentLocation.Name);
             sb.Append("Position: ").AppendLine(Game1.player.getTileLocationPoint().ToString());
             sb.Append("DesertWarp: ").AppendLine(WarpHandler.DesertWarp.ToString());
-            sb.Append("FromWand: ").AppendLine(WarpHandler.FromWand.ToString());
             sb.Append("WarpNetworkEntry: ").AppendLine(Game1.player.currentLocation.getMapProperty("WarpNetworkEntry"));
             sb.Append("Is Multiplayer: ").AppendLine(Game1.IsMultiplayer.ToString());
             sb.Append("Is Host: ").AppendLine(Game1.IsMasterGame.ToString());

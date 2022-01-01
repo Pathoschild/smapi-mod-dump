@@ -49,7 +49,7 @@ namespace TimeSpeed
         /// <summary>Backing field for <see cref="TickInterval"/>.</summary>
         private int _tickInterval;
 
-        /// <summary>The number of seconds per 10-game-minutes to apply.</summary>
+        /// <summary>The number of milliseconds per 10-game-minutes to apply.</summary>
         private int TickInterval
         {
             get => this._tickInterval;
@@ -60,15 +60,17 @@ namespace TimeSpeed
         /*********
         ** Public methods
         *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
+            I18n.Init(helper.Translation);
+
             // read config
             this.Config = helper.ReadConfig<ModConfig>();
 
             // add time events
             this.TimeHelper.WhenTickProgressChanged(this.OnTickProgressed);
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
@@ -100,7 +102,24 @@ namespace TimeSpeed
         /****
         ** Event handlers
         ****/
-        /// <summary>Raised after the player loads a save slot and the world is initialized.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            GenericModConfigMenuIntegration.Register(this.ModManifest, this.Helper.ModRegistry, this.Monitor,
+                getConfig: () => this.Config,
+                reset: () => this.Config = new(),
+                save: () =>
+                {
+                    this.Helper.WriteConfig(this.Config);
+                    if (Context.IsWorldReady && this.ShouldEnable())
+                        this.UpdateSettingsForLocation(Game1.currentLocation);
+                }
+            );
+        }
+
+        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -109,7 +128,7 @@ namespace TimeSpeed
                 this.Monitor.Log("Disabled mod; only works for the main player in multiplayer.", LogLevel.Warn);
         }
 
-        /// <summary>Raised after the game begins a new day (including when the player loads a save).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -122,7 +141,7 @@ namespace TimeSpeed
             this.UpdateSettingsForLocation(Game1.currentLocation);
         }
 
-        /// <summary>Raised after the player presses or releases any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -140,7 +159,7 @@ namespace TimeSpeed
                 this.ReloadConfig();
         }
 
-        /// <summary>Raised after a player warps to a new location.</summary>
+        /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
@@ -151,7 +170,7 @@ namespace TimeSpeed
             this.UpdateSettingsForLocation(e.NewLocation);
         }
 
-        /// <summary>Raised after the in-game clock time changes.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.TimeChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
@@ -162,7 +181,7 @@ namespace TimeSpeed
             this.UpdateFreezeForTime();
         }
 
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -221,7 +240,7 @@ namespace TimeSpeed
             this.Config = this.Helper.ReadConfig<ModConfig>();
             this.UpdateScaleForDay(Game1.currentSeason, Game1.dayOfMonth);
             this.UpdateSettingsForLocation(Game1.currentLocation);
-            this.Notifier.ShortNotify(this.Helper.Translation.Get("message.config-reloaded"));
+            this.Notifier.ShortNotify(I18n.Message_ConfigReloaded());
         }
 
         /// <summary>Increment or decrement the tick interval, taking into account the held modifier key if applicable.</summary>
@@ -251,7 +270,7 @@ namespace TimeSpeed
 
             // log change
             this.Notifier.QuickNotify(
-                this.Helper.Translation.Get("message.speed-changed", new { seconds = this.TickInterval / 1000 })
+                I18n.Message_SpeedChanged(seconds: this.TickInterval / 1000)
             );
             this.Monitor.Log($"Tick length set to {this.TickInterval / 1000d: 0.##} seconds.", LogLevel.Info);
         }
@@ -262,13 +281,13 @@ namespace TimeSpeed
             if (!this.IsTimeFrozen)
             {
                 this.UpdateTimeFreeze(manualOverride: true);
-                this.Notifier.QuickNotify(this.Helper.Translation.Get("message.time-stopped"));
+                this.Notifier.QuickNotify(I18n.Message_TimeStopped());
                 this.Monitor.Log("Time is frozen globally.", LogLevel.Info);
             }
             else
             {
                 this.UpdateTimeFreeze(manualOverride: false);
-                this.Notifier.QuickNotify(this.Helper.Translation.Get("message.time-resumed"));
+                this.Notifier.QuickNotify(I18n.Message_TimeResumed());
                 this.Monitor.Log($"Time is resumed at \"{Game1.currentLocation.Name}\".", LogLevel.Info);
             }
         }
@@ -281,7 +300,7 @@ namespace TimeSpeed
 
             if (!wasFrozen && this.IsTimeFrozen)
             {
-                this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-time-change.time-stopped"));
+                this.Notifier.ShortNotify(I18n.Message_OnTimeChange_TimeStopped());
                 this.Monitor.Log($"Time automatically set to frozen at {Game1.timeOfDay}.", LogLevel.Info);
             }
         }
@@ -295,8 +314,7 @@ namespace TimeSpeed
 
             // update time settings
             this.UpdateTimeFreeze();
-            if (this.Config.GetTickInterval(location) != null)
-                this.TickInterval = this.Config.GetTickInterval(location) ?? this.TickInterval;
+            this.TickInterval = this.Config.GetMillisecondsPerMinute(location) * 10;
 
             // notify player
             if (this.Config.LocationNotify)
@@ -304,15 +322,15 @@ namespace TimeSpeed
                 switch (this.AutoFreeze)
                 {
                     case AutoFreezeReason.FrozenAtTime when this.IsTimeFrozen:
-                        this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-globally"));
+                        this.Notifier.ShortNotify(I18n.Message_OnLocationChange_TimeStoppedGlobally());
                         break;
 
                     case AutoFreezeReason.FrozenForLocation when this.IsTimeFrozen:
-                        this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-stopped-here"));
+                        this.Notifier.ShortNotify(I18n.Message_OnLocationChange_TimeStoppedHere());
                         break;
 
                     default:
-                        this.Notifier.ShortNotify(this.Helper.Translation.Get("message.on-location-change.time-speed-here", new { seconds = this.TickInterval / 1000 }));
+                        this.Notifier.ShortNotify(I18n.Message_OnLocationChange_TimeSpeedHere(seconds: this.TickInterval / 1000));
                         break;
                 }
             }

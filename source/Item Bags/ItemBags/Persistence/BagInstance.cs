@@ -12,11 +12,13 @@ using ItemBags.Bags;
 using ItemBags.Helpers;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -214,6 +216,31 @@ namespace ItemBags.Persistence
             }
 
             return null;
+        }
+
+        public static bool TryDeserializePyTKData(Item item, out BagInstance result)
+        {
+            string name = item.Name;
+
+            //  Create a regex that will look for strings that start with PyTK serialization prefixes such as "PyTK|Item|ItemBags.Bags.BoundedBag,  ItemBags|BagInstanceXmlString="
+            string namespacePrefix = @$"{nameof(ItemBags)}\.{nameof(Bags)}\."; // "ItemBags.Bags."
+            List<string> classNames = new List<string>() { nameof(BoundedBag), nameof(BundleBag), nameof(Rucksack), nameof(OmniBag) };
+            string classNamesPattern = $"({string.Join(@"|", classNames)})"; // "(BoundedBag|BundleBag|Rucksack|OmniBag)"
+            string pattern = @$"^PyTK\|Item\|{namespacePrefix}{classNamesPattern},  ItemBags\|BagInstanceXmlString=";
+            Regex prefix = new Regex(pattern);
+
+            if (prefix.IsMatch(name))
+            {
+                string escapedXMLString = name.Replace(prefix.Match(name).Value, "");
+                if (XMLSerializer.TryDeserializeFromString(escapedXMLString.Replace(PyTKEqualsSignEncoding, "="), out BagInstance Data, out Exception Error))
+                {
+                    result = Data;
+                    return true;
+                }
+            }
+
+            result = null;
+            return false;
         }
         #endregion PyTK CustomElementHandler
 

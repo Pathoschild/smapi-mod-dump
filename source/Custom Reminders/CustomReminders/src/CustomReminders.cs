@@ -82,12 +82,13 @@ namespace Dem1se.CustomReminders
             if (Context.IsMainPlayer)
             {
                 Utilities.Globals.SaveFolderName = Constants.SaveFolderName;
-                Utilities.Globals.MenuButton = Utilities.Globals.GetMenuButton();
+                Utilities.Globals.MenuButton = Game1.options.menuButton[0].ToSButton();
             }
             else
             {
                 // SaveFolderName will be assigned on peerContextRecieved
-                Utilities.Globals.MenuButton = Config.FarmhandInventoryButton;
+                //Utilities.Globals.MenuButton = Config.FarmhandInventoryButton;
+                Utilities.Globals.MenuButton = Game1.options.menuButton[0].ToSButton();
             }
 
             /* Create the data subfolder for the save for first time users. 

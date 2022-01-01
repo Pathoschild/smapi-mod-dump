@@ -29,16 +29,16 @@ namespace JustRelax
             }
 
             // if we are in bed and in singleplayer (because multiplayer already has healing) or we are sitting
-            if ((Game1.player.isInBed && !Game1.IsMultiplayer) || Game1.player.isSitting)
+            if ((Game1.player.isInBed.Value && !Game1.IsMultiplayer) || Game1.player.isSitting.Value)
             {
                 // 'pause when inactive' only works when you are in true singleplayer, not when you are alone in multiplayer (unlike menu pause)
                 bool outOfFocusPaused = Game1.multiplayerMode == Game1.singlePlayer && !Game1.game1.IsActive && Game1.options.pauseWhenOutOfFocus;
 
                 // if the game is not paused in singleplayer and half a second passed (same regen rate as bed in multiplayer)
-                if (!(Game1.player.hasMenuOpen && !Game1.IsMultiplayer) && !outOfFocusPaused && !Game1.paused && args.Ticks % 30 == 0)
+                if (!(Game1.player.hasMenuOpen.Value && !Game1.IsMultiplayer) && !outOfFocusPaused && !Game1.paused && args.Ticks % 30 == 0)
                 {
                     // upper case stamina property has an inbuilt check that it can't go over maxStamina so we can simply add one
-                    if (Game1.player.Stamina < Game1.player.maxStamina)
+                    if (Game1.player.Stamina < Game1.player.maxStamina.Value)
                     {
                         Game1.player.Stamina++;
                     }

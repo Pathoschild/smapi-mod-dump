@@ -1,0 +1,15 @@
+{
+  "CanPickUpBed": true,
+  "CanPickUpChair": true,
+  "CanPickUpTable": true,
+  "CanPickUpDresser": true,
+  "CanPickUpDecoration": true,
+  "CanPickUpTV": true,
+  "CanPickUpLamp": true,
+  "CanPickUpRug": true,
+  "CanPickUpWindow": true,
+  "CanPickUpFireplace": true,
+  "CanPickUpTorch": true,
+  "CanPickUpSconce": true,
+  "CanPickUpFishTank": true
+}

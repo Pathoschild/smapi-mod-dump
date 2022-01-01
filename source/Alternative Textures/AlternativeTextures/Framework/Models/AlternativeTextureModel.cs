@@ -35,6 +35,7 @@ namespace AlternativeTextures.Framework.Models
         public int TextureWidth { get; set; }
         public int TextureHeight { get; set; }
         public int Variations { get; set; } = 1;
+        internal int MaxVariationsPerTextures { get; set; } = -1;
         internal string TileSheetPath { get; set; }
         internal List<Texture2D> Textures { get; set; } = new List<Texture2D>();
         public List<VariationModel> ManualVariations { get; set; } = new List<VariationModel>();
@@ -121,9 +122,20 @@ namespace AlternativeTextures.Framework.Models
             return Textures[0];
         }
 
+        public int GetMaxVariationsPerTexture()
+        {
+            if (MaxVariationsPerTextures == -1)
+            {
+                MaxVariationsPerTextures = MAX_TEXTURE_HEIGHT / TextureHeight;
+            }
+
+            return MaxVariationsPerTextures;
+        }
+
+
         public int GetTextureOffset(int variation)
         {
-            int maxVariationsPerTexture = MAX_TEXTURE_HEIGHT / TextureHeight;
+            int maxVariationsPerTexture = GetMaxVariationsPerTexture();
             if (variation >= maxVariationsPerTexture)
             {
                 return (variation - maxVariationsPerTexture) * TextureHeight;
@@ -141,6 +153,11 @@ namespace AlternativeTextures.Framework.Models
             var tints = ManualVariations.First(v => v.Id == variation).Tints;
             var selectedTint = tints[Game1.random.Next(tints.Count())];
             return new Color(selectedTint[0], selectedTint[1], selectedTint[2], selectedTint[3]);
+        }
+
+        public bool IsDecoration()
+        {
+            return String.Equals(GetTextureType(), "Decoration", StringComparison.OrdinalIgnoreCase);
         }
 
         public bool HasKeyword(string variationString, string keyword)

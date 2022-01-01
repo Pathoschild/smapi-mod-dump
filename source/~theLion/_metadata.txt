@@ -7,9 +7,9 @@ mods:
    Walk Of Life
 
 latest commit:
-   commit 7c33006211131b8fcf36e0e3951c618c29fa6649
-   Author: The Lion <matheus_is@live.com>
-   Date:   Tue Nov 16 19:44:34 2021 -0300
+   commit 97a9cd13fb93090dc1a596ee20a92bf4330921fe
+   Author: Mat L <matheus_is@live.com>
+   Date:   Thu Dec 30 15:34:10 2021 -0300
    
-       Added extended progression.
+       Add patch statistics.
    

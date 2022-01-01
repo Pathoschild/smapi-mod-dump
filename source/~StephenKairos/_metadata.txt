@@ -7,10 +7,10 @@ mods:
    Rope Bridge
 
 latest commit:
-   commit d930d797ac65301034ffc2deac21d43ac328eff4
-   Merge: 97a5a9c 765f2ea
+   commit 39e9e347470d18240b7d3c317c8b137616c03bae
+   Merge: d930d79 3f9e8ae
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Oct 1 23:08:03 2021 -0400
+   Date:   Tue Dec 28 14:59:32 2021 -0500
    
        Merge branch 'develop'
    

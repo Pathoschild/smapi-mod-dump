@@ -19,7 +19,7 @@ namespace BattleRoyale.Network
 {
     class BroadcastChatMessage : NetworkMessage
     {
-        private readonly Regex colorRx = new Regex(@"^\[(\w+)\]");
+        private readonly Regex colorRx = new(@"^\[(\w+)\]");
         public BroadcastChatMessage()
         {
             MessageType = NetworkUtils.MessageTypes.SERVER_BROADCAST_CHAT_MESSAGE;

@@ -6,11 +6,9 @@ mods:
    Eidee Easy Fishing
 
 latest commit:
-   commit 8f3db48c43a345e0afbbc1de0dfc9362de7c0fbf
+   commit e7137180b127c4352c0b9f476823d2f2ddb0ef87
    Author: eideehi <account@eidee.net>
-   Date:   Fri Dec 20 22:44:51 2019 +0900
+   Date:   Thu Dec 9 20:57:04 2021 +0900
    
-       Update 1.0.2
-       
-       Fixed a bug that caused two legendary fish to be caught when SkipMinigame and AlwaysCaughtDoubleFish were enabled.
+       Remove unwanted imports and format source code
    

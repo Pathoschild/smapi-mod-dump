@@ -10,9 +10,9 @@ mods:
    TehCore
 
 latest commit:
-   commit 5429d52b9dd9848705f8a9b2c0789e6bc9ff029f
+   commit 704bf406fe377ef12b283282b53ea09378353f99
    Author: TehPers <tehperz@gmail.com>
-   Date:   Sat Feb 16 14:31:05 2019 -0600
+   Date:   Fri Dec 31 02:40:22 2021 -0800
    
-       Added cooking recipes, food, and pufferchick slimes
+       Update TFO to 3.2.7
    

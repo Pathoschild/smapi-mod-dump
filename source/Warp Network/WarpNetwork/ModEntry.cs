@@ -8,39 +8,36 @@
 **
 *************************************************/
 
-using System;
-using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SpaceCore.Events;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
-using StardewValley;
-using SpaceCore.Events;
 using System.Collections.Generic;
 using System.IO;
+using WarpNetwork.api;
+using WarpNetwork.models;
 
 namespace WarpNetwork
 {
     class ModEntry : Mod, IAssetLoader
     {
         //const
-        public static readonly string pathLocData = Path.Combine("Data","WarpNetwork","Destinations");
-        public static readonly string pathItemData = Path.Combine("Data","WarpNetwork","WarpItems");
+        public static readonly string pathLocData = PathUtilities.NormalizeAssetName("Data/WarpNetwork/Destinations");
+        public static readonly string pathItemData = PathUtilities.NormalizeAssetName("Data/WarpNetwork/WarpItems");
+        public static readonly string pathIcons = PathUtilities.NormalizeAssetName("Data/WarpNetwork/Icons");
 
         //main
-        internal static Config Config;
-        public static API api = new API();
-        public static bool IslandObeliskFixed = false;
+        internal static Config config;
+        internal static IModHelper helper;
+        internal static IMonitor monitor;
+        internal static IDynamicGameAssets dgaAPI = null;
+        public static API api = new();
         public override void Entry(IModHelper helper)
         {
-            Config = helper.ReadConfig<Config>();
-            IslandObeliskFixed = helper.ModRegistry.IsLoaded("tlitookilakin.farmwarpspatch") || helper.ModRegistry.IsLoaded("FlashShifter.SVECode");
-            CommandHandler.Init(Monitor, helper);
-            WarpHandler.Init(Monitor, helper, Config);
-            ItemHandler.Init(Monitor, helper, Config);
-            Utils.Init(helper, Monitor);
-            ObeliskPatch.Init(Monitor, Config);
-            DataPatcher.Init(Monitor, helper, Config);
-            CPIntegration.Init(Monitor, helper, Config);
+            config = helper.ReadConfig<Config>();
+            ModEntry.helper = helper;
+            monitor = Monitor;
             helper.ConsoleCommands.Add("warpnet", "Master command for Warp Network mod. Use 'warpnet' or 'warpnet help' to see a list of subcommands.", CommandHandler.Main);
             helper.Content.AssetEditors.Add(new DataPatcher());
             helper.Events.GameLoop.GameLaunched += GameLaunched;
@@ -50,7 +47,9 @@ namespace WarpNetwork
         }
         public void GameLaunched(object sender, GameLaunchedEventArgs ev)
         {
-            Config.RegisterModConfigMenu(Helper, ModManifest);
+            if (helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
+                dgaAPI = helper.ModRegistry.GetApi<IDynamicGameAssets>("spacechase0.DynamicGameAssets");
+            config.RegisterModConfigMenu(Helper, ModManifest);
             CPIntegration.AddTokens(ModManifest);
         }
         public override object GetApi()
@@ -62,7 +61,13 @@ namespace WarpNetwork
         {
             return (
                 asset.AssetNameEquals(pathLocData) ||
-                asset.AssetNameEquals(pathItemData)
+                asset.AssetNameEquals(pathItemData) ||
+                asset.AssetNameEquals(pathIcons + "/DEFAULT") ||
+                asset.AssetNameEquals(pathIcons + "/farm") ||
+                asset.AssetNameEquals(pathIcons + "/mountain") ||
+                asset.AssetNameEquals(pathIcons + "/island") ||
+                asset.AssetNameEquals(pathIcons + "/desert") ||
+                asset.AssetNameEquals(pathIcons + "/beach")
             );
         }
         public T Load<T>(IAssetInfo asset)
@@ -72,13 +77,18 @@ namespace WarpNetwork
                 Dictionary<string, WarpItem> items = Helper.Content.Load<Dictionary<string, WarpItem>>(Path.Combine("assets", "WarpItems.json"));
                 DataPatcher.AddApiItems(items);
                 return (T)(object)items;
-            } else if (asset.AssetNameEquals(pathLocData))
+            }
+            else if (asset.AssetNameEquals(pathLocData))
             {
                 Dictionary<string, WarpLocation> locs = Helper.Content.Load<Dictionary<string, WarpLocation>>(Path.Combine("assets", "Destinations.json"));
                 DataPatcher.EditLocationsEnabled(locs);
                 DataPatcher.AddApiLocs(locs);
                 DataPatcher.TranslateDefaultWarps(locs);
                 return (T)(object)locs;
+            }
+            else if (asset.AssetName.StartsWith(pathIcons))
+            {
+                return (T)(object)Helper.Content.Load<Texture2D>(Path.Combine("assets", "icons", asset.AssetName.Split(PathUtilities.PreferredAssetSeparator)[3] + ".png"));
             }
             return default;
         }

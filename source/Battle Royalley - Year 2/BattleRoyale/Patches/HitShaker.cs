@@ -19,11 +19,11 @@ namespace BattleRoyale.Patches
 {
     class HitShaker : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(FarmerRenderer), "draw",
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(FarmerRenderer), "draw",
 
             new Type[] { typeof(SpriteBatch), typeof(FarmerSprite.AnimationFrame), typeof(int), typeof(Rectangle), typeof(Vector2), typeof(Vector2), typeof(float), typeof(int), typeof(Color), typeof(float), typeof(float), typeof(Farmer) });
 
-        private static readonly Dictionary<long, int> hitShakeTimers = new Dictionary<long, int>();
+        private static readonly Dictionary<long, int> hitShakeTimers = new();
 
         public static bool IsPlayerFlashing(long playerID) => hitShakeTimers.ContainsKey(playerID);
 

@@ -26,8 +26,8 @@ namespace BattleRoyale
             this.locationName = locationName;
         }
 
-        public Warp CreateWarp() => new Warp(0, 0, locationName, tileX, tileY, false);
-        public Vector2 CreateVector2() => new Vector2(tileX, tileY);
+        public Warp CreateWarp() => new(0, 0, locationName, tileX, tileY, false);
+        public Vector2 CreateVector2() => new(tileX, tileY);
 
         public GameLocation GetGameLocation()
         {

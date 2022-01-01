@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-
 namespace EideeEasyFishing
 {
     class ModConfig

@@ -1,0 +1,180 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://raw.githubusercontent.com/TehPers/StardewValleyMods/master/docs/TehPers.FishingOverhaul/schemas/contentPacks/content.schema.json",
+  "AddFish": [
+    // Add entries for all the legendary fish
+    {
+      // Crimsonfish
+      "FishKey": "StardewValley:Object/159",
+      "AvailabilityInfo": {
+        "BaseChance": 0.02,
+        "DepthMultiplier": 0.005,
+        "IncludeLocations": ["Beach"],
+        "Seasons": ["Summer"],
+        "MinFishingLevel": 5,
+        "FarmerPosition": {
+          "X": {
+            "GreaterThanEq": 82
+          }
+        },
+        "MinDepth": 3,
+        "When": {
+          // It is not on delay
+          "HasConversationTopic |contains=TehPers.RecatchableLegendaries/crimsonfishDelay": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.FishingOverhaul/crimsonfishCaught"],
+        "StartConversations": {
+          "TehPers.RecatchableLegendaries/crimsonfishDelay": 7
+        }
+      }
+    },
+    {
+      // Angler
+      "FishKey": "StardewValley:Object/160",
+      "AvailabilityInfo": {
+        "BaseChance": 0.02,
+        "DepthMultiplier": 0.005,
+        "IncludeLocations": ["Town"],
+        "Seasons": ["Fall"],
+        "MinFishingLevel": 3,
+        "FarmerPosition": {
+          "Y": {
+            "LessThan": 15
+          }
+        },
+        "When": {
+          // It is not longer on delay
+          "HasConversationTopic |contains=TehPers.RecatchableLegendaries/anglerDelay": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.FishingOverhaul/anglerCaught"],
+        "StartConversations": {
+          // Delay for 7 days
+          "TehPers.RecatchableLegendaries/anglerDelay": 7
+        }
+      }
+    },
+    {
+      // Legend
+      "FishKey": "StardewValley:Object/163",
+      "AvailabilityInfo": {
+        "BaseChance": 0.02,
+        "DepthMultiplier": 0.005,
+        "IncludeLocations": ["Mountain"],
+        "Seasons": ["Spring"],
+        "Weathers": ["Rainy"],
+        "WaterTypes": ["PondOrOcean"],
+        "MinFishingLevel": 10,
+        "MinDepth": 4,
+        "When": {
+          // It is not longer on delay
+          "HasConversationTopic |contains=TehPers.RecatchableLegendaries/legendDelay": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.FishingOverhaul/legendCaught"],
+        "StartConversations": {
+          // Delay for 7 days
+          "TehPers.RecatchableLegendaries/legendDelay": 7
+        }
+      }
+    },
+    {
+      // Mutant carp
+      "FishKey": "StardewValley:Object/682",
+      "AvailabilityInfo": {
+        "BaseChance": 0.02,
+        "DepthMultiplier": 0.005,
+        "IncludeLocations": ["Sewer"],
+        "FarmerPosition": {
+          "X": {
+            "LessThanEq": 14
+          },
+          "Y": {
+            "LessThanEq": 42
+          }
+        },
+        "When": {
+          // It is not on delay
+          "HasConversationTopic |contains=TehPers.RecatchableLegendaries/mutantCarpDelay": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.FishingOverhaul/mutantCarpCaught"],
+        "StartConversations": {
+          // Delay for 7 days
+          "TehPers.RecatchableLegendaries/mutantCarpDelay": 7
+        }
+      }
+    },
+    {
+      // Glacierfish
+      "FishKey": "StardewValley:Object/775",
+      "AvailabilityInfo": {
+        "BaseChance": 0.02,
+        "DepthMultiplier": 0.005,
+        "IncludeLocations": ["Forest"],
+        "Seasons": ["Winter"],
+        "WaterTypes": ["River"],
+        "MinFishingLevel": 6,
+        "FarmerPosition": {
+          "X": {
+            "GreaterThanEq": 58,
+            "LessThan": 59
+          },
+          "Y": {
+            "GreaterThanEq": 87,
+            "LessThan": 88
+          }
+        },
+        "MinDepth": 3,
+        "When": {
+          // It is not on delay
+          "HasConversationTopic |contains=TehPers.RecatchableLegendaries/glacierfishDelay": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.FishingOverhaul/glacierfishCaught"],
+        "StartConversations": {
+          // Delay for 7 days
+          "TehPers.RecatchableLegendaries/glacierfishDelay": 7
+        }
+      }
+    }
+  ],
+  // Remove the original legendary fish entries
+  "RemoveFish": [
+    {
+      // Crimsonfish
+      "FishKey": "StardewValley:Object/159"
+    },
+    {
+      // Angler
+      "FishKey": "StardewValley:Object/160"
+    },
+    {
+      // Legend
+      "FishKey": "StardewValley:Object/163"
+    },
+    {
+      // Mutant carp
+      "FishKey": "StardewValley:Object/682"
+    },
+    {
+      // Glacierfish
+      "FishKey": "StardewValley:Object/775"
+    }
+  ]
+}

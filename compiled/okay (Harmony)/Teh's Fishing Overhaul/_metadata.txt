@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/866
 IDs: TehPers.FishingOverhaul
-update keys: Nexus:866, GitHub:TehPers/StardewValleyMods
+update keys: Nexus:866, ModDrop:123679, GitHub:TehPers/StardewValleyMods

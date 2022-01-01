@@ -19,7 +19,7 @@ namespace BattleRoyale
 {
     class CommandHandler
     {
-        private static readonly Dictionary<string, Action<string[]>> commands = new Dictionary<string, Action<string[]>>()
+        private static readonly Dictionary<string, Action<string[]>> commands = new()
         {
             { "kill", Kill },
             { "spectate", Spectate },
@@ -158,7 +158,7 @@ namespace BattleRoyale
                 return;
             }
 
-            Game1.player.name.Value = name;
+            Game1.player.Name = name;
 
             Game1.chatBox.addInfoMessage("Successfully changed username.");
         }

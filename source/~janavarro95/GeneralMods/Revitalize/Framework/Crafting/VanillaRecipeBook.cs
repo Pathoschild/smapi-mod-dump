@@ -42,6 +42,7 @@ namespace Revitalize.Framework.Crafting
             this.recipesByObjectName = new Dictionary<string, Dictionary<string, VanillaRecipe>>();
             this.recipesByObjectName.Add("Furnace", new Dictionary<string, VanillaRecipe>());
 
+            /*
             VanillaRecipe furnace_tinOre = new VanillaRecipe(new Dictionary<Item, int>()
             {
                 {ModCore.ObjectManager.resources.getOre("Tin"),5 },
@@ -81,13 +82,13 @@ namespace Revitalize.Framework.Crafting
             }, new KeyValuePair<Item, int>(ModCore.ObjectManager.GetItem("TitaniumIngot"), 1), TimeUtilities.GetMinutesFromTime(0,4,0), new StatCost(), false);
 
             this.recipesByObjectName["Furnace"].Add("Titanium Ore", furnace_titaniumOre);
-
+            
             VanillaRecipe furnace_prismaticNugget = new VanillaRecipe(new Dictionary<Item, int>()
             {
                 {ModCore.ObjectManager.resources.getOre("PrismaticNugget"),7 },
                 {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1}
             }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.PrismaticShard,1), 1), TimeUtilities.GetMinutesFromTime(0, 7, 0), new StatCost(), false);
-
+            
             this.recipesByObjectName["Furnace"].Add("Prismatic Nugget", furnace_prismaticNugget);
 
             if (ModCore.Configs.vanillaMachineConfig.ExpensiveGemstoneToPrismaticFurnaceRecipe)
@@ -250,6 +251,7 @@ namespace Revitalize.Framework.Crafting
 
            }, new KeyValuePair<Item, int>(ModCore.ObjectManager.resources.getResource("TitaniumIngot"), 1), TimeUtilities.GetMinutesFromTime(0, 4, 0), new StatCost(), false);
             this.recipesByObjectName["Furnace"].Add("Titanium Sand", furnace_titaniumSand);
+            */
         }
 
         /// <summary>

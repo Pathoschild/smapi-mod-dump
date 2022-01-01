@@ -22,7 +22,7 @@ namespace BattleRoyale.Patches
             5555
         };
 
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(FarmerSprite), "getAnimationFromIndex");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(FarmerSprite), "getAnimationFromIndex");
 
         public static bool Prefix(int index, FarmerSprite requester)
         {
@@ -43,6 +43,8 @@ namespace BattleRoyale.Patches
                     outFrames.Add(new AnimationFrame(16, 200));
                     outFrames.Add(new AnimationFrame(4, 600));
                     outFrames.Add(new AnimationFrame(5, 2400));
+                    break;
+                default:
                     break;
             }
 

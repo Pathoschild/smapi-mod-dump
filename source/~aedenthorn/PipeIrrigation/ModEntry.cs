@@ -17,6 +17,7 @@ using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Object = StardewValley.Object;
 
 namespace PipeIrrigation
@@ -65,6 +66,7 @@ namespace PipeIrrigation
             SHelper = helper;
 
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
+            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
             helper.Events.Display.RenderedWorld += Display_RenderedWorld;
 
             harmony = new Harmony(ModManifest.UniqueID);
@@ -73,6 +75,13 @@ namespace PipeIrrigation
                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Farm_DayUpdate_Postfix))
             );
             dropTexture = Helper.Content.Load<Texture2D>("assets/drop.png");
+        }
+
+        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
+        {
+            if (!Config.EnableMod || !(Game1.player.currentLocation is Farm))
+                return;
+            RefreshWateringTiles(Game1.player.currentLocation, false);
         }
 
         private void Display_RenderedWorld(object sender, RenderedWorldEventArgs e)
@@ -145,10 +154,10 @@ namespace PipeIrrigation
         {
             if (!Config.EnableMod || !(e.Key is Farm) || e.Value != 0)
                 return;
-            RefreshWateringTiles(e.Key);
+            RefreshWateringTiles(e.Key, false);
         }
 
-        private static void RefreshWateringTiles(GameLocation location)
+        private static void RefreshWateringTiles(GameLocation location, bool use)
         {
             wateringPipeDict[location.Name] = new List<Vector2>();
             wateringTileDict[location.Name] = new List<Vector2>();
@@ -158,8 +167,7 @@ namespace PipeIrrigation
                     continue;
                 Vector2 power = utilityGridAPI.TileGroupWaterVector(location, (int)group[0].X, (int)group[0].Y);
                 float netExcess = power.X + power.Y;
-                if (netExcess < Config.PercentWaterPerTile / 100f)
-                    continue;
+
                 List<Vector2> pipeList = new List<Vector2>();
                 List<Vector2> hoeDirtList = new List<Vector2>();
                 foreach (Vector2 tile in group)
@@ -175,19 +183,45 @@ namespace PipeIrrigation
                         if (tileHoeDirtList.Count > 0)
                         {
                             pipeList.Add(tile);
-                            hoeDirtList.AddRange(tileHoeDirtList);
+                            foreach(var v in tileHoeDirtList)
+                            {
+                                if(!hoeDirtList.Contains(v))
+                                    hoeDirtList.Add(v);
+                            }
                         }
                     }
-                    else
+                    else if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt)
                     {
-                        if (location.terrainFeatures.ContainsKey(tile) && location.terrainFeatures[tile] is HoeDirt)
-                        {
-                            pipeList.Add(tile);
+                        pipeList.Add(tile);
+                        if (!hoeDirtList.Contains(tile))
                             hoeDirtList.Add(tile);
+                    }
+                }
+                bool enough = hoeDirtList.Count * Config.PercentWaterPerTile / 100f <= netExcess;
+                if (use)
+                    SMonitor.Log($"tiles {hoeDirtList.Count}, percent {Config.PercentWaterPerTile / 100f}, vector {power}, excess {netExcess}");
+                if (!enough)
+                {
+                    float lacking = hoeDirtList.Count * Config.PercentWaterPerTile / 100f - netExcess;
+
+                    foreach (var obj in utilityGridAPI.TileGroupWaterObjects(location, (int)group[0].X, (int)group[0].Y))
+                    {
+                        if(location.objects.ContainsKey(obj) && location.objects[obj].modData.ContainsKey("aedenthorn.UtilityGrid/waterCharge"))
+                        {
+                            float charge = float.Parse(location.objects[obj].modData["aedenthorn.UtilityGrid/waterCharge"], CultureInfo.InvariantCulture);
+                            float required = Math.Min(charge, lacking);
+                            lacking -= required;
+                            if(use)
+                                location.objects[obj].modData["aedenthorn.UtilityGrid/waterCharge"] = (charge - required).ToString();
+                            if (lacking <= 0)
+                            {
+                                enough = true;
+                                break;
+                            }
                         }
                     }
                 }
-                if (hoeDirtList.Count * Config.PercentWaterPerTile / 100f <= netExcess)
+                if (enough)
                 {
                     wateringPipeDict[location.Name].AddRange(pipeList);
                     wateringTileDict[location.Name].AddRange(hoeDirtList);
@@ -199,7 +233,7 @@ namespace PipeIrrigation
         {
             if (!Config.EnableMod || !wateringPipeDict.ContainsKey(__instance.Name))
                 return;
-            RefreshWateringTiles(__instance);
+            RefreshWateringTiles(__instance, true);
             SMonitor.Log($"{wateringPipeDict[__instance.Name].Count} pipes watering {wateringTileDict[__instance.Name].Count} tiles in {__instance.Name}");
             foreach(Vector2 pipe in wateringPipeDict[__instance.Name])
             {

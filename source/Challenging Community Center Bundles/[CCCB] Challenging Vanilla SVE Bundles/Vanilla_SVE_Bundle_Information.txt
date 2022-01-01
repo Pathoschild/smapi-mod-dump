@@ -157,7 +157,7 @@ FISHTANK
   20x Anchovy
   20x Tuna
   20x Sardine
-  20x Clownfish
+  20x Red Mullet
   20x Herring
   20x Red Snapper
   20x Sea Cucumber

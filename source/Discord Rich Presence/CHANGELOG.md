@@ -13,10 +13,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## [2.4.2] - 2021-12-02
 ### Added
-- Better support for 64-bit Stardew Valley.
+- Support for Stardew Valley 1.5.5
+- Added Get Mod button to rich presence (can be disabled)
 
 ### Fixed
+- Linux support
 - Fixed `DiscordTags` mentioning old command name
 
 ## [2.4.1] - 2021-01-05
@@ -164,7 +168,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Removed Discord event handlers due to them not triggering.
 
-[Unreleased]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.1...HEAD
+[Unreleased]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.2...HEAD
+[2.4.2]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.1..v2.4.2
 [2.4.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.0...v2.3.1

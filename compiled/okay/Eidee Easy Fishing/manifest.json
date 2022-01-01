@@ -1,10 +1,10 @@
 ﻿{
-    "Name": "Eidee Easy Fishing",
-    "Author": "EideeHi",
-    "Version": "1.0.2",
-    "Description": "Fishing is now easy.",
-    "UniqueID": "net.eidee.stardew_valley.easy_fishing",
-    "EntryDll": "EideeEasyFishing.dll",
-    "MinimumApiVersion": "2.10.0",
-    "UpdateKeys": [ "Nexus:4806" ]
+  "Name": "Eidee Easy Fishing",
+  "Author": "EideeHi",
+  "Version": "1.1.0",
+  "Description": "Mods to make fishing easier, customizable by config.",
+  "UniqueID": "net.eidee.stardew_valley.easy_fishing",
+  "EntryDll": "EideeEasyFishing.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "Nexus:4806" ]
 }

@@ -1,6 +1,6 @@
 ﻿{
   "ui-fail": "Nothing happens...",
-  "ui-label": "Where would you like to go?",
+  "ui-label": "Choose Destination",
   "ui-cancel": "Cancel",
   "cfg-warpsenabled.label": "Vanilla Warps Enabled",
   "cfg-warpsenabled.desc": "When to enable the vanilla warps.",
@@ -13,5 +13,10 @@
   "cfg-obeliskpatch.label": "Patch Vanilla Obelisks",
   "cfg-obeliskpatch.desc": "Override the warps on the vanilla obelisks to work with custom destination coordinates.",
   "cfg-menu.label": "Enable Warp Network Menu",
-  "cfg-menu.desc": "Enable the Warp Network menu. When this is disabled, the warp network can't be accessed from any of the statues."
+  "cfg-menu.desc": "Enable the Warp Network menu. When this is disabled, the warp network can't be accessed from any of the statues.",
+  "dest-farm": "Farm",
+  "dest-mountain": "Mountains",
+  "dest-beach": "Beach",
+  "dest-island": "Ginger Island",
+  "dest-desert": "Desert"
 }

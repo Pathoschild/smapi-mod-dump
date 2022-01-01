@@ -125,7 +125,7 @@ namespace Pathoschild.Stardew.Tests.Mods.ContentPatcher
                     case LexTokenInput inputArgs:
                         return $"<input:{this.GetComparableShorthand(inputArgs.Parts)}>";
 
-                    case LexTokenLiteral _:
+                    case LexTokenLiteral:
                         return $"[{bit}]";
 
                     default:

@@ -1,10 +1,10 @@
 {
   "Name": "Animals Die - Old Age, Hunger, Illness",
   "Author": "Goldenrevolver",
-  "Version": "1.7",
+  "Version": "1.7.1",
   "Description": "Farm animals can die of old age, hunger or illness",
   "UniqueID": "Goldenrevolver.AnimalsDie",
   "EntryDll": "AnimalsDie.dll",
-  "MinimumApiVersion": "3.8.2",
+  "MinimumApiVersion": "3.13.2",
   "UpdateKeys": [ "Nexus:7769" ]
 }

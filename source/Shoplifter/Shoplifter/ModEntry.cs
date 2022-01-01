@@ -30,8 +30,6 @@ namespace Shoplifter
 
         public static readonly PerScreen<Dictionary<string,int>> PerScreenShopliftedShops = new PerScreen<Dictionary<string, int>>(createNewState: () => new Dictionary<string, int>());
 
-        public static Dictionary<string, string> shopliftingstrings = new Dictionary<string, string>();
-
         public static readonly PerScreen<ArrayList> PerScreenShopsBannedFrom = new PerScreen<ArrayList>(createNewState: () => new ArrayList());
 
         public static readonly string[] shops = { "SeedShop", "FishShop", "AnimalShop", "ScienceHouse", "Hospital", "Blacksmith", "Saloon", "SandyHouse" };
@@ -54,6 +52,7 @@ namespace Shoplifter
             }
             
             ShopMenuUtilities.gethelpers(this.Monitor, this.ModManifest, this.config);
+            i18n.gethelpers(this.Helper.Translation, this.config);
         }
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
@@ -77,18 +76,23 @@ namespace Shoplifter
                 {
                     data.Add($"{this.ModManifest.UniqueID}_{shop}", "0/0");
                     this.Monitor.Log($"Adding mod data... {this.ModManifest.UniqueID}_{shop}");
-                }
-                
+                }               
             }
 
             foreach (string shopliftingdata in new List<string>(data.Keys))
             {
 
-                string[] values = data[shopliftingdata].Split('/');
-                string[] fields = shopliftingdata.Split('_');
+                string[] values = data[shopliftingdata]?.Split('/') ?? new string[] { };            
+                string[] fields = shopliftingdata?.Split('_') ?? new string[] { };
+
+                if (values.Length < 2 || fields.Length < 2)
+                {
+                    this.Monitor.Log("Mod save data couldn't be accessed. Ban logic may not work. Try resetting the mod save data if issue persists.");
+                    continue;
+                }
 
                 // Player has finished certain number of days ban, remove shop from list, also reset first day caught
-                if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) <= -this.config.DaysBannedFor)
+                if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) <= -this.config.DaysBannedFor && values.Length == 2)
                 {
                     values[0] = "0";
                     values[1] = "0";
@@ -98,7 +102,7 @@ namespace Shoplifter
                 }
 
                 // Player is currently banned, add shop to list
-                else if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) < 0)
+                else if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) < 0 && values.Length == 2)
                 {
                     values[0] = (int.Parse(values[0]) - 1).ToString();
                     PerScreenShopsBannedFrom.Value.Add(fields[1]);
@@ -106,7 +110,7 @@ namespace Shoplifter
                 }
 
                 // If 28 days have past and player was not caught a certain number of times, reset both fields
-                if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) > 0 && values[1] == Game1.dayOfMonth.ToString())
+                if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) > 0 && values[1] == Game1.dayOfMonth.ToString() && values.Length == 2)
                 {
                     values[0] = "0";
                     values[1] = "0";
@@ -122,9 +126,6 @@ namespace Shoplifter
 
         private void Launched(object sender, GameLaunchedEventArgs e)
         {
-            // Add placeholder for missing strings
-            shopliftingstrings.Add("Placeholder", "There's a string missing here...");
-
             if (this.config.MaxShopliftsPerStore == 0)
             {
                 this.config.MaxShopliftsPerStore = 1;
@@ -140,31 +141,10 @@ namespace Shoplifter
                 this.config.CatchesBeforeBan = 1;
             }
 
-            try
+            if (this.config.CaughtRadius == 0)
             {
-                // Get strings from assets folder and add them to a new dictionary
-                Dictionary<string, string> strings = this.Helper.Content.Load<Dictionary<string, string>>("assets\\Strings.json", ContentSource.ModFolder);
-
-                if (strings != null)
-                {
-                    foreach (string key in new List<string>(strings.Keys))
-                    {
-                        shopliftingstrings.Add(key, strings[key]);
-                    }
-                }
-
-                this.Monitor.Log("Strings loaded from assets, ready to go!");
-
-                if (shopliftingstrings.Count < 25)
-                {
-                    this.Monitor.Log("The number of strings loaded seem a bit low, you may get some missing string problems...\nCheck that all strings are present in the Strings.json", LogLevel.Warn);
-                }
+                this.config.CaughtRadius = 1;
             }
-            catch
-            {             
-                this.Monitor.Log("Could not load strings... This will result in missing string problems, (Are you missing the Strings.json file?)", LogLevel.Error);
-            }
-           
         }
 
         private void Action(object sender, ButtonPressedEventArgs e)
@@ -201,16 +181,7 @@ namespace Shoplifter
                                 // Supress button so game doesn't warp player (they're banned)
                                 Helper.Input.Suppress(e.Button);
 
-                                // Show string to say player is banned if it is available, else a placeholder
-                                if (shopliftingstrings.ContainsKey("TheMightyAmondee.Shoplifter/Banned") == true)
-                                {
-                                    Game1.drawObjectDialogue(shopliftingstrings["TheMightyAmondee.Shoplifter/Banned"]);
-                                }
-
-                                else
-                                {
-                                    Game1.drawObjectDialogue(shopliftingstrings["Placeholder"]);
-                                }
+                                Game1.drawObjectDialogue(i18n.string_Banned());
                             }
                             break;
                         // For each action that would open a shop that can be shoplifted, check if it can be shoplifted and take appropriate action

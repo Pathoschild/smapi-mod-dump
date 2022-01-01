@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
   "ToggleGrid": "Home",
+  "ToggleEdit": "End",
   "SwitchGrid": "Delete",
   "SwitchTile": "PageUp",
   "RotateTile": "PageDown",

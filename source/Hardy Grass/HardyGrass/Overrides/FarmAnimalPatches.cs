@@ -12,20 +12,28 @@ using System;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using Harmony;
+using HarmonyLib;
 
 namespace HardyGrass
 {
-    [HarmonyPatch(typeof(FarmAnimal))]
-    [HarmonyPatch("grassEndPointFunction", new Type[] {typeof(PathNode), typeof(Point), typeof(GameLocation), typeof(Character)})]
-    public class FarmAnimal_grassEndPointFunction_Patch
+    public class FarmAnimalPatches
     {
-        public static bool Prefix(ref bool __result, PathNode currentPoint, Point endPoint, GameLocation location, Character c)
+        public static void ApplyPatches(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.FarmAnimal), nameof(StardewValley.FarmAnimal.grassEndPointFunction)),
+                prefix: new HarmonyMethod(typeof(FarmAnimalPatches), nameof(FarmAnimalPatches.grassEndPointFunction_Prefix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.FarmAnimal), nameof(StardewValley.FarmAnimal.Eat)),
+                prefix: new HarmonyMethod(typeof(FarmAnimalPatches), nameof(FarmAnimalPatches.Eat_Prefix)));
+        }
+
+        public static bool grassEndPointFunction_Prefix(ref bool __result, PathNode currentPoint, Point endPoint, GameLocation location, Character c)
         {
             __result = false;
 
             Vector2 tileLocation = new Vector2(currentPoint.x, currentPoint.y);
-            if (location.terrainFeatures.TryGetValue(tileLocation, out var t) && t is Grass grass && (int)grass.numberOfWeeds > 0 && !FarmAnimal.reservedGrass.Contains(grass))
+            if (location.terrainFeatures.TryGetValue(tileLocation, out var t) && t is Grass grass && grass.numberOfWeeds.Value > 0 && !FarmAnimal.reservedGrass.Contains(grass))
             {
                 FarmAnimal.reservedGrass.Add(grass);
                 if (c is FarmAnimal)
@@ -37,25 +45,21 @@ namespace HardyGrass
 
             return false;
         }
-    }
 
-    [HarmonyPatch(typeof(FarmAnimal))]
-    [HarmonyPatch("Eat", new Type[] { typeof(GameLocation) })]
-    public class FarmAnimal_Eat_Patch
-    {
-        public static bool Prefix(FarmAnimal __instance, GameLocation location)
+        public static bool Eat_Prefix(FarmAnimal __instance, GameLocation location)
         {
             Vector2 tilePosition = new Vector2(__instance.GetBoundingBox().Center.X / 64, __instance.GetBoundingBox().Center.Y / 64);
             __instance.isEating.Value = true;
             int weedsToEat = __instance.isCoopDweller() ? 2 : 4;
             int fullnessPerWeed = (byte.MaxValue + 1) / weedsToEat;
             int weedsEaten = weedsToEat;
-            if (location.terrainFeatures.ContainsKey(tilePosition) && location.terrainFeatures[tilePosition] is Grass grass && (int)grass.numberOfWeeds > 0)
+
+            if (location.terrainFeatures.ContainsKey(tilePosition) && location.terrainFeatures[tilePosition] is Grass grass && grass.numberOfWeeds.Value > 0)
             {
                 if (ModEntry.config.fixAnimalsEating)
                 {
-                    weedsToEat = (byte.MaxValue + 1 - (byte)__instance.fullness) / fullnessPerWeed;
-                    weedsEaten = Math.Min((int)grass.numberOfWeeds, weedsToEat);
+                    weedsToEat = (byte.MaxValue + 1 - __instance.fullness.Value) / fullnessPerWeed;
+                    weedsEaten = Math.Min(grass.numberOfWeeds.Value, weedsToEat);
                 }
 
                 if (grass.reduceBy(weedsEaten, tilePosition, location.Equals(Game1.currentLocation)))
@@ -64,12 +68,12 @@ namespace HardyGrass
                 }
             }
             __instance.Sprite.loop = false;
-            __instance.fullness.Value = (weedsEaten == weedsToEat) ? byte.MaxValue : (byte)(__instance.fullness + (weedsEaten * fullnessPerWeed));
+            __instance.fullness.Value = (weedsEaten == weedsToEat) ? byte.MaxValue : (byte)(__instance.fullness.Value + (weedsEaten * fullnessPerWeed));
 
-            if ((byte)__instance.fullness >= byte.MaxValue && (int)__instance.moodMessage != 5 && (int)__instance.moodMessage != 6 && !Game1.isRaining)
+            if (__instance.fullness.Value >= byte.MaxValue && __instance.moodMessage.Value != 5 && __instance.moodMessage.Value != 6 && !Game1.isRaining)
             {
                 __instance.happiness.Value = byte.MaxValue;
-                __instance.friendshipTowardFarmer.Value = Math.Min(1000, (int)__instance.friendshipTowardFarmer + 8);
+                __instance.friendshipTowardFarmer.Value = Math.Min(1000, __instance.friendshipTowardFarmer.Value + 8);
             }
 
             return false;

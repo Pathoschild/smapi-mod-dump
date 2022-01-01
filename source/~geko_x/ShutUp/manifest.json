@@ -11,7 +11,7 @@
 {
   "Name": "Shut Up",
   "Author": "Geko_X",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Prevents certain sounds from playing",
   "UniqueID": "gekox.shutUp",
   "EntryDll": "ShutUp.dll",

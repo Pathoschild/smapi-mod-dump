@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/alanperrow/StardewModding
+**
+*************************************************/
+
+{
+  "Name": "Convenient Inventory",
+  "Author": "gaussfire",
+  "Version": "1.1.0",
+  "Description": "Adds convenience features to the player's inventory, such as quick stack to nearby chests and favorited items.",
+  "UniqueID": "gaussfire.ConvenientInventory",
+  "EntryDll": "ConvenientInventory.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:10384" ]
+}

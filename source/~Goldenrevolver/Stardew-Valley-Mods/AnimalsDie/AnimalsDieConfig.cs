@@ -16,7 +16,7 @@ namespace AnimalsDie
     using System;
     using System.Text.RegularExpressions;
 
-    public interface GenericModConfigMenuAPI
+    public interface IGenericModConfigMenuApi
     {
         void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
 
@@ -116,7 +116,7 @@ namespace AnimalsDie
                             prop.SetValue(config, 0);
                         }
 
-                        var maxProp = typeof(AnimalsDieConfig).GetProperty("Max" + prop.Name.Substring(3));
+                        var maxProp = typeof(AnimalsDieConfig).GetProperty("Max" + prop.Name[3..]);
 
                         if ((int)maxProp.GetValue(config) < minValue)
                         {
@@ -149,7 +149,7 @@ namespace AnimalsDie
 
         public static void SetUpModConfigMenu(AnimalsDieConfig config, AnimalsDie mod, bool isWaterModInstalled)
         {
-            GenericModConfigMenuAPI api = mod.Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            IGenericModConfigMenuApi api = mod.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
             if (api == null)
             {
@@ -220,7 +220,7 @@ namespace AnimalsDie
 
                         api.RegisterSimpleOption(manifest, betterName, "must at least 0 and smaller or equal to maximum age, otherwise it's reset", () => (int)prop.GetValue(config), (int i) => prop.SetValue(config, i));
 
-                        var maxProp = typeof(AnimalsDieConfig).GetProperty("Max" + prop.Name.Substring(3));
+                        var maxProp = typeof(AnimalsDieConfig).GetProperty("Max" + prop.Name[3..]);
 
                         betterName = Regex.Replace(maxProp.Name, "([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))", "$1 ");
 

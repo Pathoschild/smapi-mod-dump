@@ -4,6 +4,24 @@
         <name>TehPers.Core.Api</name>
     </assembly>
     <members>
+        <member name="T:TehPers.Core.Api.Content.ContentPackAssetProvider">
+            <summary>
+            Asset provider for a content pack.
+            </summary>
+            <inheritdoc cref="T:TehPers.Core.Api.Content.IAssetProvider"/>
+        </member>
+        <member name="M:TehPers.Core.Api.Content.ContentPackAssetProvider.#ctor(StardewModdingAPI.IContentPack)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TehPers.Core.Api.Content.ContentPackAssetProvider"/> class.
+            </summary>
+            <param name="contentPack">The content pack to provide assets for.</param>
+        </member>
+        <member name="M:TehPers.Core.Api.Content.ContentPackAssetProvider.Load``1(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.Content.ContentPackAssetProvider.Open(System.String,System.IO.FileMode)">
+            <inheritdoc/>
+        </member>
         <member name="T:TehPers.Core.Api.Content.IAssetProvider">
             <summary>
             A provider for game assets. You may use <see cref="T:TehPers.Core.Api.DI.ContentSourceAttribute"/> to specify
@@ -30,7 +48,7 @@
             <param name="path">The path to the file.</param>
             <param name="mode">The mode to open the file in.</param>
             <returns>The file's stream.</returns>
-            <exception cref="T:System.ArgumentException">The <see cref="!:mode"/> was not supported.</exception>
+            <exception cref="T:System.ArgumentException">The <paramref name="mode"/> was not supported.</exception>
         </member>
         <member name="T:TehPers.Core.Api.Content.IAssetTracker">
             <summary>
@@ -164,21 +182,6 @@
             <param name="source">The content source that should be used.</param>
         </member>
         <member name="M:TehPers.Core.Api.DI.ContentSourceAttribute.Matches(Ninject.Planning.Bindings.IBindingMetadata)">
-            <inheritdoc />
-        </member>
-        <member name="T:TehPers.Core.Api.DI.DataStore`1">
-            <inheritdoc />
-        </member>
-        <member name="M:TehPers.Core.Api.DI.DataStore`1.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:TehPers.Core.Api.DI.DataStore`1"/> class.
-            </summary>
-            <param name="value">The initial value stored in this data store.</param>
-        </member>
-        <member name="M:TehPers.Core.Api.DI.DataStore`1.Access``1(System.Func{`0,``0})">
-            <inheritdoc />
-        </member>
-        <member name="M:TehPers.Core.Api.DI.DataStore`1.Replace(System.Func{`0,`0})">
             <inheritdoc />
         </member>
         <member name="T:TehPers.Core.Api.DI.GlobalAttribute">
@@ -375,6 +378,40 @@
             <inheritdoc cref="T:TehPers.Core.Api.DI.BaseModule"/>
             <inheritdoc cref="T:TehPers.Core.Api.DI.IModModule"/>
         </member>
+        <member name="P:TehPers.Core.Api.DI.ModModule.GlobalProxyRoot">
+            <inheritdoc/>
+        </member>
+        <member name="P:TehPers.Core.Api.DI.ModModule.Kernel">
+            <inheritdoc/>
+        </member>
+        <member name="P:TehPers.Core.Api.DI.ModModule.KernelInstance">
+            <inheritdoc/>
+        </member>
+        <member name="P:TehPers.Core.Api.DI.ModModule.ParentFactory">
+            <inheritdoc/>
+        </member>
+        <member name="P:TehPers.Core.Api.DI.ModModule.ParentMod">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.DI.ModModule.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:TehPers.Core.Api.DI.ModModule"/> class.
+            </summary>
+        </member>
+        <member name="M:TehPers.Core.Api.DI.ModModule.Unbind(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.DI.ModModule.OnLoad(Ninject.IKernel)">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.DI.ModModule.OnUnload(Ninject.IKernel)">
+            <inheritdoc/>
+        </member>
+        <member name="T:TehPers.Core.Api.DI.ModServices">
+            <summary>
+            The global mod services. This contains the mod kernel factory, for example.
+            </summary>
+        </member>
         <member name="P:TehPers.Core.Api.DI.ModServices.Factory">
             <summary>
             Gets the <see cref="T:TehPers.Core.Api.DI.IModKernelFactory"/> for creating mod kernels. This value is
@@ -395,6 +432,47 @@
             </summary>
             <param name="context">The parent context.</param>
             <returns>The inherited parameters.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.BindingExtensions.ToFirst``1(Ninject.Syntax.IBindingToSyntax{``0},System.Type[])">
+            <summary>
+            Indicates that a service should be bound to the first available implementation.
+            </summary>
+            <typeparam name="TService">The implementation type.</typeparam>
+            <param name="syntax">The fluent syntax.</param>
+            <param name="implementationTypes">The implementation types. These should be assignable to <typeparamref name="TService"/>.</param>
+            <returns>The fluent syntax.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown if an input paramater is null.</exception>
+            <exception cref="T:Ninject.ActivationException">Thrown if there was an error activating the service.</exception>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.BindingExtensions.ToFirst``2(Ninject.Syntax.IBindingToSyntax{``0})">
+            <summary>
+            Indicates that a service should be bound to the first available implementation.
+            </summary>
+            <typeparam name="TService">The implementation type.</typeparam>
+            <typeparam name="T1">The only implementation type to try.</typeparam>
+            <param name="syntax">The fluent syntax.</param>
+            <returns>The fluent syntax.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.BindingExtensions.ToFirst``3(Ninject.Syntax.IBindingToSyntax{``0})">
+            <summary>
+            Indicates that a service should be bound to the first available implementation.
+            </summary>
+            <typeparam name="TService">The implementation type.</typeparam>
+            <typeparam name="T1">The first implementation type to try.</typeparam>
+            <typeparam name="T2">The second implementation type to try.</typeparam>
+            <param name="syntax">The fluent syntax.</param>
+            <returns>The fluent syntax.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.BindingExtensions.ToFirst``4(Ninject.Syntax.IBindingToSyntax{``0})">
+            <summary>
+            Indicates that a service should be bound to the first available implementation.
+            </summary>
+            <typeparam name="TService">The implementation type.</typeparam>
+            <typeparam name="T1">The first implementation type to try.</typeparam>
+            <typeparam name="T2">The second implementation type to try.</typeparam>
+            <typeparam name="T3">The third implementation type to try.</typeparam>
+            <param name="syntax">The fluent syntax.</param>
+            <returns>The fluent syntax.</returns>
         </member>
         <member name="M:TehPers.Core.Api.Extensions.BindingExtensions.BindForeignModApi``1(TehPers.Core.Api.DI.IModBindingRoot,System.String)">
             <summary>
@@ -498,6 +576,114 @@
             <param name="source">The source items.</param>
             <returns>An <see cref="T:System.Collections.Generic.IEnumerable`1"/> containing the source items and their index in the sequence.</returns>
         </member>
+        <member name="T:TehPers.Core.Api.Extensions.FunctionalExtensions">
+            <summary>
+            Extension methods that allow for more functional programming.
+            </summary>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.FunctionalExtensions.Select``2(System.Nullable{``0},System.Func{``0,``1})">
+            <summary>
+            Projects the value to a new value if it is not null. This is similar to
+            <see cref="M:System.Linq.Enumerable.Select``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})"/>.
+            </summary>
+            <typeparam name="TSource">The source value type.</typeparam>
+            <typeparam name="TResult">The mapped type.</typeparam>
+            <param name="source">The source value.</param>
+            <param name="f">A function which maps the source to the result.</param>
+            <returns>
+            The result of mapping the value using <paramref name="f"/>. If
+            <paramref name="source"/> is <see langword="null"/>, then the result is also
+            <see langword="null"/>.
+            </returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.FunctionalExtensions.Where``1(System.Nullable{``0},System.Predicate{``0})">
+            <summary>
+            Filters a nullable value based on a predicate. This is similar to
+            <see cref="M:System.Linq.Enumerable.Where``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})"/>.
+            </summary>
+            <typeparam name="T">The source value type.</typeparam>
+            <param name="source">The source value.</param>
+            <param name="f">A function which determines whether the source value should remain non-null.</param>
+            <returns>
+            The result of filtering the value using <paramref name="f"/>. If the predicate returned
+            <see langword="false"/>, then the result is <see langword="null"/>. If the source was
+            already <see langword="null"/>, then it remains unchanged.
+            </returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Extensions.FunctionalExtensions.AsEnumerable``1(System.Nullable{``0})">
+            <summary>
+            Converts a nullable value to an <see cref="T:System.Collections.Generic.IEnumerable`1"/>. If the value was
+            <see langword="null"/>, then the resulting sequence is empty. Otherwise, it contains a
+            single value containing the <paramref name="source"/>.
+            </summary>
+            <typeparam name="T">The source value type.</typeparam>
+            <param name="source">The source value.</param>
+            <returns>
+            An <see cref="T:System.Collections.Generic.IEnumerable`1"/> representing the enumerated source value.
+            </returns>
+        </member>
+        <member name="T:TehPers.Core.Api.Gameplay.Seasons">
+            <summary>
+            Seasons within the game. Because this is a flags-style enum, multiple seasons can be
+            combined.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Seasons.Spring">
+            <summary>
+            The spring season.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Seasons.Summer">
+            <summary>
+            The summer season.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Seasons.Fall">
+            <summary>
+            The fall season.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Seasons.Winter">
+            <summary>
+            The winter season.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Seasons.None">
+            <summary>
+            No seasons.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Seasons.All">
+            <summary>
+            All seasons in the game.
+            </summary>
+        </member>
+        <member name="T:TehPers.Core.Api.Gameplay.Weathers">
+            <summary>
+            Weathers within the game. Because this is a flags-style enum, multiple weathers can be
+            combined.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Weathers.Sunny">
+            <summary>
+            Sunny weather.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Weathers.Rainy">
+            <summary>
+            Rainy weather.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Weathers.None">
+            <summary>
+            No weathers.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Gameplay.Weathers.All">
+            <summary>
+            All weathers in the game.
+            </summary>
+        </member>
         <member name="T:TehPers.Core.Api.Items.IItemFactory">
             <summary>
             A factory which can create instances of an <see cref="T:StardewValley.Item"/>.
@@ -588,7 +774,312 @@
         </member>
         <member name="T:TehPers.Core.Api.Items.ItemTypes">
             <summary>
-            Standard <see cref="T:StardewValley.Item"/> types.
+            Standard <see cref="T:StardewValley.Item"/> type names.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.BigCraftable">
+            <summary>
+            The type name for craftable items. This is different than the type name for objects
+            even though they use the same class.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Boots">
+            <summary>
+            The type name for boots.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Clothing">
+            <summary>
+            The type name for clothing.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Flooring">
+            <summary>
+            The type name for flooring. This is different than the type name for wallpapers even
+            though they use the same class.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Furniture">
+            <summary>
+            The type name for furniture.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Hat">
+            <summary>
+            The type name for hats.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Object">
+            <summary>
+            The type name for objects.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Ring">
+            <summary>
+            The type name for rings.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Tool">
+            <summary>
+            The type name for tools.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Wallpaper">
+            <summary>
+            The type name for wallpapers. This is different than the type name for flooring even
+            though they use the same class.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Weapon">
+            <summary>
+            The type name for weapons (both melee and sling shots).
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ItemTypes.Unknown">
+            <summary>
+            The type name for unknown item types.
+            </summary>
+        </member>
+        <member name="T:TehPers.Core.Api.Items.NamespacedKey">
+            <summary>
+            A string key within a specific namespace.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.NamespacedKey.StardewValleyNamespace">
+            <summary>
+            The namespace for SDV.
+            </summary>
+        </member>
+        <member name="P:TehPers.Core.Api.Items.NamespacedKey.Namespace">
+            <summary>
+            The namespace this key is contained in.
+            </summary>
+        </member>
+        <member name="P:TehPers.Core.Api.Items.NamespacedKey.Key">
+            <summary>
+            The unique key within the namespace.
+            </summary>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> class.
+            </summary>
+            <param name="namespace">The namespace of the key.</param>
+            <param name="key">The unique key within the namespace.</param>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.#ctor(StardewModdingAPI.IManifest,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> class.
+            </summary>
+            <param name="manifest">The manifest that represents the namespace of the key.</param>
+            <param name="key">The unique key within the namespace.</param>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.Deconstruct(System.String@,System.String@)">
+            <summary>
+            Deconstructs this <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> into its components.
+            </summary>
+            <param name="namespace">The namespace of the key.</param>
+            <param name="key">The unique key within the namespace.</param>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.Equals(TehPers.Core.Api.Items.NamespacedKey)">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.Equals(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.op_Equality(TehPers.Core.Api.Items.NamespacedKey,TehPers.Core.Api.Items.NamespacedKey)">
+            <summary>
+            Compares two namespaced keys for equivalency.
+            </summary>
+            <param name="left">The first <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</param>
+            <param name="right">The second <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</param>
+            <returns>Whether the keys are equivalent.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.op_Inequality(TehPers.Core.Api.Items.NamespacedKey,TehPers.Core.Api.Items.NamespacedKey)">
+            <summary>
+            Compares two namespaced keys for inequivalency.
+            </summary>
+            <param name="left">The first <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</param>
+            <param name="right">The second <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</param>
+            <returns>Whether the keys are inequivalent.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.TryParse(System.String,TehPers.Core.Api.Items.NamespacedKey@)">
+            <summary>
+            Tries to parse a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> from a raw string. Strings in the format
+            <c>namespace:key</c> are parsed into their components. The key may contain colons, but
+            the namespace cannot.
+            </summary>
+            <param name="raw">The raw string to parse.</param>
+            <param name="key">The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>, if any.</param>
+            <returns>Whether parsing was successful.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvTool(System.String)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a tool in the SDV namespace.
+            </summary>
+            <param name="toolType">The tool type.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvTool(System.String,System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a tool in the SDV namespace.
+            </summary>
+            <param name="toolType">The tool type.</param>
+            <param name="quality">The quality level of the tool.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvClothing(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a clothing item in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the clothing item.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvWallpaper(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a wallpaper item in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the wallpaper item.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvFlooring(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a flooring item in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the flooring item.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvBoots(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for boots in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the boots.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvHat(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a hat in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the hat.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvWeapon(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a weapon in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the weapon.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvFurniture(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a furniture item in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the furniture item.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvBigCraftable(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a craftable item in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the craftable item.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvRing(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a ring in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the ring.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvObject(System.Int32)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for an object in the SDV namespace.
+            </summary>
+            <param name="parentSheetIndex">The index of the object.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.NamespacedKey.SdvCustom(System.String,System.String)">
+            <summary>
+            Creates a <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/> for a custom item in the SDV namespace.
+            </summary>
+            <param name="itemType">The item type of the custom item.</param>
+            <param name="key">The unique key of the custom item within the namespace and item type.</param>
+            <returns>The resulting <see cref="T:TehPers.Core.Api.Items.NamespacedKey"/>.</returns>
+        </member>
+        <member name="T:TehPers.Core.Api.Items.SimpleItemFactory">
+            <summary>
+            An item factory for simple items.
+            </summary>
+        </member>
+        <member name="P:TehPers.Core.Api.Items.SimpleItemFactory.ItemType">
+            <summary>
+            The type of item this factory creates.
+            </summary>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.SimpleItemFactory.#ctor(System.String,System.Func{StardewValley.Item})">
+            <summary>
+            Initializes a new instance of the <see cref="T:TehPers.Core.Api.Items.SimpleItemFactory"/> class.
+            </summary>
+            <param name="itemType">The type of item this factory creates.</param>
+            <param name="createItem">A function that creates an instance of the item.</param>
+        </member>
+        <member name="M:TehPers.Core.Api.Items.SimpleItemFactory.Create">
+            <inheritdoc/>
+        </member>
+        <member name="T:TehPers.Core.Api.Items.ToolTypes">
+            <summary>
+            Standard <see cref="T:StardewValley.Tool"/> type names.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.Axe">
+            <summary>
+            The type name for axes.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.Hoe">
+            <summary>
+            The type name for hoes.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.Pickaxe">
+            <summary>
+            The type name for pickaxes.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.WateringCan">
+            <summary>
+            The type name for watering cans.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.FishingRod">
+            <summary>
+            The type name for fishing rods.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.MilkPail">
+            <summary>
+            The type name for milk pails.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.Shears">
+            <summary>
+            The type name for shears.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.Pan">
+            <summary>
+            The type name for ore pans.
+            </summary>
+        </member>
+        <member name="F:TehPers.Core.Api.Items.ToolTypes.Wand">
+            <summary>
+            The type name for wands.
             </summary>
         </member>
         <member name="T:TehPers.Core.Api.Json.IJsonProvider">

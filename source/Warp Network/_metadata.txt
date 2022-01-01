@@ -6,9 +6,9 @@ mods:
    Warp Network
 
 latest commit:
-   commit 54236d54c4ce01768ab54ea07fc9e6c9f78683a4
-   Author: Wren <Wren@MYSTERY-SHACK>
-   Date:   Fri Apr 23 20:34:53 2021 -0400
+   commit 17be74c869baba05fbf69c69956f8b97f9908253
+   Author: tlitookilakin <swyrlyy@gmail.com>
+   Date:   Mon Dec 20 22:31:24 2021 -0500
    
-       Add ability to always hide a destination in the menu.
+       adjust button size for better sprite scaling
    

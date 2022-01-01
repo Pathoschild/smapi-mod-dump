@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Runtime.Serialization;
 
 namespace ContentPatcher.Framework.ConfigModels
@@ -36,7 +37,7 @@ namespace ContentPatcher.Framework.ConfigModels
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
-            this.MigrateLegacyNames ??= new string[0];
+            this.MigrateLegacyNames ??= Array.Empty<string>();
         }
     }
 }

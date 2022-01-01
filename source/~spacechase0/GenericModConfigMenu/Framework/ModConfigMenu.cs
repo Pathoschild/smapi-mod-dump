@@ -27,23 +27,16 @@ namespace GenericModConfigMenu.Framework
         *********/
         private RootElement Ui;
         private readonly Table Table;
-        private readonly bool InGame;
         private readonly int ScrollSpeed;
         private readonly Action<IManifest> OpenModMenu;
-
-
-        /*********
-        ** Accessors
-        *********/
-        public static IClickableMenu ActiveConfigMenu;
+        private bool InGame => Context.IsWorldReady;
 
 
         /*********
         ** Public methods
         *********/
-        public ModConfigMenu(bool inGame, int scrollSpeed, Action<IManifest> openModMenu, ModConfigManager configs)
+        public ModConfigMenu(int scrollSpeed, Action<IManifest> openModMenu, ModConfigManager configs)
         {
-            this.InGame = inGame;
             this.ScrollSpeed = scrollSpeed;
             this.OpenModMenu = openModMenu;
 
@@ -82,28 +75,24 @@ namespace GenericModConfigMenu.Framework
                 this.initializeUpperRightCloseButton();
             else
                 this.upperRightCloseButton = null;
-
-            ModConfigMenu.ActiveConfigMenu = this;
         }
 
         /// <inheritdoc />
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
-            if (this.upperRightCloseButton != null && this.readyToClose() && this.upperRightCloseButton.containsPoint(x, y))
+            if (this.upperRightCloseButton?.containsPoint(x, y) == true && this.readyToClose())
             {
                 if (playSound)
                     Game1.playSound("bigDeSelect");
-                if (!this.InGame && TitleMenu.subMenu != null && Game1.activeClickableMenu != null)
-                    TitleMenu.subMenu = null;
+
+                Mod.ActiveConfigMenu = null;
             }
         }
 
-        public void ReceiveScrollWheelActionSmapi(int direction)
+        /// <inheritdoc />
+        public override void receiveScrollWheelAction(int direction)
         {
-            if (TitleMenu.subMenu == this || this.InGame)
-                this.Table.Scrollbar.ScrollBy(direction / -this.ScrollSpeed);
-            else
-                ModConfigMenu.ActiveConfigMenu = null;
+            this.Table.Scrollbar.ScrollBy(direction / -this.ScrollSpeed);
         }
 
         /// <inheritdoc />

@@ -7,9 +7,9 @@ for queries and analysis.**
 ----
 
 # API Documentation
-**Animals Need Water** provides an API allowing modders to access data like *which animals were left thirsty yesterday* or *coops/barns with watered troughs*.
+**Animals Need Water** provides an API allowing modders to access some of its data.
 
-Here's what ANW's API interface looks like:
+Here's the ANW's API interface:
 ```csharp
     public interface IAnimalsNeedWaterAPI
     {
@@ -20,6 +20,7 @@ Here's what ANW's API interface looks like:
         List<string> GetBarnsWithWateredTrough();
     
         bool IsAnimalFull(FarmAnimal animal);
+        bool DoesAnimalHaveAccessToWater(FarmAnimal animal);
         List<long> GetFullAnimals();
     }
 ```
@@ -53,16 +54,20 @@ Returns a ```List<string>```  containing a list of Barns with watered trough.
 
 Requires a ```FarmAnimal``` instance.
 
-Returns a ```bool``` defining whether the animal was able to drink outside today or not.
+Returns a ```bool``` defining whether the animal was able to drink outside today.
+
+**DoesAnimalHaveAccessToWater**
+
+Requires a ```FarmAnimal``` instance.
+
+Returns a ```bool``` defining whether the animal was able to drink outside OR the trough inside its home is filled.
 
 **GetFullAnimals**
 
 *No parameters*
 
-Returns a ```long``` myID of each animal that was able to drink outside today.
+Returns a ```long``` myID of each animal that was able to drink outside.
 You can get the actual FarmAnimal instance with ```Utility.getAnimal(id)```.
-## Accessing API
-See [Modder Guide/APIs/Integrations](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Using_an_API) on the official SDV wiki.
 
----
-Want to get more data from the API? Contact me either here by [opening an issue](https://github.com/gzhynko/StardewMods/issues/new) or on [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/6196?tab=posts) and i will be happy to implement that!
+## Accessing the API
+See [Modder Guide/APIs/Integrations](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations#Using_an_API) on the official SDV wiki.

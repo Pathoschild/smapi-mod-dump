@@ -28,7 +28,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             new Recipe(
                 input: 340,
                 inputCount: 1,
-                output: input => new SObject(Vector2.Zero, 459, "Mead", false, true, false, false) { name = "Mead" },
+                output: _ => new SObject(Vector2.Zero, 459, "Mead", false, true, false, false) { name = "Mead" },
                 minutes: 600
             ),
 
@@ -36,7 +36,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             new Recipe(
                 input: 433,
                 inputCount: 5,
-                output: input => new SObject(Vector2.Zero, 395, "Coffee", false, true, false, false) { name = "Coffee" },
+                output: _ => new SObject(Vector2.Zero, 395, "Coffee", false, true, false, false) { name = "Coffee" },
                 minutes: 120
             ),
 
@@ -44,7 +44,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             new Recipe(
                 input: 815,
                 inputCount: 1,
-                output: input => new Object(Vector2.Zero, 614, "Green Tea", false, true, false, false) { name = "Green Tea" },
+                output: _ => new SObject(Vector2.Zero, 614, "Green Tea", false, true, false, false) { name = "Green Tea" },
                 minutes: 180
             ),
 
@@ -52,7 +52,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             new Recipe(
                 input: 262,
                 inputCount: 1,
-                output: input => new SObject(Vector2.Zero, 346, "Beer", false, true, false, false) { name = "Beer" },
+                output: _ => new SObject(Vector2.Zero, 346, "Beer", false, true, false, false) { name = "Beer" },
                 minutes: 1750
             ),
 
@@ -60,7 +60,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             new Recipe(
                 input: 304,
                 inputCount: 1,
-                output: input => new SObject(Vector2.Zero, 303, "Pale Ale", false, true, false, false) { name = "Pale Ale" },
+                output: _ => new SObject(Vector2.Zero, 303, "Pale Ale", false, true, false, false) { name = "Pale Ale" },
                 minutes: 2250
             ),
 
@@ -73,10 +73,10 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
                     SObject wine = new SObject(Vector2.Zero, 348, input.Name + " Wine", false, true, false, false)
                     {
                         name = input.Name + " Wine",
-                        Price = ((SObject)input).Price * 3
+                        Price = ((SObject)input).Price * 3,
+                        preserve = { Value = SObject.PreserveType.Wine },
+                        preservedParentSheetIndex = { Value = input.ParentSheetIndex }
                     };
-                    wine.preserve.Value = SObject.PreserveType.Wine;
-                    wine.preservedParentSheetIndex.Value = input.ParentSheetIndex;
                     return wine;
                 },
                 minutes: 10000
@@ -89,10 +89,10 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
                     SObject juice = new SObject(Vector2.Zero, 350, input.Name + " Juice", false, true, false, false)
                     {
                         name = input.Name + " Juice",
-                        Price = (int)(((SObject)input).Price * 2.25)
+                        Price = (int)(((SObject)input).Price * 2.25),
+                        preserve = { Value = SObject.PreserveType.Juice },
+                        preservedParentSheetIndex = { Value = input.ParentSheetIndex }
                     };
-                    juice.preserve.Value = SObject.PreserveType.Juice;
-                    juice.preservedParentSheetIndex.Value = input.ParentSheetIndex;
                     return juice;
                 },
                 minutes: 6000

@@ -138,15 +138,15 @@ namespace BattleRoyale.Utils
 
                 DelayedAction.functionAfterDelay(() =>
                 {
-                    Random random = new Random();
+                    Random random = new();
 
                     //Spawn their items onto the floor
                     foreach (var item in Game1.player.Items)
                     {
                         if (item != null)
-                            if (!(item is Tool) || item is MeleeWeapon || item is Slingshot)
+                            if (item is not Tool || item is MeleeWeapon || item is Slingshot)
                             {
-                                Debris debris = new Debris(item, Game1.player.getStandingPosition(), Game1.player.getStandingPosition() + new Vector2(64 * (float)(random.NextDouble() * 2 - 1), 64 * (float)(random.NextDouble() * 2 - 1)));
+                                Debris debris = new(item, Game1.player.getStandingPosition(), Game1.player.getStandingPosition() + new Vector2(64 * (float)(random.NextDouble() * 2 - 1), 64 * (float)(random.NextDouble() * 2 - 1)));
                                 Game1.currentLocation.debris.Add(debris);
                             }
                     }
@@ -374,19 +374,19 @@ namespace BattleRoyale.Utils
         {
             if (ModEntry.BRGame.IsSpecialRoundType(SpecialRoundType.TRAVELLING_CART))
             {
-                int weaponId = randomRoundMeleeWeapons[Game1.random.Next(randomRoundMeleeWeapons.Count())];
-                MeleeWeapon weapon = new MeleeWeapon(weaponId);
+                int weaponId = randomRoundMeleeWeapons[Game1.random.Next(randomRoundMeleeWeapons.Length)];
+                MeleeWeapon weapon = new(weaponId);
 
-                int foodId = randomRoundFood[Game1.random.Next(randomRoundFood.Count())];
+                int foodId = randomRoundFood[Game1.random.Next(randomRoundFood.Length)];
                 int foodAmount = Game1.random.Next(randomRoundFoodRange[0], randomRoundFoodRange[1] + 1);
 
-                StardewValley.Object food = new StardewValley.Object(foodId, foodAmount);
+                StardewValley.Object food = new(foodId, foodAmount);
 
-                int ringId = randomRoundRings[Game1.random.Next(randomRoundRings.Count())];
-                Ring ring = new Ring(ringId);
+                int ringId = randomRoundRings[Game1.random.Next(randomRoundRings.Length)];
+                Ring ring = new(ringId);
 
-                int bootId = randomRoundBoots[Game1.random.Next(randomRoundBoots.Count())];
-                Boots boots = new Boots(bootId);
+                int bootId = randomRoundBoots[Game1.random.Next(randomRoundBoots.Length)];
+                Boots boots = new(bootId);
 
                 Game1.player.addItemToInventory(weapon);
                 Game1.player.addItemToInventory(food);
@@ -396,11 +396,11 @@ namespace BattleRoyale.Utils
             }
             else if (ModEntry.BRGame.IsSpecialRoundType(SpecialRoundType.SLINGSHOT_ONLY))
             {
-                Slingshot slingshot = new Slingshot(32);
+                Slingshot slingshot = new(32);
 
-                StardewValley.Object wood = new StardewValley.Object(388, 100);
-                StardewValley.Object stone = new StardewValley.Object(390, 50);
-                StardewValley.Object copper = new StardewValley.Object(378, 20);
+                StardewValley.Object wood = new(388, 100);
+                StardewValley.Object stone = new(390, 50);
+                StardewValley.Object copper = new(378, 20);
 
                 Game1.player.addItemToInventory(slingshot);
                 Game1.player.addItemToInventory(wood);
@@ -409,7 +409,7 @@ namespace BattleRoyale.Utils
             }
             else if (ModEntry.BRGame.IsSpecialRoundType(SpecialRoundType.BOMBS_ONLY))
             {
-                StardewValley.Object bomb = new StardewValley.Object(287, 50);
+                StardewValley.Object bomb = new(287, 50);
                 Game1.player.addItemToInventory(bomb);
             }
         }

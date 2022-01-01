@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<EnableHarmony>true</EnableHarmony>
+		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+		<IgnoreModFilePatterns>^ContentPatcher\.(dll|pdb)$, ^TehPers\.Core\.Api\.(dll|pdb|xml)$, ^Ninject\.dll$</IgnoreModFilePatterns>
+		<Nullable>Enable</Nullable>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\TehPers.FishingOverhaul.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TehPers.FishingOverhaul.Api\TehPers.FishingOverhaul.Api.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="$(GameModsPath)/ContentPatcher/ContentPatcher.dll" />
+		<Reference Include="$(GameModsPath)/TehPers.Core/TehPers.Core.Api.dll" />
+		<Reference Include="$(GameModsPath)/TehPers.Core/Ninject.dll" />
+	</ItemGroup>
+
+</Project>

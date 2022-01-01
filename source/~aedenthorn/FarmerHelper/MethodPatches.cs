@@ -9,13 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;
 
@@ -26,7 +23,9 @@ namespace FarmerHelper
     {
         private static bool Utility_tryToPlaceItem_Prefix(GameLocation location, Item item, ref bool __result )
         {
-            if (!Config.EnableMod || !Config.PreventLatePlant || (new int[] { 495, 496, 497, 498, 770 }).Contains(item.ParentSheetIndex))
+            if (!Config.EnableMod || !Config.PreventLatePlant || (new int[] { 495, 496, 497, 498, 770 }).Contains(item.ParentSheetIndex) || !(item is Object) || ((Object)item).Category != -74)
+                return true;
+            if (location.SeedsIgnoreSeasonsHere())
                 return true;
             Crop c = new Crop(item.ParentSheetIndex, 0, 0);
             if (c == null)
@@ -39,7 +38,7 @@ namespace FarmerHelper
         }
         private static bool Object_placementAction_Prefix(Object __instance, GameLocation location, int x, int y, Farmer who, ref bool __result)
         {
-            if (!Config.EnableMod || !Config.PreventLatePlant)
+            if (!Config.EnableMod || !Config.PreventLatePlant || __instance.Category != -74)
                 return true;
 
             Vector2 placementTile = new Vector2((float)(x / 64), (float)(y / 64));
@@ -48,6 +47,9 @@ namespace FarmerHelper
                 return true;
 
             if ((new int[] { 495, 496, 497, 498, 770 }).Contains(__instance.ParentSheetIndex))
+                return true;
+
+            if (location.SeedsIgnoreSeasonsHere())
                 return true;
 
             Crop c = new Crop(__instance.ParentSheetIndex, x, y);
@@ -76,11 +78,9 @@ namespace FarmerHelper
             if (!Config.EnableMod || dialogKey != "Sleep")
                 return;
 
-            foreach (var obj in Game1.getFarm().terrainFeatures.Values)
+            foreach (var terrainFeature in Game1.getFarm().terrainFeatures.Values)
             {
-                if (!(obj is HoeDirt))
-                    continue;
-                if (Config.WarnAboutPlantsUnwateredBeforeSleep && (obj as HoeDirt).needsWatering())
+                if (terrainFeature is HoeDirt && Config.WarnAboutPlantsUnwateredBeforeSleep && (terrainFeature as HoeDirt).crop != null && !(terrainFeature as HoeDirt).hasPaddyCrop() && (terrainFeature as HoeDirt).state.Value == 0)
                 {
                     question = string.Format(SHelper.Translation.Get("plants-need-watering"), question);
                     break;
@@ -117,7 +117,9 @@ namespace FarmerHelper
                 {
                     foreach (Building building in Game1.getFarm().buildings)
                     {
-                        if (found || !(building.indoors.Value is AnimalHouse))
+                        if (found)
+                            break;
+                        if(!(building.indoors.Value is AnimalHouse))
                             continue;
                         foreach(FarmAnimal animal in (building.indoors.Value as AnimalHouse).animals.Values)
                         {
@@ -147,7 +149,9 @@ namespace FarmerHelper
                 {
                     foreach (Building building in Game1.getFarm().buildings)
                     {
-                        if (found || !(building.indoors.Value is AnimalHouse))
+                        if (found)
+                            break;
+                        if(!(building.indoors.Value is AnimalHouse))
                             continue;
                         foreach(FarmAnimal animal in (building.indoors.Value as AnimalHouse).animals.Values)
                         {

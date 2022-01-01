@@ -17,14 +17,14 @@ namespace BattleRoyale.Patches
 {
     class PlantSeedsAnywhere : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(HoeDirt), "plant");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(HoeDirt), "plant");
 
         public static bool Prefix(HoeDirt __instance, ref bool __result, int index, int tileX, int tileY, Farmer who, GameLocation location)
         {
             if (location.IsFarm)
                 return true;
 
-            Crop c = new Crop(index, tileX, tileY);
+            Crop c = new(index, tileX, tileY);
             __instance.crop = c;
             if ((bool)c.raisedSeeds)
             {
@@ -44,13 +44,13 @@ namespace BattleRoyale.Patches
 
     class PlantTreesAnywhere : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Object), "placementAction");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Object), "placementAction");
 
         public static bool Prefix(ref bool __result, Object __instance, GameLocation location, int x, int y)
         {
             if (__instance.isSapling())
             {
-                Vector2 placementTile = new Vector2(x / 64, y / 64);
+                Vector2 placementTile = new(x / 64, y / 64);
                 location.playSound("dirtyHit");
                 DelayedAction.playSoundAfterDelay("coin", 100);
                 if ((int)__instance.parentSheetIndex == 251)

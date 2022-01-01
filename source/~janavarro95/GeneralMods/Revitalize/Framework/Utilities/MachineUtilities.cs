@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Revitalize;
+using Revitalize.Framework;
 using Revitalize.Framework.Objects.InformationFiles;
 
 namespace Revitalize.Framework.Utilities
@@ -32,7 +34,7 @@ namespace Revitalize.Framework.Utilities
             {
                 return ResourcesForMachines[ID];
             }
-            else if (ID.Equals("Omegasis.Revitalize.Objects.Machines.MiningDrillV1"))
+            else if (ID.Equals("Revitalize.Objects.Machines.MiningDrillV1"))
             {
                 return ModCore.ObjectManager.resources.miningDrillResources.Values.ToList();
             }
@@ -45,11 +47,11 @@ namespace Revitalize.Framework.Utilities
             
             ResourcesForMachines = new Dictionary<string, List<ResourceInformation>>()
         {
-            {"Omegasis.Revitalize.Objects.Machines.BatteryBin" ,new List<ResourceInformation>(){
-                new Objects.InformationFiles.ResourceInformation(new StardewValley.Object((int)Enums.SDVObject.BatteryPack,1),1,1,1,1,1,1,0,0,0,0)
+            {"Revitalize.Objects.Machines.BatteryBin" ,new List<ResourceInformation>(){
+                new ResourceInformation(new StardewValley.Object((int)Enums.SDVObject.BatteryPack,1),1,1,1,1,1,1,0,0,0,0)
             } },
-            {"Omegasis.Revitalize.Objects.Machines.Sandbox",new List<ResourceInformation>(){
-                new Objects.InformationFiles.ResourceInformation(ModCore.ObjectManager.resources.getResource("Sand",1),1,1,1,1,1,1,0,0,0,0)
+            {"Revitalize.Objects.Machines.Sandbox",new List<ResourceInformation>(){
+                new ResourceInformation(ModCore.ObjectManager.resources.getResource("Sand",1),1,1,1,1,1,1,0,0,0,0)
             } }
         };
         }

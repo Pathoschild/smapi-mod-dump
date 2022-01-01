@@ -51,7 +51,13 @@ namespace UtilityGrid
             }
             if (!ShowingGrid)
                 return;
-
+            if(e.Button == Config.ToggleEdit)
+            {
+                Helper.Input.Suppress(e.Button);
+                ShowingEdit = !ShowingEdit;
+                Monitor.Log($"Showing edit: {ShowingEdit}");
+                return;
+            }
             if (e.Button == Config.SwitchGrid)
             {
                 Helper.Input.Suppress(e.Button);
@@ -59,7 +65,7 @@ namespace UtilityGrid
                 Monitor.Log($"Showing grid: {CurrentGrid}");
                 return;
             }
-            if (Game1.player.IsCarrying())
+            if (!ShowingEdit || Game1.player.IsCarrying())
                 return;
             if (e.Button == Config.SwitchTile)
             {
@@ -189,14 +195,16 @@ namespace UtilityGrid
                 foreach (var kvp in group.objects)
                 {
                     DrawAmount(e.SpriteBatch, kvp, netPower, color);
+                    DrawCharge(e.SpriteBatch, kvp, color);
                 }
 
             }
             foreach (var kvp in objectDict)
             {
                 DrawAmount(e.SpriteBatch, kvp, CurrentGrid == GridType.electric ? kvp.Value.electric : kvp.Value.water, color);
+                DrawCharge(e.SpriteBatch, kvp, color);
             }
-            if (!carrying)
+            if (ShowingEdit && !carrying)
             {
                 if (CurrentTile == 4)
                 {
@@ -217,6 +225,47 @@ namespace UtilityGrid
             }
         }
 
+        private void GameLoop_TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)
+        {
+            if (!Config.EnableMod || Game1.timeOfDay % 100 != 0)
+                return;
+
+            foreach(var kvp in utilitySystemDict)
+            {
+                foreach(var group in kvp.Value.electricGroups)
+                {
+                    GetGroupElectricPower(kvp.Key, group, true);
+                }
+                foreach(var group in kvp.Value.waterGroups)
+                {
+                    GetGroupWaterPower(kvp.Key, group, true);
+                }
+            }
+        }
+        private void GameLoop_DayEnding(object sender, StardewModdingAPI.Events.DayEndingEventArgs e)
+        {
+            if (!Config.EnableMod)
+                return;
+
+            int elapsed = 6 - Game1.timeOfDay / 100;
+            if (elapsed <= 0)
+                elapsed += 24;
+            for(int i = 0; i < elapsed; i++)
+            {
+                foreach (var kvp in utilitySystemDict)
+                {
+                    foreach (var group in kvp.Value.electricGroups)
+                    {
+                        GetGroupElectricPower(kvp.Key, group, true);
+                    }
+                    foreach (var group in kvp.Value.waterGroups)
+                    {
+                        GetGroupWaterPower(kvp.Key, group, true);
+                    }
+                }
+            }
+        }
+
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
             utilitySystemDict = new Dictionary<string, UtilitySystem>();
@@ -225,7 +274,7 @@ namespace UtilityGrid
             CurrentTile = 0;
             try
             {
-                objectDict = SHelper.Content.Load<Dictionary<string, UtilityObject>>(dictPath, ContentSource.GameContent);
+                utilityObjectDict = SHelper.Content.Load<Dictionary<string, UtilityObject>>(dictPath, ContentSource.GameContent);
                 UtilitySystemDictData systemDataDict = Helper.Data.ReadSaveData<UtilitySystemDictData>(saveKey) ?? new UtilitySystemDictData();
 
                 Monitor.Log($"reading grid data for {systemDataDict.dict.Count} locations from save");
@@ -343,8 +392,8 @@ namespace UtilityGrid
                 mod: ModManifest,
                 name: () => "Pipe Item Destroy",
                 tooltip: () => "Comma-separated pairs of index:amount",
-                getValue: () => Config.PipeCostItems,
-                setValue: value => Config.PipeCostItems = value
+                getValue: () => Config.PipeDestroyItems,
+                setValue: value => Config.PipeDestroyItems = value
             );
 
             configMenu.AddSectionTitle(

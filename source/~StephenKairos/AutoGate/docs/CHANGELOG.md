@@ -9,8 +9,15 @@ for queries and analysis.**
 ← [back to readme](README.md)
 
 # Release notes
+## 1.3.0
+Released 28 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.5.5.
+* Added support for gates placed on top of fences.
+* Fixed double-gates not always working consistently.
+
 ## 1.2.0
-Released 01 October 2021 for SMAPI 3.12.0 or later.
+Released 01 October 2021 for SMAPI 3.12.0 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.5 (including split-screen mode).
 * Gates now open immediately when approached, without a half-second delay.

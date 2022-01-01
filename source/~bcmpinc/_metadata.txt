@@ -16,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit 883060af0d65009a0a174844b44941ebf3d964e8
+   commit e40d5204b2b5f1e6c29e4924712f3a3e6d6a5876
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Tue Oct 12 15:09:49 2021 +0200
+   Date:   Thu Dec 30 10:54:31 2021 +0100
    
-       Support for latest SDV beta release
+       [TilledSoilDecay] Fixed #79 issue with seasonal decay
    

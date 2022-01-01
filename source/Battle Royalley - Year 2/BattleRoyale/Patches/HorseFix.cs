@@ -17,7 +17,7 @@ namespace BattleRoyale.Patches
 {
     class HorseDespawnFix : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Horse), "dismount");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Horse), "dismount");
 
         public static bool Prefix(Horse __instance)
         {
@@ -46,7 +46,7 @@ namespace BattleRoyale.Patches
 
     class MultipleHorseFix : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Horse), "checkAction");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Horse), "checkAction");
 
         public static bool Prefix(Horse __instance, Farmer who, GameLocation l)
         {

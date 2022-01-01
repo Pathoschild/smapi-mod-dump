@@ -15,6 +15,6 @@
     "Description": "Lets you cycle your inventory rows.",
     "UniqueID": "InventoryCycle",
     "EntryDll": "InventoryCycle.dll",
-    "MinimumApiVersion": "2.10.1",
+    "MinimumApiVersion": "3.13.0",
     "UpdateKeys": []
 }

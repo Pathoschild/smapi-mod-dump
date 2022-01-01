@@ -21,7 +21,7 @@ namespace BattleRoyale
     class SpectatorMode
     {
         //Each location UI component on the map has a myID field
-        private static readonly Dictionary<int, string> pointIDsToLocation = new Dictionary<int, string>()
+        private static readonly Dictionary<int, string> pointIDsToLocation = new()
         {
             { -500, "Beach" },
             { 1001 ,"Desert" },
@@ -192,7 +192,7 @@ namespace BattleRoyale
 
         public static void Update()
         {
-            if (!InSpectatorMode || ModEntry.Leaderboard.AlreadyDisplaying())
+            if (!InSpectatorMode || UI.Leaderboard.AlreadyDisplaying())
                 return;
 
             #region Camera movement

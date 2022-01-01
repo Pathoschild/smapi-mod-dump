@@ -19,13 +19,13 @@ namespace BattleRoyale.Patches
 {
     class SlingshotPatch3 : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Projectile), "isColliding");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Projectile), "isColliding");
 
         public static bool Postfix(bool __result, Projectile __instance, GameLocation location)
         {
             bool damagesMonsters = ModEntry.BRGame.Helper.Reflection.GetField<NetBool>(__instance, "damagesMonsters").GetValue().Value;
 
-            if (!__result && (!(__instance is BasicProjectile bp) || bp.damageToFarmer.Value < 20))
+            if (!__result && (__instance is not BasicProjectile bp || bp.damageToFarmer.Value < 20))
             {
                 Rectangle r = __instance.getBoundingBox();
                 foreach (Farmer farmer in location.farmers.Where(x => x != null))

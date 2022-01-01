@@ -17,7 +17,7 @@ namespace BattleRoyale.Patches
 {
     class TitleMenuButtons : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(TitleMenu), "setUpIcons");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(TitleMenu), "setUpIcons");
 
         public static void Postfix(TitleMenu __instance)
         {
@@ -48,7 +48,7 @@ namespace BattleRoyale.Patches
 
     class TitleMenuButtonSounds : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(TitleMenu), "update");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(TitleMenu), "update");
 
         public static bool Prefix(TitleMenu __instance)
         {
@@ -62,7 +62,7 @@ namespace BattleRoyale.Patches
 
     class CoopMenuNoNewFarm : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(CoopMenu), "connectionFinished");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(CoopMenu), "connectionFinished");
 
         public static void Postfix(CoopMenu __instance)
         {

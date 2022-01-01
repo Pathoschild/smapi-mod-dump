@@ -8,111 +8,113 @@
 **
 *************************************************/
 
+using LinqFasterer;
 using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace SpriteMaster.Extensions.Compressors {
-	// https://stackoverflow.com/a/8605828
-	// TODO : Implement a continual training dictionary so each stream doesn't require its own dictionary for in-memory compression.
-	internal static class LZMA {
-		internal static bool IsSupported {
-			get {
-				try {
-					var dummyData = new byte[16];
-					var compressedData = Compress(dummyData);
-					var uncompressedData = Decompress(compressedData, dummyData.Length);
-					if (!Enumerable.SequenceEqual(dummyData, uncompressedData)) {
-						throw new Exception("Original and Uncompressed Data Mismatch");
-					}
-					Debug.InfoLn("LZMA Compression is supported");
-					return true;
+namespace SpriteMaster.Extensions.Compressors;
+
+// https://stackoverflow.com/a/8605828
+// TODO : Implement a continual training dictionary so each stream doesn't require its own dictionary for in-memory compression.
+static class LZMA {
+	internal static bool IsSupported {
+		[MethodImpl(Runtime.MethodImpl.RunOnce)]
+		get {
+			try {
+				var dummyData = new byte[16];
+				var compressedData = Compress(dummyData);
+				var uncompressedData = Decompress(compressedData, dummyData.Length);
+				if (!EnumerableF.SequenceEqualF(dummyData, uncompressedData)) {
+					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
-				catch (DllNotFoundException) {
-					Debug.InfoLn($"LZMA Compression not supported");
-					return false;
-				}
-				catch (Exception ex) {
-					Debug.InfoLn($"LZMA Compression not supported: '{ex.ToString()}'");
-					return false;
-				}
+				Debug.InfoLn("LZMA Compression is supported");
+				return true;
+			}
+			catch (DllNotFoundException) {
+				Debug.InfoLn($"LZMA Compression not supported");
+				return false;
+			}
+			catch (Exception ex) {
+				Debug.InfoLn($"LZMA Compression not supported: '{ex}'");
+				return false;
 			}
 		}
+	}
 
-		private static class Data {
-			internal static readonly byte[] Properties;
+	private static class Data {
+		internal static readonly byte[] Properties;
 
-			static Data() {
-				var encoder = new SevenZip.Compression.LZMA.Encoder();
-				using var propertiesStream = new MemoryStream(5);
-				encoder.WriteCoderProperties(propertiesStream);
-				propertiesStream.Flush();
-				Properties = propertiesStream.ToArray();
-			}
+		[MethodImpl(Runtime.MethodImpl.RunOnce)]
+		static Data() {
+			var encoder = new SevenZip.Compression.LZMA.Encoder();
+			using var propertiesStream = new MemoryStream(5);
+			encoder.WriteCoderProperties(propertiesStream);
+			propertiesStream.Flush();
+			Properties = propertiesStream.ToArray();
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static SevenZip.Compression.LZMA.Encoder GetEncoder() {
+		return new SevenZip.Compression.LZMA.Encoder();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static SevenZip.Compression.LZMA.Decoder GetDecoder() {
+		var decoder = new SevenZip.Compression.LZMA.Decoder();
+		decoder.SetDecoderProperties(Data.Properties);
+		return decoder;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static int CompressedLengthEstimate(byte[] data) {
+		return data.Length >> 1;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static int DecompressedLengthEstimate(byte[] data) {
+		return data.Length << 1;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte[] Compress(byte[] data) {
+		using var output = new MemoryStream(CompressedLengthEstimate(data));
+
+		var encoder = GetEncoder();
+
+		using (var input = new MemoryStream(data)) {
+			encoder.Code(input, output, data.Length, -1, null);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		private static SevenZip.Compression.LZMA.Encoder GetEncoder() {
-			return new SevenZip.Compression.LZMA.Encoder();
+		output.Flush();
+		return output.ToArray();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static unsafe byte[] Decompress(byte[] data) {
+		using var output = new MemoryStream(DecompressedLengthEstimate(data));
+
+		using (var input = new MemoryStream(data)) {
+			var decoder = GetDecoder();
+			decoder.Code(input, output, input.Length, -1, null);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		private static SevenZip.Compression.LZMA.Decoder GetDecoder() {
-			var decoder = new SevenZip.Compression.LZMA.Decoder();
-			decoder.SetDecoderProperties(Data.Properties);
-			return decoder;
+		output.Flush();
+		return output.ToArray();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte[] Decompress(byte[] data, int size) {
+		var output = new byte[size];
+		using var outputStream = new MemoryStream(output);
+
+		using (var input = new MemoryStream(data)) {
+			var decoder = GetDecoder();
+			decoder.Code(input, outputStream, input.Length, size, null);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		internal static int CompressedLengthEstimate(byte[] data) {
-			return data.Length >> 1;
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		internal static int DecompressedLengthEstimate(byte[] data) {
-			return data.Length << 1;
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		internal static byte[] Compress(byte[] data) {
-			using var output = new MemoryStream(CompressedLengthEstimate(data));
-
-			var encoder = GetEncoder();
-
-			using (var input = new MemoryStream(data)) {
-				encoder.Code(input, output, data.Length, -1, null);
-			}
-
-			output.Flush();
-			return output.ToArray();
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		internal static unsafe byte[] Decompress(byte[] data) {
-			using var output = new MemoryStream(DecompressedLengthEstimate(data));
-
-			using (var input = new MemoryStream(data)) {
-				var decoder = GetDecoder();
-				decoder.Code(input, output, input.Length, -1, null);
-			}
-
-			output.Flush();
-			return output.ToArray();
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		internal static byte[] Decompress(byte[] data, int size) {
-			var output = new byte[size];
-			using var outputStream = new MemoryStream(output);
-
-			using (var input = new MemoryStream(data)) {
-				var decoder = GetDecoder();
-				decoder.Code(input, outputStream, input.Length, size, null);
-			}
-
-			outputStream.Flush();
-			return output;
-		}
+		outputStream.Flush();
+		return output;
 	}
 }

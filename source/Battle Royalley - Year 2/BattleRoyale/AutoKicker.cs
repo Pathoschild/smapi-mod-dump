@@ -22,9 +22,9 @@ namespace BattleRoyale
 {
     internal class AutoKicker
     {
-        internal static Dictionary<long, Tuple<int, int, byte[]>> playersToVersions = new Dictionary<long, Tuple<int, int, byte[]>>();
+        internal static Dictionary<long, Tuple<int, int, byte[]>> playersToVersions = new();
 
-        public bool ProcessPlayerJoin(NetFarmerRoot farmer)
+        public static bool ProcessPlayerJoin(NetFarmerRoot farmer)
         {
             var pl = ModEntry.BRGame.Helper.Multiplayer.GetConnectedPlayer(farmer.Value.UniqueMultiplayerID);
             if (!pl.HasSmapi)
@@ -32,7 +32,7 @@ namespace BattleRoyale
                 Console.WriteLine("Kicking because does not have SMAPI");
 
                 SendChatMessageToPlayerWithoutMod(farmer.Value.UniqueMultiplayerID, "Read the instruction page before joining.");
-                Game1.server.sendMessage(farmer.Value.UniqueMultiplayerID, new OutgoingMessage((byte)19, farmer.Value.UniqueMultiplayerID, new object[0]));
+                Game1.server.sendMessage(farmer.Value.UniqueMultiplayerID, new OutgoingMessage((byte)19, farmer.Value.UniqueMultiplayerID, Array.Empty<object>()));
                 Game1.server.playerDisconnected(farmer.Value.UniqueMultiplayerID);
                 Game1.otherFarmers.Remove(farmer.Value.UniqueMultiplayerID);
                 return false;
@@ -41,7 +41,7 @@ namespace BattleRoyale
             Console.WriteLine($"Player joined with mods:");
             if (pl.Mods.Count() > 1)
             {
-                Game1.server.sendMessage(farmer.Value.UniqueMultiplayerID, new OutgoingMessage((byte)19, farmer.Value.UniqueMultiplayerID, new object[0]));
+                Game1.server.sendMessage(farmer.Value.UniqueMultiplayerID, new OutgoingMessage((byte)19, farmer.Value.UniqueMultiplayerID, Array.Empty<object>()));
                 Game1.server.playerDisconnected(farmer.Value.UniqueMultiplayerID);
                 Game1.otherFarmers.Remove(farmer.Value.UniqueMultiplayerID);
 
@@ -74,7 +74,7 @@ namespace BattleRoyale
                     Console.WriteLine("Kicking");
                     //KickPlayer(farmer.Value, $"Could not connect in time");
                     SendChatMessageToPlayerWithoutMod(farmer.Value.UniqueMultiplayerID, "Could not connect in time");
-                    Game1.server.sendMessage(farmer.Value.UniqueMultiplayerID, new OutgoingMessage((byte)19, farmer.Value.UniqueMultiplayerID, new object[0]));
+                    Game1.server.sendMessage(farmer.Value.UniqueMultiplayerID, new OutgoingMessage((byte)19, farmer.Value.UniqueMultiplayerID, Array.Empty<object>()));
                     Game1.server.playerDisconnected(farmer.Value.UniqueMultiplayerID);
                     Game1.otherFarmers.Remove(farmer.Value.UniqueMultiplayerID);
                     return;
@@ -85,7 +85,7 @@ namespace BattleRoyale
         }
 
 
-        public void SendMyVersionToTheServer(Client client)
+        public static void SendMyVersionToTheServer(Client client)
         {
             var m = new OutgoingMessage(uniqueMessageType, Game1.player,
                 (int)MessageTypes.SEND_MY_VERSION_TO_SERVER, (int)GetMyVersion().Item1, (int)GetMyVersion().Item2, GetSHA());
@@ -96,22 +96,20 @@ namespace BattleRoyale
                 Console.WriteLine("Client null: can't send version info to server");
         }
 
-        private byte[] GetSHA()
+        private static byte[] GetSHA()
         {
-            using (FileStream stream = new FileStream(System.Reflection.Assembly.GetExecutingAssembly().Location, FileMode.Open, FileAccess.Read))
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                return sha256Hash.ComputeHash(stream);
-            }
+            using FileStream stream = new(System.Reflection.Assembly.GetExecutingAssembly().Location, FileMode.Open, FileAccess.Read);
+            using SHA256 sha256Hash = SHA256.Create();
+            return sha256Hash.ComputeHash(stream);
         }
 
-        public void AcknowledgeClientVersion(long clientID, int major, int minor, byte[] sha)
+        public static void AcknowledgeClientVersion(long clientID, int major, int minor, byte[] sha)
         {
             playersToVersions.Remove(clientID);
             playersToVersions.Add(clientID, Tuple.Create(major, minor, sha));
         }
 
-        private Tuple<int, int, byte[]> GetMyVersion()
+        private static Tuple<int, int, byte[]> GetMyVersion()
         {
             var v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             return Tuple.Create(v.Major, v.Minor, GetSHA());

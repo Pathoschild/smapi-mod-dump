@@ -10,7 +10,7 @@
 
 namespace WateringGrantsXP
 {
-    using Harmony;
+    using HarmonyLib;
     using StardewModdingAPI;
     using StardewValley;
     using StardewValley.TerrainFeatures;
@@ -37,12 +37,11 @@ namespace WateringGrantsXP
 
             Helper.Events.GameLoop.DayEnding += delegate { CheckForUnwateredCrops(); };
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             harmony.Patch(
                original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.performToolAction)),
-               prefix: new HarmonyMethod(typeof(WateringGrantsXP), nameof(WateringGrantsXP.GiveWateringExp))
-            );
+               prefix: new HarmonyMethod(typeof(WateringGrantsXP), nameof(WateringGrantsXP.GiveWateringExp)));
         }
 
         public void DebugLog(object o)
@@ -56,7 +55,7 @@ namespace WateringGrantsXP
             {
                 double chance = mod.config.WateringChanceToGetXP / 100.0;
 
-                if (t != null && t is WateringCan && __instance.state.Value == 0 && __instance.needsWatering() && !__instance.crop.dead)
+                if (t != null && t is WateringCan && __instance != null && __instance.state.Value == 0 && __instance.needsWatering() && __instance.crop != null && !__instance.crop.dead.Value)
                 {
                     if (Game1.random.NextDouble() < chance)
                     {
@@ -100,14 +99,14 @@ namespace WateringGrantsXP
                 {
                     if (terrainfeature.Value is HoeDirt dirt)
                     {
-                        if (dirt.crop == null || dirt.crop.dead || dirt.state == 1)
+                        if (dirt.crop == null || dirt.crop.dead.Value || dirt.state.Value == 1)
                         {
                             if (dirt.modData.ContainsKey(key))
                             {
                                 dirt.modData.Remove(key);
                             }
                         }
-                        else if (dirt.needsWatering() && !dirt.crop.dead && dirt.state != 1)
+                        else if (dirt.needsWatering() && !dirt.crop.dead.Value && dirt.state.Value != 1)
                         {
                             CheckForCropDeath(dirt);
                         }

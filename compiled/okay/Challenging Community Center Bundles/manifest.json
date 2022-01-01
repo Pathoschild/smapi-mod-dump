@@ -12,18 +12,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 {
-   "Name": "Challenging Community Center Bundles",
-   "Author": "alvadea & jaksha",
-   "Version": "2.2.1",
-   "Description": "Challenging Community Center Bundles - Main Files",
-   "UniqueID": "alja.CCCB",
-   "EntryDll": "ChallengingCommunityCenterBundles.dll",
-   "MinimumApiVersion": "3.8.0",
-   "UpdateKeys": ["Nexus:6361"],
-   "Dependencies": [
-		{
-            "UniqueID": "spacechase0.JsonAssets",
-            "IsRequired": false
-        },
-	]
+  "Name": "Challenging Community Center Bundles",
+  "Author": "alvadea & jaksha",
+  "Version": "2.3.0",
+  "Description": "Challenging Community Center Bundles - Main Files",
+  "UniqueID": "alja.CCCB",
+  "EntryDll": "ChallengingCommunityCenterBundles.dll",
+  "MinimumApiVersion": "3.8.0",
+  "UpdateKeys": [ "Nexus:6361" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false
+    }
+  ]
 }

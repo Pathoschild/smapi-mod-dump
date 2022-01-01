@@ -487,7 +487,14 @@ namespace StardustCore.UIUtilities
             Game1.spriteBatch.DrawString(Game1.dialogueFont, text1, new Vector2(dialogueX + x + Game1.tileSize, screenHeight - (5 + addedTileHeightForQuestions + 1) * Game1.tileSize + Game1.dialogueFont.MeasureString(text).Y + (Game1.tileSize * 3 / 2 + Game1.tileSize / 8) + dialogueY), Game1.textColor);
         }
 
-        public override void update(GameTime time) { }
+        public override void update(GameTime time) {
+
+            if (this.readyToClose())
+            {
+                this.exitMenu();
+            }
+
+        }
 
         /// <summary>
         /// Gets a relative position for teh component on the menu.
@@ -528,6 +535,7 @@ namespace StardustCore.UIUtilities
         {
             //Do extra stuff here.
             this.exitThisMenu(playSound);
+            Game1.exitActiveMenu();
         }
     }
 }

@@ -1,16 +1,15 @@
 ﻿{
   "Name": "[DW]SeasonalObelisk",
   "Author": "Sandman53",
-  "Version": "1.1",
+  "Version": "2.1",
   "Description": "Makes the Obelisk seasonal.",
   "UniqueID": "maxvollmer.deepwoodsmod.seasonalobelisk",
   "EntryDll": "SeasonalObelisk.dll",
-  "MinimumApiVersion": "3.2.1",
-  "UpdateKeys": [ "Nexus:5016" ],
+  "MinimumApiVersion": "3.13.0-beta.20210922",
   "Dependencies": [
     {
       "UniqueID": "maxvollmer.deepwoodsmod",
-      "MinimumVersion": "1.9.0-beta"
+      "MinimumVersion": "2.0.0-beta"
     }
   ]
 }

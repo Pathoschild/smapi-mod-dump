@@ -336,6 +336,7 @@ function SetCheats(bState) {
     document.getElementById("farmercheat").checked = bState;
     document.getElementById("showcrops").checked = bState;
     document.getElementById("towncheat").checked = bState;
+    document.getElementById("showtrain").checked = bState;
 }
 
 function ClearCache() {
@@ -413,10 +414,12 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
-function drag(ev) {
+var iDragCounter = 0;
+
+function drag(ev, el) {
     console.debug("Drag started");
-    ev.dataTransfer.setData("text", ev.target.parentNode.id + "^^^" + ev.target.id);
-    console.debug("Drag ID:" + ev.target.parentNode.id);
+    ev.dataTransfer.setData("text", el.id + "^^^" + ev.target.id);
+    console.debug("Drag ID:" + el.id);
 }
 
 function shippingbindrop(ev) {
@@ -441,21 +444,42 @@ function trashdrop(ev) {
     document.getElementById(data[0]).innerText = "Empty";
 }
 
-function drop(ev) {
+
+
+function dragenter(e, el) {
+    e.preventDefault();
+    el.classList.add('dragging');
+    //console.debug("Drag enter: parent div id='" + el.id + "', nodename='" + el.nodeName + "', e.nodeName='" + e.currentTarget.nodeName + "'");
+}
+
+function dragleave(e, el) {
+    e.preventDefault();
+    el.classList.remove('dragging');
+    //console.debug("Drag exit: parent div id='" + el.id + "', nodename='" + el.nodeName + "'");
+}
+
+function drop(ev, el) {
     ev.preventDefault();
 
     var data = ev.dataTransfer.getData("text").split("^^^");
     console.debug("Source ID:" + data[1]);
 
-    var sTargetId = ev.originalTarget.id;
+    //var sTargetId = ev.originalTarget.id;
+    var sTargetId = el.id;
     RunDebugCommand("moveitem " + data[0].replaceAll(" ", "+") + " " + sTargetId.replaceAll(" ", "+"), null, MoveComplete);
 
     var oMoveElment = document.getElementById(data[1]);
 
-    ev.target.innerText = "";
-    ev.target.appendChild(oMoveElment);
-    document.getElementById(data[0]).innerText = "Empty";
+    //ev.target.innerText = "";
+    //ev.target.appendChild(oMoveElment);
+    //ev.target.classList.remove('dragging');
+    console.debug("drop el id ='" + el.id + "', ev id='" + ev.id + "'");
 
+    el.innerText = "";
+    el.appendChild(oMoveElment);
+    el.classList.remove('dragging');
+
+    document.getElementById(data[0]).innerText = "Empty";
 }
 
 function MoveComplete() {
@@ -637,7 +661,7 @@ function UpdateRealTimeStats() {
                     document.getElementById('hud_season').innerHTML = data.Season;
                     document.getElementById('hud_daytext').innerHTML = data.DayDate;
                     document.getElementById('hud_tod').innerHTML = data.TOD;
-                    document.getElementById('hud_warn').innerHTML = data.Warning;
+                    document.getElementById('hud_warn').innerHTML = data.TtoT;
                     iRealTimeErrorCount = 0;
                 });
             } else {
@@ -659,6 +683,7 @@ function RealTimeError() {
     document.getElementById('hud_season').innerHTML = "????";
     document.getElementById('hud_daytext').innerHTML = "????";
     document.getElementById('hud_tod').innerHTML = "????";
+    document.getElementById('hud_warn').innerHTML = "";
 
 }
 

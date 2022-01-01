@@ -23,6 +23,7 @@ namespace AnimalsNeedWater
         List<string> GetBarnsWithWateredTrough();
 
         bool IsAnimalFull(FarmAnimal animal);
+        bool DoesAnimalHaveAccessToWater(FarmAnimal animal);
         List<long> GetFullAnimals();
     }
 
@@ -51,6 +52,13 @@ namespace AnimalsNeedWater
         public bool IsAnimalFull(FarmAnimal animal)
         {
             return ModData.FullAnimals.Contains(animal);
+        }
+        
+        public bool DoesAnimalHaveAccessToWater(FarmAnimal animal)
+        {
+            var houseTroughFull = ModData.CoopsWithWateredTrough.Contains(animal.home.nameOfIndoors.ToLower()) ||
+                                  ModData.BarnsWithWateredTrough.Contains(animal.home.nameOfIndoors.ToLower());
+            return houseTroughFull || ModData.FullAnimals.Contains(animal);
         }
 
         public List<long> GetFullAnimals()

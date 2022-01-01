@@ -19,7 +19,7 @@ namespace BattleRoyale
 {
     class BombRadiusChange : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(GameLocation), "explode");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "explode");
 
         public static bool Prefix(GameLocation __instance, Vector2 tileLocation, int radius, Farmer who)
         {
@@ -31,9 +31,9 @@ namespace BattleRoyale
 
             bool insideCircle = false;
             __instance.updateMap();
-            Vector2 currentTile = new Vector2(Math.Min(__instance.map.Layers[0].LayerWidth - 1, Math.Max(0f, tileLocation.X - (float)radius)), Math.Min(__instance.map.Layers[0].LayerHeight - 1, Math.Max(0f, tileLocation.Y - (float)radius)));
+            Vector2 currentTile = new(Math.Min(__instance.map.Layers[0].LayerWidth - 1, Math.Max(0f, tileLocation.X - (float)radius)), Math.Min(__instance.map.Layers[0].LayerHeight - 1, Math.Max(0f, tileLocation.Y - (float)radius)));
             bool[,] circleOutline = Game1.getCircleOutlineGrid(radius);
-            Rectangle areaOfEffect = new Rectangle((int)(tileLocation.X - (float)radius - 1f) * 64, (int)(tileLocation.Y - (float)radius - 1f) * 64, (radius * 2 + 1) * 64, (radius * 2 + 1) * 64);
+            Rectangle areaOfEffect = new((int)(tileLocation.X - (float)radius - 1f) * 64, (int)(tileLocation.Y - (float)radius - 1f) * 64, (radius * 2 + 1) * 64, (radius * 2 + 1) * 64);
             if (damage_amount > 0)
             {
                 __instance.damageMonster(areaOfEffect, damage_amount, damage_amount, isBomb: true, who);
@@ -42,7 +42,7 @@ namespace BattleRoyale
             {
                 __instance.damageMonster(areaOfEffect, radius * 6, radius * 8, isBomb: true, who);
             }
-            List<TemporaryAnimatedSprite> sprites = new List<TemporaryAnimatedSprite>
+            List<TemporaryAnimatedSprite> sprites = new()
             {
                 new TemporaryAnimatedSprite(23, 9999f, 6, 1, new Vector2(currentTile.X * 64f, currentTile.Y * 64f), flicker: false, Game1.random.NextDouble() < 0.5)
                 {

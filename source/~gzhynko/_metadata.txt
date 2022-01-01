@@ -13,9 +13,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit e58fffc85249a182b42142d798a442b46912f035
-   Author: Gleb Zhynko <gleb.zhinko@gmail.com>
-   Date:   Wed Aug 18 10:34:52 2021 -0400
+   commit a639c45941088f322007bd00f868099f2e642632
+   Author: gzhynko <gleb.zhinko@protonmail.com>
+   Date:   Thu Dec 30 18:31:04 2021 +0300
    
-       fix: prevent bars from moving out if they are not moved in
+       bump ANW version
    

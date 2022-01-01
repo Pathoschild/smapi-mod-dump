@@ -16,9 +16,9 @@ namespace BattleRoyale.Patches
 {
     class PostEatFoodDebuff1 : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "doneEating");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "doneEating");
 
-        internal static Dictionary<long, DateTime> timesSinceLastEat = new Dictionary<long, DateTime>();
+        internal static Dictionary<long, DateTime> timesSinceLastEat = new();
         internal static int debuffMilliseconds = 3500;
         internal static float speedMultiplier = 0.6f;
         private static readonly int minimumHealthBonusForDebuff = 50;
@@ -38,7 +38,7 @@ namespace BattleRoyale.Patches
 
     class PostEatFoodDebuff2 : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "getMovementSpeed");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "getMovementSpeed");
 
         public static void Postfix(Farmer __instance, ref float __result)
         {

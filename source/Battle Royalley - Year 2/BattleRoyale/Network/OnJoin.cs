@@ -25,7 +25,7 @@ namespace BattleRoyale.Network
         {
             for (int i = 0; i < Game1.player.items.Count; i++)
             {
-                if (!(Game1.player.items[i] is StardewValley.Objects.Hat))
+                if (Game1.player.items[i] is not StardewValley.Objects.Hat)
                     Game1.player.items[i] = null;
             }
 

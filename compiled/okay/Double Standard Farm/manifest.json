@@ -1,10 +1,10 @@
-{
-  "Name": "DoubleStandardFarm",
-  "Author": "Leaf",
-  "Version": "1.0.0",
-  "Description": "Double the standard farm",
-  "UniqueID": "Leaf.DoubleStandardFarm",
-  "EntryDll": "DoubleStandardFarm.dll",
-  "MinimumApiVersion": "2.10.0",
-  "UpdateKeys": [ "Nexus:3928" ]
+﻿{
+    "Name": "DoubleStandardFarm",
+    "Author": "Leaf",
+    "Version": "2.0.2",
+    "Description": "Double the standard farm",
+    "UniqueID": "Leaf.DoubleStandardFarm",
+    "EntryDll": "DoubleStandardFarm.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:3928" ]
 }

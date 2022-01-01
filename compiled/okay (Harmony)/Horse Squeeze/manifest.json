@@ -1,0 +1,9 @@
+{
+  "Name": "Horse Squeeze",
+  "Author": "jorgamun",
+  "Version": "1.0.0",
+  "Description": "A small mod that helps the horse squeeze through tight spaces.",
+  "UniqueID": "jorgamun.HorseSqueeze",
+  "EntryDll": "HorseSqueeze.dll",
+  "UpdateKeys": [ "Nexus:10446"]
+}

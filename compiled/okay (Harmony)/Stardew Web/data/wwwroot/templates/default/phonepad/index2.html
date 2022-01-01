@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Stardew Valley on the Web</title>
+    <link rel="shortcut icon" href="/images/favicon.png" />
+    <!--
+    theme style sheets and scripts
+    -->
+    <link href='/css/default/bootstrap.min.css' rel='stylesheet'>
+    <!--
+    <link href='/css/default/custom.css' rel='stylesheet'>
+        -->
+    <script src="/scripts/default/jquery-3.6.0.min.js"></script>
+    <script src="/scripts/default/bootstrap.bundle.min.js"></script>
+    <script src="/scripts/phonepad.js"></script>
+    <!--
+    base style sheets and scripts
+    -->
+    <link href='/css/stardew.css' rel='stylesheet'>
+    <link href='/css/phonepad.css' rel='stylesheet'>
+    <script src="/scripts/popper.min.js"></script>
+    <script src='/scripts/stardewweb.js'></script>
+    <script src="/scripts/joy.js"></script>
+    <title>Stardew Valley Phonepad</title>
+    <style>
+        .notcp {
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="notcp" style="background:none; overflow:hidden;" onload="JoyStickLoaded()">
+    <div class="container vh-100 boxme" style="padding-top:20px;">
+        <div class="container" style="padding-bottom:10px;">
+            <!-- header row -->
+            <div class="row">
+                <div class="col-2"><button ontouchstart="SendToken('tbutton/lsb/d');" ontouchend="SendToken('tbutton/lsb/u');">LSB</button></div>
+                <div class="col-2"><button onmousedown="SendToken('lt/d');" onmouseup="SendToken('lt/u');">LT</button></div>
+                <div class="col-4"></div>
+
+                <div class="col-2"><button onmousedown="SendToken('tbutton/rsb/d');" onmouseup="SendToken('tbutton/rsb/u');">RSB</button></div>
+                <div class="col-2"><button onmousedown="SendToken('rt/d');" onmouseup="SendToken('rt/u');">RT</button></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row row-cols-4 row-cols-sm-4 row-cols-md-4 boxme">
+                <div class="col">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <table>
+                                    <tr><td></td><td><div class="dpadbutton" ontouchstart="SendToken('dpad/u/d');" ontouchend="SendToken('dpad/u/u');">B</div></td><td></td></tr>
+                                    <tr><td><div class="dpadbutton" ontouchstart="SendToken('dpad/l/d');" ontouchend="SendToken('dpad/l/u');">B</div></td><td></td><td><div class="dpadbutton" ontouchstart="SendToken('dpad/r/d');" ontouchend="SendToken('dpad/r/u');">B</div></td></tr>
+                                    <tr><td></td><td><div class="dpadbutton" ontouchstart="SendToken('dpad/d/d');" ontouchend="SendToken('dpad/d/u');">B</div></td><td></td></tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
+                                <div id="joy1Div" style="width:80px;height:80px;margin:30px"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="col-6 col-md-6 col-sm-6 p-0">
+                    <div class="container p-0 boxme">
+                        <div class="row row-cols-12 row-cols-sm-8 row-cols-md-12">
+                            <div class="col-4 col-sm-4 col-md-6 p-2"><button class="actionbutton" style="background-color:orange;" ontouchstart="SendToken('tbutton/y/d');" ontouchend="SendToken('tbutton/y/u');">Journal</button></div>
+                            <div class="col-4 col-sm-4 col-md-6 p-2"><button class="actionbutton" style="background-color: mediumvioletred;" ontouchstart="SendToken('tbutton/b/d');" ontouchend="SendToken('tbutton/b/u');">Menu</button></div>
+                        </div>
+                        <div class="row row-cols-12 row-cols-sm-8 row-cols-md-12">
+                            <div class="col-4 col-sm-4 col-md-6 p-2"><button class="actionbutton" style="background-color: darkblue;" ontouchstart="SendToken('tbutton/x/d');" ontouchend="SendToken('tbutton/x/u');">Tool</button></div>
+                            <div class="col-4 col-sm-4 col-md-6 p-2"><button class="actionbutton" style="background-color: forestgreen;" ontouchstart="SendToken('tbutton/a/d');" ontouchend="SendToken('tbutton/a/u');">Action</button></div>
+                        </div>
+                        <div class="row row-cols-12 row-cols-sm-8 row-cols-md-12">
+                            <div class="col-4 col-sm-4 col-md-6 p-2"><button class="actionbutton" style="background-color: forestgreen;" ontouchstart="SendToken('tbutton/start/d');" ontouchend="SendToken('tbutton/start/u');">Start</button></div>
+                            <div class="col-4 col-sm-4 col-md-6 p-2"><button class="actionbutton" style="background-color: forestgreen;" ontouchstart="SendToken('tbutton/back/d');" ontouchend="SendToken('tbutton/back/u');">Back</button></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="row-cols-md-5 offset-md-7">
+                                <div id="joy2Div" style="width:80px;height:80px;margin:30px"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <!-- Center content -->
+            <div class="row">
+
+                <div class="col-4">
+                </div>
+            </div>
+        </div>
+        <!-- Footer content -->
+        <div class="row">
+
+
+
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+    </script>
+</body>
+</html>

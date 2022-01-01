@@ -30,6 +30,7 @@ namespace MailFrameworkMod.ContentPack
         public List<int> Days;
         public List<string> Seasons;
         public string Weather;
+        public int? HouseUpgradeLevel;
         public List<FriendshipCondition> FriendshipConditions;
         public List<SkillCondition> SkillConditions;
         public List<StatsCondition> StatsConditions;

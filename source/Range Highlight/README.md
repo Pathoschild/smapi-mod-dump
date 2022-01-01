@@ -42,8 +42,9 @@ three different ranges.
   * The "normal" range is the area where rocks and many items are
     destroyed.  This is was the only range shown version 1.1.
   * The outermost area is where crops are destroyed, flooring is
-    disrupted, and the player takes damage.  (Note that this area
-    is not centered on the bomb.)  The default configuration does
+    disrupted, and the player takes damage.  (Note that prior to
+    SDV 1.5.5 this area
+    was not centered on the bomb.)  The default configuration does
     show this range, but it can be disabled.
 
 Version 1.1 shows only the "normal" range, and only around the cursor

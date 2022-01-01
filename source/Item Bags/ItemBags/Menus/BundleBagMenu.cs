@@ -125,7 +125,7 @@ namespace ItemBags.Menus
             foreach (Object BagItem in Bag.Contents)
             {
                 //  Find all placeholders requiring this item Id/Quality
-                List<KeyValuePair<BundleItem, Object>> Placeholders = ItemPlaceholders.Where(x => ItemBag.AreItemsEquivalent(x.Value, BagItem, false))
+                List<KeyValuePair<BundleItem, Object>> Placeholders = ItemPlaceholders.Where(x => ItemBag.AreItemsEquivalent(x.Value, BagItem, false, false))
                     .OrderByDescending(x => x.Key.IsRequired).ToList();
 
                 //  Distribute the Stack of this item to the placeholders, up to each placeholder's required quantity.
@@ -143,7 +143,11 @@ namespace ItemBags.Menus
                     RemainingQuantity -= Quantity;
 
                     if (Quantity > 0 && BagItem.Category == Object.artisanGoodsCategory)
+                    {
                         Placeholder.Price = BagItem.Price;
+                        Placeholder.Name = BagItem.Name;
+                        Placeholder.DisplayName = BagItem.DisplayName;
+                    }
 
                     CurrentIndex++;
                 }
@@ -435,7 +439,7 @@ namespace ItemBags.Menus
             if (TargetItem is Object TargetObject)
             {
                 int Qty = ItemBag.GetQuantityToTransfer(ItemBag.InputTransferAction.PrimaryActionButtonPressed, TargetObject, IBM.IsTransferMultipleModifierHeld, IBM.IsTransferHalfModifierHeld);
-                Bag.MoveFromBag(TargetObject, Qty, out int MovedQty, true, IBM.InventorySource, IBM.ActualInventoryCapacity);
+                Bag.MoveFromBag(TargetObject, Qty, out _, true, IBM.InventorySource, IBM.ActualInventoryCapacity);
             }
         }
 

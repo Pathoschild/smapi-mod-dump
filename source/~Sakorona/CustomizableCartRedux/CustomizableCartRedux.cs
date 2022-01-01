@@ -28,7 +28,7 @@ namespace CustomizableTravelingCart
         public static Mod instance;
         public static IMonitor Logger;
         public static CartConfig OurConfig;
-        public MersenneTwister Dice;
+        public Random Dice;
         internal static Dictionary<StardewValley.Object, int[]> APIItemsToBeAdded;
         private ICustomizableCart API;
 
@@ -37,7 +37,7 @@ namespace CustomizableTravelingCart
         public override void Entry(IModHelper helper)
         {
             instance = this;
-            Dice = new MersenneTwister();
+            Dice = new Xoshiro.PRNG64.XoShiRo256starstar();
             OurConfig = helper.ReadConfig<CartConfig>();
             Logger = Monitor;
             APIItemsToBeAdded = new Dictionary<StardewValley.Object, int[]>();

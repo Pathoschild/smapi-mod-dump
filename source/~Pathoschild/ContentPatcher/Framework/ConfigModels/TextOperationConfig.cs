@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -53,7 +54,7 @@ namespace ContentPatcher.Framework.ConfigModels
         [OnDeserialized]
         public void OnDeserialized(StreamingContext context)
         {
-            this.Target ??= new string[0];
+            this.Target ??= Array.Empty<string>();
         }
     }
 }

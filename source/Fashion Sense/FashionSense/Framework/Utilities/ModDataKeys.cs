@@ -26,6 +26,7 @@ namespace FashionSense.Framework.Utilities
         internal const string CUSTOM_HAT_ID = "FashionSense.CustomHat.Id";
         internal const string CUSTOM_SHIRT_ID = "FashionSense.CustomShirt.Id";
         internal const string CUSTOM_PANTS_ID = "FashionSense.CustomPants.Id";
+        internal const string CUSTOM_SLEEVES_ID = "FashionSense.CustomSleeves.Id";
 
         // UI related keys
         internal const string UI_HAND_MIRROR_FILTER_BUTTON = "FashionSense.UI.HandMirror.SelectedFilterButton";
@@ -35,13 +36,17 @@ namespace FashionSense.Framework.Utilities
         internal const string UI_HAND_MIRROR_HAT_COLOR = "FashionSense.UI.HandMirror.Color.Hat";
         internal const string UI_HAND_MIRROR_SHIRT_COLOR = "FashionSense.UI.HandMirror.Color.Shirt";
         internal const string UI_HAND_MIRROR_PANTS_COLOR = "FashionSense.UI.HandMirror.Color.Pants";
+        internal const string UI_HAND_MIRROR_SLEEVES_COLOR = "FashionSense.UI.HandMirror.Color.Sleeves";
 
         // Tool related keys
         internal const string HAND_MIRROR_FLAG = "FashionSense.Tools.HandMirror";
 
+        // Outfit related keys
+        internal const string OUTFITS = "FashionSense.Outfit.Collection";
+        internal const string CURRENT_OUTFIT_ID = "FashionSense.Outfit.CurrentId";
+
         // General animation related keys
         internal const string ANIMATION_FACING_DIRECTION = "FashionSense.Animation.FacingDirection";
-        internal const string ANIMATION_FARMER_FRAME = "FashionSense.Animation.FarmerFrame";
 
         // Hair animation related keys
         internal const string ANIMATION_HAIR_TYPE = "FashionSense.Animation.Hair.Type";
@@ -50,6 +55,7 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_HAIR_FRAME_DURATION = "FashionSense.Animation.Hair.FrameDuration";
         internal const string ANIMATION_HAIR_ELAPSED_DURATION = "FashionSense.Animation.Hair.ElapsedDuration";
         internal const string ANIMATION_HAIR_LIGHT_ID = "FashionSense.Animation.Hair.Light.Id";
+        internal const string ANIMATION_HAIR_FARMER_FRAME = "FashionSense.Animation.Hair.FarmerFrame";
 
         // Accessory animation related keys
         internal const string ANIMATION_ACCESSORY_TYPE = "FashionSense.Animation.Accessory.Type";
@@ -58,6 +64,7 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_ACCESSORY_FRAME_DURATION = "FashionSense.Animation.Accessory.FrameDuration";
         internal const string ANIMATION_ACCESSORY_ELAPSED_DURATION = "FashionSense.Animation.Accessory.ElapsedDuration";
         internal const string ANIMATION_ACCESSORY_LIGHT_ID = "FashionSense.Animation.Accessory.Light.Id";
+        internal const string ANIMATION_ACCESSORY_FARMER_FRAME = "FashionSense.Animation.Accessory.FarmerFrame";
 
         // Accessory animation related keys
         internal const string ANIMATION_ACCESSORY_SECONDARY_TYPE = "FashionSense.Animation.Accessory.Secondary.Type";
@@ -66,6 +73,7 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_ACCESSORY_SECONDARY_FRAME_DURATION = "FashionSense.Animation.Accessory.Secondary.FrameDuration";
         internal const string ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION = "FashionSense.Animation.Accessory.Secondary.ElapsedDuration";
         internal const string ANIMATION_ACCESSORY_SECONDARY_LIGHT_ID = "FashionSense.Animation.Accessory.Secondary.Light.Id";
+        internal const string ANIMATION_ACCESSORY_SECONDARY_FARMER_FRAME = "FashionSense.Animation.Accessory.Secondary.FarmerFrame";
 
         // Accessory animation related keys
         internal const string ANIMATION_ACCESSORY_TERTIARY_TYPE = "FashionSense.Animation.Accessory.Tertiary.Type";
@@ -74,6 +82,7 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_ACCESSORY_TERTIARY_FRAME_DURATION = "FashionSense.Animation.Accessory.Tertiary.FrameDuration";
         internal const string ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION = "FashionSense.Animation.Accessory.Tertiary.ElapsedDuration";
         internal const string ANIMATION_ACCESSORY_TERTIARY_LIGHT_ID = "FashionSense.Animation.Accessory.Tertiary.Light.Id";
+        internal const string ANIMATION_ACCESSORY_TERTIARY_FARMER_FRAME = "FashionSense.Animation.Accessory.Tertiary.FarmerFrame";
 
         // Hat animation related keys
         internal const string ANIMATION_HAT_TYPE = "FashionSense.Animation.Hat.Type";
@@ -82,6 +91,7 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_HAT_FRAME_DURATION = "FashionSense.Animation.Hat.FrameDuration";
         internal const string ANIMATION_HAT_ELAPSED_DURATION = "FashionSense.Animation.Hat.ElapsedDuration";
         internal const string ANIMATION_HAT_LIGHT_ID = "FashionSense.Animation.Hat.Light.Id";
+        internal const string ANIMATION_HAT_FARMER_FRAME = "FashionSense.Animation.Hat.FarmerFrame";
 
         // Shirt animation related keys
         internal const string ANIMATION_SHIRT_TYPE = "FashionSense.Animation.Shirt.Type";
@@ -90,6 +100,7 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_SHIRT_FRAME_DURATION = "FashionSense.Animation.Shirt.FrameDuration";
         internal const string ANIMATION_SHIRT_ELAPSED_DURATION = "FashionSense.Animation.Shirt.ElapsedDuration";
         internal const string ANIMATION_SHIRT_LIGHT_ID = "FashionSense.Animation.Shirt.Light.Id";
+        internal const string ANIMATION_SHIRT_FARMER_FRAME = "FashionSense.Animation.Shirt.FarmerFrame";
 
         // Pants animation related keys
         internal const string ANIMATION_PANTS_TYPE = "FashionSense.Animation.Pants.Type";
@@ -98,5 +109,15 @@ namespace FashionSense.Framework.Utilities
         internal const string ANIMATION_PANTS_FRAME_DURATION = "FashionSense.Animation.Pants.FrameDuration";
         internal const string ANIMATION_PANTS_ELAPSED_DURATION = "FashionSense.Animation.Pants.ElapsedDuration";
         internal const string ANIMATION_PANTS_LIGHT_ID = "FashionSense.Animation.Pants.Light.Id";
+        internal const string ANIMATION_PANTS_FARMER_FRAME = "FashionSense.Animation.Pants.FarmerFrame";
+
+        // Sleeves animation related keys
+        internal const string ANIMATION_SLEEVES_TYPE = "FashionSense.Animation.Sleeves.Type";
+        internal const string ANIMATION_SLEEVES_ITERATOR = "FashionSense.Animation.Sleeves.Iterator";
+        internal const string ANIMATION_SLEEVES_STARTING_INDEX = "FashionSense.Animation.Sleeves.StartingIndex";
+        internal const string ANIMATION_SLEEVES_FRAME_DURATION = "FashionSense.Animation.Sleeves.FrameDuration";
+        internal const string ANIMATION_SLEEVES_ELAPSED_DURATION = "FashionSense.Animation.Sleeves.ElapsedDuration";
+        internal const string ANIMATION_SLEEVES_LIGHT_ID = "FashionSense.Animation.Sleeves.Light.Id";
+        internal const string ANIMATION_SLEEVES_FARMER_FRAME = "FashionSense.Animation.Sleeves.FarmerFrame";
     }
 }

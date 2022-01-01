@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "menu.title": "ความสัมพันธ์ที่มีอยู่ก่อน",
+    "menu.text": "คุณคุยกับใครมาสักพักแล้ว \nและสุดท้ายก็ย้ายมาอยู่ที่หุบเขา เพื่ออยู่ด้วยกัน... \nเขาคือใคร?",
+    "menu.button.accept": "ยอมรับ",
+    "menu.button.cancel": "ยกเลิก",
+    "married": "คู่สมรสของคุณ ได้ย้ายเข้ามาแล้ว!",
+    "spouse-taken": "NPC นี้แต่งงานแล้ว"
+}

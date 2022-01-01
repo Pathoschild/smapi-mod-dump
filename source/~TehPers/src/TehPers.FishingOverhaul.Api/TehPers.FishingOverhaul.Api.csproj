@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <EnableModDeploy>False</EnableModDeploy>
+        <EnableModZip>False</EnableModZip>
+        <Nullable>Enable</Nullable>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\TehPers.FishingOverhaul.Api.xml</DocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="$(GameModsPath)/TehPers.Core/TehPers.Core.Api.dll" />
+    </ItemGroup>
+
+</Project>

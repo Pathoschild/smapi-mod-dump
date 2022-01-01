@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/elizabethcd/PreventFurniturePickup
+   Git: https://github.com/elizabethcd/PreventFurniturePickup.git
+
+mods:
+   Glue Your Furniture Down
+
+latest commit:
+   commit c2fbf283d4c51d937c0e6954a5fd592921126671
+   Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
+   Date:   Sat Dec 18 23:29:24 2021 -0800
+   
+       Update README.md
+   

@@ -15,6 +15,6 @@
     "Description": "Lets you walk over stairs in the mines and Skull Cavern.",
     "UniqueID": "RopeBridge",
     "EntryDll": "RopeBridge.dll",
-    "MinimumApiVersion": "3.12.0",
+    "MinimumApiVersion": "3.13.0",
     "UpdateKeys": [ "Nexus:824" ]
 }

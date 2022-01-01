@@ -1,0 +1,7 @@
+﻿{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.skill-level": "{{skillName}} level {{level}}",
+    "config.toggle-skill.desc": "Whether to add {{professionName}} when you reach {{skillName}} level {{level}}."
+}

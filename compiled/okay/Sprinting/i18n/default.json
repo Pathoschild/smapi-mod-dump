@@ -1,0 +1,21 @@
+﻿{
+  "config.sprintingkey.name": "Sprinting key",
+  "config.speedbonus.name": "Speed bonus",
+  "config.energydrainpersecond.name": "Energy consumed per second",
+  "config.skillbased.name": "Skill level based consumption",
+  "config.skillbased.tooltip": "The higher your levels sum, the less energy you consume, capping at the consumption per second",
+  "config.allowhorsesprinting.name": "Allow sprinting when riding horses",
+  "config.minimumenergytosprint.name": "Minimum energy to sprint",
+  "config.minimumenergytosprint.tooltip": "The minimum energy you must have to allow sprinting",
+  "config.lowenergywarning.name": "Warn when sprinting with low energy",
+  "config.energytowarn.name": "Low energy warning threshold",
+  "config.energyregenrate.name": "Energy regeneration rate",
+  "config.energyregenrate.tooltip": "Percentage of your max energy recovered per second",
+  "config.energyregencooldown.name": "Energy regen cooldown",
+  "config.energyregencooldown.tooltip": "Seconds until recovery starts after spending energy",
+  "config.healthregenrate.name": "Health regeneration rate",
+  "config.healthregenrate.tooltip": "Percentage of your max health recovered per second",
+  "config.healthregencooldown.name": "Health regen cooldown",
+  "config.healthregencooldown.tooltip": "Seconds until recovery starts after losing health",
+  "message.lowenergy": "You are feeling tired. You should rest for a bit."
+}

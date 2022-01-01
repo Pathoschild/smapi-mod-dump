@@ -6,9 +6,9 @@ mods:
    ImagEd
 
 latest commit:
-   commit 8bed1dde0573ce56573b873694771559ae598fd3
+   commit cad31685b6eb0d7efe431d71d69507113c694a40
    Author: Candidus <candidus@xmail.net>
-   Date:   Wed Dec 30 22:02:30 2020 +0100
+   Date:   Mon Dec 6 17:45:38 2021 +0100
    
-       Add alpha value support.
+       Recolor didn't work anymore (wrong variable used), fixed
    

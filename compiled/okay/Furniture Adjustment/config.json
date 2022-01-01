@@ -1,5 +1,6 @@
 {
   "EnableMod": true,
+  "MoveCursor": true,
   "RaiseButton": "NumPad8",
   "LowerButton": "NumPad2",
   "LeftButton": "NumPad4",

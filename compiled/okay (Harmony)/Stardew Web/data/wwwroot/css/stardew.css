@@ -887,7 +887,12 @@ a.navbar_link {
     display: inline-block;
     width:100%;
 }
-
+.message_paper_board_flex_nm {
+    background-image: url('/images/message_board_paper.png');
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 100%;
+}
 .message_board_full {
     background-image: url('/images/message_board.png');
     margin: 5px;
@@ -1298,4 +1303,9 @@ a.quest_link {
 .about_container {
     border: groove 2px black;
     background-color: burlywood;
+}
+
+.dragging {
+    border: 4px dashed black;
+    background-color:white;
 }

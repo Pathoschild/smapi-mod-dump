@@ -9,6 +9,8 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace HealthBars.Framework
 {
@@ -50,5 +52,8 @@ namespace HealthBars.Framework
 
         /// <summary>The health bar's horizontal border width in pixels.</summary>
         public int BarBorderHeight { get; set; } = 2;
+
+        /// <summary>The keys which reload the mod config.</summary>
+        public KeybindList ReloadKey { get; set; } = new(SButton.F5);
     }
 }

@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "oneOf": [
+    {
+      "$ref": "#/definitions/TehPers.FishingOverhaul.Config.ContentPacks.FishTraitsPack"
+    }
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "FishTraitsPack",
+  "definitions": {
+    "TehPers.FishingOverhaul.Config.ContentPacks.FishTraitsPack": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Content which modifies the behavior of fish.",
+      "properties": {
+        "Add": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.FishTraits"
+              }
+            ]
+          },
+          "description": "The fish traits to add."
+        },
+        "$schema": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Optional '$schema' URL. This is ignored and exists entirely for convenience."
+        }
+      }
+    },
+    "TehPers.FishingOverhaul.Api.Content.FishTraits": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Definition for a fish's traits.",
+      "required": [
+        "DartFrequency",
+        "DartBehavior",
+        "MinSize",
+        "MaxSize"
+      ],
+      "properties": {
+        "DartFrequency": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "How often the fish darts in the fishing minigame."
+        },
+        "DartBehavior": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.DartBehavior"
+            }
+          ],
+          "description": "How the fish moves during the fishing minigame."
+        },
+        "MinSize": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "The minimum size the fish can be."
+        },
+        "MaxSize": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "The maximum size the fish can be."
+        },
+        "IsLegendary": {
+          "type": "boolean",
+          "description": "Whether the fish is legendary.",
+          "default": false
+        }
+      }
+    },
+    "TehPers.FishingOverhaul.Api.DartBehavior": {
+      "type": "string",
+      "description": "The movement behavior of the fish in the minigame.",
+      "enum": [
+        "Mixed",
+        "Dart",
+        "Smooth",
+        "Sink",
+        "Floater"
+      ]
+    }
+  }
+}

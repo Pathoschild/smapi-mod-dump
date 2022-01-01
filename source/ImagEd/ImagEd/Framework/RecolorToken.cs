@@ -88,7 +88,7 @@ namespace ImagEd.Framework {
 
             IContentPack contentPack = Utility.GetContentPackFromModInfo(helper_.ModRegistry.Get(inputData.ContentPackName));
             monitor_.Log($"Content pack {contentPack.Manifest.UniqueID} requests recoloring of {inputData.AssetName}.");
-            monitor_.Log($"Recolor with {inputData.MaskPath} and {Utility.ColorToHtml(inputData.BlendColor)}");
+            monitor_.Log($"Recolor with {inputData.MaskPath} and {Utility.ColorToHtml(inputData.BlendColor)}, flip mode {inputData.FlipMode}");
 
             // "gamecontent" means loading from game folder.
             Texture2D source = inputData.SourcePath.ToLowerInvariant() == "gamecontent"
@@ -101,7 +101,21 @@ namespace ImagEd.Framework {
                                                   inputData.DesaturationMode)
                                 : source;
 
-            Texture2D target = ColorBlend(extracted, inputData.BlendColor);
+            Texture2D blended = ColorBlend(extracted, inputData.BlendColor);
+
+            Texture2D target;
+            if (inputData.FlipMode == Flip.Mode.FlipHorizontally) {
+                target = Flip.FlipHorizontally(blended);
+            }
+            else if (inputData.FlipMode == Flip.Mode.FlipVertically) {
+                target = Flip.FlipVertically(blended);
+            }
+            else if (inputData.FlipMode == Flip.Mode.FlipBoth) {
+                target = Flip.FlipVertically(Flip.FlipHorizontally(blended));
+            }
+            else {
+                target = blended;
+            }
 
             // ATTENTION: In order to load files we just generated we need at least ContentPatcher 1.18.3 .
             string generatedFilePath = GenerateFilePath(inputData);
@@ -121,8 +135,7 @@ namespace ImagEd.Framework {
 
         /// <summary>Color blending (multiplication).</summary>
         private Texture2D ColorBlend(Texture2D source, Color blendColor) {
-            Color[] sourcePixels = new Color[source.Width * source.Height];
-            source.GetData(sourcePixels);
+            Color[] sourcePixels = Utility.TextureToArray(source);
             // Renderer expects premultiplied alpha.
             for (int i = 0; i < sourcePixels.Length; i++) {
                 sourcePixels[i]

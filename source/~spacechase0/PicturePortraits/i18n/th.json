@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    "camera.name": "กล้อง",
+    "camera.description": "ถ่ายรูป NPC! ซื้อฟิล์มได้ที่ร้านปิแอร์ ในวันพฤหัสบดี",
+    "error.no-matching-portrait": "คุณลืมถอดฝาปิดเลนส์\n(ไม่พบภาพบุคคล)"
+}

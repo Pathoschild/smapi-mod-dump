@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableModDeploy>False</EnableModDeploy>
+    <EnableModZip>False</EnableModZip>
+    <EnableGameDebugging>false</EnableGameDebugging>
+    <Nullable>Enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Namotion.Reflection" Version="2.0.9" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TehPers.Core\TehPers.Core.csproj" />
+    <ProjectReference Include="..\TehPers.FishingOverhaul\TehPers.FishingOverhaul.csproj" />
+  </ItemGroup>
+
+</Project>

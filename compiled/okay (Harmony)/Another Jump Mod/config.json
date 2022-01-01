@@ -6,5 +6,6 @@
   "PlayJumpSound": true,
   "CustomHorseTexture": false,
   "OrdinaryJumpHeight": 8.0,
+  "JumpSound": "dwop",
   "HorseShadowOffset": "0, 0"
 }

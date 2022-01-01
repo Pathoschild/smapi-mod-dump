@@ -19,8 +19,7 @@
   "AppList": [
     "aedenthorn.MobilePhone",
     "aedenthorn.MobilePhone_themes",
-    "aedenthorn.MobilePhone_Rotate",
-    "PeacefulEnd.JojaOnline"
+    "aedenthorn.MobilePhone_Rotate"
   ],
   "PhoneWidth": 286,
   "PhoneHeight": 503,
@@ -52,9 +51,24 @@
   "ShowNamesInPhoneBook": true,
   "UseRealNamesInPhoneBook": true,
   "UncallableNPCAlpha": 255,
-  "PhoneBookBackgroundColor": "255, 255, 255, 255",
-  "PhoneBookHeaderColor": "0, 191, 255, 255",
-  "PhoneBookHeaderTextColor": "255, 255, 255, 255",
+  "PhoneBookBackgroundColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "PhoneBookHeaderColor": {
+    "B": 255,
+    "G": 191,
+    "R": 0,
+    "A": 255
+  },
+  "PhoneBookHeaderTextColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
   "ContactWidth": 64,
   "ContactHeight": 64,
   "ContactMarginX": 16,
@@ -72,18 +86,68 @@
   "RingListItemHeight": 32,
   "RingListItemScale": 0.5,
   "TabTextScale": 0.5,
-  "RingListItemColor": "0, 0, 0, 255",
-  "RingListBackgroundColor": "255, 255, 255, 255",
-  "RingListHighlightColor": "200, 200, 200, 255",
-  "ThemesHeaderColor": "0, 191, 255, 255",
-  "ThemesFooterHighlightColor": "240, 248, 255, 255",
-  "ThemesHeaderTextColor": "255, 255, 255, 255",
-  "ThemesHeaderHighlightedTextColor": "72, 61, 139, 255",
+  "RingListItemColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  },
+  "RingListBackgroundColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "RingListHighlightColor": {
+    "B": 200,
+    "G": 200,
+    "R": 200,
+    "A": 255
+  },
+  "ThemesHeaderColor": {
+    "B": 255,
+    "G": 191,
+    "R": 0,
+    "A": 255
+  },
+  "ThemesFooterHighlightColor": {
+    "B": 255,
+    "G": 248,
+    "R": 240,
+    "A": 255
+  },
+  "ThemesHeaderTextColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "ThemesHeaderHighlightedTextColor": {
+    "B": 139,
+    "G": 61,
+    "R": 72,
+    "A": 255
+  },
   "EnableIncomingCalls": true,
   "FriendCallChance": 0.01,
-  "CallTextColor": "255, 255, 255, 255",
-  "AnswerColor": "34, 139, 34, 255",
-  "DeclineColor": "139, 0, 0, 255",
+  "CallTextColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "AnswerColor": {
+    "B": 34,
+    "G": 139,
+    "R": 34,
+    "A": 255
+  },
+  "DeclineColor": {
+    "B": 0,
+    "G": 0,
+    "R": 139,
+    "A": 255
+  },
   "IncomingCallMinRings": 3,
   "IncomingCallMaxRings": 5,
   "NotifyOnRing": false,

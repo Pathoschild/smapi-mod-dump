@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class ParryInvincibilityPatch : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Monster), "handleParried");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Monster), "handleParried");
 
         public static bool Prefix()
         {

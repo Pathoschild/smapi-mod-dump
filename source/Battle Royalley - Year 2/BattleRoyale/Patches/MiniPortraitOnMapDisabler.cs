@@ -18,11 +18,11 @@ namespace BattleRoyale.Patches
 {
     class MiniPortraitOnMapDisabler : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(MapPage), "drawMiniPortraits");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MapPage), "drawMiniPortraits");
 
         public static bool Prefix(MapPage __instance, SpriteBatch b)
         {
-            List<Farmer> playersToShow = new List<Farmer>();
+            List<Farmer> playersToShow = new();
             Round round = ModEntry.BRGame.GetActiveRound();
             if (ModEntry.BRGame.InProgress && round?.AlivePlayers != null && Game1.player != null && (bool)round?.AlivePlayers.Contains(Game1.player))
             {
@@ -37,12 +37,11 @@ namespace BattleRoyale.Patches
                     playersToShow.Add(farmer);
             }
 
-            Dictionary<Vector2, int> usedPositions = new Dictionary<Vector2, int>();
+            Dictionary<Vector2, int> usedPositions = new();
             foreach (Farmer onlineFarmer in playersToShow)
             {
                 Vector2 pos2 = __instance.getPlayerMapPosition(onlineFarmer) - new Vector2(32f, 32f);
-                int count = 0;
-                usedPositions.TryGetValue(pos2, out count);
+                usedPositions.TryGetValue(pos2, out int count);
                 usedPositions[pos2] = count + 1;
                 pos2 += new Vector2((48 * (count % 2)), (48 * (count / 2)));
                 onlineFarmer.FarmerRenderer.drawMiniPortrat(b, pos2, 0.00011f, 4f, 2, onlineFarmer);

@@ -15,9 +15,9 @@ mods:
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit 418678e4e0003430a6eb9323c66baf56ab7213ec
+   commit bf5d679fe718403cb35f8441765e0c552a520425
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Sat Jul 24 13:21:43 2021 +0200
+   Date:   Tue Dec 28 00:57:05 2021 +0100
    
-       Small fixes for Permanent Cookout Kit and Forage Fantasy
+       Upgraded all projects to the new versions of smapi, SV, harmony, .net etc. Fixed null reference and keybinding conflict errors in horse overhaul. Added ingame keybind config to horse overhaul and drop it. Added owner fallback in crap pot quality
    

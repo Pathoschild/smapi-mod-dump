@@ -23,10 +23,9 @@ using TwilightShards.Stardew.Common;
 using TwilightShards.Common;
 using Microsoft.Xna.Framework.Graphics;
 using EnumsNET;
-using PyTK.CustomTV;
 using HarmonyLib;
 using System.Reflection;
-using ClimatesOfFerngillRebuild.Patches; 
+using ClimatesOfFerngillRebuild.Patches;
 
 namespace ClimatesOfFerngillRebuild
 {
@@ -36,7 +35,7 @@ namespace ClimatesOfFerngillRebuild
         internal static WeatherConfig WeatherOpt { get; set; }
 
         /// <summary> The pRNG object </summary>
-        internal static MersenneTwister Dice;
+        internal static Random Dice;
 
         /// <summary> The current weather conditions </summary>
         internal static WeatherConditions Conditions;
@@ -101,7 +100,7 @@ namespace ClimatesOfFerngillRebuild
             Translator = Helper.Translation;
             Reflection = Helper.Reflection;
             MPHandler = Helper.Multiplayer;
-            Dice = new MersenneTwister();
+            Dice = new Xoshiro.PRNG64.XoShiRo256starstar();
             OurIcons = new Sprites.Icons(Helper.Content);
             WeatherProcessing.Init();
             Conditions = new WeatherConditions();
@@ -303,7 +302,7 @@ namespace ClimatesOfFerngillRebuild
         /// <param name="e">The event arguments.</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            CustomTVMod.changeAction("weather", DisplayWeather);
+            //CustomTVMod.changeAction("weather", DisplayWeather);
 
             if (Context.IsMainPlayer)
             {
@@ -338,9 +337,9 @@ namespace ClimatesOfFerngillRebuild
 
             double fog = ClimatesOfFerngill.GetClimateForDay(SDate.Now().AddDays(1)).RetrieveOdds(Dice, "fog", SDate.Now().AddDays(1).Day);
 
-            OnScreenText += DescriptionEngine.GenerateTVForecast(Conditions, ClimatesOfFerngill.Dice, fog, MoonPhase, MoonIsUp);
+            OnScreenText += DescriptionEngine.GenerateTVForecast(Conditions, Dice, fog, MoonPhase, MoonIsUp);
 
-            CustomTVMod.showProgram(BackgroundSprite, OnScreenText, CustomTVMod.endProgram, WeatherSprite);
+            //CustomTVMod.showProgram(BackgroundSprite, OnScreenText, CustomTVMod.endProgram, WeatherSprite);
         }
 
         /// <summary>Raised before drawing the HUD (item toolbar, clock, etc) to the screen. The vanilla HUD may be hidden at this point (e.g. because a menu is open).</summary>
@@ -392,7 +391,7 @@ namespace ClimatesOfFerngillRebuild
             // handle new dialogue box
             else if (e.NewMenu is DialogueBox box)
             {
-                double odds = Dice.NextDoublePositive(), stormOdds = GameClimate.GetStormOdds(SDate.Now().AddDays(1), Dice);
+                double odds = Dice.NextDouble(), stormOdds = GameClimate.GetStormOdds(SDate.Now().AddDays(1), Dice);
                 WeatherProcessing.HandleStormTotemInterception(box, odds, stormOdds);
             }
         }
@@ -686,7 +685,7 @@ namespace ClimatesOfFerngillRebuild
                     SystemDist.AddNewCappedEndPoint(windSystem, "debris");
                     SystemDist.AddNewCappedEndPoint(sunSystem, "sunny");
 
-                    double distOdd = Dice.NextDoublePositive();
+                    double distOdd = Dice.NextDouble();
 
                     if (!(SystemDist.GetEntryFromProb(distOdd, out string Result)))
                     {

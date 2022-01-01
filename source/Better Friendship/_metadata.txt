@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/urbanyeti/stardew-better-friendship
+   Git: https://github.com/urbanyeti/stardew-better-friendship.git
+
+mods:
+   Better Friendship
+
+latest commit:
+   commit 574652f4a78cdcc819260ce06322545c57ba6def
+   Author: Urbanyeti <urbanski@gmail.com>
+   Date:   Thu Dec 9 19:56:50 2021 -0800
+   
+       Update README.md
+   

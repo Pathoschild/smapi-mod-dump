@@ -204,7 +204,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
         }
 
         /// <summary>Construct an instance.</summary>
-        public SliderButton(string name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, Dictionary<string, List<Animations.Animation>> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true)
+        public SliderButton(string name, string displayText, Rectangle bounds, Texture2DExtended buttonTexture, Button barTexture, Rectangle sourceRect, float scale, SliderInformation sliderInformation, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, Dictionary<string, Animations.Animation> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture, bool getLabelXYPos = true)
             : base(name, bounds, buttonTexture, displayText, sourceRect, scale, defaultAnimation, animationsToPlay, startingKey, drawColor, textColor, buttonFunctionality, startingAnimationFrame, animationEnabled, extraTexture)
         {
             this.sliderInformation = sliderInformation;

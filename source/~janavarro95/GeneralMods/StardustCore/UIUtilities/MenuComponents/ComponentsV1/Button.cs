@@ -78,10 +78,10 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
         }
 
         /// <summary>A more advanced Button constructor that deals with an animation manager.</summary>
-        public Button(string name, Rectangle bounds, Texture2DExtended texture, string displayText, Rectangle sourceRect, float scale, Animations.Animation defaultAnimation, Dictionary<string, List<Animations.Animation>> animationsToPlay, string startingAnimationKey, Color drawColor, Color textColor, ButtonFunctionality functionality, int startingAnimationFrame = 0, bool animationEnabled = true, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture = null,bool DrawLabel=true)
+        public Button(string name, Rectangle bounds, Texture2DExtended texture, string displayText, Rectangle sourceRect, float scale, Animations.Animation defaultAnimation, Dictionary<string, Animations.Animation> animationsToPlay, string startingAnimationKey, Color drawColor, Color textColor, ButtonFunctionality functionality, int startingAnimationFrame = 0, bool animationEnabled = true, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture = null,bool DrawLabel=true)
             : base(bounds, texture.getTexture(), sourceRect, scale)
         {
-            this.animationManager = new Animations.AnimationManager(texture, defaultAnimation, animationsToPlay, startingAnimationKey, startingAnimationFrame, animationEnabled);
+            this.animationManager = new Animations.AnimationManager(texture, animationsToPlay, startingAnimationKey, startingAnimationKey, startingAnimationFrame, animationEnabled);
             this.label = displayText;
             this.name = name;
             this.textureColor = drawColor; // ?? IlluminateFramework.Colors.getColorFromList("White");
@@ -245,7 +245,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
         /// <returns>A Button object that is identical to the one passed in.</returns>
         public virtual Button clone()
         {
-            var b = new Button(this.name, this.bounds, this.animationManager.getExtendedTexture(), this.label, this.sourceRect, this.scale, this.animationManager.defaultDrawFrame, this.textureColor, this.textColor, this.buttonFunctionality, true);
+            var b = new Button(this.name, this.bounds, this.animationManager.getExtendedTexture(), this.label, this.sourceRect, this.scale, this.animationManager.getDefaultAnimation(), this.textureColor, this.textColor, this.buttonFunctionality, true);
             if (b.buttonFunctionality.hover == null)
                 ModCore.ModMonitor.Log("I'm null!");
             return b;
@@ -255,7 +255,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
         /// <param name="newPosition"></param>
         public virtual Button clone(Vector2 newPosition)
         {
-            return new Button(this.name, new Rectangle((int)newPosition.X, (int)newPosition.Y, this.bounds.Width, this.bounds.Height), this.animationManager.getExtendedTexture(), this.label, this.sourceRect, this.scale, this.animationManager.defaultDrawFrame, this.textureColor, this.textColor, this.buttonFunctionality, true, this.extraTextures == null? null:this.extraTextures,this.drawLabel);
+            return new Button(this.name, new Rectangle((int)newPosition.X, (int)newPosition.Y, this.bounds.Width, this.bounds.Height), this.animationManager.getExtendedTexture(), this.label, this.sourceRect, this.scale, this.animationManager.getDefaultAnimation(), this.textureColor, this.textColor, this.buttonFunctionality, true, this.extraTextures == null? null:this.extraTextures,this.drawLabel);
             //if (b.buttonFunctionality.hover == null)
             //    StardustCore.ModCore.ModMonitor.Log("I'm null!");
         }
@@ -268,7 +268,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
         /// <returns></returns>
         public virtual Button clone(Vector2 newPosition,bool DrawLabel)
         {
-            return new Button(this.name, new Rectangle((int)newPosition.X, (int)newPosition.Y, this.bounds.Width, this.bounds.Height), this.animationManager.getExtendedTexture(), this.label, this.sourceRect, this.scale, this.animationManager.defaultDrawFrame, this.textureColor, this.textColor, this.buttonFunctionality, true, this.extraTextures == null ? null : this.extraTextures, DrawLabel);
+            return new Button(this.name, new Rectangle((int)newPosition.X, (int)newPosition.Y, this.bounds.Width, this.bounds.Height), this.animationManager.getExtendedTexture(), this.label, this.sourceRect, this.scale, this.animationManager.getDefaultAnimation(), this.textureColor, this.textColor, this.buttonFunctionality, true, this.extraTextures == null ? null : this.extraTextures, DrawLabel);
             //if (b.buttonFunctionality.hover == null)
             //    StardustCore.ModCore.ModMonitor.Log("I'm null!");
         }

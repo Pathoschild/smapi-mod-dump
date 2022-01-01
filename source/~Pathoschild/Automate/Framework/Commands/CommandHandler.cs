@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using Pathoschild.Stardew.Automate.Framework.Models;
 using Pathoschild.Stardew.Common.Commands;
 using StardewModdingAPI;
@@ -24,7 +25,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
         /// <param name="monitor">Writes messages to the console.</param>
         /// <param name="config">The mod configuration.</param>
         /// <param name="machineManager">Manages machine groups.</param>
-        public CommandHandler(IMonitor monitor, ModConfig config, MachineManager machineManager)
+        public CommandHandler(IMonitor monitor, Func<ModConfig> config, MachineManager machineManager)
             : base("automate", "Automate", CommandHandler.BuildCommands(monitor, config, machineManager), monitor) { }
 
 
@@ -35,7 +36,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
         /// <param name="monitor">Writes messages to the console.</param>
         /// <param name="config">The mod configuration.</param>
         /// <param name="machineManager">Manages machine groups.</param>
-        private static ICommand[] BuildCommands(IMonitor monitor, ModConfig config, MachineManager machineManager)
+        private static ICommand[] BuildCommands(IMonitor monitor, Func<ModConfig> config, MachineManager machineManager)
         {
             return new ICommand[]
             {

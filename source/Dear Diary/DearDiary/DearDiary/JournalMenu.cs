@@ -29,54 +29,57 @@ namespace StardewJournal.UI
     {
         
         
-        public JournalMenu(IDataHelper helper, string modDirectory) : base((int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport.Width, Game1.viewport.Height).X, (int)Utility.getTopLeftPositionForCenteringOnScreen(Game1.viewport.Width, Game1.viewport.Height).X, Game1.viewport.Width, Game1.viewport.Height, true)
+        public JournalMenu(IDataHelper helper, string modDirectory) : base((int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).X, (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).X, 980, 470, true)
         {
-            
+            int menuX = (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).X;
+            int menuY = (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).Y;
+
             this.modDirectory = modDirectory;
             this.dataHelper = helper;
-            displayedText = new TextField(xPositionOnScreen + 32, yPositionOnScreen + 84, width - 64, height - 96);
+            displayedText = new TextField(xPositionOnScreen - 450, yPositionOnScreen - 400 , width + 925, height + 300);
             this.currentDate = SDate.Now();
             diaryData = dataHelper.ReadSaveData<Dictionary<string, List<string>>>("diary-data") ?? new Dictionary<string, List<string>>();
             if (!diaryData.ContainsKey(currentDate.ToString()))
                 diaryData.Add(currentDate.ToString(), new List<string> { "", });
-            this.backButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 32, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f, false)
+            this.backButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen - 400, this.yPositionOnScreen + this.height , 48, 44), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f, false)
             {
                 myID = 101,
                 rightNeighborID = 102
             };
-            this.nextButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width - 32 - 48, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false)
+            this.nextButton = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 1350 , this.yPositionOnScreen + this.height , 48, 44), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false)
             {
                 myID = 102,
                 leftNeighborID = this.backButton.myID
             };
-            this.previousDay = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 64, this.yPositionOnScreen + this.height - 64 - 96, 80, 76), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f, false)
+            this.previousDay = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen -375, this.yPositionOnScreen + this.height - 40, 48, 44), Game1.mouseCursors, new Rectangle(352, 495, 12, 11), 4f, false)
             {
                 myID = 103,
                 rightNeighborID = 104
             };
-            this.nextDay = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + this.width - 64 - 80, this.yPositionOnScreen + this.height - 64 - 96, 80, 76), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false)
+            this.nextDay = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 1325, this.yPositionOnScreen + this.height - 40, 48, 44), Game1.mouseCursors, new Rectangle(365, 495, 12, 11), 4f, false)
             {
                 myID = 104,
                 leftNeighborID = this.previousDay.myID
             };
-            this.exportDiary = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 640, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(48, 640, 16, 16), 4f, false)
+            this.exportDiary = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 400, this.yPositionOnScreen + this.height , 48, 44), Game1.mouseCursors, new Rectangle(48, 640, 16, 16), 4f, false)
             {
                 myID = 105,
                 rightNeighborID = this.nextDay.myID
                 
             };
-            this.backMonth = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 480, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f, false)
+            this.backMonth = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen , this.yPositionOnScreen + this.height , 48, 44), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f, false)
             {
                 myID = 106,
                 leftNeighborID = this.nextDay.myID
             };
-            this.nextMonth = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 800, this.yPositionOnScreen + this.height - 32 - 64, 48, 44), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f, false)
+            this.nextMonth = new ClickableTextureComponent(new Rectangle(this.xPositionOnScreen + 800, this.yPositionOnScreen + this.height, 48, 44), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f, false)
             {
                 myID = 107,
                 leftNeighborID = this.backMonth.myID
             };
-
+            RemoveBlanks();
             SetPage(0);
+            
         }
         //Variables and Stuff
         int day = Game1.dayOfMonth; //Used to show Current Day
@@ -84,6 +87,10 @@ namespace StardewJournal.UI
         int year = Game1.year; //Used to show Current Year
         public int currentPage; //What page you're currently on.
         public SDate currentDate; //Shows current date, can move around to change date.
+        public string currentEntry; //update to last known
+        public int entryCount; // monitors entry count
+        public bool dateUp;
+        public bool dateDown;
         Dictionary<string, List<string>> diaryData;
         private IDataHelper dataHelper;
         public string modDirectory;
@@ -98,12 +105,31 @@ namespace StardewJournal.UI
 
         private void SetPage(int newPage) //This creates new pages or sends you to a page
         {
-            if (!this.diaryData.ContainsKey(currentDate.ToString()))
+
+            if (!this.diaryData.ContainsKey(currentDate.ToString()) && currentDate == SDate.Now())
                 this.diaryData.Add(currentDate.ToString(), new List<string> { "", });
             // set page number
             this.currentPage = Math.Max(0, newPage);
 
             // get current page
+            while (!this.diaryData.ContainsKey(currentDate.ToString()))
+            {
+                if (dateDown == true)
+                {
+                    currentDate = this.currentDate.AddDays(-1);
+                }
+                if (dateUp == true)
+                {
+                    currentDate = this.currentDate.AddDays(1);
+                }
+            }
+
+            if (this.diaryData.ContainsKey(currentDate.ToString()))
+            {
+                dateDown = false;
+                dateUp = false;
+
+            }
             List<string> pages = this.diaryData[currentDate.ToString()];
             if (this.currentPage >= pages.Count)
                 pages.Add("");
@@ -112,14 +138,44 @@ namespace StardewJournal.UI
             // update display text
             this.displayedText.Text = pageText;
         }
+        private void RemoveBlanks()
+        {
+            // remove old blank pages
+            foreach (KeyValuePair<string, List<string>> entry in this.diaryData.ToArray())
+            {
+                // delete empty pages in entry
+                List<string> pages = entry.Value;
+                for (int i = pages.Count - 1; i >= 0; i--)
+                {
+                    if (pages[i] == "")
+                    {
+                        DearDiary.Mod.TempMonitor.Log($"Blank page found! Deleting page {i + 1} in {entry.Key}", LogLevel.Debug);
+                        pages.RemoveAt(i);
+                    }
+                }
+
+                // delete entire entry if it's empty
+                if (!pages.Any())
+                {
+                    DearDiary.Mod.TempMonitor.Log($"Entry {entry.Key} has no pages, deleting entire entry.", LogLevel.Debug);
+                    diaryData.Remove(entry.Key);
+                }
+            }
+        }
         private void SaveCurrentPage() //This allows the game to save your data on the pages by date and page number
         {
             // Save current page
+            try
+            {
+                List<string> pages = this.diaryData[currentDate.ToString()];
+                pages[this.currentPage] = this.displayedText.Text;
+                dataHelper.WriteSaveData("diary-data", this.diaryData);
 
-            List<string> pages = this.diaryData[currentDate.ToString()];
-            pages[this.currentPage] = this.displayedText.Text;
-            dataHelper.WriteSaveData("diary-data", this.diaryData);
-
+            }
+            catch (Exception ex)
+            {
+                DearDiary.Mod.TempMonitor.Log(ex.Message, LogLevel.Error);
+            }
         }
         public override void update(GameTime time) //This saves your text often.
         {
@@ -147,8 +203,8 @@ namespace StardewJournal.UI
 
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
         {
-            this.xPositionOnScreen = (int)Utility.getTopLeftPositionForCenteringOnScreen(1280, 720, 0, 0).X;
-            this.yPositionOnScreen = (int)Utility.getTopLeftPositionForCenteringOnScreen(1280, 720, 0, 0).Y;
+            this.xPositionOnScreen = (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).X;
+            this.yPositionOnScreen = (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).Y;
         }
 
         public TextField displayedText;
@@ -158,7 +214,7 @@ namespace StardewJournal.UI
 
         {
             int value = (int)key;
-            DearDiary.Mod.TempMonitor.Log($"Pressed {value}", LogLevel.Debug);
+            DearDiary.Mod.TempMonitor.Log($"Pressed {value}", LogLevel.Trace); //still there but invisible incase something is wrong in the future.
             /*if (this.displayedText.Selected || Game1.options.doesInputListContain(Game1.options.menuButton, key))
                 return;*/
             if (key == Keys.E)
@@ -166,6 +222,10 @@ namespace StardewJournal.UI
             if (Constants.TargetPlatform == GamePlatform.Mac && value == 8)
                 this.displayedText.RecieveSpecialInput(key);
             if (Constants.TargetPlatform == GamePlatform.Mac && value == 13)
+                this.displayedText.RecieveSpecialInput(key);
+            if (Constants.TargetPlatform == GamePlatform.Linux && value == 8)
+                this.displayedText.RecieveSpecialInput(key);
+            if (Constants.TargetPlatform == GamePlatform.Linux && value == 13)
                 this.displayedText.RecieveSpecialInput(key);
 
             base.receiveKeyPress(key);
@@ -209,9 +269,12 @@ namespace StardewJournal.UI
             }
             else if (this.previousDay.containsPoint(x, y))
             {
+                if (currentDate == new SDate(1, "spring", 1))
+                    return;
                 if (currentDate > new SDate(1, "spring", 1))
                 {
                     this.SetDate(-1);
+                    dateDown = true;
                     this.SetPage(0);
                 }
                 
@@ -219,6 +282,7 @@ namespace StardewJournal.UI
             else if (this.nextDay.containsPoint(x, y))
             {
                 this.SetDate(1);
+                dateUp = true;
                 this.SetPage(0);
             }
             else if (this.backMonth.containsPoint(x, y))
@@ -251,6 +315,10 @@ namespace StardewJournal.UI
 
         public override void draw(SpriteBatch b)
         {
+
+            int menuX = (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).X;
+            int menuY = (int)Utility.getTopLeftPositionForCenteringOnScreen(980, 470).Y;
+
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.White * 0.4f);
             /*  var day = Game1.dayOfMonth;
               string season = Game1.currentSeason;
@@ -259,9 +327,10 @@ namespace StardewJournal.UI
             //string dayof = "Day";
             //b.Draw(Game1.menuTexture, new Rectangle(xPositionOnScreen, yPositionOnScreen, width, height), Color.White);
             Vector2 titleSize = Game1.dialogueFont.MeasureString("Today: XX Day of Season Year XX Viewing Entry: XX Season XX Page XXX");
-            drawTextureBox(b, xPositionOnScreen + 16, yPositionOnScreen, (int)titleSize.X + 32, (int)titleSize.Y + 32, Color.White);
+            //string dateText = this.Helper.Translation.Get("date", { day = 1, season = "summer", year = 1 });
+            drawTextureBox(b, menuX - 455, menuY - 310, (int)titleSize.X + 32, (int)titleSize.Y + 32, Color.White);
             Utility.drawTextWithShadow(b, $"Today: Day {day} of {season} Year {year}  Viewing Entry: {currentDate} Page {currentPage + 1}", Game1.dialogueFont, new Vector2(32, 16), Game1.textColor);
-            drawTextureBox(b, xPositionOnScreen + 16, yPositionOnScreen + 72, width - 32, height - 84, Color.White);
+            drawTextureBox(b, menuX - 445, menuY - 230, width + 900, height + 500 , Color.White);
             displayedText.Draw(b);
             backButton.draw(b);
             nextButton.draw(b);
@@ -299,7 +368,7 @@ namespace StardewJournal.UI
                 IClickableMenu.drawHoverText(b, "Next (Season)", Game1.smallFont);
             }
 
-
+            //base.draw(b);
             //draw mouse
             drawMouse(b);
         }

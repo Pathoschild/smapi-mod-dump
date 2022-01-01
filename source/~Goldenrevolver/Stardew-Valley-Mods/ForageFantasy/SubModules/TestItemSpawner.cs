@@ -20,7 +20,7 @@ namespace ForageFantasy
     {
         public static void TestValues(ForageFantasy mod, bool showOnlyTotals, bool ignoreSecretForest)
         {
-            List<string> seasons = new List<string>() { "summer" }; ////, "spring", "fall", "winter" };
+            var seasons = new List<string>() { "summer" }; ////, "spring", "fall", "winter" };
 
             foreach (var season in seasons)
             {
@@ -32,11 +32,11 @@ namespace ForageFantasy
 
                 foreach (var loc in Game1.locations)
                 {
-                    Random r = new Random(((int)Game1.uniqueIDForThisGame / 2) + (int)Game1.stats.DaysPlayed);
+                    var r = new Random(((int)Game1.uniqueIDForThisGame / 2) + (int)Game1.stats.DaysPlayed);
                     Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data/Locations");
 
-                    int id = -1;
-                    switch (loc.name)
+                    int id;
+                    switch (loc.Name)
                     {
                         case "BusStop":
                             id = 0;
@@ -78,9 +78,9 @@ namespace ForageFantasy
                             continue;
                     }
 
-                    if (locationData.ContainsKey(loc.name))
+                    if (locationData.ContainsKey(loc.Name))
                     {
-                        string rawData = locationData[loc.name].Split(new char[]
+                        string rawData = locationData[loc.Name].Split(new char[]
                         {
                     '/'
                         })[Utility.getSeasonNumber(season)];
@@ -96,9 +96,9 @@ namespace ForageFantasy
                             {
                                 int xCoord = r.Next(loc.map.DisplayWidth / 64);
                                 int yCoord = r.Next(loc.map.DisplayHeight / 64);
-                                Vector2 location = new Vector2((float)xCoord, (float)yCoord);
+                                var location = new Vector2(xCoord, yCoord);
                                 StardewValley.Object o;
-                                loc.objects.TryGetValue(location, out o);
+                                //// loc.objects.TryGetValue(location, out StardewValley.Object o);
                                 int whichObject = r.Next(split.Length / 2) * 2;
                                 if (r.NextDouble() < Convert.ToDouble(split[whichObject + 1], CultureInfo.InvariantCulture))
                                 {

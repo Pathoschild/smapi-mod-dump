@@ -36,12 +36,14 @@ namespace RecatchLegendaryFish
         /*********
         ** Public methods
         *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
+            I18n.Init(helper.Translation);
+
             this.Config = helper.ReadConfig<ModConfig>();
 
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.Saving += this.OnSaving;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
@@ -55,7 +57,19 @@ namespace RecatchLegendaryFish
         /****
         ** Event handlers
         ****/
-        /// <summary>Raised after the player loads a save slot and the world is initialised.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            GenericModConfigMenuIntegration.Register(this.ModManifest, this.Helper.ModRegistry, this.Monitor,
+                getConfig: () => this.Config,
+                reset: () => this.Config = new(),
+                save: () => this.Helper.WriteConfig(this.Config)
+            );
+        }
+
+        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -63,7 +77,7 @@ namespace RecatchLegendaryFish
             this.Stash.Value.Clear();
         }
 
-        /// <summary>Raised before the game begins writes data to the save file (except the initial save creation).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.Saving"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnSaving(object sender, SavingEventArgs e)
@@ -71,7 +85,7 @@ namespace RecatchLegendaryFish
             this.Stash.Value.Restore(); // just in case something weird happens
         }
 
-        /// <summary>Raised after the game state is updated (≈60 times per second).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -91,7 +105,7 @@ namespace RecatchLegendaryFish
                 stash.Restore();
         }
 
-        /// <summary>Raised after the player presses or releases any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event arguments.</param>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -105,13 +119,10 @@ namespace RecatchLegendaryFish
         {
             this.IsEnabled = !this.IsEnabled;
 
-            string message = this.Helper.Translation.Get(
-                this.IsEnabled ? "message.enabled" : "message.disabled",
-                new
-                {
-                    key = this.Config.ToggleKey.GetKeybindCurrentlyDown().ToString()
-                }
-            );
+            string key = this.Config.ToggleKey.GetKeybindCurrentlyDown().ToString();
+            string message = this.IsEnabled
+                ? I18n.Message_Enabled(key: key)
+                : I18n.Message_Disabled(key: key);
             Game1.addHUDMessage(new HUDMessage(message, HUDMessage.newQuest_type) { timeLeft = 2500 });
         }
     }

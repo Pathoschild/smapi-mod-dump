@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tlitookilakin/FarmWarpsPatch
+   Git: https://github.com/tlitookilakin/FarmWarpsPatch.git
+
+mods:
+   Farm Warps Patch
+
+latest commit:
+   commit 4720990ebbcbb463aff18dbe4e0bda2bc27ca984
+   Author: Wren <Wren@MYSTERY-SHACK>
+   Date:   Tue Mar 9 14:45:54 2021 -0500
+   
+       -
+   

@@ -6,10 +6,11 @@ Prevents watered tilled soil from disappearing during the night. If you only wan
 ## Config
 *Note: run Stardew Valley once with this mod enabled to generate the `config.json` file.*
 
-* `EachNight`: How soil decays every night
-* `Greenhouse`: How soil decays inside the greenhouse
-* `Island`: How soil decays on Ginger Island
-* `NonFarm`: How soil decays outside the farm
+* `EachNight`: How soil decays on the farm every night.
+* `EachSeason`: How soil decays on the farm (and maps that have the `ClearEmptyDirtOnNewMonth` property) during nights between seasons. This is in addition to the normal decay.
+* `Greenhouse`: How soil decays inside the greenhouse.
+* `Island`: How soil decays on Ginger Island.
+* `NonFarm`: How soil decays outside the farm.
 
 Each of the previous 5 settings consists of two options.
 * `DryingRate`: Chance that tilled soil will disappear. On the farm this is normally 0.1 (=10%), but this mod increases it to 0.5 (=50%).
@@ -42,4 +43,12 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Add support for Ginger Island
 
 #### 5.2:
-* Removed changing soil decay at the start of a new month, as it seems to have been removed from the game.
+* Removed changing soil decay at the start of a new season, as it seems to have been removed from the game.
+
+#### 5.6:
+* Added back changing soil decay at the start of a new season, due to populair request.
+* Updated for Stardew Valley 1.5.6
+
+#### 5.7:
+* Soil decay at the start of a new season was not removed. This version allows you to configure that decay.
+

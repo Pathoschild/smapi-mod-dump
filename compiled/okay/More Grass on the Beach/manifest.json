@@ -1,11 +1,11 @@
 ﻿{
    "Name": "More Grass on the Beach",
    "Author": "AngelaRanna",
-   "Version": "1.0.2",
+   "Version": "2.0.0",
    "Description": "Spawns more grass each day start on the beach to help it support animal heavy games.",
    "UniqueID": "AngelaRanna.MoreGrassOnTheBeach",
    "EntryDll": "MoreGrassOnTheBeach.dll",
-   "MinimumApiVersion": "2.8.2",
+   "MinimumApiVersion": "3.13.1",
    "UpdateKeys": [
        "Nexus:8117"
    ]

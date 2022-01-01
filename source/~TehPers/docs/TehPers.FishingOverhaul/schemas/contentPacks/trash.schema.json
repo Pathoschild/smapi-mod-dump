@@ -1,0 +1,401 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "oneOf": [
+    {
+      "$ref": "#/definitions/TehPers.FishingOverhaul.Config.ContentPacks.TrashPack"
+    }
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "TrashPack",
+  "definitions": {
+    "TehPers.FishingOverhaul.Config.ContentPacks.TrashPack": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Content which controls what trash are available to catch.",
+      "properties": {
+        "Add": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.TrashEntry"
+              }
+            ]
+          },
+          "description": "The trash entries to add."
+        },
+        "$schema": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Optional '$schema' URL. This is ignored and exists entirely for convenience."
+        }
+      }
+    },
+    "TehPers.FishingOverhaul.Api.Content.TrashEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A trash availability entry.",
+      "required": [
+        "ItemKey",
+        "AvailabilityInfo"
+      ],
+      "properties": {
+        "ItemKey": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.Core.Api.Items.NamespacedKey"
+            }
+          ],
+          "description": "The item key."
+        },
+        "AvailabilityInfo": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.AvailabilityInfo"
+            }
+          ],
+          "description": "The availability information."
+        },
+        "OnCatch": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.CatchActions"
+            }
+          ],
+          "description": "Actions to perform when this is caught."
+        }
+      }
+    },
+    "TehPers.Core.Api.Items.NamespacedKey": {
+      "type": "string",
+      "pattern": "(?<namespace>[^:].+):(?<key>.*)"
+    },
+    "TehPers.FishingOverhaul.Api.Content.AvailabilityInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Information about the availability of a catchable item.",
+      "required": [
+        "BaseChance"
+      ],
+      "properties": {
+        "BaseChance": {
+          "type": "number",
+          "description": "The base chance this will be caught. This is not a percentage chance, but rather a weight relative to all available entries."
+        },
+        "StartTime": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Time this becomes available (inclusive).",
+          "default": 600
+        },
+        "EndTime": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Time this is no longer available (exclusive).",
+          "default": 2600
+        },
+        "Seasons": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.Core.Api.Gameplay.Seasons"
+              }
+            ]
+          },
+          "description": "Seasons this can be caught in."
+        },
+        "Weathers": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.Core.Api.Gameplay.Weathers"
+              }
+            ]
+          },
+          "description": "Weathers this can be caught in."
+        },
+        "WaterTypes": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.FishingOverhaul.Api.WaterTypes"
+              }
+            ]
+          },
+          "description": "The type of water this can be caught in. Each location handles this differently."
+        },
+        "MinFishingLevel": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Required fishing level to catch this.",
+          "default": 0
+        },
+        "MaxFishingLevel": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Maximum fishing level required to catch this, or null for no max.",
+          "default": null
+        },
+        "IncludeLocations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of locations this should be available in. Leaving this empty will make this available everywhere. Some locations have special handling. For example, the mines use the location names \"UndergroundMine\" and \"UndergroundMine/N\", where N is the floor number (both location names are valid for the floor)."
+        },
+        "ExcludeLocations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of locations this should not be available in. This takes priority over IncludeLocations."
+        },
+        "Position": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.PositionConstraint"
+            }
+          ],
+          "description": "Constraints on the bobber's position on the map when fishing."
+        },
+        "FarmerPosition": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.PositionConstraint"
+            }
+          ],
+          "description": "Constraints on the farmer's position on the map when fishing."
+        },
+        "MinDepth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Minimum bobber depth required to catch this.",
+          "default": 0
+        },
+        "MaxDepth": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Maximum bobber depth required to catch this.",
+          "default": null
+        },
+        "When": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Content Patcher conditions for when this is available."
+        }
+      }
+    },
+    "TehPers.Core.Api.Gameplay.Seasons": {
+      "type": "string",
+      "description": "Seasons within the game. Because this is a flags-style enum, multiple seasons can be combined.",
+      "enum": [
+        "None",
+        "Spring",
+        "Summer",
+        "Fall",
+        "Winter",
+        "All"
+      ]
+    },
+    "TehPers.Core.Api.Gameplay.Weathers": {
+      "type": "string",
+      "description": "Weathers within the game. Because this is a flags-style enum, multiple weathers can be combined.",
+      "enum": [
+        "None",
+        "Sunny",
+        "Rainy",
+        "All"
+      ]
+    },
+    "TehPers.FishingOverhaul.Api.WaterTypes": {
+      "type": "string",
+      "description": "Type of water that fish can be caught in. Each location handles these values differently.",
+      "enum": [
+        "None",
+        "River",
+        "PondOrOcean",
+        "Freshwater",
+        "All"
+      ]
+    },
+    "TehPers.FishingOverhaul.Api.Content.PositionConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A set of constraints for positions.",
+      "properties": {
+        "X": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.CoordinateConstraint"
+            }
+          ],
+          "description": "Constraints for the x-coordinate.",
+          "default": null
+        },
+        "Y": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.CoordinateConstraint"
+            }
+          ],
+          "description": "Constraints for the Y-coordinate.",
+          "default": null
+        }
+      }
+    },
+    "TehPers.FishingOverhaul.Api.Content.CoordinateConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A set of constraints for coordinates.",
+      "properties": {
+        "GreaterThan": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Coordinate value must be greater than this.",
+          "default": null
+        },
+        "GreaterThanEq": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Coordinate value must be greater than or equal to this.",
+          "default": null
+        },
+        "LessThan": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Coordinate value must be less than this.",
+          "default": null
+        },
+        "LessThanEq": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "description": "Coordinate value must be less than or equal to this.",
+          "default": null
+        }
+      }
+    },
+    "TehPers.FishingOverhaul.Api.Content.CatchActions": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Actions to be executed on catch.",
+      "properties": {
+        "CustomEvents": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.Core.Api.Items.NamespacedKey"
+              }
+            ]
+          },
+          "description": "Raise custom events with this name to notify SMAPI mods that this was caught. Event key format is \"namespace:key\" (for example \"TehPers.FishingOverhaul:GoldenWalnut\")."
+        },
+        "SetFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Sets one or more mail flags."
+        },
+        "StartQuests": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "description": "Sets one or more quests as active."
+        },
+        "AddMail": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Adds mail entries to the player's mail tomorrow."
+        },
+        "StartConversations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647
+          },
+          "description": "Starts conversations. The key is the conversation ID and the value is the number of days."
+        }
+      }
+    }
+  }
+}

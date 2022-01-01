@@ -17,7 +17,7 @@ namespace BattleRoyale.Patches
 {
     class RainbowChat : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(ChatMessage), "draw");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(ChatMessage), "draw");
 
         public static void Prefix(ref Color ___color, ChatMessage __instance)
         {

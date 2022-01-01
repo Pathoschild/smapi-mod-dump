@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Pathoschild.Stardew.LookupAnything.Framework.Constants;
 using Pathoschild.Stardew.LookupAnything.Framework.Data;
 using StardewValley;
 using SFarmer = StardewValley.Farmer;
@@ -120,7 +121,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
             if (this.IsSpouse || this.IsHousemate)
             {
                 this.StardropPoints = constants.SpouseFriendshipForStardrop;
-                this.HasStardrop = !player.mailReceived.Contains(Constants.Constant.MailLetters.ReceivedSpouseStardrop);
+                this.HasStardrop = !player.mailReceived.Contains(Constant.MailLetters.ReceivedSpouseStardrop);
             }
         }
 

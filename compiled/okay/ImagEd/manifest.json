@@ -1,7 +1,7 @@
 {
   "Name": "ImagEd",
   "Author": "Candidus42",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Provides image recoloring for CP",
   "UniqueID": "Candidus42.ImagEd",
   "EntryDll": "ImagEd.dll",

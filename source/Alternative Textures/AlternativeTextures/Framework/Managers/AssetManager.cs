@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley.GameData;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,8 +20,11 @@ using System.Threading.Tasks;
 
 namespace AlternativeTextures.Framework.Managers
 {
-    internal class AssetManager : IAssetLoader
+    internal class AssetManager : IAssetLoader, IAssetEditor
     {
+        // Tilesheet related for decorations (wallpaper / floor)
+        private TextureManager _textureManager;
+
         internal string assetFolderPath;
         internal Dictionary<string, Texture2D> toolNames = new Dictionary<string, Texture2D>();
 
@@ -29,7 +33,7 @@ namespace AlternativeTextures.Framework.Managers
         private Texture2D _paintBrushEmptyTexture;
         private Texture2D _paintBrushFilledTexture;
 
-        public AssetManager(IModHelper helper)
+        public AssetManager(IModHelper helper, TextureManager textureManager)
         {
             // Get the asset folder path
             assetFolderPath = helper.Content.GetActualAssetKey(Path.Combine("Framework", "Assets"), ContentSource.ModFolder);
@@ -45,6 +49,39 @@ namespace AlternativeTextures.Framework.Managers
             toolNames.Add("Scissors", _scissorsTexture);
             toolNames.Add("PaintBrush_Empty", _paintBrushEmptyTexture);
             toolNames.Add("PaintBrush_Filled", _paintBrushFilledTexture);
+
+            // Get the TextureMananger
+            _textureManager = textureManager;
+        }
+
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Data/AdditionalWallpaperFlooring") && _textureManager.GetValidTextureNamesWithSeason().Count > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Edit<T>(IAssetData asset)
+        {
+            if (asset.AssetNameEquals("Data/AdditionalWallpaperFlooring"))
+            {
+                List<ModWallpaperOrFlooring> moddedDecorations = asset.GetData<List<ModWallpaperOrFlooring>>();
+                foreach (var textureModel in _textureManager.GetAllTextures().Where(t => t.IsDecoration() && !moddedDecorations.Any(d => d.ID == t.GetId())))
+                {
+                    var decoration = new ModWallpaperOrFlooring()
+                    {
+                        ID = textureModel.GetId(),
+                        Texture = $"{AlternativeTextures.TEXTURE_TOKEN_HEADER}{textureModel.GetTokenId()}",
+                        IsFlooring = String.Equals(textureModel.ItemName, "Floor", StringComparison.OrdinalIgnoreCase),
+                        Count = textureModel.GetVariations()
+                    };
+
+                    moddedDecorations.Add(decoration);
+                }
+            }
         }
 
         public bool CanLoad<T>(IAssetInfo asset)

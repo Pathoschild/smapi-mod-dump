@@ -22,7 +22,7 @@ No more frustrating clicking when you try to pass through gates with your horse!
 Just walk/ride up to any gate in-game and it'll open automatically, and close behind you!
 
 ## Compatibility
-Compatible with Stardew Valley 1.5+ on Linux/Mac/Windows, both single-player and multiplayer.
+Compatible with Stardew Valley 1.5.5+ on Linux/Mac/Windows, both single-player and multiplayer.
 
 ## See also
 * [Release notes](CHANGELOG.md)

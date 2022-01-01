@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
     class AddFarmerListener : Patch
     {
         //runs when a client joins
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Multiplayer), "addPlayer");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Multiplayer), "addPlayer");
 
         public static bool Prefix(NetFarmerRoot f)
         {
@@ -24,7 +24,7 @@ namespace BattleRoyale.Patches
             {
                 ModEntry.BRGame.ProcessPlayerJoin(f);
 
-                return new AutoKicker().ProcessPlayerJoin(f);
+                return AutoKicker.ProcessPlayerJoin(f);
             }
 
             return true;

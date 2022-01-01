@@ -11,8 +11,6 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)GeneralFunctions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OurExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PRNG\MersenneTwister.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PRNG\MTwisterExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProbabilityDistribution.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RangePair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Stardew Valley\SDVTime.cs" />

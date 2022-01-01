@@ -10,58 +10,50 @@
 
 using SpriteMaster.Extensions;
 
-namespace SpriteMaster.Types {
-	public struct ArrayWrapper2D<T> {
-		public readonly T[] Data;
-		public readonly uint Width;
-		public readonly uint Height;
-		public readonly uint Stride;
+namespace SpriteMaster.Types;
 
-		public ArrayWrapper2D (T[] data, int width, int height, int stride) {
-			Contract.AssertNotNull(data);
-			Contract.AssertNotNegative(width);
-			Contract.AssertNotNegative(height);
-			Contract.AssertNotNegative(stride);
+readonly struct ArrayWrapper2D<T> {
+	internal readonly T[] Data;
+	internal readonly uint Width;
+	internal readonly uint Height;
+	internal readonly uint Stride;
 
-			Data = data;
-			Width = width.Unsigned();
-			Height = height.Unsigned();
-			Stride = stride.Unsigned();
-		}
+	internal ArrayWrapper2D(T[] data, int width, int height, int stride) {
+		Contract.AssertNotNull(data);
+		Contract.AssertNotNegative(width);
+		Contract.AssertNotNegative(height);
+		Contract.AssertNotNegative(stride);
 
-		public ArrayWrapper2D (T[] data, int width, int height) : this(data, width, height, width) { }
+		Data = data;
+		Width = width.Unsigned();
+		Height = height.Unsigned();
+		Stride = stride.Unsigned();
+	}
 
-		private readonly uint GetIndex (int x, int y) {
-			Contract.AssertNotNegative(x);
-			Contract.AssertNotNegative(y);
+	internal ArrayWrapper2D(T[] data, int width, int height) : this(data, width, height, width) { }
 
-			return GetIndex(x.Unsigned(), y.Unsigned());
-		}
+	private readonly uint GetIndex(int x, int y) {
+		Contract.AssertNotNegative(x);
+		Contract.AssertNotNegative(y);
 
-		private readonly uint GetIndex (uint x, uint y) {
-			var offset = y * Stride + x;
+		return GetIndex(x.Unsigned(), y.Unsigned());
+	}
 
-			Contract.AssertLess(offset, Data.Length.Unsigned());
+	private readonly uint GetIndex(uint x, uint y) {
+		var offset = y * Stride + x;
 
-			return offset;
-		}
+		Contract.AssertLess(offset, Data.Length.Unsigned());
 
-		public T this[int x, int y] {
-			readonly get {
-				return Data[GetIndex(x, y)];
-			}
-			set {
-				Data[GetIndex(x, y)] = value;
-			}
-		}
+		return offset;
+	}
 
-		public T this[uint x, uint y] {
-			readonly get {
-				return Data[GetIndex(x, y)];
-			}
-			set {
-				Data[GetIndex(x, y)] = value;
-			}
-		}
+	internal T this[int x, int y] {
+		readonly get => Data[GetIndex(x, y)];
+		set => Data[GetIndex(x, y)] = value;
+	}
+
+	internal T this[uint x, uint y] {
+		readonly get => Data[GetIndex(x, y)];
+		set => Data[GetIndex(x, y)] = value;
 	}
 }

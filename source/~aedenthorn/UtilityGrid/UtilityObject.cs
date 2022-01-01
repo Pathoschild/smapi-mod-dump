@@ -24,6 +24,13 @@ namespace UtilityGrid
         public bool mustHaveSun;
         public bool mustHaveRain;
         public bool mustHaveLightning;
+        public int waterChargeCapacity;
+        public int electricChargeCapacity;
+        public float waterChargeRate;
+        public float electricChargeRate;
+        public float waterDischargeRate;
+        public float electricDischargeRate;
+        public bool fillWaterFromRain;
         public Object worldObj;
     }
 }

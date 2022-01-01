@@ -54,7 +54,7 @@ namespace StardustCore.UIUtilities
 
             if (ThrowError)
             {
-                throw new Exception("Error, texture name not found!!!");
+                throw new Exception(string.Format("Error, texture {0} not found!!!",name));
             }
             else
             {

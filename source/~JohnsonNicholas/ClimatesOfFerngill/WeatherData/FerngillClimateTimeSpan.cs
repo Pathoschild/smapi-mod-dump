@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TwilightShards.Common;
@@ -82,14 +83,14 @@ namespace ClimatesOfFerngillRebuild
             WeatherChances.Add(new WeatherParameters(wp));
         }
 
-        public RangePair GetTemperatures(MersenneTwister dice, int day)
+        public RangePair GetTemperatures(Random dice, int day)
         {
             var temps = new RangePair(RetrieveTemp(dice, "lowtemp", day), RetrieveTemp(dice, "hightemp", day), true);
             ClimatesOfFerngill.Logger.Log($"We are gathering temperatures from the climate file. Temps is {temps.LowerBound}, {temps.HigherBound}");
             return temps;
         }
 
-        public double RetrieveOdds(MersenneTwister dice, string weather, int day, bool EnforceHigherOverLower = true)
+        public double RetrieveOdds(Random dice, string weather, int day, bool EnforceHigherOverLower = true)
         {
             double Odd = 0;
 
@@ -161,7 +162,7 @@ namespace ClimatesOfFerngillRebuild
             return Temp;
         }
 
-        public double RetrieveTemp(MersenneTwister dice, string temp, int day, bool EnforceHigherOverLower = true)
+        public double RetrieveTemp(Random dice, string temp, int day, bool EnforceHigherOverLower = true)
         {
             double Temp = 0;
             List<WeatherParameters> wp = this.WeatherChances.Where(w => w.WeatherType == temp).ToList<WeatherParameters>();

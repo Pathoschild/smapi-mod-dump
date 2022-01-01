@@ -1,4 +1,6 @@
 {
   "WeddingDuration": 7,
-  "LuauDuration": 7
+  "LuauDuration": 7,
+  "BirthDuration": 7,
+  "DivorceDuration": 7
 }

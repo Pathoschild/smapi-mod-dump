@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Customizable Cart Redux",
   "Author": "Sakorona",
-  "Version": "1.4.2",
+  "Version": "1.4.3",
   "Description": "Allows you to alter the chances of the traveling cart appearing. Credit to Yyeahdude for the original idea.",
   "UniqueID": "KoihimeNakamura.CCR",
   "EntryDll": "CustomizableCartRedux.dll",
@@ -12,5 +12,5 @@
     "Directory": "_releases",
     "ModFolder": "CustomizableCartRedux"
   },
-  "UpdateKeys": [ "Nexus:1402" ]
+  "UpdateKeys": [ "Nexus:1402", "Moddrop:664037" ]
 }

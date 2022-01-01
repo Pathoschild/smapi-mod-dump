@@ -14,48 +14,56 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Tools;
 using StardewValley.TerrainFeatures;
-using Harmony;
+using HarmonyLib;
 
 namespace HardyGrass
 {
-    [HarmonyPatch(typeof(Grass))]
-    [HarmonyPatch("dayUpdate", new Type[] { typeof(GameLocation), typeof(Vector2) })]
-    public class Grass_dayUpdate_Patch
+    public class GrassPatches
     {
-        static bool Prefix(Grass __instance, GameLocation environment, Vector2 tileLocation)
+        public static void ApplyPatches(Harmony harmony)
         {
-            if ((byte)__instance.grassType == 1 && !environment.GetSeasonForLocation().Equals("winter") && (int)__instance.numberOfWeeds < 4)
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Grass), nameof(StardewValley.TerrainFeatures.Grass.dayUpdate)),
+                prefix: new HarmonyMethod(typeof(GrassPatches), nameof(GrassPatches.dayUpdate_Prefix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Grass), nameof(StardewValley.TerrainFeatures.Grass.reduceBy)),
+                postfix: new HarmonyMethod(typeof(GrassPatches), nameof(GrassPatches.reduceBy_Postfix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Grass), nameof(StardewValley.TerrainFeatures.Grass.doCollisionAction)),
+                prefix: new HarmonyMethod(typeof(GrassPatches), nameof(GrassPatches.doCollisionAction_Prefix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Grass), nameof(StardewValley.TerrainFeatures.Grass.performToolAction)),
+                prefix: new HarmonyMethod(typeof(GrassPatches), nameof(GrassPatches.performToolAction_Prefix)),
+                postfix: new HarmonyMethod(typeof(GrassPatches), nameof(GrassPatches.performToolAction_Postfix)));
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.TerrainFeatures.Grass), nameof(StardewValley.TerrainFeatures.Grass.draw)),
+                prefix: new HarmonyMethod(typeof(GrassPatches), nameof(GrassPatches.draw_Prefix)));
+        }
+
+        public static bool dayUpdate_Prefix(Grass __instance, GameLocation environment, Vector2 tileLocation)
+        {
+            if (__instance.grassType.Value == 1 && !environment.GetSeasonForLocation().Equals("winter") && __instance.numberOfWeeds.Value < 4)
             {
-                __instance.numberOfWeeds.Value = Utility.Clamp(__instance.numberOfWeeds.Value + ModEntry.CalculateTuftsToAdd(ModEntry.GrassIsQuick(__instance), (int)__instance.numberOfWeeds == 0 ? ModEntry.GrowthType.Cut : ModEntry.GrowthType.Standard), 0, 4);
+                __instance.numberOfWeeds.Value = Utility.Clamp(__instance.numberOfWeeds.Value + ModEntry.CalculateTuftsToAdd(ModEntry.GrassIsQuick(__instance), __instance.numberOfWeeds.Value == 0 ? ModEntry.GrowthType.Cut : ModEntry.GrowthType.Standard), 0, 4);
             }
             __instance.setUpRandom(tileLocation);
 
             return false;
         }
-    }
 
-    [HarmonyPatch(typeof(Grass))]
-    [HarmonyPatch("reduceBy", new Type[] { typeof(int), typeof(Vector2), typeof(bool) })]
-    public class Grass_reduceBy_Patch
-    {
-        static void Postfix(Grass __instance, ref bool __result)
+        public static void reduceBy_Postfix(Grass __instance, ref bool __result)
         {
             __result = false;
 
-            __instance.numberOfWeeds.Value = Math.Max(0, (int)__instance.numberOfWeeds);
+            __instance.numberOfWeeds.Value = Math.Max(0, __instance.numberOfWeeds.Value);
 
-            if ((int)__instance.numberOfWeeds <= 0)
+            if (__instance.numberOfWeeds.Value <= 0)
             {
                 __result = Game1.random.NextDouble() >= (ModEntry.GrassIsQuick(__instance) ? ModEntry.config.quickHardiness : ModEntry.config.vanillaHardiness);
             }
         }
-    }
 
-    [HarmonyPatch(typeof(Grass))]
-    [HarmonyPatch("doCollisionAction", new Type[] { typeof(Rectangle), typeof(int), typeof(Vector2), typeof(Character), typeof(GameLocation) })]
-    public class Grass_doCollisionAction_Patch
-    {
-        static bool Prefix(Grass __instance, float ___maxShake, float ___shakeRotation, Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, GameLocation location)
+        public static bool doCollisionAction_Prefix(Grass __instance, float ___maxShake, float ___shakeRotation, Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, GameLocation location)
         {
             if (location != Game1.currentLocation)
             {
@@ -72,14 +80,14 @@ namespace HardyGrass
                 ModEntry.GrassShakeMethodInfo.Invoke(__instance, new object[] { (float)Math.PI / 8f / (float)((5 + Game1.player.addedSpeed) / speedOfCollision), (float)Math.PI / 80f / (float)((5 + Game1.player.addedSpeed) / speedOfCollision), (float)positionOfCollider.Center.X > tileLocation.X * 64f + 32f });
                 //this.shake((float)Math.PI / 8f / (float)((5 + Game1.player.addedSpeed) / speedOfCollision), (float)Math.PI / 80f / (float)((5 + Game1.player.addedSpeed) / speedOfCollision), (float)positionOfCollider.Center.X > tileLocation.X * 64f + 32f);
             }
-            if (who is Farmer && Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && ((MeleeWeapon)Game1.player.CurrentTool).isOnSpecial && (int)((MeleeWeapon)Game1.player.CurrentTool).type == 0 && Math.Abs(___shakeRotation) < 0.001f && __instance.performToolAction(Game1.player.CurrentTool, -1, tileLocation, location))
+            if (who is Farmer && Game1.player.CurrentTool != null && Game1.player.CurrentTool is MeleeWeapon && ((MeleeWeapon)Game1.player.CurrentTool).isOnSpecial && ((MeleeWeapon)Game1.player.CurrentTool).type.Value == 0 && Math.Abs(___shakeRotation) < 0.001f && __instance.performToolAction(Game1.player.CurrentTool, -1, tileLocation, location))
             {
                 Game1.currentLocation.terrainFeatures.Remove(tileLocation);
             }
-            if ((int)__instance.numberOfWeeds > 0 && who is Farmer)
+            if (__instance.numberOfWeeds.Value > 0 && who is Farmer)
             {
                 (who as Farmer).temporarySpeedBuff = -1f;
-                if ((byte)__instance.grassType == 6)
+                if (__instance.grassType.Value == 6)
                 {
                     (who as Farmer).temporarySpeedBuff = -3f;
                 }
@@ -87,28 +95,24 @@ namespace HardyGrass
 
             return false;
         }
-    }
 
-    [HarmonyPatch(typeof(Grass))]
-    [HarmonyPatch("performToolAction", new Type[] { typeof(Tool), typeof(int), typeof(Vector2), typeof(GameLocation)})]
-    public class Grass_performToolAction_Patch
-    {
-        static bool Prefix(Grass __instance, ref bool __result, Tool t, int explosion, Vector2 tileLocation, GameLocation location)
+        public static bool performToolAction_Prefix(Grass __instance, ref bool __result, Tool t, int explosion, Vector2 tileLocation, GameLocation location)
         {
+            // If the grass is already fully cut, skip the default action entirely.
             __result = false;
-            return (int)__instance.numberOfWeeds > 0;
+            return __instance.numberOfWeeds.Value > 0;
         }
 
-        static void Postfix(Grass __instance, ref bool __result, Tool t, int explosion, Vector2 tileLocation, GameLocation location)
+        public static void performToolAction_Postfix(Grass __instance, ref bool __result, Tool t, int explosion, Vector2 tileLocation, GameLocation location)
         {
-            __instance.numberOfWeeds.Value = Math.Max(0, (int)__instance.numberOfWeeds);
+            __instance.numberOfWeeds.Value = Math.Max(0, __instance.numberOfWeeds.Value);
 
             if (location == null)
             {
                 location = Game1.currentLocation;
             }
 
-            if ((int)__instance.numberOfWeeds > 0)
+            if (__instance.numberOfWeeds.Value > 0)
             {
                 return;
             }
@@ -119,7 +123,7 @@ namespace HardyGrass
                 location.playSound("swordswipe");
 
                 Color c = Color.Green;
-                switch ((byte)__instance.grassType)
+                switch (__instance.grassType.Value)
                 {
                     case 1:
                         switch (location.GetSeasonForLocation())
@@ -159,18 +163,13 @@ namespace HardyGrass
                 __result = Game1.random.NextDouble() >= (ModEntry.GrassIsQuick(__instance) ? ModEntry.config.quickHardiness : ModEntry.config.vanillaHardiness);
             }
         }
-    }
 
-    [HarmonyPatch(typeof(Grass))]
-    [HarmonyPatch("draw", new Type[] { typeof(SpriteBatch), typeof(Vector2) })]
-    public class Grass_draw_Patch
-    {
-        static bool Prefix(Grass __instance, SpriteBatch spriteBatch, Vector2 tileLocation, int[] ___whichWeed, int[] ___offset1, int[] ___offset2, int[] ___offset3, int[] ___offset4, bool[] ___flip, double[] ___shakeRandom, float ___shakeRotation)
+        public static bool draw_Prefix(Grass __instance, SpriteBatch spriteBatch, Vector2 tileLocation, int[] ___whichWeed, int[] ___offset1, int[] ___offset2, int[] ___offset3, int[] ___offset4, bool[] ___flip, double[] ___shakeRandom, float ___shakeRotation)
         {
             for (int i = 0; i < 4; i++)
             {
                 Vector2 pos = ((i != 4) ? (tileLocation * 64f + new Vector2((float)(i % 2 * 64 / 2 + ___offset3[i] * 4 - 4) + 30f, i / 2 * 64 / 2 + ___offset4[i] * 4 + 40)) : (tileLocation * 64f + new Vector2((float)(16 + ___offset1[i] * 4 - 4) + 30f, 16 + ___offset2[i] * 4 + 40)));
-                spriteBatch.Draw(i >= (int)__instance.numberOfWeeds ? ModEntry.texture.Value : __instance.texture.Value, Game1.GlobalToLocal(Game1.viewport, pos), new Rectangle(___whichWeed[i] * 15, __instance.grassSourceOffset, 15, 20), Color.White, ___shakeRotation / (float)(___shakeRandom[i] + 1.0), new Vector2(7.5f, 17.5f), 4f, ___flip[i] ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (pos.Y - 24f) / 10000f + pos.X / 1E+07f);
+                spriteBatch.Draw(i >= __instance.numberOfWeeds.Value ? ModEntry.texture.Value : __instance.texture.Value, Game1.GlobalToLocal(Game1.viewport, pos), new Rectangle(___whichWeed[i] * 15, __instance.grassSourceOffset.Value, 15, 20), Color.White, ___shakeRotation / (float)(___shakeRandom[i] + 1.0), new Vector2(7.5f, 17.5f), 4f, ___flip[i] ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (pos.Y - 24f) / 10000f + pos.X / 1E+07f);
             }
 
             return false;

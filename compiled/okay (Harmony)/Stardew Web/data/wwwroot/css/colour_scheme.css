@@ -21,3 +21,15 @@
 .color_3rd_tier_bg {
     background-color: #ddddaa !important;
 }
+
+.color_bg_exp_land{
+    background-color: #888811;
+}
+
+.color_bg_exp_land_empty{
+    background-color:#DDDDAA;
+}
+
+.color_bg_exp_land_occ {
+    background-color: #F2DADF;
+}

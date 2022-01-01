@@ -18,7 +18,7 @@ namespace BattleRoyale.Patches
 {
     class DisableOtherSaves : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(LoadGameMenu), "FindSaveGames");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(LoadGameMenu), "FindSaveGames");
 
         public static bool Prefix(ref List<Farmer> __result)
         {
@@ -39,7 +39,7 @@ namespace BattleRoyale.Patches
     }
     class DisableOtherSaves2 : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(SaveGame), "Load");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(SaveGame), "Load");
 
         public static bool Prefix()
         {

@@ -22,7 +22,7 @@ namespace CrabPotQuality
             Helper.Events.GameLoop.DayStarted += delegate { OnDayStarted(); };
         }
 
-        private void OnDayStarted()
+        private static void OnDayStarted()
         {
             foreach (var location in Game1.locations)
             {
@@ -30,21 +30,21 @@ namespace CrabPotQuality
                 {
                     if (item is CrabPot pot)
                     {
-                        if (pot != null && pot.heldObject != null && pot.heldObject.Value != null && pot.readyForHarvest)
+                        if (pot != null && pot.heldObject.Value != null && pot.readyForHarvest.Value)
                         {
                             // doing it in two steps in case the object gets replaced with a rainbow shell
                             int quality = DeterminePotQuality(pot);
-                            pot.heldObject.Value.quality.Value = quality;
+                            pot.heldObject.Value.Quality = quality;
                         }
                     }
                 }
             }
         }
 
-        private int DeterminePotQuality(CrabPot pot)
+        private static int DeterminePotQuality(CrabPot pot)
         {
             // if it is magic bait, done before trash check so it's never wasted
-            if (pot.bait != null && pot.bait.Value != null && pot.bait.Value.ParentSheetIndex == 908)
+            if (pot.bait.Value != null && pot.bait.Value.ParentSheetIndex == 908)
             {
                 // give the crab pot a rainbow shell
                 pot.heldObject.Value = new StardewObject(394, 1, false, -1, 0);
@@ -56,11 +56,11 @@ namespace CrabPotQuality
                 return 0;
             }
 
-            Farmer farmer = Game1.getFarmer(pot.owner);
+            Farmer farmer = Game1.getFarmer(pot.owner.Value);
 
             if (farmer == null)
             {
-                return 0;
+                farmer = Game1.MasterPlayer; // set to host if owner somehow doesn't exist
             }
 
             if (IsLuremaster(farmer) || IsMariner(farmer))
@@ -71,7 +71,7 @@ namespace CrabPotQuality
             int multiplier = 1;
 
             // if it is wild bait
-            if (pot.bait != null && pot.bait.Value != null && pot.bait.Value.ParentSheetIndex == 774)
+            if (pot.bait.Value != null && pot.bait.Value.ParentSheetIndex == 774)
             {
                 multiplier = 2;
             }
@@ -91,12 +91,12 @@ namespace CrabPotQuality
             }
         }
 
-        private bool IsLuremaster(Farmer farmer)
+        private static bool IsLuremaster(Farmer farmer)
         {
             return farmer.professions.Contains(11);
         }
 
-        private bool IsMariner(Farmer farmer)
+        private static bool IsMariner(Farmer farmer)
         {
             return farmer.professions.Contains(10);
         }

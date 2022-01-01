@@ -17,21 +17,14 @@ using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
+using WarpNetwork.models;
 
 namespace WarpNetwork
 {
     class ItemHandler
     {
-        private static IModHelper Helper;
-        private static IMonitor Monitor;
-        private static Config Config;
-        internal static void Init(IMonitor monitor, IModHelper helper, Config config)
+        public static void ButtonPressed(object sender, ButtonPressedEventArgs action)
         {
-            Monitor = monitor;
-            Helper = helper;
-            Config = config;
-        }
-        public static void ButtonPressed(object sender, ButtonPressedEventArgs action){
             if (action.IsSuppressed())
             {
                 return;
@@ -47,33 +40,41 @@ namespace WarpNetwork
                         {
                             return;
                         }
-                        int id = who.ActiveObject.ParentSheetIndex;
-                        if(UseItem(who, id))
+                        string id = null;
+                        if (ModEntry.dgaAPI != null)
                         {
-                            Helper.Input.Suppress(action.Button);
+                            id = ModEntry.dgaAPI.GetDGAItemId(who.ActiveObject);
+
+                        }
+                        if (id == null)
+                        {
+                            id = who.ActiveObject.ParentSheetIndex.ToString();
+                        }
+                        if (UseItem(who, id))
+                        {
+                            ModEntry.helper.Input.Suppress(action.Button);
                         }
                     }
                 }
-            } else if (action.Button.IsUseToolButton() && who.CurrentTool is Wand && Config.AccessFromWand && Config.MenuEnabled)
+            }
+            else if (action.Button.IsUseToolButton() && who.CurrentTool is Wand && ModEntry.config.AccessFromWand && ModEntry.config.MenuEnabled)
             {
-                if(CanUseHere(who) && who.CanMove)
+                if (CanUseHere(who) && who.CanMove)
                 {
                     WarpHandler.ShowWarpMenu("_wand");
-                    Helper.Input.Suppress(action.Button);
+                    ModEntry.helper.Input.Suppress(action.Button);
                 }
             }
         }
-        private static bool UseItem(Farmer who, int id)
+        private static bool UseItem(Farmer who, string id)
         {
             Dictionary<string, WarpItem> items = Utils.GetWarpItems();
-            string key = id.ToString();
-            if (items.ContainsKey(key))
+            if (items.ContainsKey(id))
             {
-                WarpItem item = items[key];
-                if(item.Destination.ToLower() == "_all")
+                WarpItem item = items[id];
+                if (item.Destination.ToLower() == "_all")
                 {
-                    WarpHandler.ConsumeOnSelect = item.Consume;
-                    WarpHandler.ShowWarpMenu();
+                    WarpHandler.ShowWarpMenu("", item.Consume);
                     return true;
                 }
                 Color color = Utils.ParseColor(item.Color);
@@ -99,8 +100,12 @@ namespace WarpNetwork
                     !who.onBridge
                     );
         }
-        private static void DoTotemWarpEffects(Color color, int id, bool Consume, Farmer who, Func<Farmer, bool> action)
+        private static void DoTotemWarpEffects(Color color, string id, bool Consume, Farmer who, Func<Farmer, bool> action)
         {
+            if (!int.TryParse(id, out int index))
+            {
+                index = Utils.GetDeterministicHashCode(id);
+            }
             who.jitterStrength = 1f;
             who.currentLocation.playSound("warrior", NetAudio.SoundContext.Default);
             who.faceDirection(2);
@@ -125,9 +130,10 @@ namespace WarpNetwork
                 }), true)
             }, null);
             // reflection
-            Multiplayer mp = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            Multiplayer mp = ModEntry.helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
             // --
-            mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(id, 9999f, 1, 999, who.Position + new Vector2(0.0f, -96f), false, false, false, 0.0f)
+            mp.broadcastSprites(who.currentLocation,
+            new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(0.0f, -96f), false, false, false, 0.0f)
             {
                 motion = new Vector2(0.0f, -1f),
                 scaleChange = 0.01f,
@@ -139,8 +145,8 @@ namespace WarpNetwork
                 xPeriodicLoopTime = 1000f,
                 xPeriodicRange = 4f,
                 layerDepth = 1f
-            });
-            mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(id, 9999f, 1, 999, who.Position + new Vector2(-64f, -96f), false, false, false, 0.0f)
+            },
+            new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(-64f, -96f), false, false, false, 0.0f)
             {
                 motion = new Vector2(0.0f, -0.5f),
                 scaleChange = 0.005f,
@@ -154,8 +160,8 @@ namespace WarpNetwork
                 xPeriodicLoopTime = 1000f,
                 xPeriodicRange = 4f,
                 layerDepth = 0.9999f
-            });
-            mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(id, 9999f, 1, 999, who.Position + new Vector2(64f, -96f), false, false, false, 0.0f)
+            },
+            new TemporaryAnimatedSprite(index, 9999f, 1, 999, who.Position + new Vector2(64f, -96f), false, false, false, 0.0f)
             {
                 motion = new Vector2(0.0f, -0.5f),
                 scaleChange = 0.005f,

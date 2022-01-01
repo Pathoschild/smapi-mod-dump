@@ -15,30 +15,31 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Revitalize.Framework;
 using Revitalize.Framework.Configs;
-using Revitalize.Framework.Crafting;
 using Revitalize.Framework.Environment;
-using Revitalize.Framework.Hacks;
-using Revitalize.Framework.Illuminate;
-using Revitalize.Framework.Menus;
-using Revitalize.Framework.Minigame.SeasideScrambleMinigame;
 using Revitalize.Framework.Objects;
-using Revitalize.Framework.Objects.Extras;
-using Revitalize.Framework.Objects.Furniture;
+using Revitalize.Framework.World.Objects;
+using Revitalize.Framework.World.Objects.Machines;
+using Revitalize.Framework;
+using Revitalize.Framework.Crafting;
+using Revitalize.Framework.Hacks;
+using Revitalize.Framework.Menus;
+using Revitalize.Framework.Menus.MenuComponents;
+using Revitalize.Framework.Objects;
 using Revitalize.Framework.Player;
 using Revitalize.Framework.Utilities;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
+using StardewValley.Tools;
 using StardustCore.Animations;
 using StardustCore.UIUtilities;
 using StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons;
+using xTile.Dimensions;
 using Animation = StardustCore.Animations.Animation;
 
 namespace Revitalize
 {
 
-    //Bugs:
-    //  -Chair tops cut off objects
-    // -load content MUST be enabled for the table to be placed??????
     // TODO:
     /*
     // -Make this mod able to load content packs for easier future modding
@@ -46,15 +47,13 @@ namespace Revitalize
     //  -Multiple Lights On Object
     //  -Illumination Colors
     //  Furniture:
-    //      -rugs (done, needs factory info/sprite)
-    //      -tables (done)
-    //      -lamps (done)
-    //      -chairs (done)
-    //      -benches (done but needs factory info/sprite)
-    //      -dressers/other storage containers (Done!)
+    //      -rugs 
+    //      -tables
+    //      -lamps
+    //      -dressers/other storage containers 
     //      -fun interactables
     //          -Arcade machines
-    //      -More crafting tables (done)
+    //      -More crafting tables 
     //      -Baths (see chairs but swimming)
     //
     //  -Machines
@@ -199,9 +198,6 @@ namespace Revitalize
             -Broaches
             -Earings
             -Pendants
-
-
-        make chat notification when people are sleeping
     */
 
     public class ModCore : Mod
@@ -215,20 +211,11 @@ namespace Revitalize
         /// </summary>
         public static ObjectManager ObjectManager;
 
-        /// <summary>
-        /// Keeps track of all of the extra object groups.
-        /// </summary>
-        public static Dictionary<string, MultiTiledObject> ObjectGroups;
-
         public static PlayerInfo playerInfo;
 
         public static Serializer Serializer;
 
-        public static Dictionary<GameLocation, MultiTiledObject> ObjectsToDraw;
         public static VanillaRecipeBook VanillaRecipeBook;
-
-        public static Dictionary<Guid, CustomObject> CustomObjects;
-        public static Dictionary<Guid, Item> CustomItems;
 
         public static ConfigManager Configs;
         public override void Entry(IModHelper helper)
@@ -242,21 +229,15 @@ namespace Revitalize
             this.initailizeComponents();
             Serializer = new Serializer();
             playerInfo = new PlayerInfo();
-            CustomObjects = new Dictionary<Guid, CustomObject>();
-            CustomItems = new Dictionary<Guid, Item>();
 
             //Loads in textures to be used by the mod.
             this.loadInTextures();
 
             //Loads in objects to be use by the mod.
-            ObjectGroups = new Dictionary<string, MultiTiledObject>();
             ObjectManager = new ObjectManager(Manifest);
-            ObjectsToDraw = new Dictionary<GameLocation, MultiTiledObject>();
 
             //Adds in event handling for the mod.
             ModHelper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
-            ModHelper.Events.GameLoop.SaveLoaded += CraftingRecipeBook.AfterLoad_LoadRecipeBooks;
-            ModHelper.Events.GameLoop.Saving += CraftingRecipeBook.BeforeSave_SaveRecipeBooks;
 
             ModHelper.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
             ModHelper.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
@@ -267,17 +248,21 @@ namespace Revitalize
             ModHelper.Events.Input.ButtonPressed += this.Input_ButtonPressed;
             ModHelper.Events.Input.ButtonPressed += ObjectInteractionHacks.Input_CheckForObjectInteraction;
 
-            ModHelper.Events.GameLoop.DayEnding += Serializer.DayEnding_CleanUpFilesForDeletion;
             ModHelper.Events.Display.RenderedWorld += ObjectInteractionHacks.Render_RenderCustomObjectsHeldInMachines;
             //ModHelper.Events.Display.Rendered += MenuHacks.EndOfDay_OnMenuChanged;
+            ModHelper.Events.Display.MenuChanged += ShopHacks.OnNewMenuOpened;
             //ModHelper.Events.GameLoop.Saved += MenuHacks.EndOfDay_CleanupForNewDay;
-            ModHelper.Events.Multiplayer.ModMessageReceived += MultiplayerUtilities.GetModMessage;
             ModHelper.Events.Input.ButtonPressed += ObjectInteractionHacks.ResetNormalToolsColorOnLeftClick;
 
             ModHelper.Events.Input.ButtonPressed += this.Input_ButtonPressed1;
 
-            ModHelper.Events.Display.MenuChanged += MenuHacks.RecreateFarmhandInventory;
+            ModHelper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
 
+
+        }
+
+        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        {
             ObjectManager.loadInItems();
             //Adds in recipes to the mod.
             VanillaRecipeBook = new VanillaRecipeBook();
@@ -286,24 +271,58 @@ namespace Revitalize
 
         private void Input_ButtonPressed1(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
+
+            
             if (e.Button == SButton.MouseLeft)
             {
                 if (Game1.player != null)
                 {
                     if (Game1.activeClickableMenu != null || Game1.eventUp || Game1.currentMinigame != null) return;
-                    if (Game1.player.ActiveObject is CustomObject)
+                    pressUseToolButtonCheckForCustomObjects();
+                }
+            }
+            
+        }
+
+        public static bool pressUseToolButtonCheckForCustomObjects()
+        {
+            Game1.player.toolPower = 0;
+            Game1.player.toolHold = 0;
+
+            //ModCore.log("Press the tool button!");
+            Vector2 c = Game1.player.GetToolLocation() / 64f;
+            c.X = (int)c.X;
+            c.Y = (int)c.Y;
+            Point p = new Point((int)(c.X*64f), (int)(c.Y*64f));
+
+            if (Game1.player.currentLocation.objects.ContainsKey(c))
+            {
+                //ModCore.log("Spot is taken: " + p.ToString());
+                //Only want to check spots that might not be covered by the game.
+                return false ;
+            }
+
+            foreach (Furniture f in Game1.player.currentLocation.furniture)
+            {
+                //ModCore.log("I see a furniture: " + f.DisplayName);
+                if(f is CustomObject)
+                {
+                    //ModCore.log("I see a custom furniture piece: " + f.DisplayName);
+                    if (f.boundingBox.Value.Contains(p))
                     {
-                        if ((Game1.player.ActiveObject as CustomObject).canBePlacedHere(Game1.player.currentLocation, Game1.currentCursorTile))
-                        {
-                            CustomObject o = (CustomObject)Game1.player.ActiveObject;
-                            o.placementAction(Game1.currentLocation, (int)Game1.currentCursorTile.X * Game1.tileSize, (int)Game1.currentCursorTile.Y * Game1.tileSize, Game1.player);
-                            //o.performObjectDropInAction(Game1.player.ActiveObject, true, Game1.player);
-                            Game1.player.reduceActiveItemByOne();
-                            playerInfo.justPlacedACustomObject = true;
-                        }
+                        //ModCore.log("Found an object at a non object spot position: " + p.ToString());
+                       // ModCore.log("The name is: " + f.DisplayName);
+                        f.performToolAction(Game1.player.CurrentTool, Game1.player.currentLocation);
+                        return true;
+                    }
+                    else
+                    {
+                        //ModCore.log("BB is: " + f.boundingBox.Value.ToString());
+                        //ModCore.log("Point is: " + p.ToString());
                     }
                 }
             }
+            return false;
         }
 
 
@@ -346,107 +365,24 @@ namespace Revitalize
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
-            /*
-            if(e.Button== SButton.U)
-            {
-                Game1.currentMinigame = new Revitalize.Framework.Minigame.SeasideScrambleMinigame.SeasideScramble();
-            }
-            */
             if (e.Button == SButton.U)
             {
                 CraftingMenuV1 craft = new CraftingMenuV1(100, 100, 600, 800, Color.White, Game1.player.Items.ToList());
-                craft.addInCraftingPageTab("Default", new AnimatedButton(new StardustCore.Animations.AnimatedSprite("Default Tab", new Vector2(100 + 48, 100 + (24 * 4)), new AnimationManager(TextureManager.GetExtendedTexture(ModCore.Manifest, "Menus", "MenuTabHorizontal"), new Animation(0, 0, 24, 24)), Color.White), new Rectangle(0, 0, 24, 24), 2f));
-                craft.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new List<CraftingRecipeComponent>()
+                craft.addInCraftingPageTab("Default", new AnimatedButton(new StardustCore.Animations.AnimatedSprite ("Default Tab", new Vector2(100 + 48, 100 + 24 * 4), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Menus", "MenuTabHorizontal"), new Animation(0, 0, 24, 24)), Color.White), new Microsoft.Xna.Framework.Rectangle(0, 0, 24, 24), 2f));
+                craft.addInCraftingRecipe(new CraftingRecipeButton(new Recipe(new List<CraftingRecipeComponent>()
                 {
                     //Inputs here
-                   new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("SteelIngot"),20)
-                }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("Anvil"), 1)), null, new Vector2(), new Rectangle(0, 0, 32, 32), 1f, false, Color.White), "Default");
+                   new CraftingRecipeComponent(ObjectManager.GetItem("SteelIngot"),20)
+                }, new CraftingRecipeComponent(ObjectManager.GetItem("Anvil"), 1)), null, new Vector2(), new Microsoft.Xna.Framework.Rectangle(0, 0, 32, 32), 1f, false, Color.White), "Default");
                 craft.currentTab = "Default";
                 craft.sortRecipes();
                 Game1.activeClickableMenu = craft;
             }
-            /*
-            if (e.Button == SButton.Y)
-            {
-                //Game1.activeClickableMenu = new ItemGrabMenu(Game1.player.Items,false,true, new InventoryMenu.highlightThisItem(InventoryMenu.highlightAllItems),);
-                List<Item> newItems = new List<Item>()
-                {
-                    new StardewValley.Object(184,10)
-                };
 
-                Game1.activeClickableMenu = new Revitalize.Framework.Menus.InventoryTransferMenu(100, 100, 500, 500, newItems, 36);
-            }
-            */
-
-            if (e.Button == SButton.U)
-            {
-                /*
-                CraftingMenuV1 menu= new Framework.Menus.CraftingMenuV1(100, 100, 400, 700, Color.White, Game1.player.Items);
-                menu.addInCraftingPageTab("Default",new AnimatedButton(new StardustCore.Animations.AnimatedSprite("Default Tab", new Vector2(100 + 48, 100 + (24 * 4)), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Menus", "MenuTabHorizontal"), new Animation(0, 0, 24, 24)), Color.White), new Rectangle(0, 0, 24, 24), 2f));
-
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.Wool, 1), 1)), null, new Vector2(), new Rectangle(0,0,16,16), 4f, true, Color.White),"Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.FairyRose, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.PrismaticShard, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.OakResin, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.ChocolateCake, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.QualitySprinkler, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.JackOLantern, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.WildPlum, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.Egg, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-                menu.addInCraftingRecipe(new Framework.Menus.MenuComponents.CraftingRecipeButton(new Recipe(new Dictionary<Item, int>()
-                {
-                    //Inputs here
-                    {new StardewValley.Object((int)Enums.SDVObject.Coal,1),1 },
-                }, new KeyValuePair<Item, int>(new StardewValley.Object((int)Enums.SDVObject.BakedFish, 1), 1)), null, new Vector2(), new Rectangle(0, 0, 16, 16), 4f, true, Color.White), "Default");
-
-
-                menu.currentTab = "Default";
-                menu.sortRecipes();
-
-                if (Game1.activeClickableMenu == null) Game1.activeClickableMenu = menu;
-                */
-            }
         }
 
         private void GameLoop_ReturnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
         {
-            Serializer.returnToTitle();
             ObjectManager = new ObjectManager(Manifest);
         }
         /// <summary>
@@ -454,69 +390,6 @@ namespace Revitalize
         /// </summary>
         private void loadContent()
         {
-
-            MultiTiledComponent obj = new MultiTiledComponent(PyTKHelper.CreateOBJData("Omegasis.Revitalize.MultiTiledComponent.Test", TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), typeof(MultiTiledComponent), Color.White), new BasicItemInformation("CoreObjectTest", "Omegasis.TEST1", "YAY FUN!", "Omegasis.Revitalize.MultiTiledComponent.Test", Color.White, -300, 0, false, 300, true, true, TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Furniture", "Oak Chair"), new Animation(new Rectangle(0, 0, 16, 16))), Color.White, false, null, null));
-            MultiTiledComponent obj2 = new MultiTiledComponent(PyTKHelper.CreateOBJData("Omegasis.Revitalize.MultiTiledComponent.Test", TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), typeof(MultiTiledComponent), Color.White), new BasicItemInformation("CoreObjectTest2", "Omegasis.TEST2", "Some fun!", "Omegasis.Revitalize.MultiTiledComponent.Test", Color.White, -300, 0, false, 300, true, true, TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Furniture", "Oak Chair"), new Animation(new Rectangle(0, 16, 16, 16))), Color.White, false, null, null));
-            MultiTiledComponent obj3 = new MultiTiledComponent(PyTKHelper.CreateOBJData("Omegasis.Revitalize.MultiTiledComponent.Test", TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), typeof(MultiTiledComponent), Color.White), new BasicItemInformation("CoreObjectTest3", "Omegasis.TEST3", "NoFun", "Omegasis.Revitalize.MultiTiledComponent.Test", Color.White, -300, 0, false, 100, true, true, TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Furniture", "Oak Chair"), new Animation(new Rectangle(0, 32, 16, 16))), Color.Red, false, null, null));
-
-
-            obj3.info.lightManager.addLight(new Vector2(Game1.tileSize), new LightSource(4, new Vector2(0, 0), 2.5f, Color.Orange.Invert()), obj3);
-
-            MultiTiledObject bigObject = new MultiTiledObject(PyTKHelper.CreateOBJData("Omegasis.Revitalize.MultiTiledComponent.Test", TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), typeof(MultiTiledObject), Color.White), new BasicItemInformation("MultiTest", "Omegasis.BigTiledTest", "A really big object", "Omegasis.Revitalize.MultiTiledObject", Color.Blue, -300, 0, false, 500, true, true, TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), new AnimationManager(), Color.White, false, null, null));
-
-            bigObject.addComponent(new Vector2(0, 0), obj);
-            bigObject.addComponent(new Vector2(1, 0), obj2);
-            bigObject.addComponent(new Vector2(2, 0), obj3);
-
-            /*
-            Recipe pie = new Recipe(new Dictionary<Item, int>()
-            {
-                [bigObject] = 1
-            }, new KeyValuePair<Item, int>(new Furniture(3, Vector2.Zero), 1), new StatCost(100, 50, 0, 0));
-            */
-
-            ObjectManager.miscellaneous.Add("Omegasis.BigTiledTest", bigObject);
-
-
-            Framework.Objects.Furniture.RugTileComponent rug1 = new RugTileComponent(PyTKHelper.CreateOBJData("Omegasis.Revitalize.Furniture.Basic.Rugs.TestRug", TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), typeof(RugTileComponent), Color.White), new BasicItemInformation("Rug Tile", "Omegasis.Revitalize.Furniture.Basic.Rugs.TestRug", "A rug tile", "Rug", Color.Brown, -300, 0, false, 100, true, true, TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Furniture", "Oak Chair"), new Animation(new Rectangle(0, 0, 16, 16))), Color.White, true, null, null));
-
-            Framework.Objects.Furniture.RugMultiTiledObject rug = new RugMultiTiledObject(PyTKHelper.CreateOBJData("Omegasis.Revitalize.Furniture.Basic.Rugs.TestRug", TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), typeof(RugMultiTiledObject), Color.White, false), new BasicItemInformation("Simple Rug Test", "Omegasis.Revitalize.Furniture.Basic.Rugs.TestRug", "A simple rug for testing", "Rugs", Color.Brown, -300, 0, false, 500, true, true, TextureManager.GetTexture(Manifest, "Furniture", "Oak Chair"), new AnimationManager(), Color.White, true, null, null));
-
-            rug.addComponent(new Vector2(0, 0), rug1);
-
-            ObjectManager.miscellaneous.Add("Omegasis.Revitalize.Furniture.Rugs.RugTest", rug);
-
-
-            SeasideScramble sscGame = new SeasideScramble();
-            ArcadeCabinetTile ssc1 = new ArcadeCabinetTile(PyTKHelper.CreateOBJData("Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", TextureManager.GetTexture(Manifest, "Furniture", "SeasideScrambleArcade"), typeof(ArcadeCabinetTile), Color.White), new BasicItemInformation("Seaside Scramble Arcade Game", "Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", "A arcade to play Seaside Scramble!", "Arcades", Color.LimeGreen, -300, 0, false, 100, true, true, TextureManager.GetTexture(Manifest, "Furniture", "SeasideScrambleArcade"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Furniture", "SeasideScrambleArcade"), new Animation(new Rectangle(0, 0, 16, 16)), new Dictionary<string, List<Animation>>()
-            {
-                {"Animated",new List<Animation>()
-                {
-                    new Animation(0,0,16,16,60),
-                    new Animation(16,0,16,16,60)
-                }
-                }
-
-            }, "Animated"), Color.White, false, null, null), new Framework.Objects.InformationFiles.Furniture.ArcadeCabinetInformation(sscGame, false));
-            ArcadeCabinetTile ssc2 = new ArcadeCabinetTile(PyTKHelper.CreateOBJData("Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", TextureManager.GetTexture(Manifest, "Furniture", "SeasideScrambleArcade"), typeof(ArcadeCabinetTile), Color.White), new BasicItemInformation("Seaside Scramble Arcade Game", "Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", "A arcade to play Seaside Scramble!", "Arcades", Color.LimeGreen, -300, 0, false, 100, true, true, TextureManager.GetTexture(Manifest, "Furniture", "SeasideScrambleArcade"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Furniture", "SeasideScrambleArcade"), new Animation(new Rectangle(0, 16, 16, 16)), new Dictionary<string, List<Animation>>()
-            {
-                {"Animated",new List<Animation>()
-                {
-                    new Animation(0,16,16,16,60),
-                    new Animation(16,16,16,16,60)
-                }
-                }
-
-            }, "Animated"), Color.White, false, null, null), new Framework.Objects.InformationFiles.Furniture.ArcadeCabinetInformation(sscGame, false));
-
-            ArcadeCabinetOBJ sscCabinet = new ArcadeCabinetOBJ(PyTKHelper.CreateOBJData("Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", TextureManager.GetTexture(Manifest, "Furniture", "SeasideScrambleArcade"), typeof(ArcadeCabinetOBJ), Color.White, true), new BasicItemInformation("Seaside Scramble Arcade Game", "Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", "A arcade to play Seaside Scramble!", "Arcades", Color.LimeGreen, -300, 0, false, 500, true, true, TextureManager.GetTexture(Manifest, "Furniture", "SeasideScrambleArcade"), new AnimationManager(), Color.White, true, null, null));
-            sscCabinet.addComponent(new Vector2(0, 0), ssc1);
-            sscCabinet.addComponent(new Vector2(0, 1), ssc2);
-
-
-            ObjectManager.miscellaneous.Add("Omegasis.Revitalize.Furniture.Arcade.SeasideScramble", sscCabinet);
-
-            //ModCore.log("Added in SSC!");
 
         }
 
@@ -554,66 +427,33 @@ namespace Revitalize
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
-            //this.loadContent();
-
-
-            Serializer.afterLoad();
-            ShopHacks.AddInCustomItemsToShops();
-            ObjectInteractionHacks.AfterLoad_RestoreTrackedMachines();
-
-
-            // Game1.player.addItemToInventory(GetObjectFromPool("Omegasis.BigTiledTest"));
-            //Game1.player.addItemToInventory(ObjectManager.getChair("Omegasis.Revitalize.Furniture.Chairs.OakChair"));
-
-            Game1.player.addItemToInventoryBool(ObjectManager.GetItem("Workbench"));
-
-
-            MultiTiledObject batteryBin = (MultiTiledObject)ModCore.ObjectManager.GetItem("BatteryBin", 1);
-            batteryBin.dyeColor(Framework.Illuminate.ColorsList.Lime);
-
-            //PickaxeExtended pick = new PickaxeExtended(new BasicItemInformation("My First Pickaxe", "Omegasis.Revitalize.Items.Tools.MyFirstPickaxe", "A testing pickaxe. Does it work?", "Tool", Color.SlateGray, 0, 0, false, 500, false, false, TextureManager.GetTexture(Manifest, "Tools", "Pickaxe"), new AnimationManager(TextureManager.GetExtendedTexture(Manifest, "Tools", "Pickaxe"), new Animation(0, 0, 16, 16)), Color.White, true, null, null),2,TextureManager.GetExtendedTexture(Manifest,"Tools","TestingPickaxeWorking"));
-            Game1.player.addItemsByMenuIfNecessary(new List<Item>()
+            ModCore.log("Load a save game!?!?");
+            Item i = ObjectManager.GetItem("SolarPanelTier1");
+            if (i == null)
             {
-                new StardewValley.Object((int)Enums.SDVObject.Coal,100),
-                ModCore.ObjectManager.GetItem("SteelIngot", 20),
-                ModCore.ObjectManager.GetItem("TrashCan",1),
-                ModCore.ObjectManager.resources.getResource("Sand",5),
-                ModCore.ObjectManager.GetItem("Anvil",1),
-                ModCore.ObjectManager.GetItem("SolarPanelTier1",1),
-                ModCore.ObjectManager.GetItem("SolarArrayTier1",1),
-                new StardewValley.Object(Vector2.Zero,(int)Enums.SDVBigCraftable.Furnace,false),
-                ModCore.ObjectManager.GetItem("CopperWire",10),
-                batteryBin,
-                ModCore.ObjectManager.GetItem("Capacitor",1),
-                ModCore.ObjectManager.GetItem("ChargingStation",1),
-                new StardewValley.Object((int)Enums.SDVObject.CopperOre,10),
-                ModCore.ObjectManager.GetTool("ChainsawV1"),
-                ModCore.ObjectManager.GetItem("MiningDrillMachineV1"),
-                ModCore.ObjectManager.GetItem("AlloyFurnace"),
-                new StardewValley.Object((int)Enums.SDVObject.IronBar,100),
-                ModCore.ObjectManager.GetItem("WaterPumpV1"),
-                ModCore.ObjectManager.GetItem("SteamBoilerV1"),
-                ModCore.ObjectManager.GetItem("IronPipe",100),
-                ModCore.ObjectManager.GetItem("SteamEngineV1"),
-                ModCore.ObjectManager.GetItem("WindmillV1"),
-                ModCore.ObjectManager.GetItem("WindmillV2")
-            });
-        }
-
-        /*
-        public static Item GetObjectFromPool(string objName)
-        {
-            if (customObjects.ContainsKey(objName))
-            {
-                CustomObject i = (CustomObject)customObjects[objName].getOne();
-                return i;
+                ModCore.log("SOLAR PANEL IS NULL?!?!?!");
             }
             else
             {
-                throw new Exception("Object Key name not found: " + objName);
+                ModCore.log("SOLAR PANEL IS NOT NULL!?!?!?");
             }
+            Game1.player.addItemToInventoryBool(ObjectManager.GetItem("SolarPanelTier1"));
+
+            Game1.player.addItemToInventoryBool(ObjectManager.GetItem("Workbench"));
+            Game1.player.addItemsByMenuIfNecessary(new List<Item>()
+            {
+                new StardewValley.Object((int)Enums.SDVObject.Coal,100),
+                ObjectManager.GetItem("SteelIngot", 20),
+                ObjectManager.GetItem("Anvil",1),
+                ObjectManager.GetItem("SolarPanelTier1",1),
+                ObjectManager.GetItem("SolarArrayTier1",1),
+                new StardewValley.Object(Vector2.Zero,(int)Enums.SDVBigCraftable.Furnace,false),
+                new StardewValley.Object((int)Enums.SDVObject.CopperOre,10),
+                ObjectManager.GetItem("MiningDrillMachineV1"),
+                new StardewValley.Object((int)Enums.SDVObject.IronBar,100),
+                ObjectManager.GetItem("WindmillV1"),
+            });
         }
-        */
 
         /// <summary>
         ///Logs information to the console.
@@ -622,13 +462,9 @@ namespace Revitalize
         public static void log(object message, bool StackTrace = true)
         {
             if (StackTrace)
-            {
                 ModMonitor.Log(message.ToString() + " " + getFileDebugInfo());
-            }
             else
-            {
                 ModMonitor.Log(message.ToString());
-            }
         }
 
         public static string getFileDebugInfo()
@@ -642,7 +478,7 @@ namespace Revitalize
         {
             // deal with normal scenarios
             if (argument == null) return true;
-            if (object.Equals(argument, default(T))) return true;
+            if (Equals(argument, default(T))) return true;
 
             // deal with non-null nullables
             Type methodType = typeof(T);

@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "TehCore",
+  "Author": "TehPers",
+  "Version": "1.0.1",
+  "Description": "Utility mod for creating highly compatible mods",
+  "UniqueID": "TehPers.Core",
+  "EntryDll": "TehPers.Core.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": ["Nexus:3256", "ModDrop:1071149"],
+  "Dependencies": [
+    { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": false }
+  ]
+}

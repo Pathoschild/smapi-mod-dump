@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32002.261
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticScreenshotTaker", "AutomaticScreenshotTaker\AutomaticScreenshotTaker.csproj", "{199931AE-86F6-4FAF-A7E4-2A5AD8154FC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{199931AE-86F6-4FAF-A7E4-2A5AD8154FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199931AE-86F6-4FAF-A7E4-2A5AD8154FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199931AE-86F6-4FAF-A7E4-2A5AD8154FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199931AE-86F6-4FAF-A7E4-2A5AD8154FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC1312CF-C276-46D3-BA65-E11CE4139FF4}
+	EndGlobalSection
+EndGlobal

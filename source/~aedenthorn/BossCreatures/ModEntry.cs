@@ -10,18 +10,15 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Monsters;
-using StardewValley.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
@@ -145,7 +142,7 @@ namespace BossCreatures
             {
                 try
                 {
-                    Texture2D spriteTexture = ModEntry.PHelper.Content.Load<Texture2D>($"Characters/Monsters/{type.Name}", ContentSource.GameContent);
+                    Texture2D spriteTexture = PHelper.Content.Load<Texture2D>($"Characters/Monsters/{type.Name}", ContentSource.GameContent);
                     if(spriteTexture != null)
                     {
                         texturePath = $"Characters\\Monsters\\{type.Name}";
@@ -161,7 +158,7 @@ namespace BossCreatures
 
         public static void BossDeath(GameLocation currentLocation, Monster monster, float difficulty)
         {
-            PHelper.Events.Display.RenderedHud -= ModEntry.OnRenderedHud;
+            PHelper.Events.Display.RenderedHud -= OnRenderedHud;
 
             Microsoft.Xna.Framework.Rectangle monsterBox = monster.GetBoundingBox();
 

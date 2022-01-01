@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -23,13 +23,11 @@ namespace CustomFixedDialogue
         {
             DialoguePatches.Initialize(Monitor, helper);
 
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
-            HarmonyMethod hm = new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.Dialogue_Prefix));
-            hm.prioritiy = Priority.First;
             harmony.Patch(
                 original: AccessTools.Constructor(typeof(Dialogue), new Type[] { typeof(string), typeof(NPC) }),
-                prefix: hm
+                prefix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.Dialogue_Prefix))
             );
 
             harmony.Patch(
@@ -62,7 +60,7 @@ namespace CustomFixedDialogue
 
 
         }
-
+        
         private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
         {
             string text = "This is a test";

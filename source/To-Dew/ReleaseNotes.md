@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.10.0
+
+* Built for SDV 1.5.5 / SMAPI 3.13
+
 ## Version 1.9.4
 
 * Updated Chinese translation. (Thanks to Thomas Chen, github user cwt9562.)

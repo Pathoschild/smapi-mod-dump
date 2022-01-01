@@ -429,7 +429,7 @@ namespace ItemBags.Menus
             //  Set quantities of the placeholder items to match the corresponding amount of the item currently stored in the bag
             foreach (Object Item in Bag.Contents)
             {
-                Object Placeholder = PlaceholderItems.FirstOrDefault(x => ItemBag.AreItemsEquivalent(x, Item, false));
+                Object Placeholder = PlaceholderItems.FirstOrDefault(x => ItemBag.AreItemsEquivalent(x, Item, false, true));
                 if (Placeholder != null)
                     ItemBag.ForceSetQuantity(Placeholder, Item.Stack);
             }

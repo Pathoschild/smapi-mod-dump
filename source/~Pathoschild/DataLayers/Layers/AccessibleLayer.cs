@@ -42,10 +42,10 @@ namespace Pathoschild.Stardew.DataLayers.Layers
 
         /// <summary>The action tile property values which trigger a warp.</summary>
         /// <remarks>See remarks on <see cref="IsWarp"/>.</remarks>
-        private readonly HashSet<string> WarpActions = new HashSet<string> { "EnterSewer", "LockedDoorWarp", "Mine", "Theater_Entrance", "Warp", "WarpCommunityCenter", "WarpGreenhouse", "WarpMensLocker", "WarpWomensLocker", "WizardHatch" };
+        private readonly HashSet<string> WarpActions = new() { "EnterSewer", "LockedDoorWarp", "Mine", "Theater_Entrance", "Warp", "WarpCommunityCenter", "WarpGreenhouse", "WarpMensLocker", "WarpWomensLocker", "WizardHatch" };
 
         /// <summary>The touch action tile property values which trigger a warp.</summary>
-        private readonly HashSet<string> TouchWarpActions = new HashSet<string> { "Door", "MagicWarp" };
+        private readonly HashSet<string> TouchWarpActions = new() { "Door", "MagicWarp", "Warp" };
 
 
         /*********
@@ -153,7 +153,7 @@ namespace Pathoschild.Stardew.DataLayers.Layers
 
             // check mine ladders/shafts
             const int ladderID = 173, shaftID = 174;
-            if (location is MineShaft && buildingTile != null && buildingTile.TileIndex is ladderID or shaftID && buildingTile.TileSheet.Id == "mine")
+            if (location is MineShaft && buildingTile is { TileIndex: ladderID or shaftID } && buildingTile.TileSheet.Id == "mine")
                 return true;
 
             return false;
@@ -163,7 +163,7 @@ namespace Pathoschild.Stardew.DataLayers.Layers
         /// <param name="location">The current location.</param>
         /// <param name="tile">The tile to check.</param>
         /// <param name="tilePixels">The tile area in pixels.</param>
-        /// <remarks>Derived from <see cref="Farmer.MovePosition"/>, <see cref="GameLocation.isCollidingPosition(Rectangle,xTile.Dimensions.Rectangle,bool)"/>, <see cref="GameLocation.isTilePassable(Location,xTile.Dimensions.Rectangle)"/>, and <see cref="Fence"/>.</remarks>
+        /// <remarks>Derived from <see cref="Farmer.MovePosition"/>, <see cref="GameLocation.isCollidingPosition(Rectangle,xTile.Dimensions.Rectangle,bool)"/>, <see cref="GameLocation.isTilePassable(xTile.Dimensions.Location,xTile.Dimensions.Rectangle)"/>, and <see cref="Fence"/>.</remarks>
         private bool IsPassable(GameLocation location, Vector2 tile, Rectangle tilePixels)
         {
             // check layer properties

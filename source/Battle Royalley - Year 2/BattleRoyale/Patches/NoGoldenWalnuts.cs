@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class NoGoldenWalnuts : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Bush), "shake");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Bush), "shake");
 
         public static bool Prefix(Bush __instance)
         {

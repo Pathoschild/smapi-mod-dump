@@ -23,7 +23,13 @@
 			"Location": "Custom_EastScarpe",
 			"FishingArea": 2, // ocean
 			"OceanCatches": true
+		},
+		{
+			"Location": "Custom_ESCastlePoint",
+			"FishingArea": 1, // ocean
+			"OceanCatches": true
 		}
+		
 	],
 	"CritterSpawns":
 	[
@@ -52,6 +58,16 @@
 		{
 			"Location": "Custom_EastScarpe",
 			"Index": 2 // ocean
+		},
+		{
+			"Location": "Custom_ESCastlePoint",
+			"Area": { "X": 0, "Y": 0, "Width": 24, "Height": 25 },
+			"Index": 0 // pond
+		},
+	
+		{
+			"Location": "Custom_ESCastlePoint",
+			"Index": 1 // ocean
 		}
 	],
 	"FruitTreeLocations":

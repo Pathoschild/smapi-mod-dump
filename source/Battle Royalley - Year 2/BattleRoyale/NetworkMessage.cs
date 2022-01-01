@@ -49,7 +49,7 @@ namespace BattleRoyale
     {
         public NetworkUtils.MessageTypes MessageType;
 
-        public static Dictionary<NetworkUtils.MessageTypes, NetworkMessage> instances = new Dictionary<NetworkUtils.MessageTypes, NetworkMessage>();
+        public static Dictionary<NetworkUtils.MessageTypes, NetworkMessage> instances = new();
 
         public static void SetupMessages()
         {
@@ -79,7 +79,7 @@ namespace BattleRoyale
         public virtual void Send(NetworkMessageDestination destination, List<object> data, long? targetPeer = null)
         {
             bool sendToSelf = false;
-            List<long> toSendTo = new List<long>();
+            List<long> toSendTo = new();
 
             switch (destination)
             {
@@ -126,7 +126,7 @@ namespace BattleRoyale
             if (sendToSelf)
                 Receive(Game1.player, data);
 
-            MessageData messageData = new MessageData(MessageType, Game1.player, data);
+            MessageData messageData = new(MessageType, Game1.player, data);
             ModEntry.Multiplayer.SendMessage(messageData, "MessageData", playerIDs: toSendTo.ToArray());
         }
 

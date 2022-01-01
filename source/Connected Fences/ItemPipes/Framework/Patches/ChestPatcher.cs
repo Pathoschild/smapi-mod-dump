@@ -33,47 +33,194 @@ namespace ItemPipes.Framework.Patches
         {
             try
             {
-                /*harmony.Patch(
+                harmony.Patch(
                     original: AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
-                    postfix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Chest_addItem_Postfix))
-                );*/
+                    prefix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Chest_addItem_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Chest), nameof(Chest.grabItemFromInventory)),
+                    prefix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Chest_grabItemFromInventory_Prefix))
+                );
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Utility), nameof(Utility.CollectSingleItemOrShowChestMenu)),
+                    prefix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Utility_CollectSingleItemOrShowChestMenu_Prefix))
+                );
             }
             catch (Exception ex)
             {
                 Framework.Printer.Info($"Failed to add chest postfix: {ex}");
             }
         }
-        private static void Chest_addItem_Postfix(Chest __instance, Item item, ref Item __result)
-        {
-            item.resetState();
-            __instance.clearNulls();
-            NetObjectList<Item> item_list = __instance.items;
-            DataAccess DataAccess = DataAccess.GetDataAccess();
-            if (__instance.SpecialChestType == Chest.SpecialChestTypes.MiniShippingBin || __instance.SpecialChestType == Chest.SpecialChestTypes.JunimoChest)
-            {
-                item_list = __instance.GetItemsForPlayer(Game1.player.UniqueMultiplayerID);
-            }
 
-            for (int i = 0; i < item_list.Count; i++)
+
+        private static bool Utility_CollectSingleItemOrShowChestMenu_Prefix(Chest __instance, object context = null)
+        {
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            List<Node> nodes;
+            if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
             {
-                if (item_list[i] != null && item_list[i].canStackWith(item))
+                Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
+                if (node is FilterPipe)
                 {
-                    item.Stack = item_list[i].addToStack(item);
-                    if (item.Stack <= 0)
+                    Printer.Info("COLLECTING");
+                    int item_count = 0;
+                    Item item_to_grab = null;
+                    for (int i = 0; i < __instance.items.Count; i++)
                     {
-                        __result = null;
+                        if (__instance.items[i] != null)
+                        {
+                            item_count++;
+                            if (item_count == 1)
+                            {
+                                item_to_grab = __instance.items[i];
+                            }
+                            if (item_count == 2)
+                            {
+                                item_to_grab = null;
+                                break;
+                            }
+                        }
                     }
+                    bool exit = false;
+                    if (item_count == 0)
+                    {
+                        exit = true;
+                    }
+                    if (item_to_grab != null && !exit)
+                    {
+                        Printer.Info("IN");
+
+                        Game1.playSound("coin");
+                        __instance.items.Remove(item_to_grab);
+                        __instance.clearNulls();
+                        exit = true;
+                    }
+                    if(!exit)
+                    {
+                        Game1.activeClickableMenu = new ItemGrabMenu(__instance.items, reverseGrab: false, showReceivingMenu: true, InventoryMenu.highlightAllItems, __instance.grabItemFromInventory, null, __instance.grabItemFromChest, snapToBottom: false, canBeExitedWithKey: true, playRightClickSound: true, allowRightClick: true, showOrganizeButton: true, 1, null, -1, context);
+                    }
+                    return false;
                 }
-            }
-            if (item_list.Count < __instance.GetActualCapacity())
-            {
-                item_list.Add(item);
-                __result = null;
+                else
+                {
+                    return true;
+                }
             }
             else
             {
-                __result = item;
+                return true;
             }
+        }
+
+        private static bool Chest_grabItemFromChest_Prefix(Chest __instance, Item item, Farmer who)
+        {
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            List<Node> nodes;
+            if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
+            {
+                Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
+                if (node is FilterPipe)
+                {
+                    Printer.Info("GRAB FROM CHEST");
+
+                    if (who.couldInventoryAcceptThisItem(item))
+                    {
+                        __instance.GetItemsForPlayer(Game1.player.UniqueMultiplayerID).Remove(item);
+                        __instance.clearNulls();
+                        __instance.ShowMenu();
+                    }
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
+        private static bool Chest_grabItemFromInventory_Prefix(Chest __instance, Item item, Farmer who)
+        {
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            List<Node> nodes;
+            if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
+            {
+                Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
+                if (node is FilterPipe)
+                {
+                    Printer.Info("GRAB FROM INV");
+
+                    if (item.Stack == 0)
+                    {
+                        item.Stack = 1;
+                    }
+                    __instance.addItem(item);
+                    Item tmp = who.addItemToInventory(item);
+                    __instance.clearNulls();
+                    int oldID = ((Game1.activeClickableMenu.currentlySnappedComponent != null) ? Game1.activeClickableMenu.currentlySnappedComponent.myID : (-1));
+                    __instance.ShowMenu();
+                    (Game1.activeClickableMenu as ItemGrabMenu).heldItem = tmp;
+                    if (oldID != -1)
+                    {
+                        Game1.activeClickableMenu.currentlySnappedComponent = Game1.activeClickableMenu.getComponentWithID(oldID);
+                        Game1.activeClickableMenu.snapCursorToCurrentSnappedComponent();
+                    }
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+
+
+
+        private static bool Chest_addItem_Prefix(Chest __instance, Item item, ref Item __result)
+        {
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            List<Node> nodes;
+            if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
+            {
+                Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
+                if(node is FilterPipe)
+                {
+                    item.resetState();
+                    __instance.clearNulls();
+                    NetObjectList<Item> item_list = __instance.items;
+                    if (__instance.SpecialChestType == Chest.SpecialChestTypes.MiniShippingBin || __instance.SpecialChestType == Chest.SpecialChestTypes.JunimoChest)
+                    {
+                        item_list = __instance.GetItemsForPlayer(Game1.player.UniqueMultiplayerID);
+                    }
+                    if(!item_list.Any(x => x.Name.Equals(item.Name)))
+                    {
+                        if (item_list.Count < __instance.GetActualCapacity())
+                        {
+                            item_list.Add(item.getOne());
+                            __result = null;
+                        }
+                        else
+                        {
+                            __result = item;
+                        }
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
 
 

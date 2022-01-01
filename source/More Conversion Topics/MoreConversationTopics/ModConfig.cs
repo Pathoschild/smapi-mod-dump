@@ -18,6 +18,8 @@ namespace MoreConversationTopics
         public int LuauDuration { get; set; }
         public int BirthDuration { get; set; }
         public int DivorceDuration { get; set; }
+        public int JojaGreenhouseDuration { get; set; }
+        public int LeoArrivalDuration { get; set; }
 
         public ModConfig()
         {
@@ -26,6 +28,8 @@ namespace MoreConversationTopics
             this.LuauDuration = 7;
             this.BirthDuration = 7;
             this.DivorceDuration = 7;
+            this.JojaGreenhouseDuration = 3;
+            this.LeoArrivalDuration = 7;
         }
     }
 }

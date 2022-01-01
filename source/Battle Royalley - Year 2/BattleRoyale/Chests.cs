@@ -39,7 +39,7 @@ namespace BattleRoyale
 
         public Vector2 TilePosition { get; set; }
 
-        public ChestGrade Grade { get; set; } = Chests.GetRandomChestGrade();
+        public ChestGrade Grade { get; set; }
 
         public bool BeenOpened { get; set; } = false;
 
@@ -60,7 +60,7 @@ namespace BattleRoyale
         private const float maxFractionToSpawn = 0.8f;
         private const int numberOfPlayersForMaxFraction = 15;
 
-        private static readonly Dictionary<ChestGrade, int[]> LootPrimary = new Dictionary<ChestGrade, int[]>() {
+        private static readonly Dictionary<ChestGrade, int[]> LootPrimary = new() {
             { ChestGrade.LEGENDARY,      new int[]{ 2, 48, 23, 46, 32 } },
             { ChestGrade.RARE,           new int[]{ 5, 7, 45, 26, 32 } },
             { ChestGrade.COMMON,         new int[]{ 3, 49, 51, 32 } },
@@ -68,20 +68,20 @@ namespace BattleRoyale
             { ChestGrade.SPOUSE,         new int[]{ 36, 40, 35, 25, 42, 37, 39, 38, 41, 30 } }
         };
 
-        private static readonly Dictionary<ChestGrade, int> GradeSlingshotAmmo = new Dictionary<ChestGrade, int>() {
+        private static readonly Dictionary<ChestGrade, int> GradeSlingshotAmmo = new() {
             { ChestGrade.LEGENDARY,      378 },
             { ChestGrade.RARE,           390 },
             { ChestGrade.COMMON,         388 }
         };
 
-        private static readonly Dictionary<LootSecondaryType, int[]> LootSecondary = new Dictionary<LootSecondaryType, int[]>() {
+        private static readonly Dictionary<LootSecondaryType, int[]> LootSecondary = new() {
             { LootSecondaryType.FOOD_GREATER,    new int[]{ 222, 221, 649 } },
             { LootSecondaryType.FOOD_LESSER,     new int[]{ 216, 456, 198 } },
             { LootSecondaryType.BUFFS,           new int[]{ 253, 244, 231 } },
             { LootSecondaryType.CHERRY_BOMBS,    new int[]{ 286 } }
         };
 
-        private static readonly Dictionary<LootSecondaryType, double> LootSecondaryWeights = new Dictionary<LootSecondaryType, double>()
+        private static readonly Dictionary<LootSecondaryType, double> LootSecondaryWeights = new()
         {
             { LootSecondaryType.FOOD_GREATER,    0.25 },
             { LootSecondaryType.FOOD_LESSER,     0.40 },
@@ -89,7 +89,7 @@ namespace BattleRoyale
             { LootSecondaryType.CHERRY_BOMBS,    0.15 }
         };
 
-        private static readonly Dictionary<LootSecondaryType, int> LootSecondaryQuantities = new Dictionary<LootSecondaryType, int>()
+        private static readonly Dictionary<LootSecondaryType, int> LootSecondaryQuantities = new()
         {
             { LootSecondaryType.FOOD_GREATER,    1 },
             { LootSecondaryType.FOOD_LESSER,     3 },
@@ -97,7 +97,7 @@ namespace BattleRoyale
             { LootSecondaryType.CHERRY_BOMBS,    3 }
         };
 
-        private static readonly Dictionary<ChestGrade, double> GradeWeights = new Dictionary<ChestGrade, double>()
+        private static readonly Dictionary<ChestGrade, double> GradeWeights = new()
         {
             { ChestGrade.LEGENDARY,      0.099 },
             { ChestGrade.RARE,           0.5   },
@@ -106,7 +106,7 @@ namespace BattleRoyale
             { ChestGrade.SPOUSE,         0.001 }
         };
 
-        private static readonly Dictionary<ChestGrade, Color> GradeColors = new Dictionary<ChestGrade, Color>()
+        private static readonly Dictionary<ChestGrade, Color> GradeColors = new()
         {
             { ChestGrade.LEGENDARY,      Color.Gold              },
             { ChestGrade.RARE,           new Color(52, 178, 52)  },
@@ -189,7 +189,8 @@ namespace BattleRoyale
 
         public static void CreateStardewChest(Chest chest)
         {
-            StardewValley.Objects.Chest stardewChest = new StardewValley.Objects.Chest(true);
+            chest.Grade = GetRandomChestGrade();
+            StardewValley.Objects.Chest stardewChest = new(true);
 
             AddItems(chest, stardewChest);
 
@@ -200,7 +201,7 @@ namespace BattleRoyale
             chest.StardewChest = stardewChest;
         }
 
-        public bool ShouldSpawnChests()
+        public static bool ShouldSpawnChests()
         {
             return (
                 !ModEntry.BRGame.IsSpecialRoundType(SpecialRoundType.SLUGFEST) &&
@@ -210,7 +211,7 @@ namespace BattleRoyale
             );
         }
 
-        public void SpawnAndFillChests(bool gingerIsland = false)
+        public static void SpawnAndFillChests(bool gingerIsland = false)
         {
             if (!ShouldSpawnChests())
                 return;
@@ -333,7 +334,7 @@ namespace BattleRoyale
             new Chest("Forest", new Vector2(44, 46)),
         };
 
-        public static List<Chest> IslandChestSpawns = new List<Chest>()
+        public static List<Chest> IslandChestSpawns = new()
         {
             new Chest("IslandSouth", new Vector2(6, 32)),
             new Chest("IslandSouth", new Vector2(34, 27)),

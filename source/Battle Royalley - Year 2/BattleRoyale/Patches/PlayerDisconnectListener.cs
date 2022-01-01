@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class PlayerDisconnectListener : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Multiplayer), "playerDisconnected");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Multiplayer), "playerDisconnected");
 
         public static bool Prefix(long id, List<long> ___disconnectingFarmers)
         {

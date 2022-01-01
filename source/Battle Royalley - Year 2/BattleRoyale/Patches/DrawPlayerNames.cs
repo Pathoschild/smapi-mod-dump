@@ -15,7 +15,7 @@ namespace BattleRoyale.Patches
 {
     class DrawPlayerNames : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "draw");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "draw");
 
         public static void Postfix(Farmer __instance, SpriteBatch b)
         {

@@ -177,7 +177,7 @@ namespace ClimatesOfFerngillRebuild
             return currRain;
         }
 
-        internal static void SetWeatherTomorrow(string Result, MersenneTwister Dice, FerngillClimate GameClimate, double stormOdds, RangePair TmrwTemps)
+        internal static void SetWeatherTomorrow(string Result, Random Dice, FerngillClimate GameClimate, double stormOdds, RangePair TmrwTemps)
         {
             //now parse the result.
             if (Result == "rain")
@@ -206,7 +206,7 @@ namespace ClimatesOfFerngillRebuild
                 }
 
                 //apply lightning logic.
-                if (Dice.NextDoublePositive() >= stormOdds && Game1.weatherForTomorrow == Game1.weather_rain)
+                if (Dice.NextDouble() >= stormOdds && Game1.weatherForTomorrow == Game1.weather_rain)
                 {
                     SDVUtilities.SetWeather(Game1.weather_lightning);
                     if (SDate.Now().Year == 1 && SDate.Now().Season == "spring" && !ClimatesOfFerngill.WeatherOpt.AllowStormsSpringYear1)
@@ -232,7 +232,7 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        internal static void SetWeatherNonSystemForTomorrow(MersenneTwister Dice, FerngillClimate GameClimate, double rainDays, double stormDays, double windyDays, RangePair TmrwTemps)
+        internal static void SetWeatherNonSystemForTomorrow(Random Dice, FerngillClimate GameClimate, double rainDays, double stormDays, double windyDays, RangePair TmrwTemps)
         {
             ProbabilityDistribution<string> WeatherDist = new ProbabilityDistribution<string>("sunny");
 
@@ -240,7 +240,7 @@ namespace ClimatesOfFerngillRebuild
             if (ClimatesOfFerngill.WeatherOpt.DisableHighRainWind)
                 WeatherDist.AddNewCappedEndPoint(windyDays, "debris");
 
-            double distOdd = Dice.NextDoublePositive();
+            double distOdd = Dice.NextDouble();
 
             if (ClimatesOfFerngill.WeatherOpt.Verbose)
             {
@@ -265,7 +265,7 @@ namespace ClimatesOfFerngillRebuild
             CropList = new List<Vector2>();
         }
 
-        internal static void DynamicRainOnNewDay(WeatherConditions curr, MersenneTwister Dice)
+        internal static void DynamicRainOnNewDay(WeatherConditions curr, Random Dice)
         {
             if (!curr.HasWeather(CurrentWeather.Rain))
                 return;
@@ -336,7 +336,7 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        internal static void CheckForStaticRainChanges(WeatherConditions curr, MersenneTwister Dice, double ChanceForNonNormalRain)
+        internal static void CheckForStaticRainChanges(WeatherConditions curr, Random Dice, double ChanceForNonNormalRain)
         {
             if (Game1.isLightning && Game1.isRaining)
             {
@@ -398,7 +398,7 @@ namespace ClimatesOfFerngillRebuild
             if (blockFog || ClimatesOfFerngill.WeatherOpt.DisableAllFog)
                 curr.GenerateEveningFog = false;
 
-            double fogRoll = (ClimatesOfFerngill.WeatherOpt.DisableAllFog ? 1.1 : ClimatesOfFerngill.Dice.NextDoublePositive());
+            double fogRoll = (ClimatesOfFerngill.WeatherOpt.DisableAllFog ? 1.1 : ClimatesOfFerngill.Dice.NextDouble());
 
             if (fogRoll < ClimateForDay.RetrieveOdds(ClimatesOfFerngill.Dice, "fog", Game1.dayOfMonth) && !curr.GetCurrentConditions().HasFlag(CurrentWeather.Wind) && !blockFog)
             {
@@ -434,7 +434,7 @@ namespace ClimatesOfFerngillRebuild
 
             //test for spring conversion
             if (curr.HasWeather(CurrentWeather.Rain) && curr.HasWeather(CurrentWeather.Frost) && (Game1.currentSeason == "spring" || Game1.currentSeason == "fall")
-                && ClimatesOfFerngill.Dice.NextDoublePositive() <= ClimatesOfFerngill.WeatherOpt.RainToSnowConversion)
+                && ClimatesOfFerngill.Dice.NextDouble() <= ClimatesOfFerngill.WeatherOpt.RainToSnowConversion)
             {
                 curr.RemoveWeather(CurrentWeather.Rain);
 
@@ -452,14 +452,14 @@ namespace ClimatesOfFerngillRebuild
 
             if (curr.HasWeather(CurrentWeather.Snow))
             {
-                double blizRoll = ClimatesOfFerngill.Dice.NextDoublePositive();
+                double blizRoll = ClimatesOfFerngill.Dice.NextDouble();
                 double blizOdds = ClimateForDay.RetrieveOdds(ClimatesOfFerngill.Dice, "blizzard", Game1.dayOfMonth);
                 if (blizRoll <= blizOdds)
                 {
                     curr.CreateWeather("Blizzard");
                     if (ClimatesOfFerngill.WeatherOpt.Verbose)
                         ClimatesOfFerngill.Logger.Log($"With roll {blizRoll:N3} against {blizOdds}, there will be blizzards today");
-                    if (ClimatesOfFerngill.Dice.NextDoublePositive() < ClimatesOfFerngill.WeatherOpt.WhiteOutChances && ClimatesOfFerngill.WeatherOpt.HazardousWeather)
+                    if (ClimatesOfFerngill.Dice.NextDouble() < ClimatesOfFerngill.WeatherOpt.WhiteOutChances && ClimatesOfFerngill.WeatherOpt.HazardousWeather)
                     {
                         curr.CreateWeather("WhiteOut");
                     }
@@ -472,7 +472,7 @@ namespace ClimatesOfFerngillRebuild
             //  which have so low rain chances they may never storm.
             if (curr.HasWeather(CurrentWeather.Snow))
             {
-                double oddsRoll = ClimatesOfFerngill.Dice.NextDoublePositive();
+                double oddsRoll = ClimatesOfFerngill.Dice.NextDouble();
 				double thunderSnowOdds = ClimateForDay.RetrieveOdds(ClimatesOfFerngill.Dice,"storm",Game1.dayOfMonth);
 				
                 if (oddsRoll <= thunderSnowOdds && !curr.HasWeather(CurrentWeather.Fog))
@@ -487,7 +487,7 @@ namespace ClimatesOfFerngillRebuild
 
             if (!(curr.HasPrecip()))
             {
-                double oddsRoll = ClimatesOfFerngill.Dice.NextDoublePositive();
+                double oddsRoll = ClimatesOfFerngill.Dice.NextDouble();
 
                 if (oddsRoll <= ClimatesOfFerngill.WeatherOpt.DryLightning && curr.TodayHigh >= ClimatesOfFerngill.WeatherOpt.DryLightningMinTemp &&
                     !curr.HasWeather(CurrentWeather.Frost))
@@ -609,7 +609,7 @@ namespace ClimatesOfFerngillRebuild
             }
         }
 
-        internal static HUDMessage HandleOnSaving(WeatherConditions Conditions, MersenneTwister Dice)
+        internal static HUDMessage HandleOnSaving(WeatherConditions Conditions, Random Dice)
         {
             if (Conditions.HasWeather(CurrentWeather.Frost) && ClimatesOfFerngill.WeatherOpt.AllowCropDeath)
             {
@@ -656,7 +656,7 @@ namespace ClimatesOfFerngillRebuild
         }
 
 
-        internal static void ProcessHazardousCropWeather(WeatherConditions curr, int timeOfDay, MersenneTwister Dice)
+        internal static void ProcessHazardousCropWeather(WeatherConditions curr, int timeOfDay, Random Dice)
         {
             //frost works at night, heatwave works during the day
             if (timeOfDay == 1700)

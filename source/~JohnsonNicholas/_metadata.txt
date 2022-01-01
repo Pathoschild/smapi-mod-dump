@@ -8,12 +8,13 @@ mods:
    Time Reminder
 
 latest commit:
-   commit 6c6974cd7c2b64da1eb46116a267cc1b1d9f26e6
-   Merge: 13681ad 6cc34f0
+   commit 5fc70a7b947249a87b3c2085dd84c9868dcbf210
    Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
-   Date:   Thu Nov 25 20:14:48 2021 -0800
+   Date:   Tue Dec 28 14:03:51 2021 -0800
    
-       Merge pull request #101 from ImJustMatt/develop
+       Update to 1.5.5 compatible
        
-       Update for successful compilation to SDV 1.5.5
+       Thanks to furyx639
+       
+       Preliminary work for bugfixes
    

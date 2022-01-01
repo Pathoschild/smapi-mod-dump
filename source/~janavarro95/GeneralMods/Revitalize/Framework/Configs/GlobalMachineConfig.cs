@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Revitalize;
 
 namespace Revitalize.Framework.Configs
 {
@@ -69,7 +70,7 @@ namespace Revitalize.Framework.Configs
             else
             {
                 GlobalMachineConfig Config = new GlobalMachineConfig();
-                ModCore.ModHelper.Data.WriteJsonFile<GlobalMachineConfig>(Path.Combine("Configs", "MachinesConfig.json"), Config);
+                ModCore.ModHelper.Data.WriteJsonFile(Path.Combine("Configs", "MachinesConfig.json"), Config);
                 return Config;
             }
         }

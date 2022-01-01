@@ -10,7 +10,7 @@
 
 namespace HorseOverhaul
 {
-    using Harmony;
+    using HarmonyLib;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
@@ -39,11 +39,11 @@ namespace HorseOverhaul
         //// (tile.x, tile.y), (tile.x+1, tile.y), (tile.x+2, tile.y), (tile.x+3, tile.y)
         //// (tile.x, tile.y+1), (tile.x+1, tile.y+1), (tile.x+2, tile.y+1), (tile.x+3, tile.y+1)
 
-        private readonly List<SButton> mouseButtons = new List<SButton>() { SButton.MouseLeft, SButton.MouseRight, SButton.MouseMiddle, SButton.MouseX1, SButton.MouseX2 };
+        private readonly List<SButton> mouseButtons = new() { SButton.MouseLeft, SButton.MouseRight, SButton.MouseMiddle, SButton.MouseX1, SButton.MouseX2 };
 
-        private readonly PerScreen<List<HorseWrapper>> horses = new PerScreen<List<HorseWrapper>>(createNewState: () => new List<HorseWrapper>());
+        private readonly PerScreen<List<HorseWrapper>> horses = new(createNewState: () => new List<HorseWrapper>());
 
-        private readonly PerScreen<bool> dayJustStarted = new PerScreen<bool>(createNewState: () => false);
+        private readonly PerScreen<bool> dayJustStarted = new(createNewState: () => false);
 
         private string gwenOption = "1";
 
@@ -127,6 +127,81 @@ namespace HorseOverhaul
             Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
         }
 
+        private static Texture2D MergeTextures(Texture2D overlay, Texture2D oldTexture)
+        {
+            if (overlay == null || oldTexture == null)
+            {
+                return oldTexture;
+            }
+
+            int count = overlay.Width * overlay.Height;
+            var newData = new Color[count];
+            overlay.GetData(newData);
+            var origData = new Color[count];
+            oldTexture.GetData(origData);
+
+            if (newData == null || origData == null)
+            {
+                return oldTexture;
+            }
+
+            for (int i = 0; i < newData.Length; i++)
+            {
+                newData[i] = newData[i].A != 0 ? newData[i] : origData[i];
+            }
+
+            oldTexture.SetData(newData);
+            return oldTexture;
+        }
+
+        private static void ResetHorses()
+        {
+            foreach (Building building in Game1.getFarm().buildings)
+            {
+                // also do it for tractors
+                if (building is Stable stable && stable.getStableHorse() != null)
+                {
+                    stable.getStableHorse().forceOneTileWide.Value = false;
+                }
+            }
+        }
+
+        private static bool IsInRange(Character chara, int mouseX, int mouseY, bool ignoreMousePosition)
+        {
+            if (Utility.withinRadiusOfPlayer((int)chara.Position.X, (int)chara.Position.Y, 1, Game1.player))
+            {
+                if (ignoreMousePosition)
+                {
+                    return Game1.player.FacingDirection switch
+                    {
+                        0 => Game1.player.getStandingY() > chara.getStandingY() && Math.Abs(Game1.player.getStandingX() - chara.getStandingX()) < 48,
+                        1 => Game1.player.getStandingX() < chara.getStandingX() && Math.Abs(Game1.player.getStandingY() - chara.getStandingY()) < 48,
+                        2 => Game1.player.getStandingY() < chara.getStandingY() && Math.Abs(Game1.player.getStandingX() - chara.getStandingX()) < 48,
+                        3 => Game1.player.getStandingX() > chara.getStandingX() && Math.Abs(Game1.player.getStandingY() - chara.getStandingY()) < 48,
+                        _ => false,
+                    };
+                }
+                else
+                {
+                    return Utility.distance(mouseX, chara.Position.X, mouseY, chara.Position.Y) <= 70;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsEdible(Item item)
+        {
+            return item.getCategoryName() == "Cooking" || item.healthRecoveredOnConsumption() > 0;
+        }
+
+        private static int CalculateExpGain(Item item, int currentFriendship)
+        {
+            int baseMult = item.getCategoryName() == "Cooking" ? 10 : 5;
+
+            return (int)Math.Floor((baseMult + (item.healthRecoveredOnConsumption() / 10)) * Math.Pow(1.2, -currentFriendship / 200));
+        }
+
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
             if (e == null || e.FromModID != ModManifest.UniqueID)
@@ -145,7 +220,7 @@ namespace HorseOverhaul
                         Helper.Multiplayer.SendMessage(new StateMessage(horse), "sync", modIDs: new[] { ModManifest.UniqueID }, new[] { e.FromPlayerID });
                     }
                 }
-                else if (message.HorseID != null)
+                else
                 {
                     foreach (var horse in Horses)
                     {
@@ -195,21 +270,40 @@ namespace HorseOverhaul
             {
                 if (Helper.ModRegistry.IsLoaded("CJBok.CheatsMenu"))
                 {
-                    // whether the pet menu is set to the default
-                    if (Config.PetMenuKey.IsBound && Config.PetMenuKey.Keybinds.Length == 1 && Config.PetMenuKey.Keybinds[0].Buttons.Length == 1 && Config.PetMenuKey.Keybinds[0].Buttons[0] == SButton.P)
+                    var data = Helper.ModRegistry.Get("CJBok.CheatsMenu");
+
+                    var path = data.GetType().GetProperty("DirectoryPath");
+
+                    if (path != null && path.GetValue(data) != null)
                     {
-                        var data = Helper.ModRegistry.Get("CJBok.CheatsMenu");
+                        var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "OpenMenuKey" }, data.Manifest.Name);
 
-                        var path = data.GetType().GetProperty("DirectoryPath");
-
-                        if (path != null && path.GetValue(data) != null)
+                        if (list["OpenMenuKey"].ToLower() == "p")
                         {
-                            var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "OpenMenuKey" }, data.Manifest.Name);
-
-                            if (list["OpenMenuKey"] == "P")
+                            // whether the pet menu is set to the default
+                            if (Config.PetMenuKey.IsBound && Config.PetMenuKey.Keybinds != null)
                             {
-                                Config.PetMenuKey = KeybindList.Parse(string.Empty);
-                                DebugLog("Unassigned pet menu key because cjb cheats menu is bound to the same key.");
+                                var conflictLessBinds = new List<Keybind>();
+                                bool foundConflict = false;
+
+                                foreach (var keybind in Config.PetMenuKey.Keybinds)
+                                {
+                                    if (keybind?.Buttons?.Length == 1 && keybind.Buttons[0] == SButton.P)
+                                    {
+                                        foundConflict = true;
+                                    }
+                                    else
+                                    {
+                                        conflictLessBinds.Add(keybind);
+                                    }
+                                }
+
+                                if (foundConflict)
+                                {
+                                    DebugLog("Unassigned pet menu key because cjb cheats menu is bound to the same key.");
+                                    Config.PetMenuKey = new KeybindList(conflictLessBinds.ToArray());
+                                    this.Helper.WriteConfig(Config);
+                                }
                             }
                         }
                     }
@@ -222,7 +316,7 @@ namespace HorseOverhaul
 
         private void SetOverlays()
         {
-            List<Guid> horseIDs = new List<Guid>();
+            var horseIDs = new List<Guid>();
 
             foreach (Building building in Game1.getFarm().buildings)
             {
@@ -280,7 +374,7 @@ namespace HorseOverhaul
                 {
                     var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "color palette", "stable" }, data.Manifest.Name);
 
-                    if (list["stable"] != "false")
+                    if (list["stable"].ToLower() != "false")
                     {
                         EmptyTroughOverlay = Helper.Content.Load<Texture2D>($"assets/elle/overlay_empty_{list["color palette"]}.png", ContentSource.ModFolder);
 
@@ -299,7 +393,7 @@ namespace HorseOverhaul
                 {
                     var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stable" }, data.Manifest.Name);
 
-                    if (list["stable"] == "true")
+                    if (list["stable"].ToLower() == "true")
                     {
                         FilledTroughOverlay = Helper.Content.Load<Texture2D>($"assets/overlay_filled_tone.png", ContentSource.ModFolder);
                         EmptyTroughOverlay = Helper.Content.Load<Texture2D>($"assets/overlay_empty_tone.png", ContentSource.ModFolder);
@@ -410,33 +504,6 @@ namespace HorseOverhaul
             }
 
             return result;
-        }
-
-        private Texture2D MergeTextures(Texture2D overlay, Texture2D oldTexture)
-        {
-            if (overlay == null || oldTexture == null)
-            {
-                return oldTexture;
-            }
-
-            int count = overlay.Width * overlay.Height;
-            var newData = new Color[count];
-            overlay.GetData(newData);
-            var origData = new Color[count];
-            oldTexture.GetData(origData);
-
-            if (newData == null || origData == null)
-            {
-                return oldTexture;
-            }
-
-            for (int i = 0; i < newData.Length; i++)
-            {
-                newData[i] = newData[i].A != 0 ? newData[i] : origData[i];
-            }
-
-            oldTexture.SetData(newData);
-            return oldTexture;
         }
 
         private void LateDayStarted()
@@ -553,8 +620,7 @@ namespace HorseOverhaul
 
         private Chest GetSaddleBag(Func<Stable> stable, int stableID)
         {
-            StardewValley.Object value;
-            Game1.getFarm().Objects.TryGetValue(new Vector2(stableID, 0), out value);
+            Game1.getFarm().Objects.TryGetValue(new Vector2(stableID, 0), out StardewValley.Object value);
 
             if (value != null && value is Chest chest)
             {
@@ -633,18 +699,6 @@ namespace HorseOverhaul
             return stableID;
         }
 
-        private void ResetHorses()
-        {
-            foreach (Building building in Game1.getFarm().buildings)
-            {
-                // also do it for tractors
-                if (building is Stable stable && stable.getStableHorse() != null)
-                {
-                    stable.getStableHorse().forceOneTileWide.Value = false;
-                }
-            }
-        }
-
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady || !Context.IsPlayerFree || Config.DisableMainSaddleBagAndFeedKey)
@@ -707,7 +761,7 @@ namespace HorseOverhaul
                 if (horse != null && !IsTractor(horse) && IsInRange(horse, mouseX, mouseY, ignoreMousePosition))
                 {
                     HorseWrapper horseW = null;
-                    Horses.Where(h => h?.Horse.HorseId == horse.HorseId).Do(h => horseW = h);
+                    Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).Do(h => horseW = h);
 
                     if (Game1.player.CurrentItem != null && Config.Feeding)
                     {
@@ -794,35 +848,11 @@ namespace HorseOverhaul
             return false;
         }
 
-        private bool IsInRange(Character chara, int mouseX, int mouseY, bool ignoreMousePosition)
-        {
-            if (Utility.withinRadiusOfPlayer((int)chara.Position.X, (int)chara.Position.Y, 1, Game1.player))
-            {
-                if (ignoreMousePosition)
-                {
-                    switch (Game1.player.FacingDirection)
-                    {
-                        case 0: return Game1.player.getStandingY() > chara.getStandingY() && Math.Abs(Game1.player.getStandingX() - chara.getStandingX()) < 48;
-                        case 1: return Game1.player.getStandingX() < chara.getStandingX() && Math.Abs(Game1.player.getStandingY() - chara.getStandingY()) < 48;
-                        case 2: return Game1.player.getStandingY() < chara.getStandingY() && Math.Abs(Game1.player.getStandingX() - chara.getStandingX()) < 48;
-                        case 3: return Game1.player.getStandingX() > chara.getStandingX() && Math.Abs(Game1.player.getStandingY() - chara.getStandingY()) < 48;
-                        default: return false;
-                    }
-                }
-                else
-                {
-                    return Utility.distance(mouseX, chara.Position.X, mouseY, chara.Position.Y) <= 70;
-                }
-            }
-
-            return false;
-        }
-
         private void OpenHorseMenu()
         {
             HorseWrapper horse = null;
 
-            Horses.Where(h => h?.Horse.getOwner() == Game1.player && h?.Horse.getName() == Game1.player.horseName).Do(h => horse = h);
+            Horses.Where(h => h?.Horse?.getOwner() == Game1.player && h?.Horse?.getName() == Game1.player.horseName.Value).Do(h => horse = h);
 
             if (horse != null)
             {
@@ -841,18 +871,6 @@ namespace HorseOverhaul
                     Game1.activeClickableMenu = new PetMenu(this, pet);
                 }
             }
-        }
-
-        private bool IsEdible(Item item)
-        {
-            return item.getCategoryName() == "Cooking" || item.healthRecoveredOnConsumption() > 0;
-        }
-
-        private int CalculateExpGain(Item item, int currentFriendship)
-        {
-            int baseMult = item.getCategoryName() == "Cooking" ? 10 : 5;
-
-            return (int)Math.Floor((baseMult + (item.healthRecoveredOnConsumption() / 10)) * Math.Pow(1.2, -currentFriendship / 200));
         }
 
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)

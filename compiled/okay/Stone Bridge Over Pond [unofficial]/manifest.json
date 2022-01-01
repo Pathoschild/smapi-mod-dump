@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Pond With Bridge",
   "Author": "Advize & Jinxiewinxie",
-  "Version": "1.0.4-unofficial.1-tks4fish",
+  "Version": "1.0.4-unofficial.2-tks4fish",
   "Description": "Adds a bridge over the lower pond on the farm",
   "UniqueID": "jinxiewinxie.StoneBridgeOverPond",
   "EntryDll": "PondWithBridge.dll",
-  "MinimumApiVersion": "3.10",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [ "Nexus:316" ]
 }

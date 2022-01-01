@@ -1,0 +1,5 @@
+﻿{
+  "cfg-afterobelisk.label": "Only Enable After Obelisk",
+  "cfg-afterobelisk.desc": "Only enable warping to the deepwoods if the farm has at least one deepwoods obelisk on it.",
+  "ui-label":  "Deep Woods"
+}

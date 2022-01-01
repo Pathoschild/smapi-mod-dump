@@ -1,0 +1,84 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cantorsdust/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** In-game messages
+    *********/
+    // changed manually
+    "message.config-reloaded": "时间流动变得不同了...",
+    "message.speed-changed": "10分钟感觉就像 {{seconds}} 秒。",
+    "message.time-stopped": "嘿，你冻结了时间!",
+    "message.time-resumed": "时间像往常一样重新流动...",
+
+    // changed based on time
+    "message.on-time-change.time-stopped": "时间突然停止...",
+
+    // changed based on location
+    "message.on-location-change.time-stopped-globally": "无论在哪时间都停止...",
+    "message.on-location-change.time-stopped-here": "在这里时间似乎停止了...",
+    "message.on-location-change.time-speed-here": "这里10分钟感觉就像{{seconds}} 秒钟...",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // general options
+    // TODO
+    "config.general-options": "General options",
+    "config.enable-on-festival-days.name": "Enable on festival days",
+    "config.enable-on-festival-days.desc": "Whether to change tick length on festival days.",
+    "config.location-notify.name": "Show time info on warp",
+    "config.location-notify.desc": "Whether to show a message about the time settings when you enter a location.",
+
+    // seconds per minute section
+    // TODO
+    "config.seconds-per-minute": "Seconds per minute",
+    "config.indoors-speed.name": "Indoors",
+    "config.indoors-speed.desc": "The number of seconds per in-game minute while indoors.",
+    "config.outdoors-speed.name": "Outdoors",
+    "config.outdoors-speed.desc": "The number of seconds per in-game minute while outdoors.",
+    "config.mine-speed.name": "Mines",
+    "config.mine-speed.desc": "The number of seconds per in-game minute while in the mines.",
+    "config.skull-cavern-speed.name": "Skull Cavern",
+    "config.skull-cavern-speed.desc": "The number of seconds per in-game minute while in the Skull Cavern.",
+    "config.volcano-dungeon-speed.name": "Volcano Dungeon",
+    "config.volcano-dungeon-speed.desc": "The number of seconds per in-game minute while in the Volcano Dungeon.",
+
+    // freeze time section
+    // TODO
+    "config.freeze-time": "Freeze time",
+    "config.anywhere-at-time.name": "Freeze time at",
+    "config.anywhere-at-time.desc": "The time at which to freeze time everywhere. This should be 24-hour military time, from 600 (6am) to 2400 (midnight) and 2600 (2am). You can set it to 2600 to disable it.",
+    "config.freeze-time-indoors.name": "Indoors",
+    "config.freeze-time-indoors.desc": "Whether to freeze time while indoors.",
+    "config.freeze-time-outdoors.name": "Outdoors",
+    "config.freeze-time-outdoors.desc": "Whether to freeze time while outdoors.",
+    "config.freeze-time-mine.name": "Mines",
+    "config.freeze-time-mine.desc": "Whether to freeze time while in the mines.",
+    "config.freeze-time-skull-cavern.name": "Skull Cavern",
+    "config.freeze-time-skull-cavern.desc": "Whether to freeze time while in the Skull Cavern.",
+    "config.freeze-time-volcano-dungeon.name": "Volcano Dungeon",
+    "config.freeze-time-volcano-dungeon.desc": "Whether to freeze time while in the Volcano Dungeon.",
+    "config.freeze-time-custom.name": "Custom location names",
+    "config.freeze-time-custom.desc": "The names of custom locations in which to freeze time. Location names can be seen in-game using the Debug Mode mod. You can list multiple with commas.",
+
+    // controls
+    // TODO
+    "config.controls": "Controls",
+    "config.freeze-time-key.name": "Freeze time",
+    "config.freeze-time-key.desc": "The key which freezes or unfreezes time. Freezing time will stay in effect until you unfreeze it; unfreezing time will stay in effect until you enter a new location with time settings.",
+    "config.slow-time-key.name": "Slow time",
+    "config.slow-time-key.desc": "The key which slows down time by one second per 10-game-minutes. Combine with Control for 100 seconds, Shift for 10 seconds, or Alt for 0.1 seconds.",
+    "config.speed-up-time-key.name": "Speed up time",
+    "config.speed-up-time-key.desc": "The key which speeds up time by one second per 10-game-minutes. Combine with Control for 100 seconds, Shift for 10 seconds, or Alt for 0.1 seconds.",
+    "config.reload-key.name": "Reload config",
+    "config.reload-key.desc": "The key which reloads all values from the config file and applies them immediately. Time will stay frozen if it was frozen via hotkey."
+}

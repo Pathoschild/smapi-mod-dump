@@ -595,7 +595,7 @@ namespace ToDew {
 
                 if (currentItemEditor == null) {
                     Vector2 titleSize = backgroundBatch.DrawTextBlock(font, I18n.Menu_List_TitleBoldPart(), new Vector2(x + leftOffset, y + topOffset), bodyWidth, bold: true);
-                    Vector2 farmNameSize = backgroundBatch.DrawTextBlock(font, I18n.Menu_List_TitleRest(farmName: Game1.player.farmName), new Vector2(x + leftOffset + titleSize.X + spaceWidth, y + topOffset), bodyWidth);
+                    Vector2 farmNameSize = backgroundBatch.DrawTextBlock(font, I18n.Menu_List_TitleRest(farmName: Game1.player.farmName.Value), new Vector2(x + leftOffset + titleSize.X + spaceWidth, y + topOffset), bodyWidth);
                     topOffset += Math.Max(titleSize.Y, farmNameSize.Y);
                 } else {
                     Vector2 titleSize = backgroundBatch.DrawTextBlock(font, I18n.Menu_Edit_Title(), new Vector2(x + leftOffset, y + topOffset), bodyWidth, bold: true);

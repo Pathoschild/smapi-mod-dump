@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class DisableBeds : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(GameLocation), "performTouchAction");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "performTouchAction");
 
         public static bool Prefix(string fullActionString)
         {

@@ -54,10 +54,21 @@ Fully compatible with multiplayer, shoplifting data is seperate for each player.
 
 Compatibile with shop tile framework in that altered stock will be considered when stock is generated for each shop (except for Sandy's Oasis, this causes an exception due to reflection and Harmony Patches). However, new shops added by the mod can't be shoplifted since even added vanilla shops are regarded as custom shops.
 
+## Translation ##
+
+Shoplifter fully supports translation! Currently available in:
+- Chinese, thanks to 20080618!
+- Korean, thanks to Aromay7!
+
+New translations always welcome! The best place to reach me is on the Shoplifter [mod page](https://www.nexusmods.com/stardewvalley/mods/8569).
+Translations are released seperately to the main files until a sufficient number of translations are received for a full release.
+
 ## Versions ##
 1.0.0 - Initial release
 
 1.1.0 - Made shoplifting preferences configurable, added Icecream Stand as shopliftable
+
+1.2.0 - Added translation support
 
 
 

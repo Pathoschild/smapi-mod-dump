@@ -17,12 +17,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Revitalize.Framework.Menus;
 using Revitalize.Framework.Objects;
-using Revitalize.Framework.Objects.Machines;
+using Revitalize.Framework.World.Objects.Machines;
 using Revitalize.Framework.Utilities;
 using StardewValley;
 using StardustCore.Animations;
 using StardustCore.UIUtilities;
 using StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons;
+using Revitalize;
+using Revitalize.Framework;
 
 namespace Revitalize.Framework.Crafting
 {
@@ -236,77 +238,6 @@ namespace Revitalize.Framework.Crafting
         //~~~~~~~~~~~~~~~~~~~~//
 
 
-        public static void BeforeSave_SaveRecipeBooks(object o, StardewModdingAPI.Events.SavingEventArgs e)
-        {
-            if (!Directory.Exists(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"))) Directory.CreateDirectory(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"));
-            string[] directories = Directory.GetDirectories(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"));
-            string playerData = Path.Combine(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"), PlayerUtilities.GetUniqueCharacterString());
-            string objectPath = Path.Combine(playerData, "RecipeInformation");
-            Directory.CreateDirectory(objectPath);
-            string[] objectFiles = Directory.GetFiles(objectPath);
-
-            foreach (KeyValuePair<string, CraftingRecipeBook> book in CraftingRecipeBook.CraftingRecipesByGroup)
-            {
-                string recipePath = Path.Combine(objectPath, book.Key + ".json");
-                ModCore.Serializer.Serialize(recipePath, book.Value);
-            }
-        }
-
-        public static void AfterLoad_LoadRecipeBooks(object o, StardewModdingAPI.Events.SaveLoadedEventArgs e)
-        {
-            if (!Directory.Exists(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"))) Directory.CreateDirectory(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"));
-            string[] directories = Directory.GetDirectories(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"));
-            string playerData = Path.Combine(Path.Combine(Revitalize.ModCore.ModHelper.DirectoryPath, "SaveData"), PlayerUtilities.GetUniqueCharacterString());
-            string objectPath = Path.Combine(playerData, "RecipeInformation");
-            Directory.CreateDirectory(objectPath);
-            string[] objectFiles = Directory.GetFiles(objectPath);
-            foreach (string file in objectFiles)
-            {
-                CraftingRecipeBook book = ModCore.Serializer.Deserialize<CraftingRecipeBook>(file);
-                string fileName = Path.GetFileNameWithoutExtension(file);
-                CraftingRecipeBook.CraftingRecipesByGroup.Add(fileName, book);
-            }
-
-            InitializeRecipeBooks();
-
-            
-            for(int bookIndex=0;bookIndex<CraftingRecipesByGroup.Count;bookIndex++)
-            {
-
-                KeyValuePair<string, CraftingRecipeBook> pair = CraftingRecipesByGroup.ElementAt(bookIndex);
-                for(int recipeIndex=0;recipeIndex<pair.Value.craftingRecipes.Count;recipeIndex++)
-                {
-                    KeyValuePair<string, UnlockableCraftingRecipe> recipe = pair.Value.craftingRecipes.ElementAt(recipeIndex);
-                    for (int i = 0; i < recipe.Value.recipe.ingredients.Count; i++)
-                    {
-                        if (recipe.Value.recipe.ingredients[i].item is MultiTiledObject)
-                        {
-                            //ModCore.log("Found a multi tiled object as an output!");
-                            //ModCore.log("Found a multi tiled object!");
-                            Type t = recipe.Value.recipe.ingredients[i].item.GetType();
-                            string id = (recipe.Value.recipe.ingredients[i].item as MultiTiledObject).info.id;
-                            recipe.Value.recipe.ingredients[i].item = ModCore.ObjectManager.getItemByIDAndType(id, t);
-                        }
-                    }
-                    for (int i = 0; i < recipe.Value.recipe.outputs.Count; i++)
-                    {
-                        if (recipe.Value.recipe.outputs[i].item is MultiTiledObject)
-                        {
-                            //ModCore.log("Found a multi tiled object as an output!");
-                            //ModCore.log("Found a multi tiled object!");
-                            Type t = recipe.Value.recipe.outputs[i].item.GetType();
-                            string id = (recipe.Value.recipe.outputs[i].item as MultiTiledObject).info.id;
-                            recipe.Value.recipe.outputs[i].item = ModCore.ObjectManager.getItemByIDAndType(id, t);
-
-                            //ModCore.log("Components are: "+(recipe.Value.recipe.outputs[i].item as MultiTiledObject).objects.Count);
-                        }
-                    }
-                }
-            }
-
-            
-        }
-
         private static void InitializeRecipeBooks()
         {
 
@@ -346,6 +277,7 @@ namespace Revitalize.Framework.Crafting
             {
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.CopperBar,1),1),
             }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("CopperWire"),2),null,0),true));
+            /*
             WorkbenchRecipes.addCraftingRecipe("Alloy Furnace", new UnlockableCraftingRecipe("Default", new Recipe(new List<CraftingRecipeComponent>()
             {
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.Clay,20),10),
@@ -356,6 +288,7 @@ namespace Revitalize.Framework.Crafting
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.Wood,100),100),
                 new CraftingRecipeComponent(ModCore.ObjectManager.resources.getResource("Sand"), 25)
             }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("SandBox"), 1), null, 0), true));
+            */
             WorkbenchRecipes.addCraftingRecipe("Battery Bin", new UnlockableCraftingRecipe("Default", new Recipe(new List<CraftingRecipeComponent>()
             {
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.Wood,100),100),
@@ -511,18 +444,21 @@ namespace Revitalize.Framework.Crafting
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.IronBar,2),2)
             }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("IronPipe"), 1)), true));
 
+            /*
             AnvilRecipes.addCraftingRecipe("Solar Panel", new UnlockableCraftingRecipe("Default", new Recipe(new List<CraftingRecipeComponent>()
             {
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.IronBar,10),10),
                 new CraftingRecipeComponent(ModCore.ObjectManager.resources.getResource("Glass"),4),
             }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("SolarPanelTier1"), 1)), true));
-
+            */
+            /*
             AnvilRecipes.addCraftingRecipe("Solar Array", new UnlockableCraftingRecipe("Default", new Recipe(new List<CraftingRecipeComponent>()
             {
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.IronBar,45),45),
                 new CraftingRecipeComponent(ModCore.ObjectManager.resources.getResource("Glass"),20),
             }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("SolarArrayTier1"), 1)), true));
-
+            */
+            /*
             ///Alt solar array crafting recipe.
             AnvilRecipes.addCraftingRecipe("Solar Array Alt. Recipe", new UnlockableCraftingRecipe("Default", new Recipe(new List<CraftingRecipeComponent>()
             {
@@ -537,7 +473,7 @@ namespace Revitalize.Framework.Crafting
                 new CraftingRecipeComponent(ModCore.ObjectManager.resources.getResource("Glass"),5),
                 new CraftingRecipeComponent(new StardewValley.Object((int)Enums.SDVObject.Wood,10), 10)
             }, new CraftingRecipeComponent(ModCore.ObjectManager.GetItem("Lighthouse"), 1)), true));
-
+            */
 
             AnvilRecipes.addCraftingRecipe("Grinder", new UnlockableCraftingRecipe("Default", new Recipe(new List<CraftingRecipeComponent>()
             {

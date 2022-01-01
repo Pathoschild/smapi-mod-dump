@@ -23,7 +23,7 @@ namespace BattleRoyale
 
         public new const int height = 165;
 
-        private readonly Rectangle textureSegment = new Rectangle(384, 373, 18, 18);
+        private readonly Rectangle textureSegment = new(384, 373, 18, 18);
 
         public int AlivePlayers { get; set; }
         private readonly int initalAlivePlayers;

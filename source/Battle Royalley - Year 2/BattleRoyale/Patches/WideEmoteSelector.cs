@@ -21,11 +21,11 @@ namespace BattleRoyale.Patches
 {
     class WideEmoteSelector : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(EmoteMenu), "_RepositionButtons");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(EmoteMenu), "_RepositionButtons");
 
         public static bool Prefix(EmoteSelector __instance)
         {
-            if (Game1.onScreenMenus.OfType<VictoryRoyale>().Count() == 0)
+            if (!Game1.onScreenMenus.OfType<VictoryRoyale>().Any())
                 return true;
 
             __instance.xPositionOnScreen = Game1.viewport.Width / 2 - __instance.width / 2;
@@ -39,11 +39,11 @@ namespace BattleRoyale.Patches
 
     class EmoteScrollLower : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(EmoteMenu), "draw");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(EmoteMenu), "draw");
 
         public static bool Prefix(EmoteSelector __instance, SpriteBatch b)
         {
-            if (Game1.onScreenMenus.OfType<VictoryRoyale>().Count() == 0)
+            if (!Game1.onScreenMenus.OfType<VictoryRoyale>().Any())
                 return true;
 
 

@@ -55,10 +55,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 53c9da647fe6554d47fb37e60361cbabd9d03c37
-   Merge: 88de0e72 5f723abf
+   commit 2750dec7aad686f6fca7a2a5d70fd3b706538b65
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Nov 27 12:07:37 2021 -0500
+   Date:   Thu Dec 30 15:04:04 2021 -0500
    
-       Merge branch 'develop'
+       fix Luck Skill UI drawn over vanilla tooltip
    

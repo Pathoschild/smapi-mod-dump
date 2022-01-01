@@ -93,7 +93,7 @@ namespace MailFrameworkMod
                         {
                             if (c.Name != null && c.Collection != Collection.Crafting)
                             {
-                                objects = objects ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                                objects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"), ContentSource.GameContent);
                                 KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(c.Name + "/"));
                                 if (pair.Value != null)
                                 {
@@ -138,6 +138,7 @@ namespace MailFrameworkMod
                             && (mailItem.RecipeNotKnown == null || mailItem.RecipeNotKnown.All(r=>!Game1.player.knowsRecipe(r)))
                             && (mailItem.ExpandedPrecondition == null || (ConditionsCheckerApi != null && ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPrecondition)))
                             && (mailItem.ExpandedPreconditions == null || (ConditionsCheckerApi != null && ConditionsCheckerApi.CheckConditions(mailItem.ExpandedPreconditions)))
+                            && (mailItem.HouseUpgradeLevel == null || mailItem.HouseUpgradeLevel <= Game1.player.HouseUpgradeLevel)
                         ;
 
                         if (mailItem.Attachments != null && mailItem.Attachments.Count > 0)
@@ -151,7 +152,7 @@ namespace MailFrameworkMod
                                     case ItemType.Object:
                                         if (i.Name != null)
                                         {
-                                            objects = objects ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                                            objects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/ObjectInformation"), ContentSource.GameContent);
                                             KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -176,7 +177,7 @@ namespace MailFrameworkMod
                                     case ItemType.BigCraftable:
                                         if (i.Name != null)
                                         {
-                                            bigObjects = bigObjects ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\BigCraftablesInformation", ContentSource.GameContent);
+                                            bigObjects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/BigCraftablesInformation"), ContentSource.GameContent);
                                             KeyValuePair<int, string> pair = bigObjects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -253,7 +254,7 @@ namespace MailFrameworkMod
                                         }
                                         break;
                                     case ItemType.Ring:
-                                        objects = objects ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
+                                        objects ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\ObjectInformation", ContentSource.GameContent);
                                         if (i.Name != null)
                                         {
                                             KeyValuePair<int, string> pair = objects.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
@@ -285,7 +286,7 @@ namespace MailFrameworkMod
                                     case ItemType.Furniture:
                                         if (i.Name != null)
                                         {
-                                            furnitures = furnitures ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\Furniture", ContentSource.GameContent);
+                                            furnitures ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Furniture"), ContentSource.GameContent);
                                             KeyValuePair<int, string> pair = furnitures.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -309,7 +310,7 @@ namespace MailFrameworkMod
                                     case ItemType.Weapon:
                                         if (i.Name != null)
                                         {
-                                            weapons = weapons ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\Weapons", ContentSource.GameContent);
+                                            weapons ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Weapons"), ContentSource.GameContent);
                                             KeyValuePair<int, string> pair = weapons.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {
@@ -334,7 +335,7 @@ namespace MailFrameworkMod
                                     case ItemType.Boots:
                                         if (i.Name != null)
                                         {
-                                            boots = boots ?? MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>("Data\\Boots", ContentSource.GameContent);
+                                            boots ??= MailFrameworkModEntry.ModHelper.Content.Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Boots"), ContentSource.GameContent);
                                             KeyValuePair<int, string> pair = boots.FirstOrDefault(o => o.Value.StartsWith(i.Name + "/"));
                                             if (pair.Value != null)
                                             {

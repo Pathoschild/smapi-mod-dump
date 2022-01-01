@@ -58,7 +58,9 @@ namespace RangeHighlight {
             public bool[,] prismaticSprinkler;
             public bool[,] radioactiveSprinkler;
             public readonly bool[,] beehouse;
+            public const int scarecrowRadius = 8;
             public readonly bool[,] scarecrow;
+            public const int deluxeScarecrowRadius = 16;
             public readonly bool[,] deluxeScarecrow;
             public bool[,] junimoHut;
             public readonly struct BombRange {
@@ -84,8 +86,8 @@ namespace RangeHighlight {
                 prismaticSprinkler = api.GetSquareCircle(3);
                 radioactiveSprinkler = api.GetSquareCircle(3);
                 beehouse = api.GetManhattanCircle(5);
-                scarecrow = api.GetCartesianCircleWithTruncate(8);
-                deluxeScarecrow = api.GetCartesianCircleWithTruncate(16);
+                scarecrow = api.GetCartesianCircleWithTruncate(scarecrowRadius);
+                deluxeScarecrow = api.GetCartesianCircleWithTruncate(deluxeScarecrowRadius);
                 SetJunimoRange(8);
                 cherryBomb = new BombRange(
                     api.GetCartesianCircleWithRound(3, false),
@@ -170,7 +172,16 @@ namespace RangeHighlight {
                             return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
                                 itemName.Contains("deluxe") ? defaultShapes.deluxeScarecrow : defaultShapes.scarecrow);
                         } else {
-                            return null;
+                            if ((item is StardewValley.Object) && (item as StardewValley.Object).IsScarecrow()) {
+                                int r = (item as StardewValley.Object).GetRadiusForScarecrow() - 1;
+                                if (r < 0) return null; // shouldn't happen?
+                                return new Tuple<Color, bool[,]>(config.ScarecrowRangeTint,
+                                    r == DefaultShapes.scarecrowRadius ? defaultShapes.scarecrow
+                                        : r == DefaultShapes.deluxeScarecrowRadius ? defaultShapes.deluxeScarecrow
+                                        : api.GetCartesianCircleWithTruncate((uint)r));
+                            } else {
+                                return null;
+                            }
                         }
                     });
             }
@@ -249,8 +260,9 @@ namespace RangeHighlight {
                 highlighter.AddHighlightTiles(config.BombInnerRangeTint, range.rangeInner, posX, posY);
             }
             if (config.showBombOuterRange) {
-                // yes, the effective area is actually offset from center
-                highlighter.AddHighlightTiles(config.BombOuterRangeTint, range.rangeOuter, posX - 1, posY - 1);
+                // Prior to SDV 1.5.5 the effective area is actually offset from center by 1.
+                //highlighter.AddHighlightTiles(config.BombOuterRangeTint, range.rangeOuter, posX - 1, posY - 1);
+                highlighter.AddHighlightTiles(config.BombOuterRangeTint, range.rangeOuter, posX, posY);
             }
             return new Tuple<Color, bool[,]>(config.BombRangeTint, range.range);
         }

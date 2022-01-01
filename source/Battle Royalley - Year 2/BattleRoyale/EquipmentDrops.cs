@@ -44,13 +44,13 @@ namespace BattleRoyale
     class EquipmentDrops
     {
         private static List<EquipmentDrop> drops;
-        private static readonly List<EquipmentDrop> spawnedDrops = new List<EquipmentDrop>();
+        private static readonly List<EquipmentDrop> spawnedDrops = new();
 
         private static EquipmentDrop activeDrop;
         private static DateTime dropActivatedAt;
 
         // Announced at specified time, spawns later.
-        private static readonly List<int> announceTimes = new List<int>() // Measured in seconds
+        private static readonly List<int> announceTimes = new() // Measured in seconds
         {
             25, 50, 70, 90
         };
@@ -59,19 +59,19 @@ namespace BattleRoyale
 
         private static readonly int itemCount = 2;
 
-        private static readonly Dictionary<EquipmentTier, double> LootWeights = new Dictionary<EquipmentTier, double>()
+        private static readonly Dictionary<EquipmentTier, double> LootWeights = new()
         {
             { EquipmentTier.A_TIER, 0.2 },
             { EquipmentTier.B_TIER, 0.8 }
         };
 
-        private static readonly Dictionary<EquipmentTier, int[]> Loot = new Dictionary<EquipmentTier, int[]>()
+        private static readonly Dictionary<EquipmentTier, int[]> Loot = new()
         {
             { EquipmentTier.A_TIER, new int[]{ 524, 810, 861, 863, 855 } },
             { EquipmentTier.B_TIER, new int[]{ 529, 533, 534, 839, 508 } }
         };
 
-        private static readonly List<int> bootIds = new List<int> { 855, 508 };
+        private static readonly List<int> bootIds = new() { 855, 508 };
 
         public static EquipmentTier GetRandomEquipmentTier()
         {
@@ -93,7 +93,7 @@ namespace BattleRoyale
 
         public static void CreateStardewChest(EquipmentDrop drop)
         {
-            StardewValley.Objects.Chest stardewChest = new StardewValley.Objects.Chest(true, parentSheedIndex: 232);
+            StardewValley.Objects.Chest stardewChest = new(true, parentSheedIndex: 232);
 
             for (int i = 0; i < itemCount; i++)
             {
@@ -103,12 +103,12 @@ namespace BattleRoyale
 
                 if (bootIds.Contains(itemId))
                 {
-                    StardewValley.Objects.Boots boots = new StardewValley.Objects.Boots(itemId);
+                    StardewValley.Objects.Boots boots = new(itemId);
                     stardewChest.items.Add(boots);
                 }
                 else
                 {
-                    StardewValley.Objects.Ring ring = new StardewValley.Objects.Ring(itemId);
+                    StardewValley.Objects.Ring ring = new(itemId);
                     stardewChest.items.Add(ring);
                 }
             }
@@ -239,7 +239,7 @@ namespace BattleRoyale
             new EquipmentDrop("Railroad", new Vector2(32, 47), "Choo choo! Equipment chest is about to be dropped at the train station.")
         };
 
-        public static List<EquipmentDrop> IslandEquipmentDropSpawns = new List<EquipmentDrop>()
+        public static List<EquipmentDrop> IslandEquipmentDropSpawns = new()
         {
             new EquipmentDrop("IslandWest", new Vector2(75, 42), "Parrot's left you some mail! Equipment chest is about to be dropped outside the Island farm house."),
             new EquipmentDrop("IslandWest", new Vector2(95, 35), "Gourmand Frog was happy with your crops, he left you a reward. Equipment chest is about to be dropped outside the Gourmand's cave."),

@@ -14,7 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Revitalize.Framework.Objects.InformationFiles;
+using Revitalize;
 using Revitalize.Framework.Utilities;
 using StardewValley;
 
@@ -99,7 +99,7 @@ namespace Revitalize.Framework.Configs
             this.amountOfTinToMine = new IntRange(1, 3);
             this.amountOfTitaniumToMine = new IntRange(1, 3);
         }
-        
+
 
         public static MiningDrillConfig InitializeConfig()
         {
@@ -108,7 +108,7 @@ namespace Revitalize.Framework.Configs
             else
             {
                 MiningDrillConfig Config = new MiningDrillConfig();
-                ModCore.ModHelper.Data.WriteJsonFile<MiningDrillConfig>(Path.Combine("Configs", "MiningDrillMachine.json"), Config);
+                ModCore.ModHelper.Data.WriteJsonFile(Path.Combine("Configs", "MiningDrillMachine.json"), Config);
                 return Config;
             }
         }

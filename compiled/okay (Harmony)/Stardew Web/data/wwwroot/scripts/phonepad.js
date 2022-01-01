@@ -12,7 +12,7 @@ var joy1Y;
 var Joy2;
 function JoyStickLoaded() {
 
-    Joy1 = new JoyStick('joy1Div');
+     Joy1 = new JoyStick('joy1Div');
     Joy2 = new JoyStick('joy2Div');
 
     //joy1IinputPosX = document.getElementById("joy1PosizioneX");
@@ -27,6 +27,7 @@ function JoyStickLoaded() {
     setInterval(CheckLeftThumb1, 50);
     //setInterval(function () { joy1X.value = Joy1.GetX(); }, 50);
     //setInterval(function () { joy1Y.value = Joy1.GetY(); }, 50);
+    //document.body.requestFullscreen();
 }
 
 function SendToken(token) {

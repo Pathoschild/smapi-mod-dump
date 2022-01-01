@@ -7,9 +7,9 @@ mods:
    Zoomy Farmer
 
 latest commit:
-   commit b0767907022b5d567337ee36c23cb382ebeac5c3
+   commit f324b0f95b52f92ef4e25f36417db572e37338aa
    Author: Geko_X <xavhunt@gmail.com>
-   Date:   Mon Jan 25 11:03:09 2021 +1000
+   Date:   Tue Dec 7 21:14:40 2021 +1000
    
-       + Shut ShutUp up. (Reduced console spam)
+       + Bump version for ZoomyFarmer
    

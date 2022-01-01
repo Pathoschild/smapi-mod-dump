@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/10464
+IDs: harvz.Airstrike.DLL
+update keys: Nexus:???, Nexus:10464, GitHub:XxHarvzBackxX/airstrike

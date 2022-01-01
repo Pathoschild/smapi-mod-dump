@@ -24,11 +24,26 @@ namespace ItemPipes.Framework
     public class IOPipe : Node
     {
         public Container ConnectedContainer { get; set; }
-        public string State { get; set; }
+        public bool Connecting { get; set; }
+
         public IOPipe(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
             ConnectedContainer = null;
             State = "unconnected";
+            Connecting = false;
+
+        }
+
+        public override string GetState()
+        {
+            if (Connecting)
+            {
+                return "connecting_"+State;
+            }
+            else
+            {
+                return State;
+            }
         }
 
         public override bool AddAdjacent(Side side, Node entity)

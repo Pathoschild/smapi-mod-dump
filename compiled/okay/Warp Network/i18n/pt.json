@@ -1,0 +1,22 @@
+﻿{
+  "ui-fail": "Nada aconteceu...",
+  "ui-label": "Pra onde gostaria de ir?",
+  "ui-cancel": "Cancelar",
+  "cfg-warpsenabled.label": "Transporte Padrão Ativado",
+  "cfg-warpsenabled.desc": "Quando permitir os transportes padrão",
+  "cfg-farmenabled.label": "Transporte da Fazenda Ativado",
+  "cfg-farmenabled.desc": "Quando ativar os transportes padrão",
+  "cfg-accessdisabled.label": "Acessar De Desativado",
+  "cfg-accessdisabled.desc": "Acessar a rede de destinos desativados.",
+  "cfg-accesswand.label": "Acessar do Cetro de Retorno",
+  "cfg-accesswand.desc": "Acessar a rede usando o cetro de retorno.",
+  "cfg-obeliskpatch.label": "Corrigir Obeliscos padrão",
+  "cfg-obeliskpatch.desc": "Sobrepor os transportes dos obeliscos vanilla para usar coordenadas customizadas.",
+  "cfg-menu.label": "Ativar Menu da Rede de Transporte",
+  "cfg-menu.desc": "Ativar Menu da Rede de Transporte. Quando desativado, a rede de transporte não pode ser acessada por nenhuma das estátuas..",
+  "dest-farm": "Fazenda",
+  "dest-mountain": "Montanhas",
+  "dest-beach": "Praia",
+  "dest-island": "Ilha Gengibre",
+  "dest-desert": "Deserto"
+}

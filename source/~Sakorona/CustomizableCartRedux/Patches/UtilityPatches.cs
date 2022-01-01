@@ -45,7 +45,7 @@ namespace CustomizableTravelingCart.Patches
 
         private static Dictionary<ISalable, int[]> generateLocalTravelingMerchantStock(int seed)
         {
-            MersenneTwister Dice = new MersenneTwister(seed);
+            Random Dice = new Xoshiro.PRNG64.XoShiRo256starstar();
             Dictionary<ISalable, int[]> stock1 = new Dictionary<ISalable, int[]>();
             HashSet<int> stockIndices1 = new HashSet<int>();
             int numStock = (CustomizableCartRedux.OurConfig.AmountOfItems <= 3 ? 4 : CustomizableCartRedux.OurConfig.AmountOfItems);
@@ -153,7 +153,7 @@ namespace CustomizableTravelingCart.Patches
             return categoryBanned;
         }
 
-        private static int GetItem(MersenneTwister r, int maxItemID)
+        private static int GetItem(Random r, int maxItemID)
         {
             string[] strArray;
             int index2 = r.Next(2, maxItemID);

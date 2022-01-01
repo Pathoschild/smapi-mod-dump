@@ -1,21 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Version>0.0.1</Version>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <RootNamespace>Revitalize</RootNamespace>
+
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 
-    <ProjectReference Include="..\StardustCore\StardustCore.csproj" Private="False" />
-
-    <Reference Include="PyTK" HintPath="$(GamePath)\Mods\PyTK\PyTK.dll" Private="False" />
+    <Reference Include="SpaceCore" HintPath="$(GamePath)\Mods\SpaceCore\SpaceCore.dll" Private="False" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Content\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Framework\Menus\Machines\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StardustCore\StardustCore.csproj" />
   </ItemGroup>
 
   <Import Project="..\common.targets" />

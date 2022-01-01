@@ -16,44 +16,31 @@ using StardewValley.Locations;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
+using WarpNetwork.models;
 
 namespace WarpNetwork
 {
     class WarpHandler
     {
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-        private static Config Config;
-        private static GameLocation.afterQuestionBehavior QuestionResponder = new GameLocation.afterQuestionBehavior(answerQuestion);
-        internal static bool FromWand = false;
-        internal static bool ConsumeOnSelect = false;
         internal static Point? DesertWarp = null;
-        public static Dictionary<string, CustomLocationHandler> CustomLocs = new Dictionary<string, CustomLocationHandler>(StringComparer.OrdinalIgnoreCase);
-        internal static void Init(IMonitor monitor, IModHelper helper, Config config)
+        public static void ShowWarpMenu(string exclude = "", bool consume = false)
         {
-            Monitor = monitor;
-            Helper = helper;
-            Config = config;
-        }
-        public static void ShowWarpMenu(string exclude = "")
-        {
-            if (!Config.MenuEnabled)
+            if (!ModEntry.config.MenuEnabled)
             {
                 ShowFailureText();
-                Monitor.Log("Warp menu is disabled in config, menu not displayed.");
+                ModEntry.monitor.Log("Warp menu is disabled in config, menu not displayed.");
                 return;
             }
 
-            //Game1.activeClickableMenu = new WarpSelectMenu();
-            List<Response> dests = new List<Response>();
-            Dictionary<String, WarpLocation> locs = Utils.GetWarpLocations();
+            List<WarpLocation> dests = new();
+            Dictionary<string, WarpLocation> locs = Utils.GetWarpLocations();
 
             if (locs.ContainsKey(exclude))
             {
-                if (!locs[exclude].Enabled && !Config.AccessFromDisabled)
+                if (!locs[exclude].Enabled && !ModEntry.config.AccessFromDisabled)
                 {
                     ShowFailureText();
-                    Monitor.Log("Access from locked locations is disabled, menu not displayed.");
+                    ModEntry.monitor.Log("Access from locked locations is disabled, menu not displayed.");
                     return;
                 }
             }
@@ -63,96 +50,56 @@ namespace WarpNetwork
                 WarpLocation loc = locs[id];
                 string normid = id.ToLower();
                 if (
-                    !loc.AlwaysHide &&
-                    !CustomLocs.ContainsKey(id) && (
-                    normalized == "_force" || 
-                    (loc.Enabled && normid != normalized) || 
+                    !loc.AlwaysHide && (
+                    normalized == "_force" ||
+                    (loc.Enabled && normid != normalized) ||
                     (normid == "farm" && normalized == "_wand")
                     )
                 )
                 {
-                    if(Game1.getLocationFromName(loc.Location) != null)
+                    if (loc is CustomWarpLocation || Game1.getLocationFromName(loc.Location) != null)
                     {
-                        dests.Add(new Response(id, loc.Label));
-                    } else
+                        dests.Add(locs[id]);
+                    }
+                    else
                     {
-                        Monitor.Log("Invalid Location name '"+loc.Location+"'; skipping entry.", LogLevel.Warn);
+                        ModEntry.monitor.Log("Invalid Location name '" + loc.Location + "'; skipping entry.", LogLevel.Warn);
                     }
                 }
             }
-            foreach (string id in CustomLocs.Keys)
+            if (dests.Count == 0)
             {
-                CustomLocationHandler handler = CustomLocs[id];
-                if(normalized == "_force" || (handler.GetEnabled(id) && id.ToLowerInvariant() != normalized))
-                {
-                    dests.Add(new Response(id, handler.GetLabel(id)));
-                }
-            }
-            if(dests.Count == 0)
-            {
-                Monitor.Log("No valid warp destinations, menu not displayed.");
+                ModEntry.monitor.Log("No valid warp destinations, menu not displayed.");
                 ShowFailureText();
                 return;
             }
-            dests.Add(new Response("_", Game1.parseText(Helper.Translation.Get("ui-cancel"))));
-
-            FromWand = normalized == "_wand";
-            Game1.currentLocation.createQuestionDialogue(Game1.parseText(Helper.Translation.Get("ui-label")), dests.ToArray(), QuestionResponder);
-            //Game1.drawObjectQuestionDialogue(Game1.parseText(Helper.Translation.Get("warpnet-label")), dests);
-        }
-        private static void answerQuestion(Farmer who, String answer)
-        {
-            if(answer == "_" || !who.IsLocalPlayer)
+            Item stack = consume ? Game1.player.CurrentItem : null;
+            Game1.activeClickableMenu = new WarpMenu(dests, (WarpLocation where) =>
             {
-                ConsumeOnSelect = false;
-                FromWand = false;
-                return;
-            }
-            if (CustomLocs.ContainsKey(answer))
-            {
-                if (ConsumeOnSelect)
-                {
-                    who.reduceActiveItemByOne();
-                }
-                ConsumeOnSelect = false;
-                CustomLocs[answer].Warp(answer);
-                FromWand = false;
-            }
-            else
-            {
-                Dictionary<String, WarpLocation> locs = Utils.GetWarpLocations();
-                WarpLocation loc = locs[answer];
-                if (!(loc is null) && !(Game1.getLocationFromName(loc.Location) is null))
-                {
-                    if (ConsumeOnSelect)
-                    {
-                        who.reduceActiveItemByOne();
-                    }
-                    ConsumeOnSelect = false;
-                    WarpToLocation(loc);
-                }
-            }
+                WarpToLocation(where, normalized == "_wand");
+                Utils.reduceItemCount(Game1.player, stack, 1);
+            });
         }
         private static void ShowFailureText()
         {
-            Game1.drawObjectDialogue(Game1.parseText(Helper.Translation.Get("ui-fail")));
+            Game1.drawObjectDialogue(Game1.parseText(ModEntry.helper.Translation.Get("ui-fail")));
         }
         public static void HandleAction(object sender, EventArgsAction action)
         {
             if (action.Action.ToLower() == "warpnetwork")
             {
-                Monitor.Log("Warp Network Activated");
+                ModEntry.monitor.Log("Warp Network Activated");
                 string[] args = action.ActionString.Split(' ');
                 ShowWarpMenu((args.Length > 1) ? args[1] : "");
             }
             if (action.Action.ToLower() == "warpnetworkto")
             {
-                Monitor.Log("Direct Warp Activated");
+                ModEntry.monitor.Log("Direct Warp Activated");
                 string[] args = action.ActionString.Split(' ');
                 DirectWarp(args);
             }
         }
-        public static bool DirectWarp(String[] args)
+        public static bool DirectWarp(string[] args)
         {
             if (args.Length > 1)
             {
@@ -161,30 +108,17 @@ namespace WarpNetwork
             }
             else
             {
-                Monitor.Log("Warning! Map '" + Game1.currentLocation.Name + "' has invalid WarpNetworkTo property! Location MUST be specified!", LogLevel.Warn);
+                ModEntry.monitor.Log("Warning! Map '" + Game1.currentLocation.Name + "' has invalid WarpNetworkTo property! Location MUST be specified!", LogLevel.Warn);
                 return false;
             }
         }
         public static bool DirectWarp(string location, bool force)
         {
-            if(location is null)
+            if (location is null)
             {
-                Monitor.Log("Destination is null! Cannot warp!", LogLevel.Error);
+                ModEntry.monitor.Log("Destination is null! Cannot warp!", LogLevel.Error);
                 ShowFailureText();
                 return false;
-            }
-            if (CustomLocs.ContainsKey(location))
-            {
-                CustomLocationHandler cloc = CustomLocs[location];
-                if(force || cloc.GetEnabled(location))
-                {
-                    cloc.Warp(location);
-                    return true;
-                } else
-                {
-                    ShowFailureText();
-                    return false;
-                }
             }
             Dictionary<String, WarpLocation> locs = Utils.GetWarpLocations();
             WarpLocation loc = locs[location];
@@ -204,37 +138,42 @@ namespace WarpNetwork
                             ShowFailureText();
                             return false;
                         }
-                    } else
+                    }
+                    else
                     {
-                        Monitor.Log("Failed to warp to '" + loc.Location + "': Festival at location not ready.", LogLevel.Debug);
+                        ModEntry.monitor.Log("Failed to warp to '" + loc.Location + "': Festival at location not ready.", LogLevel.Debug);
                         ShowFailureText();
                         return false;
                     }
                 }
                 else
                 {
-                    Monitor.Log("Failed to warp to '" + loc.Location + "': Location with that name does not exist!", LogLevel.Error);
+                    ModEntry.monitor.Log("Failed to warp to '" + loc.Location + "': Location with that name does not exist!", LogLevel.Error);
                     ShowFailureText();
                     return false;
                 }
             }
             else
             {
-                Monitor.Log("Warp to '" + location + "' failed: warp network location not registered with that name", LogLevel.Warn);
+                ModEntry.monitor.Log("Warp to '" + location + "' failed: warp network location not registered with that name", LogLevel.Warn);
                 ShowFailureText();
                 return false;
             }
         }
-        private static void WarpToLocation(WarpLocation where)
+        internal static void WarpToLocation(WarpLocation where, bool fromWand = false)
         {
+            if (where is CustomWarpLocation custom)
+            {
+                custom.handler.Warp();
+                return;
+            }
             int x = where.X;
             int y = where.Y;
             if (where.Location == "Farm")
             {
-                if(FromWand)
+                if (fromWand)
                 {
                     Point dest = GetFrontDoor(Game1.player);
-                    FromWand = false;
                     DoWarpEffects(() => Game1.warpFarmer("Farm", dest.X, dest.Y, false));
                     return;
                 }
@@ -242,14 +181,14 @@ namespace WarpNetwork
                 x = farmTotem.X;
                 y = farmTotem.Y;
             }
-            FromWand = false;
-            if(where.Location == "Desert")
+            if (where.Location == "Desert")
             {
                 //desert has bus scene hardcoded. Must warp to hardcoded spot, then use obelisk patch to move the player afterwards.
                 if (!where.OverrideMapProperty)
                 {
                     DesertWarp = Game1.getLocationFromName("Desert").GetMapPropertyPosition("WarpNetworkEntry", where.X, where.Y);
-                } else
+                }
+                else
                 {
                     DesertWarp = new Point(where.X, where.Y);
                 }
@@ -259,7 +198,8 @@ namespace WarpNetwork
             {
                 Point coords = Game1.getLocationFromName(where.Location).GetMapPropertyPosition("WarpNetworkEntry", x, y);
                 DoWarpEffects(() => Game1.warpFarmer(where.Location, coords.X, coords.Y, false));
-            } else
+            }
+            else
             {
                 DoWarpEffects(() => Game1.warpFarmer(where.Location, x, y, false));
             }
@@ -267,7 +207,7 @@ namespace WarpNetwork
         private static Point GetFrontDoor(Farmer who)
         {
             FarmHouse home = Utility.getHomeOfFarmer(who);
-            if(!(home is null))
+            if (!(home is null))
             {
                 return home.getFrontDoorSpot();
             }
@@ -277,7 +217,7 @@ namespace WarpNetwork
         {
             Farmer who = Game1.player;
             // reflection
-            Multiplayer mp = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
+            Multiplayer mp = ModEntry.helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
             // --
             for (int index = 0; index < 12; ++index)
                 mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(
@@ -293,7 +233,8 @@ namespace WarpNetwork
             who.temporaryInvincibilityTimer = -2000;
             who.freezePause = 1000;
             Game1.flashAlpha = 1f;
-            DelayedAction.fadeAfterDelay(new Game1.afterFadeFunction(() => {
+            DelayedAction.fadeAfterDelay(new Game1.afterFadeFunction(() =>
+            {
                 action();
                 Game1.fadeToBlackAlpha = 0.99f;
                 Game1.screenGlow = false;

@@ -145,5 +145,10 @@ namespace RidgesideVillage
 
         }
 
+        public override bool overrideSnappyMenuCursorMovementBan()
+        {
+            return true;
+        }
+
     }
 }

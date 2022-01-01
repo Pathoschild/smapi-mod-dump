@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-	"Format": "1.22.0",
+	"Format": "1.24.0",
 
 	/*********
 	** Configuration
@@ -54,9 +54,17 @@
 		"EnableBetterBusStop": {
 			"AllowValues": "true, false",
 			"Default": "false",
-			"Description": "Uses Ridgeside Village's official patch for the Bus Stop. Might be incompatible with other mods."
+			"Description": "Uses Ridgeside Village's official patch for the Bus Stop by TheLimeyDragon and Rafseazz. Might be incompatible with other mods."
 		},
+
+/*		"EnableVanillaEdits": {
+			"AllowValues": "true, false",
+			"Default": "false",
+			"Description": "Edits vanilla content to integrate Ridgeside with the base game. Might be incompatible with other mods."
+		},		
+*/		
 },
+
 
 	/*********
 	** Dynamic tokens
@@ -91,13 +99,33 @@
 			}
 		},
 
+		// Leilani
+		{
+			"Name": "PossibleCableCarNPCs",
+			"Value": "{{PossibleCableCarNPCs}}, Leilani",
+			"When": {
+				"EnableOtherNPCsInCableCar": true,
+				"HasMod |contains=ZoeDoll.NPCLeilani": true
+			}
+		},
+
 		// East Scarpe
 		{
 			"Name": "PossibleCableCarNPCs",
-			"Value": "{{PossibleCableCarNPCs}}, Aideen, Lexi, Jacob, Eloise",
+			"Value": "{{PossibleCableCarNPCs}}, Aideen, Jacob, Eloise, Leximonster",
 			"When": {
 				"EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=Lemurkat.JacobEloise.CP": true
+			}
+		},
+
+		// Always Raining in the Valley
+		{
+			"Name": "PossibleCableCarNPCs",
+			"Value": "{{PossibleCableCarNPCs}}, Mia, Sterling, Henry",
+			"When": {
+				"EnableOtherNPCsInCableCar": true,
+				"HasMod |contains=Himetarts.ARV.CP": true
 			}
 		},
 
@@ -255,7 +283,6 @@
 			"When": {
 				"Query: '{{Rafseazz.RidgesideVillage/SpouseGender}}' = 'female'": true
 			},
-			"Update": "OnLocationChange, OnTimeChange"
 		},
 		{
 			"Name": "SpouseGender",
@@ -263,7 +290,6 @@
 			"When": {
 				"Query: '{{Rafseazz.RidgesideVillage/SpouseGender}}' = 'male'": true
 			},
-			"Update": "OnLocationChange, OnTimeChange"
 		},
 		{
 			"Name": "SpouseGender",
@@ -271,7 +297,6 @@
 			"When": {
 				"Query: '{{Rafseazz.RidgesideVillage/SpouseGender}}' = 'undefined'": true
 			},
-			"Update": "OnLocationChange, OnTimeChange"
 		},
 		{
 			"Name": "NPCListCheck",
@@ -805,6 +830,12 @@
    		"Action": "Include",
    		"FromFile": "Data/Extras/SantaGiftData.json",
   	},
+/*	{
+		"LogName": "Include Vanilla Edits",
+   		"Action": "Include",
+   		"FromFile": "Data/Extras/VanillaEdits.json",
+  	},
+*/  	
 
   	//Includes Tilesheets
 	/*
@@ -828,5 +859,5 @@
 
 ],
 
-
 }
+

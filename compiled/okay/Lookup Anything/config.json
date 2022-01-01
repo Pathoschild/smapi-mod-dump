@@ -10,6 +10,7 @@
   },
   "ProgressionMode": false,
   "HighlightUnrevealedGiftTastes": false,
+  "ShowAllGiftTastes": false,
   "HideOnKeyUp": false,
   "EnableTargetRedirection": true,
   "EnableTileLookups": false,

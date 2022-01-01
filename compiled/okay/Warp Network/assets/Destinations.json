@@ -4,34 +4,39 @@
     "x": 48,
     "y": 7,
     "enabled": false,
-    "label": "Farm"
+    "label": "Farm",
+    "icon":  "farm"
   },
   "mountain": {
     "location": "Mountain",
     "x": 31,
     "y": 20,
     "enabled": false,
-    "label": "Mountains"
+    "label": "Mountains",
+    "icon":  "mountain"
   },
   "beach": {
     "location": "Beach",
     "x": 20,
     "y": 4,
     "enabled": false,
-    "label": "Beach"
+    "label": "Beach",
+    "icon":  "beach"
   },
   "desert": {
     "location": "Desert",
     "x": 35,
     "y": 43,
     "enabled": false,
-    "label": "Desert"
+    "label": "Desert",
+    "icon": "desert"
   },
   "island": {
     "location": "IslandSouth",
     "x": 11,
     "y": 11,
     "enabled": false,
-    "label":  "Ginger Island"
+    "label": "Ginger Island",
+    "icon": "island"
   }
 }

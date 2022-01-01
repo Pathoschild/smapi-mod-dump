@@ -6,9 +6,11 @@ mods:
    Farm Cave Spawns More Tree Fruit
 
 latest commit:
-   commit 59a6deb884a9ad3ea3a980fe83cda8e5f5fc8c45
-   Author: atravia <nightshadequeen@gmail.com>
-   Date:   Sat Nov 27 20:48:57 2021 -0500
+   commit b4bf31b65abd702a13a63f76b57a9ae04d2f7afa
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Fri Dec 31 18:02:24 2021 -0500
    
-       Adds ability to spawn in the mine entrance as well.
+       Delete ModConfig.cs
+       
+       This seems to have been a mistake
    

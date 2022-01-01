@@ -1,0 +1,131 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "oneOf": [
+    {
+      "$ref": "#/definitions/TehPers.FishingOverhaul.Config.FishConfig"
+    }
+  ],
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "FishConfig",
+  "definitions": {
+    "TehPers.FishingOverhaul.Config.FishConfig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ShowFishInMinigame": {
+          "type": "boolean",
+          "description": "Whether to show the fish being caught in the fishing minigame.",
+          "default": false
+        },
+        "GlobalDartFrequencyFactor": {
+          "type": "number",
+          "description": "Modifier for the dart frequency (difficulty) of all fish.",
+          "default": 1.0
+        },
+        "CatchSpeed": {
+          "type": "number",
+          "description": "Affects how fast you catch fish.",
+          "default": 1.0
+        },
+        "DrainSpeed": {
+          "type": "number",
+          "description": "Affects how fast the catch bar drains when the bobber isn't on the fish.",
+          "default": 1.0
+        },
+        "StreakForIncreasedQuality": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Required streak for an increase in quality. For example, 3 means that every 3 consecutive perfect catches increases your catch quality by 1. A value of 0 or less disables any quality increase from your perfect fishing streak. (You still get a quality increase for perfectly catching a fish though.)",
+          "default": 3
+        },
+        "MaxFishQuality": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "The max quality fish that can be caught. 0 = normal, 1 = silver, 2 = gold, 3 = iridium, 4+ = beyond iridium.",
+          "default": 3
+        },
+        "MaxNormalFishQuality": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Determines the max quality fish a non-perfect catch can get, or null for no restrictions.",
+          "default": null
+        },
+        "FishChances": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Config.FishingChances"
+            }
+          ],
+          "description": "The chance that you'll find a fish instead of trash."
+        }
+      }
+    },
+    "TehPers.FishingOverhaul.Config.FishingChances": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "BaseChance": {
+          "type": "number",
+          "description": "The base chance. Total chance is calculated as locationFactor * (baseChance + sum(factor * thing it's a factor of)), bounded in the range [minChance, maxChance], then bounded once again in the range [0, 1].",
+          "default": 0.0
+        },
+        "StreakFactor": {
+          "type": "number",
+          "description": "The effect that streak has on this chance.",
+          "default": 0.0
+        },
+        "FishingLevelFactor": {
+          "type": "number",
+          "description": "The effect that fishing level has on this chance.",
+          "default": 0.0
+        },
+        "DailyLuckFactor": {
+          "type": "number",
+          "description": "The effect that daily luck has on this chance.",
+          "default": 0.0
+        },
+        "LuckLevelFactor": {
+          "type": "number",
+          "description": "The effect that luck level has on this chance.",
+          "default": 0.0
+        },
+        "MinChance": {
+          "type": "number",
+          "description": "The minimum possible chance.",
+          "default": 0.0
+        },
+        "MaxChance": {
+          "type": "number",
+          "description": "The maximum possible chance.",
+          "default": 1.0
+        },
+        "LocationFactors": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "description": "The effects that specific locations have on this chance. Keys are location names and values are their factors."
+        }
+      }
+    }
+  }
+}

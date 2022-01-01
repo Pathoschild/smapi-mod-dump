@@ -1,0 +1,21 @@
+﻿{
+  "config.sprintingkey.name": "Tecla de corrida",
+  "config.speedbonus.name": "Bônus de velocidade",
+  "config.energydrainpersecond.name": "Energia consumida por segundo",
+  "config.skillbased.name": "Consumo baseado em habilidades",
+  "config.skillbased.tooltip": "Quanto maior a soma de seus níveis, menos energia consumirá ao correr, limitado ao consumo por segundo",
+  "config.allowhorsesprinting.name": "Permitir corrida montado a cavalo",
+  "config.minimumenergytosprint.name": "Energia mínima para correr",
+  "config.minimumenergytosprint.tooltip": "O mínimo de energia que você precisa para poder correr",
+  "config.lowenergywarning.name": "Aviso de pouca energia ao correr",
+  "config.energytowarn.name": "Limite para aviso de baixa energia",
+  "config.energyregenrate.name": "Taxa de recuperação de energia",
+  "config.energyregenrate.tooltip": "Porcentagem da sua energia máxima recuperada por segundo",
+  "config.energyregencooldown.name": "Atraso para recuperar energia",
+  "config.energyregencooldown.tooltip": "Segundos até a recuperação começar depois de gastar energia",
+  "config.healthregenrate.name": "Taxa de regeneração de saúde",
+  "config.healthregenrate.tooltip": "Porcentagem da sua saúde máxima regenerada por segundo",
+  "config.healthregencooldown.name": "Atraso para regenerar saúde",
+  "config.healthregencooldown.tooltip": "Segundos até a regeneração começar depois de perder vida",
+  "message.lowenergy": "Você está cansado. Você deveria descansar um pouco."
+}

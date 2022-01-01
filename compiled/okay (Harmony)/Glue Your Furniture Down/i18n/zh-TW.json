@@ -1,0 +1,34 @@
+﻿{
+  // 這個mod的描述
+  "mod.description": "加選項以防止撿起來家具",
+
+  // 每個選項的標題
+  "CanPickUpBed.title": "可以撿起來床",
+  "CanPickUpChair.title": "可以撿起來椅子",
+  "CanPickUpTable.title": "可以撿起來桌子",
+  "CanPickUpDresser.title": "可以撿起來梳妝台",
+  "CanPickUpDecoration.title": "可以撿起來裝飾",
+  "CanPickUpTV.title": "可以撿起來電視",
+  "CanPickUpLamp.title": "可以撿起來燈",
+  "CanPickUpRug.title": "可以撿起來地毯",
+  "CanPickUpWindow.title": "可以撿起來窗戶",
+  "CanPickUpFireplace.title": "可以撿起來壁爐",
+  "CanPickUpTorch.title": "可以撿起來火炬",
+  "CanPickUpSconce.title": "可以撿起來壁掛燈",
+  "CanPickUpFishTank.title": "可以撿起來魚缸",
+
+  // 選項的錯誤文本
+  "CanPickUpBed.error": "撿起來床現在禁用",
+  "CanPickUpChair.error": "撿起來椅子現在禁用",
+  "CanPickUpTable.error": "撿起來桌子現在禁用",
+  "CanPickUpDresser.error": "撿起來梳妝台現在禁用",
+  "CanPickUpDecoration.error": "撿起來裝飾現在禁用",
+  "CanPickUpTV.error": "撿起來電視現在禁用",
+  "CanPickUpLamp.error": "撿起來燈現在禁用",
+  "CanPickUpRug.error": "撿起來地毯現在禁用",
+  "CanPickUpWindow.error": "撿起來窗戶現在禁用",
+  "CanPickUpFireplace.error": "撿起來壁爐現在禁用",
+  "CanPickUpTorch.error": "撿起來火炬現在禁用",
+  "CanPickUpSconce.error": "撿起來壁掛燈現在禁用",
+  "CanPickUpFishTank.error": "撿起來魚缸現在禁用"
+}

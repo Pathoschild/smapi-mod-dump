@@ -26,7 +26,7 @@ namespace BattleRoyale.Patches
             return bounds;
         }
 
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Projectile), "behaviorOnCollision");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Projectile), "behaviorOnCollision");
 
         public static bool Prefix()
         {
@@ -48,7 +48,7 @@ namespace BattleRoyale.Patches
 
             foreach (NPC character in location.characters)
             {
-                if (!(character is Monster))
+                if (character is not Monster)
                     continue;
 
                 Monster monster = character as Monster;

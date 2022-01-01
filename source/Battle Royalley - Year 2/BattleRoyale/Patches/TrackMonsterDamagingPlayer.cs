@@ -19,7 +19,7 @@ namespace BattleRoyale.Patches
 {
     class TrackMonsterDamagingPlayer : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "takeDamage");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "takeDamage");
 
         public static bool Prefix(Farmer __instance, int damage, bool overrideParry, Monster damager)
         {
@@ -28,7 +28,7 @@ namespace BattleRoyale.Patches
                 return false;
             }
             bool num = damager != null && !damager.isInvincible() && !overrideParry;
-            bool monsterDamageCapable = (damager == null || !damager.isInvincible()) && (damager == null || (!(damager is GreenSlime) && !(damager is BigSlime)) || !__instance.isWearingRing(520));
+            bool monsterDamageCapable = (damager == null || !damager.isInvincible()) && (damager == null || (damager is not GreenSlime && damager is not BigSlime) || !__instance.isWearingRing(520));
             bool playerParryable = __instance.CurrentTool != null && __instance.CurrentTool is MeleeWeapon weapon && weapon.isOnSpecial && weapon.type == 3;
             bool playerDamageable = __instance.CanBeDamaged();
             if (num && playerParryable)

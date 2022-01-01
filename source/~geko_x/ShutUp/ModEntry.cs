@@ -9,15 +9,12 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Channels;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using Harmony;
+using HarmonyLib;
 
 namespace ShutUp {
 	class ModEntry : Mod {
@@ -43,7 +40,7 @@ namespace ShutUp {
 			Monitor.Log("Reading config", LogLevel.Debug);
 			ModEntry.config = helper.ReadConfig<ModConfig>();
 
-			var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+			var harmony = new Harmony(this.ModManifest.UniqueID);
 
 			//harmony.Patch(
 			//	original: Type.GetType(nameof(StardewValley.Game1)).GetMethod(nameof(Game1.playSound), System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance),
@@ -66,5 +63,6 @@ namespace ShutUp {
 
 	class ModConfig {
 		public string[] sounds { get; set; } = new[] { "" };
+		public bool showDebugSpam = false;
 	}
 }

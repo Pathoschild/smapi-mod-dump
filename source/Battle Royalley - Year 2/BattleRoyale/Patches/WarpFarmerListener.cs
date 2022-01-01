@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class WarpFarmerListener : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Game1), "warpFarmer", new Type[] { typeof(LocationRequest), typeof(int), typeof(int), typeof(int) });
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Game1), "warpFarmer", new Type[] { typeof(LocationRequest), typeof(int), typeof(int), typeof(int) });
 
         public static bool Prefix(ref LocationRequest locationRequest)
         {

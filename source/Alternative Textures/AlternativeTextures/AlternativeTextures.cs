@@ -91,13 +91,14 @@ namespace AlternativeTextures
             // Setup our managers
             textureManager = new TextureManager(monitor);
             apiManager = new ApiManager(monitor);
-            assetManager = new AssetManager(helper);
+            assetManager = new AssetManager(helper, textureManager);
 
             // Setup our utilities
             fpsCounter = new FpsCounter();
 
             // Load the asset manager
             helper.Content.AssetLoaders.Add(assetManager);
+            helper.Content.AssetEditors.Add(assetManager);
 
             // Load our Harmony patches
             try
@@ -127,7 +128,6 @@ namespace AlternativeTextures
                 new IndoorPotPatch(monitor, helper).Apply(harmony);
                 new PhonePatch(monitor, helper).Apply(harmony);
                 new TorchPatch(monitor, helper).Apply(harmony);
-                new WallpaperPatch(monitor, helper).Apply(harmony);
                 /*
                  * Not supported:
                  * - Wood Chipper
@@ -148,7 +148,6 @@ namespace AlternativeTextures
 
                 // Start of location patches
                 new GameLocationPatch(monitor, helper).Apply(harmony);
-                new DecoratableLocationPatch(monitor, helper).Apply(harmony);
                 new FarmPatch(monitor, helper).Apply(harmony);
 
                 // Paint tool related patches
@@ -592,9 +591,9 @@ namespace AlternativeTextures
                                     Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: No associated texture.png or split textures (texture_1.png, texture_2.png, etc.) given", LogLevel.Warn);
                                     continue;
                                 }
-                                if (textureModel.GetVariations() > textureFilePaths.Count())
+                                else if (textureModel.IsDecoration())
                                 {
-                                    Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: There are less split texture files compared to variations ({textureFilePaths.Count()} file(s) vs {textureModel.GetVariations()} variation(s))", LogLevel.Warn);
+                                    Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {contentPack.Manifest.Name}: Split textures (texture_1.png, texture_2.png, etc.) are not allowed for Decoration types (wallpapers / floors)!", LogLevel.Warn);
                                     continue;
                                 }
                                 if (textureModel.GetVariations() < textureFilePaths.Count())
@@ -618,6 +617,11 @@ namespace AlternativeTextures
                                 if (singularTexture.Height >= AlternativeTextureModel.MAX_TEXTURE_HEIGHT)
                                 {
                                     Monitor.Log($"Unable to add alternative texture for {textureModel.Owner}: The texture {textureModel.TextureId} has a height larger than 16384!\nPlease split it into individual textures (e.g. texture_0.png, texture_1.png, etc.) to resolve this issue.", LogLevel.Warn);
+                                    continue;
+                                }
+                                else if (textureModel.IsDecoration() && singularTexture.Width < 256)
+                                {
+                                    Monitor.Log($"Unable to add alternative texture for {textureModel.ItemName} from {contentPack.Manifest.Name}: The required image width is 256 for Decoration types (wallpapers / floors). Please correct the image's width manually.", LogLevel.Warn);
                                     continue;
                                 }
                                 else

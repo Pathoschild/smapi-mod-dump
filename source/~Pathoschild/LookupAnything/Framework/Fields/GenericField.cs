@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -91,7 +92,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         {
             return !string.IsNullOrWhiteSpace(value)
                 ? new IFormattedText[] { new FormattedText(value) }
-                : new IFormattedText[0];
+                : Array.Empty<IFormattedText>();
         }
 
         /// <summary>Get the display value for sale price data.</summary>

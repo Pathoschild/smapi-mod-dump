@@ -15,7 +15,7 @@ namespace BattleRoyale.Patches
 {
     class MapClickOverride : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(MapPage), "receiveLeftClick");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MapPage), "receiveLeftClick");
 
         public static bool Prefix(MapPage __instance, int x, int y)
         {

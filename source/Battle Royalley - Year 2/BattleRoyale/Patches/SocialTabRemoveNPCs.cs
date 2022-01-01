@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class SocialTabRemoveNPCs : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(SocialPage), "", new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) });
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(SocialPage), "", new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) });
 
         public static void Postfix(SocialPage __instance)
         {

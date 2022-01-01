@@ -14,9 +14,11 @@ using FashionSense.Framework.Models.Hair;
 using FashionSense.Framework.Models.Hat;
 using FashionSense.Framework.Models.Pants;
 using FashionSense.Framework.Models.Shirt;
+using FashionSense.Framework.Models.Sleeves;
 using FashionSense.Framework.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
@@ -107,6 +109,9 @@ namespace FashionSense.Framework.UI
                 case HandMirrorMenu.PANTS_FILTER_BUTTON:
                     appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is PantsContentPack).ToList();
                     break;
+                case HandMirrorMenu.SLEEVES_FILTER_BUTTON:
+                    appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is SleevesContentPack).ToList();
+                    break;
             }
             _pages = new List<List<AppearanceContentPack>>();
 
@@ -142,6 +147,22 @@ namespace FashionSense.Framework.UI
             {
                 _currentPage++;
                 Game1.playSound("shiny4");
+            }
+        }
+
+        public override void receiveKeyPress(Keys key)
+        {
+            if (key != 0)
+            {
+                if (key == Keys.Escape && base.readyToClose())
+                {
+                    Game1.activeClickableMenu = _callbackMenu;
+                    base.exitThisMenu();
+                }
+                else if (Game1.options.snappyMenus && Game1.options.gamepadControls && !base.overrideSnappyMenuCursorMovementBan())
+                {
+                    this.applyMovementKey(key);
+                }
             }
         }
 
@@ -228,8 +249,14 @@ namespace FashionSense.Framework.UI
             {
                 if (_pages.Count() > 0 && _pages[_currentPage].Count() > j)
                 {
+                    var packName = _pages[_currentPage][j].PackName;
+                    if (packName.Length > 23)
+                    {
+                        packName = $"{packName.Substring(0, 23).TrimEnd()}...";
+                    }
+
                     IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 396, 15, 15), packButtons[j].bounds.X, packButtons[j].bounds.Y, packButtons[j].bounds.Width, packButtons[j].bounds.Height, packButtons[j].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()) ? Color.Wheat : Color.White, 4f, drawShadow: false);
-                    SpriteText.drawStringHorizontallyCenteredAt(b, _pages[_currentPage][j].PackName, packButtons[j].bounds.X + packButtons[j].bounds.Width / 2, packButtons[j].bounds.Y + 20);
+                    SpriteText.drawStringHorizontallyCenteredAt(b, packName, packButtons[j].bounds.X + packButtons[j].bounds.Width / 2, packButtons[j].bounds.Y + 20);
                 }
             }
 

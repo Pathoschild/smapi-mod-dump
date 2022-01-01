@@ -28,10 +28,10 @@ namespace GrapesAllYearRound
             if (__instance.crop == null) return true;
             
             // Avoid running if this crop is in the greenhouse or on the Ginger Island.
-            if (environment.name == GreenhouseMapName || environment.name == IslandMapName) return true;
+            if (environment.Name == GreenhouseMapName || environment.Name == IslandMapName) return true;
             
             // Avoid running if this is not grape.
-            if (__instance.crop.indexOfHarvest != 398) return true;
+            if (__instance.crop.indexOfHarvest.Value != 398) return true;
             
             // Skip the original method if the current season is winter to prevent the grape from dying.
             if (Game1.currentSeason == "winter") return false;
@@ -50,10 +50,10 @@ namespace GrapesAllYearRound
             if (__instance.crop == null) return;
             
             // Avoid running if this is not grape.
-            if (__instance.crop.indexOfHarvest != 398) return;
+            if (__instance.crop.indexOfHarvest.Value != 398) return;
             
             // Avoid running if this crop is in the greenhouse or on the Ginger Island.
-            if (__instance.currentLocation.name == GreenhouseMapName || __instance.currentLocation.name == IslandMapName) return;
+            if (__instance.currentLocation.Name == GreenhouseMapName || __instance.currentLocation.Name == IslandMapName) return;
 
             var previousRow = __instance.crop.rowInSpriteSheet.Value;
             
@@ -69,20 +69,20 @@ namespace GrapesAllYearRound
         public static void CropNewDay(Crop __instance, int state, int fertilizer, int xTile, int yTile,
             GameLocation environment)
         {
-            if (environment.name == GreenhouseMapName || environment.name == IslandMapName) return; // return if the crop is planted in the greenhouse or on the Ginger Island.
+            if (environment.Name == GreenhouseMapName || environment.Name == IslandMapName) return; // return if the crop is planted in the greenhouse or on the Ginger Island.
 
-            if (__instance.indexOfHarvest != 398) return; // return if this crop is not grape.
+            if (__instance.indexOfHarvest.Value != 398) return; // return if this crop is not grape.
             
             // Return if this crop is still growing,
             // its hoe dirt is not watered or this crop is fiber.
-            if ((!__instance.fullyGrown && (__instance.dayOfCurrentPhase != 0 && __instance.currentPhase != 5)) ||
-                state != 1 || __instance.indexOfHarvest == 771) return;
+            if ((!__instance.fullyGrown.Value && (__instance.dayOfCurrentPhase.Value != 0 && __instance.currentPhase.Value != 5)) ||
+                state != 1 || __instance.indexOfHarvest.Value == 771) return;
             
             if (Game1.currentSeason == "fall") return;
 
             // If the crop is about to finish its growth in any season other than fall,
             // prevent it from producing.
-            if (__instance.currentPhase == 5 && __instance.dayOfCurrentPhase == 0)
+            if (__instance.currentPhase.Value == 5 && __instance.dayOfCurrentPhase.Value == 0)
             {
                 __instance.dayOfCurrentPhase.Value = 3;
                 __instance.fullyGrown.Value = true;

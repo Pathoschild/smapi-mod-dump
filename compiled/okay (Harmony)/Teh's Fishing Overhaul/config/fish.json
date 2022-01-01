@@ -1,5 +1,6 @@
 {
     "ShowFishInMinigame": false,
+    "GlobalDartFrequencyFactor": 1,
     "CatchSpeed": 1,
     "DrainSpeed": 1,
     "StreakForIncreasedQuality": 3,

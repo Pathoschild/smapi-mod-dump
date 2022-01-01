@@ -88,8 +88,13 @@ namespace AlternativeTextures.Framework.Interfaces.API
                 // Verify we are given a singular texture, if not then stitch them all together
                 if (textures.Count() > 1)
                 {
-                    // Load in the first texture_#.png to get its dimensions for creating stitchedTexture
+                    if (textureModel.IsDecoration())
+                    {
+                        _framework.Monitor.Log($"Unable to add alternative texture for item {textureModel.ItemName} from {textureModel.TextureId}: Split textures (texture_1.png, texture_2.png, etc.) are not allowed for Decoration types (wallpapers / floors)!", LogLevel.Warn);
+                        continue;
+                    }
 
+                    // Load in the first texture_#.png to get its dimensions for creating stitchedTexture
                     int maxVariationsPerTexture = AlternativeTextureModel.MAX_TEXTURE_HEIGHT / textureModel.TextureHeight;
                     Texture2D baseTexture = textures.First();
                     for (int t = 0; t <= (textureModel.GetVariations() * textureModel.TextureHeight) / AlternativeTextureModel.MAX_TEXTURE_HEIGHT; t++)
@@ -132,6 +137,11 @@ namespace AlternativeTextures.Framework.Interfaces.API
                     if (singularTexture.Height >= AlternativeTextureModel.MAX_TEXTURE_HEIGHT)
                     {
                         _framework.Monitor.Log($"Unable to add alternative texture for {textureModel.Owner}: The texture {textureModel.TextureId} has a height larger than 16384!\nPlease split it into individual textures (e.g. texture_0.png, texture_1.png, etc.) to resolve this issue.", LogLevel.Warn);
+                        continue;
+                    }
+                    else if (textureModel.IsDecoration() && singularTexture.Width < 256)
+                    {
+                        _framework.Monitor.Log($"Unable to add alternative texture for {textureModel.ItemName} from {textureModel.TextureId}: The required image width is 256 for Decoration types (wallpapers / floors). Please correct the image's width manually.", LogLevel.Warn);
                         continue;
                     }
                     else

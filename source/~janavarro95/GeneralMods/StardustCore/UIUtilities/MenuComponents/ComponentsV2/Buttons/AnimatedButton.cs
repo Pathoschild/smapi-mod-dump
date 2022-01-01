@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardustCore.Animations;
 
 namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
 {
@@ -23,7 +24,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
         /// <summary>
         /// The sprite that handles all of the visuals for the button.
         /// </summary>
-        public Animations.AnimatedSprite sprite;
+        public AnimatedSprite sprite;
         /// <summary>
         /// The default bounds for the button.
         /// </summary>
@@ -79,7 +80,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV2.Buttons
         /// <param name="Sprite">The sprite for the button.</param>
         /// <param name="DefaultBounds">The default hitbox for the button.</param>
         /// <param name="Scale">The scale for the button's sprite and it's hitbox</param>
-        public AnimatedButton(Animations.AnimatedSprite Sprite, Rectangle DefaultBounds, float Scale)
+        public AnimatedButton(AnimatedSprite Sprite, Rectangle DefaultBounds, float Scale)
         {
 
             this.sprite = Sprite;

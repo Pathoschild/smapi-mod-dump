@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class BusStopFix : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(BusStop), "resetLocalState");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(BusStop), "resetLocalState");
 
         public static void Postfix(BusStop __instance)
         {

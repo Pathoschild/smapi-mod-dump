@@ -27,7 +27,7 @@ namespace BattleRoyale.Patches
             return;
         }
 
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Desert), "resetLocalState");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Desert), "resetLocalState");
 
         public static bool Prefix(Desert __instance)
         {

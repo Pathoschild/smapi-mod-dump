@@ -22,7 +22,7 @@ namespace BattleRoyale.Patches
 {
     class CustomServerMessages : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Multiplayer), "processIncomingMessage");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Multiplayer), "processIncomingMessage");
 
         public static bool Prefix(IncomingMessage msg)
         {
@@ -63,7 +63,7 @@ namespace BattleRoyale.Patches
 
                         Console.WriteLine($"Received storm location data from server, info: Length={locationsReached.Count}");
 
-                        Dictionary<GameLocation, DateTime> deserializedLocations = new Dictionary<GameLocation, DateTime>();
+                        Dictionary<GameLocation, DateTime> deserializedLocations = new();
                         foreach (var kvp in locationsReached)
                         {
                             GameLocation location = Game1.getLocationFromName(kvp.Key);
@@ -77,7 +77,7 @@ namespace BattleRoyale.Patches
                         Console.WriteLine("Unable to process storm location data. Kicking to prevent glitches...");
                         long id = sourceFarmer.UniqueMultiplayerID;
                         NetworkUtils.SendChatMessageToPlayerWithoutMod(id, "Unable to process storm location data. Kicking to prevent glitches...");
-                        Game1.server.sendMessage(id, new OutgoingMessage((byte)19, id, new object[0]));
+                        Game1.server.sendMessage(id, new OutgoingMessage((byte)19, id, Array.Empty<object>()));
                         Game1.server.playerDisconnected(id);
                         Game1.otherFarmers.Remove(id);
                     }
@@ -90,12 +90,12 @@ namespace BattleRoyale.Patches
                         byte[] sha = msgData.Skip(12).ToArray();
 
                         Console.WriteLine($"Received version from client {sourceFarmer.Name}/{sourceFarmer.UniqueMultiplayerID}: {major}.{minor}");
-                        new AutoKicker().AcknowledgeClientVersion(sourceFarmer.UniqueMultiplayerID, major, minor, sha);
+                        AutoKicker.AcknowledgeClientVersion(sourceFarmer.UniqueMultiplayerID, major, minor, sha);
                     }
                     return false;
-                default:
-                    return true;
             }
+
+            return false;
         }
 
 

@@ -58,6 +58,8 @@ namespace BattleRoyale.UI
                     return ascending ? Kills.CompareTo(other.Kills) : other.Kills.CompareTo(Kills);
                 case "Deaths":
                     return ascending ? Deaths.CompareTo(other.Deaths) : other.Deaths.CompareTo(Deaths);
+                default:
+                    break;
             }
 
             return 0;
@@ -65,11 +67,11 @@ namespace BattleRoyale.UI
     }
     class Leaderboard : IClickableMenu
     {
-        public List<LeaderboardPlayer> Players = new List<LeaderboardPlayer>();
+        public List<LeaderboardPlayer> Players = new();
         public string SortMethod = "Wins";
 
         private int currentDrawHeight;
-        private List<ClickableComponent> headerComponents = new List<ClickableComponent>();
+        private readonly List<ClickableComponent> headerComponents = new();
 
         private readonly float percentOfViewportWide = 0.33f;
         private readonly float percentOfViewportTall = 0.66f;
@@ -81,7 +83,7 @@ namespace BattleRoyale.UI
         private readonly Texture2D titleTexture;
         private readonly float titleScale = 0.65f;
 
-        private readonly Rectangle horizontalLineRectangle = new Rectangle(0, 256, 60, 60);
+        private readonly Rectangle horizontalLineRectangle = new(0, 256, 60, 60);
 
         public Leaderboard()
         {
@@ -91,7 +93,7 @@ namespace BattleRoyale.UI
 
         public void InitPlayer(Farmer farmer)
         {
-            LeaderboardPlayer newPlayer = new LeaderboardPlayer(farmer, 0, 0, 0);
+            LeaderboardPlayer newPlayer = new(farmer, 0, 0, 0);
             Players.Add(newPlayer);
         }
 
@@ -103,7 +105,7 @@ namespace BattleRoyale.UI
                     return player;
             }
 
-            LeaderboardPlayer newPlayer = new LeaderboardPlayer(farmer, 0, 0, 0);
+            LeaderboardPlayer newPlayer = new(farmer, 0, 0, 0);
             Players.Add(newPlayer);
             return newPlayer;
         }
@@ -172,7 +174,7 @@ namespace BattleRoyale.UI
             }
         }
 
-        public bool AlreadyDisplaying()
+        public static bool AlreadyDisplaying()
         {
             foreach (var menu in Game1.onScreenMenus)
             {
@@ -183,7 +185,7 @@ namespace BattleRoyale.UI
             return false;
         }
 
-        public void TryShow()
+        public static void TryShow()
         {
             if (!AlreadyDisplaying())
             {
@@ -193,7 +195,7 @@ namespace BattleRoyale.UI
             }
         }
 
-        public void TryRemove()
+        public static void TryRemove()
         {
             if (AlreadyDisplaying())
             {
@@ -232,13 +234,13 @@ namespace BattleRoyale.UI
 
         public void drawLeaderboardTitle(SpriteBatch spriteBatch)
         {
-            Rectangle scaledBounds = new Rectangle(
+            Rectangle scaledBounds = new(
                 (int)(titleTexture.Bounds.X * titleScale),
                 (int)(titleTexture.Bounds.Y * titleScale),
                 (int)(titleTexture.Bounds.Width * titleScale),
                 (int)(titleTexture.Bounds.Height * titleScale)
             );
-            ClickableTextureComponent Logo = new ClickableTextureComponent(
+            ClickableTextureComponent Logo = new(
                 "Logo",
                 new Rectangle(xPositionOnScreen + (width / 2 - (scaledBounds.Width / 2)), currentDrawHeight, width - cornerSize, 80),
                 "",

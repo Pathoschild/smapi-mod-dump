@@ -1,0 +1,44 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/PreventFurniturePickup
+**
+*************************************************/
+
+{
+  // Add in mod description
+  "mod.description": "Adds options to prevent picking up furniture by type.",
+  
+  // Add in titles for the options
+  "CanPickUpBed.title": "Can pick up beds",
+  "CanPickUpChair.title": "Can pick up chairs",
+  "CanPickUpTable.title": "Can pick up tables",
+  "CanPickUpDresser.title": "Can pick up dressers",
+  "CanPickUpDecoration.title": "Can pick up decorations",
+  "CanPickUpTV.title":  "Can pick up TVs",
+  "CanPickUpLamp.title": "Can pick up lamps",
+  "CanPickUpRug.title": "Can pick up rugs",
+  "CanPickUpWindow.title": "Can pick up windows",
+  "CanPickUpFireplace.title": "Can pick up fireplaces",
+  "CanPickUpTorch.title": "Can pick up torches",
+  "CanPickUpSconce.title": "Can pick up sconces",
+  "CanPickUpFishTank.title":  "Can pick up fish tanks",
+
+  // Add in error text for the options
+  "CanPickUpBed.error": "Picking up beds disabled",
+  "CanPickUpChair.error": "Picking up chairs disabled",
+  "CanPickUpTable.error": "Picking up tables disabled",
+  "CanPickUpDresser.error": "Picking up dressers disabled",
+  "CanPickUpDecoration.error": "Picking up decorations disabled",
+  "CanPickUpTV.error": "Picking up TVs disabled",
+  "CanPickUpLamp.error": "Picking up lamps disabled",
+  "CanPickUpRug.error": "Picking up rugs disabled",
+  "CanPickUpWindow.error": "Picking up windows disabled",
+  "CanPickUpFireplace.error": "Picking up fireplaces disabled",
+  "CanPickUpTorch.error": "Picking up torches disabled",
+  "CanPickUpSconce.error": "Picking up sconces disabled",
+  "CanPickUpFishTank.error": "Picking up fish tanks disabled"
+}

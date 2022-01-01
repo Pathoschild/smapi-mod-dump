@@ -50,17 +50,17 @@ namespace TwilightShards.Common
 	  }
 	  
 	  //get random value in ranges
-	  public double RandomInFullRange(MersenneTwister r)
+	  public double RandomInFullRange(Random r)
 	  {
 		  return r.RollInRange(LowerBound, UpperBound);
 	  }
 	  
-	  public double RandomInLowerRange(MersenneTwister r)
+	  public double RandomInLowerRange(Random r)
 	  {
 		  return r.RollInRange(LowerBound, MidPoint);
 	  }
 	  
-	  public double RandomInUpperRange(MersenneTwister r)
+	  public double RandomInUpperRange(Random r)
 	  {
 		  return r.RollInRange(MidPoint, UpperBound);
 	  }

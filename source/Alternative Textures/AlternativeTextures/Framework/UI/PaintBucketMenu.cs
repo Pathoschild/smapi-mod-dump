@@ -139,21 +139,49 @@ namespace AlternativeTextures.Framework.UI
             }
 
             // Add the vanilla version
-            var vanillaObject = target.getOne();
-            vanillaObject.modData["AlternativeTextureOwner"] = AlternativeTextures.DEFAULT_OWNER;
-            vanillaObject.modData["AlternativeTextureName"] = $"{vanillaObject.modData["AlternativeTextureOwner"]}.{modelName}";
-            vanillaObject.modData["AlternativeTextureVariation"] = $"{-1}";
-            vanillaObject.modData["AlternativeTextureSeason"] = String.Empty;
-            vanillaObject.modData["AlternativeTextureDisplayName"] = String.Empty;
-
-            if (target is Furniture)
+            if (textureType is TextureType.Decoration)
             {
-                (vanillaObject as Furniture).currentRotation.Value = (target as Furniture).currentRotation;
-                (vanillaObject as Furniture).updateRotation();
-            }
+                int index = 0;
+                foreach (Wallpaper decoration in Utility.getAllWallpapersAndFloorsForFree().Keys.Where(d => d is Wallpaper wallpaper && wallpaper.isFloor.Value == modelName.Contains("Floor")))
+                {
+                    if (!String.IsNullOrEmpty(decoration.modDataID.Value))
+                    {
+                        continue;
+                    }
 
-            this.filteredTextureOptions.Insert(0, vanillaObject);
-            this.cachedTextureOptions.Insert(0, vanillaObject);
+                    decoration.modData["AlternativeTextureOwner"] = AlternativeTextures.DEFAULT_OWNER;
+                    decoration.modData["AlternativeTextureName"] = $"{decoration.modData["AlternativeTextureOwner"]}.{modelName}";
+                    decoration.modData["AlternativeTextureVariation"] = decoration.ParentSheetIndex.ToString();
+                    decoration.modData["AlternativeTextureSeason"] = String.Empty;
+
+                    if (AlternativeTextures.modConfig.IsTextureVariationDisabled(decoration.modData["AlternativeTextureName"], decoration.ParentSheetIndex))
+                    {
+                        continue;
+                    }
+
+                    this.filteredTextureOptions.Insert(index, decoration);
+                    this.cachedTextureOptions.Insert(index, decoration);
+
+                    index++;
+                }
+            }
+            else
+            {
+                var vanillaObject = target.getOne();
+                vanillaObject.modData["AlternativeTextureOwner"] = AlternativeTextures.DEFAULT_OWNER;
+                vanillaObject.modData["AlternativeTextureName"] = $"{vanillaObject.modData["AlternativeTextureOwner"]}.{modelName}";
+                vanillaObject.modData["AlternativeTextureVariation"] = $"{-1}";
+                vanillaObject.modData["AlternativeTextureSeason"] = String.Empty;
+
+                if (target is Furniture)
+                {
+                    (vanillaObject as Furniture).currentRotation.Value = (target as Furniture).currentRotation;
+                    (vanillaObject as Furniture).updateRotation();
+                }
+
+                this.filteredTextureOptions.Insert(0, vanillaObject);
+                this.cachedTextureOptions.Insert(0, vanillaObject);
+            }
 
             _textureType = textureType;
 
@@ -390,13 +418,8 @@ namespace AlternativeTextures.Framework.UI
                             shippingBin.initLid();
                         }
                     }
-                    else if (Game1.currentLocation is Farm farm && farm.GetHouseRect().Contains((int)_position.X / 64, (int)_position.Y / 64))
+                    else if (Game1.currentLocation is Farm farm && farm.GetHouseRect().Contains(new Vector2(_position.X, _position.Y) / 64))
                     {
-                        var targetedBuilding = new Building();
-                        targetedBuilding.buildingType.Value = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel + 1}";
-                        targetedBuilding.tilesWide.Value = farm.GetHouseRect().Width;
-                        targetedBuilding.tilesHigh.Value = farm.GetHouseRect().Height;
-
                         foreach (string key in c.item.modData.Keys)
                         {
                             farm.modData[key] = c.item.modData[key];
@@ -408,10 +431,9 @@ namespace AlternativeTextures.Framework.UI
                     else if (Game1.currentLocation is DecoratableLocation decoratableLocation && (decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y)) != -1 || decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y)) != -1))
                     {
                         var room = 0;
-                        var isFloor = false;
-                        if (_modelName.Contains("Floor"))
+                        var isFloor = _modelName.Contains("Floor");
+                        if (isFloor)
                         {
-                            isFloor = true;
                             room = decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y));
                         }
                         else
@@ -419,31 +441,26 @@ namespace AlternativeTextures.Framework.UI
                             room = decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y));
                         }
 
-                        var typeKey = isFloor ? "Floor" : "Wallpaper";
-                        foreach (string key in c.item.modData.Keys.Where(k => !k.Contains("AlternativeTexture.Floor") && !k.Contains("AlternativeTexture.Wallpaper")))
+                        if (room != -1)
                         {
-                            decoratableLocation.modData[key] = c.item.modData[key];
-                            if (key.Contains("AlternativeTexture"))
+                            int variation = Int32.Parse(c.item.modData["AlternativeTextureVariation"]);
+                            var decorationKey = c.item.modData["AlternativeTextureOwner"] == AlternativeTextures.DEFAULT_OWNER ? variation.ToString() : $"{c.item.modData["AlternativeTextureName"]}:{variation}";
+                            if (isFloor)
                             {
-                                decoratableLocation.modData[key.Replace("AlternativeTexture", String.Concat("AlternativeTexture.", typeKey, ".")) + $"_{room}"] = c.item.modData[key];
+                                if (variation == -1)
+                                {
+                                    decorationKey = decoratableLocation.GetFirstFlooringTile().ToString();
+                                }
+                                decoratableLocation.SetFloor(decorationKey, decoratableLocation.floorIDs[room]);
                             }
-                        }
-
-                        if (isFloor)
-                        {
-                            decoratableLocation.setFloor(decoratableLocation.floor[room], room, true);
-                            MethodInfo method = decoratableLocation.GetType().GetMethod("doSetVisibleFloor", BindingFlags.Instance | BindingFlags.NonPublic);
-                            method.Invoke(decoratableLocation, new object[] { room, decoratableLocation.floor[room] });
-
-                            decoratableLocation.modData[$"AlternativeTexture.Floor.Dirty_{room}"] = true.ToString();
-                        }
-                        else
-                        {
-                            decoratableLocation.setWallpaper(decoratableLocation.wallPaper[room], room, true);
-                            MethodInfo method = decoratableLocation.GetType().GetMethod("doSetVisibleWallpaper", BindingFlags.Instance | BindingFlags.NonPublic);
-                            method.Invoke(decoratableLocation, new object[] { room, decoratableLocation.wallPaper[room] });
-
-                            decoratableLocation.modData[$"AlternativeTexture.Wallpaper.Dirty_{room}"] = true.ToString();
+                            else
+                            {
+                                if (variation == -1)
+                                {
+                                    decorationKey = "0";
+                                }
+                                decoratableLocation.SetWallpaper(decorationKey, decoratableLocation.wallpaperIDs[room]);
+                            }
                         }
                     }
 
@@ -518,7 +535,7 @@ namespace AlternativeTextures.Framework.UI
                         var variation = Int32.Parse(target.modData["AlternativeTextureVariation"]);
 
                         this.availableTextures[i].item = target;
-                        if (variation == -1)
+                        if (variation == -1 || target.modData["AlternativeTextureOwner"] == AlternativeTextures.DEFAULT_OWNER)
                         {
                             if (PatchTemplate.IsDGAUsed() && PatchTemplate.IsDGAObject(PatchTemplate.GetObjectAt(Game1.currentLocation, (int)_position.X, (int)_position.Y)))
                             {
@@ -557,21 +574,21 @@ namespace AlternativeTextures.Framework.UI
                                     b.Draw(Game1.mouseCursors, new Vector2(this.availableTextures[i].bounds.X + 4, this.availableTextures[i].bounds.Y - 20), new Rectangle(134, 226, 30, 25), Color.White, 0f, Vector2.Zero, _buildingScale, SpriteEffects.None, 1f);
                                 }
                             }
-                            else if (Game1.currentLocation is Farm farm && farm.GetHouseRect().Contains((int)_position.X / 64, (int)_position.Y / 64))
+                            else if (Game1.currentLocation is Farm farm && farm.GetHouseRect().Contains(new Vector2(_position.X, _position.Y) / 64))
                             {
                                 var targetedBuilding = new Building();
                                 targetedBuilding.buildingType.Value = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel}";
                                 targetedBuilding.tilesWide.Value = farm.GetHouseRect().Width;
                                 targetedBuilding.tilesHigh.Value = farm.GetHouseRect().Height;
 
-                                Texture2D house_texture = Farm.houseTextures;
-                                if (farm.paintedHouseTexture != null)
+                                Texture2D house_texture = BuildingPainter.Apply(Farm.houseTextures, "Buildings\\houses_PaintMask", farm.housePaintColor);
+                                if (house_texture is null)
                                 {
-                                    house_texture = BuildingPainter.Apply(Farm.houseTextures, "Buildings\\houses_PaintMask", farm.housePaintColor);
+                                    house_texture = Farm.houseTextures;
                                 }
 
                                 BuildingPatch.ResetTextureReversePatch(targetedBuilding);
-                                BuildingPatch.CondensedDrawInMenu(targetedBuilding, house_texture, b, this.availableTextures[i].bounds.X, this.availableTextures[i].bounds.Y, _buildingScale);
+                                b.Draw(house_texture, new Vector2(this.availableTextures[i].bounds.X, this.availableTextures[i].bounds.Y), farm.houseSource, targetedBuilding.color, 0f, new Vector2(0f, 0f), _buildingScale, SpriteEffects.None, 0.89f);
                             }
                             else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Tree tree)
                             {
@@ -593,19 +610,10 @@ namespace AlternativeTextures.Framework.UI
                             }
                             else if (Game1.currentLocation is DecoratableLocation decoratableLocation && (decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y)) != -1 || decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y)) != -1))
                             {
-                                var which = 0;
-                                var isFloor = false;
-                                if (_modelName.Contains("Floor"))
-                                {
-                                    isFloor = true;
-                                    which = decoratableLocation.floor[decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y))];
-                                }
-                                else
-                                {
-                                    which = decoratableLocation.wallPaper[decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y))];
-                                }
+                                var which = variation;
+                                var isFloor = _modelName.Contains("Floor");
 
-                                this.availableTextures[i].texture = Wallpaper.wallpaperTexture;
+                                this.availableTextures[i].texture = Game1.content.Load<Texture2D>("Maps\\walls_and_floors");
                                 this.availableTextures[i].sourceRect = (isFloor ? new Rectangle(which % 8 * 32, 336 + which / 8 * 32, 32, 32) : new Rectangle(which % 16 * 16, which / 16 * 48, 16, 48));
                                 this.availableTextures[i].draw(b, Color.White, 0.87f);
                             }
@@ -642,7 +650,7 @@ namespace AlternativeTextures.Framework.UI
                                 b.Draw(textureModel.GetTexture(variation), new Vector2(this.availableTextures[i].bounds.X + 4, this.availableTextures[i].bounds.Y - 20), new Rectangle(32, textureModel.GetTextureOffset(variation), 30, 25), Color.White, 0f, Vector2.Zero, _buildingScale, SpriteEffects.None, 1f);
                             }
                         }
-                        else if (Game1.currentLocation is Farm farm && farm.GetHouseRect().Contains((int)_position.X / 64, (int)_position.Y / 64))
+                        else if (Game1.currentLocation is Farm farm && farm.GetHouseRect().Contains(new Vector2(_position.X, _position.Y) / 64))
                         {
                             var targetedBuilding = new Building();
                             targetedBuilding.buildingType.Value = $"Farmhouse_{Game1.MasterPlayer.HouseUpgradeLevel}";
@@ -652,7 +660,7 @@ namespace AlternativeTextures.Framework.UI
                             targetedBuilding.tilesWide.Value = farm.GetHouseRect().Width + 1;
                             targetedBuilding.tilesHigh.Value = farm.GetHouseRect().Height + 1;
 
-                            BuildingPatch.CondensedDrawInMenu(targetedBuilding, BuildingPatch.GetBuildingTextureWithPaint(targetedBuilding, textureModel, variation, true), b, this.availableTextures[i].bounds.X, this.availableTextures[i].bounds.Y, _buildingScale);
+                            b.Draw(BuildingPatch.GetBuildingTextureWithPaint(targetedBuilding, textureModel, variation, true), new Vector2(this.availableTextures[i].bounds.X, this.availableTextures[i].bounds.Y), new Rectangle(0, 0, farm.houseSource.Width, farm.houseSource.Height), targetedBuilding.color, 0f, new Vector2(0f, 0f), _buildingScale, SpriteEffects.None, 0.89f);
                         }
                         else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Tree tree)
                         {
@@ -674,8 +682,11 @@ namespace AlternativeTextures.Framework.UI
                         }
                         else if (Game1.currentLocation is DecoratableLocation decoratableLocation && (decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y)) != -1 || decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y)) != -1))
                         {
+                            var isFloor = _modelName.Contains("Floor");
+                            var decorationOffset = isFloor ? 8 : 16;
+
                             this.availableTextures[i].texture = textureModel.GetTexture(variation);
-                            this.availableTextures[i].sourceRect = new Rectangle(0, textureModel.GetTextureOffset(variation), textureModel.TextureWidth, textureModel.TextureHeight);
+                            this.availableTextures[i].sourceRect = new Rectangle((variation % decorationOffset) * textureModel.TextureWidth, (variation / decorationOffset) * textureModel.TextureHeight, textureModel.TextureWidth, textureModel.TextureHeight);
                             this.availableTextures[i].draw(b, Color.White, 0.87f);
                         }
                     }

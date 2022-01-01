@@ -11,18 +11,18 @@
 //#define TRACK_PERFORMANCE
 
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace SpriteMaster {
-	internal static class Performance {
-#if !TRACK_PERFORMANCE
-		internal struct DummyDisposable : IDisposable {
+namespace SpriteMaster;
 
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public void Dispose () {}
-		}
-		private static readonly DummyDisposable Dummy = new();
+static class Performance {
+#if !TRACK_PERFORMANCE
+	internal readonly struct DummyDisposable : IDisposable {
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		public void Dispose() { }
+	}
+	private static readonly DummyDisposable Dummy = new();
 #else
 		internal struct PerformanceTrackerDisposable : IDisposable {
 			internal readonly string Name;
@@ -47,14 +47,14 @@ namespace SpriteMaster {
 #if TRACK_PERFORMANCE
 		internal static IDisposable Track([CallerMemberName] string name = "") {
 #else
-		internal static IDisposable Track(string _ = null) {
+	internal static IDisposable Track(string _ = null) {
 #endif
 #if TRACK_PERFORMANCE
 			return new PerformanceTrackerDisposable(name);
 #else
-			return Dummy;
+		return Dummy;
 #endif
-		}
+	}
 
 #if TRACK_PERFORMANCE
 		private static readonly Dictionary<string, TimeSpan> WorstTimes = new Dictionary<string, TimeSpan>();
@@ -81,5 +81,4 @@ namespace SpriteMaster {
 			}
 		}
 #endif
-	}
 }

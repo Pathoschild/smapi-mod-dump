@@ -3,7 +3,7 @@
   "RoommateKisses": false,
   "MinHeartsForMarriageKiss": 9,
   "HeartsForFriendship": 5,
-  "UnlimitedDailyKisses": false,
+  "UnlimitedDailyKisses": true,
   "DatingKisses": true,
   "FriendHugs": true,
   "SpouseKissChance0to1": 0.1,

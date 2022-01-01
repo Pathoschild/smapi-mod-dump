@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Revitalize;
 
 namespace Revitalize.Framework.Configs
 {
@@ -61,12 +62,12 @@ namespace Revitalize.Framework.Configs
         /// <returns></returns>
         public static Shops_BlacksmithConfig InitializeConfig()
         {
-            if (File.Exists(Path.Combine(ModCore.ModHelper.DirectoryPath, "Configs","Shops","BlacksmithShopPricesConfig.json")))
-                return ModCore.ModHelper.Data.ReadJsonFile<Shops_BlacksmithConfig>(Path.Combine("Configs","Shops", "BlacksmithShopPricesConfig.json"));
+            if (File.Exists(Path.Combine(ModCore.ModHelper.DirectoryPath, "Configs", "Shops", "BlacksmithShopPricesConfig.json")))
+                return ModCore.ModHelper.Data.ReadJsonFile<Shops_BlacksmithConfig>(Path.Combine("Configs", "Shops", "BlacksmithShopPricesConfig.json"));
             else
             {
                 Shops_BlacksmithConfig Config = new Shops_BlacksmithConfig();
-                ModCore.ModHelper.Data.WriteJsonFile<Shops_BlacksmithConfig>(Path.Combine("Configs","Shops", "BlacksmithShopPricesConfig.json"), Config);
+                ModCore.ModHelper.Data.WriteJsonFile(Path.Combine("Configs", "Shops", "BlacksmithShopPricesConfig.json"), Config);
                 return Config;
             }
         }

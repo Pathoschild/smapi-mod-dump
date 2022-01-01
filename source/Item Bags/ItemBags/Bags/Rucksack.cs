@@ -27,7 +27,7 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 #if !ANDROID
-using PyTK.CustomElementHandler;
+//using PyTK.CustomElementHandler;
 #endif
 
 namespace ItemBags.Bags
@@ -161,7 +161,7 @@ namespace ItemBags.Bags
                     }
                     else
                     {
-                        Object ExistingItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false));
+                        Object ExistingItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false, true));
                         if (ExistingItem == null)// || ExistingItem.maximumStackSize() <= 1)
                             return true;
                         else
@@ -195,7 +195,7 @@ namespace ItemBags.Bags
             //{
             //    return EmptySlots + Contents.Count(x => AreItemsEqual(Item, x, true));
             //}
-            Object ExistingItem = Contents.FirstOrDefault(x => AreItemsEquivalent(Item, x, false));
+            Object ExistingItem = Contents.FirstOrDefault(x => AreItemsEquivalent(Item, x, false, true));
             int ExistingSlots = ExistingItem == null ? 0 : GetNumSlots(ExistingItem.Stack);
             return (EmptySlots + ExistingSlots) * MaxStackSize;
         }

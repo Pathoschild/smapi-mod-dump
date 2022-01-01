@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class AlwaysPassTime : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Game1), "shouldTimePass");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Game1), "shouldTimePass");
 
         public static bool Prefix(ref bool __result)
         {

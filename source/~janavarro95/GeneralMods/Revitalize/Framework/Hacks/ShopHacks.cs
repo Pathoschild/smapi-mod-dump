@@ -13,7 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PyTK.Types;
+using Revitalize;
+using Revitalize.Framework;
+using StardewValley;
+using StardewValley.Menus;
 
 namespace Revitalize.Framework.Hacks
 {
@@ -23,29 +26,52 @@ namespace Revitalize.Framework.Hacks
     public class ShopHacks
     {
 
-        public static void AddInCustomItemsToShops()
+        public static void OnNewMenuOpened(object Sender, StardewModdingAPI.Events.MenuChangedEventArgs args)
         {
-            AddItemsToRobinsShop();
-            AddOreToClintsShop();
+            if (args.NewMenu != null)
+            {
+                if (args.NewMenu is ShopMenu)
+                {
+                    ShopMenu menu = (args.NewMenu as ShopMenu);
+                    if (menu.portraitPerson != null)
+                    {
+                        string npcName = menu.portraitPerson.Name;
+                        if (npcName.Equals("Robin"))
+                        {
+                            AddItemsToRobinsShop(menu);
+                        }
+                        else if (npcName.Equals("Clint"))
+                        {
+                            AddOreToClintsShop(menu);
+                        }
+                    }
+                }
+            }
         }
 
-
-        private static void AddItemsToRobinsShop()
+        public static void AddItemToShop(ShopMenu Menu,ISalable Item, int Price, int Stock)
         {
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.GetItem("Workbench", 1), 500), "Robin");
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(new StardewValley.Object((int)Enums.SDVObject.Clay,1),50), "Robin");
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.resources.getResource("Sand", 1), 25), "Robin");
+            Menu.forSale.Add(Item);
+            Menu.itemPriceAndStock.Add(Item, new int[2] { Price, Stock });
+        }
+
+        private static void AddItemsToRobinsShop(ShopMenu Menu)
+        {
+            AddItemToShop(Menu,ModCore.ObjectManager.GetItem("Workbench", 1), 500, 1);
+            AddItemToShop(Menu,ModCore.ObjectManager.resources.getResource("Sand", 1), 50, -1);
+            AddItemToShop(Menu, new StardewValley.Object((int)Enums.SDVObject.Clay, 1), 50, -1);
+
         }
         /// <summary>
         /// Adds in ore to clint's shop.
         /// </summary>
-        private static void AddOreToClintsShop()
+        private static void AddOreToClintsShop(ShopMenu Menu)
         {
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.resources.getOre("Tin",1),ModCore.Configs.shops_blacksmithConfig.tinOreSellPrice), "Clint");
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.resources.getOre("Bauxite", 1), ModCore.Configs.shops_blacksmithConfig.bauxiteOreSellPrice), "Clint");
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.resources.getOre("Lead", 1), ModCore.Configs.shops_blacksmithConfig.leadOreSellPrice), "Clint");
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.resources.getOre("Silver", 1), ModCore.Configs.shops_blacksmithConfig.silverOreSellPrice), "Clint");
-            PyTK.Extensions.PyEvents.addToNPCShop(new InventoryItem(ModCore.ObjectManager.resources.getOre("Titanium", 1), ModCore.Configs.shops_blacksmithConfig.titaniumOreSellPrice), "Clint");
+            AddItemToShop(Menu, ModCore.ObjectManager.resources.getOre("Tin", 1), ModCore.Configs.shops_blacksmithConfig.tinOreSellPrice, -1);
+            AddItemToShop(Menu, ModCore.ObjectManager.resources.getOre("Bauxite", 1), ModCore.Configs.shops_blacksmithConfig.bauxiteOreSellPrice, -1);
+            AddItemToShop(Menu, ModCore.ObjectManager.resources.getOre("Lead", 1), ModCore.Configs.shops_blacksmithConfig.leadOreSellPrice, -1);
+            AddItemToShop(Menu, ModCore.ObjectManager.resources.getOre("Silver", 1), ModCore.Configs.shops_blacksmithConfig.silverOreSellPrice, -1);
+            AddItemToShop(Menu, ModCore.ObjectManager.resources.getOre("Titanium", 1), ModCore.Configs.shops_blacksmithConfig.titaniumOreSellPrice, -1);
         }
     }
 }

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.show-on-start.name": "Mostrar al inicio",
+    "config.show-on-start.tooltip": "Si se inicia el juego con el tiempo restante ya mostrandose.",
+
+    "config.toggle-key.name": "Tecla: Activar pantalla",
+    "config.toggle-key.tooltip": "La tecla para activar la visualización de los objetos.",
+
+    "config.text-scale.name": "Escala de texto",
+    "config.text-scale.tooltip": "La escala del texto a superponer en los objetos."
+}

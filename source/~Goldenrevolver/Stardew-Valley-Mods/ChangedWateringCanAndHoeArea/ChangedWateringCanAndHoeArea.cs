@@ -8,37 +8,19 @@
 **
 *************************************************/
 
-using Harmony;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Tools;
-using System;
-using System.Collections.Generic;
-
 namespace ChangedWateringCanAndHoeArea
 {
+    using HarmonyLib;
+    using Microsoft.Xna.Framework;
+    using StardewModdingAPI;
+    using StardewValley;
+    using StardewValley.Tools;
+    using System;
+    using System.Collections.Generic;
+
     public class ChangedWateringCanAndHoeArea : Mod
     {
         private static ChangedWateringCanAndHoeArea mod;
-
-        public override void Entry(IModHelper helper)
-        {
-            mod = this;
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
-
-            try
-            {
-                harmony.Patch(
-                   original: AccessTools.Method(typeof(Tool), "tilesAffected"),
-                   prefix: new HarmonyMethod(typeof(ChangedWateringCanAndHoeArea), nameof(TilesAffectedPatch))
-                );
-            }
-            catch (Exception e)
-            {
-                ErrorLog("Error while trying to setup required patches:", e);
-            }
-        }
 
         public static bool TilesAffectedPatch(ref Tool __instance, ref List<Vector2> __result, ref Vector2 tileLocation, ref int power, ref Farmer who)
         {
@@ -66,26 +48,13 @@ namespace ChangedWateringCanAndHoeArea
             }
         }
 
-        public void DebugLog(object o)
-        {
-            Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
-        }
-
-        public void ErrorLog(object o, Exception e = null)
-        {
-            string baseMessage = o == null ? "null" : o.ToString();
-
-            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
-
-            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
-        }
-
         public static List<Vector2> NewTilesAffected(ref Tool tool, ref Vector2 tileLocation, ref int power, ref Farmer who)
         {
             power++;
-            List<Vector2> tileLocations = new List<Vector2>();
-
-            tileLocations.Add(Vector2.Zero);
+            var tileLocations = new List<Vector2>
+            {
+                Vector2.Zero
+            };
 
             if (tool is WateringCan)
             {
@@ -94,6 +63,7 @@ namespace ChangedWateringCanAndHoeArea
                     tileLocations.Add(new Vector2(1f, 0f));
                     tileLocations.Add(new Vector2(-1f, 0));
                 }
+
                 if (power >= 3)
                 {
                     tileLocations.Add(new Vector2(0f, -1f));
@@ -108,6 +78,7 @@ namespace ChangedWateringCanAndHoeArea
                     tileLocations.Add(new Vector2(0f, -1f));
                     tileLocations.Add(new Vector2(0f, -2f));
                 }
+
                 if (power >= 3)
                 {
                     tileLocations.Add(new Vector2(0f, -3f));
@@ -115,6 +86,7 @@ namespace ChangedWateringCanAndHoeArea
                     tileLocations.Add(new Vector2(0f, -5f));
                 }
             }
+
             if (power >= 4)
             {
                 tileLocations.Clear();
@@ -126,6 +98,7 @@ namespace ChangedWateringCanAndHoeArea
                     tileLocations.Add(new Vector2(-1f, -i));
                 }
             }
+
             if (power >= 5)
             {
                 // we have to iterate forwards so the animation is the right way around
@@ -137,6 +110,7 @@ namespace ChangedWateringCanAndHoeArea
                     tileLocations.Add(tileLocations[i] + new Vector2(0f, -3f));
                 }
             }
+
             if (power >= 6)
             {
                 // again clear to have the right order of the elements, less expensive than sorting
@@ -164,6 +138,37 @@ namespace ChangedWateringCanAndHoeArea
             return tileLocations;
         }
 
+        public override void Entry(IModHelper helper)
+        {
+            mod = this;
+            var harmony = new Harmony(ModManifest.UniqueID);
+
+            try
+            {
+                harmony.Patch(
+                   original: AccessTools.Method(typeof(Tool), "tilesAffected"),
+                   prefix: new HarmonyMethod(typeof(ChangedWateringCanAndHoeArea), nameof(TilesAffectedPatch)));
+            }
+            catch (Exception e)
+            {
+                ErrorLog("Error while trying to setup required patches:", e);
+            }
+        }
+
+        public void DebugLog(object o)
+        {
+            Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
+        }
+
+        public void ErrorLog(object o, Exception e = null)
+        {
+            string baseMessage = o == null ? "null" : o.ToString();
+
+            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
+
+            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
+        }
+
         private static void AdjustForFacingDirection(ref List<Vector2> tileLocations, int facingDirection)
         {
             switch (facingDirection)
@@ -173,6 +178,7 @@ namespace ChangedWateringCanAndHoeArea
                     {
                         tileLocations[i] = new Vector2(-tileLocations[i].Y, -tileLocations[i].X);
                     }
+
                     break;
 
                 case 2:
@@ -180,6 +186,7 @@ namespace ChangedWateringCanAndHoeArea
                     {
                         tileLocations[i] = -tileLocations[i];
                     }
+
                     break;
 
                 case 3:
@@ -187,6 +194,7 @@ namespace ChangedWateringCanAndHoeArea
                     {
                         tileLocations[i] = new Vector2(tileLocations[i].Y, tileLocations[i].X);
                     }
+
                     break;
             }
         }

@@ -48,7 +48,7 @@ namespace BattleRoyale
         public DateTime? WhenToStartNextRound = null;
         public bool waitingForNextRoundToStart = false;
 
-        public HashSet<long> spectatingPlayers = new HashSet<long>();
+        public HashSet<long> spectatingPlayers = new();
 
         public bool isSpectating = false;
         public bool lastRound = false;
@@ -62,20 +62,20 @@ namespace BattleRoyale
 
         public bool ForceSpecialRound = false;
         public static int SpecialRoundsEvery = 3;
-        public List<SpecialRoundType> SpecialRoundHistory = new List<SpecialRoundType>();
+        public List<SpecialRoundType> SpecialRoundHistory = new();
         public int SpecialRoundHistorySize = 4;
 
-        public List<int> StormIndexHistory = new List<int>();
+        public List<int> StormIndexHistory = new();
         public int StormIndexHistorySize = 5;
 
-        public List<Round> Rounds = new List<Round>();
+        public List<Round> Rounds = new();
 
         public bool InProgress
         {
             get { return Rounds.Count > 0 && GetActiveRound().InProgress; }
         }
 
-        public static Dictionary<GameLocation, List<DoorOrWarp>> AllWarps = new Dictionary<GameLocation, List<DoorOrWarp>>();
+        public static Dictionary<GameLocation, List<DoorOrWarp>> AllWarps = new();
 
         public Game(IModHelper helper, IMonitor monitor)
         {
@@ -106,7 +106,7 @@ namespace BattleRoyale
             if (Rounds.Count == 0)
                 return null;
 
-            return Rounds[Rounds.Count - 1];
+            return Rounds[^1];
         }
 
         public bool IsSpecialRoundType(SpecialRoundType roundType)
@@ -118,7 +118,7 @@ namespace BattleRoyale
         public Round CreateNewRound()
         {
             List<Farmer> participants = GetAllPlayers();
-            Round round = new Round(participants);
+            Round round = new(participants);
             Rounds.Add(round);
             return round;
         }
@@ -270,7 +270,7 @@ namespace BattleRoyale
 
                 foreach (Warp warp in location.warps)
                 {
-                    Point position = new Point(warp.X * 64, warp.Y * 64);
+                    Point position = new(warp.X * 64, warp.Y * 64);
 
                     GameLocation targetLocation;
                     try
@@ -294,7 +294,7 @@ namespace BattleRoyale
 
                 if (location is IslandWest)
                 {
-                    DoorOrWarp item = new DoorOrWarp(
+                    DoorOrWarp item = new(
                         location,
                         new Point(4930, 2500),
                         Game1.getLocationFromName("IslandFarmHouse")
@@ -306,7 +306,7 @@ namespace BattleRoyale
                 }
                 else if (location is Town)
                 {
-                    DoorOrWarp item = new DoorOrWarp(
+                    DoorOrWarp item = new(
                         location,
                         new Point(2200, 6125),
                         Game1.getLocationFromName("Sewer")

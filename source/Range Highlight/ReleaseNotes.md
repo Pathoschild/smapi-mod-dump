@@ -9,6 +9,16 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 3.0.0
+
+### User-visible Changes
+
+* Built for SDV 1.5.5 / SMAPI 3.13
+* Adjust "outer" range for bombs to be centered, reflecting bug fix in the game
+* Check the "IsScarecrow" function exposed in 1.5.5 when looking at items.
+  This should have no effect in the base game, but will automatically reflect
+  scarecrow ranges for items added or modified by other mods using this feature.
+
 ## Version 2.8.0
 
 ### User-visible Changes

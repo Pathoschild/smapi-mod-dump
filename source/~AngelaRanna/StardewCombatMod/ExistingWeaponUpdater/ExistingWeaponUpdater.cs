@@ -44,9 +44,9 @@ namespace ExistingWeaponUpdater
             // Loop through the player's inventory and update each weapon
             for (int i = 0; i < Game1.player.Items.Count; i++)
             {
-                if (Game1.player.items[i] != null && Game1.player.items[i] is MeleeWeapon)
+                if (Game1.player.Items[i] != null && Game1.player.Items[i] is MeleeWeapon)
                 {
-                    Game1.player.items[i] = (Item)new MeleeWeapon(((MeleeWeapon)Game1.player.items[i]).InitialParentTileIndex);
+                    Game1.player.Items[i] = (Item)new MeleeWeapon(((MeleeWeapon)Game1.player.Items[i]).InitialParentTileIndex);
                     iMadeThis = true;
                 }
             }

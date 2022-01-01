@@ -58,13 +58,13 @@ namespace AnimalsDie
 
     public class AnimalsDie : Mod
     {
-        public readonly List<string> Messages = new List<string>();
+        public readonly List<string> Messages = new();
 
-        public readonly List<Tuple<FarmAnimal, string>> AnimalsToKill = new List<Tuple<FarmAnimal, string>>();
+        public readonly List<Tuple<FarmAnimal, string>> AnimalsToKill = new();
 
-        public readonly List<FarmAnimal> SickAnimals = new List<FarmAnimal>();
+        public readonly List<FarmAnimal> SickAnimals = new();
 
-        public readonly List<FarmAnimal> CheckedToday = new List<FarmAnimal>();
+        public readonly List<FarmAnimal> CheckedToday = new();
 
         public FarmAnimal WildAnimalVictim { get; set; }
 
@@ -118,7 +118,7 @@ namespace AnimalsDie
         public int CalculateIllness(FarmAnimal animal, byte actualFullness, bool gotWater, bool wasLeftOutLastNight)
         {
             int addIllness = 0;
-            StringBuilder potentialLog = new StringBuilder();
+            StringBuilder potentialLog = new();
 
             // was trapped outdoors overnight
             if (wasLeftOutLastNight)
@@ -137,7 +137,7 @@ namespace AnimalsDie
                 if (WasColdOutside())
                 {
                     // and the door was left open
-                    if (animal.home.animalDoorOpen)
+                    if (animal.home.animalDoorOpen.Value)
                     {
                         // if it's winter it's too cold regardless of if there is a heater (no heater even grants one more point)
                         if (IsWinter())
@@ -181,8 +181,7 @@ namespace AnimalsDie
                 potentialLog.Append("noWater ");
             }
 
-            string moddata;
-            animal.modData.TryGetValue($"{ModManifest.UniqueID}/illness", out moddata);
+            animal.modData.TryGetValue($"{ModManifest.UniqueID}/illness", out string moddata);
 
             int illness = addIllness;
 
@@ -201,7 +200,7 @@ namespace AnimalsDie
 
             if (!string.IsNullOrEmpty(potentialLog.ToString()))
             {
-                VerboseLog($"{animal.name} illness change, total: {illness}, new: {addIllness}, reasons: {potentialLog}");
+                VerboseLog($"{animal.Name} illness change, total: {illness}, new: {addIllness}, reasons: {potentialLog}");
             }
 
             animal.modData[$"{ModManifest.UniqueID}/illness"] = illness.ToString();
@@ -211,8 +210,7 @@ namespace AnimalsDie
 
         public int CalculateDehydration(FarmAnimal animal, bool gotWater)
         {
-            string moddata;
-            animal.modData.TryGetValue($"{ModManifest.UniqueID}/dehydration", out moddata);
+            animal.modData.TryGetValue($"{ModManifest.UniqueID}/dehydration", out string moddata);
 
             int dehydration = 0;
 
@@ -224,7 +222,7 @@ namespace AnimalsDie
             if (!gotWater)
             {
                 dehydration++;
-                VerboseLog($"{animal.name} didn't get water, dehydration: {dehydration}");
+                VerboseLog($"{animal.Name} didn't get water, dehydration: {dehydration}");
             }
             else
             {
@@ -238,8 +236,7 @@ namespace AnimalsDie
 
         public int CalculateStarvation(FarmAnimal animal, byte actualFullness)
         {
-            string moddata;
-            animal.modData.TryGetValue($"{ModManifest.UniqueID}/starvation", out moddata);
+            animal.modData.TryGetValue($"{ModManifest.UniqueID}/starvation", out string moddata);
 
             int starvation = 0;
 
@@ -251,7 +248,7 @@ namespace AnimalsDie
             if (actualFullness < 30)
             {
                 starvation++;
-                VerboseLog($"{animal.name} didn't get fed, fullness: {actualFullness}, starvation: {starvation}");
+                VerboseLog($"{animal.Name} didn't get fed, fullness: {actualFullness}, starvation: {starvation}");
             }
             else
             {
@@ -288,27 +285,22 @@ namespace AnimalsDie
             return false;
         }
 
-        private void PostMessage(object o)
-        {
-            Messages.Add(o == null ? "null" : o.ToString());
-        }
-
-        private bool IsWinter()
+        private static bool IsWinter()
         {
             return Game1.currentSeason.Equals("winter");
         }
 
-        private bool WasColdOutside()
+        private static bool WasColdOutside()
         {
             return Game1.wasRainingYesterday || IsWinter(); ////Game1.isRaining || Game1.isSnowing || Game1.isLightning
         }
 
-        private bool HasHeater(FarmAnimal animal)
+        private static bool HasHeater(FarmAnimal animal)
         {
             return animal.home.indoors.Value.numberOfObjectsWithName("Heater") > 0;
         }
 
-        private double Map(double from, double fromMin, double fromMax, double toMin, double toMax)
+        private static double Map(double from, double fromMin, double fromMax, double toMin, double toMax)
         {
             var fromAbs = from - fromMin;
             var fromMaxAbs = fromMax - fromMin;
@@ -323,48 +315,7 @@ namespace AnimalsDie
             return to;
         }
 
-        private Tuple<int, int> GetMinAndMaxAnimalAgeInYears(FarmAnimal animal)
-        {
-            int barnPlaceHolderAge = 10;
-            int coopPlaceHolderAge = 5;
-
-            AnimalType type = GetAnimalType(animal);
-
-            switch (type)
-            {
-                case AnimalType.Sheep:
-                    return new Tuple<int, int>(Config.MinAgeSheep, Config.MaxAgeSheep);
-
-                case AnimalType.Cow:
-                    return new Tuple<int, int>(Config.MinAgeCow, Config.MaxAgeCow);
-
-                case AnimalType.Goat:
-                    return new Tuple<int, int>(Config.MinAgeGoat, Config.MaxAgeGoat);
-
-                case AnimalType.Pig:
-                    return new Tuple<int, int>(Config.MinAgeSheep, Config.MaxAgeSheep);
-
-                case AnimalType.Ostrich:
-                    return new Tuple<int, int>(Config.MinAgeOstrich, Config.MaxAgeOstrich);
-
-                case AnimalType.Chicken:
-                    return new Tuple<int, int>(Config.MinAgeChicken, Config.MaxAgeChicken);
-
-                case AnimalType.Duck:
-                    return new Tuple<int, int>(Config.MinAgeDuck, Config.MaxAgeDuck);
-
-                case AnimalType.Rabbit:
-                    return new Tuple<int, int>(Config.MinAgeRabbit, Config.MaxAgeRabbit);
-
-                case AnimalType.Dinosaur:
-                    return new Tuple<int, int>(Config.MinAgeDinosaur, Config.MaxAgeDinosaur);
-
-                default:
-                    return animal.isCoopDweller() ? new Tuple<int, int>(coopPlaceHolderAge, coopPlaceHolderAge) : new Tuple<int, int>(barnPlaceHolderAge, barnPlaceHolderAge);
-            }
-        }
-
-        private AnimalType GetAnimalType(FarmAnimal animal)
+        private static AnimalType GetAnimalType(FarmAnimal animal)
         {
             var animalTypes = Enum.GetNames(typeof(AnimalType));
 
@@ -378,6 +329,33 @@ namespace AnimalsDie
             }
 
             return AnimalType.Other;
+        }
+
+        private void PostMessage(object o)
+        {
+            Messages.Add(o == null ? "null" : o.ToString());
+        }
+
+        private Tuple<int, int> GetMinAndMaxAnimalAgeInYears(FarmAnimal animal)
+        {
+            int barnPlaceHolderAge = 10;
+            int coopPlaceHolderAge = 5;
+
+            AnimalType type = GetAnimalType(animal);
+
+            return type switch
+            {
+                AnimalType.Sheep => new Tuple<int, int>(Config.MinAgeSheep, Config.MaxAgeSheep),
+                AnimalType.Cow => new Tuple<int, int>(Config.MinAgeCow, Config.MaxAgeCow),
+                AnimalType.Goat => new Tuple<int, int>(Config.MinAgeGoat, Config.MaxAgeGoat),
+                AnimalType.Pig => new Tuple<int, int>(Config.MinAgeSheep, Config.MaxAgeSheep),
+                AnimalType.Ostrich => new Tuple<int, int>(Config.MinAgeOstrich, Config.MaxAgeOstrich),
+                AnimalType.Chicken => new Tuple<int, int>(Config.MinAgeChicken, Config.MaxAgeChicken),
+                AnimalType.Duck => new Tuple<int, int>(Config.MinAgeDuck, Config.MaxAgeDuck),
+                AnimalType.Rabbit => new Tuple<int, int>(Config.MinAgeRabbit, Config.MaxAgeRabbit),
+                AnimalType.Dinosaur => new Tuple<int, int>(Config.MinAgeDinosaur, Config.MaxAgeDinosaur),
+                _ => animal.isCoopDweller() ? new Tuple<int, int>(coopPlaceHolderAge, coopPlaceHolderAge) : new Tuple<int, int>(barnPlaceHolderAge, barnPlaceHolderAge),
+            };
         }
 
         private void CalculateDeathMessage(FarmAnimal animal, string cause)
@@ -423,11 +401,11 @@ namespace AnimalsDie
 
             string happiness;
 
-            if (animal.happiness < 30)
+            if (animal.happiness.Value < 30)
             {
                 happiness = Helper.Translation.Get("Happiness.sad");
             }
-            else if (animal.happiness < 200)
+            else if (animal.happiness.Value < 200)
             {
                 happiness = Helper.Translation.Get("Happiness.fine");
             }
@@ -436,7 +414,7 @@ namespace AnimalsDie
                 happiness = Helper.Translation.Get("Happiness.happy");
             }
 
-            double hearts = animal.friendshipTowardFarmer < 1000 ? animal.friendshipTowardFarmer / 200.0 : 5;
+            double hearts = animal.friendshipTowardFarmer.Value < 1000 ? animal.friendshipTowardFarmer.Value / 200.0 : 5;
 
             double withHalfHearts = ((int)(hearts * 2.0)) / 2.0;
             string loveString = Helper.Translation.Get(withHalfHearts == 1 ? "Love.heart" : "Love.hearts", new { heartCount = withHalfHearts });
@@ -444,7 +422,7 @@ namespace AnimalsDie
             // if the locale is the default locale, keep the english animal type
             string animalType = string.IsNullOrWhiteSpace(Helper.Translation.Locale) ? animal.type.Value.ToLower() : animal.displayType;
 
-            string message = Helper.Translation.Get("AnimalDeathMessage", new { animalType, animalName = animal.name, cause = causeString, entireAgeText = ageString, happinessText = happiness, lovestring = loveString });
+            string message = Helper.Translation.Get("AnimalDeathMessage", new { animalType, animalName = animal.Name, cause = causeString, entireAgeText = ageString, happinessText = happiness, lovestring = loveString });
 
             PostMessage(message);
         }
@@ -491,16 +469,16 @@ namespace AnimalsDie
                 }
             }
 
-            VerboseLog($"Killed {animal.name} due to {cause}");
+            VerboseLog($"Killed {animal.Name} due to {cause}");
 
             // right before this Utility.fixAllAnimals gets called, so if it's still not fixed then... it truly doesn't have a home and I don't need to remove it
             if (animal.home != null)
             {
-                (animal.home.indoors.Value as AnimalHouse).animalsThatLiveHere.Remove(animal.myID);
-                (animal.home.indoors.Value as AnimalHouse).animals.Remove(animal.myID);
+                (animal.home.indoors.Value as AnimalHouse).animalsThatLiveHere.Remove(animal.myID.Value);
+                (animal.home.indoors.Value as AnimalHouse).animals.Remove(animal.myID.Value);
             }
 
-            Game1.getFarm().animals.Remove(animal.myID);
+            Game1.getFarm().animals.Remove(animal.myID.Value);
 
             animal.health.Value = -1;
 
@@ -654,25 +632,25 @@ namespace AnimalsDie
                     return;
 
                 case 1:
-                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.oneAnimal", new { firstAnimalName = SickAnimals[0].name }));
+                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.oneAnimal", new { firstAnimalName = SickAnimals[0].Name }));
                     break;
 
                 case 2:
-                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.twoAnimals", new { firstAnimalName = SickAnimals[0].name, secondAnimalName = SickAnimals[1].name, }));
+                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.twoAnimals", new { firstAnimalName = SickAnimals[0].Name, secondAnimalName = SickAnimals[1].Name, }));
                     break;
 
                 case 3:
 
-                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.threeAnimals", new { firstAnimalName = SickAnimals[0].name, secondAnimalName = SickAnimals[1].name, thirdAnimalName = SickAnimals[2].name }));
+                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.threeAnimals", new { firstAnimalName = SickAnimals[0].Name, secondAnimalName = SickAnimals[1].Name, thirdAnimalName = SickAnimals[2].Name }));
                     break;
 
                 case 4:
 
-                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.fourAnimals", new { firstAnimalName = SickAnimals[0].name, secondAnimalName = SickAnimals[1].name, thirdAnimalName = SickAnimals[2].name, sickAnimalCount = SickAnimals.Count - 3 }));
+                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.fourAnimals", new { firstAnimalName = SickAnimals[0].Name, secondAnimalName = SickAnimals[1].Name, thirdAnimalName = SickAnimals[2].Name, sickAnimalCount = SickAnimals.Count - 3 }));
                     break;
 
                 default:
-                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.morethanfourAnimals", new { firstAnimalName = SickAnimals[0].name, secondAnimalName = SickAnimals[1].name, thirdAnimalName = SickAnimals[2].name, sickAnimalCount = SickAnimals.Count - 3 }));
+                    Game1.showGlobalMessage(Helper.Translation.Get("SickAnimalMessage.morethanfourAnimals", new { firstAnimalName = SickAnimals[0].Name, secondAnimalName = SickAnimals[1].Name, thirdAnimalName = SickAnimals[2].Name, sickAnimalCount = SickAnimals.Count - 3 }));
                     break;
             }
 

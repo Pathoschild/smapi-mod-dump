@@ -14,6 +14,7 @@
   "messages.warning.brush_is_empty": "The brush doesn't have a copied texture! Right click on an object to copy a texture.",
   "messages.warning.brush_not_supported": "The brush doesn't support copying textures from this object.",
   "messages.warning.invalid_copied_texture": "The copied texture {{textureName}} isn't valid for this object!",
+  "messages.warning.custom_building_not_supported": "This custom building ({{itemName}}) doesn't support texture variations.",
 
   "messages.info.texture_copied": "Texture copied!",
   "messages.info.cleared_brush": "Cleared brush!"

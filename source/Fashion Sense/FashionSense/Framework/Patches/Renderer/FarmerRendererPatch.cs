@@ -33,6 +33,7 @@ using StardewValley.Tools;
 using FashionSense.Framework.Models.Hat;
 using FashionSense.Framework.Models.Shirt;
 using FashionSense.Framework.Models.Pants;
+using FashionSense.Framework.Models.Sleeves;
 
 namespace FashionSense.Framework.Patches.Renderer
 {
@@ -197,25 +198,27 @@ namespace FashionSense.Framework.Patches.Renderer
                 case AccessoryModel accessoryModel:
                     if (accessoryModel.Priority == AccessoryModel.Type.Secondary)
                     {
-                        return who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+                        return who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FARMER_FRAME);
                     }
                     if (accessoryModel.Priority == AccessoryModel.Type.Tertiary)
                     {
-                        return who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+                        return who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FARMER_FRAME);
                     }
-                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_ACCESSORY_FARMER_FRAME);
                 case HatModel hatModel:
-                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAT_FARMER_FRAME);
                 case ShirtModel shirtModel:
-                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_FARMER_FRAME);
                 case PantsModel pantsModel:
-                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_FARMER_FRAME);
+                case SleevesModel sleevesModel:
+                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_SLEEVES_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SLEEVES_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SLEEVES_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SLEEVES_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_SLEEVES_FARMER_FRAME);
             }
 
-            return who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FARMER_FRAME);
+            return who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_ITERATOR) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_FRAME_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_TYPE) && who.modData.ContainsKey(ModDataKeys.ANIMATION_FACING_DIRECTION) && who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_FARMER_FRAME);
         }
 
-        private static bool IsFrameValid(List<AnimationModel> animations, int iterator, bool probe = false)
+        private static bool IsFrameValid(Farmer who, List<AnimationModel> animations, int iterator, bool probe = false)
         {
             AnimationModel animationModel = animations.ElementAtOrDefault(iterator);
             if (animationModel is null)
@@ -230,6 +233,10 @@ namespace FashionSense.Framework.Patches.Renderer
                 if (condition.Name is Condition.Type.MovementDuration)
                 {
                     passedCheck = condition.IsValid(true, FashionSense.conditionData.IsMovingLongEnough(condition.GetParsedValue<long>(!probe)));
+                }
+                else if (condition.Name is Condition.Type.MovementDurationLogical)
+                {
+                    passedCheck = condition.IsValid(FashionSense.conditionData.GetMovementDuration(who));
                 }
                 else if (condition.Name is Condition.Type.IsElapsedTimeMultipleOf)
                 {
@@ -253,17 +260,21 @@ namespace FashionSense.Framework.Patches.Renderer
                 {
                     passedCheck = condition.IsValid(true, FashionSense.conditionData.IsMovingFastEnough(condition.GetParsedValue<long>(!probe)));
                 }
+                else if (condition.Name is Condition.Type.MovementSpeedLogical)
+                {
+                    passedCheck = condition.IsValid(FashionSense.conditionData.GetMovementSpeed(who));
+                }
                 else if (condition.Name is Condition.Type.RidingHorse)
                 {
-                    passedCheck = condition.IsValid(Game1.player.isRidingHorse());
+                    passedCheck = condition.IsValid(who.isRidingHorse());
                 }
                 else if (condition.Name is Condition.Type.InventoryItemCount)
                 {
-                    passedCheck = condition.IsValid(FashionSense.conditionData.GetActualPlayerInventoryCount(Game1.player));
+                    passedCheck = condition.IsValid(FashionSense.conditionData.GetActualPlayerInventoryCount(who));
                 }
                 else if (condition.Name is Condition.Type.IsInventoryFull)
                 {
-                    passedCheck = condition.IsValid(Game1.player.isInventoryFull());
+                    passedCheck = condition.IsValid(who.isInventoryFull());
                 }
                 else if (condition.Name is Condition.Type.IsDarkOut)
                 {
@@ -275,55 +286,55 @@ namespace FashionSense.Framework.Patches.Renderer
                 }
                 else if (condition.Name is Condition.Type.IsWalking)
                 {
-                    passedCheck = condition.IsValid(!Game1.player.running);
+                    passedCheck = condition.IsValid(!FashionSense.conditionData.IsRunning(who));
                 }
                 else if (condition.Name is Condition.Type.IsRunning)
                 {
-                    passedCheck = condition.IsValid(Game1.player.running);
+                    passedCheck = condition.IsValid(FashionSense.conditionData.IsRunning(who));
                 }
                 else if (condition.Name is Condition.Type.IsEating)
                 {
-                    passedCheck = condition.IsValid(Game1.player.isEating && Game1.player.FarmerSprite.CurrentSingleAnimation == FarmerSprite.eat);
+                    passedCheck = condition.IsValid(who.isEating && who.FarmerSprite.CurrentSingleAnimation == FarmerSprite.eat);
                 }
                 else if (condition.Name is Condition.Type.IsDrinking)
                 {
-                    passedCheck = condition.IsValid(Game1.player.isEating && Game1.player.FarmerSprite.CurrentSingleAnimation == FarmerSprite.drink);
+                    passedCheck = condition.IsValid(who.isEating && who.FarmerSprite.CurrentSingleAnimation == FarmerSprite.drink);
                 }
                 else if (condition.Name is Condition.Type.IsFishing)
                 {
-                    passedCheck = condition.IsValid(Game1.player.CurrentTool is FishingRod fishingRod && fishingRod.isFishing);
+                    passedCheck = condition.IsValid(who.CurrentTool is FishingRod fishingRod && fishingRod.isFishing);
                 }
                 else if (condition.Name is Condition.Type.IsUsingHeavyTool)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && (Game1.player.CurrentTool is Hoe || Game1.player.CurrentTool is Pickaxe || Game1.player.CurrentTool is Axe));
+                    passedCheck = condition.IsValid(who.UsingTool && (who.CurrentTool is Hoe || who.CurrentTool is Pickaxe || who.CurrentTool is Axe));
                 }
                 else if (condition.Name is Condition.Type.IsUsingMilkPail)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && Game1.player.CurrentTool is MilkPail);
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is MilkPail);
                 }
                 else if (condition.Name is Condition.Type.IsUsingShears)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && Game1.player.CurrentTool is Shears);
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is Shears);
                 }
                 else if (condition.Name is Condition.Type.IsUsingPan)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && Game1.player.CurrentTool is Pan);
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is Pan);
                 }
                 else if (condition.Name is Condition.Type.IsUsingScythe)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && Game1.player.CurrentTool is MeleeWeapon weapon && weapon.isScythe());
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is MeleeWeapon weapon && weapon.isScythe());
                 }
                 else if (condition.Name is Condition.Type.IsUsingMeleeWeapon)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && Game1.player.CurrentTool is MeleeWeapon weapon);
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is MeleeWeapon weapon);
                 }
                 else if (condition.Name is Condition.Type.IsUsingSlingshot)
                 {
-                    passedCheck = condition.IsValid(Game1.player.UsingTool && Game1.player.CurrentTool is Slingshot);
+                    passedCheck = condition.IsValid(who.UsingTool && who.CurrentTool is Slingshot);
                 }
                 else if (condition.Name is Condition.Type.IsHarvesting)
                 {
-                    passedCheck = condition.IsValid(279 + Game1.player.FacingDirection == Game1.player.FarmerSprite.CurrentSingleAnimation);
+                    passedCheck = condition.IsValid(279 + who.FacingDirection == who.FarmerSprite.CurrentSingleAnimation);
                 }
                 else if (condition.Name is Condition.Type.IsInMines)
                 {
@@ -332,6 +343,22 @@ namespace FashionSense.Framework.Patches.Renderer
                 else if (condition.Name is Condition.Type.IsOutdoors)
                 {
                     passedCheck = condition.IsValid(Game1.currentLocation.IsOutdoors);
+                }
+                else if (condition.Name is Condition.Type.HealthLevel)
+                {
+                    passedCheck = condition.IsValid(who.health);
+                }
+                else if (condition.Name is Condition.Type.StaminaLevel)
+                {
+                    passedCheck = condition.IsValid((long)who.stamina);
+                }
+                else if (condition.Name is Condition.Type.IsSitting)
+                {
+                    passedCheck = condition.IsValid(who.IsSitting());
+                }
+                else if (condition.Name is Condition.Type.IsCarrying)
+                {
+                    passedCheck = condition.IsValid(who.IsCarrying());
                 }
 
                 // If the condition is independent and is true, then skip rest of evaluations
@@ -365,6 +392,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_STARTING_INDEX] = startingIndex.ToString();
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION] = "0";
+                        who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     }
                     else if (accessoryModel.Priority == AccessoryModel.Type.Tertiary)
                     {
@@ -373,6 +401,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_STARTING_INDEX] = startingIndex.ToString();
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION] = "0";
+                        who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     }
                     else
                     {
@@ -381,6 +410,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_STARTING_INDEX] = startingIndex.ToString();
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                         who.modData[ModDataKeys.ANIMATION_ACCESSORY_ELAPSED_DURATION] = "0";
+                        who.modData[ModDataKeys.ANIMATION_ACCESSORY_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     }
                     break;
                 case HatModel hatModel:
@@ -389,6 +419,7 @@ namespace FashionSense.Framework.Patches.Renderer
                     who.modData[ModDataKeys.ANIMATION_HAT_STARTING_INDEX] = startingIndex.ToString();
                     who.modData[ModDataKeys.ANIMATION_HAT_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                     who.modData[ModDataKeys.ANIMATION_HAT_ELAPSED_DURATION] = "0";
+                    who.modData[ModDataKeys.ANIMATION_HAT_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     break;
                 case ShirtModel shirtModel:
                     who.modData[ModDataKeys.ANIMATION_SHIRT_TYPE] = type.ToString();
@@ -396,6 +427,7 @@ namespace FashionSense.Framework.Patches.Renderer
                     who.modData[ModDataKeys.ANIMATION_SHIRT_STARTING_INDEX] = startingIndex.ToString();
                     who.modData[ModDataKeys.ANIMATION_SHIRT_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                     who.modData[ModDataKeys.ANIMATION_SHIRT_ELAPSED_DURATION] = "0";
+                    who.modData[ModDataKeys.ANIMATION_SHIRT_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     break;
                 case PantsModel pantsModel:
                     who.modData[ModDataKeys.ANIMATION_PANTS_TYPE] = type.ToString();
@@ -403,6 +435,15 @@ namespace FashionSense.Framework.Patches.Renderer
                     who.modData[ModDataKeys.ANIMATION_PANTS_STARTING_INDEX] = startingIndex.ToString();
                     who.modData[ModDataKeys.ANIMATION_PANTS_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                     who.modData[ModDataKeys.ANIMATION_PANTS_ELAPSED_DURATION] = "0";
+                    who.modData[ModDataKeys.ANIMATION_PANTS_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
+                    break;
+                case SleevesModel sleevesModel:
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_TYPE] = type.ToString();
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_ITERATOR] = iterator.ToString();
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_STARTING_INDEX] = startingIndex.ToString();
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_ELAPSED_DURATION] = "0";
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     break;
                 default:
                     who.modData[ModDataKeys.ANIMATION_HAIR_TYPE] = type.ToString();
@@ -410,11 +451,11 @@ namespace FashionSense.Framework.Patches.Renderer
                     who.modData[ModDataKeys.ANIMATION_HAIR_STARTING_INDEX] = startingIndex.ToString();
                     who.modData[ModDataKeys.ANIMATION_HAIR_FRAME_DURATION] = animations.ElementAt(iterator).Duration.ToString();
                     who.modData[ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION] = "0";
+                    who.modData[ModDataKeys.ANIMATION_HAIR_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
                     break;
             }
 
             who.modData[ModDataKeys.ANIMATION_FACING_DIRECTION] = facingDirection.ToString();
-            who.modData[ModDataKeys.ANIMATION_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
         }
 
         private static void HandleAppearanceAnimation(AppearanceModel model, Farmer who, int facingDirection, ref Rectangle sourceRectangle)
@@ -444,6 +485,11 @@ namespace FashionSense.Framework.Patches.Renderer
             {
                 size.Width = pantsModel.PantsSize.Width;
                 size.Length = pantsModel.PantsSize.Length;
+            }
+            else if (model is SleevesModel sleevesModel)
+            {
+                size.Width = sleevesModel.SleevesSize.Width;
+                size.Length = sleevesModel.SleevesSize.Length;
             }
 
             // Reset any cached animation data, if needd
@@ -499,6 +545,8 @@ namespace FashionSense.Framework.Patches.Renderer
                     return who.modData.ContainsKey(ModDataKeys.ANIMATION_SHIRT_TYPE) ? who.modData[ModDataKeys.ANIMATION_SHIRT_TYPE] == type.ToString() : false;
                 case PantsModel pantsModel:
                     return who.modData.ContainsKey(ModDataKeys.ANIMATION_PANTS_TYPE) ? who.modData[ModDataKeys.ANIMATION_PANTS_TYPE] == type.ToString() : false;
+                case SleevesModel sleevesModel:
+                    return who.modData.ContainsKey(ModDataKeys.ANIMATION_SLEEVES_TYPE) ? who.modData[ModDataKeys.ANIMATION_SLEEVES_TYPE] == type.ToString() : false;
                 default:
                     return who.modData.ContainsKey(ModDataKeys.ANIMATION_HAIR_TYPE) ? who.modData[ModDataKeys.ANIMATION_HAIR_TYPE] == type.ToString() : false;
             }
@@ -531,6 +579,9 @@ namespace FashionSense.Framework.Patches.Renderer
                 case PantsModel pantsModel:
                     who.modData[ModDataKeys.ANIMATION_PANTS_TYPE] = type.ToString();
                     break;
+                case SleevesModel sleevesModel:
+                    who.modData[ModDataKeys.ANIMATION_SLEEVES_TYPE] = type.ToString();
+                    break;
                 default:
                     who.modData[ModDataKeys.ANIMATION_HAIR_TYPE] = type.ToString();
                     break;
@@ -545,13 +596,8 @@ namespace FashionSense.Framework.Patches.Renderer
                 FashionSense.ResetAnimationModDataFields(who, animations.ElementAt(0).Duration, type, facingDirection, true, model);
             }
 
-            // Utilize the default modData key properties (HairModel)
-            var iterator = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_ITERATOR]);
-            var startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_STARTING_INDEX]);
-            var frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_FRAME_DURATION]);
-            var elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION]);
-
             // Determine the modData keys to use based on AppearanceModel
+            int iterator, startingIndex, frameDuration, elapsedDuration, lastFarmerFrame;
             switch (model)
             {
                 case AccessoryModel accessoryModel:
@@ -561,6 +607,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_STARTING_INDEX]);
                         frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FRAME_DURATION]);
                         elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION]);
+                        lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_FARMER_FRAME]);
                     }
                     else if (accessoryModel.Priority == AccessoryModel.Type.Tertiary)
                     {
@@ -568,6 +615,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_STARTING_INDEX]);
                         frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FRAME_DURATION]);
                         elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION]);
+                        lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_FARMER_FRAME]);
                     }
                     else
                     {
@@ -575,6 +623,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_STARTING_INDEX]);
                         frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_FRAME_DURATION]);
                         elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_ELAPSED_DURATION]);
+                        lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_ACCESSORY_FARMER_FRAME]);
                     }
                     break;
                 case HatModel hatModel:
@@ -582,18 +631,35 @@ namespace FashionSense.Framework.Patches.Renderer
                     startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAT_STARTING_INDEX]);
                     frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAT_FRAME_DURATION]);
                     elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAT_ELAPSED_DURATION]);
+                    lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAT_FARMER_FRAME]);
                     break;
                 case ShirtModel shirtModel:
                     iterator = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SHIRT_ITERATOR]);
                     startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SHIRT_STARTING_INDEX]);
                     frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SHIRT_FRAME_DURATION]);
                     elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SHIRT_ELAPSED_DURATION]);
+                    lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SHIRT_FARMER_FRAME]);
                     break;
                 case PantsModel pantsModel:
                     iterator = Int32.Parse(who.modData[ModDataKeys.ANIMATION_PANTS_ITERATOR]);
                     startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_PANTS_STARTING_INDEX]);
                     frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_PANTS_FRAME_DURATION]);
                     elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_PANTS_ELAPSED_DURATION]);
+                    lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_PANTS_FARMER_FRAME]);
+                    break;
+                case SleevesModel sleevesModel:
+                    iterator = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SLEEVES_ITERATOR]);
+                    startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SLEEVES_STARTING_INDEX]);
+                    frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SLEEVES_FRAME_DURATION]);
+                    elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SLEEVES_ELAPSED_DURATION]);
+                    lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_SLEEVES_FARMER_FRAME]);
+                    break;
+                default:
+                    iterator = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_ITERATOR]);
+                    startingIndex = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_STARTING_INDEX]);
+                    frameDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_FRAME_DURATION]);
+                    elapsedDuration = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION]);
+                    lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_HAIR_FARMER_FRAME]);
                     break;
             }
 
@@ -601,7 +667,7 @@ namespace FashionSense.Framework.Patches.Renderer
             var animationModel = animations.ElementAtOrDefault(iterator) is null ? animations.ElementAtOrDefault(0) : animations.ElementAtOrDefault(iterator);
 
             // Check if frame is valid
-            if (IsFrameValid(animations, iterator, probe: true))
+            if (IsFrameValid(who, animations, iterator, probe: true))
             {
                 if (animationModel.OverrideStartingIndex && startingIndex != iterator)
                 {
@@ -617,7 +683,7 @@ namespace FashionSense.Framework.Patches.Renderer
             {
                 // Frame isn't valid, get the next available frame starting from iterator
                 var hasFoundNextFrame = false;
-                foreach (var animation in animations.Skip(iterator + 1).Where(a => IsFrameValid(animations, animations.IndexOf(a), probe: true)))
+                foreach (var animation in animations.Skip(iterator + 1).Where(a => IsFrameValid(who, animations, animations.IndexOf(a), probe: true)))
                 {
                     iterator = animations.IndexOf(animation);
 
@@ -634,7 +700,7 @@ namespace FashionSense.Framework.Patches.Renderer
                 // If no frames are available from iterator onwards, then check backwards for the next available frame with OverrideStartingIndex
                 if (!hasFoundNextFrame)
                 {
-                    foreach (var animation in animations.Take(iterator + 1).Reverse().Where(a => a.OverrideStartingIndex && IsFrameValid(animations, animations.IndexOf(a), probe: true)))
+                    foreach (var animation in animations.Take(iterator + 1).Reverse().Where(a => a.OverrideStartingIndex && IsFrameValid(who, animations, animations.IndexOf(a), probe: true)))
                     {
                         iterator = animations.IndexOf(animation);
                         startingIndex = iterator;
@@ -663,11 +729,10 @@ namespace FashionSense.Framework.Patches.Renderer
 
             // Perform time based logic for elapsed animations
             // Note: ANIMATION_ELAPSED_DURATION is updated via UpdateTicked event
-            var lastFarmerFrame = Int32.Parse(who.modData[ModDataKeys.ANIMATION_FARMER_FRAME]);
             if ((elapsedDuration >= frameDuration && !animationModel.EndWhenFarmerFrameUpdates) || (animationModel.EndWhenFarmerFrameUpdates && who.FarmerSprite.CurrentFrame != lastFarmerFrame))
             {
                 // Force the frame's condition to evalute and update any caches
-                IsFrameValid(animations, iterator);
+                IsFrameValid(who, animations, iterator);
                 UpdateLight(model, animationModel, who, true);
 
                 iterator = iterator + 1 >= animations.Count() ? startingIndex : iterator + 1;
@@ -733,6 +798,10 @@ namespace FashionSense.Framework.Patches.Renderer
                 case PantsModel pantsModel:
                     indexOffset = 6;
                     lightIdKey = ModDataKeys.ANIMATION_PANTS_LIGHT_ID;
+                    break;
+                case SleevesModel sleevesModel:
+                    indexOffset = 7;
+                    lightIdKey = ModDataKeys.ANIMATION_SLEEVES_LIGHT_ID;
                     break;
                 case HairModel hairModel:
                     indexOffset = 9;
@@ -822,6 +891,9 @@ namespace FashionSense.Framework.Patches.Renderer
                     break;
                 case PantsModel pantsModel:
                     iteratorKey = ModDataKeys.ANIMATION_PANTS_ITERATOR;
+                    break;
+                case SleevesModel sleevesModel:
+                    iteratorKey = ModDataKeys.ANIMATION_SLEEVES_ITERATOR;
                     break;
             }
 
@@ -1001,9 +1073,75 @@ namespace FashionSense.Framework.Patches.Renderer
             b.Draw(maskedTexture, position, sourceRect, color, rotation, origin, scale, appearanceModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
         }
 
-        private static void DrawCustomAccessory(AccessoryContentPack accessoryPack, AccessoryModel accessoryModel, Rectangle customAccessorySourceRect, string colorModDataKey, FarmerRenderer renderer, SpriteBatch b, Farmer who, int facingDirection, Vector2 position, Vector2 origin, Vector2 positionOffset, Vector2 rotationAdjustment, float scale, int currentFrame, float rotation, float layerDepth)
+        private static void DrawSleeveColorMask(SpriteBatch b, SleevesContentPack sleevesPack, SleevesModel sleevesModel, ShirtModel shirtModel, Vector2 position, Rectangle sourceRect, Color color, float rotation, Vector2 origin, float scale, float layerDepth)
         {
-            var accessoryColor = new Color() { PackedValue = Game1.player.modData.ContainsKey(colorModDataKey) ? uint.Parse(Game1.player.modData[colorModDataKey]) : who.hairstyleColor.Value.PackedValue };
+            Color[] data = new Color[sleevesPack.Texture.Width * sleevesPack.Texture.Height];
+            sleevesPack.Texture.GetData(data);
+            Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, sleevesPack.Texture.Width, sleevesPack.Texture.Height);
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (!sleevesModel.IsMaskedColor(data[i]))
+                {
+                    data[i] = Color.Transparent;
+                }
+                else if (sleevesModel.ColorMasks is not null)
+                {
+                    if (sleevesModel.ColorMasks.Count > 0 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[0]) && shirtModel.HasSleeveColorAtLayer(0))
+                    {
+                        data[i] = shirtModel.GetSleeveColor(0);
+                    }
+                    else if (sleevesModel.ColorMasks.Count > 1 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[1]) && shirtModel.HasSleeveColorAtLayer(1))
+                    {
+                        data[i] = shirtModel.GetSleeveColor(1);
+                    }
+                    else if (sleevesModel.ColorMasks.Count > 2 && data[i] == AppearanceModel.GetColor(sleevesModel.ColorMasks[2]) && shirtModel.HasSleeveColorAtLayer(2))
+                    {
+                        data[i] = shirtModel.GetSleeveColor(2);
+                    }
+                }
+            }
+
+            maskedTexture.SetData(data);
+            b.Draw(maskedTexture, position, sourceRect, Color.White, rotation, origin, scale, sleevesModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
+        }
+
+        private static void DrawSkinToneMask(SpriteBatch b, AppearanceContentPack appearancePack, AppearanceModel appearanceModel, SkinToneModel skinTone, Vector2 position, Rectangle sourceRect, Color color, float rotation, Vector2 origin, float scale, float layerDepth)
+        {
+            Color[] data = new Color[appearancePack.Texture.Width * appearancePack.Texture.Height];
+            appearancePack.Texture.GetData(data);
+            Texture2D maskedTexture = new Texture2D(Game1.graphics.GraphicsDevice, appearancePack.Texture.Width, appearancePack.Texture.Height);
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (!appearanceModel.IsSkinToneMaskColor(data[i]))
+                {
+                    data[i] = Color.Transparent;
+                }
+                else if (appearanceModel.SkinToneMasks is not null)
+                {
+                    if (appearanceModel.SkinToneMasks.LightTone is not null && data[i] == appearanceModel.SkinToneMasks.Lightest)
+                    {
+                        data[i] = skinTone.Lightest;
+                    }
+                    else if (appearanceModel.SkinToneMasks.MediumTone is not null && data[i] == appearanceModel.SkinToneMasks.Medium)
+                    {
+                        data[i] = skinTone.Medium;
+                    }
+                    else if (appearanceModel.SkinToneMasks.DarkTone is not null && data[i] == appearanceModel.SkinToneMasks.Darkest)
+                    {
+                        data[i] = skinTone.Darkest;
+                    }
+                }
+            }
+
+            maskedTexture.SetData(data);
+            b.Draw(maskedTexture, position, sourceRect, appearanceModel.DisableSkinGrayscale ? Color.White : color, rotation, origin, scale, appearanceModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth);
+        }
+
+        private static void DrawCustomAccessory(AccessoryContentPack accessoryPack, AccessoryModel accessoryModel, Rectangle customAccessorySourceRect, string colorModDataKey, SkinToneModel skinTone, FarmerRenderer renderer, bool isDrawingForUI, SpriteBatch b, Farmer who, int facingDirection, Vector2 position, Vector2 origin, Vector2 positionOffset, Vector2 rotationAdjustment, float scale, int currentFrame, float rotation, float layerDepth)
+        {
+            var accessoryColor = new Color() { PackedValue = who.modData.ContainsKey(colorModDataKey) ? uint.Parse(who.modData[colorModDataKey]) : who.hairstyleColor.Value.PackedValue };
             if (accessoryModel.DisableGrayscale)
             {
                 accessoryColor = Color.White;
@@ -1014,8 +1152,12 @@ namespace FashionSense.Framework.Patches.Renderer
             }
 
             // Correct how the accessory is drawn according to facingDirection and AccessoryModel.DrawBehindHair
-            var layerFix = facingDirection == 0 ? (accessoryModel.DrawBeforeHair ? 3.9E-05f : 2E-05f) : (accessoryModel.DrawBeforeHair ? -0.1E-05f : 2.9E-05f);
-            layerFix += accessoryModel.DrawAfterPlayer ? 0.2E-05f : 0;
+            var layerFix = facingDirection == 0 ? (accessoryModel.DrawBeforeHair ? 3.9E-05f : 0) : (accessoryModel.DrawBeforeHair ? -0.1E-05f : 2.9E-05f);
+            if (isDrawingForUI)
+            {
+                layerFix = facingDirection == 0 ? (accessoryModel.DrawBeforeHair ? 3.9E-05f : 2E-05f) : (accessoryModel.DrawBeforeHair ? -0.1E-05f : 3.9E-05f);
+            }
+            layerFix += accessoryModel.DrawAfterPlayer ? 0.5E-05f : 0;
 
             b.Draw(accessoryPack.Texture, position + origin + positionOffset + rotationAdjustment + GetFeatureOffset(facingDirection, currentFrame, scale, renderer, accessoryPack.PackType), customAccessorySourceRect, accessoryModel.HasColorMask() ? Color.White : accessoryColor, rotation, origin + new Vector2(accessoryModel.HeadPosition.X, accessoryModel.HeadPosition.Y), 4f * scale + ((rotation != 0f) ? 0f : 0f), accessoryModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + layerFix);
 
@@ -1023,9 +1165,13 @@ namespace FashionSense.Framework.Patches.Renderer
             {
                 DrawColorMask(b, accessoryPack, accessoryModel, position + origin + positionOffset + GetFeatureOffset(facingDirection, currentFrame, scale, renderer, accessoryPack.PackType), customAccessorySourceRect, accessoryColor, rotation, origin + new Vector2(accessoryModel.HeadPosition.X, accessoryModel.HeadPosition.Y), 4f * scale, layerDepth + layerFix + 0.01E-05f);
             }
+            if (accessoryModel.HasSkinToneMask())
+            {
+                DrawSkinToneMask(b, accessoryPack, accessoryModel, skinTone, position + origin + positionOffset + GetFeatureOffset(facingDirection, currentFrame, scale, renderer, accessoryPack.PackType), customAccessorySourceRect, accessoryColor, rotation, origin + new Vector2(accessoryModel.HeadPosition.X, accessoryModel.HeadPosition.Y), 4f * scale, layerDepth + layerFix + 0.01E-05f);
+            }
         }
 
-        private static bool DrawHairAndAccesoriesPrefix(FarmerRenderer __instance, bool ___isDrawingForUI, Vector2 ___positionOffset, Vector2 ___rotationAdjustment, ref Rectangle ___hairstyleSourceRect, ref Rectangle ___shirtSourceRect, ref Rectangle ___accessorySourceRect, ref Rectangle ___hatSourceRect, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth)
+        private static bool DrawHairAndAccesoriesPrefix(FarmerRenderer __instance, bool ___isDrawingForUI, Vector2 ___positionOffset, Vector2 ___rotationAdjustment, LocalizedContentManager ___farmerTextureManager, Texture2D ___baseTexture, NetInt ___skin, bool ____sickFrame, ref Rectangle ___hairstyleSourceRect, ref Rectangle ___shirtSourceRect, ref Rectangle ___accessorySourceRect, ref Rectangle ___hatSourceRect, SpriteBatch b, int facingDirection, Farmer who, Vector2 position, Vector2 origin, float scale, int currentFrame, float rotation, Color overrideColor, float layerDepth)
         {
             if (!who.modData.ContainsKey(ModDataKeys.CUSTOM_HAIR_ID) && !who.modData.ContainsKey(ModDataKeys.CUSTOM_ACCESSORY_ID) && !who.modData.ContainsKey(ModDataKeys.CUSTOM_HAT_ID))
             {
@@ -1109,11 +1255,23 @@ namespace FashionSense.Framework.Patches.Renderer
                 shirtModel = sPack.GetShirtFromFacingDirection(facingDirection);
             }
 
+            // Sleeves pack
+            SleevesContentPack sleevesPack = null;
+            SleevesModel sleevesModel = null;
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SLEEVES_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(who.modData[ModDataKeys.CUSTOM_SLEEVES_ID]) is SleevesContentPack armPack && armPack != null)
+            {
+                sleevesPack = armPack;
+                sleevesModel = armPack.GetSleevesFromFacingDirection(facingDirection);
+            }
+
             // Check if all the models are null, if so revert back to vanilla logic
-            if (pantsModel is null && hairModel is null && accessoryModel is null && secondaryAccessoryModel is null && tertiaryAccessoryModel is null && hatModel is null && shirtModel is null)
+            if (pantsModel is null && hairModel is null && accessoryModel is null && secondaryAccessoryModel is null && tertiaryAccessoryModel is null && hatModel is null && shirtModel is null && sleevesModel is null)
             {
                 return true;
             }
+
+            // Get skin tone
+            var skinTone = DrawPatch.GetSkinTone(___farmerTextureManager, ___baseTexture, null, ___skin, ____sickFrame);
 
             // Set up source rectangles
             Rectangle customPantsSourceRect = new Rectangle();
@@ -1123,6 +1281,7 @@ namespace FashionSense.Framework.Patches.Renderer
             Rectangle customTertiaryAccessorySourceRect = new Rectangle();
             Rectangle customHatSourceRect = new Rectangle();
             Rectangle customShirtSourceRect = new Rectangle();
+            Rectangle customSleevesSourceRect = new Rectangle();
 
             // Handle any animations
             if (pantsModel != null)
@@ -1153,6 +1312,10 @@ namespace FashionSense.Framework.Patches.Renderer
             {
                 HandleAppearanceAnimation(shirtModel, who, facingDirection, ref customShirtSourceRect);
             }
+            if (sleevesModel != null)
+            {
+                HandleAppearanceAnimation(sleevesModel, who, facingDirection, ref customSleevesSourceRect);
+            }
 
             // Execute recolor
             DrawPatch.ExecuteRecolorActionsReversePatch(__instance, who);
@@ -1175,14 +1338,19 @@ namespace FashionSense.Framework.Patches.Renderer
             // Offset the source rectangles for shirts, accessories and hats according to facingDirection
             OffsetSourceRectangles(who, facingDirection, rotation, ref ___shirtSourceRect, ref dyed_shirt_source_rect, ref ___accessorySourceRect, ref ___hatSourceRect, ref ___rotationAdjustment);
 
+            // Prepare the layer offsets
+            float sleevesLayer = 0f;
+            float shirtLayer = 0f;
+            float hairLayer = 0f;
+
             // Draw the pants
             if (pantsModel is null || who.bathingClothes)
             {
                 // Handled in DrawPatch.HandleCustomDraw
             }
-            else
+            else if (!(pantsModel.HideWhileSwimming && who.swimming.Value))
             {
-                var pantsColor = new Color() { PackedValue = Game1.player.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR) ? uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR]) : who.hairstyleColor.Value.PackedValue };
+                var pantsColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR]) : who.hairstyleColor.Value.PackedValue };
                 if (pantsModel.DisableGrayscale)
                 {
                     pantsColor = Color.White;
@@ -1195,24 +1363,29 @@ namespace FashionSense.Framework.Patches.Renderer
                 var featureOffset = GetFeatureOffset(facingDirection, currentFrame, scale, __instance, pantsPack.PackType, false);
                 featureOffset.Y -= who.isMale ? 4 : 0;
 
-                b.Draw(pantsPack.Texture, position + origin + ___positionOffset + featureOffset, customPantsSourceRect, pantsModel.HasColorMask() ? Color.White : pantsColor, rotation, origin + new Vector2(pantsModel.BodyPosition.X, pantsModel.BodyPosition.Y), 4f * scale, pantsModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + 0.001E-05f);
+                b.Draw(pantsPack.Texture, position + origin + ___positionOffset + featureOffset, customPantsSourceRect, pantsModel.HasColorMask() ? Color.White : pantsColor, rotation, origin + new Vector2(pantsModel.BodyPosition.X, pantsModel.BodyPosition.Y), 4f * scale, pantsModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + 0.01E-05f);
 
                 if (pantsModel.HasColorMask())
                 {
-                    DrawColorMask(b, pantsPack, pantsModel, position + origin + ___positionOffset + featureOffset, customPantsSourceRect, pantsColor, rotation, origin + new Vector2(pantsModel.BodyPosition.X, pantsModel.BodyPosition.Y), 4f * scale, layerDepth + 0.001E-05f);
+                    DrawColorMask(b, pantsPack, pantsModel, position + origin + ___positionOffset + featureOffset, customPantsSourceRect, pantsColor, rotation, origin + new Vector2(pantsModel.BodyPosition.X, pantsModel.BodyPosition.Y), 4f * scale, layerDepth + 0.02E-05f);
+                }
+                if (pantsModel.HasSkinToneMask())
+                {
+                    DrawSkinToneMask(b, pantsPack, pantsModel, skinTone, position + origin + ___positionOffset + featureOffset, customPantsSourceRect, pantsColor, rotation, origin + new Vector2(pantsModel.BodyPosition.X, pantsModel.BodyPosition.Y), 4f * scale, layerDepth + 0.02E-05f);
                 }
             }
+            layerDepth += 0.03E-05f;
 
             // Draw the shirt
             if (shirtModel is null || who.bathingClothes)
             {
                 DrawShirtVanilla(b, ___shirtSourceRect, dyed_shirt_source_rect, __instance, who, currentFrame, facingDirection, rotation, scale, layerDepth, position, origin, ___positionOffset, ___rotationAdjustment, overrideColor);
             }
-            else
+            else if (!(shirtModel.HideWhileSwimming && who.swimming.Value))
             {
-                float layerOffset = who.FacingDirection > 1 ? 1.5E-07f : 1.8E-07f;
+                float layerOffset = 1.5E-07f;
 
-                var shirtColor = new Color() { PackedValue = Game1.player.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR) ? uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) : who.hairstyleColor.Value.PackedValue };
+                var shirtColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) : who.hairstyleColor.Value.PackedValue };
                 if (shirtModel.DisableGrayscale)
                 {
                     shirtColor = Color.White;
@@ -1229,7 +1402,14 @@ namespace FashionSense.Framework.Patches.Renderer
                 {
                     DrawColorMask(b, shirtPack, shirtModel, position + origin + ___positionOffset + featureOffset, customShirtSourceRect, shirtColor, rotation, origin + new Vector2(shirtModel.BodyPosition.X, shirtModel.BodyPosition.Y), 4f * scale, layerDepth + layerOffset + 0.01E-05f);
                 }
+                if (shirtModel.HasSkinToneMask())
+                {
+                    DrawSkinToneMask(b, shirtPack, shirtModel, skinTone, position + origin + ___positionOffset + featureOffset, customShirtSourceRect, shirtColor, rotation, origin + new Vector2(shirtModel.BodyPosition.X, shirtModel.BodyPosition.Y), 4f * scale, layerDepth + layerOffset + 0.01E-05f);
+                }
+
+                shirtLayer = layerDepth + layerOffset + (shirtModel.HasColorMask() ? 0.01E-05f : 0);
             }
+            layerDepth += 0.02E-05f;
 
             // Draw accessory
             if (accessoryModel is null && secondaryAccessoryModel is null && tertiaryAccessoryModel is null)
@@ -1238,17 +1418,18 @@ namespace FashionSense.Framework.Patches.Renderer
             }
             else
             {
-                if (accessoryModel != null)
+                var accessoryLayer = who.FacingDirection == 2 ? layerDepth - 1E-5f : layerDepth;
+                if (accessoryModel != null && !(accessoryModel.HideWhileSwimming && who.swimming.Value))
                 {
-                    DrawCustomAccessory(accessoryPack, accessoryModel, customAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_COLOR, __instance, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, layerDepth);
+                    DrawCustomAccessory(accessoryPack, accessoryModel, customAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_COLOR, skinTone, __instance, ___isDrawingForUI, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, accessoryLayer);
                 }
-                if (secondaryAccessoryModel != null)
+                if (secondaryAccessoryModel != null && !(secondaryAccessoryModel.HideWhileSwimming && who.swimming.Value))
                 {
-                    DrawCustomAccessory(secondaryAccessoryPack, secondaryAccessoryModel, customSecondaryAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_SECONDARY_COLOR, __instance, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, layerDepth + 0.01E-05f);
+                    DrawCustomAccessory(secondaryAccessoryPack, secondaryAccessoryModel, customSecondaryAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_SECONDARY_COLOR, skinTone, __instance, ___isDrawingForUI, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, accessoryLayer + 0.01E-05f);
                 }
-                if (tertiaryAccessoryModel != null)
+                if (tertiaryAccessoryModel != null && !(tertiaryAccessoryModel.HideWhileSwimming && who.swimming.Value))
                 {
-                    DrawCustomAccessory(tertiaryAccessoryPack, tertiaryAccessoryModel, customTertiaryAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_TERTIARY_COLOR, __instance, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, layerDepth + 0.02E-05f);
+                    DrawCustomAccessory(tertiaryAccessoryPack, tertiaryAccessoryModel, customTertiaryAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_TERTIARY_COLOR, skinTone, __instance, ___isDrawingForUI, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, accessoryLayer + 0.02E-05f);
                 }
             }
 
@@ -1260,7 +1441,7 @@ namespace FashionSense.Framework.Patches.Renderer
                     DrawHairVanilla(b, FarmerRenderer.hairStylesTexture, ___hairstyleSourceRect, __instance, who, currentFrame, facingDirection, rotation, scale, layerDepth, position, origin, ___positionOffset, overrideColor);
                 }
             }
-            else
+            else if (!(hairModel.HideWhileSwimming && who.swimming.Value))
             {
                 float hair_draw_layer = 2.2E-05f;
                 var hairColor = overrideColor.Equals(Color.White) ? ((Color)who.hairstyleColor) : overrideColor;
@@ -1285,17 +1466,81 @@ namespace FashionSense.Framework.Patches.Renderer
                     {
                         DrawColorMask(b, hairPack, hairModel, position + origin + ___positionOffset + featureOffset, customHairSourceRect, hairColor, rotation, origin + new Vector2(hairModel.HeadPosition.X, hairModel.HeadPosition.Y), 4f * scale, layerDepth + hair_draw_layer + 0.01E-05f);
                     }
+                    if (hairModel.HasSkinToneMask())
+                    {
+                        DrawSkinToneMask(b, hairPack, hairModel, skinTone, position + origin + ___positionOffset + featureOffset, customHairSourceRect, hairColor, rotation, origin + new Vector2(hairModel.HeadPosition.X, hairModel.HeadPosition.Y), 4f * scale, layerDepth + hair_draw_layer + 0.01E-05f);
+                    }
+
+                    hairLayer = layerDepth + hair_draw_layer + (hairModel.HasColorMask() ? 0.01E-05f : 0);
+                    layerDepth = hairLayer;
                 }
             }
+
+            // Draw the sleeves
+            if (sleevesModel is null)
+            {
+                // Handled in DrawPatch.HandleCustomDraw
+            }
+            else if (!(sleevesModel.HideWhileSwimming && who.swimming.Value))
+            {
+                var sleevesColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR]) : who.hairstyleColor.Value.PackedValue };
+                if (sleevesModel.DisableGrayscale)
+                {
+                    sleevesColor = Color.White;
+                }
+                else if (sleevesModel.IsPrismatic)
+                {
+                    sleevesColor = Utility.GetPrismaticColor(speedMultiplier: sleevesModel.PrismaticAnimationSpeedMultiplier);
+                }
+
+                // Adjust the sleevesLayer according to model's adjustment properties
+                if (sleevesModel.DrawBeforeShirt)
+                {
+                    sleevesLayer = hairModel is not null ? shirtLayer - 0.01E-05f : sleevesLayer - 0.01E-05f;
+                }
+                else if (sleevesModel.DrawBeforeHair)
+                {
+                    sleevesLayer = hairModel is not null ? hairLayer - 2E-05f : sleevesLayer - 0.01E-05f;
+                }
+                else
+                {
+                    sleevesLayer = layerDepth;
+                }
+                sleevesLayer = sleevesLayer + 0.01E-05f;
+
+                var featureOffset = GetFeatureOffset(facingDirection, currentFrame, scale, __instance, sleevesPack.PackType, false);
+                featureOffset.Y -= who.isMale ? 4 : 0;
+
+                b.Draw(sleevesPack.Texture, position + origin + ___positionOffset + featureOffset, customSleevesSourceRect, sleevesModel.HasColorMask() ? Color.White : sleevesColor, rotation, origin + new Vector2(sleevesModel.BodyPosition.X, sleevesModel.BodyPosition.Y), 4f * scale, sleevesModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, sleevesLayer);
+
+                if (sleevesModel.HasColorMask())
+                {
+                    if (sleevesModel.UseShirtColors && shirtModel is not null && shirtModel.SleeveColors is not null)
+                    {
+                        DrawSleeveColorMask(b, sleevesPack, sleevesModel, shirtModel, position + origin + ___positionOffset + featureOffset, customSleevesSourceRect, sleevesColor, rotation, origin + new Vector2(sleevesModel.BodyPosition.X, sleevesModel.BodyPosition.Y), 4f * scale, sleevesLayer + 0.02E-05f);
+                    }
+                    else
+                    {
+                        DrawColorMask(b, sleevesPack, sleevesModel, position + origin + ___positionOffset + featureOffset, customSleevesSourceRect, sleevesColor, rotation, origin + new Vector2(sleevesModel.BodyPosition.X, sleevesModel.BodyPosition.Y), 4f * scale, sleevesLayer + 0.02E-05f);
+                    }
+
+                    sleevesLayer = sleevesLayer + 0.02E-05f;
+                }
+                if (sleevesModel.HasSkinToneMask())
+                {
+                    DrawSkinToneMask(b, sleevesPack, sleevesModel, skinTone, position + origin + ___positionOffset + featureOffset, customSleevesSourceRect, sleevesColor, rotation, origin + new Vector2(sleevesModel.BodyPosition.X, sleevesModel.BodyPosition.Y), 4f * scale, sleevesLayer + 0.01E-05f);
+                }
+            }
+            layerDepth += 0.01E-05f;
 
             // Draw hat
             if (hatModel is null)
             {
                 DrawHatVanilla(b, ___hatSourceRect, __instance, who, currentFrame, facingDirection, rotation, scale, layerDepth, position, origin, ___positionOffset);
             }
-            else
+            else if (!(hatModel.HideWhileSwimming && who.swimming.Value))
             {
-                var hatColor = new Color() { PackedValue = Game1.player.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_HAT_COLOR) ? uint.Parse(Game1.player.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR]) : who.hairstyleColor.Value.PackedValue };
+                var hatColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_HAT_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR]) : who.hairstyleColor.Value.PackedValue };
                 if (hatModel.DisableGrayscale)
                 {
                     hatColor = Color.White;
@@ -1313,12 +1558,16 @@ namespace FashionSense.Framework.Patches.Renderer
                 {
                     DrawColorMask(b, hatPack, hatModel, position + origin + ___positionOffset + GetFeatureOffset(facingDirection, currentFrame, scale, __instance, hatPack.PackType, flip), customHatSourceRect, hatColor, rotation, origin + new Vector2(hatModel.HeadPosition.X, hatModel.HeadPosition.Y), 4f * scale, layerDepth + layerOffset + 0.01E-05f);
                 }
+                if (hatModel.HasSkinToneMask())
+                {
+                    DrawSkinToneMask(b, hatPack, hatModel, skinTone, position + origin + ___positionOffset + GetFeatureOffset(facingDirection, currentFrame, scale, __instance, hatPack.PackType, flip), customHatSourceRect, hatColor, rotation, origin + new Vector2(hatModel.HeadPosition.X, hatModel.HeadPosition.Y), 4f * scale, layerDepth + layerOffset + 0.01E-05f);
+                }
             }
 
             return false;
         }
 
-        private static bool DrawMiniPortratPrefix(FarmerRenderer __instance, Texture2D ___baseTexture, SpriteBatch b, Vector2 position, float layerDepth, float scale, int facingDirection, Farmer who)
+        private static bool DrawMiniPortratPrefix(FarmerRenderer __instance, LocalizedContentManager ___farmerTextureManager, Texture2D ___baseTexture, NetInt ___skin, bool ____sickFrame, SpriteBatch b, Vector2 position, float layerDepth, float scale, int facingDirection, Farmer who)
         {
             if (!who.modData.ContainsKey(ModDataKeys.CUSTOM_HAIR_ID))
             {
@@ -1400,6 +1649,12 @@ namespace FashionSense.Framework.Patches.Renderer
             if (hairModel.HasColorMask())
             {
                 DrawColorMask(b, hairPack, hairModel, position + new Vector2(0f, feature_y_offset * 4) * scale / 4f, sourceRect, hairColor, 0f, new Vector2(hairModel.HeadPosition.X, hairModel.HeadPosition.Y), 4f * scale, layerDepth + hair_draw_layer + 0.01E-05f);
+            }
+            if (hairModel.HasSkinToneMask())
+            {
+                // Get skin tone
+                var skinTone = DrawPatch.GetSkinTone(___farmerTextureManager, ___baseTexture, null, ___skin, ____sickFrame);
+                DrawSkinToneMask(b, hairPack, hairModel, skinTone, position + new Vector2(0f, feature_y_offset * 4) * scale / 4f, sourceRect, hairColor, 0f, new Vector2(hairModel.HeadPosition.X, hairModel.HeadPosition.Y), 4f * scale, layerDepth + hair_draw_layer + 0.01E-05f);
             }
 
             return false;

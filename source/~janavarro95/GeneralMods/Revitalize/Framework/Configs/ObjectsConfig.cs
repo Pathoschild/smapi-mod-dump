@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Revitalize;
 
 namespace Revitalize.Framework.Configs
 {
@@ -32,7 +33,7 @@ namespace Revitalize.Framework.Configs
             else
             {
                 ObjectsConfig Config = new ObjectsConfig();
-                ModCore.ModHelper.Data.WriteJsonFile<ObjectsConfig>(Path.Combine("Configs", "ObjectsConfig.json"), Config);
+                ModCore.ModHelper.Data.WriteJsonFile(Path.Combine("Configs", "ObjectsConfig.json"), Config);
                 return Config;
             }
         }

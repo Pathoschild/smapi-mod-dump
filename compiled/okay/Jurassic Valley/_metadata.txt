@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8068
-IDs: MayaCalderwood.JurassicValley
-update keys: Nexus:8068

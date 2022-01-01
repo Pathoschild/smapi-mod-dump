@@ -62,7 +62,7 @@ namespace ClimatesOfFerngillRebuild
             return false;
         }
 
-        internal static int ReturnRndRainAmtInLevel(MersenneTwister dice, RainLevels rl)
+        internal static int ReturnRndRainAmtInLevel(Random dice, RainLevels rl)
         {
 			return (int)(Math.Round(RainCategories[rl].RandomInFullRange(dice),0));
         }

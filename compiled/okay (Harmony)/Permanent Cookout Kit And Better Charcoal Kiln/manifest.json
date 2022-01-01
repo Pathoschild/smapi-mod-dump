@@ -1,10 +1,10 @@
 {
   "Name": "Better Cookout Kit And Charcoal Kiln",
   "Author": "Goldenrevolver",
-  "Version": "1.1.2",
+  "Version": "1.1.3",
   "Description": "Makes cookout kits not disappear overnight. Instead the fire goes out and you need to reignite it. Also changes the charcoal kiln.",
   "UniqueID": "Goldenrevolver.PermanentCookoutKit",
   "EntryDll": "PermanentCookoutKit.dll",
-  "MinimumApiVersion": "3.9.1",
+  "MinimumApiVersion": "3.13.2",
   "UpdateKeys": [ "Nexus:8035" ]
 }

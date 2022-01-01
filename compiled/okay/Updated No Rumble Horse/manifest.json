@@ -1,0 +1,10 @@
+﻿{
+	"Name": "UpdatedNoRumbleHorse",
+	"Author": "Aladanor",
+	"Version": "1.0.0",
+	"Description": "A successor of the NoRumbleHorse mod",
+	"UniqueID": "Aladanor.UpdatedNoRumbleHorse",
+	"EntryDll": "UpdatedNoRumbleHorse.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:10164" ]
+}

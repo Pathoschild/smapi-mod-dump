@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Runtime.Remoting.Channels;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;

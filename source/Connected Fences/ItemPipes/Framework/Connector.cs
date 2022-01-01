@@ -22,9 +22,30 @@ namespace ItemPipes.Framework
     public class Connector : Node
     {
         public bool PassingItem { get; set; }
+        public bool Connecting { get; set; }
+
+
         public Connector(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
             PassingItem = false;
+            Connecting = false;
+        }
+
+        public override string GetState()
+        {
+            if(PassingItem)
+            {
+                return "item";
+            }
+            else if (Connecting)
+            {
+                return "connecting";
+            }
+            else
+            {
+                return "default";
+            }
+
         }
 
     }

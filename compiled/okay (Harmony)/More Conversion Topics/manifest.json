@@ -1,7 +1,7 @@
 {
   "Name": "More Conversation Topics",
   "Author": "violetlizabet",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Adds conversation topics that need code to add.",
   "UniqueID": "violetlizabet.MoreConvoTopics",
   "EntryDll": "MoreConversationTopics.dll",

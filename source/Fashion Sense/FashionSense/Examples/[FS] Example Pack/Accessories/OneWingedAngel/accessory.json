@@ -12,6 +12,7 @@
   "Name": "One Winged Angel",
   "FrontAccessory": {
     "DisableGrayscale": true,
+    "HideWhileSwimming": true,
     "DrawBeforeHair": true,
     "DrawBeforePlayer": false,
     "StartingPosition": {
@@ -35,6 +36,7 @@
   },
   "BackAccessory": {
     "DisableGrayscale": true,
+    "HideWhileSwimming": true,
     "Flipped": true,
     "StartingPosition": {
       "X": 0,

@@ -1,0 +1,11 @@
+{
+  "IsEnableQuickStack": true,
+  "QuickStackRange": 5,
+  "IsQuickStackIntoBuildingsWithInventories": true,
+  "IsQuickStackOverflowItems": true,
+  "IsQuickStackTooltipDrawNearbyChests": true,
+  "IsEnableFavoriteItems": true,
+  "FavoriteItemsHighlightTextureChoice": 2,
+  "FavoriteItemsKeyboardHotkey": "LeftAlt",
+  "FavoriteItemsControllerHotkey": "LeftStick"
+}

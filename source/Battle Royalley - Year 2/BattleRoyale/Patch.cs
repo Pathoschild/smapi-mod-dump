@@ -45,7 +45,7 @@ namespace BattleRoyale
 
             MethodBase targetMethod = string.IsNullOrEmpty(patchDescriptor.targetMethodName) ?
 
-                patchDescriptor.targetType.GetConstructor(patchDescriptor.targetMethodArguments ?? new Type[0]) :
+                patchDescriptor.targetType.GetConstructor(patchDescriptor.targetMethodArguments ?? Array.Empty<Type>()) :
 
                 targetMethod = patchDescriptor.targetMethodArguments != null ?
                     patchDescriptor.targetType.GetMethod(patchDescriptor.targetMethodName, patchDescriptor.targetMethodArguments)
@@ -79,7 +79,7 @@ namespace BattleRoyale
 
         public static void PatchAll(string id)
         {
-            Harmony harmonyInstance = new Harmony(id);
+            Harmony harmonyInstance = new(id);
 
             foreach (Type type in (from type in Assembly.GetExecutingAssembly().GetTypes()
                                    where type.IsClass && type.BaseType == typeof(Patch)

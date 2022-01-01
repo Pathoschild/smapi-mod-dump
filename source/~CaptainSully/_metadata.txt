@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/CaptainSully/StardewMods
+   Git: https://github.com/CaptainSully/StardewMods.git
+
+mods:
+   Better Tappers
+   Start With Greenhouse
+
+latest commit:
+   commit 530359068382ecf684e99820c9b7fa36187e2715
+   Author: CaptainSully <sully.kylej@gmail.com>
+   Date:   Fri Dec 31 03:53:50 2021 -0500
+   
+       BT 1.1.3, SWG 1.0.1
+       Code restructure
+   

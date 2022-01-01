@@ -15,7 +15,7 @@ namespace BattleRoyale.Patches
 {
     class DisableTigerSlimes : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(IslandWest), "resetSharedState");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(IslandWest), "resetSharedState");
 
         public static bool Prefix(IslandWest __instance)
         {

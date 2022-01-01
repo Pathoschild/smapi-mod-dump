@@ -30,5 +30,6 @@
   "BarWidth": 90,
   "BarHeight": 15,
   "BarBorderWidth": 2,
-  "BarBorderHeight": 2
+  "BarBorderHeight": 2,
+  "ReloadKey": "F5"
 }

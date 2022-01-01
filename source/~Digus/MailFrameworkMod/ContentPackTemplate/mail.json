@@ -45,8 +45,9 @@
 		"Date": "10 spring Y1", // Must be that date or after it. The format is "[1-28] [spring|summer|fall|winter] Y[1-999]".
 		"Days": [7,14,21,28], // Must be one of the days in the list.
 		"Seasons": ["fall"], // Must be one of the seasons in the list, seasons should be lower case.
-		"Weather": "sunny", // Must me that game weather. The format is "[sunny|rainy]".
-		"FriendshipConditions": // Each NPC of the list must check all conditions.
+		"Weather": "sunny", // Must be that game weather. The format is "[sunny|rainy]".
+		"HouseUpgradeLevel": 2, // House upgrade level must be equal or higher what is defined. 0 - starter house(no reason to use this, just remove the line), 1 - kitchen, 2 - second floor, 3 - cellar.
+        "FriendshipConditions": // Each NPC of the list must check all conditions.
 		[
 			{
 				"NpcName": "Lewis", //Name of the NPC. Can use custom NPCs.

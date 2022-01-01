@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/stardew-access/stardew-access
+   Git: https://github.com/stardew-access/stardew-access.git
+
+mods:
+   Stardew Access
+
+latest commit:
+   commit 408cdbde665d4da9ab17de3cbecbbfc5e528fb1b
+   Author: shoaib11120 <shoaib.khan20@outlook.com>
+   Date:   Fri Dec 31 20:45:52 2021 +0530
+   
+       Added naming menu title narration
+   

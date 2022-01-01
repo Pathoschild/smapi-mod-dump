@@ -1,4 +1,5 @@
 {
+  "phonePadMode": false,
   "fetchWikiDetails": true,
   "usePhonePad": false,
   "TemplateName": "default",
@@ -20,6 +21,8 @@
   "PluginsEnabled": false,
   "StatusBarRT": true,
   "ShowTechDetails": true,
+  "FixTrainTime": true,
+  "ShowNextTrain": true,
   "ShowAroundTown": false,
   "CheatsEnabled": false,
   "WarpsEnabled": false,

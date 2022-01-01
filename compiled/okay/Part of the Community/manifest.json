@@ -1,7 +1,7 @@
 {
   "Name": "Part of the Community",
   "Author": "Brandon Marquis Markail Green (Space Baby)",
-  "Version": "1.1.6-3",
+  "Version": "1.1.6-4",
   "Description": "Lets you increase friendship by supporting the community.",
    "UniqueID": "SpaceBaby.PartOfTheCommunity",
   "EntryDll": "PartOfTheCommunity.dll",

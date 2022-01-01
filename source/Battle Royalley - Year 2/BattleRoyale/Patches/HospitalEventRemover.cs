@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class HospitalEventRemover : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "Update");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "Update");
 
         public static void Prefix(Farmer __instance)
         {

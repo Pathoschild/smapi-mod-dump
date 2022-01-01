@@ -16,6 +16,7 @@ using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.Constants;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
@@ -119,7 +120,9 @@ namespace ContentPatcher.Framework
             return this.GetCached(
                 $"{nameof(this.GetCurrentLocation)}:{player.UniqueMultiplayerID}",
                 () => this.GetForState(
-                    loaded: () => player.currentLocation,
+                    loaded: () => Context.IsWorldReady
+                        ? player.currentLocation
+                        : player.currentLocation ?? this.GetLocationFromName(player.lastSleepLocation.Value), // currentLocation is set later in the save loading process
                     reading: _ => this.GetLocationFromName(player.lastSleepLocation.Value)
                 )
             );
@@ -458,7 +461,6 @@ namespace ContentPatcher.Framework
                     string name = null;
                     Gender gender = Gender.Male;
                     bool isPlayer = false;
-                    bool valid = false;
                     if (spousePlayerID.HasValue)
                     {
                         Farmer spouse = this.GetAllPlayers().FirstOrDefault(p => p.UniqueMultiplayerID == spousePlayerID);
@@ -479,7 +481,7 @@ namespace ContentPatcher.Framework
                             isPlayer = false;
                         }
                     }
-                    valid = name != null && friendship != null;
+                    bool valid = name != null && friendship != null;
 
                     // create cache entry
                     return Tuple.Create(name, friendship, gender, isPlayer, valid);
@@ -509,14 +511,17 @@ namespace ContentPatcher.Framework
         }
 
         /// <summary>Get the farm type.</summary>
-        public FarmType GetFarmType()
+        public string GetFarmType()
         {
-            int farm = this.GetForState(
-                loaded: () => Game1.whichFarm,
-                reading: save => save.whichFarm
-            );
+            return this.GetForState(
+                loaded: () => Game1.whichFarm == Farm.mod_layout
+                    ? Game1.whichModFarm?.ID ?? FarmType.Custom.ToString()
+                    : this.GetEnum(Game1.whichFarm, FarmType.Custom).ToString(),
 
-            return this.GetEnum(farm, FarmType.Custom);
+                reading: save => int.TryParse(save.whichFarm, out _) && Enum.TryParse(save.whichFarm, out FarmType farmType)
+                    ? farmType.ToString()
+                    : save.whichFarm
+            );
         }
 
         /// <summary>Get whether the community center is complete.</summary>
@@ -583,7 +588,7 @@ namespace ContentPatcher.Framework
         /// <summary>Get all owners for all constructed buildings on the farm.</summary>
         private IDictionary<GameLocation, long> GetBuildingInteriorOwners()
         {
-            return this.GetCached<Dictionary<GameLocation, long>>(
+            return this.GetCached(
                 nameof(this.GetBuildingInteriorOwners),
                 () =>
                 {

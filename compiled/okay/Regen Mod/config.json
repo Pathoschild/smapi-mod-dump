@@ -8,5 +8,6 @@
   "RegenHealthConstantAmountPerSecond": 0.0,
   "RegenHealthStill": false,
   "RegenHealthStillAmountPerSecond": 0.0,
-  "RegenHealthStillTimeRequiredMS": 1000
+  "RegenHealthStillTimeRequiredMS": 1000,
+  "ReloadKey": "F5"
 }

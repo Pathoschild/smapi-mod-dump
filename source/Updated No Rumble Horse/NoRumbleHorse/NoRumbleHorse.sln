@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoRumbleHorse", "NoRumbleHorse\NoRumbleHorse.csproj", "{39A6CAB8-6573-4118-8383-463A599D9E4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39A6CAB8-6573-4118-8383-463A599D9E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A6CAB8-6573-4118-8383-463A599D9E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A6CAB8-6573-4118-8383-463A599D9E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A6CAB8-6573-4118-8383-463A599D9E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {290700E0-3A3A-4393-81E9-5977FCB6F941}
+	EndGlobalSection
+EndGlobal

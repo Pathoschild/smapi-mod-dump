@@ -10,6 +10,7 @@
 
 using System.Linq;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using Object = StardewValley.Object;
 // ReSharper disable InconsistentNaming
@@ -33,7 +34,7 @@ namespace FishExclusions
             var bannedIds = Utils.GetExcludedFish(ModEntry.Config, Game1.currentSeason, __instance.Name, Game1.IsRainingHere(__instance));
 
             // This method has a neat unused (yet?) parameter 'baitPotency'. Why not to use it to avoid recursion?
-            if ((int) baitPotency == 909 || !bannedIds.Contains(__result.parentSheetIndex)) return;
+            if ((int) baitPotency == 909 || !bannedIds.Contains(__result.ParentSheetIndex)) return;
             
             var numberOfAttempts = 0;
             
@@ -42,7 +43,7 @@ namespace FishExclusions
 
             var lastResult = __result;
 
-            while (numberOfAttempts < maxAttempts && bannedIds.Contains(lastResult.parentSheetIndex))
+            while (numberOfAttempts < maxAttempts && bannedIds.Contains(lastResult.ParentSheetIndex))
             {
                 lastResult = __instance.getFish(millisecondsAfterNibble, bait, waterDepth, who, 909, bobberTile,
                     locationName);
@@ -56,7 +57,7 @@ namespace FishExclusions
             
             // Return Trash or the item specified in config in case all possible
             // fish for this water body / season / weather is excluded.
-            if(bannedIds.Contains(lastResult.parentSheetIndex)) lastResult = new Object(itemToCatchIfNoVariantsLeft, 1);
+            if(bannedIds.Contains(lastResult.ParentSheetIndex)) lastResult = new Object(itemToCatchIfNoVariantsLeft, 1);
 
             __result = lastResult;
         }

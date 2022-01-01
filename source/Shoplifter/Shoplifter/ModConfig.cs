@@ -24,5 +24,6 @@ namespace Shoplifter
         public uint FriendshipPenalty { get; set; } = 500;
         public uint DaysBannedFor { get; set; } = 3;
         public uint CatchesBeforeBan { get; set; } = 3;
+        public uint CaughtRadius { get; set; } = 5;
     }
 }

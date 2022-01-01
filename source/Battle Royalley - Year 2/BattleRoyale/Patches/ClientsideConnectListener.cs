@@ -14,11 +14,11 @@ namespace BattleRoyale.Patches
 {
     class ClientsideConnectListener : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Client), "receiveServerIntroduction");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Client), "receiveServerIntroduction");
 
         public static void Postfix(Client __instance)
         {
-            new AutoKicker().SendMyVersionToTheServer(__instance);
+            AutoKicker.SendMyVersionToTheServer(__instance);
         }
     }
 }

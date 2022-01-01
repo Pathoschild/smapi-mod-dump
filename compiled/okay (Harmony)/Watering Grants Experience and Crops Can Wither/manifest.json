@@ -1,10 +1,10 @@
 {
   "Name": "Watering Grants XP, Crops Can Wither",
   "Author": "Goldenrevolver",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Watering crops with the watering can grants experience, also crops may die if they are not watered",
   "UniqueID": "Goldenrevolver.WateringGrantsXP",
   "EntryDll": "WateringGrantsXP.dll",
-  "MinimumApiVersion": "3.8.2",
+  "MinimumApiVersion": "3.13.2",
   "UpdateKeys": [ "Nexus:7768" ]
 }

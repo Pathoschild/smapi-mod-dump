@@ -11,7 +11,7 @@
 {
   "Name": "Longer Seasons",
   "Author": "aedenthorn",
-  "Version": "0.1.5",
+  "Version": "0.3.4",
   "Description": "Longer seasons.",
   "UniqueID": "aedenthorn.LongerSeasons",
   "EntryDll": "LongerSeasons.dll",

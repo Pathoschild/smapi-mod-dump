@@ -10,11 +10,13 @@
 
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Buildings;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using WarpNetwork.models;
 using xTile;
 using xTile.Dimensions;
 using xTile.Layers;
@@ -24,24 +26,14 @@ namespace WarpNetwork
 {
     class DataPatcher : IAssetEditor
     {
-        private static readonly string[] DefaultDests = { "farm", "mountain", "beach", "desert", "island"};
+        private static readonly string[] DefaultDests = { "farm", "mountain", "beach", "desert", "island" };
 
-        private static IMonitor Monitor;
-        private static IModHelper Helper;
-        private static Config Config;
+        public static Dictionary<string, WarpLocation> ApiLocs = new(StringComparer.OrdinalIgnoreCase);
+        public static Dictionary<string, WarpItem> ApiItems = new(StringComparer.OrdinalIgnoreCase);
 
-        public static Dictionary<string, WarpLocation> ApiLocs = new Dictionary<string, WarpLocation>(StringComparer.OrdinalIgnoreCase);
-        public static Dictionary<string, WarpItem> ApiItems = new Dictionary<string, WarpItem>(StringComparer.OrdinalIgnoreCase);
-
-        internal static void Init(IMonitor monitor, IModHelper helper, Config config)
-        {
-            Monitor = monitor;
-            Helper = helper;
-            Config = config;
-        }
         public bool CanEdit<T>(IAssetInfo asset)
         {
-            return (
+            return
                     asset.AssetNameEquals(ModEntry.pathLocData) ||
                     asset.AssetNameEquals(ModEntry.pathItemData) ||
                     asset.AssetNameEquals("Maps/Beach") ||
@@ -51,47 +43,47 @@ namespace WarpNetwork
                     asset.AssetNameEquals("Maps/Island_S") ||
                     asset.AssetNameEquals("Maps/Mountain") ||
                     asset.AssetNameEquals("Maps/Desert") ||
-                    asset.AssetNameEquals("Maps/Farm") ||
-                    asset.AssetNameEquals("Maps/Farm_Fishing") ||
-                    asset.AssetNameEquals("Maps/Farm_Combat") ||
-                    asset.AssetNameEquals("Maps/Farm_Foraging") ||
-                    asset.AssetNameEquals("Maps/Farm_FourCorners") ||
-                    asset.AssetNameEquals("Maps/Farm_Island") ||
-                    asset.AssetNameEquals("Maps/Farm_Mining")
-                );
+                    asset.AssetNameEquals("Maps/" + Utils.GetFarmMapPath())
+                ;
         }
         public void Edit<T>(IAssetData asset)
         {
             if (!asset.AssetNameEquals(ModEntry.pathLocData) && !asset.AssetNameEquals(ModEntry.pathItemData))
             {
-                if (Config.MenuEnabled)
+                if (ModEntry.config.MenuEnabled)
                 {
-                    string Name = Path.GetFileNameWithoutExtension(asset.AssetName);
-                    Name = (Name == "Island_S") ? "island" : (Name.Contains("Beach")) ? "beach" : Name.ToLower();
+                    string Name = asset.AssetName.Split(PathUtilities.PreferredAssetSeparator)[1];
+                    if (asset.DataType != typeof(Map))
+                    {
+                        ModEntry.monitor.Log("Expected vanilla asset '" + asset.AssetName + "' to be a map, but instead got type '" + asset.DataType.FullName + "'!", LogLevel.Error);
+                        return;
+                    }
+                    Name = (Name == "Island_S") ? "island" : Name.StartsWith("Beach") ? "beach" : Name.ToLower();
                     AddVanillaWarpStatue(asset.AsMap(), Name);
                 }
             }
         }
         internal static void AddApiLocs(IDictionary<string, WarpLocation> dict)
         {
-            foreach(string key in ApiLocs.Keys){
+            foreach (string key in ApiLocs.Keys)
+            {
                 dict[key] = ApiLocs[key];
             }
         }
         internal static void AddApiItems(IDictionary<string, WarpItem> dict)
         {
-            foreach(string key in ApiItems.Keys)
+            foreach (string key in ApiItems.Keys)
             {
                 dict[key] = ApiItems[key];
             }
         }
         internal static void TranslateDefaultWarps(IDictionary<string, WarpLocation> dict)
         {
-            foreach(string key in DefaultDests)
+            foreach (string key in DefaultDests)
             {
                 if (dict.ContainsKey(key))
                 {
-                    Translation label = Helper.Translation.Get("dest-" + key);
+                    Translation label = ModEntry.helper.Translation.Get("dest-" + key);
                     if (label.HasValue())
                     {
                         dict[key].Label = label;
@@ -101,9 +93,9 @@ namespace WarpNetwork
         }
         internal static void EditLocationsEnabled(IDictionary<string, WarpLocation> dict)
         {
-            if (ModEntry.Config.FarmWarpEnabled != WarpEnabled.Never || ModEntry.Config.VanillaWarpsEnabled != WarpEnabled.Never)
+            if (ModEntry.config.FarmWarpEnabled != WarpEnabled.Never || ModEntry.config.VanillaWarpsEnabled != WarpEnabled.Never)
             {
-                if (ModEntry.Config.VanillaWarpsEnabled == WarpEnabled.Always && ModEntry.Config.FarmWarpEnabled != WarpEnabled.AfterObelisk)
+                if (ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Always && ModEntry.config.FarmWarpEnabled != WarpEnabled.AfterObelisk)
                 {
                     EnableLocation(dict, "beach");
                     EnableLocation(dict, "mountain");
@@ -113,8 +105,8 @@ namespace WarpNetwork
                 }
                 else
                 {
-                    bool AnyObelisk = ModEntry.Config.FarmWarpEnabled == WarpEnabled.Always;
-                    bool ObeliskAlways = ModEntry.Config.VanillaWarpsEnabled == WarpEnabled.Always;
+                    bool AnyObelisk = ModEntry.config.FarmWarpEnabled == WarpEnabled.Always;
+                    bool ObeliskAlways = ModEntry.config.VanillaWarpsEnabled == WarpEnabled.Always;
 
                     bool ObeliskWater = ObeliskAlways;
                     bool ObeliskEarth = ObeliskAlways;
@@ -149,14 +141,14 @@ namespace WarpNetwork
                         }
                     }
 
-                    if (ModEntry.Config.VanillaWarpsEnabled != WarpEnabled.Never)
+                    if (ModEntry.config.VanillaWarpsEnabled != WarpEnabled.Never)
                     {
                         EnableLocation(dict, "beach", ObeliskWater);
                         EnableLocation(dict, "mountain", ObeliskEarth);
                         EnableLocation(dict, "desert", ObeliskDesert);
                         EnableLocation(dict, "island", ObeliskIsland);
                     }
-                    if (ModEntry.Config.FarmWarpEnabled != WarpEnabled.Never)
+                    if (ModEntry.config.FarmWarpEnabled != WarpEnabled.Never)
                     {
                         EnableLocation(dict, "farm", AnyObelisk);
                     }
@@ -165,19 +157,21 @@ namespace WarpNetwork
         }
         private static void AddVanillaWarpStatue(IAssetDataForMap map, string Name)
         {
-            string id = Name.Contains("farm") ? "farm" : Name;
+            string id = (Name == Path.GetFileName(Utils.GetFarmMapPath()).ToLower()) ? "farm" : Name;
             if (!map.Data.Properties.ContainsKey("WarpNetworkEntry"))
             {
                 Dictionary<String, WarpLocation> locs = Utils.GetWarpLocations();
                 if (!locs.ContainsKey(id))
                 {
-                    Monitor.Log("No destination entry for vanilla location '" + id + "'; skipping!", LogLevel.Warn);
+                    ModEntry.monitor.Log("No destination entry for vanilla location '" + id + "'; skipping!", LogLevel.Warn);
                     return;
                 }
                 Layer Buildings = map.Data.GetLayer("Buildings");
-                if (Buildings is null) {
-                    Monitor.Log("Could not add Warp Network to vanilla location '" + id + "'; Map is missing Buildings layer", LogLevel.Warn);
-                } else
+                if (Buildings is null)
+                {
+                    ModEntry.monitor.Log("Could not add Warp Network to vanilla location '" + id + "'; Map is missing Buildings layer", LogLevel.Warn);
+                }
+                else
                 {
                     if (locs[id].X >= 0 && locs[id].Y > 0)
                     {
@@ -186,21 +180,23 @@ namespace WarpNetwork
                         {
                             Point pt = Utils.GetActualFarmPoint(map.Data, locs["farm"].X, locs["farm"].Y, Name);
                             spot = new Location(pt.X, pt.Y).Above;
-                        } else
+                        }
+                        else
                         {
                             spot = locs[id].CoordsAsLocation().Above;
                         }
-                        Monitor.Log("Adding access point for destination '" + id + "' @ " + spot.X + ", " + spot.Y);
+                        ModEntry.monitor.Log("Adding access point for destination '" + id + "' @ " + spot.X + ", " + spot.Y);
                         Tile tile = Buildings.Tiles[spot];
-                        if(tile is null)
+                        if (tile is null)
                         {
-                            Monitor.Log("No tile in building layer, could not add access point: '" + id + "' @ " + spot.X + ", " + spot.Y, LogLevel.Warn);
+                            ModEntry.monitor.Log("No tile in building layer, could not add access point: '" + id + "' @ " + spot.X + ", " + spot.Y, LogLevel.Warn);
                             return;
                         }
                         tile.Properties["Action"] = "WarpNetwork " + id;
-                    } else
+                    }
+                    else
                     {
-                        Monitor.Log("Could not add Warp Network to vanilla location '" + id + "'; Coordinates are outside map bounds.", LogLevel.Warn);
+                        ModEntry.monitor.Log("Could not add Warp Network to vanilla location '" + id + "'; Coordinates are outside map bounds.", LogLevel.Warn);
                     }
                 }
             }

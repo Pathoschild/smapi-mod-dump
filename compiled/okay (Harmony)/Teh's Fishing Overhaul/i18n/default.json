@@ -8,6 +8,12 @@
   "text.streak.lost": "You lost your perfect fishing streak of {{streak}}.",
   "text.streak.warning": "Catch the treasure and the fish to keep your streak of {{streak}}!",
   "text.streak.restored": "You kept your perfect fishing streak!",
+  // General config strings
+  "text.config.disabled": "Disabled",
+  "text.config.basic": "Basic",
+  "text.config.silver": "Silver",
+  "text.config.gold": "Gold",
+  "text.config.iridium": "Iridium",
   // HUD config
   "text.config.hud.name": "HUD",
   "text.config.hud.desc": "Configure how the fishing HUD looks",
@@ -25,18 +31,18 @@
   "text.config.fish.desc": "Configure how fishing works",
   "text.config.fish.showFishInMinigame.name": "Show fish in minigame",
   "text.config.fish.showFishInMinigame.desc": "Whether to show the fish being caught in the fishing minigame.",
+  "text.config.fish.globalDartFrequencyFactor.name": "Global dart frequency",
+  "text.config.fish.globalDartFrequencyFactor.desc": "Modifier for the dart frequency (difficulty) of all fish.",
   "text.config.fish.catchSpeed.name": "Catch speed",
   "text.config.fish.catchSpeed.desc": "Affects how fast you catch fish.",
   "text.config.fish.drainSpeed.name": "Drain speed",
   "text.config.fish.drainSpeed.desc": "Affects how fast the catch bar drains when the bobber isn't on the fish.",
   "text.config.fish.streakForIncreasedQuality.name": "Streak for quality increase",
   "text.config.fish.streakForIncreasedQuality.desc":
-    "Required streak for an increase in quality. For example, 3 means that every 3 consecutive perfect catches increases your catch quality by 1.",
-  "text.config.fish.maxNormalFishQuality.enabled.name": "Max normal fish quality (enabled)",
-  "text.config.fish.maxNormalFishQuality.enabled.desc":
-    "Determines the max quality fish a non-perfect catch can get, or null for no restrictions.",
+    "Required streak for an increase in quality. For example, 3 means that every 3 consecutive perfect catches increases your catch quality by 1. A value of 0 or less disables any quality increase from your perfect fishing streak. (You still get a quality increase for perfectly catching a fish though.)",
   "text.config.fish.maxNormalFishQuality.name": "Max normal fish quality",
-  "text.config.fish.maxNormalFishQuality.desc": "The chance that you'll find a fish instead of trash.",
+  "text.config.fish.maxNormalFishQuality.desc":
+    "The max quality fish a non-perfect catch can get. Non-perfect catches can't get above gold quality (regardless of this setting).",
   "text.config.fish.maxFishQuality.name": "Max fish quality",
   "text.config.fish.maxFishQuality.desc":
     "The max quality fish that can be caught. 0 = normal, 1 = silver, 2 = gold, 3 = iridium, 4+ = beyond iridium.",
@@ -51,6 +57,9 @@
   "text.config.treasure.allowDuplicateLoot.name": "Allow duplicate loot",
   "text.config.treasure.allowDuplicateLoot.desc":
     "Whether the treasure randomizer should be allowed to select the same loot option multiple times. Some loot can't be repeated even if duplicate loot is enabled.",
+  "text.config.treasure.invertChancesOnPerfectCatch.name": "Invert chances on perfect catch",
+  "text.config.treasure.invertChancesOnPerfectCatch.desc":
+    "Whether to invert the chances of each treasure entry when you get a perfect catch and treasure chest at the same time. For example, when this is enabled, getting a perfect catch and treasure chest together would make an item that normally has a 1% chance of showing in a chest instead have a 99% chance of appearing.",
   "text.config.treasure.catchSpeed.name": "Catch speed",
   "text.config.treasure.catchSpeed.desc": "Affects how fast you catch treasure.",
   "text.config.treasure.drainSpeed.name": "Drain speed",

@@ -14,7 +14,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ItemPipes.Framework.Model;
+using ItemPipes.Framework.Objects;
+using ItemPipes.Framework.Util;
 using Microsoft.Xna.Framework;
+using System.Threading;
+using StardewModdingAPI;
+using StardewValley;
 
 namespace ItemPipes.Framework
 {
@@ -26,6 +31,7 @@ namespace ItemPipes.Framework
         public List<Input> Inputs { get; set; }
         public List<Connector> Connectors { get; set; }
         public bool IsPassable { get; set; }
+        public Invisibilizer Invis { get; set; }
 
         public Network(int id)
         {
@@ -59,42 +65,30 @@ namespace ItemPipes.Framework
             }
         }
 
-        public bool AddConnector(Connector node)
+        public bool AddNode(Node node)
         {
             bool added = false;
-            if (Nodes.Contains(node))
+            if (!Nodes.Contains(node))
             {
-                if (!Connectors.Contains(node))
+                added = true;
+                Nodes.Add(node);
+                if (node is Output && !Outputs.Contains(node))
                 {
-                    added = true;
-                    Connectors.Add(node);
+                    Outputs.Add((Output)node);
                 }
-            }
-            return added;
-        }
-
-        public bool AddOutput(Output node)
-        {
-            bool added = false;
-            if (Nodes.Contains(node))
-            {
-                if (!Outputs.Contains(node))
+                else if (node is Input && !Inputs.Contains(node))
                 {
-                    added = true;
-                    Outputs.Add(node);
+                    Inputs.Add((Input)node);
                 }
-            }
-            return added;
-        }
-        public bool AddInput(Input node)
-        {
-            bool added = false;
-            if (Nodes.Contains(node))
-            {
-                if (!Inputs.Contains(node))
+                else if (node is Connector && !Connectors.Contains(node))
                 {
-                    added = true;
-                    Inputs.Add(node);
+                    Connectors.Add((Connector)node);
+                }
+                else if (node is Invisibilizer && Invis == null)
+                {
+                    Invis = (Invisibilizer)node;
+                    Thread thread = new Thread(new ThreadStart(ChangePassable));
+                    thread.Start();
                 }
             }
             return added;
@@ -111,13 +105,19 @@ namespace ItemPipes.Framework
                 {
                     Outputs.Remove((Output)node);
                 }
-                if (Inputs.Contains(node))
+                else if (Inputs.Contains(node))
                 {
                     Inputs.Remove((Input)node);
                 }
-                if (Connectors.Contains(node))
+                else if (Connectors.Contains(node))
                 {
                     Connectors.Remove((Connector)node);
+                }
+                else if (node is Invisibilizer && Invis != null)
+                {
+                    Thread thread = new Thread(new ThreadStart(ChangePassable));
+                    thread.Start();
+                    Invis = null;
                 }
             }
             return removed;
@@ -190,15 +190,10 @@ namespace ItemPipes.Framework
             return canDisconnect;
         }
 
-        public bool AddNode(Node node)
+        public void ChangePassable()
         {
-            bool added = false;
-            if (!Nodes.Contains(node))
-            {
-                added = true;
-                Nodes.Add(node);
-            }
-            return added;
+            List<Node> path = Invis.TraverseAll();
+            Animator.AnimateChangingPassable(path);
         }
 
         public bool ContainsVector2(Vector2 position)

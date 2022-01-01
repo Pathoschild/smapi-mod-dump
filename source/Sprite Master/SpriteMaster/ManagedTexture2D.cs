@@ -9,70 +9,70 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using SpriteMaster.Types;
 using SpriteMaster.Extensions;
-using TeximpNet.Compression;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using SpriteMaster.Types;
+using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using TeximpNet.Compression;
 
-namespace SpriteMaster {
-	internal sealed class ManagedTexture2D : Texture2D {
-		private static long TotalAllocatedSize = 0L;
-		private static int TotalManagedTextures = 0;
-		private const bool UseMips = false;
+namespace SpriteMaster;
+sealed class ManagedTexture2D : Texture2D {
+	private static long TotalAllocatedSize = 0L;
+	private static int TotalManagedTextures = 0;
+	private const bool UseMips = false;
 
-		public readonly WeakReference<Texture2D> Reference;
-		public readonly ScaledTexture Texture;
-		public readonly Vector2I Dimensions;
+	internal readonly WeakReference<Texture2D> Reference;
+	internal readonly ScaledTexture Texture;
+	internal readonly Vector2I Dimensions;
 
-		internal static void DumpStats(List<string> output) {
-			output.Add("\tManagedTexture2D:");
-			output.Add($"\t\tTotal Managed Textures : {TotalManagedTextures}");
-			output.Add($"\t\tTotal Texture Size     : {TotalAllocatedSize.AsDataSize()}");
+	internal static void DumpStats(List<string> output) {
+		output.AddRange(new[]{
+			"\tManagedTexture2D:",
+			$"\t\tTotal Managed Textures : {TotalManagedTextures}",
+			$"\t\tTotal Texture Size     : {TotalAllocatedSize.AsDataSize()}"
+			});
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal ManagedTexture2D(
+		ScaledTexture texture,
+		Texture2D reference,
+		Vector2I dimensions,
+		SurfaceFormat format,
+		string name = null
+	) : base(reference.GraphicsDevice.IsDisposed ? DrawState.Device : reference.GraphicsDevice, dimensions.Width, dimensions.Height, UseMips, format) {
+		this.Name = name ?? $"{reference.SafeName()} [RESAMPLED {(CompressionFormat)format}]";
+
+		Reference = reference.MakeWeak();
+		Texture = texture;
+		Dimensions = dimensions - texture.BlockPadding;
+
+		reference.Disposing += (_, _) => OnParentDispose();
+
+		TotalAllocatedSize += this.SizeBytes();
+		++TotalManagedTextures;
+
+		Garbage.MarkOwned(format, dimensions.Area);
+		Disposing += (_, _) => {
+			Garbage.UnmarkOwned(format, dimensions.Area);
+			TotalAllocatedSize -= this.SizeBytes();
+			--TotalManagedTextures;
+		};
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	~ManagedTexture2D() {
+		if (!IsDisposed) {
+			Dispose(false);
 		}
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public ManagedTexture2D (
-			ScaledTexture texture,
-			Texture2D reference,
-			Vector2I dimensions,
-			SurfaceFormat format,
-			string name = null
-		) : base(reference.GraphicsDevice.IsDisposed ? DrawState.Device : reference.GraphicsDevice, dimensions.Width, dimensions.Height, UseMips, format) {
-			this.Name = name ?? $"{reference.SafeName()} [RESAMPLED {(CompressionFormat)format}]";
-
-			Reference = reference.MakeWeak();
-			Texture = texture;
-			Dimensions = dimensions - texture.BlockPadding;
-
-			reference.Disposing += (_, _1) => OnParentDispose();
-
-			TotalAllocatedSize += this.SizeBytes();
-			++TotalManagedTextures;
-
-			Garbage.MarkOwned(format, dimensions.Area);
-			Disposing += (_, _1) => {
-				Garbage.UnmarkOwned(format, dimensions.Area);
-				TotalAllocatedSize -= this.SizeBytes();
-				--TotalManagedTextures;
-			};
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		~ManagedTexture2D() {
-			if (!IsDisposed) {
-				Dispose(false);
-			}
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		private void OnParentDispose() {
-			if (!IsDisposed) {
-				Debug.TraceLn($"Disposing ManagedTexture2D '{Name}'");
-				Dispose();
-			}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private void OnParentDispose() {
+		if (!IsDisposed) {
+			Debug.TraceLn($"Disposing ManagedTexture2D '{Name}'");
+			Dispose();
 		}
 	}
 }

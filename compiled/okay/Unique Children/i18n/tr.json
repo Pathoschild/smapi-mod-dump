@@ -1,7 +1,7 @@
     {
 	"label.player": "Oyuncu",
-    	"label.child_with": "Cocukla",
-    	"label.adopted_with": "İle benimsendi",
+    	"label.child_with": "İle dünyaya getirildi",
+    	"label.adopted_with": "İle evlatlık alındı",
     	"label.unknow": "Bilinmeyen",
 
 	"label.age": "Yaş",

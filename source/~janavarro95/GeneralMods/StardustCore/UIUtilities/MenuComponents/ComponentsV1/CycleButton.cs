@@ -37,7 +37,7 @@ namespace StardustCore.UIUtilities.MenuComponents.ComponentsV1
             this.buttonIndex = 0;
         }
 
-        public CycleButton(string name, string displayText, Rectangle bounds, List<Button> buttons, Rectangle sourceRect, float scale, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, Dictionary<string, List<Animations.Animation>> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture)
+        public CycleButton(string name, string displayText, Rectangle bounds, List<Button> buttons, Rectangle sourceRect, float scale, Animations.Animation defaultAnimation, Color drawColor, Color textColor, ButtonFunctionality buttonFunctionality, bool animationEnabled, Dictionary<string, Animations.Animation> animationsToPlay, string startingKey, int startingAnimationFrame, List<KeyValuePair<ClickableTextureComponent, ExtraTextureDrawOrder>> extraTexture)
             : base(name, bounds, buttons.ElementAt(0).animationManager.getExtendedTexture(), displayText, sourceRect, scale, defaultAnimation, animationsToPlay, startingKey, drawColor, textColor, buttonFunctionality, startingAnimationFrame, animationEnabled, extraTexture)
         {
             this.buttons = buttons;

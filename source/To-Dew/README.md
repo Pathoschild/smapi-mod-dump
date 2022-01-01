@@ -101,7 +101,10 @@ external file via SMAPI console commands.  Type `help todo-export` or
 
 ## Compatibility
 
-Works with Stardew Valley 1.5 / SMAPI 3.9, single and multiplayer (but see
+Requires Stardew Valley 1.5.5 / SMAPI 3.13 beginning with version 1.10.
+Older versions work with Stardew Valley 1.5 / SMAPI 3.9.
+
+Works in single and multiplayer modes (but see
 further notes on Multiplayer below).  No known incompatibilities with
 other mods.
 

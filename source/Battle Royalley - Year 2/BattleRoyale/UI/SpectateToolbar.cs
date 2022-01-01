@@ -18,7 +18,7 @@ namespace StardewValley.Menus
 {
     public class SpectateToolbar : IClickableMenu
     {
-        private readonly List<ClickableComponent> buttons = new List<ClickableComponent>();
+        private readonly List<ClickableComponent> buttons = new();
 
         private new int yPositionOnScreen;
 
@@ -34,7 +34,7 @@ namespace StardewValley.Menus
             "-", "="
         };
 
-        public Rectangle toolbarTextSource = new Rectangle(0, 256, 60, 60);
+        public Rectangle toolbarTextSource = new(0, 256, 60, 60);
 
         public SpectateToolbar(Farmer farmer)
             : base(Game1.uiViewport.Width / 2 - 384 - 64, Game1.uiViewport.Height, 896, 208)
@@ -106,14 +106,14 @@ namespace StardewValley.Menus
             drawTextureBox(b, Game1.menuTexture, this.toolbarTextSource, Game1.uiViewport.Width / 2 - 384 - 16, this.yPositionOnScreen - 96 - 8, 800, 96, Color.White * this.transparency, 1f, drawShadow: false);
             for (int j = 0; j < 12; j++)
             {
-                Vector2 toDraw = new Vector2(Game1.uiViewport.Width / 2 - 384 + j * 64, this.yPositionOnScreen - 96 + 8);
+                Vector2 toDraw = new(Game1.uiViewport.Width / 2 - 384 + j * 64, this.yPositionOnScreen - 96 + 8);
                 b.Draw(Game1.menuTexture, toDraw, Game1.getSourceRectForStandardTileSheet(Game1.menuTexture, (Farmer.CurrentToolIndex == j) ? 56 : 10), Color.White * this.transparency);
                 b.DrawString(Game1.tinyFont, this.slotText[j], toDraw + new Vector2(4f, -8f), Color.DimGray * this.transparency);
             }
             for (int i = 0; i < 12; i++)
             {
                 this.buttons[i].scale = Math.Max(1f, this.buttons[i].scale - 0.025f);
-                Vector2 toDraw2 = new Vector2(Game1.uiViewport.Width / 2 - 384 + i * 64, this.yPositionOnScreen - 96 + 8);
+                Vector2 toDraw2 = new(Game1.uiViewport.Width / 2 - 384 + i * 64, this.yPositionOnScreen - 96 + 8);
                 if (Farmer.items.Count > i && Farmer.items.ElementAt(i) != null)
                 {
                     Farmer.items[i].drawInMenu(b, toDraw2, (Farmer.CurrentToolIndex == i) ? 0.9f : (this.buttons.ElementAt(i).scale * 0.8f), this.transparency, 0.88f);

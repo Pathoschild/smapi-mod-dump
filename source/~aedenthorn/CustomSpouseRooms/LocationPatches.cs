@@ -242,6 +242,7 @@ namespace CustomSpouseRooms
 					string[] array = room_data[srd.templateName].Split('/', StringSplitOptions.None);
 					map_path = array[0];
 					indexInSpouseMapSheet = int.Parse(array[1]);
+					Monitor.Log($"Got Data\\SpouseRooms room for template {srd.templateName}: room {map_path}, index {indexInSpouseMapSheet}");
 				}
 				catch (Exception)
 				{
@@ -254,6 +255,7 @@ namespace CustomSpouseRooms
 					string[] array = room_data[spouse].Split('/', StringSplitOptions.None);
 					map_path = array[0];
 					indexInSpouseMapSheet = int.Parse(array[1]);
+					Monitor.Log($"Got Data\\SpouseRooms room for spouse {spouse}: room {map_path}, index {indexInSpouseMapSheet}");
 				}
 				catch (Exception)
 				{
@@ -264,10 +266,12 @@ namespace CustomSpouseRooms
 				if (srd.templateName != null && ModEntry.roomIndexes.ContainsKey(srd.templateName))
 				{
 					indexInSpouseMapSheet = ModEntry.roomIndexes[srd.templateName];
+					Monitor.Log($"Got vanilla index for template {srd.templateName}: {indexInSpouseMapSheet}");
 				}
 				else if (ModEntry.roomIndexes.ContainsKey(spouse))
 				{
 					indexInSpouseMapSheet = ModEntry.roomIndexes[spouse];
+					Monitor.Log($"Got vanilla index for spouse {spouse}: {indexInSpouseMapSheet}");
 				}
 				else
 				{
@@ -288,7 +292,7 @@ namespace CustomSpouseRooms
 			for (int x = areaToRefurbish.Left; x < areaToRefurbish.Right; x++)
 			{
 				Point point = new Point(x, areaToRefurbish.Bottom - 1);
-				Tile tile = front_layer.Tiles[point.X, point.Y];
+				Tile tile = front_layer?.Tiles[point.X, point.Y];
 				if (tile != null)
 				{
 					bottom_row_tiles.Add(new KeyValuePair<Point, Tile>(point, tile));
@@ -305,11 +309,11 @@ namespace CustomSpouseRooms
 			{
 				for (int y = 0; y < areaToRefurbish.Height; y++)
 				{
-					if (refurbishedMap.GetLayer("Buildings").Tiles[mapReader.X + x, mapReader.Y + y] != null)
+					if (refurbishedMap.GetLayer("Buildings")?.Tiles[mapReader.X + x, mapReader.Y + y] != null)
 					{
 						Helper.Reflection.GetMethod(fh, "adjustMapLightPropertiesForLamp").Invoke(refurbishedMap.GetLayer("Buildings").Tiles[mapReader.X + x, mapReader.Y + y].TileIndex, areaToRefurbish.X + x, areaToRefurbish.Y + y, "Buildings");
 					}
-					if (y < areaToRefurbish.Height - 1 && refurbishedMap.GetLayer("Front").Tiles[mapReader.X + x, mapReader.Y + y] != null)
+					if (y < areaToRefurbish.Height - 1 && refurbishedMap.GetLayer("Front")?.Tiles[mapReader.X + x, mapReader.Y + y] != null)
 					{
 						Helper.Reflection.GetMethod(fh, "adjustMapLightPropertiesForLamp").Invoke(refurbishedMap.GetLayer("Front").Tiles[mapReader.X + x, mapReader.Y + y].TileIndex, areaToRefurbish.X + x, areaToRefurbish.Y + y, "Front");
 					}
@@ -322,24 +326,27 @@ namespace CustomSpouseRooms
 				}
 			}
 			fh.ReadWallpaperAndFloorTileData();
-			bool spot_found = false;
-			for (int x3 = areaToRefurbish.Left; x3 < areaToRefurbish.Right; x3++)
-			{
-				for (int y2 = areaToRefurbish.Top; y2 < areaToRefurbish.Bottom; y2++)
+			if(fh.map.GetLayer("Paths") != null)
+            {
+				bool spot_found = false;
+				for (int x3 = areaToRefurbish.Left; x3 < areaToRefurbish.Right; x3++)
 				{
-					if (fh.getTileIndexAt(new Point(x3, y2), "Paths") == 7)
+					for (int y2 = areaToRefurbish.Top; y2 < areaToRefurbish.Bottom; y2++)
 					{
-						spot_found = true;
-						if (first)
-							fh.spouseRoomSpot = new Point(x3, y2);
-						spouseSpot = new Point(x3, y2);
-						srd.spousePosOffset = spouseSpot - srd.startPos;
+						if (fh.getTileIndexAt(new Point(x3, y2), "Paths") == 7)
+						{
+							spot_found = true;
+							if (first)
+								fh.spouseRoomSpot = new Point(x3, y2);
+							spouseSpot = new Point(x3, y2);
+							srd.spousePosOffset = spouseSpot - srd.startPos;
+							break;
+						}
+					}
+					if (spot_found)
+					{
 						break;
 					}
-				}
-				if (spot_found)
-				{
-					break;
 				}
 			}
 			fh.setTileProperty(spouseSpot.X, spouseSpot.Y, "Back", "NoFurniture", "T");

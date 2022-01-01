@@ -9,6 +9,21 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 1.2.10
+Released 25 December 2021 for SMAPI 3.13.0 or later.
+
+* Fixed load error in the previous update.
+
+## 1.2.9
+Released 25 December 2021 for SMAPI 3.13.0 or later.
+
+* Fixed minimum supported Generic Mod Config Menu version.
+
+## 1.2.8
+Released 30 November 2021 for SMAPI 3.13.0 or later.
+
+* Updated for Stardew Valley 1.5.5 and SMAPI 3.13.0.
+
 ## 1.2.7
 Released 18 September 2021 for SMAPI 3.12.5 or later.
 

@@ -15,7 +15,7 @@ namespace BattleRoyale.Patches
 {
     class DisableSafariGuy : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(IslandFieldOffice), "resetLocalState");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(IslandFieldOffice), "resetLocalState");
 
         public static bool Prefix(IslandFieldOffice __instance)
         {

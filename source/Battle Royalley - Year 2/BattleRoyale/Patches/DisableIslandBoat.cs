@@ -15,7 +15,7 @@ namespace BattleRoyale.Patches
 {
     class DisableIslandBoat : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(IslandSouth), "performTouchAction");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(IslandSouth), "performTouchAction");
 
         public static bool Prefix(string fullActionString)
         {

@@ -18,6 +18,7 @@ using ContentPatcher.Framework.Tokens;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace ContentPatcher.Framework.Patches
 {
@@ -97,6 +98,9 @@ namespace ContentPatcher.Framework.Patches
         /// <inheritdoc />
         public bool IsApplied { get; set; }
 
+        /// <inheritdoc />
+        public int LastChangedTick { get; protected set; }
+
 
         /*********
         ** Public methods
@@ -151,7 +155,10 @@ namespace ContentPatcher.Framework.Patches
 
             // update
             this.IsReady = isReady;
-            return changed || this.IsReady != wasReady;
+            if (changed || this.IsReady != wasReady)
+                return this.MarkUpdated();
+
+            return false;
         }
 
         /// <inheritdoc />
@@ -223,6 +230,17 @@ namespace ContentPatcher.Framework.Patches
                 .Add(fromAsset);
             this.ManuallyUpdatedTokens.Add(assetName);
             this.ManuallyUpdatedTokens.Add(fromAsset);
+
+            this.LastChangedTick = Game1.ticks;
+        }
+
+        /// <summary>Track that the patch values were updated.</summary>
+        /// <returns>Returns <c>true</c> for convenience in <see cref="UpdateContext"/>.</returns>
+        protected bool MarkUpdated()
+        {
+            this.LastChangedTick = Game1.ticks;
+
+            return true;
         }
 
         /// <summary>Try to read a tokenized rectangle.</summary>

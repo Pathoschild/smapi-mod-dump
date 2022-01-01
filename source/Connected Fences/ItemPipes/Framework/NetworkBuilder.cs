@@ -37,54 +37,57 @@ namespace ItemPipes.Framework
                     {
                         if (DataAccess.Buildings.Contains(building.buildingType.ToString()))
                         {
-                            for (int i = 0; i < building.tilesWide; i++)
+                            for (int i = 0; i < building.tilesWide.Value; i++)
                             {
-                                for (int j = 0; j < building.tilesHigh; j++)
+                                for (int j = 0; j < building.tilesHigh.Value; j++)
                                 {
-                                    int x = building.tileX + i;
-                                    int y = building.tileY + j;
-                                    BuildBuildings(location, null, x, y);
+                                    int x = building.tileX.Value + i;
+                                    int y = building.tileY.Value + j;
+                                    BuildBuildings(new Vector2(x, y), location, null);
                                 }
                             }
                         }
                     }
                 }
             }
-            if (Globals.Debug) { Printer.Info("LOADING FARM OBJECTS"); }
-            foreach (KeyValuePair<Vector2, StardewValley.Object> obj in location.Objects.Pairs)
+            if (Globals.Debug) { Printer.Info("LOADING OBJECTS"); }
+            if(location.Objects.Count() > 0)
             {
-                if (obj.Value != null)
+                foreach (KeyValuePair<Vector2, StardewValley.Object> obj in location.Objects.Pairs)
                 {
-                    if (DataAccess.NetworkItems.Contains(obj.Value.Name))
+                    if (obj.Value != null)
                     {
-
-                        BuildNetworkRecursive(location, null, (int)obj.Key.X, (int)obj.Key.Y);
+                        if (DataAccess.NetworkItems.Contains(obj.Value.Name))
+                        {
+                            BuildNetworkRecursive(new Vector2(obj.Key.X, obj.Key.Y), location, null);
+                        }
                     }
                 }
             }
-
         }
 
-        public static void BuildBuildings(GameLocation location, Network inNetwork, int x, int y)
+        public static void BuildBuildings(Vector2 position, GameLocation location, Network inNetwork)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            Node[,] matrix;
-            if (DataAccess.LocationMatrix.TryGetValue(location, out matrix))
+            List<Node> nodes;
+            if (DataAccess.LocationNodes.TryGetValue(location, out nodes))
             {
-                if ((Game1.getFarm().getBuildingAt(new Vector2(x, y)) != null) && DataAccess.Buildings.Contains(Game1.getFarm().getBuildingAt(new Vector2(x, y)).buildingType.ToString()))
+                if ((Game1.getFarm().getBuildingAt(position) != null) && DataAccess.Buildings.Contains(Game1.getFarm().getBuildingAt(position).buildingType.ToString()))
                 {
-                    matrix[x, y] = NodeFactory.CreateElement(new Vector2(x, y), location, Game1.getFarm().getBuildingAt(new Vector2(x, y)));
+                    nodes.Add(NodeFactory.CreateElement(position, location, Game1.getFarm().getBuildingAt(position)));
                 }
             }
         }
 
-        public static Node BuildNetworkRecursive(GameLocation location, Network inNetwork, int x, int y)
+        public static Node BuildNetworkRecursive(Vector2 position, GameLocation location, Network inNetwork)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
             Node node = null;
-            Node[,] matrix;
+            List<Node> nodes;
             string inType = "";
-            if((location.getObjectAtTile(x, y) != null) && (DataAccess.ModItems.Contains(location.getObjectAtTile(x, y).name)))
+            int x = (int)position.X;
+            int y = (int)position.Y;
+            if ((location.getObjectAtTile(x, y) != null) && (DataAccess.ModItems.Contains(location.getObjectAtTile(x, y).name)))
             {
                 inType = "object";
             }
@@ -94,26 +97,25 @@ namespace ItemPipes.Framework
             }
             if (inType.Equals("object") || inType.Equals("building"))
             {
-                if (DataAccess.LocationMatrix.TryGetValue(location, out matrix) )
+                if (DataAccess.LocationNodes.TryGetValue(location, out nodes))
                 {
-                    if (matrix[x, y] == null)
+                    if (nodes.Find(n => n.Position.Equals(position)) == null)
                     {
-                        if(inType.Equals("object"))
+                        if (inType.Equals("object"))
                         {
-                            matrix[x, y] = NodeFactory.CreateElement(new Vector2(x, y), location, location.getObjectAtTile(x, y));
+                            nodes.Add(NodeFactory.CreateElement(new Vector2(x, y), location, location.getObjectAtTile(x, y)));
                         }
-                        else if(inType.Equals("building"))
+                        else if (inType.Equals("building"))
                         {
-                            matrix[x, y] = NodeFactory.CreateElement(new Vector2(x, y), location, Game1.getFarm().getBuildingAt(new Vector2(x, y)));
+                            nodes.Add(NodeFactory.CreateElement(new Vector2(x, y), location, Game1.getFarm().getBuildingAt(new Vector2(x, y))));
                         }
-                        
+
                     }
                     if (inType.Equals("object"))
                     {
-                        node = matrix[x, y];
+                        node = nodes.Find(n => n.Position.Equals(position));
                         if (node.ParentNetwork == null)
                         {
-
                             if (inNetwork == null)
                             {
                                 node.ParentNetwork = NetworkManager.CreateLocationNetwork(location);
@@ -122,146 +124,150 @@ namespace ItemPipes.Framework
                             {
                                 node.ParentNetwork = inNetwork;
                             }
-                            NetworkManager.LoadNodeToNetwork(location, x, y, node.ParentNetwork);
+                            NetworkManager.LoadNodeToNetwork(node.Position, location, node.ParentNetwork);
                             //North
+                            Vector2 north = new Vector2(x, y - 1);
                             if (location.getObjectAtTile(x, y - 1) != null && y - 1 >= 0)
                             {
                                 if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x, y - 1).Name))
                                 {
-                                    if (!node.ParentNetwork.Nodes.Contains(matrix[x, y - 1]))
+                                    if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(north))))
                                     {
-                                        Node adj = BuildNetworkRecursive(location, node.ParentNetwork, x, y - 1);
+                                        Node adj = BuildNetworkRecursive(north, location, node.ParentNetwork);
                                         node.AddAdjacent(SideStruct.GetSides().North, adj);
                                     }
                                 }
                                 else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x, y - 1).Name))
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x, y - 1), location, location.getObjectAtTile(x, y - 1));
-                                    matrix[x, y - 1] = adj;
+                                    Node adj = NodeFactory.CreateElement(north, location, location.getObjectAtTile(x, y - 1));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().North, adj);
                                 }
                             }
-                            else if (Game1.getFarm().getBuildingAt(new Vector2(x, y - 1)) != null && y - 1 >= 0)
+                            else if (Game1.getFarm().getBuildingAt(north) != null && y - 1 >= 0)
                             {
-                                if (matrix[x, y - 1] == null)
+                                if (nodes.Find(n => n.Position.Equals(north)) == null)
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x, y - 1), location, Game1.getFarm().getBuildingAt(new Vector2(x, y - 1)));
-                                    matrix[x, y - 1] = adj;
+                                    Node adj = NodeFactory.CreateElement(north, location, Game1.getFarm().getBuildingAt(north));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().North, adj);
                                 }
                                 else
                                 {
-                                    Node adj = matrix[x, y - 1];
+                                    Node adj = nodes.Find(n => n.Position.Equals(north));
                                     node.AddAdjacent(SideStruct.GetSides().North, adj);
                                 }
-                                
+
                             }
 
                             //South
+                            Vector2 south = new Vector2(x, y + 1);
                             if (location.getObjectAtTile(x, y + 1) != null && y + 1 < location.map.DisplayHeight)
                             {
                                 if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x, y + 1).Name))
                                 {
-                                    if (!node.ParentNetwork.Nodes.Contains(matrix[x, y + 1]))
+                                    if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(south))))
                                     {
-                                        Node adj = BuildNetworkRecursive(location, node.ParentNetwork, x, y + 1);
+                                        Node adj = BuildNetworkRecursive(south, location, node.ParentNetwork);
                                         node.AddAdjacent(SideStruct.GetSides().South, adj);
                                     }
                                 }
                                 else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x, y + 1).Name))
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x, y + 1), location, location.getObjectAtTile(x, y + 1));
-                                    matrix[x, y + 1] = adj;
+                                    Node adj = NodeFactory.CreateElement(south, location, location.getObjectAtTile(x, y + 1));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().South, adj);
                                 }
                             }
-                            else if (Game1.getFarm().getBuildingAt(new Vector2(x, y + 1)) != null && y + 1 < location.map.DisplayHeight)
+                            else if (Game1.getFarm().getBuildingAt(south) != null && y + 1 < location.map.DisplayHeight)
                             {
-                                if (matrix[x, y + 1] == null)
+                                if (nodes.Find(n => n.Position.Equals(south)) == null)
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x, y + 1), location, Game1.getFarm().getBuildingAt(new Vector2(x, y + 1)));
-                                    matrix[x, y + 1] = adj;
+                                    Node adj = NodeFactory.CreateElement(south, location, Game1.getFarm().getBuildingAt(south));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().South, adj);
                                 }
                                 else
                                 {
-                                    Node adj = matrix[x, y + 1];
+                                    Node adj = nodes.Find(n => n.Position.Equals(south));
                                     node.AddAdjacent(SideStruct.GetSides().South, adj);
                                 }
-                                
+
                             }
                             //West
+                            Vector2 west = new Vector2(x + 1, y);
                             if (location.getObjectAtTile(x + 1, y) != null && x + 1 < location.map.DisplayWidth)
                             {
+                                
                                 if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x + 1, y).Name))
                                 {
-                                    if (!node.ParentNetwork.Nodes.Contains(matrix[x + 1, y]))
+                                    if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(west))))
                                     {
-                                        Node adj = BuildNetworkRecursive(location, node.ParentNetwork, x + 1, y);
+                                        Node adj = BuildNetworkRecursive(west, location, node.ParentNetwork);
                                         node.AddAdjacent(SideStruct.GetSides().West, adj);
                                     }
                                 }
                                 else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x + 1, y).Name))
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x + 1, y), location, location.getObjectAtTile(x + 1, y));
-                                    matrix[x + 1, y] = adj;
+                                    Node adj = NodeFactory.CreateElement(west, location, location.getObjectAtTile(x + 1, y));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().West, adj);
                                 }
                             }
-                            else if (Game1.getFarm().getBuildingAt(new Vector2(x + 1, y)) != null && x + 1 < location.map.DisplayWidth)
+                            else if (Game1.getFarm().getBuildingAt(west) != null && x + 1 < location.map.DisplayWidth)
                             {
-                                if (matrix[x + 1, y] == null)
+                                if (nodes.Find(n => n.Position.Equals(west)) == null)
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x + 1, y), location, Game1.getFarm().getBuildingAt(new Vector2(x + 1, y)));
-                                    matrix[x + 1, y] = adj;
+                                    Node adj = NodeFactory.CreateElement(west, location, Game1.getFarm().getBuildingAt(west));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().West, adj);
                                 }
                                 else
                                 {
-                                    Node adj = matrix[x + 1, y];
+                                    Node adj = nodes.Find(n => n.Position.Equals(west));
                                     node.AddAdjacent(SideStruct.GetSides().West, adj);
                                 }
-                                
+
                             }
                             //East
+                            Vector2 east = new Vector2(x - 1, y);
                             if (location.getObjectAtTile(x - 1, y) != null && x - 1 >= 0)
                             {
                                 if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x - 1, y).Name))
                                 {
-                                    if (!node.ParentNetwork.Nodes.Contains(matrix[x - 1, y]))
+                                    if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(east))))
                                     {
-                                        Node adj = BuildNetworkRecursive(location, node.ParentNetwork, x - 1, y);
+                                        Node adj = BuildNetworkRecursive(east, location, node.ParentNetwork);
                                         node.AddAdjacent(SideStruct.GetSides().East, adj);
                                     }
                                 }
                                 else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x - 1, y).Name))
                                 {
-                                    Node adj = NodeFactory.CreateElement(new Vector2(x - 1, y), location, location.getObjectAtTile(x - 1, y));
-                                    matrix[x - 1, y] = adj;
+                                    Node adj = NodeFactory.CreateElement(east, location, location.getObjectAtTile(x - 1, y));
+                                    nodes.Add(adj);
                                     node.AddAdjacent(SideStruct.GetSides().East, adj);
                                 }
                             }
-                            else if (Game1.getFarm().getBuildingAt(new Vector2(x - 1, y)) != null && x - 1 >= 0)
+                            else if (Game1.getFarm().getBuildingAt(east) != null && x - 1 >= 0)
                             {
-                                if (DataAccess.Buildings.Contains(Game1.getFarm().getBuildingAt(new Vector2(x - 1, y)).buildingType.ToString()))
+                                if (DataAccess.Buildings.Contains(Game1.getFarm().getBuildingAt(east).buildingType.ToString()))
                                 {
-                                    if (matrix[x - 1, y] == null)
+                                    if (nodes.Find(n => n.Position.Equals(east)) == null)
                                     {
-                                        Node adj = NodeFactory.CreateElement(new Vector2(x - 1, y), location, Game1.getFarm().getBuildingAt(new Vector2(x - 1, y)));
-                                        matrix[x - 1, y] = adj;
+                                        Node adj = NodeFactory.CreateElement(east, location, Game1.getFarm().getBuildingAt(east));
+                                        nodes.Add(adj);
                                         node.AddAdjacent(SideStruct.GetSides().East, adj);
                                     }
                                     else
                                     {
-                                        Node adj = matrix[x - 1, y];
+                                        Node adj = nodes.Find(n => n.Position.Equals(east));
                                         node.AddAdjacent(SideStruct.GetSides().East, adj);
                                     }
-                                    
+
                                 }
                             }
                         }
                     }
-
                 }
             }
             return node;

@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -31,7 +31,7 @@ namespace StardewCombatMod
             WeaponDoDamagePostfixPatch.Initialize(this.Monitor);
             KnockbackDeRandomizerTranspilerPatch.Initialize(this.Monitor);
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            Harmony harmony = new Harmony(this.ModManifest.UniqueID);
 
             // Patch to do the clean checkForEvents entry that doesn't interfere with other mods' events
             harmony.Patch(
@@ -85,7 +85,7 @@ namespace StardewCombatMod
                 if (Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP"))
                 {
                     // If the player entered the guild, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
-                    if (__instance.name == "AdventureGuild" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro")
+                    if (__instance.Name == "AdventureGuild" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro")
                     && !Game1.player.eventsSeen.Contains(68940001) && Game1.player.freeSpotsInInventory() >= 2 && !Game1.eventUp && __instance.currentEvent == null)
                     {
                         // Play the Gil event
@@ -97,7 +97,7 @@ namespace StardewCombatMod
                     }
                 }
                 // If the player entered the mountains, they've seen the mail, this event hasn't played, and the player has enough free inventory to receive the free lewt
-                else if (__instance.name == "Mountain" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000)
+                else if (__instance.Name == "Mountain" && Game1.player.mailReceived.Contains("WeaponRebalanceIntro") && !Game1.player.eventsSeen.Contains(68940000)
                     && Game1.player.freeSpotsInInventory() >= 2 && !Game1.eventUp && __instance.currentEvent == null)
                 {
                     // Play the Gil event

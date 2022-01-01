@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/SpecialOrdersExtended
+   Git: https://github.com/atravita-mods/SpecialOrdersExtended.git
+
+mods:
+   Special Orders Tags Extended
+
+latest commit:
+   commit 72bcd60be651ebee5e90ef51eb4ee5263d4b23a9
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Fri Dec 31 17:58:11 2021 -0500
+   
+       Fix bugs.
+   

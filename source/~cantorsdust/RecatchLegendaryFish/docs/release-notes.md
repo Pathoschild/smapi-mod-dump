@@ -9,7 +9,13 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## 1.7
+## 1.8.0
+Released 29 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.5.5.
+* Added in-game config UI via [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+
+## 1.7.0
 Released 26 March 2021 for SMAPI 3.9.5 or later. Updated by Pathoschild.
 
 * Added optional key to toggle recatch mode.
@@ -26,7 +32,7 @@ Released 27 December 2018 for SMAPI 2.9.3 or later. Updated by Pathoschild.
 
 * Updated for SMAPI 3.0.
 
-## 1.6
+## 1.6.0
 Released 09 August 2018 for SMAPI 2.6 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.3 (including multiplayer).
@@ -39,32 +45,32 @@ Released 25 January 2018 for SMAPI 2.4 or later. Updated by Pathoschild.
 * Updated to SMAPI 2.4.
 * Added automatic update checks via SMAPI.
 
-## 1.5
+## 1.5.0
 Released 24 April 2017 for SMAPI 1.10 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.2.
 
-## 1.4
+## 1.4.0
 Released 14 April 2017 for SMAPI 1.9 or later. Updated by Pathoschild.
 
 * Fishing achievements are no longer disabled.
 
-## 1.3
+## 1.3.0
 Released 05 April 2017 for SMAPI 1.9 or later. Updated by Pathoschild.
 
 * Updated to SMAPI 1.9.
 
-## 1.2
+## 1.2.0
 Released 23 March 2016 for SMAPI 0.39 or later.
 
 * Updated to SMAPI 0.39.
 
-## 1.1
+## 1.1.0
 Released 23 March 2016 for SMAPI 0.38 or later.
 
 * Updated to SMAPI 0.38.
 
-## 1.0
+## 1.0.0
 Released 23 March 2016 for SMAPI 0.38 or later.
 
 * Initial release.

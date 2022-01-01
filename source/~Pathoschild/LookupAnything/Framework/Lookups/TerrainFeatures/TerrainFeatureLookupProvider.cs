@@ -70,7 +70,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
                         break;
 
                     case Bush bush: // planted bush
-                        yield return new BushTarget(this.GameHelper, bush, this.Reflection, () => this.BuildSubject(bush));
+                        yield return new BushTarget(this.GameHelper, bush, this.Reflection, () => this.BuildSubject(bush, location));
                         break;
                 }
             }
@@ -85,18 +85,18 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
                 switch (feature)
                 {
                     case Bush bush: // wild bush
-                        yield return new BushTarget(this.GameHelper, bush, this.Reflection, () => this.BuildSubject(bush));
+                        yield return new BushTarget(this.GameHelper, bush, this.Reflection, () => this.BuildSubject(bush, location));
                         break;
                 }
             }
         }
 
         /// <inheritdoc />
-        public override ISubject GetSubjectFor(object entity)
+        public override ISubject GetSubjectFor(object entity, GameLocation location)
         {
             return entity switch
             {
-                Bush bush => this.BuildSubject(bush),
+                Bush bush => this.BuildSubject(bush, location),
                 _ => null
             };
         }
@@ -107,9 +107,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
         *********/
         /// <summary>Build a subject.</summary>
         /// <param name="bush">The entity to look up.</param>
-        private ISubject BuildSubject(Bush bush)
+        /// <param name="location">The location containing the entity, if applicable.</param>
+        private ISubject BuildSubject(Bush bush, GameLocation location)
         {
-            return new BushSubject(this.GameHelper, bush, this.Reflection);
+            return new BushSubject(this.GameHelper, bush, location ?? bush.currentLocation, this.Reflection);
         }
 
         /// <summary>Build a subject.</summary>

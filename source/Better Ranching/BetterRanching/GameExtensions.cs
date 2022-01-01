@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -18,33 +19,14 @@ namespace BetterRanching
 	{
 		public static bool CanBeRanched(this FarmAnimal animal, string toolName)
 		{
-			return animal.currentProduce.Value > 0
-				&& (animal.age.Value >= animal.ageWhenMature.Value
-				&& animal.toolUsedForHarvest.Value.Equals(toolName));
+			return animal.currentProduce.Value > 0 && animal.age.Value >= animal.ageWhenMature.Value &&
+			       animal.toolUsedForHarvest.Value.Equals(toolName);
 		}
 
-		public static FarmAnimal GetSelectedAnimal(this Farm farm, Rectangle rectangle)
+		public static FarmAnimal GetSelectedAnimal(this IAnimalLocation location, Rectangle rectangle)
 		{
-			foreach (FarmAnimal farmAnimal in farm.animals.Values)
-			{
-				if (farmAnimal.GetBoundingBox().Intersects(rectangle))
-				{
-					return farmAnimal;
-				}
-			}
-			return null;
-		}
-
-		public static FarmAnimal GetSelectedAnimal(this AnimalHouse house, Rectangle rectangle)
-		{
-			foreach (FarmAnimal farmAnimal in house.animals.Values)
-			{
-				if (farmAnimal.GetBoundingBox().Intersects(rectangle))
-				{
-					return farmAnimal;
-				}
-			}
-			return null;
+			return location.Animals.Values
+				.FirstOrDefault(farmAnimal => farmAnimal.GetBoundingBox().Intersects(rectangle));
 		}
 
 		public static void OverwriteState(this IInputHelper input, SButton button, string message = null)
@@ -56,24 +38,15 @@ namespace BetterRanching
 
 		public static bool HoldingOverridableTool()
 		{
-			return Game1.player.CurrentTool?.Name == GameConstants.Tools.MilkPail || Game1.player.CurrentTool?.Name == GameConstants.Tools.Shears;
+			return Game1.player.CurrentTool?.Name is GameConstants.Tools.MilkPail or GameConstants.Tools.Shears;
 		}
 
 		public static bool IsClickableArea()
 		{
-			if (Game1.activeClickableMenu != null)
-			{
-				return false;
-			}
-			Point newPosition = Game1.getMousePosition();
-			foreach (var screen in Game1.onScreenMenus)
-			{
-				if (screen.isWithinBounds(newPosition.X, newPosition.Y))
-				{
-					return false;
-				}
-			}
-			return true;
+			if (Game1.activeClickableMenu != null) return false;
+
+			var (x, y) = Game1.getMousePosition();
+			return Game1.onScreenMenus.All(screen => !screen.isWithinBounds(x, y));
 		}
 	}
 }

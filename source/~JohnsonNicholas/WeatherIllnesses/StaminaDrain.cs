@@ -181,7 +181,7 @@ namespace TwilightShards.WeatherIllnesses
             return true;
         }
 
-        public int TenMinuteTick(int? hatID, double? temp, string conditions,int ticksInHouse, int ticksOutside, int ticksTotal, MersenneTwister Dice)
+        public int TenMinuteTick(int? hatID, double? temp, string conditions,int ticksInHouse, int ticksOutside, int ticksTotal, Random Dice)
         {
             double amtOutside = ticksOutside / (double)ticksTotal, totalMulti = 0;
             double amtInHouse = ticksInHouse / (double)ticksTotal;
@@ -200,7 +200,7 @@ namespace TwilightShards.WeatherIllnesses
 
             //weee.
             if (hatID == 28 && (conditions.Contains("lightning") || conditions.Contains("stormy") || conditions.Contains("thundersnow")))
-                sickOdds -= (Dice.NextDoublePositive() / 5.0) - .1;
+                sickOdds -= (Dice.NextDouble() / 5.0) - .1;
 
             if (hatID == 25 && conditions.Contains("blizzard") || conditions.Contains("whiteout"))
                 sickOdds -= .22;
@@ -208,7 +208,7 @@ namespace TwilightShards.WeatherIllnesses
             if (hatID == 4 && conditions.Contains("heatwave") && !SDVTime.IsNight)
                 sickOdds -= .11;
 
-            bool farmerCaughtCold = (Dice.NextDoublePositive() <= sickOdds) && (IllOptions.StaminaDrain > 0);
+            bool farmerCaughtCold = (Dice.NextDouble() <= sickOdds) && (IllOptions.StaminaDrain > 0);
 
             FarmHouse fh = Game1.getLocationFromName("FarmHouse") as FarmHouse;
             bool isHeaterHere = false;

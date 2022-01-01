@@ -23,6 +23,6 @@ Global
 		SolutionGuid = {59C87A53-6634-4D34-8916-5EC64AE2604F}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		outputpath = ../MoreConversationTopics/build/bin
+		outputpath = build/bin
 	EndGlobalSection
 EndGlobal

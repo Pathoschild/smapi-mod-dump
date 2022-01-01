@@ -165,170 +165,178 @@ namespace RangedTools
         /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            // Get Generic Mod Config Menu's API (if it's installed).
-            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is null)
-                return;
-            
-            // Register mod.
-            configMenu.Register(mod: ModManifest, reset: () => Config = new ModConfig(), save: () => Helper.WriteConfig(Config));
-            
-            // Add options.
-            configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerRanges"));
-            
-            List<string> rangeList = new List<string>();
-            rangeList.Add("1");
-            rangeList.Add("-1");
-            for (int i = 2; i <= 20; i++)
-                rangeList.Add(i.ToString());
-            
-            foreach (string subject in new string[] { "axe", "pickaxe", "hoe", "wateringCan", "seeds", "objects" })
+            try
             {
-                configMenu.AddTextOption(
-                    mod: ModManifest,
-                    name: () => str.Get("optionRangeName", new { subject = str.Get(subject + "ForRangeName") }),
-                    tooltip: () => str.Get("optionRangeTooltip", new { subject = str.Get(subject + "ForRangeTooltip") }),
-                    getValue: () =>
-                    {
-                        int value = 1;
-                        switch (subject)
+                // Get Generic Mod Config Menu's API (if it's installed).
+                var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+                if (configMenu is null)
+                    return;
+                
+                // Register mod.
+                configMenu.Register(mod: ModManifest, reset: () => Config = new ModConfig(), save: () => Helper.WriteConfig(Config));
+                
+                // Add options.
+                configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerRanges"));
+                
+                List<string> rangeList = new List<string>();
+                rangeList.Add("1");
+                rangeList.Add("-1");
+                for (int i = 2; i <= 20; i++)
+                    rangeList.Add(i.ToString());
+                
+                foreach (string subject in new string[] { "axe", "pickaxe", "hoe", "wateringCan", "seeds", "objects" })
+                {
+                    configMenu.AddTextOption(
+                        mod: ModManifest,
+                        name: () => str.Get("optionRangeName", new { subject = str.Get(subject + "ForRangeName") }),
+                        tooltip: () => str.Get("optionRangeTooltip", new { subject = str.Get(subject + "ForRangeTooltip") }),
+                        getValue: () =>
                         {
-                            case "axe": value = Config.AxeRange; break;
-                            case "pickaxe": value = Config.PickaxeRange; break;
-                            case "hoe": value = Config.HoeRange; break;
-                            case "wateringCan": value = Config.WateringCanRange; break;
-                            case "seeds": value = Config.SeedRange; break;
-                            case "objects": value = Config.ObjectPlaceRange; break;
-                        }
-                        return rangeList[value == 1? 0 // Default
-                                       : value < 0? 1 // Unlimited
-                                       : value]; // Extended
-                    },
-                    setValue: strValue =>
-                    {
-                        int value = 1;
-                        if (strValue.Equals(rangeList[0]))
-                            value = 1;
-                        else if (strValue.Equals(rangeList[1]))
-                            value = -1;
-                        else
-                        {
-                            for (int i = 2; i <= 20; i++)
+                            int value = 1;
+                            switch (subject)
                             {
-                                if (strValue.Equals(rangeList[i]))
+                                case "axe": value = Config.AxeRange; break;
+                                case "pickaxe": value = Config.PickaxeRange; break;
+                                case "hoe": value = Config.HoeRange; break;
+                                case "wateringCan": value = Config.WateringCanRange; break;
+                                case "seeds": value = Config.SeedRange; break;
+                                case "objects": value = Config.ObjectPlaceRange; break;
+                            }
+                            return rangeList[value == 1? 0 // Default
+                                           : value < 0? 1 // Unlimited
+                                           : value]; // Extended
+                        },
+                        setValue: strValue =>
+                        {
+                            int value = 1;
+                            if (strValue.Equals(rangeList[0]))
+                                value = 1;
+                            else if (strValue.Equals(rangeList[1]))
+                                value = -1;
+                            else
+                            {
+                                for (int i = 2; i <= 20; i++)
                                 {
-                                    value = i;
-                                    break;
+                                    if (strValue.Equals(rangeList[i]))
+                                    {
+                                        value = i;
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        
-                        switch (subject)
+                            
+                            switch (subject)
+                            {
+                                case "axe": Config.AxeRange = value; break;
+                                case "pickaxe": Config.PickaxeRange = value; break;
+                                case "hoe": Config.HoeRange = value; break;
+                                case "wateringCan": Config.WateringCanRange = value; break;
+                                case "seeds": Config.SeedRange = value; break;
+                                case "objects": Config.ObjectPlaceRange = value; break;
+                            }
+                        },
+                        allowedValues: rangeList.ToArray(),
+                        formatAllowedValue: value =>
                         {
-                            case "axe": Config.AxeRange = value; break;
-                            case "pickaxe": Config.PickaxeRange = value; break;
-                            case "hoe": Config.HoeRange = value; break;
-                            case "wateringCan": Config.WateringCanRange = value; break;
-                            case "seeds": Config.SeedRange = value; break;
-                            case "objects": Config.ObjectPlaceRange = value; break;
+                            if (value.Equals("1"))
+                                return str.Get("rangeDefault");
+                            else if (value.Equals("-1"))
+                                return str.Get("rangeUnlimited");
+                            else
+                                return str.Get("rangeExtended", new { tiles = value });
                         }
-                    },
-                    allowedValues: rangeList.ToArray(),
-                    formatAllowedValue: value =>
-                    {
-                        if (value.Equals("1"))
-                            return str.Get("rangeDefault");
-                        else if (value.Equals("-1"))
-                            return str.Get("rangeUnlimited");
-                        else
-                            return str.Get("rangeExtended", new { tiles = value });
-                    }
-                );
-            }
-            
-            configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerUseOnTile"));
-            
-            foreach (string tool in new string[] { "axe", "pickaxe", "hoe" })
-            {
+                    );
+                }
+                
+                configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerUseOnTile"));
+                
+                foreach (string tool in new string[] { "axe", "pickaxe", "hoe" })
+                {
+                    configMenu.AddBoolOption(
+                        mod: ModManifest,
+                        name: () => str.Get("optionSelfUsabilityName", new { tool = str.Get(tool + "ForUsabilityName") }),
+                        tooltip: () => str.Get("optionSelfUsabilityTooltip", new { tool = str.Get(tool + "ForUsabilityTooltip") }),
+                        getValue: () =>
+                        {
+                            switch (tool)
+                            {
+                                case "axe": return Config.AxeUsableOnPlayerTile;
+                                case "pickaxe": return Config.PickaxeUsableOnPlayerTile;
+                                case "hoe": return Config.HoeUsableOnPlayerTile;
+                            }
+                            return true;
+                        },
+                        setValue: value =>
+                        {
+                            switch (tool)
+                            {
+                                case "axe": Config.AxeUsableOnPlayerTile = value; break;
+                                case "pickaxe": Config.PickaxeUsableOnPlayerTile = value; break;
+                                case "hoe": Config.HoeUsableOnPlayerTile = value; break;
+                            }
+                        }
+                    );
+                }
+                
+                configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerFaceClick"));
+                
                 configMenu.AddBoolOption(
                     mod: ModManifest,
-                    name: () => str.Get("optionSelfUsabilityName", new { tool = str.Get(tool + "ForUsabilityName") }),
-                    tooltip: () => str.Get("optionSelfUsabilityTooltip", new { tool = str.Get(tool + "ForUsabilityTooltip") }),
-                    getValue: () =>
+                    name: () => str.Get("optionToolFaceClickName"),
+                    tooltip: () => str.Get("optionToolFaceClickTooltip"),
+                    getValue: () => Config.ToolAlwaysFaceClick,
+                    setValue: value => Config.ToolAlwaysFaceClick = value
+                );
+                
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => str.Get("optionWeaponFaceClickName"),
+                    tooltip: () => str.Get("optionWeaponFaceClickTooltip"),
+                    getValue: () => Config.WeaponAlwaysFaceClick,
+                    setValue: value => Config.WeaponAlwaysFaceClick = value
+                );
+                
+                configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerMisc"));
+                
+                configMenu.AddTextOption(
+                    mod: ModManifest,
+                    name: () => str.Get("optionToolHitLocationName"),
+                    tooltip: () => str.Get("optionToolHitLocationTooltip"),
+                    getValue: () => Config.ToolHitLocationDisplay.ToString(),
+                    setValue: value => Config.ToolHitLocationDisplay = int.Parse(value),
+                    allowedValues: new string[] { "0", "1", "2" },
+                    formatAllowedValue: value =>
                     {
-                        switch (tool)
+                        switch (value)
                         {
-                            case "axe": return Config.AxeUsableOnPlayerTile;
-                            case "pickaxe": return Config.PickaxeUsableOnPlayerTile;
-                            case "hoe": return Config.HoeUsableOnPlayerTile;
-                        }
-                        return true;
-                    },
-                    setValue: value =>
-                    {
-                        switch (tool)
-                        {
-                            case "axe": Config.AxeUsableOnPlayerTile = value; break;
-                            case "pickaxe": Config.PickaxeUsableOnPlayerTile = value; break;
-                            case "hoe": Config.HoeUsableOnPlayerTile = value; break;
+                            case "0": return str.Get("locationLogicOriginal");
+                            case "1": default: return str.Get("locationLogicNew");
+                            case "2": return str.Get("locationLogicCombined");
                         }
                     }
                 );
+                
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => str.Get("optionAllowRangedChargeName"),
+                    tooltip: () => str.Get("optionAllowRangedChargeTooltip"),
+                    getValue: () => Config.AllowRangedChargeEffects,
+                    setValue: value => Config.AllowRangedChargeEffects = value
+                );
+                
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => str.Get("optionOnClickOnlyName"),
+                    tooltip: () => str.Get("optionOnClickOnlyTooltip"),
+                    getValue: () => Config.CustomRangeOnClickOnly,
+                    setValue: value => Config.CustomRangeOnClickOnly = value
+                );
             }
-            
-            configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerFaceClick"));
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => str.Get("optionToolFaceClickName"),
-                tooltip: () => str.Get("optionToolFaceClickTooltip"),
-                getValue: () => Config.ToolAlwaysFaceClick,
-                setValue: value => Config.ToolAlwaysFaceClick = value
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => str.Get("optionWeaponFaceClickName"),
-                tooltip: () => str.Get("optionWeaponFaceClickTooltip"),
-                getValue: () => Config.WeaponAlwaysFaceClick,
-                setValue: value => Config.WeaponAlwaysFaceClick = value
-            );
-            
-            configMenu.AddSectionTitle(mod: ModManifest, text: () => str.Get("headerMisc"));
-            
-            configMenu.AddTextOption(
-                mod: ModManifest,
-                name: () => str.Get("optionToolHitLocationName"),
-                tooltip: () => str.Get("optionToolHitLocationTooltip"),
-                getValue: () => Config.ToolHitLocationDisplay.ToString(),
-                setValue: value => Config.ToolHitLocationDisplay = int.Parse(value),
-                allowedValues: new string[] { "0", "1", "2" },
-                formatAllowedValue: value =>
-                {
-                    switch (value)
-                    {
-                        case "0": return str.Get("locationLogicOriginal");
-                        case "1": default: return str.Get("locationLogicNew");
-                        case "2": return str.Get("locationLogicCombined");
-                    }
-                }
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => str.Get("optionAllowRangedChargeName"),
-                tooltip: () => str.Get("optionAllowRangedChargeTooltip"),
-                getValue: () => Config.AllowRangedChargeEffects,
-                setValue: value => Config.AllowRangedChargeEffects = value
-            );
-            
-            configMenu.AddBoolOption(
-                mod: ModManifest,
-                name: () => str.Get("optionOnClickOnlyName"),
-                tooltip: () => str.Get("optionOnClickOnlyTooltip"),
-                getValue: () => Config.CustomRangeOnClickOnly,
-                setValue: value => Config.CustomRangeOnClickOnly = value
-            );
+            catch (Exception exception)
+            {
+                Log("Error setting up mod config menu (menu may not appear): " + exception.InnerException
+                  + Environment.NewLine + exception.StackTrace);
+            }
         }
         
         /******************
@@ -441,7 +449,7 @@ namespace RangedTools
                 && !Game1.eventUp
                 && !Game1.menuUp
                 && Game1.currentMinigame == null
-                && !Game1.player.hasMenuOpen
+                && !Game1.player.hasMenuOpen.Value
                 && !Game1.player.isRidingHorse()
                 && (Game1.CurrentEvent == null || Game1.CurrentEvent.canPlayerUseTool());
         }
@@ -548,15 +556,15 @@ namespace RangedTools
         {
             try
             {
-                bool bigCraftable = (item as StardewValley.Object).bigCraftable;
+                bool bigCraftable = (item as StardewValley.Object).bigCraftable.Value;
                 
                 // Base game relies on short range to prevent placing Crab Pots in unreachable places, so always use default range.
-                if (!bigCraftable && item.parentSheetIndex == 710) // Crab Pot
+                if (!bigCraftable && item.ParentSheetIndex == 710) // Crab Pot
                     return true; // Go to original function
                 
                 // Though original behavior shows green when placing Tapper as long as highlighted tile is in range,
                 // this becomes particularly confusing at longer range settings, so check that there is in fact an empty tree.
-                if (bigCraftable && item.parentSheetIndex == 105) // Tapper
+                if (bigCraftable && item.ParentSheetIndex == 105) // Tapper
                 {
                     Vector2 tile = new Vector2(x / 64, y / 64);
                     if (!f.currentLocation.terrainFeatures.ContainsKey(tile) // No special terrain at tile
@@ -568,8 +576,8 @@ namespace RangedTools
                     }
                 }
                 
-                int range = item.category == StardewValley.Object.SeedsCategory
-                         || item.category == StardewValley.Object.fertilizerCategory? Config.SeedRange
+                int range = item.Category == StardewValley.Object.SeedsCategory
+                         || item.Category == StardewValley.Object.fertilizerCategory? Config.SeedRange
                                                                                     : Config.ObjectPlaceRange;
                 
                 if (range < 0 || Utility.withinRadiusOfPlayer(x, y, range, f))
@@ -622,7 +630,7 @@ namespace RangedTools
                   && !__instance.IsLocalPlayer
                   && !Game1.currentLocation.Name.Equals("Temp")
                   && !__instance.isFakeEventActor)
-                 || ((bool)(NetFieldBase<bool, NetBool>)__instance.hidden
+                 || (((NetFieldBase<bool, NetBool>)__instance.hidden).Value
                   && (__instance.currentLocation.currentEvent == null || __instance != __instance.currentLocation.currentEvent.farmer)
                   && (!__instance.IsLocalPlayer || Game1.locationRequest == null))
                  || (__instance.viewingLocation.Value != null
@@ -688,8 +696,8 @@ namespace RangedTools
         {
             try
             {
-                tileRadiusOverride = item.category == StardewValley.Object.SeedsCategory
-                                  || item.category == StardewValley.Object.fertilizerCategory? Config.SeedRange
+                tileRadiusOverride = item.Category == StardewValley.Object.SeedsCategory
+                                  || item.Category == StardewValley.Object.fertilizerCategory? Config.SeedRange
                                                                                              : Config.ObjectPlaceRange;
             }
             catch (Exception e)

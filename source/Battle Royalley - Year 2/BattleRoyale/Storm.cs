@@ -124,14 +124,14 @@ namespace BattleRoyale
 
     public class Storm
     {
-        private static readonly Color StormBaseColor = new Color(147, 112, 219);
+        private static readonly Color StormBaseColor = new(147, 112, 219);
         private static readonly float StormAlpha = 0.6f;
 
         private static Texture2D pixelTexture = null;
 
         public static List<Phase> Phases { get; set; }
         public static bool GingerIslandPhase = false;
-        private static TimeSpan totalLengthOfPhases = new TimeSpan(0);
+        private static TimeSpan totalLengthOfPhases = new(0);
 
         public enum Direction
         {
@@ -139,7 +139,7 @@ namespace BattleRoyale
         }
 
         private static DateTime startTime;
-        public static Dictionary<GameLocation, DateTime> TimeLocationWasReached = new Dictionary<GameLocation, DateTime>();
+        public static Dictionary<GameLocation, DateTime> TimeLocationWasReached = new();
 
         public static void StartStorm(int stormIndex)
         {
@@ -161,7 +161,7 @@ namespace BattleRoyale
             var b = new BinaryFormatter();
             var stream = new MemoryStream();
 
-            Dictionary<string, DateTime> serializedLocations = new Dictionary<string, DateTime>();
+            Dictionary<string, DateTime> serializedLocations = new();
 
             foreach (var kvp in TimeLocationWasReached)
                 serializedLocations[kvp.Key.Name] = kvp.Value;
@@ -245,7 +245,7 @@ namespace BattleRoyale
 
         public static int GetRandomStormIndex()
         {
-            int totalSize = StormDataModel.Phases.Count() + StormDataModel.IslandPhases.Count();
+            int totalSize = StormDataModel.Phases.Length + StormDataModel.IslandPhases.Length;
 
             int attempts = 0;
             int randomIdx = Game1.random.Next(totalSize);
@@ -260,7 +260,7 @@ namespace BattleRoyale
             if (ModEntry.BRGame.StormIndexHistory.Count > ModEntry.BRGame.StormIndexHistorySize)
                 ModEntry.BRGame.StormIndexHistory.RemoveAt(0);
 
-            if (randomIdx >= StormDataModel.Phases.Count())
+            if (randomIdx >= StormDataModel.Phases.Length)
                 GingerIslandPhase = true;
             else
                 GingerIslandPhase = false;
@@ -275,12 +275,12 @@ namespace BattleRoyale
 
         private static void InitializePhases(int stormIndex)
         {
-            if (stormIndex >= StormDataModel.Phases.Count())
+            if (stormIndex >= StormDataModel.Phases.Length)
             {
-                int adjustedIndex = stormIndex - StormDataModel.Phases.Count();
+                int adjustedIndex = stormIndex - StormDataModel.Phases.Length;
                 Phases = StormDataModel.IslandPhases[adjustedIndex].ToList();
             }
-            else if (stormIndex < StormDataModel.Phases.Count())
+            else if (stormIndex < StormDataModel.Phases.Length)
                 Phases = StormDataModel.Phases[stormIndex].ToList();
         }
 
@@ -402,6 +402,8 @@ namespace BattleRoyale
                     w = (int)(locationWidth - amount * (locationWidth - closeInRectangle.X2)) - x;
                     h = (int)(locationHeight - amount * (locationHeight - closeInRectangle.Y2)) - y;
                     break;
+                default:
+                    break;
             }
 
             return new Rectangle(x, y, w, h);
@@ -468,7 +470,7 @@ namespace BattleRoyale
                     bool contains = bounds.Contains(Utility.Vector2ToPoint(farmer.Position));
                     if (contains && (closeInRectangle == null) || (!contains) && (closeInRectangle != null))
                     {
-                        int damage = (int)(ModEntry.Config.StormDamagePerSecond);
+                        int damage = ModEntry.Config.StormDamagePerSecond;
                         FarmerUtils.TakeDamage(farmer, DamageSource.STORM, damage);
                     }
                 }

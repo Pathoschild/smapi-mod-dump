@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jorgamun/PauseInMultiplayer
+   Git: https://github.com/jorgamun/PauseInMultiplayer.git
+
+mods:
+   Pause in Multiplayer
+
+latest commit:
+   commit cce9351a0add0ea260dfb205c33b4e4db9193f20
+   Author: jorgamun <jorgamun@gmail.com>
+   Date:   Tue Dec 28 15:44:00 2021 -0800
+   
+       fixed edge cases involving health increases
+   

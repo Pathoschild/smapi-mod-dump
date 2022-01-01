@@ -15,8 +15,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using TwilightShards.Common;
-using SpaceCore;
 using SpaceCore.Events;
 using TwilightShards.Stardew.Common;
 
@@ -25,7 +23,7 @@ namespace TwilightShards.WeatherIllnesses
     public class WeatherIllnesses : Mod, IAssetEditor
     {
         private IllnessConfig IllnessConfig { get; set; }
-        private MersenneTwister Dice { get; set; }
+        private Random Dice { get; set; }
         private StaminaDrain StaminaMngr { get; set;}
 
         private int TicksOutside;
@@ -40,7 +38,7 @@ namespace TwilightShards.WeatherIllnesses
         public override void Entry(IModHelper helper)
         {
             IllnessConfig = helper.ReadConfig<IllnessConfig>();
-            Dice = new MersenneTwister();
+            Dice = new Xoshiro.PRNG64.XoShiRo256starstar();
             StaminaMngr = new StaminaDrain(IllnessConfig, Helper.Translation, Monitor);
             TicksOutside = TicksTotal = 0;
 

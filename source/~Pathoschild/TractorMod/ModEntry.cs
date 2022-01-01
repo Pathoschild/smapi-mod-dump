@@ -318,7 +318,7 @@ namespace Pathoschild.Stardew.TractorMod
             // fix: warping onto a magic warp while mounted causes an infinite warp loop
             Vector2 tile = CommonHelper.GetPlayerTile(Game1.player);
             string touchAction = Game1.player.currentLocation.doesTileHaveProperty((int)tile.X, (int)tile.Y, "TouchAction", "Back");
-            if (this.TractorManager.IsCurrentPlayerRiding && touchAction != null && touchAction.StartsWith("MagicWarp "))
+            if (this.TractorManager.IsCurrentPlayerRiding && touchAction?.Split(' ', 2).First() is "MagicWarp" or "Warp")
                 Game1.currentLocation.lastTouchActionLocation = tile;
 
             // fix: warping into an event may break the event (e.g. Mr Qi's event on mine level event for the 'Cryptic Note' quest)
@@ -475,17 +475,15 @@ namespace Pathoschild.Stardew.TractorMod
             if (e.Type == this.RequestTractorMessageID && Context.IsMainPlayer && e.FromModID == this.ModManifest.UniqueID)
             {
                 Farmer player = Game1.getFarmer(e.FromPlayerID);
-                if (player != null && !player.IsMainPlayer)
+                if (player is { IsMainPlayer: false })
                 {
-                    this.Monitor.Log(
-                        this.SummonLocalTractorTo(player)
-                            ? $"Summon tractor for {player.Name} ({e.FromPlayerID})."
-                            : $"Received tractor request for {player.Name} ({e.FromPlayerID}), but no tractor is available.",
-                        LogLevel.Trace
+                    this.Monitor.Log(this.SummonLocalTractorTo(player)
+                        ? $"Summon tractor for {player.Name} ({e.FromPlayerID})."
+                        : $"Received tractor request for {player.Name} ({e.FromPlayerID}), but no tractor is available."
                     );
                 }
                 else
-                    this.Monitor.Log($"Received tractor request for {e.FromPlayerID}, but no such player was found.", LogLevel.Trace);
+                    this.Monitor.Log($"Received tractor request for {e.FromPlayerID}, but no such player was found.");
             }
         }
 
@@ -534,7 +532,7 @@ namespace Pathoschild.Stardew.TractorMod
             bool summoned = this.SummonLocalTractorTo(Game1.player);
             if (!summoned && !Context.IsMainPlayer)
             {
-                this.Monitor.Log("Sending tractor request to host player.", LogLevel.Trace);
+                this.Monitor.Log("Sending tractor request to host player.");
                 this.Helper.Multiplayer.SendMessage(
                     message: true,
                     messageType: this.RequestTractorMessageID,

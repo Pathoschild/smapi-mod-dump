@@ -6,9 +6,9 @@ mods:
    Instantly Increase Crop Growth Phase
 
 latest commit:
-   commit 50aac21a19332d73f04ec4c49d22bb35267252a8
+   commit 4d4c182bdf17c4a7177110e15e1354083240e090
    Author: RyanJesky <57146630+RyanJesky@users.noreply.github.com>
-   Date:   Wed Nov 17 13:29:05 2021 -0600
+   Date:   Tue Nov 30 17:04:01 2021 -0600
    
-       Add files via upload
+       Update ModEntry.cs
    

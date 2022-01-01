@@ -188,7 +188,7 @@ namespace ItemBags.Bags
         /// Compares the given Object's by their <see cref="Item.ParentSheetIndex"/>, <see cref="StardewValley.Object.bigCraftable"/>, <see cref="Object.Quality"/>, <see cref="Object.IsRecipe"/>.
         /// Does not compare object references or other variables such as Stack sizes.
         /// </summary>
-        public static bool AreItemsEquivalent(Object object1, Object object2, bool ComparePrice)
+        public static bool AreItemsEquivalent(Object object1, Object object2, bool ComparePrice, bool CompareName)
         {
             //Possible TODO this method was originally intended to find existing stacks of the same item so that that I could combine the stacks.
             //I've recently realized there is an Item.canStackWith(Item) instance method.  The calls to this function should be refactored to use that. 
@@ -205,7 +205,7 @@ namespace ItemBags.Bags
                     object1.IsRecipe != object2.IsRecipe ||
                     object1.bigCraftable.Value != object2.bigCraftable.Value ||
                     (ComparePrice && (object1.Price != object2.Price)) ||
-                    object1.Name != object2.Name)
+                    (CompareName && (object1.Name != object2.Name)))
                 {
                     return false;
                 }
@@ -489,7 +489,14 @@ namespace ItemBags.Bags
                     {
                         int IdBeforeFixing = Item.ParentSheetIndex;
 
-                        bool IsItemStillValid = !API.FixIdsInItem(Item);
+                        bool IsItemStillValid = true;
+                        try { IsItemStillValid = !API.FixIdsInItem(Item); }
+                        catch (Exception ex2) 
+                        {
+                            string Msg = $"Error while invoking JsonAssets API 'FixIdsInItem' for id {IdBeforeFixing} (Previous item name: {Item.DisplayName}): {ex2.Message}\n\n{ex2.ToString()}";
+                            ItemBagsMod.ModInstance.Monitor.Log(Msg, LogLevel.Error); 
+                        }
+
                         if (!IsItemStillValid)
                         {
                             //  The mod that this item belongs to is no longer installed
@@ -510,7 +517,7 @@ namespace ItemBags.Bags
 #if DEBUG
                                 ItemBagsMod.ModInstance.Monitor.Log(Message, LogLevel.Debug);
 #else
-                            ItemBagsMod.ModInstance.Monitor.Log(Message, LogLevel.Trace);
+                                ItemBagsMod.ModInstance.Monitor.Log(Message, LogLevel.Trace);
 #endif
                             }
                         }
@@ -891,6 +898,15 @@ namespace ItemBags.Bags
         /// <param name="Source">The source items that are being moved to the bag. Typically this is <see cref="Game1.player.Items"/> if moving to/from the inventory.</param>
         public virtual bool MoveToBag(Object Item, int Qty, out int MovedQty, bool PlaySoundEffect, IList<Item> Source, bool NotifyIfContentsChanged = true, bool ResyncMultiplayerData = true)
         {
+            return MoveToBag(Item, Qty, out MovedQty, PlaySoundEffect, Source, NotifyIfContentsChanged, ResyncMultiplayerData, true);
+        }
+
+        /// <summary>Attempts to move the given <paramref name="Qty"/> of the given <paramref name="Item"/> from the <paramref name="Source"/> into this bag</summary>
+        /// <param name="MovedQty">The Qty that was successfully moved.</param>
+        /// <returns>True if any changes were made</returns>
+        /// <param name="Source">The source items that are being moved to the bag. Typically this is <see cref="Game1.player.Items"/> if moving to/from the inventory.</param>
+        protected bool MoveToBag(Object Item, int Qty, out int MovedQty, bool PlaySoundEffect, IList<Item> Source, bool NotifyIfContentsChanged, bool ResyncMultiplayerData, bool CompareName)
+        {
             MovedQty = 0;
             if (!IsValidBagItem(Item))
                 return false;
@@ -901,7 +917,9 @@ namespace ItemBags.Bags
                 return false;
             }
 
-            Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false));
+            Object BagItem = this.Contents.Where(x => AreItemsEquivalent(x, Item, false, false))
+                .OrderBy(x => x == Item).ThenBy(x => x.Name == Item.Name)
+                .FirstOrDefault(x => AreItemsEquivalent(x, Item, false, CompareName));
 
             //  Determine how many more of this Item the bag can hold
             int MaxCapacity = GetMaxStackSize(Item);
@@ -920,9 +938,9 @@ namespace ItemBags.Bags
                 this.Contents.Add(BagItem);
             }
 
-            List<Object> InventoryItems = Source.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, false))
+            List<Object> InventoryItems = Source.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, false, true))
                 .OrderByDescending(x => x == Item).ToList(); // OrderBy will prioritize moving the clicked item's index first
-            if (Source == Game1.player.Items && Game1.player.CursorSlotItem != null && Game1.player.CursorSlotItem is Object CursorSlotObject && AreItemsEquivalent(CursorSlotObject, Item, false))
+            if (Source == Game1.player.Items && Game1.player.CursorSlotItem != null && Game1.player.CursorSlotItem is Object CursorSlotObject && AreItemsEquivalent(CursorSlotObject, Item, false, true))
                 InventoryItems.Insert(0, CursorSlotObject);
 
             foreach (Object InventoryItem in InventoryItems)
@@ -1019,7 +1037,17 @@ namespace ItemBags.Bags
         /// <returns>True if any changes were made</returns>
         /// <param name="Target">The target items that this bag's contents are being moved to. Typically this is <see cref="Game1.player.Items"/> if moving to/from the inventory.</param>
         /// <param name="ActualTargetCapacity">The maximum # of items that can be stored in the Target list. Use <see cref="Game1.player.MaxItems"/> if moving to/from the inventory.</param>
-        public bool MoveFromBag(Object Item, int Qty, out int MovedQty, bool PlaySoundEffect, IList<Item> Target, int ActualTargetCapacity, bool NotifyIfContentsChanged = true, bool ResyncMultiplayerData = true)
+        public virtual bool MoveFromBag(Object Item, int Qty, out int MovedQty, bool PlaySoundEffect, IList<Item> Target, int ActualTargetCapacity, bool NotifyIfContentsChanged = true, bool ResyncMultiplayerData = true)
+        {
+            return MoveFromBag(Item, Qty, out MovedQty, PlaySoundEffect, Target, ActualTargetCapacity, NotifyIfContentsChanged, ResyncMultiplayerData, true);
+        }
+
+        /// <summary>Attempts to move the given <paramref name="Qty"/> of the given <paramref name="Item"/> from this Bag into player1's inventory</summary>
+        /// <param name="MovedQty">The Qty that was successfully moved.</param>
+        /// <returns>True if any changes were made</returns>
+        /// <param name="Target">The target items that this bag's contents are being moved to. Typically this is <see cref="Game1.player.Items"/> if moving to/from the inventory.</param>
+        /// <param name="ActualTargetCapacity">The maximum # of items that can be stored in the Target list. Use <see cref="Game1.player.MaxItems"/> if moving to/from the inventory.</param>
+        protected bool MoveFromBag(Object Item, int Qty, out int MovedQty, bool PlaySoundEffect, IList<Item> Target, int ActualTargetCapacity, bool NotifyIfContentsChanged, bool ResyncMultiplayerData, bool CompareName)
         {
             MovedQty = 0;
             if (Qty <= 0)
@@ -1027,13 +1055,15 @@ namespace ItemBags.Bags
 
             int TargetCapacity = Math.Max(ActualTargetCapacity, Target.Count);
 
-            Object BagItem = this.Contents.FirstOrDefault(x => AreItemsEquivalent(x, Item, false));
+            Object BagItem = this.Contents.Where(x => AreItemsEquivalent(x, Item, false, false))
+                .OrderBy(x => x == Item).ThenBy(x => x.Name == Item.Name)
+                .FirstOrDefault(x => AreItemsEquivalent(x, Item, false, CompareName));
             if (BagItem == null)
                 return false;
             int RemainingQty = Math.Min(BagItem.Stack, Qty);
 
             //  Add to existing stacks of the item that are already in the target inventory
-            List<Object> ExistingStacks = Target.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, false)).ToList();
+            List<Object> ExistingStacks = Target.Where(x => x != null && x is Object).Cast<Object>().Where(x => AreItemsEquivalent(x, Item, true, true)).ToList();
             foreach (Object InventoryItem in ExistingStacks)
             {
                 int AmountToMove = Math.Min(RemainingQty, InventoryItem.maximumStackSize() - InventoryItem.Stack);

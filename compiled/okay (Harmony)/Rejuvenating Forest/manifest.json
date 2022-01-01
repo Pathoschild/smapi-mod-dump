@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Rejuvenating Forest",
+  "Author": "Team Timber",
+  "Version": "1.0.0", // fixed locally
+  "Description": "<description goes here>",
+  "UniqueID": "TeamTimber.RejuvenatingForest",
+  "EntryDll": "RejuvenatingForest.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

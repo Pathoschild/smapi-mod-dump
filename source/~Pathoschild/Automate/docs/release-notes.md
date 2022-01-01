@@ -9,6 +9,25 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed bushes in garden pots sometimes producing a second harvest when you enter the location.
+
+## 1.25.1
+Released 25 December 2021 for SMAPI 3.13.0 or later.
+
+* Fixed load error in the previous update.
+
+## 1.25.0
+Released 25 December 2021 for SMAPI 3.13.0 or later.
+
+* Added in-game config UI through [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Internal optimizations.
+
+## 1.24.1
+Released 30 November 2021 for SMAPI 3.13.0 or later.
+
+* Updated for Stardew Valley 1.5.5 and SMAPI 3.13.0.
+
 ## 1.24.0
 Released 27 November 2021 for SMAPI 3.12.5 or later.
 

@@ -38,8 +38,7 @@ namespace ForageFantasy
 
         public static void IncreaseTreeAge(ForageFantasy mod, Tree tree)
         {
-            string moddata;
-            tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out moddata);
+            tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out string moddata);
 
             if (!string.IsNullOrEmpty(moddata))
             {
@@ -54,12 +53,12 @@ namespace ForageFantasy
 
         public static bool IsMushroomBox(StardewObject o)
         {
-            return o != null && o.bigCraftable && o.ParentSheetIndex == 128;
+            return o != null && o.bigCraftable.Value && o.ParentSheetIndex == 128;
         }
 
         public static bool IsTapper(StardewObject o)
         {
-            return o != null && o.bigCraftable && (o.ParentSheetIndex == 105 || o.parentSheetIndex == 264);
+            return o != null && o.bigCraftable.Value && (o.ParentSheetIndex == 105 || o.ParentSheetIndex == 264);
         }
 
         public static void RewardMushroomBoxExp(ForageFantasy mod)
@@ -78,7 +77,7 @@ namespace ForageFantasy
             }
         }
 
-        public static int DetermineTapperQuality(ForageFantasy mod, Farmer player, StardewObject o, Tree tree)
+        public static int DetermineTapperQuality(ForageFantasy mod, Farmer player, Tree tree)
         {
             int option = mod.Config.TapperQualityOptions;
 
@@ -102,8 +101,7 @@ namespace ForageFantasy
 
         private static int DetermineTreeQuality(ForageFantasy mod, Tree tree)
         {
-            string moddata;
-            tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out moddata);
+            tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out string moddata);
 
             if (!string.IsNullOrEmpty(moddata))
             {

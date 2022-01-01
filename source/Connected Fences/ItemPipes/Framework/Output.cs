@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Objects;
+using ItemPipes.Framework.Util;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -42,6 +43,7 @@ namespace ItemPipes.Framework
                 if (Globals.Debug) { Printer.Info($"[{ParentNetwork.ID}] CREATED NEW THREAD"); }
                 Thread thread = new Thread(new ThreadStart(StartExchage));
                 thread.Start();
+                //StartExchage();
             }
         }
 
@@ -82,7 +84,7 @@ namespace ItemPipes.Framework
                             item = outChest.GetItemToShip(input);
                             if (item != null)
                             {
-                                AnimatePath(path);
+                                Animator.AnimateItemSending(path);
                                 shipBin.ShipItem(item);
                                 if (Globals.Debug) { Printer.Info($"[{ParentNetwork.ID}] END animation"); }
                             }
@@ -95,14 +97,18 @@ namespace ItemPipes.Framework
                             if (Globals.Debug) { Printer.Info($"[{ParentNetwork.ID}] Can send? " + (item != null).ToString()); }
                             if (item != null)
                             {
-                                AnimatePath(path);
+                                Animator.AnimateItemSending(path);
                                 if (Globals.Debug) { Printer.Info($"[{ParentNetwork.ID}] ITEM CORRECTLY SENT"); }
-                                if (outChest != null && inChest != null && !outChest.SendItem(inChest, item))
+                                if (outChest != null && inChest != null)
                                 {
-                                    if (Globals.Debug) { Printer.Info($"[{ParentNetwork.ID}] CANT ENTER, REVERSE"); }
-                                    List<Node> reversePath = path;
-                                    reversePath.Reverse();
-                                    AnimatePath(reversePath);
+                                    bool sent = outChest.SendItem(inChest, item);
+                                    if (!sent)
+                                    {
+                                        if (Globals.Debug) { Printer.Info($"[{ParentNetwork.ID}] CANT ENTER, REVERSE"); }
+                                        List<Node> reversePath = path;
+                                        reversePath.Reverse();
+                                        Animator.AnimateItemSending(reversePath);
+                                    }
                                 }
                             }
                         }
@@ -134,6 +140,7 @@ namespace ItemPipes.Framework
                     added = true;
                     List<Node> path;
                     path = ConnectedContainer.GetPath(input.ConnectedContainer);
+                    Animator.AnimateInputConnection(path);
                     ConnectedInputs.Add(input, path);
                 }
             }

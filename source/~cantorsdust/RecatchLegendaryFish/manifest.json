@@ -11,10 +11,10 @@
 {
     "Name": "Recatch Legendary Fish",
     "Author": "cantorsdust and Pathoschild",
-    "Version": "1.7.0",
+    "Version": "1.8.0",
     "Description": "Lets you catch legendary fish again and again.",
     "UniqueID": "cantorsdust.RecatchLegendaryFish",
     "EntryDll": "RecatchLegendaryFish.dll",
-    "MinimumApiVersion": "3.9.5",
+    "MinimumApiVersion": "3.13.0",
     "UpdateKeys": [ "Nexus:172" ]
 }

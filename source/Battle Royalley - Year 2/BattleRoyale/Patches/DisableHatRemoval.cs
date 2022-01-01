@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class DisableHatRemoval : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(InventoryPage), "receiveLeftClick");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(InventoryPage), "receiveLeftClick");
 
         public static bool Prefix(InventoryPage __instance, int x, int y)
         {

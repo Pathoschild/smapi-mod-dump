@@ -31,8 +31,7 @@ namespace InventoryCycle
         /*********
         ** Public methods
         *********/
-        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
-        /// <param name="helper">Provides simplified APIs for writing mods.</param>
+        /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
@@ -49,12 +48,12 @@ namespace InventoryCycle
         /*********
         ** Private methods
         *********/
-        /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (e.Button == FrontKey)
+            if (e.Button == this.FrontKey)
             {
                 Item[] oldInventory = Game1.player.Items.ToArray();
                 List<Item> newInventory = new List<Item>();
@@ -73,7 +72,7 @@ namespace InventoryCycle
                     Game1.activeClickableMenu = new GameMenu();
                 }
             }
-            else if (e.Button == BackKey)
+            else if (e.Button == this.BackKey)
             {
                 Item[] oldInventory = Game1.player.Items.ToArray();
                 List<Item> newInventory = new List<Item>();

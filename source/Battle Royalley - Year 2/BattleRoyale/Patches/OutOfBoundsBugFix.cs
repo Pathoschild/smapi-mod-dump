@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class OutOfBoundsBugFix : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "MovePosition");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "MovePosition");
 
         public static void Prefix(Farmer __instance)
         {

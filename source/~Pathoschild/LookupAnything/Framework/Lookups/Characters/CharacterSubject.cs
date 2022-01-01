@@ -55,6 +55,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <summary>Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</summary>
         private readonly bool HighlightUnrevealedGiftTastes;
 
+        /// <summary>Whether to show all NPC gift tastes.</summary>
+        private readonly bool ShowAllGiftTastes;
+
         /// <summary>Whether to look up the original entity when the game spawns a temporary copy.</summary>
         private readonly bool EnableTargetRedirection;
 
@@ -80,15 +83,17 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
         /// <param name="reflectionHelper">Simplifies access to private game code.</param>
         /// <param name="progressionMode">Whether to only show content once the player discovers it.</param>
         /// <param name="highlightUnrevealedGiftTastes">Whether to highlight item gift tastes which haven't been revealed in the NPC profile.</param>
+        /// <param name="showAllGiftTastes">Whether to show all NPC gift tastes.</param>
         /// <param name="enableTargetRedirection">Whether to look up the original entity when the game spawns a temporary copy.</param>
         /// <remarks>Reverse engineered from <see cref="NPC"/>.</remarks>
-        public CharacterSubject(ISubjectRegistry codex, GameHelper gameHelper, NPC npc, SubjectType type, Metadata metadata, IReflectionHelper reflectionHelper, bool progressionMode, bool highlightUnrevealedGiftTastes, bool enableTargetRedirection)
+        public CharacterSubject(ISubjectRegistry codex, GameHelper gameHelper, NPC npc, SubjectType type, Metadata metadata, IReflectionHelper reflectionHelper, bool progressionMode, bool highlightUnrevealedGiftTastes, bool showAllGiftTastes, bool enableTargetRedirection)
             : base(gameHelper)
         {
             this.Codex = codex;
             this.Reflection = reflectionHelper;
             this.ProgressionMode = progressionMode;
             this.HighlightUnrevealedGiftTastes = highlightUnrevealedGiftTastes;
+            this.ShowAllGiftTastes = showAllGiftTastes;
             this.EnableTargetRedirection = enableTargetRedirection;
 
             // initialize
@@ -388,7 +393,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
                     yield return this.GetGiftTasteField(I18n.Npc_LovesGifts(), giftTastes, ownedItems, GiftTaste.Love);
                     yield return this.GetGiftTasteField(I18n.Npc_LikesGifts(), giftTastes, ownedItems, GiftTaste.Like);
                     yield return this.GetGiftTasteField(I18n.Npc_NeutralGifts(), giftTastes, ownedItems, GiftTaste.Neutral);
-                    if (this.ProgressionMode || this.HighlightUnrevealedGiftTastes)
+                    if (this.ProgressionMode || this.HighlightUnrevealedGiftTastes || this.ShowAllGiftTastes)
                     {
                         yield return this.GetGiftTasteField(I18n.Npc_DislikesGifts(), giftTastes, ownedItems, GiftTaste.Dislike);
                         yield return this.GetGiftTasteField(I18n.Npc_HatesGifts(), giftTastes, ownedItems, GiftTaste.Hate);
@@ -485,7 +490,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Characters
             ItemDropData[] possibleDrops = this.GameHelper.GetMonsterData().FirstOrDefault(p => p.Name == monster.Name)?.Drops;
             if (this.IsHauntedSkull)
                 possibleDrops ??= this.GameHelper.GetMonsterData().FirstOrDefault(p => p.Name == "Lava Bat")?.Drops; // haunted skulls use lava bat data
-            possibleDrops ??= new ItemDropData[0];
+            possibleDrops ??= Array.Empty<ItemDropData>();
 
             // get actual drops
             IDictionary<int, List<ItemDropData>> dropsLeft = monster

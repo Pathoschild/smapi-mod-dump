@@ -16,7 +16,7 @@ using StardewValley.Events;
 
 namespace MoreConversationTopics
 {
-    // Applies Harmony patches to Event.cs to add a conversation topic for luau results.
+    // Applies Harmony patches to BirthingEvent.cs and PlayerCoupleBirthingEvent.cs to add a conversation topic for when a child is born, by gender of the child.
     public class BirthPatcher
     {
         private static IMonitor Monitor;
@@ -58,11 +58,19 @@ namespace MoreConversationTopics
         }
 
         // Method that is used to postfix
-        private static void BirthingEvent_setUp_Postfix(bool __result)
+        private static void BirthingEvent_setUp_Postfix(bool __result, bool ___isMale)
         {
+            // If a player married to an NPC has a child, add conversation topics depending on gender
             try
             {
-                Game1.player.activeDialogueEvents.Add("birth", Config.BirthDuration);
+                if (___isMale)
+                {
+                    Game1.player.activeDialogueEvents.Add("babyBoy", Config.BirthDuration);
+                }
+                else
+                {
+                    Game1.player.activeDialogueEvents.Add("babyGirl", Config.BirthDuration);
+                }
             }
             catch (Exception ex)
             {
@@ -70,13 +78,21 @@ namespace MoreConversationTopics
             }
         }
 
-        private static void PlayerCoupleBirthingEvent_setUp_Postfix(PlayerCoupleBirthingEvent __instance, bool __result, Farmer ___spouse)
+        private static void PlayerCoupleBirthingEvent_setUp_Postfix(PlayerCoupleBirthingEvent __instance, bool __result, Farmer ___spouse, bool ___isMale)
         {
+            // If two players are married and have a child, add the conversation topic for having a new baby to both players
             try
             {
                 if (!__result)
                 {
-                    Game1.player.activeDialogueEvents.Add("birth", Config.BirthDuration);
+                    if (___isMale)
+                    {
+                        Game1.player.activeDialogueEvents.Add("babyBoy", Config.BirthDuration);
+                    }
+                    else
+                    {
+                        Game1.player.activeDialogueEvents.Add("babyGirl", Config.BirthDuration);
+                    }
                 }
             }
             catch (Exception ex)
@@ -88,7 +104,14 @@ namespace MoreConversationTopics
             {
                 if (!__result)
                 {
-                    ___spouse.activeDialogueEvents.Add("birth", Config.BirthDuration);
+                    if (___isMale)
+                    {
+                        ___spouse.activeDialogueEvents.Add("babyBoy", Config.BirthDuration);
+                    }
+                    else
+                    {
+                        ___spouse.activeDialogueEvents.Add("babyGirl", Config.BirthDuration);
+                    }
                 }
             }
             catch (Exception ex)

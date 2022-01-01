@@ -1,0 +1,324 @@
+{
+  "modUniqueId": "DaisyNiko.CCBB",
+  "coopTroughTiles": [
+    {
+      "tileX": 12,
+      "tileY": 4,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 5,
+      "tileY": 9,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 6,
+      "tileY": 9,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 5,
+      "tileY": 8,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 6,
+      "tileY": 8,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "coop2TroughTiles": [
+    {
+      "tileX": 15,
+      "tileY": 4,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 14,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 15,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 14,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 15,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "coop3TroughTiles": [
+    {
+      "tileX": 23,
+      "tileY": 4,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 1,
+      "tileY": 5,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 10,
+      "tileY": 11,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 11,
+      "tileY": 11,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 10,
+      "tileY": 10,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 11,
+      "tileY": 10,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    },
+    {
+      "tileX": 20,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 21,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 20,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 21,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "coop3WateringSystem": {
+    "tileX": 22,
+    "tileY": 3,
+    "layer": "Buildings",
+    "systemIndex": 0,
+    "tilesToRemove": [
+      {
+        "tileX": 22,
+        "tileY": 3,
+        "layer": "Buildings"
+      },
+      {
+        "tileX": 22,
+        "tileY": 2,
+        "layer": "Front"
+      }
+    ]
+  },
+  "barnTroughTiles": [
+    {
+      "tileX": 13,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 6,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 7,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 6,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 7,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn2TroughTiles": [
+    {
+      "tileX": 17,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 6,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 7,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 6,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 7,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    },
+    {
+      "tileX": 19,
+      "tileY": 5,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 20,
+      "tileY": 5,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 19,
+      "tileY": 4,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 20,
+      "tileY": 4,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn3TroughTiles": [
+    {
+      "tileX": 22,
+      "tileY": 4,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    },
+    {
+      "tileX": 6,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 7,
+      "tileY": 10,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 6,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 7,
+      "tileY": 9,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn3WateringSystem": {
+    "tileX": 8,
+    "tileY": 10,
+    "layer": "Buildings",
+    "systemIndex": 0,
+    "tilesToRemove": [
+      {
+        "tileX": 8,
+        "tileY": 10,
+        "layer": "Buildings"
+      },
+      {
+        "tileX": 8,
+        "tileY": 9,
+        "layer": "Front"
+      }
+    ]
+  }
+}

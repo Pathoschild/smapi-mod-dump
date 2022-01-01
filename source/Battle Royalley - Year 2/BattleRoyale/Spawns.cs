@@ -17,7 +17,7 @@ namespace BattleRoyale
 {
     class Spawns
     {
-        public Dictionary<Farmer, TileLocation> ScatterPlayers(IEnumerable<Farmer> players, bool gingerIsland = false)
+        public static Dictionary<Farmer, TileLocation> ScatterPlayers(IEnumerable<Farmer> players, bool gingerIsland = false)
         {
             List<TileLocation> spawnList;
             if (ModEntry.BRGame.IsSpecialRoundType(SpecialRoundType.SLUGFEST))

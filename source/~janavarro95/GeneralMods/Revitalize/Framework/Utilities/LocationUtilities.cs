@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Revitalize.Framework.World.Objects;
 using Revitalize.Framework.Objects;
 using StardewValley;
 using StardewValley.Buildings;
@@ -110,7 +111,7 @@ namespace Revitalize.Framework.Utilities
         /// <param name="Location"></param>
         /// <param name="TestObject"></param>
         /// <returns></returns>
-        public static List<Vector2> GetOpenObjectTiles(GameLocation Location, MultiTiledObject TestObject)
+        public static List<Vector2> GetOpenObjectTiles(GameLocation Location, CustomObject TestObject)
         {
             Vector2 dimensions = GetLocationTileDimensions(Location);
             List<Vector2> openTiles = new List<Vector2>();

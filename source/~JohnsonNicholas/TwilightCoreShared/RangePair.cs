@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System;
+
 namespace TwilightShards.Common
 {
     /// <summary>
@@ -94,12 +96,12 @@ namespace TwilightShards.Common
         /// </summary>
         /// <param name="d">The random object</param>
         /// <returns>Number in range</returns>
-        public double RollInRange(MersenneTwister d)
+        public double RollInRange(Random d)
         {
             if (HigherBound == LowerBound)
                 return LowerBound;
 
-            return (d.NextDoublePositive() * (HigherBound - LowerBound) + LowerBound);
+            return (d.NextDouble() * (HigherBound - LowerBound) + LowerBound);
         }
 
         /// <summary>

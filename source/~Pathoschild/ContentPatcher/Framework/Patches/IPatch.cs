@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace ContentPatcher.Framework.Patches
 {
@@ -56,6 +57,9 @@ namespace ContentPatcher.Framework.Patches
 
         /// <summary>Whether the patch is currently applied to the target asset.</summary>
         bool IsApplied { get; set; }
+
+        /// <summary>The <see cref="Game1.ticks"/> value when this patch last changed due to a context update.</summary>
+        int LastChangedTick { get; }
 
 
         /*********

@@ -6,12 +6,9 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 6aa679d5241bd6744dfa397fb331b21bad8b7410
-   Merge: 2caaf33 e7bc7ab
-   Author: TÃ³th ÃdÃ¡m <10620868+Annosz@users.noreply.github.com>
-   Date:   Sun Oct 24 12:30:22 2021 +0200
+   commit 0689fdb8416804b91dccb7304e5cbc59f4c5f884
+   Author: Annosz <tadamleanyfalu@gmail.com>
+   Date:   Thu Dec 30 21:32:11 2021 +0100
    
-       Merge pull request #80 from Annosz/spouse-heart-fixes
-       
-       Fix 9th, 11th and 13th hearts on datable NPCs and spouse
+       Update version number
    

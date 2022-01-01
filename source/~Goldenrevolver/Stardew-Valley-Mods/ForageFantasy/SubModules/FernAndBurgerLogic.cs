@@ -151,20 +151,13 @@ namespace ForageFantasy
         {
             int ran = Game1.random.Next(4);
 
-            switch (ran)
+            return ran switch
             {
-                case 0:
-                    return 259;
-
-                case 1:
-                    return 396;
-
-                case 2:
-                    return 398;
-
-                default:
-                    return 402;
-            }
+                0 => 259,
+                1 => 396,
+                2 => 398,
+                _ => 402,
+            };
         }
     }
 }

@@ -44,7 +44,7 @@
 
         	"Lake Fish": "Lake Fish/O 685 30/136 20 2 698 20 2 700 20 2 142 20 2 702 20 2 141 20 2 138 20 2 {{spacechase0.jsonAssets/ObjectId:Minnow}} 20 2/0/7/7",
 
-        	"Ocean Fish": "Ocean Fish/O 275 1/128 10 2 129 20 2 130 20 2 131 20 2 {{spacechase0.jsonAssets/ObjectId:Clownfish}} 20 2 147 20 2 150 20 2 154 20 2 267 20 2 {{spacechase0.jsonAssets/ObjectId:Starfish}} 20 2/5/8/8",
+        	"Ocean Fish": "Ocean Fish/O 275 1/128 10 2 129 20 2 130 20 2 131 20 2 146 20 2 147 20 2 150 20 2 154 20 2 267 20 2 {{spacechase0.jsonAssets/ObjectId:Starfish}} 20 2/5/8/8",
         		
         	"Night Fishing": "Night Fishing/O 242 10/148 15 0 132 30 0 140 20 0 151 20 0 155 5 0 705 20 0 708 30 0 269 10 0/1/8/9",
 
@@ -135,7 +135,7 @@
 
         	"Lake Fish": "Lake Fish/O 685 30/136 20 2 698 20 2 700 20 2 142 20 2 702 20 2 141 20 2 138 20 2 {{spacechase0.jsonAssets/ObjectId:Minnow}} 20 2/0/7/7",
 
-        	"Ocean Fish": "Ocean Fish/O 275 1/128 10 2 129 20 2 130 20 2 131 20 2 {{spacechase0.jsonAssets/ObjectId:Clownfish}} 20 2 147 20 2 150 20 2 154 20 2 267 20 2 {{spacechase0.jsonAssets/ObjectId:Starfish}} 20 2/5/8/8",
+        	"Ocean Fish": "Ocean Fish/O 275 1/128 10 2 129 20 2 130 20 2 131 20 2 146 20 2 147 20 2 150 20 2 154 20 2 267 20 2 {{spacechase0.jsonAssets/ObjectId:Starfish}} 20 2/5/8/8",
         		
         	"Night Fishing": "Night Fishing/O 242 10/148 15 0 132 30 0 140 20 0 151 20 0 155 5 0 705 20 0 708 30 0 269 10 0/1/8/9",
 

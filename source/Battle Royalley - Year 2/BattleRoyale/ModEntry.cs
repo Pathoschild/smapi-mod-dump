@@ -39,12 +39,12 @@ namespace BattleRoyale
 
         public static IMultiplayerHelper Multiplayer { get; private set; }
 
-        private readonly Dictionary<int, string> customTooltips = new Dictionary<int, string>()
+        private readonly Dictionary<int, string> customTooltips = new()
         {
             { 529, "Increases knockback by 50%." }  // Amethyst Ring,
         };
 
-        private readonly Dictionary<string, string> modifiedAssets = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> modifiedAssets = new()
         {
             { "Minigames/TitleButtons", "Assets/title.png" },
             { "TileSheets/furniture", "Assets/furniture.png" },
@@ -63,10 +63,10 @@ namespace BattleRoyale
 
         public ModEntry()
         {
-            var h = new Harmony("ilyaki.battleroyale_ctor");
+            Harmony h = new("ilyaki.battleroyale_ctor");
 
             {
-                var toPatch = new List<MethodBase>();
+                List<MethodBase> toPatch = new();
                 toPatch.AddRange(h.GetPatchedMethods().Where(x => x.DeclaringType.Assembly != Assembly.GetAssembly(typeof(Game1))));
 
                 foreach (MethodBase method in toPatch)
@@ -87,14 +87,21 @@ namespace BattleRoyale
             return false;
         }
 
-        public bool IsOnlyMod()
+        public static bool IsOnlyMod()
         {
             foreach (Assembly assm in AppDomain.CurrentDomain.GetAssemblies())
             {
                 if (assm == Assembly.GetExecutingAssembly())
                     continue;
 
-                foreach (Type type in assm.GetTypes())
+                Type[] assmTypes = Array.Empty<Type>();
+                try
+                {
+                    assmTypes = assm.GetTypes();
+                }
+                catch (ReflectionTypeLoadException) { }
+
+                foreach (Type type in assmTypes)
                 {
                     if (type.IsSubclassOf(typeof(Mod)))
                         return false;
@@ -123,12 +130,12 @@ namespace BattleRoyale
             var config = helper.ReadConfig<ModConfig>();
             if (config == null)
             {
-                config = new ModConfig();
+                config = new();
                 helper.WriteConfig(config);
             }
 
-            BRGame = new Game(helper, Monitor);
-            Leaderboard = new Leaderboard();
+            BRGame = new(helper, Monitor);
+            Leaderboard = new();
             Config = config;
 
             Patch.PatchAll("ilyaki.battleroyale");
@@ -157,7 +164,7 @@ namespace BattleRoyale
                 NetworkMessage.Send(
                     NetworkUtils.MessageTypes.TOGGLE_SPECTATE,
                     NetworkMessageDestination.ALL,
-                    new List<object>() { Game1.player.UniqueMultiplayerID, !BRGame.isSpectating }
+                    new() { Game1.player.UniqueMultiplayerID, !BRGame.isSpectating }
                 );
             });
 
@@ -217,7 +224,7 @@ namespace BattleRoyale
 
             Events.GameLoop.SaveLoaded += (o, e) =>
             {
-                BRGame = new Game(helper, Monitor);
+                BRGame = new(helper, Monitor);
 
                 if (Game1.player != Game1.MasterPlayer)
                     return;
@@ -226,13 +233,13 @@ namespace BattleRoyale
 
                 Leaderboard.InitPlayer(Game1.player);
 
-                for (int i = 0; i < Game1.player.items.Count; i++)
-                    Game1.player.items[i] = null;
+                for (int i = 0; i < Game1.player.Items.Count; i++)
+                    Game1.player.Items[i] = null;
 
                 Game1.player.Name = "";
                 Game1.player.favoriteThing.Value = "";
 
-                NetworkUtils.WarpFarmer(Game1.player, new TileLocation("Mountain", 117, 30));
+                NetworkUtils.WarpFarmer(Game1.player, new("Mountain", 117, 30));
                 Game1.activeClickableMenu = new CharacterCustomization(CharacterCustomization.Source.NewFarmhand);
             };
 
@@ -253,7 +260,7 @@ namespace BattleRoyale
             {
                 foreach (IClickableMenu menu in Game1.onScreenMenus.ToList())
                 {
-                    if (menu is VictoryRoyale && (menu as VictoryRoyale).GetTimeSince() == null)
+                    if (menu is VictoryRoyale royale && royale.GetTimeSince() == null)
                         Game1.onScreenMenus.Remove(menu);
                     if (menu is SpectateToolbar && !SpectatorMode.InSpectatorMode)
                         Game1.onScreenMenus.Remove(menu);
@@ -279,7 +286,7 @@ namespace BattleRoyale
                             if (SpectatorMode.Following == null && menu is SpectateToolbar)
                                 continue;
 
-                            if (menu != Game1.chatBox && !(menu is Toolbar))
+                            if (menu != Game1.chatBox && menu is not Toolbar)
                             {
                                 menu.update(Game1.currentGameTime);
                                 menu.draw(Game1.spriteBatch);

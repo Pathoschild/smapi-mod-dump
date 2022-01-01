@@ -26,7 +26,8 @@ namespace FashionSense.Framework.Models
             Accessory,
             Hat,
             Shirt,
-            Pants
+            Pants,
+            Sleeves
         }
 
         internal Type PackType { get; set; }

@@ -255,7 +255,7 @@ namespace TwilightShards.Stardew.Common
             return three;
         }
 
-        public static void SpawnGhostOffScreen(MersenneTwister Dice)
+        public static void SpawnGhostOffScreen(Random Dice)
         {
             Vector2 zero = Vector2.Zero;
             if (Game1.getFarm() is Farm ourFarm)

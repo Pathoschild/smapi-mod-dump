@@ -32,7 +32,7 @@ namespace TwilightShards.LunarDisturbances
     public class LunarDisturbances : Mod, IAssetEditor
     {
         internal static SDVMoon OurMoon;
-        private MersenneTwister Dice;
+        private Random Dice;
         internal static IContentHelper ContentManager;
         internal static ITranslationHelper Translation;
         private MoonConfig ModConfig;
@@ -77,7 +77,7 @@ namespace TwilightShards.LunarDisturbances
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            Dice = new MersenneTwister();
+            Dice = new Xoshiro.PRNG64.XoShiRo256starstar();
             Translation = Helper.Translation;
             ModConfig = Helper.ReadConfig<MoonConfig>();          
             OurMoon = new SDVMoon(ModConfig, Dice, Helper.Translation, Monitor);

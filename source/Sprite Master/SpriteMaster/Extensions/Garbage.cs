@@ -9,166 +9,157 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+
 using SpriteMaster.Harmonize;
+
 using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 
-namespace SpriteMaster.Extensions {
-	public static class Garbage {
-		private static readonly MethodInfo CompactingCollect = null;
-		public static volatile bool ManualCollection = false;
+namespace SpriteMaster.Extensions;
 
-		private static void ExecuteSafe(Action call) {
-			try {
-				call.Invoke();
-			}
-			catch (Exception) {
-				// ignore the exception
-			}
+static class Garbage {
+	private delegate void CompactingCollectDelegate(int generation, GCCollectionMode mode, bool blocking, bool compacting);
+	internal static volatile bool ManualCollection = false;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static void ExecuteSafe(Action call) {
+		try {
+			call.Invoke();
 		}
-
-		static Garbage () {
-			ExecuteSafe(() => GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency);
-
-			var methods = typeof(GC).GetMethods("Collect", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-			foreach (var method in methods) {
-				var methodParameters = method.GetParameters();
-				if (methodParameters.Length != 4)
-					continue;
-				// +		method	{Void Collect(Int32, System.GCCollectionMode, Boolean, Boolean)}	System.Reflection.MethodInfo {System.Reflection.RuntimeMethodInfo}
-				if (
-					methodParameters[0].ParameterType == typeof(int) &&
-					methodParameters[1].ParameterType == typeof(GCCollectionMode) &&
-					methodParameters[2].ParameterType == typeof(bool) &&
-					methodParameters[3].ParameterType == typeof(bool)
-				) {
-					CompactingCollect = method;
-					break;
-				}
-			}
+		catch (Exception) {
+			// ignore the exception
 		}
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
+	static Garbage() {
+		ExecuteSafe(() => GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 #if NETFRAMEWORK && (NET20 || NET35 || NET40 || NET45)
 		[Conditional("FALSE")]
 #endif
-		public static void MarkCompact() {
-			Debug.TraceLn("Marking for Compact");
+	internal static void MarkCompact() {
+		Debug.TraceLn("Marking for Compact");
 #if !NETFRAMEWORK || !(NET20 || NET35 || NET40 || NET45)
-			ExecuteSafe(() => GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce);
+		ExecuteSafe(() => GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce);
 #endif
-		}
+	}
 
-		public static void Collect(bool compact = false, bool blocking = false, bool background = true) {
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void Collect(bool compact = false, bool blocking = false, bool background = true) {
+		try {
+			ManualCollection = true;
+
+			Debug.TraceLn("Garbage Collecting");
+			if (compact) {
+				MarkCompact();
+			}
+
 			try {
-				ManualCollection = true;
-
-				Debug.TraceLn("Garbage Collecting");
-				if (compact) {
-					MarkCompact();
-				}
-
+				var latencyMode = GCSettings.LatencyMode;
 				try {
-					var latencyMode = GCSettings.LatencyMode;
-					try {
-						if (blocking) {
-							GCSettings.LatencyMode = GCLatencyMode.Batch;
-						}
-						if (compact && CompactingCollect != null) {
-							CompactingCollect.Invoke(null, new object[] {
-								int.MaxValue,
-								background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
-								blocking,
-								true
-							});
-						}
-						else {
-							GC.Collect(
-								generation: int.MaxValue,
-								mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
-								blocking: blocking
-							);
-						}
+					if (blocking) {
+						GCSettings.LatencyMode = GCLatencyMode.Batch;
 					}
-					finally {
-						GCSettings.LatencyMode = latencyMode;
+					if (compact) {
+						GC.Collect(
+							int.MaxValue,
+							background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
+							blocking,
+							true
+						);
+					}
+					else {
+						GC.Collect(
+							generation: int.MaxValue,
+							mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
+							blocking: blocking
+						);
 					}
 				}
-				catch (Exception) {
-					// Just in case the user's GC doesn't support the preivous properties like LatencyMode
-					GC.Collect(
-						generation: int.MaxValue,
-						mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
-						blocking: blocking
-					);
+				finally {
+					GCSettings.LatencyMode = latencyMode;
 				}
 			}
-			finally {
-				ManualCollection = false;
+			catch (Exception) {
+				// Just in case the user's GC doesn't support the preivous properties like LatencyMode
+				GC.Collect(
+					generation: int.MaxValue,
+					mode: background ? GCCollectionMode.Optimized : GCCollectionMode.Forced,
+					blocking: blocking
+				);
 			}
 		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void Mark(long size) {
-			Contract.AssertPositiveOrZero(size);
-			GC.AddMemoryPressure(size);
+		finally {
+			ManualCollection = false;
 		}
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void Mark (Texture2D texture) {
-			Contract.AssertNotNull(texture);
-			Mark(texture.SizeBytes());
-		}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void Mark(long size) {
+		Contract.AssertPositiveOrZero(size);
+		GC.AddMemoryPressure(size);
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void Unmark(long size) {
-			Contract.AssertPositiveOrZero(size);
-			GC.RemoveMemoryPressure(size);
-		}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void Mark(Texture2D texture) {
+		Contract.AssertNotNull(texture);
+		Mark(texture.SizeBytes());
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void Unmark (Texture2D texture) {
-			Contract.AssertNotNull(texture);
-			Unmark(texture.SizeBytes());
-		}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void Unmark(long size) {
+		Contract.AssertPositiveOrZero(size);
+		GC.RemoveMemoryPressure(size);
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void MarkOwned(SurfaceFormat format, int texels) {
-			if (!Config.Garbage.CollectAccountOwnedTextures)
-				return;
-			Contract.AssertPositiveOrZero(texels);
-			var size = format.SizeBytes(texels);
-			Mark(size);
-		}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void Unmark(Texture2D texture) {
+		Contract.AssertNotNull(texture);
+		Unmark(texture.SizeBytes());
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void UnmarkOwned (SurfaceFormat format, int texels) {
-			if (!Config.Garbage.CollectAccountOwnedTextures)
-				return;
-			Contract.AssertPositiveOrZero(texels);
-			var size = format.SizeBytes(texels);
-			Unmark(size);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void MarkOwned(SurfaceFormat format, int texels) {
+		if (!Config.Garbage.CollectAccountOwnedTextures) {
+			return;
 		}
+		Contract.AssertPositiveOrZero(texels);
+		var size = format.SizeBytes(texels);
+		Mark(size);
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void MarkUnowned (SurfaceFormat format, int texels) {
-			if (!Config.Garbage.CollectAccountUnownedTextures)
-				return;
-			Contract.AssertPositiveOrZero(texels);
-			var size = format.SizeBytes(texels);
-			Mark(size);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void UnmarkOwned(SurfaceFormat format, int texels) {
+		if (!Config.Garbage.CollectAccountOwnedTextures) {
+			return;
 		}
+		Contract.AssertPositiveOrZero(texels);
+		var size = format.SizeBytes(texels);
+		Unmark(size);
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static void UnmarkUnowned (SurfaceFormat format, int texels) {
-			if (!Config.Garbage.CollectAccountUnownedTextures)
-				return;
-			Contract.AssertPositiveOrZero(texels);
-			var size = format.SizeBytes(texels);
-			Unmark(size);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void MarkUnowned(SurfaceFormat format, int texels) {
+		if (!Config.Garbage.CollectAccountUnownedTextures) {
+			return;
 		}
+		Contract.AssertPositiveOrZero(texels);
+		var size = format.SizeBytes(texels);
+		Mark(size);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void UnmarkUnowned(SurfaceFormat format, int texels) {
+		if (!Config.Garbage.CollectAccountUnownedTextures) {
+			return;
+		}
+		Contract.AssertPositiveOrZero(texels);
+		var size = format.SizeBytes(texels);
+		Unmark(size);
 	}
 }

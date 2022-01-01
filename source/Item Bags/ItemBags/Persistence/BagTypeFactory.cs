@@ -348,7 +348,7 @@ namespace ItemBags.Persistence
                             {
                                 378, 380, 384, 386, 909, 535, 536, 537, 749,    // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Radioactive Ore, Geode, Frozen Geode, Magma Geode, Omni Geode
                                 382, 68, 66, 62, 70, 60, 64, 72, 74,            // Coal, Topaz, Amethyst, Aquamarine, Jade, Emerald, Ruby, Diamond, Prismatic Shard
-                                390, 382, 80, 86, 84, 82, 848                   // Stone, Quartz, Earth Crystal, Frozen Tear, Fire Quartz, Cinder Shard
+                                390, 80, 86, 84, 82, 848                        // Stone, Quartz, Earth Crystal, Frozen Tear, Fire Quartz, Cinder Shard
                             },
                             BigCraftableIds
                         ),
@@ -371,7 +371,7 @@ namespace ItemBags.Persistence
                             {
                                 378, 380, 384, 386, 909, 535, 536, 537, 749,    // Copper Ore, Iron Ore, Gold Ore, Iridium Ore, Radioactive Ore, Geode, Frozen Geode, Magma Geode, Omni Geode
                                 382, 68, 66, 62, 70, 60, 64, 72, 74,            // Coal, Topaz, Amethyst, Aquamarine, Jade, Emerald, Ruby, Diamond, Prismatic Shard
-                                390, 382, 80, 86, 84, 82, 848                   // Stone, Quartz, Earth Crystal, Frozen Tear, Fire Quartz, Cinder Shard
+                                390, 80, 86, 84, 82, 848                   // Stone, Quartz, Earth Crystal, Frozen Tear, Fire Quartz, Cinder Shard
                             },
                             BigCraftableIds
                         ),

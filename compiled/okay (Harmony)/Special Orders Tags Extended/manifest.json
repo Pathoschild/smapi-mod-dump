@@ -1,7 +1,7 @@
 {
    "Name": "Special Orders Tags Extended",
    "Author": "atravita",
-   "Version": "1.0.2",
+   "Version": "1.0.3",
    "Description": "Extends the number of tags available for special orders",
    "UniqueID": "atravita.SpecialOrdersExtended",
    "EntryDll": "SpecialOrdersExtended.dll",

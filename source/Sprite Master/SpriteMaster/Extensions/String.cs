@@ -8,53 +8,55 @@
 **
 *************************************************/
 
+using LinqFasterer;
 using SpriteMaster.Types;
+
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace SpriteMaster.Extensions {
-	public static class String {
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static bool IsBlank (this string str) => str == null || str == "";
+namespace SpriteMaster.Extensions;
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static string Reverse (this string str) {
-			Contract.AssertNotNull(str);
+static class String {
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool IsEmpty(this string str) => str.Length == 0;
 
-			unsafe {
-				fixed (char* p = str) {
-					foreach (int i in 0.To(str.Length / 2)) {
-						int endIndex = (str.Length - i) - 1;
-						Common.Swap(ref p[i], ref p[endIndex]);
-					}
-				}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool IsBlank(this string str) => str?.IsEmpty() ?? true;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static unsafe string Reverse(this string str) {
+		Contract.AssertNotNull(str);
+
+		fixed (char* p = str) {
+			foreach (int i in 0.To(str.Length / 2)) {
+				int endIndex = (str.Length - i) - 1;
+				(p[endIndex], p[i]) = (p[i], p[endIndex]);
 			}
+		}
 
+		return str;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string Reversed(this string str) {
+		Contract.AssertNotNull(str);
+		var strArray = str.ToCharArray().Reverse();
+		return new(strArray);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string Enquote(this string str, char quote = '\'') {
+		if (str.Length >= 2 && str[0] == quote && str[^1] == quote) {
 			return str;
 		}
+		return $"{quote}{str}{quote}";
+	}
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static string Reversed (this string str) {
-			Contract.AssertNotNull(str);
-			var strArray = str.ToCharArray().Reverse();
-			return new string(strArray);
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static string Enquote (this string str, string quote = "\'") {
-			if (str.StartsWith(quote) && str.EndsWith(quote)) {
-				return str;
-			}
-			return $"{quote}{str}{quote}";
-		}
-
-		private static readonly char[] NewlineChars = new[] { '\n', '\r' };
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static IEnumerable<string> Lines (this string str, bool removeEmpty = false) {
-			var strings = str.Split(NewlineChars);
-			var validLines = removeEmpty ? strings.Where(l => (l != null && l.Length > 0)) : strings.Where(l => l != null);
-			return validLines;
-		}
+	private static readonly char[] NewlineChars = new[] { '\n', '\r' };
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static IEnumerable<string> Lines(this string str, bool removeEmpty = false) {
+		var strings = str.Split(NewlineChars);
+		var validLines = removeEmpty ? strings.WhereF(l => !l.IsBlank()) : strings.WhereF(l => l is not null);
+		return validLines;
 	}
 }

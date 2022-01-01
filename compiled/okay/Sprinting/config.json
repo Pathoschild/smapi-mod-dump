@@ -1,0 +1,14 @@
+{
+  "SprintingKey": "LeftControl",
+  "SpeedBoost": 2,
+  "EnergyDrainPerSecond": 1,
+  "SkillBased": true,
+  "AllowHorseSprinting": true,
+  "MinimumEnergyToSprint": 10,
+  "LowEnergyWarning": true,
+  "EnergyToWarn": 25,
+  "EnergyRegenRate": 1.0,
+  "EnergyRegenCooldown": 10,
+  "HealthRegenRate": 0.0,
+  "HealthRegenCooldown": 15
+}

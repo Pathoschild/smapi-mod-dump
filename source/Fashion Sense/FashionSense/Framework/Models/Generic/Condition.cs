@@ -34,6 +34,8 @@ namespace FashionSense.Framework.Models.Generic
             Unknown,
             MovementSpeed,
             MovementDuration,
+            MovementSpeedLogical,
+            MovementDurationLogical,
             IsElapsedTimeMultipleOf,
             DidPreviousFrameDisplay,
             RidingHorse,
@@ -55,7 +57,11 @@ namespace FashionSense.Framework.Models.Generic
             IsUsingSlingshot,
             IsHarvesting,
             IsInMines,
-            IsOutdoors
+            IsOutdoors,
+            HealthLevel,
+            StaminaLevel,
+            IsSitting,
+            IsCarrying
         }
 
         public Type Name { get; set; }

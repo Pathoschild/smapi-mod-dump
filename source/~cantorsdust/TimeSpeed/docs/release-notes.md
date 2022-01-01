@@ -9,6 +9,21 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 2.6.0
+Released 29 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Updated for Stardew Valley 1.5.5.
+* Added in-game config UI via [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Overhauled configuration in `config.json`:
+  * Time speed is now measured in seconds/minute (instead of seconds/10-minutes) for simplicity.
+  * Split `TickLengthByLocation` into `SecondsPerMinute` and `FreezeTime` fields for clarity.
+  * Removed `DefaultTickLength` (no longer needed with above changes).
+* Improved translations. Thanks to Pedrowser (added Portuguese), xingmot (added Chinese), and Yllelder (added Spanish)!
+
+**Update note:**  
+If you previously customized the `TickLengthByLocation` or `DefaultTickLength`, you'll need to
+reconfigure the mod using the new options.
+
 ## 2.5.1
 Released 27 November 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
 
@@ -17,7 +32,7 @@ Released 27 November 2021 for SMAPI 3.12.5 or later. Updated by Pathoschild.
 * Fixed `FreezeTimeAt` option not applied if you set a time which isn't a multiple of 10 (like `2205`).
 * Fixed `FreezeTimeAt` option not resuming time when the next day starts.
 
-## 2.5
+## 2.5.0
 Released 26 March 2020 for SMAPI 3.9.5 or later. Updated by Pathoschild.
 
 * Added [multi-key binding](https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Multi-key_bindings) support.
@@ -46,12 +61,12 @@ Released 01 September 2018 for SMAPI 2.8 or later. Updated by Pathoschild.
 
 * Changed the default time speed to match the game, except indoors where it runs at half-speed. (Previously time ran at half-speed everywhere by default.)
 
-## 2.4
+## 2.4.0
 Released 09 August 2018 for SMAPI 2.6 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.3.
 
-## 2.3
+## 2.3.0
 Released 25 January 2018 for SMAPI 2.4 or later. Updated by Pathoschild.
 
 * Updated to SMAPI 2.4.
@@ -64,12 +79,12 @@ Released 02 June 2017 for SMAPI 1.14 or later. Updated by Pathoschild.
 
 * Updated to SMAPI 1.14.
 
-## 2.2
+## 2.2.0
 Released 24 April 2017 for SMAPI 1.10 or later. Updated by Pathoschild.
 
 * Updated for Stardew Valley 1.2.
 
-## 2.1
+## 2.1.0
 Released 05 April 2017 for SMAPI 1.9 or later. Updated by Pathoschild.
 
 * Updated to SMAPI 1.9.
@@ -92,7 +107,7 @@ Released 25 October 2016 for SMAPI 0.40 or later.
 * Added Linux/Mac support.
 * Fixed config resetting & parsing.
 
-## 2.0
+## 2.0.0
 Released 23 October 2016 for SMAPI 0.40 or later.
 
 * Internal refactoring.
@@ -126,15 +141,15 @@ Released 18 October 2016 for SMAPI 0.40 or later.
 
 * Added notifications when time is frozen or unfrozen.
 
-## 1.9
+## 1.9.0
 _(Lost to the sands of time.)_
 
-## 1.8
+## 1.8.0
 Released 23 March 2016 for SMAPI 0.39 or later.
 
 * Updated for SMAPI 0.39.
 
-## 1.7
+## 1.7.0
 Released 22 March 2016 for SMAPI 0.38 or later.
 
 * Updated for SMAPI 0.38.
@@ -142,14 +157,14 @@ Released 22 March 2016 for SMAPI 0.38 or later.
 * Added hotkeys to freeze/unfreeze/speed up/slow down time, and reset settings.
 * Added support for holding `Shift` to change time flow by 10-second intervals.
 
-## 1.6
+## 1.6.0
 Released 17 March 2016 for SMAPI 0.37.3 or later.
 
 * Added options to freeze time automatically based on location.
 * Added smoother time slowing.
 * Fixed overflow bug for long tick lengths.
 
-## 1.5
+## 1.5.0
 _(Storm API release.)_
 
 ## 1.4.2
@@ -162,26 +177,26 @@ Released 05 March 2016 for SMAPI 0.37 or later.
 
 * Fixed config being read from wrong path in some cases.
 
-## 1.4
+## 1.4.0
 _(Test release.)_
 
-## 1.3
+## 1.3.0
 Released 05 March 2016 for SMAPI 0.37 or later.
 
 * Updated for SMAPI 0.37.
 * Fixed config being autocreated with the wrong field name.
 
-## 1.2
+## 1.2.0
 Released 03 March 2016 for SMAPI 0.35 or later.
 
 * Renamed config setting for clarity.
 
-## 1.1
+## 1.1.0
 Released 03 March 2016 for SMAPI 0.35 or later.
 
 * Added support for speeding up and slowing down time.
 
-## 1.0
+## 1.0.0
 Released 03 March 2016 for SMAPI 0.35 or later.
 
 * Initial release.

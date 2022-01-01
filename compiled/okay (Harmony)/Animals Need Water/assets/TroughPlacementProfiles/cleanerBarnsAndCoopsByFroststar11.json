@@ -1,0 +1,134 @@
+{
+  "modUniqueId": "Froststar11.CleanBarnsCoops",
+  "coopTroughTiles": [
+    {
+      "tileX": 10,
+      "tileY": 5,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    }
+  ],
+  "coop2TroughTiles": [
+    {
+      "tileX": 14,
+      "tileY": 5,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    }
+  ],
+  "coop3TroughTiles": [
+    {
+      "tileX": 1,
+      "tileY": 6,
+      "layer": "Buildings",
+      "emptyIndex": 0,
+      "fullIndex": 3
+    }
+  ],
+  "coop3WateringSystem": {
+    "tileX": 1,
+    "tileY": 5,
+    "layer": "Front",
+    "systemIndex": 2,
+    "tilesToRemove": []
+  },
+  "barnTroughTiles": [
+    {
+      "tileX": 13,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 14,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 13,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 14,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn2TroughTiles": [
+    {
+      "tileX": 17,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 18,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 17,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 18,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn3TroughTiles": [
+    {
+      "tileX": 21,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 6,
+      "fullIndex": 8
+    },
+    {
+      "tileX": 22,
+      "tileY": 3,
+      "layer": "Buildings",
+      "emptyIndex": 7,
+      "fullIndex": 9
+    },
+    {
+      "tileX": 21,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 1,
+      "fullIndex": 4
+    },
+    {
+      "tileX": 22,
+      "tileY": 2,
+      "layer": "Front",
+      "emptyIndex": 2,
+      "fullIndex": 5
+    }
+  ],
+  "barn3WateringSystem": {
+    "tileX": 23,
+    "tileY": 3,
+    "layer": "Buildings",
+    "systemIndex": 0,
+    "tilesToRemove": []
+  }
+}

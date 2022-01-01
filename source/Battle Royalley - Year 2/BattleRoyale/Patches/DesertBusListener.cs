@@ -16,9 +16,9 @@ namespace BattleRoyale.Patches
 {
     class DesertBusListener : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Desert), "playerReachedBusDoor");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Desert), "playerReachedBusDoor");
 
-        public static bool Prefix(Desert __instance)
+        public static bool Prefix()
         {
             Game1.activeClickableMenu = new DialogueBox("Head to the right of the road");
             return false;

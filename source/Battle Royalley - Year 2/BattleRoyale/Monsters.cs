@@ -30,7 +30,7 @@ namespace BattleRoyale
 
         private static DateTime? WaitingFor = null;
 
-        private static readonly Dictionary<string, double> MonsterTypes = new Dictionary<string, double>()
+        private static readonly Dictionary<string, double> MonsterTypes = new()
         {
             { "Frost Jelly",    0.18  },
             { "Lava Bat",       0.18  },
@@ -86,6 +86,8 @@ namespace BattleRoyale
                     return new ShadowShaman(Vector2.Zero);
                 case "Serpent":
                     return new Serpent(Vector2.Zero);
+                default:
+                    break;
             }
             return new Monster(name, Vector2.Zero);
         }

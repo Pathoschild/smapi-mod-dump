@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Revitalize.Framework.Objects;
+using Revitalize;
+using Revitalize.Framework.World.Objects;
+using Revitalize.Framework.World.Objects.Interfaces;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
@@ -102,7 +104,7 @@ namespace Revitalize.Framework.Hacks
                 categoryItems = CI_R.GetValue();
 
                 //Recalculate other category.
-                foreach (CustomObject obj in categoryItems[4])
+                foreach (ICommonObjectInterface obj in categoryItems[4])
                 {
                     ModCore.log(obj.Name);
                     if (obj is StardewValley.Object)
@@ -153,48 +155,6 @@ namespace Revitalize.Framework.Hacks
             EndOfDay_HasProcessedModdedItems = false;
         }
 
-
-        /// <summary>
-        /// Recreates the farmhand's inventory even when they are offline.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public static void RecreateFarmhandInventory(object sender, StardewModdingAPI.Events.MenuChangedEventArgs e)
-        {
-            if (e.NewMenu != null)
-            {
-                ModCore.log(e.NewMenu.GetType());
-
-                if (e.NewMenu.GetType() == typeof(StardewValley.Menus.ItemGrabMenu))
-                {
-                    if (Game1.player.currentLocation is Cabin)
-                    {
-                        //ModCore.log("Let's get processing!");
-                        List<KeyValuePair<int, Item>> addition = new List<KeyValuePair<int, Item>>();
-                        for (int i = 0; i < (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.actualInventory.Count; i++)
-                        {
-                            Item I = (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.actualInventory[i];
-                            if (I is Chest && I.Name != "Chest")
-                            {
-                                //ModCore.log("Found a custom object!");
-                                Item cObj = ModCore.Serializer.DeserializeFromFarmhandInventory(I.Name);
-                                if (cObj == null) continue;
-                                addition.Add(new KeyValuePair<int, Item>(i, cObj));
-                            }
-                        }
-
-                        foreach (KeyValuePair<int, Item> pair in addition)
-                        {
-                            (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.actualInventory[pair.Key] = pair.Value;
-                        }
-
-                        (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu = new InventoryMenu((Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.xPositionOnScreen, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.yPositionOnScreen, true, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.actualInventory, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.highlightMethod, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.capacity, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.rows, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.horizontalGap, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.verticalGap, (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.drawSlots);
-                        (Game1.activeClickableMenu as ItemGrabMenu).populateClickableComponentList();
-                        (Game1.activeClickableMenu as ItemGrabMenu).ItemsToGrabMenu.populateClickableComponentList();
-                    }
-                }
-            }
-        }
 
     }
 }

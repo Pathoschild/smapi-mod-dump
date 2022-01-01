@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class BlockGiftItem : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Farmer), "checkAction");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "checkAction");
 
         public static bool Prefix(Farmer who, GameLocation location, Farmer __instance)
         {

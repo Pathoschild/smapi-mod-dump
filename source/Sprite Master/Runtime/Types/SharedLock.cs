@@ -11,212 +11,153 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.ConstrainedExecution;
-using System.Security;
 using System.Threading;
 
-namespace SpriteMaster {
-	[SecuritySafeCritical]
-	public sealed class SharedLock : CriticalFinalizerObject, IDisposable {
-		private ReaderWriterLock Lock = new ReaderWriterLock();
+namespace SpriteMaster;
 
-		public struct SharedCookie : IDisposable {
-			private ReaderWriterLock Lock;
+sealed class SharedLock : CriticalFinalizerObject, IDisposable {
+	private ReaderWriterLock Lock = new();
 
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public SharedCookie (ReaderWriterLock rwlock, int timeout) {
-				Lock = null;
-				rwlock.AcquireReaderLock(timeout);
-				Lock = rwlock;
-			}
+	internal struct SharedCookie : IDisposable {
+		private ReaderWriterLock Lock;
 
-			public bool IsDisposed {
-				[SecuritySafeCritical]
-				[MethodImpl(Runtime.MethodImpl.Optimize)]
-				get { return Lock == null; }
-			}
-
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public void Dispose () {
-				if (Lock == null) {
-					return;
-				}
-
-				Lock.ReleaseReaderLock();
-
-				Lock = null;
-			}
-		}
-		public struct ExclusiveCookie : IDisposable {
-			private ReaderWriterLock Lock;
-
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public ExclusiveCookie (ReaderWriterLock rwlock, int timeout) {
-				Lock = null;
-				rwlock.AcquireWriterLock(timeout);
-				Lock = rwlock;
-			}
-
-			public bool IsDisposed {
-				[SecuritySafeCritical]
-				[MethodImpl(Runtime.MethodImpl.Optimize)]
-				get { return Lock == null; }
-			}
-
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public void Dispose () {
-				if (Lock == null) {
-					return;
-				}
-
-				Lock.ReleaseWriterLock();
-
-				Lock = null;
-			}
-		}
-
-		public struct PromotedCookie : IDisposable {
-			private ReaderWriterLock Lock;
-			private LockCookie Cookie;
-
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public PromotedCookie (ReaderWriterLock rwlock, int timeout) {
-				Lock = null;
-				this.Cookie = rwlock.UpgradeToWriterLock(timeout);
-				Lock = rwlock;
-			}
-
-			public bool IsDisposed {
-				[SecuritySafeCritical]
-				[MethodImpl(Runtime.MethodImpl.Optimize)]
-				get { return Lock == null; }
-			}
-
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			public void Dispose () {
-				if (Lock == null) {
-					return;
-				}
-
-				Lock.DowngradeFromWriterLock(ref Cookie);
-
-				Lock = null;
-			}
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		~SharedLock () {
-			Dispose();
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		internal SharedCookie(ReaderWriterLock rwlock, int timeout) {
 			Lock = null;
+			rwlock.AcquireReaderLock(timeout);
+			Lock = rwlock;
 		}
 
-		public bool IsLocked {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get { return Lock.IsReaderLockHeld || Lock.IsWriterLockHeld; }
-		}
+		internal readonly bool IsDisposed => Lock is null;
 
-		public bool IsSharedLock {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get { return Lock.IsReaderLockHeld; }
-		}
-
-		public bool IsExclusiveLock {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get { return Lock.IsWriterLockHeld; }
-		}
-
-		public bool IsDisposed {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get { return Lock == null; }
-		}
-
-		public SharedCookie Shared {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get {
-				return new SharedCookie(Lock, -1);
-			}
-		}
-
-		public SharedCookie? TryShared {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get {
-				try {
-					return new SharedCookie(Lock, 0);
-				}
-				catch {
-					return null;
-				}
-			}
-		}
-
-		public ExclusiveCookie Exclusive {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get {
-				return new ExclusiveCookie(Lock, -1);
-			}
-		}
-
-		public ExclusiveCookie? TryExclusive {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get {
-				try {
-					return new ExclusiveCookie(Lock, 0);
-				}
-				catch {
-					return null;
-				}
-			}
-		}
-
-		public PromotedCookie Promote {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get {
-				//Contract.Assert(!IsExclusiveLock && IsSharedLock);
-				return new PromotedCookie(Lock, -1);
-			}
-		}
-
-		public PromotedCookie? TryPromote {
-			[SecuritySafeCritical]
-			[MethodImpl(Runtime.MethodImpl.Optimize)]
-			get {
-				//Contract.Assert(!IsExclusiveLock && IsSharedLock);
-				try {
-					return new PromotedCookie(Lock, 0);
-				}
-				catch {
-					return null;
-				}
-			}
-		}
-
-		[SecuritySafeCritical]
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public void Dispose () {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		public void Dispose() {
 			if (Lock == null) {
 				return;
 			}
 
-			if (Lock.IsWriterLockHeld) {
-				Lock.ReleaseWriterLock();
+			Lock.ReleaseReaderLock();
+
+			Lock = null;
+		}
+	}
+	internal struct ExclusiveCookie : IDisposable {
+		private ReaderWriterLock Lock;
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		internal ExclusiveCookie(ReaderWriterLock rwlock, int timeout) {
+			Lock = null;
+			rwlock.AcquireWriterLock(timeout);
+			Lock = rwlock;
+		}
+
+		internal readonly bool IsDisposed => Lock is null;
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		public void Dispose() {
+			if (Lock == null) {
+				return;
 			}
-			else if (Lock.IsReaderLockHeld) {
-				Lock.ReleaseReaderLock();
+
+			Lock.ReleaseWriterLock();
+
+			Lock = null;
+		}
+	}
+
+	internal struct PromotedCookie : IDisposable {
+		private ReaderWriterLock Lock;
+		private LockCookie Cookie;
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		internal PromotedCookie(ReaderWriterLock rwlock, int timeout) {
+			Lock = null;
+			this.Cookie = rwlock.UpgradeToWriterLock(timeout);
+			Lock = rwlock;
+		}
+
+		internal readonly bool IsDisposed => Lock is null;
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		public void Dispose() {
+			if (Lock == null) {
+				return;
 			}
+
+			Lock.DowngradeFromWriterLock(ref Cookie);
+
+			Lock = null;
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	~SharedLock() {
+		Dispose();
+		Lock = null;
+	}
+
+	internal bool IsLocked => Lock.IsReaderLockHeld || Lock.IsWriterLockHeld;
+
+	internal bool IsSharedLock => Lock.IsReaderLockHeld;
+
+	internal bool IsExclusiveLock => Lock.IsWriterLockHeld;
+
+	internal bool IsDisposed => Lock == null;
+
+	internal SharedCookie Shared => new(Lock, -1);
+
+	internal SharedCookie? TryShared {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		get {
+			try {
+				return new(Lock, 0);
+			}
+			catch { // TODO : catch only specific exceptions
+				return null;
+			}
+		}
+	}
+
+	internal ExclusiveCookie Exclusive => new(Lock, -1);
+
+	internal ExclusiveCookie? TryExclusive {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		get {
+			try {
+				return new(Lock, 0);
+			}
+			catch { // TODO : catch only specific exceptions
+				return null;
+			}
+		}
+	}
+
+	internal PromotedCookie Promote => new(Lock, -1);
+
+	internal PromotedCookie? TryPromote {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		get {
+			//Contract.Assert(!IsExclusiveLock && IsSharedLock);
+			try {
+				return new(Lock, 0);
+			}
+			catch {
+				return null;
+			}
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	public void Dispose() {
+		if (Lock is null) {
+			return;
+		}
+
+		if (Lock.IsWriterLockHeld) {
+			Lock.ReleaseWriterLock();
+		}
+		else if (Lock.IsReaderLockHeld) {
+			Lock.ReleaseReaderLock();
 		}
 	}
 }

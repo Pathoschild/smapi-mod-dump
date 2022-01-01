@@ -6,9 +6,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit ecc93ba6c6bc9519145adb00bc386fac9af83324
+   commit 83a5c83c3274f8ce8924f071882b36c44d9a8abd
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Fri Sep 24 00:11:25 2021 -0400
+   Date:   Thu Dec 16 21:25:18 2021 -0500
    
-       Update manifest MinimumApiVersion
+       Fix minor issues with items in Bundle Bags with duplicate Ids but different DisplayNames (such as various types of Wine)
    

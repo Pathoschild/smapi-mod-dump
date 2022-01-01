@@ -33,11 +33,33 @@ namespace GenericModConfigMenu
         /// <summary>Manages registered mod config menus.</summary>
         private readonly ModConfigManager ConfigManager = new();
 
+        /// <summary>The mod API, if initialized.</summary>
+        private Api Api;
+
 
         /*********
         ** Accessors
         *********/
         public static Mod Instance;
+
+        /// <summary>The current configuration menu.</summary>
+        public static IClickableMenu ActiveConfigMenu
+        {
+            get
+            {
+                IClickableMenu menu = Game1.activeClickableMenu is TitleMenu ? TitleMenu.subMenu : Game1.activeClickableMenu;
+                return menu is ModConfigMenu or SpecificModConfigMenu
+                    ? menu
+                    : null;
+            }
+            set
+            {
+                if (Game1.activeClickableMenu is TitleMenu)
+                    TitleMenu.subMenu = value;
+                else
+                    Game1.activeClickableMenu = value;
+            }
+        }
 
 
         /*********
@@ -53,7 +75,8 @@ namespace GenericModConfigMenu
 
             this.SetupTitleMenuButton();
 
-            helper.Events.GameLoop.UpdateTicking += this.OnUpdate;
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.GameLoop.UpdateTicking += this.OnUpdateTicking;
             helper.Events.Display.WindowResized += this.OnWindowResized;
             helper.Events.Display.Rendered += this.OnRendered;
             helper.Events.Display.MenuChanged += this.OnMenuChanged;
@@ -64,16 +87,13 @@ namespace GenericModConfigMenu
         /// <inheritdoc />
         public override object GetApi()
         {
-            return new Api(this.ConfigManager);
+            return this.Api ??= new Api(this.ConfigManager);
         }
 
         /// <summary>Open the menu which shows a list of configurable mods.</summary>
         public void OpenListMenu()
         {
-            if (Game1.activeClickableMenu is TitleMenu)
-                TitleMenu.subMenu = new ModConfigMenu(false, this.Config.ScrollSpeed, openModMenu: mod => this.OpenModMenu(mod), this.ConfigManager);
-            else
-                Game1.activeClickableMenu = new ModConfigMenu(true, this.Config.ScrollSpeed, openModMenu: mod => this.OpenModMenu(mod), this.ConfigManager);
+            Mod.ActiveConfigMenu = new ModConfigMenu(this.Config.ScrollSpeed, openModMenu: mod => this.OpenModMenu(mod), this.ConfigManager);
         }
 
         /// <summary>Open the config UI for a specific mod.</summary>
@@ -81,22 +101,15 @@ namespace GenericModConfigMenu
         /// <param name="page">The page to display within the mod's config menu.</param>
         public void OpenModMenu(IManifest mod, string page = null)
         {
-            bool inGame = Game1.activeClickableMenu is not TitleMenu;
             ModConfig config = this.ConfigManager.Get(mod, assert: true);
 
-            var menu = new SpecificModConfigMenu(
+            Mod.ActiveConfigMenu = new SpecificModConfigMenu(
                 config: config,
-                inGame: inGame,
                 scrollSpeed: this.Config.ScrollSpeed,
                 page: page,
                 openPage: newPage => this.OpenModMenu(mod, newPage),
                 returnToList: this.OpenListMenu
             );
-
-            if (inGame)
-                Game1.activeClickableMenu = menu;
-            else
-                TitleMenu.subMenu = menu;
         }
 
 
@@ -123,33 +136,78 @@ namespace GenericModConfigMenu
 
         private bool IsTitleMenuInteractable()
         {
-            if (Game1.activeClickableMenu is not TitleMenu tm || TitleMenu.subMenu != null)
+            if (Game1.activeClickableMenu is not TitleMenu titleMenu || TitleMenu.subMenu != null)
                 return false;
 
-            var method = this.Helper.Reflection.GetMethod(tm, "ShouldAllowInteraction", false);
+            var method = this.Helper.Reflection.GetMethod(titleMenu, "ShouldAllowInteraction", false);
             if (method != null)
                 return method.Invoke<bool>();
             else // method isn't available on Android
-                return this.Helper.Reflection.GetField<bool>(tm, "titleInPosition").GetValue();
+                return this.Helper.Reflection.GetField<bool>(titleMenu, "titleInPosition").GetValue();
         }
 
-        private void OnUpdate(object sender, UpdateTickingEventArgs e)
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            Api configMenu = (Api)this.GetApi();
+
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.Config = new OwnModConfig(),
+                save: () => this.Helper.WriteConfig(this.Config),
+                titleScreenOnly: false
+            );
+
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: I18n.Options_ScrollSpeed_Name,
+                tooltip: I18n.Options_ScrollSpeed_Desc,
+                getValue: () => this.Config.ScrollSpeed,
+                setValue: value => this.Config.ScrollSpeed = value,
+                min: 1,
+                max: 500
+            );
+
+            configMenu.AddKeybindList(
+                mod: this.ModManifest,
+                name: I18n.Options_OpenMenuKey_Name,
+                tooltip: I18n.Options_OpenMenuKey_Desc,
+                getValue: () => this.Config.OpenMenuKey,
+                setValue: value => this.Config.OpenMenuKey = value
+            );
+        }
+
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicking"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnUpdateTicking(object sender, UpdateTickingEventArgs e)
         {
             if (this.IsTitleMenuInteractable())
                 this.Ui.Update();
         }
 
+        /// <inheritdoc cref="IDisplayEvents.WindowResized"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnWindowResized(object sender, WindowResizedEventArgs e)
         {
             this.ConfigButton.LocalPosition = new Vector2(this.ConfigButton.Position.X, Game1.viewport.Height - 100);
         }
 
+        /// <inheritdoc cref="IDisplayEvents.Rendered"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnRendered(object sender, RenderedEventArgs e)
         {
             if (this.IsTitleMenuInteractable())
                 this.Ui.Draw(e.SpriteBatch);
         }
 
+        /// <inheritdoc cref="IDisplayEvents.MenuChanged"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (e.NewMenu is GameMenu menu)
@@ -159,21 +217,26 @@ namespace GenericModConfigMenu
             }
         }
 
+        /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (SpecificModConfigMenu.ActiveConfigMenu is SpecificModConfigMenu menu && e.Button.TryGetKeyboard(out Keys key))
+            // open menu
+            if (Context.IsPlayerFree && this.Config.OpenMenuKey.JustPressed())
+                this.OpenListMenu();
+
+            // pass input to menu
+            else if (Mod.ActiveConfigMenu is SpecificModConfigMenu menu && e.Button.TryGetKeyboard(out Keys key))
                 menu.receiveKeyPress(key);
         }
 
+        /// <inheritdoc cref="IInputEvents.MouseWheelScrolled"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void OnMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
         {
             Dropdown.ActiveDropdown?.ReceiveScrollWheelAction(e.Delta);
-
-            if (ModConfigMenu.ActiveConfigMenu is ModConfigMenu modConfigMenu)
-                modConfigMenu.ReceiveScrollWheelActionSmapi(e.Delta);
-
-            if (SpecificModConfigMenu.ActiveConfigMenu is SpecificModConfigMenu specificConfigMenu)
-                specificConfigMenu.ReceiveScrollWheelActionSmapi(e.Delta);
         }
     }
 }

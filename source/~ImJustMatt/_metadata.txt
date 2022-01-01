@@ -11,9 +11,9 @@ mods:
    Garbage Day
 
 latest commit:
-   commit df73fdf95700132e0a7918b29a06786042fe26fa
+   commit aead3d670376ebb5e53f99de14f07367f1304622
    Author: Matthew <justmatt@outlook.com>
-   Date:   Thu Nov 18 23:37:59 2021 -0600
+   Date:   Sun Dec 5 22:49:31 2021 -0600
    
-       Initial commit
+       Update for SDV 1.5.5
    

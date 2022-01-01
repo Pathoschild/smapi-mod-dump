@@ -1,6 +1,8 @@
 {
   "PreventFailedHarvesting": true,
-  "PreventHarvestRepeating": true,
   "DisplayHearts": true,
-  "DisplayProduce": true
+  "DisplayProduce": true,
+  "DisplayFarmAnimalHearts": true,
+  "DisplayPetHearts": true,
+  "HideHeartsWhenFriendshipIsMax": false
 }

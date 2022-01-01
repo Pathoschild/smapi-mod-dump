@@ -14,7 +14,7 @@ namespace BattleRoyale.Patches
 {
     class KeepGrassInLobby : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(Grass), "seasonUpdate");
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Grass), "seasonUpdate");
 
         public static bool Prefix(Grass __instance)
         {

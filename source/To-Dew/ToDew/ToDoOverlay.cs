@@ -123,7 +123,7 @@ namespace ToDew {
             if (config.hideAtFestivals && Game1.isFestival()) return;
             var spriteBatch = e.SpriteBatch;
             Rectangle effectiveBounds = bounds;
-            if (Game1.CurrentMineLevel > 0 || Game1.currentLocation is VolcanoDungeon vd && vd.level > 0) {
+            if (Game1.CurrentMineLevel > 0 || Game1.currentLocation is VolcanoDungeon vd && vd.level.Value > 0) {
                 effectiveBounds.Y += 80;
             }
             float topPx = effectiveBounds.Y + marginTop;

@@ -33,6 +33,7 @@ using StardewValley.Tools;
 using FashionSense.Framework.Models.Hat;
 using FashionSense.Framework.Models.Shirt;
 using FashionSense.Framework.Models.Pants;
+using FashionSense.Framework.Models.Sleeves;
 
 namespace FashionSense.Framework.Patches.Renderer
 {
@@ -70,40 +71,28 @@ namespace FashionSense.Framework.Patches.Renderer
 
             if (shirtModel.SleeveColors is null)
             {
-                Texture2D skinColors = ___farmerTextureManager.Load<Texture2D>("Characters\\Farmer\\skinColors");
-                Color[] skinColorsData = new Color[skinColors.Width * skinColors.Height];
-                int skin_index = ___skin.Value;
+                var skinTone = GetSkinTone(___farmerTextureManager, ___baseTexture, pixels, ___skin, ____sickFrame);
 
-                if (skin_index < 0)
-                {
-                    skin_index = skinColors.Height - 1;
-                }
-                if (skin_index > skinColors.Height - 1)
-                {
-                    skin_index = 0;
-                }
-
-                skinColors.GetData(skinColorsData);
-                Color darkest = skinColorsData[skin_index * 3 % (skinColors.Height * 3)];
-                Color medium = skinColorsData[skin_index * 3 % (skinColors.Height * 3) + 1];
-                Color lightest = skinColorsData[skin_index * 3 % (skinColors.Height * 3) + 2];
-
-                if (____sickFrame)
-                {
-                    darkest = pixels[260 + ___baseTexture.Width];
-                    medium = pixels[261 + ___baseTexture.Width];
-                    lightest = pixels[262 + ___baseTexture.Width];
-                }
-
-                SwapColorReversePatch(__instance, texture_name, pixels, 256, darkest);
-                SwapColorReversePatch(__instance, texture_name, pixels, 257, medium);
-                SwapColorReversePatch(__instance, texture_name, pixels, 258, lightest);
+                who.hidden.Value = true;
+                SwapColorReversePatch(__instance, texture_name, pixels, 256, skinTone.Darkest);
+                SwapColorReversePatch(__instance, texture_name, pixels, 257, skinTone.Medium);
+                SwapColorReversePatch(__instance, texture_name, pixels, 258, skinTone.Lightest);
             }
             else
             {
-                SwapColorReversePatch(__instance, texture_name, pixels, 256, shirtModel.GetSleeveColor(0));
-                SwapColorReversePatch(__instance, texture_name, pixels, 257, shirtModel.GetSleeveColor(1));
-                SwapColorReversePatch(__instance, texture_name, pixels, 258, shirtModel.GetSleeveColor(2));
+                var shirtColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) : who.hairstyleColor.Value.PackedValue };
+                if (shirtModel.DisableGrayscale)
+                {
+                    shirtColor = Color.White;
+                }
+                else if (shirtModel.IsPrismatic)
+                {
+                    shirtColor = Utility.GetPrismaticColor(speedMultiplier: shirtModel.PrismaticAnimationSpeedMultiplier);
+                }
+
+                SwapColorReversePatch(__instance, texture_name, pixels, 256, shirtModel.IsMaskedColor(shirtModel.GetSleeveColor(0)) ? Utility.MultiplyColor(shirtColor, shirtModel.GetSleeveColor(0)) : shirtModel.GetSleeveColor(0));
+                SwapColorReversePatch(__instance, texture_name, pixels, 257, shirtModel.IsMaskedColor(shirtModel.GetSleeveColor(1)) ? Utility.MultiplyColor(shirtColor, shirtModel.GetSleeveColor(1)) : shirtModel.GetSleeveColor(1));
+                SwapColorReversePatch(__instance, texture_name, pixels, 258, shirtModel.IsMaskedColor(shirtModel.GetSleeveColor(2)) ? Utility.MultiplyColor(shirtColor, shirtModel.GetSleeveColor(2)) : shirtModel.GetSleeveColor(2));
             }
 
             return false;
@@ -138,20 +127,26 @@ namespace FashionSense.Framework.Patches.Renderer
 
         private static void HandleConditionalDraw(FarmerRenderer __instance, ref Vector2 ___positionOffset, ref Vector2 ___rotationAdjustment, ref bool ____sickFrame, ref bool ____shirtDirty, ref bool ____spriteDirty, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
         {
-            ShirtContentPack sPack = null;
+            ShirtContentPack shirtPack = null;
             if (who.modData.ContainsKey(ModDataKeys.CUSTOM_PANTS_ID))
             {
-                sPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShirtContentPack>(who.modData[ModDataKeys.CUSTOM_SHIRT_ID]);
+                shirtPack = FashionSense.textureManager.GetSpecificAppearanceModel<ShirtContentPack>(who.modData[ModDataKeys.CUSTOM_SHIRT_ID]);
             }
 
-            PantsContentPack pPack = null;
+            SleevesContentPack sleevesPack = null;
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SLEEVES_ID))
+            {
+                sleevesPack = FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(who.modData[ModDataKeys.CUSTOM_SLEEVES_ID]);
+            }
+
+            PantsContentPack pantsPack = null;
             if (who.modData.ContainsKey(ModDataKeys.CUSTOM_PANTS_ID))
             {
-                pPack = FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(who.modData[ModDataKeys.CUSTOM_PANTS_ID]);
+                pantsPack = FashionSense.textureManager.GetSpecificAppearanceModel<PantsContentPack>(who.modData[ModDataKeys.CUSTOM_PANTS_ID]);
             }
 
             // Check if we need to utilize custom draw logic
-            if (sPack != null || pPack != null)
+            if (shirtPack is not null || sleevesPack is not null || pantsPack is not null)
             {
                 HandleCustomDraw(__instance, ref ___positionOffset, ref ___rotationAdjustment, ref ____sickFrame, ref ____shirtDirty, ref ____spriteDirty, b, animationFrame, currentFrame, sourceRect, position, origin, layerDepth, facingDirection, overrideColor, rotation, scale, who);
             }
@@ -216,7 +211,6 @@ namespace FashionSense.Framework.Patches.Renderer
                     case 7:
                     case 9:
                     case 19:
-                    case 20:
                     case 21:
                     case 30:
                     case 31:
@@ -241,6 +235,7 @@ namespace FashionSense.Framework.Patches.Renderer
                         break;
                     case 11:
                     case 17:
+                    case 20:
                     case 22:
                     case 23:
                     case 49:
@@ -323,14 +318,26 @@ namespace FashionSense.Framework.Patches.Renderer
                 b.Draw(baseTexture, position + origin + ___positionOffset + new Vector2(x_adjustment, FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + ((who.FacingDirection == 1 || who.FacingDirection == 3) ? 40 : 44)), new Rectangle(264 + ((facingDirection == 3) ? 4 : 0), 2 + (who.currentEyes - 1) * 2, (facingDirection == 2) ? 6 : 2, 2), overrideColor, 0f, origin, 4f * scale, SpriteEffects.None, layerDepth + 1.2E-07f);
             }
             __instance.drawHairAndAccesories(b, facingDirection, who, position, origin, scale, currentFrame, rotation, overrideColor, layerDepth);
-            float arm_layer_offset = 4.9E-05f;
-            if (facingDirection == 0)
-            {
-                arm_layer_offset = -1E-07f;
-            }
-            sourceRect.Offset(-288 + (animationFrame.secondaryArm ? 192 : 96), 0);
 
-            b.Draw(baseTexture, position + origin + ___positionOffset + who.armOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + arm_layer_offset);
+            // Get the sleeves model, if applicable
+            SleevesModel sleevesModel = null;
+            if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SLEEVES_ID) && FashionSense.textureManager.GetSpecificAppearanceModel<SleevesContentPack>(who.modData[ModDataKeys.CUSTOM_SLEEVES_ID]) is SleevesContentPack sleevesPack && sleevesPack != null)
+            {
+                sleevesModel = sleevesPack.GetSleevesFromFacingDirection(facingDirection);
+            }
+
+            // Handle the vanilla sleeve / arm drawing, if a custom sleeve model isn't given
+            if (sleevesModel is null)
+            {
+                float arm_layer_offset = 4.9E-05f;
+                if (facingDirection == 0)
+                {
+                    arm_layer_offset = -1E-07f;
+                }
+                sourceRect.Offset(-288 + (animationFrame.secondaryArm ? 192 : 96), 0);
+
+                b.Draw(baseTexture, position + origin + ___positionOffset + who.armOffset, sourceRect, overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + arm_layer_offset);
+            }
         }
 
         private static void DrawPantsVanilla(SpriteBatch b, Rectangle sourceRect, FarmerRenderer renderer, Farmer who, FarmerSprite.AnimationFrame animationFrame, int currentFrame, int facingDirection, float rotation, float scale, float layerDepth, Vector2 position, Vector2 origin, Vector2 positionOffset, Vector2 rotationAdjustment, Color overrideColor)
@@ -345,6 +352,40 @@ namespace FashionSense.Framework.Patches.Renderer
             }
 
             b.Draw(FarmerRenderer.pantsTexture, position + origin + positionOffset, pants_rect, overrideColor.Equals(Color.White) ? Utility.MakeCompletelyOpaque(who.GetPantsColor()) : overrideColor, rotation, origin, 4f * scale, animationFrame.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + ((who.FarmerSprite.CurrentAnimationFrame.frame == 5) ? 0.00092f : 9.2E-08f));
+        }
+
+        internal static SkinToneModel GetSkinTone(LocalizedContentManager farmerTextureManager, Texture2D baseTexture, Color[] pixels, NetInt skin, bool sickFrame)
+        {
+            Texture2D skinColors = farmerTextureManager.Load<Texture2D>("Characters\\Farmer\\skinColors");
+            Color[] skinColorsData = new Color[skinColors.Width * skinColors.Height];
+            int skin_index = skin.Value;
+
+            if (skin_index < 0)
+            {
+                skin_index = skinColors.Height - 1;
+            }
+            if (skin_index > skinColors.Height - 1)
+            {
+                skin_index = 0;
+            }
+
+            skinColors.GetData(skinColorsData);
+            Color darkest = skinColorsData[skin_index * 3 % (skinColors.Height * 3)];
+            Color medium = skinColorsData[skin_index * 3 % (skinColors.Height * 3) + 1];
+            Color lightest = skinColorsData[skin_index * 3 % (skinColors.Height * 3) + 2];
+
+            if (sickFrame)
+            {
+                if (pixels is null)
+                {
+                    pixels = new Color[baseTexture.Width * baseTexture.Height];
+                }
+                darkest = pixels[260 + baseTexture.Width];
+                medium = pixels[261 + baseTexture.Width];
+                lightest = pixels[262 + baseTexture.Width];
+            }
+
+            return new SkinToneModel(lightest, medium, darkest);
         }
 
         internal static void ExecuteRecolorActionsReversePatch(FarmerRenderer __instance, Farmer who)

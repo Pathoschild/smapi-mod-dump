@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "Power Grid",
+  "Author": "TehPers",
+  "Version": "0.1.0-beta.20211018",
+  "Description": "Energy framework for Stardew Valley.",
+  "UniqueID": "TehPers.PowerGrid",
+  "EntryDll": "TehPers.PowerGrid.dll",
+  "MinimumApiVersion": "3.13.0-beta.20210918",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "TehPers.Core",
+      "MinimumVersion": "1.0.0-beta.20211013"
+    }
+  ]
+}

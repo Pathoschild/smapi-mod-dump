@@ -14,9 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Revitalize.Framework.World.Objects;
 using Revitalize.Framework.Crafting;
 using Revitalize.Framework.Objects;
-using Revitalize.Framework.Objects.Furniture;
 using Revitalize.Framework.Utilities;
 using StardewModdingAPI;
 using StardewValley;
@@ -26,7 +26,7 @@ namespace Revitalize.Framework.Hacks
 {
     public class ObjectInteractionHacks
     {
-
+        
         /// <summary>
         /// Returns the object underneath the mouse's position.
         /// </summary>
@@ -89,6 +89,7 @@ namespace Revitalize.Framework.Hacks
             }
         }
 
+        /*
         /// <summary>
         /// Restores all tracked machines after loading for proper rendering.
         /// </summary>
@@ -120,6 +121,7 @@ namespace Revitalize.Framework.Hacks
                 }
             }
         }
+        */
 
         /// <summary>
         /// Renders custom objects as held objects for stardew valley machines.

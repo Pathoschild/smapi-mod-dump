@@ -10,37 +10,31 @@
 
 using System.Threading;
 
-namespace SpriteMaster.Types
-{
-	internal sealed class Condition
-	{
-		private volatile bool State = false;
-		private volatile AutoResetEvent Event = new(false);
+namespace SpriteMaster.Types;
 
-		public Condition(bool initialState = false)
-		{
-			State = initialState;
-		}
+sealed class Condition {
+	private volatile bool State = false;
+	private volatile AutoResetEvent Event = new(false);
 
-		public static implicit operator bool(Condition condition) => condition.State;
+	internal Condition(bool initialState = false) {
+		State = initialState;
+	}
 
-		// This isn't quite thread-safe, but the granularity of this in our codebase is really loose to begin with. It doesn't need to be entirely thread-safe.
-		public bool Wait()
-		{
-			Event.WaitOne();
-			return State;
-		}
+	public static implicit operator bool(Condition condition) => condition.State;
 
-		public void Set(bool state = true)
-		{
-			State = state;
-			Event.Set();
-		}
+	// This isn't quite thread-safe, but the granularity of this in our codebase is really loose to begin with. It doesn't need to be entirely thread-safe.
+	internal bool Wait() {
+		Event.WaitOne();
+		return State;
+	}
 
-		// This clears the state without triggering the event.
-		public void Clear()
-		{
-			State = false;
-		}
+	internal void Set(bool state = true) {
+		State = state;
+		Event.Set();
+	}
+
+	// This clears the state without triggering the event.
+	internal void Clear() {
+		State = false;
 	}
 }

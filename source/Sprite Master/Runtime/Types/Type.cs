@@ -8,187 +8,147 @@
 **
 *************************************************/
 
-using SpriteMaster.Extensions;
 using System;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace SpriteMaster.Types {
-	public static class TypeTExtensions {
-		public static Type<T> GetTypeT<T> (this T _) {
-			return Type<T>.This;
-		}
-	}
+namespace SpriteMaster.Types;
 
-	public sealed class Type<T> : Type {
-		public static readonly Type<T> This = new Type<T>();
-		public static readonly Type UnderlyingType = typeof(T);
+static class TypeTExtensions {
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static Type<T> GetTypeT<T>(this T _) => Type<T>.This;
+}
 
-		// TODO : implements equals, comparable, ==, !=, hashcode, etc
+sealed class Type<T> : Type {
+	internal static readonly Type<T> This = new();
+	internal static readonly Type UnderlyingType = typeof(T);
 
-		public override Guid GUID => typeof(T).GUID;
+	// TODO : implements equals, comparable, ==, !=, hashcode, etc
 
-		public override Module Module => typeof(T).Module;
+	public override Guid GUID => typeof(T).GUID;
 
-		public override Assembly Assembly => typeof(T).Assembly;
+	public override Module Module => typeof(T).Module;
 
-		public override string FullName => typeof(T).FullName;
+	public override Assembly Assembly => typeof(T).Assembly;
 
-		public override string Namespace => typeof(T).Namespace;
+	public override string FullName => typeof(T).FullName;
 
-		public override string AssemblyQualifiedName => typeof(T).AssemblyQualifiedName;
+	public override string Namespace => typeof(T).Namespace;
 
-		public override Type BaseType => typeof(T).BaseType;
+	public override string AssemblyQualifiedName => typeof(T).AssemblyQualifiedName;
 
-		public override Type UnderlyingSystemType => typeof(T).UnderlyingSystemType;
+	public override Type BaseType => typeof(T).BaseType;
 
-		public override string Name => typeof(T).Name;
+	public override Type UnderlyingSystemType => typeof(T).UnderlyingSystemType;
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override ConstructorInfo[] GetConstructors (BindingFlags bindingAttr) {
-			return typeof(T).GetConstructors(bindingAttr);
-		}
+	public override string Name => typeof(T).Name;
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override object[] GetCustomAttributes (bool inherit) {
-			return typeof(T).GetCustomAttributes(inherit);
-		}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal Type() : base() { }
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override object[] GetCustomAttributes (Type attributeType, bool inherit) {
-			return typeof(T).GetCustomAttributes(attributeType, inherit);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr) => typeof(T).GetConstructors(bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override Type GetElementType () {
-			return typeof(T).GetElementType();
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override object[] GetCustomAttributes(bool inherit) => typeof(T).GetCustomAttributes(inherit);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override EventInfo GetEvent (string name, BindingFlags bindingAttr) {
-			return typeof(T).GetEvent(name, bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override object[] GetCustomAttributes(Type attributeType, bool inherit) => typeof(T).GetCustomAttributes(attributeType, inherit);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override EventInfo[] GetEvents (BindingFlags bindingAttr) {
-			return typeof(T).GetEvents(bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override Type GetElementType() => typeof(T).GetElementType();
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override FieldInfo GetField (string name, BindingFlags bindingAttr) {
-			return typeof(T).GetField(name, bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override EventInfo GetEvent(string name, BindingFlags bindingAttr) => typeof(T).GetEvent(name, bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override FieldInfo[] GetFields (BindingFlags bindingAttr) {
-			return typeof(T).GetFields(bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override EventInfo[] GetEvents(BindingFlags bindingAttr) => typeof(T).GetEvents(bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override Type GetInterface (string name, bool ignoreCase) {
-			return typeof(T).GetInterface(name, ignoreCase);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override FieldInfo GetField(string name, BindingFlags bindingAttr) => typeof(T).GetField(name, bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override Type[] GetInterfaces () {
-			return typeof(T).GetInterfaces();
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override FieldInfo[] GetFields(BindingFlags bindingAttr) => typeof(T).GetFields(bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override MemberInfo[] GetMembers (BindingFlags bindingAttr) {
-			return typeof(T).GetMembers(bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override Type GetInterface(string name, bool ignoreCase) => typeof(T).GetInterface(name, ignoreCase);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override MethodInfo[] GetMethods (BindingFlags bindingAttr) {
-			return typeof(T).GetMethods(bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override Type[] GetInterfaces() => typeof(T).GetInterfaces();
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override Type GetNestedType (string name, BindingFlags bindingAttr) {
-			return typeof(T).GetNestedType(name, bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override MemberInfo[] GetMembers(BindingFlags bindingAttr) => typeof(T).GetMembers(bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override Type[] GetNestedTypes (BindingFlags bindingAttr) {
-			return typeof(T).GetNestedTypes(bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override MethodInfo[] GetMethods(BindingFlags bindingAttr) => typeof(T).GetMethods(bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override PropertyInfo[] GetProperties (BindingFlags bindingAttr) {
-			return typeof(T).GetProperties(bindingAttr);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override Type GetNestedType(string name, BindingFlags bindingAttr) => typeof(T).GetNestedType(name, bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override object InvokeMember (string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters) {
-			return typeof(T).InvokeMember(name, invokeAttr, binder, target, args, modifiers, culture, namedParameters);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override Type[] GetNestedTypes(BindingFlags bindingAttr) => typeof(T).GetNestedTypes(bindingAttr);
 
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		public override bool IsDefined (Type attributeType, bool inherit) {
-			return typeof(T).IsDefined(attributeType, inherit);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override PropertyInfo[] GetProperties(BindingFlags bindingAttr) => typeof(T).GetProperties(bindingAttr);
 
-		private static readonly Lazy<MethodInfo> GetAttributeFlagsImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("GetAttributeFlagsImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override TypeAttributes GetAttributeFlagsImpl () {
-			return GetAttributeFlagsImplRefl.Value.Invoke<TypeAttributes>(typeof(T));
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters) =>
+		typeof(T).InvokeMember(name, invokeAttr, binder, target, args, modifiers, culture, namedParameters);
 
-		private static readonly Lazy<MethodInfo> GetConstructorImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("GetConstructorImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override ConstructorInfo GetConstructorImpl (BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers) {
-			return GetConstructorImplRefl.Value.Invoke<ConstructorInfo>(typeof(T), bindingAttr, binder, callConvention, types, modifiers);
-		}
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	public override bool IsDefined(Type attributeType, bool inherit) => typeof(T).IsDefined(attributeType, inherit);
 
-		private static readonly Lazy<MethodInfo> GetMethodImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("GetMethodImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override MethodInfo GetMethodImpl (string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers) {
-			return GetMethodImplRefl.Value.Invoke<MethodInfo>(typeof(T), name, bindingAttr, binder, callConvention, types, modifiers);
-		}
+	[MethodImpl(Runtime.MethodImpl.Cold)]
+	private static F GetPrivateMethod<F>(string name) where F : Delegate => typeof(T).GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic).CreateDelegate<F>(typeof(T));
 
-		private static readonly Lazy<MethodInfo> GetPropertyImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("GetPropertyImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override PropertyInfo GetPropertyImpl (string name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers) {
-			return GetPropertyImplRefl.Value.Invoke<PropertyInfo>(typeof(T), name, bindingAttr, binder, returnType, types, modifiers);
-		}
+	private delegate TypeAttributes GetAttributeFlagsDelegate();
+	private static readonly Lazy<GetAttributeFlagsDelegate> GetAttributeFlagsImplRefl = new(() => GetPrivateMethod<GetAttributeFlagsDelegate>("GetAttributeFlagsImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override TypeAttributes GetAttributeFlagsImpl() => GetAttributeFlagsImplRefl.Value();
 
-		private static readonly Lazy<MethodInfo> HasElementTypeImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("HasElementTypeImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override bool HasElementTypeImpl () {
-			return HasElementTypeImplRefl.Value.Invoke<bool>(typeof(T));
-		}
+	private delegate ConstructorInfo GetConstructorDelegate(BindingFlags _0, Binder _1, CallingConventions _2, Type[] _3, ParameterModifier[] _4);
+	private static readonly Lazy<GetConstructorDelegate> GetConstructorImplRefl = new(() => GetPrivateMethod<GetConstructorDelegate>("GetConstructorImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers) =>
+		GetConstructorImplRefl.Value(bindingAttr, binder, callConvention, types, modifiers);
 
-		private static readonly Lazy<MethodInfo> IsArrayImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("IsArrayImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override bool IsArrayImpl () {
-			return IsArrayImplRefl.Value.Invoke<bool>(typeof(T));
-		}
+	private delegate MethodInfo GetMethodDelegate(string _0, BindingFlags _1, Binder _2, CallingConventions _3, Type[] _4, ParameterModifier[] _5);
+	private static readonly Lazy<GetMethodDelegate> GetMethodImplRefl = new(() => GetPrivateMethod<GetMethodDelegate>("GetMethodImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers) =>
+		GetMethodImplRefl.Value(name, bindingAttr, binder, callConvention, types, modifiers);
 
-		private static readonly Lazy<MethodInfo> IsByRefImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("IsByRefImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override bool IsByRefImpl () {
-			return IsByRefImplRefl.Value.Invoke<bool>(typeof(T));
-		}
+	private delegate PropertyInfo GetPropertyDelegate(string _0, BindingFlags _1, Binder _2, Type _3, Type[] _4, ParameterModifier[] _5);
+	private static readonly Lazy<GetPropertyDelegate> GetPropertyImplRefl = new(() => GetPrivateMethod<GetPropertyDelegate>("GetPropertyImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers) =>
+		GetPropertyImplRefl.Value(name, bindingAttr, binder, returnType, types, modifiers);
 
-		private static readonly Lazy<MethodInfo> IsCOMObjectImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("IsCOMObjectImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override bool IsCOMObjectImpl () {
-			return IsCOMObjectImplRefl.Value.Invoke<bool>(typeof(T));
-		}
+	private delegate bool BooleanGetter();
 
-		private static readonly Lazy<MethodInfo> IsPointerImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("IsPointerImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override bool IsPointerImpl () {
-			return IsPointerImplRefl.Value.Invoke<bool>(typeof(T));
-		}
+	private static readonly Lazy<BooleanGetter> HasElementTypeImplRefl = new(() => GetPrivateMethod<BooleanGetter>("HasElementTypeImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override bool HasElementTypeImpl() => HasElementTypeImplRefl.Value();
 
-		private static readonly Lazy<MethodInfo> IsPrimitiveImplRefl = new Lazy<MethodInfo>(() => typeof(T).GetMethod("IsPrimitiveImpl", BindingFlags.Instance | BindingFlags.NonPublic));
-		[Pure, MethodImpl(Runtime.MethodImpl.Optimize)]
-		protected override bool IsPrimitiveImpl () {
-			return IsPrimitiveImplRefl.Value.Invoke<bool>(typeof(T));
-		}
-	}
+	private static readonly Lazy<BooleanGetter> IsArrayImplRefl = new(() => GetPrivateMethod<BooleanGetter>("IsArrayImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override bool IsArrayImpl() => IsArrayImplRefl.Value();
+
+	private static readonly Lazy<BooleanGetter> IsByRefImplRefl = new(() => GetPrivateMethod<BooleanGetter>("IsByRefImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override bool IsByRefImpl() => IsByRefImplRefl.Value();
+
+	private static readonly Lazy<BooleanGetter> IsCOMObjectImplRefl = new(() => GetPrivateMethod<BooleanGetter>("IsCOMObjectImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override bool IsCOMObjectImpl() => IsCOMObjectImplRefl.Value();
+
+	private static readonly Lazy<BooleanGetter> IsPointerImplRefl = new(() => GetPrivateMethod<BooleanGetter>("IsPointerImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override bool IsPointerImpl() => IsPointerImplRefl.Value();
+
+	private static readonly Lazy<BooleanGetter> IsPrimitiveImplRefl = new(() => GetPrivateMethod<BooleanGetter>("IsPrimitiveImpl"));
+	[Pure, MethodImpl(Runtime.MethodImpl.Hot)]
+	protected override bool IsPrimitiveImpl() => IsPrimitiveImplRefl.Value();
 }

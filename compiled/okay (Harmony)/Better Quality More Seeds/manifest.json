@@ -1,7 +1,7 @@
 {
   "Name": "Better Quality, More Seeds",
   "Author": "Brandon Marquis Markail Green (Space Baby)",
-  "Version": "2.0.0-5",
+  "Version": "2.0.0-6",
   "Description": "Gain More Seeds For Adding Better Quality Crops",
   "UniqueID": "SpaceBaby.BetterQualityMoreSeeds",
   "EntryDll": "BetterQualityMoreSeeds.dll",

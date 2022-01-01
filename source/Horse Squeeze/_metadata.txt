@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jorgamun/HorseSqueeze
+   Git: https://github.com/jorgamun/HorseSqueeze.git
+
+mods:
+   Horse Squeeze
+
+latest commit:
+   commit 9a3827f6bc597b9e6c4884df9392b855455eb1a8
+   Author: jorgamun <jorgamun@gmail.com>
+   Date:   Sun Dec 26 18:36:43 2021 -0800
+   
+       Add project files.
+   

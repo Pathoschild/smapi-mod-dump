@@ -14,30 +14,35 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using Location = xTile.Dimensions.Location;
-using Harmony;
+using HarmonyLib;
 
 namespace HardyGrass
 {
-    [HarmonyPatch(typeof(GameLocation))]
-    [HarmonyPatch("growWeedGrass", new Type[] { typeof(int) })]
-    public class GameLocation_growWeedGrass_Patch
+    public class GameLocationPatches
     {
-        static bool Prefix(GameLocation __instance, int iterations)
+        public static void ApplyPatches(Harmony harmony)
+        {
+            harmony.Patch(
+                original: AccessTools.Method(typeof(StardewValley.GameLocation), nameof(StardewValley.GameLocation.growWeedGrass)),
+                prefix: new HarmonyMethod(typeof(GameLocationPatches), nameof(GameLocationPatches.growWeedGrass_Prefix)));
+        }
+
+        public static bool growWeedGrass_Prefix(GameLocation __instance, int iterations)
         {
             for (int i = 0; i < iterations; i++)
             {
                 for (int j = __instance.terrainFeatures.Count() - 1; j >= 0; j--)
                 {
                     KeyValuePair<Vector2, TerrainFeature> kvp = __instance.terrainFeatures.Pairs.ElementAt(j);
-                    if (kvp.Value is Grass grass && (int)grass.numberOfWeeds > 0)
+                    if (kvp.Value is Grass grass && grass.numberOfWeeds.Value > 0)
                     {
                         bool isQuick = ModEntry.GrassIsQuick(grass);
-                        if ((int)grass.numberOfWeeds < 4)
+                        if (grass.numberOfWeeds.Value < 4)
                         {
                             // This is to mimic vanilla behavior of the "spread" having a chance to grow again if the grass patch isn't full.
                             if (!ModEntry.config.simplifyGrassGrowth)
                             {
-                                grass.numberOfWeeds.Value = Utility.Clamp((int)grass.numberOfWeeds + ModEntry.CalculateTuftsToAdd(isQuick, ModEntry.GrowthType.SpreadConsolidate), 0, 4);
+                                grass.numberOfWeeds.Value = Utility.Clamp(grass.numberOfWeeds.Value + ModEntry.CalculateTuftsToAdd(isQuick, ModEntry.GrowthType.SpreadConsolidate), 0, 4);
                             }
 
                             return false;
@@ -56,7 +61,7 @@ namespace HardyGrass
                             int tuftsToAdd = ModEntry.CalculateTuftsToAdd(isQuick, ModEntry.GrowthType.Spread);
                             if (tuftsToAdd > 0)
                             {
-                                Grass newGrass = new Grass((byte)grass.grassType, tuftsToAdd);
+                                Grass newGrass = new Grass(grass.grassType.Value, tuftsToAdd);
                                 if (isQuick)
                                 {
                                     newGrass.modData.Add(ModEntry.IsQuickModDataKey, ModEntry.IsQuickModDataValue);
@@ -69,7 +74,7 @@ namespace HardyGrass
                             int tuftsToAdd = ModEntry.CalculateTuftsToAdd(isQuick, ModEntry.GrowthType.Spread);
                             if (tuftsToAdd > 0)
                             {
-                                Grass newGrass = new Grass((byte)grass.grassType, tuftsToAdd);
+                                Grass newGrass = new Grass(grass.grassType.Value, tuftsToAdd);
                                 if (isQuick)
                                 {
                                     newGrass.modData.Add(ModEntry.IsQuickModDataKey, ModEntry.IsQuickModDataValue);
@@ -82,7 +87,7 @@ namespace HardyGrass
                             int tuftsToAdd = ModEntry.CalculateTuftsToAdd(isQuick, ModEntry.GrowthType.Spread);
                             if (tuftsToAdd > 0)
                             {
-                                Grass newGrass = new Grass((byte)grass.grassType, tuftsToAdd);
+                                Grass newGrass = new Grass(grass.grassType.Value, tuftsToAdd);
                                 if (isQuick)
                                 {
                                     newGrass.modData.Add(ModEntry.IsQuickModDataKey, ModEntry.IsQuickModDataValue);
@@ -95,7 +100,7 @@ namespace HardyGrass
                             int tuftsToAdd = ModEntry.CalculateTuftsToAdd(isQuick, ModEntry.GrowthType.Spread);
                             if (tuftsToAdd > 0)
                             {
-                                Grass newGrass = new Grass((byte)grass.grassType, tuftsToAdd);
+                                Grass newGrass = new Grass(grass.grassType.Value, tuftsToAdd);
                                 if (isQuick)
                                 {
                                     newGrass.modData.Add(ModEntry.IsQuickModDataKey, ModEntry.IsQuickModDataValue);

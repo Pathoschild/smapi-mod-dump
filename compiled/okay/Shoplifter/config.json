@@ -4,5 +4,6 @@
   "MaxFine": 1000,
   "FriendshipPenalty": 500,
   "DaysBannedFor": 3,
-  "CatchesBeforeBan": 3
+  "CatchesBeforeBan": 3,
+  "CaughtRadius": 5
 }

@@ -16,7 +16,7 @@ namespace BattleRoyale.Patches
 {
     class SlingshotPatch1 : Patch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new PatchDescriptor(typeof(BasicProjectile), null, new Type[0]);
+        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(BasicProjectile), null, Array.Empty<Type>());
 
         public static void Postfix(BasicProjectile __instance)
         {

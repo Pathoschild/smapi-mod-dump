@@ -10,7 +10,7 @@
 
 namespace AnimalsDie
 {
-    using Harmony;
+    using HarmonyLib;
     using Netcode;
     using StardewValley;
     using StardewValley.Buildings;
@@ -25,24 +25,21 @@ namespace AnimalsDie
         {
             mod = animalsDie;
 
-            var harmony = HarmonyInstance.Create(mod.ModManifest.UniqueID);
+            var harmony = new Harmony(mod.ModManifest.UniqueID);
 
             try
             {
                 harmony.Patch(
                    original: AccessTools.Method(typeof(FarmAnimal), "dayUpdate"),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchDayUpdate))
-                );
+                   prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchDayUpdate)));
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(QuestionEvent), "setUp"),
-                   postfix: new HarmonyMethod(typeof(Patcher), nameof(DetectPregnancy))
-                );
+                   postfix: new HarmonyMethod(typeof(Patcher), nameof(DetectPregnancy)));
 
                 harmony.Patch(
                    original: AccessTools.Method(typeof(SoundInTheNightEvent), "makeChangesToLocation"),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(DetectAnimalAttack))
-                );
+                   prefix: new HarmonyMethod(typeof(Patcher), nameof(DetectAnimalAttack)));
             }
             catch (Exception e)
             {
@@ -62,7 +59,7 @@ namespace AnimalsDie
                 var behavior = mod.Helper.Reflection.GetField<NetInt>(__instance, "behavior");
                 var targetBuilding = mod.Helper.Reflection.GetField<Building>(__instance, "targetBuilding");
 
-                if (behavior.GetValue() != null && behavior.GetValue().Value == SoundInTheNightEvent.dogs && targetBuilding != null && targetBuilding.GetValue() != null)
+                if (behavior.GetValue().Value == SoundInTheNightEvent.dogs && targetBuilding != null && targetBuilding.GetValue() != null)
                 {
                     AnimalHouse indoors = targetBuilding.GetValue().indoors.Value as AnimalHouse;
                     long idOfRemove = 0L;
@@ -100,8 +97,7 @@ namespace AnimalsDie
 
                 if (!__result && whichQuestion.GetValue() == 2 && __instance.animal != null)
                 {
-                    string moddata;
-                    __instance.animal.modData.TryGetValue($"{mod.ModManifest.UniqueID}/illness", out moddata);
+                    __instance.animal.modData.TryGetValue($"{mod.ModManifest.UniqueID}/illness", out string moddata);
 
                     // add one point of illness due to pregnancy stress
                     int illness = 1;
@@ -111,7 +107,7 @@ namespace AnimalsDie
                         illness += int.Parse(moddata);
                     }
 
-                    mod.VerboseLog($"{__instance.animal.name} received illness point due to pregnancy");
+                    mod.VerboseLog($"{__instance.animal.Name} received illness point due to pregnancy");
 
                     __instance.animal.modData[$"{mod.ModManifest.UniqueID}/illness"] = illness.ToString();
                 }
@@ -131,13 +127,13 @@ namespace AnimalsDie
                 FarmAnimal animal = __instance;
                 if (animal.home == null)
                 {
-                    mod.DebugLog($"{animal.name} has no home anymore! This should have been fixed at the start of the day. Please report this to the mod page.");
+                    mod.DebugLog($"{animal.Name} has no home anymore! This should have been fixed at the start of the day. Please report this to the mod page.");
                     return true;
                 }
 
                 if (environtment == null)
                 {
-                    mod.DebugLog($"{animal.name} is nowhere? Please report this to the mod page. A game update or another mod probably caused this.");
+                    mod.DebugLog($"{animal.Name} is nowhere? Please report this to the mod page. A game update or another mod probably caused this.");
                     return true;
                 }
 
@@ -152,7 +148,7 @@ namespace AnimalsDie
                 }
 
                 bool wasLeftOutLastNight = false;
-                if (!(animal.home.indoors.Value as AnimalHouse).animals.ContainsKey(animal.myID) && environtment is Farm)
+                if (!(animal.home.indoors.Value as AnimalHouse).animals.ContainsKey(animal.myID.Value) && environtment is Farm)
                 {
                     if (!animal.home.animalDoorOpen.Value)
                     {

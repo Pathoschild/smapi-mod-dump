@@ -26,12 +26,12 @@ mods:
    Time Freeze
 
 latest commit:
-   commit 202cf60230d2e14af4ca152c98fc3b6d2f854286
-   Merge: 9ebade83 e589653f
-   Author: Joshua Navarro <janavarro95@users.noreply.github.com>
-   Date:   Tue Apr 6 17:39:42 2021 -0700
+   commit 1b30759faa1414d4b8a75d57108a56c2ea08b8cc
+   Author: Joshua <janavarro95@gmail.com>
+   Date:   Wed Dec 1 23:44:39 2021 -0800
    
-       Merge pull request #75 from janavarro95/minor-cleanup
-       
-       Update project structure, minor cleanup & fixes
+       Migrated mod .csproj to .net5 for monogames SDV port.
+       Removed lots of unnecessary code from Revitalize for simplification. May add it back in later.
+       Removed all of the Omegasis. namespace prefixes
+       Rewrote most of the animation rendering system to not be so messy and be more simplified.
    

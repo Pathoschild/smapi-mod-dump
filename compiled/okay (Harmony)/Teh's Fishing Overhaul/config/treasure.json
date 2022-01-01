@@ -1,6 +1,7 @@
 {
     "MaxTreasureQuantity": 3,
     "AllowDuplicateLoot": true,
+    "InvertChancesOnPerfectCatch": true,
     "CatchSpeed": 1,
     "DrainSpeed": 1,
     "TreasureChances": {

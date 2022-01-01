@@ -1,354 +1,24 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Version>5.0.2</Version>
+    <TargetFramework>net5.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <EnableHarmony>true</EnableHarmony>
     <EnableModZip>false</EnableModZip>
     <EnableModDeploy>false</EnableModDeploy>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5292883C-225B-4A46-B1FE-D928B8DA4230}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AlternativeTextures</RootNamespace>
-    <AssemblyName>AlternativeTextures</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build" />
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="releases\**" />
+    <EmbeddedResource Remove="releases\**" />
+    <None Remove="releases\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="AlternativeTextures.cs" />
-    <Compile Include="Framework\External\ContentPatcher\ToolToken.cs" />
-    <Compile Include="Framework\External\ContentPatcher\TextureToken.cs" />
-    <Compile Include="Framework\External\GenericModConfigMenu\ModConfig.cs" />
-    <Compile Include="Framework\External\GenericModConfigMenu\TextureWidget.cs" />
-    <Compile Include="Framework\Interfaces\API\Api.cs" />
-    <Compile Include="Framework\Interfaces\IContentPatcherApi.cs" />
-    <Compile Include="Framework\Interfaces\IDynamicGameAssetsApi.cs" />
-    <Compile Include="Framework\Interfaces\IGenericModConfigMenuApi.cs" />
-    <Compile Include="Framework\Interfaces\IJsonAssetsApi.cs" />
-    <Compile Include="Framework\Managers\ApiManager.cs" />
-    <Compile Include="Framework\Managers\AssetManager.cs" />
-    <Compile Include="Framework\Managers\TextureManager.cs" />
-    <Compile Include="Framework\Models\AnimationModel.cs" />
-    <Compile Include="Framework\Models\DisabledTextureModel.cs" />
-    <Compile Include="Framework\Models\VariationModel.cs" />
-    <Compile Include="Framework\Patches\Buildings\ShippingBinPatch.cs" />
-    <Compile Include="Framework\Patches\Buildings\StablePatch.cs" />
-    <Compile Include="Framework\Patches\Buildings\BuildingPatch.cs" />
-    <Compile Include="Framework\Patches\Entities\MonsterPatch.cs" />
-    <Compile Include="Framework\Patches\Entities\PetPatch.cs" />
-    <Compile Include="Framework\Patches\Entities\HorsePatch.cs" />
-    <Compile Include="Framework\Patches\Entities\FarmAnimalPatch.cs" />
-    <Compile Include="Framework\Patches\Entities\ChildPatch.cs" />
-    <Compile Include="Framework\Patches\Entities\CharacterPatch.cs" />
-    <Compile Include="Framework\Patches\GameLocations\DecoratableLocationPatch.cs" />
-    <Compile Include="Framework\Patches\GameLocations\FarmPatch.cs" />
-    <Compile Include="Framework\Patches\SpecialObjects\TorchPatch.cs" />
-    <Compile Include="Framework\Patches\SpecialObjects\WallpaperPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\FishTankFurniturePatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\BedFurniturePatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\FurniturePatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\FlooringPatch.cs" />
-    <Compile Include="Framework\UI\PaintBucketMenu.cs" />
-    <Compile Include="Framework\Models\AlternativeTextureModel.cs" />
-    <Compile Include="Framework\Patches\SpecialObjects\PhonePatch.cs" />
-    <Compile Include="Framework\Patches\SpecialObjects\IndoorPotPatch.cs" />
-    <Compile Include="Framework\Patches\SpecialObjects\CrabPotPatch.cs" />
-    <Compile Include="Framework\Patches\SpecialObjects\ChestPatch.cs" />
-    <Compile Include="Framework\Patches\UtilityPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\ResourceClumpPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\GiantCropPatch.cs" />
-    <Compile Include="Framework\Patches\GameLocations\GameLocationPatch.cs" />
-    <Compile Include="Framework\Patches\PatchTemplate.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\FruitTreePatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\BushPatch.cs" />
-    <Compile Include="Framework\Patches\Tools\ToolPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\TreePatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\GrassPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\HoeDirtPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\CropPatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\FencePatch.cs" />
-    <Compile Include="Framework\Patches\StandardObjects\ObjectPatch.cs" />
-    <Compile Include="Framework\Utilities\Extensions\TextureExtension.cs" />
-    <Compile Include="Framework\Utilities\FpsCounter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.4.0-beta.20210813" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\BigBarn\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Barn\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Farmhouse_0\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\ShippingBin\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\AnimatedRecyclingMachine\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\DynamicGameAssetExampleItem\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\GreenSlime\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\RoyalSerpent\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Serpent\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\StoneGolemDangerous\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\ShadowBrute\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Skeleton\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Ghost\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Bat\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Mummy\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\AnimatedTreeOfTheWinterStar\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Outliers\ArtifactSpot\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Wallpapers\WoodWall\texture.json" />
-    <None Include="Examples\[AT] Mystical Mini-Obelisks\manifest.json" />
-    <None Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture.json" />
-    <None Include="Examples\[AT] Crystal Mini-Obelisks\manifest.json" />
-    <None Include="Examples\[AT] Crystal Mini-Obelisks\Textures\MiniObelisk\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\DeluxeCoop\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\DeluxeBarn\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\JunimoHut\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\FishPond\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Greenhouse\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Mill\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\DesertObelisk\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\SlimeHutch\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Silo\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Well\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Buildings\Stable\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Chickens\BabyWhiteChicken\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Chickens\WhiteChicken\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Cows\BabyBrownCow\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Cows\BrownCow\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Horse\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\BabySheep\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\ShearedSheep\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\WinterSheep\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\Sheep\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Humans\Children\Baby\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Humans\Children\Toddler\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Pets\Dog\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Entities\Pets\Cat\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\BrownCouch\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OrnateLamp\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\SmallWindow\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\NeedlepointFlower\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OakChair\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\Calendar\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\DeluxeFishTank\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\ModernFishTank\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\SmallFishTank\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\StrawberryDoubleBed\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\TotemPole\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OakTable\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\OakDresser\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Furniture\DarkRug\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Gate Examples\Gate2\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Gate Examples\Gate1\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\MiniShippingBin\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Furnace\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\Grass\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Sub Folder Example\HeavyTapper\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Sub Folder Example\Tapper\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Split Texture Examples\SuitOfArmor\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\AutoPetter\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\TuboFlowers_FallWinter\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\TuboFlowers_SpringSummer\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Phone\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\GardenPot\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\CrabPot\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\JunimoChest\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Scarecrow\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\StoneChest\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Chest\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\GiantMelon\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Cask\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Resource Clumps\Stump\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\Poppy\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Flooring\SteppingStonePath\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Flooring\StoneWalkwayFloor\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\Sub Folder Example\MiniFridge\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Flooring\WoodFloor\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\TeaBushSummer\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\TeaBushSpring\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Trees\TreeOakSpring\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Trees\AppleSaplingSummer\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Trees\TreeOakSummer\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\GrassSpring\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\JsonAssetExampleItem\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\GrassSummer\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\Loom\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Crops\Sunflower\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\StoneFence\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\WoodFence2\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\WoodFence\texture.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Floors\WoodFloor\texture.json" />
-    <None Include="Examples\[AT] Snowcrows\manifest.json" />
-    <None Include="Examples\[AT] Snowcrows\Textures\DeluxeScarecrow\texture.json" />
-    <None Include="Examples\[AT] Snowcrows\Textures\Scarecrow\texture.json" />
-    <None Include="Examples\[CP] Content Patcher Example\content.json" />
-    <None Include="Examples\[CP] Content Patcher Example\manifest.json" />
-    <None Include="Examples\[DGA] Dynamic Game Asset Example\content.json" />
-    <None Include="Examples\[DGA] Dynamic Game Asset Example\i18n\default.json" />
-    <None Include="Examples\[DGA] Dynamic Game Asset Example\manifest.json" />
-    <None Include="Examples\[JA] Json Asset Example\BigCraftables\Example Item\big-craftable.json" />
-    <None Include="Examples\[JA] Json Asset Example\content-pack.json" />
-    <None Include="Examples\[AT] Example Pack\manifest.json" />
-    <None Include="Examples\[AT] Example Pack\Textures\Craftables\MiniObelisk\texture.json" />
-    <None Include="Examples\[JA] Json Asset Example\manifest.json" />
-    <None Include="i18n\default.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Examples\[AT] Crystal Mini-Obelisks\Textures\MiniObelisk\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\BigBarn\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Barn\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\DeluxeCoop\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\DeluxeBarn\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Farmhouse_0\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\ShippingBin\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\JunimoHut\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\FishPond\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Greenhouse\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Mill\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\DesertObelisk\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\SlimeHutch\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Silo\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Well\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Buildings\Stable\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\AnimatedRecyclingMachine\texture_0.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\AnimatedRecyclingMachine\texture_1.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\DynamicGameAssetExampleItem\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Chickens\BabyWhiteChicken\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Chickens\WhiteChicken\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Cows\BabyBrownCow\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Cows\BrownCow\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Horse\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\BabySheep\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\ShearedSheep\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\WinterSheep\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Animals\Sheep\Sheep\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Humans\Children\Baby\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Humans\Children\Toddler\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\GreenSlime\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\RoyalSerpent\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Serpent\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\StoneGolemDangerous\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\ShadowBrute\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Skeleton\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Ghost\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Bat\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Monsters\Mummy\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Pets\Dog\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Entities\Pets\Cat\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\AnimatedTreeOfTheWinterStar\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\BrownCouch\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OrnateLamp\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\SmallWindow\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\NeedlepointFlower\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OakChair\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\Calendar\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\DeluxeFishTank\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\ModernFishTank\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\SmallFishTank\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\StrawberryDoubleBed\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\TotemPole\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OakTable\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\OakDresser\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Furniture\DarkRug\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Gate Examples\Gate2\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Gate Examples\Gate1\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\MiniShippingBin\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Furnace\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\Grass\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Sub Folder Example\HeavyTapper\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Sub Folder Example\Tapper\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Outliers\ArtifactSpot\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Split Texture Examples\SuitOfArmor\texture_10.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Split Texture Examples\SuitOfArmor\texture_2.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Split Texture Examples\SuitOfArmor\texture_1.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\AutoPetter\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\TuboFlowers_FallWinter\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\TuboFlowers_SpringSummer\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Phone\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\GardenPot\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\CrabPot\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\JunimoChest\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Scarecrow\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\StoneChest\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Chest\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\GiantMelon\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Cask\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Resource Clumps\Stump\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\Poppy\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Flooring\SteppingStonePath\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Flooring\StoneWalkwayFloor\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\Sub Folder Example\MiniFridge\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Flooring\WoodFloor\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\TeaBushSummer\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\TeaBushSpring\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Trees\TreeOakSpring\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Trees\AppleSaplingSummer\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Trees\TreeOakSummer\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\GrassSpring\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\JsonAssetExampleItem\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\GrassSummer\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Texture Exceptions\Loom\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Crops\Sunflower\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\StoneFence\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\WoodFence2\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\WoodFence\texture.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Wallpapers\WoodWall\texture.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_0.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_1.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_2.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_3.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_4.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_5.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_6.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_7.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_8.png" />
-    <Content Include="Examples\[AT] Mystical Mini-Obelisks\Textures\MiniObelisk\texture_9.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Floors\WoodFloor\texture.png" />
-    <Content Include="Examples\[AT] Snowcrows\Textures\DeluxeScarecrow\texture.png" />
-    <Content Include="Examples\[AT] Snowcrows\Textures\Scarecrow\texture.png" />
-    <Content Include="Examples\[CP] Content Patcher Example\assets\alt_paint_bucket.png" />
-    <Content Include="Examples\[CP] Content Patcher Example\assets\test_replacement.png" />
-    <Content Include="Examples\[DGA] Dynamic Game Asset Example\BigCraftables\Example Item\big-craftable.png" />
-    <Content Include="Examples\[JA] Json Asset Example\BigCraftables\Example Item\big-craftable.png" />
-    <Content Include="Examples\[AT] Example Pack\Textures\Craftables\MiniObelisk\texture.png" />
     <Content Include="Framework\Assets\PaintBrushEmpty.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -362,38 +32,33 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Pathoschild.Stardew.ModBuildConfig.3.3.0\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
-  </Target>
-  <Target Name="PostBuildMacros">
-    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
-      <Output TaskParameter="Assemblies" ItemName="Targets" />
-    </GetAssemblyIdentity>
-    <ItemGroup>
-      <VersionNumber Include="$([System.Text.RegularExpressions.Regex]::Replace(&quot;%(Targets.Version)&quot;, &quot;^(.+?)(\.0+)$&quot;, &quot;$1&quot;))" />
-    </ItemGroup>
-  </Target>
+
+  <ItemGroup>
+    <None Update="i18n\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup>
     <PostBuildEventDependsOn>
-    $(PostBuildEventDependsOn);
-    PostBuildMacros;
-  </PostBuildEventDependsOn>
-    <PostBuildEvent>powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '@(VersionNumber)' | sc -LiteralPath \"$f\" })"
+      $(PostBuildEventDependsOn);
+      PostBuildMacros;
+    </PostBuildEventDependsOn>
+    <PostBuildEvent>
+      powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
-powershell Remove-Item -Path '$(SolutionDir)releases\latest\$(SolutionName)"' -Recurse -Force
-xcopy /s /y /i "$(TargetDir)" "$(SolutionDir)releases\latest\$(SolutionName)"
-7z a -tzip "$(SolutionDir)releases\$(SolutionName)-@(VersionNumber).zip" "$(SolutionDir)releases\latest\$(SolutionName)"
+      powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"' -Recurse -Force
+      xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
+      7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\AlternativeTextures-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures"
 
-powershell Remove-Item -Path '$(GameModsPath)\$(SolutionName)' -Recurse -Force
-powershell Remove-Item -Path '$(GameModsPath)\Alternative Textures Examples' -Recurse -Force
+      powershell Remove-Item -Path '$(GameModsPath)\AlternativeTextures' -Recurse -Force
+      powershell Remove-Item -Path '$(GameModsPath)\Alternative Textures Examples' -Recurse -Force
 
-xcopy /s /y /i "$(SolutionDir)releases\latest\$(SolutionName)" "$(GameModsPath)\$(SolutionName)"
-xcopy /s /y /i "$(SolutionDir)Examples\*" "$(GameModsPath)\Alternative Textures Examples"</PostBuildEvent>
+      xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\releases\latest\AlternativeTextures" "$(GameModsPath)\AlternativeTextures"
+      xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\AlternativeTextures\AlternativeTextures\Examples\*" "$(GameModsPath)\Alternative Textures Examples"
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

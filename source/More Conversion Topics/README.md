@@ -22,18 +22,26 @@ Some good references when creating content packs that rely on this mod:
    * `luauBest` (triggered when the luau soup gets the best result)
    * `luauShorts` (triggered when the Mayor's shorts are added to the luau soup)
    * `luauPoisoned` (triggered when a poisonous item is added to the luau soup)
+   * `divorce` (triggered when you get divorced)
+   * `babyBoy` (triggered when you have a baby, and it's a boy)
+   * `babyGirl` (triggered when you have a baby, and it's a girl)
 
 These conversation topics have default lengths but are also configurable in the config file, with the following variables:
    * `WeddingDuration` (default of 7 days, controls length of `wedding` conversation topic)
    * `LuauDuration` (default of 7 days, controls length of all luau conversation topics)
+   * `BirthDuration` (default of 7 days, controls length of `babyBoy` and `babyGirl` conversation topics)
+   * `DivorceDuration` (default of 7 days, controls length of `divorce` conversation topic)
 
 ## Console Command
 
-This mod also adds a new console command, "current_conversation_topics", which gives a list of the current active conversation topics. 
+This mod also adds some new console commands:
+
+* `current_conversation_topics`, which gives a list of the current active conversation topics. 
+* `player_hasmailflag <flagName>`, which tells you whether or not you have that mail flag.
+* `add_conversation_topic <topicName>`, which adds the specified conversation topic with a duration of 1 day. (coming soon)
+* `remove_conversation_topic <topicName>`, which removes the specified conversation topic. (coming soon)
 
 ## Planned Conversation Topics To Be Added
-   * `divorce` triggered when a player gets divorced
-   * `birth` triggered when a player has a child (either via pregnancy or adoption)
    * `joja_Greenhouse` triggered when the player buys the greenhouse Joja improvement
    * `joja_Complete` triggered in the Joja warehouse celebration cutscene
    * `leoArrival` triggered when Leo moves to the valley
@@ -51,7 +59,7 @@ Most of the achievements rely on stats that are tracked in [Stats as Tokens](htt
 
 ### Weddings and Births
 
-This mod adds a `wedding` conversation topic, but Stats as Tokens is also planning to track days married, so that you can add dialogue or other things based on anniversaries. This mod is planned to add a `birth` conversation topic right when your children get born, but you may also want to use the upcoming Stats as Tokens children tokens to trigger dialogue/events/changes based on how old your children are. 
+This mod adds a `wedding` conversation topic, but Stats as Tokens is also planning to track days married, so that you can add dialogue or other things based on anniversaries. This mod adds a `babyBoy` or `babyGirl` conversation topic right when your children get born, but you may also want to use the upcoming Stats as Tokens children tokens to trigger dialogue/events/changes based on how old your children are. 
 
 ### Events That Happen Once or Things with Mail Flags
 

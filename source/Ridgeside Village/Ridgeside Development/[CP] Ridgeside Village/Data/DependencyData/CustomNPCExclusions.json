@@ -9,15 +9,16 @@
 *************************************************/
 
 {
-	"Changes": [
-
-	/*********
-	** NPC Exclusions
-	*********/
+	"Changes":
+	[
+		/*********
+		** Custom NPC Exclusions
+		*********/
 		{
 			"Action": "EditData",
 			"Target": "Data/CustomNPCExclusions",
-			"Entries": {
+			"Entries":
+			{
 				"Kiwi": "TownEvent TownQuest OtherEvent",
 				"Undreya": "ALL",
 				"Helen": "ALL",
@@ -33,168 +34,24 @@
 				"Zayne": "ALL",
 				"Bryle": "ALL",
 				"Daia": "TownEvent TownQuest OtherEvent",
-				"Jio": "TownEvent TownQuest OtherEvent",
+				"Jio": "TownEvent TownQuest IslandEvent OtherEvent",
 				"TreehouseGirl": "ALL",
 				"RelicSpirit": "ALL",
-
-				"Anton": "MovieInvite IslandEvent WinterStar",
-				"Ariah": "MovieInvite IslandEvent WinterStar",
-				"Blair": "MovieInvite IslandEvent WinterStar",
-				"Carmen": "MovieInvite IslandEvent WinterStar",
-				"Faye": "MovieInvite IslandEvent WinterStar",
-				"Irene": "MovieInvite IslandEvent WinterStar",
-				"Kiarra": "MovieInvite IslandEvent WinterStar",
-				"Lorenzo": "MovieInvite IslandEvent WinterStar",
-				"Louie": "MovieInvite IslandEvent WinterStar",
-				"Maive": "MovieInvite IslandEvent WinterStar",
-				"Paula": "MovieInvite IslandEvent WinterStar",
-				"Sean": "MovieInvite IslandEvent WinterStar",
-				"Shanice": "MovieInvite IslandEvent WinterStar",
-				"Sonny": "MovieInvite IslandEvent WinterStar",
+				"Anton": "ItemDelivery MovieInvite IslandEvent",
+				"Ariah": "ItemDelivery MovieInvite IslandEvent",
+				"Blair": "ItemDelivery MovieInvite IslandEvent",
+				"Carmen": "ItemDelivery MovieInvite IslandEvent",
+				"Faye": "ItemDelivery MovieInvite IslandEvent",
+				"Irene": "ItemDelivery MovieInvite IslandEvent",
+				"Kiarra": "ItemDelivery MovieInvite IslandEvent",
+				"Lorenzo": "ItemDelivery MovieInvite IslandEvent",
+				"Louie": "ItemDelivery MovieInvite IslandEvent",
+				"Maive": "ItemDelivery MovieInvite IslandEvent",
+				"Paula": "ItemDelivery MovieInvite IslandEvent",
+				"Sean": "ItemDelivery MovieInvite IslandEvent",
+				"Shanice": "ItemDelivery MovieInvite IslandEvent",
+				"Sonny": "ItemDelivery MovieInvite IslandEvent",
 			}
 		},
-
-//Easy introduction config
-		{
-			"Action": "EditData",
-			"Target": "Data/CustomNPCExclusions",
-			"When": {
-				"EasyIntroduction": true
-			},
-			"Entries": {
-
-				"Ian": "Socialize",
-				"Jeric": "Socialize",
-				"Kenneth": "Socialize",
-				"Philip": "Socialize",
-				"Shiro": "Socialize",
-				"Alissa": "Socialize",
-				"Corine": "Socialize",
-				"Flor": "Socialize",
-				"Maddie": "Socialize",
-				"Ysabelle": "Socialize",
-				"Aguar": "Socialize",
-				"Bert": "Socialize",
-				"Ezekiel": "Socialize",
-				"Freddie": "Socialize",
-				"Keahi": "Socialize",
-				"Lenny": "Socialize",
-				"Lola": "Socialize",
-				"Olga": "Socialize",
-				"Pika": "Socialize",
-				"Richard": "Socialize",
-				"Trinnie": "Socialize",
-				"Yuuma": "Socialize",
-				"Anton": "Socialize MovieInvite IslandEvent",
-				"Ariah": "Socialize MovieInvite IslandEvent",
-				"Blair": "Socialize MovieInvite IslandEvent",
-				"Carmen": "Socialize MovieInvite IslandEvent",
-				"Faye": "Socialize MovieInvite IslandEvent",
-				"Irene": "Socialize MovieInvite IslandEvent",
-				"Kiarra": "Socialize MovieInvite IslandEvent",
-				"Lorenzo": "Socialize MovieInvite IslandEvent",
-				"Louie": "Socialize MovieInvite IslandEvent",
-				"Maive": "Socialize MovieInvite IslandEvent",
-				"Paula": "Socialize MovieInvite IslandEvent",
-				"Sean": "Socialize MovieInvite IslandEvent",
-				"Shanice": "Socialize MovieInvite IslandEvent",
-				"Sonny": "Socialize MovieInvite IslandEvent",
-			}
-		},
-
-		{
-			"Action": "EditData",
-			"Target": "Data/CustomNPCExclusions",
-			"When": {
-				"FullFestivals": false
-			},
-			"TextOperations": [
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Anton"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Ariah"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Blair"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Carmen"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Faye"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Irene"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Kiarra"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Lorenzo"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Louie"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Maive"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Paula"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Sean"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Shanice"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-				{
-					"Operation": "Append",
-					"Target": ["Entries", "Sonny"],
-					"Value": "WinterStar",
-					"Delimiter": " "
-				},
-			]
-		}
-
-],
+	],
 }

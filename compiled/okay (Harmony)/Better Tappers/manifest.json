@@ -1,7 +1,7 @@
 {
   "Name": "BetterTappers",
   "Author": "CaptainSully",
-  "Version": "1.0.3",
+  "Version": "1.1.3",
   "Description": "Gives options for tapper production times, quality, and experience.",
   "UniqueID": "CaptainSully.BetterTappers",
   "EntryDll": "BetterTappers.dll",

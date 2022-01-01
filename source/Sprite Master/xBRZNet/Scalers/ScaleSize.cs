@@ -8,24 +8,18 @@
 **
 *************************************************/
 
-using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace SpriteMaster.xBRZ.Scalers {
-	internal static class ScaleSize {
-		private static readonly IScaler[] Scalers =
-		{
-			new Scaler2X(),
-			new Scaler3X(),
-			new Scaler4X(),
-			new Scaler5X(),
-			new Scaler6X()
-		};
+namespace SpriteMaster.xBRZ.Scalers;
 
-		[MethodImpl(Runtime.MethodImpl.Optimize)]
-		public static IScaler ToIScaler (this uint scaleSize) {
-			// MJY: Need value checks to assure scaleSize is between 2-5 inclusive.
-			return Scalers.Single(s => s.Scale == scaleSize);
-		}
-	}
+static class ScaleSize {
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static IScaler ToIScaler(this uint scaleSize, Config config) => scaleSize switch {
+		2U => new Scaler2X(config),
+		3U => new Scaler3X(config),
+		4U => new Scaler4X(config),
+		5U => new Scaler5X(config),
+		6U => new Scaler6X(config),
+		_ => null
+	};
 }
