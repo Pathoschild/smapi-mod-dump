@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoeStrout/Farmtronics
+**
+*************************************************/
+
+file-related commands:
+   `pwd` -- print working directory
+   `cd "path"` -- change directory
+   `dir` -- list files
+   `mkdir "dirname"` -- make directory
+   `load "filename"` -- load program
+   `save "filename"` -- save program
+   `view "filename"` -- preview file	
+		
+Note that there are two disks available:
+    `"/sys"` -- system disk (read-only)
+    `"/usr"` -- user files (read/write)
+
+To find the fun stuff, enter: 
+  `cd "/sys/demo"`
+  `dir`

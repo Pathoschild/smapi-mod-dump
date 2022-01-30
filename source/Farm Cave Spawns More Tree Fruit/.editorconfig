@@ -1,0 +1,25 @@
+﻿[*.{cs,vb}]
+
+#constants
+dotnet_naming_symbols.all_constants.applicable_kinds  = field
+dotnet_naming_symbols.all_constants.applicable_accessibilities  = *
+dotnet_naming_symbols.all_constants.required_modifiers  = const, readonly
+
+dotnet_naming_style.all_upper_underscore.capitalization = all_upper
+dotnet_naming_style.all_upper_underscore.word_separator = _
+
+dotnet_naming_rule.constants_must_be_all_uppercase.symbols = all_constants
+dotnet_naming_rule.constants_must_be_all_uppercase.style = all_upper_underscore
+dotnet_naming_rule.constants_must_be_all_uppercase.severity = suggestion
+
+# IDE0003: Remove qualification
+dotnet_style_qualification_for_event =true:suggestion
+dotnet_style_qualification_for_field=true:suggestion
+dotnet_style_qualification_for_property=true:suggestion
+dotnet_style_qualification_for_method=true:suggestion
+dotnet_diagnostic.CA1304.severity=suggestion
+
+[*.cs]
+csharp_style_pattern_matching_over_is_with_cast_check=true:warning
+csharp_style_pattern_matching_over_as_with_null_check=true:warning
+insert_final_newline=true

@@ -11,6 +11,8 @@
   "IgnoreFarmCaveType.description": "If enabled, spawns fruit in all cave types",
   "EarlyFarmCave.title": "Allow Early Fruit Cave",
   "EarlyFarmCave.description": "Spawns fruit even before the fruit cave cutscene.",
+  "UseModCaves.title": "Use Mod Caves",
+  "UseModCaves.description": "Allows fruits to spawn in caves added by mods (if registered with this mod.)\n\nSVE included by default.",
   "UseMineCave.title": "Use Mine Entrance",
   "UseMineCave.description": "Allows fruits to spawn in the mine entrance as well (after spawning in the Farm Cave, if Max Daily Spawns is not yet hit.",
   "SeasonalOnly.title": "Seasonal Fruit Only",
@@ -22,5 +24,11 @@
   "NoBananasBeforeShrine.title": "No Bananas Before Shrine",
   "NoBananasBeforeShrine.description": "Prevents bananas from showing up before one's given to the banana shrine.",
   "PriceCap.title": "Price Cap",
-  "PriceCap.description":  "Removes fruit if their base price is above this."
+  "PriceCap.description": "Removes fruit if their base price is above this.",
+
+
+  //Errors
+  "ExcessRegexMatches": "Do not recognize pattern {{loc}}; skipping for now.",
+  "RegexTimeout": "Regex is timing out for {{loc}}. Will attempt to continue.\n\n{{ex}}",
+  "LocationMissing": "Location {{loc}} missing, will not spawn here."
 }

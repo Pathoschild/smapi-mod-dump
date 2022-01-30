@@ -11,7 +11,7 @@
 
 using StardewModdingAPI;
 
-namespace GroundhogDay
+namespace Screenshot
 {
     public class ModConfig
     {

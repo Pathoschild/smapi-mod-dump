@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/DialogueExtension
+**
+*************************************************/
+
+{
+  "4": "...Have you encountered others like me, in the mines? I'm sorry if they were hostile towards you. You see, we've learned to fear humans... there have been too many... unpleasant encounters.#$e#You haven't... slain any of my friends, have you?",
+  "8": "A 1000 year war between my people and the dwarves recently ended. There's still a lot of resentment on both sides.",
+  "15": "Please keep my location a secret. If the dwarves knew of me, they'd surely send an assassin.",
+  "Fri": "...",
+  "reject_868": "Oh, it's an arctic shard! That's a very rare magical item.#$b#I'd bring that to the Wizard if I were you!",
+  "Wed": "I find things here and I sell them. Care to buy anything?",
+  "Wed6": "If you put your ear up to the right pipe, you can hear into any house from down here.#$b#I wouldn't eavesdrop, though!$3",
+  "Thu": "Please don't tell anyone about me.#$b#Humans tend to destroy things they can't understand.",
+  "Thu6": "Please don't tell anyone about me.#$b#Most humans are frightened by us shadow people... maybe for good reason.$s#$b#But regardless, if the townspeople knew about me, I might not be safe here.",
+  "Tue": "I am too sensitive to sunlight to go out on most days.#$b#The conditions in here are perfect.#$e#Care to buy anything?",
+  "Mon": "Please, don't be alarmed. I am different than the others.#$e#I've spent a lot of time observing humans. I know you like to shop. Care to see my wares?",
+  "Mon2": "Back again? I suppose it does fit into my theory of human behavior.",
+  "Mon6": "'Krobus' means 'bridge-crosser' in our language.",
+  "Sat": "On Fridays I stay silent as a sign of devotion to Yoba.",
+  "Sun": "...Sorry, I'm still a little wary of humans. My shop is still open to you, however.",
+  "Sun4": "You're not like the other humans, are you?",
+  "Sun8": "You've opened my eyes to the world of humans. I appreciate that.",
+  "divorced": "..."
+}

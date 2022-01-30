@@ -6,9 +6,9 @@ mods:
    Quest Framework
 
 latest commit:
-   commit d3aa61e90bc10c1d4fa9fcb4e42e378d8786e476
-   Author: PurrplingCat <ellenfawkes@gmail.com>
-   Date:   Mon Sep 20 11:35:47 2021 +0200
+   commit 1fcffe42e8ff813ad9e94dc5b3044aea0d42911f
+   Author: PurrplingCat <ellen@purrplingcat.com>
+   Date:   Mon Jan 3 14:12:35 2022 +0100
    
-       requires SMAPI 3.12.7 and newer
+       Fix for SDV 1.5.6
    

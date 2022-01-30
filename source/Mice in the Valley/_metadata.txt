@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/mus-candidus/MiceInTheValley
+   Git: https://github.com/mus-candidus/MiceInTheValley.git
+
+mods:
+   Mice in the Valley
+
+latest commit:
+   commit cfc00e4febd4a5eb22d0fb6642a2788b51719aed
+   Author: Candidus <candidus@xmail.net>
+   Date:   Thu Dec 23 18:28:25 2021 +0100
+   
+       New feature: Tiger mice on Ginger Island.
+   

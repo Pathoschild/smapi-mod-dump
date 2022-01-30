@@ -8,16 +8,11 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
+using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Monsters;
 
 namespace FarmTypeManager
 {
@@ -85,7 +80,7 @@ namespace FarmTypeManager
                     && assembly.ManifestModule.Name != "<In Memory Module>"
                     && !assembly.FullName.StartsWith("System")
                     && !assembly.FullName.StartsWith("Microsoft")
-                ) 
+                )
                 .SelectMany(assembly => Utility.TryGetTypes(assembly)) //get all types from each assembly as a single sequence
                 .Where(filterSubclass) //ignore any types that are not subclasses of baseClass
             );

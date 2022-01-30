@@ -9,10 +9,25 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.4.1
+Released 12 January 2022 for SMAPI 3.13.0 or later.
+
+* Added support for giant crops outside the farm.
+
+## 1.4.0
+Release 11 January 2022 for SMAPI 3.13.0 or later.
+
+* Added `Custom` field for item which use a custom class.
+* Fixed cloning custom hats.
+* Fixed SpaceCore's `AfterGiftGiven` event not raised when gifting custom items.
+
+## 1.3.4
+Released 09 January 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
 * Improved errors when a content pack...
   * adds an invalid recipe entry to shops;
   * adds a duplicate texture override.
+* Improved translations. Thanks to burunduk (added Ukrainian) and wally232 (added Korean)!
 
 ## 1.3.3
 Released 24 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.

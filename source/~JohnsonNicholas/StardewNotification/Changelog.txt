@@ -8,6 +8,19 @@
 **
 *************************************************/
 
+1.8.9
+- now includes support for GMCM
+- adds in an option to have notifications on day start start later
+- turns off tool upgrade notifications by default (still an option if people want it on)
+- Show Empty Hay now works properly, if set to false, it will not show the notification.
+
+1.8.8
+- fixes silo showing notifications when under construction
+
+1.8.7
+- updated for 1.5.5
+- fixes config option for spring onions not working
+
 1.8.6
  - fixes a greenhouse bug with tea leaves.
 

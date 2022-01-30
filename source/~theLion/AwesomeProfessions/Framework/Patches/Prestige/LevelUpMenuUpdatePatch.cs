@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,16 +20,19 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Netcode;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Events;
-using TheLion.Stardew.Professions.Framework.Extensions;
-using CollectionExtensions = TheLion.Stardew.Common.Extensions.CollectionExtensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Stardew.Common.Harmony;
+using Events.GameLoop;
+using Extensions;
+using SuperMode;
+
+using CollectionExtensions = Stardew.Common.Extensions.CollectionExtensions;
+using Localization = Utility.Localization;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuUpdatePatch : BasePatch
@@ -72,20 +79,18 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while patching level 15 profession choices. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching level 15 profession choices. Helper returned {ex}");
             return null;
         }
 
-        /// This injection chooses the correct level 10 profession choices based on the last selected level 5 profession.
+        /// This injection chooses the correct 2nd-tier profession choices based on the last selected level 5 profession.
         /// From: else if (Game1.player.professions.Contains(currentSkill * 6))
         /// To: else if (Game1.player.CurrentBranchForSkill(currentSkill) == currentSkill * 6)
 
         try
         {
             helper
-                .FindFirst( // find index of checking if the player has the the first level 5 profesion in the skill
+                .FindFirst( // find index of checking if the player has the the first level 5 profession in the skill
                     new CodeInstruction(OpCodes.Ldfld, typeof(Farmer).Field(nameof(Farmer.professions))),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldfld, typeof(LevelUpMenu).Field("currentSkill")),
@@ -113,9 +118,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while patching level 10 profession choices to reflect last chosen level 5 profession. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching 2nd-tier profession choices to reflect last chosen 1st-tier profession. Helper returned {ex}");
             return null;
         }
 
@@ -132,7 +135,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         var isNotPrestigeLevel = iLGenerator.DefineLabel();
         var chosenProfession = iLGenerator.DeclareLocal(typeof(int));
         var shouldProposeFinalQuestion = iLGenerator.DeclareLocal(typeof(bool));
-        var shouldCongratulateOnFullPrestige = iLGenerator.DeclareLocal(typeof(bool));
+        var shouldCongratulateFullSkillMastery = iLGenerator.DeclareLocal(typeof(bool));
         var i = 0;
         repeat1:
         try
@@ -201,14 +204,12 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Call,
                         typeof(LevelUpMenuUpdatePatch).MethodNamed(nameof(ShouldCongratulateOnFullSkillMastery))),
                     // store the bool result for later
-                    new CodeInstruction(OpCodes.Stloc_S, shouldCongratulateOnFullPrestige)
+                    new CodeInstruction(OpCodes.Stloc_S, shouldCongratulateFullSkillMastery)
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while patching level up profession redundancy and injecting dialogues. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching level up profession redundancy and injecting dialogues. Helper returned {ex}");
             return null;
         }
 
@@ -232,7 +233,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Stloc_S, shouldProposeFinalQuestion),
                     // initialize shouldCongratulateOnFullPrestige local variable to false
                     new CodeInstruction(OpCodes.Ldc_I4_0),
-                    new CodeInstruction(OpCodes.Stloc_S, shouldCongratulateOnFullPrestige)
+                    new CodeInstruction(OpCodes.Stloc_S, shouldCongratulateFullSkillMastery)
                 )
                 .FindLast( // find index of the section that checks for a return (once LevelUpMenu is no longer needed)
                     new CodeInstruction(OpCodes.Ldfld, typeof(LevelUpMenu).Field(nameof(LevelUpMenu.isActive)))
@@ -249,7 +250,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Brfalse_S, dontProposeFinalQuestion),
                     // if so, push the chosen profession onto the stack and call ProposeFinalQuestion()
                     new CodeInstruction(OpCodes.Ldloc_S, chosenProfession),
-                    new CodeInstruction(OpCodes.Ldloc_S, shouldCongratulateOnFullPrestige),
+                    new CodeInstruction(OpCodes.Ldloc_S, shouldCongratulateFullSkillMastery),
                     new CodeInstruction(OpCodes.Call,
                         typeof(LevelUpMenuUpdatePatch).MethodNamed(nameof(ProposeFinalQuestion))),
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
@@ -258,7 +259,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                     // branch here after checking for proposal
                     new[] {dontProposeFinalQuestion},
                     // check if should congratulate on full prestige
-                    new CodeInstruction(OpCodes.Ldloc_S, shouldCongratulateOnFullPrestige),
+                    new CodeInstruction(OpCodes.Ldloc_S, shouldCongratulateFullSkillMastery),
                     new CodeInstruction(OpCodes.Brfalse_S, dontCongratulateOnFullPrestige),
                     // if so, push the chosen profession onto the stack and call CongratulateOnFullPrestige()
                     new CodeInstruction(OpCodes.Ldloc_S, chosenProfession),
@@ -268,8 +269,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while injecting level up profession final question. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while injecting level up profession final question. Helper returned {ex}");
             return null;
         }
 
@@ -278,13 +278,13 @@ internal class LevelUpMenuUpdatePatch : BasePatch
 
     #endregion harmony patches
 
-    #region private methods
+    #region injected subroutines
 
     private static bool ShouldProposeFinalQuestion(int chosenProfession)
     {
-        return ModEntry.Config.EnablePrestige && ModState.SuperModeIndex > 0 &&
-               chosenProfession is >= 26 and < 30 &&
-               ModState.SuperModeIndex != chosenProfession;
+        return ModEntry.Config.EnablePrestige && chosenProfession is >= 26 and < 30 &&
+               ModEntry.State.Value.SuperMode is not null &&
+               (int) ModEntry.State.Value.SuperMode.Index != chosenProfession;
     }
 
     private static bool ShouldCongratulateOnFullSkillMastery(int currentLevel, int chosenProfession)
@@ -292,15 +292,15 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         return currentLevel == 10 && Game1.player.HasAllProfessionsInSkill(chosenProfession / 6);
     }
 
-    private static void ProposeFinalQuestion(int chosenProfession, bool shouldCongratulateOnFullPrestige)
+    private static void ProposeFinalQuestion(int chosenProfession, bool shouldCongratulateFullSkillMastery)
     {
-        var oldProfessionKey = Utility.Professions.NameOf(ModState.SuperModeIndex).ToLower();
+        var oldProfessionKey = ModEntry.State.Value.SuperMode.Index.ToString().ToLower();
         var oldProfessionDisplayName = ModEntry.ModHelper.Translation.Get(oldProfessionKey + ".name.male");
         var oldBuff = ModEntry.ModHelper.Translation.Get(oldProfessionKey + ".buff");
-        var newProfessionKey = Utility.Professions.NameOf(chosenProfession);
+        var newProfessionKey = chosenProfession.ToProfessionName();
         var newProfessionDisplayName = ModEntry.ModHelper.Translation.Get(newProfessionKey + ".name.male");
         var newBuff = ModEntry.ModHelper.Translation.Get(newProfessionKey + ".buff");
-        var pronoun = Utility.Professions.GetBuffPronoun();
+        var pronoun = Localization.GetBuffPronoun();
         Game1.currentLocation.createQuestionDialogue(
             ModEntry.ModHelper.Translation.Get("prestige.levelup.question",
                 new
@@ -313,8 +313,14 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                 }),
             Game1.currentLocation.createYesNoResponses(), delegate(Farmer _, string answer)
             {
-                if (answer == "Yes") ModState.SuperModeIndex = chosenProfession;
-                if (shouldCongratulateOnFullPrestige) CongratulateOnFullSkillMastery(chosenProfession);
+                if (answer == "Yes")
+                {
+                    var newIndex = (SuperModeIndex) chosenProfession;
+                    ModEntry.State.Value.SuperMode = new(newIndex);
+                    ModData.Write(DataField.SuperModeIndex, newIndex.ToString());
+                }
+
+                if (shouldCongratulateFullSkillMastery) CongratulateOnFullSkillMastery(chosenProfession);
             });
     }
 
@@ -330,8 +336,8 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                                                (Game1.player.IsMale ? "male" : "female"));
         if (Game1.player.achievements.Contains(name.GetDeterministicHashCode())) return;
 
-        ModEntry.Subscriber.Subscribe(new AchievementUnlockedDayStartedEvent());
+        EventManager.Enable(typeof(AchievementUnlockedDayStartedEvent));
     }
 
-    #endregion private methods
+    #endregion injected subroutines
 }

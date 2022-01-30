@@ -6,9 +6,9 @@ mods:
    Stop Rug Removal
 
 latest commit:
-   commit a00c872f2ac1c28ba1380a611989a88a8f1c825b
+   commit dbc8ca5b5b2ec0262ef0831479c596a1ef8d896a
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri Dec 31 12:01:34 2021 -0500
+   Date:   Sun Jan 16 11:45:50 2022 -0500
    
-       Move to new language features!
+       add gmcm version check
    

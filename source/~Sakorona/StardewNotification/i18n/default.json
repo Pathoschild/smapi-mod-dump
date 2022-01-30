@@ -57,5 +57,61 @@
   "autoGrabber": "The auto grabber has items for harvest",
   "hayMessage": "Silos report {{hayAmt}} pieces of hay",
   "noHayMessage": "No hay in the silos.",
-  "FishPond": "Fish Ponds ready for harvest."
+  "FishPond": "Fish Ponds ready for harvest.",
+
+  //GMCM fields
+  "gmcmNotDurTitle": "Notification Duration",
+  "gmcmNotDurDesc": "The amount of ticks the messages appear. Note that 7000 ticks is 10 minutes. This value is clamped between 0 and 14000 ticks",
+  "gmcmNotifTimeTitle": "Notification Time",
+  "gmcmNotifTimeDesc": "The time the day start notifications appear. We recommend you leave this at 6am. Clamped between 6am and 2pm.",
+  "gmcmNotifOnBirthTitle": "Notify on Birthdays",
+  "gmcmNotifOnBirthDesc": "Turn this on to be notified about birthdays",
+  "gmcmNotifOnBirthRemindTitle": "Birthday Notification Reminder",
+  "gmcmNotifOnBirthRemindDesc": "Turn this on to be reminded to give a gift that day",
+  "gmcmNotifOnBirthRemindTimeTitle": "Birthday Reminder Time",
+  "gmcmNotifOnBirthRemindTimeDesc": "The time the birthday reminder notification will appear. Clamped between 9am and 7pm. (most NPCs will not be available after this point). Note that values ending in 60-99 will not work in game.",
+  "gmcmNotifOnFestivalTitle": "Festival Notifications",
+  "gmcmNotifOnFestivalDesc": "Turn this on to be told it's a festival today",
+  "gmcmNotifOnMerchantTitle": "Traveling Merchant Notifications",
+  "gmcmNotifOnMerchantDesc": "Turn this on to be told if the traveling merchant has arrived",
+
+  "gmcmNotifOnToolTitle": "Tool Upgrade Notifications",
+  "gmcmNotifOnToolDesc": "Turn this on to be told if you have a tool waiting to be picked up.",
+
+  "gmcmNotifOnGLuckTitle": "Max Luck Notifications",
+  "gmcmNotifOnGLucklDesc": "Turn this on to be told if you have maximum luck that day.",
+
+  "gmcmNotifOnBLuckTitle": "Min Luck Notifications",
+  "gmcmNotifOnBLucklDesc": "Turn this on to be told if your have minimum luck that day.",
+
+  "gmcmNotifShowHayCountTitle": "Show Daily Hay Count",
+  "gmcmNotifShowHayCountDesc": "Turn this on to get notifications for hay counts daily.",
+  "gmcmNotifEmptyHayTitle": "Show Empty Hay",
+  "gmcmNotifEmptyHayDesc": "Turn this on to get notifications if you are out of hay. Note this must be on to be told if you are out of hay.",
+
+  "gmcmNotifWeatNDTitle": "Show Weather Next Day",
+  "gmcmNotifWeatNDDesc": "Turn this on to get notifications to see what the weather is the next day",
+  "gmcmRemindTimeForNWDTitle": "Reminder Time for Weather",
+  "gmcmRemindTimeForNWDDesc": "The time the birthday reminder notification appear. Clamped between 9am and 2am",
+
+  "gmcmNotifTVChanTitle": "Notify for TV Channels",
+  "gmcmNotifTVChanDesc": "Turn this on to get notifications for today's TV channels.",
+  "gmcmNotifSpringOnionTitle": "Show Spring Onion Count",
+  "gmcmNotifSpringOnionDesc": "Turn this on to get notifications for the spring onion count.",
+
+  "gmcmNotifFarmCaveTitle": "Notify for Farm Cave",
+  "gmcmNotifFarmCaveDesc": "Turn this on to get notifications for farm cave harvest.",
+  "gmcmNotifGreenCropTitle": "Notify for Greenhouse Crops",
+  "gmcmNotifGreenCropDesc": "Turn this on to get notifications for greenhouse crops harvest.",
+
+  "gmcmNotifShedProdTitle": "Notify for Shed Production",
+  "gmcmNotifShedProdDesc": "Turn this on to get notifications for machines in the shed",
+  "gmcmNotifGreenProdTitle": "Notify for Greenhouse Production",
+  "gmcmNotifGreenProdDesc": "Turn this on to get notifications for machines in the greenhouse.",
+
+  "gmcmNotifCellarProdTitle": "Notify for Cellar Production",
+  "gmcmNotifCellarProdDesc": "Turn this on to get notifications for machines in the cellar.",
+  "gmcmNotifBarnProdTitle": "Notify for Barn Production",
+  "gmcmNotifBarnProdDesc": "Turn this on to get notifications for machines in the barn."
 }
+

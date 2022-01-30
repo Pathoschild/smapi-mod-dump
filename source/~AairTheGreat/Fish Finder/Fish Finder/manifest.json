@@ -11,11 +11,11 @@
 {
   "Name": "Fish Finder",
   "Author": "AairTheGreat",
-  "Version": "1.0.2",
+  "Version": "1.0.3",
   "Description": "Hopefully makes finding fishing spots easier",
   "UniqueID": "AairTheGreat.FishFinder",
   "EntryDll": "Fish Finder.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [
     "GitHub:AairTheGreat/StardewValleyMods",
     "Nexus:5011"

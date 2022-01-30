@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProducerFrameworkMod.ContentPack;
@@ -28,7 +28,7 @@ namespace ProducerFrameworkMod
 
     internal class ObjectOverrides
     {
-        [HarmonyPriority(800)]
+        [HarmonyPriority(Priority.First)]
         internal static bool PerformObjectDropInAction(Object __instance, Item dropInItem, bool probe, Farmer who, ref bool __result)
         {
             if (__instance.isTemporarilyInvisible || !(dropInItem is Object))
@@ -237,7 +237,7 @@ namespace ProducerFrameworkMod
         public static IEnumerable<CodeInstruction> draw_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             LinkedList<CodeInstruction> newInstructions = new LinkedList<CodeInstruction>(instructions);
-            CodeInstruction codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Call && c.operand?.ToString() == "Microsoft.Xna.Framework.Vector2 getScale()");
+            CodeInstruction codeInstruction = newInstructions.FirstOrDefault(c => c.opcode == OpCodes.Callvirt && c.operand?.ToString() == "Microsoft.Xna.Framework.Vector2 getScale()");
             LinkedListNode<CodeInstruction> linkedListNode = newInstructions.Find(codeInstruction);
             if (linkedListNode != null && codeInstruction != null)
             {
@@ -291,7 +291,7 @@ namespace ProducerFrameworkMod
             float layerDepth,
             Object producer)
         {
-            if (ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig)
+            if (producer.heldObject.Value != null && ProducerController.GetProducerConfig(producer.Name) is ProducerConfig producerConfig)
             {
                 if (producerConfig.ProducingAnimation is Animation producingAnimation && producer.minutesUntilReady > 0 && producerConfig.CheckSeasonCondition(Game1.currentLocation) && producerConfig.CheckWeatherCondition() && producerConfig.CheckCurrentTimeCondition())
                 {
@@ -347,7 +347,7 @@ namespace ProducerFrameworkMod
             return (int)tileLocation.X * (int)tileLocation.X * 13 + (int)tileLocation.Y * (int)tileLocation.Y * 1019;
         }
 
-        [HarmonyPriority(800)]
+        [HarmonyPriority(Priority.First)]
         internal static bool performDropDownAction(Object __instance, Farmer who, bool __result)
         {
             if (ProducerController.GetProducerConfig(__instance.Name) is ProducerConfig producerConfig)

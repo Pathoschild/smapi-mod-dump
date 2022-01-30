@@ -1,10 +1,10 @@
 ﻿{
-  "Name": "Producer Framework Mod",
-  "Author": "Digus",
-  "Version": "1.7.3",
-  "Description": "Framework to add rules to produce objects or change the vanilla rules.",
-  "UniqueID": "Digus.ProducerFrameworkMod",
-  "EntryDll": "ProducerFrameworkMod.dll",
-  "MinimumApiVersion": "3.9.0",
-  "UpdateKeys": [ "Nexus:4970" ]
+    "Name": "Producer Framework Mod",
+    "Author": "Digus",
+    "Version": "1.7.4",
+    "Description": "Framework to add rules to produce objects or change the vanilla rules.",
+    "UniqueID": "Digus.ProducerFrameworkMod",
+    "EntryDll": "ProducerFrameworkMod.dll",
+    "MinimumApiVersion": "3.13.0",
+    "UpdateKeys": [ "Nexus:4970" ]
 }

@@ -8,12 +8,16 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Common.Extensions;
+
+#region using directives
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
 
-namespace TheLion.Stardew.Common.Extensions;
+#endregion using directives
 
 public static class CodeInstructionListExtensions
 {

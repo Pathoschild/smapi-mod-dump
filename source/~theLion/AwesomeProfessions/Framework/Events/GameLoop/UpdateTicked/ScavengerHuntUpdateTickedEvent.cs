@@ -8,15 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class ScavengerHuntUpdateTickedEvent : UpdateTickedEvent
 {
     /// <inheritdoc />
-    public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        ModState.ScavengerHunt.Update(e.Ticks);
+        ModEntry.State.Value.ScavengerHunt.Update(e.Ticks);
     }
 }

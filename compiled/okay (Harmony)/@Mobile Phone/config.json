@@ -129,6 +129,7 @@
     "A": 255
   },
   "EnableIncomingCalls": true,
+  "ReceiveCallsUnderground": false,
   "FriendCallChance": 0.01,
   "CallTextColor": {
     "B": 255,

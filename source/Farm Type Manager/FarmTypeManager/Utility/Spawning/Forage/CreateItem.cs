@@ -8,18 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -45,7 +40,7 @@ namespace FarmTypeManager
                         Monitor.Log($"Failed to create an item. Saved object does not appear to be an item.", LogLevel.Debug);
                         Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
                         return null;
-                }   
+                }
 
                 if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container && save.Type != SavedObject.ObjectType.DGA) //if this save doesn't have an ID (and isn't a container or a DGA item)
                 {

@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "Name": "[JA] The Grape Divide",
+    "Author": "Goldenrevolver",
+    "Version": "3.0",
+    "Description": "Adds the actual grape item needed by Forage Fantasy",
+    "UniqueID": "Goldenrevolver.TheGrapeDivide",
+    "UpdateKeys": [ "Nexus:7554" ],
+	"MinimumApiVersion": "3.13.2",
+	"ContentPackFor": {
+		"UniqueID": "spacechase0.JsonAssets"
+	}
+}

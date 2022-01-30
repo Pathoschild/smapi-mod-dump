@@ -9,10 +9,8 @@
 *************************************************/
 
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using TwilightShards.Stardew.Common;
 
 namespace TwilightShards.TheStarsIncline
 {

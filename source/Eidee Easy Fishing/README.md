@@ -7,29 +7,31 @@ for queries and analysis.**
 ----
 
 # Eidee Easy Fishing
-カスタマイズ可能な、釣りの簡易化Mod
-
 Customizable Mod for easy fishing.
 
-## 概要 / Outline:
-  このModは釣りを簡単にするために作成されました。コンフィグから、ミニゲームをスキップ、ミニゲームの簡易化、常に宝箱を発見、常に2尾釣りなど細かく設定できます。
+## Outline:
+This Mod was created to make fishing easier. You can customize from your configuration, such as skipping minigame, minigame make easier, always found a Treasure, always double fishing.
 
-  This Mod was created to make fishing easier. You can customize from your configuration, such as skipping minigame, minigame make easier, always found a Treasure, always double fishing.
-
-## コンフィグ / Config:
-  ゲーム中、F5キーを押下することでコンフィグを再読み込みできます。
-
-  During the game, you can reload the config by pressing F5.
+## Config:
+During the game, you can reload the configuration by pressing the F5 key. It is possible to change the keys from the config.
+Starting with version 1.1.1, you can now edit the configuration in the "[Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)"
 
 |Property|Description|
 |--------|-----------|
-|BiteFaster|ヒットまでの時間を短縮します。<br>Reduces the time to hit.|
-|HitAutomatically|自動でヒット処理を行います。<br>Automatic hit processing.|
-|SkipMinigame|釣りのミニゲームをスキップします。<br>Skip the minigame.|
-|FishEasyCaught|魚のアイコンがバーを追いかけるようになります。<br>The fish icon follows the bar.|
-|TreasureAlwaysBeFound|常に宝箱を発見するようになります。<br>You will always find the Treasure.|
-|TreasureEasyCaught|宝箱のアイコンがバーを追いかけるようになります。<br>The Treasure icon follows the bar.|
-|AlwaysCaughtDoubleFish|ワイルドな釣りエサを使用している場合、常に2尾の魚を釣り上げます。<br>If the bait is Wild Bait, it always catches two fish.|
-|CaughtDoubleFishOnAnyBait|AlwaysCaughtDoubleFishと一緒にtrueにすると、使用しているエサに関わらず、常に2尾の魚を釣り上げます。<br>If AlwaysCaughtDoubleFish is true, it always catches two fish, regardless of the bait.|
-|AlwaysMaxCastPower|常に最大パワーでキャスティングできます。<br>Cast power is always maximized.|
-|ReloadConfig|コンフィグをリロードするキーを設定できます。<br>Set the key to reload the configuration.|
+|BiteFaster|It reduces the time it takes for fish to bite the bait.|
+|HitAutomatically|You do not need to click the mouse to go to the minigame. If the feature to skip the minigame is enabled, you will caught the fish.|
+|SkipMinigame|Skip the minigame and caught the fish.|
+|FishEasyCaught|In the minigame, the fish icon follows the bar.|
+|TreasureAlwaysBeFound|The treasure will appear every time. This works even if you want to skip the minigame.|
+|TreasureEasyCaught|In the mini-game, the treasure icon follows the bar.|
+|AlwaysCaughtDoubleFish|If the bait is Wild Bait, it always catches two fish.|
+|CaughtDoubleFishOnAnyBait|You will get a chance to catch two fish regardless of the bait you are using. This can be used in conjunction with AlwaysCaughtDoubleFish.|
+|AlwaysMaxCastPower|Cast power is always maximized.|
+|ReloadConfig|Set the key to reload the configuration.|
+
+## Credits:
+### Dependencies:
+* [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
+
+# License:
+Eidee Easy Fishing is developed and released under the [MIT license](./LICENSE), except for the APIs of the libraries it depends on.

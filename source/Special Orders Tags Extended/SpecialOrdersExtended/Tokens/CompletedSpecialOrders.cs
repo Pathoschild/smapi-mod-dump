@@ -10,13 +10,15 @@
 
 namespace SpecialOrdersExtended.Tokens;
 
+/// <summary>
+/// Token that gets all completed special orders.
+/// </summary>
 internal class CompletedSpecialOrders : AbstractToken
 {
-    /// <summary>Update the values when the context changes.</summary>
-    /// <returns>Returns whether the value changed, which may trigger patch updates.</returns>
+    /// <inheritdoc/>
     public override bool UpdateContext()
     {
-        List<string> specialOrderNames;
+        List<string>? specialOrderNames;
         if (Context.IsWorldReady)
         {
             specialOrderNames = Game1.player.team.completedSpecialOrders.Keys.OrderBy(a => a)?.ToList();
@@ -25,15 +27,6 @@ internal class CompletedSpecialOrders : AbstractToken
         {
             specialOrderNames = SaveGame.loaded?.completedSpecialOrders?.OrderBy(a => a)?.ToList();
         }
-
-        if (specialOrderNames == SpecialOrdersCache)
-        {
-            return false;
-        }
-        else
-        {
-            SpecialOrdersCache = specialOrderNames;
-            return true;
-        }
+        return this.UpdateCache(specialOrderNames);
     }
 }

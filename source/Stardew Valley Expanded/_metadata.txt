@@ -6,9 +6,10 @@ mods:
    Stardew Valley Expanded
 
 latest commit:
-   commit ea199b205edaf4a535045b51d9a3cf4557b65744
-   Author: FlashShifter <49621564+FlashShifter@users.noreply.github.com>
-   Date:   Tue Oct 26 12:44:18 2021 -0700
+   commit f5c709eb3b7c9c20d544bf23a550ed7822a25b34
+   Merge: 1b4cab1 ea199b2
+   Author: FlashShifter <devinhedegaard@gmail.com>
+   Date:   Sat Jan 29 15:08:19 2022 -0800
    
-       Update LICENSE
+       SVE 1.14 update
    

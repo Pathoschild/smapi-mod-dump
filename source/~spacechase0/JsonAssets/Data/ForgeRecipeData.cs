@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Runtime.Serialization;
 
 namespace JsonAssets.Data
@@ -37,7 +38,7 @@ namespace JsonAssets.Data
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            this.AbleToForgeConditions ??= new string[0];
+            this.AbleToForgeConditions ??= Array.Empty<string>();
         }
     }
 }

@@ -9,22 +9,16 @@
 *************************************************/
 
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
-using xTile;
 using xTile.Dimensions;
-using xTile.Display;
 using xTile.Layers;
-using xTile.Tiles;
-using Rectangle = xTile.Dimensions.Rectangle;
 
 namespace ExtraMapLayers
 {
@@ -73,6 +67,15 @@ namespace ExtraMapLayers
                original: AccessTools.Method(Game1.mapDisplayDevice.GetType(), "DrawTile"),
                prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.DrawTile_Prefix))
             );
+            var pytkapi = Helper.ModRegistry.GetApi("Platonymous.Toolkit");
+            if(pytkapi != null)
+            {
+                Monitor.Log($"patching pytk");
+                harmony.Patch(
+                   original: AccessTools.Method(pytkapi.GetType().Assembly.GetType("PyTK.Types.PyDisplayDevice"), "DrawTile"),
+                   prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.DrawTile_Prefix))
+                );
+            }
         }
 
         public static IEnumerable<CodeInstruction> Layer_DrawNormal_Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -81,14 +84,21 @@ namespace ExtraMapLayers
             List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
             for (int i = 0; i < codes.Count; i++)
             {
-                if (codes[i].opcode == OpCodes.Callvirt && (MethodInfo)codes[i].operand == AccessTools.Method("String:Equals", new Type[]{typeof(string)}) && i > 0 && codes[i - 1].opcode == OpCodes.Ldstr && (string)codes[i - 1].operand == "Front")
+                if (i > 0&& codes[i].opcode == OpCodes.Callvirt && (MethodInfo)codes[i].operand == AccessTools.Method("String:Equals", new Type[]{typeof(string)}) && codes[i - 1].opcode == OpCodes.Ldstr && (string)codes[i - 1].operand == "Front")
                 {
-                    PMonitor.Log("switching equals to starts with");
-                    codes[i].operand = AccessTools.Method("String:StartsWith", new Type[] { typeof(string) }, null);
+                    PMonitor.Log("switching equals to startswith for layer id");
+                    codes[i].operand = AccessTools.Method("String:StartsWith", new Type[] { typeof(string) });
+                    break;
                 }
             }
             return codes.AsEnumerable();
         }
+
+        private static int GetLayerOffset(string layerName)
+        {
+            return layerName.StartsWith("Front") ? 16 : 0;
+        }
+
         public static int thisLayerDepth = 0;
         public static void Layer_Draw_Postfix(Layer __instance)
         {
@@ -97,10 +107,9 @@ namespace ExtraMapLayers
 
             foreach (Layer layer in Game1.currentLocation.Map.Layers)
             {
-                Match match = Regex.Match(layer.Id, $"^{__instance.Id}([0-9]+)$");
-                if (match.Success)
+                if (layer.Id.StartsWith(__instance.Id) && int.TryParse(layer.Id.Substring(__instance.Id.Length), out int layerIndex))
                 {
-                    thisLayerDepth = int.Parse(match.Groups[1].Value);
+                    thisLayerDepth = layerIndex;
                     layer.Draw(Game1.mapDisplayDevice, Game1.viewport, Location.Origin, false, 4);
                     thisLayerDepth = 0;
                 }

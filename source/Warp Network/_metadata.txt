@@ -6,9 +6,9 @@ mods:
    Warp Network
 
 latest commit:
-   commit 17be74c869baba05fbf69c69956f8b97f9908253
+   commit ededb58c0a1fb44f03b679054128986ff17989b2
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Mon Dec 20 22:31:24 2021 -0500
+   Date:   Tue Jan 25 13:42:41 2022 -0500
    
-       adjust button size for better sprite scaling
+       fix ui centering
    

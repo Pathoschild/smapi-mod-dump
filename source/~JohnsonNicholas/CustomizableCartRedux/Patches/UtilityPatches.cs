@@ -16,8 +16,6 @@ using StardewValley.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 using TwilightShards.Common;
 
 namespace CustomizableTravelingCart.Patches
@@ -48,10 +46,16 @@ namespace CustomizableTravelingCart.Patches
             Random Dice = new Xoshiro.PRNG64.XoShiRo256starstar();
             Dictionary<ISalable, int[]> stock1 = new Dictionary<ISalable, int[]>();
             HashSet<int> stockIndices1 = new HashSet<int>();
-            int numStock = (CustomizableCartRedux.OurConfig.AmountOfItems <= 3 ? 4 : CustomizableCartRedux.OurConfig.AmountOfItems);
+            int numStock = (CustomizableCartRedux.OurConfig.AmountOfItems <= 4 ? 5 : CustomizableCartRedux.OurConfig.AmountOfItems);
             int maxItemID = CustomizableCartRedux.OurConfig.UseVanillaMax ? 790 :
                 Game1.objectInformation.Keys.Max();
             var itemsToBeAdded = new List<int>();
+
+            bool add_guaranteed_item = false;
+            if (Game1.netWorldState.Value.VisitsUntilY1Guarantee == 0)
+            {
+                add_guaranteed_item = true;
+            }
 
             for (int index1 = 0; index1 < (numStock - 3); ++index1)
             {
@@ -70,6 +74,12 @@ namespace CustomizableTravelingCart.Patches
                     {
                         index2 = GetItem(Dice, maxItemID);
                     }
+
+                    if (index2 == 266 || index2 == 485)
+                    {
+                        add_guaranteed_item = false;
+                    }
+
                     var strArray = Game1.objectInformation[index2].Split('/');
 
                     stock2 = stock1;
@@ -83,6 +93,16 @@ namespace CustomizableTravelingCart.Patches
                     };
                 }
                 while (!addToStock(stock2, stockIndices2, objectToAdd, listing));
+
+                if (add_guaranteed_item)
+                {
+                    string[] split2 = Game1.objectInformation[485].Split('/');
+                    addToStock(stock1, stockIndices1, new StardewValley.Object(485, 1), new int[2]
+                    {
+                    Math.Max(Dice.Next(1, 11) * 100, Convert.ToInt32(split2[1]) * Dice.Next(3, 6)),
+                    (!(Dice.NextDouble() < 0.1)) ? 1 : 5
+                    });
+                }
             }
             addToStock(stock1, stockIndices1, getRandomFurniture(Dice, null, 0, 1613), new int[2]
             {
@@ -117,6 +137,8 @@ namespace CustomizableTravelingCart.Patches
                 });
             }
 
+
+            stockIndices1.Clear(); //clear this.
             return stock1;
         }
 

@@ -190,7 +190,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 // (e.g. a recipe with several possible inputs => several recipes with one possible input)
                 .SelectMany(recipe =>
                 {
-                    Item outputItem = recipe.CreateItem(ingredient);
+                    Item outputItem = recipe.TryCreateItem(ingredient);
+
                     RecipeItemEntry output = this.CreateItemEntry(
                         name: recipe.SpecialOutput?.DisplayText ?? outputItem?.DisplayName,
                         item: outputItem,

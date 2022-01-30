@@ -1,0 +1,10 @@
+{
+  "Name": "AccessibleTiles",
+  "Author": "GrumpyCrouton",
+  "Version": "1.1.0",
+  "Description": "<One or two sentences about the mod>",
+  "UniqueID": "GrumpyCrouton.AccessibleTiles",
+  "EntryDll": "AccessibleTiles.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:10755"]
+}

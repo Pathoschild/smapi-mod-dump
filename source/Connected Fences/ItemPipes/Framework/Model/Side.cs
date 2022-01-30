@@ -19,6 +19,8 @@ namespace ItemPipes.Framework.Model
     public class Side
     {
         public string Name { get; set; }
+
+        public Side() { }
         public Side(string name)
         {
             Name = name;

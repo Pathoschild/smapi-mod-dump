@@ -6,12 +6,16 @@
   "VisibleSaddleBags": "Green",
   "Petting": true,
   "Water": true,
+  "HorseHeater": true,
+  "HorseHoofstepEffects": true,
   "Feeding": true,
   "PetFeeding": true,
+  "NewFoodSystem": true,
   "AllowMultipleFeedingsADay": false,
   "HorseMenuKey": "H, LeftStick + DPadUp",
   "PetMenuKey": "P, LeftStick + DPadDown",
   "AlternateSaddleBagAndFeedKey": "LeftStick",
   "DisableMainSaddleBagAndFeedKey": false,
-  "DisableStableSpriteChanges": false
+  "DisableStableSpriteChanges": false,
+  "DisableHorseSounds": false
 }

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/4638
 IDs: Candidus42.MiceInTheValley
-update keys: Nexus:4638
+update keys: Nexus:4638, GitHub:mus-candidus/MiceInTheValley

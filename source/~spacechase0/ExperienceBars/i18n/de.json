@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.position-x.name": "X Position",
+    "config.position-x.tooltip": "Die X-Pixel-Position, an der die Erfahrungsbalken dargestellt werden sollen, gemessen an der linken oberen Ecke des Bildschirms.",
+    "config.position-y.name": "Y Position",
+    "config.position-y.tooltip": "Die Y-Pixel-Position, an der die Erfahrungsbalken dargestellt werden sollen, gemessen an der linken oberen Ecke des Bildschirms.",
+    "config.toggle-key.name": "Taste ein-/ausblenden",
+    "config.toggle-key.tooltip": "Die Taste, die die Erfahrungsbalken ein- oder ausblendet. Drücke die Umschalttaste und diese Taste, um die Anzeige zu verschieben."
+}

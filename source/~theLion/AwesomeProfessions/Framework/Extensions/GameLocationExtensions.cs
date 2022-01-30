@@ -8,41 +8,49 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Extensions;
+
+#region using directives
+
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-using TheLion.Stardew.Common.Extensions;
+using xTile.Dimensions;
+
+using Common.Extensions;
+
 using SUtility = StardewValley.Utility;
 
-namespace TheLion.Stardew.Professions.Framework.Extensions;
+#endregion using directives
 
 public static class GameLocationExtensions
 {
     /// <summary>Whether any farmer in the game location has a specific profession.</summary>
     /// <param name="professionName">The name of the profession.</param>
-    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, string professionName)
+    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, Profession profession)
     {
         if (!Context.IsMultiplayer && location.Equals(Game1.currentLocation))
-            return Game1.player.HasProfession(professionName);
-        return location.farmers.Any(farmer => farmer.HasProfession(professionName));
+            return Game1.player.HasProfession(profession);
+        return location.farmers.Any(farmer => farmer.HasProfession(profession));
     }
 
     /// <summary>Whether any farmer in the game location has a specific profession.</summary>
     /// <param name="professionName">The name of the profession.</param>
     /// <param name="farmers">All the farmer instances in the location with the given profession.</param>
-    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, string professionName,
+    public static bool DoesAnyPlayerHereHaveProfession(this GameLocation location, Profession profession,
         out IList<Farmer> farmers)
     {
         farmers = new List<Farmer>();
         if (!Context.IsMultiplayer && location.Equals(Game1.player.currentLocation) &&
-            Game1.player.HasProfession(professionName))
+            Game1.player.HasProfession(profession))
             farmers.Add(Game1.player);
         else
-            foreach (var farmer in location.farmers.Where(farmer => farmer.HasProfession(professionName)))
+            foreach (var farmer in location.farmers.Where(farmer => farmer.HasProfession(profession)))
                 farmers.Add(farmer);
 
         return farmers.Any();
@@ -75,8 +83,45 @@ public static class GameLocationExtensions
     /// <summary>Whether the game location can spawn enemies.</summary>
     public static bool IsCombatZone(this GameLocation location)
     {
-        return location.IsAnyOfTypes(typeof(MineShaft), typeof(Woods), typeof(VolcanoDungeon)) ||
+        return location is MineShaft or Woods or VolcanoDungeon ||
                location.NameOrUniqueName.ContainsAnyOf("CrimsonBadlands", "DeepWoods", "RidgeForest",
                    "SpiritRealm") || location.characters.OfType<Monster>().Any();
+    }
+
+    /// <summary>Check if a tile on a map is valid for spawning diggable treasure.</summary>
+    /// <param name="tile">The tile to check.</param>
+    /// <param name="location">The game location.</param>
+    public static bool IsTileValidForTreasure(this GameLocation location, Vector2 tile)
+    {
+        return (!location.objects.TryGetValue(tile, out var o) || o == null) &&
+               location.doesTileHaveProperty((int) tile.X, (int) tile.Y, "Spawnable", "Back") != null &&
+               !location.doesEitherTileOrTileIndexPropertyEqual((int) tile.X, (int) tile.Y, "Spawnable", "Back", "F") &&
+               location.isTileLocationTotallyClearAndPlaceable(tile) &&
+               location.getTileIndexAt((int) tile.X, (int) tile.Y, "AlwaysFront") == -1 &&
+               location.getTileIndexAt((int) tile.X, (int) tile.Y, "Front") == -1 && !location.isBehindBush(tile) &&
+               !location.isBehindTree(tile);
+    }
+
+    /// <summary>Check if a tile is clear of debris.</summary>
+    /// <param name="tile">The tile to check.</param>
+    /// <param name="location">The game location.</param>
+    public static bool IsTileClearOfDebris(this GameLocation location, Vector2 tile)
+    {
+        return (from debris in location.debris
+            where debris.item is not null && debris.Chunks.Count > 0
+            select new Vector2((int) (debris.Chunks[0].position.X / Game1.tileSize) + 1,
+                (int) (debris.Chunks[0].position.Y / Game1.tileSize) + 1)).All(debrisTile => debrisTile != tile);
+    }
+
+    /// <summary>Force a tile to be affected by the hoe.</summary>
+    /// <param name="tile">The tile to change.</param>
+    /// <param name="location">The game location.</param>
+    public static bool MakeTileDiggable(this GameLocation location, Vector2 tile)
+    {
+        if (location.doesTileHaveProperty((int) tile.X, (int) tile.Y, "Diggable", "Back") is not null) return true;
+
+        var digSpot = new Location((int) tile.X * Game1.tileSize, (int) tile.Y * Game1.tileSize);
+        location.Map.GetLayer("Back").PickTile(digSpot, Game1.viewport.Size).Properties["Diggable"] = true;
+        return false;
     }
 }

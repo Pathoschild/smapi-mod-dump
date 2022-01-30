@@ -8,21 +8,10 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
-using Newtonsoft.Json;
 
 namespace FarmTypeManager
 {
@@ -37,7 +26,7 @@ namespace FarmTypeManager
             public static string GetTMXBuildableName(string locationName)
             {
                 string tmxPrefix = "BuildableIndoors-"; //the prefix currently used by TMXLoader in buildable indoor location names
-                
+
                 if (!locationName.StartsWith(tmxPrefix)) //if the location name doesn't start with the TMX prefix
                 {
                     return null; //return null without checking TMX's data

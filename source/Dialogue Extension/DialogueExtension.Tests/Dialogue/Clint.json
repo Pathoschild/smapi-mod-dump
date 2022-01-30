@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/DialogueExtension
+**
+*************************************************/
+
+{
+  "Introduction": "Er... hi. I'm Clint.#$e#I'm the town blacksmith. If you ever need to upgrade your tools, I'm your guy.",
+  "Resort_Entering": "I'm gonna put on my special red trunks. They're supposed to be really eye-catching.",
+  "Resort_Leaving": "Well, that didn't turn out like I was imagining...",
+  "Resort_Shore": "Oh no... I forgot to clip my toenails.$s",
+  "Resort_Shore_2": "I thought working a furnace would have prepared me for this heat, but I'm sweating in places I didn't know I could.$s#$e#I hope no one noticed...#$e#%Clint's body is glistening...",
+  "Resort_Chair": "Ow... my whole torso is burnt to a crisp.$s",
+  "Resort_Bar": "I'm hungry...$s",
+  "Resort": "*sigh*... We're all at the beach but I still feel so alone...$s",
+  "reject_868": "Hmm... That's an interesting stone, like nothing I've ever seen before.#$b#I wouldn't know what to do with it, though. I deal in the mundane, not the magical...",
+  "cc_Minecart": "Somehow, the old town minecart system started working again. It's very convenient for getting to and from the mines.#$b#Don't get too cozy, though... if it can start up so suddenly, it could just as well shut down...",
+  "Mon": "Yep. I'm a blacksmith.#$e#My father was also a blacksmith.#$e#My grandfather was a blacksmith as well.$u#$q 9/9 Mon_old#I bet you can't guess what my great-grandfather was...#$r 9 30 Mon_9#A blacksmith.#$r 9 50 Mon_clown#A silly clown.#$r 9 -50 Mon_rude#A sarcastic jerk.",
+  "Mon_old": "And yes, my great-grandfather was also a blacksmith.",
+  "Mon_9": "How'd you know?$u",
+  "Mon_clown": "Hahahaha. Good one.$h",
+  "Mon_rude": "Wow. That was rude. I was just being funny and you took it to a whole new level.",
+  "Mon4": "Be glad you're a farmer, @. It's nicer to work outdoors than by a hot furnace all day.#$e#I'm only a blacksmith because my father pushed me into it.",
+  "Tue": "If you want me to upgrade your tools you'll have to give me the correct ore.#$e#And you'll have to pay me a fee, of course.",
+  "Wed": "Hey. What do you need?",
+  "Wed6": "Oh, hi @. Sorry If I look a little messy. I've been working at the furnace all morning.$h#$e#So, did you need anything, or do you just want to visit?",
+  "Thu": "Business has been slow lately.#$e#You should upgrade your tools. I could use the cash.",
+  "Fri": "The weather doesn't really matter to me. I typically stay near my shop year-round.#$e#Depressing, huh?",
+  "Sat": "Sometimes I wonder how I ended up in this town.$u",
+  "Sat6": "Damn it, I'm too old to do anything exciting anymore. All I have to look forward to is years and years of sweaty, hot furnace-work.",
+  "Sun": "Don't you have work to do?",
+  "Sun4": "So how are your tools holding up?",
+  "event_advice1": "Okay... I'll keep that in mind.",
+  "event_advice2": "That's the problem... I do act natural... but I never have any success.$s",
+  "summer_Mon4": "Be glad you're a farmer, @. It's nicer to work outdoors than by a hot furnace all day.#$e#I'm only a blacksmith because my father pushed me into it.",
+  "summer_Wed6": "Oh, hi @! Sorry If I look a little messy. I've been working at the furnace all morning.$h#$e#So, did you need anything, or do you just want to visit?",
+  "summer_Thu": "Business has been slow lately.#$e#You should upgrade your tools. I could use the cash."
+}

@@ -13,6 +13,7 @@ using DynamicGameAssets.Game;
 using DynamicGameAssets.PackData;
 using HarmonyLib;
 using Spacechase.Shared.Patching;
+using SpaceCore.Events;
 using SpaceShared;
 using StardewModdingAPI;
 using StardewValley;
@@ -47,6 +48,7 @@ namespace DynamicGameAssets.Patches
             if (o is CustomObject customObj)
             {
                 NpcPatcher.DoReceiveGift(__instance, customObj, giver, updateGiftLimitInfo, friendshipChangeMultiplier, showResponse);
+                SpaceEvents.InvokeAfterGiftGiven( __instance, o, giver );
                 return false;
             }
             return true;

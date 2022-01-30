@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/xynerorias/pierre-roulette-shop-SV
+**
+*************************************************/
+
+{
+  "Name": "Pierre's Roulette Shop",
+  "Author": "Xynerorias",
+  "Version": "1.0",
+  "Description": "Makes Pierre's stock of seed random everyday in an attempt to declutter it when you have lots of crop mods.",
+  "UniqueID": "xynerorias.pierresroulette",
+  "EntryDll": "Pierre's Roulette.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:10826" ]
+}

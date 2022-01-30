@@ -10,9 +10,9 @@ mods:
    TehCore
 
 latest commit:
-   commit 704bf406fe377ef12b283282b53ea09378353f99
+   commit c4291c0f0db65dff866d0d59ab5d1bbe5f3ded10
    Author: TehPers <tehperz@gmail.com>
-   Date:   Fri Dec 31 02:40:22 2021 -0800
+   Date:   Sun Jan 2 15:40:02 2022 -0800
    
-       Update TFO to 3.2.7
+       Fix the links in the TFO README
    

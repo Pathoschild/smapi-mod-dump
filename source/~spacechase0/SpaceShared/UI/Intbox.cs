@@ -8,9 +8,16 @@
 **
 *************************************************/
 
+#if IS_SPACECORE
+namespace SpaceCore.UI
+{
+    public
+#else
 namespace SpaceShared.UI
 {
-    internal class Intbox : Textbox
+    internal
+#endif
+         class Intbox : Textbox
     {
         /*********
         ** Accessors

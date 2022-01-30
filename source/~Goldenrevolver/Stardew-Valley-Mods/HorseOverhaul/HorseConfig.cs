@@ -27,8 +27,6 @@ namespace HorseOverhaul
 
     public interface IGenericModConfigMenuAPI
     {
-        void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
         void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
 
         void RegisterLabel(IManifest mod, string labelName, string labelDesc);
@@ -50,6 +48,8 @@ namespace HorseOverhaul
         void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
 
         void RegisterComplexOption(IManifest mod, string optionName, string optionDesc, Func<Vector2, object, object> widgetUpdate, Func<SpriteBatch, Vector2, object, object> widgetDraw, Action<object> onSave);
+
+        void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 
         void SetTitleScreenOnlyForNextOptions(IManifest mod, bool titleScreenOnly);
 
@@ -81,9 +81,15 @@ namespace HorseOverhaul
 
         public bool Water { get; set; } = true;
 
+        public bool HorseHeater { get; set; } = true;
+
+        public bool HorseHoofstepEffects { get; set; } = true;
+
         public bool Feeding { get; set; } = true;
 
         public bool PetFeeding { get; set; } = true;
+
+        public bool NewFoodSystem { get; set; } = true;
 
         public bool AllowMultipleFeedingsADay { get; set; } = false;
 
@@ -96,6 +102,8 @@ namespace HorseOverhaul
         public bool DisableMainSaddleBagAndFeedKey { get; set; } = false;
 
         public bool DisableStableSpriteChanges { get; set; } = false;
+
+        public bool DisableHorseSounds { get; set; } = false;
 
         public static void VerifyConfigValues(HorseConfig config, HorseOverhaul mod)
         {
@@ -157,7 +165,8 @@ namespace HorseOverhaul
                 {
                     mod.Helper.WriteConfig(config);
                     VerifyConfigValues(config, mod);
-                });
+                }
+            );
 
             api.SetTitleScreenOnlyForNextOptions(manifest, true);
 
@@ -174,9 +183,13 @@ namespace HorseOverhaul
             api.RegisterSimpleOption(manifest, "Petting", null, () => config.Petting, (bool val) => config.Petting = val);
             api.RegisterSimpleOption(manifest, "Water", null, () => config.Water, (bool val) => config.Water = val);
             api.RegisterSimpleOption(manifest, "Feeding", null, () => config.Feeding, (bool val) => config.Feeding = val);
+            api.RegisterSimpleOption(manifest, "Heater", null, () => config.HorseHeater, (bool val) => config.HorseHeater = val);
 
             api.RegisterLabel(manifest, "Other", null);
 
+            api.RegisterSimpleOption(manifest, "Horse Hoofstep Effects", null, () => config.HorseHoofstepEffects, (bool val) => config.HorseHoofstepEffects = val);
+            api.RegisterSimpleOption(manifest, "Disable Horse Sounds", null, () => config.DisableHorseSounds, (bool val) => config.DisableHorseSounds = val);
+            api.RegisterSimpleOption(manifest, "New Food System", null, () => config.NewFoodSystem, (bool val) => config.NewFoodSystem = val);
             api.RegisterSimpleOption(manifest, "Pet Feeding", null, () => config.PetFeeding, (bool val) => config.PetFeeding = val);
             api.RegisterSimpleOption(manifest, "Allow Multiple Feedings A Day", null, () => config.AllowMultipleFeedingsADay, (bool val) => config.AllowMultipleFeedingsADay = val);
             api.RegisterSimpleOption(manifest, "Disable Stable Sprite Changes", null, () => config.DisableStableSpriteChanges, (bool val) => config.DisableStableSpriteChanges = val);
@@ -189,7 +202,6 @@ namespace HorseOverhaul
             api.AddKeybindList(manifest, () => config.PetMenuKey, (KeybindList keybindList) => config.PetMenuKey = keybindList, () => "Pet Menu Key");
             api.AddKeybindList(manifest, () => config.AlternateSaddleBagAndFeedKey, (KeybindList keybindList) => config.AlternateSaddleBagAndFeedKey = keybindList, () => "Alternate Saddle Bag\nAnd Feed Key");
             api.RegisterSimpleOption(manifest, "Disable Main Saddle Bag\nAnd Feed Key", null, () => config.DisableMainSaddleBagAndFeedKey, (bool val) => config.DisableMainSaddleBagAndFeedKey = val);
-            api.AddParagraph(manifest, () => "You can disable/ unassign keybindings by changing them to \"\" in the config file.");
         }
     }
 }

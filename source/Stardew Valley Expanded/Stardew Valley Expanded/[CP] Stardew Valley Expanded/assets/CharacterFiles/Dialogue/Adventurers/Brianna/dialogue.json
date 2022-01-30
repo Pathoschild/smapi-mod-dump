@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+
+"Mon": "%Brianna: I'm busy. Go away.#$e#%Brianna: Shoo...",
+"Tue": "%Brianna: Ugh. I got stuck with patrol duty.",
+"Wed": "%Brianna: Lance has looked out for me since I joined. He's like a big brother to me.",
+"Thu": "%Brianna: My blue cloak gives me 20 defense!",
+"Fri": "%She continues talking to Drake and ignores you.",
+"Sat": "%Brianna: Can you walk on water too?#$e#%Brianna: It took me months to figure it out.",
+"Sun": "%Brianna: Those golden ocean flowers helped me befriend Drake."
+
+}

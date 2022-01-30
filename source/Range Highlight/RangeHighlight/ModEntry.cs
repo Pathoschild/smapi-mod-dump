@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-// Copyright 2020 Jamie Taylor
+// Copyright 2020-2022 Jamie Taylor
 using System;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -29,12 +29,14 @@ namespace RangeHighlight {
 
         public override void Entry(IModHelper helper) {
             this.helper = helper;
+            I18n.Init(helper.Translation);
             config = helper.ReadConfig<ModConfig>();
-            highlighter = new RangeHighlighter(this.Monitor, helper, config);
+            highlighter = new RangeHighlighter(this);
             api = _api_private = new RangeHighlightAPI(this);
             defaultShapes = new DefaultShapes(api);
-            installDefaultHighlights();
             helper.Events.GameLoop.GameLaunched += onLaunched;
+            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         }
 
         public override object GetApi() {
@@ -42,7 +44,17 @@ namespace RangeHighlight {
         }
 
         private void onLaunched(object sender, GameLaunchedEventArgs e) {
+            ModConfig.RegisterGMCM(this);
+        }
+
+        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
+            installDefaultHighlights();
             integrations = new Integrations(this);
+        }
+
+        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
+            integrations = null;
+            highlighter?.ClearAllHighlighters();
         }
 
 

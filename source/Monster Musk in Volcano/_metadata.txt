@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/BananaFruit1492/MonsterMuskInVolcano
+   Git: https://github.com/BananaFruit1492/MonsterMuskInVolcano.git
+
+mods:
+   Monster Musk in Volcano
+
+latest commit:
+   commit f188a9db2d4be4f198b3c4c396ef57926e87b5d1
+   Author: BananaFruit <bananafruit1492@gmail.com>
+   Date:   Fri Jan 21 19:01:53 2022 +0100
+   
+       Fixed typo
+   

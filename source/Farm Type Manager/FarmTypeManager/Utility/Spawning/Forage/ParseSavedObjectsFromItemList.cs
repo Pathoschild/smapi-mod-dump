@@ -8,18 +8,11 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.TerrainFeatures;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -92,7 +85,7 @@ namespace FarmTypeManager
                             Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
                             Monitor.Log($"This may be caused by a formatting error in the item list. The affected item will be skipped.", LogLevel.Info);
                         }
-                        
+
                         if (saved != null) //if parsing was successful
                         {
                             SavedObjects.Add(saved); //add this to the list

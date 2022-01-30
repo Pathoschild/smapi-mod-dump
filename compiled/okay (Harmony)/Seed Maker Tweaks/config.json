@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "AncientSeedChance": 0.5,
+  "MixedSeedChance": 2.0,
+  "MinSeeds": 1,
+  "MaxSeeds": 4,
+  "MinMixedSeeds": 1,
+  "MaxMixedSeeds": 5
+}

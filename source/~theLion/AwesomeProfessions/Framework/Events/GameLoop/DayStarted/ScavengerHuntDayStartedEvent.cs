@@ -8,15 +8,20 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class ScavengerHuntDayStartedEvent : DayStartedEvent
 {
     /// <inheritdoc />
-    public override void OnDayStarted(object sender, DayStartedEventArgs e)
+    protected override void OnDayStartedImpl(object sender, DayStartedEventArgs e)
     {
-        if (ModState.ScavengerHunt is not null) ModState.ScavengerHunt.ResetAccumulatedBonus();
+        if (ModEntry.State.Value.ScavengerHunt is not null)
+            ModEntry.State.Value.ScavengerHunt.ResetAccumulatedBonus();
     }
 }

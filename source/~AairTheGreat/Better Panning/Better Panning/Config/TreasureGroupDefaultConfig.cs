@@ -225,7 +225,7 @@ namespace BetterPanning.Config
             treasures.Add(CreateTreasure(532, "Jade Ring",  0.01));
             treasures.Add(CreateTreasure(533, "Emerald Ring",  0.01));
             treasures.Add(CreateTreasure(534, "Ruby Ring",  0.01));
-
+            treasures.Add(CreateTreasure(859, "Lucky Ring", 0.002));
             return treasures;
         }
 

@@ -82,7 +82,8 @@ namespace AlternativeTextures.Framework.Models
 
         public string GetTokenId()
         {
-            return String.Concat(Owner, ".", ItemName, "_", String.IsNullOrEmpty(Season) ? Game1.currentSeason : Season);
+            string seasonSuffix = String.IsNullOrEmpty(Season) ? String.Empty : String.Concat("_", Season);
+            return String.Concat(Owner, ".", ItemName, seasonSuffix);
         }
 
         public string GetNameWithSeason()

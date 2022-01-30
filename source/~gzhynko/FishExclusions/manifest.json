@@ -11,10 +11,10 @@
 {
   "Name": "FishExclusions",
   "Author": "GZhynko",
-  "Version": "1.1.5",
+  "Version": "1.2.0",
   "Description": "Allows user to exclude certain fish or items from catchable fish types.",
   "UniqueID": "GZhynko.FishExclusions",
   "EntryDll": "FishExclusions.dll",
-  "MinimumApiVersion": "3.12.0",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [ "Nexus:7782" ]
 }

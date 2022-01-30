@@ -9,6 +9,19 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 3.1.0
+
+### User-visible Changes
+
+* Add configuration in-game (title screen only) via Generic Mod Config Menu.
+  If GMCM Options is also installed then tint colors can be configured as well.
+
+
+### API Changes
+
+* All highlighters are now cleared when returning to the title screen.  The
+  `SaveLoaded` event is a good place to put any calls to `Add...Highlighter`.
+
 ## Version 3.0.0
 
 ### User-visible Changes

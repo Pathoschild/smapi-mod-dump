@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Bulk Staircases",
+  "Author": "BananaFruit",
+  "Version": "1.0.1",
+  "Description": "Use staircases in bulk",
+  "UniqueID": "BananaFruit.BulkStaircases",
+  "EntryDll": "BulkStaircases.dll",
+  "MinimumApiVersion": "3.13.2",
+  "UpdateKeys": [ "Nexus:10622" ]
+}

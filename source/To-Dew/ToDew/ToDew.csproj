@@ -4,11 +4,10 @@
 		<RootNamespace>ToDew</RootNamespace>
 		<AssemblyName>ToDew</AssemblyName>
 		<TargetFramework>net5.0</TargetFramework>
-		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="1.0.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\LICENSE">
@@ -19,14 +18,5 @@
 			<Link>NOTICE</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="I18n.tt">
-			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>I18n.cs</LastGenOutput>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Update="I18n.cs">
-			<DependentUpon>I18n.tt</DependentUpon>
-		</Compile>
 	</ItemGroup>
 </Project>

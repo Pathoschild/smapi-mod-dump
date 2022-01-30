@@ -8,16 +8,21 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class Game1CreateObjectDebrisPatch : BasePatch
@@ -39,21 +44,21 @@ internal class Game1CreateObjectDebrisPatch : BasePatch
         try
         {
             var who = Game1.getFarmer(whichPlayer);
-            if (!who.HasProfession("Gemologist") || !new SObject(objectIndex, 1).IsGemOrMineral())
+            if (!who.HasProfession(Profession.Gemologist) || !new SObject(objectIndex, 1).IsGemOrMineral())
                 return true; // run original logic
 
             location.debris.Add(new(objectIndex, new(xTile * 64 + 32, yTile * 64 + 32),
                 who.getStandingPosition())
             {
-                itemQuality = Utility.Professions.GetGemologistMineralQuality()
+                itemQuality = who.GetGemologistMineralQuality()
             });
 
-            ModEntry.Data.Increment<uint>("MineralsCollected");
+            ModData.Increment<uint>(DataField.GemologistMineralsCollected);
             return false; // don't run original logic
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

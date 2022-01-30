@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoeStrout/Farmtronics
+**
+*************************************************/
+
+Farmtronics users unite!
+
+Get help, share your code, and hang out
+with other users via these links:
+
+Discord:
+ `https://discord.gg/7s6zajx` (MiniScript)
+ `https://discord.gg/stardewvalley` (SDV)
+
+MiniScript home page:
+ `https://miniscript.org/`
+
+MiniScript forums:
+ `https://forums.miniscript.org/`
+
+GitHub repo:
+`https://github.com/JoeStrout/Farmtronics`

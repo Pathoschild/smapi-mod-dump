@@ -6,15 +6,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 6a67e8ce440cc42ed00e2c507b3cdabdc7f0f874
+   commit bca2ff433db6820f6ffd7d880c0445aaf34daae8
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Fri Dec 3 22:13:31 2021 -0500
+   Date:   Sun Jan 9 22:19:57 2022 -0500
    
-       Updates for SDV 1.5.5 / SMAPI 3.13; version 3.0.0
-       
-       Updated build env.
-       
-       Outer bomb range is no longer offset.
-       
-       Check the IsScarecrow and scarecrow radius functions exposed in 1.5.5.
+       release 3.1.0
    

@@ -1,0 +1,160 @@
+﻿{
+  "positions": [
+    {
+      "name": "姜岛码头海滩",
+      "mapName": "IslandSouth",
+      "x": 10,
+      "y": 34
+    },
+    {
+      "name": "姜岛海盗湾",
+      "mapName": "IslandSouthEast",
+      "x": 28,
+      "y": 19
+    },
+    {
+      "name": "姜岛东丛林",
+      "mapName": "IslandEast",
+      "x": 22,
+      "y": 31
+    },
+    {
+      "name": "姜岛商人",
+      "mapName": "IslandNorth",
+      "x": 36,
+      "y": 75
+    },
+    {
+      "name": "姜岛办事处",
+      "mapName": "IslandNorth",
+      "x": 46,
+      "y": 47
+    },
+    {
+      "name": "姜岛火山",
+      "mapName": "IslandNorth",
+      "x": 40,
+      "y": 23
+    },
+    {
+      "name": "姜岛挖掘场",
+      "mapName": "IslandNorth",
+      "x": 19,
+      "y": 45
+    },
+    {
+      "name": "#姜岛核桃房",
+      "mapName": "QiNutRoom",
+      "x": 12,
+      "y": 4
+    },
+    {
+      "name": "春季鱼王点",
+      "mapName": "Mountain",
+      "x": 68,
+      "y": 24
+    },
+    {
+      "name": "夏季鱼王点",
+      "mapName": "Beach",
+      "x": 86,
+      "y": 39
+    },
+    {
+      "name": "秋季鱼王点",
+      "mapName": "Town",
+      "x": 94,
+      "y": 11
+    },
+    {
+      "name": "冬季鱼王点",
+      "mapName": "Forest",
+      "x": 58,
+      "y": 87
+    },
+    {
+      "name": "沙漠矿洞",
+      "mapName": "Desert",
+      "x": 8,
+      "y": 7
+    },
+    {
+      "name": "老师傅香炸奶酪卷",
+      "mapName": "Woods",
+      "x": 8,
+      "y": 10
+    },
+    {
+      "name": "猪车",
+      "mapName": "Forest",
+      "x": 26,
+      "y": 14
+    },
+    {
+      "name": "#下水道小黑",
+      "mapName": "Sewer",
+      "x": 31,
+      "y": 19
+    },
+    {
+      "name": "#矿井电梯",
+      "mapName": "Mine",
+      "x": 17,
+      "y": 4
+    },
+    {
+      "name": "女巫洞口",
+      "mapName": "Railroad",
+      "x": 54,
+      "y": 36
+    },
+    {
+      "name": "#女巫小屋",
+      "mapName": "WitchHut",
+      "x": 7,
+      "y": 13
+    },
+    {
+      "name": "#突变虫穴",
+      "mapName": "BugLand",
+      "x": 31,
+      "y": 7
+    },
+    {
+      "name": "#农场洞穴",
+      "mapName": "FarmCave",
+      "x": 8,
+      "y": 10
+    },
+    {
+      "name": "农场南出口",
+      "mapName": "Forest",
+      "x": 69,
+      "y": 1
+    },
+    {
+      "name": "#农场温室",
+      "mapName": "Greenhouse",
+      "x": 10,
+      "y": 22
+    },
+    {
+      "name": "#锻造台",
+      "mapName": "Caldera",
+      "x": 23,
+      "y": 22
+    },
+    {
+      "name": "#沙洲赌场",
+      "mapName": "Club",
+      "x": 4,
+      "y": 5
+    },
+    {
+      "name": "#骷髅洞穴100层",
+      "mapName": "UndergroundMine220",
+      "x": 6,
+      "y": 6
+    }
+  ]
+}

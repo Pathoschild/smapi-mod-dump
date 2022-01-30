@@ -1,10 +1,10 @@
 ﻿{
   "Name": "Custom Gift Dialogue Utillity",
   "Author": "PurrplingCat",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Adds support for custom reactions to a gift for NPCs",
   "UniqueID": "PurrplingCat.CustomGiftDialogue",
   "EntryDll": "CustomGiftDialogue.dll",
-  "MinimumApiVersion": "3.12.7",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [ "Nexus:7304" ]
 }

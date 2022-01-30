@@ -67,8 +67,10 @@
     "config.freeze-time-skull-cavern.desc": "Whether to freeze time while in the Skull Cavern.",
     "config.freeze-time-volcano-dungeon.name": "Volcano Dungeon",
     "config.freeze-time-volcano-dungeon.desc": "Whether to freeze time while in the Volcano Dungeon.",
-    "config.freeze-time-custom.name": "Custom location names",
-    "config.freeze-time-custom.desc": "The names of custom locations in which to freeze time. Location names can be seen in-game using the Debug Mode mod. You can list multiple with commas.",
+    "config.freeze-time-freeze-names.name": "Freeze location names",
+    "config.freeze-time-freeze-names.desc": "The names of specific locations in which to freeze time. Location names can be seen in-game using the Debug Mode mod. You can list multiple with commas.",
+    "config.freeze-time-dont-freeze-names.name": "Don't freeze location names",
+    "config.freeze-time-dont-freeze-names.desc": "The names of specific locations in which time shouldn't be frozen, regardless of the previous settings. Location names can be seen in-game using the Debug Mode mod. You can list multiple with commas.",
 
     // controls
     // TODO

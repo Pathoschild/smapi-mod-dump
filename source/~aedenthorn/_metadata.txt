@@ -8,6 +8,7 @@ mods:
    Animated Parrot and Perch
    Another Jump Mod
    Bed Tweaks
+   Better Lightning Rods
    Boss Creatures
    Coin Collector
    Craftable Butterfly Hutches
@@ -21,17 +22,20 @@ mods:
    Custom Object Production
    Custom Ore Nodes
    Custom Pet Beds
+   Custom Picture Frames
    Custom Renovations
    Custom Resource Clumps
    Custom Spouse Patio
    Custom Spouse Patio Wizard
    Custom Spouse Rooms
+   Custom Tree Tweaks
    Custom Warp Points
    Dialogue Trees
    Enhanced Loot Magnet
    Expert Sitting
    Extra Map Layers
    Familiars
+   Farm Cave Framework
    Farmer Helper
    Fire Breath
    Fishing Chests Expanded
@@ -40,6 +44,7 @@ mods:
    Friendly Divorce
    Fruit Tree Shaker
    Furniture Adjustment
+   Furniture Display Framework
    Furniture Recolor
    Gem Isles
    Groundhog Day
@@ -50,6 +55,7 @@ mods:
    Loose Audio Files
    Map Editor
    Map Teleport
+   Meteor Defence
    Mobile Arcade
    Mobile Audio Player
    Mobile Calendar
@@ -62,9 +68,11 @@ mods:
    Multiple Floor Farmhouse
    Multiple Spouses
    Murdercrows
+   Night Event Chance Tweak
    Non-Random Prairie King
    Overworld Chests
    Pacifist Valley
+   Pelican xVASynth
    Persistent Grange Display
    Pipe Irrigation
    Placeable Mine Shafts
@@ -74,11 +82,14 @@ mods:
    Quotes
    Random NPCs
    Realistic Random Names
+   Seed Maker Tweaks
    Show Players Behind Buildings
    Simple Screenshots
    Sixty-Nine Shirt
    Social Page Order Button
+   Sound Effect Replacement
    Swim
+   Tappable Palm Trees
    Transparent Objects
    Trash Can Reactions
    Treasure Chests Expanded
@@ -90,9 +101,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit e266947834c1b3898c37bdbc84fc8a8cd988c586
+   commit 21a1aec31319f6ed0c8164a7c964bb2c6a2aebd8
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Thu Dec 30 22:01:26 2021 -0500
+   Date:   Fri Jan 28 23:09:35 2022 -0500
    
-       etc
+       Furniture Display Framework
    

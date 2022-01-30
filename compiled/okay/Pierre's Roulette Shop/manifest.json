@@ -1,0 +1,10 @@
+{
+  "Name": "Pierre's Roulette Shop",
+  "Author": "Xynerorias",
+  "Version": "1.0",
+  "Description": "Makes Pierre's stock of seed random everyday in an attempt to declutter it when you have lots of crop mods.",
+  "UniqueID": "xynerorias.pierresroulette",
+  "EntryDll": "Pierre's Roulette.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:10826" ]
+}

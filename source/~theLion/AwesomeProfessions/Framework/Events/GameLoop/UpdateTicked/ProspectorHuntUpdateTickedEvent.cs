@@ -8,15 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class ProspectorHuntUpdateTickedEvent : UpdateTickedEvent
 {
     /// <inheritdoc />
-    public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        ModState.ProspectorHunt.Update(e.Ticks);
+        ModEntry.State.Value.ProspectorHunt.Update(e.Ticks);
     }
 }

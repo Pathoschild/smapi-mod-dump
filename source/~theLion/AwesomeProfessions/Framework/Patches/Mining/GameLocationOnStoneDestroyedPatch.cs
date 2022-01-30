@@ -8,17 +8,21 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class GameLocationOnStoneDestroyedPatch : BasePatch
@@ -52,8 +56,7 @@ internal class GameLocationOnStoneDestroyedPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
             return null;
         }
 

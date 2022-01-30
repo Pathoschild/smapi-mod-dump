@@ -1,0 +1,11 @@
+{
+  "NumberOfStaircasesToLeaveInStack": 0,
+  "SkipLevel100SkullCavern": false,
+  "SkipDinosaurLevels": false,
+  "SkipTreasureLevels": false,
+  "SkipQuarryDungeonLevels": false,
+  "SkipSlimeLevels": false,
+  "SkipMonsterLevels": false,
+  "SkipMushroomLevels": false,
+  "ToggleKey": "LeftShift + C"
+}

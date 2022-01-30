@@ -8,12 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Tools;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class SlingshotGetRequiredChargeTimePatch : BasePatch
@@ -31,7 +36,7 @@ internal class SlingshotGetRequiredChargeTimePatch : BasePatch
     private static void SlingshotGetRequiredChargeTimePostfix(Slingshot __instance, ref float __result)
     {
         var firer = __instance.getLastFarmerToUse();
-        if (!firer.HasProfession("Desperado")) return;
+        if (!firer.HasProfession(Profession.Desperado)) return;
         __result *= 0.5f;
     }
 

@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+
+"Mon": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache.",
+"Tue": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache.",
+"Wed": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache.",
+"Thu": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache.",
+"Fri": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache.",
+"Sat": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache.",
+"Sun": "%Brock: Gil is checking over important documentation regarding Castle Village's weapon cache."
+
+}

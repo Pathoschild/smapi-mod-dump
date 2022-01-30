@@ -9,6 +9,18 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.2.3
+Released 12 January 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Fixed version check for Generic Mod Config Menu not working with some older versions.
+* Improved translations. Thanks to Scartiana (added German)!
+
+## 1.2.2
+Released 09 January 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Added min-version check for integration with Generic Mod Config Menu.
+* Improved translations. Thanks to wally232 (updated Korean)!
+
 ## 1.2.1
 Released 24 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

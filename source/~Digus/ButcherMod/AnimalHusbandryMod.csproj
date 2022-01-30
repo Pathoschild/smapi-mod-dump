@@ -1,28 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Version>1.0.0</Version>
+    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -31,26 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AnimalHusbandryMod</RootNamespace>
     <AssemblyName>AnimalHusbandryMod</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -61,96 +23,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="animals\Animal.cs" />
-    <Compile Include="animals\AnimalContestController.cs" />
-    <Compile Include="animals\data\OstrichItem.cs" />
-    <Compile Include="common\AnimalUtility.cs" />
-    <Compile Include="animals\data\AnimalContestData.cs" />
-    <Compile Include="animals\data\CustomAnimalItem.cs" />
-    <Compile Include="animals\data\DinosaurItem.cs" />
-    <Compile Include="animals\data\MeatAnimalItem.cs" />
-    <Compile Include="animals\events\AbigailAct.cs" />
-    <Compile Include="animals\events\AbstractAct.cs" />
-    <Compile Include="animals\events\AlexAct.cs" />
-    <Compile Include="animals\events\EmilyAct.cs" />
-    <Compile Include="animals\events\IAnimalContestAct.cs" />
-    <Compile Include="animals\AnimalContestEventBuilder.cs" />
-    <Compile Include="animals\data\AnimalContestItem.cs" />
-    <Compile Include="animals\data\AnimalContestScore.cs" />
-    <Compile Include="animals\data\AnimalStatus.cs" />
-    <Compile Include="animals\data\AnimalBuildingData.cs" />
-    <Compile Include="animals\data\AnimalData.cs" />
-    <Compile Include="animals\data\AnimalItem.cs" />
-    <Compile Include="animals\AnimalExtension.cs" />
-    <Compile Include="animals\AnimalQueryMenuExtended.cs" />
-    <Compile Include="animals\data\ChickenItem.cs" />
-    <Compile Include="animals\data\CowItem.cs" />
-    <Compile Include="animals\data\DuckItem.cs" />
-    <Compile Include="animals\data\FeatherAnimalItem.cs" />
-    <Compile Include="animals\data\FeetAnimalItem.cs" />
-    <Compile Include="animals\data\GoatItem.cs" />
-    <Compile Include="animals\data\ImpregnatableAnimalItem.cs" />
-    <Compile Include="animals\data\PetItem.cs" />
-    <Compile Include="animals\data\PigItem.cs" />
-    <Compile Include="animals\data\TreatItem.cs" />
-    <Compile Include="animals\events\EmilysParrotDancer.cs" />
-    <Compile Include="animals\events\JasAct.cs" />
-    <Compile Include="animals\events\JodiAct.cs" />
-    <Compile Include="animals\events\MarnieAct.cs" />
-    <Compile Include="animals\events\MaruAct.cs" />
-    <Compile Include="animals\events\ShaneAct.cs" />
-    <Compile Include="animals\events\WillyAct.cs" />
-    <Compile Include="animals\FarmAnimalExtension.cs" />
-    <Compile Include="animals\FarmAnimalOverrides.cs" />
-    <Compile Include="animals\events\VincentAct.cs" />
-    <Compile Include="animals\events\VincentAnimal.cs" />
-    <Compile Include="common\Channel.cs" />
-    <Compile Include="common\CustomEvent.cs" />
-    <Compile Include="animals\events\EventGreenSlime.cs" />
-    <Compile Include="common\EventsLoader.cs" />
-    <Compile Include="animals\LivingWithTheAnimalsChannel.cs" />
-    <Compile Include="animals\MeatController.cs" />
-    <Compile Include="animals\PetOverrides.cs" />
-    <Compile Include="animals\PregnancyController.cs" />
-    <Compile Include="animals\data\PregnancyItem.cs" />
-    <Compile Include="animals\data\SheepItem.cs" />
-    <Compile Include="animals\data\WoolAnimalItem.cs" />
-    <Compile Include="animals\TreatsController.cs" />
-    <Compile Include="common\EventOverrides.cs" />
-    <Compile Include="common\ItemUtility.cs" />
-    <Compile Include="common\TvController.cs" />
-    <Compile Include="common\TvOverrides.cs" />
-    <Compile Include="integrations\IDynamicGameAssetsApi.cs" />
-    <Compile Include="meats\MeatOverrides.cs" />
-    <Compile Include="ModConfig.cs" />
-    <Compile Include="animals\data\RabbitItem.cs" />
-    <Compile Include="recipes\RecipeAttribute.cs" />
-    <Compile Include="meats\MeatAttribute.cs" />
-    <Compile Include="cooking\Cooking.cs" />
-    <Compile Include="cooking\CookingData.cs" />
-    <Compile Include="cooking\CookingExtension.cs" />
-    <Compile Include="cooking\CookingItem.cs" />
-    <Compile Include="common\DataLoader.cs" />
-    <Compile Include="meats\Meat.cs" />
-    <Compile Include="meats\MeatData.cs" />
-    <Compile Include="meats\MeatItem.cs" />
-    <Compile Include="meats\MeatExtension.cs" />
-    <Compile Include="recipes\RecipesLoader.cs" />
-    <Compile Include="farmer\FarmerLoader.cs" />
-    <Compile Include="farmer\FarmerData.cs" />
-    <Compile Include="recipes\TrashBearOverrides.cs" />
-    <Compile Include="tools\FeedingBasketOverrides.cs" />
-    <Compile Include="tools\InseminationSyringeOverrides.cs" />
-    <Compile Include="tools\MeatCleaverOverrides.cs" />
-    <Compile Include="AnimalHusbandryModEntry.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="recipes\MeatFridayChannel.cs" />
-    <Compile Include="tools\ParticipantRibbonOverrides.cs" />
-    <Compile Include="tools\ToolOverridesBase.cs" />
-    <Compile Include="tools\ToolsFactory.cs" />
-    <Compile Include="tools\ToolsLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="contentPackTemplate\customAnimals.json">
@@ -192,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
 </Project>

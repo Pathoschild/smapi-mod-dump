@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -29,6 +30,88 @@ namespace EideeEasyFishing
             helper.Events.Display.MenuChanged += OnMenuChanged;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu == null)
+            {
+                return;
+            }
+
+            configMenu.Register(
+                mod: ModManifest,
+                reset: () => Config = new ModConfig(),
+                save: () => Helper.WriteConfig(Config));
+
+            configMenu.AddSectionTitle(
+                mod: ModManifest,
+                text: () => Helper.Translation.Get("config.section.general.name"));
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.bitefaster.name"),
+                tooltip: () => Helper.Translation.Get("config.bitefaster.description"),
+                getValue: () => Config.BiteFaster,
+                setValue: value => Config.BiteFaster = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.hitautomatically.name"),
+                tooltip: () => Helper.Translation.Get("config.hitautomatically.description"),
+                getValue: () => Config.HitAutomatically,
+                setValue: value => Config.HitAutomatically = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.skipminigame.name"),
+                tooltip: () => Helper.Translation.Get("config.skipminigame.description"),
+                getValue: () => Config.SkipMinigame,
+                setValue: value => Config.SkipMinigame = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.fisheasycaught.name"),
+                tooltip: () => Helper.Translation.Get("config.fisheasycaught.description"),
+                getValue: () => Config.FishEasyCaught,
+                setValue: value => Config.FishEasyCaught = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.treasurealwaysbefound.name"),
+                tooltip: () => Helper.Translation.Get("config.treasurealwaysbefound.description"),
+                getValue: () => Config.TreasureAlwaysBeFound,
+                setValue: value => Config.TreasureAlwaysBeFound = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.treasureeasycaught.name"),
+                tooltip: () => Helper.Translation.Get("config.treasureeasycaught.description"),
+                getValue: () => Config.TreasureEasyCaught,
+                setValue: value => Config.TreasureEasyCaught = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.alwayscaughtdoublefish.name"),
+                tooltip: () => Helper.Translation.Get("config.alwayscaughtdoublefish.description"),
+                getValue: () => Config.AlwaysCaughtDoubleFish,
+                setValue: value => Config.AlwaysCaughtDoubleFish = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.caughtdoublefishonanybait.name"),
+                tooltip: () => Helper.Translation.Get("config.caughtdoublefishonanybait.description"),
+                getValue: () => Config.CaughtDoubleFishOnAnyBait,
+                setValue: value => Config.CaughtDoubleFishOnAnyBait = value);
+
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.alwaysmaxcastpower.name"),
+                tooltip: () => Helper.Translation.Get("config.alwaysmaxcastpower.description"),
+                getValue: () => Config.AlwaysMaxCastPower,
+                setValue: value => Config.AlwaysMaxCastPower = value);
         }
 
         private void OnMenuChanged(object sender, MenuChangedEventArgs args)
@@ -136,7 +219,7 @@ namespace EideeEasyFishing
             if (args.Button == Keys.ReloadConfig)
             {
                 Config = Helper.ReadConfig<ModConfig>();
-                string msg = Helper.Translation.Get("config.reload");
+                string msg = Helper.Translation.Get("message.config.reload");
                 Game1.addHUDMessage(new HUDMessage(msg, HUDMessage.error_type) { noIcon = true, timeLeft = HUDMessage.defaultTime });
             }
         }

@@ -8,10 +8,14 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Common.Extensions;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 
-namespace TheLion.Stardew.Common.Extensions;
+#endregion using directives
 
 public static class EnumerableExtensions
 {

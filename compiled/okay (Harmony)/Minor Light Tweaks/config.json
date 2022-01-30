@@ -1,0 +1,14 @@
+{
+  "DarkInteriors": true,
+  "GradualDark": false,
+  "DarkVolcano": false,
+  "FarmHouseAutoFireplaces": true,
+  "AutoFireplacesSpring": -10,
+  "AutoFireplacesSummer": -10,
+  "AutoFireplacesFall": 1800,
+  "AutoFireplacesWinter": 1500,
+  "FarmHouseFireplacesOffMorning": true,
+  "AutoFireplacesSpringRain": 1700,
+  "AutoFireplacesSummerRain": -10,
+  "AutoFireplacesFallRain": 1700
+}

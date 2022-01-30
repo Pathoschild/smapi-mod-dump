@@ -8,19 +8,22 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Projectiles;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Extensions;
+
+#endregion using directives
 
 // ReSharper disable PossibleLossOfFraction
-
-namespace TheLion.Stardew.Professions.Framework.Patches;
-
 [UsedImplicitly]
 internal class BasicProjectileExplodeOnImpact : BasePatch
 {
@@ -38,16 +41,16 @@ internal class BasicProjectileExplodeOnImpact : BasePatch
     {
         try
         {
-            if (who is not Farmer farmer || !farmer.HasProfession("Demolitionist"))
+            if (who is not Farmer farmer || !farmer.HasProfession(Profession.Demolitionist))
                 return true; // run original logic
 
             location.explode(new(x / Game1.tileSize, y / Game1.tileSize),
-                farmer.HasPrestigedProfession("Demolitionist") ? 4 : 3, farmer);
+                farmer.HasProfession(Profession.Demolitionist) ? 4 : 3, farmer);
             return false; // don't run original logic
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

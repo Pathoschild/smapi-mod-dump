@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+  "woodFence.Label": "Wood Fence",
+  "woodFence.tooltip": "The lifetime multiplier for wood fences",
+  "stoneFence.Label": "Stone Fence",
+  "stoneFence.tooltip": "The lifetime multiplier for stone fences",
+  "ironFence.Label": "Iron Fence",
+  "ironFence.tooltip": "The lifetime multiplier for iron fences",
+  "hardwoodFence.Label": "Hardwood Fence",
+  "hardwoodFence.tooltip": "The lifetime multiplier for hardwood fences",
+  "gate.Label": "Gates",
+  "gate.tooltip": "The lifetime multiplier for fence gates",
+  "fenceLife.label": "Fence life keybind",
+  "fenceLife.tooltip":  "The button you want to hold to display the fence life status.",
+  "hover.tooltip": "Approx {{daysLeft}} days of remaining life"
+}

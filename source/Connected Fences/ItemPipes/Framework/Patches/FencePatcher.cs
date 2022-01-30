@@ -20,11 +20,12 @@ using StardewValley.Objects;
 using StardewValley.Tools;
 using StardewModdingAPI;
 using ItemPipes.Framework.Model;
-using ItemPipes.Framework.Objects;
+using ItemPipes.Framework.Nodes;
 using Netcode;
 using Microsoft.Xna.Framework;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
+using ItemPipes.Framework.Util;
 
 namespace ItemPipes.Framework.Patches
 {
@@ -69,7 +70,7 @@ namespace ItemPipes.Framework.Patches
 			}
 			catch (Exception ex)
 			{
-				if (Globals.Debug) { Printer.Info($"Failed to add fence patch: {ex}"); }
+				if (Globals.UltraDebug) { Printer.Info($"Failed to add fence patch: {ex}"); }
 			}
 		}
 		
@@ -78,22 +79,16 @@ namespace ItemPipes.Framework.Patches
 			DataAccess DataAccess = DataAccess.GetDataAccess();
 			if (Game1.didPlayerJustRightClick(ignoreNonMouseHeldInput: true) && __instance.Name.Equals("FilterPipe"))
 			{
-				List<Node> nodes;
-				if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
-				{
-					FilterPipe pipe = (FilterPipe)nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-					pipe.Chest.ShowMenu();
-				}
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				FilterPipeNode pipe = (FilterPipeNode)nodes.Find(n => n.Position.Equals(__instance.TileLocation));
+				pipe.Chest.ShowMenu();
 				return false;
 			}
 			else if (DataAccess.IOPipeNames.Contains(__instance.Name))
 			{
-				List<Node> nodes;
-				if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
-				{
-					IOPipe pipe = (IOPipe)nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-					//Add state display
-				}
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				IOPipeNode pipe = (IOPipeNode)nodes.Find(n => n.Position.Equals(__instance.TileLocation));
+				//Add state display
 				return false;
 			}
 			else
@@ -109,29 +104,26 @@ namespace ItemPipes.Framework.Patches
 				DataAccess DataAccess = DataAccess.GetDataAccess();
 				if (DataAccess.IOPipeNames.Contains(__instance.Name))
 				{
-					List<Node> nodes;
-					if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
+					List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+					IOPipeNode pipe = (IOPipeNode)nodes.Find(n => n.Position.Equals(__instance.TileLocation));
+					switch (pipe.State)
 					{
-						IOPipe pipe = (IOPipe)nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-						switch (pipe.State)
-						{
-							case "off":
-								if (pipe.ConnectedContainer != null)
-								{
-									pipe.State = "on";
-								}
-								else
-								{
-									pipe.State = "unconnected";
-								}
-								break;
-							case "on":
-								pipe.State = "off";
-								break;
-							case "unconnected":
-								pipe.State = "off";
-								break;
-						}
+						case "off":
+							if (pipe.ConnectedContainer != null)
+							{
+								pipe.State = "on";
+							}
+							else
+							{
+								pipe.State = "unconnected";
+							}
+							break;
+						case "on":
+							pipe.State = "off";
+							break;
+						case "unconnected":
+							pipe.State = "off";
+							break;
 					}
 					return false;
 				}
@@ -182,16 +174,13 @@ namespace ItemPipes.Framework.Patches
 			DataAccess DataAccess = DataAccess.GetDataAccess();
 			if (DataAccess.PipeNames.Contains(__instance.Name))
 			{
-				List<Node> nodes;
-				if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
-				{
-					Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-					if (node != null)
-                    {
-						if (node.ParentNetwork.IsPassable)
-						{
-							__result = true;
-						}
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
+				if (node != null)
+                {
+					if (node.ParentNetwork.IsPassable)
+					{
+						__result = true;
 					}
 				}
 				return false;
@@ -275,19 +264,16 @@ namespace ItemPipes.Framework.Patches
 				}
 				if (__instance.Name.Equals("ConnectorPipe"))
 				{
-					List<Node> nodes;
-					if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
-					{
-						Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-						if (node is Connector)
+					List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+					Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
+					if (node is ConnectorNode)
+                    {
+						ConnectorNode connector = (ConnectorNode)node;
+						if(connector.PassingItem)
                         {
-							Connector connector = (Connector)node;
-							if(connector.PassingItem)
-                            {
-								drawSum += 5;
-							}
-
+							drawSum += 5;
 						}
+
 					}
 				}
 				__result = drawSum;
@@ -385,19 +371,16 @@ namespace ItemPipes.Framework.Patches
 				int sourceRectPosition = 1;
 				int drawSum = __instance.getDrawSum(Game1.currentLocation);
 				sourceRectPosition = GetNewDrawGuide(__instance)[drawSum];
-				List<Node> nodes;
-				if (DataAccess.LocationNodes.TryGetValue(Game1.currentLocation, out nodes))
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
+				if (node != null)
 				{
-					Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-					if (node != null)
-					{
-						Texture2D signalTexture = Helper.GetHelper().Content.Load<Texture2D>($"assets/Pipes/{node.GetName()}/{node.GetState()}.png");
-						b.Draw(signalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), new Rectangle(sourceRectPosition * Fence.fencePieceWidth % __instance.fenceTexture.Value.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / __instance.fenceTexture.Value.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)(y * 64 + 32) / 10000f);
-					}
-					else
-                    {
-						b.Draw(__instance.fenceTexture.Value, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), new Rectangle(sourceRectPosition * Fence.fencePieceWidth % __instance.fenceTexture.Value.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / __instance.fenceTexture.Value.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)(y * 64 + 32) / 10000f);
-					}
+					Texture2D signalTexture = Helper.GetHelper().Content.Load<Texture2D>($"assets/Pipes/{node.GetName()}/{node.GetState()}.png");
+					b.Draw(signalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), new Rectangle(sourceRectPosition * Fence.fencePieceWidth % __instance.fenceTexture.Value.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / __instance.fenceTexture.Value.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)(y * 64 + 32) / 10000f);
+				}
+				else
+                {
+					b.Draw(__instance.fenceTexture.Value, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), new Rectangle(sourceRectPosition * Fence.fencePieceWidth % __instance.fenceTexture.Value.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / __instance.fenceTexture.Value.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)(y * 64 + 32) / 10000f);
 				}
 				
 				return false;

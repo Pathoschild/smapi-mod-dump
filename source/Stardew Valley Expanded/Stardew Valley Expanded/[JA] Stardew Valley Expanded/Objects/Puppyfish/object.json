@@ -20,7 +20,7 @@
 	"GiftTastes":
 	{
 		"Love": ["Sophia"],
-		"Like": ["Willy", "Abigail"],
+		"Like": ["Willy", "Abigail", "Lance" ],
 		"Hate": ["George", "Kent", "Andy"]
 	},
 }

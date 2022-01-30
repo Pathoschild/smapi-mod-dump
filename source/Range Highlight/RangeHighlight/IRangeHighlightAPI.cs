@@ -52,6 +52,11 @@ using StardewValley;
 using StardewValley.Buildings;
 
 namespace RangeHighlight {
+    /// <summary>
+    /// Interface to the Range Highlight mod functionality.  Add new highlighters with the Add*Highlighter methods.
+    /// All highlighters are cleared when returning to the title screen, so the `SaveLoaded` game event is a
+    /// good place to add highlighters.
+    /// </summary>
     public interface IRangeHighlightAPI {
 
         // ----- Helpers for making highlight shapes -----

@@ -11,12 +11,19 @@
 namespace ForageFantasy
 {
     using StardewModdingAPI;
+    using StardewModdingAPI.Events;
+    using StardewModdingAPI.Utilities;
     using StardewValley;
+    using StardewValley.TerrainFeatures;
     using System;
+    using System.Collections.Generic;
+    using System.IO;
 
     public class ForageFantasy : Mod, IAssetEditor
     {
         public ForageFantasyConfig Config { get; set; }
+
+        internal bool TappersDreamAndMushroomTreesGrowInWinter { get; set; }
 
         public static int DetermineForageQuality(Farmer farmer, bool allowBotanist = true)
         {
@@ -51,9 +58,18 @@ namespace ForageFantasy
 
             Helper.Events.GameLoop.GameLaunched += delegate { DeluxeGrabberCompatibility.Setup(this); };
 
-            Helper.Events.GameLoop.DayStarted += delegate { TapperAndMushroomQualityLogic.IncreaseTreeAges(this); };
+            Helper.Events.GameLoop.DayStarted += delegate
+            {
+                TapperAndMushroomQualityLogic.IncreaseTreeAges(this);
+                GrapeLogic.SetDropToNewGrapes(this);
+                CheckForTappersDream();
+            };
+
+            Helper.Events.GameLoop.DayEnding += delegate { GrapeLogic.ResetGrapes(this); };
 
             Helper.Events.GameLoop.SaveLoaded += delegate { FernAndBurgerLogic.ChangeBundle(this); };
+
+            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 
             Patcher.PatchAll(this);
         }
@@ -89,6 +105,110 @@ namespace ForageFantasy
             string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
 
             Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
+        }
+
+        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        {
+            if (!Context.IsWorldReady || !Context.IsPlayerFree)
+            {
+                return;
+            }
+
+            // this is done in buttonsChanged instead of buttonPressed as recommended
+            // in the documentation: https://stardewcommunitywiki.com/Modding:Modder_Guide/APIs/Input#KeybindList
+            if (Config.TreeMenuKey.JustPressed())
+            {
+                OpenTreeMenu(Game1.currentLocation);
+            }
+        }
+
+        private void OpenTreeMenu(GameLocation currentLocation)
+        {
+            foreach (var terrainfeature in currentLocation.terrainFeatures.Pairs)
+            {
+                if (Game1.currentCursorTile == terrainfeature.Value.currentTileLocation)
+                {
+                    if (terrainfeature.Value is Tree tree)
+                    {
+                        if (tree.growthStage.Value >= 5)
+                        {
+                            Game1.activeClickableMenu = new TreeMenu(this, tree);
+                            return;
+                        }
+                    }
+
+                    if (terrainfeature.Value is FruitTree fruittree)
+                    {
+                        // fruit tree ages are negative
+                        if (fruittree.daysUntilMature.Value <= 0)
+                        {
+                            Game1.activeClickableMenu = new TreeMenu(this, fruittree);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CheckForTappersDream()
+        {
+            try
+            {
+                if (Helper.ModRegistry.IsLoaded("Goldenrevolver.ATappersDream"))
+                {
+                    var data = Helper.ModRegistry.Get("Goldenrevolver.ATappersDream");
+
+                    var path = data.GetType().GetProperty("DirectoryPath");
+
+                    if (path?.GetValue(data) != null)
+                    {
+                        var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "MushroomTreesGrowInWinter" }, data.Manifest.Name, true);
+
+                        TappersDreamAndMushroomTreesGrowInWinter = list["MushroomTreesGrowInWinter"]?.ToLower().Contains("true") == true;
+                    }
+                    else
+                    {
+                        TappersDreamAndMushroomTreesGrowInWinter = false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                TappersDreamAndMushroomTreesGrowInWinter = false;
+            }
+        }
+
+        private Dictionary<string, string> ReadConfigFile(string path, string modFolderPath, string[] options, string modName, bool isNonString)
+        {
+            string fullPath = Path.Combine(modFolderPath, PathUtilities.NormalizePath(path));
+
+            var result = new Dictionary<string, string>();
+
+            try
+            {
+                string fullText = File.ReadAllText(fullPath).ToLower();
+                var split = fullText.Split('\"');
+                int offset = isNonString ? 1 : 2;
+
+                for (int i = 0; i < split.Length; i++)
+                {
+                    foreach (var option in options)
+                    {
+                        if (option.ToLower() == split[i].Trim() && i + offset < split.Length)
+                        {
+                            string optionText = split[i + offset].Trim();
+
+                            result.Add(option, optionText);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorLog($"There was an exception while {ModManifest.Name} was reading the config for {modName}:", e);
+            }
+
+            return result;
         }
     }
 }

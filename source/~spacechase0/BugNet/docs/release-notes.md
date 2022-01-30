@@ -9,7 +9,9 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.5.4
+Released 09 January 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
 * Improved translations. Thanks to Sorarey (added German)!
 
 ## 1.5.3

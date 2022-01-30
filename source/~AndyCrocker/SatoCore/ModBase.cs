@@ -84,8 +84,8 @@ namespace SatoCore
             foreach (var method in this.GetType().Assembly.GetTypes().SelectMany(type => type.GetTypeInfo().DeclaredMethods))
             {
                 // check if method is a patch
-                var patchAttribute = method.GetCustomAttribute<PatchAttribute>();
-                if (patchAttribute == null)
+                var patchAttributes = method.GetCustomAttributes<PatchAttribute>();
+                if (!patchAttributes.Any())
                     continue;
 
                 // ensure method is static
@@ -95,14 +95,15 @@ namespace SatoCore
                     continue;
                 }
 
-                // apply patch
-                switch (patchAttribute.PatchType)
-                {
-                    case PatchType.Prefix: harmony.Patch(patchAttribute.OriginalMethod, prefix: new HarmonyMethod(method)); break;
-                    case PatchType.Transpiler: harmony.Patch(patchAttribute.OriginalMethod, transpiler: new HarmonyMethod(method)); break;
-                    case PatchType.Postfix: harmony.Patch(patchAttribute.OriginalMethod, postfix: new HarmonyMethod(method)); break;
-                    default: this.Monitor.Log($"Patch '{method.GetFullName()}' has an invalid patch type ({patchAttribute.PatchType})", LogLevel.Error); break;
-                }
+                // apply patches
+                foreach (var patchAttribute in patchAttributes)
+                    switch (patchAttribute.PatchType)
+                    {
+                        case PatchType.Prefix: harmony.Patch(patchAttribute.OriginalMethod, prefix: new HarmonyMethod(method)); break;
+                        case PatchType.Transpiler: harmony.Patch(patchAttribute.OriginalMethod, transpiler: new HarmonyMethod(method)); break;
+                        case PatchType.Postfix: harmony.Patch(patchAttribute.OriginalMethod, postfix: new HarmonyMethod(method)); break;
+                        default: this.Monitor.Log($"Patch '{method.GetFullName()}' has an invalid patch type ({patchAttribute.PatchType})", LogLevel.Error); break;
+                    }
             }
         }
     }

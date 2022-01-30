@@ -12,6 +12,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace SatoCore.Extensions
 {
@@ -41,8 +42,19 @@ namespace SatoCore.Extensions
                 for (int j = 0; j < oldValueList.Count; j++)
                 {
                     // ensure this portion (starting index of 'i') is an 'oldValue' section
-                    if (collectionList[i + j].opcode != oldValueList[j].opcode
-                        || collectionList[i + j].operand != oldValueList[j].operand)
+                    if (collectionList[i + j].opcode != oldValueList[j].opcode)
+                        break;
+
+                    var operandValue = collectionList[i + j].operand;
+                    if (operandValue is LocalBuilder localBuilder)
+                        operandValue = localBuilder.LocalIndex;
+
+                    var areOperandsEqual = operandValue == oldValueList[j].operand;
+                    if (operandValue != null && oldValueList[j].operand != null)
+                        areOperandsEqual = operandValue.Equals(oldValueList[j].operand);
+                    if (operandValue is float c && oldValueList[j].operand is float d)
+                        areOperandsEqual = FloatingPointEquals(c, d);
+                    if (!areOperandsEqual)
                         break;
 
                     // ensure this ('j') is the end of the 'oldValue' section
@@ -66,6 +78,9 @@ namespace SatoCore.Extensions
             }
 
             return collectionList;
+
+            // Determines whether two floating-point numbers are equal.
+            bool FloatingPointEquals(float a, float b) => Math.Abs(a - b) < .00001f;
         }
     }
 }

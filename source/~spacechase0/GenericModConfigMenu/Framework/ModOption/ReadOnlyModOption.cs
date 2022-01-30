@@ -31,7 +31,10 @@ namespace GenericModConfigMenu.Framework.ModOption
         public override void AfterSave() { }
 
         /// <inheritdoc />
-        public override void GetLatest() { }
+        public override void BeforeMenuOpened() { }
+
+        /// <inheritdoc />
+        public override void BeforeMenuClosed() { }
 
 
         /*********

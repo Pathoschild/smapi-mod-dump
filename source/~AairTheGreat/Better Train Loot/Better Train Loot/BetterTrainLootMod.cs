@@ -12,7 +12,7 @@ using BetterTrainLoot.Config;
 using BetterTrainLoot.Data;
 using BetterTrainLoot.GamePatch;
 using BetterTrainLoot.Interfaces;
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -31,7 +31,7 @@ namespace BetterTrainLoot
 
         internal static Multiplayer multiplayer;
 
-        internal HarmonyInstance harmony { get; private set; }
+        internal Harmony harmony { get; private set; }
 
         private int maxNumberOfTrains;
         private int numberOfTrains = 0;
@@ -70,7 +70,7 @@ namespace BetterTrainLoot
                 helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
                 //helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
-                harmony = HarmonyInstance.Create("com.aairthegreat.mod.trainloot");
+                harmony = new Harmony("com.aairthegreat.mod.trainloot");
                 harmony.Patch(typeof(TrainCar).GetMethod("draw"), null, new HarmonyMethod(typeof(TrainCarOverrider).GetMethod("postfix_getTrainTreasure")));
                 harmony.Patch(typeof(Railroad).GetMethod("PlayTrainApproach"), new HarmonyMethod(typeof(RailroadOverrider).GetMethod("prefix_playTrainApproach")));
                 string trainCarFile = Path.Combine("DataFiles", "trains.json");
@@ -105,9 +105,9 @@ namespace BetterTrainLoot
                 forceNewTrain = true;
                 enableCreatedTrain = true;
             }
-            else if (e.Button == SButton.Y && railroadMapBlocked)
+            else if (e.Button == SButton.O && railroadMapBlocked)
             {
-                this.Monitor.Log("Player press Y, but the railraod map is not available... No choo choo for you.");
+                this.Monitor.Log("Player press O, but the railraod map is not available... No choo choo for you.");
             }
         }
 
@@ -144,6 +144,7 @@ namespace BetterTrainLoot
             {
                 if (Game1.player.currentLocation.IsOutdoors && railroad.train.Value == null)
                 {
+                    var ranValue = Game1.random.NextDouble();
                     if (forceNewTrain)
                     {
                         CreateNewTrain();
@@ -151,8 +152,9 @@ namespace BetterTrainLoot
                     else if (enableCreatedTrain
                         && numberOfTrains < maxNumberOfTrains
                         && e.NewTime >= startTimeOfFirstTrain
-                        && Game1.random.NextDouble() <= pctChanceOfNewTrain)
+                        && ranValue <= pctChanceOfNewTrain)
                     {
+                        this.Monitor.Log($"Creating Train: {ranValue} <= {pctChanceOfNewTrain} from {e.NewTime} >= {startTimeOfFirstTrain}");
                         CreateNewTrain();
                     }
                 }

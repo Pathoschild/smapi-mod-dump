@@ -8,24 +8,26 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Tools.Configs;
+
+#region using directives
+
 using System.Collections.Generic;
 
-namespace TheLion.Stardew.Tools.Configs;
+using Framework;
 
-/// <summary>Configuration for the pickaxe shockwave.</summary>
+#endregion using directives
+
 public class PickaxeConfig
 {
     /// <summary>Enables charging the Pickaxe.</summary>
     public bool EnablePickaxeCharging { get; set; } = true;
 
-    /// <summary>Pickaxe must be at least this level to charge.</summary>
-    public int RequiredUpgradeForCharging { get; set; } = 1;
+    /// <summary>Pickaxe must be at least this level to charge. Must be greater than zero.</summary>
+    public UpgradeLevel RequiredUpgradeForCharging { get; set; } = UpgradeLevel.Copper;
 
     /// <summary>The radius of affected tiles at each upgrade level.</summary>
-    public List<int> RadiusAtEachPowerLevel { get; set; } = new List<int>() { 1, 2, 3, 4 };
-
-    /// <summary>Whether to show affected tiles overlay while charging.</summary>
-    public bool ShowPickaxeAffectedTiles { get; set; } = true;
+    public List<int> RadiusAtEachPowerLevel { get; set; } = new() {1, 2, 3, 4};
 
     /// <summary>Whether to break boulders and meteorites.</summary>
     public bool BreakBouldersAndMeteorites { get; set; } = true;
@@ -56,4 +58,7 @@ public class PickaxeConfig
 
     /// <summary>Whether to clear debris like stones, boulders and weeds.</summary>
     public bool ClearDebris { get; set; } = true;
+
+    /// <summary>Whether to play the shockwave animation when the charged Pickaxe is released.</summary>
+    public bool PlayShockwaveAnimation { get; set; } = true;
 }

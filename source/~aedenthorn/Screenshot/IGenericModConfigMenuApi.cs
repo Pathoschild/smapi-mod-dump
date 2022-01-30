@@ -8,14 +8,10 @@
 **
 *************************************************/
 
-using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewModdingAPI.Utilities;
-using StardewValley;
+using System;
 
-namespace GroundhogDay
+namespace Screenshot
 {
     /// <summary>The API which lets other mods add a config UI through Generic Mod Config Menu.</summary>
     public interface IGenericModConfigMenuApi

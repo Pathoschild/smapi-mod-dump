@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/TheMightyAmondee/EventLimiter
+   Git: https://github.com/TheMightyAmondee/EventLimiter.git
+
+mods:
+   Event Limiter
+
+latest commit:
+   commit 4d5de162b80ab3a06dd34c336ffa088d14d04276
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Mon Jan 24 10:21:40 2022 +1100
+   
+       Update README.md
+   

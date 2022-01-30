@@ -19,6 +19,11 @@ namespace DynamicNightTime.Patches
     {
         public static void Postfix()
         {
+            //moon mod compatiblity - do not run DNT in Moon Areas.
+            if (Game1.currentLocation.Name.Contains("Moon"))
+                return;
+
+
             SDVTime sunriseSTime = DynamicNightTime.GetSunrise();
             //sunriseSTime.AddTime(-10);
             int sunriseTime = sunriseSTime.ReturnIntTime();
@@ -26,6 +31,7 @@ namespace DynamicNightTime.Patches
             sunsetT.AddTime(-20);
             
             int astronTime = DynamicNightTime.GetMorningAstroTwilight().ReturnIntTime();
+            //DynamicNightTime.Logger.Log($"Latitude for calc is {DynamicNightTime.GetCurrentLocationLat()}", LogLevel.Info);
 
             //colors
             //sunrise 255,159,80

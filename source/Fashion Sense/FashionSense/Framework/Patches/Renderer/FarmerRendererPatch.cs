@@ -114,7 +114,20 @@ namespace FashionSense.Framework.Patches.Renderer
         {
             if ((int)who.accessory >= 0)
             {
-                b.Draw(FarmerRenderer.accessoriesTexture, position + origin + positionOffset + rotationAdjustment + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 8 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)renderer.heightOffset - 4), accessorySourceRect, (overrideColor.Equals(Color.White) && (int)who.accessory < 6) ? ((Color)who.hairstyleColor) : overrideColor, rotation, origin, 4f * scale + ((rotation != 0f) ? 0f : 0f), SpriteEffects.None, layerDepth + (((int)who.accessory < 8) ? 1.9E-05f : 2.9E-05f));
+                switch (who.facingDirection.Value)
+                {
+                    case 0:
+                        return;
+                    case 1:
+                        b.Draw(FarmerRenderer.accessoriesTexture, position + origin + positionOffset + rotationAdjustment + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 8 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)renderer.heightOffset - 4), accessorySourceRect, (overrideColor.Equals(Color.White) && (int)who.accessory < 6) ? ((Color)who.hairstyleColor) : overrideColor, rotation, origin, 4f * scale + ((rotation != 0f) ? 0f : 0f), SpriteEffects.None, layerDepth + (((int)who.accessory < 8) ? 1.9E-05f : 2.9E-05f));
+                        break;
+                    case 2:
+                        b.Draw(FarmerRenderer.accessoriesTexture, position + origin + positionOffset + rotationAdjustment + new Vector2(FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 8 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)renderer.heightOffset - 4), accessorySourceRect, (overrideColor.Equals(Color.White) && (int)who.accessory < 6) ? ((Color)who.hairstyleColor) : overrideColor, rotation, origin, 4f * scale + ((rotation != 0f) ? 0f : 0f), SpriteEffects.None, layerDepth + (((int)who.accessory < 8) ? 1.9E-05f : 2.9E-05f));
+                        break;
+                    case 3:
+                        b.Draw(FarmerRenderer.accessoriesTexture, position + origin + positionOffset + rotationAdjustment + new Vector2(-FarmerRenderer.featureXOffsetPerFrame[currentFrame] * 4, 4 + FarmerRenderer.featureYOffsetPerFrame[currentFrame] * 4 + (int)renderer.heightOffset), accessorySourceRect, (overrideColor.Equals(Color.White) && (int)who.accessory < 6) ? ((Color)who.hairstyleColor) : overrideColor, rotation, origin, 4f * scale + ((rotation != 0f) ? 0f : 0f), SpriteEffects.FlipHorizontally, layerDepth + (((int)who.accessory < 8) ? 1.9E-05f : 2.9E-05f));
+                        break;
+                }
             }
         }
 
@@ -360,6 +373,14 @@ namespace FashionSense.Framework.Patches.Renderer
                 {
                     passedCheck = condition.IsValid(who.IsCarrying());
                 }
+                else if (condition.Name is Condition.Type.IsSwimming)
+                {
+                    passedCheck = condition.IsValid(who.swimming.Value);
+                }
+                else if (condition.Name is Condition.Type.IsInBathingSuit)
+                {
+                    passedCheck = condition.IsValid(who.bathingClothes.Value);
+                }
 
                 // If the condition is independent and is true, then skip rest of evaluations
                 if (condition.Independent && passedCheck)
@@ -492,21 +513,36 @@ namespace FashionSense.Framework.Patches.Renderer
                 size.Length = sleevesModel.SleevesSize.Length;
             }
 
-            // Reset any cached animation data, if needd
+            // Reset any cached animation data, if needed
             if (model.HasMovementAnimation() && FashionSense.conditionData.IsPlayerMoving() && !HasCorrectAnimationTypeCached(model, who, AnimationModel.Type.Moving))
             {
                 SetAnimationType(model, who, AnimationModel.Type.Moving);
-                FashionSense.ResetAnimationModDataFields(who, 0, AnimationModel.Type.Moving, facingDirection, true);
+                FashionSense.ResetAnimationModDataFields(who, 0, AnimationModel.Type.Moving, facingDirection, true, model);
+
+                foreach (var animation in model.MovementAnimation)
+                {
+                    animation.Reset();
+                }
             }
             else if (model.HasIdleAnimation() && !FashionSense.conditionData.IsPlayerMoving() && !HasCorrectAnimationTypeCached(model, who, AnimationModel.Type.Idle))
             {
                 SetAnimationType(model, who, AnimationModel.Type.Idle);
-                FashionSense.ResetAnimationModDataFields(who, 0, AnimationModel.Type.Idle, facingDirection, true);
+                FashionSense.ResetAnimationModDataFields(who, 0, AnimationModel.Type.Idle, facingDirection, true, model);
+
+                foreach (var animation in model.IdleAnimation)
+                {
+                    animation.Reset();
+                }
             }
             else if (!model.HasMovementAnimation() && !model.HasIdleAnimation() && !HasCorrectAnimationTypeCached(model, who, AnimationModel.Type.Uniform))
             {
                 SetAnimationType(model, who, AnimationModel.Type.Uniform);
-                FashionSense.ResetAnimationModDataFields(who, 0, AnimationModel.Type.Uniform, facingDirection, true);
+                FashionSense.ResetAnimationModDataFields(who, 0, AnimationModel.Type.Uniform, facingDirection, true, model);
+
+                foreach (var animation in model.UniformAnimation)
+                {
+                    animation.Reset();
+                }
             }
 
             // Update the animations
@@ -861,6 +897,19 @@ namespace FashionSense.Framework.Patches.Renderer
             return 0;
         }
 
+        internal static bool AreSleevesForcedHidden(params AppearanceModel[] models)
+        {
+            foreach (var model in models.Where(m => m is not null))
+            {
+                if (model.HideSleeves)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static bool IsWaitingOnRequiredAnimation(Farmer who, AppearanceModel model)
         {
             // Utilize the default modData key properties (HairModel)
@@ -1157,7 +1206,15 @@ namespace FashionSense.Framework.Patches.Renderer
             {
                 layerFix = facingDirection == 0 ? (accessoryModel.DrawBeforeHair ? 3.9E-05f : 2E-05f) : (accessoryModel.DrawBeforeHair ? -0.1E-05f : 3.9E-05f);
             }
-            layerFix += accessoryModel.DrawAfterPlayer ? 0.5E-05f : 0;
+
+            if (accessoryModel.DrawAfterSleeves)
+            {
+                layerFix += 3E-05f;
+            }
+            else if (accessoryModel.DrawAfterPlayer)
+            {
+                layerFix += 0.5E-05f;
+            }
 
             b.Draw(accessoryPack.Texture, position + origin + positionOffset + rotationAdjustment + GetFeatureOffset(facingDirection, currentFrame, scale, renderer, accessoryPack.PackType), customAccessorySourceRect, accessoryModel.HasColorMask() ? Color.White : accessoryColor, rotation, origin + new Vector2(accessoryModel.HeadPosition.X, accessoryModel.HeadPosition.Y), 4f * scale + ((rotation != 0f) ? 0f : 0f), accessoryModel.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, layerDepth + layerFix);
 
@@ -1344,11 +1401,11 @@ namespace FashionSense.Framework.Patches.Renderer
             float hairLayer = 0f;
 
             // Draw the pants
-            if (pantsModel is null || who.bathingClothes)
+            if (pantsModel is null || (pantsModel.HideWhileWearingBathingSuit && who.bathingClothes.Value) || (pantsModel.HideWhileSwimming && who.swimming.Value))
             {
                 // Handled in DrawPatch.HandleCustomDraw
             }
-            else if (!(pantsModel.HideWhileSwimming && who.swimming.Value))
+            else
             {
                 var pantsColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR]) : who.hairstyleColor.Value.PackedValue };
                 if (pantsModel.DisableGrayscale)
@@ -1377,11 +1434,11 @@ namespace FashionSense.Framework.Patches.Renderer
             layerDepth += 0.03E-05f;
 
             // Draw the shirt
-            if (shirtModel is null || who.bathingClothes)
+            if (shirtModel is null || (shirtModel.HideWhileWearingBathingSuit && who.bathingClothes.Value) || (shirtModel.HideWhileSwimming && who.swimming.Value))
             {
                 DrawShirtVanilla(b, ___shirtSourceRect, dyed_shirt_source_rect, __instance, who, currentFrame, facingDirection, rotation, scale, layerDepth, position, origin, ___positionOffset, ___rotationAdjustment, overrideColor);
             }
-            else if (!(shirtModel.HideWhileSwimming && who.swimming.Value))
+            else
             {
                 float layerOffset = 1.5E-07f;
 
@@ -1419,29 +1476,29 @@ namespace FashionSense.Framework.Patches.Renderer
             else
             {
                 var accessoryLayer = who.FacingDirection == 2 ? layerDepth - 1E-5f : layerDepth;
-                if (accessoryModel != null && !(accessoryModel.HideWhileSwimming && who.swimming.Value))
+                if (accessoryModel != null && !(accessoryModel.HideWhileSwimming && who.swimming.Value) && !(accessoryModel.HideWhileWearingBathingSuit && who.bathingClothes.Value))
                 {
                     DrawCustomAccessory(accessoryPack, accessoryModel, customAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_COLOR, skinTone, __instance, ___isDrawingForUI, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, accessoryLayer);
                 }
-                if (secondaryAccessoryModel != null && !(secondaryAccessoryModel.HideWhileSwimming && who.swimming.Value))
+                if (secondaryAccessoryModel != null && !(secondaryAccessoryModel.HideWhileSwimming && who.swimming.Value) && !(secondaryAccessoryModel.HideWhileWearingBathingSuit && who.bathingClothes.Value))
                 {
                     DrawCustomAccessory(secondaryAccessoryPack, secondaryAccessoryModel, customSecondaryAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_SECONDARY_COLOR, skinTone, __instance, ___isDrawingForUI, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, accessoryLayer + 0.01E-05f);
                 }
-                if (tertiaryAccessoryModel != null && !(tertiaryAccessoryModel.HideWhileSwimming && who.swimming.Value))
+                if (tertiaryAccessoryModel != null && !(tertiaryAccessoryModel.HideWhileSwimming && who.swimming.Value) && !(tertiaryAccessoryModel.HideWhileWearingBathingSuit && who.bathingClothes.Value))
                 {
                     DrawCustomAccessory(tertiaryAccessoryPack, tertiaryAccessoryModel, customTertiaryAccessorySourceRect, ModDataKeys.UI_HAND_MIRROR_ACCESSORY_TERTIARY_COLOR, skinTone, __instance, ___isDrawingForUI, b, who, facingDirection, position, origin, ___positionOffset, ___rotationAdjustment, scale, currentFrame, rotation, accessoryLayer + 0.02E-05f);
                 }
             }
 
             // Draw hair
-            if (hairModel is null)
+            if (hairModel is null || (hairModel.HideWhileWearingBathingSuit && who.bathingClothes.Value) || (hairModel.HideWhileSwimming && who.swimming.Value))
             {
                 if (hatModel is null || !hatModel.HideHair)
                 {
                     DrawHairVanilla(b, FarmerRenderer.hairStylesTexture, ___hairstyleSourceRect, __instance, who, currentFrame, facingDirection, rotation, scale, layerDepth, position, origin, ___positionOffset, overrideColor);
                 }
             }
-            else if (!(hairModel.HideWhileSwimming && who.swimming.Value))
+            else
             {
                 float hair_draw_layer = 2.2E-05f;
                 var hairColor = overrideColor.Equals(Color.White) ? ((Color)who.hairstyleColor) : overrideColor;
@@ -1477,11 +1534,11 @@ namespace FashionSense.Framework.Patches.Renderer
             }
 
             // Draw the sleeves
-            if (sleevesModel is null)
+            if (sleevesModel is null || (sleevesModel.HideWhileWearingBathingSuit && who.bathingClothes.Value) || (sleevesModel.HideWhileSwimming && who.swimming.Value) || AreSleevesForcedHidden(pantsModel, hairModel, accessoryModel, secondaryAccessoryModel, tertiaryAccessoryModel, hatModel, shirtModel))
             {
                 // Handled in DrawPatch.HandleCustomDraw
             }
-            else if (!(sleevesModel.HideWhileSwimming && who.swimming.Value))
+            else
             {
                 var sleevesColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR]) : who.hairstyleColor.Value.PackedValue };
                 if (sleevesModel.DisableGrayscale)
@@ -1534,11 +1591,11 @@ namespace FashionSense.Framework.Patches.Renderer
             layerDepth += 0.01E-05f;
 
             // Draw hat
-            if (hatModel is null)
+            if (hatModel is null || (hatModel.HideWhileWearingBathingSuit && who.bathingClothes.Value) || (hatModel.HideWhileSwimming && who.swimming.Value))
             {
                 DrawHatVanilla(b, ___hatSourceRect, __instance, who, currentFrame, facingDirection, rotation, scale, layerDepth, position, origin, ___positionOffset);
             }
-            else if (!(hatModel.HideWhileSwimming && who.swimming.Value))
+            else
             {
                 var hatColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_HAT_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_HAT_COLOR]) : who.hairstyleColor.Value.PackedValue };
                 if (hatModel.DisableGrayscale)

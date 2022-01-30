@@ -16,4 +16,4 @@
   <Import Project="..\TwilightCoreShared\TwilightCoreShared.projitems" Label="Shared" />
   <Import Project="$(SolutionDir)\deploy-mod.targets" />
 
-</Project>
+</Project> 

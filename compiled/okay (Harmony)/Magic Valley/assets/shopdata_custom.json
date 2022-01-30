@@ -1,0 +1,74 @@
+﻿{
+  "sales": [
+    {
+      "itemName": "Strawberry Seeds",
+      "price": 100
+    },
+    {
+      "itemId": 433,
+      "itemName": "Coffee Bean",
+      "price": 2500
+    },
+    {
+      "itemName": "Ancient Seeds",
+      "price": 10000
+    },
+    {
+      "itemName": "Mushroom Tree Seed",
+      "price": 200
+    },
+    {
+      "itemName": "Roe",
+      "price": 100
+    },
+    {
+      "itemName": "Caviar",
+      "price": 1500
+    },
+    {
+      "itemName": "Squid Ink",
+      "price": 250
+    },
+    {
+      "itemName": "Lucky Lunch",
+      "price": 500
+    },
+    {
+      "itemName": "Deluxe Fertilizer",
+      "price": 200
+    },
+    {
+      "itemName": "Hyper Speed-Gro",
+      "price": 200
+    },
+    {
+      "itemName": "Deluxe Retaining Soil",
+      "price": 100
+    },
+    {
+      "itemId": 848,
+      "price": 100
+    },
+    {
+      "itemId": 165,
+      "price": 500,
+      "stock": 2,
+      "itemType": "BigCraftable"
+    },
+    {
+      "itemId": 272,
+      "price": 1000,
+      "stock": 2,
+      "itemType": "BigCraftable"
+    },
+    {
+      "itemId": 24,
+      "itemName": "Parsnip",
+      "price": 200,
+      "stock": 1,
+      "itemType": "Object",
+      "isRecipe": false,
+      "quality": 4
+    }
+  ]
+}

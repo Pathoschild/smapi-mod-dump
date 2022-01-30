@@ -8,19 +8,24 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Stardew.Common.Harmony;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class ObjectCheckForActionPatch : BasePatch
@@ -35,7 +40,6 @@ internal class ObjectCheckForActionPatch : BasePatch
 
     /// <summary>Patch to remember object state.</summary>
     [HarmonyPrefix]
-    // ReSharper disable once RedundantAssignment
     private static bool ObjectCheckForActionPrefix(SObject __instance, ref bool __state)
     {
         __state = __instance.heldObject.Value is not null;
@@ -46,9 +50,9 @@ internal class ObjectCheckForActionPatch : BasePatch
     [HarmonyPostfix]
     private static void ObjectCheckForActionPostfix(SObject __instance, bool __state, Farmer who)
     {
-        if (__state && __instance.heldObject.Value is null && __instance.ParentSheetIndex == 128 &&
-            who.HasProfession("Ecologist"))
-            ModEntry.Data.Increment<uint>("ItemsForaged");
+        if (__state && __instance.heldObject.Value is null && __instance.IsMushroomBox() &&
+            who.HasProfession(Profession.Ecologist))
+            ModData.Increment<uint>(DataField.EcologistItemsForaged);
     }
 
     /// <summary>Patch to increment Gemologist counter for gems collected from Crystalarium.</summary>
@@ -59,7 +63,7 @@ internal class ObjectCheckForActionPatch : BasePatch
         var helper = new ILHelper(original, instructions);
 
         /// Injected: if (who.professions.Contains(<gemologist_id>) && name.Equals("Crystalarium"))
-        ///		Data.IncrementField<uint>("MineralsCollected")
+        ///		Data.IncrementField<uint>("GemologistMineralsCollected")
         ///	Before: switch (name)
 
         var dontIncreaseGemologistCounter = iLGenerator.DefineLabel();
@@ -74,7 +78,7 @@ internal class ObjectCheckForActionPatch : BasePatch
                     // prepare profession check
                     new CodeInstruction(OpCodes.Ldarg_1) // arg 1 = Farmer who
                 )
-                .InsertProfessionCheckForPlayerOnStack(Utility.Professions.IndexOf("Gemologist"),
+                .InsertProfessionCheckForPlayerOnStack((int) Profession.Gemologist,
                     dontIncreaseGemologistCounter)
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_0),
@@ -84,19 +88,18 @@ internal class ObjectCheckForActionPatch : BasePatch
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(string).MethodNamed(nameof(string.Equals), new[] {typeof(string)})),
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseGemologistCounter),
+                    new CodeInstruction(OpCodes.Ldstr, DataField.GemologistMineralsCollected.ToString()),
+                    new CodeInstruction(OpCodes.Ldnull),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.Data))),
-                    new CodeInstruction(OpCodes.Ldstr, "MineralsCollected"),
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModData).MethodNamed(nameof(ModData.Increment), new[] {typeof(string)})
+                        typeof(ModData)
+                            .MethodNamed(nameof(ModData.Increment), new[] {typeof(DataField), typeof(Farmer)})
                             .MakeGenericMethod(typeof(uint)))
                 )
                 .AddLabels(dontIncreaseGemologistCounter);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Gemologist counter increment.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding Gemologist counter increment.\nHelper returned {ex}");
             return null;
         }
 

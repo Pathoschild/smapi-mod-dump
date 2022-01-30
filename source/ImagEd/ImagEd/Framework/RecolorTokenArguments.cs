@@ -9,6 +9,8 @@
 *************************************************/
 
 using System;
+using System.Linq;
+using System.Security.Cryptography;
 
 using Microsoft.Xna.Framework;
 
@@ -23,6 +25,7 @@ namespace ImagEd.Framework {
         public string MaskPath { get; private set; }
         public Desaturation.Mode DesaturationMode { get; private set; }
         public Flip.Mode FlipMode { get; private set; }
+        public float Brightness { get; private set; }
 
         /// <inheritdoc />
         public override bool Equals(object obj) {
@@ -36,7 +39,8 @@ namespace ImagEd.Framework {
                 && this.BlendColor.Equals(args.BlendColor)
                 && this.MaskPath.Equals(args.MaskPath)
                 && this.DesaturationMode.Equals(args.DesaturationMode)
-                && this.FlipMode.Equals(args.FlipMode);
+                && this.FlipMode.Equals(args.FlipMode)
+                && this.Brightness.Equals(args.Brightness);
         }
 
         /// <inheritdoc />
@@ -48,8 +52,31 @@ namespace ImagEd.Framework {
                                 this.BlendColor,
                                 this.MaskPath,
                                 this.DesaturationMode,
-                                this.FlipMode)
+                                this.FlipMode,
+                                this.Brightness)
                         .GetHashCode();
+        }
+
+        ///<summary> Returns a unique suffix to identify the file in different runs of SDV.</summary>
+        public string GetUniqueFileSuffix() {
+            // ATTENTION: We can't persist the result of GetHashCode() because it's not consistent between several runs of a program.
+            // This is by design and a security feature of since the .NET Core 1.0, see
+            // https://docs.microsoft.com/en-us/dotnet/api/system.string.gethashcode?view=netcore-1.0
+            // To get consistent results required to identify the file on next run we use MD5 over all token arguments.
+            string argsInfo = $"{this.ContentPackName}"
+                            + $"{this.AssetName}"
+                            + $"{this.SourcePath}"
+                            + $"{this.BlendColor}"
+                            + $"{this.MaskPath}"
+                            + $"{this.DesaturationMode}"
+                            + $"{this.FlipMode}"
+                            + $"{this.Brightness}";
+
+            using (MD5 md5algorithm = MD5.Create()) {
+                byte[] argsMd5 = md5algorithm.ComputeHash(System.Text.Encoding.UTF8.GetBytes(argsInfo));
+
+                return string.Concat(argsMd5.Select(c => $"{c:x2}"));
+            }
         }
 
         /// <summary>Parse JSON string and return token arguments.</summary>
@@ -75,7 +102,10 @@ namespace ImagEd.Framework {
                                  : Desaturation.Mode.None,
                 FlipMode = tempInput.Length > 6
                          ? Flip.ParseEnum(tempInput[6].Trim())
-                         : Flip.Mode.None
+                         : Flip.Mode.None,
+                Brightness = tempInput.Length > 7
+                           ? float.Parse(tempInput[7].Trim(), System.Globalization.CultureInfo.InvariantCulture)
+                           : 1.0f
             };
         }
     }

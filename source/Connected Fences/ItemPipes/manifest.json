@@ -11,7 +11,7 @@
 {
   "Name": "Item Pipes",
   "Author": "sergiomadd",
-  "Version": "0.1.3",
+  "Version": "0.1.5",
   "Description": "Transport pipes for items.",
   "UniqueID": "sergiomadd.ItemPipes",
   "EntryDll": "ItemPipes.dll",
@@ -19,8 +19,8 @@
   "UpdateKeys": [],
   "Dependencies": [
     {
-      "UniqueID": "spacechase0.JsonAssets",
-      "IsRequired": true
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": "true"
     }
   ],
 }

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MagicValley",
+  "Author": "season",
+  "Version": "0.2.1",
+  "Description": "Make the valley full of magic.",
+  "UniqueID": "season.MagicValley",
+  "EntryDll": "MagicValley.dll",
+  "UpdateKeys": [ "Nexus:10639" ],
+  "MinimumApiVersion": "3.13.0"
+}

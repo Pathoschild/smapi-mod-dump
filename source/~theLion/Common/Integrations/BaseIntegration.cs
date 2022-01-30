@@ -8,10 +8,14 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Common.Integrations;
+
+#region using directives
+
 using System;
 using StardewModdingAPI;
 
-namespace TheLion.Stardew.Common.Integrations;
+#endregion using directives
 
 /// <summary>The base implementation for a mod integration.</summary>
 /// <remarks>Credit to <c>Pathoschild</c>.</remarks>
@@ -23,17 +27,17 @@ internal abstract class BaseIntegration : IModIntegration
     /// <param name="minVersion">The minimum version of the mod that's supported.</param>
     /// <param name="modRegistry">An API for fetching metadata about loaded mods.</param>
     /// <param name="log">Encapsulates monitoring and logging.</param>
-    protected BaseIntegration(string label, string modID, string minVersion, IModRegistry modRegistry,
+    protected BaseIntegration(string label, string modId, string minVersion, IModRegistry modRegistry,
         Action<string, LogLevel> log)
     {
         // init
         Label = label;
-        ModID = modID;
+        ModId = modId;
         ModRegistry = modRegistry;
         Log = log;
 
         // validate mod
-        var manifest = modRegistry.Get(ModID)?.Manifest;
+        var manifest = modRegistry.Get(ModId)?.Manifest;
         if (manifest is null) return;
 
         if (manifest.Version.IsOlderThan(minVersion))
@@ -48,7 +52,7 @@ internal abstract class BaseIntegration : IModIntegration
     }
 
     /// <summary>The mod's unique ID.</summary>
-    protected string ModID { get; }
+    protected string ModId { get; }
 
     /// <summary>API for fetching metadata about loaded mods.</summary>
     protected IModRegistry ModRegistry { get; }
@@ -66,7 +70,7 @@ internal abstract class BaseIntegration : IModIntegration
     /// <typeparam name="TInterface">The API type.</typeparam>
     protected TInterface GetValidatedApi<TInterface>() where TInterface : class
     {
-        var api = ModRegistry.GetApi<TInterface>(ModID);
+        var api = ModRegistry.GetApi<TInterface>(ModId);
         if (api is not null) return api;
 
         Log($"Detected {Label}, but couldn't fetch its API. Disabled integration with this mod.",

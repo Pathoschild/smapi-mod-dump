@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit 1a82064980f120140803fac96a5850f5a53645f4
+   commit ec674a02cc5cca711eeeafbf85ef37a2e6415936
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Mon Aug 9 18:59:03 2021 +0100
+   Date:   Thu Jan 20 04:47:34 2022 +0000
    
-       [MasterFisher] Update to use new staging system
+       [MoreGrass] Fix bug causing a crash
    

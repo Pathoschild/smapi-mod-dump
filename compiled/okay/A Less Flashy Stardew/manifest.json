@@ -1,0 +1,11 @@
+{
+  "Name": "Less Flashy Stardew",
+  "Author": "mistyspring",
+  "Version": "2.0.1",
+  "Description": "Reduces flashing in SDV.",
+  "UniqueID": "mistyspring.lessflashy",
+  "UpdateKeys": ["Nexus:10531"],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

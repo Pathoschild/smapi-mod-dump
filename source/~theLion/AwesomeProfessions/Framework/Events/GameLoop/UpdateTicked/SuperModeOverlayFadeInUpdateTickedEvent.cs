@@ -8,16 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class SuperModeOverlayFadeInUpdateTickedEvent : UpdateTickedEvent
 {
     /// <inheritdoc />
-    public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        ModState.SuperModeOverlayAlpha += 0.01f;
-        if (ModState.SuperModeOverlayAlpha >= 0.3f) ModEntry.Subscriber.Unsubscribe(GetType());
+        ModEntry.State.Value.SuperMode.Overlay.FadeIn();
     }
 }

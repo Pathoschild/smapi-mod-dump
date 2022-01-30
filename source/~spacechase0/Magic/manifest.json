@@ -11,7 +11,7 @@
 {
     "Name": "Magic",
     "Author": "spacechase0",
-    "Version": "0.7.1",
+    "Version": "0.8.1",
     "MinimumApiVersion": "3.13.0",
     "Description": "Adds a full spell system to the game.",
     "UniqueID": "spacechase0.Magic",
@@ -23,10 +23,6 @@
         },
         {
             "UniqueID": "spacechase0.JsonAssets"
-        },
-        {
-            "UniqueID": "Platonymous.Toolkit",
-            "IsRequired": false
         },
         {
             "UniqueID": "spacechase0.ManaBar"

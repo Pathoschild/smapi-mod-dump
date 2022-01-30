@@ -1,0 +1,9 @@
+{
+  "WoodFenceLife": 2.0,
+  "StoneFenceLife": 2.0,
+  "IronFenceLife": 1.3,
+  "HardwoodFenceLife": 1.0,
+  "GateLife": 1.0,
+  "FenceLifeKeybind": "OemPeriod",
+  "Debug": false
+}

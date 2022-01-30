@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".metadata", ".metadata", "{ACEE3349-CD26-4969-8693-5CB58786A2AA}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,7 +40,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HappyFishJump", "HappyFishJ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheStarsIncline", "TheStarsIncline\TheStarsIncline.csproj", "{8DB4F568-B5D9-442A-AE3D-A3AEE9BB9877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WashAwayForage", "WashAwayForage\WashAwayForage.csproj", "{426E93E6-DA81-4B25-AF0E-5C20B79D039F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WashAwayForage", "WashAwayForage\WashAwayForage.csproj", "{426E93E6-DA81-4B25-AF0E-5C20B79D039F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResetSkullCaverns", "ResetSkullCaverns\ResetSkullCaverns.csproj", "{DA465429-24F2-401F-92C2-E45F3421C277}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IndoorsFarmStayDry", "IndoorsFarmStayDry\IndoorsFarmStayDry.csproj", "{9BD160B6-6B17-4132-BEDB-5780855039F7}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -233,6 +237,30 @@ Global
 		{426E93E6-DA81-4B25-AF0E-5C20B79D039F}.x86|Any CPU.Build.0 = Release|Any CPU
 		{426E93E6-DA81-4B25-AF0E-5C20B79D039F}.x86|x86.ActiveCfg = Release|Any CPU
 		{426E93E6-DA81-4B25-AF0E-5C20B79D039F}.x86|x86.Build.0 = Release|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Debug|x86.Build.0 = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Release|x86.ActiveCfg = Release|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.Release|x86.Build.0 = Release|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.x86|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.x86|Any CPU.Build.0 = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.x86|x86.ActiveCfg = Debug|Any CPU
+		{DA465429-24F2-401F-92C2-E45F3421C277}.x86|x86.Build.0 = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Debug|x86.Build.0 = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Release|x86.ActiveCfg = Release|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.Release|x86.Build.0 = Release|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.x86|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.x86|Any CPU.Build.0 = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.x86|x86.ActiveCfg = Debug|Any CPU
+		{9BD160B6-6B17-4132-BEDB-5780855039F7}.x86|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

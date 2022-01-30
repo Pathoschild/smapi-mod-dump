@@ -152,7 +152,7 @@ namespace PetBed
             if (names.Count > 0)
             {
                 Vector2 sleeping_tile = new Vector2(-1, -1);
-                ShuffleList(names);
+                names = ShuffleList(names);
                 foreach (string name in names)
                 {
                     SMonitor.Log($"Checking bed {name}");

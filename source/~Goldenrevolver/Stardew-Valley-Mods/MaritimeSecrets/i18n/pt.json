@@ -1,0 +1,74 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  /*
+		The first entry before the : is the translation key, leave that one unchanged. Only change the translation in the "" behind it.
+		Every value that you don't translate (or that is missing when I update) will simply take the english translation I wrote.
+  */
+  "ConfigChangePendantPriceToPearl": "Trocar Preço do Pingente para uma Pérola",
+  "ConfigMarinerSpeechType": "Tipo de Fala do Marinheiro",
+  "ConfigSpeechTypeModern": "Moderno",
+  "ConfigSpeechTypeSailor": "Marinheiro",
+  "ConfigSpeechTypeDynamic": "Dinâmico",
+  "FallbackOldMarinerName": "Velho Marinheiro",
+  "GreenOcean": "Mar Esmeralda",
+  "Secret": "{{name}}: Você quer saber um segredo?",
+  "NoSecret": "{{name}}: Não tenho nenhum segredo para te contar hoje.",
+  "BeachSupplyCrate": "Uma caixa de suprimentos apareceu na praia hoje de manhã.",
+  "AlsoBeachSupplyCrate": "Ah, e uma caixa de suprimentos apareceu na praia hoje de manhã.",
+  "SummerForageCalendar": "No meio do verão o mar fica verde e a colheita das ondas é farta.",
+  "WormBinUpgrade": "Madeira do mar em decomposição é um paraiso para micro-organismos. Tente adicionar uma ao seu cesto de minhocas.",
+  "MermaidSecretNote": "Certa vez eu conheci uma sereia. Ela ficava murmurando os números 1-5-4-2-3 enquanto dormia.",
+  "MermaidSecretNote_Mermaid": "Você já viu uma sereia de cabelo azul antes? Ela fica murmurando os números 1-5-4-2-3 enquanto dorme.",
+  "MermaidSecretNote_MermaidBlueHair": "Você já viu uma sereia de cabelo azul parecida comigo antes? Ela fica murmurando os números 1-5-4-2-3 enquanto dorme.",
+  "BeachFarmBoatPainting": "Sua fazenda possui uma recompensa especial para você se você pescar em uma lugar que seja ao mesmo tempo aparente, porém isolado.",
+  "WillyLifeSaver": "O pescador local perdeu uma bóia certa vez. Ela caiu do barco e se enroscou quando ele foi desembarcar.",
+  "TownTrashCanBrokenCommunityCenter": "As gaivotas contam de uma construção abandonada na cidade. Perto dali, alguém tentou se livrar de algo em águas que jamais chegarão ao mar.",
+  "TownTrashCanRestoredCommunityCenter": "As gaivotas contam de uma construção recém reformada na cidade. Perto dali, alguém tentou se livrar de algo em águas que jamais chegarão ao mar.",
+  "TownTrashCanJojaWareHouse": "As gaivotas contam de uma construção azulada nova na cidade. Perto dali, alguém tentou se livrar de algo em águas que jamais chegarão ao mar.",
+  "SecretWoodsWallBasket": "Os madeirões contam que alguém derrubou uma cesta na lagoa deles.",
+  "DesertPyramidDecal": "Os areinhas contam de uma lagoa escondida com um tesouro antigo dentro.",
+  "SpaPaintingAndNecklace": "Algumas gotas de chuva me contaram que elas evaporaram perto do spa local e que as pessoas perderam várias coisas interessantes lá.",
+  "SpaPaintingOrNecklace": "Algumas gotas de chuva me contaram que elas te viram pouco antes de evaporarem perto do spa local. Elas querem que você saiba que existe mais uma coisa interessante a ser descoberta lá.",
+  "IridiumKrobusReady": "Você me parece um mestre da pescaria. Com essa habilidade toda você provavelmente conseguiria pescar algo especial no rio ao sul dos esgotos.",
+  "IridiumKrobusNotReady": "Você parece ter talento para pescaria. Mas te falta habilidade para pescar algo especial no rio ao sul dos esgotos.",
+  "IslandGourmandStatue": "Ouvi falar de arraias que vivem em uma enseada numa ilha distante tem uma linda estátua submersa decorando sua casa.",
+  "VolcanoPainting": "Ouvi falar de enguias de lava no topo de um vulcão em uma ilha distante que são artistas bastante determinadas.",
+  "IslandFrogHat": "Existe uma lenda entre os sapos da região sobre um sapo glutão em uma ilha distante. É dito que em seus dominios existe um pequeno e gosmento amigo que quer conhecer o mundo.",
+  "IslandPainting": "Na parte mais ao norte de uma ilha distante, ouvi falar de um segredo no leito de uma parte de um rio que só pode ser alcançado através de um bosque secreto. Este segredo pode ser um pouco difícil de encontrar.",
+  "IslandSquirrel": "Em uma ilha distante, ouvi falar de um segredo no leito de uma parte de um rio que só pode ser alcançado ao encontrar uma maneira de andar sobre a lava. Este segredo pode ser um pouco difícil de encontrar.",
+  "GreenOcean_Sailor": "Mar Esmeralda",
+  "Secret_Sailor": "{{name}}: Ocê qué saber dum segredinho?",
+  "NoSecret_Sailor": "{{name}}: Hoje eu to sorto e sem segredo. Vorta outro dia pra nois prosiar mais.",
+  "BeachSupplyCrate_Sailor": "Uma caxa cheia de tranquera apareceu na praia hoje mai cedo.",
+  "AlsoBeachSupplyCrate_Sailor": " Ah, e uma caxa cheia de tranquera apareceu na praia hoje mai cedo.",
+  "SummerForageCalendar_Sailor": "Lá pos mei du veraum o mar fica verde de tudo e começa a brota tudo quanto é tipo de coisa das onda. É bunito demais de vê.",
+  "WormBinUpgrade_Sailor": "Madera do mar é um verdadero paraiso pra tudu quanto é tipo de micróbio. Se ocê buta uma na sua compostagem, de certo que as minhoca fica tudo filiz.",
+  "MermaidSecretNote_Sailor": "Eu cunheci uma sereia uma vez. Inté qui era boa moça, mai ela ficava repetindo us número 1-5-4-2-3 enquanto durmia, vai intendê.",
+  "MermaidSecretNote_Mermaid_Sailor": "Ocê já viu uma sereia dus cabelo azul antes? Inté qui era boa moça, mai ela ficava repetindo us número 1-5-4-2-3 enquanto durmia, vai intendê.",
+  "MermaidSecretNote_MermaidBlueHair_Sailor": "Ocê já viu uma sereia dus cabelo azul igual us meu antes? Inté qui era boa moça, mai ela ficava repetindo us número 1-5-4-2-3 enquanto durmia, vai intendê.",
+  "BeachFarmBoatPainting_Sailor": "Si ocê pescá nu lugar certo na sua fazenda, ocê vai achar um trem todo especial. É so ocê procura um lugar qui seja mai reservado, mai ainda assim bastante aparente.",
+  "WillyLifeSaver_Sailor": "Um pescadô aqui das redondeza perdeu uma boia uns tempo atrais. O trem caiu do barco e se inrosco todim quando ele saiu. Das veis ocê incontra.",
+  "TownTrashCanBrokenCommunityCenter_Sailor": "Eu tava ouvindo as gaivota prosiando e um trem me chamô atenção. Parece que tem uma construção abandonada na cidade e pertim dali alguém tacô alguma coisa na água, que nunca que vai chegá no mar.",
+  "TownTrashCanRestoredCommunityCenter_Sailor": "Eu tava ouvindo as gaivota prosiando e um trem me chamô atenção. Parece que tem uma construção que foi reformada esses dia na cidade e pertim dali alguém tacô alguma coisa na água, que nunca que vai chegá no mar.",
+  "TownTrashCanJojaWareHouse_Sailor": "Eu tava ouvindo as gaivota prosiando e um trem me chamô atenção. Parece que tem uma construção azulada toda metida a besta na cidade e pertim dali alguém tacô alguma coisa na água, que nunca que vai chegá no mar.",
+  "SecretWoodsWallBasket_Sailor": "Esses dia atrás um Maderão veio me contá que alguém deixo uma cesta caí na lagoinha dele.",
+  "DesertPyramidDecal_Sailor": "Uma vez uma Areinha cheia de prosa mi contô que tem um tesôro antigo no fundo duma lagoa escondida.",
+  "SpaPaintingAndNecklace_Sailor": "Numa prosa minha cumas gota d'água, elas me contaram que certa vez evaporaram perto dum spa e que lá elas viu um punhado de coisa que o povo perdeu.",
+  "SpaPaintingOrNecklace_Sailor": "Numa prosa minha cumas gota d'água, elas me contaram que ti viram perto dum spa. Mandaru eu te avisá que ainda tem alguma coisa pra ocê acha lá.",
+  "IridiumKrobusReady_Sailor": "Ocê parece que intende bem de pesca. Cum essa habilidade toda talvez ocê consiga pescar o troço que tá no rio onde os esgoto disimboca.",
+  "IridiumKrobusNotReady_Sailor": "Ocê parece ter talento pra pesca. Mai cum essa habilidade sua ocê num vai consegui pescar o troço que tá no rio onde os esgoto disimboca.",
+  "IslandGourmandStatue_Sailor": "Ouvi dize que umas arraia numa gruta escondida numa ilha bem distante tem uma estátua bem bonita infeitando a casa delas.",
+  "VolcanoPainting_Sailor": "Ouvi dize que tem umas enguia de lava no topo dum vulcão numa ilha bem distante que são umas pintora determinada de tudo.",
+  "IslandFrogHat_Sailor": "Us sapo tavam me contando duma lenda dum sapo parrudo numa ilha distante. Parece que nas terra dele tem um bixim miúdo e gosmento todo serelepe querendo vê o mundo a fora.",
+  "IslandPainting_Sailor": "Na parte norte duma ilha distante, ouvi falá dum segredo nu leito duma parte dum rio que só dá pra chegá passando por um bosque secreto. Esse vai ser difícil d'ocê encontra.",
+  "IslandSquirrel_Sailor": "Numa ilha distante, ouvi falá dum segredo nu leito duma parte dum rio que só dá pra chegá se ocê consegui anda na lava. Esse vai ser difícil d'ocê encontra."
+}

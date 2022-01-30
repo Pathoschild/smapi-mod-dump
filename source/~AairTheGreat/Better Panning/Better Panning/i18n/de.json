@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AairTheGreat/StardewValleyMods
+**
+*************************************************/
+
+{
+  "hud.foundOreSpot": "Schürfstelle gefunden!",
+  "hud.noOreSpot": "Keine Schürfstelle gefunden!",
+  "hud.north": "N",
+  "hud.northwest": "NW",
+  "hud.northeast": "NO",
+  "hud.south": "S",
+  "hud.southwest": "SW",
+  "hud.southeast": "SO",
+  "hud.west": "W",
+  "hud.east": "O",
+  "hud.direction": "Richtung {{direction}}.",
+  "hud.distance": "Etwa {{distance}} Kachel entfernt.",
+  "hud.oreSpotDisappeared": "Die Schürfstelle ist verschwunden!",
+  "hud.oreSpotDisappearedReason": "Ein Fisch hat wohl den Schatz verschlungen.",
+  "hud.playerGotTheSpot": "Gute Arbeit! Du hast die Schürfstelle bekommen!",
+  "hud.TryAgain": "Versuche es in dieser Gegend später erneut!"
+}

@@ -1,10 +1,10 @@
 {
   "Name": "JustLuckMod",
   "Author": "delaney",
-  "Version": "0.0.1",
+  "Version": "0.1.1",
   "Description": "See your exact luck score every day with a minimalistic HUD feature.",
   "UniqueID": "dJustLuckMod",
   "EntryDll": "JustLuckMod.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "" ]
+  "UpdateKeys": [ "Nexus:10386", "ModDrop:1070645" ]
 }

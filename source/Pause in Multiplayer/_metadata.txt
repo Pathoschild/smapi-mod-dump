@@ -6,9 +6,9 @@ mods:
    Pause in Multiplayer
 
 latest commit:
-   commit cce9351a0add0ea260dfb205c33b4e4db9193f20
+   commit f7f07a9a61486fd2261bff8491eeb43fe1d2a0a3
    Author: jorgamun <jorgamun@gmail.com>
-   Date:   Tue Dec 28 15:44:00 2021 -0800
+   Date:   Sun Jan 23 17:27:42 2022 -0800
    
-       fixed edge cases involving health increases
+       vote pause additions
    

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/elizabethcd/CustomizeWeddingAttire
+   Git: https://github.com/elizabethcd/CustomizeWeddingAttire.git
+
+mods:
+   Customize Wedding Attire
+
+latest commit:
+   commit 719227da448bbdc3fcc0dad8e8204617aab84d7b
+   Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
+   Date:   Thu Jan 27 20:52:46 2022 -0500
+   
+       Updating readme to mention GMCM options
+   

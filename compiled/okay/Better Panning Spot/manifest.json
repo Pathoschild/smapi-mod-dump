@@ -1,0 +1,12 @@
+{
+  "Name": "Better Panning Spot",
+  "Author": "ForgedBrass",
+  "Version": "1.0.0",
+  "Description": "Makes the panning spot easier to notice.",
+  "UniqueID": "ForgedBrass.BetterPanningSpot",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:10608"],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  }
+}

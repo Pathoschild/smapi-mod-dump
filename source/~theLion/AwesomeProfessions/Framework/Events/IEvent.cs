@@ -8,14 +8,14 @@
 **
 *************************************************/
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+namespace DaLion.Stardew.Professions.Framework.Events;
 
-/// <summary>Interface for dynamic events.</summary>
+/// <summary>Interface for an event wrapper allowing dynamic enabling/disabling of events.</summary>
 internal interface IEvent
 {
-    /// <summary>Hook this event to the event listener.</summary>
-    public void Hook();
+    /// <summary>Enable this event on the current screen.</summary>
+    public void Enable();
 
-    /// <summary>Unhook this event from the event listener.</summary>
-    public void Unhook();
+    /// <summary>Disable this event on the current screen.</summary>
+    public void Disable();
 }

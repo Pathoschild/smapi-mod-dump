@@ -8,12 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Extensions;
+
+#region using directives
+
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
-using TheLion.Stardew.Professions.Framework.Utility;
 
-namespace TheLion.Stardew.Professions.Framework.Extensions;
+using ObjectLookups = Utility.ObjectLookups;
+
+#endregion using directives
 
 public static class CrabPotExtensions
 {
@@ -21,7 +26,7 @@ public static class CrabPotExtensions
     public static bool HasMagnet(this CrabPot crabpot)
     {
         return crabpot.bait.Value is not null &&
-               Objects.BaitById.TryGetValue(crabpot.bait.Value.ParentSheetIndex, out var baitName) &&
+               ObjectLookups.BaitById.TryGetValue(crabpot.bait.Value.ParentSheetIndex, out var baitName) &&
                baitName == "Magnet";
     }
 
@@ -29,7 +34,7 @@ public static class CrabPotExtensions
     public static bool HasWildBait(this CrabPot crabpot)
     {
         return crabpot.bait.Value is not null &&
-               Objects.BaitById.TryGetValue(crabpot.bait.Value.ParentSheetIndex, out var baitName) &&
+               ObjectLookups.BaitById.TryGetValue(crabpot.bait.Value.ParentSheetIndex, out var baitName) &&
                baitName == "Wild Bait";
     }
 
@@ -37,7 +42,7 @@ public static class CrabPotExtensions
     public static bool HasMagicBait(this CrabPot crabpot)
     {
         return crabpot.bait.Value is not null &&
-               Objects.BaitById.TryGetValue(crabpot.bait.Value.ParentSheetIndex, out var baitName) &&
+               ObjectLookups.BaitById.TryGetValue(crabpot.bait.Value.ParentSheetIndex, out var baitName) &&
                baitName == "Magic Bait";
     }
 

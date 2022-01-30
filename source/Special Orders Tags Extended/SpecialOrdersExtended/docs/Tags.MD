@@ -35,10 +35,11 @@ Tags are used to restrict the appearance of special orders. Tags can be negated 
 7. `conversation_<conversationTopic>`: If *any* player has the conversation topic active. Conversation topics are regularly used in-game to delay events, and this is basically my intent with this one. Negate with `conversation_<conversationTopic>_not`.(Added in 1.0.1)
 8. `haskilled_<Monster-Name>_<num>`: If any farmer has killed at least a specific number of the enemy. `Monster-Name` is the exact name of the monster with spaces traded for dashes - ie `haskilled_Green-Slime_1000`. Note that these are exact enemy names and the game doesn't combine similar monsters. `haskilled_Green-Slime_1000` will not count Frost Jellies. Use stats_slimesKilled if you want all slimes. haskilled_<Monster-Name>_under_<num> for strictly under.
 9. `friendship_<NPCname>_<num>`: If any farmer has at least the required amount of friendship points with the NPC in question. ie `friendship_Robin_2500` = at least ten hearts with Robin. `friendship_<NPCname>_under_<num>` for strictly under.
+10. `married_<NPCname>`: whether or not the NPC is married. Inverse is `married_<NPCname>_not`.
 10. `minelevel_<num>`: Whether or not any farmer has reached the mine level indicated. (Values > 120 refer to the Skull Cavern). `minelevel_under_<num>` for strictly under.
 11. `houselevel_<num>`: Whether or not any farmer has the house upgrade referenced. Mostly useful for checking if anyone has a basement, I think. `houselevel_under_<num>` for strictly under.
 12. `moneyearned_<num>`: Whether or not players have earned a certain amount of money.
-13. `skillllevel_<skillname>_<num>`: Whether any farmer has the required skill level (note: three l's). `skilllevel_<skillname>_under_<num>` for strictly under.
+13. `skillllevel_<skillname>_<num>`: Whether any farmer has the required skill level (note: three l's). Currently only vanilla skills are supported. `skilllevel_<skillname>_under_<num>` for strictly under.
 14. `achievement_<key>`: Whether any farmer has the achievement in question, where `key` is the key in `Data/achievements`. Use `achievement_<key>_not` to negate.
 14. `hasspecialitem_<item>`: If any farmer has the special item. Valid items: `clubCard`, `specialCharm`, `skullKey`, `rustyKey`, `translationGuide`, `townKey`. Use `hasspecialitem_<item>_not` for the inverse - if NO farmer has the `clubCard`, etc.
 15. `craftingrecipe_<recipe>`: If any farmer has the recipe. Negate with `craftingrecipe_<recipe>_not`. (Added in 1.0.1)

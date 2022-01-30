@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,12 +20,14 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Stardew.Common.Extensions;
+using Stardew.Common.Harmony;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class ObjectPerformObjectDropInActionPatch : BasePatch
@@ -62,29 +68,33 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
                 __instance.heldObject.Value.Stack = 2;
                 __instance.heldObject.Value.Quality = SObject.lowQuality;
             }
-            // ostrich mayonnaise keeps giving x10 output but doesn't respect input quality without Artisan
-            else if (dropInItem.ParentSheetIndex == 289 &&
-                     !ModEntry.ModHelper.ModRegistry.IsLoaded("ughitsmegan.ostrichmayoForProducerFrameworkMod"))
+            else
             {
-                __instance.heldObject.Value.Quality = SObject.lowQuality;
-            }
-            // golden mayonnaise keeps giving gives single output but keeps golden quality
-            else if (dropInItem.ParentSheetIndex == 928 &&
-                     !ModEntry.ModHelper.ModRegistry.IsLoaded("ughitsmegan.goldenmayoForProducerFrameworkMod"))
-            {
-                __instance.heldObject.Value.Stack = 1;
+                switch (dropInItem.ParentSheetIndex)
+                {
+                    // ostrich mayonnaise keeps giving x10 output but doesn't respect input quality without Artisan
+                    case 289 when !ModEntry.ModHelper.ModRegistry.IsLoaded(
+                        "ughitsmegan.ostrichmayoForProducerFrameworkMod"):
+                        __instance.heldObject.Value.Quality = SObject.lowQuality;
+                        break;
+                    // golden mayonnaise keeps giving gives single output but keeps golden quality
+                    case 928 when !ModEntry.ModHelper.ModRegistry.IsLoaded(
+                        "ughitsmegan.goldenmayoForProducerFrameworkMod"):
+                        __instance.heldObject.Value.Stack = 1;
+                        break;
+                }
             }
         }
 
         // if the machine doesn't belong to this player, then do nothing further
         if (Context.IsMultiplayer && __instance.owner.Value != who.UniqueMultiplayerID) return;
 
-        if (__instance.name == "Geode Crusher" && who.HasProfession("Gemologist") &&
+        if (__instance.name == "Geode Crusher" && who.HasProfession(Profession.Gemologist) &&
             (__instance.heldObject.Value.IsForagedMineral() || __instance.heldObject.Value.IsGemOrMineral()))
         {
-            __instance.heldObject.Value.Quality = Utility.Professions.GetGemologistMineralQuality();
+            __instance.heldObject.Value.Quality = who.GetGemologistMineralQuality();
         }
-        else if (__instance.IsArtisanMachine() && who.HasProfession("Artisan") && dropInItem is SObject dropIn)
+        else if (__instance.IsArtisanMachine() && who.HasProfession(Profession.Artisan) && dropInItem is SObject dropIn)
         {
             // produce cares about input quality with low chance for upgrade
             __instance.heldObject.Value.Quality = dropIn.Quality;
@@ -93,7 +103,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
                 __instance.heldObject.Value.Quality +=
                     dropIn.Quality == SObject.highQuality ? 2 : 1;
 
-            if (who.HasPrestigedProfession("Artisan"))
+            if (who.HasProfession(Profession.Artisan, true))
                 __instance.MinutesUntilReady -= __instance.MinutesUntilReady / 4;
             else
                 __instance.MinutesUntilReady -= __instance.MinutesUntilReady / 10;
@@ -128,7 +138,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
         var helper = new ILHelper(original, instructions);
 
         /// Injected: if (Game1.player.professions.Contains(<gemologist_id>))
-        ///		Data.IncrementField<uint>("MineralsCollected")
+        ///		Data.IncrementField<uint>("GemologistMineralsCollected")
         ///	After: Game1.stats.GeodesCracked++;
 
         var dontIncreaseGemologistCounter = iLGenerator.DefineLabel();
@@ -140,22 +150,21 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
                         typeof(Stats).PropertySetter(nameof(Stats.GeodesCracked)))
                 )
                 .Advance()
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Gemologist"),
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Gemologist,
                     dontIncreaseGemologistCounter)
                 .Insert(
+                    new CodeInstruction(OpCodes.Ldstr, DataField.GemologistMineralsCollected.ToString()),
+                    new CodeInstruction(OpCodes.Ldnull),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.Data))),
-                    new CodeInstruction(OpCodes.Ldstr, "MineralsCollected"),
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModData).MethodNamed(nameof(ModData.Increment), new[] {typeof(string)})
+                        typeof(ModData)
+                            .MethodNamed(nameof(ModData.Increment), new[] {typeof(DataField), typeof(Farmer)})
                             .MakeGenericMethod(typeof(uint)))
                 )
                 .AddLabels(dontIncreaseGemologistCounter);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Gemologist counter increment.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding Gemologist counter increment.\nHelper returned {ex}");
             return null;
         }
 
@@ -170,7 +179,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
             var notPrestigedBreeder = iLGenerator.DefineLabel();
             var resumeExecution = iLGenerator.DefineLabel();
             helper
-                .FindProfessionCheck(Utility.Professions.IndexOf("Breeder"), true)
+                .FindProfessionCheck((int) Profession.Breeder, true)
                 .RetreatUntil(
                     new CodeInstruction(OpCodes.Ldloc_0)
                 )
@@ -189,7 +198,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_2)
                 )
                 .ReplaceWith(
-                    new(OpCodes.Ldc_I4_S, 100 + Utility.Professions.IndexOf("Breeder"))
+                    new(OpCodes.Ldc_I4_S, (int) Profession.Breeder + 100)
                 )
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Brfalse_S)
@@ -205,8 +214,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding prestiged Breeder incubation bonus.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding prestiged Breeder incubation bonus.\nHelper returned {ex}");
             return null;
         }
 

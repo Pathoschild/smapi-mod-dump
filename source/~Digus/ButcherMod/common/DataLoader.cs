@@ -57,7 +57,7 @@ namespace AnimalHusbandryMod.common
 
         public static IDynamicGameAssetsApi DgaApi;
 
-        public DataLoader(IModHelper helper)
+        public DataLoader(IModHelper helper, IManifest manifest)
         {
             Helper = helper;
             ModConfig = helper.ReadConfig<ModConfig>();
@@ -118,6 +118,8 @@ namespace AnimalHusbandryMod.common
             {
                 editors.Add(RecipeLoader);
             }
+
+            CreateConfigMenu(manifest);
         }
 
         public bool CanEdit<T>(IAssetInfo asset)
@@ -431,6 +433,68 @@ namespace AnimalHusbandryMod.common
             }
         }
 
+        private void CreateConfigMenu(IManifest manifest)
+        {
+            GenericModConfigMenuApi api = Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (api != null)
+            {
+                api.RegisterModConfig(manifest, () => DataLoader.ModConfig = new ModConfig(), () => Helper.WriteConfig(DataLoader.ModConfig));
+
+                api.RegisterLabel(manifest, "Main Features:", "Properties to disable the mod main features.");
+
+                api.RegisterSimpleOption(manifest, "Disable Meat", "Disable all features related to meat. Meat Cleaver/Wand will not be delivered , and if already owned, will not work. Meat items and meat dishes will not be loaded. Any item still on the inventory will be bugged. You should sell/trash all of them before disabling meat. Meat Friday will not show on TV. You will not receive any more meat recipe letter from the villagers. Learned recipes will still be known, but will not show on the cooking menu. If re-enabled, they will show again.", () => DataLoader.ModConfig.DisableMeat, (bool val) => DataLoader.ModConfig.DisableMeat = val);
+                
+                api.RegisterSimpleOption(manifest, "Disable Pregnancy", "Disable all features related to pregnancy. Syringe will not be delivered, and if already owned, it will not work. Pregnancy status will not update but will not reset. Animals that were pregnant will be with random pregnancy disabled unless changed. If re-enabled, everything will resume as it was before.", () => DataLoader.ModConfig.DisablePregnancy, (bool val) => DataLoader.ModConfig.DisablePregnancy = val);
+                
+                api.RegisterSimpleOption(manifest, "Disable Treats", "Disable all features related to treats. The basket will not be delivered, and if already owned, it will not work. Treat status will update while the treat feature is disable. Animals that were feed treats before will be able to eat again if the appropriate amount of days has passed when the mod was disabled.", () => DataLoader.ModConfig.DisableTreats, (bool val) => DataLoader.ModConfig.DisableTreats = val);
+                
+                api.RegisterSimpleOption(manifest, "Disable Animal Contest", "Disable all features related to the animal contest. You won't receive any more participant ribbons. Bonus from previous winners will still apply though.", () => DataLoader.ModConfig.DisableAnimalContest, (bool val) => DataLoader.ModConfig.DisableAnimalContest = val);
+
+                api.RegisterLabel(manifest, "Meat Properties:", "Properties to configure the meat feature.");
+
+                api.RegisterSimpleOption(manifest, "Softmode", "Enable the Softmode. When enabled the Meat Cleaver is replaced with the Meat Want. They work the same, but sound, text and effects are changed to resemble magic.", () => DataLoader.ModConfig.Softmode, (bool val) => DataLoader.ModConfig.Softmode = val);
+
+                api.RegisterSimpleOption(manifest, "Disable Rancher Affect Meat", "Disable the patch that make Rancher Profession work on meat items.", () => DataLoader.ModConfig.DisableRancherMeatPriceAjust, (bool val) => DataLoader.ModConfig.DisableRancherMeatPriceAjust = val);
+
+                api.RegisterSimpleOption(manifest, "Disable Meat In Bundle", "Disable the addition of meat to the Animal Bundle in the Community Center.", () => DataLoader.ModConfig.DisableMeatInBlundle, (bool val) => DataLoader.ModConfig.DisableMeatInBlundle = val);
+
+                api.RegisterSimpleOption(manifest, "Disable Meat From Dinosaur", "Disable dinosaur giving a random kind of meat.", () => DataLoader.ModConfig.DisableMeatFromDinosaur, (bool val) => DataLoader.ModConfig.DisableMeatFromDinosaur = val);
+
+                api.RegisterSimpleOption(manifest, "Disable Meat Tool Letter", "Disable the sending of the meat cleaver or the meat wand. Meat will only be able to be obtained through the meat button.", () => DataLoader.ModConfig.DisableMeatToolLetter, (bool val) => DataLoader.ModConfig.DisableMeatToolLetter = val);
+
+                api.RegisterSimpleOption(manifest, "Add Meat Tool Key", "Set a keyboard key to directly add the Meat Cleaver/Want to your inventory.", () => DataLoader.ModConfig.AddMeatCleaverToInventoryKey ?? SButton.None, (SButton val) => DataLoader.ModConfig.AddMeatCleaverToInventoryKey = val == SButton.None ? (SButton?)null : val);
+
+                api.RegisterLabel(manifest, "Pregnancy Properties:", "Properties to configure the insemination feature.");
+
+                api.RegisterSimpleOption(manifest, "Disable Full Build Notif.", "Disable notifications for when an animals can't give birth because their building is full.", () => DataLoader.ModConfig.DisableFullBuildingForBirthNotification, (bool val) => DataLoader.ModConfig.DisableFullBuildingForBirthNotification = val);
+                
+                api.RegisterSimpleOption(manifest, "Disable Birth Notif.", "Disable notifications for when an animal will give birth tomorrow.", () => DataLoader.ModConfig.DisableTomorrowBirthNotification, (bool val) => DataLoader.ModConfig.DisableTomorrowBirthNotification = val);
+
+                api.RegisterSimpleOption(manifest, "Add Insemination Syringe Key", "Set a keyboard key to directly add the Insemination Syringe to your inventory.", () => DataLoader.ModConfig.AddInseminationSyringeToInventoryKey ?? SButton.None, (SButton val) => DataLoader.ModConfig.AddInseminationSyringeToInventoryKey = val == SButton.None ? (SButton?)null : val);
+
+                api.RegisterLabel(manifest, "Treats Properties:", "Properties to configure the treats feature.");
+
+                api.RegisterSimpleOption(manifest, "Disable Friendship Increase", "Disable animal friendship being increased when given a treat.", () => DataLoader.ModConfig.DisableFriendshipInscreseWithTreats, (bool val) => DataLoader.ModConfig.DisableFriendshipInscreseWithTreats = val);
+
+                api.RegisterSimpleOption(manifest, "Disable Mood Increase", "Disable animal mood being set to max when given a treat.", () => DataLoader.ModConfig.DisableMoodInscreseWithTreats, (bool val) => DataLoader.ModConfig.DisableMoodInscreseWithTreats = val);
+
+                api.RegisterSimpleOption(manifest, "Enable Treats Count As Feed", "Enable animal feed status being set to max when given a treat.", () => DataLoader.ModConfig.EnableTreatsCountAsAnimalFeed, (bool val) => DataLoader.ModConfig.EnableTreatsCountAsAnimalFeed = val);
+
+                api.RegisterSimpleOption(manifest, "Professions Adjust", "Change the percentage adjust for friendship increase when giving treats when you have the coopmaster or shepherd professions. 0.25 means 25% more than usual.", () => (float)DataLoader.ModConfig.PercentualAjustOnFriendshipInscreaseFromProfessions, (float val) => DataLoader.ModConfig.PercentualAjustOnFriendshipInscreaseFromProfessions = val);
+
+                api.RegisterSimpleOption(manifest, "Add Feeding Basket Key", "Set a keyboard key to directly add the Feeding Basket to your inventory.", () => DataLoader.ModConfig.AddFeedingBasketToInventoryKey ?? SButton.None, (SButton val) => DataLoader.ModConfig.AddFeedingBasketToInventoryKey = val == SButton.None ? (SButton?) null : val);
+
+                api.RegisterLabel(manifest, "Animal Contest Properties:", "Properties to configure the animal contest feature.");
+
+                api.RegisterSimpleOption(manifest, "Disable Contest Bonus", "Disable the fertility and the production bonuses from the contest. If enabled again, all winners will receive the bonus again, no matter if the bonus was disabled when they won.", () => DataLoader.ModConfig.DisableContestBonus, (bool val) => DataLoader.ModConfig.DisableContestBonus = val);
+
+                api.RegisterLabel(manifest, "Misc. Properties:", "Miscellaneous Properties.");
+
+                api.RegisterSimpleOption(manifest, "Force Draw Attachment", "Force the patch that draw the hover menu for the feeding basket and insemination syringe on any OS", () => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS, (bool val) => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS = val);
+
+                api.RegisterSimpleOption(manifest, "Disable TV Channels", "Disable all TV channels added by this mod.", () => DataLoader.ModConfig.DisableTvChannels, (bool val) => DataLoader.ModConfig.DisableTvChannels = val);
+            }
+        }
         enum Taste {
             Love = 1,
             Like = 3,

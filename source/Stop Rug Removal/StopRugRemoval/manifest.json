@@ -11,10 +11,10 @@
 {
    "Name": "StopRugRemoval",
    "Author": "atravita",
-   "Version": "1.0.2",
+   "Version": "1.1.0-alpha",
    "Description": "Prevents you from removing rugs if there's something on it",
    "UniqueID": "atravita.StopRugRemoval",
    "EntryDll": "StopRugRemoval.dll",
-   "UpdateKeys": ["Nexus:10192"],
-   "MinimumApiVersion": "3.13",
+   "UpdateKeys": ["Nexus:10192", "ModDrop:1068101"],
+   "MinimumApiVersion": "3.13"
 }

@@ -16,7 +16,7 @@ using StardewValley;
 using System;
 using System.IO;
 
-namespace GroundhogDay
+namespace Screenshot
 {
     /// <summary>The mod entry point.</summary>
     public partial class ModEntry : Mod
@@ -45,7 +45,6 @@ namespace GroundhogDay
             helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
-            var harmony = new Harmony(ModManifest.UniqueID);
         }
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)

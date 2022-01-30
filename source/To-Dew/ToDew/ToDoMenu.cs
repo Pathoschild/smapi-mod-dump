@@ -671,10 +671,17 @@ namespace ToDew {
             }
         }
 
+        private bool ignoreKeyFlag = true; // ignore the keypress that opens the menu if it also closes the menu
+
         /// <summary>The method invoked when the player presses an input button.</summary>
         /// <param name="key">The pressed input.</param>
         public override void receiveKeyPress(Keys key) {
             // deliberately avoid calling base, which may let another key close the menu
+            if (ignoreKeyFlag && this.theMod.config.secondaryCloseButton.Equals(key.ToSButton())) {
+                ignoreKeyFlag = false;
+                return;
+            }
+            ignoreKeyFlag = false;
             if (currentItemEditor == null) {
                 if (key.Equals(Keys.Escape) || this.theMod.config.secondaryCloseButton.Equals(key.ToSButton()))
                     this.exitThisMenu();
@@ -705,7 +712,10 @@ namespace ToDew {
         }
 
         public override void receiveGamePadButton(Buttons b) {
+            bool ignore = ignoreKeyFlag;
+            ignoreKeyFlag = false;
             if (this.theMod.config.secondaryCloseButton.Equals(b.ToSButton())) {
+                if (ignore) return;
                 if (currentItemEditor == null) {
                     this.exitThisMenu();
                 } else {

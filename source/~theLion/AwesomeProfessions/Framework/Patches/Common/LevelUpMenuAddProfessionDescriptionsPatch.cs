@@ -8,17 +8,21 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuAddProfessionDescriptionsPatch : BasePatch
@@ -38,17 +42,16 @@ internal class LevelUpMenuAddProfessionDescriptionsPatch : BasePatch
     {
         try
         {
-            if (!Utility.Professions.IndexByName.Contains(professionName)) return true; // run original logic
+            if (!Enum.TryParse<Profession>(professionName, out var profession)) return true; // run original logic
 
             descriptions.Add(ModEntry.ModHelper.Translation.Get(professionName + ".name." +
                                                                 (Game1.player.IsMale ? "male" : "female")));
 
-            var professionIndex = Utility.Professions.IndexOf(professionName);
-            var skillIndex = professionIndex / 6;
+            var skillIndex = (int) profession / 6;
             var currentLevel = Game1.player.GetUnmodifiedSkillLevel(skillIndex);
             descriptions.AddRange(ModEntry.ModHelper.Translation
                 .Get(professionName + ".desc" +
-                     (Game1.player.HasPrestigedProfession(professionName) ||
+                     (Game1.player.HasProfession(profession, true) ||
                       Game1.activeClickableMenu is LevelUpMenu && currentLevel > 10
                          ? ".prestiged"
                          : string.Empty)).ToString()
@@ -58,7 +61,7 @@ internal class LevelUpMenuAddProfessionDescriptionsPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Torpedo Trout",
+	"Description": "This fish is capable of swimming up to 68 miles per hour.",
+	"Category": "Fish",
+	"Edibility": -10,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 575,
+	"IsColored": false,
+	"GiftTastes":
+	{
+	    "Love": [ "Lance" ],
+		"Dislike": [ "Morgan", "Wizard", "Elliott", "Martin", "Willy", "Harvey", "Demetrius", "George", "Jodi", "Claire", "Olivia", "Shane", "Haley", "Maru", "Pam", "Clint", "Jas", "Andy", "Gus", "Sebastian", "Abigail", "Vincent" ],
+	    "Hate": [ "Kent" ]
+	},
+}

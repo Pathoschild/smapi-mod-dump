@@ -173,8 +173,7 @@ namespace CustomizeExterior
                     string choiceStr = Path.GetFileName(choice);
                     string typeStr = Path.GetFileNameWithoutExtension(type);
 
-                    if (!this.AssetsByBuildingType.TryGetValue(typeStr, out List<string> forType))
-                        forType = new();
+                    List<string> forType = this.AssetsByBuildingType.GetOrDefault(typeStr) ?? new();
 
                     if (!forType.Contains(choiceStr))
                         forType.Add(choiceStr);
@@ -228,8 +227,7 @@ namespace CustomizeExterior
                         string typeStr = Path.GetFileNameWithoutExtension(building);
                         if (summer.Contains(building) && fall.Contains(building) && winter.Contains(building))
                         {
-                            if (!this.AssetsByBuildingType.TryGetValue(typeStr, out List<string> forType))
-                                forType = new();
+                            List<string> forType = this.AssetsByBuildingType.GetOrDefault(typeStr) ?? new();
 
                             if (!forType.Contains(choiceStr))
                                 forType.Add(choiceStr);

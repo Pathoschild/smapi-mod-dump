@@ -3,9 +3,10 @@
   <PropertyGroup>
     <AssemblyName>CustomizableCartRedux</AssemblyName>
     <RootNamespace>CustomizableTravelingCart</RootNamespace>
-    <Version>1.4.1</Version>
+    <Version>1.4.5-beta.1</Version>
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
   </PropertyGroup>
 
   <ItemGroup>

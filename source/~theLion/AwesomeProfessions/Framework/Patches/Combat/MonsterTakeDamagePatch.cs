@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +19,15 @@ using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Tools;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Stardew.Common.Harmony;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class MonsterTakeDamagePatch : BasePatch
@@ -31,9 +36,9 @@ internal class MonsterTakeDamagePatch : BasePatch
     public override void Apply(Harmony harmony)
     {
         var targetMethods = TargetMethods().ToList();
-        ModEntry.Log($"[Patch]: Found {targetMethods.Count} target methods for {GetType().Name}.", LogLevel.Trace);
-        HarmonyPatcher.TotalPrefixCount += (uint) targetMethods.Count - 1;
-        HarmonyPatcher.TotalPostfixCount += (uint) targetMethods.Count - 1;
+        Log.D($"[Patch]: Found {targetMethods.Count} target methods for {GetType().Name}.");
+        PatchManager.TotalPrefixCount += (uint) targetMethods.Count - 1;
+        PatchManager.TotalPostfixCount += (uint) targetMethods.Count - 1;
 
         foreach (var method in targetMethods)
             try
@@ -56,8 +61,8 @@ internal class MonsterTakeDamagePatch : BasePatch
     {
         try
         {
-            if (damage <= 0 || isBomb || !ModState.IsSuperModeActive ||
-                ModState.SuperModeIndex != Utility.Professions.IndexOf("Poacher") ||
+            if (damage <= 0 || isBomb ||
+                ModEntry.State.Value.SuperMode is not {Index: SuperModeIndex.Poacher, IsActive: true} ||
                 who.CurrentTool is not MeleeWeapon weapon || weapon.isOnSpecial) return true; // run original logic
 
             if (__instance is Bug bug && bug.isArmoredBug.Value &&
@@ -81,7 +86,7 @@ internal class MonsterTakeDamagePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }
@@ -90,14 +95,13 @@ internal class MonsterTakeDamagePatch : BasePatch
     [HarmonyPostfix]
     private static void MonsterTakeDamagePostfix(Monster __instance, int damage, bool isBomb, Farmer who)
     {
-        if (damage <= 0 || isBomb || !who.IsLocalPlayer || !ModState.IsSuperModeActive ||
-            ModState.SuperModeIndex != Utility.Professions.IndexOf("Poacher") || __instance.Health <= 0)
-            return;
-        ModState.IsSuperModeActive = false;
+        if (damage > 0 && !isBomb && who.IsLocalPlayer &&
+            ModEntry.State.Value.SuperMode is {Index: SuperModeIndex.Poacher, IsActive: true} &&
+            __instance.Health > 0) ModEntry.State.Value.SuperMode.Deactivate();
     }
 
     #endregion harmony patches
-    
+
     #region private methods
 
     [HarmonyTargetMethods]
@@ -114,7 +118,7 @@ internal class MonsterTakeDamagePatch : BasePatch
                 typeof(Skeleton),
                 typeof(Spiker))
             select type.MethodNamed("takeDamage",
-                new[] {typeof(int), typeof(int), typeof(int), typeof(bool), typeof(double), typeof(Farmer)});
+                new[] { typeof(int), typeof(int), typeof(int), typeof(bool), typeof(double), typeof(Farmer) });
 
         return methods.Where(m => m.DeclaringType == m.ReflectedType);
     }

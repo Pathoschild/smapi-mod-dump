@@ -1,0 +1,10 @@
+{
+  "Name": "Monster Goals Anywhere",
+  "Author": "Suphax",
+  "Version": "1.0.0",
+  "Description": "Allows you to open the Monster Eradication Goals screen from anywhere.",
+  "UniqueID": "suphax.monstergoalsanywhere",
+  "EntryDll": "Suphax.MonsterGoalsAnywhere.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

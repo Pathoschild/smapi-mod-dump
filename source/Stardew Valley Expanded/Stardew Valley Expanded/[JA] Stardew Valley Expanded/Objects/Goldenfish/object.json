@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Goldenfish",
+	"Description": "It glows with a gold-like aurora.",
+	"Category": "Fish",
+	"Edibility": 5,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 150,
+	"IsColored": false,
+	"GiftTastes":
+	{
+	    "Love": [ "MarlonFay" ],
+		"Like": [ "Wizard", "Morgan", "Lance" ],
+		"Hate": [ "Elliott", "Willy", "Harvey", "Demetrius", "Martin", "Sebastian", "Abigail", "Vincent", "George", "Kent", "Jodi", "Claire", "Olivia", "Shane", "Haley", "Maru", "Pam", "Clint", "Jas", "Andy", "Gus" ]
+	},
+}

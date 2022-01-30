@@ -18,11 +18,16 @@
     "config.overlay.max-width.desc": "Maximum width of the overlay in pixels",
     "config.overlay.max-items": "Max Items",
     "config.overlay.max-items.desc": "Maximum number of items to show in the overlay",
+    "config.overlay.background-color": "Background Color",
+    "config.overlay.background-color.desc": "Background color of the overlay",
+    "config.overlay.text-color": "Text Color",
+    "config.overlay.text-color.desc": "Color of the item text in the overlay",
 
     // Overlay
     "overlay.header": "To-Dew List",
 
     // Console log messages
+    "message.install-gmcm-options": "You have the Generic Mod Menu Config mod installed, but not GMCM Options.  If you install GMCM Options (https://www.nexusmods.com/stardewvalley/mods/10505) then you will be able to configure the overlay colors from inside the {{modName}} configuration menu.",
     "message.save-version-newer": "List information in this save is in a newer format version ({{saveFormatVersion}}) than this version of {{modName}} uses ({{modFormatVersion}}).  The next save will use this older version, which will result in losing any attributes added in the newer version.",
     "message.save-version-older": "Read list information in format version {{saveFormatVersion}}.  It will be updated to the current format version ({{modFormatVersion}}) on next save.",
     "message.host-no-mod": "Host does not have {{modName}} installed; list disabled.",

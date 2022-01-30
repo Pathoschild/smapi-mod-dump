@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jltaylor-us/StardewGMCMOptions
+   Git: https://github.com/jltaylor-us/StardewGMCMOptions.git
+
+mods:
+   GMCM Options
+
+latest commit:
+   commit e6efd3a638ad90073bc529c6ae8ea349208ef91e
+   Author: Jamie Taylor <Jamie.Taylor@pobox.com>
+   Date:   Thu Jan 27 20:29:56 2022 -0500
+   
+       v1.1.0
+   

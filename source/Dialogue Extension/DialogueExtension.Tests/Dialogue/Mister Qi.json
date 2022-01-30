@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/DialogueExtension
+**
+*************************************************/
+
+{
+  "Mon": "Keep it up, kid. I think you're gonna be a star.#$e#Just ask me if you need anything.",
+  "Tue": "I knew you'd end up here someday. Of course, I had to make it a little difficult so you'd have an incentive to achieve excellence.",
+  "Wed": "I was born an ordinary boy, but I made a decision early in life that I would become extraordinary.",
+  "Thu": "Hey. Don't tell anyone about this place, okay? I want to keep it... exclusive.#$e#You'd keep a secret for your friend Mr. Qi, wouldn't you?",
+  "Fri": "Never stop striving to achieve perfection.#$e#Settle for nothing less than excellence in everything you do.",
+  "Sat": "Stop by whenever you wanna relax.",
+  "Sun": "Keep working hard and maybe you'll end up like me someday.",
+  "QiNutRoom_Mon": "There's more to this world than meets the eye, kid. Some day, you might understand.#$b#For now, just keep striving for excellence in everything you do.",
+  "QiNutRoom_Tue": "I got to where I am through the force of pure willpower, kid.#$b#You see... The mind is a very powerful tool.#$b#In fact, it's the most powerful tool in all of reality... and beyond.",
+  "QiNutRoom_Wed": "I'm impressed with your tenacity, kid... it took a lot of walnuts to get this far.",
+  "QiNutRoom_Thu": "Wherever you go... I'm always behind the curtain, making sure the show is interesting. Hahaha...#$b#Or... am I?",
+  "QiNutRoom_Fri": "Set your eyes on the furthest star, and let that be your goal.#$b#It's always within your power to go one step further than you used to believe.",
+  "QiNutRoom_Sat": "Some things transcend time and space, kid. It's a unique feeling in the heart... a whisper of things beyond.",
+  "QiNutRoom_Sun": "On the left, you'll find a board with my special challenges... custom-tailored for you, kid.#$b#On the right, a set of fantastic prizes for those who meet my challenge...#$b#Good luck, kid."
+}

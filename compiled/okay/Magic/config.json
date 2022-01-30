@@ -7,6 +7,9 @@
   "Key_Spell4": "D4",
   "Key_Spell5": "D5",
   "AltarLocation": "SeedShop",
-  "AltarX": 36,
-  "AltarY": 16
+  "AltarX": -1,
+  "AltarY": -1,
+  "RadioLocation": "WizardHouse",
+  "RadioX": -1,
+  "RadioY": -1
 }

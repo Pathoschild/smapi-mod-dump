@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Dawilly/SAAT
+   Git: https://github.com/Dawilly/SAAT.git
+
+mods:
+   SAAT.API
+   SAAT.Mod
+
+latest commit:
+   commit 432dd73ee61d6d916c07ba872d73909fd7f51af5
+   Author: David Weil <gamemx25@gmail.com>
+   Date:   Sat Jan 22 13:26:01 2022 -0800
+   
+       Typo corrections
+   

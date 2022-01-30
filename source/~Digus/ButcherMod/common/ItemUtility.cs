@@ -51,6 +51,15 @@ namespace AnimalHusbandryMod.common
                                     chest.items.Remove(obj);
                             }
                         }
+                        if (pair.Value.heldObject.Value is Chest autoGrabber)
+                        {
+                            NetObjectList<Item> items = autoGrabber.items;
+                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                            {
+                                if (IsModdedItem(obj, itemKey))
+                                    autoGrabber.items.Remove(obj);
+                            }
+                        }
 
                         if (IsModdedItem(pair.Value.heldObject.Value, itemKey))
                             pair.Value.heldObject.Value = null;
@@ -79,6 +88,15 @@ namespace AnimalHusbandryMod.common
                                         {
                                             if (IsModdedItem(obj, itemKey))
                                                 (pair.Value as Chest).items.Remove(obj);
+                                        }
+                                    }
+                                    if (pair.Value.heldObject.Value is Chest autoGrabber)
+                                    {
+                                        NetObjectList<Item> items = autoGrabber.items;
+                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                                        {
+                                            if (IsModdedItem(obj, itemKey))
+                                                autoGrabber.items.Remove(obj);
                                         }
                                     }
                                 }
@@ -167,6 +185,13 @@ namespace AnimalHusbandryMod.common
                                 if (IsModdedItem(obj, itemKey)) return true;
                             }
                         }
+                        if (pair.Value.heldObject.Value is Chest autoGrabber)
+                        {
+                            foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
+                            {
+                                if (IsModdedItem(obj, itemKey)) return true;
+                            }
+                        }
 
                         if (IsModdedItem(pair.Value.heldObject.Value, itemKey))
                             pair.Value.heldObject.Value = null;
@@ -187,9 +212,16 @@ namespace AnimalHusbandryMod.common
                                 if (pair.Value != null)
                                 {
                                     if (pair.Value.modData.ContainsKey(itemKey)) return true;
-                                    if (pair.Value is Chest)
+                                    if (pair.Value is Chest chest)
                                     {
-                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)(pair.Value as Chest).items).ToList())
+                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)chest.items).ToList())
+                                        {
+                                            if (IsModdedItem(obj, itemKey)) return true;
+                                        }
+                                    }
+                                    if (pair.Value.heldObject.Value is Chest autoGrabber)
+                                    {
+                                        foreach (Item obj in ((NetList<Item, NetRef<Item>>)autoGrabber.items).ToList())
                                         {
                                             if (IsModdedItem(obj, itemKey)) return true;
                                         }

@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,13 +20,13 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuDrawPatch : BasePatch
@@ -75,8 +79,7 @@ internal class LevelUpMenuDrawPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching level up menu choose profession text. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching level up menu choose profession text. Helper returned {ex}");
             return null;
         }
 
@@ -103,8 +106,7 @@ internal class LevelUpMenuDrawPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching level up menu prestige ribbon draw. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching level up menu prestige ribbon draw. Helper returned {ex}");
             return null;
         }
 
@@ -113,7 +115,7 @@ internal class LevelUpMenuDrawPatch : BasePatch
 
     #endregion harmony patches
 
-    #region private methods
+    #region injected subroutines
 
     private static string GetChooseProfessionText(LevelUpMenu menu)
     {
@@ -165,5 +167,5 @@ internal class LevelUpMenuDrawPatch : BasePatch
         }
     }
 
-    #endregion private methods
+    #endregion injected subroutines
 }

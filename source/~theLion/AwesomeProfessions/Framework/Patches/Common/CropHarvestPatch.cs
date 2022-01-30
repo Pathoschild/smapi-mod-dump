@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +20,12 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class CropHarvestPatch : BasePatch
@@ -58,20 +63,30 @@ internal class CropHarvestPatch : BasePatch
                 )
                 .ReplaceWith( // replace with custom quality
                     new(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(
-                            nameof(Utility.Professions.GetEcologistForageQuality)))
+                        typeof(FarmerExtensions).MethodNamed(
+                            nameof(FarmerExtensions.GetEcologistForageQuality)))
+                )
+                .Insert(
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player)))
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded Ecologist spring onion quality.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching modded Ecologist spring onion quality.\nHelper returned {ex}");
             return null;
         }
 
         /// Injected: if (Game1.player.professions.Contains(<ecologist_id>))
-        ///		Data.IncrementField("ItemsForaged", amount: @object.Stack)
+        ///		Data.IncrementField("EcologistItemsForaged", amount: @object.Stack)
         ///	After: Game1.stats.ItemsForaged += @object.Stack;
+
+        // this particular method is too edgy for Harmony Access Tool, so we use some old-fashioned reflection trickery to find this particular overload of ModData.Increment<T>
+        var mi = typeof(ModData)
+                     .GetMember("Increment*", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static)
+                     .Cast<MethodInfo>()
+                     .FirstOrDefault(mi => mi.GetParameters().Length == 3) ??
+                 throw new MissingMethodException("Increment method not found.");
+        mi = mi.MakeGenericMethod(typeof(uint));
 
         var dontIncreaseEcologistCounter = iLGenerator.DefineLabel();
         try
@@ -82,24 +97,21 @@ internal class CropHarvestPatch : BasePatch
                         typeof(Stats).PropertySetter(nameof(Stats.ItemsForaged)))
                 )
                 .Advance()
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Ecologist"),
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Ecologist,
                     dontIncreaseEcologistCounter)
                 .Insert(
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.Data))),
-                    new CodeInstruction(OpCodes.Ldstr, "ItemsForaged"),
+                    new CodeInstruction(OpCodes.Ldstr, DataField.EcologistItemsForaged.ToString()),
                     new CodeInstruction(OpCodes.Ldloc_1), // loc 1 = @object
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(Item).PropertyGetter(nameof(Item.Stack))),
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModData).GetMethods().First(m => m.Name == "Increment")
-                            .MakeGenericMethod(typeof(int)))
+                    new CodeInstruction(OpCodes.Ldnull),
+                    new CodeInstruction(OpCodes.Call, mi)
                 )
                 .AddLabels(dontIncreaseEcologistCounter);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Ecologist counter increment.\nHelper returned {ex}", LogLevel.Error);
+            Log.E($"Failed while adding Ecologist counter increment.\nHelper returned {ex}");
             return null;
         }
 
@@ -116,7 +128,7 @@ internal class CropHarvestPatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_3),
                     new CodeInstruction(OpCodes.Blt_S)
                 )
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Agriculturist"), isAgriculturist,
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Agriculturist, isAgriculturist,
                     true)
                 .AdvanceUntil( // find start of dice roll
                     new CodeInstruction(OpCodes.Ldloc_S, random2)
@@ -125,8 +137,7 @@ internal class CropHarvestPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding modded Agriculturist crop harvest quality.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding modded Agriculturist crop harvest quality.\nHelper returned {ex}");
             return null;
         }
 
@@ -162,23 +173,21 @@ internal class CropHarvestPatch : BasePatch
                 .GetLabels(out var labels) // copy existing labels
                 .SetLabels(dontIncreaseNumToHarvest) // branch here if shouldn't apply Harvester bonus
                 .Insert( // insert check if junimoHarvester is null
+                    labels,
                     new CodeInstruction(OpCodes.Ldarg_S, (byte) 4),
                     new CodeInstruction(OpCodes.Brtrue_S, dontIncreaseNumToHarvest)
                 )
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Harvester"),
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Harvester,
                     dontIncreaseNumToHarvest)
                 .Insert( // insert dice roll
                     new CodeInstruction(OpCodes.Ldloc_S, r2),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(Random).MethodNamed(nameof(Random.NextDouble))),
-                    new CodeInstruction(OpCodes.Ldc_R8, 0.1),
-                    // double chance if prestiged
-                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player))),
-                    new CodeInstruction(OpCodes.Ldfld, typeof(Farmer).Field(nameof(Farmer.professions))),
-                    new CodeInstruction(OpCodes.Ldc_I4_S, 100 + Utility.Professions.IndexOf("Harvester")),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(NetList<int, NetInt>).MethodNamed(nameof(NetList<int, NetInt>.Contains))),
-                    new CodeInstruction(OpCodes.Brfalse_S, dontDuplicateChance),
+                    new CodeInstruction(OpCodes.Ldc_R8, 0.1)
+                )
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Harvester + 100,
+                    dontDuplicateChance) // double chance if prestiged
+                .Insert(
                     new CodeInstruction(OpCodes.Ldc_R8, 0.1),
                     new CodeInstruction(OpCodes.Add)
                 )
@@ -186,14 +195,11 @@ internal class CropHarvestPatch : BasePatch
                     new[] {dontDuplicateChance},
                     new CodeInstruction(OpCodes.Bge_Un_S, dontIncreaseNumToHarvest)
                 )
-                .InsertBuffer() // insert numToHarvest++
-                .Return(3) // return to first inserted instruction
-                .SetLabels(labels); // restore original labels to this segment
+                .InsertBuffer(); // insert numToHarvest++
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding modded Harvester extra crop yield.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding modded Harvester extra crop yield.\nHelper returned {ex}");
             return null;
         }
 

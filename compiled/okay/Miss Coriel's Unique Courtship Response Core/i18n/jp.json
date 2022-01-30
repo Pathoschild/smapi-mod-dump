@@ -1,0 +1,62 @@
+{
+  "give_flowersA": "こんな風に思ってくれているとは思わなかったよ。$1#$b#これでカップルだね。$4",
+  "give_flowersB": "これを私に？ 私も同じ気持ちです！#$b#次の関係に進もう。$1",
+  "give_pendant": "…！？#$b#わかった！$1#$b#…何もかもこっちで準備するから、結婚式は3日後にしよう。#$b#いい？$4",
+  "stardrop_gift": "@、あなたは私にとって素晴らしい夫です。とても特別な存在だと思っています。$4^@、あなたは私にとって素晴らしい妻です。とても特別な存在だと思っています。$4#$b#このプレゼントで、幸せが伝わるといいな。",
+  "rejectNPCA": "自分の気持ちを宣言すにはちょっと早すぎない？",
+  "rejectNPCB": "うーん… やめとく。",
+  "reject_two_heartA": "ほとんど会ったこともないのに… あなたって変人なの？$2",
+  "reject_two_heartB": "その判断を下すには、私への理解が十分ではないと思うよ。",
+  "reject_four_heartA": "まあ… その… 私たちは友達だけど… そんなに親しいとは思えない。",
+  "reject_four_heartB": "あー… えっと… 私たちの素晴らしい友情を壊したくないんだ。$1",
+  "engageA": "どうしてこれを私に渡すの？ あなたはもう結婚しているのに…$2#$b#こんなことやめて。$2",
+  "engageB": "こんなこと良くないよ…。$2",
+  "marriedA": "こんなことをしているなんて %spouse は知りたくないでしょうね。#2",
+  "marriedB": "ねえ %spouse と結婚しているのにやめてよ @ さん！$5",
+  "refusal_knownA": "私は次のレベルへの準備ができていないと思います。",
+  "refusal_knownB": "私たちはただの友達だよ @。#$b#少なくともお世辞ではないと思います。$1",
+  "refusal_botherA": "さっきも言ったよね？ 私たちはまだ結婚できない…。$5",
+  "refusal_botherB": "いいかげんしつこいよ @。$5",
+  "refusal_no_heartsA": "ちょっと早すぎるのでは？",
+  "refusal_no_heartsB": "何でよ！？ あなたとは出会ったばかりなのに。$1",
+  "birthdayLoveA": "ねえちょっと、これは素晴らしい誕生日プレゼントだね！#$b#ありがとう！$1",
+  "birthdayLoveB": "きっと素敵なものを持ってきてくれると信じていたよ。これは素晴らしい。$1",
+  "birthdayLikeA": "おお！ 誕生日プレゼントを持ってきてくれたんだ！#$b#ありがとう、感謝するよ！$1",
+  "birthdayLikeB": "これは私のために用意してくれたの？ これは素晴らしいね、ありがとう。",
+  "birthdayDislikeA": "何これ… ジョークのつもりなの？$5",
+  "birthdayDislikeB": "これは不快だよ。どうしてこんなことをするの？$5",
+  "birthdayNeutralA": "え！私の誕生日に？ 頑張ったね。",
+  "birthdayNeutralB": "私の誕生日が思ったよりも早く来たのかな？#$b#ありがとう、@。",
+  "giftquestion_yes": "そうだね… あなたはいつも優しい男性ですね。$1^そうだね… あなたはいつも優しい女性ですね。$1",
+  "giftquestion_lie": "本気で嘘をつくつもり？ もう知ってるんだよ！$5#$b#心配したほうがいいの？！$2",
+  "breakUp": "ああ… 私たちは友達でいるべきだと思う…。",
+  "NPC.cs.3962": "$q 10001 give_flowersA#？！ …#$r 10001 0 give_flowersA# [花束を贈る]",
+  "NPC.cs.3963": "$q 10001 give_flowersB#？！ …#$r 10001 0 give_flowersB# [花束を贈る]",
+  "NPC.cs.3980": "$q 10001 give_pendant#？！ …#$r 10001 0 give_pendant# 結婚してくれませんか？",
+  "NPC.cs.4001": "$q 10001 stardrop_gift#？！ …#$r 10001 0 stardrop_gift# 私にくれるの？",
+  "NPC.cs.3956": "$q 10001 rejectNPCA#？！ …#$r 10001 0 rejectNPCA#[花束を贈る]",
+  "NPC.cs.3957": "$q 10001 rejectNPCB#？！ …#$r 10001 0 rejectNPCB#[花束を贈る]",
+  "NPC.cs.3958": "$q 10001 reject_two_heartA#？！ …#$r 10001 0 reject_two_heartA#[花束を贈る]",
+  "NPC.cs.3959": "$q 10001 reject_two_heartB#？！ …#$r 10001 0 reject_two_heartB#[花束を贈る]",
+  "NPC.cs.3960": "$q 10001 reject_four_heartA#？！ …#$r 10001 0 reject_four_heartA#[花束を贈る]",
+  "NPC.cs.3961": "$q 10001 reject_four_heartB#？！ …#$r 10001 0 reject_four_heartB#[花束を贈る]",
+  "NPC.cs.3965": "$q 10001 engageA#？！ …#$r 10001 0 engageA# 結婚してくれませんか？",
+  "NPC.cs.3966": "$q 10001 engageB#？！ …#$r 10001 0 engageB# 結婚してくれませんか？",
+  "NPC.cs.3967": "$q 10001 marriedA#？！ …#$r 10001 0 marriedA# 結婚してくれませんか？",
+  "NPC.cs.3968": "$q 10001 marriedB#？！ …#$r 10001 0 marriedB# 結婚してくれませんか？",
+  "NPC.cs.3970": "$q 10001 refusal_no_heartsA#？！ …#$r 10001 0 refusal_no_heartsA# 結婚してくれませんか？",
+  "NPC.cs.3971": "$q 10001 refusal_no_heartsB#？！ …#$r 10001 0 refusal_no_heartsB# 結婚してくれませんか？",
+  "NPC.cs.3972": "$q 10001 refusal_knownA#？！ …#$r 10001 0 refusal_knownA# 結婚してくれませんか？",
+  "NPC.cs.3973": "$q 10001 refusal_knownB#？！ …#$r 10001 0 refusal_knownB# 結婚してくれませんか？",
+  "NPC.cs.3974": "$q 10001 refusal_botherA#？！ …#$r 10001 0 refusal_botherA# 結婚してくれませんか？",
+  "NPC.cs.3975": "$q 10001 refusal_botherB#？！ …#$r 10001 0 refusal_botherB# 結婚してくれませんか？",
+  "NPC.cs.4274": "$q 10001 birthdayLoveA#……#$r 10001 0 birthdayLoveA# [誕生日おめでとう]", //love
+  "NPC.cs.4275": "$q 10001 birthdayLoveB#……#$r 10001 0 birthdayLoveB# [誕生日おめでとう]", //love
+  "NPC.cs.4276": "$q 10001 birthdayLikeA#……#$r 10001 0 birthdayLikeA# [誕生日おめでとう]", //like
+  "NPC.cs.4277": "$q 10001 birthdayLikeB#……#$r 10001 0 birthdayLikeB# [誕生日おめでとう]", //like
+  "NPC.cs.4278": "$q 10001 birthdayDislikeA#……#$r 10001 0 birthdayDislikeA# [誕生日おめでとう]", //hate
+  "NPC.cs.4279": "$q 10001 birthdayDislikeB#……#$r 10001 0 birthdayDislikeB# [誕生日おめでとう]", //dislike
+  "NPC.cs.4280": "$q 10001 birthdayNeutralA#……#$r 10001 0 birthdayNeutralA# [誕生日おめでとう]", //neutral
+  "NPC.cs.4281": "$q 10001 birthdayNeutralB#……#$r 10001 0 birthdayNeutralB# [誕生日おめでとう]" //neutral
+ 
+}

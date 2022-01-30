@@ -6,9 +6,9 @@ mods:
    Special Orders Tags Extended
 
 latest commit:
-   commit 72bcd60be651ebee5e90ef51eb4ee5263d4b23a9
+   commit 63f3d00514d7ca82c32571ff03fa461c572ac266
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri Dec 31 17:58:11 2021 -0500
+   Date:   Fri Jan 21 19:15:21 2022 -0500
    
-       Fix bugs.
+       Reorganization.
    

@@ -1,0 +1,72 @@
+{
+  "EnableMod": true,
+  "EnableFeatureList": true,
+  "FeatureListKey": "Q",
+  "ForceUnlockSpecialOrder": false,
+  "ForceRefreshSpecialOrder": false,
+  "EnableFriendshipFeature": true,
+  "EnableNpcAllChat": true,
+  "EnableNpcGiveGift": true,
+  "EnablePetFeedAnimal": true,
+  "EnableJunimoSkills": true,
+  "InfiniteMagnetRange": true,
+  "EnableSharedChest": true,
+  "ColourSharedChests": false,
+  "AllowMaxEnchantmentTimes": 1,
+  "EnchantmentToolPrice": 5000,
+  "EnableAutoFishing": true,
+  "EnableAutomation": true,
+  "EnableRemoteShops": true,
+  "EnableRemoteOffice": true,
+  "CustomShopOffice": true,
+  "FurnituresAndWallpapers": true,
+  "TailoringAndForge": true,
+  "EnableGoldenWalnutInfo": true,
+  "EnableGoldenWalnutGain": true,
+  "EnableMapTeleport": true,
+  "MapTeleportKey": "MouseLeft",
+  "EnableMapPointUnreachable": false,
+  "EnableMineElevator": true,
+  "EnableDesertElevator": true,
+  "DesertElevatorMaxLevel": 100,
+  "EnableVolcanoElevator": true,
+  "showGingerMap": true,
+  "EnableGingerMapTeleport": true,
+  "showFarmLocationMap": true,
+  "showLocationMap": true,
+  "EnableLocationMapTeleport": true,
+  "EnableTagPositionTeleport": false,
+  "TagPositionKey": "P",
+  "showCustomPortraits": true,
+  "showPortraitsConjointCP": false,
+  "automationConfig": {
+    "radius": 0,
+    "searchToolInBackPack": false,
+    "EnableAutomationTypes": [
+      "Sundries",
+      "LargeDebris",
+      "StuffMachine",
+      "CollectMachine",
+      "Forage",
+      "HoeDirt",
+      "WaterCrops"
+    ],
+    "ExcludeAutomationCrops": [
+      254,
+      276,
+      190
+    ],
+    "AcceptInputMachines": [
+      "Crab Pot",
+      "Furnace",
+      "Recycling Machine"
+    ]
+  },
+  "MainDisplayMenuTypes": [],
+  "MenuShortcutKeys": [
+    {
+      "ShortcutKey": "N",
+      "MenuType": "LocationMap"
+    }
+  ]
+}

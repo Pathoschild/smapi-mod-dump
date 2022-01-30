@@ -8,23 +8,27 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using System;
 using System.Linq;
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class SlimeDeflationUpdateTickedEvent : UpdateTickedEvent
 {
     /// <inheritdoc />
-    public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        var undeflatedSlimes = ModState.PipedSlimeScales.Keys.ToList();
+        var undeflatedSlimes = ModEntry.State.Value.PipedSlimeScales.Keys.ToList();
         for (var i = undeflatedSlimes.Count - 1; i >= 0; --i)
         {
             undeflatedSlimes[i].Scale = Math.Max(undeflatedSlimes[i].Scale / 1.1f,
-                ModState.PipedSlimeScales[undeflatedSlimes[i]]);
-            if (!(undeflatedSlimes[i].Scale <= ModState.PipedSlimeScales[undeflatedSlimes[i]])) continue;
+                ModEntry.State.Value.PipedSlimeScales[undeflatedSlimes[i]]);
+            if (!(undeflatedSlimes[i].Scale <= ModEntry.State.Value.PipedSlimeScales[undeflatedSlimes[i]])) continue;
 
             undeflatedSlimes[i].willDestroyObjectsUnderfoot = false;
             undeflatedSlimes.RemoveAt(i);
@@ -32,7 +36,7 @@ internal class SlimeDeflationUpdateTickedEvent : UpdateTickedEvent
 
         if (undeflatedSlimes.Any()) return;
 
-        ModState.PipedSlimeScales.Clear();
-        ModEntry.Subscriber.Unsubscribe(GetType());
+        ModEntry.State.Value.PipedSlimeScales.Clear();
+        Disable();
     }
 }

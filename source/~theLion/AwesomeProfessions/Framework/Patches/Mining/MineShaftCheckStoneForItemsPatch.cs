@@ -8,18 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class MineShaftCheckStoneForItemsPatch : BasePatch
@@ -62,11 +67,12 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
                     // prepare profession check
                     new CodeInstruction(OpCodes.Ldarg_S, (byte) 4) // arg 4 = Farmer who
                 )
-                .InsertProfessionCheckForPlayerOnStack(Utility.Professions.IndexOf("Spelunker"), isNotSpelunker)
+                .InsertProfessionCheckForPlayerOnStack((int) Profession.Spelunker, isNotSpelunker)
                 .Insert(
                     new CodeInstruction(OpCodes.Ldloc_3), // local 3 = chanceForLadderDown
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player))),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
+                        typeof(FarmerExtensions).MethodNamed(nameof(FarmerExtensions
                             .GetSpelunkerBonusLadderDownChance))),
                     new CodeInstruction(OpCodes.Add),
                     new CodeInstruction(OpCodes.Stloc_3)
@@ -74,8 +80,7 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Spelunker bonus ladder down chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding Spelunker bonus ladder down chance.\nHelper returned {ex}");
             return null;
         }
 
@@ -102,8 +107,7 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Geologist paired gem chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Geologist paired gem chance.\nHelper returned {ex}");
             return null;
         }
 
@@ -126,8 +130,7 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Excavator double geode chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Excavator double geode chance.\nHelper returned {ex}");
             return null;
         }
 
@@ -148,8 +151,7 @@ internal class MineShaftCheckStoneForItemsPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
             return null;
         }
 

@@ -1,0 +1,188 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ameisen/SV-SpriteMaster
+**
+*************************************************/
+
+using System.Runtime.Intrinsics.X86;
+using System.Runtime.CompilerServices;
+using System.Numerics;
+public static class C {    
+    // 32 elements at a time
+    public static unsafe void M_numeric_vec_prefetch(byte *source, ushort *dest, int count) {
+        const int DefaultPrefetchDistance = 32 * 4;
+        
+        int countPerVec = Vector<ushort>.Count;
+        int countPerLoop = Vector<ushort>.Count * 2;
+        
+        int index = 0;
+        bool prefetch = true;
+        for (; index + countPerLoop <= count; index += countPerLoop) {
+            var vec0 = Unsafe.Read<Vector<byte>>(source + index);
+            Vector.Widen(vec0, out var vec1, out var vec2);
+            var vec1r = Vector.Multiply(vec1, (ushort)0x101);
+            var vec2r = Vector.Multiply(vec2, (ushort)0x101);
+            Unsafe.Copy(dest + index + (countPerVec * 0), ref vec1r);
+            Unsafe.Copy(dest + index + (countPerVec * 1), ref vec2r);
+            
+            // Every other loop instance because a cache line is 64B, not 32B
+            if (prefetch) {
+                Sse.PrefetchNonTemporal(source + index + DefaultPrefetchDistance);
+            }
+            prefetch = !prefetch;
+        }
+
+        for (; index < count; ++index) {
+            byte inByte = source[index];
+            dest[index] = (ushort)((inByte << 8) | inByte);
+        }
+    }
+    
+    // 64 elements at a time
+    public static unsafe void M_numeric_vec_prefetch2(byte *source, ushort *dest, int count) {
+        const int DefaultPrefetchDistance = 32 * 4;
+        
+        int bytesPerVec = Vector<ushort>.Count * 2;
+        int countPerVec = Vector<ushort>.Count;
+        int countPerLoop = Vector<ushort>.Count * 4;
+        
+        int index = 0;
+        for (; index + countPerLoop <= count; index += countPerLoop) {
+            var inVec0 = Unsafe.Read<Vector<byte>>(source + index);
+            var inVec1 = Unsafe.Read<Vector<byte>>(source + index + bytesPerVec);
+            Vector.Widen(inVec0, out var vec0, out var vec1);
+            Vector.Widen(inVec1, out var vec2, out var vec3);
+            var vec0r = Vector.Multiply(vec0, (ushort)0x101);
+            var vec1r = Vector.Multiply(vec1, (ushort)0x101);
+            var vec2r = Vector.Multiply(vec2, (ushort)0x101);
+            var vec3r = Vector.Multiply(vec3, (ushort)0x101);
+            Unsafe.Copy(dest + index + (countPerVec * 0), ref vec0r);
+            Unsafe.Copy(dest + index + (countPerVec * 1), ref vec1r);
+            Unsafe.Copy(dest + index + (countPerVec * 2), ref vec2r);
+            Unsafe.Copy(dest + index + (countPerVec * 3), ref vec3r);
+           
+            Sse.PrefetchNonTemporal(source + index + DefaultPrefetchDistance);
+        }
+
+        for (; index < count; ++index) {
+            byte inByte = source[index];
+            dest[index] = (ushort)((inByte << 8) | inByte);
+        }
+    }
+    
+    // 128 elements at a time
+    public static unsafe void M_numeric_vec_prefetch3(byte *source, ushort *dest, int count) {
+        const int DefaultPrefetchDistance = 64 * 4;
+        
+        int bytesPerVec = Vector<ushort>.Count * 2;
+        int countPerVec = Vector<ushort>.Count;
+        int countPerLoop = Vector<ushort>.Count * 8;
+        
+        int index = 0;
+        for (; index + countPerLoop <= count; index += countPerLoop) {
+            var inVec0 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 0));
+            var inVec1 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 1));
+            var inVec2 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 2));
+            var inVec3 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 3));
+            Vector.Widen(inVec0, out var vec0, out var vec1);
+            Vector.Widen(inVec1, out var vec2, out var vec3);
+            Vector.Widen(inVec2, out var vec4, out var vec5);
+            Vector.Widen(inVec3, out var vec6, out var vec7);
+            var vec0r = Vector.Multiply(vec0, (ushort)0x101);
+            var vec1r = Vector.Multiply(vec1, (ushort)0x101);
+            var vec2r = Vector.Multiply(vec2, (ushort)0x101);
+            var vec3r = Vector.Multiply(vec3, (ushort)0x101);
+            var vec4r = Vector.Multiply(vec4, (ushort)0x101);
+            var vec5r = Vector.Multiply(vec5, (ushort)0x101);
+            var vec6r = Vector.Multiply(vec6, (ushort)0x101);
+            var vec7r = Vector.Multiply(vec7, (ushort)0x101);
+            Unsafe.Copy(dest + index + (countPerVec * 0), ref vec0r);
+            Unsafe.Copy(dest + index + (countPerVec * 1), ref vec1r);
+            Unsafe.Copy(dest + index + (countPerVec * 2), ref vec2r);
+            Unsafe.Copy(dest + index + (countPerVec * 3), ref vec3r);
+            Unsafe.Copy(dest + index + (countPerVec * 4), ref vec4r);
+            Unsafe.Copy(dest + index + (countPerVec * 5), ref vec5r);
+            Unsafe.Copy(dest + index + (countPerVec * 6), ref vec6r);
+            Unsafe.Copy(dest + index + (countPerVec * 7), ref vec7r);
+           
+            Sse.PrefetchNonTemporal(source + index + DefaultPrefetchDistance);
+        }
+
+        for (; index < count; ++index) {
+            byte inByte = source[index];
+            dest[index] = (ushort)((inByte << 8) | inByte);
+        }
+    }
+    
+    // 256 elements at a time
+    public static unsafe void M_numeric_vec_prefetch4(byte *source, ushort *dest, int count) {
+        const int DefaultPrefetchDistance = 128 * 4;
+        
+        int bytesPerVec = Vector<ushort>.Count * 2;
+        int countPerVec = Vector<ushort>.Count;
+        int countPerLoop = Vector<ushort>.Count * 16;
+        
+        int index = 0;
+        for (; index + countPerLoop <= count; index += countPerLoop) {
+            var inVec0 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 0));
+            var inVec1 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 1));
+            var inVec2 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 2));
+            var inVec3 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 3));
+            var inVec4 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 4));
+            var inVec5 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 5));
+            var inVec6 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 6));
+            var inVec7 = Unsafe.Read<Vector<byte>>(source + index + (bytesPerVec * 7));
+            Vector.Widen(inVec0, out var vec0, out var vec1);
+            Vector.Widen(inVec1, out var vec2, out var vec3);
+            Vector.Widen(inVec2, out var vec4, out var vec5);
+            Vector.Widen(inVec3, out var vec6, out var vec7);
+            Vector.Widen(inVec4, out var vec8, out var vec9);
+            Vector.Widen(inVec5, out var vecA, out var vecB);
+            Vector.Widen(inVec6, out var vecC, out var vecD);
+            Vector.Widen(inVec7, out var vecE, out var vecF);     
+            var vec0r = Vector.Multiply(vec0, (ushort)0x101);
+            var vec1r = Vector.Multiply(vec1, (ushort)0x101);
+            var vec2r = Vector.Multiply(vec2, (ushort)0x101);
+            var vec3r = Vector.Multiply(vec3, (ushort)0x101);
+            var vec4r = Vector.Multiply(vec4, (ushort)0x101);
+            var vec5r = Vector.Multiply(vec5, (ushort)0x101);
+            var vec6r = Vector.Multiply(vec6, (ushort)0x101);
+            var vec7r = Vector.Multiply(vec7, (ushort)0x101);
+            var vec8r = Vector.Multiply(vec8, (ushort)0x101);
+            var vec9r = Vector.Multiply(vec9, (ushort)0x101);
+            var vecAr = Vector.Multiply(vecA, (ushort)0x101);
+            var vecBr = Vector.Multiply(vecB, (ushort)0x101);
+            var vecCr = Vector.Multiply(vecC, (ushort)0x101);
+            var vecDr = Vector.Multiply(vecD, (ushort)0x101);
+            var vecEr = Vector.Multiply(vecE, (ushort)0x101);
+            var vecFr = Vector.Multiply(vecF, (ushort)0x101);
+            Unsafe.Copy(dest + index + (countPerVec * 0x0), ref vec0r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x1), ref vec1r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x2), ref vec2r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x3), ref vec3r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x4), ref vec4r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x5), ref vec5r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x6), ref vec6r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x7), ref vec7r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x8), ref vec8r);
+            Unsafe.Copy(dest + index + (countPerVec * 0x9), ref vec9r);
+            Unsafe.Copy(dest + index + (countPerVec * 0xA), ref vecAr);
+            Unsafe.Copy(dest + index + (countPerVec * 0xB), ref vecBr);
+            Unsafe.Copy(dest + index + (countPerVec * 0xC), ref vecCr);
+            Unsafe.Copy(dest + index + (countPerVec * 0xD), ref vecDr);
+            Unsafe.Copy(dest + index + (countPerVec * 0xE), ref vecEr);
+            Unsafe.Copy(dest + index + (countPerVec * 0xF), ref vecFr);
+           
+            Sse.PrefetchNonTemporal(source + index + DefaultPrefetchDistance);
+        }
+
+        for (; index < count; ++index) {
+            byte inByte = source[index];
+            dest[index] = (ushort)((inByte << 8) | inByte);
+        }
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "EnableMod": true,
+  "SizeIncreasePerDay": 0.1,
+  "MaxDaysSizeIncrease": 100,
+  "LootIncreasePerDay": 0.1
+}

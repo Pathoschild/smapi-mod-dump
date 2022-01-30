@@ -24,7 +24,7 @@ namespace BetterTrainLoot.GamePatch
         {
             bool showMessage = true;
             bool playSound = true;
-            if (!Game1.currentLocation.isOutdoors || Game1.isFestival())
+            if (!Game1.currentLocation.IsOutdoors || Game1.isFestival())
                 return false;
 
             if (BetterTrainLootMod.Instance.config.enableMod)

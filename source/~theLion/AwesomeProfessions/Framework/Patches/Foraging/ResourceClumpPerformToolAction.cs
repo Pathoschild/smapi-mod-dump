@@ -8,18 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class ResourceClumpPerformToolAction : BasePatch
@@ -51,7 +56,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
         try
         {
             helper
-                .FindProfessionCheck(Utility.Professions.IndexOf("Lumberjack"))
+                .FindProfessionCheck((int) Profession.Lumberjack)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_S, 10)
                 )
@@ -60,7 +65,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Callvirt, typeof(Tool).MethodNamed(nameof(Tool.getLastFarmerToUse)))
                 )
-                .InsertProfessionCheckForPlayerOnStack(100 + Utility.Professions.IndexOf("Lumberjack"),
+                .InsertProfessionCheckForPlayerOnStack((int) Profession.Lumberjack + 100,
                     notPrestigedLumberjack)
                 .Insert(
                     new CodeInstruction(OpCodes.Ldc_I4_S, 11),
@@ -78,7 +83,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Callvirt, typeof(Tool).MethodNamed(nameof(Tool.getLastFarmerToUse)))
                 )
-                .InsertProfessionCheckForPlayerOnStack(100 + Utility.Professions.IndexOf("Lumberjack"),
+                .InsertProfessionCheckForPlayerOnStack((int) Profession.Lumberjack + 100,
                     resumeExecution2)
                 .InsertDiceRoll()
                 .Insert(
@@ -90,8 +95,7 @@ internal class ResourceClumpPerformToolAction : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}");
             return null;
         }
 

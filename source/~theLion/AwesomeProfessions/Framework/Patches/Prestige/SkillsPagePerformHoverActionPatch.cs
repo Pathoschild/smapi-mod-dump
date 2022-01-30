@@ -8,16 +8,22 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+    
+#region using directives
+
 using System.Linq;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using AssetLoaders;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class SkillsPagePerformHoverActionPatch : BasePatch
@@ -39,13 +45,12 @@ internal class SkillsPagePerformHoverActionPatch : BasePatch
 
         if (!ModEntry.Config.EnablePrestige) return;
 
-        var w = Utility.Prestige.RibbonWidth;
-        var s = Utility.Prestige.RibbonScale;
         var bounds =
             new Rectangle(
-                __instance.xPositionOnScreen + __instance.width + Utility.Prestige.RibbonHorizontalOffset,
+                __instance.xPositionOnScreen + __instance.width + Textures.RIBBON_HORIZONTAL_OFFSET_I,
                 __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth -
-                70, (int) (w * s), (int) (w * s));
+                70, (int) (Textures.RIBBON_WIDTH_I * Textures.RIBBON_SCALE_F),
+                (int) (Textures.RIBBON_WIDTH_I * Textures.RIBBON_SCALE_F));
 
         for (var i = 0; i < 5; ++i)
         {
@@ -66,7 +71,7 @@ internal class SkillsPagePerformHoverActionPatch : BasePatch
 
             ___hoverText = ModEntry.ModHelper.Translation.Get("prestige.skillpage.tooltip", new {count});
             ___hoverText = professionsForThisSkill
-                .Select(p => ModEntry.ModHelper.Translation.Get(Utility.Professions.NameOf(p).ToLower() + ".name." +
+                .Select(p => ModEntry.ModHelper.Translation.Get(p.ToProfessionName().ToLower() + ".name." +
                                                                 (Game1.player.IsMale ? "male" : "female")))
                 .Aggregate(___hoverText, (current, name) => current + $"\n• {name}");
         }

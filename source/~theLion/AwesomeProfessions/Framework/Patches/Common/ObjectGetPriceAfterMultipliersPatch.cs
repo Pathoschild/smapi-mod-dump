@@ -8,16 +8,20 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Extensions;
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class ObjectGetPriceAfterMultipliersPatch : BasePatch
@@ -61,10 +65,10 @@ internal class ObjectGetPriceAfterMultipliersPatch : BasePatch
                 var multiplier = 1f;
 
                 // professions
-                if (player.HasProfession("Producer") && __instance.IsAnimalProduct())
-                    multiplier += Utility.Professions.GetProducerPriceBonus(player);
-                if (player.HasProfession("Angler") && __instance.IsFish())
-                    multiplier += Utility.Professions.GetAnglerPriceBonus(player);
+                if (player.HasProfession(Profession.Producer) && __instance.IsAnimalProduct())
+                    multiplier += player.GetProducerPriceBonus();
+                if (player.HasProfession(Profession.Angler) && __instance.IsFish())
+                    multiplier += player.GetAnglerPriceBonus();
 
                 // events
                 else if (player.eventsSeen.Contains(2120303) && __instance.IsWildBerry())
@@ -73,15 +77,15 @@ internal class ObjectGetPriceAfterMultipliersPatch : BasePatch
                     multiplier *= 5f;
 
                 // tax bonus
-                if (player.IsLocalPlayer && player.HasProfession("Conservationist"))
-                    multiplier *= Utility.Professions.GetConservationistPriceMultiplier();
+                if (player.IsLocalPlayer && player.HasProfession(Profession.Conservationist))
+                    multiplier *= player.GetConservationistPriceMultiplier();
 
                 saleMultiplier = Math.Max(saleMultiplier, multiplier);
             }
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
 

@@ -8,26 +8,32 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.Input;
+
+#region using directives
+
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using Display;
+using GameLoop;
+
+#endregion using directives
 
 internal class TrackerButtonsChangedEvent : ButtonsChangedEvent
 {
     /// <inheritdoc />
-    public override void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+    protected override void OnButtonsChangedImpl(object sender, ButtonsChangedEventArgs e)
     {
         if (ModEntry.Config.Modkey.JustPressed())
         {
-            ModEntry.Subscriber.Subscribe(new ArrowPointerUpdateTickedEvent(), new TrackerRenderedHudEvent());
+            EventManager.Enable(typeof(IndicatorUpdateTickedEvent), typeof(TrackerRenderedHudEvent));
         }
         else if (ModEntry.Config.Modkey.GetState() == SButtonState.Released)
         {
-            ModEntry.Subscriber.Unsubscribe(typeof(TrackerRenderedHudEvent));
-            if (!(ModEntry.Subscriber.IsSubscribed(typeof(ProspectorHuntRenderedHudEvent)) ||
-                  ModEntry.Subscriber.IsSubscribed(typeof(ScavengerHuntRenderedHudEvent))))
-                ModEntry.Subscriber.Unsubscribe(typeof(ArrowPointerUpdateTickedEvent));
+            EventManager.Disable(typeof(TrackerRenderedHudEvent));
+            if (!ModEntry.State.Value.ProspectorHunt.IsActive && !ModEntry.State.Value.ScavengerHunt.IsActive)
+                EventManager.Disable(typeof(IndicatorUpdateTickedEvent));
         }
     }
 }

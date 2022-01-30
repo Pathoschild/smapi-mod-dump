@@ -10,9 +10,9 @@ mods:
    Show Birthdays
 
 latest commit:
-   commit d2c3c452c7b3271b2fc191a02c2d920d769b2a69
+   commit aa6d32da510ebf2152ff863ae987a0d169fdb825
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Tue Mar 16 00:41:14 2021 +0200
+   Date:   Sun Jan 30 05:59:43 2022 +0200
    
-       Added Hungarian translation by martin66789
+       Version 1.2.0 release
    

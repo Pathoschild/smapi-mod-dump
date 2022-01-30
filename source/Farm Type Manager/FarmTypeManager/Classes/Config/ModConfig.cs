@@ -23,7 +23,7 @@ namespace FarmTypeManager
                 {
                     EnableConsoleCommands = value;
                 }
-            } 
+            }
             public bool EnableConsoleCommands { get; set; } = true; //enable this mod's SMAPI console commands
             public bool EnableContentPacks { get; set; } = true; //enable any content packs for this mod
             public bool EnableTraceLogMessages { get; set; } = true; //allow the mod to generate trace-level log messages (which tend to spam the "SMAPI for developers" console)
@@ -36,7 +36,7 @@ namespace FarmTypeManager
                 {
                     MonsterLimitPerLocation = 50; //use the community-recommended default monster limit
                 }
-            }  
+            }
         }
     }
 }

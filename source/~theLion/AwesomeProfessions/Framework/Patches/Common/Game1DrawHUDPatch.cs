@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -15,15 +19,15 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
-using TheLion.Stardew.Professions.Framework.Utility;
+
+using Stardew.Common.Harmony;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class Game1DrawHUDPatch : BasePatch
@@ -40,9 +44,9 @@ internal class Game1DrawHUDPatch : BasePatch
     [HarmonyPostfix]
     private static void Game1DrawHUDPostfix()
     {
-        if (!Game1.player.HasProfession("Prospector") || Game1.currentLocation is not MineShaft shaft) return;
-        foreach (var tile in Tiles.GetLadderTiles(shaft))
-            HUD.DrawTrackingArrowPointer(tile, Color.Lime);
+        if (!Game1.player.HasProfession(Profession.Prospector) || Game1.currentLocation is not MineShaft shaft) return;
+        foreach (var tile in shaft.GetLadderTiles())
+            ModEntry.State.Value.Pointer.DrawAsTrackingPointer(tile, Color.Lime);
     }
 
     /// <summary>Patch for Scavenger and Prospector to track different stuff.</summary>
@@ -69,7 +73,7 @@ internal class Game1DrawHUDPatch : BasePatch
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_S)
                 )
-                .SetOperand(Utility.Professions.IndexOf("Prospector")) // change to prospector check
+                .SetOperand((int) Profession.Prospector) // change to prospector check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Brfalse)
                 )
@@ -87,8 +91,7 @@ internal class Game1DrawHUDPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}");
             return null;
         }
 
@@ -120,8 +123,35 @@ internal class Game1DrawHUDPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}");
+            return null;
+        }
+
+        /// Injected: if (!player.professions.Contains(<prospector_id>)) return
+        /// Before panning tracker
+
+        var drawPanningTracker = iLGenerator.DefineLabel();
+        try
+        {
+            helper
+                .FindLast(
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.currentLocation))),
+                    new CodeInstruction(OpCodes.Ldfld, typeof(GameLocation).Field(nameof(GameLocation.orePanPoint))),
+                    new CodeInstruction(OpCodes.Call, typeof(Point).PropertyGetter(nameof(Point.Zero))),
+                    new CodeInstruction(OpCodes.Box)
+                )
+                .StripLabels(out var labels)
+                .AddLabels(drawPanningTracker)
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Prospector, drawPanningTracker, useBrtrue: true)
+                .Insert(
+                    new CodeInstruction(OpCodes.Ret)
+                )
+                .Return(2)
+                .SetLabels(labels);
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed while patching Prospector restriction for panning tacker. Helper returned {ex}");
             return null;
         }
 

@@ -8,18 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class BushShakePatch : BasePatch
@@ -52,20 +57,22 @@ internal class BushShakePatch : BasePatch
                 .GetLabels(out var labels) // backup branch labels
                 .ReplaceWith( // replace with custom quality
                     new(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(
-                            nameof(Utility.Professions.GetEcologistForageQuality)))
+                        typeof(FarmerExtensions).MethodNamed(
+                            nameof(FarmerExtensions.GetEcologistForageQuality)))
                 )
-                .SetLabels(labels);
+                .Insert(
+                    labels: labels, // restore backed-up labels
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player)))
+                );
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded Ecologist wild berry quality.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching modded Ecologist wild berry quality.\nHelper returned {ex}");
             return null;
         }
 
         /// Injected: if (Game1.player.professions.Contains(<ecologist_id>))
-        ///		Data.IncrementField<uint>("ItemsForaged")
+        ///		Data.IncrementField<uint>("EcologistItemsForaged")
 
         var dontIncreaseEcologistCounter = iLGenerator.DefineLabel();
         try
@@ -77,21 +84,21 @@ internal class BushShakePatch : BasePatch
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldarg_0)
                 )
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Ecologist"),
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Ecologist,
                     dontIncreaseEcologistCounter)
                 .Insert(
+                    new CodeInstruction(OpCodes.Ldstr, DataField.EcologistItemsForaged.ToString()),
+                    new CodeInstruction(OpCodes.Ldnull),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.Data))),
-                    new CodeInstruction(OpCodes.Ldstr, "ItemsForaged"),
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModData).MethodNamed(nameof(ModData.Increment), new[] {typeof(string)})
+                        typeof(ModData)
+                            .MethodNamed(nameof(ModData.Increment), new[] {typeof(DataField), typeof(Farmer)})
                             .MakeGenericMethod(typeof(uint)))
                 )
                 .AddLabels(dontIncreaseEcologistCounter);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Ecologist counter increment.\nHelper returned {ex}", LogLevel.Error);
+            Log.E($"Failed while adding Ecologist counter increment.\nHelper returned {ex}");
             return null;
         }
 

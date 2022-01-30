@@ -33,6 +33,21 @@ namespace DialogueBoxRedesign
         public bool DarkerBackgroundInWinter { get; set; } = true;
         
         /// <summary>
+        /// Whether to move the character portrait to the left of the text.
+        /// </summary>
+        public bool ShowPortraitOnTheLeft { get; set; } = false;
+        
+        /// <summary>
+        /// Whether to show the speaker's name above the portrait.
+        /// </summary>
+        public bool ShowSpeakerName { get; set; } = true;
+        
+        /// <summary>
+        /// Whether to show the friendship jewel.
+        /// </summary>
+        public bool ShowFriendshipJewel { get; set; } = true;
+
+        /// <summary>
         /// Setup the Generic Mod Config Menu API.
         /// </summary>
         public static void SetUpModConfigMenu(ModConfig config, ModEntry mod)
@@ -53,6 +68,9 @@ namespace DialogueBoxRedesign
             api.RegisterLabel(manifest, "Appearance", null);
 
             api.RegisterSimpleOption(manifest, "Darker Background In Winter", "Whether to show a darker gradient background in winter for better text readability.", () => config.DarkerBackgroundInWinter, (bool val) => config.DarkerBackgroundInWinter = val);
+            api.RegisterSimpleOption(manifest, "Show Portrait On The Left", "Whether to move the character portrait to the left of the text.", () => config.ShowPortraitOnTheLeft, (bool val) => config.ShowPortraitOnTheLeft = val);
+            api.RegisterSimpleOption(manifest, "Show Speaker Name", "Whether to show the speaker's name above the portrait.", () => config.ShowSpeakerName, (bool val) => config.ShowSpeakerName = val);
+            api.RegisterSimpleOption(manifest, "Show Friendship Jewel", "Whether to show the friendship jewel.", () => config.ShowFriendshipJewel, (bool val) => config.ShowFriendshipJewel = val);
         }
     }
 }

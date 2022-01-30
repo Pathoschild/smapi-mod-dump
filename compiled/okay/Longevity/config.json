@@ -1,6 +1,7 @@
 {
   "Taxes": true,
   "Price_Balance": true,
+  "Price_Exemption": "Crate/Box/Mead/Tea",
   "Stamina_Balance": true,
   "NPCClothing": true,
   "NPCDialogue": true,

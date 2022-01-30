@@ -6,11 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 3c71f41d0e2a526a1376c27cd4419eee9960f7c4
-   Author: Yllelder Bamir <Yllelder@users.noreply.github.com>
-   Date:   Tue Dec 28 21:39:42 2021 +0100
+   commit 7961a22af9fb80a34d176146a90f92e98b877ddc
+   Author: Jamie Taylor <Jamie.Taylor@pobox.com>
+   Date:   Sun Jan 9 22:36:17 2022 -0500
    
-       Update es.json (#5)
-       
-       Translation in native Spanish.
+       release 1.10.2
    

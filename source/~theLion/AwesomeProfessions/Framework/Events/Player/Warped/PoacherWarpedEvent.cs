@@ -8,15 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.Player;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class PoacherWarpedEvent : WarpedEvent
 {
     /// <inheritdoc />
-    public override void OnWarped(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
     {
-        if (e.IsLocalPlayer) ModState.MonstersStolenFrom.Clear();
+        if (!e.NewLocation.Equals(e.OldLocation)) ModEntry.State.Value.MonstersStolenFrom.Clear();
     }
 }

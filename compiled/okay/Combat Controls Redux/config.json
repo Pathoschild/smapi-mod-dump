@@ -1,0 +1,14 @@
+{
+  "MouseFix": true,
+  "ControllerFix": false,
+  "RegularToolsFix": false,
+  "AutoSwing": false,
+  "AutoSwingDagger": true,
+  "SlickMoves": true,
+  "SwordSpecialSlickMove": true,
+  "ClubSpecialSlickMove": false,
+  "SlideVelocity": 4.0,
+  "SpecialSlideVelocity": 2.8,
+  "Debug": false,
+  "NearTileFacingFix": false
+}

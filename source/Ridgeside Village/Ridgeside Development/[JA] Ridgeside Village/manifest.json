@@ -9,13 +9,41 @@
 *************************************************/
 
 {
-	"Name": "Ridgeside Village Items",
+    /*********
+    ** Mod Name
+    *********/      
+	"Name": "Ridgeside Village - JSON Assets",
+
+    /*********
+    ** Mod Author
+    *********/  
     "Author": "Rafseazz",
-    "Version": "2.0.3",
-    "Description": "Adds items to Ridgeside Village",
+
+    /*********
+    ** Current Version
+    *********/  
+    "Version": "2.0.4",
+
+    /*********
+    ** Content Pack Description
+    *********/  
+    "Description": "Adds custom items to Ridgeside Village.",
+
+    /*********
+    ** Unique Manifest ID for Content Pack
+    *********/  
     "UniqueID": "Rafseazz.RSVJA",
-	"UpdateKeys": [ "Nexus:???" ],
-    "ContentPackFor": {
-    	"UniqueID": "spacechase0.JsonAssets"
+
+    /*********
+    ** Update Keys (Currently only on Nexus)
+    *********/
+    "UpdateKeys": [ "Nexus:-1" ],
+
+    /*********
+    ** Framework Manifest ID
+    *********/
+    "ContentPackFor":
+    {
+        "UniqueID": "spacechase0.JsonAssets"
     },
 }

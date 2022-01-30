@@ -53,11 +53,18 @@ namespace AnimalHusbandryMod.tools
             __result = DataLoader.i18n.Get("Tool.ParticipantRibbon.Description");
         }
 
-        public static void canBeTrashed(Tool __instance, ref bool __result)
+        public static void canBeTrashed(Item __instance, ref bool __result)
         {
             if (!IsParticipantRibbon(__instance)) return;
 
             __result = true;
+        }
+
+        public static void CanAddEnchantment(Tool __instance, ref bool __result)
+        {
+            if (!IsParticipantRibbon(__instance)) return;
+
+            __result = false;
         }
 
         public static bool beginUsing(MilkPail __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
@@ -266,7 +273,7 @@ namespace AnimalHusbandryMod.tools
             return false;
         }
 
-        private static bool IsParticipantRibbon(Tool tool)
+        private static bool IsParticipantRibbon(Item tool)
         {
             return tool.modData.ContainsKey(ParticipantRibbonKey);
         }

@@ -6,9 +6,9 @@ mods:
    Eidee Easy Fishing
 
 latest commit:
-   commit e7137180b127c4352c0b9f476823d2f2ddb0ef87
+   commit d7eb9f48e8f636d0f48aaaf8afe9dd7f74fb09d7
    Author: eideehi <account@eidee.net>
-   Date:   Thu Dec 9 20:57:04 2021 +0900
+   Date:   Sun Jan 16 23:21:36 2022 +0900
    
-       Remove unwanted imports and format source code
+       v1.1.1
    

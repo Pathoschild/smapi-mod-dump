@@ -10,10 +10,10 @@
 
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley.Monsters;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {

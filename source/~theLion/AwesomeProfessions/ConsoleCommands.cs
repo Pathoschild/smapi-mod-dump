@@ -8,64 +8,73 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Enums;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Extensions;
-using TheLion.Stardew.Professions.Framework.Utility;
 
-namespace TheLion.Stardew.Professions;
+using Common.Extensions;
+using Framework;
+using Framework.Extensions;
+using Framework.SuperMode;
+using Framework.Utility;
+
+#endregion using directives
 
 internal static class ConsoleCommands
 {
-    internal static void Register()
+    /// <summary>Register all internally defined console commands.</summary>
+    /// <param name="helper">The console command API.</param>
+    internal static void Register(ICommandHelper helper)
     {
-        ModEntry.ModHelper.ConsoleCommands.Add("player_skills", "List the player's current skill levels.",
+        helper.Add("player_skills", "List the player's current skill levels.",
             PrintLocalPlayerSkillLevels);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_resetskills", "Reset all player's skills.",
+        helper.Add("player_resetskills", "Reset all player's skills.",
             ResetLocalPlayerSkills);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_professions", "List the player's current professions.",
+        helper.Add("player_professions", "List the player's current professions.",
             PrintLocalPlayerProfessions);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_addprofessions",
+        helper.Add("player_addprofessions",
             "Add the specified professions to the local player, without affecting skill levels." +
             GetUsageForAddProfessions(),
             AddProfessionsToLocalPlayer);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_resetprofessions",
+        helper.Add("player_resetprofessions",
             "Reset all skills and professions for the local player.",
             ResetLocalPlayerProfessions);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_setultvalue",
-            "Set the Super Mode meter to the desired value.",
+        helper.Add("player_readyult", "Max-out the Super Mode meter, or set it to the specified percentage.",
             SetSuperModeGaugeValue);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_readyult", "Max-out the Super Mode meter.",
-            MaxSuperModeGaugeValue);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_chooseult",
+        helper.Add("player_changeult",
             "Change the currently registered Super Mode profession.",
             SetSuperModeIndex);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_whichult",
+        helper.Add("player_whichult",
             "Check the currently registered Super Mode profession.",
             PrintSuperModeIndex);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_maxanimalfriendship",
+        helper.Add("player_maxanimalfriendship",
             "Max-out the friendship of all owned animals.",
             MaxAnimalFriendship);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_maxanimalmood", "Max-out the mood of all owned animals.",
+        helper.Add("player_maxanimalmood", "Max-out the mood of all owned animals.",
             MaxAnimalMood);
-        ModEntry.ModHelper.ConsoleCommands.Add("player_fishingprogress",
+        helper.Add("player_fishingprogress",
             "Check your fishing progress as Angler.",
-            PrintFishCaughtAudit);
-        ModEntry.ModHelper.ConsoleCommands.Add("wol_data",
+            PrintFishingAudit);
+        helper.Add("wol_data",
             "Check the current value of all mod data fields." + GetUsageForSetModData(),
             PrintModData);
-        ModEntry.ModHelper.ConsoleCommands.Add("wol_setdata", "Set a new value for a mod data field.",
+        helper.Add("wol_setdata", "Set a new value for a mod data field.",
             SetModData);
-        ModEntry.ModHelper.ConsoleCommands.Add("wol_events", "List currently subscribed mod events.",
+        helper.Add("wol_events", "List currently subscribed mod events.",
             PrintSubscribedEvents);
+        helper.Add("wol_resetthehunt",
+            "Forcefully reset the current Treasure Hunt with a new target treasure tile.",
+            RerollTreasureTile);
     }
 
     #region command handlers
@@ -75,15 +84,15 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
-        ModEntry.Log($"Farming level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Farming)}", LogLevel.Info);
-        ModEntry.Log($"Fishing level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Fishing)}", LogLevel.Info);
-        ModEntry.Log($"Foraging level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Foraging)}", LogLevel.Info);
-        ModEntry.Log($"Mining level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Mining)}", LogLevel.Info);
-        ModEntry.Log($"Combat level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Combat)}", LogLevel.Info);
+        Log.I($"Farming level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Farming)}");
+        Log.I($"Fishing level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Fishing)}");
+        Log.I($"Foraging level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Foraging)}");
+        Log.I($"Mining level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Mining)}");
+        Log.I($"Combat level: {Game1.player.GetUnmodifiedSkillLevel((int) SkillType.Combat)}");
     }
 
     /// <summary>Reset all skills for the local player.</summary>
@@ -91,7 +100,7 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
@@ -112,22 +121,25 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
+        var message = $"Farmer {Game1.player.Name}'s professions:";
         foreach (var professionsIndex in Game1.player.professions)
             try
             {
-                ModEntry.Log(
-                    professionsIndex < 100
-                        ? $"{Framework.Utility.Professions.NameOf(professionsIndex)}"
-                        : $"{Framework.Utility.Professions.NameOf(professionsIndex - 100)} (P)", LogLevel.Info);
+                message += "\n\t- " +
+                    (professionsIndex < 100
+                        ? $"{professionsIndex.ToProfessionName()}"
+                        : $"{(professionsIndex - 100).ToProfessionName()} (P)");
             }
             catch (IndexOutOfRangeException)
             {
-                ModEntry.Log($"Unknown profession index {professionsIndex}", LogLevel.Info);
+                Log.I($"Unknown profession index {professionsIndex}");
             }
+
+        Log.I(message);
     }
 
     /// <summary>Add specified professions to the local player.</summary>
@@ -135,13 +147,13 @@ internal static class ConsoleCommands
     {
         if (!args.Any())
         {
-            ModEntry.Log("You must specify at least one profession." + GetUsageForAddProfessions(), LogLevel.Warn);
+            Log.W("You must specify at least one profession." + GetUsageForAddProfessions());
             return;
         }
 
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
@@ -149,7 +161,7 @@ internal static class ConsoleCommands
         if (prestige) args = args.Skip(1).ToArray();
 
         List<int> professionsToAdd = new();
-        foreach (var arg in args)
+        foreach (var arg in args.Select(a => a.ToLower()))
         {
             if (arg == "all")
             {
@@ -157,28 +169,28 @@ internal static class ConsoleCommands
                 if (prestige) range = range.Concat(Enumerable.Range(100, 30)).ToHashSet();
 
                 professionsToAdd.AddRange(range);
-                ModEntry.Log($"Added all {(prestige ? "prestiged " : "")}professions to farmer {Game1.player.Name}.", LogLevel.Info);
+                Log.I($"Added all {(prestige ? "prestiged " : "")}professions to farmer {Game1.player.Name}.");
                 break;
             }
 
             var professionName = arg.FirstCharToUpper();
-            if (Framework.Utility.Professions.IndexByName.Forward.TryGetValue(professionName, out var professionIndex))
+            if (Enum.TryParse<Profession>(professionName, out var profession))
             {
-                if (!prestige && Game1.player.HasProfession(professionName) || prestige && Game1.player.HasPrestigedProfession(professionName))
+                if (!prestige && Game1.player.HasProfession(profession) ||
+                    prestige && Game1.player.HasProfession(profession, true))
                 {
-                    ModEntry.Log("You already have this profession.", LogLevel.Warn);
+                    Log.W("You already have this profession.");
                     continue;
                 }
 
-                professionsToAdd.Add(professionIndex);
-                if (prestige) professionsToAdd.Add(100 + professionIndex);
-                ModEntry.Log(
-                    $"Added {Framework.Utility.Professions.NameOf(professionIndex)}{(prestige ? " (P)" : "")} profession to farmer {Game1.player.Name}.",
-                    LogLevel.Info);
+                professionsToAdd.Add((int) profession);
+                if (prestige) professionsToAdd.Add((int) profession + 100);
+                Log.I(
+                    $"Added {profession.ToString()}{(prestige ? " (P)" : "")} profession to farmer {Game1.player.Name}.");
             }
             else
             {
-                ModEntry.Log($"Ignoring unknown profession {arg}.", LogLevel.Warn);
+                Log.W($"Ignoring unknown profession {arg}.");
             }
         }
 
@@ -197,111 +209,112 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
-        ModState.SuperModeIndex = -1;
-        var professionsToRemove = Game1.player.professions.ToList();
-        foreach (var professionIndex in professionsToRemove)
+        ModEntry.State.Value.SuperMode = null;
+        ModData.Write(DataField.SuperModeIndex, null);
+        for (var i = Game1.player.professions.Count - 1; i >= 0; --i)
         {
-            Game1.player.professions.Remove(professionIndex);
+            var professionIndex = Game1.player.professions[i];
+            Game1.player.professions.RemoveAt(i);
             LevelUpMenu.removeImmediateProfessionPerk(professionIndex);
         }
 
         LevelUpMenu.RevalidateHealth(Game1.player);
     }
 
-    /// <summary>Set <see cref="ModState.SuperModeGaugeValue" /> to the max value.</summary>
+    /// <summary>Set <see cref="ModEntry.State.Value.SuperModeGaugeValue" /> to the desired value, or max it out if no value is specified.</summary>
     internal static void SetSuperModeGaugeValue(string command, string[] args)
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
-        if (ModState.SuperModeIndex < 0)
+        if (ModEntry.State.Value.SuperMode is null)
         {
-            ModEntry.Log("You must have a level 10 combat profession.", LogLevel.Warn);
+            Log.W("Not registered to any Super Mode.");
             return;
         }
 
-        if (!args.Any() || args.Length > 1)
+        if (!args.Any())
         {
-            ModEntry.Log("You must specify a single value.", LogLevel.Warn);
+            ModEntry.State.Value.SuperMode.Gauge.CurrentValue = SuperModeGauge.MaxValue;
             return;
         }
 
-        if (int.TryParse(args[0], out var value))
-            ModState.SuperModeGaugeValue = Math.Min(value, ModState.SuperModeGaugeMaxValue);
-        else
-            ModEntry.Log("You must specify an integer value.", LogLevel.Warn);
+        if (args.Length > 1)
+        {
+            Log.W("Too many arguments. Specify a single value between 0 and 100.");
+            return;
+        }
+
+        if (!int.TryParse(args[0], out var value) || value is < 0 or > 100)
+        {
+            Log.W("Bad arguments. Specify an integer value between 0 and 100.");
+            return;
+        }
+
+        ModEntry.State.Value.SuperMode.Gauge.CurrentValue = SuperModeGauge.MaxValue * (double)value / 100;
     }
 
-    /// <summary>Set <see cref="ModState.SuperModeGaugeValue" /> to the desired value.</summary>
-    internal static void MaxSuperModeGaugeValue(string command, string[] args)
-    {
-        if (!Context.IsWorldReady)
-        {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
-            return;
-        }
-
-        if (ModState.SuperModeIndex < 0)
-        {
-            ModEntry.Log("You must have a level 10 combat profession.", LogLevel.Warn);
-            return;
-        }
-
-        // first raise above zero, then fill, otherwise fill event won't trigger
-        ModState.SuperModeGaugeValue = 1;
-        ModState.SuperModeGaugeValue = ModState.SuperModeGaugeMaxValue;
-    }
-
-    /// <summary>Set <see cref="ModState.SuperModeIndex" /> to a different combat profession, in case you have more than one.</summary>
+    /// <summary>
+    ///     Reset the Super Mode instance to a different combat profession's, in case you have more
+    ///     than one.
+    /// </summary>
     internal static void SetSuperModeIndex(string command, string[] args)
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
         if (!args.Any() || args.Length > 1)
         {
-            ModEntry.Log("You must specify a single value.", LogLevel.Warn);
+            Log.W("You must specify a single value.");
             return;
         }
 
-        if (!args[0].IsAnyOf("brute", "poacher", "desperado", "piper"))
+        if (!Game1.player.professions.Any(p => p is >= 26 and < 30))
         {
-            ModEntry.Log("You must specify a valid level 10 combat profession.", LogLevel.Warn);
+            Log.W("You don't have any 2nd-tier combat professions.");
             return;
         }
 
-        if (!Game1.player.HasProfession(args[0].FirstCharToUpper()))
+        args[0] = args[0].ToLower().FirstCharToUpper();
+        if (!Enum.TryParse<SuperModeIndex>(args[0], out var index))
         {
-            ModEntry.Log("You don't have this profession.", LogLevel.Warn);
+            Log.W("You must enter a valid 2nd-tier combat profession.");
             return;
         }
 
-        ModState.SuperModeIndex = Framework.Utility.Professions.IndexOf(args[0].FirstCharToUpper());
+        if (!Game1.player.HasProfession((Profession) index))
+        {
+            Log.W("You don't have this profession.");
+            return;
+        }
+
+        ModEntry.State.Value.SuperMode = new(index);
+        ModData.Write(DataField.SuperModeIndex, index.ToString());
     }
 
     /// <summary>Print the currently registered Super Mode profession.</summary>
     internal static void PrintSuperModeIndex(string command, string[] args)
     {
-        if (ModState.SuperModeIndex < 0)
+        if (ModEntry.State.Value.SuperMode is null)
         {
-            ModEntry.Log("Not registered to any Super Mode.", LogLevel.Info);
+            Log.I("Not registered to any Super Mode.");
             return;
         }
 
-        var key = Framework.Utility.Professions.NameOf(ModState.SuperModeIndex).ToLower();
+        var key = ModEntry.State.Value.SuperMode.Index;
         var professionDisplayName = ModEntry.ModHelper.Translation.Get(key + ".name.male");
         var buffName = ModEntry.ModHelper.Translation.Get(key + ".buff");
-        ModEntry.Log($"Registered to {professionDisplayName}'s {buffName}.", LogLevel.Info);
+        Log.I($"Registered to {professionDisplayName}'s {buffName}.");
     }
 
     /// <summary>Set all farm animals owned by the local player to the max friendship value.</summary>
@@ -309,7 +322,7 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
@@ -318,12 +331,12 @@ internal static class ConsoleCommands
         var count = animals.Count;
         if (count <= 0)
         {
-            ModEntry.Log("You don't own any animals.", LogLevel.Warn);
+            Log.W("You don't own any animals.");
             return;
         }
 
         foreach (var animal in animals) animal.friendshipTowardFarmer.Value = 1000;
-        ModEntry.Log($"Maxed the friendship of {count} animals", LogLevel.Info);
+        Log.I($"Maxed the friendship of {count} animals");
     }
 
     /// <summary>Set all farm animals owned by the local player to the max mood value.</summary>
@@ -331,7 +344,7 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
@@ -341,59 +354,59 @@ internal static class ConsoleCommands
 
         if (count <= 0)
         {
-            ModEntry.Log("You don't own any animals.", LogLevel.Warn);
+            Log.W("You don't own any animals.");
             return;
         }
 
         foreach (var animal in animals) animal.happiness.Value = 255;
-        ModEntry.Log($"Maxed the mood of {count} animals", LogLevel.Info);
+        Log.I($"Maxed the mood of {count} animals");
     }
 
     /// <summary>Check current fishing progress.</summary>
-    internal static void PrintFishCaughtAudit(string command, string[] args)
+    internal static void PrintFishingAudit(string command, string[] args)
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
         if (!Game1.player.fishCaught.Pairs.Any())
         {
-            ModEntry.Log("You haven't caught any fish.", LogLevel.Warn);
+            Log.W("You haven't caught any fish.");
             return;
         }
 
         var fishData = Game1.content
-            .Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("ModEntry.Data/Fish"))
-            .Where(p => !p.Key.IsAnyOf(152, 152, 157) && !p.Value.Contains("trap"))
+            .Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
+            .Where(p => !p.Key.IsAnyOf(152, 153, 157) && !p.Value.Contains("trap"))
             .ToDictionary(p => p.Key, p => p.Value);
         int numLegendariesCaught = 0, numMaxSizedCaught = 0;
         var caughtFishNames = new List<string>();
         var nonMaxSizedCaught = new Dictionary<string, Tuple<int, int>>();
         var result = string.Empty;
-        foreach (var p in Game1.player.fishCaught.Pairs)
+        foreach (var (key, value) in Game1.player.fishCaught.Pairs)
         {
-            if (!fishData.TryGetValue(p.Key, out var specificFishData)) continue;
+            if (!fishData.TryGetValue(key, out var specificFishData)) continue;
 
             var dataFields = specificFishData.Split('/');
-            if (Objects.LegendaryFishNames.Contains(dataFields[0]))
+            if (ObjectLookups.LegendaryFishNames.Contains(dataFields[0]))
             {
                 ++numLegendariesCaught;
             }
             else
             {
-                if (p.Value[1] >= Convert.ToInt32(dataFields[4]))
+                if (value[1] >= Convert.ToInt32(dataFields[4]))
                     ++numMaxSizedCaught;
                 else
                     nonMaxSizedCaught.Add(dataFields[0],
-                        new(p.Value[1], Convert.ToInt32(dataFields[4])));
+                        new(value[1], Convert.ToInt32(dataFields[4])));
             }
 
             caughtFishNames.Add(dataFields[0]);
         }
 
-        var priceMultiplier = Game1.player.HasProfession("Angler")
+        var priceMultiplier = Game1.player.HasProfession(Profession.Angler)
             ? (numMaxSizedCaught + numMaxSizedCaught * 5).ToString() + '%'
             : "Zero. You're not an Angler.";
         result +=
@@ -401,16 +414,16 @@ internal static class ConsoleCommands
         result = nonMaxSizedCaught.Keys.Aggregate(result,
             (current, fish) =>
                 current +
-                $"\n- {fish} (current: {nonMaxSizedCaught[fish].Item1}, max: {nonMaxSizedCaught[fish].Item2})");
+                $"\n\t- {fish} (current: {nonMaxSizedCaught[fish].Item1}, max: {nonMaxSizedCaught[fish].Item2})");
 
         var seasonFish = from specificFishData in fishData.Values
             where specificFishData.Split('/')[6].Contains(Game1.currentSeason)
             select specificFishData.Split('/')[0];
 
         result += "\n\nThe following fish can be caught this season:";
-        result = seasonFish.Except(caughtFishNames).Aggregate(result, (current, fish) => current + $"\n- {fish}");
+        result = seasonFish.Except(caughtFishNames).Aggregate(result, (current, fish) => current + $"\n\t- {fish}");
 
-        ModEntry.Log(result, LogLevel.Info);
+        Log.I(result);
     }
 
     /// <summary>Print the current value of every mod data field to the console.</summary>
@@ -418,26 +431,48 @@ internal static class ConsoleCommands
     {
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
-        var fields = new[]
-        {
-            "ItemsForaged", "MineralsCollected", "ProspectorStreak", "ScavengerStreak",
-            "WaterTrashCollectedThisSeason", "ActiveTaxBonusPercent"
-        };
-        foreach (var field in fields)
-        {
-            var value = ModEntry.Data.Read($"{field}");
-            if (field == "ActiveTaxBonusPercent" && float.TryParse(value, out var pct))
-                value = (pct * 100).ToString(CultureInfo.InvariantCulture) + '%';
+        var message = $"Farmer {Game1.player.Name}'s mod data:";
+        var value = ModData.Read(DataField.EcologistItemsForaged);
+        message += "\n\t- " +
+            (!string.IsNullOrEmpty(value)
+                ? $"{DataField.EcologistItemsForaged}: {value} ({ModEntry.Config.ForagesNeededForBestQuality - int.Parse(value)} needed for best quality)"
+                : $"Mod data does not contain an entry for {DataField.EcologistItemsForaged}.");
 
-            ModEntry.Log(
-                !string.IsNullOrEmpty(value)
-                    ? $"{field}: {value}"
-                    : $"Mod data does not contain an entry for {field}.", LogLevel.Info);
-        }
+        value = ModData.Read(DataField.GemologistMineralsCollected);
+        message += "\n\t- " +
+            (!string.IsNullOrEmpty(value)
+                ? $"{DataField.GemologistMineralsCollected}: {value} ({ModEntry.Config.MineralsNeededForBestQuality - int.Parse(value)} needed for best quality)"
+                : $"Mod data does not contain an entry for {DataField.GemologistMineralsCollected}.");
+
+        value = ModData.Read(DataField.ProspectorHuntStreak);
+        message += "\n\t- " +
+            (!string.IsNullOrEmpty(value)
+                ? $"{DataField.ProspectorHuntStreak}: {value} (affects treasure quality)"
+                : $"Mod data does not contain an entry for {DataField.ProspectorHuntStreak}.");
+
+        value = ModData.Read(DataField.ScavengerHuntStreak);
+        message += "\n\t- " +
+            (!string.IsNullOrEmpty(value)
+                ? $"{DataField.ScavengerHuntStreak}: {value} (affects treasure quality)"
+                : $"Mod data does not contain an entry for {DataField.ScavengerHuntStreak}.");
+
+        value = ModData.Read(DataField.ConservationistTrashCollectedThisSeason);
+        message += "\n\t- " +
+            (!string.IsNullOrEmpty(value)
+                ? $"{DataField.ConservationistTrashCollectedThisSeason}: {value} (expect a {Math.Min(int.Parse(value) / ModEntry.Config.TrashNeededPerTaxLevel, (int) (ModEntry.Config.TaxDeductionCeiling * 100))}% tax deduction next season)"
+                : $"Mod data does not contain an entry for {DataField.ConservationistTrashCollectedThisSeason}.");
+
+        value = ModData.Read(DataField.ConservationistActiveTaxBonusPct);
+        message += "\n\t- " + 
+            (!string.IsNullOrEmpty(value)
+                ? $"{DataField.ConservationistActiveTaxBonusPct}: {float.Parse(value) * 100}%"
+                : $"Mod data does not contain an entry for {DataField.ConservationistActiveTaxBonusPct}.");
+
+        Log.I(message);
     }
 
     /// <summary>Set a new value to the specified mod data field.</summary>
@@ -445,46 +480,52 @@ internal static class ConsoleCommands
     {
         if (!args.Any() || args.Length != 2)
         {
-            ModEntry.Log("You must specify a data field and value." + GetUsageForSetModData(), LogLevel.Warn);
+            Log.W("You must specify a data field and value." + GetUsageForSetModData());
             return;
         }
 
         if (!int.TryParse(args[1], out var value) || value < 0)
         {
-            ModEntry.Log("You must specify a positive integer value.", LogLevel.Warn);
+            Log.W("You must specify a positive integer value.");
             return;
         }
 
         if (!Context.IsWorldReady)
         {
-            ModEntry.Log("You must load a save first.", LogLevel.Warn);
+            Log.W("You must load a save first.");
             return;
         }
 
-        switch (args[0])
+        switch (args[0].ToLower())
         {
-            case "itemsforaged":
-                SetItemsForaged(value);
+            case "forages":
+            case "ecologistitemsforaged":
+                SetEcologistItemsForaged(value);
                 break;
 
-            case "mineralscollected":
-                SetMineralsCollected(value);
+            case "minerals":
+            case "gemologistmineralscollected":
+                SetGemologistMineralsCollected(value);
                 break;
 
-            case "scavengerstreak":
-                SetScavengerStreak(value);
+            case "shunt":
+            case "scavengerhuntstreak":
+                SetScavengerHuntStreak(value);
                 break;
 
-            case "prospectorstreak":
-                SetProspectorStreak(value);
+            case "phunt":
+            case "prospectorhuntstreak":
+                SetProspectorHuntStreak(value);
                 break;
 
-            case "watertrashcollectedthisseason":
-                SetWaterTrashCollectedThisSeason(value);
+            case "trash":
+            case "conservationisttrashcollectedthisseason":
+                SetConservationistTrashCollectedThisSeason(value);
                 break;
 
             default:
-                ModEntry.Log($"'{args[0]}' is not a settable data field.", LogLevel.Warn);
+                var message = $"'{args[0]}' is not a settable data field.\n" + GetAvailableDataFields();
+                Log.W(message);
                 break;
         }
     }
@@ -492,9 +533,58 @@ internal static class ConsoleCommands
     /// <summary>Print the currently subscribed mod events to the console.</summary>
     internal static void PrintSubscribedEvents(string command, string[] args)
     {
-        ModEntry.Log("Currently subscribed events:", LogLevel.Info);
-        foreach (var eventName in ModEntry.Subscriber.Select(e => e.GetType().Name))
-            ModEntry.Log($"{eventName}", LogLevel.Info);
+        var message = "Enabled events:";
+        message = EventManager.GetAllEnabled()
+            .Aggregate(message, (current, next) => current + "\n\t- " + next.GetType().Name);
+        Log.I(message);
+    }
+
+    /// <summary>Force a new treasure tile to be selected for the currently active Treasure Hunt.</summary>
+    internal static void RerollTreasureTile(string command, string[] args)
+    {
+        if (!Context.IsWorldReady)
+        {
+            Log.W("You must load a save first.");
+            return;
+        }
+
+        if (!ModEntry.State.Value.ScavengerHunt.IsActive && !ModEntry.State.Value.ProspectorHunt.IsActive)
+        {
+            Log.W("There is no Treasure Hunt currently active.");
+            return;
+        }
+
+        if (ModEntry.State.Value.ScavengerHunt.IsActive)
+        {
+            var v = ModEntry.State.Value.ScavengerHunt.ChooseTreasureTile(Game1.currentLocation);
+            if (v is null)
+            {
+                Log.W("Couldn't find a valid treasure tile after 10 tries.");
+                return;
+            }
+
+            Game1.currentLocation.MakeTileDiggable(v.Value);
+            ModEntry.ModHelper.Reflection.GetProperty<Vector2?>(ModEntry.State.Value.ScavengerHunt, "TreasureTile")
+                .SetValue(v);
+            ModEntry.ModHelper.Reflection.GetField<uint>(ModEntry.State.Value.ScavengerHunt, "elapsed").SetValue(0);
+
+            Log.I("The Scavenger Hunt was reset.");
+        }
+        else if (ModEntry.State.Value.ProspectorHunt.IsActive)
+        {
+            var v = ModEntry.State.Value.ProspectorHunt.ChooseTreasureTile(Game1.currentLocation);
+            if (v is null)
+            {
+                Log.W("Couldn't find a valid treasure tile after 10 tries.");
+                return;
+            }
+
+            ModEntry.ModHelper.Reflection.GetProperty<Vector2?>(ModEntry.State.Value.ProspectorHunt, "TreasureTile")
+                .SetValue(v);
+            ModEntry.ModHelper.Reflection.GetField<int>(ModEntry.State.Value.ProspectorHunt, "Elapsed").SetValue(0);
+
+            Log.I("The Prospector Hunt was reset.");
+        }
     }
 
     #endregion command handlers
@@ -504,88 +594,107 @@ internal static class ConsoleCommands
     /// <summary>Tell the dummies how to use the console command.</summary>
     private static string GetUsageForAddProfessions()
     {
-        var result = "\n\nUsage: player_addprofessions <argument1> <argument2> ... <argumentN>";
-        result += "\nAvailable arguments:";
+        var result = "\n\nUsage: player_addprofessions [--prestige] <profession1> <profession2> ... <professionN>";
+        result += "\n\nParameters:";
+        result += "\n\t<profession>\t- one of the modded profession names, or 'all'";
+        result += "\n\nOptional flags:";
         result +=
-            "\n\t'<profession>' - get the specified profession.";
-        result += "\n\t'all' - get all professions.";
-        result += "\n\nExample:";
+            "\n\t--prestige, -p\t- add the prestiged versions of the specified professions (will automatically add the base versions as well)";
+        result += "\n\nExamples:";
         result += "\n\tplayer_addprofessions artisan brute";
+        result += "\n\tplayer_addprofessions -p all";
         return result;
     }
 
     /// <summary>Tell the dummies how to use the console command.</summary>
     private static string GetUsageForSetModData()
     {
-        var result = "\n\nUsage: wol_setdata <name> <value>";
-        result += "\n\nExample:";
-        result += "\n\twol_setdata itemsforaged 100";
+        var result = "\n\nUsage: wol_setdata <field> <value>";
+        result += "\n\nParameters:";
+        result += "\n\t<field>\t- the name of the field";
+        result += "\\n\t<value>\t- the desired new value";
+        result += "\n\nExamples:";
+        result += "\n\twol_setdata EcologistItemsForaged 100";
+        result += "\n\twol_setdata trash 500";
+        result += "\n\n" + GetAvailableDataFields();
         return result;
     }
 
-    /// <summary>Set a new value to the ItemsForaged data field.</summary>
-    internal static void SetItemsForaged(int value)
+    /// <summary>Tell the dummies which fields they can set.</summary>
+    private static string GetAvailableDataFields()
     {
-        if (!Game1.player.HasProfession("Ecologist"))
-        {
-            ModEntry.Log("You must have the Ecologist profession.", LogLevel.Warn);
-            return;
-        }
-
-        ModEntry.Data.Write("ItemsForaged", value.ToString());
-        ModEntry.Log($"ItemsForaged set to {value}.", LogLevel.Info);
+        var result = "Available data fields:";
+        result += $"\n\t- {DataField.EcologistItemsForaged} (shortcut 'forages')";
+        result += $"\n\t- {DataField.GemologistMineralsCollected} (shortcut 'minerals')";
+        result += $"\n\t- {DataField.ProspectorHuntStreak} (shortcut 'phunt')";
+        result += $"\n\t- {DataField.ScavengerHuntStreak} (shortcut 'shunt')";
+        result += $"\n\t- {DataField.ConservationistTrashCollectedThisSeason} (shortcut 'trash')";
+        return result;
     }
 
-    /// <summary>Set a new value to the MineralsCollected data field.</summary>
-    internal static void SetMineralsCollected(int value)
+    /// <summary>Set a new value to the EcologistItemsForaged data field.</summary>
+    private static void SetEcologistItemsForaged(int value)
     {
-        if (!Game1.player.HasProfession("Gemologist"))
+        if (!Game1.player.HasProfession(Profession.Ecologist))
         {
-            ModEntry.Log("You must have the Gemologist profession.", LogLevel.Warn);
+            Log.W("You must have the Ecologist profession.");
             return;
         }
 
-        ModEntry.Data.Write("MineralsCollected", value.ToString());
-        ModEntry.Log($"MineralsCollected set to {value}.", LogLevel.Info);
+        ModData.Write(DataField.EcologistItemsForaged, value.ToString());
+        Log.I($"Items foraged as Ecologist was set to {value}.");
     }
 
-    /// <summary>Set a new value to the ProspectorStreak data field.</summary>
-    internal static void SetProspectorStreak(int value)
+    /// <summary>Set a new value to the GemologistMineralsCollected data field.</summary>
+    private static void SetGemologistMineralsCollected(int value)
     {
-        if (!Game1.player.HasProfession("Prospector"))
+        if (!Game1.player.HasProfession(Profession.Gemologist))
         {
-            ModEntry.Log("You must have the Prospector profession.", LogLevel.Warn);
+            Log.W("You must have the Gemologist profession.");
             return;
         }
 
-        ModEntry.Data.Write("ProspectorStreak", value.ToString());
-        ModEntry.Log($"ProspectorStreak set to {value}.", LogLevel.Info);
+        ModData.Write(DataField.GemologistMineralsCollected, value.ToString());
+        Log.I($"Minerals collected as Gemologist was set to {value}.");
     }
 
-    /// <summary>Set a new value to the ScavengerStreak data field.</summary>
-    internal static void SetScavengerStreak(int value)
+    /// <summary>Set a new value to the ProspectorHuntStreak data field.</summary>
+    private static void SetProspectorHuntStreak(int value)
     {
-        if (!Game1.player.HasProfession("Scavenger"))
+        if (!Game1.player.HasProfession(Profession.Prospector))
         {
-            ModEntry.Log("You must have the Scavenger profession.", LogLevel.Warn);
+            Log.W("You must have the Prospector profession.");
             return;
         }
 
-        ModEntry.Data.Write("ScavengerStreak", value.ToString());
-        ModEntry.Log($"ScavengerStreak set to {value}.", LogLevel.Info);
+        ModData.Write(DataField.ProspectorHuntStreak, value.ToString());
+        Log.I($"Prospector Hunt was streak set to {value}.");
     }
 
-    /// <summary>Set a new value to the WaterTrashCollectedThisSeason data field.</summary>
-    internal static void SetWaterTrashCollectedThisSeason(int value)
+    /// <summary>Set a new value to the ScavengerHuntStreak data field.</summary>
+    private static void SetScavengerHuntStreak(int value)
     {
-        if (!Game1.player.HasProfession("Conservationist"))
+        if (!Game1.player.HasProfession(Profession.Scavenger))
         {
-            ModEntry.Log("You must have the Conservationist profession.", LogLevel.Warn);
+            Log.W("You must have the Scavenger profession.");
             return;
         }
 
-        ModEntry.Data.Write("WaterTrashCollectedThisSeason", value.ToString());
-        ModEntry.Log($"WaterTrashCollectedThisSeason set to {value}.", LogLevel.Info);
+        ModData.Write(DataField.ScavengerHuntStreak, value.ToString());
+        Log.I($"Scavenger Hunt streak was set to {value}.");
+    }
+
+    /// <summary>Set a new value to the ConservationistTrashCollectedThisSeason data field.</summary>
+    private static void SetConservationistTrashCollectedThisSeason(int value)
+    {
+        if (!Game1.player.HasProfession(Profession.Conservationist))
+        {
+            Log.W("You must have the Conservationist profession.");
+            return;
+        }
+
+        ModData.Write(DataField.ConservationistTrashCollectedThisSeason, value.ToString());
+        Log.I($"Conservationist trash collected in the current season was set to {value}.");
     }
 
     #endregion private methods

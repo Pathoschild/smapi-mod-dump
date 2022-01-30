@@ -52,6 +52,7 @@
     "categories.recipes": "Recipes",
     "categories.rings": "Rings",
     "categories.seeds": "Seeds",
+    "categories.seedsOther": "Seeds Other",
     "categories.sell-to-pierre-or-marnie": "Sellable @ Pierre's/Marnie's",
     "categories.sell-to-pierre": "Sellable @ Pierres",
     "categories.sell-to-willy": "Sellable @ Willy's",
@@ -65,6 +66,6 @@
     /*********
     ** Generic Mod Config Menu UI
     *********/
-    "config.grid-layout.name": "Experimental Grid Layout",
-    "config.grid-layout.tooltip": "Whether to use the experimental grid layout in shops. This may cause minor display issues or impact other mods' features in shop menus."
+    "config.grid-layout.name": "Grid Layout",
+    "config.grid-layout.tooltip": "Whether to use the grid layout in shops. This may impact other mods' features in shop menus."
 }

@@ -10,11 +10,26 @@ Changelog
 ======
 #### Todo
 
-* Consider adding a way for mod caves to limit the spawn area....
+* Nothing! Awaiting future object updates, but have no more ideas at current.
+
+#### 1.6 todo
+* Switch all ID lookup to the new system.
+* Figure out DGA fruit trees.
+
+#### Version 1.0.8 (upcoming)
+
+* Corrects `UseModCave` option (would previously always use the additional locations list.) Adds new option to only use the six usual vanilla tree fruit.
+* Use delegates
+* Add error checking for badly formatted config files, and clamps the possible values for the config files. Adds version checking for GMCM, and disables GMCM integration if the version is too old.
+* (Internal) Fixes tile shuffling logic.
+
+#### Version 1.0.7
+
+* Adds compat with FarmCaveFramework (https://www.nexusmods.com/stardewvalley/mods/10506).
 
 #### Version 1.0.6
 
-* Adds ability for other mods to add locations this mod will spawn fruit in. (Move SVE additional farmcave location support to that.)
+* Adds ability for other mods to add locations this mod will spawn fruit in, with the ability to limit the spawn area. (Move SVE additional farmcave location support to that.) 
 * Add configuration option that can disable that.
 
 #### Version 1.0.5

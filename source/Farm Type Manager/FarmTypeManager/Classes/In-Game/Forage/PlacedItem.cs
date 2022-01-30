@@ -8,23 +8,14 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Network;
-using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
-using Netcode;
-
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
+using StardewModdingAPI;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using System;
+using System.Xml.Serialization;
 
 namespace FarmTypeManager
 {
@@ -140,7 +131,7 @@ namespace FarmTypeManager
 
                     Item = null; //clear this placed item's reference to the item
                     currentLocation.terrainFeatures.Remove(tileLocation); //remove this placed item from the game
-                }  
+                }
 
                 return true; //this placed item was used
             }
@@ -158,7 +149,7 @@ namespace FarmTypeManager
                     {
                         //imitate Stardew's random seed, which produces the same result when give the same object position and in-game day
                         Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)currentTileLocation.X + (int)currentTileLocation.Y * 777);
-                        
+
                         //set random qualities based on the player's Foraging skill
                         if (random.NextDouble() < Game1.player.ForagingLevel / 30.0)
                             obj.Quality = StardewValley.Object.highQuality; //gold quality

@@ -8,119 +8,104 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.TerrainFeatures;
+namespace DaLion.Stardew.Tools.Framework.Effects;
+
+#region using directives
+
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+
+using Configs;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Tools.Framework.Effects;
+#endregion using directives
 
-/// <summary>Applies Axe-specific effects.</summary>
-internal class AxeEffect : BaseEffect
+/// <summary>Applies Axe effects.</summary>
+internal class AxeEffect : IEffect
 {
-    public Configs.AxeConfig Config { get; }
+    /// <summary>Construct an instance.</summary>
+    public AxeEffect(AxeConfig config)
+    {
+        Config = config;
+    }
+
+    public AxeConfig Config { get; }
 
     /// <summary>The Axe upgrade levels needed to break supported resource clumps.</summary>
-    /// <remarks>Derived from <see cref="ResourceClump.performToolAction"/>.</remarks>
+    /// <remarks>Derived from <see cref="ResourceClump.performToolAction" />.</remarks>
     private IDictionary<int, int> UpgradeLevelsNeededForResource { get; } = new Dictionary<int, int>
     {
         [ResourceClump.stumpIndex] = Tool.copper,
         [ResourceClump.hollowLogIndex] = Tool.steel
     };
 
-    /// <summary>Construct an instance.</summary>
-    /// <param name="config">The effect settings.</param>
-    /// <param name="modRegistry">Metadata about loaded mods.</param>
-    public AxeEffect(Configs.AxeConfig config, IModRegistry modRegistry)
-        : base(modRegistry)
-    {
-        Config = config;
-    }
-
-    /// <inheritdoc/>
-    public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Tool tool, GameLocation location, Farmer who)
+    /// <inheritdoc />
+    public bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Tool tool,
+        GameLocation location, Farmer who)
     {
         // clear debris
-        if (Config.ClearDebris && (IsTwig(tileObj) || IsWeed(tileObj)))
-            return UseToolOnTile(tool, tile, who, location);
+        if (Config.ClearDebris && (tileObj.IsTwig() || tileObj.IsWeed()))
+            return tool.UseOnTile(tile, location, who);
 
         // cut terrain features
         switch (tileFeature)
         {
             // cut non-fruit tree
             case Tree tree:
-                return ShouldCut(tree) && UseToolOnTile(tool, tile, who, location);
+                return ShouldCut(tree) && tool.UseOnTile(tile, location, who);
 
             // cut fruit tree
             case FruitTree tree:
-                return ShouldCut(tree) && UseToolOnTile(tool, tile, who, location);
+                return ShouldCut(tree) && tool.UseOnTile(tile, location, who);
 
             // cut bushes
             case Bush bush:
-                return ShouldCut(bush) && UseToolOnTile(tool, tile, who, location);
+                return ShouldCut(bush) && tool.UseOnTile(tile, location, who);
 
             // clear crops
             case HoeDirt {crop: { }} dirt:
                 if (Config.ClearDeadCrops && dirt.crop.dead.Value)
-                {
-                    return UseToolOnTile(tool, tile, who, location);
-                }
+                    return tool.UseOnTile(tile, location, who);
                 else if (Config.ClearLiveCrops && !dirt.crop.dead.Value)
-                {
-                    return UseToolOnTile(tool, tile, who, location);
-                }
+                    return tool.UseOnTile(tile, location, who);
+
                 break;
         }
 
         // cut resource stumps
         if (Config.ClearDebris || Config.CutGiantCrops)
         {
-            ResourceClump clump = GetResourceClumpCoveringTile(location, tile, who, out var applyTool);
+            var clump = location.GetResourceClumpCoveringTile(tile, who, out var applyTool);
 
             // giant crops
-            if (Config.CutGiantCrops && clump is GiantCrop)
-            {
-                return applyTool(tool);
-            }
+            if (Config.CutGiantCrops && clump is GiantCrop) return applyTool(tool);
 
             // big stumps and fallen logs
-            if (Config.ClearDebris && clump is not null && UpgradeLevelsNeededForResource.ContainsKey(clump.parentSheetIndex.Value) && tool.UpgradeLevel >= UpgradeLevelsNeededForResource[clump.parentSheetIndex.Value])
-            {
+            if (Config.ClearDebris && clump is not null &&
+                UpgradeLevelsNeededForResource.ContainsKey(clump.parentSheetIndex.Value) && tool.UpgradeLevel >=
+                UpgradeLevelsNeededForResource[clump.parentSheetIndex.Value])
                 return applyTool(tool);
-            }
         }
 
         // cut bushes in large terrain features
         if (Config.ClearBushes)
-        {
             if (location.largeTerrainFeatures.OfType<Bush>().Any(b => b.tilePosition.Value == tile))
-            {
-                return UseToolOnTile(tool, tile, who, location);
-            }
-        }
+                return tool.UseOnTile(tile, location, who);
 
         return false;
     }
 
-    /// <summary>Spreads the Axe effect to an area around the player.</summary>
-    /// <param name="tool">The tool selected by the player.</param>
-    /// <param name="origin">The center of the shockwave (i.e. the Axe's tile location).</param>
-    /// <param name="multiplier">Stamina cost multiplier.</param>
-    /// <param name="location">The player's location.</param>
-    /// <param name="who">The player.</param>
-    public void SpreadToolEffect(Tool tool, Vector2 origin, float multiplier, GameLocation location, Farmer who)
-    {
-        base.SpreadToolEffect(tool, origin, multiplier, location, who, Config.RadiusAtEachPowerLevel);
-    }
+    #region private methods
 
     /// <summary>Get whether a given tree should be chopped.</summary>
     /// <param name="tree">The tree to check.</param>
     private bool ShouldCut(Tree tree)
     {
-
         return tree.growthStage.Value switch
         {
             Tree.seedStage => Config.ClearTreeSeeds, // seed
@@ -135,9 +120,9 @@ internal class AxeEffect : BaseEffect
     {
         return tree.growthStage.Value switch
         {
-            Tree.seedStage => Config.ClearFruitTreeSeeds,       // seed
-            < Tree.treeStage => Config.ClearFruitTreeSaplings,  // sapling
-            _ => Config.CutGrownFruitTrees                      // full-grown
+            Tree.seedStage => Config.ClearFruitTreeSeeds, // seed
+            < Tree.treeStage => Config.ClearFruitTreeSaplings, // sapling
+            _ => Config.CutGrownFruitTrees // full-grown
         };
     }
 
@@ -147,4 +132,6 @@ internal class AxeEffect : BaseEffect
     {
         return Config.ClearBushes;
     }
+
+    #endregion private methods
 }

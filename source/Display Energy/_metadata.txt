@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/dmarcoux/DisplayEnergy
+   Git: https://github.com/dmarcoux/DisplayEnergy.git
+
+mods:
+   Display Energy
+
+latest commit:
+   commit cf570971fb0eeac1e450772dac00a690082a06da
+   Author: Dany Marcoux <dmarcoux@posteo.de>
+   Date:   Sun Jan 16 16:11:13 2022 +0100
+   
+       Improve mod description
+   

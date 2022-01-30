@@ -30,7 +30,7 @@ namespace Bpendragon.GreenhouseSprinklers
             if (!Context.IsWorldReady) return; //World Hasn't Loaded yet, it's definitely not the menu we want
             if (e.NewMenu == null) return; //Menu was closed
             if (!Game1.getFarm().greenhouseUnlocked.Value) return; //Greenhouse has not been unlocked. You aren't gonna be able to add sprinklers to it. 
-            if (!(e.NewMenu is CarpenterMenu)) return; //We aren't in a carpenter menu
+            if (e.NewMenu is not CarpenterMenu) return; //We aren't in a carpenter menu
             if (Helper.Reflection.GetField<bool>(e.NewMenu, "magicalConstruction").GetValue()) return; //We aren't in Robin's Carpenter menu
             Monitor.Log("In the Carpenter Menu, here's hoping");
             //Figure out which level of the Upgrade we already have to allow us to select the appropriate upgrade

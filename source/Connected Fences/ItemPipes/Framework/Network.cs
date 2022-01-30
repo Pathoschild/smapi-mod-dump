@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ItemPipes.Framework.Model;
-using ItemPipes.Framework.Objects;
+using ItemPipes.Framework.Nodes;
 using ItemPipes.Framework.Util;
 using Microsoft.Xna.Framework;
 using System.Threading;
@@ -27,41 +27,53 @@ namespace ItemPipes.Framework
     {
         public int ID { get; set; }
         public List<Node> Nodes { get; set; }
-        public List<Output> Outputs { get; set; }
-        public List<Input> Inputs { get; set; }
-        public List<Connector> Connectors { get; set; }
+        public List<OutputNode> Outputs { get; set; }
+        public List<InputNode> Inputs { get; set; }
+        public List<ConnectorNode> Connectors { get; set; }
         public bool IsPassable { get; set; }
-        public Invisibilizer Invis { get; set; }
+        public InvisibilizerNode Invis { get; set; }
 
+        public Network() { }
         public Network(int id)
         {
             ID = id;
             Nodes = new List<Node>();
-            Outputs = new List<Output>();
-            Inputs = new List<Input>();
-            Connectors = new List<Connector>();
+            Outputs = new List<OutputNode>();
+            Inputs = new List<InputNode>();
+            Connectors = new List<ConnectorNode>();
             IsPassable = false;
         }
 
         public void Update()
         {
-            foreach(Output output in Outputs)
+            foreach(OutputNode output in Outputs)
             {
-                foreach (Input input in output.ConnectedInputs.Keys.ToList())
+                foreach (InputNode input in output.ConnectedInputs.Keys.ToList())
                 {
                     TryDisconnectInput(input);
+                    input.UpdateState();
                 }
                 TryConnectOutput(output);
+                output.UpdateState();
             }
-
         }
 
-        public void ProcessExchanges()
+        public void ProcessExchanges(int tier)
         {
             Update();
-            foreach (Output output in Outputs)
+            switch (tier)
             {
-                output.ProcessExchanges();
+                case 1:
+                    foreach (OutputNode output in Outputs)
+                    {
+                        if(output.Tier == 1)
+                        {
+                            output.ProcessExchanges();
+                        }
+                    }
+                    break;
+                case 2:
+                    break;
             }
         }
 
@@ -72,21 +84,21 @@ namespace ItemPipes.Framework
             {
                 added = true;
                 Nodes.Add(node);
-                if (node is Output && !Outputs.Contains(node))
+                if (node is OutputNode && !Outputs.Contains(node))
                 {
-                    Outputs.Add((Output)node);
+                    Outputs.Add((OutputNode)node);
                 }
-                else if (node is Input && !Inputs.Contains(node))
+                else if (node is InputNode && !Inputs.Contains(node))
                 {
-                    Inputs.Add((Input)node);
+                    Inputs.Add((InputNode)node);
                 }
-                else if (node is Connector && !Connectors.Contains(node))
+                else if (node is ConnectorNode && !Connectors.Contains(node))
                 {
-                    Connectors.Add((Connector)node);
+                    Connectors.Add((ConnectorNode)node);
                 }
-                else if (node is Invisibilizer && Invis == null)
+                else if (node is InvisibilizerNode && Invis == null)
                 {
-                    Invis = (Invisibilizer)node;
+                    Invis = (InvisibilizerNode)node;
                     Thread thread = new Thread(new ThreadStart(ChangePassable));
                     thread.Start();
                 }
@@ -103,17 +115,17 @@ namespace ItemPipes.Framework
                 Nodes.Remove(node);
                 if (Outputs.Contains(node))
                 {
-                    Outputs.Remove((Output)node);
+                    Outputs.Remove((OutputNode)node);
                 }
                 else if (Inputs.Contains(node))
                 {
-                    Inputs.Remove((Input)node);
+                    Inputs.Remove((InputNode)node);
                 }
                 else if (Connectors.Contains(node))
                 {
-                    Connectors.Remove((Connector)node);
+                    Connectors.Remove((ConnectorNode)node);
                 }
-                else if (node is Invisibilizer && Invis != null)
+                else if (node is InvisibilizerNode && Invis != null)
                 {
                     Thread thread = new Thread(new ThreadStart(ChangePassable));
                     thread.Start();
@@ -123,7 +135,7 @@ namespace ItemPipes.Framework
             return removed;
         }
 
-        public bool TryConnectNodes(Output output, Input input)
+        public bool TryConnectNodes(OutputNode output, InputNode input)
         {
             bool connected = false;
             if (output != null && input != null)
@@ -141,51 +153,70 @@ namespace ItemPipes.Framework
             return connected;
         }
 
-        public bool TryConnectOutput(Output output)
+        public bool TryConnectOutput(OutputNode output)
         {
-            if (Globals.Debug) { Printer.Info($"[{ID}] Trying output connection..."); }
             bool canConnect = false;
             if (output != null)
             {
-                foreach (Input input in Inputs)
+                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Trying connecting {output.Print()}"); }
+                if(Inputs.Count == 0)
                 {
-                    if (!output.IsInputConnected(input))
+                    if (Globals.UltraDebug) { Printer.Info($"[N{ID}] No inputs to connect."); }
+                }
+                else
+                {
+                    if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {Inputs.Count} inputs to connect."); }
+                    foreach (InputNode input in Inputs)
                     {
-                        if (Globals.Debug) { Printer.Info($"[{ID}] Input not connected"); }
-                        if (Globals.Debug) { input.Print(); }
-                        if (output.CanConnectedWith(input))
+                        if (!output.IsInputConnected(input))
                         {
-                            if (Globals.Debug) { Printer.Info($"[{ID}] Can connect with input"); }
-                            canConnect = output.AddConnectedInput(input);
-                            if (Globals.Debug) { Printer.Info($"[{ID}] CONNECTED? " + canConnect.ToString()); }
+                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} not already connected"); }
+                            if (output.CanConnectedWith(input))
+                            {
+                                canConnect = output.AddConnectedInput(input);
+                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Can connect with {input.Print()}? -> {canConnect}"); }
+                            }
+                            else
+                            {
+                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Cannot connect with {input.Print()}"); }
+                            }
                         }
+                        else
+                        {
+                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} already connected"); }
+                        }
+                        input.UpdateState();
                     }
+                    output.UpdateState();
                 }
             }
             return canConnect;
         }
 
-        public bool TryDisconnectInput(Input input)
+        public bool TryDisconnectInput(InputNode input)
         {
-            if (Globals.Debug) { Printer.Info($"[{ID}] Trying input disconnection"); Print(); }
             bool canDisconnect = false;
             if (input != null)
             {
-                if (Globals.Debug) { Printer.Info($"[{ID}] Input not null"); }
-                foreach (Output output in Outputs)
+                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Trying disconnecting {input.Print()}"); }
+                foreach (OutputNode output in Outputs)
                 {
-                    if (Globals.Debug) { Printer.Info($"[{ID}] Output has input? " + output.IsInputConnected(input).ToString()); }
                     if (output.IsInputConnected(input))
                     {
+                        if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} already connected"); }
                         if (!output.CanConnectedWith(input))
                         {
-                            if (Globals.Debug) { Printer.Info($"[{ID}] Can connect with input"); }
                             canDisconnect = output.RemoveConnectedInput(input);
-                            if (Globals.Debug) { Printer.Info($"[{ID}] Disconnected?  " + canDisconnect.ToString()); }
+                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Can disconnect with {input.Print()}? -> {canDisconnect}"); }
                         }
-
+                        else
+                        {
+                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Cannot disconnect with {input.Print()}"); }
+                        }
                     }
+                    output.UpdateState();
                 }
+                input.UpdateState();
             }
             return canDisconnect;
         }
@@ -216,31 +247,35 @@ namespace ItemPipes.Framework
         public string Print()
         {
             StringBuilder graph = new StringBuilder();
-            graph.Append("\nPriting Networks: \n");
-            graph.Append("Networks: \n");
-            graph.Append("Inputs: \n");
-            foreach (Input input in Inputs)
+            if (!Nodes.All(n=>n is ContainerNode))
             {
-                graph.Append(input.Obj.Name + input.Position.ToString() + input.GetHashCode().ToString() + ", ");
-            }
-            graph.Append("\n");
-            graph.Append("Outputs: \n");
-            foreach (Output output in Outputs)
-            {
-                graph.Append(output.Obj.Name + output.Position.ToString() + output.GetHashCode().ToString() + ", \n");
-                foreach (Input input in output.ConnectedInputs.Keys)
+                graph.Append($"\n----------------------------");
+                graph.Append($"\nPriting Network [{ID}]: \n");
+                graph.Append("Networks: \n");
+                graph.Append("Inputs: \n");
+                foreach (InputNode input in Inputs)
                 {
-                    graph.Append("Output Connected Inputs: \n");
-                    graph.Append(input.Obj.Name + input.Position.ToString() + input.GetHashCode().ToString() + " | ");
+                    graph.Append(input.Obj.Name + input.Position.ToString() + input.GetHashCode().ToString() + ", ");
+                }
+                graph.Append("\n");
+                graph.Append("Outputs: \n");
+                foreach (OutputNode output in Outputs)
+                {
+                    graph.Append(output.Obj.Name + output.Position.ToString() + output.GetHashCode().ToString() + ", \n");
+                    foreach (InputNode input in output.ConnectedInputs.Keys)
+                    {
+                        graph.Append("Output Connected Inputs: \n");
+                        graph.Append(input.Obj.Name + input.Position.ToString() + input.GetHashCode().ToString() + " | ");
+                    }
+                    graph.Append("\n");
+                }
+                graph.Append("Connectors: \n");
+                foreach (ConnectorNode conn in Connectors)
+                {
+                    graph.Append(conn.Obj.Name + conn.Position.ToString() + conn.GetHashCode().ToString() + ", ");
                 }
                 graph.Append("\n");
             }
-            graph.Append("Connectors: \n");
-            foreach (Connector conn in Connectors)
-            {
-                graph.Append(conn.Obj.Name + conn.Position.ToString() + conn.GetHashCode().ToString() + ", ");
-            }
-            graph.Append("\n");
             return graph.ToString();
         }
     }

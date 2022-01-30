@@ -8,19 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class MeleeWeaponDoAnimateSpecialMovePatch : BasePatch
@@ -43,36 +47,36 @@ internal class MeleeWeaponDoAnimateSpecialMovePatch : BasePatch
         switch (__instance.type.Value)
         {
             case MeleeWeapon.dagger:
-                if (who.HasPrestigedProfession("Brute"))
+                if (who.HasProfession(Profession.Brute, true))
                     MeleeWeapon.daggerCooldown =
                         (int) (MeleeWeapon.daggerCooldown *
-                               Utility.Professions.GetPrestigedBruteCooldownReduction(who));
-                else if (who.HasPrestigedProfession("Poacher"))
+                               who.GetPrestigedBruteCooldownReduction());
+                else if (who.HasProfession(Profession.Poacher, true))
                     MeleeWeapon.daggerCooldown =
                         (int) (MeleeWeapon.daggerCooldown *
-                               Utility.Professions.GetPrestigedPoacherCooldownReduction(who));
+                               who.GetPrestigedPoacherCooldownReduction());
                 break;
 
             case MeleeWeapon.club:
-                if (who.HasPrestigedProfession("Brute"))
+                if (who.HasProfession(Profession.Brute, true))
                     MeleeWeapon.clubCooldown =
                         (int) (MeleeWeapon.clubCooldown *
-                               Utility.Professions.GetPrestigedBruteCooldownReduction(who));
-                else if (who.HasPrestigedProfession("Poacher"))
+                               who.GetPrestigedBruteCooldownReduction());
+                else if (who.HasProfession(Profession.Poacher, true))
                     MeleeWeapon.clubCooldown =
                         (int) (MeleeWeapon.clubCooldown *
-                               Utility.Professions.GetPrestigedPoacherCooldownReduction(who));
+                               who.GetPrestigedPoacherCooldownReduction());
                 break;
 
             case MeleeWeapon.defenseSword:
-                if (who.HasPrestigedProfession("Brute"))
+                if (who.HasProfession(Profession.Brute, true))
                     MeleeWeapon.defenseCooldown =
                         (int) (MeleeWeapon.defenseCooldown *
-                               Utility.Professions.GetPrestigedBruteCooldownReduction(who));
-                else if (who.HasPrestigedProfession("Poacher"))
+                               who.GetPrestigedBruteCooldownReduction());
+                else if (who.HasProfession(Profession.Poacher, true))
                     MeleeWeapon.defenseCooldown =
                         (int) (MeleeWeapon.defenseCooldown *
-                               Utility.Professions.GetPrestigedPoacherCooldownReduction(who));
+                               who.GetPrestigedPoacherCooldownReduction());
                 break;
         }
     }
@@ -108,8 +112,7 @@ internal class MeleeWeaponDoAnimateSpecialMovePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Acrobat cooldown reduction.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Acrobat cooldown reduction.\nHelper returned {ex}");
             return null;
         }
 

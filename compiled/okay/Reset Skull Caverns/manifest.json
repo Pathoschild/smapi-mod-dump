@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Reset Skull Caverns",
+  "Author": "Sakorona",
+  "Version": "1.0.0",
+  "Description": "Resets the skull cavern stages to respawn coal and other things per day.",
+  "UniqueID": "KoihimeNakamura.ResetCaverns",
+  "EntryDll": "ResetSkullCaverns.dll",
+  "MinimumApiVersion": "3.4.0",
+  "UpdateKeys": [ "ModDrop: 1080116" ]
+}

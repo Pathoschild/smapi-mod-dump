@@ -1,0 +1,22 @@
+﻿{
+  "message.config.reload": "[EideeEasyFishing] コンフィグがリロードされました。",
+  "config.section.general.name": "一般",
+  "config.bitefaster.name": "魚がすぐに餌に食いつく",
+  "config.bitefaster.description": "魚が餌に食いつくまでの時間を短縮します。",
+  "config.hitautomatically.name": "自動でヒット処理を行う",
+  "config.hitautomatically.description": "マウスをクリックしなくてもミニゲームに移行します。ミニゲームをスキップする場合はそのまま魚を釣り上げます。",
+  "config.skipminigame.name": "ミニゲームをスキップする",
+  "config.skipminigame.description": "ミニゲームをスキップして魚を釣り上げます。",
+  "config.fisheasycaught.name": "魚を簡単に釣り上げる",
+  "config.fisheasycaught.description": "ミニゲームで、魚のアイコンがバーを追いかけるようになります。",
+  "config.treasurealwaysbefound.name": "常に宝箱を発見する",
+  "config.treasurealwaysbefound.description": "宝箱が毎回出現するようになります。ミニゲームをスキップする場合でも有効です。",
+  "config.treasureeasycaught.name": "宝箱を簡単に釣り上げる",
+  "config.treasureeasycaught.description": "ミニゲームで、宝箱のアイコンがバーを追いかけるようになります。",
+  "config.alwayscaughtdoublefish.name": "必ず二尾の魚を釣り上げる",
+  "config.alwayscaughtdoublefish.description": "ワイルドな釣りエサを使用している場合、必ず二尾の魚を釣り上げます。",
+  "config.caughtdoublefishonanybait.name": "どんなエサでも二尾の魚を釣り上げる",
+  "config.caughtdoublefishonanybait.description": "使用しているエサに関わらず、二尾の魚を釣り上げるチャンスが発生します。「必ず二尾の魚を釣り上げる」と併用することが可能です。",
+  "config.alwaysmaxcastpower.name": "常に最大パワーでキャストする",
+  "config.alwaysmaxcastpower.description": "釣り竿のパワーゲージが常に最大になります。"
+}

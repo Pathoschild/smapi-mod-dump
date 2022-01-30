@@ -1,0 +1,10 @@
+{
+    "Name": "Friendship Booster",
+    "Author": "Hills",
+    "Version": "0.3",
+    "Description": "Making friends is hard. This mod makes it easier",
+    "UniqueID": "Hills.FriendshipBooster",
+    "EntryDll": "FriendshipBooster.dll",
+    "MinimumApiVersion": "3.13.2",
+    "UpdateKeys": [ "Nexus:10497" ]
+}

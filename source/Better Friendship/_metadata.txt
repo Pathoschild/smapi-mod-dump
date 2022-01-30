@@ -6,9 +6,10 @@ mods:
    Better Friendship
 
 latest commit:
-   commit 574652f4a78cdcc819260ce06322545c57ba6def
-   Author: Urbanyeti <urbanski@gmail.com>
-   Date:   Thu Dec 9 19:56:50 2021 -0800
+   commit 9e8b32b1ac086ef7a20672e0fa6633180e5b8529
+   Merge: 4c0990d aa4e669
+   Author: Daniel Urbanski <urbanski@gmail.com>
+   Date:   Sat Jan 15 17:31:49 2022 -0800
    
-       Update README.md
+       Merge branch 'main' of github.com:urbanyeti/stardew-better-friendship
    

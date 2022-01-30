@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+
+"Mon": "%Freya: Hi, love. We should go adventuring together sometime.",
+"Tue": "%Freya: Hi, love. We should go adventuring together sometime.",
+"Wed": "%Freya: Hi, love. We should go adventuring together sometime.",
+"Thu": "%Freya: Hi, love. We should go adventuring together sometime.",
+"Fri": "%Freya: Hi, love. We should go adventuring together sometime.",
+"Sat": "%Freya: Hi, love. We should go adventuring together sometime.",
+"Sun": "%Freya: Hi, love. We should go adventuring together sometime."
+
+}

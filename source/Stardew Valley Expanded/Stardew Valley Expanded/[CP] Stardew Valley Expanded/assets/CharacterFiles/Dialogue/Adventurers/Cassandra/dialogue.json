@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+
+"Mon": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off...",
+"Tue": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off...",
+"Wed": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off...",
+"Thu": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off...",
+"Fri": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off...",
+"Sat": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off...",
+"Sun": "%Cassandra: Hmm? Oh. Hi. I'm busy.#$e#%Cassandra: That means buzz off..."
+
+}

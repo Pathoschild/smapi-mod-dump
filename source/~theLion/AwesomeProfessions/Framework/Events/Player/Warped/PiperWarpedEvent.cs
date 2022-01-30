@@ -8,32 +8,37 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.Player;
+
+#region using directives
+
 using System;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using GameLoop;
+using Extensions;
+
+#endregion using directives
 
 internal class PiperWarpedEvent : WarpedEvent
 {
     /// <inheritdoc />
-    public override void OnWarped(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
     {
-        if (!e.IsLocalPlayer) return;
+        if (e.NewLocation.Equals(e.OldLocation)) return;
 
         if (e.NewLocation is not (Woods or VolcanoDungeon or MineShaft) ||
             e.NewLocation is MineShaft shaft1 && shaft1.IsTreasureOrSafeRoom())
         {
-            ModEntry.Subscriber.Unsubscribe(typeof(PiperUpdateTickedEvent));
+            EventManager.Disable(typeof(PiperUpdateTickedEvent));
             return;
         }
 
-        var attempts = Utility.Professions.GetPiperSlimeSpawnAttempts();
+        var attempts = e.Player.GetPiperSlimeSpawnAttempts();
         var spawned = 0;
         var r = new Random(Guid.NewGuid().GetHashCode());
         while (attempts-- > 0 || spawned < 1)
@@ -90,8 +95,8 @@ internal class PiperWarpedEvent : WarpedEvent
             --attempts;
         }
 
-        ModEntry.Log($"Spawned {spawned} Slimes after {attempts} attempts.", LogLevel.Trace);
+        Log.D($"Spawned {spawned} Slimes after {attempts} attempts.");
 
-        ModEntry.Subscriber.Subscribe(new PiperUpdateTickedEvent());
+        EventManager.Enable(typeof(PiperUpdateTickedEvent));
     }
 }

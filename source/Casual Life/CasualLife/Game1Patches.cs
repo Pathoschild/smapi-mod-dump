@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Network;
@@ -122,10 +123,10 @@ namespace CasualLife
                 }
                 Game1.outdoorLight = new Color(R, G, B, 254);
 
-                if (Game1.bloom != null && Game1.bloom.Visible)
-                {
-                    Game1.bloom.Settings.BloomThreshold = Math.Min(1f, Game1.bloom.Settings.BloomThreshold + lightByTime);
-                }
+                // if (Game1.bloom != null && Game1.bloom.Visible)
+                // {
+                //     Game1.bloom.Settings.BloomThreshold = Math.Min(1f, Game1.bloom.Settings.BloomThreshold + lightByTime);
+                // }
 
             }
             else
@@ -146,10 +147,10 @@ namespace CasualLife
                     float transparency = Math.Min(0.93f, 0.3f + ((float)(adjustedTime - Game1.getStartingToGetDarkTime()) + (float)Game1.gameTimeInterval / 7000f * 16.6f) * 0.00225f);
                     Game1.outdoorLight = (Game1.IsRainingHere() ? Game1.ambientLight : Game1.eveningColor) * transparency;
                 }
-                else if (Game1.bloom != null && Game1.timeOfDay >= Game1.getStartingToGetDarkTime() - 100 && Game1.bloom.Visible)
-                {
-                    Game1.bloom.Settings.BloomThreshold = Math.Min(1f, Game1.bloom.Settings.BloomThreshold + 0.0004f);
-                }
+                // else if (Game1.bloom != null && Game1.timeOfDay >= Game1.getStartingToGetDarkTime() - 100 && Game1.bloom.Visible)
+                // {
+                //     Game1.bloom.Settings.BloomThreshold = Math.Min(1f, Game1.bloom.Settings.BloomThreshold + 0.0004f);
+                // }
                 else if (Game1.IsRainingHere())
                 {
                     Game1.outdoorLight = Game1.ambientLight * 0.3f;
@@ -222,20 +223,22 @@ namespace CasualLife
                 {
                     Game1.changeMusicTrack("none", true, Game1.MusicContext.Default);
                 }
-                if (Game1.currentLocation.isOutdoors && !Game1.IsRainingHere() && !Game1.eventUp && Game1.getMusicTrackName(Game1.MusicContext.Default).Contains("day") && Game1.isDarkOut())
+                if (Game1.currentLocation.IsOutdoors && !Game1.IsRainingHere() && !Game1.eventUp && Game1.getMusicTrackName(Game1.MusicContext.Default).Contains("day") && Game1.isDarkOut())
                 {
                     Game1.changeMusicTrack("none", true, Game1.MusicContext.Default);
                 }
                 if (Game1.weatherIcon == 1)
                 {
-                    int num = Convert.ToInt32(Game1.temporaryContent.Load<Dictionary<string, string>>(string.Concat(string.Concat("Data\\Festivals\\", Game1.currentSeason), Game1.dayOfMonth))["conditions"].Split(new char[] { '/' })[1].Split(new char[] { ' ' })[0]);
+                    string festivalAssetName = string.Format("{0}{1}{2}{3}", PathUtilities.NormalizeAssetName("Data/Festivals"), PathUtilities.PreferredAssetSeparator, Game1.currentSeason, Game1.dayOfMonth);
+                    Dictionary<string, string> festival = Game1.temporaryContent.Load<Dictionary<string, string>>(festivalAssetName);
+                    int num = Convert.ToInt32(festival["conditions"].Split(PathUtilities.PreferredAssetSeparator)[1].Split(new char[] { ' ' })[0]);
                     if (Game1.whereIsTodaysFest == null)
                     {
-                        Game1.whereIsTodaysFest = Game1.temporaryContent.Load<Dictionary<string, string>>(string.Concat(string.Concat("Data\\Festivals\\", Game1.currentSeason), Game1.dayOfMonth))["conditions"].Split(new char[] { '/' })[0];
+                        Game1.whereIsTodaysFest = festival["conditions"].Split(PathUtilities.PreferredAssetSeparator)[0];
                     }
                     if (Game1.timeOfDay == num)
                     {
-                        string str = Game1.temporaryContent.Load<Dictionary<string, string>>(string.Concat(string.Concat("Data\\Festivals\\", Game1.currentSeason), Game1.dayOfMonth))["conditions"].Split(new char[] { '/' })[0];
+                        string str = festival["conditions"].Split(PathUtilities.PreferredAssetSeparator)[0];
                         if (str == "Forest")
                         {
                             str = (Game1.currentSeason.Equals("winter") ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2634") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2635"));
@@ -248,7 +251,7 @@ namespace CasualLife
                         {
                             str = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2639");
                         }
-                        Game1.showGlobalMessage(string.Concat(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", Game1.temporaryContent.Load<Dictionary<string, string>>(string.Concat(string.Concat("Data\\Festivals\\", Game1.currentSeason), Game1.dayOfMonth))["name"]), str));
+                        Game1.showGlobalMessage(string.Concat(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", festival["name"]), str));
                     }
                 }
                 Game1.player.performTenMinuteUpdate();
@@ -257,7 +260,7 @@ namespace CasualLife
                 {
                     if (num1 == 1200)
                     {
-                        if (Game1.currentLocation.isOutdoors && !Game1.IsRainingHere() && (Game1.currentSong == null || Game1.currentSong.IsStopped || Game1.currentSong.Name.ToLower().Contains("ambient")))
+                        if (Game1.currentLocation.IsOutdoors && !Game1.IsRainingHere() && (Game1.currentSong == null || Game1.currentSong.IsStopped || Game1.currentSong.Name.ToLower().Contains("ambient")))
                         {
                             Game1.playMorningSong();
                         }

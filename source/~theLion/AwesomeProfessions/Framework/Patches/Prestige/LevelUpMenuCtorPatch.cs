@@ -8,17 +8,21 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuCtorPatch : BasePatch
@@ -61,8 +65,7 @@ internal class LevelUpMenuCtorPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching profession choices above level 10. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching profession choices above level 10. Helper returned {ex}");
             return null;
         }
 

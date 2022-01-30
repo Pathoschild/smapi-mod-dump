@@ -6,9 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 408cdbde665d4da9ab17de3cbecbbfc5e528fb1b
-   Author: shoaib11120 <shoaib.khan20@outlook.com>
-   Date:   Fri Dec 31 20:45:52 2021 +0530
+   commit 4b7d011a7bc1950c9f88234b6691c92ae822e9a4
+   Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
+   Date:   Sun Jan 30 22:25:02 2022 +0530
    
-       Added naming menu title narration
+       Added screen reader support for linux
    

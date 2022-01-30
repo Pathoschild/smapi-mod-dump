@@ -1,0 +1,18 @@
+{
+  "ChangeBuffButton": "G",
+  "HeartThreshold": 5,
+  "HeartSuggestThreshold": 7,
+  "ShowHUD": true,
+  "EnableDebug": false,
+  "AdventureMode": true,
+  "AvoidSayHiToMonsters": true,
+  "RequestsWithShift": false,
+  "RequestsShiftButton": "LeftShift",
+  "Experimental": {},
+  "AllowGainFriendship": true,
+  "FightThruCompanion": true,
+  "UseCheckForEventsPatch": true,
+  "AllowEntryLockedCompanionHouse": true,
+  "UseAsk2FollowCursor": true,
+  "AllowLegacyContentPacks": false
+}

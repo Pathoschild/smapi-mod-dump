@@ -10,11 +10,15 @@
 
 namespace SpecialOrdersExtended.Tokens;
 
+/// <summary>
+/// Token that gets all current active special order rules.
+/// </summary>
 internal class CurrentSpecialOrderRule : AbstractToken
 {
+    /// <inheritdoc/>
     public override bool UpdateContext()
     {
-        List<string> rules;
+        List<string>? rules;
         if (Context.IsWorldReady)
         {
             rules = Game1.player.team.specialOrders
@@ -28,14 +32,6 @@ internal class CurrentSpecialOrderRule : AbstractToken
                 ?.OrderBy(a => a)?.ToList();
         }
 
-        if (rules == SpecialOrdersCache)
-        {
-            return false;
-        }
-        else
-        {
-            SpecialOrdersCache = rules;
-            return true;
-        }
+        return this.UpdateCache(rules);
     }
 }

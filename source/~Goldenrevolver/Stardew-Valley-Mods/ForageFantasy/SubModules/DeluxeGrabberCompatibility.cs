@@ -38,11 +38,20 @@ namespace ForageFantasy
                 return;
             }
 
-            api.GetBerryBushHarvest += ChangeBerryBuchHarvest;
-            api.GetMushroomHarvest += ChangeMushroomHarvest;
+            // if neither is on, we can skip adding our overwrite for better compatibility with other mods
+            if ((mod.Config.AutomationHarvestsGrantXP && mod.Config.BerryBushXPAmount > 0 && mod.Config.BerryBushChanceToGetXP > 0) || mod.Config.BerryBushQuality)
+            {
+                api.GetBerryBushHarvest += ChangeBerryBushHarvest;
+            }
+
+            // if neither is on, we can skip adding our overwrite for better compatibility with other mods
+            if ((mod.Config.AutomationHarvestsGrantXP && mod.Config.MushroomXPAmount > 0) || mod.Config.MushroomBoxQuality)
+            {
+                api.GetMushroomHarvest += ChangeMushroomHarvest;
+            }
         }
 
-        private static KeyValuePair<StardewObject, int> ChangeBerryBuchHarvest(StardewObject item, Vector2 tile, GameLocation location)
+        private static KeyValuePair<StardewObject, int> ChangeBerryBushHarvest(StardewObject item, Vector2 tile, GameLocation location)
         {
             if (item == null || (item.ParentSheetIndex != 296 && item.ParentSheetIndex != 410))
             {

@@ -32,7 +32,7 @@ namespace HorseOverhaul
 
             string petAnswer = pet.grantedFriendshipForPet.Value ? yes : no;
             string waterAnswer = Game1.getFarm().petBowlWatered.Value ? yes : no;
-            string foodAnswer = pet?.modData?.TryGetValue($"{mod.ModManifest.UniqueID}/gotFed", out _) == true ? yes : no;
+            string foodAnswer = pet?.modData?.ContainsKey($"{mod.ModManifest.UniqueID}/gotFed") == true ? yes : no;
 
             string friendship = mod.Helper.Translation.Get("Friendship", new { value = pet.friendshipTowardFarmer.Value }) + "\n";
             string petted = mod.Config.Petting ? mod.Helper.Translation.Get("GotPetted", new { value = petAnswer }) + "\n" : string.Empty;

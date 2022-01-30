@@ -15,7 +15,7 @@
 	"Description": "Integrates the Industrial Furnace with Automate.",
 	"UniqueID": "Traktori.AM.IndustrialFurnace",
 	"EntryDll": "IndustrialFurnaceAutomate.dll",
-	"MinimumApiVersion": "3.8.0",
+	"MinimumApiVersion": "3.13.0",
 	"UpdateKeys": [ "Nexus:5568@Automate" ],
 	"Dependencies":
 	[

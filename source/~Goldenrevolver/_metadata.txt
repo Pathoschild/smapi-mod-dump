@@ -7,17 +7,20 @@ mods:
    Animals Die
    Crab Pot Loot Has Quality and Bait Effects
    Drop It - Drop Item Hotkey
+   Enchantable Scythes and Golden Scythe Respawns
    Forage Fantasy
    Harvest Moon FoMT-like Watering Can and Hoe Area
    Horse Overhaul
    Just Relax
+   Maritime Secrets
    Permanent Cookout Kit And Better Charcoal Kiln
+   Ring Overhaul
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit bf5d679fe718403cb35f8441765e0c552a520425
+   commit 31d5d453014e7d3e9048d0fc11c38a141fa5f226
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Tue Dec 28 00:57:05 2021 +0100
+   Date:   Fri Jan 28 23:53:51 2022 +0100
    
-       Upgraded all projects to the new versions of smapi, SV, harmony, .net etc. Fixed null reference and keybinding conflict errors in horse overhaul. Added ingame keybind config to horse overhaul and drop it. Added owner fallback in crap pot quality
+       Ring Overhaul better ring compatibility, crafting recipe translation bug fix, increment times crafted for furnace recipes
    

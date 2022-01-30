@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Junimo Dialog",
   "Author": "ceruleandeep",
-  "Version": "1.0.5-beta.1",
+  "Version": "1.0.6",
   "Description": "Junimo Dialog",
   "UniqueID": "ceruleandeep.junimodialog",
   "EntryDll": "JunimoDialog.dll",

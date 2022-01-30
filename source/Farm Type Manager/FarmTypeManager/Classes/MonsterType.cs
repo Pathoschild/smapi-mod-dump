@@ -8,9 +8,9 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
-using StardewModdingAPI;
 
 namespace FarmTypeManager
 {

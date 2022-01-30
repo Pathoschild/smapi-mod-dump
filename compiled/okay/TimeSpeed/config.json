@@ -16,7 +16,8 @@
     "Mines": false,
     "SkullCavern": false,
     "VolcanoDungeon": false,
-    "ByLocationName": []
+    "ByLocationName": [],
+    "ExceptLocationNames": []
   },
   "Keys": {
     "FreezeTime": "N",

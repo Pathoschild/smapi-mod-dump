@@ -8,18 +8,11 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using Newtonsoft.Json;
 
 namespace FarmTypeManager
 {
@@ -46,7 +39,7 @@ namespace FarmTypeManager
                     && assembly.ManifestModule.Name != "<In Memory Module>"
                     && !assembly.FullName.StartsWith("System")
                     && !assembly.FullName.StartsWith("Microsoft");
-                
+
                 //if this type already exists in the DynamicTypes list, retrieve it
                 matchingType = DynamicTypes
                     .Where(filterSubclass) //ignore any types that are not subclasses of baseClass (if applicable)

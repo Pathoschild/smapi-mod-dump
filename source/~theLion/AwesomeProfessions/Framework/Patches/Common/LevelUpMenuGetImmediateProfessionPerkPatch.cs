@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +23,12 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuGetImmediateProfessionPerkPatch : BasePatch
@@ -38,28 +45,29 @@ internal class LevelUpMenuGetImmediateProfessionPerkPatch : BasePatch
     [HarmonyPostfix]
     private static void LevelUpMenuGetImmediateProfessionPerkPostfix(int whichProfession)
     {
-        if (!Utility.Professions.IndexByName.TryGetReverseValue(whichProfession, out var professionName)) return;
+        if (!Enum.IsDefined(typeof(Profession), whichProfession)) return;
+
+        var professionName = whichProfession.ToProfessionName();
 
         // add immediate perks
         if (professionName == "Aquarist")
-            foreach (var b in Game1.getFarm().buildings.Where(b =>
-                         (b.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
-                         b is FishPond && !b.isUnderConstruction()))
-            {
-                var pond = (FishPond) b;
+            foreach (var pond in Game1.getFarm().buildings.OfType<FishPond>().Where(p =>
+                         (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
+                         !p.isUnderConstruction()))
                 pond.UpdateMaximumOccupancy();
-            }
-
-        // initialize mod data, assets and helpers
-        ModEntry.Data.InitializeDataForProfession(professionName);
 
         // subscribe events
-        ModEntry.Subscriber.SubscribeEventsForProfession(professionName);
+        EventManager.EnableAllForProfession(professionName);
+        if (professionName == "Conservationist" && !Context.IsMainPlayer) // request the main player
+            ModEntry.ModHelper.Multiplayer.SendMessage("Conservationist", "RequestEventEnable",
+                new[] {ModEntry.Manifest.UniqueID}, new[] {Game1.MasterPlayer.UniqueMultiplayerID});
 
-        if (whichProfession is >= 26 and < 30 &&
-            ModState.SuperModeIndex < 0) // is level 10 combat profession and Super Mode is not yet registered
-            // register Super Mode
-            ModState.SuperModeIndex = whichProfession;
+        if (whichProfession is < 26 or >= 30 || ModEntry.State.Value.SuperMode is not null) return;
+        
+        // register Super Mode
+        var newIndex = (SuperModeIndex) whichProfession;
+        ModEntry.State.Value.SuperMode = new(newIndex);
+        ModData.Write(DataField.SuperModeIndex, newIndex.ToString());
     }
 
     /// <summary>Patch to move bonus health from Defender to Brute.</summary>
@@ -78,12 +86,11 @@ internal class LevelUpMenuGetImmediateProfessionPerkPatch : BasePatch
                 .FindFirst(
                     new CodeInstruction(OpCodes.Ldc_I4_S, Farmer.defender)
                 )
-                .SetOperand(Utility.Professions.IndexOf("Brute"));
+                .SetOperand((int) Profession.Brute);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}");
             return null;
         }
 

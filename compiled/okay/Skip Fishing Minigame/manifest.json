@@ -1,10 +1,10 @@
 ﻿{
   "Name": "SkipFishingMinigame",
   "Author": "DewMods",
-  "Version": "0.3.0",
+  "Version": "0.4.1",
   "Description": "When a fish bites, just hook the fish and skip the minigame",
   "UniqueID": "DewMods.StardewValleyMods.SkipFishingMinigame",
-  "EntryDll": "DewMods.StardewValleyMods.SkipFishingMinigame.dll",
-  "MinimumApiVersion": "3.3.0",
+  "EntryDll": "SkipFishingMinigame.dll",
+  "MinimumApiVersion": "3.13.2",
   "UpdateKeys": [ "Nexus:2697" ]
 }

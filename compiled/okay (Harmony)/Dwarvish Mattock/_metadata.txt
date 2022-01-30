@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/9684
 IDs: com.anthonyhilyard.dwarvishmattock
-update keys: Nexus:9684
+update keys: Nexus:9684, GitHub:AHilyard/DwarvishMattock

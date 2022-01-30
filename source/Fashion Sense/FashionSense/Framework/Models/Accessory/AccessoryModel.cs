@@ -32,6 +32,10 @@ namespace FashionSense.Framework.Models.Accessory
         public Size AccessorySize { get; set; }
         public bool DrawBeforeHair { get; set; }
         public bool DrawAfterPlayer { get; set; }
+        public bool DrawAfterSleeves { get; set; }
+
+        public override bool HideWhileSwimming { get; set; } = false;
+        public override bool HideWhileWearingBathingSuit { get; set; } = false;
 
         // Old property, has been renamed to DrawAfterPlayer
         [Obsolete("Has been renamed to DrawAfterPlayer.")]

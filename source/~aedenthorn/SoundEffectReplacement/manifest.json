@@ -11,7 +11,7 @@
 {
   "Name": "Sound Effect Replacement",
   "Author": "aedenthorn",
-  "Version": "0.1.1",
+  "Version": "0.1.2",
   "Description": "Sound Effect Replacement.",
   "UniqueID": "aedenthorn.SoundEffectReplacement",
   "EntryDll": "SoundEffectReplacement.dll",

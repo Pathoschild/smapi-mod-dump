@@ -8,18 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -370,7 +365,7 @@ namespace FarmTypeManager
 
                                 foreach (Farmer farmer in Game1.getAllFarmers()) //for each farmer
                                 {
-                                    
+
                                     highestSkillLevel = Math.Max(highestSkillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the farmer's skill level if it's higher than before
                                 }
 

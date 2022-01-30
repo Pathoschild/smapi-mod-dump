@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/CustomizeWeddingAttire
+**
+*************************************************/
+
+{
+  // Add mod description
+  "mod.description": "Adds options for what to wear at a wedding.",
+
+  // Add config options
+  "weddingAttire.title": "WeddingAttire",
+  "weddingAttire.description": "Pick which of these options to wear at a wedding. Note that Dress is a wedding dress, and GameDefault varies by gender.",
+  "weddingAttire.noneOption": "NoClothingChange",
+  "weddingAttire.tuxOption": "Tuxedo",
+  "weddingAttire.dressOption": "WeddingDress",
+  "weddingAttire.defaultOption": "GameDefault"
+}

@@ -8,12 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Tools;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class FishingRodCalculateTimeUntilFishingBitePatch : BasePatch
@@ -31,7 +36,7 @@ internal class FishingRodCalculateTimeUntilFishingBitePatch : BasePatch
     private static bool FishingRodCalculateTimeUntilFishingBitePrefux(FishingRod __instance, ref float __result)
     {
         var who = __instance.getLastFarmerToUse();
-        if (!who.HasPrestigedProfession("Fisher")) return true; // run original logic
+        if (!who.HasProfession(Profession.Fisher, true)) return true; // run original logic
 
         __result = 50;
         return false; // don't run original logic
@@ -42,7 +47,7 @@ internal class FishingRodCalculateTimeUntilFishingBitePatch : BasePatch
     private static void FishingRodCalculateTimeUntilFishingBitePostfix(FishingRod __instance, ref float __result)
     {
         var who = __instance.getLastFarmerToUse();
-        if (who.HasProfession("Fisher")) __result *= 0.5f;
+        if (who.HasProfession(Profession.Fisher)) __result *= 0.5f;
     }
 
     #endregion harmony patches

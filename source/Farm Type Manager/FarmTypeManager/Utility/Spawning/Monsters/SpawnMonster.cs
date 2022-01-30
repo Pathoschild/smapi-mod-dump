@@ -8,18 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+using FarmTypeManager.Monsters;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
-using FarmTypeManager.Monsters;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -416,7 +411,7 @@ namespace FarmTypeManager
                     case "lava crab":
                         monster = new LavaCrab(tile);
                         break;
-                     case "iridiumcrab":
+                    case "iridiumcrab":
                     case "iridium crab":
                         monster = new RockCrab(tile, "Iridium Crab");
                         break;

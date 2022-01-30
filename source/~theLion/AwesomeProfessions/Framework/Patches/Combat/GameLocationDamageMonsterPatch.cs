@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +19,19 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Tools;
-using TheLion.Stardew.Common.Harmony;
+
+using Stardew.Common.Harmony;
+using AssetLoaders;
+using Extensions;
+using SuperMode;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 internal class GameLocationDamageMonsterPatch : BasePatch
 {
@@ -57,7 +66,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
             helper
                 .FindProfessionCheck(Farmer.scout) // find index of scout check
                 .Advance()
-                .SetOperand(Utility.Professions.IndexOf("Poacher")) // replace with Poacher check
+                .SetOperand((int) Profession.Poacher) // replace with Poacher check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldarg_S) // start of critChance += critChance * 0.5f
                 )
@@ -71,9 +80,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while moving modded bonus crit chance from Scout to Poacher.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while moving modded bonus crit chance from Scout to Poacher.\nHelper returned {ex}");
             return null;
         }
 
@@ -85,7 +92,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck(Utility.Professions.IndexOf("Fighter"),
+                .FindProfessionCheck((int) Profession.Fighter,
                     true) // find index of brute check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 1.1f) // brute damage multiplier
@@ -94,7 +101,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_S, (byte) 10) // arg 10 = Farmer who
                 )
-                .InsertProfessionCheckForPlayerOnStack(100 + Utility.Professions.IndexOf("Fighter"),
+                .InsertProfessionCheckForPlayerOnStack((int) Profession.Fighter + 100,
                     notPrestigedFighter)
                 .Insert(
                     new CodeInstruction(OpCodes.Ldc_R4, 1.2f),
@@ -105,8 +112,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching prestiged Fighter bonus damage.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching prestiged Fighter bonus damage.\nHelper returned {ex}");
             return null;
         }
 
@@ -116,14 +122,14 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck(Utility.Professions.IndexOf("Brute"),
+                .FindProfessionCheck((int) Profession.Brute,
                     true) // find index of brute check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 1.15f) // brute damage multiplier
                 )
                 .ReplaceWith( // replace with custom multiplier
                     new(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
+                        typeof(FarmerExtensions).MethodNamed(nameof(FarmerExtensions
                             .GetBruteBonusDamageMultiplier)))
                 )
                 .Insert(
@@ -132,12 +138,12 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded Brute bonus damage.\nHelper returned {ex}", LogLevel.Error);
+            Log.E($"Failed while patching modded Brute bonus damage.\nHelper returned {ex}");
             return null;
         }
 
         /// From: if (who is not null && crit && who.professions.Contains(<desperado_id>) ... *= 2f;
-        /// To: if (who is not null && crit && who.IsLocalPlayer && ModState.SuperModeIndex == <poacher_id>) ... *= GetPoacherCritDamageMultiplier;
+        /// To: if (who is not null && crit && who.IsLocalPlayer && SuperMode?.Index == <poacher_id>) ... *= GetPoacherCritDamageMultiplier;
 
         try
         {
@@ -158,13 +164,25 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                 )
                 .Advance()
                 .ReplaceWith(
-                    new(OpCodes.Call,
-                        typeof(ModState).PropertyGetter(
-                            nameof(ModState.SuperModeIndex))) // was Callvirt NetList.Contains
+                    new(OpCodes.Callvirt,
+                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.Index))) // was Callvirt NetList.Contains
+                )
+                .Insert(
+                    // check if SuperMode is null
+                    new CodeInstruction(OpCodes.Call, typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                    new CodeInstruction(OpCodes.Callvirt,
+                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                    new CodeInstruction(OpCodes.Callvirt, typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
+                    new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseCritPow),
+                    // push SuperMode onto the stack
+                    new CodeInstruction(OpCodes.Call, typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                    new CodeInstruction(OpCodes.Callvirt,
+                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                    new CodeInstruction(OpCodes.Callvirt, typeof(ModState).PropertyGetter(nameof(ModState.SuperMode)))
                 )
                 .Advance()
                 .Insert(
-                    new CodeInstruction(OpCodes.Ldc_I4_S, Utility.Professions.IndexOf("Poacher"))
+                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) SuperModeIndex.Poacher)
                 )
                 .SetOpCode(OpCodes.Bne_Un_S) // was Brfalse_S
                 .AdvanceUntil(
@@ -172,15 +190,16 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                 )
                 .ReplaceWith(
                     new(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(
-                            nameof(Utility.Professions.GetPoacherCritDamageMultiplier)))
+                        typeof(FarmerExtensions).MethodNamed(
+                            nameof(FarmerExtensions.GetPoacherCritDamageMultiplier)))
+                )
+                .Insert(
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player)))
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while moving modded bonus crit damage from Desperado to Poacher.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while moving modded bonus crit damage from Desperado to Poacher.\nHelper returned {ex}");
             return null;
         }
 
@@ -198,7 +217,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
                     new CodeInstruction(OpCodes.Ldloc_S, $"{typeof(int)} (8)")
                 )
                 .GetOperand(out var damageAmount)
-                .FindFirst( // monter.Health <= 0
+                .FindFirst( // monster.Health <= 0
                     new CodeInstruction(OpCodes.Ldloc_2),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(Monster).PropertyGetter(nameof(Monster.Health))),
@@ -224,9 +243,7 @@ internal class GameLocationDamageMonsterPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while injecting modded Poacher snatch attempt plus Brute Fury and Poacher Cold Blood gauges.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while injecting modded Poacher snatch attempt plus Brute Fury and Poacher Cold Blood gauges.\nHelper returned {ex}");
             return null;
         }
 
@@ -235,17 +252,17 @@ internal class GameLocationDamageMonsterPatch : BasePatch
 
     #endregion harmony patches
 
-    #region private methods
+    #region injected subroutines
 
     private static void DamageMonsterSubroutine(int damageAmount, bool isBomb, bool didCrit, float critMultiplier,
         Monster monster, Farmer who)
     {
-        if (damageAmount <= 0 || isBomb ||
-            who is not {IsLocalPlayer: true, CurrentTool: MeleeWeapon weapon}) return;
+        if (damageAmount <= 0 || isBomb || who is not {IsLocalPlayer: true, CurrentTool: MeleeWeapon weapon} ||
+            ModEntry.State.Value.SuperMode is not { } superMode) return;
 
         // try to steal
-        if (didCrit && ModState.SuperModeIndex == Utility.Professions.IndexOf("Poacher") &&
-            !ModState.MonstersStolenFrom.Contains(monster.GetHashCode()) && Game1.random.NextDouble() <
+        if (didCrit && superMode.Index == SuperModeIndex.Poacher &&
+            !ModEntry.State.Value.MonstersStolenFrom.Contains(monster.GetHashCode()) && Game1.random.NextDouble() <
             (weapon.type.Value == MeleeWeapon.dagger ? 0.5 : 0.25))
         {
             var drops = monster.objectsToDrop.Select(o => new SObject(o, 1) as Item)
@@ -253,30 +270,49 @@ internal class GameLocationDamageMonsterPatch : BasePatch
             var stolen = drops.ElementAtOrDefault(Game1.random.Next(drops.Count))?.getOne();
             if (stolen is null || stolen.Name.Contains("Error") || !who.addItemToInventoryBool(stolen)) return;
 
-            ModState.MonstersStolenFrom.Add(monster.GetHashCode());
+            ModEntry.State.Value.MonstersStolenFrom.Add(monster.GetHashCode());
 
             // play sound effect
-            ModEntry.SoundBox.Play("poacher_steal");
+            SoundBox.Play(SFX.PoacherSteal);
         }
 
         // try to increment Super Mode gauges
-        if (ModState.IsSuperModeActive) return;
+        if (superMode.IsActive) return;
 
         var increment = 0;
-        if (ModState.SuperModeIndex == Utility.Professions.IndexOf("Brute"))
+        // ReSharper disable once SwitchStatementMissingSomeEnumCasesNoDefault
+        switch (superMode.Index)
         {
-            increment = 2;
-            if (monster.Health <= 0) increment *= 2;
-            if (weapon.type.Value == MeleeWeapon.club) increment *= 2;
-        }
-        else if (ModState.SuperModeIndex == Utility.Professions.IndexOf("Poacher") && didCrit)
-        {
-            increment = (int) critMultiplier;
-            if (weapon.type.Value == MeleeWeapon.dagger) increment *= 2;
+            case SuperModeIndex.Brute:
+            {
+                increment = 2;
+                if (monster.Health <= 0) increment *= 2;
+                if (weapon.type.Value == MeleeWeapon.club) increment *= 2;
+                break;
+            }
+            case SuperModeIndex.Poacher:
+            {
+                increment = 2;
+                if (didCrit) increment *= (int) critMultiplier;
+                if (weapon.type.Value == MeleeWeapon.dagger) increment *= 2;
+                break;
+            }
+            case SuperModeIndex.Piper:
+            {
+                increment = monster switch
+                {
+                    GreenSlime => 4,
+                    BigSlime => 8,
+                    _ => 0
+                };
+                
+                if (monster.Health <= 0) increment *= 2;
+                break;
+            }
         }
 
-        ModState.SuperModeGaugeValue += (int) (increment * ((float) ModState.SuperModeGaugeMaxValue / 500));
+        superMode.Gauge.CurrentValue += increment * ModEntry.Config.SuperModeGainFactor * (double) SuperModeGauge.MaxValue / 500;
     }
 
-    #endregion private methods
+    #endregion injected subroutines
 }

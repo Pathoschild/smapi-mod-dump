@@ -6,9 +6,9 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 0689fdb8416804b91dccb7304e5cbc59f4c5f884
+   commit ed653d98bf94c0222be359c85ac083759f7a6f2c
    Author: Annosz <tadamleanyfalu@gmail.com>
-   Date:   Thu Dec 30 21:32:11 2021 +0100
+   Date:   Mon Jan 24 20:30:36 2022 +0100
    
-       Update version number
+       Fix shop harvest price overlap/position
    

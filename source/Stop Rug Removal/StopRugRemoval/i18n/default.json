@@ -9,7 +9,12 @@
 *************************************************/
 
 {
-    "mod.description": "Prevents rugs from being removed if there's something on the rug.",
-    "enabled.title":  "Enabled",
-    "rug-removal-message": "Remove all items on rug before removing rug!"
+  "mod.description": "Prevents rugs from being removed if there's something on the rug.",
+  "enabled.title": "Enabled",
+  "rug-removal-message": "Remove all items on rug before removing rug!",
+
+  // Config errors and messages
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+  "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
+  "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled."
 }

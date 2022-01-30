@@ -46,6 +46,7 @@ namespace FashionSense.Framework.Models
         public string ShirtColor { get; set; }
         public string SleevesColor { get; set; }
         public string PantsColor { get; set; }
+        public string ShoesColor { get; set; }
 
         public Outfit()
         {
@@ -73,6 +74,7 @@ namespace FashionSense.Framework.Models
             ShirtColor = who.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR];
             SleevesColor = who.modData[ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR];
             PantsColor = who.modData[ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR];
+            ShoesColor = who.modData[ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR];
         }
     }
 }

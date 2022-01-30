@@ -8,40 +8,25 @@
 **
 *************************************************/
 
-using System.Linq;
-using StardewModdingAPI.Events;
-using StardewValley;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Extensions;
+namespace DaLion.Stardew.Professions.Framework.Events.Player;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#region using directives
+
+using StardewModdingAPI.Events;
+
+using Display;
+using Extensions;
+
+#endregion using directives
 
 internal class SuperModeWarpedEvent : WarpedEvent
 {
     /// <inheritdoc />
-    public override void OnWarped(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
     {
-        if (!e.IsLocalPlayer || e.NewLocation.GetType() == e.OldLocation.GetType()) return;
+        if (e.NewLocation.Equals(e.OldLocation) || e.NewLocation.GetType() == e.OldLocation.GetType()) return;
 
-        if (e.NewLocation.IsCombatZone())
-        {
-            ModEntry.Subscriber.Subscribe(new SuperModeBarRenderingHudEvent());
-        }
-        else
-        {
-            ModEntry.Subscriber.Unsubscribe(typeof(SuperModeBarFadeOutUpdateTickedEvent),
-                typeof(SuperModeBarShakeTimerUpdateTickedEvent), typeof(SuperModeBarRenderingHudEvent));
-
-            ModState.SuperModeGaugeValue = 0;
-            ModState.SuperModeGaugeAlpha = 1f;
-            ModState.ShouldShakeSuperModeGauge = false;
-
-            var buffID = ModEntry.Manifest.UniqueID.GetHashCode() + ModState.SuperModeIndex + 4;
-            var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffID);
-            if (buff is null) return;
-
-            Game1.buffsDisplay.otherBuffs.Remove(buff);
-            Game1.player.stopGlowing();
-        }
+        if (e.NewLocation.IsCombatZone() && ModEntry.Config.EnableSuperMode) EventManager.Enable(typeof(SuperModeGaugeRenderingHudEvent));
+        else ModEntry.State.Value.SuperMode.Gauge.CurrentValue = 0.0;
     }
 }

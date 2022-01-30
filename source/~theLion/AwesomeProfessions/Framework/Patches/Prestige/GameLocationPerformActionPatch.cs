@@ -8,18 +8,22 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using System;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewModdingAPI.Enums;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Events;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Events.GameLoop;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class GameLocationPerformActionPatch : BasePatch
@@ -44,7 +48,8 @@ internal class GameLocationPerformActionPatch : BasePatch
         {
             string message;
             if (!ModEntry.Config.AllowPrestigeMultiplePerDay &&
-                (ModEntry.Subscriber.IsSubscribed(typeof(PrestigeDayEndingEvent)) || ModState.UsedDogStatueToday))
+                (EventManager.Get<PrestigeDayEndingEvent>().IsEnabled ||
+                 ModEntry.State.Value.UsedDogStatueToday))
             {
                 message = ModEntry.ModHelper.Translation.Get("prestige.dogstatue.dismiss");
                 Game1.drawObjectDialogue(message);
@@ -61,18 +66,21 @@ internal class GameLocationPerformActionPatch : BasePatch
                 __instance.createQuestionDialogue(message, __instance.createYesNoResponses(), "dogStatue");
                 return false; // don't run original logic
             }
-				
-            if (who.HasAllProfessions() && !ModState.UsedDogStatueToday)
+
+            if (who.HasAllProfessions() && !ModEntry.State.Value.UsedDogStatueToday)
             {
                 message = ModEntry.ModHelper.Translation.Get("prestige.dogstatue.what");
-                var options = new Response[]
-                {
-                    new("changeUlt", ModEntry.ModHelper.Translation.Get("prestige.dogstatue.changeult") +
-                                     (ModEntry.Config.ChangeUltCost > 0
-                                         ? ' ' + ModEntry.ModHelper.Translation.Get("prestige.dogstatue.cost",
-                                             new {cost = ModEntry.Config.ChangeUltCost})
-                                         : string.Empty))
-                };
+                Response[] options = Array.Empty<Response>();
+
+                if (ModEntry.State.Value.SuperMode is not null)
+                    options = options.Concat(new Response[]
+                    {
+                        new("changeUlt", ModEntry.ModHelper.Translation.Get("prestige.dogstatue.changeult") +
+                                         (ModEntry.Config.ChangeUltCost > 0
+                                             ? ' ' + ModEntry.ModHelper.Translation.Get("prestige.dogstatue.cost",
+                                                 new {cost = ModEntry.Config.ChangeUltCost})
+                                             : string.Empty))
+                    }).ToArray();
 
                 if (Enum.GetValues<SkillType>().Any(s => GameLocation.canRespec((int) s)))
                     options = options.Concat(new Response[]
@@ -82,7 +90,7 @@ internal class GameLocationPerformActionPatch : BasePatch
                             (ModEntry.Config.PrestigeRespecCost > 0
                                 ? ' ' + ModEntry.ModHelper.Translation.Get("prestige.dogstatue.cost",
                                     new {cost = ModEntry.Config.PrestigeRespecCost})
-                                : string.Empty)),
+                                : string.Empty))
                     }).ToArray();
 
                 __instance.createQuestionDialogue(message, options, "dogStatue");
@@ -95,7 +103,7 @@ internal class GameLocationPerformActionPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

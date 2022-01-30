@@ -33,6 +33,7 @@ using StardewModdingAPI.Events;
 using FashionSense.Framework.Models.Pants;
 using FashionSense.Framework.Patches.Entities;
 using FashionSense.Framework.Models.Sleeves;
+using FashionSense.Framework.UI;
 
 namespace FashionSense
 {
@@ -56,6 +57,7 @@ namespace FashionSense
 
         // Debugging flags
         private bool _displayMovementData = false;
+        private bool _continuousReloading = false;
 
         public override void Entry(IModHelper helper)
         {
@@ -101,6 +103,7 @@ namespace FashionSense
             // Add in our debug commands
             helper.ConsoleCommands.Add("fs_display_movement", "Displays debug info related to player movement. Use again to disable. \n\nUsage: fs_display_movement", delegate { _displayMovementData = !_displayMovementData; });
             helper.ConsoleCommands.Add("fs_reload", "Reloads all Fashion Sense content packs.\n\nUsage: fs_reload", delegate { this.LoadContentPacks(); });
+            helper.ConsoleCommands.Add("fs_reload_continuous", "Debug usage only: reloads all Fashion Sense content packs every 2 seconds. Use the command again to stop the continuous reloading.\n\nUsage: fs_reload_continuous", delegate { _continuousReloading = !_continuousReloading; });
             helper.ConsoleCommands.Add("fs_add_mirror", "Gives you a Hand Mirror tool.\n\nUsage: fs_add_mirror", delegate { Game1.player.addItemToInventory(SeedShopPatch.GetHandMirrorTool()); });
 
             modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -125,17 +128,24 @@ namespace FashionSense
             {
                 // Update movement trackers
                 conditionData.Update(Game1.player, Game1.currentGameTime);
+
+                if (_continuousReloading && e.IsMultipleOf(120))
+                {
+                    this.LoadContentPacks(true);
+                }
             }
 
-            // Update elapsed durations
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_ACCESSORY_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_HAT_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_SHIRT_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_PANTS_ELAPSED_DURATION);
-            UpdateElapsedDuration(ModDataKeys.ANIMATION_SLEEVES_ELAPSED_DURATION);
+            // Update elapsed durations for the player
+            UpdateElapsedDuration(Game1.player);
+
+            // Update elapsed durations when the player is using the SearchMenu
+            if (Game1.activeClickableMenu is SearchMenu searchMenu && searchMenu is not null)
+            {
+                foreach (var fakeFarmer in searchMenu.fakeFarmers)
+                {
+                    UpdateElapsedDuration(fakeFarmer);
+                }
+            }
         }
 
         private void OnWarped(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
@@ -200,6 +210,7 @@ namespace FashionSense
             SetCachedColor(ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR);
             SetCachedColor(ModDataKeys.UI_HAND_MIRROR_PANTS_COLOR);
             SetCachedColor(ModDataKeys.UI_HAND_MIRROR_SLEEVES_COLOR);
+            SetCachedColor(ModDataKeys.UI_HAND_MIRROR_SHOES_COLOR);
         }
 
         private void OnDayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
@@ -212,19 +223,32 @@ namespace FashionSense
             EnsureKeyExists(ModDataKeys.CUSTOM_SHIRT_ID);
             EnsureKeyExists(ModDataKeys.CUSTOM_PANTS_ID);
             EnsureKeyExists(ModDataKeys.CUSTOM_SLEEVES_ID);
+            EnsureKeyExists(ModDataKeys.CUSTOM_SHOES_ID);
 
             // Set sprite to dirty in order to refresh sleeves and other tied-in appearances
             SetSpriteDirty();
         }
 
-        private void UpdateElapsedDuration(string durationKey)
+        private void UpdateElapsedDuration(Farmer who)
         {
-            if (Game1.player.modData.ContainsKey(durationKey))
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_HAIR_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_ACCESSORY_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_ACCESSORY_SECONDARY_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_ACCESSORY_TERTIARY_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_HAT_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_SHIRT_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_PANTS_ELAPSED_DURATION);
+            UpdateElapsedDuration(who, ModDataKeys.ANIMATION_SLEEVES_ELAPSED_DURATION);
+        }
+
+        private void UpdateElapsedDuration(Farmer who, string durationKey)
+        {
+            if (who.modData.ContainsKey(durationKey))
             {
-                var elapsedDuration = Int32.Parse(Game1.player.modData[durationKey]);
+                var elapsedDuration = Int32.Parse(who.modData[durationKey]);
                 if (elapsedDuration < MAX_TRACKED_MILLISECONDS)
                 {
-                    Game1.player.modData[durationKey] = (elapsedDuration + Game1.currentGameTime.ElapsedGameTime.Milliseconds).ToString();
+                    who.modData[durationKey] = (elapsedDuration + Game1.currentGameTime.ElapsedGameTime.Milliseconds).ToString();
                 }
             }
         }
@@ -245,7 +269,7 @@ namespace FashionSense
             }
         }
 
-        private void LoadContentPacks()
+        private void LoadContentPacks(bool silent = false)
         {
             // Clear the existing cache of AppearanceModels
             textureManager.Reset();
@@ -253,7 +277,7 @@ namespace FashionSense
             // Load owned content packs
             foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
             {
-                Monitor.Log($"Loading data from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Debug);
+                Monitor.Log($"Loading data from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", silent ? LogLevel.Trace : LogLevel.Debug);
 
                 // Load Hairs
                 Monitor.Log($"Loading hairstyles from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", LogLevel.Trace);
@@ -834,6 +858,8 @@ namespace FashionSense
             spriteDirty.SetValue(true);
             var shirtDirty = modHelper.Reflection.GetField<bool>(Game1.player.FarmerRenderer, "_shirtDirty");
             shirtDirty.SetValue(true);
+            var shoeDirty = modHelper.Reflection.GetField<bool>(Game1.player.FarmerRenderer, "_shoesDirty");
+            shoeDirty.SetValue(true);
         }
 
         internal static void ResetAnimationModDataFields(Farmer who, int duration, AnimationModel.Type animationType, int facingDirection, bool ignoreAnimationType = false, AppearanceModel model = null)

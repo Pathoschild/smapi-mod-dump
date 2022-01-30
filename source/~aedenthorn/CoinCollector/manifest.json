@@ -11,7 +11,7 @@
 {
   "Name": "Coin Collector",
   "Author": "aedenthorn",
-  "Version": "0.2.0",
+  "Version": "0.3.1",
   "Description": "Lets you buy a metal detector and dig up and collect rare and precious coins.",
   "UniqueID": "aedenthorn.CoinCollector",
   "EntryDll": "CoinCollector.dll",

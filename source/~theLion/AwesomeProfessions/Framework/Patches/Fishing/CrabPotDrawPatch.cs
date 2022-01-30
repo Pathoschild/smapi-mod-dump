@@ -8,19 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
-using TheLion.Stardew.Common.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class CrabPotDrawPatch : BasePatch
@@ -88,7 +92,7 @@ internal class CrabPotDrawPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

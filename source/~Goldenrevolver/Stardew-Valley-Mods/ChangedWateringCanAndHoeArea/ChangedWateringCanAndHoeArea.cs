@@ -21,133 +21,163 @@ namespace ChangedWateringCanAndHoeArea
     public class ChangedWateringCanAndHoeArea : Mod
     {
         private static ChangedWateringCanAndHoeArea mod;
+        private static bool shouldNotPatchReaching = false;
 
-        public static bool TilesAffectedPatch(ref Tool __instance, ref List<Vector2> __result, ref Vector2 tileLocation, ref int power, ref Farmer who)
+        public static void TilesAffectedPatch(Tool __instance, Vector2 tileLocation, int power, Farmer who, ref List<Vector2> __result)
         {
             try
             {
                 // this should always be the case, but just to make sure
                 if (__instance is WateringCan || __instance is Hoe)
                 {
-                    // set the list of affected tiles ourselves
-                    __result = NewTilesAffected(ref __instance, ref tileLocation, ref power, ref who);
+                    if (power is 2 or 3 or 6)
+                    {
+                        if (power is 6 && shouldNotPatchReaching)
+                        {
+                            return;
+                        }
 
-                    // don't call original method
-                    return false;
-                }
-                else
-                {
-                    // call original method
-                    return true;
+                        // set the list of affected tiles ourselves
+                        __result = NewTilesAffected(__instance, tileLocation, power, who);
+                    }
                 }
             }
             catch (Exception e)
             {
                 mod.ErrorLog("There was an exception in a patch", e);
-                return true;
             }
         }
 
-        public static List<Vector2> NewTilesAffected(ref Tool tool, ref Vector2 tileLocation, ref int power, ref Farmer who)
+        private static List<Vector2> NewTilesAffected(Tool tool, Vector2 tileLocation, int power, Farmer who)
         {
-            power++;
-            var tileLocations = new List<Vector2>
+            // this is done by the base implementation now (and power is no longer 'ref' anyway)
+            ////power++;
+            var newTileLocations = new List<Vector2>
             {
                 Vector2.Zero
             };
 
-            if (tool is WateringCan)
-            {
-                if (power >= 2)
-                {
-                    tileLocations.Add(new Vector2(1f, 0f));
-                    tileLocations.Add(new Vector2(-1f, 0));
-                }
-
-                if (power >= 3)
-                {
-                    tileLocations.Add(new Vector2(0f, -1f));
-                    tileLocations.Add(new Vector2(1f, -1f));
-                    tileLocations.Add(new Vector2(-1f, -1f));
-                }
-            }
-            else if (tool is Hoe)
-            {
-                if (power >= 2)
-                {
-                    tileLocations.Add(new Vector2(0f, -1f));
-                    tileLocations.Add(new Vector2(0f, -2f));
-                }
-
-                if (power >= 3)
-                {
-                    tileLocations.Add(new Vector2(0f, -3f));
-                    tileLocations.Add(new Vector2(0f, -4f));
-                    tileLocations.Add(new Vector2(0f, -5f));
-                }
-            }
-
-            if (power >= 4)
-            {
-                tileLocations.Clear();
-
-                for (int i = 0; i < 3; i++)
-                {
-                    tileLocations.Add(new Vector2(0f, -i));
-                    tileLocations.Add(new Vector2(1f, -i));
-                    tileLocations.Add(new Vector2(-1f, -i));
-                }
-            }
-
-            if (power >= 5)
-            {
-                // we have to iterate forwards so the animation is the right way around
-                // we have to make a copy of the count so it doesn't loop forever
-                int count = tileLocations.Count;
-
-                for (int i = 0; i < count; i++)
-                {
-                    tileLocations.Add(tileLocations[i] + new Vector2(0f, -3f));
-                }
-            }
-
             if (power >= 6)
             {
                 // again clear to have the right order of the elements, less expensive than sorting
-                tileLocations.Clear();
+                newTileLocations.Clear();
 
                 for (int i = 0; i < 6; i++)
                 {
-                    tileLocations.Add(new Vector2(0f, -i));
-                    tileLocations.Add(new Vector2(1f, -i));
-                    tileLocations.Add(new Vector2(-1f, -i));
-                    tileLocations.Add(new Vector2(2f, -i));
-                    tileLocations.Add(new Vector2(-2f, -i));
+                    newTileLocations.Add(new Vector2(0f, -i));
+                    newTileLocations.Add(new Vector2(1f, -i));
+                    newTileLocations.Add(new Vector2(-1f, -i));
+                    newTileLocations.Add(new Vector2(2f, -i));
+                    newTileLocations.Add(new Vector2(-2f, -i));
+                }
+            }
+            else
+            {
+                if (tool is WateringCan)
+                {
+                    if (power >= 2)
+                    {
+                        newTileLocations.Add(new Vector2(1f, 0f));
+                        newTileLocations.Add(new Vector2(-1f, 0));
+                    }
+
+                    if (power >= 3)
+                    {
+                        newTileLocations.Add(new Vector2(0f, -1f));
+                        newTileLocations.Add(new Vector2(1f, -1f));
+                        newTileLocations.Add(new Vector2(-1f, -1f));
+                    }
+                }
+                else if (tool is Hoe)
+                {
+                    if (power >= 2)
+                    {
+                        newTileLocations.Add(new Vector2(0f, -1f));
+                        newTileLocations.Add(new Vector2(0f, -2f));
+                    }
+
+                    if (power >= 3)
+                    {
+                        newTileLocations.Add(new Vector2(0f, -3f));
+                        newTileLocations.Add(new Vector2(0f, -4f));
+                        newTileLocations.Add(new Vector2(0f, -5f));
+                    }
+                }
+
+                // power >= 4 cannot happen anymore, but I will leave this here as legacy code
+                if (power >= 4)
+                {
+                    newTileLocations.Clear();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        newTileLocations.Add(new Vector2(0f, -i));
+                        newTileLocations.Add(new Vector2(1f, -i));
+                        newTileLocations.Add(new Vector2(-1f, -i));
+                    }
+                }
+
+                // power >= 5 cannot happen anymore, but I will leave this here as legacy code
+                if (power >= 5)
+                {
+                    // we have to iterate forwards so the animation is the right way around
+                    // we have to make a copy of the count so it doesn't loop forever
+                    int count = newTileLocations.Count;
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        newTileLocations.Add(newTileLocations[i] + new Vector2(0f, -3f));
+                    }
                 }
             }
 
-            // turn the offsets made for facing direction 0 to work for the current facing direction
-            AdjustForFacingDirection(ref tileLocations, who.FacingDirection);
-
-            // add the tile location after rotating so the math works out
-            for (int i = 0; i < tileLocations.Count; i++)
+            if (who.FacingDirection != 0)
             {
-                tileLocations[i] += tileLocation;
+                // turn the offsets made for facing direction 0 to work for the current facing direction
+                AdjustForFacingDirection(newTileLocations, who.FacingDirection);
             }
 
-            return tileLocations;
+            // add the tile location after rotating so the math works out
+            for (int i = 0; i < newTileLocations.Count; i++)
+            {
+                newTileLocations[i] += tileLocation;
+            }
+
+            return newTileLocations;
+        }
+
+        private static void AdjustForFacingDirection(List<Vector2> tileLocations, int facingDirection)
+        {
+            for (int i = 0; i < tileLocations.Count; i++)
+            {
+                tileLocations[i] = facingDirection switch
+                {
+                    1 => new Vector2(-tileLocations[i].Y, -tileLocations[i].X),
+                    2 => -tileLocations[i],
+                    3 => new Vector2(tileLocations[i].Y, tileLocations[i].X),
+                    _ => tileLocations[i],
+                };
+            }
         }
 
         public override void Entry(IModHelper helper)
         {
             mod = this;
+
+            shouldNotPatchReaching = mod.Helper.ModRegistry.IsLoaded("kakashigr.RadioactiveTools");
+
+            if (shouldNotPatchReaching)
+            {
+                ErrorLog("Disabled Reach Buff in favor of Radioactive Tools");
+            }
+
             var harmony = new Harmony(ModManifest.UniqueID);
 
             try
             {
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Tool), "tilesAffected"),
-                   prefix: new HarmonyMethod(typeof(ChangedWateringCanAndHoeArea), nameof(TilesAffectedPatch)));
+                   postfix: new HarmonyMethod(typeof(ChangedWateringCanAndHoeArea), nameof(TilesAffectedPatch)));
             }
             catch (Exception e)
             {
@@ -167,36 +197,6 @@ namespace ChangedWateringCanAndHoeArea
             string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
 
             Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
-        }
-
-        private static void AdjustForFacingDirection(ref List<Vector2> tileLocations, int facingDirection)
-        {
-            switch (facingDirection)
-            {
-                case 1:
-                    for (int i = 0; i < tileLocations.Count; i++)
-                    {
-                        tileLocations[i] = new Vector2(-tileLocations[i].Y, -tileLocations[i].X);
-                    }
-
-                    break;
-
-                case 2:
-                    for (int i = 0; i < tileLocations.Count; i++)
-                    {
-                        tileLocations[i] = -tileLocations[i];
-                    }
-
-                    break;
-
-                case 3:
-                    for (int i = 0; i < tileLocations.Count; i++)
-                    {
-                        tileLocations[i] = new Vector2(tileLocations[i].Y, tileLocations[i].X);
-                    }
-
-                    break;
-            }
         }
     }
 }

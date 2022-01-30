@@ -8,19 +8,24 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Network;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Stardew.Common.Harmony;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 internal class GameLocationCheckActionPatch : BasePatch
 {
@@ -72,14 +77,16 @@ internal class GameLocationCheckActionPatch : BasePatch
                 )
                 .ReplaceWith( // replace with custom quality
                     new(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(
-                            nameof(Utility.Professions.GetEcologistForageQuality)))
+                        typeof(FarmerExtensions).MethodNamed(
+                            nameof(FarmerExtensions.GetEcologistForageQuality)))
+                )
+                .Insert(
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player)))
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded Ecologist forage quality.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching modded Ecologist forage quality.\nHelper returned {ex}");
             return null;
         }
 
@@ -118,7 +125,7 @@ internal class GameLocationCheckActionPatch : BasePatch
                 .AdvanceUntil( // find repeated botanist check
                     new CodeInstruction(OpCodes.Ldc_I4_S, Farmer.botanist)
                 )
-                .SetOperand(Utility.Professions.IndexOf("Gemologist")) // replace with gemologist check
+                .SetOperand((int) Profession.Gemologist) // replace with gemologist check
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldarg_0)
                 )
@@ -139,17 +146,17 @@ internal class GameLocationCheckActionPatch : BasePatch
                 )
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(
-                            nameof(Utility.Professions.GetEcologistForageQuality)))
+                        typeof(FarmerExtensions).MethodNamed(
+                            nameof(FarmerExtensions.GetEcologistForageQuality)))
                 )
                 .SetOperand(
-                    typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
-                        .GetGemologistMineralQuality))); // set correct custom quality method call
+                    typeof(FarmerExtensions).MethodNamed(nameof(FarmerExtensions
+                        .GetGemologistMineralQuality))
+                ); // set correct custom quality method call
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding modded Gemologist foraged mineral quality.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding modded Gemologist foraged mineral quality.\nHelper returned {ex}");
             return null;
         }
 
@@ -176,8 +183,7 @@ internal class GameLocationCheckActionPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Ecologist and Gemologist counter increment.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding Ecologist and Gemologist counter increment.\nHelper returned {ex}");
             return null;
         }
 
@@ -189,7 +195,7 @@ internal class GameLocationCheckActionPatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck(Utility.Professions.IndexOf("Forager"))
+                .FindProfessionCheck((int) Profession.Forager)
                 .Retreat()
                 .ToBufferUntil(
                     true,
@@ -202,9 +208,9 @@ internal class GameLocationCheckActionPatch : BasePatch
                 .AddLabels(notPrestigedForager)
                 .InsertBuffer()
                 .RetreatUntil(
-                    new CodeInstruction(OpCodes.Ldc_I4_S, Utility.Professions.IndexOf("Forager"))
+                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) Profession.Forager)
                 )
-                .SetOperand(100 + Utility.Professions.IndexOf("Forager"))
+                .SetOperand((int) Profession.Forager + 100)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Brfalse_S)
                 )
@@ -219,8 +225,7 @@ internal class GameLocationCheckActionPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding prestiged Foraged double forage bonus.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding prestiged Foraged double forage bonus.\nHelper returned {ex}");
             return null;
         }
 
@@ -233,10 +238,10 @@ internal class GameLocationCheckActionPatch : BasePatch
 
     private static void CheckActionSubroutine(SObject obj, GameLocation location, Farmer who)
     {
-        if (who.HasProfession("Ecologist") && obj.isForage(location) && !obj.IsForagedMineral())
-            ModEntry.Data.Increment<uint>("ItemsForaged");
-        else if (who.HasProfession("Gemologist") && obj.IsForagedMineral())
-            ModEntry.Data.Increment<uint>("MineralsCollected");
+        if (who.HasProfession(Profession.Ecologist) && obj.isForage(location) && !obj.IsForagedMineral())
+            ModData.Increment<uint>(DataField.EcologistItemsForaged);
+        else if (who.HasProfession(Profession.Gemologist) && obj.IsForagedMineral())
+            ModData.Increment<uint>(DataField.GemologistMineralsCollected);
     }
 
     #endregion private methods

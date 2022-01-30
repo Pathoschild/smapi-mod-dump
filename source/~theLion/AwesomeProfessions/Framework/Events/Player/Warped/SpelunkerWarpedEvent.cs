@@ -8,39 +8,44 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.Player;
+
+#region using directives
+
 using System;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using GameLoop;
+using Extensions;
+
+#endregion using directives
 
 internal class SpelunkerWarpedEvent : WarpedEvent
 {
-    private static readonly SpelunkerBuffDisplayUpdateTickedEvent SpelunkerUpdateTickedEvent = new();
-
     /// <inheritdoc />
-    public override void OnWarped(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
     {
-        if (!e.IsLocalPlayer) return;
+        if (e.NewLocation.Equals(e.OldLocation)) return;
 
-        if (e.NewLocation is MineShaft)
+        if (e.NewLocation is MineShaft newShaft && e.OldLocation is MineShaft oldShaft &&
+            newShaft.mineLevel > oldShaft.mineLevel)
         {
-            ++ModState.SpelunkerLadderStreak;
+            ++ModEntry.State.Value.SpelunkerLadderStreak;
 
-            if (e.Player.HasPrestigedProfession("Spelunker"))
+            if (e.Player.HasProfession(Profession.Spelunker, true))
             {
                 var player = e.Player;
                 player.health = Math.Min(player.health + (int) (player.maxHealth * 0.05f), player.maxHealth);
                 player.Stamina = Math.Min(player.Stamina + player.MaxStamina * 0.05f, player.MaxStamina);
             }
 
-            ModEntry.Subscriber.Subscribe(SpelunkerUpdateTickedEvent);
+            EventManager.Enable(typeof(SpelunkerBuffDisplayUpdateTickedEvent));
         }
-        else
+        else if (e.OldLocation is MineShaft)
         {
-            ModState.SpelunkerLadderStreak = 0;
-            ModEntry.Subscriber.Unsubscribe(SpelunkerUpdateTickedEvent.GetType());
+            ModEntry.State.Value.SpelunkerLadderStreak = 0;
+            EventManager.Disable(typeof(SpelunkerBuffDisplayUpdateTickedEvent));
         }
     }
 }

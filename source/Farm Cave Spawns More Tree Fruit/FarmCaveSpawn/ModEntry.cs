@@ -8,196 +8,404 @@
 **
 *************************************************/
 
+using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
-
+using StardewModdingAPI.Events;
 using StardewValley.Locations;
-
 
 namespace FarmCaveSpawn;
 
+/// <inheritdoc />
 public class ModEntry : Mod
 {
+    private readonly AssetManager assetManager = new();
+
+    /// <summary>
+    /// Sublocation-parsing regex.
+    /// </summary>
+    private readonly Regex regex = new(
+        // ":[(x1;y1);(x2;y2)]"
+        pattern: @":\[\((?<x1>\d+);(?<y1>\d+)\);\((?<x2>\d+);(?<y2>\d+)\)\]$",
+        options: RegexOptions.CultureInvariant | RegexOptions.Compiled,
+        new TimeSpan(1000000));
+
+    /// <summary>
+    /// The item IDs for the four basic forage fruit.
+    /// </summary>
+    private readonly List<int> BASE_FRUIT = new() { 296, 396, 406, 410 };
+
+    /// <summary>
+    /// A list of vanilla fruit.
+    /// </summary>
+    private readonly List<int> VANILLA_FRUIT = new() { 613, 634, 635, 636, 637, 638 };
+
+    /// <summary>
+    /// Item IDs for items produced by trees.
+    /// </summary>
+    private List<int> TreeFruit = new();
+
+    // The config is set by the Entry method, so it should never realistically be null
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private ModConfig config;
-    private readonly List<int> BaseFruit = new() { 296, 396, 406, 410 };
-    private List<int> TreeFruit;
-    private Random random;
-    private AssetManager assetManager;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+    /// <summary>
+    /// Location to temporarily store the seeded random.
+    /// </summary>
+    private Random? random;
 
+    /// <summary>
+    /// Gets the seeded random for this mod.
+    /// </summary>
+    internal Random Random
+    {
+        get
+        {
+            if (this.random is null)
+            {
+                this.random = new Random(((int)Game1.uniqueIDForThisGame * 2) + ((int)Game1.stats.DaysPlayed * 7));
+            }
+            return this.random;
+        }
+    }
+
+    /// <inheritdoc />/>
     public override void Entry(IModHelper helper)
     {
+#if DEBUG
+        this.Monitor.Log("FarmCaveSpawn initializing, DEBUG mode. Do not release this version", LogLevel.Warn);
+#endif
         I18n.Init(helper.Translation);
-        config = Helper.ReadConfig<ModConfig>();
-        assetManager = new();
-        helper.Events.GameLoop.DayStarted += SpawnFruit;
-        helper.Events.GameLoop.GameLaunched += SetUpConfig;
+        try
+        {
+            this.config = this.Helper.ReadConfig<ModConfig>();
+        }
+        catch
+        {
+            this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
+            this.config = new();
+        }
+
+        helper.Events.GameLoop.DayStarted += this.SpawnFruit;
+        helper.Events.GameLoop.GameLaunched += this.SetUpConfig;
         helper.ConsoleCommands.Add(
             name: "list_fruits",
             documentation: I18n.ListFruits_Description(),
-            callback: this.ListFruits
-            );
-        helper.Content.AssetLoaders.Add(assetManager);
+            callback: this.ListFruits);
+
+        helper.Content.AssetLoaders.Add(this.assetManager);
     }
 
     /// <summary>
-    /// Remove the list TreeFruit when no longer necessary, delete the Random as well
+    /// Remove the list TreeFruit when no longer necessary, delete the Random as well.
     /// </summary>
     private void Cleanup()
     {
-        TreeFruit.Clear();
-        TreeFruit.TrimExcess();
-        random = null;
+        this.TreeFruit.Clear();
+        this.TreeFruit.TrimExcess();
+        this.random = null;
     }
-    private void SetUpConfig(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+
+    /// <summary>
+    /// Generates the GMCM for this mod by looking at the structure of the config class.
+    /// </summary>
+    /// <param name="sender">Unknown, expected by SMAPI.</param>
+    /// <param name="e">Arguments for eevnt.</param>
+    /// <remarks>To add a new setting, add the details to the i18n file. Currently handles: bool, int, float.</remarks>
+    private void SetUpConfig(object? sender, GameLaunchedEventArgs e)
     {
+        IModInfo gmcm = this.Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu");
+        if (gmcm is null)
+        {
+            this.Monitor.Log(I18n.GmcmNotFound(), LogLevel.Debug);
+            return;
+        }
+        if (gmcm.Manifest.Version.IsOlderThan("1.6.0"))
+        {
+            this.Monitor.Log(I18n.GmcmVersionMessage(version: "1.6.0", currentversion: gmcm.Manifest.Version), LogLevel.Info);
+            return;
+        }
         var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
         if (configMenu is null)
+        {
             return;
+        }
 
         configMenu.Register(
-            mod: ModManifest,
-            reset: () => config = new ModConfig(),
-            save: () => Helper.WriteConfig(config));
+            mod: this.ModManifest,
+            reset: () => this.config = new ModConfig(),
+            save: () => this.Helper.WriteConfig(this.config));
 
         configMenu.AddParagraph(
-            mod: ModManifest,
-            text: I18n.Mod_Description
-            );
+            mod: this.ModManifest,
+            text: I18n.Mod_Description);
 
-        foreach (System.Reflection.PropertyInfo property in typeof(ModConfig).GetProperties())
+        foreach (PropertyInfo property in typeof(ModConfig).GetProperties())
         {
+            MethodInfo? getter = property.GetGetMethod();
+            MethodInfo? setter = property.GetSetMethod();
+            if(getter is null || setter is null)
+            {
+                this.DebugLog("Config appears to have a mis-formed option?");
+                continue;
+            }
+
             if (property.PropertyType.Equals(typeof(bool)))
             {
+                var getterDelegate = (Func<ModConfig, bool>)Delegate.CreateDelegate(typeof(Func<ModConfig, bool>), getter);
+                var setterDelegate = (Action<ModConfig, bool>)Delegate.CreateDelegate(typeof(Action<ModConfig, bool>), setter);
+
                 configMenu.AddBoolOption(
-                    mod: ModManifest,
-                    getValue: () => (bool)property.GetValue(config),
-                    setValue: (bool value) => property.SetValue(config, value),
+                    mod: this.ModManifest,
+                    getValue: () => getterDelegate(this.config),
+                    setValue: (bool value) => setterDelegate(this.config, value),
                     name: () => I18n.GetByKey($"{property.Name}.title"),
-                    tooltip: () => I18n.GetByKey($"{property.Name}.description")
-                   );
+                    tooltip: () => I18n.GetByKey($"{property.Name}.description"));
             }
             else if (property.PropertyType.Equals(typeof(int)))
             {
+                var getterDelegate = (Func<ModConfig, int>)Delegate.CreateDelegate(typeof(Func<ModConfig, int>), getter);
+                var setterDelegate = (Action<ModConfig, int>)Delegate.CreateDelegate(typeof (Action<ModConfig, int>), setter);
                 configMenu.AddNumberOption(
-                    mod: ModManifest,
-                    getValue: () => (int)property.GetValue(config),
-                    setValue: (int value) => property.SetValue(config, value),
+                    mod: this.ModManifest,
+                    getValue: () => getterDelegate(this.config),
+                    setValue: (int value) => setterDelegate(this.config, value),
                     name: () => I18n.GetByKey($"{property.Name}.title"),
                     tooltip: () => I18n.GetByKey($"{property.Name}.description"),
                     min: 0,
-                    interval: 1
-                );
+                    max: property.Name.Equals("MaxDailySpawns", StringComparison.OrdinalIgnoreCase) ? 100 : 1000,
+                    interval: 1);
             }
             else if (property.PropertyType.Equals(typeof(float)))
             {
+                var getterDelegate = (Func<ModConfig, float>)Delegate.CreateDelegate(typeof(Func<ModConfig, float>), getter);
+                var setterDelegate = (Action<ModConfig, float>)Delegate.CreateDelegate(typeof(Action<ModConfig, float>), setter);
                 configMenu.AddNumberOption(
-                    mod: ModManifest,
-                    getValue: () => (float)property.GetValue(config),
-                    setValue: (float value) => property.SetValue(config, value),
+                    mod: this.ModManifest,
+                    getValue: () => getterDelegate(this.config),
+                    setValue: (float value) => setterDelegate(this.config, value),
                     name: () => I18n.GetByKey($"{property.Name}.title"),
                     tooltip: () => I18n.GetByKey($"{property.Name}.description"),
-                    min: 0.0f
-                );
+                    min: 0.0f,
+                    max: 100f);
             }
-            else { Monitor.Log($"{property.Name} unaccounted for.", LogLevel.Trace); }
+            else
+            {
+                this.DebugLog($"{property.Name} unaccounted for.", LogLevel.Warn);
+            }
         }
     }
 
-    private void SpawnFruit(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+    /// <summary>
+    /// Handle spawning fruit at the start of each day.
+    /// </summary>
+    /// <param name="sender">Unknown, unused.</param>
+    /// <param name="e">Arguments.</param>
+    private void SpawnFruit(object? sender, DayStartedEventArgs e)
     {
-        if (!Context.IsMainPlayer) { return; }
-        if (!config.EarlyFarmCave && (Game1.MasterPlayer.caveChoice?.Value is null || Game1.MasterPlayer.caveChoice.Value <= 0)) { return; }
-        if (!config.IgnoreFarmCaveType && (Game1.MasterPlayer.caveChoice?.Value is null || Game1.MasterPlayer.caveChoice.Value != 1)) { return; }
-        int count = 0;
-        TreeFruit = GetTreeFruits();
-        random = new((int)Game1.uniqueIDForThisGame * 2 + (int)Game1.stats.DaysPlayed * 7);
-        FarmCave farmcave = Game1.getLocationFromName("FarmCave") as FarmCave;
-
-        foreach (Vector2 v in IterateTiles(farmcave))
+        // Compat for Farm Cave Framework: https://www.nexusmods.com/stardewvalley/mods/10506
+        // Which saves the farm cave choice to their own SaveData, and doesn't update the MasterPlayer.caveChoice
+        bool hasFCFbatcave = false;
+        if (Game1.CustomData.TryGetValue("smapi/mod-data/aedenthorn.farmcaveframework/farm-cave-framework-choice", out string? farmcavechoice))
         {
-            PlaceFruit(farmcave, v);
-            if (++count >= config.MaxDailySpawns) { break; }
+            // Crosscheck this = probably better to just use the actual value, maybe...
+            hasFCFbatcave = (farmcavechoice is not null) && (farmcavechoice.ToLowerInvariant().Contains("bat") || farmcavechoice.ToLowerInvariant().Contains("fruit"));
+            this.DebugLog(hasFCFbatcave ? "FarmCaveFramework fruit bat cave detected." : "FarmCaveFramework fruit bat cave not detected.");
         }
-        farmcave.UpdateReadyFlag();
-        if (count >= config.MaxDailySpawns) { Cleanup(); return; }
 
-        foreach (string location in GetData(assetManager.additionalLocationsLocation))
+        if (!Context.IsMainPlayer)
         {
-            GameLocation gameLocation = Game1.getLocationFromName(location);
-            if (gameLocation is not null)
+            return;
+        }
+        if (!this.config.EarlyFarmCave && (Game1.MasterPlayer.caveChoice?.Value is null || Game1.MasterPlayer.caveChoice.Value <= Farmer.caveNothing) && string.IsNullOrWhiteSpace(farmcavechoice))
+        {
+            this.DebugLog("Demetrius cutscene not seen and config not set to early, skip spawning for today.");
+            return;
+        }
+        if (!this.config.IgnoreFarmCaveType && !this.config.EarlyFarmCave && (Game1.MasterPlayer.caveChoice?.Value is null || Game1.MasterPlayer.caveChoice.Value != Farmer.caveBats) && !hasFCFbatcave)
+        {
+            this.DebugLog("Fruit bat cave not selected and config not set to ignore that, skip spawning for today.");
+            return;
+        }
+        int count = 0;
+        this.TreeFruit = this.GetTreeFruits();
+
+        if (Game1.getLocationFromName("FarmCave") is FarmCave farmcave)
+        {
+            this.DebugLog($"Spawning in the farmcave");
+            foreach (Vector2 v in this.IterateTiles(farmcave))
             {
-                Monitor.Log($"Found {gameLocation}");
-                foreach (Vector2 v in IterateTiles(gameLocation))
+                this.PlaceFruit(farmcave, v);
+                if (++count >= this.config.MaxDailySpawns)
                 {
-                    PlaceFruit(gameLocation, v);
-                    if (++count >= config.MaxDailySpawns) { Cleanup(); return; }
+                    break;
+                }
+            }
+            farmcave.UpdateReadyFlag();
+            if (count >= this.config.MaxDailySpawns)
+            {
+                this.Cleanup();
+                return;
+            }
+        }
+
+        if (this.config.UseModCaves)
+        {
+            foreach (string location in this.GetData(this.assetManager.ADDITIONAL_LOCATIONS_LOCATION))
+            {
+                string parseloc = location;
+                // initialize default limits
+                Dictionary<string, int> locLimits = new()
+                {
+                    ["x1"] = 1,
+                    ["x2"] = int.MaxValue,
+                    ["y1"] = 1,
+                    ["y2"] = int.MaxValue,
+                };
+                try
+                {
+                    MatchCollection matches = this.regex.Matches(location);
+                    if (matches.Count == 1)
+                    {
+                        Match match = matches[0];
+                        parseloc = location[..^match.Value.Length];
+                        foreach (Group group in match.Groups)
+                        {
+                            if (int.TryParse(group.Value, out int result))
+                            {
+                                locLimits[group.Name] = result;
+                            }
+                        }
+                        this.DebugLog($"Found and parsed sublocation: {parseloc} + ({locLimits["x1"]};{locLimits["y1"]});({locLimits["x2"]};{locLimits["y2"]})");
+                    }
+                    else if (matches.Count >= 2)
+                    {
+                        this.Monitor.Log(I18n.ExcessRegexMatches(loc: location), LogLevel.Warn);
+                        continue;
+                    }
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    this.Monitor.Log(I18n.RegexTimeout(loc: location, ex: ex), LogLevel.Warn);
+                }
+
+                if (Game1.getLocationFromName(parseloc) is GameLocation gameLocation)
+                {
+                    this.Monitor.Log($"Found {gameLocation}");
+                    foreach (Vector2 v in this.IterateTiles(gameLocation, xstart: locLimits["x1"], xend: locLimits["x2"], ystart: locLimits["y1"], yend: locLimits["y2"]))
+                    {
+                        this.PlaceFruit(gameLocation, v);
+                        if (++count >= this.config.MaxDailySpawns)
+                        {
+                            this.Cleanup();
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    this.Monitor.Log(I18n.LocationMissing(loc: location), LogLevel.Debug);
                 }
             }
         }
 
-        if (config.UseMineCave && Game1.getLocationFromName("Mine") is Mine mine)
+        if (this.config.UseMineCave && Game1.getLocationFromName("Mine") is Mine mine)
         {
-            foreach (Vector2 v in IterateTiles(mine, xstart: 11))
+            foreach (Vector2 v in this.IterateTiles(mine, xstart: 11))
             {
-                PlaceFruit(mine, v);
-                if (++count >= config.MaxDailySpawns) { Cleanup(); return; }
+                this.PlaceFruit(mine, v);
+                if (++count >= this.config.MaxDailySpawns)
+                {
+                    this.Cleanup();
+                    return;
+                }
             }
         }
     }
 
-    public void PlaceFruit(GameLocation location, Vector2 tile)
+    /// <summary>
+    /// Place a fruit on a specific tile.
+    /// </summary>
+    /// <param name="location">Map to place fruit on.</param>
+    /// <param name="tile">Tile to place fruit on.</param>
+    private void PlaceFruit(GameLocation location, Vector2 tile)
     {
-        int fruitToPlace = Utility.GetRandom<int>(random.NextDouble() < (config.TreeFruitChance / 100f) ? TreeFruit : BaseFruit, random);
+        int fruitToPlace = Utility.GetRandom(this.Random.NextDouble() < (this.config.TreeFruitChance / 100f) ? this.TreeFruit : this.BASE_FRUIT, this.Random);
         location.setObject(tile, new StardewValley.Object(fruitToPlace, 1)
         {
-            IsSpawnedObject = true
+            IsSpawnedObject = true,
         });
-        Monitor.Log($"Spawning item {fruitToPlace} at {location.Name}:{tile.X},{tile.Y}");
+        this.DebugLog($"Spawning item {fruitToPlace} at {location.Name}:{tile.X},{tile.Y}", LogLevel.Debug);
     }
 
-    public IEnumerable<Vector2> IterateTiles(GameLocation location, int xstart = 1, int xend = int.MaxValue, int ystart = 1, int yend = int.MaxValue)
+    /// <summary>
+    /// Iterate over tiles in a map, with a random chance to pick each tile.
+    /// Will only return clear and placable tiles.
+    /// </summary>
+    /// <param name="location">Map to iterate over.</param>
+    /// <param name="xstart">X coordinate to start.</param>
+    /// <param name="xend">X coordinate to end.</param>
+    /// <param name="ystart">Y coordinate to start.</param>
+    /// <param name="yend">Y coordinte to end.</param>
+    /// <returns>Enumerable of tiles for which to place fruit.</returns>
+    /// <remarks>The start and end coordinates are clamped to the size of the map, so there shouldn't be a way to give this function invalid values.</remarks>
+    private IEnumerable<Vector2> IterateTiles(GameLocation location, int xstart = 1, int xend = int.MaxValue, int ystart = 1, int yend = int.MaxValue)
     {
-        foreach (int x in Enumerable.Range(xstart, Math.Clamp(xend, xstart, location.Map.Layers[0].LayerWidth - 2)).OrderBy((x) => random.Next()))
+        List<Vector2> points = Enumerable.Range(Math.Max(xstart, 1), Math.Clamp(xend, xstart, location.Map.Layers[0].LayerWidth - 2))
+            .SelectMany(x => Enumerable.Range(Math.Max(ystart, 1), Math.Clamp(yend, ystart, location.Map.Layers[0].LayerHeight - 2)), (x, y) => new Vector2(x, y)).ToList();
+        Utility.Shuffle(this.Random, points);
+        foreach (Vector2 v in points)
         {
-            foreach (int y in Enumerable.Range(ystart, Math.Clamp(yend, ystart, location.Map.Layers[0].LayerHeight - 2)).OrderBy((x) => random.Next()))
+            if (this.Random.NextDouble() < (this.config.SpawnChance / 100f) && location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v))
             {
-                Vector2 v = new(x, y);
-                if (random.NextDouble() < (config.SpawnChance / 100f) && location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v))
-                {
-                    yield return v;
-                }
+                yield return v;
             }
         }
     }
 
+    /// <summary>
+    /// Console command to list valid fruits for spawning.
+    /// </summary>
+    /// <param name="command">Name of command.</param>
+    /// <param name="args">Arguments for command.</param>
     private void ListFruits(string command, string[] args)
     {
         if (!Context.IsWorldReady)
         {
-            Monitor.Log("World is not ready. Please load save first.");
+            this.Monitor.Log("World is not ready. Please load save first.");
             return;
         }
-        List<string> FruitNames = new();
-        foreach (int objectID in GetTreeFruits())
+
+        List<string> fruitNames = new();
+        foreach (int objectID in this.GetTreeFruits())
         {
             StardewValley.Object obj = new(objectID, 1);
-            FruitNames.Add(obj.DisplayName);
+            fruitNames.Add(obj.DisplayName);
         }
+
         LocalizedContentManager contextManager = Game1.content;
         string langcode = contextManager.LanguageCodeString(contextManager.GetCurrentLanguage());
-        FruitNames.Sort(StringComparer.Create(new CultureInfo(langcode), true));
-        Monitor.Log($"Possible fruits: {String.Join(", ", FruitNames)}", LogLevel.Info);
+        fruitNames.Sort(StringComparer.Create(new CultureInfo(langcode), true));
+        this.Monitor.Log($"Possible fruits: {string.Join(", ", fruitNames)}", LogLevel.Info);
     }
 
+    /// <summary>
+    /// Get data from assets, based on which mods are installed.
+    /// </summary>
+    /// <param name="datalocation">asset name.</param>
+    /// <returns>List of data, split by commas.</returns>
     private List<string> GetData(string datalocation)
     {
-        IDictionary<string, string> rawlist = Helper.Content.Load<Dictionary<string, string>>(datalocation, ContentSource.GameContent);
+        this.Helper.Content.InvalidateCache(datalocation);
+        IDictionary<string, string> rawlist = this.Helper.Content.Load<Dictionary<string, string>>(datalocation, ContentSource.GameContent);
         List<string> datalist = new();
 
         foreach (string uniqueID in rawlist.Keys)
         {
-            if (Helper.ModRegistry.IsLoaded(uniqueID))
+            if (this.Helper.ModRegistry.IsLoaded(uniqueID))
             {
                 datalist.AddRange(rawlist[uniqueID].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
             }
@@ -205,18 +413,27 @@ public class ModEntry : Mod
         return datalist;
     }
 
+    /// <summary>
+    /// Generate list of tree fruits valid for spawning, based on user config/denylist/data in Data/fruitTrees.
+    /// </summary>
+    /// <returns>A list of tree fruit.</returns>
+    [Pure]
     private List<int> GetTreeFruits()
     {
+        if (this.config.UseVanillaFruitOnly)
+        {
+            return this.VANILLA_FRUIT;
+        }
 
-        List<string> denylist = GetData(assetManager.denylistLocation);
+        List<string> denylist = this.GetData(this.assetManager.DENYLIST_LOCATION);
+        List<int> treeFruits = new();
 
-        List<int> TreeFruits = new();
-        Dictionary<int, string> fruittrees = Helper.Content.Load<Dictionary<int, string>>("Data/fruitTrees", ContentSource.GameContent);
-        string currentseason = Game1.currentSeason.ToLower().Trim();
+        Dictionary<int, string> fruittrees = this.Helper.Content.Load<Dictionary<int, string>>("Data/fruitTrees", ContentSource.GameContent);
+        string currentseason = Game1.currentSeason.ToLowerInvariant().Trim();
         foreach (string tree in fruittrees.Values)
         {
-            string[] treedata = tree.Split('/');
-            if (config.SeasonalOnly && Context.IsWorldReady)
+            string[] treedata = tree.Split('/', StringSplitOptions.TrimEntries);
+            if (this.config.SeasonalOnly && Context.IsWorldReady)
             {
                 if (!treedata[1].Contains(currentseason))
                 {
@@ -227,21 +444,20 @@ public class ModEntry : Mod
                 }
             }
 
-            bool success = int.TryParse(treedata[2].Trim(), out int objectIndex);
-            if (success)
+            if (int.TryParse(treedata[2], out int objectIndex))
             {
                 try
                 {
                     StardewValley.Object fruit = new(objectIndex, 1);
-                    if (!config.AllowAnyTreeProduct && fruit.Category != StardewValley.Object.FruitsCategory)
+                    if (!this.config.AllowAnyTreeProduct && fruit.Category != StardewValley.Object.FruitsCategory)
                     {
                         continue;
                     }
-                    if (config.EdiblesOnly && fruit.Edibility < 0)
+                    if (this.config.EdiblesOnly && fruit.Edibility < 0)
                     {
                         continue;
                     }
-                    if (fruit.Price > config.PriceCap)
+                    if (fruit.Price > this.config.PriceCap)
                     {
                         continue;
                     }
@@ -249,21 +465,35 @@ public class ModEntry : Mod
                     {
                         continue;
                     }
-                    if (config.NoBananasBeforeShrine && fruit.Name.Equals("Banana"))
+                    if (this.config.NoBananasBeforeShrine && fruit.Name.Equals("Banana"))
                     {
-                        if (!Context.IsWorldReady) { continue; }
-                        IslandEast islandeast = Game1.getLocationFromName("IslandEast") as IslandEast;
-                        if (!islandeast.bananaShrineComplete.Value) { continue; }
+                        if (!Context.IsWorldReady && Game1.getLocationFromName("IslandEast") is IslandEast islandeast && !islandeast.bananaShrineComplete.Value)
+                        {
+                            continue;
+                        }
                     }
-                    TreeFruits.Add(objectIndex);
+                    treeFruits.Add(objectIndex);
                 }
                 catch (Exception ex)
                 {
-                    Monitor.Log($"Ran into issue looking up item {objectIndex}\n{ex}", LogLevel.Warn);
+                    this.Monitor.Log($"Ran into issue looking up item {objectIndex}\n{ex}", LogLevel.Warn);
                 }
             }
         }
-        return TreeFruits;
+        return treeFruits;
     }
 
+    /// <summary>
+    /// Log to DEBUG if compiled with DEBUG
+    /// Log to verbose only otherwise.
+    /// </summary>
+    /// <param name="message">Message to log.</param>
+    private void DebugLog(string message, LogLevel level = LogLevel.Debug)
+    {
+#if DEBUG
+        this.Monitor.Log(message, level);
+#else
+        Monitor.VerboseLog(message);
+#endif
+    }
 }

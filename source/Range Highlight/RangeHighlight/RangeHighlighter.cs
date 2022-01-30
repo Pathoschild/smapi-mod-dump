@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-// Copyright 2020 Jamie Taylor
+// Copyright 2020-2022 Jamie Taylor
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -29,9 +29,9 @@ namespace RangeHighlight {
     using TASHighlightFunction = Func<TemporaryAnimatedSprite, Tuple<Color, bool[,]>>;
 
     internal class RangeHighlighter {
-        private readonly IMonitor monitor;
-        private readonly IModHelper helper;
-        private readonly ModConfig config;
+        private readonly ModEntry theMod;
+        private IModHelper helper => theMod.helper;
+        private ModConfig config => theMod.config;
         private readonly Texture2D tileTexture;
 
         private readonly PerScreen<List<Tuple<Color, Point>>> highlightTiles = new PerScreen<List<Tuple<Color, Point>>>(createNewState: () => new List<Tuple<Color, Point>>());
@@ -78,13 +78,18 @@ namespace RangeHighlight {
         private readonly List<ItemHighlighter> itemHighlighters = new List<ItemHighlighter>();
         private readonly List<Highlighter<TASHighlightFunction>> tasHighlighters = new List<Highlighter<TASHighlightFunction>>();
 
-        public RangeHighlighter(IMonitor monitor, IModHelper helper, ModConfig config) {
-            this.monitor = monitor;
-            this.helper = helper;
-            this.config = config;
+        public RangeHighlighter(ModEntry mod) {
+            theMod = mod;
             tileTexture = helper.Content.Load<Texture2D>("tile.png");
             helper.Events.Display.RenderedWorld += OnRenderedWorld;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+        }
+
+        public void ClearAllHighlighters() {
+            blueprintHighlighters.Clear();
+            buildingHighlighters.Clear();
+            itemHighlighters.Clear();
+            tasHighlighters.Clear();
         }
 
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e) {

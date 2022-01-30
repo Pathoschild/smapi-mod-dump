@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.require-flute.name": "Requerir una flauta de caballo",
+    "config.require-flute.description": "Si necesitas el objeto flauta de caballo en tu inventario para invocar un caballo. Desactivado por defecto.",
+
+    "config.summon-horse-button.name": "Botón para invocar al caballo",
+    "config.summon-horse-button.description": "El botón que hay que pulsar para hacer sonar la flauta e invocar a un caballo. Por defecto {{defaultValue}}."
+}

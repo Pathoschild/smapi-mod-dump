@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Ornate Treasure Chest",
+	"Description": "It's filled to the brim with gold and gems.",
+	"Edibility": -300,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"CanSell": false,
+	"Price": 10000,
+	"IsColored": false,
+	"GiftTastes":
+	{
+	    "Love": [ "Lance" ],
+		"Like": ["MarlonFay", "Wizard", "Krobus", "Dwarf", "Abigail", "Morgan", "Sophia", "Leo", "Apples", "GuntherSilvian", "Olivia", "Andy", "Martin", "Victor", "Claire", "Susan", "MorrisTod", "Alex", "Elliott", "Harvey", "Sam", "Sebastian", "Shane", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Lewis", "Linus", "Marnie", "Pam", "Pierre", "Robin", "Sandy", "Vincent", "Willy" ],
+	},
+}

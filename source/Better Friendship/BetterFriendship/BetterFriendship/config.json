@@ -9,11 +9,13 @@
 *************************************************/
 
 {
-  "DisplayTalkPrompt": true,
+  "DisplayTalkPrompts": true,
   "GiftPreference": "like",
   "GiftCycleCount": 5,
   "GiftCycleDelay": 150000,
   "IgnoreMaxedFriendships": false,
+  "DisplayGenericGiftPrompts": true,
   "OnlyHighestQuality": false,
+  "SpousePromptsOverride": false,
   "DisplayBubbles": true
 }

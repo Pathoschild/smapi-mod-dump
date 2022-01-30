@@ -8,7 +8,12 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -18,9 +23,11 @@ using StardewModdingAPI.Enums;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuRevalidateHealthPatch : BasePatch
@@ -43,37 +50,43 @@ internal class LevelUpMenuRevalidateHealthPatch : BasePatch
         var expectedMaxHealth = 100;
         if (farmer.mailReceived.Contains("qiCave")) expectedMaxHealth += 25;
 
-        for (var i = 0; i < farmer.combatLevel.Value; ++i)
+        for (var i = 1; i <= farmer.combatLevel.Value; ++i)
             if (!farmer.newLevels.Contains(new((int) SkillType.Combat, i)))
                 expectedMaxHealth += 5;
 
-        if (Game1.player.HasProfession("Fighter")) expectedMaxHealth += 15;
-        if (Game1.player.HasProfession("Brute")) expectedMaxHealth += 25;
+        if (Game1.player.HasProfession(Profession.Fighter)) expectedMaxHealth += 15;
+        if (Game1.player.HasProfession(Profession.Brute)) expectedMaxHealth += 25;
 
         if (farmer.maxHealth != expectedMaxHealth)
         {
-            ModEntry.Log(
-                $"Fixing max health of {farmer.Name}.\nCurrent: {farmer.maxHealth}\nExpected: {expectedMaxHealth}",
-                LogLevel.Warn);
+            Log.W($"Fixing max health of {farmer.Name}.\nCurrent: {farmer.maxHealth}\nExpected: {expectedMaxHealth}");
             farmer.maxHealth = expectedMaxHealth;
             farmer.health = Math.Min(farmer.maxHealth, farmer.health);
         }
 
         try
         {
-            // revalidate fish pond capacity
-            foreach (var b in Game1.getFarm().buildings.Where(b =>
-                         (b.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer) && b is FishPond &&
-                         !b.isUnderConstruction()))
+            foreach (var pond in Game1.getFarm().buildings.OfType<FishPond>().Where(p =>
+                         (p.owner.Value == farmer.UniqueMultiplayerID || !Context.IsMultiplayer) &&
+                         !p.isUnderConstruction()))
             {
-                var pond = (FishPond) b;
+                // revalidate fish pond capacity
                 pond.UpdateMaximumOccupancy();
                 pond.currentOccupants.Value = Math.Min(pond.currentOccupants.Value, pond.maxOccupants.Value);
+
+                if (!ModEntry.Config.EnableFishPondRebalance) return false;
+
+                // revalidate fish pond quality rating
+                var qualityRatingByFishPond = new Dictionary<int, int>();
+                var thisFishPond = pond.GetCenterTile().ToString().GetDeterministicHashCode();
+                qualityRatingByFishPond[thisFishPond] = pond.FishCount; // default to lowest quality = 1
+                ModData.WriteIfNotExists(DataField.QualityRatingByFishPond, qualityRatingByFishPond.ToString(",", ";"),
+                    farmer);
             }
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return false; // don't run original logic
         }
 

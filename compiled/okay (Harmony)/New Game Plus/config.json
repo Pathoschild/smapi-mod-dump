@@ -1,0 +1,9 @@
+{
+  "StockList": true,
+  "GingerIsland": true,
+  "AdditionalProfitMultiplier": 0.5,
+  "RelationshipPenaltyPercentage": 0.5,
+  "ExpCurveExponent": 1.1,
+  "StartingPoints": 25,
+  "GoldPerLeftoverPoint": 500
+}

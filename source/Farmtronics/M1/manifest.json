@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoeStrout/Farmtronics
+**
+*************************************************/
+
+{
+  "Name": "Farmtronics",
+  "Author": "Joe Strout",
+  "Version": "1.0.5",
+  "Description": "Adds a high-tech \"home computer\" to your TV!",
+  "UniqueID": "strout.farmtronics",
+  "EntryDll": "Farmtronics.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:10634", "GitHub:JoeStrout/Farmtronics"]
+}

@@ -15,8 +15,10 @@ using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
 
 using StardewModdingAPI;
+using StardewValley;
 
 
 namespace ImagEd.Framework {
@@ -81,54 +83,111 @@ namespace ImagEd.Framework {
         /// <param name="input">The input argument, if applicable.</param>
         public IEnumerable<string> GetValues(string input) {
             RecolorTokenArguments inputData = RecolorTokenArguments.Parse(input);
-            if (!(inputData.Equals(previousInputData_))) {
-                mustUpdateContext_ = true;
-            }
-            previousInputData_ = inputData;
 
             IContentPack contentPack = Utility.GetContentPackFromModInfo(helper_.ModRegistry.Get(inputData.ContentPackName));
-            monitor_.Log($"Content pack {contentPack.Manifest.UniqueID} requests recoloring of {inputData.AssetName}.");
-            monitor_.Log($"Recolor with {inputData.MaskPath} and {Utility.ColorToHtml(inputData.BlendColor)}, flip mode {inputData.FlipMode}");
-
-            // "gamecontent" means loading from game folder.
-            Texture2D source = inputData.SourcePath.ToLowerInvariant() == "gamecontent"
-                             ? helper_.Content.Load<Texture2D>(inputData.AssetName, ContentSource.GameContent)
-                             : contentPack.LoadAsset<Texture2D>(inputData.SourcePath);
-
-            Texture2D extracted = inputData.MaskPath.ToLowerInvariant() != "none"
-                                ? ExtractSubImage(source,
-                                                  contentPack.LoadAsset<Texture2D>(inputData.MaskPath),
-                                                  inputData.DesaturationMode)
-                                : source;
-
-            Texture2D blended = ColorBlend(extracted, inputData.BlendColor);
-
-            Texture2D target;
-            if (inputData.FlipMode == Flip.Mode.FlipHorizontally) {
-                target = Flip.FlipHorizontally(blended);
-            }
-            else if (inputData.FlipMode == Flip.Mode.FlipVertically) {
-                target = Flip.FlipVertically(blended);
-            }
-            else if (inputData.FlipMode == Flip.Mode.FlipBoth) {
-                target = Flip.FlipVertically(Flip.FlipHorizontally(blended));
-            }
-            else {
-                target = blended;
-            }
 
             // ATTENTION: In order to load files we just generated we need at least ContentPatcher 1.18.3 .
             string generatedFilePath = GenerateFilePath(inputData);
             string generatedFilePathAbsolute = Path.Combine(contentPack.DirectoryPath, generatedFilePath);
-            Directory.CreateDirectory(Path.GetDirectoryName(generatedFilePathAbsolute));
-            using (FileStream fs = new FileStream(generatedFilePathAbsolute, FileMode.Create)) {
-                target.SaveAsPng(fs, target.Width, target.Height);
-                fs.Close();
+
+            if (!(inputData.Equals(previousInputData_))) {
+                mustUpdateContext_ = true;
+
+                previousInputData_ = inputData;
+
+                monitor_.Log($"Content pack {contentPack.Manifest.UniqueID} requests recoloring of {inputData.AssetName}.");
+                monitor_.Log($"Recolor with {inputData.MaskPath} and {Utility.ColorToHtml(inputData.BlendColor)}, flip mode {inputData.FlipMode}, brightness {inputData.Brightness}");
+
+                // Check versions: If version of SDV or content pack changed we have to delete generated images.
+                string contentPackVersion = contentPack.Manifest.Version.ToString();
+                string generatedDirectoryPathAbsolute = Path.Combine(contentPack.DirectoryPath, "generated");
+                var versions = contentPack.ReadJsonFile<Dictionary<string, string>>("generated/versions.json") ?? new Dictionary<string, string>();
+                if (!versions.TryGetValue("StardewValley", out string stardewVersion) || stardewVersion != Game1.version) {
+                    versions["StardewValley"] = Game1.version;
+
+                    monitor_.Log($"Version of StardewValley changed from {stardewVersion ?? "(null)"} to {Game1.version}, deleting generated files.");
+                    if (Directory.Exists(generatedDirectoryPathAbsolute)) {
+                        Directory.Delete(generatedDirectoryPathAbsolute, true);
+                    }
+
+                    contentPack.WriteJsonFile("generated/versions.json", versions);
+                }
+                if (!versions.TryGetValue(contentPack.Manifest.UniqueID, out string modVersion) || modVersion != contentPackVersion) {
+                    versions[contentPack.Manifest.UniqueID] = contentPackVersion;
+
+                    monitor_.Log($"Version of content pack {contentPack.Manifest.UniqueID} changed from {modVersion ?? "(null)"} to {contentPackVersion}, deleting generated files.");
+                    if (Directory.Exists(generatedDirectoryPathAbsolute)) {
+                        Directory.Delete(generatedDirectoryPathAbsolute, true);
+                    }
+
+                    contentPack.WriteJsonFile("generated/versions.json", versions);
+                }
+
+                // Skip actions if file was found.
+                if (File.Exists(generatedFilePathAbsolute)) {
+                    monitor_.Log($"Found existing file {generatedFilePathAbsolute}, returning relative path {generatedFilePath}");
+
+                    helper_.Content.InvalidateCache(inputData.AssetName);
+                }
+                else {
+                    try {
+                        // "gamecontent" means loading from game folder. Don't dispose an asset source!
+                        Texture2D source;
+                        if (inputData.SourcePath.ToLowerInvariant() == "gamecontent") {
+                            // ATTENTION: Game content requires special attention because the loaded assets modify themselves over time:
+                            // Game content contains vanilla assets only when game is loaded, otherwise the assets are already patched.
+                            // Luma desaturation and recoloring don't change brightness so they can be applied multiple times
+                            // without bad effects but changing brightness multiple times changes colors over time.
+                            // A way to prevent that is caching them in files once and using the cached versions as a base for modifications.
+                            string generatedBasePath = Path.Combine("generated", $"{inputData.AssetName}_gamecontent.png");
+                            string generatedBasePathAbsolute = Path.Combine(contentPack.DirectoryPath, generatedBasePath);
+                            Directory.CreateDirectory(Path.GetDirectoryName(generatedBasePathAbsolute));
+
+                            if (File.Exists(generatedBasePathAbsolute)) {
+                                using (FileStream fs = new FileStream(generatedBasePathAbsolute, FileMode.Open)) {
+                                    source = Texture2D.FromStream(Game1.graphics.GraphicsDevice, fs);
+                                }
+                                monitor_.Log($"Loading asset {inputData.AssetName} from existing cache file {generatedBasePathAbsolute}");
+                            }
+                            else {
+                                source = helper_.Content.Load<Texture2D>(inputData.AssetName, ContentSource.GameContent);
+                                using (FileStream fs = new FileStream(generatedBasePathAbsolute, FileMode.Create)) {
+                                    source.SaveAsPng(fs, source.Width, source.Height);
+                                    fs.Close();
+                                }
+                                monitor_.Log($"Saving asset {inputData.AssetName} in cache file {generatedBasePathAbsolute}");
+                            }
+                        }
+                        else {
+                            source = contentPack.LoadAsset<Texture2D>(inputData.SourcePath);
+                        }
+
+                        Texture2D mask = inputData.MaskPath.ToLowerInvariant() != "none"
+                                       ? contentPack.LoadAsset<Texture2D>(inputData.MaskPath)
+                                       : null;
+
+                        using (Texture2D extracted = ExtractSubImage(source, mask, inputData.DesaturationMode, inputData.Brightness))
+                        using (Texture2D blended = ColorBlend(extracted, inputData.BlendColor))
+                        using (Texture2D flipped = FlipImage(source, blended, inputData.FlipMode)) {
+                            Directory.CreateDirectory(Path.GetDirectoryName(generatedFilePathAbsolute));
+                            using (FileStream fs = new FileStream(generatedFilePathAbsolute, FileMode.Create)) {
+                                flipped.SaveAsPng(fs, flipped.Width, flipped.Height);
+                                fs.Close();
+                            }
+                        }
+
+                        monitor_.Log($"Generated file {generatedFilePathAbsolute}, returning relative path {generatedFilePath}");
+
+                        helper_.Content.InvalidateCache(inputData.AssetName);
+                    }
+                    catch (ContentLoadException) {
+                        // Asset is not available, return its name to prevent game from crashing.
+                        monitor_.Log($"Ignoring unavailable asset {inputData.AssetName}. If this was caused by patch reload you can ignore it, the next 10min update cycle should do a proper reload.", LogLevel.Info);
+
+                        generatedFilePath = inputData.AssetName;
+                    }
+                }
             }
-
-            monitor_.Log($"Generated file {generatedFilePathAbsolute}, returning relative path {generatedFilePath}");
-
-            helper_.Content.InvalidateCache(inputData.AssetName);
 
             yield return generatedFilePath;
         }
@@ -136,24 +195,28 @@ namespace ImagEd.Framework {
         /// <summary>Color blending (multiplication).</summary>
         private Texture2D ColorBlend(Texture2D source, Color blendColor) {
             Color[] sourcePixels = Utility.TextureToArray(source);
+            Color[] blendedPixels = new Color[source.Width * source.Height];
             // Renderer expects premultiplied alpha.
             for (int i = 0; i < sourcePixels.Length; i++) {
-                sourcePixels[i]
+                blendedPixels[i]
                     = new Color((byte) (sourcePixels[i].R * blendColor.R / 255 * blendColor.A / 255),
                                 (byte) (sourcePixels[i].G * blendColor.G / 255 * blendColor.A / 255),
                                 (byte) (sourcePixels[i].B * blendColor.B / 255 * blendColor.A / 255),
                                 (byte) (sourcePixels[i].A * blendColor.A / 255));
             }
 
-            Texture2D blended = Utility.ArrayToTexture(sourcePixels, source.Width, source.Height);
+            Texture2D blended = Utility.ArrayToTexture(blendedPixels, source.Width, source.Height);
 
             return blended;
         }
 
-        /// <summary>Extracts a sub image using the given mask.</summary>
-        private Texture2D ExtractSubImage(Texture2D source, Texture2D mask, Desaturation.Mode desaturationMode) {
-            if (mask.Width != source.Width || mask.Height != source.Height) {
+        /// <summary>Extracts a sub image using the given mask and brightness.</summary>
+        private Texture2D ExtractSubImage(Texture2D source, Texture2D mask, Desaturation.Mode desaturationMode, float brightness) {
+            if (mask != null && (mask.Width != source.Width || mask.Height != source.Height)) {
                 throw new ArgumentException("Sizes of image and mask don't match");
+            }
+            if (brightness < 0.0f) {
+                throw new ArgumentException("Brightness must not be negative");
             }
 
             Color[] sourcePixels = Utility.TextureToArray(source);
@@ -163,12 +226,52 @@ namespace ImagEd.Framework {
             for (int i = 0; i < sourcePixels.Length; i++) {
                 Color pixel = Desaturation.Desaturate(sourcePixels[i], desaturationMode);
                 // Treat mask as grayscale (luma).
-                byte maskValue = Desaturation.Desaturate(maskPixels[i], Desaturation.Mode.DesaturateLuma).R;
+                byte maskValue = mask != null ? Desaturation.Desaturate(maskPixels[i], Desaturation.Mode.DesaturateLuma).R : (byte) 0xFF;
                 // Multiplication is all we need: If maskValue is zero the resulting pixel is zero (TransparentBlack).
-                extractedPixels[i] = pixel * (maskValue / 255.0f);
+                // Clamping is done automatically on assignment.
+                extractedPixels[i] = pixel * (maskValue / 255.0f) * brightness;
             }
 
             return Utility.ArrayToTexture(extractedPixels, source.Width, source.Height);
+        }
+
+        /// <summary>Flipping is special: We can't just flip the overlay, we need the whole image!</summary>
+        private Texture2D FlipImage(Texture2D baseImage, Texture2D overlay, Flip.Mode flipMode) {
+            if (flipMode == Flip.Mode.None) {
+                // Return a copy so it can be disposed safely.
+                return Utility.ArrayToTexture(Utility.TextureToArray(overlay), overlay.Width, overlay.Height);
+            }
+            else {
+                // Flip the whole image.
+                using (Texture2D image = AlphaBlend(baseImage, overlay)) {
+                    return Flip.FlipImage(image, flipMode);
+                }
+            }
+        }
+
+        /// <summary>Alpha blending.</summary>
+        private Texture2D AlphaBlend(Texture2D baseImage, Texture2D overlay) {
+            if (overlay.Width != baseImage.Width || overlay.Height != baseImage.Height) {
+                throw new ArgumentException("Sizes of base image and overlay don't match");
+            }
+
+            Color[] baseImagePixels = Utility.TextureToArray(baseImage);
+            Color[] overlayPixels = Utility.TextureToArray(overlay);
+            Color[] blendedPixels = new Color[baseImage.Width * baseImage.Height];
+            // Renderer expects premultiplied alpha.
+            // https://en.wikipedia.org/wiki/Alpha_compositing
+            for (int i = 0; i < baseImagePixels.Length; i++) {
+                float alpha = 1.0f - overlayPixels[i].A / 255.0f;
+                blendedPixels[i]
+                    = new Color((byte) (overlayPixels[i].R + baseImagePixels[i].R * alpha),
+                                (byte) (overlayPixels[i].G + baseImagePixels[i].G * alpha),
+                                (byte) (overlayPixels[i].B + baseImagePixels[i].B * alpha),
+                                (byte) (overlayPixels[i].A + baseImagePixels[i].A * alpha));
+            }
+
+            Texture2D blended = Utility.ArrayToTexture(blendedPixels, baseImage.Width, baseImage.Height);
+
+            return blended;
         }
 
         /// <summary>Generates a file path from token arguments.</summary>
@@ -179,7 +282,7 @@ namespace ImagEd.Framework {
                               : inputData.SourcePath;
 
             // Encode configuration to avoid file name collisions.
-            string suffix = $"recolored_{(uint) inputData.GetHashCode()}";
+            string suffix = $"recolored_{inputData.GetUniqueFileSuffix()}";
 
             return Utility.AddFileNameSuffix(Path.Combine("generated", outputPath), suffix);
         }

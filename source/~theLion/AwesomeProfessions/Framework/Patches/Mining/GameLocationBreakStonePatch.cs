@@ -8,17 +8,22 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class GameLocationBreakStonePatch : BasePatch
@@ -45,7 +50,7 @@ internal class GameLocationBreakStonePatch : BasePatch
         try
         {
             helper
-                .FindProfessionCheck(Utility.Professions.IndexOf("Miner"))
+                .FindProfessionCheck((int) Profession.Miner)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Stloc_1)
                 )
@@ -53,7 +58,7 @@ internal class GameLocationBreakStonePatch : BasePatch
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_S, (byte) 4) // arg 4 = Farmer who
                 )
-                .InsertProfessionCheckForPlayerOnStack(100 + Utility.Professions.IndexOf("Miner"),
+                .InsertProfessionCheckForPlayerOnStack((int) Profession.Miner + 100,
                     notPrestigedMiner)
                 .Insert(
                     new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -62,8 +67,7 @@ internal class GameLocationBreakStonePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding prestiged Miner extra ores.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding prestiged Miner extra ores.\nHelper returned {ex}");
             return null;
         }
 
@@ -88,8 +92,7 @@ internal class GameLocationBreakStonePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Geologist paired gems.\nHelper returned {ex}");
             return null;
         }
 
@@ -111,8 +114,7 @@ internal class GameLocationBreakStonePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Prospector double coal chance.\nHelper returned {ex}");
             return null;
         }
 

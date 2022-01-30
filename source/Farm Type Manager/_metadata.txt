@@ -6,9 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit ab6f96f8f818621c130b1af011011b0e7792fb44
+   commit d080caa557d2bb631c771d6b3264bdfa451a09f7
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Tue Nov 9 17:18:58 2021 -0600
+   Date:   Wed Jan 26 22:34:00 2022 -0600
    
-       Fix DGA category name in readme
+       Automatic cleanup (remove/sort usings)
    

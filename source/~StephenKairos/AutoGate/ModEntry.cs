@@ -114,13 +114,13 @@ namespace AutoGate
             this.Gates.Value.Clear();
             this.LastPlayerTile.Value = new Vector2(-1);
 
-            foreach (var pair in Game1.currentLocation.objects.Pairs)
+            if (Game1.currentLocation?.objects != null)
             {
-                Vector2 tile = pair.Key;
-                SObject obj = pair.Value;
-
-                if (obj is Fence fence && fence.isGate.Value)
-                    this.Gates.Value[tile] = fence;
+                foreach ((Vector2 tile, SObject obj) in Game1.currentLocation.objects.Pairs)
+                {
+                    if (obj is Fence fence && fence.isGate.Value)
+                        this.Gates.Value[tile] = fence;
+                }
             }
         }
 

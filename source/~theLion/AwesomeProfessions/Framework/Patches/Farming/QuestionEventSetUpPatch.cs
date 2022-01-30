@@ -8,17 +8,22 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley.Events;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class QuestionEventSetUpPatch : BasePatch
@@ -54,22 +59,21 @@ internal class QuestionEventSetUpPatch : BasePatch
                 .Advance()
                 .AddLabels(resumeExecution) // branch here to resume execution
                 .Retreat()
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Breeder"), isNotBreeder)
-                .InsertProfessionCheckForLocalPlayer(100 + Utility.Professions.IndexOf("Breeder"), isNotPrestiged)
-                .Insert( // if player is breeder load adjusted pregancy chance
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Breeder, isNotBreeder)
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Breeder + 100, isNotPrestiged)
+                .Insert( // if player is breeder load adjusted pregnancy chance
                     new CodeInstruction(OpCodes.Ldc_R8, 0.0275), // x5 for prestiged
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
                 )
                 .Insert(
                     new[] {isNotPrestiged},
-                    new CodeInstruction(OpCodes.Ldc_R8, 0.0165), // x3 for regular
+                    new CodeInstruction(OpCodes.Ldc_R8, 0.0055 * 3), // x3 for regular
                     new CodeInstruction(OpCodes.Br_S, resumeExecution)
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while adding Breeder bonus animal pregnancy chance.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while adding Breeder bonus animal pregnancy chance.\nHelper returned {ex}");
             return null;
         }
 

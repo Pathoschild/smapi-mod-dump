@@ -8,6 +8,42 @@ for queries and analysis.**
 
 # Changelog
 
+## v1.0.6 (2022/01/15)
+
+#### Enhancements:
+
+- [#18](https://github.com/urbanyeti/stardew-better-friendship/issues/18) Improve overall error handling
+- [#17](https://github.com/urbanyeti/stardew-better-friendship/issues/17) Improve splitscreen support
+
+#### Bug Fixes:
+
+- [#16](https://github.com/urbanyeti/stardew-better-friendship/issues/16) Unknown error related to Marigold the service dog in Diverse Stardew Valley mod
+- [#15](https://github.com/urbanyeti/stardew-better-friendship/issues/15) Errors in logs related to henchman in witch's swamp
+
+---
+
+## v1.0.5 (2022/01/11)
+
+#### Enhancements:
+
+- [#14](https://github.com/urbanyeti/stardew-better-friendship/issues/14) Add spouse override config setting
+
+#### Bug Fixes:
+
+- [#13](https://github.com/urbanyeti/stardew-better-friendship/issues/13) Speech prompt still displays when npc cannot be spoken to after quest completion 
+- [#12](https://github.com/urbanyeti/stardew-better-friendship/issues/12) Empty thought bubble is not hidden when generic gifts are disabled
+
+---
+
+## v1.0.4 (2022/01/08)
+
+#### Enhancements:
+
+- [#11](https://github.com/urbanyeti/stardew-better-friendship/issues/11) Add specific cycling gift icons to talk / gift combination indicator
+- [#10](https://github.com/urbanyeti/stardew-better-friendship/issues/10) Add config option to disable generic gift prompt
+
+---
+
 ## v1.0.3 (2021/12/09)
 
 #### Bug Fixes:

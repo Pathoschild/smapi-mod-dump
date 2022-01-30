@@ -8,14 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
+
+#region using directives
+
 using System;
 using System.Linq;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class AnimalHouseAddNewHatchedAnimalPatch : BasePatch
@@ -33,7 +38,7 @@ internal class AnimalHouseAddNewHatchedAnimalPatch : BasePatch
     private static void AnimalHouseAddNewHatchedAnimalPostfix(AnimalHouse __instance)
     {
         var who = Game1.getFarmer(__instance.getBuilding().owner.Value);
-        if (!who.HasProfession("Rancher")) return;
+        if (!who.HasProfession(Profession.Rancher)) return;
 
         var a = __instance.Animals?.Values.Last();
         if (a is null || a.age.Value != 0 || a.friendshipTowardFarmer.Value != 0) return;

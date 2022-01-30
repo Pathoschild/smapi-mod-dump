@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using StardewModdingAPI;
 
 namespace FarmTypeManager

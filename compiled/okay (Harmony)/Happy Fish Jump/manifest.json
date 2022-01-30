@@ -1,16 +1,10 @@
 ﻿{
   "Name": "Happy Fish Jump",
   "Author": "Sakorona",
-  "Version": "1.1.13-beta",
+  "Version": "1.1.13",
   "Description": "Fish will periodically jump while you're around the farm",
   "UniqueID": "KoihimeNakamura.HappyFishJump",
   "EntryDll": "HappyFishJump.dll",
-  "MinimumApiVersion": "3.13.0",
-  "ModUpdater": {
-    "Repository": "SDVMods",
-    "User": "Sakorona",
-    "Directory": "_releases",
-    "ModFolder": "HappyFishJump"
-  },
-  "UpdateKeys": [ "ModDrop:1068089" ]
+  "MinimumApiVersion": "3.4.0",
+  "UpdateKeys": [ "Nexus:6516" ]
 } 

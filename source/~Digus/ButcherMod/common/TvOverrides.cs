@@ -21,7 +21,7 @@ namespace AnimalHusbandryMod.common
     {
         public static bool createQuestionDialogue(string question, ref Response[] answerChoices)
         {
-            if (question == Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13120"))
+            if (!DataLoader.ModConfig.DisableTvChannels && question == Game1.content.LoadString("Strings\\StringsFromCSFiles:TV.cs.13120"))
             {
                 List<Response> answerChoicesList = new List<Response>(answerChoices);
                 TvController.GetChannelsWithEpisodeToday().ForEach(c =>

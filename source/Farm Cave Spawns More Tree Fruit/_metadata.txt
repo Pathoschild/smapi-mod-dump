@@ -6,11 +6,9 @@ mods:
    Farm Cave Spawns More Tree Fruit
 
 latest commit:
-   commit b4bf31b65abd702a13a63f76b57a9ae04d2f7afa
+   commit ed03b5808610ff35fe3d9c37243fe1c2a286ce71
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri Dec 31 18:02:24 2021 -0500
+   Date:   Mon Jan 24 01:38:01 2022 -0500
    
-       Delete ModConfig.cs
-       
-       This seems to have been a mistake
+       A little reorganization, make stylecop happy.
    

@@ -1,0 +1,65 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ameisen/SV-SpriteMaster
+**
+*************************************************/
+
+using SpriteMaster.Types.Fixed;
+using System;
+
+namespace SpriteMaster.Extensions;
+
+static class MathExt {
+	#region Min
+	internal static Fixed8 Min(this Fixed8 a, Fixed8 b) => Math.Min(a.Value, b.Value);
+	internal static Fixed16 Min(this Fixed16 a, Fixed16 b) => Math.Min(a.Value, b.Value);
+
+	internal static byte Min(byte a, byte b, byte c) => Math.Min(a, Math.Min(b, c));
+	internal static sbyte Min(sbyte a, sbyte b, sbyte c) => Math.Min(a, Math.Min(b, c));
+	internal static ushort Min(ushort a, ushort b, ushort c) => Math.Min(a, Math.Min(b, c));
+	internal static short Min(short a, short b, short c) => Math.Min(a, Math.Min(b, c));
+	internal static uint Min(uint a, uint b, uint c) => Math.Min(a, Math.Min(b, c));
+	internal static int Min(int a, int b, int c) => Math.Min(a, Math.Min(b, c));
+	internal static ulong Min(ulong a, ulong b, ulong c) => Math.Min(a, Math.Min(b, c));
+	internal static long Min(long a, long b, long c) => Math.Min(a, Math.Min(b, c));
+	internal static float Min(float a, float b, float c) => Math.Min(a, Math.Min(b, c));
+	internal static double Min(double a, double b, double c) => Math.Min(a, Math.Min(b, c));
+	internal static Fixed8 Min(Fixed8 a, Fixed8 b, Fixed8 c) => MathExt.Min(a, MathExt.Min(b, c));
+	internal static Fixed16 Min(Fixed16 a, Fixed16 b, Fixed16 c) => MathExt.Min(a, MathExt.Min(b, c));
+	#endregion
+
+	#region Max
+	internal static Fixed8 Max(this Fixed8 a, Fixed8 b) => Math.Max(a.Value, b.Value);
+	internal static Fixed16 Max(this Fixed16 a, Fixed16 b) => Math.Max(a.Value, b.Value);
+
+	internal static byte Max(byte a, byte b, byte c) => Math.Max(a, Math.Max(b, c));
+	internal static sbyte Max(sbyte a, sbyte b, sbyte c) => Math.Max(a, Math.Max(b, c));
+	internal static ushort Max(ushort a, ushort b, ushort c) => Math.Max(a, Math.Max(b, c));
+	internal static short Max(short a, short b, short c) => Math.Max(a, Math.Max(b, c));
+	internal static uint Max(uint a, uint b, uint c) => Math.Max(a, Math.Max(b, c));
+	internal static int Max(int a, int b, int c) => Math.Max(a, Math.Max(b, c));
+	internal static ulong Max(ulong a, ulong b, ulong c) => Math.Max(a, Math.Max(b, c));
+	internal static long Max(long a, long b, long c) => Math.Max(a, Math.Max(b, c));
+	internal static float Max(float a, float b, float c) => Math.Max(a, Math.Max(b, c));
+	internal static double Max(double a, double b, double c) => Math.Max(a, Math.Max(b, c));
+	internal static Fixed8 Max(Fixed8 a, Fixed8 b, Fixed8 c) => MathExt.Max(a, MathExt.Max(b, c));
+	internal static Fixed16 Max(Fixed16 a, Fixed16 b, Fixed16 c) => MathExt.Max(a, MathExt.Max(b, c));
+	#endregion
+
+	#region Clamp
+	internal static Fixed8 Clamp(this Fixed8 v, Fixed8 min, Fixed8 max) => Math.Clamp(v.Value, min.Value, max.Value);
+	internal static Fixed16 Clamp(this Fixed16 v, Fixed16 min, Fixed16 max) => Math.Clamp(v.Value, min.Value, max.Value);
+	#endregion
+
+	#region RoundToInt/Long
+	internal static int RoundToInt(this float v) => (int)Math.Round(v);
+	internal static int RoundToInt(this double v) => (int)Math.Round(v);
+
+	internal static long RoundToLong(this float v) => (long)Math.Round(v);
+	internal static long RoundToLong(this double v) => (long)Math.Round(v);
+	#endregion
+}

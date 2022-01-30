@@ -70,7 +70,7 @@
 		],
 		"Sounds": [ "furnace" ], //List of sound to make when an input is placed. Default is an empty list.
 		"DelayedSounds": [ { "bubbles": 50 } ], //List of sounds to make after a delay. Default is an empty list.
-		"PlacingAnimation": "Fire", //[Bubbles|Fire|CharcoalKiltSmoke] //Animation to make when placing the input. Default is null.
+		"PlacingAnimation": "Fire", //[Bubbles|Fire|CharcoalKilnSmoke] //Animation to make when placing the input. Default is null.
 		"PlacingAnimationColorName": "White", //The color of the animation.[http://www.foszor.com/blog/xna-color-chart/] Default White.
 		"PlacingAnimationOffsetX": 0, //The offset of the X axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.
 		"PlacingAnimationOffsetY": -32, //The offset of the Y axis. The offset is relative to the animation default location, not the position of the machine. Default is 0.

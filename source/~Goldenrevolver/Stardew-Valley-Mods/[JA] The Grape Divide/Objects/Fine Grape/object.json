@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "Name": "Fine Grape", 
+    "Description": "A sweet cluster of fruit.", 
+    "Category": "Fruit", 
+    "Edibility": 17, 
+    "Price": 110, 
+    "IsColored": false, 
+    "Recipe": null, 
+    "GiftTastes": 
+    {
+        "Love": ["Vincent", "Harvey", "Lewis", "Sandy"],
+        "Like": ["Demetrius", "Elliott", "Harvey", "Jodi", "Kent", "Leah", "Linus", "Pam", "Robin", "Sandy", "Shane"],
+        "Neutral": [ "Alex", "Caroline", "Clint", "Dwarf", "Emily", "Evelyn", "George", "Gus", "Krobus", "Leo", "Lewis", "Marnie", "Maru", "Pierre", "Sam", "Sebastian", "Willy", "Wizard" ],
+        "Dislike": [ "Abigail", "Haley", "Jas"], 
+        "Hate": ["Penny"]
+    },
+}

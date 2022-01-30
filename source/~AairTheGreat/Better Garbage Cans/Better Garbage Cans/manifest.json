@@ -11,11 +11,11 @@
 {
   "Name": "Better Garbage Cans",
   "Author": "AairTheGreat",
-  "Version": "1.0.6",
+  "Version": "1.0.7",
   "Description": "Hopefully makes digging thru the garbage more interesting",
   "UniqueID": "AairTheGreat.BetterGarbageCans",
   "EntryDll": "Better Garbage Cans.dll",
-  "MinimumApiVersion": "3.8.0",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [    
     "Nexus:4171"
   ]

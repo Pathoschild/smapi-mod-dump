@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Golden Ocean Flower",
+	"Description": "Leaves an everlasting effect when gifted.",
+	"Category": "Flower",
+	"Edibility": -300,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 1000,
+	"GiftTastes":
+	{
+		"Love": ["Krobus", "Dwarf", "Abigail", "Sophia", "Leo", "Apples", "GuntherSilvian", "Olivia", "Martin", "Victor", "Claire", "Susan", "MorrisTod", "Alex", "Elliott", "Harvey", "Sam", "Sebastian", "Shane", "Emily", "Haley", "Leah", "Maru", "Penny", "Caroline", "Clint", "Demetrius", "Evelyn", "George", "Gus", "Jas", "Jodi", "Kent", "Lewis", "Linus", "Marnie", "Pam", "Pierre", "Robin", "Sandy", "Vincent", "Willy"],
+		"Like": ["Andy", "Wizard", "MarlonFay", "Lance", "Morgan"]
+	},
+}

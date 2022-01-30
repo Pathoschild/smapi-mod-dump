@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BananaFruit1492/BulkStaircases
+**
+*************************************************/
+
+{
+  "Name": "Bulk Staircases",
+  "Author": "BananaFruit",
+  "Version": "1.0.1",
+  "Description": "Use staircases in bulk",
+  "UniqueID": "BananaFruit.BulkStaircases",
+  "EntryDll": "BulkStaircases.dll",
+  "MinimumApiVersion": "3.13.2",
+  "UpdateKeys": [ "Nexus:10622" ]
+}

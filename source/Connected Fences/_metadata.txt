@@ -6,9 +6,9 @@ mods:
    Connected Fences
 
 latest commit:
-   commit 0f332f51e52fba0448e361411738d54b58b192cf
-   Author: Sergio CortÃ©s <sergiocortmon@gmail.com>
-   Date:   Fri Dec 24 00:45:50 2021 +0100
+   commit f6192253d197fbdbb03108ebdfd41db0d49f06b2
+   Author: sergiomadd <sergiocortmon@gmail.com>
+   Date:   Thu Jan 27 23:28:44 2022 +0100
    
-       Update README.md
+       [IP] Added new nochest state for IOPipes. Refactored container item sending methods. Fixed a lot of bugs with getting path.
    

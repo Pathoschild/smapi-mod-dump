@@ -8,39 +8,45 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using System;
 using System.Linq;
 using StardewModdingAPI.Events;
 using StardewValley;
-using TheLion.Stardew.Common.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using Extensions;
+
+#endregion using directives
 
 internal class DemolitionistBuffDisplayUpdateTickedEvent : UpdateTickedEvent
 {
     private const int SHEET_INDEX_I = 41;
 
-    private readonly int _buffID;
+    private readonly int _buffId;
 
     /// <summary>Construct an instance.</summary>
     internal DemolitionistBuffDisplayUpdateTickedEvent()
     {
-        _buffID = (ModEntry.Manifest.UniqueID + Utility.Professions.IndexOf("Demolitionist")).GetHashCode();
+        _buffId = (ModEntry.Manifest.UniqueID + (int) Profession.Demolitionist).GetHashCode();
     }
 
     /// <inheritdoc />
-    public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        if (ModState.DemolitionistExcitedness <= 0) ModEntry.Subscriber.Unsubscribe(GetType());
+        if (ModEntry.State.Value.DemolitionistExcitedness <= 0) Disable();
 
         if (e.Ticks % 30 == 0)
         {
-            var buffDecay = ModState.DemolitionistExcitedness > 4 ? 2 : 1;
-            ModState.DemolitionistExcitedness = Math.Max(0, ModState.DemolitionistExcitedness - buffDecay);
+            var buffDecay = ModEntry.State.Value.DemolitionistExcitedness > 4 ? 2 : 1;
+            ModEntry.State.Value.DemolitionistExcitedness =
+                Math.Max(0, ModEntry.State.Value.DemolitionistExcitedness - buffDecay);
         }
 
-        var buffID = _buffID + ModState.DemolitionistExcitedness;
-        var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffID);
+        var buffId = _buffId + ModEntry.State.Value.DemolitionistExcitedness;
+        var buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == buffId);
         if (buff is not null) return;
 
         Game1.buffsDisplay.addOtherBuff(
@@ -53,7 +59,7 @@ internal class DemolitionistBuffDisplayUpdateTickedEvent : UpdateTickedEvent
                 0,
                 0,
                 0,
-                ModState.DemolitionistExcitedness,
+                ModEntry.State.Value.DemolitionistExcitedness,
                 0,
                 0,
                 1,
@@ -61,7 +67,7 @@ internal class DemolitionistBuffDisplayUpdateTickedEvent : UpdateTickedEvent
                 ModEntry.ModHelper.Translation.Get(
                     "demolitionist.name." + (Game1.player.IsMale ? "male" : "female")))
             {
-                which = buffID,
+                which = buffId,
                 sheetIndex = SHEET_INDEX_I,
                 millisecondsDuration = 0,
                 description = ModEntry.ModHelper.Translation.Get("demolitionist.buffdesc")

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MoreGrass.Config;
@@ -118,7 +118,7 @@ namespace MoreGrass
         private void ApplyHarmonyPatches()
         {
             // create a new harmony instance for patching source code
-            var harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
             // apply the patches
             harmony.Patch(

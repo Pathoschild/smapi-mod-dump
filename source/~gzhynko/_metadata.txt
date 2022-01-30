@@ -13,9 +13,9 @@ mods:
    Puffer Eggs to Mayonnaise → PEMAutomate
 
 latest commit:
-   commit a639c45941088f322007bd00f868099f2e642632
+   commit 1b58a899aaf4c86dce7d55b742af981a78df93ab
    Author: gzhynko <gleb.zhinko@protonmail.com>
-   Date:   Thu Dec 30 18:31:04 2021 +0300
+   Date:   Sun Jan 30 22:03:51 2022 +0300
    
-       bump ANW version
+       update mod versions
    

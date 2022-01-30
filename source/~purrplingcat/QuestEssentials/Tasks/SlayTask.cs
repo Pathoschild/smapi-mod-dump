@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Newtonsoft.Json;
 using QuestEssentials.Messages;
 using System.Collections.Generic;
 

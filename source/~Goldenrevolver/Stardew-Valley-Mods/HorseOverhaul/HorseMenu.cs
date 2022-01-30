@@ -33,13 +33,17 @@ namespace HorseOverhaul
             string petAnswer = horse.WasPet ? yes : no;
             string waterAnswer = horse.GotWater ? yes : no;
             string foodAnswer = horse.GotFed ? yes : no;
+            string heaterAnswer = horse.HasHeater ? yes : no;
 
             string friendship = mod.Helper.Translation.Get("Friendship", new { value = horse.Friendship }) + "\n";
             string petted = mod.Config.Petting ? mod.Helper.Translation.Get("GotPetted", new { value = petAnswer }) + "\n" : string.Empty;
             string water = mod.Config.Water ? mod.Helper.Translation.Get("GotWater", new { value = waterAnswer }) + "\n" : string.Empty;
-            string food = mod.Config.Feeding ? mod.Helper.Translation.Get("GotFood", new { value = foodAnswer }) : string.Empty;
+            string food = mod.Config.Feeding ? mod.Helper.Translation.Get("GotFood", new { value = foodAnswer }) + "\n" : string.Empty;
+            string heater = mod.Config.HorseHeater && Game1.IsWinter ? mod.Helper.Translation.Get("HasHeater", new { value = heaterAnswer }) + "\n" : string.Empty;
 
-            return $"{friendship}{petted}{water}{food}";
+            string res = $"{friendship}{petted}{water}{food}{heater}";
+            // remove last newline character
+            return res[0..^1];
         }
 
         public override int GetFriendship()

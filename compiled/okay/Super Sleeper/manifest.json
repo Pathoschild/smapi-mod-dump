@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SuperSleeper",
+  "Author": "spoocky123",
+  "Version": "1.0",
+  "Description": "Instantly replenishes stamina and health when in bed.",
+  "UniqueID": "spoocky123.SuperSleeper",
+  "EntryDll": "SuperSleeper.dll",
+  "MinimumApiVersion": "1.0",
+  "UpdateKeys": ["Nexus:10842"]
+}

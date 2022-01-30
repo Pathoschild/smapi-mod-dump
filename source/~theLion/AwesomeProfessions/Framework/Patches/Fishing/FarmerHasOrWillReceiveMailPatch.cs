@@ -8,14 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class FarmerHasOrWillReceiveMailPatch : BasePatch
@@ -42,7 +45,7 @@ internal class FarmerHasOrWillReceiveMailPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

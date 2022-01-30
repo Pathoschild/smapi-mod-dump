@@ -8,18 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using Newtonsoft.Json;
+using System;
+using System.Reflection;
 
 namespace FarmTypeManager
 {

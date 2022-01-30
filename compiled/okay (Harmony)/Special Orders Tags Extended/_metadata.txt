@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/9855
 IDs: atravita.SpecialOrdersExtended
-update keys: Nexus:9855, GitHub:atravita-mods/SpecialOrdersExtended
+update keys: Nexus:9855, ModDrop:1086743, GitHub:atravita-mods/SpecialOrdersExtended

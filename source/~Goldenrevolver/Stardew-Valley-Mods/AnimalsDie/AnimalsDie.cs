@@ -140,7 +140,7 @@ namespace AnimalsDie
                     if (animal.home.animalDoorOpen.Value)
                     {
                         // if it's winter it's too cold regardless of if there is a heater (no heater even grants one more point)
-                        if (IsWinter())
+                        if (Game1.IsWinter)
                         {
                             addIllness++;
                             potentialLog.Append("openDoorWinter ");
@@ -153,7 +153,7 @@ namespace AnimalsDie
                             potentialLog.Append("openDoorNoHeater ");
                         }
                     }
-                    else if (IsWinter() && !HasHeater(animal))
+                    else if (Game1.IsWinter && !HasHeater(animal))
                     {
                         addIllness++;
                         potentialLog.Append("WinterNoHeater ");
@@ -285,14 +285,9 @@ namespace AnimalsDie
             return false;
         }
 
-        private static bool IsWinter()
-        {
-            return Game1.currentSeason.Equals("winter");
-        }
-
         private static bool WasColdOutside()
         {
-            return Game1.wasRainingYesterday || IsWinter(); ////Game1.isRaining || Game1.isSnowing || Game1.isLightning
+            return Game1.wasRainingYesterday || Game1.IsWinter; ////Game1.isRaining || Game1.isSnowing || Game1.isLightning
         }
 
         private static bool HasHeater(FarmAnimal animal)

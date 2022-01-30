@@ -167,9 +167,7 @@ namespace BugNet
             // get translations
             string TranslateCritterName(string locale)
             {
-                return translatedCritterNames.TryGetValue(locale, out string translatedName)
-                    ? translatedName
-                    : defaultCritterName;
+                return translatedCritterNames.GetOrDefault(locale) ?? defaultCritterName;
             }
             this.GetTranslationsInAllLocales("cage.name", out string defaultCageName, out var cageNameTranslations, format: (locale, translation) => translation.Tokens(new { critterName = TranslateCritterName(locale) }).ToString());
             this.GetTranslationsInAllLocales("cage.description", out string defaultCageDescription, out var cageDescriptionTranslations);
@@ -265,8 +263,7 @@ namespace BugNet
                     localeSet => format?.Invoke(localeSet.Key, localeSet.Value) ?? localeSet.Value.ToString()
                 );
 
-            if (!translations.TryGetValue("default", out defaultText))
-                defaultText = null;
+            defaultText = translations.GetOrDefault("default");
             translations.Remove("default");
         }
 

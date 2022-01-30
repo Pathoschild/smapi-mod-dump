@@ -165,6 +165,14 @@ namespace AnimalHusbandryMod.tools
                         ReplaceIfOldItem(items, k);
                     }
                 }
+                if (o.heldObject.Value is Chest autoGrabber)
+                {
+                    NetObjectList<Item> items = autoGrabber.items;
+                    for (int k = 0; k < items.Count; k++)
+                    {
+                        ReplaceIfOldItem(items, k);
+                    }
+                }
             }
         }
 

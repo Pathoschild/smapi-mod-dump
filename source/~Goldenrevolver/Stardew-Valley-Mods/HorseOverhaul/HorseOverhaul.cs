@@ -29,7 +29,21 @@ namespace HorseOverhaul
     {
         None,
         Sonr,
-        Gwen
+        Gwen,
+        Magimatica
+    }
+
+    public static class ExtensionMethods
+    {
+        public static bool IsTractor(this Horse horse)
+        {
+            return horse?.modData.ContainsKey("Pathoschild.TractorMod") == true || horse?.Name.StartsWith("tractor/") == true;
+        }
+
+        public static bool IsGarage(this Stable stable)
+        {
+            return stable != null && (stable.buildingType.Value == "TractorGarage" || stable.maxOccupants.Value == -794739);
+        }
     }
 
     public class HorseOverhaul : Mod
@@ -71,19 +85,7 @@ namespace HorseOverhaul
 
         private Texture2D EmptyTroughOverlay { get; set; }
 
-        //// TODO add food preferences
         //// TODO horse race festival
-        //// TODO heater for winter somewhere near the stable
-
-        public static bool IsTractor(Horse horse)
-        {
-            return horse?.modData.TryGetValue("Pathoschild.TractorMod", out _) == true || horse?.Name.StartsWith("tractor/") == true;
-        }
-
-        public static bool IsGarage(Stable stable)
-        {
-            return stable != null && (stable.maxOccupants.Value == -794739 || stable.buildingType.Value == "TractorGarage");
-        }
 
         public override void Entry(IModHelper helper)
         {
@@ -97,6 +99,8 @@ namespace HorseOverhaul
                 HorseConfig.SetUpModConfigMenu(Config, this);
                 BetterRanchingApi = SetupBetterRanching();
             };
+
+            SoundModule.SetupSounds(this);
 
             Helper.Events.GameLoop.SaveLoaded += delegate { SetOverlays(); };
 
@@ -154,6 +158,7 @@ namespace HorseOverhaul
             return oldTexture;
         }
 
+        // this is legacy code for backwards compatibility, as we now patch GetSpriteWidthForPositioning
         private static void ResetHorses()
         {
             foreach (Building building in Game1.getFarm().buildings)
@@ -164,42 +169,6 @@ namespace HorseOverhaul
                     stable.getStableHorse().forceOneTileWide.Value = false;
                 }
             }
-        }
-
-        private static bool IsInRange(Character chara, int mouseX, int mouseY, bool ignoreMousePosition)
-        {
-            if (Utility.withinRadiusOfPlayer((int)chara.Position.X, (int)chara.Position.Y, 1, Game1.player))
-            {
-                if (ignoreMousePosition)
-                {
-                    return Game1.player.FacingDirection switch
-                    {
-                        0 => Game1.player.getStandingY() > chara.getStandingY() && Math.Abs(Game1.player.getStandingX() - chara.getStandingX()) < 48,
-                        1 => Game1.player.getStandingX() < chara.getStandingX() && Math.Abs(Game1.player.getStandingY() - chara.getStandingY()) < 48,
-                        2 => Game1.player.getStandingY() < chara.getStandingY() && Math.Abs(Game1.player.getStandingX() - chara.getStandingX()) < 48,
-                        3 => Game1.player.getStandingX() > chara.getStandingX() && Math.Abs(Game1.player.getStandingY() - chara.getStandingY()) < 48,
-                        _ => false,
-                    };
-                }
-                else
-                {
-                    return Utility.distance(mouseX, chara.Position.X, mouseY, chara.Position.Y) <= 70;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsEdible(Item item)
-        {
-            return item.getCategoryName() == "Cooking" || item.healthRecoveredOnConsumption() > 0;
-        }
-
-        private static int CalculateExpGain(Item item, int currentFriendship)
-        {
-            int baseMult = item.getCategoryName() == "Cooking" ? 10 : 5;
-
-            return (int)Math.Floor((baseMult + (item.healthRecoveredOnConsumption() / 10)) * Math.Pow(1.2, -currentFriendship / 200));
         }
 
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
@@ -213,11 +182,11 @@ namespace HorseOverhaul
 
             if (message != null)
             {
-                if (e.Type == "syncRequest" && Context.IsMainPlayer)
+                if (e.Type == StateMessage.SyncRequestType && Context.IsMainPlayer)
                 {
                     foreach (var horse in Horses)
                     {
-                        Helper.Multiplayer.SendMessage(new StateMessage(horse), "sync", modIDs: new[] { ModManifest.UniqueID }, new[] { e.FromPlayerID });
+                        Helper.Multiplayer.SendMessage(new StateMessage(horse), StateMessage.SyncType, modIDs: new[] { ModManifest.UniqueID }, new[] { e.FromPlayerID });
                     }
                 }
                 else
@@ -226,29 +195,36 @@ namespace HorseOverhaul
                     {
                         if (horse?.Stable?.HorseId == message.HorseID)
                         {
-                            if (e.Type == "gotFed")
+                            if (e.Type == StateMessage.GotFoodType)
                             {
                                 horse.GotFed = true;
                                 horse.Friendship = message.Friendship;
                             }
 
-                            if (e.Type == "gotWater")
+                            if (e.Type == StateMessage.GotWaterType)
                             {
                                 horse.GotWater = true;
                                 horse.Friendship = message.Friendship;
                             }
 
-                            if (e.Type == "wasPet")
+                            if (e.Type == StateMessage.GotPettedType)
                             {
                                 horse.WasPet = true;
                                 horse.Friendship = message.Friendship;
                             }
 
-                            if (e.Type == "sync")
+                            if (e.Type == StateMessage.GotHeaterType)
+                            {
+                                horse.HasHeater = true;
+                                horse.Friendship = message.Friendship;
+                            }
+
+                            if (e.Type == StateMessage.SyncType)
                             {
                                 horse.WasPet = message.WasPet;
                                 horse.GotFed = message.GotFed;
                                 horse.GotWater = message.GotWater;
+                                horse.HasHeater = message.HasHeater;
                                 horse.Friendship = message.Friendship;
 
                                 if (message.StableID.HasValue)
@@ -274,9 +250,9 @@ namespace HorseOverhaul
 
                     var path = data.GetType().GetProperty("DirectoryPath");
 
-                    if (path != null && path.GetValue(data) != null)
+                    if (path?.GetValue(data) != null)
                     {
-                        var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "OpenMenuKey" }, data.Manifest.Name);
+                        var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "OpenMenuKey" }, data.Manifest.Name, false);
 
                         if (list["OpenMenuKey"].ToLower() == "p")
                         {
@@ -320,7 +296,7 @@ namespace HorseOverhaul
 
             foreach (Building building in Game1.getFarm().buildings)
             {
-                if (building is Stable stable && !IsGarage(stable))
+                if (building is Stable stable && !stable.IsGarage())
                 {
                     horseIDs.Add(stable.HorseId);
                 }
@@ -372,7 +348,7 @@ namespace HorseOverhaul
 
                 if (path != null && path.GetValue(data) != null)
                 {
-                    var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "color palette", "stable" }, data.Manifest.Name);
+                    var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "color palette", "stable" }, data.Manifest.Name, false);
 
                     if (list["stable"].ToLower() != "false")
                     {
@@ -391,7 +367,7 @@ namespace HorseOverhaul
 
                 if (path != null && path.GetValue(data) != null)
                 {
-                    var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stable" }, data.Manifest.Name);
+                    var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stable" }, data.Manifest.Name, false);
 
                     if (list["stable"].ToLower() == "true")
                     {
@@ -411,7 +387,7 @@ namespace HorseOverhaul
 
                 if (path != null && path.GetValue(data) != null)
                 {
-                    var dict = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stableOption" }, data.Manifest.Name);
+                    var dict = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "stableOption" }, data.Manifest.Name, false);
 
                     SetupGwenTextures(dict);
 
@@ -427,7 +403,7 @@ namespace HorseOverhaul
 
                 if (path != null && path.GetValue(data) != null)
                 {
-                    var dict = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "buildingsReplaced", "stableOption" }, data.Manifest.Name);
+                    var dict = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "buildingsReplaced", "stableOption" }, data.Manifest.Name, false);
 
                     if (dict["buildingsReplaced"].Contains("stable"))
                     {
@@ -441,6 +417,8 @@ namespace HorseOverhaul
             if (Helper.ModRegistry.IsLoaded("magimatica.SeasonalVanillaBuildings") || Helper.ModRegistry.IsLoaded("red.HudsonValleyBuildings"))
             {
                 EmptyTroughOverlay = Helper.Content.Load<Texture2D>($"assets/overlay_empty_no_bucket.png", ContentSource.ModFolder);
+
+                seasonalVersion = SeasonalVersion.Magimatica;
 
                 return;
             }
@@ -474,7 +452,7 @@ namespace HorseOverhaul
             return null;
         }
 
-        private Dictionary<string, string> ReadConfigFile(string path, string modFolderPath, string[] options, string modName)
+        private Dictionary<string, string> ReadConfigFile(string path, string modFolderPath, string[] options, string modName, bool isNonString)
         {
             string fullPath = Path.Combine(modFolderPath, PathUtilities.NormalizePath(path));
 
@@ -484,14 +462,15 @@ namespace HorseOverhaul
             {
                 string fullText = File.ReadAllText(fullPath).ToLower();
                 var split = fullText.Split('\"');
+                int offset = isNonString ? 1 : 2;
 
                 for (int i = 0; i < split.Length; i++)
                 {
                     foreach (var option in options)
                     {
-                        if (option.ToLower() == split[i].Trim() && i + 2 < split.Length)
+                        if (option.ToLower() == split[i].Trim() && i + offset < split.Length)
                         {
-                            string optionText = split[i + 2].Trim();
+                            string optionText = split[i + offset].Trim();
 
                             result.Add(option, optionText);
                         }
@@ -523,11 +502,11 @@ namespace HorseOverhaul
 
             if (seasonalVersion == SeasonalVersion.Sonr)
             {
-                EmptyTroughOverlay = Helper.Content.Load<Texture2D>($"assets/sonr/overlay_empty_{Game1.currentSeason}.png", ContentSource.ModFolder);
+                EmptyTroughOverlay = Helper.Content.Load<Texture2D>($"assets/sonr/overlay_empty_{Game1.currentSeason.ToLower()}.png", ContentSource.ModFolder);
             }
             else if (seasonalVersion == SeasonalVersion.Gwen)
             {
-                if (Game1.currentSeason == "winter" && Game1.isSnowing)
+                if (Game1.IsWinter && Game1.isSnowing)
                 {
                     EmptyTroughOverlay = Helper.Content.Load<Texture2D>($"assets/gwen/overlay_1_snow_peta.png", ContentSource.ModFolder);
                 }
@@ -541,10 +520,10 @@ namespace HorseOverhaul
             // the overridden method makes sure to not change the sprite if the config disallows it
             foreach (Building building in Game1.getFarm().buildings)
             {
-                if (building is Stable stable && !IsGarage(stable))
+                if (building is Stable stable && !stable.IsGarage())
                 {
                     // empty the water troughs
-                    if (Context.IsMainPlayer && stable?.modData?.TryGetValue($"{ModManifest.UniqueID}/gotWater", out _) == true)
+                    if (Context.IsMainPlayer && stable?.modData?.ContainsKey($"{ModManifest.UniqueID}/gotWater") == true)
                     {
                         stable.modData.Remove($"{ModManifest.UniqueID}/gotWater");
                     }
@@ -565,12 +544,7 @@ namespace HorseOverhaul
             {
                 if (building is Stable stable)
                 {
-                    if (Config.ThinHorse && stable.getStableHorse() != null)
-                    {
-                        stable.getStableHorse().forceOneTileWide.Value = true;
-                    }
-
-                    if (IsGarage(stable))
+                    if (stable.IsGarage())
                     {
                         continue;
                     }
@@ -597,6 +571,11 @@ namespace HorseOverhaul
                     }
 
                     Horses.Add(new HorseWrapper(stable, this, saddleBag, stableID));
+
+                    if (Context.IsMainPlayer && Config.HorseHeater)
+                    {
+                        CheckForHeater(stable);
+                    }
                 }
             }
 
@@ -606,7 +585,7 @@ namespace HorseOverhaul
                 {
                     Pet pet = Game1.player.getPet();
 
-                    if (pet?.modData?.TryGetValue($"{ModManifest.UniqueID}/gotFed", out _) == true)
+                    if (pet?.modData?.ContainsKey($"{ModManifest.UniqueID}/gotFed") == true)
                     {
                         pet.modData.Remove($"{ModManifest.UniqueID}/gotFed");
                     }
@@ -615,6 +594,53 @@ namespace HorseOverhaul
             else
             {
                 Helper.Multiplayer.SendMessage(new StateMessage(), "syncRequest", modIDs: new[] { ModManifest.UniqueID }, new[] { Game1.MasterPlayer.UniqueMultiplayerID });
+            }
+        }
+
+        private void CheckForHeater(Stable stable)
+        {
+            var horse = stable.getStableHorse();
+
+            if (horse != null && Game1.IsWinter)
+            {
+                // this stable skin includes a heater, so we give the player the bonus for free
+                if (seasonalVersion == SeasonalVersion.Magimatica)
+                {
+                    HorseWrapper horseW = null;
+                    Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).Do(h => horseW = h);
+
+                    if (horseW != null)
+                    {
+                        horseW.AddHeaterBonus();
+                    }
+
+                    return;
+                }
+
+                var farmObjects = Game1.getFarm().Objects.Values;
+
+                foreach (var item in farmObjects)
+                {
+                    if (item != null && item.Name.Equals("Heater"))
+                    {
+                        // check if the heater is on any tile of the stable or one tile around it
+                        if (stable.tileX.Value - 1 <= item.TileLocation.X && item.TileLocation.X <= stable.tileX.Value + 4)
+                        {
+                            if (stable.tileY.Value - 1 <= item.TileLocation.Y && item.TileLocation.Y <= stable.tileY.Value + 2)
+                            {
+                                HorseWrapper horseW = null;
+                                Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).Do(h => horseW = h);
+
+                                if (horseW != null)
+                                {
+                                    horseW.AddHeaterBonus();
+                                }
+
+                                return;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -712,11 +738,11 @@ namespace HorseOverhaul
                 bool ignoreMousePosition = !mouseButtons.Contains(e.Button);
                 Point cursorPosition = Game1.getMousePosition();
 
-                bool interacted = CheckHorseInteraction(Game1.currentLocation, cursorPosition.X + Game1.viewport.X, cursorPosition.Y + Game1.viewport.Y, ignoreMousePosition);
+                bool interacted = Feeding.CheckHorseInteraction(this, Game1.currentLocation, cursorPosition.X + Game1.viewport.X, cursorPosition.Y + Game1.viewport.Y, ignoreMousePosition);
 
                 if (!interacted)
                 {
-                    CheckPetInteraction(cursorPosition.X + Game1.viewport.X, cursorPosition.Y + Game1.viewport.Y, ignoreMousePosition);
+                    Feeding.CheckPetInteraction(this, cursorPosition.X + Game1.viewport.X, cursorPosition.Y + Game1.viewport.Y, ignoreMousePosition);
                 }
             }
         }
@@ -744,108 +770,13 @@ namespace HorseOverhaul
 
             if (Config.AlternateSaddleBagAndFeedKey.JustPressed())
             {
-                bool interacted = CheckHorseInteraction(Game1.currentLocation, 0, 0, true);
+                bool interacted = Feeding.CheckHorseInteraction(this, Game1.currentLocation, 0, 0, true);
 
                 if (!interacted)
                 {
-                    CheckPetInteraction(0, 0, true);
+                    Feeding.CheckPetInteraction(this, 0, 0, true);
                 }
             }
-        }
-
-        private bool CheckHorseInteraction(GameLocation currentLocation, int mouseX, int mouseY, bool ignoreMousePosition)
-        {
-            foreach (Horse horse in currentLocation.characters.OfType<Horse>())
-            {
-                // check if the interaction was a mouse click on a horse or a button click near a horse
-                if (horse != null && !IsTractor(horse) && IsInRange(horse, mouseX, mouseY, ignoreMousePosition))
-                {
-                    HorseWrapper horseW = null;
-                    Horses.Where(h => h?.Horse?.HorseId == horse.HorseId).Do(h => horseW = h);
-
-                    if (Game1.player.CurrentItem != null && Config.Feeding)
-                    {
-                        Item currentItem = Game1.player.CurrentItem;
-
-                        if (IsEdible(currentItem))
-                        {
-                            if (horseW.GotFed && !Config.AllowMultipleFeedingsADay)
-                            {
-                                Game1.drawObjectDialogue(Helper.Translation.Get("AteEnough", new { name = horse.displayName }));
-                            }
-                            else
-                            {
-                                Game1.drawObjectDialogue(Helper.Translation.Get("AteFood", new { name = horse.displayName, foodName = currentItem.DisplayName }));
-
-                                if (Config.ThinHorse)
-                                {
-                                    horse.doEmote(Character.happyEmote);
-                                }
-
-                                Game1.player.reduceActiveItemByOne();
-
-                                horseW.JustGotFood(CalculateExpGain(currentItem, horseW.Friendship));
-                            }
-
-                            return true;
-                        }
-                    }
-
-                    if (Context.IsWorldReady && Context.CanPlayerMove && Context.IsPlayerFree && Config.SaddleBag)
-                    {
-                        if (horseW.SaddleBag != null)
-                        {
-                            horseW.SaddleBag.ShowMenu();
-
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private bool CheckPetInteraction(int mouseX, int mouseY, bool ignoreMousePosition)
-        {
-            if (!Config.PetFeeding || !Game1.player.hasPet())
-            {
-                return false;
-            }
-
-            Pet pet = Game1.player.getPet();
-
-            if (pet != null && IsInRange(pet, mouseX, mouseY, ignoreMousePosition))
-            {
-                if (Game1.player.CurrentItem != null)
-                {
-                    Item currentItem = Game1.player.CurrentItem;
-
-                    if (IsEdible(currentItem))
-                    {
-                        if (pet?.modData?.TryGetValue($"{ModManifest.UniqueID}/gotFed", out _) == true && !Config.AllowMultipleFeedingsADay)
-                        {
-                            Game1.drawObjectDialogue(Helper.Translation.Get("AteEnough", new { name = pet.displayName }));
-                        }
-                        else
-                        {
-                            pet.modData.Add($"{ModManifest.UniqueID}/gotFed", "fed");
-
-                            Game1.drawObjectDialogue(Helper.Translation.Get("AteFood", new { name = pet.displayName, foodName = currentItem.DisplayName }));
-
-                            pet.doEmote(Character.happyEmote);
-
-                            Game1.player.reduceActiveItemByOne();
-
-                            pet.friendshipTowardFarmer.Set(Math.Min(1000, pet.friendshipTowardFarmer.Value + CalculateExpGain(currentItem, pet.friendshipTowardFarmer.Value)));
-                        }
-
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         private void OpenHorseMenu()

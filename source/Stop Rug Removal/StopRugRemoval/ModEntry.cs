@@ -8,137 +8,142 @@
 **
 *************************************************/
 
-using StardewValley.Objects;
+using System.Reflection;
+using System.Text;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI.Events;
+using StardewValley.Objects;
 
 namespace StopRugRemoval;
 
-public class ModConfig
-{
-    public bool Enabled { get; set; } = true;
-    //public bool CanPlaceRugsOutside { get; set; } = false;
-    public bool CanPlaceRugsUnder { get; set; } = true;
-}
+/// <summary>
+/// Entry class to the mod.
+/// </summary>
 public class ModEntry : Mod
 {
+    // the following two fields are set in the entry method, which is approximately as close as I can get to the constructor anyways.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    /// <summary>
+    /// Instance that holds the logger for this file.
+    /// </summary>
+    [SuppressMessage("ReSharper", "CA2211", Justification = "This is needed to give harmony patches access to the logger. Also, multithreading is not used anyways.")]
+    [SuppressMessage("StyleCop", "SA1401", Justification = "The logger, so unlikely to change in the future")]
     public static IMonitor ModMonitor;
-    private static ModConfig config;
+
+    /// <summary>
+    /// Instance that holds the configuration for this mod.
+    /// </summary>
+    [SuppressMessage("ReSharper", "CA2211", Justification = "This is needed to give harmony patches access to the configuration. Also, multithreading is not used anyways.")]
+    [SuppressMessage("StyleCop", "SA1401", Justification = "The config file, unlikely to change in the future")]
+    public static ModConfig Config;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+    /// <inheritdoc/>
     public override void Entry(IModHelper helper)
     {
-        config = Helper.ReadConfig<ModConfig>();
-        ModMonitor = Monitor;
+        try
+        {
+            Config = this.Helper.ReadConfig<ModConfig>();
+        }
+        catch
+        {
+            this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
+            Config = new();
+        }
+
+        ModMonitor = this.Monitor;
         I18n.Init(helper.Translation);
 
-        Harmony harmony = new(ModManifest.UniqueID);
-        ModMonitor.Log("Patching Furniture::CanBeRemoved to prevent accidental rug removal", LogLevel.Debug);
-        harmony.Patch(
-            original: AccessTools.Method(typeof(Furniture), nameof(Furniture.canBeRemoved)),
-            postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.PostfixCanBeRemoved))
-            );
-        //harmony.Patch(
-        //     original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.CanPlaceThisFurnitureHere)),
-        //     postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.PostfixCanPlaceFurnitureHere))
-        //     );
+        this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
 
-        helper.Events.GameLoop.GameLaunched += SetUpConfig;
+        helper.Events.GameLoop.GameLaunched += this.SetUpConfig;
+        //helper.Events.GameLoop.Saving += this.BeforeSave;
+        //saved as well?
     }
 
-    private void SetUpConfig(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+    /// <summary>
+    /// Applies and logs this mod's harmony patches.
+    /// </summary>
+    /// <param name="harmony">My harmony instance.</param>
+    private void ApplyPatches(Harmony harmony)
     {
-        var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-        if (configMenu is null)
+        // handle patches from annotations.
+        harmony.PatchAll();
+        foreach (MethodBase? method in harmony.GetPatchedMethods())
+        {
+            if (method is null)
+            {
+                continue;
+            }
+            Patches patches = Harmony.GetPatchInfo(method);
+
+            StringBuilder sb = new();
+            sb.Append("Patched method ").Append(method.GetFullName());
+            foreach (Patch patch in patches.Prefixes.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
+            {
+                sb.AppendLine().Append("\tPrefixed with method: ").Append(patch.PatchMethod.GetFullName());
+            }
+            foreach (Patch patch in patches.Postfixes.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
+            {
+                sb.AppendLine().Append("\tPostfixed with method: ").Append(patch.PatchMethod.GetFullName());
+            }
+            foreach (Patch patch in patches.Transpilers.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
+            {
+                sb.AppendLine().Append("\tTranspiled with method: ").Append(patch.PatchMethod.GetFullName());
+            }
+            foreach (Patch patch in patches.Finalizers.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
+            {
+                sb.AppendLine().Append("\tFinalized with method: ").Append(patch.PatchMethod.GetFullName());
+            }
+            ModMonitor.Log(sb.ToString(), LogLevel.Trace);
+        }
+    }
+
+    /// <summary>
+    /// Clear all NoSpawn tiles before saving.
+    /// </summary>
+    /// <param name="sender">From SMAPI.</param>
+    /// <param name="e">Saving Event arguments...</param>
+    /// <exception cref="NotImplementedException">Haven't finished writing this yet.</exception>
+    private void BeforeSave(object? sender, SavingEventArgs e) => throw new NotImplementedException();
+
+    private void SetUpConfig(object? sender, GameLaunchedEventArgs e)
+    {
+        IModInfo gmcm = this.Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu");
+        if (gmcm is null)
+        {
+            this.Monitor.Log(I18n.GmcmNotFound(), LogLevel.Debug);
             return;
+        }
+        if (gmcm.Manifest.Version.IsOlderThan("1.6.0"))
+        {
+            this.Monitor.Log(I18n.GmcmVersionMessage(version: "1.6.0", currentversion: gmcm.Manifest.Version), LogLevel.Info);
+            return;
+        }
+
+        var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+        if (configMenu is null)
+        {
+            return;
+        }
 
         configMenu.Register(
-            mod: ModManifest,
-            reset: () => config = new ModConfig(),
-            save: () => Helper.WriteConfig(config)
+            mod: this.ModManifest,
+            reset: () => Config = new ModConfig(),
+            save: () => this.Helper.WriteConfig(Config)
             );
 
         configMenu.AddParagraph(
-            mod: ModManifest,
+            mod: this.ModManifest,
             text: I18n.Mod_Description
             );
 
         configMenu.AddBoolOption(
-            mod: ModManifest,
-            getValue: () => config.Enabled,
-            setValue: value => config.Enabled = value,
+            mod: this.ModManifest,
+            getValue: () => Config.Enabled,
+            setValue: value => Config.Enabled = value,
             name: I18n.Enabled_Title
             );
-    }
-
-    private static bool PrefixCanBePlacedHere(Furniture __instance, GameLocation __0, Vector2 tile, bool __result)
-    {
-        try
-        {
-            if (!config.Enabled || !config.CanPlaceRugsUnder) { return true; }
-            if (__instance.furniture_type.Value.Equals(Furniture.rug)) { return true; }
-            if (__instance.placementRestriction != 0) { return true; }//someone requested a custom placement restriction, respect that.
-            Rectangle bounds = __instance.boundingBox.Value;
-            bool okaytoplace = true;
-            for (int x = 0; x < bounds.Width / 64; x++)
-            {
-                for (int y = 0; y < bounds.Height / 64; y++)
-                {
-                    //check for large terrain+terrain, refuse placement.
-                    //check for is placeable everywhere, and if the thing that's blocking placement is an Object or 
-                    //another furniture item, I'm still okay to place.
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            ModMonitor.Log($"Ran into errors in PrefixCanBePlacedHere for {__instance.Name} at {__0.NameOrUniqueName} ({tile.X}, {tile.Y})\n\n{ex}", LogLevel.Error);
-        }
-        return true;
-    }
-    //private static void PostfixCanPlaceFurnitureHere(GameLocation __instance, Furniture __0, ref bool __result)
-    //{
-    //    try
-    //    {
-    //        if (!config.Enabled || !config.CanPlaceRugsOutside) { return; } //mod disabled
-    //        if (__instance is MineShaft || __instance is VolcanoDungeon) { return; }//do not want to affect mines
-    //        if (__result) { return; }//can already be placed
-    //        if (__0.placementRestriction != 0) { return; }//someone requested a custom placement restriction, respect that.
-    //        if (__0.furniture_type.Value.Equals(Furniture.rug)) { __result = true; return; }//Let me place rug
-    //    }
-    //    catch(Exception ex)
-    //    {
-    //        ModMonitor.Log($"Failed in attempting to place rug outside in PostfixCanPlaceFurnitureHere.\n{ex}", LogLevel.Error);
-    //    }
-    //}
-
-    private static void PostfixCanBeRemoved(Furniture __instance, ref Farmer __0, ref bool __result)
-    {
-        try
-        {
-            if (!config.Enabled) { return; } //mod disabled
-            if (!__result) { return; } //can't be removed already
-            if (!__instance.furniture_type.Value.Equals(Furniture.rug)) { return; } //only want to deal with rugs
-            GameLocation currentLocation = __0.currentLocation; //get location of farmer
-            if (currentLocation == null) { return; }
-
-            Rectangle bounds = __instance.boundingBox.Value;
-            ModMonitor.Log($"Checking rug: {bounds.X / 64f}, {bounds.Y / 64f}, W/H {bounds.Width / 64f}/{bounds.Height / 64f}");
-
-            for (int x = 0; x < bounds.Width / 64; x++)
-            {
-                for (int y = 0; y < bounds.Height / 64; y++)
-                {
-                    if (!currentLocation.isTileLocationTotallyClearAndPlaceable(x + bounds.X / 64, y + bounds.Y / 64))
-                    {
-                        Game1.showRedMessage(I18n.RugRemovalMessage());
-                        __result = false;
-                        return;
-                    };
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            ModMonitor.Log($"Ran into issues with postfix for Furniture::CanBeRemoved for {__instance.Name}\n\n{ex}", LogLevel.Error);
-        }
     }
 }

@@ -13,10 +13,29 @@ namespace ForageFantasy
     using StardewModdingAPI;
     using StardewValley;
     using StardewValley.TerrainFeatures;
+    using System;
     using StardewObject = StardewValley.Object;
+
+    public static class ExtensionMethods
+    {
+        public static bool IsMushroomBox(this StardewObject o)
+        {
+            return o != null && o.bigCraftable.Value && o.ParentSheetIndex == 128;
+        }
+
+        public static bool IsTapper(this StardewObject o)
+        {
+            return o != null && o.bigCraftable.Value && (o.ParentSheetIndex == 105 || o.ParentSheetIndex == 264);
+        }
+    }
 
     internal class TapperAndMushroomQualityLogic
     {
+        public static int GetTapperProductValueForDaysNeeded(int daysNeeded)
+        {
+            return (int)Math.Round(daysNeeded * (150f / 7f), MidpointRounding.AwayFromZero);
+        }
+
         public static void IncreaseTreeAges(ForageFantasy mod)
         {
             if (!Context.IsMainPlayer)
@@ -38,6 +57,11 @@ namespace ForageFantasy
 
         public static void IncreaseTreeAge(ForageFantasy mod, Tree tree)
         {
+            if (tree.growthStage.Value < 5)
+            {
+                return;
+            }
+
             tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out string moddata);
 
             if (!string.IsNullOrEmpty(moddata))
@@ -51,29 +75,19 @@ namespace ForageFantasy
             }
         }
 
-        public static bool IsMushroomBox(StardewObject o)
-        {
-            return o != null && o.bigCraftable.Value && o.ParentSheetIndex == 128;
-        }
-
-        public static bool IsTapper(StardewObject o)
-        {
-            return o != null && o.bigCraftable.Value && (o.ParentSheetIndex == 105 || o.ParentSheetIndex == 264);
-        }
-
-        public static void RewardMushroomBoxExp(ForageFantasy mod)
+        public static void RewardMushroomBoxExp(ForageFantasy mod, Farmer player)
         {
             if (mod.Config.MushroomXPAmount > 0)
             {
-                Game1.player.gainExperience(2, mod.Config.MushroomXPAmount);
+                player.gainExperience(2, mod.Config.MushroomXPAmount);
             }
         }
 
-        public static void RewardTapperExp(ForageFantasy mod)
+        public static void RewardTapperExp(ForageFantasy mod, Farmer player)
         {
             if (mod.Config.TapperXPAmount > 0)
             {
-                Game1.player.gainExperience(2, mod.Config.TapperXPAmount);
+                player.gainExperience(2, mod.Config.TapperXPAmount);
             }
         }
 
@@ -81,7 +95,7 @@ namespace ForageFantasy
         {
             int option = mod.Config.TapperQualityOptions;
 
-            if (option == 1 || option == 2)
+            if (option is 1 or 2)
             {
                 // has tapper profession or it's not required
                 if (!mod.Config.TapperQualityRequiresTapperPerk || player.professions.Contains(Farmer.tapper))
@@ -89,7 +103,7 @@ namespace ForageFantasy
                     return ForageFantasy.DetermineForageQuality(player, mod.Config.TapperQualityOptions == 1);
                 }
             }
-            else if (option == 3 || option == 4)
+            else if (option is 3 or 4)
             {
                 // quality increase once a year
                 return DetermineTreeQuality(mod, tree);
@@ -99,7 +113,7 @@ namespace ForageFantasy
             return 0;
         }
 
-        private static int DetermineTreeQuality(ForageFantasy mod, Tree tree)
+        public static int DetermineTreeQuality(ForageFantasy mod, Tree tree)
         {
             tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out string moddata);
 

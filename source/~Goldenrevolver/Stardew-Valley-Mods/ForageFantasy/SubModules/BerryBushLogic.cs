@@ -37,24 +37,25 @@ namespace ForageFantasy
 
             string season = (bush.overrideSeason.Value == -1) ? Game1.GetSeasonForLocation(bush.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
 
-            if (season == "spring")
+            switch (season)
             {
-                shakeOff = 296;
-            }
-            else if (season == "fall")
-            {
-                shakeOff = 410;
-            }
-            else
-            {
-                return;
+                case "spring":
+                    shakeOff = 296;
+                    break;
+
+                case "fall":
+                    shakeOff = 410;
+                    break;
+
+                default:
+                    return;
             }
 
             bool gaveExp = false;
 
             foreach (var item in bush.currentLocation.debris)
             {
-                if (item != null && item.item != null && item.item.ParentSheetIndex == shakeOff)
+                if (item?.item?.ParentSheetIndex == shakeOff)
                 {
                     if (!gaveExp)
                     {

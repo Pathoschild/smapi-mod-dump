@@ -8,22 +8,29 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.Player;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using Extensions;
+using TreasureHunt;
+
+#endregion using directives
 
 internal class ProspectorWarpedEvent : WarpedEvent
 {
     /// <inheritdoc />
-    public override void OnWarped(object sender, WarpedEventArgs e)
+    protected override void OnWarpedImpl(object sender, WarpedEventArgs e)
     {
-        if (!e.IsLocalPlayer) return;
+        if (e.NewLocation.Equals(e.OldLocation)) return;
 
-        ModState.ProspectorHunt ??= new();
-        if (ModState.ProspectorHunt.IsActive) ModState.ProspectorHunt.End();
-        if (Game1.CurrentEvent is null && e.NewLocation is MineShaft)
-            ModState.ProspectorHunt.TryStartNewHunt(e.NewLocation);
+        ModEntry.State.Value.ProspectorHunt ??= new ProspectorHunt();
+        if (ModEntry.State.Value.ProspectorHunt.IsActive) ModEntry.State.Value.ProspectorHunt.Fail();
+        if (!Game1.eventUp && e.NewLocation is MineShaft shaft && !shaft.IsTreasureOrSafeRoom())
+            ModEntry.State.Value.ProspectorHunt.TryStartNewHunt(e.NewLocation);
     }
 }

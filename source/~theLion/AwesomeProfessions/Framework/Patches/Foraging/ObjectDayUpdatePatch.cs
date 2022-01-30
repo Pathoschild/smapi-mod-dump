@@ -8,13 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class ObjectDayUpdatePatch : BasePatch
@@ -31,11 +37,11 @@ internal class ObjectDayUpdatePatch : BasePatch
     [HarmonyPostfix]
     private static void ObjectDayUpdatePostfix(SObject __instance)
     {
-        if (!__instance.bigCraftable.Value || __instance.ParentSheetIndex != 128 ||
-            __instance.heldObject.Value is null || !Game1.MasterPlayer.HasProfession("Ecologist"))
+        if (!__instance.IsMushroomBox() || __instance.heldObject.Value is null ||
+            !Game1.MasterPlayer.HasProfession(Profession.Ecologist))
             return;
 
-        __instance.heldObject.Value.Quality = Utility.Professions.GetEcologistForageQuality();
+        __instance.heldObject.Value.Quality = Game1.MasterPlayer.GetEcologistForageQuality();
     }
 
     #endregion harmony patches

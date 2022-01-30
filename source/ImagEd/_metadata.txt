@@ -6,9 +6,9 @@ mods:
    ImagEd
 
 latest commit:
-   commit cad31685b6eb0d7efe431d71d69507113c694a40
+   commit 59a17330604d2556d29df49559ef63bc658dc11b
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Dec 6 17:45:38 2021 +0100
+   Date:   Sun Jan 30 17:58:02 2022 +0100
    
-       Recolor didn't work anymore (wrong variable used), fixed
+       Prepare for release.
    

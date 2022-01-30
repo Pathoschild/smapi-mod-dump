@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JoeStrout/Farmtronics
+   Git: https://github.com/JoeStrout/Farmtronics.git
+
+mods:
+   Farmtronics
+
+latest commit:
+   commit ea79ed5cbf214bd2601d653d3f1b30305991237c
+   Author: Joe Strout <joe@strout.net>
+   Date:   Sun Jan 30 10:47:37 2022 -0700
+   
+       Invaders game now done except for (1) player hits; (2) levels, and (3) UFO.
+   

@@ -11,11 +11,11 @@
 {
   "Name": "Quest Framework",
   "Author": "PurrplingCat",
-  "Version": "1.4.0",
+  "Version": "1.4.1-dev.220103",
   "Description": "Add, edit and manage your own quests and create new quest types.",
   "UniqueID": "PurrplingCat.QuestFramework",
   "EntryDll": "QuestFramework.dll",
-  "MinimumApiVersion": "3.12.7",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [
     "Nexus:6414"
   ],

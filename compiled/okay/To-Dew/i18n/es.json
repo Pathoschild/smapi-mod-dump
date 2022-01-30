@@ -1,64 +1,63 @@
 {
-    // Cadenas para la configuración del menú Genérico Mod Config
-    "config.hotkey": "Tecla de acceso rápido",
-    "config.hotkey.desc": "La clave para abrir la lista de tareas pendientes",
-    "config.secondary-close-button": "Botón de cierre secundario",
-    "config.secondary-close-button.desc": "Una tecla alternativa (además de ESC) para cerrar la lista de tareas",
-    "config.debug": "Depurar",
-    "config.debug.desc": "Habilitar la salida de depuración en el registro",
+    // Strings for the Generic Mod Config Menu configuration
+    "config.hotkey": "Tecla de acceso directo",
+    "config.hotkey.desc": "El botón para mostrar la lista de tareas pendientes",
+    "config.secondary-close-button": "Tecla secundaria para cerrar",
+    "config.secondary-close-button.desc": "Un botón alternativo (además de ESC) para cerrar la lista de tareas pendientes",
+    "config.debug": "Depuración",
+    "config.debug.desc": "Activar la salida de depuración en el registro",
     "config.overlay": "Superposición",
-    "config.overlay.desc": "Configurar la superposición siempre activa que muestra la lista",
-    "config.overlay.enabled": "Habilitado",
-    "config.overlay.enabled.desc": "¿Está habilitada la superposición?",
-    "config.overlay.hotkey": "Tecla de acceso rápido",
-    "config.overlay.hotkey.desc": "Tecla de acceso rápido para mostrar u ocultar",
-    "config.overlay.hide-at-festivals": "Ocultar en festivales",
+    "config.overlay.desc": "Configurar la superposición permanente de la lista",
+    "config.overlay.enabled": "Activado",
+    "config.overlay.enabled.desc": "¿Está activada la superposición?",
+    "config.overlay.hotkey": "Tecla de acceso directo",
+    "config.overlay.hotkey.desc": "Tecla de acceso directo para mostrar u ocultar",
+    "config.overlay.hide-at-festivals": "Ocultar durante los festivales",
     "config.overlay.hide-at-festivals.desc": "¿Ocultar la superposición durante los festivales?",
     "config.overlay.max-width": "Ancho máximo",
     "config.overlay.max-width.desc": "Ancho máximo de la superposición en píxeles",
-    "config.overlay.max-items": "Elementos máximos",
-    "config.overlay.max-items.desc": "Número máximo de elementos para mostrar en la superposición",
+    "config.overlay.max-items": "Máximo de ítems",
+    "config.overlay.max-items.desc": "Número máximo de elementos a mostrar en la superposición",
 
-    // Superposición
-    "overlay.header": "Lista de To-Dew",
+    // Overlay
+    "overlay.header": "Lista de tareas",
 
-    // Mensajes de registro de la consola
-    "message.save-version-newer": "La información de la lista en este guardado está en una versión de formato más reciente ({{saveFormatVersion}}) que esta versión de {{modName}} usa ({{modFormatVersion}}). usará esta versión anterior, lo que resultará en la pérdida de los atributos agregados en la versión más reciente. ",
-    "message.save-version-old": "Leer la información de la lista en la versión de formato {{saveFormatVersion}}. Se actualizará a la versión de formato actual ({{modFormatVersion}}) en el próximo guardado.",
-    "message.host-no-mod": "El host no tiene {{modName}} instalado; lista deshabilitada.",
-    "message.host-different-mod-version": "El host tiene la versión {{hostVersion}} de {{modName}} instalada, pero usted tiene la versión {{myVersion}}. Intentando continuar de todos modos.",
-    "message.ignoring-unknown-message-type": "Ignorando el tipo de mensaje inesperado {{messageType}} del jugador {{fromId}} ({{fromName}})",
-    "message.host-newer-data-format-minor": "El host está usando una versión de formato de datos más reciente ({{hostVersion}}) que esta versión de {{modName}} usa ({{myVersion}}), pero nosotros haremos todo lo posible para solucionarlo. ",
-    "message.host-newer-data-format-major": "El host está usando una versión de formato de datos más reciente ({{hostVersion}}) que esta versión de {{modName}} usa ({{myVersion}}). Dado que tiene un número de versión principal diferente, no vamos a intentar manejarlo ",
-    "message.host-old-data-format": "El host está usando la versión de formato de datos {{hostVersion}}, que es más antigua que la versión de formato actual ({{myVersion}}). Es posible que algunas funciones no estén disponibles.",
-    "message.current-item-deleted": "Otro jugador eliminó el elemento {{itemId}}",
+    // Console log messages
+    "message.save-version-newer": "La información de la lista en este guardado está en una versión de formato más nueva ({{saveFormatVersion}}) que la que utiliza esta versión de {{modName}} ({{modFormatVersion}}). El siguiente guardado utilizará esta versión más antigua, lo que hará que se pierdan los atributos añadidos en la versión más reciente.",
+    "message.save-version-older": "Leyendo la información de la lista en la versión de formato {{saveFormatVersion}}. Se actualizará a la versión de formato actual ({{modFormatVersion}}) en el siguiente guardado.",
+    "message.host-no-mod": "El host no tiene instalado {{modName}}; lista desactivada.",
+    "message.host-different-mod-version": "El host tiene la versión {{hostVersion}} de {{modName}} instalada, pero tú tienes la versión {{myVersion}}. Se intentará iniciar el mod de todos modos.",
+    "message.ignoring-unexpected-message-type": "Ignorando el tipo de mensaje inesperado {{messageType}} del jugador {{fromId}} ({{fromName}})",
+    "message.host-newer-data-format-minor": "El host está utilizando una versión de formato de datos más reciente ({{hostVersion}}) que tu versión de {{modName}} ({{myVersion}}), pero intentaremos que funcione.",
+    "message.host-newer-data-format-major": "El host está utilizando una versión de formato de datos más reciente ({{hostVersion}}) que tu versión de {{modName}} ({{myVersion}}).  Como tiene un número de versión principal diferente, no podemos hacer nada para que tu mod funcione.",
+    "message.host-older-data-format": "El host está utilizando la versión {{hostVersion}}, que es más antigua que tu versión actual ({{myVersion}}). Algunas funciones pueden no estar disponibles.",
+    "message.current-item-deleted": "El ítem {{itemId}} fue eliminado por otro jugador",
 
-    // menú de lista
-    "menu.list.title-bold-part": "Lista de To-Dew",
-    "menu.list.title-rest": "para la granja {{farmName}}",
-    "menu.textbox.title": "Agregar elemento de tarea", // no estoy seguro de que TitleText aparezca en alguna parte
-    // menú de configuración del elemento (editar)
-    "menu.edit.title": "Editando elemento",
-    "menu.edit.header": "Encabezado",
+    // list menu
+    "menu.list.title-bold-part": "Lista de tareas",
+    "menu.list.title-rest": "de la granja {{farmName}}",
+    "menu.textbox.title": "Añadir tarea pendiente", // not sure the TitleText actually shows up anywhere
+    // item configuration (edit) menu
+    "menu.edit.title": "Editar ítem",
+    "menu.edit.header": "Título",
     "menu.edit.bold": "Negrita",
-    "menu.edit.repeating": "Repitiendo",
-    "menu.edit.hide-in-overlay": "Ocultar en superposición",
-    "menu.edit.show-when": "Mostrar elemento cuando:",
-    "menu.edit.raining-on-farm": "Lloviendo en la granja",
+    "menu.edit.repeating": "Repetición",
+    "menu.edit.hide-in-overlay": "Ocultar en la superposición",
+    "menu.edit.show-when": "Mostrar ítem cuando:",
+    "menu.edit.raining-on-farm": "Llueve en la granja",
     "menu.edit.not-raining-on-farm": "No llueve en la granja",
-    "menu.edit.raining-on-island": "Lloviendo en la isla",
-    "menu.edit.not-raining-on-island": "No lloviendo en la isla",
-    "menu.edit.only-days": "Mostrar solo en estos días:",
+    "menu.edit.raining-on-island": "Llueve en la isla",
+    "menu.edit.not-raining-on-island": "No llueve en la isla",
+    "menu.edit.only-days": "Mostrar solo estos días:",
     "menu.edit.week": "Semana:",
-    "menu.edit.only-season": "Mostrar solo en:", // ¡mantén el espacio final!
+    "menu.edit.only-season": "Mostrar solo en:",
 
-    // nombres de día completo (ya que el juego solo tiene traducciones para los nombres cortos)
-    "sunday": "domingo",
-    "monday": "lunes",
-    "tuesday": "martes",
-    "wednesday": "miércoles",
-    "thursday": "jueves",
-    "friday": "viernes",
-    "saturday": "sábado"
-
+    // full day names (since the game only has translations for the short names)
+    "sunday": "Domingo",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado"
 }

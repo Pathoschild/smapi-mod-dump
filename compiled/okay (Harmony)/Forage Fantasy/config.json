@@ -7,7 +7,16 @@
   "BerryBushXPAmount": 1,
   "MushroomXPAmount": 1,
   "TapperXPAmount": 3,
+  "AutomationHarvestsGrantXP": false,
+  "TapperDaysNeededChangesEnabled": true,
+  "MapleDaysNeeded": 9,
+  "OakDaysNeeded": 7,
+  "PineDaysNeeded": 5,
+  "MushroomTreeHeavyTappersFix": true,
+  "MushroomTreeTappersConsistencyChange": true,
+  "MushroomTreeSeedsDrop": false,
   "CommonFiddleheadFern": true,
   "ForageSurvivalBurger": true,
-  "AutomationHarvestsGrantXP": false
+  "TreeMenuKey": "None",
+  "MushroomTapperCalendar": false
 }

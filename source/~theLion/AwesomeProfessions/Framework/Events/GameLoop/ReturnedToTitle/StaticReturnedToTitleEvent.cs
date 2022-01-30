@@ -8,24 +8,25 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 [UsedImplicitly]
 internal class StaticReturnedToTitleEvent : ReturnedToTitleEvent
 {
     /// <inheritdoc />
-    public override void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+    protected override void OnReturnedToTitleImpl(object sender, ReturnedToTitleEventArgs e)
     {
-        // release mod data
-        ModEntry.Data.Unload();
+        // disable events
+        EventManager.DisableAllForLocalPlayer();
 
-        // unsubscribe events
-        ModEntry.Subscriber.UnsubscribeLocalPlayerEvents();
-
-        // reset Super Mode
-        if (ModState.SuperModeIndex > 0) ModState.SuperModeIndex = -1;
+        // reset mod state
+        ModEntry.State.Value = new();
     }
 }

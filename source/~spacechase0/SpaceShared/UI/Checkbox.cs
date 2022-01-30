@@ -14,9 +14,16 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
+#if IS_SPACECORE
+namespace SpaceCore.UI
+{
+    public
+#else
 namespace SpaceShared.UI
 {
-    internal class Checkbox : Element
+    internal
+#endif
+        class Checkbox : Element
     {
         /*********
         ** Accessors

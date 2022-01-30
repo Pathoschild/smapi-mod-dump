@@ -85,12 +85,6 @@ namespace Shoplifter
                 string[] values = data[shopliftingdata]?.Split('/') ?? new string[] { };            
                 string[] fields = shopliftingdata?.Split('_') ?? new string[] { };
 
-                if (values.Length < 2 || fields.Length < 2)
-                {
-                    this.Monitor.Log("Mod save data couldn't be accessed. Ban logic may not work. Try resetting the mod save data if issue persists.");
-                    continue;
-                }
-
                 // Player has finished certain number of days ban, remove shop from list, also reset first day caught
                 if (shopliftingdata.StartsWith($"{this.ModManifest.UniqueID}") && int.Parse(values[0]) <= -this.config.DaysBannedFor && values.Length == 2)
                 {

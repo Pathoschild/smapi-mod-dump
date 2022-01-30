@@ -8,12 +8,18 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class CraftingRecipeCtorPatch : BasePatch
@@ -30,39 +36,21 @@ internal class CraftingRecipeCtorPatch : BasePatch
     [HarmonyPostfix]
     private static void CraftingRecipeCtorPostfix(ref CraftingRecipe __instance)
     {
-        if (__instance.name == "Tapper" && Game1.player.HasProfession("Tapper"))
+        if (__instance.name == "Tapper" && Game1.player.HasProfession(Profession.Tapper))
             __instance.recipeList = new()
             {
-                {388, 25}, // wood
-                {334, 1} // copper bar
+                { 388, 25 }, // wood
+                { 334, 1 } // copper bar
             };
-        else if (__instance.name == "Heavy Tapper" && Game1.player.HasProfession("Tapper"))
+        else if (__instance.name == "Heavy Tapper" && Game1.player.HasProfession(Profession.Tapper))
             __instance.recipeList = new()
             {
-                {709, 20}, // hardwood
-                {337, 1}, // iridium bar
-                {909, 1} // radioactive ore
+                { 709, 20 }, // hardwood
+                { 337, 1 }, // iridium bar
+                { 909, 1 } // radioactive ore
             };
-        else if (__instance.name.Contains("Bomb") && Game1.player.HasProfession("Blaster"))
-            __instance.recipeList = __instance.name switch
-            {
-                "Cherry Bomb" => new()
-                {
-                    {378, 2}, // copper ore
-                    {382, 1} // coal
-                },
-                "Bomb" => new()
-                {
-                    {380, 2}, // iron ore
-                    {382, 1} // coal
-                },
-                "Mega Bomb" => new()
-                {
-                    {384, 2}, // gold ore
-                    {382, 1} // coal
-                },
-                _ => __instance.recipeList
-            };
+        else if (__instance.name.ContainsAnyOf("Bomb", "Explosive") && Game1.player.HasProfession(Profession.Blaster))
+            __instance.numberProducedPerCraft *= 2;
     }
 
     #endregion harmony patches

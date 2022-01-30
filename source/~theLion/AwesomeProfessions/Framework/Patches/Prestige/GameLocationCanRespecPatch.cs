@@ -8,14 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directive
 
 [UsedImplicitly]
 internal class GameLocationCanRespecPatch : BasePatch
@@ -28,7 +31,7 @@ internal class GameLocationCanRespecPatch : BasePatch
 
     #region harmony patches
 
-    /// <summary>Patch to change Statue of Uncertainty respec from <10 to >10.</summary>
+    /// <summary>Patch to change Statue of Uncertainty respec from <10 to>10.</summary>
     [HarmonyPrefix]
     private static bool GameLocationCanRespecPrefix(ref bool __result, int skill_index)
     {
@@ -43,7 +46,7 @@ internal class GameLocationCanRespecPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

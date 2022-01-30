@@ -10,7 +10,14 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* [Content packs can now edit the Tractor Mod textures](README.md#custom-textures) (e.g. for recolors or tractor texture packs).
+
+## 4.14.10
+Released 14 January 2022 for SMAPI 3.13.0 or later.
+
+* Fixed [enrichers](https://stardewvalleywiki.com/Enricher) not affecting seeds planted with the tractor.
 * Fixed support for custom locations with farm animals.
+* Improved translations. Thanks to ChulkyBow (added Ukrainian), Evexyron + Yllelder (updated Spanish), and Zangorr (added Polish)!
 
 ## 4.14.9
 Released 25 December 2021 for SMAPI 3.13.0 or later.

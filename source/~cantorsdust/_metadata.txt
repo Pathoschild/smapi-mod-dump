@@ -11,10 +11,10 @@ mods:
    TimeSpeed
 
 latest commit:
-   commit 46bd57a0c1b5560ac0178629b4717bf613a6f169
-   Merge: 0d3f767 bf639f9
+   commit a1b2a87c4e5ce433ecd3b75995adaba8d7be74e9
+   Merge: 46bd57a dcbe26c
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Dec 29 16:01:59 2021 -0500
+   Date:   Mon Jan 10 18:42:27 2022 -0500
    
        Merge branch 'develop'
    

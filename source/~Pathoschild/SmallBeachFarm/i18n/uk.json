@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Farm info
+    *********/
+    "farm.name": "Маленька пляжна ферма",
+    "farm.description": "Невеликий родючий кишеньковий пляж, де можна ловити як річкову, так і океанську рибу.",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.campfire.name": "Додати вогнище",
+    "config.campfire.tooltip": "Додає працездатне вогнище перед фермерським будинком.",
+
+    "config.islands.name": "Додати острови",
+    "config.islands.tooltip": "Додає океанські острови з додатковою площею суші.",
+
+    "config.beach-sounds.name": "Програвати звуки пляжу",
+    "config.beach-sounds.tooltip": "Програє фонову музику на пляжі (тобто звуки хвиль) на пляжній фермі."
+}

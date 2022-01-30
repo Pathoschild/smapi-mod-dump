@@ -98,7 +98,7 @@ namespace FarmTypeManager
 
                 //if no listed tiles are valid for the given size
                 DepletedSizes.Add(size); //add this size to the list, making it faster to "reject" further requests for this size
-                return null; 
+                return null;
             }
 
             /// <summary>Randomize the order of items in TileList.</summary>

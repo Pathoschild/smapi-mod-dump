@@ -233,13 +233,186 @@ These fields for this task type are under the `Data` field:
 | ----- | ---- | ----------- |
 | Tile  | `<x>,<y>` | A point of tile on the map to stand on.
 | Area  | `<x>,<y>,<width>,<height>` | An area rectangle of pixels on the map to stand inside.
+| EventOnComplete | `<int:EventId> <string:pathToScript>` where path to script must be `<string:GameContentFile>:<string:Key>` | An [event](#events) to be started when this task is completed
+
+**Example**
+
+```js
+{
+  "Name": "EnterSpotTask1",
+  "Type": "EnterSpot",
+  "Data": {
+    "Tile": "14,15",
+    "Location": "FarmHouse",
+    "EventOnComplete": "4725065 Strings\\Locations:IslandSecret_Event_BirdieIntro"
+  },
+  "Description": "%i18n:story_quest.EnterSpotTask1.description"
+},
+```
+```js
+{
+  "Name": "EnterSpotTask2",
+  "Type": "EnterSpot",
+  "Description": "Enter your kitchen",
+  "Data": {
+    "Area": "64,768,576,704",
+    "Location": "FarmHouse"
+    }
+}
+```
 
 ### Fish
 
-### Gift
+Catch a fish or another fishable item in the water.
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| AcceptedContextTags | string | The context tags for fish to catch. The format is the same as for Special Orders in vanilla SDV
+
+**Example**
+
+```js
+{
+  "Name": "FishTask8",
+  "Type": "Fish",
+  "Description": "Catch any ocean summer fish",
+  "Data": {
+    "AcceptedContextTags": "fish_ocean, season_summer"
+  },
+  "Count": 5
+}
+```
+
+### Gift 
+
+Give a present to an NPC villager in Stardew Valley.
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| NpcName | string | A target villager NPC name receives your gift
+| MinimumLikeLevel | `None`, `Hated`, `Disliked`, `Neutral`, `Liked`, `Loved` | A minimum like level required to complete this task
+| AcceptedContextTags | string | The context tags for fish to catch. The format is the same as for Special Orders in vanilla SDV
+
+**Example**
+
+```js
+{
+  "Name": "GiftTask9",
+  "Type": "Gift",
+  "Description": "Give a someone gift",
+  "Data": {
+    "MinimumLikeLevel": "Liked"
+  },
+  "Count": 5
+}
+```
 
 ### Slay
 
+Defeat a monster in caves or another place contains monsters except the farm.
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| TargetName | string | A name of a target monster to kill. You can declare more than one monster name separated with `,`
+
+**Example**
+```js
+{
+  "Name": "SlayTask7",
+  "Type": "Slay",
+  "Description": "Kill some slimes or bats",
+  "Data": {
+    "TargetName": "Slime, Bat, Jelly, Sludge"
+  },
+  "Count": 20,
+}
+```
+
 ### Talk
 
+Talk with a villager. This task can be more complex by define a required items present in player's inventory to complete this task by talk with a villager. Also you can define which items you will receive after talk. This is usefull for item exchange with villagers in your quest lines.
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| NpcName | string | A name of a NPC villager to talk with.
+| DialogueText | string | A text of dialogue.
+| StartEvent | `<int:EventId> <string:pathToScript>` where path to script must be `<string:GameContentFile>:<string:Key>` | An [event](#events) to be started when you talk with an NPC.
+| ReceiveItems | string | An [item description](#quest-items) receive after this task is completed. You can define more items separated with `,`.
+| RequiredItems | string | An [item description](#quest-items) of item which must be present in player's inventory to complete this task.
+| KeepRequiredItems | boolean | true = Required items needed to complete this task stay in your inventory. Otherwise the required items present in your inventory will be removed while completing this task.
+
+**Example**
+
+```js
+{
+  "Name": "TestTask6",
+  "Type": "Talk",
+  "Description": "Talk with Abigail",
+  "Data": {
+    // Talk to abby and then see an event
+    "NpcName": "Abigail",
+    "DialogueText": "I am thinking about go to an adventure in mines. Can I go with you if you go to the mines some day?#$b#Take an ancient fruit from me",
+    "StartEvent": "44017601 Data\\Events\\FarmHouse:3917601/f Emily 3500/O Emily/n emilyFiber/A emilyFiber/t 2000 2400/p Emily",
+    "ReceiveItems": "object_ancient_fruit" // And get ancient fruit from Abby when talk
+  }
+}
+```
+
 ### Tile Action
+
+Interact with a tile on the map to complete quest task. Optionaly can requires an item present in player's hands (Player must hold this item)
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| Location | string | A location name where the tile to interact is placed.
+| Tile | `<int:x>,<int:y>` | A position on map of the tile to interact.
+| ItemAcceptedContextTags | string | (optional) The context tags of required item in player's hands to complete this task. Player must hold this item to complete. The format is the same as for Special Orders in vanilla SDV.
+| ItemRequiredMessage | string | The message to show when item is required.
+| Message | string | The message to show when this task is completed.
+| StartEvent | `<int:EventId> <string:pathToScript>` where path to script must be `<string:GameContentFile>:<string:Key>` | An [event](#events) to be started when you interacted with specified tile (and you hold the required item if defined). No message will be displayed if you defined it in field `Message`.
+| ConsumeItem | boolean | true = The required item will be removed from player's inventory when this task is completed. Otherwise keep it in player's hands.
+
+**Example**
+
+```js
+{
+  "Name": "TileActionTest",
+  "Type": "TileAction",
+  "Data": {
+    "Tile": "14,15",
+    "Location": "FarmHouse",
+    "Message": "You did it! Winner!"
+  },
+  "Description": "%i18n:story_quest.TestTask1.description"
+}
+```
+
+
+## Events
+
+Some quest tasks allows you to define events which will be triggered when the task completion started. The event description string has a format `<int:EventId> <string:pathToScript>` where path to script must be `<string:GameContentFile>:<string:Key>`.
+
+| Argument | Type | Description
+| -------- | ---- | -----------
+| EventId | int | ID of your event which will be contained in player's event seen list when this event was played. It's recomended define your event id in format `MMMMNNNN` where M represents one digit of your mod id on Nexusmods and the `N` represents any number defined by you. Example: 45820001 is a event id #1 for mod NPC Adventures used by quest task.
+| pathToScript | string | Fullpath of game asset dictionary which contains the event script. This contains the path to the asset file and the key in dictionary contained in that file. The filename and dictionary id is separated by `:`, like `Strings\\Locations:IslandSecret_Event_BirdieIntro` where *Strings\\Locations:IslandSecret_Event_BirdieIntro* is the game asset file path and `IslandSecret_Event_BirdieIntro` is the key in dictionary inside the asset file
+
+**Tip for event script path:** In linux and 64-bit SDV build you can use the `/` instead of `\\` as path separator in asset filename.
+
+## Quest Items
+
+Some quest tags has a field to define concrete item instead of item context tags. This item is described by the item description which describes the item name (or id) and some parameters for the item. Item description is used in fields `RequiredItems` and `ReceiveItems` in task type `Talk`.
+
+The format of item description: `<type>_<name> [specialAttr]`
+
+| Attribute | Type | Description
+| --------- | ---- | -----------
+| type | BigCraftable, Boots, Clothing, Flooring, Furniture, Hat, Object, Ring, Tool, Wallpaper, Weapon | Item type name. This attribute is case insensitive.
+| name | string | Item name. If the name contains spaces, replace them with underscore `_`
+| specialAttr | `special`, `quest`, `lost` | (optional) An special attribute which will be assigned to a target item. This is usefull for recieve item by quest task.
+
+### Item special attributes
+
+- `special`sets item flag `specialItem` to the item. This item can't be trashed.
+- `quest` sets item flag `questItem` to the item. Some items used in quests has set this flag.
+- `lost` sets item flag `isLostItem`. Items used and spawned by Lost Item quest type has set this flag.

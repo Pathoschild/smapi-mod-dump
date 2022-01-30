@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/xynerorias/pierre-roulette-shop-SV
+   Git: https://github.com/xynerorias/pierre-roulette-shop-SV.git
+
+mods:
+   Pierre's Roulette Shop
+
+latest commit:
+   commit ca68df467f4c787060ddb40e3d232a0d103476da
+   Author: Axel Malmgren <43299926+xynerorias@users.noreply.github.com>
+   Date:   Wed Jan 26 18:16:12 2022 +0100
+   
+       added update key to manifest
+   

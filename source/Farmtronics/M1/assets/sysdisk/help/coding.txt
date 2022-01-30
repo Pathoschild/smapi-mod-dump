@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoeStrout/Farmtronics
+**
+*************************************************/
+
+Commands related to coding (programs):
+  `load "filename"` -- load a program
+                     into memory
+  `save "filename"` -- save current 
+                     program to disk
+  `run` -- run current program
+  `reset` -- delete current program
+           from memory
+  `source` -- list current source code
+  `edit` -- edit current program
+
+See also `help "import"` for info about
+the `import` command.

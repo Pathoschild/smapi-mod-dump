@@ -1,15 +1,13 @@
 {
   "AxeConfig": {
     "EnableAxeCharging": true,
-    "RequiredUpgradeForCharging": 1,
+    "RequiredUpgradeForCharging": "Copper",
     "RadiusAtEachPowerLevel": [
       1,
       2,
       3,
-      4,
-      5
+      4
     ],
-    "ShowAxeAffectedTiles": true,
     "ClearFruitTreeSeeds": false,
     "ClearFruitTreeSaplings": false,
     "CutGrownFruitTrees": false,
@@ -21,19 +19,18 @@
     "ClearBushes": true,
     "ClearLiveCrops": false,
     "ClearDeadCrops": true,
-    "ClearDebris": true
+    "ClearDebris": true,
+    "PlayShockwaveAnimation": true
   },
   "PickaxeConfig": {
     "EnablePickaxeCharging": true,
-    "RequiredUpgradeForCharging": 1,
+    "RequiredUpgradeForCharging": "Copper",
     "RadiusAtEachPowerLevel": [
       1,
       2,
       3,
-      4,
-      5
+      4
     ],
-    "ShowPickaxeAffectedTiles": true,
     "BreakBouldersAndMeteorites": true,
     "HarvestMineSpawns": true,
     "BreakMineContainers": true,
@@ -43,10 +40,13 @@
     "ClearBushes": true,
     "ClearLiveCrops": false,
     "ClearDeadCrops": true,
-    "ClearDebris": true
+    "ClearDebris": true,
+    "PlayShockwaveAnimation": true
   },
   "RequireModkey": true,
   "Modkey": "LeftShift, LeftShoulder",
+  "HideAffectedTiles": false,
   "StaminaCostMultiplier": 1.0,
-  "ShockwaveDelay": 200
+  "TicksBetweenWaves": 4,
+  "EnableDebug": false
 }

@@ -8,14 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley.Menus;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuGetProfessionNamePatch : BasePatch
@@ -34,14 +37,14 @@ internal class LevelUpMenuGetProfessionNamePatch : BasePatch
     {
         try
         {
-            if (!Utility.Professions.IndexByName.Contains(whichProfession)) return true; // run original logic
+            if (!Enum.IsDefined(typeof(Profession), whichProfession)) return true; // run original logic
 
-            __result = Utility.Professions.IndexByName.Reverse[whichProfession];
+            __result = ((Profession) whichProfession).ToString();
             return false; // don't run original logic
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

@@ -1,0 +1,330 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ameisen/SV-SpriteMaster
+**
+*************************************************/
+
+using SpriteMaster.Types;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Security;
+using TeximpNet;
+using TeximpNet.Unmanaged;
+
+namespace SpriteMaster.Harmonize.Patches;
+
+[SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
+[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
+[SuppressUnmanagedCodeSecurity]
+static class NVTT {
+
+	//[DllImport("__Internal")]
+	//private static extern IntPtr dlerror (String fileName, int flags);
+
+	static NVTT() {
+		if (Runtime.IsLinux) {
+			// This needs to be done because Debian-based systems don't always have a libdl.so, and instead have libdl.so.2.
+			// We need to determine which libdl we actually need to talk to.
+			var dlTypes = Arrays.Of(
+				typeof(LibDL),
+				typeof(LibDL2),
+				typeof(LibDL3),
+				typeof(LibDL1)
+			);
+
+			foreach (var dlType in dlTypes) {
+				var newDL = (LibDL?)Activator.CreateInstance(dlType);
+				try {
+					if (newDL is null) {
+						throw new NullReferenceException(nameof(newDL));
+					}
+					newDL.error();
+				}
+				catch {
+					Debug.TraceLn($"Failed DL: {dlType}");
+					continue;
+				}
+				dl = newDL;
+				Debug.TraceLn($"New DL: {dlType}");
+				break;
+			}
+
+			if (dl == null) {
+				Debug.ErrorLn("A valid libdl could not be found.");
+				throw new NotSupportedException("A valid libdl could not be found.");
+			}
+		}
+	}
+
+	/*
+[DllImport("__Internal", CharSet = CharSet.Ansi)]
+private static extern void mono_dllmap_insert(IntPtr assembly, string dll, string func, string tdll, string tfunc);
+
+// and then somewhere:
+mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null);
+	*/
+
+	private static readonly LibDL? dl = null;
+
+	// NVTT's CUDA compressor for block compression is _not_ threadsafe. I have a version locally from a while back that I made threadsafe,
+	// but I never validated it and am not comfortable jamming it in here.
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		"TeximpNet.Unmanaged.NvTextureToolsLibrary",
+		"EnableCudaAcceleration",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.Last
+	)]
+	internal static bool EnableCudaAcceleration(IntPtr compressor, ref bool value) {
+		value = true;
+		return true;
+	}
+
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		"TeximpNet.Unmanaged.NvTextureToolsLibrary",
+		"IsCudaAccelerationEnabled",
+		Harmonize.Fixation.Postfix,
+		Harmonize.PriorityLevel.Last
+	)]
+	internal static void IsCudaAccelerationEnabled(IntPtr compressor, ref bool __result) {
+		__result = false;
+	}
+
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		"TeximpNet.Unmanaged.PlatformHelper",
+		"GetAppBaseDirectory",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.First,
+		instance: false
+	)]
+	internal static bool GetAppBaseDirectory(ref string? __result) {
+		__result = SpriteMaster.AssemblyPath;
+		Debug.TraceLn($"GetAppBaseDirectory: {__result}");
+		return false;
+	}
+
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		new[] { "TeximpNet.Unmanaged.UnmanagedLibrary", "UnmanagedWindowsLibraryImplementation" },
+		"get_DllExtension",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.First,
+		platform: Harmonize.Platform.Windows
+	)]
+	internal static bool DllExtension_Windows(UnmanagedLibrary __instance, ref string __result) {
+		switch (Runtime.Bits) {
+			case 32:
+				__result = ".32.dll";
+				break;
+			case 64:
+				__result = ".64.dll";
+				break;
+			default:
+				Debug.Warning($"Unknown Runtime Bits value: {Runtime.Bits}");
+				return true;
+		}
+
+		return false;
+	}
+
+	private const int RTLD_NOW = 2;
+
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		new[] { "TeximpNet.Unmanaged.UnmanagedLibrary", "UnmanagedLinuxLibraryImplementation" },
+		"NativeLoadLibrary",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.First,
+		platform: Harmonize.Platform.Linux
+	)]
+	internal static bool NativeLoadLibrary(UnmanagedLibrary __instance, ref IntPtr __result, String path) {
+		if (dl is null) {
+			throw new NullReferenceException(nameof(dl));
+		}
+
+		var libraryHandle = dl.open(path, RTLD_NOW);
+
+		if (libraryHandle == IntPtr.Zero && __instance.ThrowOnLoadFailure) {
+			var errPtr = dl.error();
+			var msg = Marshal.PtrToStringAnsi(errPtr);
+			if (!String.IsNullOrEmpty(msg))
+				throw new TeximpException(String.Format("Error loading unmanaged library from path: {0}\n\n{1}", path, msg));
+			else
+				throw new TeximpException(String.Format("Error loading unmanaged library from path: {0}", path));
+		}
+
+		__result = libraryHandle;
+
+		return false;
+	}
+
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		new[] { "TeximpNet.Unmanaged.UnmanagedLibrary", "UnmanagedLinuxLibraryImplementation" },
+		"NativeGetProcAddress",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.First,
+		platform: Harmonize.Platform.Linux
+	)]
+	internal static bool NativeGetProcAddress(ref IntPtr __result, IntPtr handle, String functionName) {
+		if (dl is null) {
+			throw new NullReferenceException(nameof(dl));
+		}
+
+		__result = dl.sym(handle, functionName);
+
+		return false;
+	}
+
+	[Harmonize(
+		typeof(NvTextureToolsLibrary),
+		new[] { "TeximpNet.Unmanaged.UnmanagedLibrary", "UnmanagedLinuxLibraryImplementation" },
+		"NativeFreeLibrary",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.First,
+		platform: Harmonize.Platform.Linux
+	)]
+	internal static bool NativeFreeLibrary(IntPtr handle) {
+		dl?.close(handle);
+		return false;
+	}
+
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+	private class LibDL {
+		private const string lib = "libdl.so";
+
+		internal virtual IntPtr open(string fileName, int flags) {
+			return dlopen(fileName, flags);
+		}
+
+		internal virtual IntPtr sym(IntPtr handle, string functionName) {
+			return dlsym(handle, functionName);
+		}
+
+		internal virtual int close(IntPtr handle) {
+			return dlclose(handle);
+		}
+
+		internal virtual IntPtr error() {
+			return dlerror();
+		}
+
+		[DllImport(lib)]
+		private static extern IntPtr dlopen(String fileName, int flags);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlsym(IntPtr handle, String functionName);
+
+		[DllImport(lib)]
+		private static extern int dlclose(IntPtr handle);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlerror();
+	}
+
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+	private sealed class LibDL2 : LibDL {
+		private const string lib = "libdl.so.2";
+
+		internal override IntPtr open(string fileName, int flags) {
+			return dlopen(fileName, flags);
+		}
+
+		internal override IntPtr sym(IntPtr handle, string functionName) {
+			return dlsym(handle, functionName);
+		}
+
+		internal override int close(IntPtr handle) {
+			return dlclose(handle);
+		}
+
+		internal override IntPtr error() {
+			return dlerror();
+		}
+
+		[DllImport(lib)]
+		private static extern IntPtr dlopen(String fileName, int flags);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlsym(IntPtr handle, String functionName);
+
+		[DllImport(lib)]
+		private static extern int dlclose(IntPtr handle);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlerror();
+	}
+
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+	private sealed class LibDL3 : LibDL {
+		private const string lib = "libdl.so.3";
+
+		internal override IntPtr open(string fileName, int flags) {
+			return dlopen(fileName, flags);
+		}
+
+		internal override IntPtr sym(IntPtr handle, string functionName) {
+			return dlsym(handle, functionName);
+		}
+
+		internal override int close(IntPtr handle) {
+			return dlclose(handle);
+		}
+
+		internal override IntPtr error() {
+			return dlerror();
+		}
+
+		[DllImport(lib)]
+		private static extern IntPtr dlopen(String fileName, int flags);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlsym(IntPtr handle, String functionName);
+
+		[DllImport(lib)]
+		private static extern int dlclose(IntPtr handle);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlerror();
+	}
+
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
+	private sealed class LibDL1 : LibDL {
+		private const string lib = "libdl.so.1";
+
+		internal override IntPtr open(string fileName, int flags) {
+			return dlopen(fileName, flags);
+		}
+
+		internal override IntPtr sym(IntPtr handle, string functionName) {
+			return dlsym(handle, functionName);
+		}
+
+		internal override int close(IntPtr handle) {
+			return dlclose(handle);
+		}
+
+		internal override IntPtr error() {
+			return dlerror();
+		}
+
+		[DllImport(lib)]
+		private static extern IntPtr dlopen(String fileName, int flags);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlsym(IntPtr handle, String functionName);
+
+		[DllImport(lib)]
+		private static extern int dlclose(IntPtr handle);
+
+		[DllImport(lib)]
+		private static extern IntPtr dlerror();
+	}
+}

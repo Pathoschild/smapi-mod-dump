@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
   "BuyPendantsAnytime": false,
+  "PendantPrice": 5000,
   "MinPointsToMarry": 2500,
   "MinPointsToDate": 2000,
   "MaxGiftsPerSpousePerDay": 1,

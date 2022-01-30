@@ -81,7 +81,7 @@ namespace FarmTypeManager
                 monsterArea1.MonsterTypes.Add(greenSlime);
 
                 //add area 1 to the array
-                Areas[0] = monsterArea1; 
+                Areas[0] = monsterArea1;
 
                 //create the default "flying monsters" area for the farm
                 //this should spawn 1 "flying" monster at ~5% to 7.5% of available times from 7pm to 2am

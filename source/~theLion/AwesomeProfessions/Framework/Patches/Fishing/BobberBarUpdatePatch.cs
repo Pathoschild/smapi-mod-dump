@@ -8,18 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class BobberBarUpdatePatch : BasePatch
@@ -34,7 +39,8 @@ internal class BobberBarUpdatePatch : BasePatch
 
     /// <summary>Patch to slow-down catching bar decrease for Aquarist.</summary>
     [HarmonyTranspiler]
-    private static IEnumerable<CodeInstruction> BobberBarUpdateTranspiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
+    private static IEnumerable<CodeInstruction> BobberBarUpdateTranspiler(IEnumerable<CodeInstruction> instructions,
+        MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -56,22 +62,22 @@ internal class BobberBarUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Stfld)
                 )
                 .Advance()
-                .InsertProfessionCheckForLocalPlayer(Utility.Professions.IndexOf("Aquarist"), (Label) resumeExecution)
+                .InsertProfessionCheckForLocalPlayer((int) Profession.Aquarist, (Label) resumeExecution)
                 .Insert(
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldfld, typeof(BobberBar).Field("distanceFromCatching")),
                     new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player))),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(Utility.Professions).MethodNamed(nameof(Utility.Professions
+                        typeof(FarmerExtensions).MethodNamed(nameof(FarmerExtensions
                             .GetAquaristBonusCatchingBarSpeed))),
-                    new CodeInstruction(OpCodes.Sub),
+                    new CodeInstruction(OpCodes.Add),
                     new CodeInstruction(OpCodes.Stfld, typeof(BobberBar).Field("distanceFromCatching"))
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching Aquarist catching bar speed. Helper returned {ex}", LogLevel.Error);
+            Log.E($"Failed while patching Aquarist catching bar loss. Helper returned {ex}");
             return null;
         }
 

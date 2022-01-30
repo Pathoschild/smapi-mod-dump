@@ -8,11 +8,15 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Common.Extensions;
+
+#region using directives
+
 using System;
 using System.Linq.Expressions;
 using StardewValley;
 
-namespace TheLion.Stardew.Common.Extensions;
+#endregion using directives
 
 /// <summary>Provides extension methods for reading and writing values in <see cref="ModDataDictionary" /> fields.</summary>
 public static class ModDataDictionaryExtensions
@@ -37,14 +41,14 @@ public static class ModDataDictionaryExtensions
     ///     The value of the specified key if it exists, parsed as type <typeparamref name="T" />, or a default value if
     ///     the key doesn't exist or fails to parse.
     /// </returns>
-    public static T Read<T>(this ModDataDictionary data, string key, T defaultValue = default)
+    public static T ReadAs<T>(this ModDataDictionary data, string key, T defaultValue = default)
     {
         return data.TryGetValue(key, out var rawValue) && rawValue.TryParse(out T parsedValue)
             ? parsedValue
             : defaultValue;
     }
 
-    /// <summary>Write a value to the <see cref="ModDataDictionary" />, or remove the key if supplied with null.</summary>
+    /// <summary>Write a string value to the <see cref="ModDataDictionary" />, or remove the corresponding key if supplied with a null or empty string.</summary>
     /// <param name="data">The <see cref="ModDataDictionary" />.</param>
     /// <param name="key">The dictionary key to write to.</param>
     /// <param name="value">The value to write, or <c>null</c> to remove the key.</param>
@@ -89,7 +93,7 @@ public static class ModDataDictionaryExtensions
     /// <remarks>Credit to <c>Adi Lester</c> (https://stackoverflow.com/questions/8122611/c-sharp-adding-two-generic-values).</remarks>
     public static ModDataDictionary Increment<T>(this ModDataDictionary data, string key, T amount)
     {
-        var num = data.Read<T>(key);
+        var num = data.ReadAs<T>(key);
 
         // declare the parameters
         var paramA = Expression.Parameter(typeof(T), "a");

@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Shadow Crop",
+	"Product": "Void Root",
+	"SeedName": "Void Seed",
+	"SeedDescription": "Plant these during winter. Takes 8 days to mature.",
+	"Type": "Vegetable",
+	"CropType": "Normal",
+	"Seasons": ["winter"],
+	"Phases": [2,2,2,2],
+	"RegrowthPhase":-1,
+	"HarvestWithScythe": false,
+	"Bonus": {
+		"MaxIncreasePerFarmLevel": 2,
+	},
+}

@@ -6,6 +6,12 @@ for queries and analysis.**
 
 ----
 
+#Ver 1.1.14
+- Fixes bug with entries being accidentally added twice
+
+# Ver 1.1.13
+- Code fixed, now working with SDV 1.5.6
+
 # Ver 1.1.2
 - fix for multiplayer - locations may not be loaded when splash is called
 - legendary fish jump. Includes support for some mods.

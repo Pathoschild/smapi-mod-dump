@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +20,13 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Stardew.Common.Extensions;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches.Combat;
+#endregion using directives
 
 [UsedImplicitly]
 internal class GreenSlimeGetExtraDropItemsPatch : BasePatch
@@ -36,7 +42,7 @@ internal class GreenSlimeGetExtraDropItemsPatch : BasePatch
     /// <summary>Patch Slime drop table for Piper.</summary>
     private static void GreenSlimeGetExtraDropItemsPostfix(GreenSlime __instance, ref List<Item> __result)
     {
-        if (!__instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers) ||
+        if (!__instance.currentLocation.DoesAnyPlayerHereHaveProfession(Profession.Piper, out var pipers) ||
             !Game1.MasterPlayer.mailReceived.Contains("slimeHutchBuilt")) return;
 
         var slimeCount =

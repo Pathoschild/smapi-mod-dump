@@ -66,7 +66,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                     __instance.modData["AlternativeTextureSeason"] = Game1.currentSeason;
                     __instance.modData["AlternativeTextureName"] = String.Concat(__instance.modData["AlternativeTextureName"], "_", __instance.modData["AlternativeTextureSeason"]);
 
-                    BuildingPatch.ResetTextureReversePatch(__instance);
+                    __instance.resetTexture();
                 }
             }
         }
@@ -108,7 +108,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                         }
                     }
                     b.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 80, 80), building.color.Value * alpha, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 1f);
-                    b.Draw(texture, new Vector2(x + 64, y + 44 + ((Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2500.0 < 1250.0) ? 4 : 0)), new Rectangle(16, 160, 48, 7), building.color.Value * alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
+                    b.Draw(texture, new Vector2(x + 32, y + 24 + ((Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2500.0 < 1250.0) ? 4 : 0)), new Rectangle(16, 160, 48, 7), building.color.Value * alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
                     b.Draw(texture, new Vector2(x, y - 128), new Rectangle(80, 0, 80, 48), building.color.Value * alpha, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 1f);
                     return;
                 case GreenhouseBuilding greenhouse:
@@ -117,7 +117,7 @@ namespace AlternativeTextures.Framework.Patches.Buildings
                     return;
                 case JunimoHut junimoHut:
                     //building.drawShadow(b, x, y);
-                    b.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 48, 64), building.color, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 0.89f);
+                    b.Draw(texture, new Vector2(x, y), junimoHut.sourceRect, building.color, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 0.89f);
                     return;
                 case Mill mill:
                     b.Draw(texture, new Vector2(x, y), building.getSourceRectForMenu(), building.color, 0f, new Vector2(0f, 0f), scale, SpriteEffects.None, 0.89f);

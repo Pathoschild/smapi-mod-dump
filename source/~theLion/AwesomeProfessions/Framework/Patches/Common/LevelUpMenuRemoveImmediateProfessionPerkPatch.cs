@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Common;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +21,14 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Buildings;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Stardew.Common.Harmony;
+using Extensions;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
@@ -40,36 +45,41 @@ internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
     [HarmonyPostfix]
     private static void LevelUpMenuRemoveImmediateProfessionPerkPostfix(int whichProfession)
     {
-        if (!Utility.Professions.IndexByName.TryGetReverseValue(whichProfession, out var professionName)) return;
+        if (!Enum.IsDefined(typeof(Profession), whichProfession)) return;
+
+        var professionName = whichProfession.ToProfessionName();
 
         // remove immediate perks
         if (professionName == "Aquarist")
-            foreach (var b in Game1.getFarm().buildings.Where(b =>
-                         (b.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
-                         b is FishPond && !b.isUnderConstruction() && b.maxOccupants.Value > 10))
+            foreach (var pond in Game1.getFarm().buildings.Where(p =>
+                         (p.owner.Value == Game1.player.UniqueMultiplayerID || !Context.IsMultiplayer) &&
+                         !p.isUnderConstruction() && p.maxOccupants.Value > 10))
             {
-                b.maxOccupants.Set(10);
-                b.currentOccupants.Value = Math.Min(b.currentOccupants.Value, b.maxOccupants.Value);
+                pond.maxOccupants.Set(10);
+                pond.currentOccupants.Value = Math.Min(pond.currentOccupants.Value, pond.maxOccupants.Value);
             }
 
         // clean unnecessary mod data
         if (!professionName.IsAnyOf("Scavenger", "Prospector"))
-            ModEntry.Data.RemoveProfessionData(professionName);
+            ModData.CleanUpRogueData();
 
         // unsubscribe unnecessary events
-        ModEntry.Subscriber.UnsubscribeProfessionEvents(professionName);
+        EventManager.DisableAllForProfession(professionName);
 
         // unregister Super Mode
-        if (ModState.SuperModeIndex != whichProfession) return;
+        if (ModEntry.State.Value.SuperMode?.Index != (SuperModeIndex)whichProfession) return;
 
-        var otherSuperModeProfessions = new[] {"Brute", "Poacher", "Desperado", "Piper"}
-            .Except(new[] {professionName}).ToArray();
-        if (Game1.player.HasAnyOfProfessions(otherSuperModeProfessions, out var firstMatch))
-            ModState.SuperModeIndex = Utility.Professions.IndexOf(firstMatch);
+        if (Game1.player.professions.Any(p => p is >= 26 and < 30))
+        {
+            var firstIndex = (SuperModeIndex) Game1.player.professions.First(p => p is >= 26 and < 30);
+            ModData.Write(DataField.SuperModeIndex, firstIndex.ToString());
+            ModEntry.State.Value.SuperMode = new(firstIndex);
+        }
         else
-            ModState.SuperModeIndex = -1;
-
-        ModState.SuperModeGaugeValue = 0;
+        {
+            ModData.Write(DataField.SuperModeIndex, null);
+            ModEntry.State.Value.SuperMode = null;
+        }
     }
 
     /// <summary>Patch to move bonus health from Defender to Brute.</summary>
@@ -88,12 +98,11 @@ internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
                 .FindFirst(
                     new CodeInstruction(OpCodes.Ldc_I4_S, Farmer.defender)
                 )
-                .SetOperand(Utility.Professions.IndexOf("Brute"));
+                .SetOperand((int) Profession.Brute);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while moving vanilla Defender health bonus to Brute.\nHelper returned {ex}");
             return null;
         }
 

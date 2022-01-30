@@ -9,8 +9,16 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.2.3
+Released 12 January 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Improved translations. Thanks to Scartiana (added German)!
+
+## 1.2.2
+Released 09 January 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
 * Fixed skill page luck UI drawn over the tooltip.
+* Improved translations. Thanks to wally232 (added Korean)!
 
 ## 1.2.1
 Released 24 December 2021 for SMAPI 3.13.0 or later. Updated by Pathoschild.

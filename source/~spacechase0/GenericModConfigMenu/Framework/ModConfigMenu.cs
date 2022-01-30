@@ -27,21 +27,41 @@ namespace GenericModConfigMenu.Framework
         *********/
         private RootElement Ui;
         private readonly Table Table;
+
+        /// <summary>The number of field rows to offset when scrolling a config menu.</summary>
         private readonly int ScrollSpeed;
-        private readonly Action<IManifest> OpenModMenu;
+
+        /// <summary>Open the config UI for a specific mod.</summary>
+        private readonly Action<IManifest, int> OpenModMenu;
         private bool InGame => Context.IsWorldReady;
+
+
+        /*********
+        ** Accessors
+        *********/
+        /// <summary>The scroll position, represented by the row index at the top of the visible area.</summary>
+        public int ScrollRow
+        {
+            get => this.Table.Scrollbar.TopRow;
+            set => this.Table.Scrollbar.ScrollTo(value);
+        }
 
 
         /*********
         ** Public methods
         *********/
-        public ModConfigMenu(int scrollSpeed, Action<IManifest> openModMenu, ModConfigManager configs)
+        /// <summary>Construct an instance.</summary>
+        /// <param name="scrollSpeed">The number of field rows to offset when scrolling a config menu.</param>
+        /// <param name="openModMenu">Open the config UI for a specific mod.</param>
+        /// <param name="configs">The mod configurations to display.</param>
+        /// <param name="scrollTo">The initial scroll position, represented by the row index at the top of the visible area.</param>
+        public ModConfigMenu(int scrollSpeed, Action<IManifest, int> openModMenu, ModConfigManager configs, int? scrollTo = null)
         {
             this.ScrollSpeed = scrollSpeed;
             this.OpenModMenu = openModMenu;
 
+            // init UI
             this.Ui = new RootElement();
-
             this.Table = new Table
             {
                 RowHeight = 50,
@@ -49,24 +69,69 @@ namespace GenericModConfigMenu.Framework
                 Size = new Vector2(800, Game1.uiViewport.Height - 128)
             };
 
-            var heading = new Label
+            // editable mods section
             {
-                String = I18n.List_Heading(),
-                Bold = true
-            };
-            heading.LocalPosition = new Vector2((800 - heading.Measure().X) / 2, heading.LocalPosition.Y);
-            this.Table.AddRow(new Element[] { heading });
-
-            foreach (var entry in configs.GetAll().OrderBy(entry => entry.ModName))
-            {
-                if (this.InGame && !entry.AnyEditableInGame)
-                    continue;
-                var label = new Label
+                // heading
+                var heading = new Label
                 {
-                    String = entry.ModName,
-                    Callback = _ => this.ChangeToModPage(entry.ModManifest)
+                    String = I18n.List_EditableHeading(),
+                    Bold = true
                 };
-                this.Table.AddRow(new Element[] { label });
+                heading.LocalPosition = new Vector2((800 - heading.Measure().X) / 2, heading.LocalPosition.Y);
+                this.Table.AddRow(new Element[] { heading });
+
+                // mod list
+                {
+                    ModConfig[] editable = configs
+                        .GetAll()
+                        .Where(entry => entry.AnyEditableInGame || !this.InGame)
+                        .OrderBy(entry => entry.ModName)
+                        .ToArray();
+
+                    foreach (ModConfig entry in editable)
+                    {
+                        Label label = new Label
+                        {
+                            String = entry.ModName,
+                            Callback = _ => this.ChangeToModPage(entry.ModManifest)
+                        };
+                        this.Table.AddRow(new Element[] { label });
+                    }
+                }
+            }
+
+            // non-editable mods heading
+            {
+                ModConfig[] notEditable = configs
+                    .GetAll()
+                    .Where(entry => !entry.AnyEditableInGame && this.InGame)
+                    .OrderBy(entry => entry.ModName)
+                    .ToArray();
+
+                if (notEditable.Any())
+                {
+                    // heading
+                    var heading = new Label
+                    {
+                        String = I18n.List_NotEditableHeading(),
+                        Bold = true
+                    };
+                    this.Table.AddRow(Array.Empty<Element>());
+                    this.Table.AddRow(new Element[] { heading });
+
+                    // mod list
+                    foreach (ModConfig entry in notEditable)
+                    {
+                        Label label = new Label
+                        {
+                            String = entry.ModName,
+                            IdleTextColor = Color.Black * 0.4f,
+                            HoverTextColor = Color.Black * 0.4f
+                        };
+
+                        this.Table.AddRow(new Element[] { label });
+                    }
+                }
             }
 
             this.Ui.AddChild(this.Table);
@@ -75,6 +140,9 @@ namespace GenericModConfigMenu.Framework
                 this.initializeUpperRightCloseButton();
             else
                 this.upperRightCloseButton = null;
+
+            if (scrollTo != null)
+                this.ScrollRow = scrollTo.Value;
         }
 
         /// <inheritdoc />
@@ -137,7 +205,7 @@ namespace GenericModConfigMenu.Framework
             Log.Trace("Changing to mod config page for mod " + modManifest.UniqueID);
             Game1.playSound("bigSelect");
 
-            this.OpenModMenu(modManifest);
+            this.OpenModMenu(modManifest, this.ScrollRow);
         }
     }
 }

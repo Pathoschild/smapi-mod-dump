@@ -8,17 +8,22 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 using StardewValley;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.AssetEditors;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using Common.Extensions;
+using AssetEditors;
+
+#endregion using directives
 
 internal class AchievementUnlockedDayStartedEvent : DayStartedEvent
 {
     /// <inheritdoc />
-    public override void OnDayStarted(object sender, DayStartedEventArgs e)
+    protected override void OnDayStartedImpl(object sender, DayStartedEventArgs e)
     {
         if (!ModEntry.ModHelper.Content.AssetEditors.ContainsType(typeof(AchivementsEditor)))
             ModEntry.ModHelper.Content.AssetEditors.Add(new AchivementsEditor());
@@ -30,6 +35,6 @@ internal class AchievementUnlockedDayStartedEvent : DayStartedEvent
         Game1.playSound("achievement");
         Game1.addHUDMessage(new(name, true));
 
-        ModEntry.Subscriber.Unsubscribe(GetType());
+        Disable();
     }
 }

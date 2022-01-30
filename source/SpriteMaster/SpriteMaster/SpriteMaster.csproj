@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)SpriteMasterCommon.props" />
+
+	<PropertyGroup>
+		<AssemblyName>SpriteMaster</AssemblyName>
+		<PackageId>SpriteMaster-SV</PackageId>
+		<ProjectGuid>C270B7AD-DA11-4176-83B9-8998FE58A601</ProjectGuid>
+		<EnableHarmony>true</EnableHarmony>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<NoWarn>0162;7035</NoWarn>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), \.dll\.config$, ILMerge, runtimes, net452, net450, net45</IgnoreModFilePatterns>
+		<Configurations>Debug;Release;Development</Configurations>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<PackageProjectUrl>https://github.com/ameisen/SV-SpriteMaster</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/ameisen/SV-SpriteMaster</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<IsPublishable>False</IsPublishable>
+		<Nullable>enable</Nullable>
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+		<DefineConstants>DEBUG;DEVELOPMENT;TRACE</DefineConstants>
+		<Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--<PackageReference Include="Brokenevent.ILStrip.CLI" Version="1.1.4" GeneratePathProperty="true" ExcludeAssets="all" />-->
+		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.2.1" />
+		<PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" ExcludeAssets="all" />
+		<PackageReference Include="LinqFasterer" Version="2.1.0" />
+		<PackageReference Include="LZMA-SDK" Version="19.0.0" />
+		<PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
+		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
+		<PackageReference Include="Pastel" Version="3.0.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+		<PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
+		<PackageReference Include="TeximpNet" Version="1.4.3" />
+		<PackageReference Include="Tomlyn" Version="0.3.1" />
+		<PackageReference Include="ZstdNet" Version="1.4.5" />
+	</ItemGroup>
+	
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="$(ProjectDir)scripts\build.post.rb 'OutDir=$(OutDir)' 'SolutionDir=$(SolutionDir)' 'ILRepack=$(PkgILRepack)' 'ILStrip=$(PkgBrokenevent_ILStrip_CLI)' 'IgnoreModFilePatterns=$(IgnoreModFilePatterns)'" />
+	</Target>
+
+	<ItemGroup>
+		<Reference Update="Stardew Valley">
+			<Aliases>destination</Aliases>
+		</Reference>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="$(SolutionDir)SetVersion.rb -q" />
+	</Target>
+
+</Project>

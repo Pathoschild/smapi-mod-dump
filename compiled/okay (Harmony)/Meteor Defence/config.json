@@ -1,0 +1,10 @@
+{
+  "EnableMod": true,
+  "StrikeAnywhere": false,
+  "MinMeteorites": 1,
+  "MaxMeteorites": 1,
+  "DefenceObject": "Space Laser",
+  "MeteorsPerObject": 1,
+  "DefenceSound": "debuffSpell",
+  "ExplodeSound": "explosion"
+}

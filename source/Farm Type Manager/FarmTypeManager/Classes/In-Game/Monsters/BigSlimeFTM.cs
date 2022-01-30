@@ -8,19 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
+using System;
+using System.Xml.Serialization;
 
 namespace FarmTypeManager
 {
@@ -119,7 +113,7 @@ namespace FarmTypeManager
                                     Type = SavedObject.ObjectType.Monster,
                                     ID = ID,
                                     DaysUntilExpire = 1
-                                }; 
+                                };
 
                                 if (Context.IsMainPlayer) //if this method was run by the host player
                                 {

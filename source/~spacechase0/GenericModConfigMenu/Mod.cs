@@ -40,8 +40,6 @@ namespace GenericModConfigMenu
         /*********
         ** Accessors
         *********/
-        public static Mod Instance;
-
         /// <summary>The current configuration menu.</summary>
         public static IClickableMenu ActiveConfigMenu
         {
@@ -69,7 +67,6 @@ namespace GenericModConfigMenu
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
-            Mod.Instance = this;
             Log.Monitor = this.Monitor;
             this.Config = helper.ReadConfig<OwnModConfig>();
 
@@ -82,24 +79,31 @@ namespace GenericModConfigMenu
             helper.Events.Display.MenuChanged += this.OnMenuChanged;
             helper.Events.Input.MouseWheelScrolled += this.OnMouseWheelScrolled;
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonsChanged += this.OnButtonChanged;
         }
 
         /// <inheritdoc />
         public override object GetApi()
         {
-            return this.Api ??= new Api(this.ConfigManager);
+            return this.Api ??= new Api(this.ConfigManager, mod => this.OpenModMenu(mod, page: null, listScrollRow: null));
         }
 
+
+        /*********
+        ** Private methods
+        *********/
         /// <summary>Open the menu which shows a list of configurable mods.</summary>
-        public void OpenListMenu()
+        /// <param name="scrollRow">The initial scroll position, represented by the row index at the top of the visible area.</param>
+        private void OpenListMenu(int? scrollRow = null)
         {
-            Mod.ActiveConfigMenu = new ModConfigMenu(this.Config.ScrollSpeed, openModMenu: mod => this.OpenModMenu(mod), this.ConfigManager);
+            Mod.ActiveConfigMenu = new ModConfigMenu(this.Config.ScrollSpeed, openModMenu: (mod, curScrollRow) => this.OpenModMenu(mod, page: null, listScrollRow: curScrollRow), this.ConfigManager, scrollRow);
         }
 
         /// <summary>Open the config UI for a specific mod.</summary>
         /// <param name="mod">The mod whose config menu to display.</param>
         /// <param name="page">The page to display within the mod's config menu.</param>
-        public void OpenModMenu(IManifest mod, string page = null)
+        /// <param name="listScrollRow">The scroll position to set in the mod list when returning to it, represented by the row index at the top of the visible area.</param>
+        private void OpenModMenu(IManifest mod, string page, int? listScrollRow)
         {
             ModConfig config = this.ConfigManager.Get(mod, assert: true);
 
@@ -107,15 +111,11 @@ namespace GenericModConfigMenu
                 config: config,
                 scrollSpeed: this.Config.ScrollSpeed,
                 page: page,
-                openPage: newPage => this.OpenModMenu(mod, newPage),
-                returnToList: this.OpenListMenu
+                openPage: newPage => this.OpenModMenu(mod, newPage, listScrollRow),
+                returnToList: () => this.OpenListMenu(listScrollRow)
             );
         }
 
-
-        /*********
-        ** Private methods
-        *********/
         private void SetupTitleMenuButton()
         {
             this.Ui = new RootElement();
@@ -167,7 +167,8 @@ namespace GenericModConfigMenu
                 getValue: () => this.Config.ScrollSpeed,
                 setValue: value => this.Config.ScrollSpeed = value,
                 min: 1,
-                max: 500
+                max: 500,
+                formatValue: null
             );
 
             configMenu.AddKeybindList(
@@ -213,7 +214,7 @@ namespace GenericModConfigMenu
             if (e.NewMenu is GameMenu menu)
             {
                 OptionsPage page = (OptionsPage)menu.pages[GameMenu.optionsTab];
-                page.options.Add(new OptionsButton(I18n.Button_ModOptions(), this.OpenListMenu));
+                page.options.Add(new OptionsButton(I18n.Button_ModOptions(), () => this.OpenListMenu()));
             }
         }
 
@@ -229,6 +230,16 @@ namespace GenericModConfigMenu
             // pass input to menu
             else if (Mod.ActiveConfigMenu is SpecificModConfigMenu menu && e.Button.TryGetKeyboard(out Keys key))
                 menu.receiveKeyPress(key);
+        }
+
+        /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
+        private void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
+        {
+            // pass to menu for keybinding
+            if (Mod.ActiveConfigMenu is SpecificModConfigMenu menu)
+                menu.OnButtonsChanged(e);
         }
 
         /// <inheritdoc cref="IInputEvents.MouseWheelScrolled"/>

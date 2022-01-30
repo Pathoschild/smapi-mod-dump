@@ -8,13 +8,18 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class TemporaryAnimatedSpriteCtorPatch : BasePatch
@@ -32,8 +37,8 @@ internal class TemporaryAnimatedSpriteCtorPatch : BasePatch
     [HarmonyPostfix]
     private static void TemporaryAnimatedSpriteCtorPostfix(ref TemporaryAnimatedSprite __instance, Farmer owner)
     {
-        if (owner.HasProfession("Demolitionist")) ++__instance.bombRadius;
-        if (owner.HasPrestigedProfession("Demolitionist")) ++__instance.bombRadius;
+        if (owner.HasProfession(Profession.Demolitionist)) ++__instance.bombRadius;
+        if (owner.HasProfession(Profession.Demolitionist, true)) ++__instance.bombRadius;
     }
 
     #endregion harmony patches

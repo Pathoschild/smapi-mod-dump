@@ -1,0 +1,12 @@
+Welcome to Farmtronics! Enter MiniScript
+code at the prompt. For language help,
+see: `http://miniscript.org`
+
+To break out of any program, press
+Control-C. To clear the screen, enter
+`clear`
+
+Enter `toDo` to see your To-Do list.
+
+For more help, enter `help "topics"`
+Remember to use quotation marks!

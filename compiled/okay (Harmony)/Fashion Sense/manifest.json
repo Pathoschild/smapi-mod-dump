@@ -1,7 +1,7 @@
 {
   "Name": "Fashion Sense",
   "Author": "PeacefulEnd",
-  "Version": "3.5.1",
+  "Version": "4.2.0",
   "Description": "Framework which adds hair animation and more into Stardew Valley.",
   "UniqueID": "PeacefulEnd.FashionSense",
   "EntryDll": "FashionSense.dll",

@@ -10,7 +10,6 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
@@ -21,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text.RegularExpressions;
 using Object = StardewValley.Object;
 
 namespace FreeLove
@@ -377,13 +375,14 @@ namespace FreeLove
             }
         }
 
-        public static bool NPC_engagementResponse_Prefix(NPC __instance, Farmer who, bool asRoommate = false)
+        public static bool NPC_engagementResponse_Prefix(NPC __instance, Farmer who, ref bool asRoommate)
         {
-            Monitor.Log($"engagement response");
             Monitor.Log($"engagement response for {__instance.Name}");
             if (asRoommate)
             {
                 Monitor.Log($"{__instance.Name} is roomate");
+                if (ModEntry.Config.RoommateRomance)
+                    asRoommate = false;
                 return true;
             }
             if (!who.friendshipData.ContainsKey(__instance.Name))
@@ -713,7 +712,7 @@ namespace FreeLove
                     else
                     {
                         who.friendshipData[__instance.Name].GiftsThisWeek = 2;
-                        __state[3] = 1; // flag to say we set it to 1
+                        __state[3] = 1; // flag to say we set it to 2
                     }
                 }
                 if (who.ActiveObject.ParentSheetIndex == 808 && __instance.Name.Equals("Krobus"))
@@ -734,9 +733,12 @@ namespace FreeLove
                         who.spouse = __instance.Name;
                         Misc.ResetSpouses(who);
                         Game1.currentLocation.playSound("dwop", NetAudio.SoundContext.NPC);
-                        FarmHouse fh = Utility.getHomeOfFarmer(who);
-                        fh.showSpouseRoom();
-                        Helper.Reflection.GetMethod(fh, "resetLocalState").Invoke();
+                        if(Integrations.customSpouseRoomsAPI == null)
+                        {
+                            FarmHouse fh = Utility.getHomeOfFarmer(who);
+                            fh.showSpouseRoom();
+                            Helper.Reflection.GetMethod(fh, "resetLocalState").Invoke();
+                        }
                         return false;
                     }
 
@@ -766,7 +768,7 @@ namespace FreeLove
                         }
                         if (__instance.datable.Value && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate / 2f)
                         {
-                            __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3958") : Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3959"), __instance));
+                            __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3958") : Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3959"), __instance));
                             Game1.drawDialogue(__instance);
                             return false;
                         }
@@ -787,7 +789,7 @@ namespace FreeLove
                                     __instance.displayName
                             });
                         }
-                        __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3962") : Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3963"), __instance));
+                        __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3962") : Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3963"), __instance));
                         who.changeFriendship(25, __instance);
                         who.reduceActiveItemByOne();
                         who.completelyStopAnimatingOrDoingAction();
@@ -803,7 +805,7 @@ namespace FreeLove
                     {
                         Monitor.Log($"Tried to give pendant while engaged");
 
-                        __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3965") : Game1.LoadStringByGender(__instance.gender, "Strings\\StringsFromCSFiles:NPC.cs.3966"), __instance));
+                        __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3965") : Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3966"), __instance));
                         Game1.drawDialogue(__instance);
                         return false;
                     }

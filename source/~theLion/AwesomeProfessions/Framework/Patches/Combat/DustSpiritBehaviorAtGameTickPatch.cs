@@ -8,11 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley.Monsters;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class DustSpiritBehaviorAtGameTickPatch : BasePatch
@@ -29,8 +35,8 @@ internal class DustSpiritBehaviorAtGameTickPatch : BasePatch
     [HarmonyPostfix]
     private static void DustSpiritBehaviorAtGameTickPostfix(DustSpirit __instance, ref bool ___seenFarmer)
     {
-        if (!__instance.Player.IsLocalPlayer || !ModState.IsSuperModeActive ||
-            ModState.SuperModeIndex != Utility.Professions.IndexOf("Poacher")) return;
+        if (!__instance.Player.IsLocalPlayer || ModEntry.State.Value.SuperMode is not
+                {Index: SuperModeIndex.Poacher, IsActive: true}) return;
         ___seenFarmer = false;
     }
 

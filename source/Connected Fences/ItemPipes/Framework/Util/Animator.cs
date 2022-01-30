@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ItemPipes.Framework.Model;
-using ItemPipes.Framework.Objects;
+using ItemPipes.Framework.Nodes;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -24,28 +24,29 @@ namespace ItemPipes.Framework.Util
 {
     public static class Animator
     {
-        public static Connector current;
+        public static ConnectorNode current;
         public static bool updated;
         public static void AnimateItemSending(List<Node> path)
         {
             foreach (Node node in path.ToList())
             {
-                if (node != null && node is Connector)
+                if (node != null && node is ConnectorNode)
                 {
-                    Connector conn = (Connector)node;
+                    ConnectorNode conn = (ConnectorNode)node;
                     AnimateItemMovement(conn);
                 }
             }
-            /*Node[] nodes = path.ToArray();
+            /*
+            Node[] nodes = path.ToArray();
             int cont = 0;
             updated = false;
             if (Globals.Debug) { Printer.Info("ANIMATING..."); }
             while (cont < nodes.Length)
             {
                 Node node = nodes[cont];
-                if (node != null && node is Connector)
+                if (node != null && node is ConnectorNode)
                 {
-                    Connector conn = (Connector)node;
+                    ConnectorNode conn = (ConnectorNode)node;
                     if (Globals.Debug) { conn.Print(); Printer.Info(conn.PassingItem.ToString()); }
                     if (!conn.PassingItem)
                     {
@@ -65,11 +66,11 @@ namespace ItemPipes.Framework.Util
                     cont++;
                 }
 
-            }*/
-                
+            }
+            */
         }
 
-        private static void AnimateItemMovement(Connector conn)
+        private static void AnimateItemMovement(ConnectorNode conn)
         {
             conn.PassingItem = true;
             System.Threading.Thread.Sleep(500);
@@ -80,15 +81,15 @@ namespace ItemPipes.Framework.Util
         {
             foreach (Node node in path.ToList())
             {
-                if (node != null && node is Connector)
+                if (node != null && node is ConnectorNode)
                 {
-                    Connector conn = (Connector)node;
+                    ConnectorNode conn = (ConnectorNode)node;
                     AnimateInput(conn);
                 }
             }
         }
 
-        private static void AnimateInput(Connector conn)
+        private static void AnimateInput(ConnectorNode conn)
         {
             conn.Connecting = true;
             System.Threading.Thread.Sleep(100);

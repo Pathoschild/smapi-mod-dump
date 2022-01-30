@@ -1,4 +1,6 @@
 ﻿{
     "template.start": "Started {{mod}} from folder: {{folder}}",
-    "ThunderstormTotem.RainToThunder": "You can hear thunder building in the distance..."
+    "ThunderstormTotem.RainToThunder": "You can hear thunder building in the distance...",
+    "ThunderstormTotem.config.debug.name": "Debug Mode",
+    "ThunderstormTotem.config.debug.description": "Enabled extra logging information."
 }

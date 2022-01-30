@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.Display;
+
+#region using directives
+
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +19,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+#endregion using directives
 
 internal class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
 {
@@ -32,7 +36,7 @@ internal class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
     internal static ClickableComponent FocusedComponent { get; set; }
 
     /// <inheritdoc />
-    public override void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+    protected override void OnRenderedActiveMenuImpl(object sender, RenderedActiveMenuEventArgs e)
     {
         if (!ModEntry.Config.DebugKey.IsDown()) return;
 
@@ -47,9 +51,9 @@ internal class DebugRenderedActiveMenuEvent : RenderedActiveMenuEvent
         foreach (var component in ClickableComponents)
         {
             DrawBorder(component.bounds, 3, Color.Red, e.SpriteBatch);
-            if (DebugCursorMovedEvent.CursorPosition is null) continue;
+            if (ModEntry.State.Value.CursorPosition is null) continue;
 
-            var (cursorX, cursorY) = DebugCursorMovedEvent.CursorPosition.GetScaledScreenPixels();
+            var (cursorX, cursorY) = ModEntry.State.Value.CursorPosition.GetScaledScreenPixels();
             if (component.containsPoint((int) cursorX, (int) cursorY)) FocusedComponent = component;
         }
     }

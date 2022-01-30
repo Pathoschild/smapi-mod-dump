@@ -6,9 +6,9 @@ mods:
    Glue Your Furniture Down
 
 latest commit:
-   commit c2fbf283d4c51d937c0e6954a5fd592921126671
+   commit d425cbe1280e45dd7fd49d28b30f262133227dbd
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Sat Dec 18 23:29:24 2021 -0800
+   Date:   Wed Jan 26 20:11:43 2022 -0500
    
-       Update README.md
+       Move readme into docs folder
    

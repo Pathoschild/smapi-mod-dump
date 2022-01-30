@@ -8,21 +8,12 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
-using Netcode;
-using System.Xml.Serialization;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley.Network;
+using Netcode;
+using StardewValley;
+using StardewValley.TerrainFeatures;
+using System.Xml.Serialization;
 
 namespace FarmTypeManager
 {

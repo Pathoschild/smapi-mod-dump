@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace TheLion.Stardew.Common.Integrations;
+namespace DaLion.Stardew.Common.Integrations;
 
 /// <summary>Handles integration with a given mod.</summary>
 /// <remarks>Credit to <c>Pathoschild</c>.</remarks>

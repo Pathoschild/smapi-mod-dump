@@ -16,12 +16,6 @@
   "UniqueID": "KoihimeNakamura.ClimatesOfFerngill",
   "EntryDll": "ClimatesOfFerngill.dll",
   "MinimumApiVersion": "3.4.0",
-  "ModUpdater": {
-    "Repository": "SDVMods",
-    "User": "Sakorona",
-    "Directory": "_releases",
-    "ModFolder": "ClimatesOfFerngill"
-  },
   "Dependencies": [
     {
       "UniqueID": "Platonymous.Toolkit",

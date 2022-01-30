@@ -72,7 +72,7 @@ namespace AnimalHusbandryMod
             }
             else
             {
-                DataLoader = new DataLoader(Helper);
+                DataLoader = new DataLoader(Helper, ModManifest);
                 try
                 {
                     DataLoader.LoadContentPacksCommand();
@@ -181,6 +181,10 @@ namespace AnimalHusbandryMod
                         postfix: new HarmonyMethod(typeof(MeatCleaverOverrides), nameof(MeatCleaverOverrides.canBeTrashed))
                     );
                     harmony.Patch(
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.CanAddEnchantment)),
+                        postfix: new HarmonyMethod(typeof(MeatCleaverOverrides), nameof(MeatCleaverOverrides.CanAddEnchantment))
+                    );
+                    harmony.Patch(
                         original: AccessTools.Method(typeof(Axe), nameof(Axe.beginUsing)),
                         prefix: new HarmonyMethod(typeof(MeatCleaverOverrides), nameof(MeatCleaverOverrides.beginUsing))
                     );
@@ -207,6 +211,10 @@ namespace AnimalHusbandryMod
                     harmony.Patch(
                         original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.canBeTrashed))
+                    );
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.CanAddEnchantment)),
+                        postfix: new HarmonyMethod(typeof(InseminationSyringeOverrides), nameof(InseminationSyringeOverrides.CanAddEnchantment))
                     );
                     harmony.Patch(
                         original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.beginUsing)),
@@ -250,6 +258,10 @@ namespace AnimalHusbandryMod
                     harmony.Patch(
                         original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.canBeTrashed))
+                    );
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.CanAddEnchantment)),
+                        postfix: new HarmonyMethod(typeof(FeedingBasketOverrides), nameof(FeedingBasketOverrides.CanAddEnchantment))
                     );
                     harmony.Patch(
                         original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.beginUsing)),
@@ -327,6 +339,10 @@ namespace AnimalHusbandryMod
                     harmony.Patch(
                         original: AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed)),
                         postfix: new HarmonyMethod(typeof(ParticipantRibbonOverrides), nameof(ParticipantRibbonOverrides.canBeTrashed))
+                    );
+                    harmony.Patch(
+                        original: AccessTools.Method(typeof(Tool), nameof(Tool.CanAddEnchantment)),
+                        postfix: new HarmonyMethod(typeof(ParticipantRibbonOverrides), nameof(ParticipantRibbonOverrides.CanAddEnchantment))
                     );
                     harmony.Patch(
                         original: AccessTools.Method(typeof(MilkPail), nameof(MilkPail.beginUsing)),

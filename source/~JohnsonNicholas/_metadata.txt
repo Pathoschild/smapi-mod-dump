@@ -8,13 +8,9 @@ mods:
    Time Reminder
 
 latest commit:
-   commit 5fc70a7b947249a87b3c2085dd84c9868dcbf210
-   Author: Sakorona <7285555+Sakorona@users.noreply.github.com>
-   Date:   Tue Dec 28 14:03:51 2021 -0800
+   commit 5cedf6d96ca71cc8be7265281ed5d9b12b4f76df
+   Author: Nicholas Johnson <7285555+Sakorona@users.noreply.github.com>
+   Date:   Sat Jan 22 17:25:12 2022 -0800
    
-       Update to 1.5.5 compatible
-       
-       Thanks to furyx639
-       
-       Preliminary work for bugfixes
+       Updates for various things.
    

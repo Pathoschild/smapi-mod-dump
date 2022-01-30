@@ -231,7 +231,7 @@ namespace AlternativeTextures
                         tool.modData[PAINT_BRUSH_SCALE] = 0.5f.ToString();
                         if (terrainFeature != null)
                         {
-                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.info.brush_not_supported"), 3) { timeLeft = 2000 });
+                            Game1.addHUDMessage(new HUDMessage(modHelper.Translation.Get("messages.warning.brush_not_supported"), 3) { timeLeft = 2000 });
                         }
                         else
                         {

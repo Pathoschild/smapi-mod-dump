@@ -11,7 +11,7 @@
 {
   "Name": "Casual Life",
   "Author": "adverserath",
-  "Version": "1.5.4.2",
+  "Version": "1.5.6",
   "Description": "Slow down game time and update by minutes",
   "UniqueID": "Adverserath.CasualLife",
   "EntryDll": "CasualLife.dll",

@@ -1,10 +1,18 @@
 {
+   "$schema": "https://smapi.io/schemas/manifest.json",
    "Name": "FarmCaveSpawn",
    "Author": "atravita",
-   "Version": "1.0.5",
+   "Version": "1.0.7",
    "Description": "Spawn more tree fruit in the fruit cave",
    "UniqueID": "atravita.FarmCaveSpawn",
    "EntryDll": "FarmCaveSpawn.dll",
-   "UpdateKeys": ["Nexus:10186"],
-   "MinimumApiVersion": "3.0"
+  "UpdateKeys": [ "Nexus:10186", "ModDrop:1068205", "Github:atravita-mods/FarmCaveSpawn" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "MinimumVersion": "1.6.0", // uses the new API
+      "IsRequired":  "false"
+    }
+   ],
+   "MinimumApiVersion": "3.13.0"
 }

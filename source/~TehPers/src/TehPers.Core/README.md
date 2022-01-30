@@ -37,4 +37,4 @@ The API docs are still a work in progress. Check back soon for updated docs.
 This mod is licensed under MIT License. The source code and full license text can be found on the [GitHub repository][github repo].
 
 [ninject]: https://github.com/ninject/ninject/wiki
-[github repo]: https://github.com/TehPers/StardewValleyMods/tree/full-rewrite
+[github repo]: ../../

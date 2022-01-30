@@ -15,6 +15,6 @@
 	"Description": "A giant furnace capable of smelting multiple ores at once.",
 	"UniqueID": "Traktori.IndustrialFurnace",
 	"EntryDll": "IndustrialFurnace.dll",
-	"MinimumApiVersion": "3.8.0",
+	"MinimumApiVersion": "3.13.0",
 	"UpdateKeys": [ "Nexus:5568" ]
 }

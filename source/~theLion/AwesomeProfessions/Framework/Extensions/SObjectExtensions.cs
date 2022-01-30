@@ -8,15 +8,21 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Extensions;
+
+#region using directives
+
 using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI.Utilities;
 using StardewValley;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Utility;
+
+using Common.Extensions;
+
+using ObjectLookups = Utility.ObjectLookups;
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Extensions;
+#endregion using directives
 
 public static class SObjectExtensions
 {
@@ -29,14 +35,20 @@ public static class SObjectExtensions
     /// <summary>Whether a given object is an artisan good.</summary>
     public static bool IsArtisanMachine(this SObject obj)
     {
-        return Objects.ArtisanMachines.Contains(obj?.name);
+        return ObjectLookups.ArtisanMachines.Contains(obj?.name);
     }
 
     /// <summary>Whether a given object is an animal produce or derived artisan good.</summary>
     public static bool IsAnimalProduct(this SObject obj)
     {
-        return obj.Category.IsAnyOf(SObject.EggCategory, SObject.MilkCategory, SObject.sellAtPierresAndMarnies)
-               || Objects.AnimalDerivedProductIDs.Contains(obj.ParentSheetIndex);
+        return obj.Category.IsAnyOf(SObject.EggCategory, SObject.MilkCategory, SObject.meatCategory, SObject.sellAtPierresAndMarnies)
+               || ObjectLookups.AnimalDerivedProductIds.Contains(obj.ParentSheetIndex);
+    }
+
+    /// <summary>Whether a given object is a mushroom box.</summary>
+    public static bool IsMushroomBox(this SObject obj)
+    {
+        return obj.bigCraftable.Value && obj.ParentSheetIndex == 128;
     }
 
     /// <summary>Whether a given object is salmonberry or blackberry.</summary>
@@ -66,7 +78,7 @@ public static class SObjectExtensions
     /// <summary>Whether a given object is a resource node or foraged mineral.</summary>
     public static bool IsResourceNode(this SObject obj)
     {
-        return Objects.ResourceNodeIDs.Contains(obj.ParentSheetIndex);
+        return ObjectLookups.ResourceNodeIds.Contains(obj.ParentSheetIndex);
     }
 
     /// <summary>Whether a given object is a stone.</summary>
@@ -94,10 +106,10 @@ public static class SObjectExtensions
             .TryGetValue(obj.ParentSheetIndex, out var fishData) && fishData.Contains("trap");
     }
 
-    /// <summary>Whether a given object is a trash.</summary>
+    /// <summary>Whether a given object is algae or seaweed.</summary>
     public static bool IsAlgae(this SObject obj)
     {
-        return obj.ParentSheetIndex.IsAnyOf(152, 152, 157);
+        return obj.ParentSheetIndex is 152 or 153 or 157;
     }
 
     /// <summary>Whether a given object is a trash.</summary>
@@ -109,15 +121,15 @@ public static class SObjectExtensions
     /// <summary>Whether a given object is typically found in pirate treasure.</summary>
     public static bool IsPirateTreasure(this SObject obj)
     {
-        return Objects.TrapperPirateTreasureTable.ContainsKey(obj.ParentSheetIndex);
+        return ObjectLookups.TrapperPirateTreasureTable.ContainsKey(obj.ParentSheetIndex);
     }
 
     /// <summary>Whether the player should track a given object.</summary>
     public static bool ShouldBeTracked(this SObject obj)
     {
-        return Game1.player.HasProfession("Scavenger") &&
+        return Game1.player.HasProfession(Profession.Scavenger) &&
                (obj.IsSpawnedObject && !obj.IsForagedMineral() || obj.IsArtifactSpot())
-               || Game1.player.HasProfession("Prospector") &&
+               || Game1.player.HasProfession(Profession.Prospector) &&
                (obj.IsStone() && obj.IsResourceNode() || obj.IsForagedMineral());
     }
 }

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.require-flute.name": "말 피리 필요",
+    "config.require-flute.description": "말을 소환하기 위해 인벤토리의 말피리 아이템이 필요한지 여부. 기본값 - false",
+
+    "config.summon-horse-button.name": "말 버튼 소환",
+    "config.summon-horse-button.description": "피리를 연주하고 말을 소환할 때 누르는 버튼. 기본값 - {{defaultValue}}."
+}

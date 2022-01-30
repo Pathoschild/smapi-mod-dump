@@ -52,6 +52,6 @@ This mod is licensed under MIT License. The source code and full license text ca
 
 [gmcm]: https://www.nexusmods.com/stardewvalley/mods/5098
 [create a content pack]: https://stardewvalleywiki.com/Modding:Content_packs#Create_a_content_pack
-[content pack docs]: https://github.com/TehPers/StardewValleyMods/tree/full-rewrite/docs/TehPers.FishingOverhaul/Content%20Packs.md
-[api docs]: https://github.com/TehPers/StardewValleyMods/tree/full-rewrite/docs/TehPers.FishingOverhaul/API.md
-[github repo]: https://github.com/TehPers/StardewValleyMods/tree/full-rewrite
+[content pack docs]: ../../docs/TehPers.FishingOverhaul/Content%20Packs.md
+[api docs]: ../../docs/TehPers.FishingOverhaul/API.md
+[github repo]: ../../

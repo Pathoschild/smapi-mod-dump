@@ -1,0 +1,13 @@
+{
+  "CraftableGemRings": true,
+  "CraftableGemRingsMetalBar": 0,
+  "CraftableGemRingsUnlockLevels": 0,
+  "CraftableGemRingsCustomSprites": true,
+  "MinorRingCraftingChanges": true,
+  "RemoveCrabshellRingAndImmunityBandTooltipFromCombinedRing": true,
+  "RemoveLuckyTooltipFromCombinedRing": false,
+  "OldGlowStoneRingRecipe": false,
+  "OldIridiumBandRecipe": false,
+  "JukeboxRingEnabled": true,
+  "JukeboxRingWorksInRain": false
+}

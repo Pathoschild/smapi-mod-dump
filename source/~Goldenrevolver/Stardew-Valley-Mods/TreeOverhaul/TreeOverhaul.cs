@@ -22,22 +22,6 @@ namespace TreeOverhaul
     using System.Collections.Generic;
 
     /// <summary>
-    /// The default tree types with their default names and ids
-    /// </summary>
-    public enum TreeType
-    {
-        bushyTree = 1,
-        leafyTree = 2,
-        pineTree = 3,
-        winterTree1 = 4,
-        winterTree2 = 5,
-        palmTree = 6,
-        mushroomTree = 7,
-        mahoganyTree = 8,
-        palmTree2 = 9
-    }
-
-    /// <summary>
     /// Tree overhaul mod class that changes the behavior of trees and fruit trees.
     /// </summary>
     public class TreeOverhaul : Mod
@@ -112,7 +96,7 @@ namespace TreeOverhaul
                 {
                     if (terrainfeature.Value is Tree tree)
                     {
-                        if (tree.treeType.Value == (int)TreeType.mahoganyTree)
+                        if (tree.treeType.Value == Tree.mahoganyTree)
                         {
                             tree.modData[$"{this.ModManifest.UniqueID}/growthStage"] = tree.growthStage.Value.ToString();
                         }
@@ -136,15 +120,15 @@ namespace TreeOverhaul
             if (args.Button.IsUseToolButton() || (config.SaveSprouts > 2 && args.Button.IsActionButton()))
             {
                 var tool = Game1.player.CurrentTool;
-                if (tool != null && tool is MeleeWeapon weapon && (config.SaveSprouts > 2 || weapon.isScythe(-1)))
+                if (tool is MeleeWeapon weapon && (config.SaveSprouts > 2 || weapon.isScythe(-1)))
                 {
                     foreach (var terrainfeature in Game1.currentLocation.terrainFeatures.Pairs)
                     {
                         if (terrainfeature.Value is Tree)
                         {
-                            SaveSprout(terrainfeature.Value);
-
                             waitingForAnimationToFinish = true;
+
+                            SaveSprout(terrainfeature.Value);
                         }
                     }
                 }
@@ -199,7 +183,7 @@ namespace TreeOverhaul
                         terrainFeatures.Add(tree);
 
                         // tapped trees can't be destroyed
-                        tree.tapped.Set(true);
+                        tree.tapped.Value = true;
                     }
                 }
                 else if (feature is FruitTree fruitTree)
@@ -209,7 +193,7 @@ namespace TreeOverhaul
                         terrainFeatures.Add(fruitTree);
 
                         // dead fruit trees can't be destroyed
-                        fruitTree.health.Set(-99f);
+                        fruitTree.health.Value = -99f;
                     }
                 }
             }
@@ -228,14 +212,14 @@ namespace TreeOverhaul
                     {
                         if (tree.growthStage.Value == 1 || tree.growthStage.Value == 2)
                         {
-                            tree.tapped.Set(false);
+                            tree.tapped.Value = false;
                         }
                     }
                     else if (feature is FruitTree fruitTree)
                     {
                         if (fruitTree.growthStage.Value >= 0 && fruitTree.growthStage.Value <= 2)
                         {
-                            fruitTree.health.Set(10f);
+                            fruitTree.health.Value = 10f;
                         }
                     }
                 }
@@ -262,9 +246,9 @@ namespace TreeOverhaul
                 {
                     foreach (var terrainfeature in location.terrainFeatures.Pairs)
                     {
-                        if (terrainfeature.Value is Tree tree)
+                        if (terrainfeature.Value is Tree tree && tree.treeType.Value == Tree.mushroomTree)
                         {
-                            FixMushroomStump(tree);
+                            FixMushroomStump(tree, location);
                         }
                     }
                 }
@@ -296,7 +280,7 @@ namespace TreeOverhaul
         private void RevertSaplingGrowthInShade(Tree tree, GameLocation location, Vector2 tileLocation)
         {
             // stop if it's a palm tree
-            if (tree.treeType.Value == (int)TreeType.palmTree || tree.treeType.Value == (int)TreeType.palmTree2)
+            if (tree.treeType.Value == Tree.palmTree || tree.treeType.Value == Tree.palmTree2)
             {
                 return;
             }
@@ -308,7 +292,7 @@ namespace TreeOverhaul
 
             if (IsGrowthBlocked(tree, location, tileLocation))
             {
-                tree.growthStage.Set(0);
+                tree.growthStage.Value = 0;
             }
         }
 
@@ -331,7 +315,7 @@ namespace TreeOverhaul
         private void CalculateTreeGrowth(Tree tree, GameLocation location, Vector2 tileLocation)
         {
             // stop if it's a palm tree
-            if (tree.treeType.Value == (int)TreeType.palmTree || tree.treeType.Value == (int)TreeType.palmTree2)
+            if (tree.treeType.Value == Tree.palmTree || tree.treeType.Value == Tree.palmTree2)
             {
                 return;
             }
@@ -340,12 +324,12 @@ namespace TreeOverhaul
             // so we get exactly one growth call if the config says to grow in winter
             if (IsWinter(location) && !location.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) && !tree.fertilized.Value)
             {
-                if (tree.treeType.Value != (int)TreeType.mushroomTree && config.NormalTreesGrowInWinter)
+                if (tree.treeType.Value != Tree.mushroomTree && config.NormalTreesGrowInWinter)
                 {
                     GrowTree(tree, location, tileLocation);
                 }
 
-                if (tree.treeType.Value == (int)TreeType.mushroomTree && config.MushroomTreesGrowInWinter)
+                if (tree.treeType.Value == Tree.mushroomTree && config.MushroomTreesGrowInWinter)
                 {
                     GrowTree(tree, location, tileLocation);
                 }
@@ -360,12 +344,12 @@ namespace TreeOverhaul
             {
                 if (IsWinter(location))
                 {
-                    if (tree.treeType.Value != (int)TreeType.mushroomTree && (config.NormalTreesGrowInWinter || location.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) || tree.fertilized.Value))
+                    if (tree.treeType.Value != Tree.mushroomTree && (config.NormalTreesGrowInWinter || location.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) || tree.fertilized.Value))
                     {
                         GrowTree(tree, location, tileLocation);
                     }
 
-                    if (tree.treeType.Value == (int)TreeType.mushroomTree && (config.MushroomTreesGrowInWinter || location.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) || tree.fertilized.Value))
+                    if (tree.treeType.Value == Tree.mushroomTree && (config.MushroomTreesGrowInWinter || location.CanPlantTreesHere(-1, (int)tileLocation.X, (int)tileLocation.Y) || tree.fertilized.Value))
                     {
                         GrowTree(tree, location, tileLocation);
                     }
@@ -391,21 +375,21 @@ namespace TreeOverhaul
                 return;
             }
 
-            if (config.GrowthIgnoresStumps && tree.growthStage.Value == 4 && (!config.BuffMahoganyTrees || tree.treeType.Value != (int)TreeType.mahoganyTree) && IsGrowthOnlyBlockedByStump(tree, location, tileLocation))
+            if (config.GrowthIgnoresStumps && tree.growthStage.Value == 4 && (!config.BuffMahoganyTrees || tree.treeType.Value != Tree.mahoganyTree) && IsGrowthOnlyBlockedByStump(tree, location, tileLocation))
             {
                 // mahogany trees have a lower chance to grow for some reason
-                if (tree.treeType.Value == (int)TreeType.mahoganyTree)
+                if (tree.treeType.Value == Tree.mahoganyTree)
                 {
                     if (Game1.random.NextDouble() < 0.15 || (tree.fertilized.Value && Game1.random.NextDouble() < 0.6))
                     {
-                        tree.growthStage.Set(tree.growthStage.Value + 1);
+                        tree.growthStage.Value++;
                     }
                 }
                 else
                 {
                     if (Game1.random.NextDouble() < 0.2 || tree.fertilized.Value)
                     {
-                        tree.growthStage.Set(tree.growthStage.Value + 1);
+                        tree.growthStage.Value++;
                     }
                 }
 
@@ -417,7 +401,7 @@ namespace TreeOverhaul
                 return;
             }
 
-            if (config.BuffMahoganyTrees && tree.treeType.Value == (int)TreeType.mahoganyTree)
+            if (config.BuffMahoganyTrees && tree.treeType.Value == Tree.mahoganyTree)
             {
                 tree.modData.TryGetValue($"{this.ModManifest.UniqueID}/growthStage", out string moddata);
 
@@ -427,11 +411,11 @@ namespace TreeOverhaul
 
                     if (!(Game1.random.NextDouble() < 0.2 || tree.fertilized.Value) || ((yesterdaysGrowthStage == 4 || (yesterdaysGrowthStage < 4 && config.StopShadeSaplingGrowth)) && IsGrowthBlocked(tree, location, tileLocation)))
                     {
-                        tree.growthStage.Set(yesterdaysGrowthStage);
+                        tree.growthStage.Value = yesterdaysGrowthStage;
                     }
                     else
                     {
-                        tree.growthStage.Set(yesterdaysGrowthStage + 1);
+                        tree.growthStage.Value = yesterdaysGrowthStage + 1;
                     }
                 }
             }
@@ -444,7 +428,7 @@ namespace TreeOverhaul
         private void RecalculateSeedChance(Tree tree)
         {
             // stop if it's a palm tree
-            if (tree.treeType.Value == (int)TreeType.palmTree || tree.treeType.Value == (int)TreeType.palmTree2)
+            if (tree.treeType.Value == Tree.palmTree || tree.treeType.Value == Tree.palmTree2)
             {
                 return;
             }
@@ -556,26 +540,26 @@ namespace TreeOverhaul
             }
 
             // mahogany trees have a lower chance to grow for some reason
-            if (tree.treeType.Value == (int)TreeType.mahoganyTree)
+            if (tree.treeType.Value == Tree.mahoganyTree)
             {
                 if (config.BuffMahoganyTrees)
                 {
                     if (Game1.random.NextDouble() < 0.2 || tree.fertilized.Value)
                     {
-                        tree.growthStage.Set(tree.growthStage.Value + 1);
+                        tree.growthStage.Value++;
                     }
                 }
                 else
                 {
                     if (Game1.random.NextDouble() < 0.15 || (tree.fertilized.Value && Game1.random.NextDouble() < 0.6))
                     {
-                        tree.growthStage.Set(tree.growthStage.Value + 1);
+                        tree.growthStage.Value++;
                     }
                 }
             }
             else if (Game1.random.NextDouble() < 0.2 || tree.fertilized.Value)
             {
-                tree.growthStage.Set(tree.growthStage.Value + 1);
+                tree.growthStage.Value++;
             }
         }
 
@@ -583,18 +567,42 @@ namespace TreeOverhaul
         /// Reverts the mushroom stump back into a tree exactly like its done in StardewValley.TerrainFeatures.Tree.dayUpdate, but only if it's not a chopped down tree
         /// </summary>
         /// <param name="tree">current mushroom tree</param>
-        private void FixMushroomStump(Tree tree)
+        private void FixMushroomStump(Tree tree, GameLocation location)
         {
-            if (tree.treeType.Value == (int)TreeType.mushroomTree)
-            {
-                IReflectedField<float> shakeRotation = Helper.Reflection.GetField<float>(tree, "shakeRotation");
+            var shakeRotation = Helper.Reflection.GetField<float>(tree, "shakeRotation");
 
-                // if the value is higher than this the game considers the tree as falling or having fallen
-                if (Math.Abs(shakeRotation.GetValue()) < 1.5707963267948966)
+            // if the value is higher than this the game considers the tree as falling or having fallen
+            if (Math.Abs(shakeRotation.GetValue()) < 1.5707963267948966)
+            {
+                tree.stump.Value = false;
+                tree.health.Value = 10f;
+                shakeRotation.SetValue(0f);
+            }
+
+            if (tree.stump.Value)
+            {
+                return;
+            }
+
+            StardewValley.Object tapper_instance = location.getObjectAtTile((int)tree.currentTileLocation.X, (int)tree.currentTileLocation.Y);
+
+            if (tapper_instance?.bigCraftable.Value == true && (tapper_instance.ParentSheetIndex is 105 or 264))
+            {
+                int daysUntilSpring = new WorldDate(Game1.year + 1, "spring", 1).TotalDays - Game1.Date.TotalDays;
+                int minutesUntilSpring = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay, daysUntilSpring);
+                int minutesUntilTomorrow = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);
+
+                if (tapper_instance.MinutesUntilReady == minutesUntilSpring)
                 {
-                    tree.stump.Set(false);
-                    tree.health.Set(10f);
-                    shakeRotation.SetValue(0f);
+                    // red mushroom
+                    if (tapper_instance.heldObject.Value.ParentSheetIndex is 420)
+                    {
+                        tapper_instance.MinutesUntilReady = 0;
+                    }
+                    else if (minutesUntilSpring > minutesUntilTomorrow)
+                    {
+                        tapper_instance.MinutesUntilReady = minutesUntilTomorrow;
+                    }
                 }
             }
         }
@@ -664,28 +672,28 @@ namespace TreeOverhaul
         {
             if (fruittree.daysUntilMature.Value > 28)
             {
-                fruittree.daysUntilMature.Set(28);
+                fruittree.daysUntilMature.Value = 28;
             }
 
             if (fruittree.daysUntilMature.Value <= 0)
             {
-                fruittree.growthStage.Set(4);
+                fruittree.growthStage.Value = 4;
             }
             else if (fruittree.daysUntilMature.Value <= 7)
             {
-                fruittree.growthStage.Set(3);
+                fruittree.growthStage.Value = 3;
             }
             else if (fruittree.daysUntilMature.Value <= 14)
             {
-                fruittree.growthStage.Set(2);
+                fruittree.growthStage.Value = 2;
             }
             else if (fruittree.daysUntilMature.Value <= 21)
             {
-                fruittree.growthStage.Set(1);
+                fruittree.growthStage.Value = 1;
             }
             else
             {
-                fruittree.growthStage.Set(0);
+                fruittree.growthStage.Value = 0;
             }
         }
 
@@ -706,12 +714,12 @@ namespace TreeOverhaul
                 if (increaseGrowthElseRevertGrowth)
                 {
                     // grow tree (reduce days until mature)
-                    fruittree.daysUntilMature.Set(fruittree.daysUntilMature.Value - 1);
+                    fruittree.daysUntilMature.Value--;
                 }
                 else
                 {
                     // revert tree growth (increase days until mature)
-                    fruittree.daysUntilMature.Set(fruittree.daysUntilMature.Value + 1);
+                    fruittree.daysUntilMature.Value++;
                 }
 
                 UpdateGrowthStage(fruittree);

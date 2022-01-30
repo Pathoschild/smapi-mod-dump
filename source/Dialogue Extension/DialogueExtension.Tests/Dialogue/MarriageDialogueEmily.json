@@ -1,0 +1,70 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/DialogueExtension
+**
+*************************************************/
+
+{
+  "Rainy_Day_0": "I wonder where the flying insects go when it rains? Don't they get hit by the raindrops?",
+  "Rainy_Day_1": "A day like this is a blessing from mother nature.",
+  "Rainy_Day_2": "Good morning... I got this gift for you. Don't worry, I already purified it with sage incense. [428 440 444 338 207]",
+  "Rainy_Day_3": "I meant to let the parrot go free, but his wing never fully healed. He seems content, though. I give him lots of attention.#$e#He told me that he's happy here.",
+  "Rainy_Day_4": "I never told you this... but when you first moved here I had a dream about you. I knew right then that our life-paths would intertwine.$4",
+  "Rainy_Night_0": "Every moment has a unique and precious beauty... do you notice? It can be easy to forget, sometimes.",
+  "patio_Emily": "This is my favorite spot for a morning meditation.#$e#I visualize the energy from this crystal garden flowing through my body.",
+  "Rainy_Night_1": "I can hear the plants talking to each other... they're so happy after today's rain!",
+  "Rainy_Night_2": "How was your day, @? You look a little soggy.",
+  "Rainy_Night_3": "My day was very peaceful. How was yours?",
+  "Rainy_Night_4": "Want some dessert? It's my special raw, gluten-free version, sweetened only with cactus syrup.[232 234 223 220]$h",
+  "Rainy_Night_5": "Does the sound of rain ever put you in a trance?",
+  "Indoor_Day_0": "Another beautiful day on %farm farm... I have faith that something good will happen today!$h",
+  "Indoor_Day_1": "Here, take this. It's for you. [428 440 444 338 207 395 749]",
+  "Indoor_Day_2": "Hey, someone must've gotten a good night of sleep... you look fresh this morning.$h",
+  "Indoor_Day_3": "My horoscope for the day isn't too good... but I'm going to make the best of it, as always. Let's get to work!",
+  "Indoor_Day_4": "Ughh... *gurgle*... I ate too many bran muffins for breakfast.$s",
+  "Indoor_Night_0": "Is that a new hole I see in your shirt? I can sew that up for you, no problem.",
+  "Indoor_Night_1": "Welcome home, @. I hope you had a wonderful day.",
+  "Indoor_Night_2": "Is it bed time already? My, the day just floated away from me again.$u",
+  "Indoor_Night_3": "Ah, that aroma! It can only be you.$h#$e#It's a good smell.",
+  "Indoor_Night_4": "I swept the whole house, washed the windows, dusted, and cleaned the fridge. It was a very productive day!",
+  "Outdoor_0": "I love getting up early. There's a certain freshness to the air and the wildlife is much more active.",
+  "Outdoor_1": "What's on the agenda today, dear?",
+  "Outdoor_2": "Oooh! Ooh! I saw another one!$h#$e#I'm counting squirrels.",
+  "Outdoor_3": "A little sunlight is good for you. Just don't get crispy, okay?",
+  "Outdoor_4": "Good morning! I was wondering when you'd finally roll out of bed!$h#$e#It's okay, @... you deserve a good night of rest.",
+  "OneKid_0": "I hope we can raise %kid1 to be kind and considerate. That's more important than getting A's in school.",
+  "OneKid_1": "Is one child enough, or should we raise another?#$e#I guess we'll just see where fate leads us.",
+  "OneKid_3": "I lit a pale green candle and shook a sprig of baby-mint over %kid1. That should ward off any dangerous spirits.",
+  "TwoKids_1": "A big house, two kids and a parrot... I have my hands full!",
+  "TwoKids_2": "Well, %kid2 certainly has your hair...$u",
+  "TwoKids_3": "Oh, I already fed the kids their organic quinoa puffs with goat milk. You just focus on the farm!",
+  "Good_1": "This is so fun to live together! I always thought I'd be single my whole life.",
+  "Good_2": "It was our destiny to be together... I believe that with all my heart!",
+  "Good_3": "Thanks for taking me into your home. I love this new life.$4",
+  "Good_4": "Our vibrational energies are perfectly in tune. Can't you feel it?",
+  "Good_5": "I was just admiring my wedding amulet... The shell is beautiful! I can feel the pure blue energy radiating from it.$l",
+  "Good_6": "I had another dream about us last night. We had climbed to the top of a crystal tree, looking down on the most lush and beautiful meadow. I keep having this dream.#$e#I don't know what it means, but I feel that it's a good omen.",
+  "Neutral_0": "I hope you'll still like me when I grow old and my hair turns to a dull, faded steel.",
+  "Neutral_8": "I feel uninspired today.$s",
+  "funLeave_Emily": "I'm going to visit town today, and later on I'm going to help out at the saloon. Have a nice day.",
+  "funReturn_Emily": "My day went well... it's good to get out of the house now and then.",
+  "spring_2": "My friends, the plants, have come back to life. I feel content.",
+  "spring_1": "Happy new year, honey. Let's make this a special one.$4",
+  "spring_22": "Hmm... I'm thinking maybe a salad of fresh foraged greens for dinner tonight?",
+  "summer_20": "The energy in our bodies fluctuate just as the seasons do. Understanding your own unique rhythym is the first step to inner harmony.",
+  "summer_2": "May Yoba bless you on this lovely day.$7",
+  "fall_1": "The year's already half-way over. Can you believe it?",
+  "fall_25": "Our bodies are naturally in tune with the seasons. This light and color of fall compels us to prepare for the barren winter.#$e#To our distant ancestors, this feeling was encompassing and vital. For us, it only barely peeks through the noise of modern life.",
+  "winter_15": "On a day like this, I have a craving for cinnamon, nutmeg, clove, and cardamom.",
+  "winter_5": "*sigh*... Why does there have to be war and hatred in the world?$s",
+  "winter_2": "I can't help but think of all the poor, frozen squirrels out there right now.$s",
+  "spring_Maru": "I'm feeling excited for a new year of farming, @!$h",
+  "fall_Emily": "I drank a super-food smoothie this morning and I feel aaah-mazing!$h",
+  "summer_Emily": "Phew! It's hot but it feels great, doesn't it?#$e#Maybe we'll see some wild parrots today.",
+  "winter_Emily": "Whoops, my hair is frozen solid again.$s",
+  "spouseRoom_Emily": "I'm going to spend some time with the parrot today. It breaks my heart that he'll never fly again.$u"
+}

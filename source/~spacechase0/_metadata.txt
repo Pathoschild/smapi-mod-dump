@@ -13,6 +13,7 @@ mods:
    Carry Chest
    Combat Level Damage Scaler
    Console Code
+   Content Code
    Content Patcher Animations
    Cooking Skill
    Custom Critters
@@ -33,11 +34,14 @@ mods:
    Luck Skill
    Magic
    Mana Bar
+   Monsters - The Framework
+   Moon Misadventures
    More Buildings
    More Giant Crops
    More Grass Starters
    More Rings
    Multi Fertilizer
+   New Game Plus
    Object Time Left
    Preexisting Relationship
    Profit Calculator
@@ -55,9 +59,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 2750dec7aad686f6fca7a2a5d70fd3b706538b65
-   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Thu Dec 30 15:04:04 2021 -0500
+   commit 5cb2af4fcfde0265db47bf02bfb031db23a6bef0
+   Author: Chase Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Fri Jan 28 18:48:30 2022 -0500
    
-       fix Luck Skill UI drawn over vanilla tooltip
+       Minor fixes for NG+ and SpaceCore
    

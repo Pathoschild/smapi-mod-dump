@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-using Harmony;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -20,7 +18,6 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using Object = StardewValley.Object;
 
 namespace HereFishy
@@ -185,7 +182,7 @@ namespace HereFishy
             }
 
 
-            int parentSheetIndex = o.parentSheetIndex;
+            int parentSheetIndex = o.ParentSheetIndex;
             animations.Clear();
             float t;
             lastUser = who;

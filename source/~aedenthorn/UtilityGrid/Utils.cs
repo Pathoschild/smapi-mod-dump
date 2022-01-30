@@ -97,16 +97,16 @@ namespace UtilityGrid
             if (destroying)
             {
                 lessGold = Config.PipeDestroyGold;
-            }
-            if (Config.PipeDestroyItems?.Length > 0)
-            {
-                var itemStrings = Config.PipeDestroyItems.Split(',');
-                foreach (var item in itemStrings)
+                if (Config.PipeDestroyItems?.Length > 0)
                 {
-                    var parts = item.Split(':');
-                    if (int.TryParse(parts[0], out int index) && int.TryParse(parts[1], out int amount))
+                    var itemStrings = Config.PipeDestroyItems.Split(',');
+                    foreach (var item in itemStrings)
                     {
-                        lessItems[index] = amount;
+                        var parts = item.Split(':');
+                        if (int.TryParse(parts[0], out int index) && int.TryParse(parts[1], out int amount))
+                        {
+                            lessItems[index] = amount;
+                        }
                     }
                 }
             }
@@ -136,7 +136,8 @@ namespace UtilityGrid
                     }
                 }
             }
-            if(destroying)
+
+            if (destroying)
                 PipeDestroyed();
             Game1.player.Money -= Config.PipeCostGold;
             foreach (var item in items)

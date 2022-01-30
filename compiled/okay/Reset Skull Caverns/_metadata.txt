@@ -1,0 +1,3 @@
+page URL: https://www.moddrop.com/stardew-valley/mod/1080116
+IDs: KoihimeNakamura.ResetCaverns
+update keys: ModDrop:1080116, GitHub:Sakorona/SDVMods

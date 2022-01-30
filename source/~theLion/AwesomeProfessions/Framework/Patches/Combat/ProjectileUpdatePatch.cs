@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,15 +20,18 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Netcode;
-using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.Projectiles;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Stardew.Common.Harmony;
+using Extensions;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class ProjectileUpdatePatch : BasePatch
@@ -52,10 +59,10 @@ internal class ProjectileUpdatePatch : BasePatch
 
         // check if firer is has Desperado Super Mode
         var firer = ___theOneWhoFiredMe.Get(Game1.currentLocation) is Farmer farmer ? farmer : Game1.player;
-        if (!firer.IsLocalPlayer || ModState.SuperModeIndex != Utility.Professions.IndexOf("Desperado")) return;
+        if (!firer.IsLocalPlayer || ModEntry.State.Value.SuperMode?.Index != SuperModeIndex.Desperado) return;
 
         // check for powered bullet
-        var bulletPower = Utility.Professions.GetDesperadoBulletPower() - 1f;
+        var bulletPower = firer.GetDesperadoBulletPower() - 1f;
         if (bulletPower <= 0f) return;
 
         // check if current power makes a difference for cross section
@@ -65,7 +72,7 @@ internal class ProjectileUpdatePatch : BasePatch
         // check if already collided
         if (__result)
         {
-            if (!ModState.PiercedBullets.Remove(projectile.GetHashCode())) return;
+            if (!ModEntry.State.Value.PiercedBullets.Remove(projectile.GetHashCode())) return;
 
             projectile.damageToFarmer.Value = (int) (projectile.damageToFarmer.Value * 0.6f);
             __result = false;
@@ -159,6 +166,10 @@ internal class ProjectileUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Bgt_Un_S, notTrickShot),
                     // add to bounced bullet set
                     new CodeInstruction(OpCodes.Call,
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                    new CodeInstruction(OpCodes.Callvirt,
+                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                    new CodeInstruction(OpCodes.Callvirt,
                         typeof(ModState).PropertyGetter(nameof(ModState.BouncedBullets))),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Callvirt, typeof(Projectile).MethodNamed(nameof(GetHashCode))),
@@ -169,8 +180,7 @@ internal class ProjectileUpdatePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching prestiged Rascal trick shot.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching prestiged Rascal trick shot.\nHelper returned {ex}");
             return null;
         }
 

@@ -8,13 +8,18 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class TreeDayUpdatePatch : BasePatch
@@ -39,7 +44,7 @@ internal class TreeDayUpdatePatch : BasePatch
     [HarmonyPostfix]
     private static void TreeDayUpdatePostfix(ref Tree __instance, int __state)
     {
-        var anyPlayerIsArborist = Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out var n);
+        var anyPlayerIsArborist = Game1.game1.DoesAnyPlayerHaveProfession(Profession.Arborist, out var n);
         if (__instance.growthStage.Value > __state || !anyPlayerIsArborist || !__instance.CanGrow()) return;
 
         if (__instance.treeType.Value == Tree.mahoganyTree)

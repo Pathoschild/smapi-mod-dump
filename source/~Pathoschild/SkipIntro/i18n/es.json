@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.skip-to.name": "Saltar a",
+    "config.skip-to.tooltip": "A qué pantalla se debe saltar. Por defecto al Título.",
+    "config.skip-to.values.title-menu": "Menú del título",
+    "config.skip-to.values.load-menu": "Menú de carga",
+    "config.skip-to.values.join-coop": "Unirse cooperativo",
+    "config.skip-to.values.host-coop": "Alojar cooperativo"
+}

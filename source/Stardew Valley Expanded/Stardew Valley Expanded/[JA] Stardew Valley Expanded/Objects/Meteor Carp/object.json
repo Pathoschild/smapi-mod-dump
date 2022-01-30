@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Meteor Carp",
+	"Description": "It radiates an intergalactic energy.",
+	"Category": "Fish",
+	"Edibility": -20,
+	"EdibleIsDrink": false,
+	"EdibleBuffs": null,
+	"Price": 300,
+	"IsColored": false,
+	"GiftTastes":
+	{
+	    "Love": [ "Krobus" ],
+		"Like": [ "Wizard", "Morgan", "Lance" ],
+		"Dislike": [ "Elliott", "Sebastian", "Abigail", "Vincent", "Willy", "Harvey", "Demetrius", "Martin", "George", "Kent", "Jodi", "Claire", "Olivia", "Shane", "Haley", "Maru", "Pam", "Clint", "Jas", "Andy", "Gus" ]
+	},
+}

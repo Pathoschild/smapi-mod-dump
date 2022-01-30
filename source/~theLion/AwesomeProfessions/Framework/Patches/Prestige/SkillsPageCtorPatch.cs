@@ -8,13 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using AssetLoaders;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class SkillsPageCtorPatch : BasePatch
@@ -57,7 +63,7 @@ internal class SkillsPageCtorPatch : BasePatch
 
                     if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 15)
                     {
-                        component.texture = Utility.Prestige.SkillBarTx;
+                        component.texture = Textures.SkillBarTx;
                         component.sourceRect = srcRect;
                     }
 
@@ -76,7 +82,7 @@ internal class SkillsPageCtorPatch : BasePatch
 
                     if (Game1.player.GetUnmodifiedSkillLevel(skillIndex) >= 20)
                     {
-                        component.texture = Utility.Prestige.SkillBarTx;
+                        component.texture = Textures.SkillBarTx;
                         component.sourceRect = srcRect;
                     }
 

@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JoeStrout/Farmtronics
+**
+*************************************************/
+
+Available topics:
+   files        coding        demos
+   text         input         community
+   farm         bot           toDo
+   
+(Access these with, for example: 
+`help "demos"` -- remember to use
+quotation marks.)

@@ -21,7 +21,7 @@ namespace StardewNotification
 
         public static void ShowMessage(string msg)
         {
-            var hudmsg = new HUDMessage(msg, Color.SeaGreen, StardewNotification.Config.NotificationTime , true)
+            var hudmsg = new HUDMessage(msg, Color.SeaGreen, StardewNotification.Config.NotificationDuration , true)
             {
                 whatType = 2
             };

@@ -860,7 +860,8 @@ namespace TwilightShards.Stardew.Common
                 if (rawData.Length > 1)
                 {
                     for (int index = 0; index < rawData.Length; index += 2)
-                        processedData.Add(rawData[index], rawData[index + 1]);
+                        if (!(processedData.Keys.Contains(rawData[index])))  
+                            processedData.Add(rawData[index], rawData[index + 1]);
                 }
                 string[] locationFish = processedData.Keys.ToArray<string>();
 

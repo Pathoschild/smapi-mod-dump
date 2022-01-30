@@ -15,6 +15,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using MoreConversationTopics.Integrations;
+using System.Reflection;
 
 namespace MoreConversationTopics
 {
@@ -33,7 +35,15 @@ namespace MoreConversationTopics
         public override void Entry(IModHelper helper)
         {
             // Read in config file and create if needed
-            this.Config = this.Helper.ReadConfig<ModConfig>();
+            try
+            {
+                this.Config = this.Helper.ReadConfig<ModConfig>();
+            }
+            catch (Exception)
+            {
+                this.Config = new ModConfig();
+                this.Monitor.Log(this.Helper.Translation.Get("IllFormatedConfig"), LogLevel.Warn);
+            }
 
             // Initialize the error logger in WeddingPatcher
             WeddingPatcher.Initialize(this.Monitor, this.Config);
@@ -76,13 +86,80 @@ namespace MoreConversationTopics
             // Adds a command to remove a conversation topic
             helper.ConsoleCommands.Add("remove_conversation_topic", "Removes the specified conversation topic.\n\nUsage: remove_conversation_topic <flagName>\n- flagName: the conversation topic to remove.", this.RemoveConversationTopic);
 
+            // Add GMCM
+            helper.Events.GameLoop.GameLaunched += this.RegisterGMCM;
+        }
+
+        /// <summary>
+        /// Generates the GMCM for this mod by looking at the structure of the config class.
+        /// </summary>
+        /// <param name="sender">Unknown, expected by SMAPI.</param>
+        /// <param name="e">Arguments for event.</param>
+        /// <remarks>To add a new setting, add the details to the i18n file. Currently handles: bool.</remarks>
+        private void RegisterGMCM(object sender, GameLaunchedEventArgs e)
+        {
+            IModInfo gmcm = this.Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu");
+            if (gmcm is null)
+            {
+                this.Monitor.Log(this.Helper.Translation.Get("GmcmNotFound"), LogLevel.Debug);
+                return;
+            }
+            if (gmcm.Manifest.Version.IsOlderThan("1.6.0"))
+            {
+                this.Monitor.Log(this.Helper.Translation.Get("GmcmVersionMessage", new { version = "1.6.0", currentversion = gmcm.Manifest.Version.ToString() }), LogLevel.Info);
+                return;
+            }
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+            {
+                return;
+            }
+
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.Config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(this.Config));
+
+            configMenu.AddParagraph(
+                mod: this.ModManifest,
+                text: () => this.Helper.Translation.Get("mod-description"));
+
+            foreach (PropertyInfo property in typeof(ModConfig).GetProperties())
+            {
+                MethodInfo getter = property.GetGetMethod();
+                MethodInfo setter = property.GetSetMethod();
+                if (getter is null || setter is null)
+                {
+                    this.Monitor.Log("Config appears to have a mis-formed option?");
+                    continue;
+                }
+                if (property.PropertyType.Equals(typeof(int)))
+                {
+                    var getterDelegate = (Func<ModConfig, int>)Delegate.CreateDelegate(typeof(Func<ModConfig, int>), getter);
+                    var setterDelegate = (Action<ModConfig, int>)Delegate.CreateDelegate(typeof(Action<ModConfig, int>), setter);
+                    configMenu.AddNumberOption(
+                        mod: this.ModManifest,
+                        getValue: () => getterDelegate(this.Config),
+                        setValue: (int value) => setterDelegate(this.Config, value),
+                        name: () => this.Helper.Translation.Get($"{property.Name}.title"),
+                        tooltip: () => this.Helper.Translation.Get($"{property.Name}.description"),
+                        min: 1,
+                        max: 14,
+                        interval: 1);
+                }
+                else
+                {
+                    this.Monitor.Log($"{property.Name} unaccounted for.", LogLevel.Warn);
+                }
+            }
         }
 
         // Helper function to check if a string is on the list of repeatable CTs added by this mod
         public static Boolean isRepeatableCTAddedByMod(string topic)
         {
-            string[] modRepeatableConversationTopics = new string[] {"wedding", "luauBest", "luauShorts", "luauPoisoned", "divorce", "babyBoy", "babyGirl"};
-            foreach (string s in modRepeatableConversationTopics) {
+            string[] modRepeatableConversationTopics = new string[] { "wedding", "luauBest", "luauShorts", "luauPoisoned", "divorce", "babyBoy", "babyGirl" };
+            foreach (string s in modRepeatableConversationTopics)
+            {
                 if (s == topic)
                 {
                     return true;

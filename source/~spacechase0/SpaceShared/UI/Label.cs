@@ -14,9 +14,16 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 
+#if IS_SPACECORE
+namespace SpaceCore.UI
+{
+    public
+#else
 namespace SpaceShared.UI
 {
-    internal class Label : Element
+    internal
+#endif
+         class Label : Element
     {
         /*********
         ** Accessors
@@ -70,10 +77,17 @@ namespace SpaceShared.UI
             bool altColor = this.Hover && this.Callback != null;
             if (this.Bold)
                 SpriteText.drawString(b, this.String, (int)this.Position.X, (int)this.Position.Y, layerDepth: 1, color: altColor ? SpriteText.color_Gray : -1);
-            else if (this.NonBoldShadow)
-                Utility.drawTextWithShadow(b, this.String, Game1.dialogueFont, this.Position, altColor ? this.HoverTextColor : this.IdleTextColor, this.NonBoldScale);
             else
-                b.DrawString(Game1.dialogueFont, this.String, this.Position, altColor ? this.HoverTextColor : this.IdleTextColor, 0f, Vector2.Zero, this.NonBoldScale, SpriteEffects.None, 1);
+            {
+                Color col = altColor ? this.HoverTextColor : this.IdleTextColor;
+                if (col.A <= 0)
+                    return;
+
+                if (this.NonBoldShadow)
+                    Utility.drawTextWithShadow(b, this.String, Game1.dialogueFont, this.Position, col, this.NonBoldScale);
+                else
+                    b.DrawString(Game1.dialogueFont, this.String, this.Position, col, 0f, Vector2.Zero, this.NonBoldScale, SpriteEffects.None, 1);
+            }
         }
 
         /// <summary>Measure the rendered dialogue text size for the given text.</summary>

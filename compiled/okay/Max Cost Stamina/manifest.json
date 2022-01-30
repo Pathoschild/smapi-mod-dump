@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Max Cast Stamina",
+  "Author": "StultusV",
+  "Version": "1.0.0",
+  "Description": "Doesn't use stamina if you get a max cast in fishing",
+  "UniqueID": "StultusV.MaxCastStamina",
+  "EntryDll": "MaxCastStamina.dll",
+  "UpdateKeys": []
+}

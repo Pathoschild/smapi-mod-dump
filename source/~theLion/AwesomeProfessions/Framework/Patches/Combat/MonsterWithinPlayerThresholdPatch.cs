@@ -8,15 +8,20 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class MonsterWithinPlayerThresholdPatch : BasePatch
@@ -36,8 +41,8 @@ internal class MonsterWithinPlayerThresholdPatch : BasePatch
         try
         {
             var foundPlayer = ModEntry.ModHelper.Reflection.GetMethod(__instance, "findPlayer").Invoke<Farmer>();
-            if (!foundPlayer.IsLocalPlayer || !ModState.IsSuperModeActive ||
-                ModState.SuperModeIndex != Utility.Professions.IndexOf("Poacher"))
+            if (!foundPlayer.IsLocalPlayer || ModEntry.State.Value.SuperMode is not
+                    {Index: SuperModeIndex.Poacher, IsActive: true})
                 return true; // run original method
 
             __result = false;
@@ -45,7 +50,7 @@ internal class MonsterWithinPlayerThresholdPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

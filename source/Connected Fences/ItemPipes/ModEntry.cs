@@ -23,31 +23,31 @@ using ItemPipes.Framework;
 using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Patches;
-using ItemPipes.Framework.API;
-using ItemPipes.Framework.ContentPackUtil;
+using ItemPipes.Framework.Nodes;
+using ItemPipes.Framework.Items;
+using ItemPipes.Framework.Items.Recipes;
 using HarmonyLib;
+using SpaceCore;
 
 namespace ItemPipes
 {
-    public interface IJsonAssetsApi
+    public interface ISpaceCoreApi
     {
-        int GetObjectId(string name);
-        void LoadAssets(string path);
+        void RegisterSerializerType(Type type);
     }
-
-    class ModEntry : Mod
+    class ModEntry : Mod, IAssetEditor
     {
+        public static IModHelper helper;
         public Dictionary<string, int> LogisticItemIds;
         public DataAccess DataAccess { get; set; }
 
         internal static readonly string ContentPackPath = Path.Combine("assets", "DGAItemLogistics");
 
-        private IJsonAssetsApi JsonAssets;
-
         public override void Entry(IModHelper helper)
         {
+            ModEntry.helper = helper;
             Printer.SetMonitor(this.Monitor);
-            Framework.Helper.SetHelper(helper);
+            Framework.Util.Helper.SetHelper(helper);
             LogisticItemIds = new Dictionary<string, int>();
             DataAccess = DataAccess.GetDataAccess();
 
@@ -80,29 +80,43 @@ namespace ItemPipes
             DataAccess.Buildings = data.Buildings;
             DataAccess.Locations = data.Locations;
 
+            //Normal debug = only errors
             if(config.DebugMode)
             {
                 Globals.Debug = true;
+                if (Globals.Debug) { Printer.Info("Debug mode ENABLED"); }
             }
             else
             {
                 Globals.Debug = false;
+                if (Globals.Debug) { Printer.Info("Debug mode DISABLED"); }
+            }
+            //Ultra debug = all the prints like step by step
+            if (config.UltraDebugMode)
+            {
+                Globals.UltraDebug = true;
+                if (Globals.Debug) { Printer.Info("UltraDebug mode ENABLED"); }
+            }
+            else
+            {
+                Globals.UltraDebug = false;
+                if (Globals.Debug) { Printer.Info("UltraDebug mode DISABLED"); }
             }
             if (!config.DisableItemSending)
             {
                 Globals.DisableItemSending = true;
+                if (Globals.Debug) { Printer.Info("Item sending ENABLED"); }
             }
             else
             {
                 Globals.DisableItemSending = false;
+                if (Globals.Debug) { Printer.Info("Item sending DISABLED"); }
             }
-            //REMOVE
-            Globals.Debug = true;
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
-            FencePatcher.Apply(harmony);
+            //FencePatcher.Apply(harmony);
             ChestPatcher.Apply(harmony);
-
+            
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
@@ -114,77 +128,73 @@ namespace ItemPipes
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            JsonAssets = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
-            if (JsonAssets == null)
+            Helper.Content.AssetEditors.Add(this);
+            var spaceCore = this.Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
+            spaceCore.RegisterSerializerType(typeof(IronPipeItem));
+            spaceCore.RegisterSerializerType(typeof(GoldPipeItem));
+
+            spaceCore.RegisterSerializerType(typeof(ExtractorPipeItem));
+            spaceCore.RegisterSerializerType(typeof(InserterPipeItem));
+            spaceCore.RegisterSerializerType(typeof(PolymorphicPipeItem));
+            spaceCore.RegisterSerializerType(typeof(FilterPipeItem));
+
+            spaceCore.RegisterSerializerType(typeof(WrenchItem));
+            //spaceCore.RegisterSerializerType(typeof(IronPipeRecipe));
+            CustomCraftingRecipe.CraftingRecipes.Add("Iron Pipe", new IronPipeRecipe());
+        }
+        public bool CanLoad<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Data/ObjectInformation"))
             {
-                Monitor.Log("Can't load Json Assets API, which is needed for Home Sewing Kit to function", LogLevel.Error);
-            }
-            else
-            {
-                JsonAssets.LoadAssets(Path.Combine(Helper.DirectoryPath, "assets"));
+                return true;
             }
 
-            /*if (Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets"))
-            {
-                Printer.Info("Attempting to hook into spacechase0.JsonAssets.");
-                ApiManager.HookIntoJsonAssets();
-            }*/
-
-            //For when migrating to DGA
-            // Check if spacechase0's DynamicGameAssets is in the current mod list
-            /*if (Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
-            {
-                Printer.Info("Attempting to hook into spacechase0.DynamicGameAssets.");
-                ApiManager.HookIntoDynamicGameAssets();
-
-                Manifest manifest = new Manifest();
-                manifest = Helper.Data.ReadJsonFile<Manifest>("manifest.json");
-                //It doesn't read the extra fields, don't know why
-                manifest.ExtraFields = new Dictionary<string, object>();
-                manifest.ExtraFields.Add("DGA.FormatVersion", 2);
-                manifest.ExtraFields.Add("DGA.ConditionsFormatVersion", "1.24.2");
-                var contentPackManifest = new CPManifest(manifest);
-                ApiManager.GetDynamicGameAssetsInterface().AddEmbeddedPack(contentPackManifest, Path.Combine(Helper.DirectoryPath, ContentPackPath));
-            }
-            */
+            return false;
         }
 
+        public bool CanEdit<T>(IAssetInfo asset)
+        {
+            if (asset.AssetNameEquals("Data/CraftingRecipes"))
+            {
+                return true;
+            }
 
+            return false;
+        }
+
+        public void Edit<T>(IAssetData asset)
+        {
+            if (asset.AssetNameEquals("Data/CraftingRecipes"))
+            {
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                string hardwoodFenceTest = "709 1/Field/298/false/Mining 3";
+                string ironPipe = "388 20 709 1/Home/0 1/false/Mining 3";
+                string fakeRecipe = "0 1//0 1/false//Test Recipe";
+                if (!data.ContainsKey("Iron Pipe"))
+                {
+                    data.Add("Iron Pipe", fakeRecipe);
+                }
+                else
+                {
+                    data["Iron Pipe"] = fakeRecipe;
+                }
+            }
+        }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            Reload();
-            
+            Reset();
             foreach (GameLocation location in Game1.locations)
             {
-                //Monitor.Log("LOADING " + location.Name, LogLevel.Info);
                 DataAccess.LocationNetworks.Add(location, new List<Network>());
                 DataAccess.LocationNodes.Add(location, new List<Node>());
                 NetworkBuilder.BuildLocationNetworks(location);
                 NetworkManager.UpdateLocationNetworks(location);
-                //Monitor.Log(location.Name + " LOADED!", LogLevel.Info);
-                if (Globals.Debug)
-                {
-                    NetworkManager.PrintLocationNetworks(location);
-                }
-                /*
-                if (DataAccess.Locations.Contains(location.Name))
-                {
-                    Monitor.Log("LOADING " + location.Name, LogLevel.Info);
-                    DataAccess.LocationNetworks.Add(location, new List<Network>());
-                    DataAccess.LocationMatrix.Add(location, new Node[location.map.DisplayWidth, location.map.DisplayHeight]);
-                    NetworkBuilder.BuildLocationNetworks(location);
-                    NetworkManager.UpdateLocationNetworks(location);
-                    Monitor.Log(location.Name + " LOADED!", LogLevel.Info);
-                    if(Globals.Debug)
-                    {
-                        NetworkManager.PrintLocationNetworks(location);
-                    }
-                }*/
             }
+            if (Globals.UltraDebug) { Printer.Info("Location networks loaded!"); }
         }
 
-        private void Reload()
+        private void Reset()
         {
             DataAccess.LocationNodes.Clear();
             DataAccess.LocationNetworks.Clear();
@@ -202,21 +212,20 @@ namespace ItemPipes
                         if (Globals.Debug) { Printer.Info($"[X] UPDATETICKET"); }
                         Animator.updated = true;
                     }*/
+                    //Tier 1 Extractors
                     if (e.IsMultipleOf(120))
                     {
                         DataAccess DataAccess = DataAccess.GetDataAccess();
-                        List<Network> networks;
                         foreach (GameLocation location in Game1.locations)
                         {
-                            if (DataAccess.LocationNetworks.TryGetValue(location, out networks))
+                            List<Network> networks = DataAccess.LocationNetworks[location];
+                            if (networks.Count > 0)
                             {
-                                if(networks.Count > 0)
+                                //if (Globals.UltraDebug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
+                                foreach (Network network in networks)
                                 {
-                                    //if (Globals.Debug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
-                                    foreach (Network network in networks)
-                                    {
-                                        //network.ProcessExchanges();
-                                    }
+                                    //Printer.Info(network.Print());
+                                    network.ProcessExchanges(1);
                                 }
                             }
                         }
@@ -244,21 +253,20 @@ namespace ItemPipes
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            RepairPipes();
-        }
-
-        private void RepairPipes()
-        {
-            foreach (GameLocation location in Game1.locations)
+            for(int i=0;i<15;i++)
             {
-                foreach (Fence fence in location.Objects.Values.OfType<Fence>())
-                {
-                    if (DataAccess.PipeNames.Contains(fence.name))
-                    {
-                        fence.health.Value = 100f;
-                        fence.maxHealth.Value = fence.health.Value;
-                    }
-                }
+                //Game1.player.addItemToInventory(new Test());
+                Game1.player.addItemToInventory(new IronPipeItem());
+                Game1.player.addItemToInventory(new GoldPipeItem());
+                Game1.player.addItemToInventory(new ExtractorPipeItem());
+                Game1.player.addItemToInventory(new InserterPipeItem());
+                Game1.player.addItemToInventory(new PolymorphicPipeItem());
+                Game1.player.addItemToInventory(new FilterPipeItem());
+                //Game1.player.addItemToInventory(new Pipe());
+            }
+            if(!Game1.player.hasItemInInventoryNamed("Wrench"))
+            {
+                Game1.player.addItemToInventory(new WrenchItem());
             }
         }
     }

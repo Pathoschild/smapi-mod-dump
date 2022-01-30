@@ -6,10 +6,10 @@ mods:
    Casual Life
 
 latest commit:
-   commit a299a8453112fcfd01f0788d89f827f8325679b2
+   commit 028643818496585791aa3afbd888fa1b18268a6c
    Author: David Rath <adverserath@gmail.com>
-   Date:   Thu Aug 26 23:50:14 2021 +0100
+   Date:   Wed Jan 12 10:59:50 2022 +0000
    
-       * Update UpdateKeys
-       * Set version number in manifest
+       * Update to 1.5.6
+       * Add time controls
    

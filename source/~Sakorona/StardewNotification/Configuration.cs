@@ -13,13 +13,14 @@ namespace StardewNotification
     public class SNConfiguration
     {
         // General Notifications
-        public float NotificationTime { get; set; } = 6150;
+        public float NotificationDuration { get; set; } = 6150;
         public bool NotifyBirthdays { get; set; } = true;
         public bool NotifyBirthdayReminder { get; set; } = true;
+        public int RunNotificationsTime { get ; set; } = 0600; // 6:00 am
         public int BirthdayReminderTime { get; set; } = 1700; // 5:00 pm
         public bool NotifyFestivals { get; set; } = true;
         public bool NotifyTravelingMerchant { get; set; } = true;
-        public bool NotifyToolUpgrade { get; set; } = true;
+        public bool NotifyToolUpgrade { get; set; } = false;
         public bool NotifyQueenOfSauce { get; set; } = true;
         public bool NotifyMaxLuck { get; set; } = true;
         public bool NotifyMinLuck { get; set; } = true;

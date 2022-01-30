@@ -10,8 +10,6 @@ for queries and analysis.**
 
 *Are you tired of constantly having to dig through multiple wiki pages or mod menus every time you want to give a villager a gift? Wouldn't it be easier if there was just a visual indicator of who can receive a gift and who you can talk to? You deserve **Better Friendship**!*
 
-**Update 1.0.3 (2021/12/09): Fixed a bug where gift suggestions would be missing or rapidly cycle when multiple NPCs were around**
-
 ![](https://github.com/urbanyeti/stardew-better-friendship/blob/main/misc/multiple-gift.gif)
 
 ## Features

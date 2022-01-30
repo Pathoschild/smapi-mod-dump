@@ -8,8 +8,15 @@ for queries and analysis.**
 
 ## Changelog
 
-### 1.4.1
+### 1.4.5
+- Patch for issue with items disappearing between repeats
+
+### 1.4.4
+- Updated to SDV 1.5.5 (including some 1.5 world gen options now fully supported)
 - Some trace spam removed
+
+### 1.4.3
+- Version increment for updates.
 
 ### 1.4
  - Updated to.. SDV 1.4

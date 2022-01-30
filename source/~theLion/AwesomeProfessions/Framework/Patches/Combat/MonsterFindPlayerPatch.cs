@@ -8,6 +8,12 @@
 **
 *************************************************/
 
+using DaLion.Stardew.Professions.Framework.SuperMode;
+
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Linq;
 using System.Reflection;
@@ -16,9 +22,10 @@ using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class MonsterFindPlayerPatch : BasePatch
@@ -45,7 +52,7 @@ internal class MonsterFindPlayerPatch : BasePatch
 
             // Slimes prefer Pipers
             if (__instance is GreenSlime &&
-                __instance.currentLocation.DoesAnyPlayerHereHaveProfession("Piper", out var pipers))
+                __instance.currentLocation.DoesAnyPlayerHereHaveProfession(Profession.Piper, out var pipers))
             {
                 var distanceToClosestPiper = double.MaxValue;
                 foreach (var piper in pipers)
@@ -81,8 +88,8 @@ internal class MonsterFindPlayerPatch : BasePatch
             var distanceToClosestPlayer = double.MaxValue;
             foreach (var farmer in __instance.currentLocation.farmers)
             {
-                if (ModState.ActivePeerSuperModes.TryGetValue(Utility.Professions.IndexOf("Poacher"),
-                        out var peerIDs) && peerIDs.Any(id => id == farmer.UniqueMultiplayerID)) continue;
+                if (ModEntry.State.Value.ActivePeerSuperModes.TryGetValue(SuperModeIndex.Poacher,
+                        out var peerIds) && peerIds.Any(id => id == farmer.UniqueMultiplayerID)) continue;
 
                 var distanceToThisPlayer = __instance.DistanceToCharacter(farmer);
                 if (distanceToThisPlayer >= distanceToClosestPlayer) continue;
@@ -91,15 +98,15 @@ internal class MonsterFindPlayerPatch : BasePatch
                 distanceToClosestPlayer = distanceToThisPlayer;
             }
 
-            //if (__result.IsLocalPlayer && ModState.IsSuperModeActive &&
-            //    ModState.SuperModeIndex == Util.Professions.IndexOf("Poacher"))
+            //if (__result.IsLocalPlayer && ModEntry.State.Value.IsSuperModeActive &&
+            //    ModEntry.State.Value.SuperModeIndex == Util.Professions.IndexOf("Poacher"))
             //	__result = null;
 
             return false; // run original logic
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

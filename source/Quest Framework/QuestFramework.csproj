@@ -2,10 +2,8 @@
   <PropertyGroup>
     <AssemblyName>QuestFramework</AssemblyName>
     <RootNamespace>QuestFramework</RootNamespace>
-    <Version>1.4.0-beta</Version>
-    <TargetFramework>net452</TargetFramework>
-    <Platforms>x86</Platforms>
-    <PlatformTarget>x86</PlatformTarget>
+    <Version>1.4.1</Version>
+    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <Configurations>Debug;Release</Configurations>
     <BuildDocFx Condition="'$(Configuration)'=='Debug'">false</BuildDocFx>
@@ -17,7 +15,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.2.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
   </ItemGroup>
 
   <Import Project="..\PurrplingCore\PurrplingCore.projitems" Label="Shared" />

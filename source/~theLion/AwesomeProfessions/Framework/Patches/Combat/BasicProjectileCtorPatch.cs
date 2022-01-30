@@ -8,15 +8,20 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewValley;
 using StardewValley.Projectiles;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class BasicProjectileCtorPatch : BasePatch
@@ -38,10 +43,10 @@ internal class BasicProjectileCtorPatch : BasePatch
         bool damagesMonsters, Character firer)
     {
         if (!damagesMonsters || firer is not Farmer farmer) return;
-			
+
         __instance.ignoreTravelGracePeriod.Value = true;
 
-        if (!farmer.HasProfession("Rascal") || !ModEntry.Config.Modkey.IsDown()) return;
+        if (!farmer.HasProfession(Profession.Rascal) || !ModEntry.Config.Modkey.IsDown()) return;
         ++___bouncesLeft.Value;
         __instance.damageToFarmer.Value = (int) (__instance.damageToFarmer.Value * 0.6);
     }

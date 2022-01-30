@@ -51,6 +51,7 @@ namespace RidgesideVillage
             TileActionHandler.RegisterTileAction("HotelCounter", HandleHotelCounterMenu);
             TileActionHandler.RegisterTileAction("EventHallCounter", HandleEventHallMenu);
             TileActionHandler.RegisterTileAction("RatesCounter", HandleRatesMenu);
+            TileActionHandler.RegisterTileAction("BlissBook", HandleBlissBook);
         }
 
         //Informs player where there room is upon entering the 2nd floor
@@ -154,6 +155,34 @@ namespace RidgesideVillage
         private static void HandleRatesMenu(string tileActionString = "")
         {
             Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("LogCabinHotel.Rates.Expanded"));
+        }
+
+        private static void HandleBlissBook(string tileActionString, Vector2 position)
+        {
+            var responses = new List<Response>
+            {
+                new Response("Aniv1st", Helper.Translation.Get("Aniv.1st")),
+                new Response("Aniv2nd", Helper.Translation.Get("Aniv.2nd")),
+                new Response("Aniv3rd", Helper.Translation.Get("Aniv.3rd")),
+                new Response("cancel", Helper.Translation.Get("Exit.Text"))
+            };
+            var responseActions = new List<Action>
+            {
+                delegate
+                {
+                    Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Aniv.Airyn"));
+                },
+                delegate
+                {
+                    Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Aniv.ChickenNuggets"));
+                },
+                delegate
+                {
+                    Game1.activeClickableMenu = new LetterViewerMenu(Helper.Translation.Get("Aniv.Yri"));
+                },
+                delegate{}
+            };
+            Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("BlissBook.Title"), responses, responseActions);
         }
 
         private static void HandleEventHallMenu(string tileActionString, Vector2 position)
@@ -348,7 +377,7 @@ namespace RidgesideVillage
                 if (k.isVillager() && k.Birthday_Season != null && validSeasons.Contains(k.Birthday_Season.ToLower()) && (Game1.player.friendshipData.ContainsKey(k.Name)))
                 {
 
-                    SDate birthday = new SDate(k.Birthday_Day, k.Birthday_Season);
+                    SDate birthday = new SDate(k.Birthday_Day, k.Birthday_Season.ToLower());
                     if(birthday < todaysDate)
                     {
                         //if birthday in the past, add a year

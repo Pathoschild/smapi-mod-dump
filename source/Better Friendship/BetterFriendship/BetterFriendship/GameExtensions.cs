@@ -23,24 +23,31 @@ namespace BetterFriendship
                    && npc is not Horse
                    && npc is not Junimo
                    && npc is not JunimoHarvester
-                   && npc is not TrashBear;
+                   && npc is not TrashBear
+                   && npc.Name != "Henchman";
         }
 
-        public static List<(Object, int)> GetTopGiftSuggestions(this NPC npc, ModConfig config)
+        public static List<(Object, int)> GetGiftSuggestions(this NPC npc, ModConfig config)
         {
             return
-            Game1.player.Items.Where(x => x is Object)
-                .Select(x => (item: x as Object, taste: npc.getGiftTasteForThisItem(x)))
-                .Where(x => config.GiftPreference switch
-                {
-                    "love" => x.taste is 0,
-                    "like" => x.taste is 0 or 2,
-                    "neutral" => x.taste is not 4 or 6,
-                    _ => false
-                })
-                .TakeTopPrioritized(config)
-                .ToList();
+                Game1.player.Items.Where(x => x is Object)
+                    .Select(x => (item: x as Object, taste: npc.getGiftTasteForThisItem(x)))
+                    .Where(x => config.GiftPreference switch
+                    {
+                        "love" => x.taste is 0,
+                        "like" => x.taste is 0 or 2,
+                        "neutral" => x.taste is not 4 or 6,
+                        _ => false
+                    })
+                    .TakeTopPrioritized(config)
+                    .ToList();
         }
+
+        public static bool ShouldOverrideForSpouse(this Character character, ModConfig config) =>
+            config.SpousePromptsOverride && character.Name == Game1.player.spouse;
+
+        public static bool IsOutOfDialog(this NPC npc) =>
+            npc is not Child && npc.Name != Game1.player.spouse && npc.CurrentDialogue?.Count == 0;
 
         private static IEnumerable<(Object, int)> TakeTopPrioritized(this IEnumerable<(Object item, int taste)> items,
             ModConfig config)

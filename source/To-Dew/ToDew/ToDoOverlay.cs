@@ -31,19 +31,60 @@ namespace ToDew {
         public Color textColor = Color.White * 0.8f;
         public int offsetX = 0;
         public int offsetY = 0;
-        public static void RegisterConfigMenuOptions(Func<OverlayConfig> getThis, GenericModConfigMenuAPI api, IManifest modManifest) {
-            api.RegisterLabel(modManifest, I18n.Config_Overlay(), I18n.Config_Overlay_Desc());
-            api.RegisterSimpleOption(modManifest, I18n.Config_Overlay_Enabled(), I18n.Config_Overlay_Enabled_Desc(), () => getThis().enabled, (bool val) => getThis().enabled = val);
-            api.RegisterSimpleOption(modManifest, I18n.Config_Overlay_Hotkey(), I18n.Config_Overlay_Hotkey_Desc(), () => getThis().hotkey, (SButton val) => getThis().hotkey = val);
-            api.RegisterSimpleOption(modManifest, I18n.Config_Overlay_HideAtFestivals(), I18n.Config_Overlay_HideAtFestivals_Desc(), () => getThis().hideAtFestivals, (bool val) => getThis().hideAtFestivals = val);
-            api.RegisterSimpleOption(modManifest, I18n.Config_Overlay_MaxWidth(), I18n.Config_Overlay_MaxWidth_Desc(), () => getThis().maxWidth, (int val) => getThis().maxWidth = val);
-            api.RegisterSimpleOption(modManifest, I18n.Config_Overlay_MaxItems(), I18n.Config_Overlay_MaxItems_Desc(), () => getThis().maxItems, (int val) => getThis().maxItems = val);
+        public static void RegisterConfigMenuOptions(Func<OverlayConfig> getThis, GenericModConfigMenuAPI api, GMCMOptionsAPI apiExt, IManifest modManifest) {
+            api.AddSectionTitle(modManifest, I18n.Config_Overlay, I18n.Config_Overlay_Desc);
+            api.AddBoolOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_Enabled,
+                tooltip: I18n.Config_Overlay_Enabled_Desc,
+                getValue: () => getThis().enabled,
+                setValue: (bool val) => getThis().enabled = val);
+            api.AddKeybind(
+                mod: modManifest,
+                name: I18n.Config_Overlay_Hotkey,
+                tooltip: I18n.Config_Overlay_Hotkey_Desc,
+                getValue: () => getThis().hotkey,
+                setValue: (SButton val) => getThis().hotkey = val);
+            api.AddBoolOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_HideAtFestivals,
+                tooltip: I18n.Config_Overlay_HideAtFestivals_Desc,
+                getValue: () => getThis().hideAtFestivals,
+                setValue: (bool val) => getThis().hideAtFestivals = val);
+            api.AddNumberOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_MaxWidth,
+                tooltip: I18n.Config_Overlay_MaxWidth_Desc,
+                getValue: () => getThis().maxWidth,
+                setValue: (int val) => getThis().maxWidth = val);
+            api.AddNumberOption(
+                mod: modManifest,
+                name: I18n.Config_Overlay_MaxItems,
+                tooltip: I18n.Config_Overlay_MaxItems_Desc,
+                getValue: () => getThis().maxItems,
+                setValue: (int val) => getThis().maxItems = val);
+            if (apiExt is not null) {
+                apiExt.AddColorOption(
+                    mod: modManifest,
+                    name: I18n.Config_Overlay_BackgroundColor,
+                    tooltip: I18n.Config_Overlay_BackgroundColor_Desc,
+                    getValue: () => getThis().backgroundColor,
+                    setValue: (c) => getThis().backgroundColor = c,
+                    colorPickerStyle: (uint)(GMCMOptionsAPI.ColorPickerStyle.AllStyles | GMCMOptionsAPI.ColorPickerStyle.RadioChooser));
+                apiExt.AddColorOption(
+                    mod: modManifest,
+                    name: I18n.Config_Overlay_TextColor,
+                    tooltip: I18n.Config_Overlay_TextColor_Desc,
+                    getValue: () => getThis().textColor,
+                    setValue: (c) => getThis().textColor = c,
+                    colorPickerStyle: (uint)(GMCMOptionsAPI.ColorPickerStyle.AllStyles | GMCMOptionsAPI.ColorPickerStyle.RadioChooser));
+            }
         }
     }
     public class ToDoOverlay : IDisposable {
         private readonly ModEntry theMod;
         private readonly ToDoList theList;
-        private readonly OverlayConfig config;
+        private OverlayConfig config { get => theMod.config.overlay; }
         private string ListHeader = I18n.Overlay_Header();
         private const int marginTop = 5;
         private const int marginLeft = 5;
@@ -58,7 +99,6 @@ namespace ToDew {
         private Rectangle bounds;
         public ToDoOverlay(ModEntry theMod, ToDoList theList) {
             this.theMod = theMod;
-            this.config = theMod.config.overlay;
             this.theList = theList;
             // save "constant" values
             ListHeaderSize = font.MeasureString(ListHeader);

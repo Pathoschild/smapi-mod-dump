@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MonsterMuskInVolcano",
+  "Author": "BananaFruit",
+  "Version": "1.0.1",
+  "Description": "Monster musk affects volcano dungeon",
+  "UniqueID": "BananaFruit.MonsterMuskInVolcano",
+  "EntryDll": "MonsterMuskInVolcano.dll",
+  "MinimumApiVersion": "3.13.2",
+  "UpdateKeys": [ "Nexus:10651" ]
+}

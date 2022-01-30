@@ -4,6 +4,7 @@
   "TreeFruitChance": 50.0,
   "IgnoreFarmCaveType": false,
   "EarlyFarmCave": false,
+  "UseModCaves": true,
   "UseMineCave": false,
   "SeasonalOnly": false,
   "AllowAnyTreeProduct": true,

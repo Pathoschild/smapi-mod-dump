@@ -8,17 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.Monsters;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley.Monsters;
 
 namespace FarmTypeManager.Monsters
 {

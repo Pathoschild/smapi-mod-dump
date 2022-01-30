@@ -8,16 +8,24 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
+
+#region using directives
+
 using StardewModdingAPI.Events;
 using StardewValley;
 
-namespace TheLion.Stardew.Professions.Framework.Events;
+using Patches.Foraging;
+
+#endregion using directives
 
 internal class PiperUpdateTickedEvent : UpdateTickedEvent
 {
     /// <inheritdoc />
-    public override void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        if (ModState.SlimeContactTimer > 0 && Game1.shouldTimePass()) --ModState.SlimeContactTimer;
+        if (ModEntry.State.Value.SlimeContactTimer > 0 &&
+            Game1ShouldTimePassPatch.Game1ShouldTimePassOriginal(Game1.game1, true))
+            --ModEntry.State.Value.SlimeContactTimer;
     }
 }

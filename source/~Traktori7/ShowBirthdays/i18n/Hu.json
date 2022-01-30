@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Traktori7/StardewValleyMods
+**
+*************************************************/
+
+{
+	"duration-label": "Ciklus időtartam",
+	"duration-desc": "Mozgó grafikus elemek ciklus időtartama rajzolási ciklusokban.",
+	"type-label": "Ciklus típusa",
+	"type-desc": "Hogyan mozognak a grafikus elemek.",
+	"icon-label": "Ikon megjelenítése",
+	"icon-desc": "Ikon megjelenítése a megosztott születésnapokon.",
+}

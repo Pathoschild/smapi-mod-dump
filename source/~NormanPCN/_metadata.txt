@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/NormanPCN/StardewValleyMods
+   Git: https://github.com/NormanPCN/StardewValleyMods.git
+
+mods:
+   Combat Controls Redux
+   Longer Fence Life
+
+latest commit:
+   commit 880186858fc211d9ccc61e144b2938070864db84
+   Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
+   Date:   Wed Jan 26 13:45:03 2022 -0800
+   
+       Add not required GMCM dep to manifest. (pedantic)
+   

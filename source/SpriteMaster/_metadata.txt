@@ -1,0 +1,18 @@
+urls:
+   web: https://github.com/ameisen/SV-SpriteMaster
+   Git: https://github.com/ameisen/SV-SpriteMaster.git
+
+mods:
+   SpriteMaster
+
+latest commit:
+   commit 27fd6be1fdaddf9ccc655043d28a2715c4a5b39b
+   Author: Ameisen <14104310+ameisen@users.noreply.github.com>
+   Date:   Tue Jan 25 23:39:59 2022 -0600
+   
+       Improvements to the padding system.
+       
+       Some work on deposterization and whitelisting.
+       
+       More work on SuperXBR.
+   

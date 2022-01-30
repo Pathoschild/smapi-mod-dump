@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/theLion/smapi-mods
+**
+*************************************************/
+
+{
+    "Name": "Radioactive Powder",
+    "Description": "Made from pure radioactive metal. A dangerous alchemical agent.",
+    "Category": "Crafting",
+    "Edibility": -300,
+    "Price": 1000,
+    "IsColored": false,
+    "Recipe": null,
+    "NameLocalization": {
+
+    },
+    "DescriptionLocalization": {
+
+    }
+}

@@ -8,11 +8,15 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Common.Extensions;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TheLion.Stardew.Common.Extensions;
+#endregion using directives
 
 public static class CollectionExtensions
 {
@@ -28,13 +32,6 @@ public static class CollectionExtensions
     public static bool ContainsType<T>(this ICollection<T> collection, Type type)
     {
         return collection.Any(item => item is not null && item.GetType() == type);
-    }
-
-    /// <summary>Determine if a collection contains any instance of the given types.</summary>
-    /// <param name="types">The types to search for.</param>
-    public static bool ContainsAnyOfTypes<T>(this ICollection<T> collection, params Type[] types)
-    {
-        return collection.Any(item => item is not null && item.IsAnyOfTypes(types));
     }
 
     /// <summary>Remove the first instance of a given type from a collection.</summary>

@@ -60,6 +60,13 @@ namespace AnimalHusbandryMod.tools
             __result = true;
         }
 
+        public static void CanAddEnchantment(Tool __instance, ref bool __result)
+        {
+            if (!IsMeatCleaver(__instance)) return;
+
+            __result = false;
+        }
+
         public static bool beginUsing(Axe __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
         {
             if (!IsMeatCleaver(__instance)) return true;

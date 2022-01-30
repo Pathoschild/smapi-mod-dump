@@ -8,21 +8,25 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Tools;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Extensions;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class CrabPotCheckForActionPatch : BasePatch
@@ -94,7 +98,7 @@ internal class CrabPotCheckForActionPatch : BasePatch
             ___lidFlapping = true;
             ___lidFlapTimer = 60f;
 
-            if (!who.HasPrestigedProfession("Luremaster") || Game1.random.NextDouble() > 0.6)
+            if (!who.HasProfession(Profession.Luremaster, true) || Game1.random.NextDouble() > 0.6)
                 __instance.bait.Value = null;
 
             who.animateOnce(279 + who.FacingDirection);
@@ -109,7 +113,7 @@ internal class CrabPotCheckForActionPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
     }

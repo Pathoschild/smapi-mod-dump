@@ -7,9 +7,9 @@ mods:
    Quest Essentials
 
 latest commit:
-   commit 71dfda36dc933c8819b8aee518d0b97e8635303a
-   Author: PurrplingCat <ellenfawkes@gmail.com>
-   Date:   Tue Nov 9 12:20:00 2021 +0100
+   commit 58ca2bde3d5052d8ccf511ca6e9c63963b9f377f
+   Author: PurrplingCat <ellen@purrplingcat.com>
+   Date:   Wed Jan 19 19:30:38 2022 +0100
    
-       Part of docs and renamed special quest to adventure quest
+       CDGU: reveal dialogues
    

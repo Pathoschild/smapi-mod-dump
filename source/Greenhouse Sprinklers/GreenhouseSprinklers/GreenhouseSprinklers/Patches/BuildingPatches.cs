@@ -22,14 +22,12 @@ namespace Bpendragon.GreenhouseSprinklers.Patches
     class BuildingPatches
     {
         private static IMonitor Monitor;
-        private static ModData Data;
         private static ModConfig Config;
         private static IModHelper Helper;
         const string ModDataKey = "Bpendragon.GreenhouseSprinklers.GHLevel";
-        public static void Initialize(IMonitor monitor, IModHelper helper, ModData data, ModConfig config)
+        public static void Initialize(IMonitor monitor, IModHelper helper, ModConfig config)
         {
             Monitor = monitor;
-            Data = data;
             Config = config;
             Helper = helper;
         }
@@ -38,7 +36,7 @@ namespace Bpendragon.GreenhouseSprinklers.Patches
         {
             try
             {
-                if (__instance.buildingType == "Greenhouse")
+                if (__instance.buildingType.Value == "Greenhouse")
                 {
                     if (__instance.daysUntilUpgrade.Value == 1)
                     {

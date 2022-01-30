@@ -19,6 +19,11 @@ namespace ForageFantasy
     {
         public static bool CanEdit<T>(IAssetInfo asset, ForageFantasyConfig config)
         {
+            if (config.TapperDaysNeededChangesEnabled && asset.AssetNameEquals("Data/ObjectInformation"))
+            {
+                return true;
+            }
+
             if (config.CommonFiddleheadFern)
             {
                 if (asset.AssetNameEquals("Data/Locations"))
@@ -48,6 +53,49 @@ namespace ForageFantasy
 
         public static void Edit<T>(IAssetData asset, ForageFantasyConfig config)
         {
+            if (config.TapperDaysNeededChangesEnabled && asset.AssetNameEquals("Data/ObjectInformation"))
+            {
+                /*  here is the reasoning for the math
+
+                    normal tapper:
+                    maple syrup 9 days 200g
+                    oak resin 7 days 150g
+                    pine tar 5 days 100g
+
+                    so 22,2g per day, 21,4g per day, 20g per day
+
+                    heavy tapper:
+                    maple syrup 4 days 200g
+                    oak resin 3 days 150g
+                    pine tar 2 days 100g
+
+                    so 50g per day for all of them
+
+                    ----
+
+                    wanted values:
+                    maple syrup 7 days 150g
+                    oak resin 7 days 150g
+                    pine tar 7 days 150g
+
+                    so the calculation is:
+                    newSellPrice = (int)Math.Round(daysNeeded * (150f / 7f), MidpointRounding.AwayFromZero);
+                 */
+
+                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
+
+                var priceChanges = new Dictionary<int, int>() { { 724, config.MapleDaysNeeded }, { 725, config.OakDaysNeeded }, { 726, config.PineDaysNeeded } };
+
+                foreach (var item in priceChanges)
+                {
+                    var entry = data[item.Key];
+                    var fields = entry.Split('/');
+                    var newPrice = TapperAndMushroomQualityLogic.GetTapperProductValueForDaysNeeded(item.Value);
+                    fields[1] = newPrice.ToString();
+                    data[item.Key] = string.Join("/", fields);
+                }
+            }
+
             if (config.CommonFiddleheadFern)
             {
                 if (asset.AssetNameEquals("Data/CraftingRecipes"))

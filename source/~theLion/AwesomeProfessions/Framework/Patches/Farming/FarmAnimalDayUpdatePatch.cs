@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
+
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -15,11 +19,12 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Common.Harmony;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class FarmAnimalDayUpdatePatch : BasePatch
@@ -79,8 +84,8 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                 .SetOpCode(OpCodes.Blt_S) // was Brfalse_S
                 .Advance()
                 .ToBufferUntil(
-                    stripLabels: false,
-                    advance: true,
+                    false,
+                    true,
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(NetList<int, NetInt>).MethodNamed(nameof(NetList<int, NetInt>.Contains)))
                 )
@@ -88,15 +93,15 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_0)
                 )
                 .ReplaceWith(
-                    new CodeInstruction(OpCodes.Ldc_R8, 1.0),
-                    preserveLabels: true
+                    new(OpCodes.Ldc_R8, 1.0),
+                    true
                 )
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_I4_1)
                 )
                 .ReplaceWith(
-                    new CodeInstruction(OpCodes.Ldc_R8, 2.0),
-                    preserveLabels: true
+                    new(OpCodes.Ldc_R8, 1.75),
+                    true
                 )
                 .AddLabels(notPrestigedProducer)
                 .InsertBuffer()
@@ -104,7 +109,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Ldc_I4_3)
                 )
                 .ReplaceWith(
-                    new CodeInstruction(OpCodes.Ldc_I4_S, 100 + Utility.Professions.IndexOf("Producer"))
+                    new(OpCodes.Ldc_I4_S, (int) Profession.Producer + 100)
                 )
                 .Return()
                 .Insert(
@@ -124,8 +129,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching modded Producer produce frequency.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching modded Producer produce frequency.\nHelper returned {ex}");
             return null;
         }
 
@@ -150,9 +154,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log(
-                $"Failed while removing vanilla Coopmaster + Shepherd produce quality bonuses.\nHelper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while removing vanilla Coopmaster + Shepherd produce quality bonuses.\nHelper returned {ex}");
             return null;
         }
 

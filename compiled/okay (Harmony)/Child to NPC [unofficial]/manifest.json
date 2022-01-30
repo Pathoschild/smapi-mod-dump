@@ -1,16 +1,16 @@
 ﻿{
   "Name": "ChildToNPC",
   "Author": "Loe2run",
-  "Version": "1.2.1-unofficial.5-candidus42",
+  "Version": "1.2.1-unofficial.7-candidus42",
   "Description": "ChildToNPC is a modding tool which converts a child NPC to a normal NPC for the purposes of creating Content Patcher mods.",
   "UniqueID": "Loe2run.ChildToNPC",
   "EntryDll": "ChildToNPC.dll",
-  "MinimumApiVersion": "3.8.0",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [ "Nexus:4568" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",
-      "MinimumVersion": "1.19.0",
+      "MinimumVersion": "1.24.7",
       "IsRequired": true
     }
   ]

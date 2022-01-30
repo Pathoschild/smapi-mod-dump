@@ -15,7 +15,6 @@ using StardewModdingAPI.Events;
 using StardewValley.Locations;
 using StardewModdingAPI.Utilities;
 using Microsoft.Xna.Framework;
-using TwilightShards.Common;
 using HarmonyLib;
 using System.Reflection;
 using CustomizableTravelingCart.Patches;
@@ -42,7 +41,10 @@ namespace CustomizableTravelingCart
             Logger = Monitor;
             APIItemsToBeAdded = new Dictionary<StardewValley.Object, int[]>();
 
-            var harmony = new Harmony("koihimenakamura.customizablecart");
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.GameLaunched += OnGameLanuched;
+
+            var harmony = new Harmony(this.ModManifest.UniqueID);
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             MethodInfo CheckAction = AccessTools.Method(typeof(Forest), "checkAction");
@@ -58,17 +60,16 @@ namespace CustomizableTravelingCart
             MethodInfo GenerateTMS = AccessTools.Method(typeof(Utility), "getTravelingMerchantStock");
             HarmonyMethod LTMPrefix = new HarmonyMethod(AccessTools.Method(typeof(UtilityPatches), "getTravelingMerchantStockPrefix"));
             Monitor.Log($"Patching {GenerateTMS} with Prefix: {LTMPrefix}", LogLevel.Trace); ;
-            harmony.Patch(GenerateTMS, prefix: LTMPrefix);
-             
-            helper.Events.GameLoop.DayStarted += OnDayStarted;
-            helper.Events.GameLoop.GameLaunched += OnGameLanuched;
+            harmony.Patch(GenerateTMS, prefix: LTMPrefix);            
+        
         }
 
         private void OnGameLanuched(object sender, GameLaunchedEventArgs e)
         {
-            var api = Helper.ModRegistry.GetApi<Integrations.GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            var api = Helper.ModRegistry.GetApi<Integrations.GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu"); 
             if (api != null)
             {
+                Monitor.Log("Accessed mod-provided API for Generic Mod Config Menu.",LogLevel.Trace);
                 api.RegisterModConfig(ModManifest, () => OurConfig = new CartConfig(), () => Helper.WriteConfig(OurConfig));
                 api.RegisterClampedOption(ModManifest, "Monday Apparence", "The chance for the cart to appear on Monday", () => (float)OurConfig.MondayChance, (float val) => OurConfig.MondayChance = val, 0f, 1f);
                 api.RegisterClampedOption(ModManifest, "Tuesday Apparence", "The chance for the cart to appear on Tuesday", () => (float)OurConfig.TuesdayChance, (float val) => OurConfig.TuesdayChance = val, 0f, 1f);

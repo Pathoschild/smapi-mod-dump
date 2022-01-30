@@ -8,15 +8,21 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+using SuperMode;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class GreenSlimeCollisionWithFarmerBehaviorPatch : BasePatch
@@ -36,12 +42,12 @@ internal class GreenSlimeCollisionWithFarmerBehaviorPatch : BasePatch
     private static void GreenSlimeCollisionWithFarmerBehaviorPostfix(GreenSlime __instance)
     {
         var who = __instance.Player;
-        if (!who.IsLocalPlayer || ModState.SuperModeIndex != Utility.Professions.IndexOf("Piper") ||
-            ModState.SlimeContactTimer > 0) return;
+        if (!who.IsLocalPlayer || ModEntry.State.Value.SuperMode is not {Index: SuperModeIndex.Piper} superMode ||
+            ModEntry.State.Value.SlimeContactTimer > 0) return;
 
-        if (who.HasPrestigedProfession("Piper"))
+        if (who.HasProfession(Profession.Piper, true))
         {
-            var healed = __instance.DamageToFarmer / 3;
+            var healed = __instance.DamageToFarmer / 2;
             healed += Game1.random.Next(Math.Min(-1, -healed / 8), Math.Max(1, healed / 8));
             healed = Math.Max(healed, 1);
 
@@ -50,11 +56,11 @@ internal class GreenSlimeCollisionWithFarmerBehaviorPatch : BasePatch
                 new(who.getStandingX() + 8, who.getStandingY()), Color.Lime, 1f, who));
         }
 
-        if (!ModState.IsSuperModeActive)
-            ModState.SuperModeGaugeValue +=
-                (int) (Game1.random.Next(1, 10) * ((float) ModState.SuperModeGaugeMaxValue / 500));
+        if (!superMode.IsActive)
+            superMode.Gauge.CurrentValue +=
+                Game1.random.Next(1, 5) * ModEntry.Config.SuperModeGainFactor * (double) SuperModeGauge.MaxValue / 500;
 
-        ModState.SlimeContactTimer = FARMER_INVINCIBILITY_FRAMES_I;
+        ModEntry.State.Value.SlimeContactTimer = FARMER_INVINCIBILITY_FRAMES_I;
     }
 
     #endregion harmony patches

@@ -8,12 +8,17 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Extensions;
+
+#region using directives
+
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using TheLion.Stardew.Common.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Extensions;
+using Common.Extensions;
+
+#endregion using directives
 
 public static class TreeExtensions
 {

@@ -7,10 +7,9 @@ mods:
    Start With Greenhouse
 
 latest commit:
-   commit 530359068382ecf684e99820c9b7fa36187e2715
+   commit 43943d31f137cffb3e94cc79fde2f9c0100c69b4
    Author: CaptainSully <sully.kylej@gmail.com>
-   Date:   Fri Dec 31 03:53:50 2021 -0500
+   Date:   Wed Jan 12 23:47:53 2022 -0500
    
-       BT 1.1.3, SWG 1.0.1
-       Code restructure
+       Stop throwing exception if not host player
    

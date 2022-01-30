@@ -1,0 +1,98 @@
+//$0 = Neutral $1 = Laugh $2 = Scared $3 = Surprised
+{
+//Egg Festival / Eierfest
+"spring13_1": "Darf ich auch beim Eiersuchen mitmachen, §RelationName?",
+"spring13_2": "Oh §RelationName! Alles so schön bunt hier!",
+"spring13_3": "Der Früchte Punch sieht aber lecker aus, §RelationName!",
+"spring13_4": "Machst du auch mit beim Eiersuchen, §RelationName?",
+"spring13_5": "§RelationName, du wirst gewinnen oder?",
+"spring13_6": "§RelationName, ich bin sooo aufgeregt!",
+"spring13_7": "Ich helfe dir beim Eiersuchen, §RelationName!",
+"spring13_8": "Wieso versteckt man denn Eier, §RelationName?",
+"spring13_9": "§RelationName, Eier sind so %adj, oder §RelationName?",
+"spring13_10": "Darf ich alle gefundenen Eier essen, §RelationName?",
+
+//Flower Dance / Blumentanz
+"spring24_1": "Mit wem tanzt du heute, §RelationName?",
+"spring24_2": "Tanzt du mit mir, §RelationName?",
+"spring24_3": "§RelationName, soo viele Blumen hier!",
+"spring24_4": "Darf ich den Wackelpudding essen, §RelationName?",
+"spring24_5": "Wieso tanzt man am Blumentanz Tag, §RelationName?",
+"spring24_6": "Darf ich mit %name tanzen, §RelationName?",
+"spring24_7": "Du siehst sooo toll aus, §RelationName!",
+"spring24_8": "Wieso müssen wir so schick sein heute, §RelationName?",
+"spring24_9": "Wow, überall so viele Blumen, §RelationName!",
+"spring24_10": "§RelationName, ich möchte auch tanzen!",
+
+//Luau
+"summer11_1": "Iiih, was riecht hier denn so, §RelationName?",
+"summer11_2": "Müssen wir das auch essen, §RelationName?",
+"summer11_3": "§RelationName, ich möchte keine Suppe essen..",
+"summer11_4": "Ob die Suppe dieses Jahr gut wird, §RelationName?",
+"summer11_5": "§RelationName, ich habe heimlich was in die Suppe getan, hihihi!",
+"summer11_6": "Es riecht sooo gut hier!",
+"summer11_7": "Dürfen wir am Strand spielen, §RelationName?",
+"summer11_8": "Darf ich auch etwas reinwerfen, §RelationName?",
+"summer11_9": "Bekomme ich nach der Suppe ein Eis, §RelationName?",
+"summer11_10": "§RelationName, wann essen wir?",
+
+//Dance of the Moonlight Jellies / Tanz der Mondlichtquallen
+"summer28_1": "Es ist so toll hier!",
+"summer28_2": "Gleich werden wir sie sehen, §RelationName!",
+"summer28_3": "Darf die Quallen streicheln, §RelationName?",
+"summer28_4": "§RelationName, wohin gehen all die Quallen?",
+"summer28_5": "Vincent meinte es gäbe eine grüne Qualle..#$b#Stimmt das, §RelationName?",
+"summer28_6": "Gibt es die grüne Qualle wirklich, §RelationName?",
+"summer28_7": "Ich bin soo aufgeregt!",
+"summer28_8": "Ich werde langsam müde, §RelationName!",
+"summer28_9": "Ich freue mich auf die Quallen, §RelationName!",
+"summer28_10": "§RelationName, Quallen sind echt %adj, oder?",
+
+//Stardew Valley Fair / Sternentautaler Volksfest
+"fall16_1": "Darf ich die Tiere streicheln, §RelationName?",
+"fall16_2": "§RelationName, ich möchte auch einen Luftballon!",
+"fall16_3": "Der Hammer ist viel zu schwer für mich, §RelationName..",
+"fall16_4": "Hast du den riiiesen Käse gesehen, §RelationName?",
+"fall16_5": "Luftballons! Ich möchte auch einen, §RelationName!",
+"fall16_6": "Es macht soo viel Spaß hier, §RelationName!",
+"fall16_7": "Der Clown ist gruselig, §RelationName!",
+"fall16_8": "Ich werde mit Vincent etwas spielen gehen, §RelationName!",
+"fall16_9": "Spielen wir auch was, §RelationName?",
+"fall16_10": "Darf ich am Rad drehen, §RelationName?",
+
+//Spirit's Eve / Geisternacht
+"fall27_1": "§RelationName, das ist voll gruselig hier..",
+"fall27_2": "§RelationName, leben die Skelette wirklich?!",
+"fall27_3": "Darf ich mit ins Labyrinth, §RelationName?",
+"fall27_4": "§RelationName, ich habe eine Spinne gesehen!",
+"fall27_5": "So viel zu essen hier, §RelationName!",
+"fall27_6": "Die Kürbisse sehen so cool aus, §RelationName!",
+"fall27_7": "Ich will nicht ins Labyrinth, §RelationName!",
+"fall27_8": "Ich spiele etwas mit Vincent, §RelationName!",
+"fall27_9": "§RelationName, gehst du später ins Labyrinth?",
+"fall27_10": "Was wohl am Ende des Labyrinth ist, §RelationName?",
+
+//Festival of Ice / Fest des Eises
+"winter8_1": "So tolle Sachen aus Eis!",
+"winter8_2": "§RelationName, wir werden beim Eisfischen gewinnen, oder?",
+"winter8_3": "Darf ich heute im Iglu schlafen, §RelationName?",
+"winter8_4": "Bauen wir auch einen Schneemann?",
+"winter8_5": "Darf ich mit Vincent auf's Eis, §RelationName?",
+"winter8_6": "Das Schweinchen ist süß oder, §RelationName?",
+"winter8_7": "§RelationName, wieso ist Schnee so %adj?",
+"winter8_8": "Lass uns auch was bauen, §RelationName!",
+"winter8_9": "Ich freu mich auf's Eisfischen, §RelationName!",
+"winter8_10": "§RelationName, %name hat mir einen Schneeball ins Gesicht geworfen!",
+
+//Feast of the Winter Star / Fest des Wintersterns
+"winter25_1": "Der Winterstar Baum ist so schön, §RelationName!",
+"winter25_2": "Kann ich meine Geschenke jetzt auspacken, §RelationName?",
+"winter25_3": "%name hat ein/e %noun bekommen, ich möchte auch so etwas, §RelationName!",
+"winter25_4": "§RelationName, ob der Wintersternmann mir %noun dieses Jahr schenkt?",
+"winter25_5": "Ob man die Zuckerstangen ablecken darf, §RelationName?",
+"winter25_6": "Sooo viele Geschenke, §RelationName!",
+"winter25_7": "Hast du schon dein Geschenk ausgepackt, §RelationName?",
+"winter25_8": "Ich möchte auch ein/e %noun zum Wintersternfest, §RelationName!",
+"winter25_9": "Winterstern ist sooo %adj, oder §RelationName?",
+"winter25_10": "§RelationName, das ist das schönste Wintersternfest!",
+}

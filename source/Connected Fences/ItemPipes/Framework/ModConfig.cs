@@ -19,6 +19,7 @@ namespace ItemPipes.Framework
     public class ModConfig
     {
         public bool DebugMode { get; set; }
+        public bool UltraDebugMode { get; set; }
         public bool DisableItemSending { get; set; }
     }
 }

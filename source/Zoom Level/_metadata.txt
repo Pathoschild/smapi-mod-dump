@@ -6,9 +6,9 @@ mods:
    Zoom Level
 
 latest commit:
-   commit 712d9de768a4c59c2087b6702cf2c9f712c13a52
+   commit 0217b04526fc526d7c0e8e4bd0bf5eeed00f13d6
    Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Fri Sep 10 18:00:43 2021 +0100
+   Date:   Thu Jan 27 20:22:05 2022 +0000
    
-       Updated Minimum API, fixed a description.
+       Fixed variable names and updated changelog
    

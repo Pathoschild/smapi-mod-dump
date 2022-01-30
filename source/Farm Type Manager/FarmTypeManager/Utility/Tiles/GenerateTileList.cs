@@ -8,16 +8,12 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.TerrainFeatures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -55,7 +51,7 @@ namespace FarmTypeManager
                         validTiles.UnionWith(GetTilesByProperty(location, includeType));
                     }
                 }
-                
+
                 //include coordinates
                 foreach (string includeCoords in area.IncludeCoordinates) //check for tiles in each "include" zone for the area
                 {
@@ -95,7 +91,7 @@ namespace FarmTypeManager
                         validTiles.ExceptWith(GetTilesByProperty(location, excludeType));
                     }
                 }
-                
+
                 //exclude coordinates
                 foreach (string excludeCoords in area.ExcludeCoordinates) //check for tiles in each "exclude" zone for the area
                 {

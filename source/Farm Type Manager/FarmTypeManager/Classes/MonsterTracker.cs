@@ -8,11 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
 using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Monsters;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {

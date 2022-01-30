@@ -8,24 +8,26 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Tools.Configs;
+
+#region using directives
+
 using System.Collections.Generic;
 
-namespace TheLion.Stardew.Tools.Configs;
+using Framework;
 
-/// <summary>Configuration for the axe shockwave.</summary>
+#endregion using directives
+
 public class AxeConfig
 {
     /// <summary>Enables charging the Axe.</summary>
     public bool EnableAxeCharging { get; set; } = true;
 
     /// <summary>Axe must be at least this level to charge.</summary>
-    public int RequiredUpgradeForCharging { get; set; } = 1;
+    public UpgradeLevel RequiredUpgradeForCharging { get; set; } = UpgradeLevel.Copper;
 
     /// <summary>The radius of affected tiles at each upgrade level.</summary>
-    public List<int> RadiusAtEachPowerLevel { get; set; } = new List<int>() { 1, 2, 3, 4 };
-
-    /// <summary>Whether to show affected tiles overlay while charging.</summary>
-    public bool ShowAxeAffectedTiles { get; set; } = true;
+    public List<int> RadiusAtEachPowerLevel { get; set; } = new() {1, 2, 3, 4};
 
     /// <summary>Whether to clear fruit tree seeds.</summary>
     public bool ClearFruitTreeSeeds { get; set; } = false;
@@ -62,4 +64,7 @@ public class AxeConfig
 
     /// <summary>Whether to clear debris like twigs, giant stumps, fallen logs and weeds.</summary>
     public bool ClearDebris { get; set; } = true;
+
+    /// <summary>Whether to play the shockwave animation when the charged Axe is released.</summary>
+    public bool PlayShockwaveAnimation { get; set; } = true;
 }

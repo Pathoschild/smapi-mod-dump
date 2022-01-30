@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/JohnsonNicholas/SDVMods
+**
+*************************************************/
+
+{
+  "Name": "Reset Skull Caverns",
+  "Author": "Sakorona",
+  "Version": "1.0.0",
+  "Description": "Resets the skull cavern stages to respawn coal and other things per day.",
+  "UniqueID": "KoihimeNakamura.ResetCaverns",
+  "EntryDll": "ResetSkullCaverns.dll",
+  "MinimumApiVersion": "3.4.0",
+  "UpdateKeys": [ "ModDrop: 1080116" ]
+}

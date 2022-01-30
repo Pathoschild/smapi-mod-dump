@@ -34,6 +34,9 @@ namespace StardewNotification
 
         public static void CheckForSpringOnions(ITranslationHelper Trans)
         {
+            if (!StardewNotification.Config.ShowSpringOnionCount)
+                return;
+
             //they really only grow in the forest, thankfully.
             var loc = Game1.locations.Where(n => n is Forest).First();
             int count = 0;
@@ -80,7 +83,19 @@ namespace StardewNotification
 
         public static void CheckForHayLevel(ITranslationHelper Trans)
         {
-            if (!StardewNotification.Config.NotifyHay || Game1.getFarm().buildings.Count(b => b.buildingType.Value == "Silo") == 0)
+            if (!StardewNotification.Config.NotifyHay) 
+                return;
+
+            bool cont = false;
+
+            //check if the silo exists and is not being built
+            foreach(var building in Game1.getFarm().buildings)
+            {
+                if (building.buildingType.Value == "Silo" && building.daysOfConstructionLeft.Value <= 0)
+                    cont = true;
+            }
+
+            if (!cont)
                 return;
 
             int hayAmt = Game1.getFarm().piecesOfHay.Value;

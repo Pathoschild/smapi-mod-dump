@@ -8,11 +8,15 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 
-namespace TheLion.Stardew.Professions.Framework.Patches.Prestige;
+#endregion using directives
 
 [UsedImplicitly]
 internal class FarmerCheckForLevelGainPatch : BasePatch

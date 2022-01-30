@@ -8,17 +8,23 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using Netcode;
 using StardewValley;
 using StardewValley.Network;
 using StardewValley.Projectiles;
-using TheLion.Stardew.Common.Extensions;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Stardew.Common.Extensions;
+using Extensions;
+
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class ProjectileBehaviorOnCollisionPatch : BasePatch
@@ -39,11 +45,11 @@ internal class ProjectileBehaviorOnCollisionPatch : BasePatch
         if (__instance is not BasicProjectile basic) return;
 
         var hashCode = basic.GetHashCode();
-        ModState.BouncedBullets.Remove(hashCode);
-        if (ModState.AuxiliaryBullets.Remove(hashCode)) return;
+        ModEntry.State.Value.BouncedBullets.Remove(hashCode);
+        if (ModEntry.State.Value.AuxiliaryBullets.Remove(hashCode)) return;
 
         var firer = ___theOneWhoFiredMe.Get(location) is Farmer farmer ? farmer : Game1.player;
-        if (!firer.HasProfession("Rascal")) return;
+        if (!firer.HasProfession(Profession.Rascal)) return;
 
         if ((___currentTileSheetIndex.Value - 1).IsAnyOf(SObject.copper, SObject.iron, SObject.gold,
                 SObject.iridium, SObject.stone) && Game1.random.NextDouble() < 0.6

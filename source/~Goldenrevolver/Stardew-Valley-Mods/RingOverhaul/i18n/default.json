@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  /*
+		The first entry before the : is the translation key, leave that one unchanged. Only change the translation in the "" behind it.
+		Every value that you don't translate (or that is missing when I update) will simply take the english translation I wrote.
+		So if you don't want to translate the gmcm config menu, you don't have to.
+		\n means insert a line break (you can see I use line breaks in the gmcm config menu because it doesn't do that automatically).
+  */
+  "IridiumBandTooltip": "Increases every weapon stat by 10%.",
+  "ExplorerRingName": "Explorer Ring",
+  "BerserkerRingName": "Berserker Ring",
+  "PaladinRingName": "Paladin Ring",
+  "GemBandName": "Gem Band", // this one is used when you combined the gem rings at the forge for some reason, instead of crafting an iridium band, so it's almost never seen
+  "ConfigCraftableGemRings": "Craftable Gem Rings",
+  "ConfigCraftableGemRingsMetalBar": "Required Metal Bar",
+  "ConfigCraftableGemRingsProgressive": "Progressive",
+  "ConfigCraftableGemRingsUnlockLevel": "Unlock Level",
+  "ConfigCraftableGemRingsCustomSprites": "Custom Sprites",
+  "ConfigCraftableGemRingsCustomSpritesBetterRings": "Custom Sprites disabled in favor of 'Better Rings' mod",
+  "ConfigOtherCategory": "Other",
+  "ConfigJukeboxRing": "Jukebox Ring",
+  "ConfigJukeboxRingWorksInRain": "Jukebox Ring Works In Rain",
+  "ConfigMinorRingCraftingChanges": "Minor Ring Crafting Changes",
+  "ConfigRemoveCITooltip": "Remove Crabshell Ring\nAnd Immunity Band Tooltip\nFrom Combined Ring",
+  "ConfigRemoveLTooltip": "Remove Lucky Ring Tooltip\nFrom Combined Ring",
+  "ConfigOldGlowStoneRingRecipe": "Old Glow Stone Ring Recipe",
+  "ConfigOldIridiumBandRecipe": "Old Iridium Band Recipe",
+  "ConfigFeedback": "Everything else about the mod can currently not be configured. Feedback is welcome."
+}

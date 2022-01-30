@@ -62,18 +62,52 @@ namespace CasualLife
         {
             if (!Context.IsWorldReady)
                 return;
-            if (e.Button == SButton.Left)
+
+
+            if (e.IsDown(SButton.LeftControl))
+                {
+                if (e.Button == SButton.Left)
+                {
+                        Game1.timeOfDay -= 100;
+                    return;
+                }
+
+                if (e.Button == SButton.Right)
+                {
+                    Game1.timeOfDay += 100;
+
+                    return;
+
+                }
+
+                if (e.Button == SButton.Up)
+                {
+                    if (Game1.timeOfDay % 100 >= 59)
+                    {
+                        Game1.timeOfDay += 41;
+                    }
+                    else
+                    {
+                        Game1.timeOfDay += 1;
+                    }
+                    return;
+                }
+            
+            if (e.Button == SButton.Down)
             {
-                if (Game1.dayOfMonth > 1)
-                {
-                    Game1.dayOfMonth--;
-                }
-                else if (Game1.dayOfMonth == 1)
-                {
-                    Game1.dayOfMonth = 28;
-                    ShiftSeasonDown();
-                }
+                    if (Game1.timeOfDay % 100 <= 0)
+                    {
+                        Game1.timeOfDay -= 41;
+                        Game1.ticks = 0;
+                    }
+                    else
+                    {
+                        Game1.timeOfDay -= 1;
+                        Game1.ticks = 0;
+                    }
+                    return;
             }
+        }
 
             if (e.Button == SButton.Right)
             {

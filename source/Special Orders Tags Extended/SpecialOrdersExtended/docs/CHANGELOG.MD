@@ -7,22 +7,30 @@ for queries and analysis.**
 ----
 
 Changelog
-============
-
 #### Todo
 
 1. Add condition to just randomly reduce the chance of a quest appearing. (May need integrate with that one mod that changes the day special orders appear?)
 2. Add condition for total number of quests (both Qi and otherwise completed.)
-3. Document tokens.
-4. Document dialogue keys, their storage, and how to use console commands to check that.
-5. Move loading of data models to first use and not when the save is loaded, perhaps.
-
+3. Add dialogue condition for Recently Completed Order, for use with repeat orders....somehow.
+3. Add tag for professions (and handle prestige mods as well?)
+3. Alter `week_X` tag to handle extended months.
 
 ##### In consideration
 
 1. Somehow limit the kill objective to just monsters on a certain (few?) maps. (Perhaps a custom objective, perhaps a Special Rule).
+2. De-hardcode skill levels and consider a way to support mod skills?
+6. Implement a temporary saving mechanism for Save Anywhere (look into their API?)
 
-#### Version 1.0.4 (upcoming)
+#### Version 1.0.5
+
+* In theory: fixes splitscreen.
+* `Available` token now correctly returns no entries if the special orders board is not unlocked. Also, adds `_IsAvailable` as a possible dialogue option.
+* Adds dialogue key `_RepeatOrder`, which is cleared seven days after the completion of the order.
+* Check heart levels for dialogue conditions above 14.
+* Added tags: `married`.
+* (Internal) Use delegates instead of `PropertyInfo`s.
+
+#### Version 1.0.4
 
 * Added tokens (`Current`, `Available`, `Completed`, `RecentCompleted`). (Thanks, Lumina, for the suggestion!)
 * Added token for the current special order rules (`CurrentRules`) (Thanks, shekurika, for the suggestion!)

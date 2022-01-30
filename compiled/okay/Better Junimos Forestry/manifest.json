@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Better Junimos Forestry",
   "Author": "ceruleandeep",
-  "Version": "1.0.4-beta.1",
+  "Version": "1.0.5",
   "Description": "Allow your Junimos (from Junimo huts) to automatically plant and harvest trees",
   "UniqueID": "ceruleandeep.BetterJunimosForestry",
   "EntryDll": "BetterJunimosForestry.dll",
@@ -9,7 +9,7 @@
   "Dependencies": [
     {
       "UniqueID": "hawkfalcon.BetterJunimos",
-      "MinimumVersion": "2.0.0-beta.9"
+      "MinimumVersion": "2.0.2"
     }
   ],
   "UpdateKeys": [ "Nexus:8992" ]

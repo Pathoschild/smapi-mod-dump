@@ -10,7 +10,13 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Improved translations. Thanks to wally232 (added Korean)!
+
+## 1.25.2
+Released 14 January 2022 for SMAPI 3.13.0 or later.
+
 * Fixed bushes in garden pots sometimes producing a second harvest when you enter the location.
+* Improved translations. Thanks to ChulkyBow (added Ukrainian), Evexyron (added Spanish), and mezen (added German)!
 
 ## 1.25.1
 Released 25 December 2021 for SMAPI 3.13.0 or later.

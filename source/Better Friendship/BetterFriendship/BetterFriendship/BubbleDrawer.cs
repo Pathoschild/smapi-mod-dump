@@ -14,7 +14,6 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Object = StardewValley.Object;
 
 namespace BetterFriendship
@@ -53,41 +52,65 @@ namespace BetterFriendship
             var hoverVal = (float)(4.0 * Math.Round(Math.Sin(DateTime.Now.TimeOfDay.TotalMilliseconds / 250.0), 2)) -
                            (Game1.tileSize / 2);
 
-            // Thought bubble
-            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                    xPosition + BubbleOffset.X,
-                    yPosition - BubbleOffset.Y + hoverVal)),
-                new Rectangle(141, 465, 20, 24),
-                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                0);
+            var selectedItem = displayGift ? SelectIem(character.Name, bestItems) : -1;
 
             // Icon(s)
             switch (displayGift)
             {
                 case true when displayTalk:
-                    spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
-                            xPosition + BubbleOffset.X + 6,
-                            yPosition - BubbleOffset.Y + hoverVal + 10)),
-                        _giftSourceRectangle,
-                        Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                        1);
-                    break;
-                case true:
-                    var selectedItem = SelectIem(character.Name, bestItems);
                     if (selectedItem == -1)
                     {
+                        if (!_config.DisplayGenericGiftPrompts && !character.ShouldOverrideForSpouse(_config))
+                        {
+                            break;
+                        }
+
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
+
+                        spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X + 6,
+                                yPosition - BubbleOffset.Y + hoverVal + 10)),
+                            _giftSourceRectangle,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
+                    }
+                    else
+                    {
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
+
+                        var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
+                            bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
+
+                        spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                                xPosition + BubbleOffset.X + 6,
+                                yPosition - BubbleOffset.Y + hoverVal + 10)),
+                            objectSourceRect,
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None, 1);
+                    }
+
+                    break;
+                case true:
+                    if (selectedItem == -1)
+                    {
+                        if (!_config.DisplayGenericGiftPrompts && !character.ShouldOverrideForSpouse(_config))
+                        {
+                            break;
+                        }
+
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
+
                         spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                                 xPosition + BubbleOffset.X + 16,
                                 yPosition - BubbleOffset.Y + hoverVal + 16)),
                             _giftSourceRectangle,
-                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None,
-                            1);
+                            Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1);
                         break;
                     }
                     else
                     {
+                        DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
+
                         var objectSourceRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet,
-                            bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
+                                bestItems[selectedItem].item.ParentSheetIndex, 16, 16);
 
                         spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                                 xPosition + BubbleOffset.X + 8,
@@ -115,13 +138,15 @@ namespace BetterFriendship
                             qualitySourceRect,
                             Color.White * 0.75f, 0.0f, Vector2.Zero, 3f, SpriteEffects.None,
                             2);
+
                         break;
                     }
             }
 
             switch (displayTalk)
             {
-                case true when displayGift:
+                case true when displayGift && (_config.DisplayGenericGiftPrompts || selectedItem != -1 ||
+                                               character.ShouldOverrideForSpouse(_config)):
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 22,
                             yPosition - BubbleOffset.Y + 30 + hoverVal)),
@@ -130,6 +155,8 @@ namespace BetterFriendship
                         2);
                     break;
                 case true:
+                    DrawThoughtBubble(spriteBatch, xPosition, yPosition + hoverVal);
+
                     spriteBatch.Draw(Game1.mouseCursors2, Game1.GlobalToLocal(Game1.viewport, new Vector2(
                             xPosition + BubbleOffset.X + 16,
                             yPosition - BubbleOffset.Y + 16 + hoverVal)),
@@ -156,17 +183,29 @@ namespace BetterFriendship
 
         private int SelectIem(string npcName, IReadOnlyCollection<(Object item, int taste)> bestItems)
         {
-            if (!bestItems.Any() || !_lastCycled.ContainsKey(npcName) || _lastCycled[npcName].item >= bestItems.Count)
+            if (bestItems == null || !bestItems.Any() || !_lastCycled.ContainsKey(npcName) ||
+                _lastCycled[npcName].item >= bestItems.Count)
             {
                 _lastCycled[npcName] = (0, 0);
                 return -1;
             }
 
-            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >= _lastCycled[npcName].time + _config.GiftCycleDelay))
+            if (!(Game1.currentGameTime.TotalGameTime.TotalMilliseconds >=
+                  _lastCycled[npcName].time + _config.GiftCycleDelay))
                 return _lastCycled[npcName].item;
-            _lastCycled[npcName] = ((_lastCycled[npcName].item + 1) % bestItems.Count, Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
+            _lastCycled[npcName] = ((_lastCycled[npcName].item + 1) % bestItems.Count,
+                Game1.currentGameTime.TotalGameTime.TotalMilliseconds);
 
             return _lastCycled[npcName].item;
+        }
+
+        private void DrawThoughtBubble(SpriteBatch spriteBatch, float xPosition, float yPosition)
+        {
+            spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(
+                    xPosition + BubbleOffset.X,
+                    yPosition - BubbleOffset.Y)),
+                new Rectangle(141, 465, 20, 24),
+                Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0);
         }
     }
 }

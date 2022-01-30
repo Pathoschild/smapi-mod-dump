@@ -27,8 +27,8 @@
   "birthdayDislikeB": "This is horrid.. Why would you do this?$5",
   "birthdayNeutralA": "Oh!  For my birthday?  Well, you tried.",
   "birthdayNeutralB": "Did my birthday come up faster than you expected?#$b#Thank you for trying, @.",
-  "giftquestion_yes": "I see.. You're always a kind man.$1^I see.. You're always a kind woman.$1",
-  "giftquestion_lie": "Are you really going to lie about it?  I already know!$5#$b#Should I be worried about this?!$2",
+  "giftquestion_yes": "That's good, sweetie.. You were always kind and giving.$4",
+  "giftquestion_lie": "You do know this is a small community right?  I mean I obviously know you did.$5#$b#You're not up to something are you?$2",
   "breakUp": "Oh.. I guess we should just be friends..",
   "NPC.cs.3962": "$q 10001 give_flowersA#?!...#$r 10001 0 give_flowersA# [Give Bouquet]",
   "NPC.cs.3963": "$q 10001 give_flowersB#?!...#$r 10001 0 give_flowersB# [Give Bouquet]",
@@ -57,6 +57,6 @@
   "NPC.cs.4278": "$q 10001 birthdayDislikeA#...#$r 10001 0 birthdayDislikeA# [Happy Birthday]", //hate
   "NPC.cs.4279": "$q 10001 birthdayDislikeB#...#$r 10001 0 birthdayDislikeB# [Happy Birthday]", //dislike
   "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [Happy Birthday]", //neutral
-  "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [Happy Birthday]" //neutral
-
+  "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [Happy Birthday]", //neutral
+  "NPC.cs.3985": "@, I heard that you gave {0} a gift today...#$b#$q 798999999 giftquestion_yes#Is this true?#$r 798999999 50 giftquestion_yes#Yes, I gave a friendly gift.#$r 798999998 0 giftquestion_lie#What? Me? No...(Lie)"
 }

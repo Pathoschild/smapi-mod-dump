@@ -9,6 +9,19 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.10.2
+
+* Overlay background and text color can now be configured in-game if both
+  Generic Mod Config Menu and GMCM Options are installed
+* Work correctly when the same key is used for the hotkey and secondary close button
+  (previously it would immediately close the just-opened menu)
+
+## Version 1.10.1
+
+* Updated Spanish translation (thanks to GitHub user Yllelder)
+* Update to use new Generic Mod Config Menu API.  I18n now works in the config menu.
+* Update build environment to use ModTranslationClassBuilder v2.0.0
+
 ## Version 1.10.0
 
 * Built for SDV 1.5.5 / SMAPI 3.13

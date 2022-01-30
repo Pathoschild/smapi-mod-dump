@@ -1,3 +1,22 @@
 ﻿{
-    "config.reload": "[EideeEasyFishing] Config has been reloaded."
+  "message.config.reload": "[EideeEasyFishing] Config has been reloaded.",
+  "config.section.general.name": "General",
+  "config.bitefaster.name": "Bite Faster",
+  "config.bitefaster.description": "It reduces the time it takes for fish to bite the bait.",
+  "config.hitautomatically.name": "Hit Automatically",
+  "config.hitautomatically.description": "You do not need to click the mouse to go to the minigame. If the feature to skip the minigame is enabled, you will caught the fish.",
+  "config.skipminigame.name": "Skip Minigame",
+  "config.skipminigame.description": "Skip the minigame and caught the fish.",
+  "config.fisheasycaught.name": "Fish Easy Caught",
+  "config.fisheasycaught.description": "In the minigame, the fish icon chases the bar.",
+  "config.treasurealwaysbefound.name": "Treasure Always Be Found",
+  "config.treasurealwaysbefound.description": "The treasure will appear every time. This works even if you want to skip the minigame.",
+  "config.treasureeasycaught.name": "Treasure Easy Caught",
+  "config.treasureeasycaught.description": "In the minigame, the treasure icon follows the bar.",
+  "config.alwayscaughtdoublefish.name": "Always Caught Double Fish",
+  "config.alwayscaughtdoublefish.description": "If the bait is Wild Bait, it always catches two fish.",
+  "config.caughtdoublefishonanybait.name": "Caught Double Fish On Any Bait",
+  "config.caughtdoublefishonanybait.description": "You will get a chance to catch two fish regardless of the bait you are using. This can be used in conjunction with Always Caught Double Fish.",
+  "config.alwaysmaxcastpower.name": "Always Max Cast Power",
+  "config.alwaysmaxcastpower.description": "Cast power is always maximized."
 }

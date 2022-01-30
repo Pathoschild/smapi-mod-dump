@@ -179,6 +179,11 @@ namespace ShowBirthdays
 				string newHoverText = "";
 
 				// Add the festival text if needed
+				// NOTE: Adding the festival name to the hover text makes the billboard.draw think it's someone's birthday and tries to draw
+				// a null texture. CalendarDay.name contains the festival name and causes the animated flag or the stars to draw.
+				// Adding the festival to the hovertext bypasses using the label as the hovertext and would allow a festival + birthday combo.
+				// How to handle potential birthday + festival combos? Don't add the festival as a hover text if there's no birthday?
+				// Would need a custom implementation for the graphic if they overlap. Which isn't actually a bad idea.
 				if (Utility.isFestivalDay(i, Game1.currentSeason))
 				{
 					// Festival name hover text from base game
@@ -206,6 +211,11 @@ namespace ShowBirthdays
 						// Build the hover text just like in the base game. I'm not touching that.
 						newHoverText += ((n.displayName.Last() != 's' && (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.de || (n.displayName.Last() != 'x' && n.displayName.Last() != 'ß' && n.displayName.Last() != 'z'))) ? Game1.content.LoadString("Strings\\UI:Billboard_Birthday", n.displayName) : Game1.content.LoadString("Strings\\UI:Billboard_SBirthday", n.displayName));
 					}
+				}
+				else
+				{
+					// If there was no birthday, reset the hover text incase a festival name was added
+					newHoverText = "";
 				}
 
 				// Get a refrence to the list of weddings

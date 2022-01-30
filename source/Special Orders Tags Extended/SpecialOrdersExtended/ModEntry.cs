@@ -15,71 +15,94 @@ using StardewValley.GameData;
 
 namespace SpecialOrdersExtended;
 
-class ModEntry : Mod
+/// <inheritdoc />
+internal class ModEntry : Mod
 {
-    public static IMonitor ModMonitor;
-    public static StatsManager StatsManager;
-    public static IDataHelper DataHelper;
+    // The following fields are set in the Entry method, which is about as close to the constructor as I can get
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
+    /// <summary>
+    /// Logger for SMAPI.
+    /// </summary>
+    private static IMonitor modMonitor;
+
+    /// <summary>
+    /// SMAPI's data writer.
+    /// </summary>
+    private static IDataHelper dataHelper;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+    /// <summary>
+    /// Gets the logger for this mod.
+    /// </summary>
+    internal static IMonitor ModMonitor => modMonitor;
+
+    /// <summary>
+    /// Gets SMAPI's data helper for this mod.
+    /// </summary>
+    internal static IDataHelper DataHelper => dataHelper;
+
+    /// <inheritdoc/>
     public override void Entry(IModHelper helper)
     {
         I18n.Init(helper.Translation);
-        ModMonitor = Monitor;
-        StatsManager = new();
-        DataHelper = helper.Data;
+        modMonitor = this.Monitor;
+        dataHelper = helper.Data;
 
         Harmony harmony = new(this.ModManifest.UniqueID);
 
         harmony.Patch(
             original: typeof(SpecialOrder).GetMethod("CheckTag", BindingFlags.NonPublic | BindingFlags.Static),
-            prefix: new HarmonyMethod(typeof(TagManager), nameof(TagManager.PrefixCheckTag))
-            );
-        ModMonitor.Log("Patching SpecialOrder:CheckTag", LogLevel.Debug);
+            prefix: new HarmonyMethod(typeof(TagManager), nameof(TagManager.PrefixCheckTag)));
+        ModMonitor.Log("Patching SpecialOrder::CheckTag for Special Orders Extended", LogLevel.Trace);
 
         try
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.checkForNewCurrentDialogue)),
-                postfix: new HarmonyMethod(typeof(DialogueManager), nameof(DialogueManager.PostfixCheckDialogue))
-                );
-            ModMonitor.Log("Patching NPC:checkForNewCurrentDialogue for Special Orders Dialogue", LogLevel.Debug);
+                postfix: new HarmonyMethod(typeof(DialogueManager), nameof(DialogueManager.PostfixCheckDialogue)));
+            ModMonitor.Log("Patching NPC::checkForNewCurrentDialogue for Special Orders Dialogue", LogLevel.Trace);
         }
         catch (Exception ex)
         {
-            ModMonitor.Log($"Failed to patch NPC:checkForNewCurrentDialogue for Special Orders Dialogue\n\n{ex}", LogLevel.Error);
+            ModMonitor.Log($"Failed to patch NPC::checkForNewCurrentDialogue for Special Orders Dialogue. Dialogue will be disabled\n\n{ex}", LogLevel.Error);
         }
 
         helper.ConsoleCommands.Add(
             name: "special_order_pool",
             documentation: I18n.SpecialOrderPool_Description(),
-            callback: this.GetAvailableOrders
-            ); ;
+            callback: this.GetAvailableOrders);
         helper.ConsoleCommands.Add(
             name: "check_tag",
             documentation: I18n.CheckTag_Description(),
-            callback: this.ConsoleCheckTag
-            );
+            callback: this.ConsoleCheckTag);
         helper.ConsoleCommands.Add(
             name: "list_available_stats",
             documentation: I18n.ListAvailableStats_Description(),
-            callback: StatsManager.ConsoleListProperties
-            );
+            callback: StatsManager.ConsoleListProperties);
         helper.ConsoleCommands.Add(
             name: "special_orders_dialogue",
             documentation: $"{I18n.SpecialOrdersDialogue_Description()}\n\n{I18n.SpecialOrdersDialogue_Example()}\n    {I18n.SpecialOrdersDialogue_Usage()}",
-            callback: DialogueManager.ConsoleSpecialOrderDialogue
-            );
-
-        helper.Events.GameLoop.GameLaunched += RegisterTokens;
-        helper.Events.GameLoop.SaveLoaded += SaveLoaded;
-        helper.Events.GameLoop.Saving += Saving;
-        helper.Events.GameLoop.TimeChanged += TimeChanged;
+            callback: DialogueManager.ConsoleSpecialOrderDialogue);
+        helper.Events.GameLoop.GameLaunched += this.RegisterTokens;
+        helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
+        helper.Events.GameLoop.Saving += this.Saving;
+        helper.Events.GameLoop.OneSecondUpdateTicking += this.OneSecondUpdateTicking;
     }
 
-    private void RegisterTokens(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+    private void OneSecondUpdateTicking(object? sender, StardewModdingAPI.Events.OneSecondUpdateTickingEventArgs e)
     {
-        var api = this.Helper.ModRegistry.GetApi<Tokens.IContentPatcherAPI>("Pathoschild.ContentPatcher");
-        if (api is null) { ModMonitor.Log(I18n.CpNotInstalled(), LogLevel.Warn); return; }
+        RecentSOManager.GrabNewRecentlyCompletedOrders();
+    }
+
+    private void RegisterTokens(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+    {
+        Tokens.IContentPatcherAPI? api = this.Helper.ModRegistry.GetApi<Tokens.IContentPatcherAPI>("Pathoschild.ContentPatcher");
+        if (api is null)
+        {
+            ModMonitor.Log(I18n.CpNotInstalled(), LogLevel.Warn);
+            return;
+        }
 
         api.RegisterToken(this.ModManifest, "Current", new Tokens.CurrentSpecialOrders());
         api.RegisterToken(this.ModManifest, "Available", new Tokens.AvailableSpecialOrders());
@@ -88,21 +111,27 @@ class ModEntry : Mod
         api.RegisterToken(this.ModManifest, "RecentCompleted", new Tokens.RecentCompletedSO());
     }
 
-    private void Saving(object sender, StardewModdingAPI.Events.SavingEventArgs e)
+    private void Saving(object? sender, StardewModdingAPI.Events.SavingEventArgs e)
     {
-        StatsManager.ClearProperties();
-        DialogueManager.SaveDialogueLog();
+        this.Monitor.DebugLog("Event Saving raised");
+
+        DialogueManager.Save(); // Save dialogue
+
+        if (Context.IsSplitScreen && Context.ScreenId != 0)
+        {// Some properties only make sense for a single player to handle in splitscreen.
+            return;
+        }
+
+        StatsManager.ClearProperties(); // clear property cache, repopulate at next use
+        RecentSOManager.GrabNewRecentlyCompletedOrders();
         RecentSOManager.DayUpdate(Game1.stats.daysPlayed);
         RecentSOManager.Save();
     }
-    private void TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)
-    {
-        RecentSOManager.UpdateCurrentOrderCache();
-    }
 
-    private void SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+    private void SaveLoaded(object? sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
     {
-        DialogueManager.LoadDialogueLog();
+        this.Monitor.DebugLog("Event SaveLoaded raised");
+        DialogueManager.Load(Game1.player.UniqueMultiplayerID);
         RecentSOManager.Load();
     }
 
@@ -126,14 +155,17 @@ class ModEntry : Mod
             {
                 base_tag = tag.Trim();
             }
-            bool result = match == Helper.Reflection.GetMethod(typeof(SpecialOrder), "CheckTag").Invoke<bool>(base_tag);
+            bool result = match == this.Helper.Reflection.GetMethod(typeof(SpecialOrder), "CheckTag").Invoke<bool>(base_tag);
             ModMonitor.Log($"{tag}: {(result ? I18n.True() : I18n.False())}", LogLevel.Debug);
         }
     }
 
     private void GetAvailableOrders(string command, string[] args)
     {
-        if (!Context.IsWorldReady) { ModMonitor.Log(I18n.LoadSaveFirst(), LogLevel.Warn); }
+        if (!Context.IsWorldReady)
+        {
+            ModMonitor.Log(I18n.LoadSaveFirst(), LogLevel.Warn);
+        }
         Dictionary<string, SpecialOrderData> order_data = Game1.content.Load<Dictionary<string, SpecialOrderData>>("Data\\SpecialOrders");
         List<string> keys = Utilities.ContextSort(order_data.Keys);
         ModMonitor.Log(I18n.NumberFound(count: keys.Count), LogLevel.Debug);
@@ -144,10 +176,16 @@ class ModEntry : Mod
         foreach (string key in keys)
         {
             SpecialOrderData order = order_data[key];
-            if (IsAvailableOrder(key, order))
+            if (this.IsAvailableOrder(key, order))
             {
+#if DEBUG
+                ModMonitor.DebugLog($"    {key} is valid");
+#endif
                 validkeys.Add(key);
-                if (!Game1.MasterPlayer.team.completedSpecialOrders.ContainsKey(key)) { unseenkeys.Add(key); }
+                if (!Game1.MasterPlayer.team.completedSpecialOrders.ContainsKey(key))
+                {
+                    unseenkeys.Add(key);
+                }
             }
         }
         ModMonitor.Log($"{I18n.ValidKeys(count: validkeys.Count)}: {string.Join(", ", validkeys)}", LogLevel.Debug);
@@ -190,7 +228,10 @@ class ModEntry : Mod
             foreach (string tag in tags)
             {
                 bool match = true;
-                if (tag.Length == 0) { continue; }
+                if (tag.Length == 0)
+                {
+                    continue;
+                }
                 string trimmed_tag;
                 if (tag.StartsWith("!"))
                 {
@@ -202,7 +243,7 @@ class ModEntry : Mod
                     trimmed_tag = tag;
                 }
 
-                if (!(match == Helper.Reflection.GetMethod(typeof(SpecialOrder), "CheckTag").Invoke<bool>(trimmed_tag)))
+                if (!(match == this.Helper.Reflection.GetMethod(typeof(SpecialOrder), "CheckTag").Invoke<bool>(trimmed_tag)))
                 {
                     ModMonitor.Log($"         {I18n.TagFailed()}: {tag}", LogLevel.Debug);
                 }

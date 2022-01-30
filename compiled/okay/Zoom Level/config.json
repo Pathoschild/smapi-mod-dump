@@ -1,15 +1,15 @@
 {
-  "IncreaseZoomOrUI": "OemPeriod, RightStick",
-  "DecreaseZoomOrUI": "OemComma, LeftStick",
-  "HoldToChangeUIKeys": "LeftShift, RightShift, LeftTrigger + RightTrigger",
-  "ResetZoom": "Home",
-  "ResetUI": "Home",
-  "SuppressControllerButton": true,
-  "ZoomAndUIControlEverywhere": false,
+  "KeybindListHoldToChangeUI": "LeftShift, RightShift, LeftTrigger + RightTrigger",
+  "KeybindListIncreaseZoomOrUI": "OemPeriod, RightStick",
+  "KeybindListDecreaseZoomOrUI": "OemComma, LeftStick",
+  "KeybindListResetZoomOrUI": "None",
+  "KeybindListMaxZoomOrUI": "None",
+  "KeybindListMinZoomOrUI": "None",
   "ZoomLevelIncreaseValue": 0.05,
   "ZoomLevelDecreaseValue": -0.05,
   "MaxZoomOutLevelAndUIValue": 0.35,
   "MaxZoomInLevelAndUIValue": 2.0,
-  "ResetUIValue": 1.0,
-  "ResetZoomValue": 1.0
+  "ResetZoomOrUIValue": 1.0,
+  "SuppressControllerButton": true,
+  "ZoomAndUIControlEverywhere": false
 }

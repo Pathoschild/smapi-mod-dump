@@ -14,11 +14,11 @@ This is a repository for all my Stardew Valley Mods
 
 
 ## Planned Mods:
-- CFF (Custom Fence Framework)
-- [CFF] Lines
 - More Junimo Chests
+- CLF (Custom Line Framework)
+- [CLF] Color Lines
 - Shed IO
-- Logic Wires
+- Logic Lines
 
 ## Released Mods:
 - [Connected Fences](https://github.com/sergiomadd/StardewValleyMods/edit/main/ConnectedFences)

@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+  "woodFence.Label": "Valla de madera",
+  "woodFence.tooltip": "El multiplicador de vida útil de las vallas de madera",
+  "stoneFence.Label": "Valla de piedra",
+  "stoneFence.tooltip": "El multiplicador de vida útil de las vallas de piedra",
+  "ironFence.Label": "Valla de hierro",
+  "ironFence.tooltip": "El multiplicador de vida útil de las vallas de hierro",
+  "hardwoodFence.Label": "Valla de madera noble",
+  "hardwoodFence.tooltip": "El multiplicador de vida útil de las vallas de madera noble",
+  "gate.Label": "Puertas",
+  "gate.tooltip": "El multiplicador de vida útil de las puertas de vallas"
+}

@@ -1,0 +1,117 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dawilly/SAAT
+**
+*************************************************/
+
+[
+  {
+    "Id": "AlissaConcert",
+    "Filepath": "Music/AlissaConcert.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "AlissaVocals",
+    "Filepath": "Music/AlissaVocals.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "AlissaWithPiano",
+    "Filepath": "Music/AlissaWithPiano.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "AlissaTheme",
+    "Filepath": "Music/AlissaTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "CorineTheme",
+    "Filepath": "Music/CorineTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "FlorTheme",
+    "Filepath": "Music/FlorTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "IanTheme",
+    "Filepath": "Music/IanTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "JericTheme",
+    "Filepath": "Music/JericTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "KennethTheme",
+    "Filepath": "Music/KennethTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "MaddieTheme",
+    "Filepath": "Music/MaddieTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "PhilipTheme",
+    "Filepath": "Music/PhilipTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "ShiroTheme",
+    "Filepath": "Music/ShiroTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "YsabelleTheme",
+    "Filepath": "Music/YsabelleTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "YsaDance",
+    "Filepath": "Music/YsaDance.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "EmberNight",
+    "Filepath": "Music/EmberNight.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "FallInRidgeside",
+    "Filepath": "Music/FallInRidgeside.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "CaveDrip",
+    "Filepath": "Music/CaveDrip.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "AlissaSerenade",
+    "Filepath": "Music/AlissaSerenade.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "AweAmbience",
+    "Filepath": "Music/AweAmbience.ogg",
+    "Category": "Ambient"
+  },
+  {
+    "Id": "JioTheme",
+    "Filepath": "Music/JioTheme.ogg",
+    "Category": "Music"
+  },
+  {
+    "Id": "DaiaTheme",
+    "Filepath": "Music/DaiaTheme.ogg",
+    "Category": "Music"
+  }
+]

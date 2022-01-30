@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "StartFramingKey": "F10",
+  "SwitchFrameKey": "F11",
+  "TakePictureKey": "F12",
+  "SwitchPictureKey": "F11",
+  "DeletePictureKey": "Delete",
+  "Message": "Saving framed picture for {0}"
+}

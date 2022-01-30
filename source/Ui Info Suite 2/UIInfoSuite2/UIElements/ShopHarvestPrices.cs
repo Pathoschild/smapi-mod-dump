@@ -146,16 +146,15 @@ namespace UIInfoSuite.UIElements
                     SpriteEffects.None,
                     0.95f);
                 // Price
-                string text = "    " + value;
                 Game1.spriteBatch.DrawString(
                     Game1.dialogueFont,
-                    text,
-                    new Vector2(xPosition - 2, yPosition + 6),
+                    value.ToString(),
+                    new Vector2(xPosition + 50, yPosition + 6),
                     Color.Black * 0.2f);
                 Game1.spriteBatch.DrawString(
                     Game1.dialogueFont,
-                    text,
-                    new Vector2(xPosition, yPosition + 4),
+                    value.ToString(),
+                    new Vector2(xPosition + 52, yPosition + 4),
                     Color.Black * 0.8f);
                 /*
 				 * I have no Idea why this is here...

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "Name": "Enchantable Scythes And Tweaks",
+  "Author": "Goldenrevolver",
+  "Version": "1.0",
+  "Description": "Scythes are enchantable, the golden scythe respawns if lost",
+  "UniqueID": "Goldenrevolver.EnchantableScythes",
+  "EntryDll": "EnchantableScythes.dll",
+  "MinimumApiVersion": "3.13.2",
+  "UpdateKeys": [ "Nexus:10668" ]
+}

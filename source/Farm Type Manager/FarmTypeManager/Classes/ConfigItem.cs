@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using StardewModdingAPI;
 using Newtonsoft.Json;
+using StardewModdingAPI;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {

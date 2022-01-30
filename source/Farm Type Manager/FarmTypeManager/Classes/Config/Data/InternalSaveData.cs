@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using StardewModdingAPI;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -29,7 +28,7 @@ namespace FarmTypeManager
 
             public InternalSaveData()
             {
-                
+
             }
         }
     }

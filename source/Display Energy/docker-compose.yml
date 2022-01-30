@@ -1,0 +1,20 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/dmarcoux/DisplayEnergy
+##
+##################################################
+
+version: "3.7"
+services:
+  dotnet:
+    image: mcr.microsoft.com/dotnet/sdk:5.0.404-alpine3.14-amd64 # .NET 5 from https://hub.docker.com/_/microsoft-dotnet-sdk
+    # Start up the container and do nothing, since we're going to connect to it from our computer
+    tty: true
+    volumes:
+      - ".:/root/DisplayEnergy"
+      - "~/.steam/steam/steamapps/common/Stardew Valley:/root/.steam/steam/steamapps/common/Stardew Valley" # To be able to install the mod when building it
+    working_dir: /root/DisplayEnergy # To avoid having to change the directory every time the container starts

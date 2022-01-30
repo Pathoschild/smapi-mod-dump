@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
+    
+#region using directives
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,13 +20,14 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using TheLion.Stardew.Common.Harmony;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Stardew.Common.Harmony;
+using AssetLoaders;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class SkillsPageDrawPatch : BasePatch
@@ -77,8 +82,7 @@ internal class SkillsPageDrawPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching to draw skills page extended level bars. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching to draw skills page extended level bars. Helper returned {ex}");
             return null;
         }
 
@@ -113,8 +117,7 @@ internal class SkillsPageDrawPatch : BasePatch
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching to draw max skill level with different color. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching to draw max skill level with different color. Helper returned {ex}");
             return null;
         }
 
@@ -131,16 +134,16 @@ internal class SkillsPageDrawPatch : BasePatch
                 )
                 .StripLabels(out var labels) // backup and remove branch labels
                 .Insert(
+                    labels,
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(SkillsPageDrawPatch).MethodNamed(nameof(DrawRibbonsSubroutine)))
+                        typeof(SkillsPageDrawPatch).MethodNamed(nameof(DrawRibbons)))
                 );
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed while patching to draw skills page prestige ribbons. Helper returned {ex}",
-                LogLevel.Error);
+            Log.E($"Failed while patching to draw skills page prestige ribbons. Helper returned {ex}");
             return null;
         }
 
@@ -149,9 +152,9 @@ internal class SkillsPageDrawPatch : BasePatch
 
     #endregion harmony patches
 
-    #region private methods
+    #region injected subroutines
 
-    private static void DrawExtendedLevelBars(int levelIndex, int skillIndex, int x, int y, int addedX,
+    internal static void DrawExtendedLevelBars(int levelIndex, int skillIndex, int x, int y, int addedX,
         int skillLevel, SpriteBatch b)
     {
         if (!ModEntry.Config.EnablePrestige) return;
@@ -161,19 +164,17 @@ internal class SkillsPageDrawPatch : BasePatch
 
         // this will draw only the blue bars
         if ((levelIndex + 1) % 5 != 0)
-            b.Draw(Utility.Prestige.SkillBarTx, new(addedX + x + levelIndex * 36, y - 4 + skillIndex * 56),
+            b.Draw(Textures.SkillBarTx, new(addedX + x + levelIndex * 36, y - 4 + skillIndex * 56),
                 new(0, 0, 8, 9), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
     }
 
-    private static void DrawRibbonsSubroutine(SkillsPage page, SpriteBatch b)
+    internal static void DrawRibbons(SkillsPage page, SpriteBatch b)
     {
         if (!ModEntry.Config.EnablePrestige) return;
 
-        var w = Utility.Prestige.RibbonWidth;
-        var s = Utility.Prestige.RibbonScale;
         var position =
             new Vector2(
-                page.xPositionOnScreen + page.width + Utility.Prestige.RibbonHorizontalOffset,
+                page.xPositionOnScreen + page.width + Textures.RIBBON_HORIZONTAL_OFFSET_I,
                 page.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth - 70);
         for (var i = 0; i < 5; ++i)
         {
@@ -190,11 +191,12 @@ internal class SkillsPageDrawPatch : BasePatch
             var count = Game1.player.NumberOfProfessionsInSkill(skillIndex, true);
             if (count == 0) continue;
 
-            var srcRect = new Rectangle(i * w, (count - 1) * w, w, w);
-            b.Draw(Utility.Prestige.RibbonTx, position, srcRect, Color.White, 0f, Vector2.Zero, s,
+            var srcRect = new Rectangle(i * Textures.RIBBON_WIDTH_I, (count - 1) * Textures.RIBBON_WIDTH_I,
+                Textures.RIBBON_WIDTH_I, Textures.RIBBON_WIDTH_I);
+            b.Draw(Textures.RibbonTx, position, srcRect, Color.White, 0f, Vector2.Zero, Textures.RIBBON_SCALE_F,
                 SpriteEffects.None, 1f);
         }
     }
 
-    #endregion private methods
+    #endregion injected subroutines
 }

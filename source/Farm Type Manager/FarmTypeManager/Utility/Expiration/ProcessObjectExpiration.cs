@@ -205,9 +205,7 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.Container) //if this is a container
                     {
-                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
-
-                        if (realObject != null) //if an object exists in the saved location
+                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject)) //if an object exists in the saved location
                         {
                             bool sameContainerCategory = false;
                             switch (saved.ConfigItem?.Category.ToLower()) //compare the saved object's category to this object's class
@@ -241,7 +239,7 @@ namespace FarmTypeManager
                                     }
                                     break;
                             }
-                            
+
                             if (sameContainerCategory) //if the real object matches the saved object's category
                             {
                                 if (realObject is Chest chest) //if this is a chest
@@ -251,7 +249,7 @@ namespace FarmTypeManager
                                         saved.ConfigItem.Contents.RemoveAt(0); //remove a missing item from the ConfigItem's contents (note: chests output the item at index 0 when used)
                                     }
                                 }
-                                
+
                                 realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
                                 location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
 
@@ -325,9 +323,7 @@ namespace FarmTypeManager
                         }
                         else //if a matching PlacedItem or furniture does not exist, check for a normal object
                         {
-                            StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
-
-                            if (realObject != null && DGAItemAPI?.GetDGAItemId(realObject) == saved.Name) //if an object exists in the saved location & matches the saved object (according to DGA's API)
+                            if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && DGAItemAPI?.GetDGAItemId(realObject) == saved.Name) //if an object exists in the saved location & matches the saved object (according to DGA's API)
                             {
                                 if (endOfDay) //if expirations should be processed
                                 {
@@ -353,9 +349,7 @@ namespace FarmTypeManager
                     }
                     else //if this is a StardewValley.Object (e.g. forage or ore)
                     {
-                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
-
-                        if (realObject != null && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID
+                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID
                         {
                             if (endOfDay) //if expirations should be processed
                             {

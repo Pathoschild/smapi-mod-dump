@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+
+"Mon": "%Gertrude: I miss the dry heat of the desert. It's too humid here.",
+"Tue": "%Gertrude: I miss the dry heat of the desert. It's too humid here.",
+"Wed": "%Gertrude: I miss the dry heat of the desert. It's too humid here.",
+"Thu": "%Gertrude: I miss the dry heat of the desert. It's too humid here.",
+"Fri": "%Gertrude: I miss the dry heat of the desert. It's too humid here.",
+"Sat": "%Gertrude: I miss the dry heat of the desert. It's too humid here.",
+"Sun": "%Gertrude: I miss the dry heat of the desert. It's too humid here."
+
+}

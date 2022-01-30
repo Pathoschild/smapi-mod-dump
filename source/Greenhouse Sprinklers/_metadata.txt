@@ -6,9 +6,9 @@ mods:
    Greenhouse Sprinklers
 
 latest commit:
-   commit 158c066b21a916a6fd957be67185ed91ab96c2e4
+   commit 2c66643cf24b7865901d5a11fc1c02ef2d1d8af2
    Author: David Camp <Bpendragon@users.noreply.github.com>
-   Date:   Fri Nov 12 16:44:24 2021 -0800
+   Date:   Wed Jan 5 22:30:33 2022 -0800
    
-       update translation builder
+       Changelog and readme update
    

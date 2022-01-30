@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Aurora Vineyard Property Deed",
+	"Description": "It needs to be given to an authority figure for review.",
+	"Price": 0,
+	"CanTrash": false,
+    "CanSell": false,
+}

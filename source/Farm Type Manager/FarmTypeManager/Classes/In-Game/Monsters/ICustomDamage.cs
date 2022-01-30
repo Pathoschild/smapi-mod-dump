@@ -8,12 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace FarmTypeManager.Monsters
 {
     /// <summary>An interface for subclasses of Monster that replace hardcoded damage values with a customizable value.</summary>

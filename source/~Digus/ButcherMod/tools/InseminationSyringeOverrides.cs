@@ -61,6 +61,13 @@ namespace AnimalHusbandryMod.tools
             __result = true;
         }
 
+        public static void CanAddEnchantment(Tool __instance, ref bool __result)
+        {
+            if (!IsInseminationSyringe(__instance)) return;
+
+            __result = false;
+        }
+
         public static bool beginUsing(MilkPail __instance, GameLocation location, int x, int y, StardewValley.Farmer who, ref bool __result)
         {
             if (!IsInseminationSyringe(__instance)) return true;

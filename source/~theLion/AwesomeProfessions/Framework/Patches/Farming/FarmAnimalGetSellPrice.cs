@@ -8,15 +8,19 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Farming;
+
+#region using directives
+
 using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewValley;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class FarmAnimalGetSellPricePatch : BasePatch
@@ -37,13 +41,13 @@ internal class FarmAnimalGetSellPricePatch : BasePatch
         try
         {
             var owner = Game1.getFarmerMaybeOffline(__instance.ownerID.Value) ?? Game1.MasterPlayer;
-            if (!owner.HasProfession("Breeder")) return true; // run original logic
+            if (!owner.HasProfession(Profession.Breeder)) return true; // run original logic
 
-            adjustedFriendship = Utility.Professions.GetProducerAdjustedFriendship(__instance);
+            adjustedFriendship = __instance.GetProducerAdjustedFriendship();
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}", LogLevel.Error);
+            Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
         }
 

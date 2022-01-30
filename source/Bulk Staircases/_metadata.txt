@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/BananaFruit1492/BulkStaircases
+   Git: https://github.com/BananaFruit1492/BulkStaircases.git
+
+mods:
+   Bulk Staircases
+
+latest commit:
+   commit 1c1433f643f2d92d8fc8667a88f97ad1a0d622cf
+   Author: BananaFruit <bananafruit1492@gmail.com>
+   Date:   Thu Jan 13 20:44:10 2022 +0100
+   
+       Updated readme.md
+   

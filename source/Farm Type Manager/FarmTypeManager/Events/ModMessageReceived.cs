@@ -8,15 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
+using System;
 
 namespace FarmTypeManager
 {
@@ -38,7 +32,7 @@ namespace FarmTypeManager
                  * NOTE: This is a messy solution to saving objects that weren't generated directly by a FarmConfig, which means they aren't associated with a SavedObjects list.
                  *       For now, the objects will be added to the first available FarmData entry and forced to expire overnight (preventing them actually being written to a file).
                  */
-                
+
                 save.DaysUntilExpire = 1; //set the object to expire overnight
                 Utility.FarmDataList[0].Save.SavedObjects.Add(save); //store it in the first listed FarmData
             }

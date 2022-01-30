@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/FlashShifter/StardewValleyExpanded
+**
+*************************************************/
+
+{
+	"Name": "Slime Bush",
+	"Product": "Slime Berry",
+	"SeedName": "Slime Seed",
+	"SeedDescription": "Plant these during spring. Takes 13 days to mature, and continues to produce.",
+	"Type": "Fruit",
+	"CropType": "Normal",
+	"Seasons": ["spring"],
+	"Phases": [2,3,2,3,3],
+	"RegrowthPhase": 4,
+	"HarvestWithScythe": false,
+	"Bonus": {
+		"MinimumPerHarvest": 1,
+		"MaximumPerHarvest": 3,
+		"MaxIncreasePerFarmLevel": 3,
+		"ExtraChance": 0.10,
+	},
+}

@@ -1,0 +1,22 @@
+﻿{
+  "Name": "CustomPictureFrames",
+  "Author": "aedenthorn",
+  "Version": "0.4.0",
+  "Description": "CustomPictureFrames.",
+  "UniqueID": "aedenthorn.CustomPictureFrames",
+  "EntryDll": "CustomPictureFrames.dll",
+  "MinimumApiVersion": "3.13.0",
+  "ModUpdater": {
+    "Repository": "StardewValleyMods",
+    "User": "aedenthorn",
+    "Directory": "_releases",
+    "ModFolder": "CustomPictureFrames"
+  },
+  "UpdateKeys": [ "Nexus:10704" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.ModUpdater",
+      "IsRequired": false
+    }
+  ]
+}

@@ -8,13 +8,18 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Foraging;
+
+#region using directives
+
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using TheLion.Stardew.Professions.Framework.Extensions;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+using Extensions;
+
+#endregion using directives
 
 [UsedImplicitly]
 internal class FruitTreeDayUpdatePatch : BasePatch
@@ -31,7 +36,7 @@ internal class FruitTreeDayUpdatePatch : BasePatch
     [HarmonyPostfix]
     private static void FruitTreeDayUpdatePostfix(ref FruitTree __instance)
     {
-        if (Game1.game1.DoesAnyPlayerHaveProfession("Arborist", out _) &&
+        if (Game1.game1.DoesAnyPlayerHaveProfession(Profession.Arborist, out _) &&
             __instance.daysUntilMature.Value % 4 == 0)
             --__instance.daysUntilMature.Value;
     }

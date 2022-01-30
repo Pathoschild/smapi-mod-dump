@@ -8,20 +8,13 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
+using Netcode;
 using StardewValley;
 using StardewValley.Monsters;
-using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Xml.Serialization;
 using xTile.Layers;
-using Netcode;
 
 namespace FarmTypeManager.Monsters
 {
@@ -58,7 +51,7 @@ namespace FarmTypeManager.Monsters
         public DuggyFTM(Vector2 position)
             : base(position)
         {
-            
+
         }
 
         /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>

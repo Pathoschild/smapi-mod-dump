@@ -6,9 +6,9 @@ mods:
    More Conversion Topics
 
 latest commit:
-   commit 6e146703dfbc24fc0917516984aeeafa3fdc41fd
+   commit 4b54114fa3dab90cddd3f8b9c2310015f0ee775b
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Fri Dec 24 16:22:15 2021 -0800
+   Date:   Wed Jan 26 19:56:22 2022 -0500
    
-       Create LICENSE
+       Fix release notes to be more accurate
    

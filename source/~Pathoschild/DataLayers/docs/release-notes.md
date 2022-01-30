@@ -10,7 +10,16 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Fixed _Coverage: Sprinklers_ layer not showing coverage for a held sprinkler.
+* Fixed missing translation in Portuguese.
+* Improved translations. Thanks to wally232 (updated Korean)!
+
+## 1.15.3
+Released 14 January 2022 for SMAPI 3.13.0 or later.
+
+* Fixed _Coverage: Sprinklers_ layer not showing the coverage for a held sprinkler.
+* Fixed _Crops: Ready to Harvest_ layer stopping to mourn if it finds a dead crop.
+* Fixed _Crops: Water for Paddy Crops_ layer ignoring dirt that's tilled without a paddy crop.
+* Improved translations. Thanks to ChulkyBow (added Ukrainian), ellipszist (updated Thai), Evexyron + Yllelder (updated Spanish), ruzgar01 (updated Turkish), and Zangorr (added Polish)!
 
 ## 1.15.2
 Released 25 December 2021 for SMAPI 3.13.0 or later.

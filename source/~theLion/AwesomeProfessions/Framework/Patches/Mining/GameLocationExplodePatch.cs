@@ -8,25 +8,29 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
+
+#region using directives
+
 using System;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Locations;
-using TheLion.Stardew.Common.Classes;
-using TheLion.Stardew.Professions.Framework.Events;
-using TheLion.Stardew.Professions.Framework.Extensions;
-using TheLion.Stardew.Professions.Framework.Utility;
+
+using Stardew.Common.Classes;
+using Events.GameLoop;
+using Extensions;
+using Utility;
+
+using Multiplayer = StardewValley.Multiplayer;
 using SObject = StardewValley.Object;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class GameLocationExplodePatch : BasePatch
 {
-    private static readonly DemolitionistBuffDisplayUpdateTickedEvent DemolitionistUpdateTickedEvent = new();
-
     /// <summary>Construct an instance.</summary>
     internal GameLocationExplodePatch()
     {
@@ -40,23 +44,21 @@ internal class GameLocationExplodePatch : BasePatch
     private static void GameLocationExplodePostfix(GameLocation __instance, Vector2 tileLocation, int radius,
         Farmer who)
     {
-        var isBlaster = who.HasProfession("Blaster");
-        var isDemolitionist = who.HasProfession("Demolitionist");
+        var isBlaster = who.HasProfession(Profession.Blaster);
+        var isDemolitionist = who.HasProfession(Profession.Demolitionist);
         if (!isBlaster && !isDemolitionist) return;
 
-        var grid = new CircleTileGrid(tileLocation, radius);
-        foreach (var tile in grid)
+        var circle = new CircleTileGrid(tileLocation, radius);
+        foreach (var tile in circle.Tiles)
         {
             if (!__instance.objects.TryGetValue(tile, out var tileObj) || !tileObj.IsStone()) continue;
 
             if (isBlaster)
             {
-                var isPrestigedBlaster = who.HasPrestigedProfession("Blaster");
+                var isPrestigedBlaster = who.HasProfession(Profession.Blaster, true);
                 if (!__instance.Name.StartsWith("UndergroundMine"))
                 {
                     var chanceModifier = who.DailyLuck / 2.0 + who.LuckLevel * 0.001 + who.MiningLevel * 0.005;
-                    //var r = new Random((int) tile.X * 1000 + (int) tile.Y + (int) Game1.stats.DaysPlayed +
-                    //                   (int) Game1.uniqueIDForThisGame / 2);
                     var r = new Random(Guid.NewGuid().GetHashCode());
                     if (tileObj.ParentSheetIndex is 343 or 450)
                     {
@@ -82,8 +84,6 @@ internal class GameLocationExplodePatch : BasePatch
                 }
                 else
                 {
-                    //var r = new Random((int) tile.X * 1000 + (int) tile.Y + ((MineShaft) __instance).mineLevel +
-                    //                   (int) Game1.uniqueIDForThisGame / 2);
                     var r = new Random(Guid.NewGuid().GetHashCode());
                     if (r.NextDouble() < 0.25 || isPrestigedBlaster && r.NextDouble() < 0.25)
                     {
@@ -105,11 +105,11 @@ internal class GameLocationExplodePatch : BasePatch
 
             if (!isDemolitionist) continue;
 
-            var isPrestigedDemolitionist = who.HasPrestigedProfession("Demolitionist");
+            var isPrestigedDemolitionist = who.HasProfession(Profession.Demolitionist, true);
             if (Game1.random.NextDouble() >= 0.20 &&
                 (!isPrestigedDemolitionist || Game1.random.NextDouble() >= 0.20)) continue;
 
-            if (Objects.ResourceFromStoneId.TryGetValue(tileObj.ParentSheetIndex, out var resourceIndex))
+            if (ObjectLookups.ResourceFromStoneId.TryGetValue(tileObj.ParentSheetIndex, out var resourceIndex))
             {
                 Game1.createObjectDebris(resourceIndex, (int) tile.X, (int) tile.Y, who.UniqueMultiplayerID,
                     __instance);
@@ -175,15 +175,13 @@ internal class GameLocationExplodePatch : BasePatch
             }
         }
 
-        if (!who.IsLocalPlayer || !isDemolitionist) return;
-
-        if (!ModEntry.Config.EnableGetExcited) return;
+        if (!who.IsLocalPlayer || !isDemolitionist || !ModEntry.Config.EnableGetExcited) return;
 
         // get excited speed buff
         var distanceFromEpicenter = (int) (tileLocation - who.getTileLocation()).Length();
-        if (distanceFromEpicenter < radius * 2 + 1) ModState.DemolitionistExcitedness = 6;
-        if (distanceFromEpicenter < radius + 1) ModState.DemolitionistExcitedness += 2;
-        ModEntry.Subscriber.Subscribe(DemolitionistUpdateTickedEvent);
+        if (distanceFromEpicenter < radius * 2 + 1) ModEntry.State.Value.DemolitionistExcitedness = 6;
+        if (distanceFromEpicenter < radius + 1) ModEntry.State.Value.DemolitionistExcitedness += 2;
+        EventManager.Enable(typeof(DemolitionistBuffDisplayUpdateTickedEvent));
     }
 
     #endregion harmony patches

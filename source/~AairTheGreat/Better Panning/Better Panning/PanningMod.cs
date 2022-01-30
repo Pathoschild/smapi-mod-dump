@@ -19,7 +19,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 using BetterPanning.Data;
-using Harmony;
+using HarmonyLib;
 using BetterPanning.GamePatch;
 using BetterPanning.Config;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace BetterPanning
         internal Dictionary<TREASURE_GROUP, TreasureGroup> defaultTresureGroups;
         internal Dictionary<string, Dictionary<TREASURE_GROUP, TreasureGroup>> areaTreasureGroups;  //GameLocation.Name : <treasure>
 
-        internal HarmonyInstance harmony { get; private set; }
+        internal Harmony harmony { get; private set; }
 
         public override void Entry(IModHelper helper)
         {
@@ -55,7 +55,7 @@ namespace BetterPanning
             helper.Events.Display.RenderedHud += Display_RenderedHud;
             helper.Events.Input.ButtonReleased += Input_ButtonReleased;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
-            
+            //helper.
             try
             {
                 config = this.Helper.Data.ReadJsonFile<ModConfig>("config.json") ?? ModConfigDefaultConfig.CreateDefaultConfig("config.json");
@@ -72,7 +72,7 @@ namespace BetterPanning
                 defaultTresureGroups = this.Helper.Data.ReadJsonFile<Dictionary<TREASURE_GROUP, TreasureGroup>>(treasureFile) ?? TreasureGroupDefaultConfig.CreateTreasureGroup(treasureFile);
                 areaTreasureGroups = new Dictionary<string, Dictionary<TREASURE_GROUP, TreasureGroup>>();
 
-                harmony = HarmonyInstance.Create("com.aairthegreat.mod.panning");
+                harmony = new Harmony("com.aairthegreat.mod.panning");
                 harmony.Patch(typeof(Pan).GetMethod("getPanItems"), null, new HarmonyMethod(typeof(PanOverrider).GetMethod("postfix_getPanItems")));
             }                        
         }

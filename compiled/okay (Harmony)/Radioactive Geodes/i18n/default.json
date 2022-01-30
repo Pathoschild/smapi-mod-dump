@@ -1,3 +1,7 @@
 ﻿{
-    "RadioactiveGeodes.start": "Started {{mod}} from folder: {{folder}}"
+    "RadioactiveGeodes.start": "Started {{mod}} from folder: {{folder}}",
+    "RadioactiveGeodes.config.chance.name": "Chance",
+    "RadioactiveGeodes.config.chance.description": "Chance of replacing Iridium Ore with Radioactive Ore. Higher numbers lower the chance.",
+    "RadioactiveGeodes.config.debug.name": "Debug mode",
+    "RadioactiveGeodes.config.debug.description": "Enables logging of extra information to help decipher issues."
 }

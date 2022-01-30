@@ -24,7 +24,7 @@ namespace ItemPipes.Framework.Model
         public Side West { get; }
         public Side East { get; }
 
-        private SideStruct()
+        public SideStruct()
         {
             North = new Side("North");
             South = new Side("South");

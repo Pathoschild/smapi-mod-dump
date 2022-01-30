@@ -9,26 +9,42 @@
 *************************************************/
 
 {
+    /*********
+    ** Mod Name
+    *********/      
     "Name": "Ridgeside Village - Custom Companions",
-    "Author": "Rafseazz",
-    "Version": "2.0.3",
-    "Description": "Custom Companions pack for Ridgeside Village.",
-    "UniqueID": "Rafseazz.RSVCC",
-    "UpdateKeys": [],
 
+    /*********
+    ** Mod Author
+    *********/      
+    "Author": "Rafseazz",
+
+    /*********
+    ** Current Version
+    *********/      
+    "Version": "2.0.4",
+
+    /*********
+    ** Content Pack Description
+    *********/          
+    "Description": "Custom Companions pack for Ridgeside Village.",
+
+    /*********
+    ** Unique Manifest ID for Content Pack
+    *********/      
+    "UniqueID": "Rafseazz.RSVCC",
+
+    /*********
+    ** Update Keys (Currently only on Nexus)
+    *********/      
+    "UpdateKeys": [ "Nexus:-1" ],
+
+    /*********
+    ** Framework Manifest ID
+    *********/  
     "ContentPackFor":
     {
         "UniqueID": "PeacefulEnd.CustomCompanions",
         "MinimumVersion": "1.5.0"
     },
-
-    "Dependencies":
-    [
-        {
-            "UniqueID": "Rafseazz.RSVCP",
-            "IsRequired": true,
-        }
-    ],
-
-
 }

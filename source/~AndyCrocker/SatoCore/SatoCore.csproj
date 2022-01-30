@@ -53,9 +53,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
+    <Compile Include="Assert.cs" />
     <Compile Include="Attributes\DefaultValueAttribute.cs" />
+    <Compile Include="Attributes\DisallowedCharactersAttribute.cs" />
     <Compile Include="Attributes\EditableAttribute.cs" />
+    <Compile Include="Attributes\ExcludeWithModPresenceAttribute.cs" />
     <Compile Include="Attributes\IdentifierAttribute.cs" />
+    <Compile Include="Attributes\IncludeWithModPresenceAttribute.cs" />
     <Compile Include="Attributes\PatchAttribute.cs" />
     <Compile Include="Attributes\RequiredAttribute.cs" />
     <Compile Include="Attributes\TokenAttribute.cs" />

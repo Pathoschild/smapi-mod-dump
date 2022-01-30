@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<RootNamespace>SpriteMaster</RootNamespace>
+		<Product>SpriteMaster-SV</Product>
+		<Authors>Digital Carbide (Michael Kuklinski)</Authors>
+		<Company>Digital Carbide</Company>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Copyright>mkuklinski</Copyright>
+
+		<Version>0.13.0-alpha.4</Version>
+		<AssemblyVersion>0.13.0.*</AssemblyVersion>
+		<FileVersion>0.13.0.4</FileVersion>
+		
+		<TargetFramework>net5.0</TargetFramework>
+		<FileAlignment>512</FileAlignment>
+		<LangVersion>preview</LangVersion>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<EnableHarmony>true</EnableHarmony>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
+		<ErrorReport>prompt</ErrorReport>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+		<ApplicationIcon>$(SolutionDir)pufferchick_xbrz.ico</ApplicationIcon>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<BaseAddress>285736960</BaseAddress>
+		<Deterministic>false</Deterministic>
+		<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+		<RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+		<!--<Deterministic>True</Deterministic>-->
+		<PublishTrimmed>true</PublishTrimmed>
+		<TrimMode>CopyUsed</TrimMode>
+		
+		<BundleExtraAssemblies>System, ThirdParty</BundleExtraAssemblies>
+		<IgnoreModFilePatterns Condition="'$(IgnoreModFilePatterns)'!=''">$(IgnoreModFilePatterns), _§ENTINEL¶_</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns Condition="'$(IgnoreModFilePatterns)'==''">_§ENTINEL¶_</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), System\.(?!Data\.HashFunction\..+).*$</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), Microsoft\.Build\..*$</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), Microsoft\.NET\..*$</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), Microsoft\.Win32\..*$</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), .*32.*</IgnoreModFilePatterns>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), .*/x86/.*</IgnoreModFilePatterns>
+	</PropertyGroup>
+	
+  <ItemGroup>
+    <None Include="$(SolutionDir)\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath/>
+    </None>
+  </ItemGroup>
+</Project>

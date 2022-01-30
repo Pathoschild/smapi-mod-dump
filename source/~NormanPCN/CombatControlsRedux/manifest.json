@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/NormanPCN/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Combat Controls Redux",
+  "Author": "NormanPCN",
+  "Version": "1.2.0",
+  "Description": "Adjustments to the game controls suitable for combat. Turns the character in the direction of your MouseClick, weapon Auto Swing and slick moves.",
+  "UniqueID": "NormanPCN.CombatControlsRedux",
+  "EntryDll": "CombatControlsRedux.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": ["Nexus:10496"],
+  "Dependencies": [
+    {"UniqueID": "spacechase0.GenericModConfigMenu", "IsRequired": false}
+  ]
+}

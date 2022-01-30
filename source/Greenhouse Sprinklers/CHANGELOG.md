@@ -9,6 +9,7 @@ for queries and analysis.**
 
 <!-- TOC -->
 
+- [v2.0.0](#v200)
 - [v1.4.3](#v143)
 - [v1.4.2](#v142)
 - [v1.4.1](#v141)
@@ -24,6 +25,12 @@ for queries and analysis.**
 
 <!-- /TOC -->
 
+
+## v2.0.0
+* Fully removed `ModData` file
+  * This should stop any "failed on GameLoop Save" issues. 
+* Technically a breaking change if you only played with v1.2.1 and earlier.
+  * Any save that played at least once with 1.3.x+ should be good to go.
 ## v1.4.3
 * Added Hungarian Translation from [Martin66789](https://www.nexusmods.com/stardewvalley/users/27323031)
 ## v1.4.2
@@ -44,7 +51,7 @@ for queries and analysis.**
 ## v1.3.3
 * More stable method of using and converting ModData used.
   * ModData is 
-* Fixed issue where upgrades would disapear on mod upgrade.
+* Fixed issue where upgrades would disappear on mod upgrade.
 * Fixed issue where the Wizard would not send letters as needed.
 
 ## v1.3.2

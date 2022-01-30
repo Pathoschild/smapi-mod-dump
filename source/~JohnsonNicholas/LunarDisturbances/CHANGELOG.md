@@ -7,6 +7,10 @@ for queries and analysis.**
 ----
 
 ## Changelog
+### 1.4.1
+- Updated for SDV 1.5.5
+- No more blue and blood moons at once.
+
 ### 1.4
  - Refactoring. API expanded for eclipse stuff
  - Tokens now include 'IsEclipse'

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Incognito357/PrairieKingUIEnhancements
+   Git: https://github.com/Incognito357/PrairieKingUIEnhancements.git
+
+mods:
+   Prairie King UI Enhancements
+
+latest commit:
+   commit 56714b4e654e1b6605b01a5f7e3c838f6534b616
+   Author: Jason <jrh.JackSparrow042@yahoo.com>
+   Date:   Mon Jan 24 12:49:40 2022 -0500
+   
+       Update README.md
+   

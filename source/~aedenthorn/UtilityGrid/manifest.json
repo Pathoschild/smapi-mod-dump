@@ -11,7 +11,7 @@
 {
   "Name": "Utility Grid",
   "Author": "aedenthorn",
-  "Version": "0.5.3",
+  "Version": "0.5.4",
   "Description": "Utility grid.",
   "UniqueID": "aedenthorn.UtilityGrid",
   "EntryDll": "UtilityGrid.dll",

@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/DialogueExtension
+**
+*************************************************/
+
+{
+  "Mon": "Hi... Everything okay?",
+  "Mon4": "I've learned a lot from my parrot family...#$b#But I'm sure there's a lot more out there I don't know.$s",
+  "Tue": "When Sun is angry, it feels good in the jungle.#$e#Sun can't find us beneath the leaves. We trick him! Haha...$h",
+  "Wed": "...Sorry... I'm shy today.$3",
+  "Wed2": "Be careful in the volcano... the spirits don't like outsiders.",
+  "Thu": "Have you met the others like you?#$b#I don't talk to them much. I feel safer with my own kind...$3",
+  "Fri": "One time... I was at the top of the volcano at night, and I saw lights far, far away.#$b#I wonder if there are other bird families out there?$3",
+  "Fri3": "I wonder if I could see your home from the top of the volcano?",
+  "Sat": "...I'm sad today.$s#$e#You go on... have fun. Let me be sad.$s",
+  "Sun": "When it rains, strange birds visit.#$b#I try to speak to them... but they fly away.$s#$b#I guess they don't want to be friends...$s"
+}

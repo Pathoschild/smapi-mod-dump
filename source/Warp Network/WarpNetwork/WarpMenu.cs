@@ -73,7 +73,7 @@ namespace WarpNetwork
         private void setIndex(int what, bool playSound = true)
         {
             int l_index = index;
-            index = MathHelper.Clamp(what, 0, MathHelper.Max(0, locs.Count - buttons.Count));
+            index = Math.Clamp(what, 0, Math.Max(0, locs.Count - buttons.Count));
             if (index == l_index)
                 return;
             if (playSound)
@@ -177,9 +177,9 @@ namespace WarpNetwork
         }
         public void align()
         {
-            Point port = Game1.graphics.GraphicsDevice.Viewport.Bounds.Size;
-            xPositionOnScreen = port.X / 2 - width / 2;
-            yPositionOnScreen = port.Y / 2 - height / 2;
+            var port = Game1.uiViewport.Size;
+            xPositionOnScreen = port.Width / 2 - width / 2;
+            yPositionOnScreen = port.Height / 2 - height / 2;
         }
         public void resized()
         {

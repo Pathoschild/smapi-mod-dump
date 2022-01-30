@@ -9,6 +9,9 @@
 *************************************************/
 
 #nullable enable
+namespace DaLion.Stardew.Common.Extensions;
+
+#region using directives
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace TheLion.Stardew.Common.Extensions;
+#endregion using directives
 
 public static class StringExtensions
 {
@@ -26,6 +29,13 @@ public static class StringExtensions
     public static bool ContainsAnyOf(this string s, params string[] candidates)
     {
         return candidates.Any(s.Contains);
+    }
+
+    /// <summary>Determine if the calling string starts with any of the specified substrings.</summary>
+    /// <param name="candidates">A sequence of strings candidates.</param>
+    public static bool StartsWithAnyOf(this string s, params string[] candidates)
+    {
+        return candidates.Any(s.StartsWith);
     }
 
     /// <summary>Capitalize the first character in the calling string.</summary>
@@ -70,19 +80,26 @@ public static class StringExtensions
     }
 
     /// <summary>Try to parse the calling string to a generic type.</summary>
-    /// <param name="val">Parsed <typeparamref name="T" />-type object if successful, else default.</param>
+    /// <param name="result">Parsed <typeparamref name="T" />-type object if successful, else default.</param>
     /// <returns>True if parse was successful, otherwise false.</returns>
-    public static bool TryParse<T>(this string s, out T? val)
+    public static bool TryParse<T>(this string s, out T? result)
     {
+        result = default;
+        if (string.IsNullOrEmpty(s)) return false;
+
         var converter = TypeDescriptor.GetConverter(typeof(T));
-        if (converter.CanConvertTo(typeof(T)) && converter.CanConvertFrom(typeof(string)))
+        if (!converter.IsValid(s))
+            return false;
+
+        try
         {
-            val = (T) converter.ConvertFromString(s);
+            result = (T) converter.ConvertFromString(s);
             return true;
         }
-
-        val = default;
-        return false;
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>Converts a string into a hash code that is reliable across different executions.</summary>

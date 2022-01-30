@@ -156,10 +156,22 @@ namespace TimeSpeed.Framework
             );
             api.AddTextOption(
                 manifest,
-                name: I18n.Config_FreezeTimeCustom_Name,
-                tooltip: I18n.Config_FreezeTimeCustom_Desc,
+                name: I18n.Config_FreezeTimeFreezeNames_Name,
+                tooltip: I18n.Config_FreezeTimeFreezeNames_Desc,
                 getValue: () => string.Join(", ", getConfig().FreezeTime.ByLocationName),
                 setValue: value => getConfig().FreezeTime.ByLocationName = new(
+                    value
+                        .Split(",")
+                        .Select(p => p.Trim())
+                        .Where(p => p != string.Empty)
+                )
+            );
+            api.AddTextOption(
+                manifest,
+                name: I18n.Config_FreezeTimeDontFreezeNames_Name,
+                tooltip: I18n.Config_FreezeTimeDontFreezeNames_Desc,
+                getValue: () => string.Join(", ", getConfig().FreezeTime.ExceptLocationNames),
+                setValue: value => getConfig().FreezeTime.ExceptLocationNames = new(
                     value
                         .Split(",")
                         .Select(p => p.Trim())

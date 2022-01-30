@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/lshtech/DialogueExtension
+**
+*************************************************/
+
+{
+  "accept_866": "A Stardew Valley rose? That's so lovely! Thank you!$h#$b#Whenever I miss the valley, I'll smell this rose. Hehe.$h#$b#Here, take this. It's been on the shelf for 10 years and no one has bought it. You can have it!",
+  "Mon": "Hello hello, sweetie!#$b#I'm so glad that the bus is back in service. It was starting to get lonely out here.#$e#...I almost went out of business.$s#$e#Hey, but now you're here to buy a whole bunch of seeds... right, sweetie?$h",
+  "Tue": "You can find coconuts and cactus fruits outside. Feel free to take as many as you can find.#$e#They're oooh-yummy, too. Heeee!~$h",
+  "Wed": "Why hello there! If you see my friend Emily in town, could you tell her I said 'Hi'?#$e#Thanks!$h",
+  "Thu": "That shady-looking guy in the back? I'm not supposed to talk about it.#$e#Anyway... what's the weather like in the valley?",
+  "Fri": "You wouldn't have much luck farming out here, honey.#$e#Well, unless you were a cactus farmer.$h",
+  "Sat": "Hi! Welcome to Sandy's Oasis, the number one destination in Calico Desert!#$e#*whisper* Did I sound professional?$h#$e#Make sure to check out our seasonal seed selection.#$e#You look really thirsty. Here, have a taste of this ice cold milk. [184]#$e#Tasty, huh?$h",
+  "Sun": "It's always sunny here, even in winter!#$e#Actually, it's a little hot for my tastes... my delicate skin burns quickly in the sun.$s",
+  "Thu2": "That shady-looking guy in the back? I'm really not supposed to talk about it.#$e#Anyway... what's the weather like in the valley",
+  "Thu4": "Hey... I think I can trust you. You can keep a secret, right?#$b#*whisper* That guy in the back... it's some kind of exclusive club. I've never been inside myself, but they pay me a generous monthly rent so I don't ask any questions.#$e#SOOOOoo! How's that Stardew Valley weather right now?",
+  "Fri4": "My name's not really Sandy, you know. It's just good for business.#$e#But everyone calls me Sandy anyway, so I've just gotten used to it.",
+  "Wed8": "Isn't it expensive, coming to the desert so often like you do?#$e#You must really like to see me, huh? Hmmm... $h",
+  "Sun8": "Hi there, honey. Yep, it's just me, alone in this big old shop. Hmmm...#$e#Well, except for that creepy guy in the back. But he never moves a muscle, so I often forget about him.",
+  "Wed10": "Hey, it's @! I'm glad to see you, kid. I was starting to think you'd never come back!#$e#If I didn't have this shop to run I'd come back to the valley with you for a day or two... just you and me on the old farm.$s#$e#You'll just have to visit me more often so I don't get depressed.$h",
+  "Tue10": "Hi!~ Stay as long as you like.#$e#The air conditioning sure feels nice, doesn't it?"
+}

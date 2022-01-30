@@ -59,16 +59,19 @@ Compatibile with shop tile framework in that altered stock will be considered wh
 Shoplifter fully supports translation! Currently available in:
 - Chinese, thanks to 20080618!
 - Korean, thanks to Aromay7!
+- Italian, thanks to peanutbatteries!
+- French, thanks to Breeis!
+- Portuguese, thanks to Kadomine!
 
 New translations always welcome! The best place to reach me is on the Shoplifter [mod page](https://www.nexusmods.com/stardewvalley/mods/8569).
-Translations are released seperately to the main files until a sufficient number of translations are received for a full release.
+Translations are released seperately to the main files until a sufficient number of translations are received for a full release. One more and I'll release all current translations as a new update.
 
 ## Versions ##
 1.0.0 - Initial release
 
 1.1.0 - Made shoplifting preferences configurable, added Icecream Stand as shopliftable
 
-1.2.0 - Added translation support
+1.1.2 - Added translation support
 
 
 

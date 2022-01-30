@@ -8,6 +8,10 @@
 **
 *************************************************/
 
+namespace DaLion.Stardew.Professions.Framework.Patches.Combat;
+
+#region using directives
+
 using System;
 using System.Linq;
 using HarmonyLib;
@@ -16,10 +20,12 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using StardewValley;
 using StardewValley.Monsters;
-using TheLion.Stardew.Professions.Framework.Extensions;
+
+using Extensions;
+
 using SUtility = StardewValley.Utility;
 
-namespace TheLion.Stardew.Professions.Framework.Patches;
+#endregion using directives
 
 [UsedImplicitly]
 internal class GreenSlimeUpdatePatch : BasePatch
@@ -39,7 +45,7 @@ internal class GreenSlimeUpdatePatch : BasePatch
     [HarmonyPostfix]
     private static void GreenSlimeUpdatePostfix(GreenSlime __instance, GameLocation location)
     {
-        if (!location.DoesAnyPlayerHereHaveProfession("Piper")) return;
+        if (!location.DoesAnyPlayerHereHaveProfession(Profession.Piper)) return;
 
         foreach (var npc in __instance.currentLocation.characters.Where(npc =>
                      npc.IsMonster && npc is not GreenSlime && npc is not BigSlime))
