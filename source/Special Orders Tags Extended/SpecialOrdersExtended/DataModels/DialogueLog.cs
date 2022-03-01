@@ -9,6 +9,9 @@
 *************************************************/
 
 using System.Text;
+using AtraShared;
+using StardewModdingAPI.Utilities;
+using AtraUtils = AtraShared.Utils.Utils;
 
 namespace SpecialOrdersExtended.DataModels;
 
@@ -18,7 +21,7 @@ namespace SpecialOrdersExtended.DataModels;
 internal class DialogueLog : AbstractDataModel
 {
     private const string IDENTIFIER = "_dialogue";
-    private readonly long multiplayerID;
+    private long multiplayerID;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogueLog"/> class.
@@ -29,9 +32,10 @@ internal class DialogueLog : AbstractDataModel
     : base(savefile) => this.multiplayerID = multiplayerID;
 
     /// <summary>
-    /// Gets or sets backing field that contains all the SeenDialogues.
+    /// Gets backing field that contains all the SeenDialogues.
     /// </summary>
-    public Dictionary<string, List<string>> SeenDialogues { get; set; } = new();
+    /// <remarks>Avoid using this directly; use the TryAdd/TryRemove/Contains methods instead if possible.</remarks>
+    public Dictionary<string, List<string>> SeenDialogues { get; private set; } = new();
 
     /// <summary>
     /// Loads a dialogueLog.
@@ -45,12 +49,14 @@ internal class DialogueLog : AbstractDataModel
         {
             throw new SaveNotLoadedError();
         }
-        return ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Constants.SaveFolderName}{IDENTIFIER}{multiplayerID}")
+        DialogueLog log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Constants.SaveFolderName}{IDENTIFIER}{multiplayerID:X8}")
             ?? new DialogueLog(Constants.SaveFolderName, multiplayerID);
+        log.multiplayerID = multiplayerID; // fix the multiplayer ID since ReadGlobalData will use the default zero-parameter constructor.
+        return log;
     }
 
     /// <summary>
-    /// Load from temporary storage.
+    /// Load from temporary storage if available. Load the usual dialogue log if not.
     /// </summary>
     /// <param name="multiplayerID">Unique ID per player.</param>
     /// <returns>A dialogueLog object.</returns>
@@ -58,15 +64,35 @@ internal class DialogueLog : AbstractDataModel
     /// <remarks>NOT IMPLEMENTED YET.</remarks>
     public static DialogueLog LoadTempIfAvailable(long multiplayerID)
     {
-        throw new NotImplementedException();
+        if (!Context.IsWorldReady)
+        {
+            throw new SaveNotLoadedError();
+        }
+        DialogueLog log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Constants.SaveFolderName}{IDENTIFIER}{multiplayerID:X8}_temp_{SDate.Now().DaysSinceStart}");
+        if (log is not null)
+        {
+            // Delete temporary file
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type. This is a valid call, SMAPI just doesn't use nullable.
+            ModEntry.DataHelper.WriteGlobalData<DialogueLog>($"{Constants.SaveFolderName}{IDENTIFIER}{multiplayerID:X8}_temp_{SDate.Now().DaysSinceStart}", null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            log.multiplayerID = multiplayerID;
+            return log;
+        }
+        log = ModEntry.DataHelper.ReadGlobalData<DialogueLog>($"{Constants.SaveFolderName}{IDENTIFIER}{multiplayerID:X8}")
+            ?? new DialogueLog(Constants.SaveFolderName, multiplayerID);
+        log.multiplayerID = multiplayerID;
+        return log;
     }
 
-    public void SaveTemp() => base.SaveTemp(IDENTIFIER + this.multiplayerID.ToString());
+    /// <summary>
+    /// Saves a temporary DialogueLog file.
+    /// </summary>
+    public void SaveTemp() => base.SaveTemp(IDENTIFIER + this.multiplayerID.ToString("X8"));
 
     /// <summary>
     /// Saves the DialogueLog.
     /// </summary>
-    public void Save() => base.Save(IDENTIFIER + this.multiplayerID.ToString());
+    public void Save() => base.Save(IDENTIFIER + this.multiplayerID.ToString("X8"));
 
     /// <summary>
     /// Whether or not the dialogueLog contains the key.
@@ -74,7 +100,6 @@ internal class DialogueLog : AbstractDataModel
     /// <param name="dialoguekey">Exact dialogue key.</param>
     /// <param name="characterName">Which character to check.</param>
     /// <returns>True if found, false otheerwise.</returns>
-    [Pure]
     public bool Contains(string dialoguekey, string characterName)
     {
         if (this.SeenDialogues.TryGetValue(dialoguekey, out List<string>? characterList))
@@ -126,12 +151,11 @@ internal class DialogueLog : AbstractDataModel
     }
 
     /// <inheritdoc/>
-    [Pure]
     public override string ToString()
     {
         StringBuilder stringBuilder = new();
         stringBuilder.Append($"DialogueLog({this.Savefile}):");
-        foreach (string key in Utilities.ContextSort(this.SeenDialogues.Keys))
+        foreach (string key in AtraUtils.ContextSort(this.SeenDialogues.Keys))
         {
             stringBuilder.AppendLine().Append($"    {key}:").AppendJoin(", ", this.SeenDialogues[key]);
         }

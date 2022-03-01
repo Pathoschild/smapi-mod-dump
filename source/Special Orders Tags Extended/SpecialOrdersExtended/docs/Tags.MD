@@ -39,10 +39,13 @@ Tags are used to restrict the appearance of special orders. Tags can be negated 
 10. `minelevel_<num>`: Whether or not any farmer has reached the mine level indicated. (Values > 120 refer to the Skull Cavern). `minelevel_under_<num>` for strictly under.
 11. `houselevel_<num>`: Whether or not any farmer has the house upgrade referenced. Mostly useful for checking if anyone has a basement, I think. `houselevel_under_<num>` for strictly under.
 12. `moneyearned_<num>`: Whether or not players have earned a certain amount of money.
-13. `skillllevel_<skillname>_<num>`: Whether any farmer has the required skill level (note: three l's). Currently only vanilla skills are supported. `skilllevel_<skillname>_under_<num>` for strictly under.
+13. `skillllevel_<skillname>_<num>`: Whether any farmer has the required skill level (note: three l's). SpaceCore skills are also supported here. `skilllevel_<skillname>_under_<num>` for strictly under.
+13. `profession_<profession>_<skill>`: Whether or not any player has the profession in question. (Vanilla professions will ignore the skill field, although it's necessary to put something there if you want the negated version. SpaceCore skills will need to be explicitly named). Negation: `profession_<profession>_<skill>_not`.
 14. `achievement_<key>`: Whether any farmer has the achievement in question, where `key` is the key in `Data/achievements`. Use `achievement_<key>_not` to negate.
-14. `hasspecialitem_<item>`: If any farmer has the special item. Valid items: `clubCard`, `specialCharm`, `skullKey`, `rustyKey`, `translationGuide`, `townKey`. Use `hasspecialitem_<item>_not` for the inverse - if NO farmer has the `clubCard`, etc.
+14. `hasspecialitem_<item>`: If any farmer has the special item. Valid items: `clubCard`, `specialCharm`, `skullKey`, `rustyKey`, `translationGuide`, `townKey`, `bearsKnowledge`, and `springOnion`. Use `hasspecialitem_<item>_not` for the inverse - if NO farmer has the `clubCard`, etc.
 15. `craftingrecipe_<recipe>`: If any farmer has the recipe. Negate with `craftingrecipe_<recipe>_not`. (Added in 1.0.1)
 16. `cookingrecipe_<recipe>`: Same as above, just for cooking. Also added in 1.0.1.
 17. `stats_<statskey>_<num>`: If any farmer has any of the very long list of stats tracked by the game itself, minus `averageBedTime`, `totalMoneyGifted`, and `timesUnconscious`. `stats_<statskey>_under_<num>` for strictly less than. A list of stats is available from the console command `list_available_stats`. Stats provided by other mods will also be included. Hardcoded stats are not case-sensitive, but the ones in the stats dictionary are.
 18. `walnutcount_<num>`: If the farmer team as at least that many walnuts. Use `walnutcount_under_<num>` for strictly under. Added in 1.0.4.
+19. `specialorderscompleted_<num>`: total number of special orders completed.
+19. `random_<float>`, primarily meant for just lowering the chances any quest might appear.

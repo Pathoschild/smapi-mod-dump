@@ -141,7 +141,7 @@ namespace AnimalHusbandryMod
                     };
                 }
 
-                if (!DataLoader.ModConfig.DisableRancherMeatPriceAjust)
+                if (!DataLoader.ModConfig.DisableMeat)
                 {
                     harmony.Patch(
                         original: AccessTools.Method(typeof(SObject), nameof(SObject.sellToStorePrice)),

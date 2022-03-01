@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Flying Start Loan",
+  "Author": "EstherHollow",
+  "Description": "Start the game with convenient goods, to be repayed later.",
+  "UniqueID": "EstherHollow.FlyingStartLoan",
+  "Version": "1.2.0",
+  "EntryDll": "Flying Start Loan.dll",
+  "UpdateKeys": [ "Nexus:11003" ]
+}

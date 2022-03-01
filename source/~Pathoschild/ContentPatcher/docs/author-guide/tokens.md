@@ -27,6 +27,7 @@ This document lists the tokens available in Content Patcher packs.
   * [String manipulation](#string-manipulation)
   * [Metadata](#metadata)
   * [Field references](#field-references)
+  * [Specialized](#specialized)
 * [Global input arguments](#global-input-arguments)
   * [`contains`](#contains)
   * [`valueAt`](#valueat)
@@ -37,6 +38,7 @@ This document lists the tokens available in Content Patcher packs.
   * [Dynamic tokens](#dynamic-tokens)
   * [Query expressions](#query-expressions)
   * [Mod-provided tokens](#mod-provided-tokens)
+  * [Aliases](#aliases)
 * [Common values](#common-values)
 * [See also](#see-also)
 
@@ -1179,6 +1181,86 @@ See also [`PathPart`](#PathPart) for more advanced scenarios.
 </tr>
 </table>
 
+### Specialized
+These are advanced tokens meant to support some specific situations.
+
+<table>
+<tr>
+<th>condition</th>
+<th>purpose</th>
+<th>&nbsp;</th>
+</tr>
+
+<tr valign="top" id="AbsoluteFilePath">
+<td>AbsoluteFilePath</td>
+<td>
+
+Get the absolute path for a file in your content pack's folder.
+
+For example, for a player with a default Windows Steam install, `{{AbsoluteFilePath: assets/portraits.png}}`
+will return a value similar to
+`C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\Mods\[CP] YourMod\assets\portraits.png`.
+
+</td>
+<td><a href="#AbsoluteFilePath">#</a></td>
+</tr>
+
+<tr valign="top" id="FormatAssetName">
+<td>FormatAssetName</td>
+<td>
+
+Normalize an asset name into the form expected by the game. For example,
+`{{FormatAssetName: Data/\\///Achievements/}}` returns a value like `Data/Achievements`.
+
+This has one optional argument:
+
+argument    | effect
+----------- | ------
+`separator` | The folder separator to use in the asset name instead of the default `/`. This is only needed when adding the path to a `/`-delimited field, like `{{FormatAssetName: {{assetKey}} |separator=\\}}`.
+
+There's no need to use this in `Target` fields, which are normalized automatically.
+
+</td>
+<td><a href="#FormatAssetName">#</a></td>
+</tr>
+
+<tr valign="top" id="InternalAssetKey">
+<td>InternalAssetKey</td>
+<td>
+
+Get a special asset key which lets the game load a file directly from your content pack, without
+needing to `Load` it into a new `Content` asset.
+
+For example, you can use this to provide the textures for a custom farm type:
+
+```js
+{
+    "Format": "1.25.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/AdditionalFarms",
+            "Entries": {
+                "Example.ModId/FarmId": {
+                    ...,
+                    "IconTexture": "{{InternalAssetKey: assets/icon.png}}",
+                    "WorldMapTexture": "{{InternalAssetKey: assets/world-map.png}}"
+                }
+            }
+        }
+    ]
+}
+```
+
+Note that other content packs can't target an internal asset key (which is why it's internal). If
+you need to let other content packs edit it, you can use [`Action: Load`](action-load.md) to create
+a new asset for it, then use that asset name instead.
+
+</td>
+<td><a href="#InternalAssetKey">#</a></td>
+</tr>
+</table>
+
 ## Global input arguments
 Global [input arguments](#input-arguments) are handled by Content Patcher itself, so they work with
 all tokens (including mod-provided tokens). If you use multiple input arguments, they're applied
@@ -1319,7 +1401,7 @@ For example, you can use config values as tokens and conditions:
 
 ```js
 {
-    "Format": "1.24.0",
+    "Format": "1.25.0",
     "ConfigSchema": {
         "EnableJohn": {
             "AllowValues": "true, false",
@@ -1537,7 +1619,7 @@ crop sprites depending on the weather:
 
 ```js
 {
-   "Format": "1.24.0",
+   "Format": "1.25.0",
    "DynamicTokens": [
       {
          "Name": "Style",
@@ -1570,7 +1652,7 @@ Query expressions are evaluated using the `Query` token. It can be used as a pla
 and can include nested tokens. Here's an example which includes all of those:
 ```js
 {
-   "Format": "1.24.0",
+   "Format": "1.25.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1695,7 +1777,7 @@ which work just like normal Content Patcher tokens. For example, this patch uses
 Assets:
 ```js
 {
-   "Format": "1.24.0",
+   "Format": "1.25.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -1715,7 +1797,7 @@ To use a mod-provided token, at least one of these must be true:
   which lists the mod:
   ```js
   {
-     "Format": "1.24.0",
+     "Format": "1.25.0",
      "Changes": [
         {
            "Action": "EditData",
@@ -1730,6 +1812,61 @@ To use a mod-provided token, at least one of these must be true:
      ]
   }
   ```
+
+### Aliases
+An _alias_ adds an optional alternate name for an existing token. This only affects your content
+pack, and you can use both the alias name and the original token name. This is mostly useful for
+custom tokens provided by other mods, which often have longer names.
+
+Aliases are defined by the `AliasTokenNames` field in `content.json`, where each key is the
+alternate name and the value is the original token name. For example:
+
+```js
+{
+    "Format": "1.25.0",
+    "AliasTokenNames": {
+        "ItemID": "spacechase0.jsonAssets/ObjectId",
+        "ItemSprite": "spacechase0.jsonAssets/ObjectSpriteSheetIndex"
+    },
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/NpcGiftTastes",
+            "Entries": {
+                "Universal_Love": "74 446 797 373 {{ItemID: pufferchick}}"
+            }
+        }
+    ]
+}
+```
+
+When using `Include` patches, aliases automatically work in the included files too.
+
+The alias name can't match a global token or config token.
+
+**Note:** this aliases the token _name_, but you can alias the token _value_ by using a [dynamic
+token](#dynamic-tokens):
+
+```js
+{
+    "Format": "1.25.0",
+    "DynamicValues": [
+        {
+            "Name": "PufferchickId",
+            "Value": "{{spacechase0.jsonAssets/ObjectId: pufferchick}}"
+        }
+    ],
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/NpcGiftTastes",
+            "Entries": {
+                "Universal_Love": "74 446 797 373 {{PufferchickId}}"
+            }
+        }
+    ]
+}
+```
 
 ## Common values
 These are predefined values used in tokens, linked from the token documentation above as needed.
@@ -1761,6 +1898,7 @@ example                                  | meaning
 `{{HasFlag}}`<br />`{{HasFlag: curentPlayer}}` | Get flags for the current player.
 `{{HasFlag: hostPlayer}}`                | Get flags for the host player.
 `{{HasFlag: currentPlayer, hostPlayer}}` | Get flags for the current _and_ host player(s).
+`{{HasFlag: anyPlayer}}`                 | Get flags which any one or more players have.
 `{{HasFlag: 3864039824286870457}}`       | Get flags for the player with the unique multiplayer ID `3864039824286870457`.
 
 The possible player types are:
@@ -1769,6 +1907,7 @@ value | meaning
 ----- | -------
 `currentPlayer` | The current player who has the mod installed.
 `hostPlayer` | The player hosting the multiplayer world. This is the same as `currentPlayer` in single-player or if the current player is hosting.
+`anyPlayer` | The combined values for all players, regardless of whether they're online.
 _player ID_ | The unique multiplayer ID for a specific player, like `3864039824286870457`.
 
 ## See also

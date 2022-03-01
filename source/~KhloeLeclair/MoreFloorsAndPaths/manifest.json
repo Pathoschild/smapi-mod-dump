@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"Name": "More Floor",
+	"Author": "Khloe Leclair",
+	"Version": "1.0.0",
+	"Description": "Adds support to Dynamic Game Assets for creating new types of Floor and Path tiles.",
+	"UniqueID": "leclair.morefloor",
+	"EntryDll": "MoreFloor.dll",
+	"MinimumApiVersion": "3.12.5",
+	"UpdateKeys": [],
+	"Dependencies": [
+		{
+			"UniqueID": "spacechase0.DynamicGameAssets"
+		}
+	]
+}

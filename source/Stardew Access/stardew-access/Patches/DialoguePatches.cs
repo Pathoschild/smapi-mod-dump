@@ -18,7 +18,8 @@ namespace stardew_access.Patches
 {
     internal class DialoguePatches
     {
-        private static string currentDialogue = " ";
+        internal static string currentDialogue = " ";
+        internal static bool isDialogueAppearingFirstTime = true;
 
         internal static void DialoguePatch(DialogueBox __instance, SpriteBatch b)
         {
@@ -32,67 +33,99 @@ namespace stardew_access.Patches
                     // For Normal Character dialogues
                     Dialogue dialogue = __instance.characterDialogue;
                     string speakerName = dialogue.speaker.displayName;
+                    List<Response> responses = __instance.responses;
                     string toSpeak = " ";
-                    bool hasResponses = false;
+                    string dialogueText = "";
+                    string response = "";
+                    bool hasResponses = dialogue.isCurrentDialogueAQuestion();
 
-                    if (__instance.responses.Count > 0)
-                        hasResponses = true;
+                    dialogueText = $"{speakerName} said {__instance.getCurrentString()}";
 
-                    if (currentDialogue != __instance.getCurrentString())
+                    if (hasResponses)
                     {
-                        toSpeak = __instance.getCurrentString();
-                        currentDialogue = toSpeak;
-                        toSpeak = $"{speakerName} said {toSpeak}";
+                        if (__instance.selectedResponse >= 0 && __instance.selectedResponse < responses.Count)
+                            response = $"{__instance.selectedResponse + 1}: {responses[__instance.selectedResponse].responseText}";
+                        else
+                            // When the dialogue is not finished writing then the selectedResponse is <0 and this results
+                            // in the first response not being detcted, so this sets the first response option to be the default
+                            // if the current dialogue is a question or has responses
+                            response = $"1: {responses[0].responseText}";
                     }
 
-                    if (__instance.responses.Count > 0)
+                    if (hasResponses)
                     {
-                        for (int i = 0; i < __instance.responses.Count; i++)
+                        if (currentDialogue != response)
                         {
-                            if (i == __instance.selectedResponse)
+                            currentDialogue = response;
+
+                            if (isDialogueAppearingFirstTime)
                             {
-                                toSpeak += $" \t\n Selected response: {__instance.responses[i].responseText}";
+                                toSpeak = $"{dialogueText} \n\t {response}";
+                                isDialogueAppearingFirstTime = false;
                             }
+                            else
+                                toSpeak = response;
+
+                            MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }
-
-                    if (toSpeak != " ")
+                    else
                     {
-                        if (hasResponses)
-                            MainClass.screenReader.SayWithChecker(toSpeak, false);
-                        else
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                        if (currentDialogue != dialogueText)
+                        {
+                            currentDialogue = dialogueText;
+                            MainClass.GetScreenReader().Say(dialogueText, true);
+                        }
                     }
                 }
                 else if (__instance.isQuestion)
                 {
                     // For Dialogues with responses/answers like the dialogue when we click on tv
-                    string toSpeak = " ";
+                    string toSpeak = "";
+                    string dialogueText = "";
+                    string response = "";
                     bool hasResponses = false;
 
                     if (__instance.responses.Count > 0)
                         hasResponses = true;
 
-                    if (currentDialogue != __instance.getCurrentString())
-                    {
-                        toSpeak = __instance.getCurrentString();
-                        currentDialogue = toSpeak;
-                    }
+                    dialogueText = __instance.getCurrentString();
 
-                    for (int i = 0; i < __instance.responses.Count; i++)
+                    if (hasResponses)
+                        if (__instance.selectedResponse >= 0 && __instance.selectedResponse < __instance.responses.Count)
+                            response = $"{__instance.selectedResponse + 1}: {__instance.responses[__instance.selectedResponse].responseText}";
+                        else
+                            // When the dialogue is not finished writing then the selectedResponse is <0 and this results
+                            // in the first response not being detcted, so this sets the first response option to be the default
+                            // if the current dialogue is a question or has responses
+                            response = $"1: {__instance.responses[0].responseText}";
+
+
+                    if (hasResponses)
                     {
-                        if (i == __instance.selectedResponse)
+                        if (currentDialogue != response)
                         {
-                            toSpeak += $" \t\n Selected response: {__instance.responses[i].responseText}";
+                            currentDialogue = response;
+
+                            if (isDialogueAppearingFirstTime)
+                            {
+                                toSpeak = $"{dialogueText} \n\t {response}";
+                                isDialogueAppearingFirstTime = false;
+                            }
+                            else
+                                toSpeak = response;
+
+                            MainClass.GetMonitor().Log(toSpeak, LogLevel.Debug);
+                            MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }
-
-                    if (toSpeak != " ")
+                    else
                     {
-                        if (hasResponses)
-                            MainClass.screenReader.SayWithChecker(toSpeak, false);
-                        else
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                        if (currentDialogue != dialogueText)
+                        {
+                            currentDialogue = dialogueText;
+                            MainClass.GetScreenReader().Say(dialogueText, true);
+                        }
                     }
                 }
                 else if (Game1.activeClickableMenu is DialogueBox)
@@ -101,13 +134,13 @@ namespace stardew_access.Patches
                     if (currentDialogue != __instance.getCurrentString())
                     {
                         currentDialogue = __instance.getCurrentString();
-                        MainClass.screenReader.Say(__instance.getCurrentString(), true);
+                        MainClass.GetScreenReader().Say(__instance.getCurrentString(), true);
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
 
         }
@@ -116,6 +149,7 @@ namespace stardew_access.Patches
         {
             // CLears the currentDialogue string on closing dialog
             currentDialogue = " ";
+            isDialogueAppearingFirstTime = true;
         }
 
         internal static void HoverTextPatch(string? text, int moneyAmountToDisplayAtBottom = -1, string? boldTitleText = null, int extraItemToShowIndex = -1, int extraItemToShowAmount = -1, string[]? buffIconsToDisplay = null, Item? hoveredItem = null, CraftingRecipe? craftingIngredients = null)
@@ -123,7 +157,7 @@ namespace stardew_access.Patches
             try
             {
                 #region Skip narrating hover text for certain menus
-                if (Game1.activeClickableMenu is TitleMenu && !((Game1.activeClickableMenu as TitleMenu).GetChildMenu() is CharacterCustomization))
+                if (Game1.activeClickableMenu is TitleMenu && !(((TitleMenu)Game1.activeClickableMenu).GetChildMenu() is CharacterCustomization))
                     return;
 
                 if (Game1.activeClickableMenu is LetterViewerMenu || Game1.activeClickableMenu is QuestLog)
@@ -135,16 +169,19 @@ namespace stardew_access.Patches
                 if (Game1.activeClickableMenu is GeodeMenu)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is InventoryPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is InventoryPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is CraftingPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is CraftingPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is OptionsPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is OptionsPage)
                     return;
 
-                if (Game1.activeClickableMenu is GameMenu && (Game1.activeClickableMenu as GameMenu).GetCurrentPage() is ExitPage)
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is ExitPage)
+                    return;
+
+                if (Game1.activeClickableMenu is GameMenu && ((GameMenu)Game1.activeClickableMenu).GetCurrentPage() is SocialPage)
                     return;
 
                 if (Game1.activeClickableMenu is ItemGrabMenu)
@@ -152,18 +189,27 @@ namespace stardew_access.Patches
 
                 if (Game1.activeClickableMenu is ShopMenu)
                     return;
-                
+
                 if (Game1.activeClickableMenu is ConfirmationDialog)
+                    return;
+
+                if (Game1.activeClickableMenu is JunimoNoteMenu)
+                    return;
+
+                if (Game1.activeClickableMenu is CarpenterMenu)
+                    return;
+
+                if (Game1.activeClickableMenu is PurchaseAnimalsMenu)
                     return;
                 #endregion
 
                 StringBuilder toSpeak = new StringBuilder(" ");
 
                 #region Add item count before title
-                if(hoveredItem != null && hoveredItem.HasBeenInInventory)
+                if (hoveredItem != null && hoveredItem.HasBeenInInventory)
                 {
                     int count = hoveredItem.Stack;
-                    if(count > 1)
+                    if (count > 1)
                         toSpeak.Append($"{count} ");
                 }
                 #endregion
@@ -174,9 +220,9 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Add quality of item
-                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).quality>0)
+                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).quality > 0)
                 {
-                    int quality = (hoveredItem as StardewValley.Object).quality;
+                    int quality = ((StardewValley.Object)hoveredItem).quality;
                     if (quality == 1)
                     {
                         toSpeak.Append("Silver quality");
@@ -231,13 +277,13 @@ namespace stardew_access.Patches
                 #endregion
 
                 #region Add health & stamina
-                if (hoveredItem is StardewValley.Object && (hoveredItem as StardewValley.Object).Edibility != -300)
+                if (hoveredItem is StardewValley.Object && ((StardewValley.Object)hoveredItem).Edibility != -300)
                 {
-                    int stamina_recovery = (hoveredItem as StardewValley.Object).staminaRecoveredOnConsumption();
+                    int stamina_recovery = ((StardewValley.Object)hoveredItem).staminaRecoveredOnConsumption();
                     toSpeak.Append($"{stamina_recovery} Energy\n");
                     if (stamina_recovery >= 0)
                     {
-                        int health_recovery = (hoveredItem as StardewValley.Object).healthRecoveredOnConsumption();
+                        int health_recovery = ((StardewValley.Object)hoveredItem).healthRecoveredOnConsumption();
                         toSpeak.Append($"{health_recovery} Health");
                     }
                 }
@@ -271,15 +317,15 @@ namespace stardew_access.Patches
                 if (toSpeak.ToString() != " ")
                 {
                     if (Context.IsPlayerFree)
-                        MainClass.screenReader.SayWithChecker(toSpeak.ToString(), true); // Normal Checker
+                        MainClass.GetScreenReader().SayWithChecker(toSpeak.ToString(), true); // Normal Checker
                     else
-                        MainClass.screenReader.SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
+                        MainClass.GetScreenReader().SayWithMenuChecker(toSpeak.ToString(), true); // Menu Checker
                 }
                 #endregion
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
             }
         }
     }

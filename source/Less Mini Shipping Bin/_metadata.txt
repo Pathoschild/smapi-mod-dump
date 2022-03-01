@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/LessMiniShippingBin
+   Git: https://github.com/atravita-mods/LessMiniShippingBin.git
+
+mods:
+   Less Mini Shipping Bin
+
+latest commit:
+   commit 9e38716bef1be8da83d674c503e2c2fe90dd50db
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Thu Feb 24 23:19:31 2022 -0500
+   
+       add more implicit usings
+   

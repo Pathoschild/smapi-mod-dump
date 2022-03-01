@@ -1,0 +1,12 @@
+{
+  "EnforceGITiming": false,
+  "UseThisScheduler": true,
+  "Capacity": 6,
+  "GroupChance": 0.6,
+  "ExplorerChance": 0.05,
+  "GusDay": "Tuesday",
+  "GusChance": 0.5,
+  "AllowWilly": true,
+  "AllowSandy": true,
+  "AllowGeorgeAndEvelyn": true
+}

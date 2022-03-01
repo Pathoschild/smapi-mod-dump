@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Shockah/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "config.orientation.section.name": "Orientation",
+    "config.orientation.section.tooltip": "The orientation to draw partial level bars at.",
+    "config.orientation.smallBars.name": "Small bars",
+    "config.orientation.smallBars.tooltip": "Non-profession bars (levels 1-4, 6-9).",
+    "config.orientation.bigBars.name": "Big bars",
+    "config.orientation.bigBars.tooltip": "Profession bars (levels 5 and 10).",
+
+    "config.orientation.value.Horizontal": "Horizontal",
+    "config.orientation.value.Vertical": "Vertical",
+
+    "config.appearance.section.name": "Appearance",
+    "config.appearance.alpha.name": "Alpha",
+    "config.appearance.alpha.tooltip": "Transparency of the partial bars.\n0: fully transparent\n1: fully opaque"
+}

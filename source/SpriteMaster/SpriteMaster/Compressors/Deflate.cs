@@ -21,9 +21,14 @@ namespace SpriteMaster.Compressors;
 static class Deflate {
 	private static readonly Action<ZlibStream, CompressionStrategy>? SetStrategy = typeof(ZlibStream).GetFieldSetter<ZlibStream, CompressionStrategy>("Strategy");
 
+	private static bool? IsSupported_ = null;
 	internal static bool IsSupported {
 		[MethodImpl(Runtime.MethodImpl.RunOnce)]
 		get {
+			if (IsSupported_.HasValue) {
+				return IsSupported_.Value;
+			}
+
 			try {
 				var dummyData = new byte[16];
 				var compressedData = CompressTest(dummyData);
@@ -31,17 +36,19 @@ static class Deflate {
 				if (!dummyData.SequenceEqualF(uncompressedData)) {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
-				Debug.InfoLn("Deflate Compression is supported");
-				return true;
+				Debug.Info("Deflate Compression is supported");
+				IsSupported_ = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.InfoLn($"Deflate Compression not supported");
-				return false;
+				Debug.Info($"Deflate Compression not supported");
+				IsSupported_ = false;
 			}
 			catch (Exception ex) {
-				Debug.InfoLn($"Deflate Compression not supported: '{ex}'");
-				return false;
+				Debug.Info($"Deflate Compression not supported: '{ex.GetType().Name} {ex.Message}'");
+				IsSupported_ = false;
 			}
+
+			return IsSupported_.Value;
 		}
 	}
 

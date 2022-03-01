@@ -4,8 +4,11 @@
   "IsQuickStackIntoBuildingsWithInventories": true,
   "IsQuickStackOverflowItems": true,
   "IsQuickStackTooltipDrawNearbyChests": true,
+  "IsEnableQuickStackHotkey": false,
+  "QuickStackKeyboardHotkey": "K",
+  "QuickStackControllerHotkey": "LeftStick",
   "IsEnableFavoriteItems": true,
   "FavoriteItemsHighlightTextureChoice": 2,
   "FavoriteItemsKeyboardHotkey": "LeftAlt",
-  "FavoriteItemsControllerHotkey": "LeftStick"
+  "FavoriteItemsControllerHotkey": "LeftShoulder"
 }

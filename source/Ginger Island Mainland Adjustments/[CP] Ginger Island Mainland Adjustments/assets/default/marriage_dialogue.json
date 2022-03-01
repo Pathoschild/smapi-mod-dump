@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/Ginger-Island-Mainland-Adjustments
+**
+*************************************************/
+
+{"Changes":[
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueLeah",
+        "Entries": { // You can use either $c or CP's random token to add multiple dialogue lines.
+            "GILeave_Leah": "#$c .3#Honey, I'm headed off to Ginger Island for today. Will I see you there?$l#$c .5#Honey, I think I'll be headed to Ginger Island today. Will you come with?#My dear, I think I'll be off to Ginger Island today. I'm looking forward to unwinding a bit and getting some inspiration. Will I see you there?",
+            "GIReturn_Leah": "That was an relaxing vacation! But I'm glad to be home.$h"
+        }
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueLeah",
+        "Entries": {
+            "GILeave_Leah": "{{Random: Honey, I think I'll be headed off to the Island for today! I'd love to get out of this cold...#$b#Would you consider joining me there, my love?$l++My dear, I think I'll be taking a vacation today! Get some more inspiration, get out of this cold for a bit. Will I see you there?|inputSeparator=++}}"
+        },
+        "When": {"Season": "Winter"}
+    },
+    {
+        "Action": "EditData",
+        "Target": "Characters/Dialogue/MarriageDialogueMaru",
+        "Entries": {
+            "GILeave_Maru": "I'll be headed off to Ginger Island today! Will you join me?",
+            "GIReturn_Maru": "There's always something interesting to see on Ginger Island! I greatly enjoyed my vacation today!$h"
+        }
+    }
+]}

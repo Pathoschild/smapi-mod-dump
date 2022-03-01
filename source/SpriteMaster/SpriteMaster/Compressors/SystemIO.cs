@@ -19,9 +19,15 @@ namespace SpriteMaster.Compressors;
 
 //[HarmonizeFinalizeCatcher<IOC.DeflateStream, DllNotFoundException>(critical: false)]
 static class SystemIO {
+
+	private static bool? IsSupported_ = null;
 	internal static bool IsSupported {
 		[MethodImpl(Runtime.MethodImpl.RunOnce)]
 		get {
+			if (IsSupported_.HasValue) {
+				return IsSupported_.Value;
+			}
+
 			try {
 				var dummyData = new byte[16];
 				var compressedData = CompressTest(dummyData);
@@ -29,17 +35,19 @@ static class SystemIO {
 				if (!dummyData.SequenceEqualF(uncompressedData)) {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
-				Debug.InfoLn("System.IO Compression is supported");
-				return true;
+				Debug.Info("System.IO Compression is supported");
+				IsSupported_ = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.InfoLn($"System.IO Compression not supported");
-				return false;
+				Debug.Info($"System.IO Compression not supported");
+				IsSupported_ = false;
 			}
 			catch (Exception ex) {
-				Debug.InfoLn($"System.IO Compression not supported: '{ex}'");
-				return false;
+				Debug.Info($"System.IO Compression not supported: '{ex.GetType().Name} {ex.Message}'");
+				IsSupported_ = false;
 			}
+
+			return IsSupported_.Value;
 		}
 	}
 

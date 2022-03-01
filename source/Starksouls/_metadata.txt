@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/OhWellMikell/Starksouls
+   Git: https://github.com/OhWellMikell/Starksouls.git
+
+mods:
+   Starksouls
+
+latest commit:
+   commit 79f15c85dc6083994b56411bc9dfb4cd8317ee23
+   Author: Mikell <43796999+OhWellMikell@users.noreply.github.com>
+   Date:   Mon Jan 31 15:01:16 2022 -0500
+   
+       Create README.md
+   

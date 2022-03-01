@@ -22,6 +22,7 @@ using ItemPipes.Framework.Nodes;
 using ItemPipes.Framework.Util;
 using Netcode;
 using StardewValley.Menus;
+using ItemPipes.Framework.Nodes.ObjectNodes;
 
 
 namespace ItemPipes.Framework.Patches
@@ -34,14 +35,6 @@ namespace ItemPipes.Framework.Patches
         {
             try
             {
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Chest), nameof(Chest.addItem)),
-                    prefix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Chest_addItem_Prefix))
-                );
-                harmony.Patch(
-                    original: AccessTools.Method(typeof(Chest), nameof(Chest.grabItemFromInventory)),
-                    prefix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Chest_grabItemFromInventory_Prefix))
-                );
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Utility), nameof(Utility.CollectSingleItemOrShowChestMenu)),
                     prefix: new HarmonyMethod(typeof(ChestPatcher), nameof(ChestPatcher.Utility_CollectSingleItemOrShowChestMenu_Prefix))
@@ -56,7 +49,6 @@ namespace ItemPipes.Framework.Patches
 
         private static bool Utility_CollectSingleItemOrShowChestMenu_Prefix(Chest __instance, object context = null)
         {
-            Printer.Info("Utility_CollectSingleItemOrShowChestMenu_Prefix");
             DataAccess DataAccess = DataAccess.GetDataAccess();
             List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
             Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
@@ -109,7 +101,6 @@ namespace ItemPipes.Framework.Patches
 
         private static bool Chest_grabItemFromChest_Prefix(Chest __instance, Item item, Farmer who)
         {
-            Printer.Info("Chest_grabItemFromChest_Prefix");
             DataAccess DataAccess = DataAccess.GetDataAccess();
             List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
             Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
@@ -130,7 +121,6 @@ namespace ItemPipes.Framework.Patches
 
         private static bool Chest_grabItemFromInventory_Prefix(Chest __instance, Item item, Farmer who)
         {
-            Printer.Info("Chest_grabItemFromInventory_Prefix");
             DataAccess DataAccess = DataAccess.GetDataAccess();
             List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
             Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));
@@ -165,7 +155,6 @@ namespace ItemPipes.Framework.Patches
 
         private static bool Chest_addItem_Prefix(Chest __instance, Item item, ref Item __result)
         {
-            Printer.Info("Chest_addItem_Prefix");
             DataAccess DataAccess = DataAccess.GetDataAccess();
             List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
             Node node = nodes.Find(n => n.Position.Equals(__instance.tileLocation));

@@ -16,7 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using xTile.Layers;
 using xTile.ObjectModel;
-using Harmony;
+using HarmonyLib;
 using PlatoTK;
 using TMXTile;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,7 +47,7 @@ namespace MapTK.MapExtras
             helper.Events.GameLoop.DayStarted += InvalidateMerges;
             helper.Events.GameLoop.SaveLoaded += InvalidateMerges;
             helper.Events.GameLoop.SaveCreated += InvalidateMerges;
-            var harmony = HarmonyInstance.Create("Platonymous.MapTK.ExtraLayers");
+            var harmony = new Harmony("Platonymous.MapTK.ExtraLayers");
             harmony.Patch(AccessTools.Method(typeof(GameLocation), "reloadMap"),postfix:new HarmonyMethod(typeof(MapExtrasHandler),nameof(AfterMapReload)));
         }
 
@@ -75,7 +75,7 @@ namespace MapTK.MapExtras
 
         private void SetMapDisplayDevice()
         {
-            HarmonyInstance instance = HarmonyInstance.Create("MatpTK.MapTKDisplayDevice");
+            Harmony instance = new Harmony("MatpTK.MapTKDisplayDevice");
 
             instance.Patch(
                    original: AccessTools.Method(Type.GetType("StardewModdingAPI.Framework.SCore, StardewModdingAPI"), "GetMapDisplayDevice"),

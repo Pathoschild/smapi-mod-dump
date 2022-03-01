@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewModdingAPI;
 using System;
 using System.Diagnostics;
@@ -274,15 +275,15 @@ namespace ModUpdater
 
         public static void patchModLoad()
         {
-            Harmony.HarmonyInstance harmony = Harmony.HarmonyInstance.Create("Platonymous.ModUpdater");
+            Harmony harmony = new Harmony("Platonymous.ModUpdater");
             harmony.Patch(
                 original:Type.GetType("StardewModdingAPI.Framework.SCore, StardewModdingAPI").GetMethod("CheckForUpdatesAsync", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance),
-                prefix: new Harmony.HarmonyMethod(Harmony.AccessTools.DeclaredMethod(typeof(ModUpdaterMod),nameof(CheckForUpdatesAsync)))
+                prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(ModUpdaterMod),nameof(CheckForUpdatesAsync)))
                 );
 
             harmony.Patch(
                 original: Type.GetType("StardewModdingAPI.Framework.SCore, StardewModdingAPI").GetMethod("TryLoadMod", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance),
-                prefix: new Harmony.HarmonyMethod(Harmony.AccessTools.DeclaredMethod(typeof(ModUpdaterMod), nameof(TryLoadMod)))
+                prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(ModUpdaterMod), nameof(TryLoadMod)))
                 );
         }
         

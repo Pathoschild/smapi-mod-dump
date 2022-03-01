@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Tools;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 
 #endregion using directives
@@ -39,7 +40,7 @@ internal class FishingRodPlayerCaughtFishEndFunctionPatch : BasePatch
     /// <summary>Patch for remove annoying repeated message for recatching legendary fish.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> FishingRodPlayerCaughtFishEndFunctionTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -70,6 +71,7 @@ internal class FishingRodPlayerCaughtFishEndFunctionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing annoying legendary fish caught notification.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

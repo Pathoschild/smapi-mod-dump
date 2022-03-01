@@ -1,0 +1,7 @@
+{
+  "ImmersionOption": 1,
+  "ByHeartLevel": false,
+  "HeartLevelMin": 0,
+  "HeartLevelMax": 12,
+  "ForceNpcVisibility": {}
+}

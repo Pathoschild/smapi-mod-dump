@@ -9,9 +9,16 @@
 *************************************************/
 
 {
-  "mod.description": "Prevents rugs from being removed if there's something on the rug.",
+  "mod.description": "Prevents rugs from being removed if there's something on the rug. Also some other things.",
   "enabled.title": "Enabled",
+  "table-removal.title": "Prevent Removal From Table",
+  "table-removal.description": "If enabled, objects will not be able to be removed from tables unless the furniture placement key is held down.",
+
+  "furniture-placement-key.title": "Furniture Placement Key",
+  "furniture-placement-key.description":  "The keybind used to allow objects to be removed from tables.",
+
   "rug-removal-message": "Remove all items on rug before removing rug!",
+  "table-removal-message": "Hold down {{keybind}} to remove object from table.",
 
   // Config errors and messages
   "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",

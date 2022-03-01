@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -206,7 +206,7 @@ namespace Visualize
 
         private void harmonyFix()
         {
-            var instance = HarmonyInstance.Create("Platonymous.Visualize");
+            var instance = new Harmony("Platonymous.Visualize");
             instance.PatchAll(Assembly.GetExecutingAssembly());
             SpritbatchFixNew.initializePatch(instance);
         }

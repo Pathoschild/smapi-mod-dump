@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+    "bettercrystalariums.wrong-mineral": "Quebre a máquina para adicionar um novo mineral.",
+    "bettercrystalariums.no-gmcm": "O usuário não parece ter o GMCM instalado. Este não é um problema.",
+    "bettercrystalariums.debug-setting-title": "Modo de depuração",
+    "bettercrystalariums.debug-setting-description": "Habilite isso apenas se eu tiver solicitado ou se você quiser se aprofundar em um problema. Isso habilitará o registro adicional."
+  }

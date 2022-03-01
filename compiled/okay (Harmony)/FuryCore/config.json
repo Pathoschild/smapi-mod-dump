@@ -1,0 +1,11 @@
+{
+  "Configure": "End",
+  "CustomTags": [
+    "CategoryArtifact",
+    "CategoryFurniture",
+    "DonateBundle",
+    "DonateMuseum"
+  ],
+  "ScrollMenuOverflow": true,
+  "ToolbarIcons": true
+}

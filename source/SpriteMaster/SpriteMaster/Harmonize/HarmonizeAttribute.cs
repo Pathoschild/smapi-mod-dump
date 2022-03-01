@@ -39,7 +39,7 @@ class HarmonizeAttribute : Attribute {
 
 	internal bool CheckPlatform() => CheckPlatform(ForPlatform);
 
-	private static Assembly GetAssembly(string name) {
+	private static Assembly? GetAssembly(string name, bool critical) {
 		if (Runtime.IsMonoGame && name.StartsWith("Microsoft.Xna.Framework")) {
 			name = "MonoGame.Framework";
 		}
@@ -48,9 +48,12 @@ class HarmonizeAttribute : Attribute {
 			return AppDomain.CurrentDomain.GetAssemblies().SingleF(assembly => assembly.GetName().Name == name);
 		}
 		catch {
-			Debug.ErrorLn($"Assembly Not Found For Harmonize: {name}");
-			throw;
+			Debug.ConditionalError(critical, $"Assembly Not Found For Harmonize: {name}");
+			if (critical) {
+				throw;
+			}
 		}
+		return null;
 	}
 
 	private static Type? ResolveType(Assembly assembly, Type? parent, string[] type, int offset = 0) {
@@ -69,7 +72,7 @@ class HarmonizeAttribute : Attribute {
 			return ResolveType(assembly, foundType, type, offset);
 	}
 
-	private static Type? ResolveType(Assembly assembly, string[] type, int offset = 0) => ResolveType(assembly, assembly.GetType(type[0], true), type, offset + 1);
+	private static Type? ResolveType(Assembly? assembly, string[] type, int offset = 0) => assembly is null ? null : ResolveType(assembly, assembly.GetType(type[0], true), type, offset + 1);
 
 	internal HarmonizeAttribute(
 		Type? type,
@@ -103,7 +106,7 @@ class HarmonizeAttribute : Attribute {
 		Platform platform = Platform.All
 	) :
 		this(
-			type: CheckPlatform(platform) ? GetAssembly(assembly).GetType(type, true) : null,
+			type: CheckPlatform(platform) ? GetAssembly(assembly, critical: critical)?.GetType(type, true) : null,
 			method: method,
 			fixation: fixation,
 			priority: priority,
@@ -169,7 +172,7 @@ class HarmonizeAttribute : Attribute {
 		Platform platform = Platform.All
 	) :
 		this(
-			type: CheckPlatform(platform) ? ResolveType(GetAssembly(assembly), type) : null,
+			type: CheckPlatform(platform) ? ResolveType(GetAssembly(assembly, critical: critical), type) : null,
 			method: method,
 			fixation: fixation,
 			priority: priority,

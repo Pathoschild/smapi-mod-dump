@@ -3,17 +3,21 @@ urls:
    Git: https://github.com/ImJustMatt/StardewMods.git
 
 mods:
+   Better Chests
    Custom Bundles
+   Easy Access
    Expanded Storage (Alternative Textures)
    Expanded Storage (Lite)
    Expanded Storage (Plus)
    Expanded Storage → XSAutomate
+   FuryCore
    Garbage Day
+   Too Many Animals
 
 latest commit:
-   commit aead3d670376ebb5e53f99de14f07367f1304622
+   commit 3a01018e125db29f6aefe5c60e03d6c4353ebd3b
    Author: Matthew <justmatt@outlook.com>
-   Date:   Sun Dec 5 22:49:31 2021 -0600
+   Date:   Sat Feb 26 23:15:47 2022 -0600
    
-       Update for SDV 1.5.5
+       Optimize code that caused excessive looping over all items.
    

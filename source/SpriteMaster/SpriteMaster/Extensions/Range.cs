@@ -51,37 +51,58 @@ static class Range {
 	internal static Vector2 Clamp(this Vector2 value, Vector2 min, Vector2 max) => new(value.X.Clamp(min.X, max.X), value.Y.Clamp(min.Y, max.Y));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2 Min(this Vector2 value, float min) => new(Math.Min(value.X, min), Math.Min(value.Y, min));
+	internal static Vector2 Min(this Vector2 value, float min) => new(MathF.Min(value.X, min), MathF.Min(value.Y, min));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2 Min(this Vector2 value, double min) => new(Math.Min(value.X, (float)min), Math.Min(value.Y, (float)min));
+	internal static Vector2 Min(this Vector2 value, double min) => new(MathF.Min(value.X, (float)min), MathF.Min(value.Y, (float)min));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2 Min(this Vector2 value, Vector2 min) => new(Math.Min(value.X, min.X), Math.Min(value.Y, min.Y));
+	internal static Vector2 Min(this Vector2 value, Vector2 min) => new(MathF.Min(value.X, min.X), MathF.Min(value.Y, min.Y));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2 Max(this Vector2 value, float max) => new(Math.Max(value.X, max), Math.Max(value.Y, max));
+	internal static Vector2 Max(this Vector2 value, float max) => new(MathF.Max(value.X, max), MathF.Max(value.Y, max));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2 Max(this Vector2 value, double max) => new(Math.Max(value.X, (float)max), Math.Max(value.Y, (float)max));
+	internal static Vector2 Max(this Vector2 value, double max) => new(MathF.Max(value.X, (float)max), MathF.Max(value.Y, (float)max));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2 Max(this Vector2 value, Vector2 max) => new(Math.Max(value.X, max.X), Math.Max(value.Y, max.Y));
+	internal static Vector2 Max(this Vector2 value, Vector2 max) => new(MathF.Max(value.X, max.X), MathF.Max(value.Y, max.Y));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool WithinInclusive<T>(this T value, T min, T max) where T : IComparable, IComparable<T> {
-		return (value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0);
-	}
+	internal static bool WithinInclusive<T>(this T value, T min, T max) where T : IComparable, IComparable<T> => (value.CompareTo(min) >= 0 && value.CompareTo(max) <= 0);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool WithinExclusive<T>(this T value, T min, T max) where T : IComparable, IComparable<T> {
-		return (value.CompareTo(min) > 0 && value.CompareTo(max) < 0);
-	}
+	internal static bool WithinExclusive<T>(this T value, T min, T max) where T : IComparable, IComparable<T> => (value.CompareTo(min) > 0 && value.CompareTo(max) < 0);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool Within<T>(this T value, T min, T max) where T : IComparable, IComparable<T> {
-		return WithinInclusive(value, min, max);
-	}
+	internal static bool Within<T>(this T value, T min, T max) where T : IComparable, IComparable<T> => WithinInclusive(value, min, max);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool WithinInclusive(this int value, int min, int max) => value >= min && value <= max;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool WithinExclusive(this int value, int min, int max) => value > min && value < max;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool Within(this int value, int min, int max) => WithinInclusive(value, min, max);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool WithinInclusive(this float value, float min, float max) => value >= min && value <= max;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool WithinExclusive(this float value, float min, float max) => value > min && value < max;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool Within(this float value, float min, float max) => WithinInclusive(value, min, max);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool WithinInclusive(this double value, double min, double max) => value >= min && value <= max;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool WithinExclusive(this double value, double min, double max) => value > min && value < max;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool Within(this double value, double min, double max) => WithinInclusive(value, min, max);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static IEnumerable<int> ToInclusive(this int from, int to) {

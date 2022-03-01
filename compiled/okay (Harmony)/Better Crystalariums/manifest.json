@@ -1,0 +1,12 @@
+{
+	"Name": "Better Crystalariums",
+	"Author": "DecidedlyHuman",
+	"Version": "1.0.0",
+	"Description": "With this mod installed, you won't be able to accidentally replace the mineral inside a crystalarium.",
+	"UniqueID": "DecidedlyHuman.BetterCrystalariums",
+	"EntryDll": "BetterCrystalariums.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:10907"
+	]
+}

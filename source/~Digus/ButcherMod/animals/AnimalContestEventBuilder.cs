@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using AnimalHusbandryMod.animals.data;
@@ -225,17 +226,19 @@ namespace AnimalHusbandryMod.animals
                 {
                     string spriteTextureName = farmAnimal.Sprite.textureName.Value;
                     string playerAnimalTextureName;
-                    if (spriteTextureName.StartsWith("Animals\\"))
+
+                    var spriteTextureNameSegments = PathUtilities.GetSegments(spriteTextureName);
+                    if (spriteTextureNameSegments.Length > 0 && spriteTextureNameSegments[0] == "Animals")
                     {
-                        playerAnimalTextureName = farmAnimal.Sprite.textureName.Value
-                            .Substring(farmAnimal.Sprite.textureName.Value.IndexOf('\\')+1)
-                            .Replace(' ', '_');
+                        playerAnimalTextureName = Path.Join(spriteTextureNameSegments.Skip(1).ToArray()).ToString();
                     }
                     else
                     {
-                        DataLoader.AssetsToLoad["Animals\\" + spriteTextureName.Replace('_', ' ')] = farmAnimal.Sprite.Texture;
-                        playerAnimalTextureName = spriteTextureName.Replace(' ', '_'); ;
+                        DataLoader.AssetsToLoad[Path.Join(spriteTextureNameSegments.Prepend("Animals").ToArray()).ToString().Replace('_', ' ')] = farmAnimal.Sprite.Texture;
+                        playerAnimalTextureName = spriteTextureName;
                     }
+                    playerAnimalTextureName = playerAnimalTextureName.Replace(' ', '_');
+
                     bool isPlayerAnimalSmall = IsAnimalSmall(farmAnimal);
                     initialPosition.Append($"/addTemporaryActor {playerAnimalTextureName} {(isPlayerAnimalSmall? SmallSize : BigSize)} {(isPlayerAnimalSmall?26:25)} 66 0 false Animal participant/showFrame participant 0");
                     if (!isPlayerAnimalSmall)
@@ -459,6 +462,8 @@ namespace AnimalHusbandryMod.animals
             string script = initialPosition.ToString() + eventAction.ToString();
             
             FarmerLoader.FarmerData.AnimalContestData.Add(animalContestInfo);
+
+            AnimalHusbandryModEntry.monitor.Log("Adding Animal Contest Event:\n" + script, LogLevel.Trace);
 
             return new CustomEvent(key,script);
         }

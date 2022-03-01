@@ -4,6 +4,7 @@
   "DeviceSpeedFactor": 2,
   "AreaOfKissEffectModifier": 20,
   "PreventUnlovedMonsterDamage": true,
+  "ShowMonsterHeartEmote": true,
   "LovedMonstersStillSwarm": false,
   "MonstersIgnorePlayer": false
 }

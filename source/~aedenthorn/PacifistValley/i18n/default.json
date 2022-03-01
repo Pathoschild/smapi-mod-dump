@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
+  "mod-enabled": "Mod Enabled",
+  "prevent-unloved-damage": "Prevent Unloved Damage",
+  "show-emote": "Show Heart Emote",
+  "loved-swarm": "Loved Still Swarm",
+  "monsters-ignore-player": "Monsters Ignore Players",
+  "ms-per-love": "Milliseconds per love",
+  "device-speed-factor": "Device Speed Factor",
+  "area-of-effect-mod": "AOE Modifier"
+
+}

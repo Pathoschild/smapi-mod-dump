@@ -11,16 +11,20 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Text;
 
 namespace SpriteMaster;
 
 static class SystemInfo {
 	internal static void Dump(GraphicsDeviceManager gdm, GraphicsDevice device) {
-		Debug.MessageLn("System Information:");
+		var dumpBuilder = new StringBuilder();
+
+		dumpBuilder.AppendLine("System Information:");
 
 		try {
-			Debug.MessageLn($"\tArchitecture: {(Environment.Is64BitProcess ? "x64" : "x86")}");
-			Debug.MessageLn($"\tNumber of Cores: {Environment.ProcessorCount}");
+			dumpBuilder.AppendLine($"\tArchitecture: {(Environment.Is64BitProcess ? "x64" : "x86")}");
+			dumpBuilder.AppendLine($"\tNumber of Cores: {Environment.ProcessorCount}");
+			dumpBuilder.AppendLine($"\tOS Version: {Environment.OSVersion}");
 		}
 		catch { }
 
@@ -28,11 +32,13 @@ static class SystemInfo {
 			if (!(device?.IsDisposed).GetValueOrDefault(false)) {
 				var adapter = device?.Adapter;
 				if (adapter != null) {
-					Debug.MessageLn($"\tGraphics Adapter: {adapter}");
-					Debug.MessageLn($"\tGraphics Adapter Description: {adapter.Description}");
+					dumpBuilder.AppendLine($"\tGraphics Adapter: {adapter}");
+					dumpBuilder.AppendLine($"\tGraphics Adapter Description: {adapter.Description}");
 				}
 			}
 		}
 		catch { }
+
+		Debug.Message(dumpBuilder.ToString());
 	}
 }

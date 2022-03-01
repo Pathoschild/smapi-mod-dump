@@ -1,7 +1,7 @@
 {
   "Name": "Pause in Multiplayer",
   "Author": "jorgamun",
-  "Version": "1.6.3",
+  "Version": "1.7.0",
   "Description": "Pauses time in multiplayer when all connected players should have their time paused.",
   "UniqueID": "jorgamun.PauseInMultiplayer",
   "EntryDll": "PauseInMultiplayer.dll",

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.UiInfoSuite;
 
 #region using directives
 
@@ -19,6 +19,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 
 #endregion using directives
@@ -62,6 +63,7 @@ internal class ExperieneBarDrawExperienceBarPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching to budge Ui Info Suite experience bar skill icon. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

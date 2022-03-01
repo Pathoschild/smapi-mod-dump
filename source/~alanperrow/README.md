@@ -15,73 +15,44 @@ This repository contains all of the mods that I have created and/or am currently
 
 ## Mod Ideas
 
-### Convenient Inventory
-
-##### Quick Stack to Nearby Chests
-
-Adds a button on side of player backpack UI to quickly deposit items to chests within a nearby range.
-
-When button is selected/hovered over, show a tooltip that says "Deposit to: _ _ _", where each _ would be a render of a nearby chest (including its color)
-
-###### Config:
-  * Exclude first row
-    * Skip first inventory row when quick stacking
-  * Nearby range
-    * How many tiles away to find chests
-  * Render nearby chests in button tooltip
-    * Show preview of which chests are in range
-
-##### Favorite items
-A favorited item is prevented from:
-  * Being quick stacked
-  * Being considered when using "Add to Existing Stacks" button in chest UI
-  * Being sold in shops
-  * Being dropped
-
-Allow favoriting items with a configurable keybind + click
-  * When keybind (default = LeftALT) is held, change cursor to a star.
-  * When an item is Keybind+Clicked, that item becomes favorited. Keybind+Click the item again to unfavorite it.
-  * Items lose their favorite status when leaving the player's inventory (AKA only tracked on the inventory-side, not necessarily per-item).
-
-###### Config:
-  * Enable favorite items
-  * Keybind for favoriting
-    * This will be the key that must be held when clicking an item
-
-##### Left/Right Cursor Warp
-Adds leftNeighbor to left "invisible" position that maps to the right-most button of the interface, and vice versa. This allows UI navigation when using a controller to be quicker to use.
-
-###### Config:
-  * Enable this feature
-  * Menus to implement this feature:
-    * Inventory
-    * Chest
-    * Shop
-    * Shipping Bin
-
-##### Shop Refund and Buy Back
-Refund:
-  * Allows players to return accidentally-purchased items (as long as you don't leave the current Game Location).
-  * After purchasing an item/stack in a Shop UI, the item/stack is fully refundable as long as you don't leave the current Game Location.
-  * Refunding removes the purchased item/stack from your inventory and returns all of the money spent to purchase it.
-
-Buy Back:
-  * Allows players to buy back accidentally-sold items (as long as you don't leave the current Game Location).
-  * After selling an item/stack in a Shop UI:
-    * Display a "Buy Back" button on the left of the player's inventory with the just-sold item displayed next to it.
-    * Hovering over this button shows the price it will cost to buy it back (which is the exact amount you sold it for).
-    * Clicking the button will buy back the item, removing the button.
-  * ALTERNATIVELY - After selling an item/stack in a Shop UI:
-    * Add the item/stack to the shop's stock, with the price being exactly what you sold it for.
-    * This will be single-purchase only, so the stock will be removed after buying it back.
-    * Upon leaving the current Game Location, any buy-back stock(s) will be removed.
-
 ### Chest Upgrades
 Adds four craftable "upgrade" items that can be used on chests to expand their storage capacity (think Iron Chests mod).
 
 Each successive upgrade requires the previous: Original -> Copper (+1 row) -> Iron (+2) -> Gold (+3) -> Iridium (+4).
 
 Will require Expanded Storage mod.
+
+### Seed Spreader
+Adds a new "Seed Spreader" tool that can be used to plant seeds in a large area more quickly.
+
+The Seed Spreader can be purchased from Clint's shop and upgraded like any other tool (Original -> Copper -> Iron -> Gold -> Iridium).
+
+Features:
+ - How to know which seeds to use?
+   - Ammo?
+   - Per-use, first seed(s) of same type found in inventory?
+ - How the tool should be used:
+   - Using the tool should not stop player movement, as that would feel a bit clunky and honestly would not be worth getting.
+   - Hold the tool to show highlighted area, press left-click to use.
+   - Show tool range via highlighted squares, displaying the tiles in which seeds will be planted.
+     - Only show highlighted squares up to the number of seeds the player has available to plant, so there is no confusion as to where the seeds will be going.
+   - Pressing left-click will shoot the seeds out into the highlighted tiles, planting them into any vacant hoed dirt.
+     - Maybe make a quick little animation of the seeds arcing into their respective tiles? Each seed should have a few ms differential, so a satisfying sound can be played when the seeds enter the dirt.
+ - Tool should require a brief recharge after each use, ~1s.
+   - Left-click can be held down to automatically use the tool again after the recharge period ends.
+   - Play a shuffling, mechanical reload sound during this time.
+   - For displaying the tool icon "recharging", try to reuse SDV weapon right-click cooldown meter, as this is the same concept.
+ - The planting range should make purhcasing/using the tool worthwhile.
+   - Max range increases with each tool upgrade.
+     - Original: 1x3 (ie: copper watering can)
+     - Copper: 1x5 (ie: iron watering can)
+     - Iron: 3x3 (ie: gold watering can)
+     - Gold: 3x5 (ie: iridium watering can)
+     - Iridium: Two ranges unlocked!
+       - (1) 5x6
+       - (2) 5 steps; trapezoidal shape, each step increasing height by 1 on both sides. (useful for pivoting around a single point, planting in all directions)
+         - 3x1, 5x1, 7x1, 9x1, 11x1
+   - While holding the tool, pressing right-click toggles the tool's range, so the player has more control over where they are planting.
 
 <!--
 ===== SCRAPPED =====

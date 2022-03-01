@@ -12,6 +12,7 @@
   "$schema": "https://smapi.io/schemas/i18n.json",
   //Warnings
   "cp-not-installed": "Content Patcher not installed, tokens will not be available.",
+  "IllFormatedConfig": "Config file seems ill-formated, using default.",
 
   //Documentation for console commands
   "special_order_pool.description": "Lists the current special orders. If order is not available, explains why.",
@@ -20,6 +21,7 @@
   "special_orders_dialogue.description": "Add, delete, or check for whether or not a specific special order dialogue key has been said yet",
   "special_orders_dialogue.usage": "Usage: special_orders_dialogue <add/remove/hasseen> <dialogue key> <one or more character names>",
   "special_orders_dialogue.example": "ie: special_orders_dialogue hasseen atravita.PamApology_InProgress Penny Pam",
+  "special_orders_dialogue.save": "Additionally, special_orders_dialogue save will save the current dialogue logs.",
 
   //Text used in console commands
   "load-save-first": "Load save first.",
@@ -57,5 +59,7 @@
   "dictionary": "In dictionary: ",
 
   "stat-not-found": "{{key}} not found in `stats.cs`. Is it provided by a mod that's not currently loaded?'",
-  "stat-cache-fail": "Failure to use {{key}}, please take this log to {{atra}}."
+  "stat-cache-fail": "Failure to use {{key}}, please take this log to {{atra}}.",
+
+  "skill-not-found": "${{profession}} for {{skill}} not found; perhaps it's from a mod not installed?"
 }

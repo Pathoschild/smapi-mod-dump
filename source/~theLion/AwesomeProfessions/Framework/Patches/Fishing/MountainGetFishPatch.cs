@@ -21,7 +21,6 @@ using JetBrains.Annotations;
 using StardewValley.Locations;
 
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -41,14 +40,14 @@ internal class MountainGetFishPatch : BasePatch
     /// <summary>Patch for prestiged Angler to recatch Legend.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> MountainGetFishTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// From: if (!who.fishCaught.ContainsKey(<legendary_fish_id>)) ...
         /// To: if (!who.fishCaught.ContainsKey(<legendary_fish_id>) || !who.HasPrestigedProfession("Angler") ...
 
-        var checkSeason = iLGenerator.DefineLabel();
+        var checkSeason = generator.DefineLabel();
         try
         {
             helper
@@ -71,6 +70,7 @@ internal class MountainGetFishPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Angler legendary fish recatch.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

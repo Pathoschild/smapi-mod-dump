@@ -1,0 +1,31 @@
+{
+    "TheMightyAmondee.Shoplifter/Shoplift":"Roubar?",  
+    "TheMightyAmondee.Shoplifter/Banned": "Você foi banido por ser pego roubando. Não abuse da sorte...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Você já roubou hoje. Chega...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "Você já roubou {{shopliftingamount}} vezes hoje. Deu por hoje...",
+    "TheMightyAmondee.Shoplifter/AlreadyShopliftedSameShop":"Não tem nada para roubar aqui...",
+    "TheMightyAmondee.Shoplifter/BanFromShop_Single":"#$b#Você já me roubou o suficiente este mês, @. Terei que te banir por um dia.$2",
+    "TheMightyAmondee.Shoplifter/BanFromShop":"#$b#Você já me roubou o suficiente este mês, @. Terei que te banir por {{daysbanned}} dias.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric": "É sério que você está roubando, @?$2#$b#*suspiro* Vou ter que te cobrar {{fineamount}} ouros por isso.$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre": "Você está roubando??!! Qual é o seu problema?!$4#$b#Pague {{fineamount}} ouros pelo que pegou e te deixarei ir, @.$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly": "Eu sei que ocê tá tentando fazer, @... Ocê num me engana não...$2#$b#Vou cobrá {{fineamount}} ouros por isso.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin": "Sério, @? Você acha mesmo que pode pegar uma TV de plasma assim de graça...$3#$b#Cobrarei {{fineamount}} ouros por isso... Talvez assim você aprenda a lição.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie": "Furtando minha palha, @? Só porquê às vezes não estou na loja, não significa que você deve roubar meus produtos.$4#$b#Se você pagar {{fineamount}} ouros, não contarei ao Lewis...$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus": "Eu sei que o prato do dia hoje está irresistível, @. Mas mesmo assim você deve pagar por ele.$3#$b#*suspiro* Se pagar {{fineamount}} ouros, esquecerei o que aconteceu, certo?$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey": "O que pensa que está fazendo, @? Esses medicamentos são perigosos se não houver prescrição médica...$8#$b#Estou te cobrando {{fineamount}} ouros por tentar roubar, @. Isso é um delito grave.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint": "Você está me roubando, @! Pensei que você fosse melhor que isso.$3#$b#Você sabe que a multa por furto é de {{fineamount}} ouros, né? É a quantia que devo te cobrar por isso.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy": "Estar mais longe da cidade não significa que minha loja é mais fácil de roubar, @.$2#$b#Me pague uma multa de {{fineamount}} ouros e eu esqueço essa história.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex": "Você está tão desesperado assim por um doce, @?$7#$b#Eu nunca pensei que um dia eu faria isso, mas... isso vai te custar {{fineamount}} ouros.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "É sério que você está roubando, @?$2#$b#*suspiro* Eu até te cobraria, mas você está sem dinheiro!$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre_NoMoney": "Você está roubando??!! Qual é o seu problema?!$4#$b#Você tem sorte por não poder pagar!$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "Eu sei que ocê tá tentando fazer, @... Ocê num me engana não...$2#$b#Coloca minha mercadoria de volta no lugar. Não posso te multar se ocê num tem como pagar.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Sério, @? Você acha mesmo que pode pegar uma TV de plasma assim de graça...$3#$b#Já que você não tem dinheiro, vou fingir que nada aconteceu desta vez.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Furtando minha palha, @? Só porquê às vezes não estou na loja, não significa que você deve roubar meus produtos.$4#$b#Geralmente há uma multa para isso, mas já que você não tem dinheiro, não posso te cobrar.$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus_NoMoney": "Eu sei que o prato do dia hoje está irresistível, @. Mas mesmo assim você deve pagar por ele.$3#$b#*suspiro* Vou te dar uma mãozinha e não te cobrarei nada desta vez.$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "O que pensa que está fazendo, @? Esses medicamentos são perigosos se não houver prescrição médica...$8#$b#Você não tem dinheiro para pagar a multa, então não te cobrarei desta vez. Mas não ouse fazer isso novamente.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Você está me roubando, @! Pensei que você fosse melhor que isso.$3#$b#Não posso te cobrar por isso desta vez, @. Já que você não tem como me pagar de qualquer forma.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Estar mais longe da cidade não significa que minha loja é mais fácil de roubar, @.$2#$b#Não se preocupe com a multa desta vez, @. Apenas vá embora.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Você está tão desesperado assim por um doce, @?$7#$b#Vou te deixar avisado desta vez.$5"
+  }

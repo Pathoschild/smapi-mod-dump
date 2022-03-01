@@ -6,9 +6,9 @@ mods:
    Quest Framework
 
 latest commit:
-   commit 1fcffe42e8ff813ad9e94dc5b3044aea0d42911f
+   commit 92049679eefdc524db759aededab35d5e673db61
    Author: PurrplingCat <ellen@purrplingcat.com>
-   Date:   Mon Jan 3 14:12:35 2022 +0100
+   Date:   Mon Jan 31 17:50:42 2022 +0100
    
-       Fix for SDV 1.5.6
+       Version 1.4.1
    

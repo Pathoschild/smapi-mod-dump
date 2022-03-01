@@ -1,0 +1,6 @@
+{
+  "stardewEventID": 19924,
+  "eventStringId": "HappyBirthday_Events_Married_BirthdayParty_Alex_Farmhouse_1",
+  "EventData": "playful/6 5/farmer 9 5 0 Alex 6 5 0/skippable/faceDirection farmer 3 True/Omegasis.HappyBirthday.Events.MakeObjectsTemporarilyInvisible 6 5 7 5 8 5 9 5/globalFadeToClear 0.007/move farmer -2 0 3 False/faceDirection Alex 1 True/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Alex SpouseBirthdayEvent_Alex_0/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Alex SpouseBirthdayEvent_Alex_1/Omegasis.HappyBirthday.Events.GivePlayerFavoriteGift/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Alex SpouseBirthdayEvent_Alex_2/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Alex SpouseBirthdayEvent_Alex_3/emote farmer 20/emote Alex 20/globalFade 0.01/viewport -400 -400 true/Omegasis.HappyBirthday.Events.ShowTranslatedMessage SpousePartyOver/end",
+  "EventPreconditionData": "Omegasis.HappyBirthday.Framework.EventPreconditions.FarmerBirthdayPrecondition/StardustCore.Events.Preconditions.TimeSpecific.TimeOfDayPrecondition 600 2600/Omegasis.HappyBirthday.Framework.EventPreconditions.GameLocationIsHome/Omegasis.HappyBirthday.Framework.EventPreconditions.FarmHouseLevelPrecondition 1/Omegasis.HappyBirthday.Framework.EventPreconditions.IsMarriedToPrecondition Alex/"
+}

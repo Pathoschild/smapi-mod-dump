@@ -19,7 +19,7 @@
   },
 
   "Foxbloom": {
-    "Value": 10,
+    "Value": 999999,
     "Effect": "GrowPlants",
     "ScriptKey": "foxbloomOffering"
   },
@@ -42,6 +42,10 @@
 
   "Village Hero Sculpture": {
     "ScriptKey": "heroOffering"
+  },
+
+  "Old Lucky Foxtail Charm": {
+    "ScriptKey": "oldluckyfoxtailOffering"
   },
 
   "Lucky Purple Shorts": {

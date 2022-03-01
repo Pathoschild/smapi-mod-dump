@@ -1,0 +1,7 @@
+{
+  "EngageBuildMode": "LeftShift + B",
+  "HoldToDraw": "MouseRight",
+  "HoldToErase": "LeftShift",
+  "ConfirmBuild": "MouseLeft",
+  "CrabPotsInAnyWaterTile": false
+}

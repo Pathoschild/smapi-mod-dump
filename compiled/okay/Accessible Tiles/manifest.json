@@ -1,8 +1,8 @@
 {
   "Name": "AccessibleTiles",
   "Author": "GrumpyCrouton",
-  "Version": "1.1.0",
-  "Description": "<One or two sentences about the mod>",
+  "Version": "2.2.3",
+  "Description": "Moved the player based on the tile grid",
   "UniqueID": "GrumpyCrouton.AccessibleTiles",
   "EntryDll": "AccessibleTiles.dll",
   "MinimumApiVersion": "3.0.0",

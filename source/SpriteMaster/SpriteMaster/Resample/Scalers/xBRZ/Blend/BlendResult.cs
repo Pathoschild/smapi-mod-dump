@@ -18,4 +18,6 @@ ref struct BlendResult {
 	internal BlendType G = 0;
 	internal BlendType J = 0;
 	internal BlendType K = 0;
+
+	public BlendResult() { }
 }

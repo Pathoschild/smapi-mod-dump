@@ -8,9 +8,13 @@
 **
 *************************************************/
 
-using System.Reflection;
+using AtraBase.Toolkit.Reflection;
+using AtraShared.Integrations;
+using AtraShared.Utils.Extensions;
+using AtraUtils = AtraShared.Utils.Utils;
 using HarmonyLib;
-
+using SpecialOrdersExtended.Managers;
+using StardewModdingAPI.Events;
 using StardewValley.GameData;
 
 namespace SpecialOrdersExtended;
@@ -18,43 +22,62 @@ namespace SpecialOrdersExtended;
 /// <inheritdoc />
 internal class ModEntry : Mod
 {
+    /// <summary>
+    /// Spacecore API handle.
+    /// </summary>
+    /// <remarks>If null, means API not loaded.</remarks>
+    private static ISpaceCoreAPI? spaceCoreAPI;
+
+    /// <summary>
+    /// Gets the Spacecore API instance.
+    /// </summary>
+    /// <remarks>If null, was not able to be loaded.</remarks>
+    internal static ISpaceCoreAPI? SpaceCoreAPI => spaceCoreAPI;
+
     // The following fields are set in the Entry method, which is about as close to the constructor as I can get
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     /// <summary>
-    /// Logger for SMAPI.
-    /// </summary>
-    private static IMonitor modMonitor;
-
-    /// <summary>
-    /// SMAPI's data writer.
-    /// </summary>
-    private static IDataHelper dataHelper;
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-
-    /// <summary>
     /// Gets the logger for this mod.
     /// </summary>
-    internal static IMonitor ModMonitor => modMonitor;
+    internal static IMonitor ModMonitor { get; private set; }
 
     /// <summary>
     /// Gets SMAPI's data helper for this mod.
     /// </summary>
-    internal static IDataHelper DataHelper => dataHelper;
+    internal static IDataHelper DataHelper { get; private set; }
+
+    /// <summary>
+    /// Gets the config class for this mod.
+    /// </summary>
+    internal static ModConfig Config { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+
+    private static Func<string, bool>? CheckTagDelegate { get; set; } = null;
 
     /// <inheritdoc/>
     public override void Entry(IModHelper helper)
     {
+        // Bind useful SMAPI features.
         I18n.Init(helper.Translation);
-        modMonitor = this.Monitor;
-        dataHelper = helper.Data;
+        ModMonitor = this.Monitor;
+        DataHelper = helper.Data;
 
+        // Read config file.
+        try
+        {
+            Config = this.Helper.ReadConfig<ModConfig>();
+        }
+        catch
+        {
+            this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
+            Config = new();
+        }
         Harmony harmony = new(this.ModManifest.UniqueID);
 
         harmony.Patch(
-            original: typeof(SpecialOrder).GetMethod("CheckTag", BindingFlags.NonPublic | BindingFlags.Static),
+            original: typeof(SpecialOrder).StaticMethodNamed("CheckTag"),
             prefix: new HarmonyMethod(typeof(TagManager), nameof(TagManager.PrefixCheckTag)));
-        ModMonitor.Log("Patching SpecialOrder::CheckTag for Special Orders Extended", LogLevel.Trace);
 
         try
         {
@@ -68,6 +91,7 @@ internal class ModEntry : Mod
             ModMonitor.Log($"Failed to patch NPC::checkForNewCurrentDialogue for Special Orders Dialogue. Dialogue will be disabled\n\n{ex}", LogLevel.Error);
         }
 
+        // Register console commands.
         helper.ConsoleCommands.Add(
             name: "special_order_pool",
             documentation: I18n.SpecialOrderPool_Description(),
@@ -82,62 +106,110 @@ internal class ModEntry : Mod
             callback: StatsManager.ConsoleListProperties);
         helper.ConsoleCommands.Add(
             name: "special_orders_dialogue",
-            documentation: $"{I18n.SpecialOrdersDialogue_Description()}\n\n{I18n.SpecialOrdersDialogue_Example()}\n    {I18n.SpecialOrdersDialogue_Usage()}",
+            documentation: $"{I18n.SpecialOrdersDialogue_Description()}\n\n{I18n.SpecialOrdersDialogue_Example()}\n    {I18n.SpecialOrdersDialogue_Usage()}\n    {I18n.SpecialOrdersDialogue_Save()}",
             callback: DialogueManager.ConsoleSpecialOrderDialogue);
-        helper.Events.GameLoop.GameLaunched += this.RegisterTokens;
+
+        // Register event handlers.
+        helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
         helper.Events.GameLoop.Saving += this.Saving;
+        helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
         helper.Events.GameLoop.OneSecondUpdateTicking += this.OneSecondUpdateTicking;
     }
 
-    private void OneSecondUpdateTicking(object? sender, StardewModdingAPI.Events.OneSecondUpdateTickingEventArgs e)
+    /// <summary>
+    /// Raised every 10 in game minutes.
+    /// </summary>
+    /// <param name="sender">Unknown, used by SMAPI.</param>
+    /// <param name="e">TimeChanged params.</param>
+    /// <remarks>Currently handles: pushing delayed dialogue back onto the stack.</remarks>
+    private void OnTimeChanged(object? sender, TimeChangedEventArgs e)
+    {
+        DialogueManager.PushPossibleDelayedDialogues();
+    }
+
+    /// <summary>
+    /// Raised every second.
+    /// </summary>
+    /// <param name="sender">Unknown, used by SMAPI.</param>
+    /// <param name="e">OneSecondUpdate params.</param>
+    /// <remarks>Currently handles: grabbing new recently completed special orders.</remarks>
+    private void OneSecondUpdateTicking(object? sender, OneSecondUpdateTickingEventArgs e)
     {
         RecentSOManager.GrabNewRecentlyCompletedOrders();
     }
 
-    private void RegisterTokens(object? sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+    /// <summary>
+    /// Raised on game launch.
+    /// </summary>
+    /// <param name="sender">Unknown, used by SMAPI.</param>
+    /// <param name="e">Game Launched arguments.</param>
+    /// <remarks>Used to bind APIs and register CP tokens.</remarks>
+    private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
-        Tokens.IContentPatcherAPI? api = this.Helper.ModRegistry.GetApi<Tokens.IContentPatcherAPI>("Pathoschild.ContentPatcher");
-        if (api is null)
-        {
-            ModMonitor.Log(I18n.CpNotInstalled(), LogLevel.Warn);
-            return;
-        }
+        // Get a delegate on SpecialOrder.CheckTag.
+        CheckTagDelegate = typeof(SpecialOrder).StaticMethodNamed("CheckTag").CreateDelegate<Func<string, bool>>();
 
-        api.RegisterToken(this.ModManifest, "Current", new Tokens.CurrentSpecialOrders());
-        api.RegisterToken(this.ModManifest, "Available", new Tokens.AvailableSpecialOrders());
-        api.RegisterToken(this.ModManifest, "Completed", new Tokens.CompletedSpecialOrders());
-        api.RegisterToken(this.ModManifest, "CurrentRules", new Tokens.CurrentSpecialOrderRule());
-        api.RegisterToken(this.ModManifest, "RecentCompleted", new Tokens.RecentCompletedSO());
+        // Bind Spacecore API
+        IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry);
+        helper.TryGetAPI("spacechase0.SpaceCore", "1.5.10", out spaceCoreAPI);
+
+        if (helper.TryGetAPI("Pathoschild.ContentPatcher", "1.20.0", out IContentPatcherAPI? api))
+        {
+            api.RegisterToken(this.ModManifest, "Current", new Tokens.CurrentSpecialOrders());
+            api.RegisterToken(this.ModManifest, "Available", new Tokens.AvailableSpecialOrders());
+            api.RegisterToken(this.ModManifest, "Completed", new Tokens.CompletedSpecialOrders());
+            api.RegisterToken(this.ModManifest, "CurrentRules", new Tokens.CurrentSpecialOrderRule());
+            api.RegisterToken(this.ModManifest, "RecentCompleted", new Tokens.RecentCompletedSO());
+        }
     }
 
-    private void Saving(object? sender, StardewModdingAPI.Events.SavingEventArgs e)
+    /// <summary>
+    /// Raised right before the game is saved.
+    /// </summary>
+    /// <param name="sender">Unknown, used by SMAPI.</param>
+    /// <param name="e">Event arguments.</param>
+    /// <remarks>Used to handle day-end events.</remarks>
+    private void Saving(object? sender, SavingEventArgs e)
     {
         this.Monitor.DebugLog("Event Saving raised");
 
         DialogueManager.Save(); // Save dialogue
+        DialogueManager.ClearDelayedDialogue();
 
         if (Context.IsSplitScreen && Context.ScreenId != 0)
         {// Some properties only make sense for a single player to handle in splitscreen.
             return;
         }
 
+        TagManager.ResetRandom();
         StatsManager.ClearProperties(); // clear property cache, repopulate at next use
         RecentSOManager.GrabNewRecentlyCompletedOrders();
         RecentSOManager.DayUpdate(Game1.stats.daysPlayed);
         RecentSOManager.Save();
     }
 
-    private void SaveLoaded(object? sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
+    /// <summary>
+    /// Raised when save is loaded.
+    /// </summary>
+    /// <param name="sender">Unknown, used by SMAPI.</param>
+    /// <param name="e">Parameters.</param>
+    /// <remarks>Used to load in this mod's data models.</remarks>
+    private void SaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
         this.Monitor.DebugLog("Event SaveLoaded raised");
         DialogueManager.Load(Game1.player.UniqueMultiplayerID);
         RecentSOManager.Load();
     }
 
+    /// <summary>
+    /// Console commands to check the value of a tag.
+    /// </summary>
+    /// <param name="command">Name of the command.</param>
+    /// <param name="args">List of tags to check.</param>
     private void ConsoleCheckTag(string command, string[] args)
     {
-        if (!Context.IsWorldReady)
+        if (!Context.IsWorldReady || CheckTagDelegate is null)
         {
             ModMonitor.Log(I18n.LoadSaveFirst(), LogLevel.Debug);
             return;
@@ -155,11 +227,15 @@ internal class ModEntry : Mod
             {
                 base_tag = tag.Trim();
             }
-            bool result = match == this.Helper.Reflection.GetMethod(typeof(SpecialOrder), "CheckTag").Invoke<bool>(base_tag);
-            ModMonitor.Log($"{tag}: {(result ? I18n.True() : I18n.False())}", LogLevel.Debug);
+            ModMonitor.Log($"{tag}: {(match == CheckTagDelegate(base_tag) ? I18n.True() : I18n.False())}", LogLevel.Debug);
         }
     }
 
+    /// <summary>
+    /// Console command to get all available orders.
+    /// </summary>
+    /// <param name="command">Name of command.</param>
+    /// <param name="args">Arguments for command.</param>
     private void GetAvailableOrders(string command, string[] args)
     {
         if (!Context.IsWorldReady)
@@ -167,7 +243,7 @@ internal class ModEntry : Mod
             ModMonitor.Log(I18n.LoadSaveFirst(), LogLevel.Warn);
         }
         Dictionary<string, SpecialOrderData> order_data = Game1.content.Load<Dictionary<string, SpecialOrderData>>("Data\\SpecialOrders");
-        List<string> keys = Utilities.ContextSort(order_data.Keys);
+        List<string> keys = AtraUtils.ContextSort(order_data.Keys);
         ModMonitor.Log(I18n.NumberFound(count: keys.Count), LogLevel.Debug);
 
         List<string> validkeys = new();
@@ -243,7 +319,7 @@ internal class ModEntry : Mod
                     trimmed_tag = tag;
                 }
 
-                if (!(match == this.Helper.Reflection.GetMethod(typeof(SpecialOrder), "CheckTag").Invoke<bool>(trimmed_tag)))
+                if (!(CheckTagDelegate?.Invoke(trimmed_tag) == match))
                 {
                     ModMonitor.Log($"         {I18n.TagFailed()}: {tag}", LogLevel.Debug);
                 }

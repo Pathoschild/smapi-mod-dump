@@ -1,10 +1,10 @@
 {
   "Name": "DialogueBoxRedesign",
   "Author": "GZhynko",
-  "Version": "1.0.4",
+  "Version": "1.1.1",
   "Description": "Makes the dialogue box a bit lighter.",
   "UniqueID": "GZhynko.DialogueBoxRedesign",
   "EntryDll": "DialogueBoxRedesign.dll",
-  "MinimumApiVersion": "3.12.0",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": [ "Nexus:8853" ]
 }

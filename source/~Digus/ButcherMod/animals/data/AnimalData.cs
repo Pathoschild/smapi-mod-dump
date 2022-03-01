@@ -20,6 +20,8 @@ namespace AnimalHusbandryMod.animals.data
 {
     public class AnimalData
     {
+        public static readonly string[] BaseGameAnimals = new string[] { "White Chicken", "Brown Chicken", "Blue Chicken", "Void Chicken", "Golden Chicken", "Duck", "Rabbit", "Dinosaur", "White Cow", "Brown Cow", "Goat", "Pig", "Hog", "Sheep", "Ostrich" };
+
         public const long PetId = -10;
 
         public CowItem Cow;

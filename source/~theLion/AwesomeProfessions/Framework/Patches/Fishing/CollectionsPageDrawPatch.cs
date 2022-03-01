@@ -24,9 +24,10 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
-using AssetLoaders;
 using Extensions;
+using Utility;
 
 #endregion using directives
 
@@ -44,7 +45,7 @@ internal class CollectionsPageDrawPatch : BasePatch
     /// <summary>Patch to overlay MAX fish size indicator on the Collections page fish tab.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> CollectionsPageDrawTranspiler(IEnumerable<CodeInstruction> instructions,
-        ILGenerator iLGenerator, MethodBase original)
+        ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -69,6 +70,7 @@ internal class CollectionsPageDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching to draw collections page MAX icons. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -90,9 +92,9 @@ internal class CollectionsPageDrawPatch : BasePatch
                  where Game1.player.HasCaughtMaxSized(index)
                  select c)
         {
-            var destRect = new Rectangle(c.bounds.Right - Textures.MAX_ICON_WIDTH_I,
-                c.bounds.Bottom - Textures.MAX_ICON_HEIGHT_I, Textures.MAX_ICON_WIDTH_I,
-                Textures.MAX_ICON_HEIGHT_I);
+            var destRect = new Rectangle(c.bounds.Right - Textures.MaxIconTx.Width * 2,
+                c.bounds.Bottom - Textures.MaxIconTx.Height * 2, Textures.MaxIconTx.Width * 2,
+                Textures.MaxIconTx.Height * 2);
             b.Draw(Textures.MaxIconTx, destRect, Color.White);
         }
     }

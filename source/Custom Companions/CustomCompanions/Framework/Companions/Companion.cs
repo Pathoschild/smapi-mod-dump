@@ -214,7 +214,8 @@ namespace CustomCompanions.Framework.Companions
                 // Check if displaying a portrait is required
                 if (this.Portrait != null)
                 {
-                    this.CurrentDialogue.Push(new Dialogue(dialogueText, this));
+                    string currentEmotion = int.TryParse(this.model.Portrait.FrameIndex.ToString(), out _) ? $"${this.model.Portrait.FrameIndex}" : this.model.Portrait.FrameIndex.ToString();
+                    this.CurrentDialogue.Push(new Dialogue(dialogueText, this) { CurrentEmotion = currentEmotion });
                     Game1.drawDialogue(this);
                 }
                 else

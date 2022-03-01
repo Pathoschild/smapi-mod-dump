@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using PlatoTK;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -98,7 +98,7 @@ namespace MapTK.Locations
             var api = Helper.ModRegistry.GetApi<PlatoTK.APIs.IContentPatcher>("Pathoschild.ContentPatcher");
             api.RegisterToken(Helper.ModRegistry.Get(Helper.ModRegistry.ModID).Manifest, "Locations", new LocationsToken());
 
-            HarmonyInstance instance = HarmonyInstance.Create("Platonymous.MapTK.AddLocations");
+            Harmony instance = new Harmony("Platonymous.MapTK.AddLocations");
             instance.Patch(AccessTools.Method(typeof(SaveGame),nameof(SaveGame.loadDataToLocations)), prefix: new HarmonyMethod(typeof(LocationsHandler),nameof(GameLocationsPatch)));
 
             instance.Patch(AccessTools.Method(typeof(NPC), nameof(NPC.populateRoutesFromLocationToLocationList)), prefix: new HarmonyMethod(typeof(LocationsHandler), nameof(SetLocationsBeforeRoutes)));

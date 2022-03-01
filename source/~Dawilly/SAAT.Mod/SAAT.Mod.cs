@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 using Microsoft.Xna.Framework.Audio;
@@ -74,6 +75,7 @@ namespace SAAT.Mod {
 
             helper.ConsoleCommands.Add("tracktemplate", "Generates an example JSON file. Results will be tracks.json in the SAAT.Mod folder.", this.GenerateSampleJson);
             helper.ConsoleCommands.Add("audiodebug", "Sets the debugging state for SAAT.Mod, enabling playlist control for audio tracks.", this.EnableDebug);
+            helper.ConsoleCommands.Add("addtojukebox", "Forcibly adds an audio track to the jukebox playlist, regardless if the player has heard the track.", this.AddToJukebox);
         }
 
         /// <summary>
@@ -212,7 +214,7 @@ namespace SAAT.Mod {
         {
             if (argv.Length < 1)
             {
-                this.Monitor.Log("Insufficient command arguments. Syntax: setdebug <value>. Where <value> is either true or false.", LogLevel.Info);
+                this.ErrorInsufficientArguments("Syntax: setdebug <value>. Where <value> is either true or false.");
                 return;
             }
 
@@ -237,6 +239,52 @@ namespace SAAT.Mod {
             }
 
             this.DebugMode = results;
+        }
+
+        /// <summary>
+        /// Command callback that forcibly adds a track to the jukebox's playlist, regardless if the player has heard the track.
+        /// </summary>
+        /// <param name="command">The called command.</param>
+        /// <param name="argv">The argument value(s).</param>
+        private void AddToJukebox(string command, string[] argv)
+        {
+            if (argv.Length < 1)
+            {
+                this.ErrorInsufficientArguments("Syntax: addtojukebox <id>. Where <id> is a valid track id; registered into the game by another mod.");
+                return;
+            }
+
+            string id = argv[0];
+            string message;
+            LogLevel level;
+
+            if (!this.audioApi.AddToJukebox(id, out var errorCode))
+            {
+                switch(errorCode)
+                {
+                    case AudioOperationError.AssetNotFound:
+                        message = $"Could not find the cue: {id}";
+                        break;
+
+                    case AudioOperationError.Exists:
+                        message = $"{id} is already registered to the jukebox playlist.";
+                        break;
+
+                    default:
+                    case AudioOperationError.Failed:
+                        message = $"Failed to add {id} for unknown reason.";
+                        break;
+                }
+
+                level = LogLevel.Warn;
+            }
+            else
+            {
+                message = $"Successfully added {id} to the jukebox.";
+                level = LogLevel.Info;
+            }
+
+            this.Monitor.Log(message, level);
         }
 
         /// <summary>
@@ -276,6 +324,12 @@ namespace SAAT.Mod {
             if (this.index == -1) return;
 
             this.activeTrack.Stop(AudioStopOptions.Immediate);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void ErrorInsufficientArguments(string specificDetails)
+        {
+            this.Monitor.Log($"Insufficient command arguments. {specificDetails}", LogLevel.Info);
         }
     }
 }

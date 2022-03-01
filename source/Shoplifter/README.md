@@ -62,9 +62,10 @@ Shoplifter fully supports translation! Currently available in:
 - Italian, thanks to peanutbatteries!
 - French, thanks to Breeis!
 - Portuguese, thanks to Kadomine!
+- German, thanks to NotErikWasTaken!
 
 New translations always welcome! The best place to reach me is on the Shoplifter [mod page](https://www.nexusmods.com/stardewvalley/mods/8569).
-Translations are released seperately to the main files until a sufficient number of translations are received for a full release. One more and I'll release all current translations as a new update.
+Translations are released seperately to the main files until a sufficient number of translations are received for a full release. 1.1.3 was the last translation full release.
 
 ## Versions ##
 1.0.0 - Initial release
@@ -72,6 +73,8 @@ Translations are released seperately to the main files until a sufficient number
 1.1.0 - Made shoplifting preferences configurable, added Icecream Stand as shopliftable
 
 1.1.2 - Added translation support
+
+1.1.3 - Added Korean, Chinese, French, Portuguese, German and Italian translations
 
 
 

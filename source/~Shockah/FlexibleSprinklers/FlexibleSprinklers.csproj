@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>Shockah.FlexibleSprinklers</RootNamespace>
+		<Version>1.2.4</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>Nullable</WarningsAsErrors>
+		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+	<Import Project="..\_Common\_Common.projitems" Label="Shared" />
+</Project>

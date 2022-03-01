@@ -18,14 +18,17 @@ namespace SpriteMaster.Resample.Scalers;
 abstract class Config : IEquatable<Config> {
 	internal readonly Vector2B Wrapped;
 	internal readonly bool HasAlpha;
+	internal readonly bool GammaCorrected;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	protected Config(
 		Vector2B wrapped,
-		bool hasAlpha
+		bool hasAlpha,
+		bool gammaCorrected
 	) {
 		Wrapped = wrapped;
 		HasAlpha = hasAlpha;
+		GammaCorrected = gammaCorrected;
 	}
 
 	public bool Equals(Config? other) {

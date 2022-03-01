@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/CJBok/SDV-Mods
+**
+*************************************************/
+
+{
+    /*********
+    ** Sort button
+    *********/
+    "sort.by-name": "Nazwa",
+    "sort.by-type": "Rodzaj",
+    "sort.by-id": "ID",
+
+
+    /*********
+    ** Category dropdown
+    *********/
+    "filter.all": "Wszystko",
+    "filter.artisan-and-cooking": "Wyroby i gotowanie",
+    "filter.crafting.products": "Wytwarzanie: przedmioty",
+    "filter.crafting.resources": "Wytwarzanie: zasoby",
+    "filter.decor.furniture": "Dekoracje: meble",
+    "filter.decor.other": "Dekoracje: pozostałe",
+    "filter.equipment-boots": "Ekwipunek: obuwie",
+    "filter.equipment-clothes": "Ekwipunek: ubrania",
+    "filter.equipment-hats": "Ekwipunek: czapki",
+    "filter.equipment-rings": "Ekwipunek: pierścienie",
+    "filter.equipment-tools": "Ekwipunek: narzędzia",
+    "filter.equipment-weapons": "Ekwipunek: bronie",
+    "filter.farm-animal-drops": "Farma: zwierzęta i potwory",
+    "filter.farm-crops": "Farma: uprawy",
+    "filter.farm-seeds": "Farma: nasiona",
+    "filter.fish": "Ryby",
+    "filter.minerals-and-artifacts": "Minerały i artefakty",
+    "filter.miscellaneous": "Różne"
+}

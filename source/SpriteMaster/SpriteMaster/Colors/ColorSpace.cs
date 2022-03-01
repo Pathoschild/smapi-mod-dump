@@ -9,6 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
+using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
 using System.Runtime.CompilerServices;
@@ -64,17 +65,53 @@ readonly struct ColorSpace {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly byte Linearize(Fixed8 value) => Linearize(value.Value);
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal readonly Color8 Linearize(in Color8 color) {
+		return new(
+			Linearize(color.R),
+			Linearize(color.G),
+			Linearize(color.B),
+			color.A
+		);
+	}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly ushort Linearize(ushort value) => LinearizeTable16[value];
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly Fixed16 Linearize(Fixed16 value) => Linearize(value.Value);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal readonly Color16 Linearize(in Color16 color) {
+		return new(
+			Linearize(color.R),
+			Linearize(color.G),
+			Linearize(color.B),
+			color.A
+		);
+	}
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly byte Delinearize(byte value) => DelinearizeTable8[value];
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly byte Delinearize(Fixed8 value) => Delinearize(value.Value);
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal readonly Color8 Delinearize(in Color8 color) {
+		return new(
+			Delinearize(color.R),
+			Delinearize(color.G),
+			Delinearize(color.B),
+			color.A
+		);
+	}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly ushort Delinearize(ushort value) => DelinearizeTable16[value];
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly Fixed16 Delinearize(Fixed16 value) => Delinearize(value.Value);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal readonly Color16 Delinearize(in Color16 color) {
+		return new(
+			Delinearize(color.R),
+			Delinearize(color.G),
+			Delinearize(color.B),
+			color.A
+		);
+	}
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
 	private static T ConvertTo<U, T>(U value) => (T)Convert.ChangeType(value, typeof(T))!;

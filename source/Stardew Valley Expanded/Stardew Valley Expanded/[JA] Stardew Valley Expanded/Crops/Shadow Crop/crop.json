@@ -22,4 +22,6 @@
 	"Bonus": {
 		"MaxIncreasePerFarmLevel": 2,
 	},
+	"TranslationKey": "crop.shadow-crop",
+	"SeedTranslationKey": "crop.void-seed",
 }

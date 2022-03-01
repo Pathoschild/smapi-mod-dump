@@ -21,18 +21,14 @@ static class GammaCorrection {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void Delinearize(Span<Color16> data, in Vector2I size) {
 		foreach (ref Color16 color in data) {
-			color.R = ColorSpace.Delinearize(color.R);
-			color.G = ColorSpace.Delinearize(color.G);
-			color.B = ColorSpace.Delinearize(color.B);
+			color = ColorSpace.Delinearize(color);
 		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void Linearize(Span<Color16> data, in Vector2I size) {
 		foreach (ref Color16 color in data) {
-			color.R = ColorSpace.Linearize(color.R);
-			color.G = ColorSpace.Linearize(color.G);
-			color.B = ColorSpace.Linearize(color.B);
+			color = ColorSpace.Linearize(color);
 		}
 	}
 }

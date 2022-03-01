@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Buildings;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using Extensions;
 
@@ -45,9 +46,8 @@ internal class FishPondIsLegalFishForPondsPatch : BasePatch
         var helper = new ILHelper(original, instructions);
 
         /// From: if (fish_item.HasContextTag("fish_legendary")) ...
-        /// To: if (fish_item.HasContextTag("fish_legendary") && !who.HasPrestigedProfession("Aquarist"))
+        /// To: if (fish_item.HasContextTag("fish_legendary") && !owner.HasPrestigedProfession("Aquarist"))
 
-        var checkProfession = ilGenerator.DefineLabel();
         try
         {
             helper
@@ -69,6 +69,7 @@ internal class FishPondIsLegalFishForPondsPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Aquarist permission to raise legendary fish.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -81,8 +82,8 @@ internal class FishPondIsLegalFishForPondsPatch : BasePatch
 
     private static bool IsLegalFishForPondsSubroutine(FishPond pond)
     {
-        var who = Game1.getFarmerMaybeOffline(pond.owner.Value) ?? Game1.MasterPlayer;
-        return who.HasProfession(Profession.Aquarist, true);
+        var owner = Game1.getFarmerMaybeOffline(pond.owner.Value) ?? Game1.MasterPlayer;
+        return owner.HasProfession(Profession.Aquarist, true);
     }
 
     #endregion injected subroutines

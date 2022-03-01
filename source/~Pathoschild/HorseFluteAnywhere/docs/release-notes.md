@@ -9,8 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Improved translations. Thanks to wally232 (added Korean)!
+## 1.1.14
+Released 27 February 2022 for SMAPI 3.13.0 or later.
+
+* Fixed compatibility issue with Deep Woods mod.
+* Improved translations. Thanks to EmWhyKay (added Turkish) and wally232 (added Korean)!
 
 ## 1.1.13
 Released 14 January 2022 for SMAPI 3.13.0 or later.

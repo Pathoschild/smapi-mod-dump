@@ -9,7 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.37.0
+Released 27 February 2022 for SMAPI 3.13.0 or later.
+
 * Improved movie ticket lookups:
   * Added list of villagers who'd refuse to watch it.
   * Fixed error if some NPCs will reject the invitation.
@@ -17,7 +19,7 @@ for queries and analysis.**
 * Fixed item lookups no longer showing construction recipes.
 * Fixed error when the community center bundle data is invalid.
 * Fixed a few missing translations in some languages.
-* Improved translations. Thanks to ChulkyBow (updated Ukrainian) and wally232 (added Korean)!
+* Improved translations. Thanks to ChulkyBow (updated Ukrainian), EmWhyKay (updated Turkish), Evexyron (updated Spanish), Scartiana (updated German), and wally232 (added Korean)!
 
 ## 1.36.2
 Released 14 January 2022 for SMAPI 3.13.0 or later.

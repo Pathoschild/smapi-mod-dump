@@ -21,6 +21,7 @@ using JetBrains.Annotations;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using SuperMode;
 
@@ -43,13 +44,13 @@ internal class FarmerTakeDamagePatch : BasePatch
     /// </summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> FarmerTakeDamageTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
-        /// Injected: else if (this.IsLocalPlayer && SuperMode.IsActive && SuperMode.Index == <poacher_id>) monsterDamageCapable = false;
+        /// Injected: else if (this.IsLocalPlayer && SuperMode.IsActive && SuperMode is PoacherColdBlood) monsterDamageCapable = false;
 
-        var alreadyUndamageableOrNotAmbuscade = iLGenerator.DefineLabel();
+        var alreadyUndamageableOrNotAmbuscade = generator.DefineLabel();
         try
         {
             helper
@@ -64,35 +65,25 @@ internal class FarmerTakeDamagePatch : BasePatch
                     new CodeInstruction(OpCodes.Brfalse_S, alreadyUndamageableOrNotAmbuscade),
                     // check if this.IsLocalPlayer
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Call,
+                    new CodeInstruction(OpCodes.Callvirt,
                         typeof(Farmer).PropertyGetter(nameof(Farmer.IsLocalPlayer))),
                     new CodeInstruction(OpCodes.Brfalse_S, alreadyUndamageableOrNotAmbuscade),
-                    // check if SuperMode is null
+                    // check if SuperMode is PoacherColdBlood
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.SuperMode))),
+                    new CodeInstruction(OpCodes.Isinst, typeof(PoacherColdBlood)),
                     new CodeInstruction(OpCodes.Brfalse_S, alreadyUndamageableOrNotAmbuscade),
-                    // check if SuperMode.Index == <poacher_id>
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.Index))),
-                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) SuperModeIndex.Poacher),
-                    new CodeInstruction(OpCodes.Bne_Un_S, alreadyUndamageableOrNotAmbuscade),
                     // check if SuperMode.IsActive
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.SuperMode))),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(SuperMode).PropertyGetter(nameof(SuperMode.IsActive))),
                     new CodeInstruction(OpCodes.Brfalse_S, alreadyUndamageableOrNotAmbuscade),
@@ -104,14 +95,15 @@ internal class FarmerTakeDamagePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Poacher untargetability during Super Mode.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
-        /// Injected: if (IsSuperModeActive && SuperModeIndex == <brute_id>) health = 1;
+        /// Injected: if (IsSuperModeActive && SuperMode is BruteFury) health = 1;
         /// After: if (health <= 0)
         /// Before: GetEffectsOfRingMultiplier(863)
 
-        var isNotUndyingButMayHaveDailyRevive = iLGenerator.DefineLabel();
+        var isNotUndyingButMayHaveDailyRevive = generator.DefineLabel();
         try
         {
             helper
@@ -129,32 +121,22 @@ internal class FarmerTakeDamagePatch : BasePatch
                 .Advance()
                 .AddLabels(isNotUndyingButMayHaveDailyRevive)
                 .Insert(
-                    // check if SuperMode is null
+                    // check if SuperMode is BruteFury
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.SuperMode))),
+                    new CodeInstruction(OpCodes.Isinst, typeof(BruteFury)),
                     new CodeInstruction(OpCodes.Brfalse_S, isNotUndyingButMayHaveDailyRevive),
-                    // check if SuperMode.Index == <brute_id>
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.Index))),
-                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) SuperModeIndex.Brute),
-                    new CodeInstruction(OpCodes.Bne_Un_S, isNotUndyingButMayHaveDailyRevive),
                     // check if SuperMode.IsActive
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.SuperMode))),
                     new CodeInstruction(OpCodes.Callvirt,
                         typeof(SuperMode).PropertyGetter(nameof(SuperMode.IsActive))),
                     new CodeInstruction(OpCodes.Brfalse_S, isNotUndyingButMayHaveDailyRevive),
@@ -170,13 +152,14 @@ internal class FarmerTakeDamagePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Brute Super Mode immortality.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
-        /// Injected: if (SuperModeIndex == <brute_id> && damage > 0) SuperModeGaugeValue += 2;
+        /// Injected: if (SuperMode is BruteFury && damage > 0) SuperMode.ChargeValue += 2;
         /// At: end of method (before return)
 
-        var dontIncreaseBruteCounterForDamage = iLGenerator.DefineLabel();
+        var dontIncreaseBruteCounterForDamage = generator.DefineLabel();
         try
         {
             helper
@@ -185,62 +168,50 @@ internal class FarmerTakeDamagePatch : BasePatch
                 )
                 .AddLabels(dontIncreaseBruteCounterForDamage) // branch here to skip gauge increment
                 .Insert(
-                    // check if SuperMode is null
+                    // check if SuperMode is BruteFury
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.SuperMode))),
+                    new CodeInstruction(OpCodes.Isinst, typeof(BruteFury)),
                     new CodeInstruction(OpCodes.Brfalse_S, dontIncreaseBruteCounterForDamage),
-                    // check if SuperMode.Index == <brute_id>
-                    new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.Index))),
-                    new CodeInstruction(OpCodes.Ldc_I4_S, (int) SuperModeIndex.Brute),
-                    new CodeInstruction(OpCodes.Bne_Un_S, dontIncreaseBruteCounterForDamage),
                     // check if farmer received any damage
                     new CodeInstruction(OpCodes.Ldarg_1), // arg 1 = int damage
-                    new CodeInstruction(OpCodes.Ldc_I4_0),
-                    new CodeInstruction(OpCodes.Ble_S, dontIncreaseBruteCounterForDamage),
+                    new CodeInstruction(OpCodes.Brtrue_S, dontIncreaseBruteCounterForDamage),
                     // if so, increment gauge by 2
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.SuperMode))),
-                    new CodeInstruction(OpCodes.Callvirt,
-                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.Gauge))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.SuperMode))),
                     new CodeInstruction(OpCodes.Dup),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(SuperModeGauge).PropertyGetter(nameof(SuperModeGauge.CurrentValue))),
+                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.ChargeValue))),
                     new CodeInstruction(OpCodes.Ldc_R8, 2.0), // <-- increment amount
-                    // increment by config factor
+                    // scale by config factor
                     new CodeInstruction(OpCodes.Call, typeof(ModEntry).PropertyGetter(nameof(ModEntry.Config))),
                     new CodeInstruction(OpCodes.Callvirt, typeof(ModConfig).PropertyGetter(nameof(ModConfig.SuperModeGainFactor))),
-                    new CodeInstruction(OpCodes.Conv_R8),
                     new CodeInstruction(OpCodes.Mul),
                     // scale for extended levels
                     new CodeInstruction(OpCodes.Call,
-                        typeof(SuperModeGauge).PropertyGetter(nameof(SuperModeGauge.MaxValue))),
+                        typeof(SuperMode).PropertyGetter(nameof(SuperMode.MaxValue))),
                     new CodeInstruction(OpCodes.Conv_R8),
-                    new CodeInstruction(OpCodes.Ldc_R8, 500.0),
+                    new CodeInstruction(OpCodes.Ldc_R8, (double) SuperMode.INITIAL_MAX_VALUE_I),
                     new CodeInstruction(OpCodes.Div),
                     new CodeInstruction(OpCodes.Mul),
+                    // increment
                     new CodeInstruction(OpCodes.Add),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(SuperModeGauge).PropertySetter(nameof(SuperModeGauge.CurrentValue)))
+                        typeof(SuperMode).PropertySetter(nameof(SuperMode.ChargeValue)))
                 );
         }
         catch (Exception ex)
         {
             Log.E($"Failed while adding Brute Fury gauge for damage taken.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

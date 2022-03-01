@@ -77,3 +77,6 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 #### 5.3:
 * Sunflowers are now considered flowers.
+
+#### 5.6:
+* Fix issue with [Tractor Mod](https://www.nexusmods.com/stardewvalley/mods/1401) harvesting weeds as weeds.

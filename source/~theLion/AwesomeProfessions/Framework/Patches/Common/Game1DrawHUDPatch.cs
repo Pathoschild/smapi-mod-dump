@@ -14,6 +14,7 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Common;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
@@ -21,7 +22,9 @@ using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.TerrainFeatures;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using Extensions;
 
@@ -40,26 +43,35 @@ internal class Game1DrawHUDPatch : BasePatch
 
     #region harmony patches
 
-    /// <summary>Patch for Prospector to track ladders and shafts.</summary>
+    /// <summary>Patch for Prospector to track ladders and shafts + Scavenger to track berry bushes.</summary>
     [HarmonyPostfix]
     private static void Game1DrawHUDPostfix()
     {
-        if (!Game1.player.HasProfession(Profession.Prospector) || Game1.currentLocation is not MineShaft shaft) return;
-        foreach (var tile in shaft.GetLadderTiles())
-            ModEntry.State.Value.Pointer.DrawAsTrackingPointer(tile, Color.Lime);
+        // track ladders and shafts as Prospector
+        if (Game1.player.HasProfession(Profession.Prospector) && Game1.currentLocation is MineShaft shaft)
+            foreach (var tile in shaft.GetLadderTiles())
+                ModEntry.PlayerState.Value.Pointer.DrawAsTrackingPointer(tile, Color.Lime);
+        
+        // track berry bushes as Scavenger
+        else if (Game1.player.HasProfession(Profession.Scavenger) && Game1.currentLocation is {IsOutdoors: true} outdoors)
+            foreach (var bush in outdoors.largeTerrainFeatures.OfType<Bush>().Where(b =>
+                         !b.townBush.Value && b.tileSheetOffset.Value == 1 &&
+                         b.inBloom(Game1.GetSeasonForLocation(outdoors), Game1.dayOfMonth)))
+                ModEntry.PlayerState.Value.Pointer.DrawAsTrackingPointer(bush.tilePosition.Value, Color.Yellow);
+
     }
 
     /// <summary>Patch for Scavenger and Prospector to track different stuff.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> Game1DrawHUDTranspiler(IEnumerable<CodeInstruction> instructions,
-        ILGenerator iLGenerator, MethodBase original)
+        ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// From: if (!player.professions.Contains(<scavenger_id>) || !currentLocation.IsOutdoors) return
         /// To: if (!(player.professions.Contains(<scavenger_id>) || player.professions.Contains(<prospector_id>)) return
 
-        var isProspector = iLGenerator.DefineLabel();
+        var isProspector = generator.DefineLabel();
         try
         {
             helper
@@ -92,6 +104,7 @@ internal class Game1DrawHUDPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -124,13 +137,14 @@ internal class Game1DrawHUDPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded tracking pointers draw condition. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
         /// Injected: if (!player.professions.Contains(<prospector_id>)) return
         /// Before panning tracker
 
-        var drawPanningTracker = iLGenerator.DefineLabel();
+        var drawPanningTracker = generator.DefineLabel();
         try
         {
             helper
@@ -152,6 +166,7 @@ internal class Game1DrawHUDPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching Prospector restriction for panning tacker. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

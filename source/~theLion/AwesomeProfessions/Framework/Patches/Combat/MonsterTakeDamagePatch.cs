@@ -24,7 +24,6 @@ using StardewValley.Monsters;
 using StardewValley.Tools;
 
 using Stardew.Common.Extensions;
-using Stardew.Common.Harmony;
 using SuperMode;
 
 #endregion using directives
@@ -32,6 +31,8 @@ using SuperMode;
 [UsedImplicitly]
 internal class MonsterTakeDamagePatch : BasePatch
 {
+    private static readonly FieldInfo _ShellGone = typeof(RockCrab).Field("shellGone");
+
     /// <inheritdoc />
     public override void Apply(Harmony harmony)
     {
@@ -62,14 +63,14 @@ internal class MonsterTakeDamagePatch : BasePatch
         try
         {
             if (damage <= 0 || isBomb ||
-                ModEntry.State.Value.SuperMode is not {Index: SuperModeIndex.Poacher, IsActive: true} ||
+                ModEntry.PlayerState.Value.SuperMode is not PoacherColdBlood {IsActive: true} ||
                 who.CurrentTool is not MeleeWeapon weapon || weapon.isOnSpecial) return true; // run original logic
 
             if (__instance is Bug bug && bug.isArmoredBug.Value &&
                 !weapon.hasEnchantmentOfType<BugKillerEnchantment>() // skip armored bugs
                 || __instance is LavaCrab && __instance.Sprite.currentFrame % 4 == 0 // skip shelled lava crabs
-                || __instance is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 && !ModEntry.ModHelper
-                    .Reflection.GetField<NetBool>(crab, "shellGone").GetValue().Value // skip shelled rock crabs
+                || __instance is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 &&
+                !((NetBool) _ShellGone.GetValue(crab))!.Value // skip shelled Rock Crabs
                 || __instance is LavaLurk lurk &&
                 lurk.currentState.Value == LavaLurk.State.Submerged // skip submerged lava lurks
                 || __instance is Spiker // skip spikers
@@ -96,8 +97,8 @@ internal class MonsterTakeDamagePatch : BasePatch
     private static void MonsterTakeDamagePostfix(Monster __instance, int damage, bool isBomb, Farmer who)
     {
         if (damage > 0 && !isBomb && who.IsLocalPlayer &&
-            ModEntry.State.Value.SuperMode is {Index: SuperModeIndex.Poacher, IsActive: true} &&
-            __instance.Health > 0) ModEntry.State.Value.SuperMode.Deactivate();
+            ModEntry.PlayerState.Value.SuperMode is PoacherColdBlood {IsActive: true} &&
+            __instance.Health > 0) ModEntry.PlayerState.Value.SuperMode.Deactivate();
     }
 
     #endregion harmony patches

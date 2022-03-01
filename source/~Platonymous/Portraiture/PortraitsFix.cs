@@ -10,7 +10,7 @@
 
 using System;
 using System.Reflection;
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using PyTK.Types;
 using StardewValley;

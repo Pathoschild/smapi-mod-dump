@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/WizardsLizards/CauldronOfChance
+   Git: https://github.com/WizardsLizards/CauldronOfChance.git
+
+mods:
+   Cauldron of Chance
+
+latest commit:
+   commit 8793bb8727401543208c4e2d96126568575cb5bc
+   Author: WizardsLizards <focdom@gmail.com>
+   Date:   Thu Feb 10 23:34:10 2022 +0100
+   
+       1.01
+   

@@ -6,9 +6,9 @@ mods:
    Farm Cave Spawns More Tree Fruit
 
 latest commit:
-   commit ed03b5808610ff35fe3d9c37243fe1c2a286ce71
+   commit 877d5276a9db891b87837941e6fc5e470081bd39
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Mon Jan 24 01:38:01 2022 -0500
+   Date:   Sun Feb 27 00:30:40 2022 -0500
    
-       A little reorganization, make stylecop happy.
+       Fix issues with error items if no tree fruit were possible (ie seasonal only, but in winter)
    

@@ -134,7 +134,7 @@ namespace InstantGrowTrees
         {
             RegularTreeConfig config = this.Config.NonFruitTrees;
 
-            // check if growable
+            // skip if can't grow
             if (tree.growthStage.Value >= Tree.treeStage || !this.CanGrowNow(location, config.InstantlyGrowInWinter))
                 return;
 
@@ -142,7 +142,7 @@ namespace InstantGrowTrees
             int maxStage = Tree.treeStage;
             if (!config.InstantlyGrowWhenInvalid)
             {
-                // ignore trees on nospawn tiles
+                // ignore trees on no-spawn tiles
                 string isNoSpawn = location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "NoSpawn", "Back");
                 if (isNoSpawn != null && (isNoSpawn == "All" || isNoSpawn == "Tree"))
                     return;
@@ -179,7 +179,7 @@ namespace InstantGrowTrees
         {
             FruitTreeConfig config = this.Config.FruitTrees;
 
-            // check if growable
+            // skip if can't grow
             bool isGrown = tree.growthStage.Value >= FruitTree.treeStage;
             bool isMature = tree.daysUntilMature.Value <= 0;
             if ((isGrown && isMature) || !this.CanGrowNow(location, config.InstantlyGrowInWinter))
@@ -215,7 +215,7 @@ namespace InstantGrowTrees
         {
             FruitTreeConfig config = this.Config.FruitTrees;
 
-            // check if ageable
+            // skip if can't be aged
             if (!config.InstantlyAge || tree.growthStage.Value < FruitTree.treeStage || tree.daysUntilMature.Value <= -ModEntry.FruitTreeIridiumDays)
                 return;
 

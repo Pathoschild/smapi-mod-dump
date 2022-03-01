@@ -10,7 +10,6 @@
 
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
-using System.Drawing;
 using System.Drawing.Imaging;
 
 namespace xBRZ;
@@ -22,9 +21,9 @@ static class Common {
 		Console.WriteLine($"Reading {path}");
 
 		using var rawImage = Image.FromFile(path.LocalPath);
-		using var image = new Bitmap(rawImage.Width + 64, rawImage.Height + 64, PixelFormat.Format32bppArgb);
+		using var image = new Bitmap(rawImage.Width, rawImage.Height, PixelFormat.Format32bppArgb);
 		using (Graphics g = Graphics.FromImage(image)) {
-			g.DrawImage(rawImage, 32, 32, rawImage.Width, rawImage.Height);
+			g.DrawImage(rawImage, 0, 0, rawImage.Width, rawImage.Height);
 		}
 
 		if (image is null) {

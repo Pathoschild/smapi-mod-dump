@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <ApplicationIcon />
+
+    <OutputType>Library</OutputType>
+
+    <StartupObject />
+    
+    <GamePath>../../SDV</GamePath>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
+    <PackageReference Include="coverlet.collector" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkillfulClothes.Mod\SkillfulClothes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- game -->
+    <Reference Include="Stardew Valley" HintPath="$(GamePath)\Stardew Valley.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" />
+    <Reference Include="StardewValley.GameData" HintPath="$(GamePath)\StardewValley.GameData.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" />
+    <Reference Include="MonoGame.Framework" HintPath="$(GamePath)\MonoGame.Framework.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" />
+    <Reference Include="xTile" HintPath="$(GamePath)\xTile.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" />
+
+    <!-- SMAPI -->
+    <Reference Include="StardewModdingAPI" HintPath="$(GamePath)\StardewModdingAPI.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" />
+    <Reference Include="SMAPI.Toolkit.CoreInterfaces" HintPath="$(GamePath)\smapi-internal\SMAPI.Toolkit.CoreInterfaces.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" />
+
+    <!-- Harmony -->
+    <!-- <Reference Include="0Harmony" Condition="'$(EnableHarmony)' == 'true'" HintPath="$(GamePath)\smapi-internal\0Harmony.dll" Private="$(BundleExtraAssemblies.Contains('Game'))" /> -->
+  </ItemGroup>
+
+</Project>

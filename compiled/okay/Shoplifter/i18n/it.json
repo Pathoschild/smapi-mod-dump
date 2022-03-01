@@ -1,0 +1,31 @@
+{
+    "TheMightyAmondee.Shoplifter/Shoplift":"Taccheggiare?",  
+    "TheMightyAmondee.Shoplifter/Banned": "Sei stato sospeso per taccheggio. Non sfidare la sorte...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Hai già taccheggiato oggi. Può bastare...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "Hai già taccheggiato {{shopliftingamount}} volte oggi. Può bastare...",
+    "TheMightyAmondee.Shoplifter/AlreadyShopliftedSameShop":"Non c'è nulla da rubare qui...",
+    "TheMightyAmondee.Shoplifter/BanFromShop_Single":"#$b#Hai taccheggiato abbastanza da me questo mese @, ti dovrò sospendere per oggi.$2",
+    "TheMightyAmondee.Shoplifter/BanFromShop":"#$b#Hai tacchegggiato abbastanza da me questo mese @, ti dovrò sospendere per {{daysbanned}} giorni.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric": "Stai seriamete taccheggiando @?$2#$b#*Sospira* Dovrò farti una sanzione di {{fineamount}}o per questo.$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre": "Stai taccheggiando??!! Ma che ti è saltato in mente?!$4#$b#Paga la sanzione di {{fineamount}}o e ti lascerò andare, @.$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly": "Riesco a capire quando stai taccheggiando @... L'odore ti segue...$2#$b#Ti farò una sanzione di {{fineamount}}o per questo.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin": "Davvero @? Pensavi di poter prenderti una TV senza pagare? Non tengo i miei oggetti di grande volume lì dietro...$3#$b#Ti farò una sanzione di {{fineamount}}o per questo... Forse questo ti farà da deterrente.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie": "Adesso mi rubiamo il fieno, @? Solo perchè non sto spesso al mio negozio non vuol dire che mi puoi derubare.$4#$b#Se paghi la sanzione da {{fineamount}}o non metterò in mezzo Lewis...$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus": "So che il piatto speciale del giorno è appetitoso @, ma devi comunque pagarlo.$3#$b#*Sospira* Se paghi la sanzione di {{fineamount}}o dimenticherò di averti visto taccheggiare, ok?$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey": "Cosa creedi di star facendo @? Quelle sostanze sono pericolose senza parere medico...$8#$b#Ti farò una sanzione di {{fineamount}}o per taccheggiamento @, è molto grave.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint": "@, mi stai derubando! Credevo fossi una persona migliore.$3#$b#Sai che la sanzione per taccheggiamento è {{fineamount}}o, vero? è ciò che ti devo far pagare per questo.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy": "Essere lontani dagli altri non significa che il mio negozio sia più facile da derubare, @.$2#$b#Paga la sanzione di {{fineamount}}o e dimenticherò l'accaduto.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex": "Vuoi davvero così disperatamente un gelato, @?$7#$b#Non pensavo averi mai dovuto sanzionare qualcuno, ma questo ti costerà {{fineamount}}o.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "Stai seriamete taccheggiando @?$2#$b#*Sospira* Ti farei una sanzione, ma non te la puoi permettere!$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre_NoMoney": "Stai taccheggiando??!! Ma che ti è saltato in mente?!$4#$b#Sei fortunato di non You're lucky you can't afford a fine!$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "Riesco a capire quando stai taccheggiando @... L'odore ti segue...$2#$b#Per favore ridammi quella roba. Non posso fari una sanzione se non te la puoi permettere.Please return that stuff. I can't fine you if you can't afford it.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Davvero @? Pensavi di poter prenderti una TV senza pagare? Non tengo i miei oggetti di grande volume lì dietro...$3#$b#Visto che non te la puoi permettere, stavolta lasacio perere la sanzione.Since you can't afford it, I'll let the fine slide this time.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Adesso mi rubiamo il fieno, @? Solo perchè non sto spesso al mio negozio non vuol dire che mi puoi derubare.$4#$b#Di solito c'è una sanzione, ma visto che non te la puoi permettere non posso farti pagare.$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus_NoMoney": "So che il piatto speciale del giorno è appetitoso @, ma devi comunque pagarlo.$3#$b#*Sospira* Per stavolta ti lascio stare e non ti farò una sanzione.$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Cosa creedi di star facendo @? Quelle sostanze sono pericolose senza parere medico...$8#$b#Non puoi permetterti la sanzione quindi per stavolta non te la faccio. ma smettila con il taccheggio.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "@, mi stai derubando! Credevo fossi una persona migliore.$3#$b#Stavolta non ti farò la sanzione @, visto che comunque non te la potresti permettere.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Essere lontani dagli altri non significa che il mio negozio sia più facile da derubare, @.$2#$b#Non ti preoccupare della sanzione per questa volta @, vai via e basta.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Vuoi davvero così disperatamente un gelato, @?$7#$b#Per stavolta ti lascio solo con un ammonimento.$5"
+  }

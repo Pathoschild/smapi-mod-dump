@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>5755b5e3-ac9d-4a3e-9c01-2731828b9caa</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Shockah.CommonModCode</Import_RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)GMCMI18nHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)I18nEnum.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IGenericModConfigMenuApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TranspileHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TranspileWorker.cs" />
+  </ItemGroup>
+</Project>

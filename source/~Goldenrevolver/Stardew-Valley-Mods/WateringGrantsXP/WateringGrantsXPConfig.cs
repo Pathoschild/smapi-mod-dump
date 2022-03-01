@@ -54,9 +54,11 @@ namespace WateringGrantsXP
 
         public bool CropsCanDieWithoutWater { get; set; } = false;
 
-        public int DaysWithoutWaterForChanceToDie { get; set; } = 2;
+        public int DaysWithoutWaterForChanceToDie { get; set; } = 3;
 
         public int ChanceToDieWhenLeftForTooLong { get; set; } = 100;
+
+        public bool CantRefillCanWithSaltWater { get; set; } = true;
 
         public static void VerifyConfigValues(WateringGrantsXPConfig config, WateringGrantsXP mod)
         {
@@ -126,13 +128,15 @@ namespace WateringGrantsXP
             api.RegisterClampedOption(manifest, "Chance To Get XP", null, () => config.WateringChanceToGetXP, (int val) => config.WateringChanceToGetXP = val, 0, 100);
             api.RegisterSimpleOption(manifest, "Forage Seed Watering\nGrants Foraging XP", null, () => config.ForageSeedWateringGrantsForagingXP, (bool val) => config.ForageSeedWateringGrantsForagingXP = val);
 
-            // this is a spacer due to the line break above
-            api.RegisterLabel(manifest, string.Empty, null);
             api.RegisterLabel(manifest, "Crops Die Without Water", null);
 
             api.RegisterSimpleOption(manifest, "Withering Feature Enabled", null, () => config.CropsCanDieWithoutWater, (bool val) => config.CropsCanDieWithoutWater = val);
             api.RegisterSimpleOption(manifest, "Days For Chance Of Withering", null, () => config.DaysWithoutWaterForChanceToDie, (int val) => config.DaysWithoutWaterForChanceToDie = val);
             api.RegisterClampedOption(manifest, "Chance For Withering", null, () => config.ChanceToDieWhenLeftForTooLong, (int val) => config.ChanceToDieWhenLeftForTooLong = val, 0, 100);
+
+            api.RegisterLabel(manifest, "Other", null);
+
+            api.RegisterSimpleOption(manifest, "Can't Refill Watering Can\nWith Salt Water", null, () => config.CantRefillCanWithSaltWater, (bool val) => config.CantRefillCanWithSaltWater = val);
         }
     }
 }

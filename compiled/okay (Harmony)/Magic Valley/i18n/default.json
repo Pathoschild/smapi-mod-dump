@@ -43,12 +43,15 @@
   "menutype.ShopWallpaper": "WallpapersAndFloors",
   "menutype.ShopDesert": "DesertShop",
   "menutype.ShopGinger": "GingerShop",
-  "menutype.ShopCustom": "CustomShop",
+  "menutype.ShopCustom": "MysteryShop",
   "menutype.ShopMaster": "MasterBuild",
   "menutype.ShopBlacksmithGeode": "BlacksmithGeode",
   "menutype.ShopIceCream": "IceCreamShop",
   "menutype.BuyBackpack": "BuyBackpack",
   "menutype.ShippingBin": "ShippingBin",
+  "menutype.TaggedChests": "TaggedChests",
+  "menutype.DresserFurniture": "Dresser",
+  "menutype.TaggedChestsWorkbench": "CraftingWorkbench",
 
   "mapname.Mine": "Mine",
   "mapname.QuarryMine": "QuarryMine",
@@ -99,7 +102,7 @@
   "WorldChest.description": "Items placed in this Chest can be take out from all Saves.\nSuggest don't put Axe/Pickaxe or other tools.",
   "menutype.JunimoChest": "JunimoChest",
   "JunimoChest.description": "Different JunimoChests share the same storage space.\n sold by Mr.Qi walnut room.",
-  "menutype.ToolEnchantment": "EnchantmentSkill",
+  "menutype.ToolEnchantment": "EnchantmentTool",
   "ToolEnchantment.description": "Enchantment tool or weapon you currently hold",
   "menutype.AutoFishing": "AutoFishing",
   "AutoFishing.description": "Hold fishing rod and facing the water, click AutoFishing to start a fishing trip\nPress the move key [A/S/D/W] to stop fishing",
@@ -151,5 +154,10 @@
   "sve.map.Custom_CastleVillageOutpost": "CastleVillageOutpost",
   "sve.map.Custom_DesertRailway": "DesertRailway",
   "sve.map.Custom_CrimsonBadlands": "CrimsonBadlands",
-  "tips.ShortcutKey": "Shortcut Key"
+  "tips.ShortcutKey": "Shortcut Key",
+
+  "description.TaggedChestsShortcutKeys": "shortcut keys of Tagged Chests\n-----\nswitch to another: ClickColorPicker  or  ScrollMouseWheel\nBatch Fill Stacks: Control+ClickStacksBtn  or  Shift+ClickStacksBtn\nMove The Showing Chest: Control+Shift+MovementKeys\nCrafting Workbench: Control+Shift+C\nDresser: Control+Shift+D\nJunimo Chest: Control+Shift+J\nShipping Bin: Control+Shift+S\nShow Dye Color info: Control+Shift+O (then hover the item)\nShow Tailoring Info: Control+Shift+P (then hover the item)\n-----\nauto tag locations:\nFarm,FarmBuildings,FarmCave;\nGingerIslandFarm,QiNutRoom;\nBusStop,MineTopFloor;",
+  "description.CaptureScreenshot": "Capture new screenshot of the present Location.\nIt may takes a long time.",
+  "description.CaptureScreenshot.Island": "Capture new screenshot of the present Ginger Island.\nIt takes a long time.",
+  "description.DefaultScreenshot.Island": "Show default map of Ginger Island."
 }

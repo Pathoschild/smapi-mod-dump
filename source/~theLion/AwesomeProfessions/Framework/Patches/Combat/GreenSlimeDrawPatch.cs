@@ -22,6 +22,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 
 #endregion using directives
@@ -32,14 +33,14 @@ internal class GreenSlimeDrawPatch : BasePatch
     /// <summary>Construct an instance.<w/ summary>
     internal GreenSlimeDrawPatch()
     {
-        Original = null;
+        //Original = RequireMethod<GreenSlime>(nameof(GreenSlime.draw));
     }
 
     #region harmony patches
 
     /// <summary>Patch to fix Green Slime eye and antenna position when inflated.</summary>
     private static IEnumerable<CodeInstruction> GreenSlimeDrawTranspiler(IEnumerable<CodeInstruction> instructions,
-        ILGenerator iLGenerator, MethodBase original)
+        ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -109,6 +110,7 @@ internal class GreenSlimeDrawPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching inflated Green Slime sprite.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

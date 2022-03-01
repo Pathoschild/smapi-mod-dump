@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FunnySnek.AntiCheat.Server.Framework;
+using FunnySnek.AntiCheat.Server.Patches;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -27,7 +29,7 @@ namespace FunnySnek.AntiCheat.Server
         ** Properties
         *********/
         /// <summary>The name of the blacklist file on the server.</summary>
-        private readonly string BlacklistFileName = "mod-blacklist.json";
+        private readonly string BlacklistPath = "assets/mod-blacklist.json";
 
         /// <summary>The number of seconds to wait until kicking a player (to make sure they receive the chat the message).</summary>
         private readonly int SecondsUntilKick = 5;
@@ -47,7 +49,15 @@ namespace FunnySnek.AntiCheat.Server
         public override void Entry(IModHelper helper)
         {
             // apply patches
-            Patch.PatchAll(this.ModManifest.UniqueID);
+            Harmony harmony = new Harmony(this.ModManifest.UniqueID);
+            harmony.Patch(
+                original: AccessTools.Method(typeof(Multiplayer), nameof(Multiplayer.processIncomingMessage)) ?? throw new InvalidOperationException($"Can't apply the {nameof(MultiplayerPatcher)} patch: target method not found."),
+                prefix: new HarmonyMethod(typeof(MultiplayerPatcher), nameof(MultiplayerPatcher.Prefix))
+            );
+            harmony.Patch(
+                original: AccessTools.Method(typeof(GameServer), nameof(GameServer.sendMessage), new[] { typeof(long), typeof(OutgoingMessage) }) ?? throw new InvalidOperationException($"Can't apply the {nameof(GameServerPatcher)} patch: target method not found."),
+                prefix: new HarmonyMethod(typeof(GameServerPatcher), nameof(GameServerPatcher.Prefix))
+            );
 
             // hook events
             helper.Events.Multiplayer.PeerContextReceived += this.OnPeerContextReceived;
@@ -56,10 +66,10 @@ namespace FunnySnek.AntiCheat.Server
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
 
             // read mod blacklist
-            var blacklist = this.Helper.Data.ReadJsonFile<Dictionary<string, string[]>>(this.BlacklistFileName);
+            var blacklist = this.Helper.Data.ReadJsonFile<Dictionary<string, string[]>>(this.BlacklistPath);
             if (blacklist == null || !blacklist.Any())
             {
-                this.Monitor.Log($"The {this.BlacklistFileName} file is missing or empty; please reinstall the mod.", LogLevel.Error);
+                this.Monitor.Log($"The {this.BlacklistPath} file is missing or empty; please reinstall the mod.", LogLevel.Error);
                 return;
             }
             foreach (var entry in blacklist)
@@ -82,7 +92,7 @@ namespace FunnySnek.AntiCheat.Server
             if (Context.IsMainPlayer)
             {
                 if (!this.ProhibitedMods.Any())
-                    this.SendPublicChat($"Anti-Cheat's {this.BlacklistFileName} file is missing or empty; please reinstall the mod.", error: true);
+                    this.SendPublicChat($"Anti-Cheat's {this.BlacklistPath} file is missing or empty; please reinstall the mod.", error: true);
                 else
                     this.SendPublicChat("Anti-Cheat activated.");
             }

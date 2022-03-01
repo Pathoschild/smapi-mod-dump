@@ -320,7 +320,6 @@ namespace CustomCompanions
                     CompanionModel companion = contentPack.ReadJsonFile<CompanionModel>(Path.Combine(companionFolder.Parent.Name, companionFolder.Name, "companion.json"));
                     companion.Name = companion.Name.Replace(" ", "");
                     companion.Owner = contentPack.Manifest.UniqueID;
-                    Monitor.Log(companion.ToString(), LogLevel.Trace);
 
                     // Save the TileSheet, if one is given
                     if (String.IsNullOrEmpty(companion.TileSheetPath) && !File.Exists(Path.Combine(companionFolder.FullName, "companion.png")))
@@ -342,7 +341,7 @@ namespace CustomCompanions
                         }
                         else
                         {
-                            companion.Portrait.PortraitSheetPath = contentPack.GetActualAssetKey(Path.Combine(companionFolder.Parent.Name, companionFolder.Name, "portrait.png"));
+                            companion.PortraitSheetPath = contentPack.GetActualAssetKey(Path.Combine(companionFolder.Parent.Name, companionFolder.Name, "portrait.png"));
                         }
                     }
 
@@ -350,6 +349,7 @@ namespace CustomCompanions
                     {
                         companion.Translations = contentPack.Translation;
                     }
+                    Monitor.Log(companion.ToString(), LogLevel.Trace);
 
                     // Add the companion to our cache
                     CompanionManager.companionModels.Add(companion);
@@ -437,12 +437,16 @@ namespace CustomCompanions
         {
             try
             {
-                var backLayer = location.map.GetLayer("Back");
-                for (int x = 0; x < backLayer.LayerWidth; x++)
+                var targetLayer = location.map.GetLayer("Back");
+                if (location is FarmHouse)
                 {
-                    for (int y = 0; y < backLayer.LayerHeight; y++)
+                    targetLayer = location.map.GetLayer("Front");
+                }
+                for (int x = 0; x < targetLayer.LayerWidth; x++)
+                {
+                    for (int y = 0; y < targetLayer.LayerHeight; y++)
                     {
-                        var tile = backLayer.Tiles[x, y];
+                        var tile = targetLayer.Tiles[x, y];
                         if (tile is null)
                         {
                             continue;
@@ -678,7 +682,7 @@ namespace CustomCompanions
                         }
                         else
                         {
-                            companion.Portrait.PortraitSheetPath = contentPack.GetActualAssetKey(Path.Combine(companionFolder.Parent.Name, companionFolder.Name, "portrait.png"));
+                            companion.PortraitSheetPath = contentPack.GetActualAssetKey(Path.Combine(companionFolder.Parent.Name, companionFolder.Name, "portrait.png"));
                         }
                     }
 

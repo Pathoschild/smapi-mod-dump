@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/Shockah/Stardew-Valley-Mods
+   Git: https://github.com/Shockah/Stardew-Valley-Mods.git
+
+mods:
+   Don't Stop Me Now
+   Flexible Sprinklers
+   Predictable Retaining Soil
+   XP Display
+
+latest commit:
+   commit 79a3c9d16aac331a1642225c4212a718727bbcbe
+   Author: Shockah <me@shockah.pl>
+   Date:   Fri Feb 25 15:16:36 2022 +0100
+   
+       DontStopMeNow: Version 1.1.0
+   

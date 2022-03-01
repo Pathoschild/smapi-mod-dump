@@ -21,6 +21,6 @@ internal class SuperModeGaugeFadeOutUpdateTickedEvent : UpdateTickedEvent
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object sender, UpdateTickedEventArgs e)
     {
-        ModEntry.State.Value.SuperMode.Gauge.FadeOut();
+        ModEntry.PlayerState.Value.SuperMode.Gauge.FadeOut();
     }
 }

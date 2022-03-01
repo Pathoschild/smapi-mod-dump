@@ -46,16 +46,16 @@ static class NVTT {
 					newDL.error();
 				}
 				catch {
-					Debug.TraceLn($"Failed DL: {dlType}");
+					Debug.Trace($"Failed DL: {dlType}");
 					continue;
 				}
 				dl = newDL;
-				Debug.TraceLn($"New DL: {dlType}");
+				Debug.Trace($"New DL: {dlType}");
 				break;
 			}
 
 			if (dl == null) {
-				Debug.ErrorLn("A valid libdl could not be found.");
+				Debug.Error("A valid libdl could not be found.");
 				throw new NotSupportedException("A valid libdl could not be found.");
 			}
 		}
@@ -106,31 +106,7 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 	)]
 	internal static bool GetAppBaseDirectory(ref string? __result) {
 		__result = SpriteMaster.AssemblyPath;
-		Debug.TraceLn($"GetAppBaseDirectory: {__result}");
-		return false;
-	}
-
-	[Harmonize(
-		typeof(NvTextureToolsLibrary),
-		new[] { "TeximpNet.Unmanaged.UnmanagedLibrary", "UnmanagedWindowsLibraryImplementation" },
-		"get_DllExtension",
-		Harmonize.Fixation.Prefix,
-		Harmonize.PriorityLevel.First,
-		platform: Harmonize.Platform.Windows
-	)]
-	internal static bool DllExtension_Windows(UnmanagedLibrary __instance, ref string __result) {
-		switch (Runtime.Bits) {
-			case 32:
-				__result = ".32.dll";
-				break;
-			case 64:
-				__result = ".64.dll";
-				break;
-			default:
-				Debug.Warning($"Unknown Runtime Bits value: {Runtime.Bits}");
-				return true;
-		}
-
+		Debug.Trace($"GetAppBaseDirectory: {__result}");
 		return false;
 	}
 

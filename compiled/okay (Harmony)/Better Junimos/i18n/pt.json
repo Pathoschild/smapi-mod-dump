@@ -1,5 +1,5 @@
 ﻿{
-  "junimosWillNotWorkText": "Junimos não trabalharão até serem pagos",
-  "spawnJunimoCommandText": "Apenas é possível chamar Junimos na fazenda",
-  "checkForWagesText": "Junimos estão felizes com seu pagamento!"
+  "msg.no-work-until-paid": "Junimos não trabalharão até serem pagos",
+  "msg.cannot-spawn-here": "Apenas é possível chamar Junimos na fazenda",
+  "msg.happy-with-payment": "Junimos estão felizes com seu pagamento!"
 }

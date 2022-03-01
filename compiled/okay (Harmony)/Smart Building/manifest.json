@@ -1,0 +1,12 @@
+{
+	"Name": "Smart Building",
+	"Author": "DecidedlyHuman",
+	"Version": "1.0.1",
+	"Description": "Allows you to build fences/walls/paths, etc. in a much more streamlined way.",
+	"UniqueID": "DecidedlyHuman.SmartBuilding",
+	"EntryDll": "SmartBuilding.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:11158"
+	]
+}

@@ -21,7 +21,6 @@ using JetBrains.Annotations;
 using StardewValley.Events;
 
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -39,16 +38,16 @@ internal class QuestionEventSetUpPatch : BasePatch
     /// <summary>Patch for Breeder to increase barn animal pregnancy chance.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> QuestionEventSetUpTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// From: if (Game1.random.NextDouble() < (double)(building.indoors.Value as AnimalHouse).animalsThatLiveHere.Count * (0.0055 * 3)
         /// To: if (Game1.random.NextDouble() < (double)(building.indoors.Value as AnimalHouse).animalsThatLiveHere.Count * (Game1.player.professions.Contains(<breeder_id>) ? 0.011 : 0.0055)
 
-        var isNotBreeder = iLGenerator.DefineLabel();
-        var isNotPrestiged = iLGenerator.DefineLabel();
-        var resumeExecution = iLGenerator.DefineLabel();
+        var isNotBreeder = generator.DefineLabel();
+        var isNotPrestiged = generator.DefineLabel();
+        var resumeExecution = generator.DefineLabel();
         try
         {
             helper
@@ -74,6 +73,7 @@ internal class QuestionEventSetUpPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Breeder bonus animal pregnancy chance.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

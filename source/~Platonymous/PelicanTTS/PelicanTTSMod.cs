@@ -15,7 +15,7 @@ using StardewValley;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
-using Harmony;
+using HarmonyLib;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -209,7 +209,7 @@ namespace PelicanTTS
         public void setUpConfig()
         {
 
-            HarmonyInstance instance = HarmonyInstance.Create("PelicanTTS.GMCM");
+            Harmony instance = new Harmony("PelicanTTS.GMCM");
            // instance.Patch(typeof(ChatBox).GetMethod("receiveChatMessage"), prefix: new HarmonyMethod(typeof(PelicanTTSMod).GetMethod("receiveChatMessage")));
 
             if (!Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))

@@ -9,8 +9,11 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 4.15.0
+Released 27 February 2022 for SMAPI 3.13.0 or later.
+
 * [Content packs can now edit the Tractor Mod textures](README.md#custom-textures) (e.g. for recolors or tractor texture packs).
+* Improved translations. Thanks to EmWhyKay (updated Turkish) and martin66789 (added Hungarian)!
 
 ## 4.14.10
 Released 14 January 2022 for SMAPI 3.13.0 or later.

@@ -41,10 +41,10 @@ namespace EscasModdingPlugins
             //initialize assets/properties
             MapPropertyName = ModEntry.PropertyPrefix + "BedPlacement"; //assign map property name
 
-            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BedPlacement)}\": postfixing SDV method \"GameLocation.CanPlaceThisFurnitureHere(Furniture)\".", LogLevel.Trace);
+            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_BedPlacement)}\": postfixing method \"GameLocation.CanPlaceThisFurnitureHere(Furniture)\".", LogLevel.Trace);
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.CanPlaceThisFurnitureHere), new[] { typeof(Furniture) }),
-                postfix: new HarmonyMethod(typeof(HarmonyPatch_BedPlacement), nameof(GameLocation_CanPlaceFurnitureHere))
+                postfix: new HarmonyMethod(typeof(HarmonyPatch_BedPlacement), nameof(GameLocation_CanPlaceThisFurnitureHere))
             );
 
             Applied = true;
@@ -57,6 +57,13 @@ namespace EscasModdingPlugins
         {
             if (location == null)
                 return false;
+
+            if (ModConfig.Instance.AllowBedPlacementEverywhere) //if config allows placement
+            {
+                if (Monitor?.IsVerbose == true)
+                    Monitor.LogOnce($"Allowing bed placement due to config.json settings.", LogLevel.Trace);
+                return true;
+            }
 
             if (location.Map.Properties.TryGetValue(MapPropertyName, out var mapPropertyObject)) //if the location has a non-null map property
             {
@@ -85,7 +92,7 @@ namespace EscasModdingPlugins
         /// <param name="__instance">The instance calling the original method.</param>'
         /// <param name="furniture">The furniture being checked.</param>
         /// <param name="__result">The result of the original method. True if the furniture can be placed; false otherwise.</param>
-        private static void GameLocation_CanPlaceFurnitureHere(GameLocation __instance, Furniture furniture, ref bool __result)
+        private static void GameLocation_CanPlaceThisFurnitureHere(GameLocation __instance, Furniture furniture, ref bool __result)
         {
             try
             {

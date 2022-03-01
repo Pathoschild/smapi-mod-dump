@@ -84,6 +84,9 @@ unsafe partial struct Vector2I :
 
 	internal readonly int Sum => X + Y;
 
+	internal readonly int LengthSquared => X * X + Y * Y;
+	internal readonly float Length => MathF.Sqrt(LengthSquared);
+
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal Vector2I(ulong Packed) : this() => this.Packed = Packed;
 
@@ -140,9 +143,6 @@ unsafe partial struct Vector2I :
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal Vector2I(System.Drawing.Bitmap bmp) : this(bmp.Width, bmp.Height) { }
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2I(TeximpNet.Surface surface) : this(surface.Width, surface.Height) { }
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static implicit operator Vector2I(in (int X, int Y) vec) => new (vec.X, vec.Y);

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.ProducerFrameworkMod;
 
 #region using directives
 
@@ -18,7 +18,8 @@ using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewValley;
 
-using Stardew.Common.Harmony;
+
+using Stardew.Common.Extensions;
 using Extensions;
 
 using SObject = StardewValley.Object;

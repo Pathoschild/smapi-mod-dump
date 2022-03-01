@@ -17,7 +17,7 @@ namespace SpriteMaster.Extensions;
 
 static class Floating {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static int NearestInt(this float v) => (int)Math.Round(v);
+	internal static int NearestInt(this float v) => (int)MathF.Round(v);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static int NearestInt(this double v) => (int)Math.Round(v);
@@ -29,7 +29,7 @@ static class Floating {
 	internal static Vector2I NearestInt(this Vector2F v) => Vector2I.From(v.X.NearestInt(), v.Y.NearestInt());
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static int NextInt(this float v) => (int)Math.Ceiling(v);
+	internal static int NextInt(this float v) => (int)MathF.Ceiling(v);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static int NextInt(this double v) => (int)Math.Ceiling(v);
@@ -53,13 +53,13 @@ static class Floating {
 	internal static Vector2I TruncateInt(this Vector2F v) => Vector2I.From(v.X.TruncateInt(), v.Y.TruncateInt());
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static long NearestLong(this float v) => (long)Math.Round(v);
+	internal static long NearestLong(this float v) => (long)MathF.Round(v);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static long NearestLong(this double v) => (long)Math.Round(v);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static long NextLong(this float v) => (long)Math.Ceiling(v);
+	internal static long NextLong(this float v) => (long)MathF.Ceiling(v);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static long NextLong(this double v) => (long)Math.Ceiling(v);

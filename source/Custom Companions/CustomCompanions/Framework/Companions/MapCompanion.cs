@@ -81,10 +81,10 @@ namespace CustomCompanions.Framework.Companions
             this.overheadTextSelectionTimer = this.model.OverheadTextCheckInterval;
 
             // Set up portrait, if valid
-            if (this.model.Portrait != null && !String.IsNullOrEmpty(this.model.Portrait.PortraitSheetPath))
+            if (this.model.Portrait != null && !String.IsNullOrEmpty(this.model.PortraitSheetPath))
             {
                 this.displayName = String.IsNullOrEmpty(this.model.Portrait.PortraitDisplayName) ? this.displayName : this.model.Portrait.PortraitDisplayName;
-                this.Portrait = CustomCompanions.modHelper.ContentPacks.GetOwned().First(c => c.Manifest.UniqueID == this.model.Owner).LoadAsset<Texture2D>(this.model.Portrait.PortraitSheetPath);
+                this.Portrait = CustomCompanions.modHelper.ContentPacks.GetOwned().First(c => c.Manifest.UniqueID == this.model.Owner).LoadAsset<Texture2D>(this.model.PortraitSheetPath);
             }
         }
 
@@ -285,10 +285,10 @@ namespace CustomCompanions.Framework.Companions
             this.overheadTextSelectionTimer = this.model.OverheadTextCheckInterval;
 
             // Set up portrait, if valid
-            if (this.model.Portrait != null && !String.IsNullOrEmpty(this.model.Portrait.PortraitSheetPath))
+            if (this.model.Portrait != null && !String.IsNullOrEmpty(this.model.PortraitSheetPath))
             {
                 this.displayName = String.IsNullOrEmpty(this.model.Portrait.PortraitDisplayName) ? this.displayName : this.model.Portrait.PortraitDisplayName;
-                this.Portrait = CustomCompanions.modHelper.ContentPacks.GetOwned().First(c => c.Manifest.UniqueID == this.model.Owner).LoadAsset<Texture2D>(this.model.Portrait.PortraitSheetPath);
+                this.Portrait = CustomCompanions.modHelper.ContentPacks.GetOwned().First(c => c.Manifest.UniqueID == this.model.Owner).LoadAsset<Texture2D>(this.model.PortraitSheetPath);
             }
         }
 

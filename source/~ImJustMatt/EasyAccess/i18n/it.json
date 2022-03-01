@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ImJustMatt/StardewMods
+**
+*************************************************/
+
+{
+  // Feature Option Formatting
+  "config.range-distance.value-unlimited": "Illimitato",
+  "config.range-distance.value-one": "1 casella",
+  "config.range-distance.value-many": "{0} caselle",
+  // Config Pages
+  "section.general.name": "Generale",
+  "section.general.description": "Opzioni generali di personalizzazione delle funzionalità.",
+  "section.features.name": "Caratteristiche",
+  "section.features.description": "Opzioni predefinite che si applicano a qualsiasi tipo di baule.",
+  "section.controls.name": "Controlli",
+  "section.controls.description": "Configurazioni di controller/tastiera.",
+  // Config Options
+  "option.default.name": "Predefinito",
+  "option.enabled.name": "Abilitato",
+  "option.disabled.name": "Disabilitato",
+  "option.location.name": "Mappa Corrente",
+  "option.world.name": "Mondo"
+}

@@ -11,7 +11,7 @@
 {
   "Name": "SAAT.API",
   "Author": "ZeroMeters",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Audio API for SMAPI",
   "UniqueID": "ZeroMeters.SAAT.API",
   "EntryDll": "SAAT.API.dll",

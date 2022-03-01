@@ -35,6 +35,11 @@ namespace cantorsdust.Common.Integrations
         /****
         ** Basic options
         ****/
+        /// <summary>Add a paragraph of text at the current position in the form.</summary>
+        /// <param name="mod">The mod's manifest.</param>
+        /// <param name="text">The paragraph text to display.</param>
+        void AddParagraph(IManifest mod, Func<string> text);
+
         /// <summary>Add a section title at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
         /// <param name="text">The title text shown in the form.</param>

@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>PlayerCoordinates</AssemblyName>
+		<RootNamespace>PlayerCoordinates</RootNamespace>
+		<Version>0.7.2</Version>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<!-- ModBuildConfig settings. -->
+	<Import Project="..\Build\Latest.targets" />
+
+	<!-- Android configuration stuff. -->
+	<PropertyGroup Condition=" '$(Configuration)'=='Android' ">
+		<DefineConstants>ANDROID</DefineConstants>
+		<GameModsPath>$(SolutionDir)Release\Android</GameModsPath>
+		<ModZipPath>$(SolutionDir)Release\Zip\Android</ModZipPath>
+
+		<PostBuildEvent>
+			echo Pushing to Android device: "$(GameModsPath)"
+		</PostBuildEvent>
+
+		<!-- This is very finnicky, and will sometimes need multiple builds to push correctly. I am not an Android developer, so I'unno. -->
+		<PostBuildEvent>
+			adb push "$(GameModsPath)\$(ProjectName)" /sdcard/StardewValley/Mods
+		</PostBuildEvent>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+</Project>

@@ -57,7 +57,7 @@ Ever wondered why there aren't any profession overhaul mods on the Nexus? Me too
 
 - Rebalanced and reworked [almost] every profession to be an equally unique and attractive choice.
 - Each profession targets a specific style of gameplay, some which were not viable in vanilla (e.g. ranching).
-- No more ~~boring~~ uninspiring flat value bonuses.
+- No more ~~boring~~ uninspiring +X% sell price bonuses.
 - Bomberman mining; Thief/Assassin combat; epic slingshots; command an army of giant Slimes.
 - Scaling end-game objectives.
 - Level 5 professions provide simple early-game buffs that benefit most styles of general gameplay.
@@ -67,8 +67,13 @@ Ever wondered why there aren't any profession overhaul mods on the Nexus? Me too
 - _[Optional]_ Level 20 skills and prestiged professions.
 - Gender-specific profession title.
 - New icons for most professions, courtesy of [IllogicalMoodSwing](https://forums.nexusmods.com/index.php?/user/38784845-illogicalmoodswing/) (please make sure to [endorse their original](https://www.nexusmods.com/stardewvalley/mods/4163) mod).
-- New sound effects for certain professions.
-- _[Optional]_ Rebalanced Fish Ponds.
+- New sound effects and visuals for certain professions.
+- Integration with Automate and several other popular mods.
+- HUD elements compatible with SVE's Galdora and [Vintage Interface v2﻿](https://www.nexusmods.com/stardewvalley/mods/4697).
+- _[Optional]_ Rebalanced Fish Ponds:
+    - Fish Ponds preserve the quality of fish placed inside. The quality of newly spawned fish will be inerited from a randomly chosen parent. Fishing from a pond always removes the lowest-quality fish first.
+    - The quality of produced roe/ink is based on the average quality of the fish inside the pond. Each fish in the pond has a chance to add one roe/ink to the produce stack. However, this chance depends on the value of the fish (higher value fish have **lower** production chance). This means that cheap fish will produce tons of cheap roe, while more expensive fish will produce less but more valuable roe.
+    - These features are intended to balance the new Aquarist profession.
 
 ## Professions
 
@@ -144,22 +149,22 @@ Ever wondered why there aren't any profession overhaul mods on the Nexus? Me too
     - _Unchanged from vanilla._
 - **Lv10 - Brute** - Damage +15%. +25 HP. Build fury in combat, further increasing damage. *Non-profession-based damage bonuses also decrease special move cooldown.*
     - **Fury:** Damage bonus caps at +40% at Combat level 10. Fury builds faster if wielding a club.Unleash all pent-up fury to enter an **Undying Rage.**
-- **Lv10 - Bushwhacker** - +10% crit. chance. Crit. strikes can poach items. Your blood cools in battle, increasing lethality of crit. strikes. *Non-profession-based damage bonuses also decrease special move cooldown.*
+- **Lv10 - Bushwhacker** - Crit. chance x2. Crit. strikes can poach items. Your blood cools in battle, increasing lethality of crit. strikes. *Non-profession-based damage bonuses also decrease special move cooldown.*
     - Monsters can only be poached once.
-    - **Cold Blood:** Crit. power bonus caps at ×3 at Combat level 10. Chance to steal is higher and cold blood builds faster if wielding a dagger. Your cold blood masks your presence, allowing you to mount an **Ambuscade.**
+    - **Cold Blood:** Crit. power bonus caps at ×2 at Combat level 10. Chance to steal is higher and cold blood builds faster if wielding a dagger. Your cold blood masks your presence, allowing you to mount an **Ambuscade.**
 - **Lv 5 - Rascal** - Slingshots deal up to 50% more damage from afar. 60% chance to recover spent ammo. *Trick shots stun enemies for 5s.*
     - In Vanilla, slingshots are unable to hit enemies that are near the Farmer. This mod improves slingshot combat by removing this grace period before a shot is allowed to deal damage. All professions are affected.
     -_Bonus: holding [ModKey](#configs) will fire a trick shot, which is weaker but can ricochet once._
 - **Lv10 - Desperado** - Fire 50% faster. Chance to fire a double shot *(spread shot)*, based on current HP. Built-up temerity increases projectile cross section and impact power.
     - **Temerity:**  Projectiles are fired with increasingly more power. Sufficiently powerful projectiles have higher knockback, can damage enemies around them even if they miss, and can even pierce through enemies, damaging others behind them. Temerity builds faster from quick shots (release immediately as soon as the slingshot is charged). Your temerity culminates in one _desperate_ **Death Blossom.**
-- **Lv10 - Slimed Piper** - Slimes damage other enemies and drop more items the more Slimes are raised on the farm. Gathered eubstance attracts more Slimes in dungeons. *Slimes also heal you on contact. Slimed debuff effect is reversed.*
-    - Slimes cannot damage flying enemies. Each Slime raised on the farm, either in a hutch or outside, increases the chance for Slimes to drop additional items.
+- **Lv10 - Slimed Piper** - Attract new Slimes in dangerous areas. All Slimes damage other enemies. Gather Eubstance to empower ally Slimes. *Defeating a Slime recovers some health and energy. Slimed debuff effect is reversed.*
+    - Each Slime raised in a hutch adds a chance to spawn an extra Slime in dungeons, up to the number of enemies on the map. The chance is diminishing, starting at 100% for the first Slime and dropping to 33% at Slime number 40 (two full hutches). Spawned Slimes and regular wild Slimes all will obey the Farmer; by default they start off in Passive behavior, huddling around the Farmer to protect from enemies. Quicky tapping the [ModKey](#configs) twice will toggle Aggressive behavior, commanding all Slimes to instead target the nearest approaching enemy. Slimes can only damage flying enemies while jumping. **Slimes will still damage the Farmer, so a Slime Charmer ring is recommended.**
     - _Bonus: immune to the Slimed debuff._
-    - **Eubstance:** Every dungeon floor can spawn a number of additional Slimes. Spread all gathered Eubstance to nearby Slimes, allowing them to enter a state of **Superfluidity.**
+    - **Eubstance:** Increase the attack speed and movement speed of ally Slimes. Spread all gathered Eubstance to nearby Slimes, allowing them to enter a state of **Superfluidity.**
 
 ## Super Mode
 
-The Combat tree has received a much more extensive overhaul. In addition to their primary fixed perks, 2nd-tier combat professions each have a unique "stackable" secondary perk (Fury, Cold Blood, Temerity, Eubstance). Once the maximum stacks have been collected, these professions may sacrifice all stacks to activate a powerful [Super Mode](https://tvtropes.org/pmwiki/pmwiki.php/Main/SuperMode) for a short duration. A new bar has been added to the HUD to help you keep track of current stacks. Only a single profession's Super Mode may be registered at any time; if a player gains multiple combat professions from skill reseting, only base perks will apply, and not the stackable secondary perk or Super Mode. The player will be prompted during level up whether they wish to replace their current Super Mode with the new professions'.
+The Combat tree has received a much more extensive overhaul. In addition to their primary fixed perks, 2nd-tier combat professions each have a unique "stackable" secondary perk (Fury, Cold Blood, Temerity, Eubstance). Once the maximum stacks have been collected, these professions may sacrifice some or all stacks to activate a powerful [Super Mode](https://tvtropes.org/pmwiki/pmwiki.php/Main/SuperMode) for a short duration. A new bar has been added to the HUD to help you keep track of current stacks. Only a single profession's Super Mode may be registered at any time; if a player gains multiple combat professions from skill reseting, only base perks will apply, and not the stackable secondary perk or Super Mode. The player will be prompted during level up whether they wish to replace their current Super Mode with the new professions'.
 
 - **Brute / Amazon - Undying Rage** - Doubles all damage bonuses. Immune to passing out.
   - Doubled damage bonuses include profession, rings and enchantments.
@@ -170,7 +175,7 @@ The Combat tree has received a much more extensive overhaul. In addition to thei
 - **Slimed Piper / Slime Enchantress - Superfluidity** - Engorge and empower nearby Slimes.
   - Slimes scale up by a random factor up to twice their original size, with a proportional damage boost. Slimes that grow large enough can hit even flying enemies, and break up into baby Slimes when defeated. Low chance to convert Slimes to a special variant. If "Prismatic Jelly" special order is active, low chance to convert Slimes to prismatic variant. Big Slimes in the area explode immediately.
 
-Once all 20 professions have been acquired, the Statue of Prestige may be used to switch Super Modes at will.
+Once all 30 professions have been acquired, the Statue of Prestige may be used to switch Super Modes at will.
 
 Super Modes can be disabled in the configs if desired.
 
@@ -197,12 +202,14 @@ The following mods are fully integrated:
 - [CJB Cheats Menu](https://www.nexusmods.com/stardewvalley/mods/4) (download the optional translation files to change profession names under skill cheats).
 - [Teh's Fishing Overhaul](https://www.nexusmods.com/stardewvalley/mods/866/) (the optional Recatchable Legendaries file is also compatible).
 - [Mushroom Propagator](https://www.nexusmods.com/stardewvalley/mods/4637) (applies Ecologist perks).
-- [Vintage Interface](https://www.nexusmods.com/stardewvalley/mods/6654) (enable via configs).﻿
+- [Vintage Interface v2](https://www.nexusmods.com/stardewvalley/mods/4697) (enable via configs).
+- [Stardew Valley Expanded](https://www.nexusmods.com/stardewvalley/mods/3753) (provides a compatible Galdoran-theme Super Mode bar if SVE is installed).﻿
 - [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 
 The following mods are compatible without integration:
 - [Multi Yield Crops](https://www.nexusmods.com/stardewvalley/mods/6069)
 - [Craftable Mushroom Boxes](https://www.nexusmods.com/stardewvalley/mods/10296)
+- [Better Beehouses](https://www.nexusmods.com/stardewvalley/mods/10996) (the mod author already handled compatibility).
 - [Forage Fantasy](https://www.nexusmods.com/stardewvalley/mods/7554) (just make sure BerryBushQuality and MushroomBoxQuality are disabled to avoid interfering with Ecologist profession; if both mods are installed, those settings should be disabled by default).
 - [Capstone Professions](https://www.nexusmods.com/stardewvalley/mods/7636) (though I don't recommend it if prestige and extended progression options are enabled).
 - Custom SpaceCore skills (e.g. [Luck](https://www.nexusmods.com/stardewvalley/mods/521), [Magic](https://www.nexusmods.com/stardewvalley/mods/2007), [Love Of Cooking](https://www.nexusmods.com/stardewvalley/mods/6830)) (note that these skills cannot be prestiged).
@@ -215,7 +222,8 @@ The mods are **not** compatible:
 - [Better Slingshots](https://www.nexusmods.com/stardewvalley/mods/2067) or any mod that affects Slingshot behavior.
 - - [Quality Artisan Products](https://www.moddrop.com/stardew-valley/mods/707502-quality-artisan-products) and [Quality Artisan Products for Artisan Valley](https://www.moddrop.com/stardew-valley/mods/726947-quality-artisan-products-for-artisan-valley) (won't break anything, but makes Artisan profession redundant; all features are already included). 
 - [All Professions](https://www.nexusmods.com/stardewvalley/mods/174) (use included prestige or console commands instead).
-- [Skill Prestige](https://www.nexusmods.com/stardewvalley/mods/569#) (now also included).
+- [Skill Prestige](https://www.nexusmods.com/stardewvalley/mods/569#) (already a mod feature).
+- [Quality Fish Ponds](https://www.nexusmods.com/stardewvalley/mods/11021) because this mod already does the same thing.
 
 Not compatible with Android version of the game.
 
@@ -232,41 +240,46 @@ While the vast majority of professions bonuses are non-configurable, some of the
 
 ### General Configs
 - **Modkey** (keybind) - The Prospector and Scavenger professions use this key to reveal the locations of key objects currently on the screen. If playing on a large screen with wide field of view, this can help locate forageables of mine nodes in large or busy maps. The default key is LeftShift for keyboards and LeftShoulder for controllers.
-- **UseVintageSkillBars** (boolean) - Set to true if you use the Vintage Interface﻿ mod. Makes the skill bars above level 10 a light pink. You can use this with the brown version of Vintage Interface. If you want to use the pink version you will have to recolor the file `assets/menus/skillbars_vintage.png` by yourself.
-- **EnableFishPondRebalance** (boolean) - Causes Fish Ponds to produce Roe, Ink or Algae in proportion to fish population.
+- **UseVintageSkillBars** (bool) - Set to true if you use the Vintage Interface﻿ mod. Makes the skill bars above level 10 a light pink. You can use this with the brown version of Vintage Interface. If you want to use the pink version you will have to recolor the file `assets/menus/skillbars_vintage.png` by yourself.
+- **EnableFishPondRebalance** (bool) - Causes Fish Ponds to produce Roe, Ink or Algae in proportion to fish population.
 
 ### Profession Configs
-- **ForagesNeededForBestQuality** (integer) - Determines the number of items foraged from the ground, bushes or mushroom boxes, required to reach permanent iridium-quality forage as an Ecologist. Default is 500.
-- **MineralsNeededForBestQuality** (integer) - As above. Determines the number of minerals (gems or foraged minerals) mined or collected from geode crushers or crystalariums, required to reach permanent iridium-quality minerals as a Gemologist. Default it 500.
-- **ChanceToStartTreasureHunt** (decimal) - The percent chance of triggering a treasure hunt when entering a new map as Prospector or Scavenger. Note that this only affects that chance the game will try to start a treasure hunt, and the actual chance is slightly lower as the game might fail to choose a valid treasure tile. Increase this value if you don't see enough treasure hunts, or decrease it if you find treasure hunts cumbersome and don't want to lose your streak. Default is 0.2 (20%).
-- **AllowScavengerHuntsOnFarm** (boolean) - Whether a Scavenger Hunt can trigger while entering a farm map.
-- **ScavengerHuntHandicap** (decimal) - This number multiplies the Scavener Hunt time limit. Increase this number if you find that Scavenger hunts end too quickly.
-- **ProspectorHuntHandicap** (decimal) - This number multiplies the Prospector Hunt time limit. Increase this number if you find that Prospector hunts end too quickly.
-- **TreasureDetectionDistance** (decimal) - Represents the minimum number of adjacent tiles between the player and the treasure tile before the treasure tile will be revealed by a floating arrow. Increase this value is you find treasure hunts too difficult. Default is 3.
-- **SpelunkerSpeedCap** (integer) - The maximum speed bonus a Spelunker can reach (values above 10 may cause problems).
+- **ForagesNeededForBestQuality** (uint) - Determines the number of items foraged from the ground, bushes or mushroom boxes, required to reach permanent iridium-quality forage as an Ecologist. Default is 500.
+- **MineralsNeededForBestQuality** (uint) - As above. Determines the number of minerals (gems or foraged minerals) mined or collected from geode crushers or crystalariums, required to reach permanent iridium-quality minerals as a Gemologist. Default is 500.
+- **ChanceToStartTreasureHunt** (float) - The percent chance of triggering a treasure hunt when entering a new map as Prospector or Scavenger. Note that this only affects that chance the game will try to start a treasure hunt, and the actual chance is slightly lower as the game might fail to choose a valid treasure tile. Increase this value if you don't see enough treasure hunts, or decrease it if you find treasure hunts cumbersome and don't want to lose your streak. Default is 0.2 (20%).
+- **AllowScavengerHuntsOnFarm** (bool) - Whether a Scavenger Hunt can trigger while entering a farm map.
+- **ScavengerHuntHandicap** (float) - This number multiplies the Scavener Hunt time limit. Increase this number if you find that Scavenger hunts end too quickly.
+- **ProspectorHuntHandicap** (float) - This number multiplies the Prospector Hunt time limit. Increase this number if you find that Prospector hunts end too quickly.
+- **TreasureDetectionDistance** (float) - Represents the minimum number of adjacent tiles between the player and the treasure tile before the treasure tile will be revealed by a floating arrow. Increase this value is you find treasure hunts too difficult. Default is 3.
+- **SpelunkerSpeedCap** (uint) - The maximum speed bonus a Spelunker can reach (values above 10 may cause problems).
 - **EnableGetExcited** (bool) - Toggles the Get Excited buff when a Demolitionist is hit by an explosion.
-- **TrashNeededPerTaxLevel** (integer) - Represents the number of trash items the Conservationist must collect in order to gain a 1% tax deduction the following season. Use this value to balance your game if you use or don't use Automate. Default is 100.
-- **TrashNeededPerFriendshipPoint** (integer) - Represents the number of trash items the Prestiged Conservationist must collect in order to gain 1 point of friendship towards all villagers. Default is 100.
-- **TaxDeductionCeiling** (decimal) - Represents the maximum allowed tax deduction by the Ferngill Revenue Service. Set this to a sensible value to avoid breaking your game. Default is 0.25 (25% bonus value on every item).
+- **SeaweedIsJunk** (bool) - Whether Seaweed and Algae are considered junk for fishing purposes.
+- **TrashNeededPerTaxLevel** (uint) - Represents the number of trash items the Conservationist must collect in order to gain a 1% tax deduction the following season. Use this value to balance your game if you use or don't use Automate. Default is 100.
+- **TrashNeededPerFriendshipPoint** (uint) - Represents the number of trash items the Prestiged Conservationist must collect in order to gain 1 point of friendship towards all villagers. Default is 100.
+- **TaxDeductionCeiling** (float) - Represents the maximum allowed tax deduction by the Ferngill Revenue Service. Set this to a sensible value to avoid breaking your game. Default is 0.25 (25% bonus value on every item).
 
 ### Super Mode Configs
-- **EnableSuperMode** (boolean) - Required to allow Super Mode activation. Super Stat continues to apply.
+- **EnableSuperMode** (bool) - Required to allow Super Mode activation. Super Stat continues to apply.
 - **SuperModeKey** (keybind) - This is the key that activates Super Mode for 2nd-tier combat professions. By default this is the same key as Modkey, but can also be set to a different key.
-- **HoldKeyToActivateSuperMode** (boolean) - If set to true, then Super Mode will be activated after holding the above key for a short amount of time. If set to false, then Super Mode will activate immediately upon pressing the key. Useful if you are running out of keys to bind, or just want to prevent accidental activation of Super Mode. Default value is true. 
-- **SuperModeActivationDelay** (decimal) - If HoldKeyToActivateSuperMode is set to true, this represents the number of seconds between pressing SuperModeKey and activating Super Mode. Set to a higher value if you use Prospector profession and find yourself accidentally wasting your Super Mode in the Mines.
-- **SuperModeGainFactor** (decimal) - Determines how quickly the Super Mode resource bar fills up.
-- **SuperModeDrainFactor** (decimal) - Determines how quickly the Super Mode resource bar drains during Super Mode. The base duration is 15 seconds. Higher numbers make Super Mode last longer.
+- **HoldKeyToActivateSuperMode** (bool) - If set to true, then Super Mode will be activated after holding the above key for a short amount of time. If set to false, then Super Mode will activate immediately upon pressing the key. Useful if you are running out of keys to bind, or just want to prevent accidental activation of Super Mode. Default value is true. 
+- **SuperModeActivationDelay** (float) - If HoldKeyToActivateSuperMode is set to true, this represents the number of seconds between pressing SuperModeKey and activating Super Mode. Set to a higher value if you use Prospector profession and find yourself accidentally wasting your Super Mode in the Mines.
+- **SuperModeGainFactor** (double) - Determines how quickly the Super Mode resource bar fills up.
+- **SuperModeDrainFactor** (double) - Determines how quickly the Super Mode resource bar drains during Super Mode. The base duration is 15 seconds. Higher numbers make Super Mode last longer.
 
 ### Prestige Configs
-- **EnablePrestige** (boolean) - Whether to apply prestige changes.
-- **SkillResetCostMultiplier** (decimal) - Multiplies the base skill reset cost. Set to 0 to prestige for free.
-- **ForgetRecipesOnSkillReset** (boolean) - Wether reseting a skill also clears all associated recipes.
-- **AllowPrestigeMultiplePerDay** (boolean) - Whether the player can use the Statue of Prestige more than once per day.
-- **BaseSkillExpMultiplier** (decimal) - Multiplies all skill experience gained from the start of the game.
-- **BonusSkillExpPerReset** (decimal) - Multiplies all skill experience gained after each respective skill reset.
-- **RequiredExpPerExtendedLevel** (integer) - How much skill experience is required for each level up beyond 10.
-- **PrestigeRespecCost** (integer) - Monetary cost of respecing prestige profession choices for a skill.
-- **ChangeUltCost** (integer) - Monetary cost of changing the combat ultimate.
+- **EnablePrestige** (bool) - Whether to apply prestige changes.
+- **SkillResetCostMultiplier** (float) - Multiplies the base skill reset cost. Set to 0 to prestige for free.
+- **ForgetRecipesOnSkillReset** (bool) - Wether reseting a skill also clears all associated recipes.
+- **AllowPrestigeMultiplePerDay** (bool) - Whether the player can use the Statue of Prestige more than once per day.
+- **BaseSkillExpMultiplier** (float array) - Multiplies all skill experience gained from the start of the game (in order: Farming, Fishing, Foraging, Mining, Combat).
+- **BonusSkillExpPerReset** (float) - Cumulative bonus that multiplies a skill's experience gain after each respective skill reset..
+- **RequiredExpPerExtendedLevel** (uint) - How much skill experience is required for each level up beyond 10.
+- **PrestigeRespecCost** (uint) - Monetary cost of respecing prestige profession choices for a skill.
+- **ChangeUltCost** (uint) - Monetary cost of changing the combat ultimate.
+
+### SVE Configs:
+- **UseGaldoranThemeAllTimes** (bool) - Replicates SVE's config settings of the same name.
+- **DisableGaldoranTheme** (bool) - Replicates SVE's config settings of the same name.
 
 ## Console Commands
 

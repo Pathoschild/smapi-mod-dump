@@ -42,7 +42,7 @@ static class Padding {
 			hasPaddingY = solidEdgeY.Invert;
 		}
 
-		if (Config.Resample.Padding.AlwaysList.AnyF(prefix => input.Reference.SafeName().StartsWith(prefix))) {
+		if (Config.Resample.Padding.AlwaysList.AnyF(prefix => input.Reference.NormalizedName().StartsWith(prefix))) {
 			hasPaddingX = Vector2B.True;
 			hasPaddingY = Vector2B.True;
 		}

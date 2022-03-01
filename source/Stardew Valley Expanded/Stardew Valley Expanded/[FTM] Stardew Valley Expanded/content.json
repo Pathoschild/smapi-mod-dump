@@ -4459,8 +4459,8 @@
         ],
         "UniqueAreaID": "Highlands Slime Berry and Monster Fruit seeds [Spring]",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 12,
-        "MaximumSpawnsPerDay": 20,
+        "MinimumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 25,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -4556,8 +4556,8 @@
         ],
         "UniqueAreaID": "Highlands Slime Berry and Monster Fruit seeds [Summer]",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 12,
-        "MaximumSpawnsPerDay": 20,
+        "MinimumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 25,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -4653,8 +4653,8 @@
         ],
         "UniqueAreaID": "Highlands Slime Berry and Monster Fruit seeds [Fall]",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 12,
-        "MaximumSpawnsPerDay": 20,
+        "MinimumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 25,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -4750,8 +4750,8 @@
         ],
         "UniqueAreaID": "Highlands Slime Berry and Monster Fruit seeds [Winter]",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 12,
-        "MaximumSpawnsPerDay": 20,
+        "MinimumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 25,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -4844,8 +4844,8 @@
         ],
         "UniqueAreaID": "Highlands Primary Spawns",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 135,
-        "MaximumSpawnsPerDay": 135,
+        "MinimumSpawnsPerDay": 120,
+        "MaximumSpawnsPerDay": 120,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -4938,8 +4938,8 @@
         ],
         "UniqueAreaID": "Custom_Highlands monster area 2",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 135,
-        "MaximumSpawnsPerDay": 135,
+        "MinimumSpawnsPerDay": 120,
+        "MaximumSpawnsPerDay": 120,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -5029,8 +5029,8 @@
         ],
         "UniqueAreaID": "Custom_Highlands monster area 3",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 135,
-        "MaximumSpawnsPerDay": 135,
+        "MinimumSpawnsPerDay": 120,
+        "MaximumSpawnsPerDay": 120,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -5120,8 +5120,8 @@
         ],
         "UniqueAreaID": "Custom_Highlands monster area 4",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 135,
-        "MaximumSpawnsPerDay": 135,
+        "MinimumSpawnsPerDay": 120,
+        "MaximumSpawnsPerDay": 120,
         "IncludeTerrainTypes": [
           "All"
         ],
@@ -5201,8 +5201,8 @@
         ],
         "UniqueAreaID": "Highlands Ruins Seed Spawns",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 6,
-        "MaximumSpawnsPerDay": 12,
+        "MinimumSpawnsPerDay": 8,
+        "MaximumSpawnsPerDay": 14,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -5254,8 +5254,8 @@
         ],
         "UniqueAreaID": "Fungus Seed - winter",
         "MapName": "Custom_Highlands",
-        "MinimumSpawnsPerDay": 6,
-        "MaximumSpawnsPerDay": 12,
+        "MinimumSpawnsPerDay": 8,
+        "MaximumSpawnsPerDay": 14,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [
           "142,83;142,83"
@@ -7243,8 +7243,8 @@
         ],
         "UniqueAreaID": "Highlands Cavern Primary Monster Spawns",
         "MapName": "Custom_HighlandsCavern",
-        "MinimumSpawnsPerDay": 150,
-        "MaximumSpawnsPerDay": 150,
+        "MinimumSpawnsPerDay": 130,
+        "MaximumSpawnsPerDay": 130,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
@@ -7319,8 +7319,8 @@
         ],
         "UniqueAreaID": "Highlands Cavern Monster Seeds",
         "MapName": "Custom_HighlandsCavern",
-        "MinimumSpawnsPerDay": 6,
-        "MaximumSpawnsPerDay": 12,
+        "MinimumSpawnsPerDay": 20,
+        "MaximumSpawnsPerDay": 30,
         "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [

@@ -6,9 +6,12 @@ mods:
    PlatoTK
 
 latest commit:
-   commit 95c81a48d976e29eb0066c5d80bcf778a2e9baf0
+   commit 488b9558c718f55b1d0e88d0bf140d57f712895f
+   Merge: 95c81a4 f151294
    Author: David <david@millionideas.de>
-   Date:   Mon Aug 23 21:58:39 2021 +0200
+   Date:   Sat Feb 5 15:15:34 2022 +0100
    
-       update releases
+       Merge pull request #2 from Pathoschild/update-code
+       
+       Update for Stardew Valley 1.5.5 beta
    

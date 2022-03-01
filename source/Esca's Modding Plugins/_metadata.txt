@@ -6,9 +6,9 @@ mods:
    Esca's Modding Plugins
 
 latest commit:
-   commit 12f5a4f6b6894688c90c138b3a6debd21b6eaef5
+   commit 7c358528324291c2e4e455b5c8ae2a9a0b8ebee1
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Oct 20 15:19:34 2021 -0500
+   Date:   Wed Feb 16 19:06:29 2022 -0600
    
-       Fix redundant casting in decompile-based code
+       Tweak log messages, move dynamic patch messages to verbose
    

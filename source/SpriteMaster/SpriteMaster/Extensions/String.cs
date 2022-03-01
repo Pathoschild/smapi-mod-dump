@@ -10,22 +10,25 @@
 
 using LinqFasterer;
 using Pastel;
-using SpriteMaster.Types;
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
 
 static class String {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string ToString<T>(this T? obj, in System.Drawing.Color color) => obj?.ToString().Pastel(color) ?? "[null]".Pastel(color);
+	internal static string ToString<T>(this T? obj, in System.Drawing.Color color) => (obj?.ToString() ?? "[null]").Pastel(color);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool IsEmpty(this string str) => str.Length == 0;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool IsBlank(this string str) => string.IsNullOrEmpty(str);
+	internal static bool IsBlank([NotNullWhen(false)] this string? str) => string.IsNullOrEmpty(str);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool IsWhiteBlank([NotNullWhen(false)] this string? str) => string.IsNullOrEmpty(str?.Trim());
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static unsafe string Reverse(this string str) {
@@ -64,4 +67,10 @@ static class String {
 		var validLines = removeEmpty ? strings.WhereF(l => !l.IsBlank()) : strings.WhereF(l => l is not null);
 		return validLines;
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool EqualsInvariantInsensitive(this string str1, string str2) => str1.Equals(str2, System.StringComparison.InvariantCultureIgnoreCase);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool EqualsOrdinal(this string str1, string str2) => str1.Equals(str2, System.StringComparison.Ordinal);
 }

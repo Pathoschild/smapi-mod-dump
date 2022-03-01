@@ -19,6 +19,8 @@
   "skillDescription.scared": "Occasionally screeches and jumps away when they see a monster.",
   "skill.fisherman": "Fisherman ({0}'s skill)",
   "skillDescription.fisherman": "Will catch fishes when you are currently fishing or you are idle.",
+  "skill.spiritual": "Spiritual ({0}'s skill)",
+  "skillDescription.spiritual": "Makes enemies friendly for a while with the power of Yoba.",
   "recruitedCompanionHint": "Companion: {0}",
   "companionState_follow": "Status: Follow",
   "companionState_idle": "Status: Idle",
@@ -32,5 +34,6 @@
   "newObjective": "New Journal Entry",
   "objectiveUpdate": "Journal Updated",
   "questObjective.recruitment": "{0}/{1} companions recruited",
-  "prosteticsChangeButton": "Press '{0}' to change {1}'s prosthetic buff."
+  "prosteticsChangeButton": "Press '{0}' to change {1}'s prosthetic buff.",
+  "ridingHorseNotAllowed": "You can't ride a horse while you have a companion"
 }

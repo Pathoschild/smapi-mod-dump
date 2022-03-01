@@ -6,9 +6,9 @@ mods:
    Trendy Haley
 
 latest commit:
-   commit 32c6594d44ee3a1aedde5dd666482ca9890c4176
+   commit 1333f9263ceb5c45af5b7941f820dc4d1bb9f05c
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Jan 4 15:50:51 2021 +0100
+   Date:   Mon Feb 14 18:30:32 2022 +0100
    
-       Add missing beach sprites for SDV 1.5
+       Feat: SpouseLookAlike works in both directions now: If farmer changes hair color, Haley does the same
    

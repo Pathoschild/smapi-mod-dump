@@ -7,9 +7,9 @@ mods:
    Longer Fence Life
 
 latest commit:
-   commit 880186858fc211d9ccc61e144b2938070864db84
+   commit 532b6c2e23f408de4b872782c599ec397ee916a3
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Wed Jan 26 13:45:03 2022 -0800
+   Date:   Wed Feb 2 09:23:46 2022 -0800
    
-       Add not required GMCM dep to manifest. (pedantic)
+       Update .gitignore
    

@@ -1,0 +1,14 @@
+﻿{
+  "mod.description": "In vanilla, monster kills on the farm do not grant XP or count towards quests. This mod changes that.",
+
+  "config.GainExp.title": "Gain EXP",
+  "config.GainExp.description": "Restore EXP gain from monster kills on farm.",
+  "config.QuestCompletion.title": "Billboard Quest Completion",
+  "config.QuestCompletion.description": "Count monster kills on the farm towards billboard quest completion?",
+  "config.SpecialOrderCompletion.title": "Special Order Completion",
+  "config.SpecialOrderCompletion.description":  "Count monster kills on the farm towards special order objectives?",
+
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+  "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
+  "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled."
+}

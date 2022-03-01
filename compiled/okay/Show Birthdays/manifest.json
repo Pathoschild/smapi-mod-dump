@@ -1,10 +1,10 @@
 {
 	"Name": "Show Birthdays",
 	"Author": "Traktori",
-	"Version": "1.1.3",
+	"Version": "1.2.3",
 	"Description": "Allows the calendar to display multiple birthdays.",
 	"UniqueID": "Traktori.ShowBirthdays",
 	"EntryDll": "ShowBirthdays.dll",
-	"MinimumApiVersion": "3.8.0",
+	"MinimumApiVersion": "3.13.0",
 	"UpdateKeys": [ "Nexus:7495" ]
 }

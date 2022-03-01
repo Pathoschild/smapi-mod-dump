@@ -10,7 +10,7 @@
 
 namespace DaLion.Stardew.Professions;
 
-public enum DataField
+internal enum DataField
 {
     EcologistItemsForaged,
     GemologistMineralsCollected,
@@ -20,5 +20,5 @@ public enum DataField
     ConservationistActiveTaxBonusPct,
     ForgottenRecipesDict,
     SuperModeIndex,
-    QualityRatingByFishPond
+    FishPondQualityDict,
 }

@@ -9,9 +9,8 @@
 *************************************************/
 
 using HarmonyLib;
-using System;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
+using System;
 using System.Collections.Generic;
 
 namespace CustomNPCExclusions
@@ -28,10 +27,12 @@ namespace CustomNPCExclusions
         /// <param name="helper">This mod's API for most SMAPI features.</param>
         public override void Entry(IModHelper helper)
         {
-            Instance = this; //set the reference to this mod's current instance
-            Harmony harmony = new Harmony(this.ModManifest.UniqueID); //create a Harmony instance for this mod
+            //initialize static helpers
+            Instance = this;
+            InitializeDataHelper(helper);
 
-            //apply all Harmony patches
+            //initialize Harmony and apply all patches
+            Harmony harmony = new Harmony(this.ModManifest.UniqueID);
             HarmonyPatch_ItemDeliveryQuest.ApplyPatch(harmony);
             HarmonyPatch_SocializeQuest.ApplyPatch(harmony);
             HarmonyPatch_WinterStarGifts.ApplyPatch(harmony);
@@ -40,6 +41,7 @@ namespace CustomNPCExclusions
             HarmonyPatch_PerfectionFriendship.ApplyPatch(harmony);
             HarmonyPatch_MovieInvitation.ApplyPatch(harmony);
             HarmonyPatch_Greetings.ApplyPatch(harmony);
+            HarmonyPatch_BirthdayCalendar.ApplyPatch(harmony);
         }
 
         /// <summary>Get whether this mod can load the initial version of the given asset.</summary>

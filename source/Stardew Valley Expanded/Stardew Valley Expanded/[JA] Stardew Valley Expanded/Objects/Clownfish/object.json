@@ -21,13 +21,6 @@
 	{
 		/*gift tastes go here*/
 	},
-	"NameLocalization":
-	{
-		/*to be added in*/
-	},
-	"DescriptionLocalization":
-	{
-		/*to be added in*/
-	},
-	"DisableWithMod": "MoreFish"
+	"DisableWithMod": "MoreFish",
+	"TranslationKey": "object.clownfish",
 }

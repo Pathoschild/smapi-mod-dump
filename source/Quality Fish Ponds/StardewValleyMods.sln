@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnhancedSlingshots", "EnhancedSlingshots\EnhancedSlingshots.csproj", "{1292486F-7F03-40DB-8317-8EB73E7E71DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QualityFishPonds", "QualityFishPonds\QualityFishPonds.csproj", "{15808F35-2EB5-4083-9ACC-7CDA57E2ACF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1292486F-7F03-40DB-8317-8EB73E7E71DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1292486F-7F03-40DB-8317-8EB73E7E71DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1292486F-7F03-40DB-8317-8EB73E7E71DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1292486F-7F03-40DB-8317-8EB73E7E71DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15808F35-2EB5-4083-9ACC-7CDA57E2ACF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15808F35-2EB5-4083-9ACC-7CDA57E2ACF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15808F35-2EB5-4083-9ACC-7CDA57E2ACF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15808F35-2EB5-4083-9ACC-7CDA57E2ACF3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F590F33-C5FE-4D1D-8C82-5F9F45DC546F}
+	EndGlobalSection
+EndGlobal

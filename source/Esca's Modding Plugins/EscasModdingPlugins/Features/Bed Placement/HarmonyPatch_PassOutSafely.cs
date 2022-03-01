@@ -12,10 +12,8 @@ using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Reflection.Emit;
 
 namespace EscasModdingPlugins
@@ -45,7 +43,7 @@ namespace EscasModdingPlugins
             //initialize assets/properties
             MapPropertyName = ModEntry.PropertyPrefix + "PassOutSafely"; //assign map property name
 
-            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_PassOutSafely)}\": transpiling SDV method \"Farmer.performPassoutWarp(Farmer, string, Point, bool)\".", LogLevel.Trace);
+            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_PassOutSafely)}\": transpiling method \"Farmer.performPassoutWarp(Farmer, string, Point, bool)\".", LogLevel.Trace);
             harmony.Patch(
                 original: AccessTools.Method(typeof(Farmer), nameof(Farmer.performPassoutWarp)),
                 transpiler: new HarmonyMethod(typeof(HarmonyPatch_PassOutSafely), nameof(Farmer_performPassoutWarp))
@@ -61,6 +59,13 @@ namespace EscasModdingPlugins
         {
             if (location == null || location is FarmHouse || location is IslandFarmHouse || location is Cellar) //if this location is null OR already allows safe passout
                 return location; //don't replace it
+
+            if (ModConfig.Instance.PassOutSafelyEverywhere) //if config allows passing out safely
+            {
+                if (Monitor?.IsVerbose == true)
+                    Monitor.LogOnce($"Allowing player to pass out from exhaustion safely due to config.json settings.", LogLevel.Trace);
+                return Game1.getLocationFromName("FarmHouse") ?? location; //replace the location with FarmHouse (resulting in a safe passout check)
+            }
 
             if (location.Map.Properties.TryGetValue(MapPropertyName, out var mapPropertyObject)) //if the location has a non-null map property
             {

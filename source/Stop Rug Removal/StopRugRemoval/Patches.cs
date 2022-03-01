@@ -29,27 +29,18 @@ internal class FurniturePatches
     {
         try
         {
-            if (!ModEntry.Config.Enabled)
-            { // mod disabled
-                return;
-            }
-            if (!__result)
-            { // can't be removed already
-                return;
-            }
-            if (!__instance.furniture_type.Value.Equals(Furniture.rug))
-            { // only want to deal with rugs
-                return;
-            }
-            GameLocation currentLocation = __0.currentLocation; // get location of farmer
-            if (currentLocation is null)
+            if (!ModEntry.Config.Enabled
+                || !__result
+                || !__instance.furniture_type.Value.Equals(Furniture.rug)
+                || __0.currentLocation is not GameLocation currentLocation)
             {
                 return;
             }
 
             Rectangle bounds = __instance.boundingBox.Value;
+#if DEBUG
             ModEntry.ModMonitor.Log($"Checking rug: {bounds.X / 64f}, {bounds.Y / 64f}, W/H {bounds.Width / 64f}/{bounds.Height / 64f}");
-
+#endif
             for (int x = 0; x < bounds.Width / 64; x++)
             {
                 for (int y = 0; y < bounds.Height / 64; y++)
@@ -69,21 +60,17 @@ internal class FurniturePatches
         }
     }
 
+#if DEBUG
     [SuppressMessage("StyleCop", "SA1313", Justification = "Style prefered by Harmony")]
     private static bool PrefixCanBePlacedHere(Furniture __instance, GameLocation __0, Vector2 tile, ref bool __result)
     {
         try
         {
-            if (!ModEntry.Config.Enabled || !ModEntry.Config.CanPlaceRugsUnder)
+            if (!ModEntry.Config.Enabled || !ModEntry.Config.CanPlaceRugsUnder
+                || !__instance.furniture_type.Value.Equals(Furniture.rug)
+                || __instance.placementRestriction != 0 // someone requested a custom placement restriction, respect that.
+                )
             {
-                return true;
-            }
-            if (__instance.furniture_type.Value.Equals(Furniture.rug))
-            {
-                return true;
-            }
-            if (__instance.placementRestriction != 0)
-            { // someone requested a custom placement restriction, respect that.
                 return true;
             }
             Rectangle bounds = __instance.boundingBox.Value;
@@ -104,46 +91,40 @@ internal class FurniturePatches
         }
         return true;
     }
-}
+#endif
 
-/// <summary>
-/// Patches on GameLocation to allow me to place rugs anywhere.
-/// </summary>
-[HarmonyPatch(typeof(GameLocation))]
-internal class GameLocationPatches
-{
+    /// <summary>
+    /// Prefix to prevent objects from accidentally being removed from tables.
+    /// </summary>
+    /// <param name="__instance">The table.</param>
+    /// <param name="who">The farmer who clicked.</param>
+    /// <param name="__result">The result of the original function.</param>
+    /// <returns>Return true to continue to the original function, false otherwise.</returns>
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(Furniture.clicked))]
     [SuppressMessage("StyleCop", "SA1313", Justification = "Style prefered by Harmony")]
-    [HarmonyPostfix]
-    [HarmonyPatch(nameof(GameLocation.CanPlaceThisFurnitureHere))]
-    private static void PostfixCanPlaceFurnitureHere(GameLocation __instance, Furniture __0, ref bool __result)
+    private static bool PrefixClicked(Furniture __instance, Farmer who, ref bool __result)
     {
         try
         {
-            if (!ModEntry.Config.Enabled || !ModEntry.Config.CanPlaceRugsOutside)
-            { // mod disabled
-                return;
+            if (!ModEntry.Config.Enabled
+                || !ModEntry.Config.PreventRemovalFromTable
+                || ModEntry.Config.FurniturePlacementKey.IsDown()
+                || __instance.furniture_type.Value != Furniture.table)
+            {
+                return true;
             }
-            if (__instance is MineShaft || __instance is VolcanoDungeon)
-            { // do not want to affect mines
-                return;
-            }
-            if (__result)
-            { // can already be placed
-                return;
-            }
-            if (__0.placementRestriction != 0)
-            { // someone requested a custom placement restriction, respect that.
-                return;
-            }
-            if (__0.furniture_type.Value.Equals(Furniture.rug))
-            {// Let me place rug
-                __result = true;
-                return;
+            else
+            {
+                Game1.showRedMessage(I18n.TableRemovalMessage(keybind: ModEntry.Config.FurniturePlacementKey));
+                __result = false;
+                return false;
             }
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Failed in attempting to place rug outside in PostfixCanPlaceFurnitureHere.\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Ran into errors preventing removal of item from table for {who.Name}\n\n{ex}", LogLevel.Error);
+            return true;
         }
     }
 }

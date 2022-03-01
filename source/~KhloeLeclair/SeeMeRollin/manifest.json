@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"Name": "See Me Rollin'",
+	"Author": "Khloe Leclair",
+	"Version": "1.1.1",
+	"Description": "Adds roller shoes to the game. Go quickly when you want. Don't when you don't.",
+	"UniqueID": "leclair.seemerollin",
+	"EntryDll": "SeeMeRollin.dll",
+	"MinimumApiVersion": "3.13.0",
+	"UpdateKeys": [
+		"Nexus:10976"
+	]
+}

@@ -47,6 +47,10 @@ namespace FashionSense.Framework.Utilities
         internal const string OUTFITS = "FashionSense.Outfit.Collection";
         internal const string CURRENT_OUTFIT_ID = "FashionSense.Outfit.CurrentId";
 
+        // Etc
+        internal const string STARTS_WITH_HAND_MIRROR = "FashionSense.StartsWithHandMirror";
+        internal const string INTERNAL_COLOR_OVERRIDE_SHOE_ID = "Override Shoe Color";
+
         // General animation related keys
         internal const string ANIMATION_FACING_DIRECTION = "FashionSense.Animation.FacingDirection";
 

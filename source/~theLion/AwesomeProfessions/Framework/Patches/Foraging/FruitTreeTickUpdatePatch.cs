@@ -21,8 +21,8 @@ using JetBrains.Annotations;
 using Netcode;
 using StardewValley.TerrainFeatures;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -40,7 +40,7 @@ internal class FruitTreeTickUpdatePatch : BasePatch
     /// <summary>Patch to add bonus wood for prestiged Lumberjack.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> FruitTreeTickUpdateTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -51,8 +51,8 @@ internal class FruitTreeTickUpdatePatch : BasePatch
         repeat:
         try
         {
-            var isPrestiged = iLGenerator.DefineLabel();
-            var resumeExecution = iLGenerator.DefineLabel();
+            var isPrestiged = generator.DefineLabel();
+            var resumeExecution = generator.DefineLabel();
             helper
                 .FindProfessionCheck((int) Profession.Lumberjack, true)
                 .Advance()
@@ -80,6 +80,7 @@ internal class FruitTreeTickUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

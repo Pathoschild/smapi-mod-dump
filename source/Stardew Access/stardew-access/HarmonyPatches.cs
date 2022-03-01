@@ -100,6 +100,16 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.ShopMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(SocialPage), nameof(SocialPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.SocialPagePatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.JunimoNoteMenuPatch))
+            );
             #endregion
 
             #region Menu Patches
@@ -172,6 +182,20 @@ namespace stardew_access
                     original: AccessTools.Method(typeof(Game1), nameof(Game1.exitActiveMenu)),
                     prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.Game1ExitActiveMenuPatch))
                 );
+            #endregion
+
+            #region Animal and Building Menu
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(CarpenterMenu), nameof(CarpenterMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.CarpenterMenuPatch))
+                );
+
+            harmony.Patch(
+                    original: AccessTools.Method(typeof(PurchaseAnimalsMenu), nameof(PurchaseAnimalsMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                    prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.PurchaseAnimalsMenuPatch))
+                );
+
             #endregion
 
             harmony.Patch(

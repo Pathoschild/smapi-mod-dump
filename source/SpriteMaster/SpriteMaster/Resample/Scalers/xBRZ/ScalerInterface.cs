@@ -24,14 +24,16 @@ sealed partial class Scaler {
 		public Span<Color16> Apply(in Resample.Scalers.Config configuration, uint scaleMultiplier, ReadOnlySpan<Color16> sourceData, Vector2I sourceSize, Span<Color16> targetData, Vector2I targetSize) =>
 			Scaler.Apply(configuration as Config, scaleMultiplier, sourceData, sourceSize, targetData, targetSize);
 
-		public Resample.Scalers.Config CreateConfig(Vector2B wrapped, bool hasAlpha) => new Config(
+		public Resample.Scalers.Config CreateConfig(Vector2B wrapped, bool hasAlpha, bool gammaCorrected) => new Config(
 			wrapped: wrapped,
 			hasAlpha: hasAlpha,
 			luminanceWeight: SMConfig.Resample.xBRZ.LuminanceWeight,
+			gammaCorrected: gammaCorrected,
 			equalColorTolerance: SMConfig.Resample.xBRZ.EqualColorTolerance,
 			dominantDirectionThreshold: SMConfig.Resample.xBRZ.DominantDirectionThreshold,
 			steepDirectionThreshold: SMConfig.Resample.xBRZ.SteepDirectionThreshold,
-			centerDirectionBias: SMConfig.Resample.xBRZ.CenterDirectionBias
+			centerDirectionBias: SMConfig.Resample.xBRZ.CenterDirectionBias,
+			useRedmean: SMConfig.Resample.UseRedmean
 		);
 	}
 }

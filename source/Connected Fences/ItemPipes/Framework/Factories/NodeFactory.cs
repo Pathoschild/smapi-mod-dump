@@ -19,6 +19,8 @@ using StardewValley.Buildings;
 using ItemPipes.Framework.Nodes;
 using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Util;
+using ItemPipes.Framework.Nodes.ObjectNodes;
+
 
 namespace ItemPipes.Framework.Factories
 {
@@ -31,7 +33,15 @@ namespace ItemPipes.Framework.Factories
             {
                 return new ExtractorPipeNode(position, location, obj);
             }
-            if (obj.name.Equals("Inserter Pipe"))
+            else if (obj.name.Equals("Gold Extractor Pipe"))
+            {
+                return new GoldExtractorPipeNode(position, location, obj);
+            }
+            else if (obj.name.Equals("Iridium Extractor Pipe"))
+            {
+                return new IridiumExtractorPipeNode(position, location, obj);
+            }
+            else if (obj.name.Equals("Inserter Pipe"))
             {
                 return new InserterPipeNode(position, location, obj);
             }
@@ -51,6 +61,10 @@ namespace ItemPipes.Framework.Factories
             {
                 return new GoldPipeNode(position, location, obj);
             }
+            else if (obj.name.Equals("Iridium Pipe"))
+            {
+                return new IridiumPipeNode(position, location, obj);
+            }
             else if (obj.name.Equals("Chest"))
             {
                 return new ChestContainerNode(position, location, obj);
@@ -59,12 +73,13 @@ namespace ItemPipes.Framework.Factories
             {
                 return new ChestContainerNode(position, location, obj);
             }
-            else if (obj.name.Equals("Invisibilizer"))
+            else if (obj.name.Equals("P.P.M."))
             {
-                return new InvisibilizerNode(position, location, obj);
+                return new PPMNode(position, location, obj);
             }
             else
             {
+                Printer.Info($"Node creation for {obj.Name} failed.");
                 return null;
             }
         }

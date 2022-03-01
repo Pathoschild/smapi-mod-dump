@@ -14,7 +14,9 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 using System;
+using System.Collections.Generic;
 
 namespace BulkStaircases
 {
@@ -55,6 +57,10 @@ namespace BulkStaircases
         /// </summary>
         private static readonly int SKULLCAVERNLEVEL100FLOOR = 220;
 
+        private static HashSet<string> MonsterFilterNames;
+
+        private static Dictionary<string, int> MonsterCountDict;
+
         /*********
         ** Public methods
         *********/
@@ -63,6 +69,8 @@ namespace BulkStaircases
         public override void Entry(IModHelper helper)
         {
             this.Config = helper.ReadConfig<ModConfig>();
+            MonsterFilterNames = new HashSet<string>(this.Config.MonsterFilters.Keys);
+            this.SetCountConfigDict();
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
         }
 
@@ -177,7 +185,8 @@ namespace BulkStaircases
                 && this.Config.SkipMonsterLevels
                 && this.Config.SkipDinosaurLevels
                 && this.Config.SkipMushroomLevels
-                && !this.Config.SkipLevel100SkullCavern;
+                && !this.Config.SkipLevel100SkullCavern
+                && ModEntry.MonsterFilterNames.Count == 0;
         }
 
         /// <summary>
@@ -192,7 +201,8 @@ namespace BulkStaircases
                 && this.Config.SkipMonsterLevels
                 && this.Config.SkipDinosaurLevels
                 && this.Config.SkipMushroomLevels
-                && this.Config.SkipLevel100SkullCavern;
+                && this.Config.SkipLevel100SkullCavern
+                && ModEntry.MonsterFilterNames.Count == 0;
         }
 
         /// <summary>
@@ -242,6 +252,10 @@ namespace BulkStaircases
                     if (mine.mineLevel == SKULLCAVERNLEVEL100FLOOR)
                         return false;
                 }
+                if (this.LevelContainsInterestedMonsters(mine))
+                {
+                    return false;
+                }
                 if (!this.Config.SkipMushroomLevels)
                 {
                     if (MineShaft.mushroomLevelsGeneratedToday.Contains(mine.mineLevel))
@@ -249,6 +263,50 @@ namespace BulkStaircases
                 }
             }
             return true;
+        }
+
+        private bool LevelContainsInterestedMonsters(MineShaft mine)
+        {
+            bool containsMonster = false;
+            if (ModEntry.MonsterFilterNames.Count > 0)
+            {
+                foreach (var npc in mine.characters)
+                {
+                    if (npc is Monster monster)
+                    {
+                        var monsterName = monster.Name;
+                        if (ModEntry.MonsterFilterNames.Contains(monsterName))
+                        {
+                            ModEntry.MonsterCountDict[monsterName]++;
+                            if (ModEntry.MonsterCountDict[monsterName] >= this.Config.MonsterFilters[monsterName])
+                            {
+                                containsMonster = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                ModEntry.ResetCountConfigDict();
+            }
+            return containsMonster;
+        }
+
+        private void SetCountConfigDict()
+        {
+            var emptyConfigDict = new Dictionary<string, int>();
+            foreach(var pair in this.Config.MonsterFilters)
+            {
+                emptyConfigDict.Add(pair.Key, 0);
+            }
+            MonsterCountDict = emptyConfigDict;
+        }
+
+        private static void ResetCountConfigDict()
+        {
+            foreach (var pair in ModEntry.MonsterCountDict)
+            {
+                ModEntry.MonsterCountDict[pair.Key] = 0;
+            }
         }
 
         private bool IsBoolPropertyTrue(string propertyName, object tobeCheckedForProperty)

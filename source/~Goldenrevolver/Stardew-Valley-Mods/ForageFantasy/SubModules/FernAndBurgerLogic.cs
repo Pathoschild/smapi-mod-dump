@@ -51,9 +51,9 @@ namespace ForageFantasy
             return false;
         }
 
-        public static void Edit<T>(IAssetData asset, ForageFantasyConfig config)
+        public static void Edit<T>(IAssetData asset, ForageFantasy mod)
         {
-            if (config.TapperDaysNeededChangesEnabled && asset.AssetNameEquals("Data/ObjectInformation"))
+            if (mod.Config.TapperDaysNeededChangesEnabled && asset.AssetNameEquals("Data/ObjectInformation"))
             {
                 /*  here is the reasoning for the math
 
@@ -84,7 +84,7 @@ namespace ForageFantasy
 
                 IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
 
-                var priceChanges = new Dictionary<int, int>() { { 724, config.MapleDaysNeeded }, { 725, config.OakDaysNeeded }, { 726, config.PineDaysNeeded } };
+                var priceChanges = new Dictionary<int, int>() { { 724, mod.Config.MapleDaysNeeded }, { 725, mod.Config.OakDaysNeeded }, { 726, mod.Config.PineDaysNeeded } };
 
                 foreach (var item in priceChanges)
                 {
@@ -96,13 +96,16 @@ namespace ForageFantasy
                 }
             }
 
-            if (config.CommonFiddleheadFern)
+            if (mod.Config.CommonFiddleheadFern)
             {
                 if (asset.AssetNameEquals("Data/CraftingRecipes"))
                 {
                     IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-                    data["Wild Seeds (Su)"] = "396 1 398 1 402 1 259 1/Field/496 10/false/Foraging 4";
+                    var entry = data["Wild Seeds (Su)"];
+                    var fields = entry.Split('/');
+                    fields[0] = "396 1 398 1 402 1 259 1";
+                    data["Wild Seeds (Su)"] = string.Join("/", fields);
                 }
 
                 if (asset.AssetNameEquals("Data/Locations"))
@@ -148,27 +151,32 @@ namespace ForageFantasy
                 }
             }
 
-            if (config.ForageSurvivalBurger)
+            if (mod.Config.ForageSurvivalBurger)
             {
+                var spring = mod.Helper.Translation.Get("SpringBurger");
+                var summer = mod.Helper.Translation.Get("SummerBurger");
+                var fall = mod.Helper.Translation.Get("FallBurger");
+                var winter = mod.Helper.Translation.Get("WinterBurger");
+
                 if (asset.AssetNameEquals("Data/CookingRecipes"))
                 {
                     IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
                     data.Remove("Survival Burger");
-                    data.Add("Survival Burger (Sp)", "216 1 16 1 20 1 22 1/70 1/241 2/s Foraging 2/Survival Burger (Sp)");
-                    data.Add("Survival Burger (Su)", "216 1 398 1 396 1 259 1/70 1/241 2/s Foraging 2/Survival Burger (Su)");
-                    data.Add("Survival Burger (Fa)", "216 1 404 1 406 1 408 1/70 1/241 2/s Foraging 2/Survival Burger (Fa)");
-                    data.Add("Survival Burger (Wi)", "216 1 412 1 414 1 416 1/70 1/241 2/s Foraging 2/Survival Burger (Wi)");
+                    data.Add("Survival Burger (Sp)", $"216 1 16 1 20 1 22 1/70 1/241 2/s Foraging 2/{spring}");
+                    data.Add("Survival Burger (Su)", $"216 1 398 1 396 1 259 1/70 1/241 2/s Foraging 2/{summer}");
+                    data.Add("Survival Burger (Fa)", $"216 1 404 1 406 1 408 1/70 1/241 2/s Foraging 2/{fall}");
+                    data.Add("Survival Burger (Wi)", $"216 1 412 1 414 1 416 1/70 1/241 2/s Foraging 2/{winter}");
                 }
 
                 if (asset.AssetNameEquals("Data/CraftingRecipes"))
                 {
                     IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-                    data.Add("Survival Burger (Sp)", "216 1 16 1 20 1 22 1/Field/241/false/s Foraging 2/Survival Burger (Sp)");
-                    data.Add("Survival Burger (Su)", "216 1 398 1 396 1 259 1/Field/241/false/s Foraging 2/Survival Burger (Su)");
-                    data.Add("Survival Burger (Fa)", "216 1 404 1 406 1 408 1/Field/241/false/s Foraging 2/Survival Burger (Fa)");
-                    data.Add("Survival Burger (Wi)", "216 1 412 1 414 1 416 1/Field/241/false/s Foraging 2/Survival Burger (Wi)");
+                    data.Add("Survival Burger (Sp)", $"216 1 16 1 20 1 22 1/Field/241/false/s Foraging 2/{spring}");
+                    data.Add("Survival Burger (Su)", $"216 1 398 1 396 1 259 1/Field/241/false/s Foraging 2/{summer}");
+                    data.Add("Survival Burger (Fa)", $"216 1 404 1 406 1 408 1/Field/241/false/s Foraging 2/{fall}");
+                    data.Add("Survival Burger (Wi)", $"216 1 412 1 414 1 416 1/Field/241/false/s Foraging 2/{winter}");
                 }
             }
         }

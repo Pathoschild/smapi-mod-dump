@@ -71,8 +71,6 @@ namespace LongerFenceLife
             //Texture.SetData(arr);
             Texture = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1);
             Texture.SetData(new[] { Color.White });
-
-            //Monitor.Log($"MinGameVersion={Constants.MinimumGameVersion}, MaxGameVersion={Constants.MaximumGameVersion}", LogLevel.Info);
         }
 
         /// <summary>Raised after a game save is loaded. Here we hook into necessary events for gameplay.</summary>

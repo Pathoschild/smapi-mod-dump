@@ -1,0 +1,8 @@
+﻿{
+	"Config.PlaceBedsAnywhere.Name": "Place beds anywhere",
+	"Config.PlaceBedsAnywhere.Description": "If enabled, you can place beds at any location.",
+	"Config.PlaceMiniFridgesAnywhere.Name": "Place mini-fridges anywhere",
+	"Config.PlaceMiniFridgesAnywhere.Description": "If enabled, you can place mini-fridges at any location.",
+	"Config.PassOutSafelyEverywhere.Name": "Pass out safely anywhere",
+	"Config.PassOutSafelyEverywhere.Description": "If enabled, you won't lose money if you pass out by staying awake too late (2:00 AM). NOTE: This doesn't change what happens if you run out of health."
+}

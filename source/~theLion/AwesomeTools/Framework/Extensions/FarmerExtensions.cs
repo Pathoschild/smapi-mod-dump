@@ -13,6 +13,7 @@ namespace DaLion.Stardew.Tools.Framework.Extensions;
 #region using directives
 
 using System;
+using System.Linq;
 using StardewValley;
 
 #endregion using directives
@@ -52,13 +53,10 @@ public static class FarmerExtensions
     {
         var animationId = ModEntry.ModHelper.Reflection.GetField<int>(who.FarmerSprite, "currentSingleAnimation")
             .GetValue();
-        foreach (var id in animationIds)
+        if (animationIds.Any(id => id == animationId))
         {
-            if (id != animationId) continue;
-
             who.completelyStopAnimatingOrDoingAction();
             who.forceCanMove();
-            break;
         }
     }
 }

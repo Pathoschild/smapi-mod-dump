@@ -166,7 +166,7 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                 }
                 case "dogStatue_changeUlt":
                 {
-                    var currentProfessionKey = ModEntry.State.Value.SuperMode.Index.ToString().ToLower();
+                    var currentProfessionKey = ModEntry.PlayerState.Value.SuperMode.Index.ToString().ToLower();
                     var currentProfessionDisplayName =
                         ModEntry.ModHelper.Translation.Get(currentProfessionKey + ".name.male");
                     var currentBuff = ModEntry.ModHelper.Translation.Get(currentProfessionKey + ".buff");
@@ -193,15 +193,24 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                     {
                         if (choice == "Cancel") return;
 
-                        Game1.player.Money = Math.Max(0, Game1.player.Money - (int) ModEntry.Config.ChangeUltCost);
+                        Game1.player.Money = Math.Max(0, Game1.player.Money - (int)ModEntry.Config.ChangeUltCost);
 
                         // change super mode
-                        var newIndex = (SuperModeIndex) int.Parse(choice.Split("_")[1]);
-                        ModEntry.State.Value.SuperMode = new(newIndex);
-                        ModData.Write(DataField.SuperModeIndex, newIndex.ToString());
+                        var newIndex = Enum.Parse<SuperModeIndex>(choice.Split("_")[1]);
+                        ModEntry.PlayerState.Value.SuperMode =
+#pragma warning disable CS8509
+                            ModEntry.PlayerState.Value.SuperMode = newIndex switch
+#pragma warning restore CS8509
+                            {
+                                SuperModeIndex.Brute => new BruteFury(),
+                                SuperModeIndex.Poacher => new PoacherColdBlood(),
+                                SuperModeIndex.Piper => new PiperEubstance(),
+                                SuperModeIndex.Desperado => new DesperadoTemerity()
+                            };
+                        Game1.player.WriteData(DataField.SuperModeIndex, newIndex.ToString());
 
                         // play sound effect
-                        SoundBox.Play(SFX.DogStatuePrestige);
+                        SoundBank.Play((SFX)SFX.DogStatuePrestige);
 
                         // tell the player
                         var choiceProfessionKey = newIndex.ToString().ToLower();
@@ -211,13 +220,13 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                         pronoun = ModEntry.ModHelper.Translation.Get("pronoun.indefinite" +
                                                                      (Game1.player.IsMale ? ".male" : ".female"));
                         Game1.drawObjectDialogue(ModEntry.ModHelper.Translation.Get("prestige.dogstatue.fledged",
-                            new {pronoun, choiceProfession = choiceProfessionDisplayName}));
+                            new { pronoun, choiceProfession = choiceProfessionDisplayName}));
 
                         // woof woof
                         DelayedAction.playSoundAfterDelay("dog_bark", 1300);
                         DelayedAction.playSoundAfterDelay("dog_bark", 1900);
 
-                        ModEntry.State.Value.UsedDogStatueToday = true;
+                        ModEntry.PlayerState.Value.UsedDogStatueToday = true;
                     });
                     return false; // don't run original logic
                 }
@@ -261,7 +270,7 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                         prestigeDayEndingEvent.Enable();
 
                         // play sound effect
-                        SoundBox.Play(SFX.DogStatuePrestige);
+                        SoundBank.Play(SFX.DogStatuePrestige);
 
                         // tell the player
                         Game1.drawObjectDialogue(
@@ -285,7 +294,7 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                             Game1.player.newLevels.Add(new((int) skillType, 20));
 
                         // play sound effect
-                        SoundBox.Play(SFX.DogStatuePrestige);
+                        SoundBank.Play(SFX.DogStatuePrestige);
 
                         // tell the player
                         Game1.drawObjectDialogue(
@@ -295,7 +304,7 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                         DelayedAction.playSoundAfterDelay("dog_bark", 1300);
                         DelayedAction.playSoundAfterDelay("dog_bark", 1900);
 
-                        ModEntry.State.Value.UsedDogStatueToday = true;
+                        ModEntry.PlayerState.Value.UsedDogStatueToday = true;
                     }
 
                     break;

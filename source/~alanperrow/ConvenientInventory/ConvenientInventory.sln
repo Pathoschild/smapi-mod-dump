@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConvenientInventory", "ConvenientInventory\ConvenientInventory.csproj", "{287A38BF-C277-4F67-8D15-C7CBE4231BB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvenientInventory", "ConvenientInventory\ConvenientInventory.csproj", "{287A38BF-C277-4F67-8D15-C7CBE4231BB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

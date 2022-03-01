@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/Ginger-Island-Mainland-Adjustments
+   Git: https://github.com/atravita-mods/Ginger-Island-Mainland-Adjustments.git
+
+mods:
+   Ginger Island Mainland Adjustments
+
+latest commit:
+   commit 37871274f650f4527d2d25d79002c431075458ea
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Mon Feb 7 01:58:16 2022 -0500
+   
+       Update README.md
+   

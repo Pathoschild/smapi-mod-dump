@@ -1,10 +1,10 @@
 {
-    "Name": "Better Balance",
-    "Author": "Xen0nex",
-    "Version": "1.2.0",
-    "Description": "Rebalances some hard-coded item prices in shops",
-    "UniqueID": "Xen0nex.BetterBalance",
-    "EntryDll": "BetterBalance.dll",
-    "MinimumAPIVersion": "3.10.1",
-    "UpdateKeys": []
+  "Name": "Better Balance",
+  "Author": "Xen0nex",
+  "Version": "1.2.2",
+  "Description": "Rebalances some hard-coded item prices in shops",
+  "UniqueID": "Xen0nex.BetterBalance",
+  "EntryDll": "BetterBalance.dll",
+  "MinimumAPIVersion": "3.10.1",
+  "UpdateKeys": []
 }

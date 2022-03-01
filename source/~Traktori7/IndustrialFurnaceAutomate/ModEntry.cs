@@ -22,8 +22,8 @@ namespace IndustrialFurnaceAutomate
 
 
 		/*********
-        ** Public methods
-        *********/
+		** Public methods
+		*********/
 		/// <summary>The mod entry point, called after the mod is first loaded.</summary>
 		/// <param name="helper">Provides simplified APIs for writing mods.</param>
 		public override void Entry(IModHelper helper)
@@ -33,8 +33,8 @@ namespace IndustrialFurnaceAutomate
 
 
 		/*********
-        ** Private methods
-        *********/
+		** Private methods
+		*********/
 		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
 			automate = this.Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");

@@ -1,0 +1,11 @@
+{
+  "ProduceInWinter": "Indoors",
+  "UsePottedFlowers": "Always",
+  "UsableIn": "Greenhouse",
+  "DaysToProduce": 4,
+  "FlowerRange": 5,
+  "UseForageFlowers": false,
+  "ValueMultiplier": 1.0,
+  "Particles": true,
+  "UseQuality": false
+}

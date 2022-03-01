@@ -11,7 +11,7 @@
 {
   "Name": "Quest Framework",
   "Author": "PurrplingCat",
-  "Version": "1.4.1-dev.220103",
+  "Version": "1.4.1",
   "Description": "Add, edit and manage your own quests and create new quest types.",
   "UniqueID": "PurrplingCat.QuestFramework",
   "EntryDll": "QuestFramework.dll",

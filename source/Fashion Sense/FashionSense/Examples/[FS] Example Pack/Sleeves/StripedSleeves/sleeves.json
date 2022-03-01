@@ -123,6 +123,7 @@
     ]
   },
   "BackSleeves": {
+    "DrawBeforeHair": true,
     "ColorMasks": [
       [ 212, 208, 197 ]
     ],

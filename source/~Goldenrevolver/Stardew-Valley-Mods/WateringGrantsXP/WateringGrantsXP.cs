@@ -13,8 +13,10 @@ namespace WateringGrantsXP
     using HarmonyLib;
     using StardewModdingAPI;
     using StardewValley;
+    using StardewValley.Locations;
     using StardewValley.TerrainFeatures;
     using StardewValley.Tools;
+    using System;
 
     public class WateringGrantsXP : Mod
     {
@@ -42,11 +44,41 @@ namespace WateringGrantsXP
             harmony.Patch(
                original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.performToolAction)),
                prefix: new HarmonyMethod(typeof(WateringGrantsXP), nameof(WateringGrantsXP.GiveWateringExp)));
+            harmony.Patch(
+               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.CanRefillWateringCanOnTile)),
+               postfix: new HarmonyMethod(typeof(WateringGrantsXP), nameof(WateringGrantsXP.CantRefillWateringCanWithSaltWater)));
         }
 
         public void DebugLog(object o)
         {
-            this.Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
+            Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
+        }
+
+        public void ErrorLog(object o, Exception e = null)
+        {
+            string baseMessage = o == null ? "null" : o.ToString();
+
+            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
+
+            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
+        }
+
+        public static void CantRefillWateringCanWithSaltWater(GameLocation __instance, ref bool __result, int tileX, int tileY)
+        {
+            try
+            {
+                if (__result && mod.config.CantRefillCanWithSaltWater)
+                {
+                    if ((__instance.doesTileHaveProperty(tileX, tileY, "Water", "Back") != null || __instance.doesTileHaveProperty(tileX, tileY, "WaterSource", "Back") != null) && (__instance is Beach || __instance.catchOceanCrabPotFishFromThisSpot(tileX, tileY)))
+                    {
+                        __result = false;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                mod.ErrorLog("There was an exception in a patch", e);
+            }
         }
 
         private static bool GiveWateringExp(HoeDirt __instance, ref Tool t)
@@ -55,7 +87,7 @@ namespace WateringGrantsXP
             {
                 double chance = mod.config.WateringChanceToGetXP / 100.0;
 
-                if (t != null && t is WateringCan && __instance != null && __instance.state.Value == 0 && __instance.needsWatering() && __instance.crop != null && !__instance.crop.dead.Value)
+                if (t != null && t is WateringCan && __instance != null && __instance.state.Value == HoeDirt.dry && __instance.needsWatering() && __instance.crop != null && !__instance.crop.dead.Value)
                 {
                     if (Game1.random.NextDouble() < chance)
                     {
@@ -78,10 +110,9 @@ namespace WateringGrantsXP
 
                 return true;
             }
-            catch (System.Exception ex)
+            catch (Exception e)
             {
-                mod.Monitor.Log($"Failed in {nameof(GiveWateringExp)}:\n{ex}", LogLevel.Error);
-
+                mod.ErrorLog("There was an exception in a patch", e);
                 return true;
             }
         }
@@ -99,14 +130,14 @@ namespace WateringGrantsXP
                 {
                     if (terrainfeature.Value is HoeDirt dirt)
                     {
-                        if (dirt.crop == null || dirt.crop.dead.Value || dirt.state.Value == 1)
+                        if (dirt.crop == null || dirt.crop.dead.Value || dirt.state.Value == HoeDirt.watered)
                         {
                             if (dirt.modData.ContainsKey(key))
                             {
                                 dirt.modData.Remove(key);
                             }
                         }
-                        else if (dirt.needsWatering() && !dirt.crop.dead.Value && dirt.state.Value != 1)
+                        else if (dirt.needsWatering() && !dirt.crop.dead.Value && dirt.state.Value != HoeDirt.watered)
                         {
                             CheckForCropDeath(dirt);
                         }

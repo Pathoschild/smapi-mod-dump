@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Shockah/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+	"Name": "Predictable Retaining Soil",
+	"Author": "Shockah",
+	"Version": "1.1.0",
+	"Description": "Makes all retaining soils stay watered a specified number of days (instead of being random).",
+	"UniqueID": "Shockah.PredictableRetainingSoil",
+	"EntryDll": "PredictableRetainingSoil.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:10956" ],
+	"Dependencies": [
+		{
+			"UniqueID": "spacechase0.SpaceCore",
+			"IsRequired": true
+		}
+	]
+}

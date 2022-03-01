@@ -281,5 +281,13 @@ namespace UpgradablePan
 			__result = items;
 			return false;
 		}
+
+		public static void getOne_Postfix(ref Pan __instance, ref Item __result)
+		{
+			if (__result is Pan panResult)
+			{
+				panResult.UpgradeLevel = __instance.UpgradeLevel;
+			}
+		}
 	}
 }

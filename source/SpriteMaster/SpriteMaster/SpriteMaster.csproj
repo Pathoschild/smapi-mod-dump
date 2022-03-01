@@ -20,20 +20,21 @@
 		<IsPublishable>False</IsPublishable>
 		<Nullable>enable</Nullable>
 		<DebugType>portable</DebugType>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<DefineConstants>TRACE</DefineConstants>
-		<Optimize>true</Optimize>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <DefineConstants>TRACE</DefineConstants>
+	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
-		<DefineConstants>DEBUG;DEVELOPMENT;TRACE</DefineConstants>
-		<Optimize>true</Optimize>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
+	  <DefineConstants>DEBUG;DEVELOPMENT;TRACE</DefineConstants>
+	  <Optimize>true</Optimize>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <DefineConstants>DEBUG;TRACE</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -45,17 +46,19 @@
 
 	<ItemGroup>
 		<!--<PackageReference Include="Brokenevent.ILStrip.CLI" Version="1.1.4" GeneratePathProperty="true" ExcludeAssets="all" />-->
-		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.2.1" />
+		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.2.2" />
 		<PackageReference Include="ILRepack" Version="2.1.0-beta1" GeneratePathProperty="true" ExcludeAssets="all" />
 		<PackageReference Include="LinqFasterer" Version="2.1.0" />
 		<PackageReference Include="LZMA-SDK" Version="19.0.0" />
 		<PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
+		<PackageReference Include="Nito.Collections.Deque" Version="1.1.1" />
+		<PackageReference Include="OptimizedPriorityQueue" Version="5.1.0" />
 		<PackageReference Include="Pastel" Version="3.0.0" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 		<PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
 		<PackageReference Include="TeximpNet" Version="1.4.3" />
-		<PackageReference Include="Tomlyn" Version="0.3.1" />
+		<PackageReference Include="Tomlyn" Version="0.11.0" />
 		<PackageReference Include="ZstdNet" Version="1.4.5" />
 	</ItemGroup>
 	

@@ -1,0 +1,72 @@
+﻿{
+    /*********
+    ** In-game messages
+    *********/
+    // changed manually
+    "message.config-reloaded": "Die Zeit fühlt sich jetzt anders an...",
+    "message.speed-changed": "10 Minuten fühlen sich nun wie {{seconds}} Sekunden an.",
+    "message.time-stopped": "Hey, du hast die Zeit gestoppt!!",
+    "message.time-resumed": "Die Zeit fühlt sich wieder normal an...",
+
+    // changed based on time
+    "message.on-time-change.time-stopped": "Die Zeit bleibt plötzlich stehen...",
+
+    // changed based on location
+    "message.on-location-change.time-stopped-globally": "Sieht so aus, als wäre die Zeit überall stehen geblieben...",
+    "message.on-location-change.time-stopped-here": "Sieht so aus, als ob die Zeit hier stehen geblieben ist...",
+    "message.on-location-change.time-speed-here": "10 Minuten fühlen sich wie {{seconds}} Sekunden hier an...",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // general options
+    "config.general-options": "Allgemeine Optionen",
+    "config.enable-on-festival-days.name": "Aktiviert an Festivaltagen",
+    "config.enable-on-festival-days.desc": "Ob die Zeit an Festivaltagen geändert werden soll.",
+    "config.location-notify.name": "Zeitinformationen bei Kartenwechsel",
+    "config.location-notify.desc": "Zeigt eine Nachricht welche Zeiteinstellungen auf der aktuellen Karte vorherrschen.",
+
+    // seconds per minute section
+    "config.seconds-per-minute": "Zeit Optionen",
+    "config.indoors-speed.name": "Drinnen",
+    "config.indoors-speed.desc": "Benötigte reale Sekunden pro Ingame Minute in Innenräumen.",
+    "config.outdoors-speed.name": "Draussen",
+    "config.outdoors-speed.desc": "Benötigte reale Sekunden pro Ingame Minute in Aussenräumen.",
+    "config.mine-speed.name": "Mine",
+    "config.mine-speed.desc": "Benötigte reale Sekunden pro Ingame Minute in der Mine.",
+    "config.skull-cavern-speed.name": "Schädelhöhle",
+    "config.skull-cavern-speed.desc": "Benötigte reale Sekunden pro Ingame Minute in der Schädelhöhle.",
+    "config.volcano-dungeon-speed.name": "Vulkan-Dungeon",
+    "config.volcano-dungeon-speed.desc": "Benötigte reale Sekunden pro Ingame Minute im Vulkan-Dungeon.",
+
+    // freeze time section
+    "config.freeze-time": "Zeit Einfrier Optionen",
+    "config.anywhere-at-time.name": "Zeit einfrieren bei",
+    "config.anywhere-at-time.desc": "Die Zeit, zu der die Zeit überall eingefroren werden soll. (6 Uhr morgens) 600 bis 2400 (Mitternacht) und 2600 (2 Uhr morgens). Du kannst es auf 2600 einstellen, um es zu deaktivieren.",
+    "config.freeze-time-indoors.name": "Drinnen",
+    "config.freeze-time-indoors.desc": "Ob die Zeit in Häusern eingefroren werden soll.",
+    "config.freeze-time-outdoors.name": "Draussen",
+    "config.freeze-time-outdoors.desc": "Ob die Zeit draussen eingefroren wird.",
+    "config.freeze-time-mine.name": "Mine",
+    "config.freeze-time-mine.desc": "Ob die Zeit in der Mine eingefroren wird.",
+    "config.freeze-time-skull-cavern.name": "Schädelhöhle",
+    "config.freeze-time-skull-cavern.desc": "Ob die Zeit in der Schädelhöhle eingefroren wird.",
+    "config.freeze-time-volcano-dungeon.name": "Vulkan-Dungeon",
+    "config.freeze-time-volcano-dungeon.desc": "Ob die Zeit im Vulkan-Dungeon eingefroren wird.",
+    "config.freeze-time-freeze-names.name": "Eigene Orte Zeit einfrieren",
+    "config.freeze-time-freeze-names.desc": "Die Namen bestimmter Orte, an denen die Zeit eingefroren werden soll. Standortnamen können im Spiel mit dem Debug-Modus-Mod angezeigt werden. Du kannst mehrere mit Kommas auflisten.",
+    "config.freeze-time-dont-freeze-names.name": "Bestimmte Orte Zeit nicht einfrieren",
+    "config.freeze-time-dont-freeze-names.desc": "Die Namen bestimmter Orte, an denen die Zeit nicht eingefroren werden soll, unabhängig von den vorherigen Einstellungen. Standortnamen können im Spiel mit dem Debug-Modus-Mod angezeigt werden. Du kannst mehrere mit Kommas auflisten.",
+
+    // controls
+    "config.controls": "Steuerungs Optionen",
+    "config.freeze-time-key.name": "Zeit einfrieren",
+    "config.freeze-time-key.desc": "Mit dieser Taste kann die Zeit angehalten und wieder angeschalten werden. Bei einem wechsel des Ortes, mit anderer Zeit Einstellung, wird die Zeit automatisch wieder eingeschalten. (z.b Farm->Mine)",
+    "config.slow-time-key.name": "Zeit verlangsamen",
+    "config.slow-time-key.desc": "Mit dieser Taste kann die Zeit verlangsamt werden. Strg + Taste für 100 Sekunden, Umschalt + Taste für 10 Sekunden, Nur Taste für 1 Sekunde oder Alt + Taste für 0.1 Sekunden.",
+    "config.speed-up-time-key.name": "Zeit beschleunigen",
+    "config.speed-up-time-key.desc": "Mit dieser Taste kann die Zeit beschleunigt werden. Strg + Taste für 100 Sekunden, Umschalt + Taste für 10 Sekunden, Nur Taste für 1 Sekunde oder Alt + Taste für 0.1 Sekunden.",
+    "config.reload-key.name": "Konfiguration neuladen",
+    "config.reload-key.desc": "Mit dieser Taste wird die Konfiguration sofort neu eingelesen. Die Zeit bleibt eingefroren, wenn sie per Taste eingefroren wurde."
+}

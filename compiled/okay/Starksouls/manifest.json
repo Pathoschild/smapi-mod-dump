@@ -1,0 +1,10 @@
+{
+    "Author": "FenrirAsonda",
+    "Description": "Customize what percentage of missing health and stamina is restored each day.",
+    "EntryDll": "Starksouls.dll",
+    "MinimumApiVersion": "3.0.0",
+    "Name": "Starksouls",
+    "UniqueID": "FenrirAsonda.Starksouls",
+    "UpdateKeys": [],
+    "Version": "1.0.0"
+}

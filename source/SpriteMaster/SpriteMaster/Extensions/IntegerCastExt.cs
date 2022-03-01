@@ -17,6 +17,12 @@ static partial class Integer {
 	// Unsigned Conversions
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static unsafe bool ToBool(this byte value) => value.ReinterpretAs<bool>();
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static unsafe bool ToBool(this int value) => value.ReinterpretAs<bool>();
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static unsafe byte ToByte(this bool value) => value.ReinterpretAs<byte>();
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]

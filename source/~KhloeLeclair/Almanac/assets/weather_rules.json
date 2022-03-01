@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+[
+	{
+		"Id": "spring_can",
+		"Priority": 10,
+		"Period": "Year",
+		"Dates": [
+			{
+				"Start": 15,
+				"End": 28
+			}
+		],
+		"Weight": "End",
+		"Pattern": [
+			[ "Rain", "Storm" ],
+			[ "Rain", "Storm" ],
+			[ "Rain", "Storm" ]
+		]
+	},
+	{
+		"Id": "week_rain",
+		"Period": "Week",
+		"ValidSeasons": [
+			"Spring",
+			"Summer",
+			"Fall"
+		],
+		"Pattern": [
+			[ "Rain", "Storm" ]
+		]
+	},
+	{
+		"Id": "week_snow",
+		"Period": "Week",
+		"ValidSeasons": [
+			"Winter"
+		],
+		"Pattern": [
+			[ "Snow" ]
+		]
+	},
+	{
+		"Id": "week_sun",
+		"Period": "Week",
+		"Pattern": [
+			[ "Sun", "Wind", "Festival" ]
+		]
+	}
+]

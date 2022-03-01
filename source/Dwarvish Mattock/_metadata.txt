@@ -6,9 +6,9 @@ mods:
    Dwarvish Mattock
 
 latest commit:
-   commit e5634d975aa2aeeeffbfda824def384034852ef2
+   commit 028568a35877e57e8c55e8330872905864da4651
    Author: Anthony Hilyard <anthony.hilyard@gmail.com>
-   Date:   Tue Oct 12 23:05:13 2021 -0700
+   Date:   Tue Feb 8 20:58:55 2022 -0800
    
-       Initial commit.
+       Fixed multiple cutscene bug.
    

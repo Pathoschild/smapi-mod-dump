@@ -3,6 +3,7 @@ urls:
    Git: https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
+   Advanced Flute Blocks
    Advanced Loot Framework
    Advanced Melee Framework
    Animated Parrot and Perch
@@ -26,6 +27,7 @@ mods:
    Custom Renovations
    Custom Resource Clumps
    Custom Spouse Patio
+   Custom Spouse Patio Redux
    Custom Spouse Patio Wizard
    Custom Spouse Rooms
    Custom Tree Tweaks
@@ -37,9 +39,11 @@ mods:
    Familiars
    Farm Cave Framework
    Farmer Helper
+   Field Harvest
    Fire Breath
    Fishing Chests Expanded
    Flowing Mine Rocks
+   Food on the Table
    Free Love
    Friendly Divorce
    Fruit Tree Shaker
@@ -70,8 +74,11 @@ mods:
    Murdercrows
    Night Event Chance Tweak
    Non-Random Prairie King
+   Object Import Map
    Overworld Chests
    Pacifist Valley
+   Painting Display
+   Particle Effects
    Pelican xVASynth
    Persistent Grange Display
    Pipe Irrigation
@@ -88,22 +95,25 @@ mods:
    Sixty-Nine Shirt
    Social Page Order Button
    Sound Effect Replacement
+   Stardew RPG
    Swim
    Tappable Palm Trees
+   Train Tracks
    Transparent Objects
    Trash Can Reactions
    Treasure Chests Expanded
    Underground Secrets
    Utility Grid
    Video Player
+   Watering Can Tweaks
    Wedding Tweaks
    Witcher Mod
    Zombie Outbreak
 
 latest commit:
-   commit 21a1aec31319f6ed0c8164a7c964bb2c6a2aebd8
+   commit 6f553ee6d41ce3fff101c02d4b7e0b782230ad7b
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Jan 28 23:09:35 2022 -0500
+   Date:   Mon Feb 28 19:43:46 2022 -0500
    
-       Furniture Display Framework
+       etc
    

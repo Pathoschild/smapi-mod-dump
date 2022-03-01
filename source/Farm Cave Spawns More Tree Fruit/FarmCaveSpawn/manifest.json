@@ -12,7 +12,7 @@
    "$schema": "https://smapi.io/schemas/manifest.json",
    "Name": "FarmCaveSpawn",
    "Author": "atravita",
-   "Version": "1.0.8-beta",
+   "Version": "1.0.9",
    "Description": "Spawn more tree fruit in the fruit cave",
    "UniqueID": "atravita.FarmCaveSpawn",
    "EntryDll": "FarmCaveSpawn.dll",

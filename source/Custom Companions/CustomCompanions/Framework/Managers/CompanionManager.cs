@@ -14,6 +14,7 @@ using CustomCompanions.Framework.Models.Companion;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
@@ -245,13 +246,17 @@ namespace CustomCompanions.Framework.Managers
                 MapCompanion mapCompanion = follower as MapCompanion;
 
                 var companionTile = mapCompanion.targetTile.Value / 64f;
-                var backLayer = location.map.GetLayer("Back");
-                if (backLayer.Tiles.Array.GetLength(0) < companionTile.X || backLayer.Tiles.Array.GetLength(1) < companionTile.Y)
+                var targetLayer = location.map.GetLayer("Back");
+                if (location is FarmHouse)
+                {
+                    targetLayer = location.map.GetLayer("Front");
+                }
+                if (targetLayer.Tiles.Array.GetLength(0) < companionTile.X || targetLayer.Tiles.Array.GetLength(1) < companionTile.Y)
                 {
                     return true;
                 }
 
-                var mapTile = backLayer.Tiles[(int)companionTile.X, (int)companionTile.Y];
+                var mapTile = targetLayer.Tiles[(int)companionTile.X, (int)companionTile.Y];
                 if (mapTile is null || !mapTile.Properties.ContainsKey("CustomCompanions"))
                 {
                     return true;

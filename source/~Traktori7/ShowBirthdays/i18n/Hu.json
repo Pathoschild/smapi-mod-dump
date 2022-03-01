@@ -9,10 +9,10 @@
 *************************************************/
 
 {
-	"duration-label": "Ciklus időtartam",
-	"duration-desc": "Mozgó grafikus elemek ciklus időtartama rajzolási ciklusokban.",
-	"type-label": "Ciklus típusa",
-	"type-desc": "Hogyan mozognak a grafikus elemek.",
-	"icon-label": "Ikon megjelenítése",
-	"icon-desc": "Ikon megjelenítése a megosztott születésnapokon.",
+  "duration-label": "Ismétlődési idő",
+  "duration-desc": "Mozgó grafikus elemek ismétlődésének az ideje.",
+  "type-label": "Ismétlődés típusa",
+  "type-desc": "Grafikus elemek ismétlődésének a típusa.",
+  "icon-label": "Ikon megjelenítése",
+  "icon-desc": "Megosztott születésnapok ikonjának megjelenítése."
 }

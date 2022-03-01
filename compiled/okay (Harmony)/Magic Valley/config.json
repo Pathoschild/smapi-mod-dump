@@ -10,12 +10,13 @@
   "EnablePetFeedAnimal": true,
   "EnableJunimoSkills": true,
   "InfiniteMagnetRange": true,
-  "EnableSharedChest": true,
+  "EnableSharedChest": false,
   "ColourSharedChests": false,
   "AllowMaxEnchantmentTimes": 1,
   "EnchantmentToolPrice": 5000,
   "EnableAutoFishing": true,
   "EnableAutomation": true,
+  "EnableRemoteChests": true,
   "EnableRemoteShops": true,
   "EnableRemoteOffice": true,
   "CustomShopOffice": true,
@@ -67,6 +68,10 @@
     {
       "ShortcutKey": "N",
       "MenuType": "LocationMap"
+    },
+    {
+      "ShortcutKey": "R",
+      "MenuType": "TaggedChests"
     }
   ]
 }

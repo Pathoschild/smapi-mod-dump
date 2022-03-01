@@ -1,0 +1,10 @@
+﻿{
+  "Name": "HostTools",
+  "Author": "MattPlays",
+  "Version": "1.0.0",
+  "Description": "HostTools is currently a command line based Mod for Server Hosts to find out information about the servers connected Farmers",
+  "UniqueID": "MattPlays.HostTools",
+  "EntryDll": "HostTools.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "nexus: 11154" ]
+}

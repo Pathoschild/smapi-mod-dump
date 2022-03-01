@@ -22,6 +22,7 @@ using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework;
 using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Factories;
+using ItemPipes.Framework.Items;
 
 namespace ItemPipes.Framework
 {
@@ -125,7 +126,7 @@ namespace ItemPipes.Framework
                         Vector2 north = new Vector2(x, y - 1);
                         if (location.getObjectAtTile(x, y - 1) != null && y - 1 >= 0)
                         {
-                            if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x, y - 1).Name))
+                            if (location.getObjectAtTile(x, y - 1) is PipeItem)
                             {
                                 if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(north))))
                                 {
@@ -133,15 +134,19 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().North, adj);
                                 }
                             }
-                            else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x, y - 1).Name))
+                            else if (location.getObjectAtTile(x, y - 1) is Chest || location.getObjectAtTile(x, y - 1) is CustomBigCraftableItem)
                             {
-                                Node adj = NodeFactory.CreateElement(north, location, location.getObjectAtTile(x, y - 1));
-                                nodes.Add(adj);
-                                if (node is IOPipeNode)
+                                Node adj;
+                                if (nodes.Find(n => n.Position.Equals(north)) == null)
                                 {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
+                                    adj = NodeFactory.CreateElement(north, location, location.getObjectAtTile(x, y - 1));
+                                    nodes.Add(adj);
                                 }
+                                else
+                                {
+                                    adj = nodes.Find(n => n.Position.Equals(north));
+                                }
+                                node.AddAdjacent(SideStruct.GetSides().North, adj);
                             }
                         }
                         else if (Game1.getFarm().getBuildingAt(north) != null && y - 1 >= 0)
@@ -158,11 +163,7 @@ namespace ItemPipes.Framework
                                 {
                                     adj = nodes.Find(n => n.Position.Equals(north));
                                 }
-                                if (node is IOPipeNode)
-                                {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
-                                }
+                                node.AddAdjacent(SideStruct.GetSides().North, adj);
                             }
                         }
 
@@ -170,7 +171,7 @@ namespace ItemPipes.Framework
                         Vector2 south = new Vector2(x, y + 1);
                         if (location.getObjectAtTile(x, y + 1) != null && y + 1 < location.map.DisplayHeight)
                         {
-                            if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x, y + 1).Name))
+                            if (location.getObjectAtTile(x, y + 1) is PipeItem)
                             {
                                 if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(south))))
                                 {
@@ -178,15 +179,19 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().South, adj);
                                 }
                             }
-                            else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x, y + 1).Name))
+                            else if (location.getObjectAtTile(x, y + 1) is Chest || location.getObjectAtTile(x, y + 1) is CustomBigCraftableItem)
                             {
-                                Node adj = NodeFactory.CreateElement(south, location, location.getObjectAtTile(x, y + 1));
-                                nodes.Add(adj);
-                                if (node is IOPipeNode)
+                                Node adj;
+                                if (nodes.Find(n => n.Position.Equals(south)) == null)
                                 {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
+                                    adj = NodeFactory.CreateElement(south, location, location.getObjectAtTile(x, y + 1));
+                                    nodes.Add(adj);
                                 }
+                                else
+                                {
+                                    adj = nodes.Find(n => n.Position.Equals(south));
+                                }
+                                node.AddAdjacent(SideStruct.GetSides().South, adj);
                             }
                         }
                         else if (Game1.getFarm().getBuildingAt(south) != null && y + 1 < location.map.DisplayHeight)
@@ -203,18 +208,14 @@ namespace ItemPipes.Framework
                                 {
                                     adj = nodes.Find(n => n.Position.Equals(south));
                                 }
-                                if (node is IOPipeNode)
-                                {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
-                                }
+                                node.AddAdjacent(SideStruct.GetSides().South, adj);
                             }
                         }
                         //East
                         Vector2 east = new Vector2(x + 1, y);
                         if (location.getObjectAtTile(x + 1, y) != null && x + 1 >= 0)
                         {
-                            if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x + 1, y).Name))
+                            if (location.getObjectAtTile(x + 1, y) is PipeItem)
                             {
                                 if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(east))))
                                 {
@@ -222,15 +223,19 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().East, adj);
                                 }
                             }
-                            else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x + 1, y).Name))
+                            else if (location.getObjectAtTile(x + 1, y) is Chest || location.getObjectAtTile(x + 1, y) is CustomBigCraftableItem)
                             {
-                                Node adj = NodeFactory.CreateElement(east, location, location.getObjectAtTile(x + 1, y));
-                                nodes.Add(adj);
-                                if (node is IOPipeNode)
+                                Node adj;
+                                if (nodes.Find(n => n.Position.Equals(east)) == null)
                                 {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
+                                    adj = NodeFactory.CreateElement(east, location, location.getObjectAtTile(x + 1, y));
+                                    nodes.Add(adj);
                                 }
+                                else
+                                {
+                                    adj = nodes.Find(n => n.Position.Equals(east));
+                                }
+                                node.AddAdjacent(SideStruct.GetSides().East, adj);
                             }
                         }
                         else if (Game1.getFarm().getBuildingAt(east) != null && x + 1 >= 0)
@@ -247,11 +252,7 @@ namespace ItemPipes.Framework
                                 {
                                     adj = nodes.Find(n => n.Position.Equals(east));
                                 }
-                                if (node is IOPipeNode)
-                                {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
-                                }
+                                node.AddAdjacent(SideStruct.GetSides().East, adj);
                             }
                         }
                         //West
@@ -259,7 +260,7 @@ namespace ItemPipes.Framework
                         if (location.getObjectAtTile(x - 1, y) != null && x + 1 < location.map.DisplayWidth)
                         {
 
-                            if (DataAccess.NetworkItems.Contains(location.getObjectAtTile(x - 1, y).Name))
+                            if (location.getObjectAtTile(x - 1, y) is PipeItem)
                             {
                                 if (!node.ParentNetwork.Nodes.Contains(nodes.Find(n => n.Position.Equals(west))))
                                 {
@@ -267,15 +268,19 @@ namespace ItemPipes.Framework
                                     node.AddAdjacent(SideStruct.GetSides().West, adj);
                                 }
                             }
-                            else if (DataAccess.ExtraNames.Contains(location.getObjectAtTile(x - 1, y).Name))
+                            else if (location.getObjectAtTile(x - 1, y) is Chest || location.getObjectAtTile(x - 1, y) is CustomBigCraftableItem)
                             {
-                                Node adj = NodeFactory.CreateElement(west, location, location.getObjectAtTile(x - 1, y));
-                                nodes.Add(adj);
-                                if (node is IOPipeNode)
+                                Node adj;
+                                if (nodes.Find(n => n.Position.Equals(west)) == null)
                                 {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
+                                    adj = NodeFactory.CreateElement(west, location, location.getObjectAtTile(x - 1, y));
+                                    nodes.Add(adj);
                                 }
+                                else
+                                {
+                                    adj = nodes.Find(n => n.Position.Equals(west));
+                                }
+                                node.AddAdjacent(SideStruct.GetSides().West, adj);
                             }
                         }
                         else if (Game1.getFarm().getBuildingAt(west) != null && x - 1 < location.map.DisplayWidth)
@@ -292,11 +297,7 @@ namespace ItemPipes.Framework
                                 {
                                     adj = nodes.Find(n => n.Position.Equals(west));
                                 }
-                                if (node is IOPipeNode)
-                                {
-                                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                                    IOPipeNode.AddConnectedContainer(adj);
-                                }
+                                node.AddAdjacent(SideStruct.GetSides().West, adj);
                             }
                         }
                     }

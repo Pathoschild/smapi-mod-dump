@@ -69,8 +69,10 @@ sealed class DoubleBuffer<T> {
 
 	internal DoubleBuffer(params object[] parameters) : this(
 		// We do, indeed, want to create two seperate instances.
+#pragma warning disable CS0618 // Type or member is obsolete
 		ReflectionExt.CreateInstance<T>(parameters) ?? throw new NullReferenceException(nameof(parameters)),
 		ReflectionExt.CreateInstance<T>(parameters) ?? throw new NullReferenceException(nameof(parameters))
+#pragma warning restore CS0618 // Type or member is obsolete
 	) { }
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]

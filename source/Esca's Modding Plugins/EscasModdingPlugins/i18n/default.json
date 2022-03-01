@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Esca-MMC/EscasModdingPlugins
+**
+*************************************************/
+
+{
+	"Config.PlaceBedsAnywhere.Name": "Place beds anywhere",
+	"Config.PlaceBedsAnywhere.Description": "If enabled, you can place beds at any location.",
+	"Config.PlaceMiniFridgesAnywhere.Name": "Place mini-fridges anywhere",
+	"Config.PlaceMiniFridgesAnywhere.Description": "If enabled, you can place mini-fridges at any location.",
+	"Config.PassOutSafelyEverywhere.Name": "Pass out safely anywhere",
+	"Config.PassOutSafelyEverywhere.Description": "If enabled, you won't lose money if you pass out by staying awake too late (2:00 AM). NOTE: This doesn't change what happens if you run out of health."
+}

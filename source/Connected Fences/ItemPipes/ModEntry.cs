@@ -24,10 +24,13 @@ using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Patches;
 using ItemPipes.Framework.Nodes;
-using ItemPipes.Framework.Items;
+using ItemPipes.Framework.Items.Objects;
 using ItemPipes.Framework.Items.Recipes;
 using HarmonyLib;
 using SpaceCore;
+using System.Diagnostics;
+using System.Threading;
+
 
 namespace ItemPipes
 {
@@ -122,8 +125,26 @@ namespace ItemPipes
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
-            helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
+            helper.Events.GameLoop.Saving += this.OnSaving;
 
+        }
+
+        private void OnSaving(object sender, SavingEventArgs e)
+        {
+            if (Globals.Debug) { Printer.Info("Waiting for all items to arrive at input..."); }
+            //Quick end all threads
+            while (DataAccess.Threads.Count > 0)
+            {
+                foreach (Thread thread in DataAccess.Threads.ToList())
+                {
+                    if (thread != null && thread.IsAlive)
+                    {
+                        thread.Interrupt();
+                    }
+                }
+                
+            }
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -132,11 +153,18 @@ namespace ItemPipes
             var spaceCore = this.Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
             spaceCore.RegisterSerializerType(typeof(IronPipeItem));
             spaceCore.RegisterSerializerType(typeof(GoldPipeItem));
+            spaceCore.RegisterSerializerType(typeof(IridiumPipeItem));
 
             spaceCore.RegisterSerializerType(typeof(ExtractorPipeItem));
+            spaceCore.RegisterSerializerType(typeof(GoldExtractorPipeItem));
+            spaceCore.RegisterSerializerType(typeof(IridiumExtractorPipeItem));
+
             spaceCore.RegisterSerializerType(typeof(InserterPipeItem));
             spaceCore.RegisterSerializerType(typeof(PolymorphicPipeItem));
             spaceCore.RegisterSerializerType(typeof(FilterPipeItem));
+
+            spaceCore.RegisterSerializerType(typeof(PPMItem));
+
 
             spaceCore.RegisterSerializerType(typeof(WrenchItem));
             //spaceCore.RegisterSerializerType(typeof(IronPipeRecipe));
@@ -192,6 +220,7 @@ namespace ItemPipes
                 NetworkManager.UpdateLocationNetworks(location);
             }
             if (Globals.UltraDebug) { Printer.Info("Location networks loaded!"); }
+
         }
 
         private void Reset()
@@ -201,21 +230,15 @@ namespace ItemPipes
             DataAccess.UsedNetworkIDs.Clear();
         }
 
-        private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if(Globals.DisableItemSending)
+            if (Globals.DisableItemSending)
             {
                 if (Context.IsWorldReady)
                 {
-                    /*if (e.IsMultipleOf(30))
-                    {
-                        if (Globals.Debug) { Printer.Info($"[X] UPDATETICKET"); }
-                        Animator.updated = true;
-                    }*/
                     //Tier 1 Extractors
                     if (e.IsMultipleOf(120))
                     {
-                        DataAccess DataAccess = DataAccess.GetDataAccess();
                         foreach (GameLocation location in Game1.locations)
                         {
                             List<Network> networks = DataAccess.LocationNetworks[location];
@@ -225,7 +248,50 @@ namespace ItemPipes
                                 foreach (Network network in networks)
                                 {
                                     //Printer.Info(network.Print());
-                                    network.ProcessExchanges(1);
+                                    if (network.Outputs.Count > 0)
+                                    {
+                                        network.ProcessExchanges(1);
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                    //Tier 2 Extractors
+                    if (e.IsMultipleOf(60))
+                    {
+                        foreach (GameLocation location in Game1.locations)
+                        {
+                            List<Network> networks = DataAccess.LocationNetworks[location];
+                            if (networks.Count > 0)
+                            {
+                                //if (Globals.UltraDebug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
+                                foreach (Network network in networks)
+                                {
+                                    //Printer.Info(network.Print());
+                                    if (network.Outputs.Count > 0)
+                                    {
+                                        network.ProcessExchanges(2);
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                    //Tier 3 Extractors
+                    if (e.IsMultipleOf(30))
+                    {
+                        foreach (GameLocation location in Game1.locations)
+                        {
+                            List<Network> networks = DataAccess.LocationNetworks[location];
+                            if (networks.Count > 0)
+                            {
+                                foreach (Network network in networks)
+                                {
+                                    if (network.Outputs.Count > 0)
+                                    {
+                                        network.ProcessExchanges(3);
+                                    }
                                 }
                             }
                         }
@@ -233,21 +299,50 @@ namespace ItemPipes
                 }
             }
         }
+        /*
+        private void ProcessNetworks()
+        {
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            foreach (GameLocation location in Game1.locations)
+            {
+                List<Network> networks = DataAccess.LocationNetworks[location];
+                if (networks.Count > 0)
+                {
+                    //if (Globals.UltraDebug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
+                    foreach (Network network in networks)
+                    {
+                        //Printer.Info(network.Print());
+                        if (network.Outputs.Count > 0)
+                        {
+                            network.ProcessExchanges(1);
+                        }
 
+                    }
+                }
+            }
+            DataAccess.GetDataAccess().Threads.Add(Thread.CurrentThread);
+        }
+        */
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             List<KeyValuePair<Vector2, StardewValley.Object>> addedObjects = e.Added.ToList();
             foreach (KeyValuePair<Vector2, StardewValley.Object> obj in addedObjects)
             {
-                NetworkManager.AddObject(obj);
-                NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
+                if(DataAccess.ModItems.Contains(obj.Value.Name))
+                {
+                    NetworkManager.AddObject(obj);
+                    NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
+                }
             }
 
             List<KeyValuePair<Vector2, StardewValley.Object>> removedObjects = e.Removed.ToList();
             foreach (KeyValuePair<Vector2, StardewValley.Object> obj in removedObjects)
             {
-                NetworkManager.RemoveObject(obj);
-                NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
+                if (DataAccess.ModItems.Contains(obj.Value.Name))
+                {
+                    NetworkManager.RemoveObject(obj);
+                    NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
+                }
             }
         }
 
@@ -255,16 +350,18 @@ namespace ItemPipes
         {
             for(int i=0;i<15;i++)
             {
-                //Game1.player.addItemToInventory(new Test());
                 Game1.player.addItemToInventory(new IronPipeItem());
                 Game1.player.addItemToInventory(new GoldPipeItem());
+                Game1.player.addItemToInventory(new IridiumPipeItem());
                 Game1.player.addItemToInventory(new ExtractorPipeItem());
+                Game1.player.addItemToInventory(new GoldExtractorPipeItem());
+                Game1.player.addItemToInventory(new IridiumExtractorPipeItem());
                 Game1.player.addItemToInventory(new InserterPipeItem());
                 Game1.player.addItemToInventory(new PolymorphicPipeItem());
                 Game1.player.addItemToInventory(new FilterPipeItem());
-                //Game1.player.addItemToInventory(new Pipe());
+                Game1.player.addItemToInventory(new PPMItem());
             }
-            if(!Game1.player.hasItemInInventoryNamed("Wrench"))
+            if (!Game1.player.hasItemInInventoryNamed("Wrench"))
             {
                 Game1.player.addItemToInventory(new WrenchItem());
             }

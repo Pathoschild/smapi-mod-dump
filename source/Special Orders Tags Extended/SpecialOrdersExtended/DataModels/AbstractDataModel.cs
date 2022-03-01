@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AtraShared.Utils.Extensions;
 using StardewModdingAPI.Utilities;
 
 namespace SpecialOrdersExtended.DataModels;
@@ -34,7 +35,11 @@ internal abstract class AbstractDataModel
     /// Handles saving.
     /// </summary>
     /// <param name="identifier">An identifier token to add to the filename.</param>
-    public virtual void Save(string identifier) => ModEntry.DataHelper.WriteGlobalData(this.Savefile + identifier, this);
+    public virtual void Save(string identifier)
+    {
+        ModEntry.ModMonitor.DebugLog($"Saving {identifier}");
+        ModEntry.DataHelper.WriteGlobalData(this.Savefile + identifier, this);
+    }
 
     /// <summary>
     /// A way to save a temporary file.

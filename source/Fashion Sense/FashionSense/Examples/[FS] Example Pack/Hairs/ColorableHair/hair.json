@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/FashionSense
+**
+*************************************************/
+
+{
+  "Name": "Colorable Hair",
+  "FrontHair": {
+    "ColorMasks": [
+      [ 57, 57, 57 ],
+      [ 81, 81, 81 ],
+      [ 119, 119, 119 ],
+      [ 158, 158, 158 ],
+      [ 203, 203, 203 ],
+      [ 224, 224, 224 ],
+      [ 254, 254, 254 ]
+    ],
+    "StartingPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HairSize": {
+      "Width": 16,
+      "Length": 32
+    }
+  },
+  "BackHair": {
+    "ColorMasks": [
+      [ 57, 57, 57 ],
+      [ 81, 81, 81 ],
+      [ 119, 119, 119 ],
+      [ 158, 158, 158 ],
+      [ 203, 203, 203 ],
+      [ 224, 224, 224 ],
+      [ 254, 254, 254 ]
+    ],
+    "StartingPosition": {
+      "X": 16,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HairSize": {
+      "Width": 16,
+      "Length": 32
+    }
+  },
+  "LeftHair": {
+    "ColorMasks": [
+      [ 57, 57, 57 ],
+      [ 81, 81, 81 ],
+      [ 119, 119, 119 ],
+      [ 158, 158, 158 ],
+      [ 203, 203, 203 ],
+      [ 224, 224, 224 ],
+      [ 254, 254, 254 ]
+    ],
+    "StartingPosition": {
+      "X": 32,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HairSize": {
+      "Width": 16,
+      "Length": 32
+    }
+  },
+  "RightHair": {
+    "ColorMasks": [
+      [ 57, 57, 57 ],
+      [ 81, 81, 81 ],
+      [ 119, 119, 119 ],
+      [ 158, 158, 158 ],
+      [ 203, 203, 203 ],
+      [ 224, 224, 224 ],
+      [ 254, 254, 254 ]
+    ],
+    "StartingPosition": {
+      "X": 48,
+      "Y": 0
+    },
+    "HeadPosition": {
+      "X": 0,
+      "Y": 0
+    },
+    "HairSize": {
+      "Width": 16,
+      "Length": 32
+    }
+  }
+}

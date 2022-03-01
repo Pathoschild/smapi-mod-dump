@@ -18,7 +18,6 @@ using SpriteMaster.Types;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Extensions;
 
@@ -28,6 +27,9 @@ static class Textures {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static Vector2I Extent(this Texture2D texture) => new(texture.Width, texture.Height);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static Bounds Bounds(this Texture2D texture) => new(texture);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static long SizeBytes(this SurfaceFormat format, int texels) {
@@ -101,57 +103,61 @@ static class Textures {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static long SizeBytes(this ManagedTexture2D texture) => (long)texture.Area() * 4;
 
-	internal static TeximpNet.Surface Resize(this TeximpNet.Surface source, in Vector2I size, TeximpNet.ImageFilter filter = TeximpNet.ImageFilter.Lanczos3, bool discard = true) {
-		if (size == new Vector2I(source)) {
-			try {
-				return source.Clone();
-			}
-			finally {
-				if (discard) {
-					source.Dispose();
-				}
-			}
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool Anonymous(this Texture2D texture) => texture.Name.IsWhiteBlank();
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static bool Anonymous(this ManagedSpriteInstance texture) => texture.Name.IsWhiteBlank();
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static string NormalizeNameInternal(this string? name) {
+		/*
+		if (name.IsWhiteBlank()) {
+			return "[Unknown]";
 		}
 
-		var output = source.Clone();
-		try {
-			if (!output.Resize(size.Width, size.Height, filter)) {
-				throw new Exception("Failed to resize surface");
-			}
-
-			if (discard) {
-				source.Dispose();
-			}
-
-			return output;
+		name = name.Replace('/', '\\');
+		string original;
+		do {
+			original = name;
+			name = original.Replace(@"\\", @"\");
 		}
-		catch {
-			output.Dispose();
-			throw;
+		while (!object.ReferenceEquals(name, original));
+
+		return name;
+		*/
+
+		if (name.IsWhiteBlank()) {
+			return "[Unknown]";
 		}
+
+		return name.Replace('/', '\\').Replace(@"\\", @"\");
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool Anonymous(this Texture2D texture) => texture.Name.IsBlank();
+	internal static string NormalizedName(this string name) => name.NormalizeNameInternal();
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string NormalizedName(this string name, in DrawingColor color) => name.NormalizeNameInternal().Pastel(color);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool Anonymous(this ManagedSpriteInstance texture) => texture.Name.IsBlank();
+	internal static string NormalizedName(this Texture texture) => texture.Name.NormalizedName();
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string NormalizedName(this Texture texture, in DrawingColor color) => texture.Name.NormalizedName(in color);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string SafeName(this string name) => name.IsBlank() ? "Unknown" : name.Replace('\\', '/').Replace("//", "/");
+	internal static string NormalizedName(this Texture2D texture) => texture.Name.NormalizedName();
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string SafeName(this string name, in DrawingColor color) => (name.IsBlank() ? "Unknown" : name.Replace('\\', '/').Replace("//", "/")).Pastel(color);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string SafeName(this Texture2D texture) => texture.Name.SafeName();
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string SafeName(this Texture2D texture, in DrawingColor color) => texture.Name.SafeName(in color);
+	internal static string NormalizedName(this Texture2D texture, in DrawingColor color) => texture.Name.NormalizedName(in color);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string SafeName(this ManagedSpriteInstance texture) => texture.Name.SafeName();
+	internal static string NormalizedName(this ManagedTexture2D texture) => texture.Name;
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string SafeName(this ManagedSpriteInstance texture, in DrawingColor color) => texture.Name.SafeName(in color);
+	internal static string NormalizedName(this ManagedTexture2D texture, in DrawingColor color) => texture.Name.Pastel(color);
 
-	private const int ImageElementSize = 4;
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string NormalizedName(this ManagedSpriteInstance instance) => instance.Name;
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string NormalizedName(this ManagedSpriteInstance instance, in DrawingColor color) => instance.Name.Pastel(color);
 
 	internal static void DumpTexture(string path, byte[] source, in Vector2I sourceSize, in double? adjustGamma = null, in Bounds? destBounds = null, in (int i0, int i1, int i2, int i3)? swap = null) {
 		DumpTexture(path, source.AsSpan().Cast<Color8>(), sourceSize, adjustGamma, destBounds, swap);
@@ -200,6 +206,9 @@ static class Textures {
 
 				// PlatformSetData(0, data, 0, data.Length);
 				dumpTexture.SetData(subData);
+				if (Path.GetDirectoryName(path) is string directory) {
+					Directory.CreateDirectory(directory);
+				}
 				using var dumpFile = File.Create(path);
 				dumpTexture.SaveAsPng(dumpFile, destBound.Width, destBound.Height);
 			}
@@ -244,6 +253,9 @@ static class Textures {
 
 				// PlatformSetData(0, data, 0, data.Length);
 				dumpTexture.SetData(subData);
+				if (Path.GetDirectoryName(path) is string directory) {
+					Directory.CreateDirectory(directory);
+				}
 				using var dumpFile = File.Create(path);
 				dumpTexture.SaveAsPng(dumpFile, destBound.Width, destBound.Height);
 			}

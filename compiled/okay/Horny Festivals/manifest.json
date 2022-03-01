@@ -1,0 +1,10 @@
+{
+  "Name": "FestivalWarps",
+  "Author": "Girafarig",
+  "Version": "1.0.0",
+  "Description": "Adds warps to the festivals so you can leave.",
+  "UniqueID": "Girafarig.FestivalWarps",
+  "EntryDll": "FestivalWarps.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

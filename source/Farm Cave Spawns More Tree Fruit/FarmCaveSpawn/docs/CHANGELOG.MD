@@ -15,13 +15,21 @@ Changelog
 #### 1.6 todo
 * Switch all ID lookup to the new system.
 * Figure out DGA fruit trees.
+<!-- bat eyes for custom locations? -->
 
-#### Version 1.0.8 (upcoming)
+#### Version 1.0.9
+
+* Fixes error items spawning in whenever no tree fruits are possible.
+* Adds in a setting to exclude winter from Seasonal Only.
+* Renames console command.
+
+#### Version 1.0.8
 
 * Corrects `UseModCave` option (would previously always use the additional locations list.) Adds new option to only use the six usual vanilla tree fruit.
-* Use delegates
 * Add error checking for badly formatted config files, and clamps the possible values for the config files. Adds version checking for GMCM, and disables GMCM integration if the version is too old.
+* Add bats to mine entrance if spawning there is enabled.
 * (Internal) Fixes tile shuffling logic.
+* (Internal) Use delegates
 
 #### Version 1.0.7
 

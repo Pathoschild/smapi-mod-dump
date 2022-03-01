@@ -15,7 +15,7 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using static SpriteMaster.Colors.ColorHelpers;
 
 namespace SpriteMaster.Resample;
 
@@ -28,65 +28,50 @@ static class Deposterize {
 		private readonly Vector2B Wrapped;
 		private readonly int Passes;
 		private readonly int Threshold;
-		private readonly int ThresholdSq;
 		private readonly int BlockSize;
+		private readonly bool UseRedmean;
+		private readonly YccConfig YccConfiguration;
 
 		internal DeposterizeContext(
 			in Vector2I size,
 			in Vector2B wrapped,
 			int passes,
 			int threshold,
-			int blockSize
+			int blockSize,
+			bool useRedmean = false
 		) {
 			Size = size;
 			Wrapped = wrapped;
 			Passes = passes;
 			Threshold = threshold * 256;
-			ThresholdSq = Threshold * Threshold;
 			BlockSize = blockSize;
+			UseRedmean = useRedmean;
+
+			YccConfiguration = new() {
+				LuminanceWeight = 1.0,
+				ChrominanceWeight = 1.0
+			};
 		}
 
 		[MethodImpl(Runtime.MethodImpl.Hot)]
-		private static Fixed16 TexelDiff(Fixed16 texel1, Fixed16 texel2) => (Fixed16)Math.Abs(texel1.Value - texel2.Value);
-
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		private static double Square(double value) => value * value;
-
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		private unsafe double DistYCbCrImpl(Color16 pix1, Color16 pix2) {
-			// See if the colors are the same
-			if (pix1.NoAlpha == pix2.NoAlpha) {
-				return 0.0;
+		internal uint ColorDifference(in Color16 pix1, in Color16 pix2) {
+			if (UseRedmean) {
+				return ColorHelpers.RedmeanDifference(
+					pix1,
+					pix2,
+					linear: true,
+					alpha: true
+				);
 			}
-
-			//http://en.wikipedia.org/wiki/YCbCr#ITU-R_BT.601_conversion
-			//YCbCr conversion is a matrix multiplication => take advantage of linearity by subtracting first!
-			var rDiff = TexelDiff(pix1.R, pix2.R); //we may delay division by 255 to after matrix multiplication
-			var gDiff = TexelDiff(pix1.G, pix2.G);
-			var bDiff = TexelDiff(pix1.B, pix2.B); //subtraction for int is noticeable faster than for double
-
-			var coefficient = CurrentColorSpace.LumaCoefficient;
-			var scale = CurrentColorSpace.LumaScale;
-
-			// TODO : integer math?
-			var y = (coefficient.R * rDiff.Value) + (coefficient.G * gDiff.Value) + (coefficient.B * bDiff.Value); //[!], analog YCbCr!
-			var cB = scale.B * (bDiff.Value - y);
-			var cR = scale.R * (rDiff.Value - y);
-
-			// Skip division by 255.
-			// Also skip square root here by pre-squaring the config option equalColorTolerance.
-			return Square(y) + ((Square(cB) + Square(cR)));
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		internal double DistYCbCr(Color16 pix1, Color16 pix2) {
-			if (pix1 == pix2) {
-				return 0.0;
+			else {
+				return ColorHelpers.YccDifference(
+					pix1,
+					pix2,
+					config: YccConfiguration,
+					linear: true,
+					alpha: true
+				);
 			}
-
-			var distance = DistYCbCrImpl(pix1, pix2);
-
-			return distance;
 		}
 
 		[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -105,10 +90,10 @@ static class Deposterize {
 
 			if (reference.A == lower.A && reference.A == higher.A) {
 				bool doMerge = false;
-				if (Config.Resample.Deposterization.UseYCbCr && lower != higher && (lower == reference || higher == reference)) {
+				if (Config.Resample.Deposterization.UsePerceptualColor && lower != higher && (lower == reference || higher == reference)) {
 					doMerge =
-						(lower == reference && DistYCbCr(higher, reference) <= ThresholdSq) ||
-						(higher == reference && DistYCbCr(lower, reference) <= ThresholdSq);
+						(lower == reference && ColorDifference(higher, reference) <= Threshold) ||
+						(higher == reference && ColorDifference(lower, reference) <= Threshold);
 				}
 				else {
 					doMerge =
@@ -298,7 +283,8 @@ static class Deposterize {
 			wrapped: wrapped,
 			passes: passes ?? Config.Resample.Deposterization.Passes,
 			threshold: threshold ?? Config.Resample.Deposterization.Threshold,
-			blockSize: blockSize ?? Config.Resample.Deposterization.BlockSize
+			blockSize: blockSize ?? Config.Resample.Deposterization.BlockSize,
+			useRedmean: Config.Resample.Deposterization.UseRedmean
 		);
 		return context.Execute(data);
 	}

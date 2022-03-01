@@ -1,0 +1,12 @@
+{
+  "Health": {
+    "Enabled": true,
+    "HealthRegenPercent": 25,
+    "HealthAfterDeathPercent": 25
+  },
+  "Stamina": {
+    "Enabled": true,
+    "StaminaRegenPercent": 25,
+    "StaminaAfterPassOutPercent": 25
+  }
+}

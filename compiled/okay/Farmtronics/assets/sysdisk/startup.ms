@@ -103,11 +103,10 @@ end function
 color.rgba = function(r, g, b, a)
 	return "#" + hex2(r) + hex2(g) + hex2(b) + hex2(a)
 end function
-
+color.lerp = function(colorA, colorB, t=0.5)
+	return _lerpColor(colorA, colorB, t)
+end function
 // ToDo: functions below, once supporting APIs are in place
-//color.lerp = function(colorA, colorB, t=0.5)
-//	return _lerpColor(colorA, colorB, t)
-//end function
 //color.toList = function(colorString)
 //	return _colorToRGBA(colorString)
 //end function
@@ -435,19 +434,19 @@ if bot then
 	// it.  Returns 1 (true) on success, 0 (false) on failure.
 	bot.clearAhead = function
 		obstacle = bot.ahead
-		if not obstacle then return
+		if not obstacle then return true
 		what = obstacle.type
 		if obstacle.hasIndex("name") then what = obstacle.name
 		print "Clearing: " + what
 		if what == "Grass" or what == "Weeds" then
 			bot.statusColor = "#66FF66"
-			bot.use "Scythe"
+			bot.select "Scythe"
 		else if what == "Stone" or what == "HoeDirt" then
 			bot.statusColor = "#8888FF"
-			bot.use "Pickaxe"
+			bot.select "Pickaxe"
 		else
 			bot.statusColor = "#FF8800"
-			bot.use "Axe"
+			bot.select "Axe"
 		end if
 		for tries in range(19)
 			if not bot.ahead then return true

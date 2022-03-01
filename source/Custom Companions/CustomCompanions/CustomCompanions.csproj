@@ -1,48 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <Version>2.0.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
-    <EnableHarmony>true</EnableHarmony>
-    <EnableModZip>false</EnableModZip>
-    <EnableModDeploy>false</EnableModDeploy>
-    <GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Properties\**" />
-    <Compile Remove="releases\**" />
-    <EmbeddedResource Remove="Properties\**" />
-    <EmbeddedResource Remove="releases\**" />
-    <None Remove="Properties\**" />
-    <None Remove="releases\**" />
-  </ItemGroup>
+	<PropertyGroup>
+		<Version>2.1.1</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Properties\**" />
+		<Compile Remove="releases\**" />
+		<EmbeddedResource Remove="Properties\**" />
+		<EmbeddedResource Remove="releases\**" />
+		<None Remove="Properties\**" />
+		<None Remove="releases\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0-beta.20210916" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
-  <PropertyGroup>
-    <PostBuildEventDependsOn>
-      $(PostBuildEventDependsOn);
-      PostBuildMacros;
-    </PostBuildEventDependsOn>
-    <PostBuildEvent>
-      powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
+	<PropertyGroup>
+		<PostBuildEventDependsOn>
+			$(PostBuildEventDependsOn);
+			PostBuildMacros;
+		</PostBuildEventDependsOn>
+		<PostBuildEvent>
+			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
-      powershell Remove-Item -Path '$(SolutionDir)releases\latest\$(SolutionName)"' -Recurse -Force
-      xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\CustomCompanions\CustomCompanions\bin\Debug\net5.0" "$(SolutionDir)releases\latest\$(SolutionName)"
-      7z a -tzip "$(SolutionDir)releases\$(SolutionName)-$(Version).zip" "$(SolutionDir)releases\latest\$(SolutionName)"
+			powershell Remove-Item -Path '$(SolutionDir)releases\latest\$(SolutionName)"' -Recurse -Force
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\CustomCompanions\CustomCompanions\bin\Debug\net5.0" "$(SolutionDir)releases\latest\$(SolutionName)"
+			7z a -tzip "$(SolutionDir)releases\$(SolutionName)-$(Version).zip" "$(SolutionDir)releases\latest\$(SolutionName)"
 
-      powershell Remove-Item -Path '$(GameModsPath)\$(SolutionName)' -Recurse -Force
-      powershell Remove-Item -Path '$(GameModsPath)\Custom Companions Examples' -Recurse -Force
+			powershell Remove-Item -Path '$(GameModsPath)\$(SolutionName)' -Recurse -Force
+			powershell Remove-Item -Path '$(GameModsPath)\Custom Companions Examples' -Recurse -Force
 
-      xcopy /s /y /i "$(SolutionDir)releases\latest\$(SolutionName)" "$(GameModsPath)\$(SolutionName)"
-      xcopy /s /y /i "$(SolutionDir)Examples\*" "$(GameModsPath)\Custom Companions Examples"
-    </PostBuildEvent>
-  </PropertyGroup>
+			xcopy /s /y /i "$(SolutionDir)releases\latest\$(SolutionName)" "$(GameModsPath)\$(SolutionName)"
+			xcopy /s /y /i "$(SolutionDir)Examples\*" "$(GameModsPath)\Custom Companions Examples"
+		</PostBuildEvent>
+	</PropertyGroup>
 </Project>

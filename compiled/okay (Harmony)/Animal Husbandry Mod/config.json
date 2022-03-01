@@ -18,5 +18,6 @@
   "DisableContestBonus": false,
   "DisableMeatToolLetter": false,
   "DisableMeatInBlundle": false,
-  "ForceDrawAttachmentOnAnyOS": false
+  "ForceDrawAttachmentOnAnyOS": false,
+  "DisableTvChannels": false
 }

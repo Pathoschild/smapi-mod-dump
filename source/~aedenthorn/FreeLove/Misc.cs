@@ -37,26 +37,37 @@ namespace FreeLove
             Config = config;
         }
 
-        public static Dictionary<string, NPC> GetSpouses(Farmer farmer, int all)
+        public static void ReloadSpouses(Farmer farmer)
         {
-            Dictionary<string, NPC> spouses = new Dictionary<string, NPC>();
-            if (all < 0)
+            ModEntry.currentSpouses[farmer.UniqueMultiplayerID] = new Dictionary<string, NPC>();
+            ModEntry.currentUnofficialSpouses[farmer.UniqueMultiplayerID] = new Dictionary<string, NPC>();
+            string ospouse = farmer.spouse;
+            if (ospouse != null)
             {
-                NPC ospouse = farmer.getSpouse();
-                if (ospouse != null)
-                {
-                    spouses.Add(ospouse.Name, ospouse);
-                }
+                ModEntry.currentSpouses[farmer.UniqueMultiplayerID].Add(ospouse, Game1.getCharacterFromName(ospouse));
             }
+            Monitor.Log($"Checking for extra spouses in {farmer.friendshipData.Count()} friends");
             foreach (string friend in farmer.friendshipData.Keys)
             {
-                if (Game1.getCharacterFromName(friend, true) != null && farmer.friendshipData[friend].IsMarried() && (all > 0 || friend != farmer.spouse))
+                if (farmer.friendshipData[friend].IsMarried() && friend != farmer.spouse)
                 {
-                    spouses.Add(friend, Game1.getCharacterFromName(friend, true));
+                    var npc = Game1.getCharacterFromName(friend, true);
+                    if(npc != null)
+                    {
+                        ModEntry.currentSpouses[farmer.UniqueMultiplayerID].Add(friend, npc);
+                        ModEntry.currentUnofficialSpouses[farmer.UniqueMultiplayerID].Add(friend, npc);
+                    }
                 }
             }
-
-            return spouses;
+            Monitor.Log($"reloaded {ModEntry.currentSpouses} spouses for {farmer.Name}");
+        }
+        public static Dictionary<string, NPC> GetSpouses(Farmer farmer, bool all)
+        {
+            if(!ModEntry.currentSpouses.ContainsKey(farmer.UniqueMultiplayerID) || (ModEntry.currentSpouses[farmer.UniqueMultiplayerID].Count == 0 && farmer.spouse != null))
+            {
+                ReloadSpouses(farmer);
+            }
+            return all ? ModEntry.currentSpouses[farmer.UniqueMultiplayerID] : ModEntry.currentUnofficialSpouses[farmer.UniqueMultiplayerID];
         }
 
         internal static void ResetDivorces()
@@ -106,7 +117,7 @@ namespace FreeLove
 
         public static string GetRandomSpouse(Farmer f)
         {
-            var spouses = GetSpouses(f, 1);
+            var spouses = GetSpouses(f, true);
             if (spouses.Count == 0)
                 return null;
             ShuffleDic(ref spouses);
@@ -120,7 +131,7 @@ namespace FreeLove
             if (farmer == null)
                 return;
 
-            List<NPC> allSpouses = GetSpouses(farmer, 1).Values.ToList();
+            List<NPC> allSpouses = GetSpouses(farmer, true).Values.ToList();
 
             if (allSpouses.Count == 0)
             {
@@ -135,7 +146,11 @@ namespace FreeLove
 
             foreach (NPC spouse in allSpouses)
             {
-
+                if (!farmHouse.Equals(spouse.currentLocation))
+                {
+                    Monitor.Log($"{spouse.Name} is not in farm house ({spouse.currentLocation.Name})");
+                    continue;
+                }
                 int type = ModEntry.myRand.Next(0, 100);
 
                 Monitor.Log($"spouse rand {type}, bed: {ModEntry.Config.PercentChanceForSpouseInBed} kitchen {ModEntry.Config.PercentChanceForSpouseInKitchen}");
@@ -159,7 +174,7 @@ namespace FreeLove
                 }
                 else if(type < ModEntry.Config.PercentChanceForSpouseInBed + ModEntry.Config.PercentChanceForSpouseInKitchen + ModEntry.Config.PercentChanceForSpouseAtPatio)
                 {
-                    if (!Game1.isRaining && !Game1.IsWinter && !spouse.Name.Equals("Krobus") && spouse.Schedule == null)
+                    if (!Game1.isRaining && !Game1.IsWinter && !Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && !spouse.Name.Equals("Krobus") && spouse.Schedule == null)
                     {
                         Monitor.Log("made patio spouse: " + spouse.Name);
                         spouse.setUpForOutdoorPatioActivity();
@@ -296,9 +311,9 @@ namespace FreeLove
         public static List<string> GetBedSpouses(FarmHouse fh)
         {
             if (ModEntry.Config.RoommateRomance)
-                return GetSpouses(fh.owner, 1).Keys.ToList();
+                return GetSpouses(fh.owner, true).Keys.ToList();
 
-            return GetSpouses(fh.owner, 1).Keys.ToList().FindAll(s => !fh.owner.friendshipData[s].RoommateMarriage);
+            return GetSpouses(fh.owner, true).Keys.ToList().FindAll(s => !fh.owner.friendshipData[s].RoommateMarriage);
         }
 
         public static List<string> ReorderSpousesForSleeping(List<string> sleepSpouses)
@@ -342,7 +357,7 @@ namespace FreeLove
             if (name == "Krobus")
                 return 8;
 
-            Texture2D tex = Helper.Content.Load<Texture2D>($"Characters/{name}", ContentSource.GameContent);
+            Texture2D tex = Game1.content.Load<Texture2D>($"Characters\\{name}");
 
             int sleepidx;
             string sleepAnim = SleepAnimation(name);
@@ -439,7 +454,7 @@ namespace FreeLove
 
         public static void ResetSpouses(Farmer f)
         {
-            Dictionary<string, NPC> spouses = GetSpouses(f,1);
+            Dictionary<string, NPC> spouses = GetSpouses(f,true);
             if (f.spouse == null)
             {
                 if(spouses.Count > 0)
@@ -480,6 +495,7 @@ namespace FreeLove
                     }
                 }
             }
+            ReloadSpouses(f);
         }
         public static void SetAllNPCsDatable()
         {

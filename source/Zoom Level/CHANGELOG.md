@@ -6,6 +6,29 @@ for queries and analysis.**
 
 ----
 
+## [unreleased] - ????-??-??
+
+### Improvements
+
+- Major code optimizations
+
+
+## [1.11.0] - 2022-02-23
+
+### Added
+
+- Option that hides the UI at a certain zoom level.
+
+### Fixed
+
+- Some text typos
+
+## [1.10.0] - 2022-02-12
+
+### Added
+
+- Toggle UI.
+
 ## [1.9.0] - 2022-01-27
 
 ### Added
@@ -116,8 +139,11 @@ for queries and analysis.**
 
 - Initial release
 
-[unreleased]: https://github.com/thespbgamer/ZoomLevel/compare/v1.9.0...HEAD
-[1.9.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.8.0
+[unreleasedTabThatIMightUseLater]: https://github.com/thespbgamer/ZoomLevel/compare/v1.12.0...HEAD
+[1.12.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.12.0
+[1.11.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.11.0
+[1.10.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.10.0
+[1.9.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.9.0
 [1.8.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.8.0
 [1.7.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.7.0
 [1.6.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/1.6.0

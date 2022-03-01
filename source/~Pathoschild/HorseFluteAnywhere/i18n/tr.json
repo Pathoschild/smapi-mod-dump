@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.require-flute.name": "At Flütü Gerektirir",
+    "config.require-flute.description": "Bir at çağırmak için envanterinizdeki at flüt öğesine ihtiyacınız olup olmadığı. Varsayılan kapalı.",
+
+    "config.summon-horse-button.name": "Atı Çağır Düğmesi",
+    "config.summon-horse-button.description": "Flüt çalan ve bir atı çağıran düğme. Varsayılan {{defaultValue}}."
+}

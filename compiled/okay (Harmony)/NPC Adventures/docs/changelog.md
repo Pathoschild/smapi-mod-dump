@@ -1,5 +1,24 @@
 # Full changelog
 
+## 0.17.2 "Blackhole"
+
+- Fixed CurrentController reference (avoid red errors spam when AI init failed - content packs)
+- Fixed warp to default NPC location when no schedule after dismiss
+- Fixed parsing of arrival schedule time
+- Fixed null reference pointer to location in HintDriver
+- English corrections in Emily companion event (SandyHouse)
+
+## 0.17.1 "Blackhole"
+
+- Fixed master schedule parse for no schedule
+
+## 0.17.0 "Blackhole"
+
+- Fixed missing strings for spiritual companion class
+- Added config option `EnableSuggestions` to enable or disable adventure suggestions by NPCs
+- Removed old way to check events
+- Fixed horse riding problem when you have a companion
+
 ## 0.16.5 "Revival"
 
 - Fixed talk blocking problem with quest

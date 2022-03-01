@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11131
+IDs: sensakuma.farmervitalsevolved, Sensakuma.FarmerVitalsEvolved
+update keys: Nexus:11131

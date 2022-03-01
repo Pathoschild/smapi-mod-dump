@@ -6,9 +6,9 @@ mods:
    Event Limiter
 
 latest commit:
-   commit 4d5de162b80ab3a06dd34c336ffa088d14d04276
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Mon Jan 24 10:21:40 2022 +1100
+   commit d186da771c9e52b730692d4d92cd07f18c082698
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Fri Feb 18 14:49:01 2022 +1100
    
-       Update README.md
+       updated manifest
    

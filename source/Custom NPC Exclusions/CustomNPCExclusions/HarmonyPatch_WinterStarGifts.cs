@@ -124,7 +124,7 @@ namespace CustomNPCExclusions
                 npc = Utility.getRandomTownNPC(r); //get another random NPC
             }
 
-            if (rerolledNames.Count > 0) //if any NPCs were excluded
+            if (rerolledNames.Count > 0 && ModEntry.Instance.Monitor.IsVerbose) //if any NPCs were excluded
             {
                 string logMessage = String.Join(", ", rerolledNames);
                 ModEntry.Instance.Monitor.Log($"Excluded NPCs from Winter Star gifts: {logMessage}", LogLevel.Trace);

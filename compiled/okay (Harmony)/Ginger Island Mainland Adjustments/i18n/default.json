@@ -1,0 +1,104 @@
+﻿{
+  // Content stuff
+  "SandyAwayShopMessage": "Hey! I'll be away on vacation today, but I trust you to not do me wrong! Just leave the money on the counter.",
+  "WillyAwayShopMessage": "I'll be on the Island today, so just leave money in the box!",
+  "Sandy_Resort": "Ah, it's so nice getting away from the shop for once!",
+  "Sandy_Resort_Bar": "Ooooh....I must get this Piña Colada recipe! I've never had anything so tasty!$h",
+  "Sandy_Resort_Bar_2": "Mmmm. Nothing like a nice cold drink on a hot, hot day.",
+  "Sandy_Resort_Wander": "This sand is so pretty! So different from the sand at home.",
+  "Sandy_Resort_Shore": "So much water is a sight for sore eyes! I've been living in the desert for so long...$s",
+  "Sandy_Resort_Approach": "Oooh @, I'm going to be going to Ginger Island today. Definitely looking forward to a good vacation!$h",
+  "Sandy_Resort_Left": "Ah, that was relaxing. Back to work, I guess....",
+  "Sandy_Resort_Pier": "Isn't that water beautiful? I could stare at it all day!",
+  "George_Resort": "Well, ain't this place different! This warm sun feels so nice today.",
+  "Evelyn_Resort": "My dear @, it's great seeing you here today!#$e#Make sure to take some time for rest and relaxation! Can't have you working yourself too hard.",
+  "Willy_Resort": "Ah, nothing like a day spent under the sun and by the sea....",
+
+  // Documentation for console commands.
+
+  "baseCommand": "A list of console commands added by this mod:",
+  "baseCommand.documentation":  "Lists all commands added by this mod.",
+  "getSchedule.documentation": "Gets the schedule of the NPC in question",
+  "getIslanders.documentation": "Gets the villagers headed off to the resort today",
+
+  "getLocations.documentation": "Gets the current NPC::routesFromLocationToLocation. Warning: probably long.",
+  "getLocations.noneFound": "Location list appears to be empty or not found (did the field name change?)",
+
+  "islanders": "Islanders",
+  "npc-not-found": "{{NPC}} not found.",
+
+  // Asset manager
+  "assetmanager.specialchar-not-found": "{{specialCharacterType}} {{name}} not found - do they come from a mod not installed?",
+  "assetmanager.groupchar-not-found": "{{specialGroupType}} {{name}} in {{groupname}} not found - do they come from a mod not installed?",
+  "assetmanager.exclusions-not-found": "Exclusions for {{name}} cannot be proccessed, cannot find NPC - do they come from a mod not installed?",
+
+  // Dialogue manager
+  "found-key": "Found key {{key}} for {{NPC}}",
+  "no-key-found": "No key found for {{NPC}} using basekey {{key}}",
+
+  // DisplaySchedule strings
+  "display-schedule.checkNPC": "Checking schedule of {{name}}.",
+  "display-schedule.isInvisible": "{{name}} is invisible.",
+  "display-schedule.noSchedule": "{{name}} is not set to follow a schedule today.",
+  "display-schedule.toIsland": "{{name}} is headed to the Island.",
+
+  "display-schedule.expectedTime": "With expected travel time: ",
+  "display-schedule.expectedTime.minutes": " minutes",
+  "display-schedule.expectedArrival": "With expected arrival time: ",
+  "display-schedule.direction": "With final facing direction: ",
+  "display-schedule.animation": "With animation: ",
+  "display-schedule.message": "With message: ",
+
+  // Config and GMCM
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+  "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
+  "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled.",
+
+  "mod-description": "Alters Ginger Island schedules so villagers don't proceed direct to bed. Alternatively, handles GI schedules.",
+  "config.enforceGITiming.title": "Enforce GI schedule timing",
+  "config.enforceGITiming.description": "If schedule points are too closely spaced, skip over them (with warning).",
+  "config.scheduler.title": "Use Mod's Scheduler",
+  "config.scheduler.description": "Use this mod's Ginger Island Scheduler (instead of vanilla game's).'",
+  "config.scheduler.otheroptions": "The remaining options will only take affect if this mod's scheduler is used.",
+  "config.capacity.title": "Ginger Island Capacity",
+  "config.capacity.description": "If using this mod's scheduler, the maximum number of people allowed on Ginger Island.",
+  "config.group_chance.title": "Group Chance.",
+  "config.group_chance.description": "Probability a (pre-defined) group will be selected to visit Ginger Island.",
+  "config.explorer_chance.title": "Explorer Group Chance",
+  "config.explorer_chance.description": "Chance that a group will explorer the remainder of Ginger Island.",
+  "config.gus_day.title": "Gus's Ginger Island Day",
+  "config.gus_day.description": "Day of week Gus is more likely to go to Ginger Island.",
+  "config.gus_chance.title": "Gus's Ginger Island Chances",
+  "config.gus_chance.description": "Chance that Gus will go to Ginger Island on his assigned day.",
+  "config.allow_willy.title": "Allow Willy",
+  "config.allow_willy.description": "If enabled, allows Willy to attend the resort. (His shop will remain available).",
+  "config.allow_sandy.title": "Allow Sandy",
+  "config.allow_sandy.description": "If enabled, allows Sandy to go to the resort. (Her store will remain available).",
+  "config.allow_george_and_evelyn.title": "Allow George and Evelyn",
+  "config.allow_george_and_evelyn.description": "If enabled, allows George and Evelyn access to the resort.",
+
+  // Game doesn't have translations for full days of the week.
+  "None": "None", // for no dedicated Gus-to-GI day.
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Saturday": "Saturday",
+  "Sunday": "Sunday",
+
+  //MidDayScheduleEditor messages
+  "middayScheduleEditor.npc-found-for-adjustment": "NPC {{name}} with Island Schedule, will set up for schedule alternation",
+  "middayScheduleEditor.npc-not-islander": "Recieved NPC {{name}}, who is not headed to Ginger Island",
+  "middayScheduleEditor.npc-has-no-schedule": "NPC {{name}} has no schedule",
+
+  //Scheduling code errors:
+  "GOTO_SCHEDULE_NOT_FOUND": "GOTO {{scheduleKey}} not found for NPC {{npc}}",
+  "GOTO_SCHEDULE_FRIENDSHIP": "Skipping due to friendship limit for {{npc}}: {{scheduleKey}}",
+  "GOTO_ILL_FORMED_FRIENDSHIP": "Ill-formed friendship requirment {{requirment}} for {{npc}}: {{scheduleKey}}",
+  "GOTO_INFINITE_LOOP": "Infinite loop detected, skipping this schedule",
+  "NO_GI_SCHEDULE_FOUND": "Did not find a GI remainder schedule for {{npc}}",
+  "REGEX_TIMEOUT_ERROR": "Regex for schedule entry {{schedulePoint}} timed out:\n\n{{ex}}",
+  "TOO_TIGHT_TIMELINE": "{{time}} position in schedule {{scheduleKey}} for {{npc}} is too tight. Will be skipped.",
+  "NO_REPLACEMENT_LOCATION": "Location replacement for {{location}} requested but not found for {{npc}}"
+}

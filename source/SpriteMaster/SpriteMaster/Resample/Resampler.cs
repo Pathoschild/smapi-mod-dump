@@ -15,9 +15,11 @@ using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Caching;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
+using SpriteMaster.Resample.Passes;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using System;
+using System.Buffers;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -25,10 +27,16 @@ namespace SpriteMaster.Resample;
 
 sealed class Resampler {
 	internal enum Scaler : int {
+		None = -1,
 		xBRZ = 0,
-		Bilinear,
-		Bicubic,
-		ImageMagick
+		Bilinear
+	}
+
+	internal enum ResampleStatus {
+		Success = 0,
+		Failure = 1,
+		DisabledGradient = 2,
+		DisabledSolid = 3
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -63,6 +71,25 @@ sealed class Resampler {
 		return hash;
 	}
 
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static ulong? GetHash(in SpriteInfo.Initializer input, TextureType textureType) {
+		if (!input.Hash.HasValue) {
+			return null;
+		}
+
+		// Need to make Hashing.CombineHash work better.
+		ulong hash = input.Hash.Value;
+
+		if (Config.Resample.EnableDynamicScale) {
+			hash = Hashing.Combine(hash, HashULong(input.ExpectedScale));
+		}
+
+		if (textureType == TextureType.Sprite) {
+			hash = Hashing.Combine(hash, input.Bounds.Extent.GetLongHashCode());
+		}
+		return hash;
+	}
+
 	private static readonly WeakSet<Texture2D> GarbageMarkSet = Config.Garbage.CollectAccountUnownedTextures ? new() : null!;
 
 	private const int WaterBlock = 4;
@@ -76,6 +103,8 @@ sealed class Resampler {
 		Unknown
 	}
 
+	//internal static readonly ArrayPool<Color16> ResamplerArrayPool = ArrayPool<Color16>.Shared;
+
 	private static unsafe Span<byte> CreateNewTexture(
 		ManagedSpriteInstance texture,
 		bool async,
@@ -86,7 +115,8 @@ sealed class Resampler {
 		out Vector2I size,
 		out TextureFormat format,
 		out PaddingQuad padding,
-		out Vector2I blockPadding
+		out Vector2I blockPadding,
+		out ResampleStatus result
 	) {
 		if (input.ReferenceData is null) {
 			throw new ArgumentNullException(nameof(input.ReferenceData));
@@ -100,13 +130,14 @@ sealed class Resampler {
 				source: input.ReferenceData,
 				sourceSize: input.ReferenceSize,
 				destBounds: input.Bounds,
-				path: FileCache.GetDumpPath($"{input.Reference.SafeName().Replace('/', '.')}.{hashString}.reference.png")
+				path: FileCache.GetDumpPath($"{input.Reference.NormalizedName().Replace('\\', '.')}.{hashString}.reference.png")
 			);
 		}
 
 		var initialGammaState = GammaState.Gamma;
 		var currentGammaState = initialGammaState;
 
+		bool directImage = input.TextureType == TextureType.SlicedImage;
 		Bounds inputBounds;
 		switch (input.TextureType) {
 			case TextureType.Sprite:
@@ -116,24 +147,42 @@ sealed class Resampler {
 				inputBounds = input.ReferenceSize;
 				break;
 			case TextureType.SlicedImage:
-				throw new NotImplementedException("Sliced Images not yet implemented");
+				inputBounds = input.Bounds;
+				break;
 			default:
 				throw new NotImplementedException("Unknown Texture Type provided");
 		}
 
 		if (input.Reference.Format.IsCompressed()) {
-			throw new InvalidOperationException($"Compressed texture '{input.Reference.SafeName()}' reached Resampler");
+			throw new InvalidOperationException($"Compressed texture '{input.Reference.NormalizedName()}' reached Resampler");
 		}
 
 		// Water in the game is pre-upscaled by 4... which is weird.
 		int blockSize = 1;
-		if ((input.IsWater || input.Reference == StardewValley.Game1.rainTexture) && WaterBlock != 1) {
+		if (input.IsWater || input.Reference == StardewValley.Game1.rainTexture) {
 			blockSize = WaterBlock;
 		}
 		else if (input.IsFont && FontBlock != 1) {
 			blockSize = FontBlock;
 			scale = Config.Resample.MaxScale;
 		}
+		else if (SMConfig.Resample.FourXTextures.AnyF(prefix => input.Reference.NormalizedName().StartsWith(prefix))) {
+			blockSize = 4;
+		}
+		else if (SMConfig.Resample.TwoXTextures.AnyF(prefix => input.Reference.NormalizedName().StartsWith(prefix))) {
+			blockSize = 2;
+		}
+		else if (SMConfig.Resample.BlockMultipleAnalysis.Enabled) {
+			blockSize = BlockMultipleAnalysis.Analyze(
+				data: input.ReferenceData.AsSpan<Color8>(),
+				textureBounds: input.Reference.Bounds,
+				spriteBounds: inputBounds,
+				stride: input.ReferenceSize.Width
+			);
+		}
+		scale *= (uint)blockSize;
+		scale = Math.Min(scale, Resample.Scalers.IScaler.Current.MaxScale);
+
 		// TODO : handle inverted input.Bounds
 		var spriteRawData8 = Passes.ExtractSprite.Extract(
 			data: input.ReferenceData.AsSpan<Color8>(),
@@ -160,19 +209,50 @@ sealed class Resampler {
 			}
 		}
 
-		var scaledSize = spriteRawExtent * scale;
-		var scaledSizeClamped = scaledSize.Min(Config.ClampDimension);
-
 		var analysis = Passes.Analysis.AnalyzeLegacy(
 			reference: input.Reference,
 			data: spriteRawData8,
 			bounds: spriteRawExtent,
-			Wrapped: input.Wrapped
+			wrapped: input.Wrapped
 		);
 
-		if (input.Reference.SafeName().StartsWith("Buildings/houses")) {
-			input = input;
+		bool isGradient = analysis.MaxChannelShades >= Config.Resample.Analysis.MinimumGradientShades && (analysis.GradientDiagonal.All || analysis.GradientAxial.All);
+
+		if (isGradient) {
+			if (Config.Debug.Sprite.DumpReference) {
+				Textures.DumpTexture(
+					source: input.ReferenceData,
+					sourceSize: input.ReferenceSize,
+					destBounds: input.Bounds,
+					path: FileCache.GetDumpPath("gradient", $"{input.Reference.NormalizedName().Replace('\\', '.')}.{hashString}.reference.png")
+				);
+			}
 		}
+
+		if (!Config.Resample.Enabled || (isGradient && Config.Resample.ScalerGradient == Scaler.None)) {
+			result = ResampleStatus.DisabledGradient;
+			size = default;
+			format = default;
+			return Span<byte>.Empty;
+		}
+
+		if (analysis.MaxChannelShades <= 1) {
+			// If the sprite only has _one_ shade, resampling makes zero sense.
+			if (Config.Debug.Sprite.DumpReference) {
+				Textures.DumpTexture(
+					source: input.ReferenceData,
+					sourceSize: input.ReferenceSize,
+					destBounds: input.Bounds,
+					path: FileCache.GetDumpPath("shadeless", $"{input.Reference.NormalizedName().Replace('\\', '.')}.{hashString}.reference.png")
+				);
+			}
+			result = ResampleStatus.DisabledSolid;
+			size = default;
+			format = default;
+			return Span<byte>.Empty;
+		}
+
+		bool resamplingAllowed = Config.Resample.Enabled || Config.Resample.Scaler == Scaler.None;
 
 		if (Config.Resample.EnableWrappedAddressing) {
 			wrapped = analysis.Wrapped;
@@ -181,22 +261,27 @@ sealed class Resampler {
 			wrapped = (false, false);
 		}
 
+		var scaledSize = resamplingAllowed ? spriteRawExtent * scale : spriteRawExtent;
+		var scaledSizeClamped = scaledSize.Min(Config.ClampDimension);
+
 		// Widen data.
 		var spriteRawData = Color16.Convert(spriteRawData8);
 
 		Span<Color16> bitmapDataWide = spriteRawData;
 
-		if (Config.Resample.Enabled) {
+		if (Config.Resample.Scaler != Scaler.None) {
 			// Apply padding to the sprite if necessary
-			spriteRawData = Passes.Padding.Apply(
-				data: spriteRawData,
-				spriteSize: spriteRawExtent,
-				scale: scale,
-				input: input,
-				analysis: analysis,
-				padding: out padding,
-				paddedSize: out spriteRawExtent
-			);
+			if (!directImage) {
+				spriteRawData = Passes.Padding.Apply(
+					data: spriteRawData,
+					spriteSize: spriteRawExtent,
+					scale: scale,
+					input: input,
+					analysis: analysis,
+					padding: out padding,
+					paddedSize: out spriteRawExtent
+				);
+			}
 
 			scaledSize = spriteRawExtent * scale;
 			scaledSizeClamped = scaledSize.Min(Config.ClampDimension);
@@ -211,7 +296,7 @@ sealed class Resampler {
 					currentGammaState = GammaState.Linear;
 				}
 
-				if (!input.IsWater && (Config.Resample.PremultiplyAlpha && analysis.PremultipliedAlpha)) {
+				if (Config.Resample.PremultiplyAlpha) {
 					Passes.PremultipliedAlpha.Reverse(spriteRawData, spriteRawExtent);
 				}
 
@@ -223,7 +308,7 @@ sealed class Resampler {
 							source: spriteRawData,
 							sourceSize: spriteRawExtent,
 							adjustGamma: 2.2,
-							path: FileCache.GetDumpPath($"{input.Reference.SafeName().Replace('/', '.')}.{hashString}.reference.deposter.png")
+							path: FileCache.GetDumpPath($"{input.Reference.NormalizedName().Replace('\\', '.')}.{hashString}.reference.deposter.png")
 						);
 					}
 				}
@@ -232,7 +317,8 @@ sealed class Resampler {
 					case Scaler.xBRZ: {
 							var scalerConfig = Resample.Scalers.IScaler.Current.CreateConfig(
 								wrapped: doWrap,
-								hasAlpha: true
+								hasAlpha: true,
+								gammaCorrected: currentGammaState == GammaState.Gamma
 							);
 
 							bitmapDataWide = Resample.Scalers.IScaler.Current.Apply(
@@ -245,13 +331,8 @@ sealed class Resampler {
 							);
 						}
 						break;
-					case Scaler.ImageMagick: {
-							throw new NotImplementedException("ImageMagick Scaling is not implemented");
-						}
-						break;
-					case Scaler.Bilinear:
-					case Scaler.Bicubic: {
-							throw new NotImplementedException("Bilinear and Bicubic scaling are not implemented");
+					case Scaler.Bilinear: {
+							throw new NotImplementedException("Bilinear scaling is not implemented");
 						}
 						break;
 					default:
@@ -266,7 +347,7 @@ sealed class Resampler {
 					bitmapDataWide = Recolor.Enhance<Color16>(bitmapDataWide, scaledSize);
 				}
 
-				if (!input.IsWater && (Config.Resample.PremultiplyAlpha && analysis.PremultipliedAlpha)) {
+				if (Config.Resample.PremultiplyAlpha) {
 					Passes.PremultipliedAlpha.Apply(bitmapDataWide, scaledSize);
 				}
 
@@ -291,7 +372,7 @@ sealed class Resampler {
 				source: bitmapDataWide,
 				sourceSize: scaledSize,
 				swap: (2, 1, 0, 4),
-				path: FileCache.GetDumpPath($"{input.Reference.SafeName().Replace('/', '.')}.{hashString}.resample-wrap[{SimplifyBools(analysis.Wrapped)}]-repeat[{SimplifyBools(analysis.RepeatX)},{SimplifyBools(analysis.RepeatY)}]-pad[{padding.X},{padding.Y}].png")
+				path: FileCache.GetDumpPath($"{input.Reference.NormalizedName().Replace('\\', '.')}.{hashString}.resample-wrap[{SimplifyBools(analysis.Wrapped)}]-repeat[{SimplifyBools(analysis.RepeatX)},{SimplifyBools(analysis.RepeatY)}]-pad[{padding.X},{padding.Y}].png")
 			);
 		}
 
@@ -300,7 +381,7 @@ sealed class Resampler {
 				throw new Exception($"Resampled texture size {scaledSize} is smaller than expected {scaledSizeClamped}");
 			}
 
-			Debug.TraceLn($"Sprite {texture.SafeName()} requires rescaling");
+			Debug.Trace($"Sprite {texture.NormalizedName()} requires rescaling");
 			// This should be incredibly rare - we very rarely need to scale back down.
 			// I don't actually have a solution for this case.
 			scaledSizeClamped = scaledSize;
@@ -353,7 +434,7 @@ sealed class Resampler {
 				hasG = green[0] != bitmapData.Length;
 				hasB = blue[0] != bitmapData.Length;
 
-				//Debug.WarningLn($"Punch-through Alpha: {intData.Length}");
+				//Debug.Warning($"Punch-through Alpha: {intData.Length}");
 				IsPunchThroughAlpha = IsMasky = alpha[0] + alpha[MaxShades - 1] == bitmapData.Length;
 				HasAlpha = alpha[MaxShades - 1] != bitmapData.Length;
 
@@ -410,6 +491,7 @@ sealed class Resampler {
 		}
 
 		size = scaledSizeClamped;
+		result = ResampleStatus.Success;
 		return resultData;
 	}
 
@@ -418,17 +500,30 @@ sealed class Resampler {
 			// Try to process the texture twice. Garbage collect after a failure, maybe it'll work then.
 			for (int i = 0; i < 2; ++i) {
 				try {
-					return UpscaleInternal(
+					var resultTexture = UpscaleInternal(
 						spriteInstance: spriteInstance,
 						scale: ref scale,
 						input: input,
 						hash: hash,
 						wrapped: ref wrapped,
-						async: async
+						async: async,
+						result: out var result
 					);
+
+					if (result is (ResampleStatus.DisabledGradient or ResampleStatus.DisabledSolid)) {
+						Debug.Info($"Skipping resample of {spriteInstance.Name} {input.Bounds}: NoResample");
+						spriteInstance.NoResample = true;
+						if (input.Reference is Texture2D texture) {
+							texture.Meta().AddNoResample(input.Bounds);
+						}
+
+						return null;
+					}
+
+					return resultTexture;
 				}
 				catch (OutOfMemoryException) {
-					Debug.WarningLn("OutOfMemoryException encountered during Upscale, garbage collecting and deferring.");
+					Debug.Warning("OutOfMemoryException encountered during Upscale, garbage collecting and deferring.");
 					Garbage.Collect(compact: true, blocking: true, background: false);
 				}
 			}
@@ -445,11 +540,12 @@ sealed class Resampler {
 		BindingFlags.Instance | BindingFlags.NonPublic
 	).SingleF(m => m.Name == "PlatformSetData" && m.GetParameters().Length == 4)?.MakeGenericMethod(new Type[] { typeof(byte) })?.CreateDelegate<Action<Texture2D, int, byte[], int, int>>();
 
-	private static ManagedTexture2D? UpscaleInternal(ManagedSpriteInstance spriteInstance, ref uint scale, SpriteInfo input, ulong hash, ref Vector2B wrapped, bool async) {
+	private static ManagedTexture2D? UpscaleInternal(ManagedSpriteInstance spriteInstance, ref uint scale, SpriteInfo input, ulong hash, ref Vector2B wrapped, bool async, out ResampleStatus result) {
 		var spriteFormat = TextureFormat.Color;
 
 		if (Config.Garbage.CollectAccountUnownedTextures && GarbageMarkSet.Add(input.Reference)) {
 			Garbage.Mark(input.Reference);
+			// TODO : this won't be hit if the object is finalized without disposal
 			input.Reference.Disposing += (obj, _) => {
 				Garbage.Unmark((Texture2D)obj!);
 			};
@@ -461,9 +557,11 @@ sealed class Resampler {
 		var inputSize = input.TextureType switch {
 			TextureType.Sprite => input.Bounds.Extent,
 			TextureType.Image => input.ReferenceSize,
-			TextureType.SlicedImage => throw new NotImplementedException("Sliced Images not yet implemented"),
+			TextureType.SlicedImage => input.Bounds.Extent,
 			_ => throw new NotImplementedException("Unknown Image Type provided")
 		};
+
+		result = ResampleStatus.Success;
 
 		Span<byte> bitmapData;
 		try {
@@ -503,11 +601,16 @@ sealed class Resampler {
 						size: out newSize,
 						format: out spriteFormat,
 						padding: out spriteInstance.Padding,
-						blockPadding: out spriteInstance.BlockPadding
+						blockPadding: out spriteInstance.BlockPadding,
+						result: out result
 					);
+
+					if (result is (ResampleStatus.DisabledGradient or ResampleStatus.DisabledSolid)) {
+						return null;
+					}
 				}
 				catch (OutOfMemoryException) {
-					Debug.Error($"OutOfMemoryException thrown trying to create texture [texture: {spriteInstance.SafeName()}, bounds: {input.Bounds}, textureSize: {input.ReferenceSize}, scale: {scale}]");
+					Debug.Error($"OutOfMemoryException thrown trying to create texture [texture: {spriteInstance.NormalizedName()}, bounds: {input.Bounds}, textureSize: {input.ReferenceSize}, scale: {scale}]");
 					throw;
 				}
 
@@ -542,7 +645,7 @@ sealed class Resampler {
 			}
 
 			var isAsync = Config.AsyncScaling.Enabled && async;
-			if (!isAsync || Config.AsyncScaling.ForceSynchronousStores) {
+			if (!isAsync || Config.AsyncScaling.ForceSynchronousStores || DrawState.ForceSynchronous) {
 				var reference = input.Reference;
 				var bitmapDataArray = bitmapData.ToArray();
 				void syncCall() {

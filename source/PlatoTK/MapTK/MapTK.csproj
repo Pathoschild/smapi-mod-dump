@@ -4,25 +4,19 @@
     <AssemblyName>MapTK</AssemblyName>
     <RootNamespace>MapTK</RootNamespace>
     <Version>1.2.0</Version>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MoonSharp" Version="2.0.0" />
-    <Reference Include="Platonymous.PlatoTK">
-      <HintPath>$(GamePath)\Mods\PlatoTK\PlatoTK.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>false</SpecificVersion>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="TMXTile">
-      <HintPath>$(GamePath)\smapi-internal\TMXTile.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>false</SpecificVersion>
-    </Reference>
+    <Reference Include="Platonymous.PlatoTK" HintPath="$(GamePath)\Mods\PlatoTK\PlatoTK.dll" Private="false" />
+    <Reference Include="TMXTile" HintPath="$(GamePath)\smapi-internal\TMXTile.dll" Private="false" />
   </ItemGroup>
 
   <Import Project="$(SolutionDir)\common.targets" />

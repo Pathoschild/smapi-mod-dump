@@ -21,7 +21,7 @@
     "Luck": 0,
 	"Foraging": 3,
 	"MaxStamina": 0,
-    "MagnetRadius": 1,
+    "MagnetRadius": 32,
 	"Speed": 0,
 	"Defense": 0,
 	"Attack": 0,
@@ -54,7 +54,7 @@
     },
 
     "NameLocalization":
-    { 
+    {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
@@ -70,7 +70,7 @@
     },
     "DescriptionLocalization":
     {
-    	//remove the "//" from your language    	
+    	//remove the "//" from your language
         //"es": "PLACEHOLDER",
         //"ko": "PLACEHOLDER",
         //"de": "PLACEHOLDER",

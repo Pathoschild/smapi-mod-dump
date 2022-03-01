@@ -28,8 +28,8 @@
   "UseMineCave.description": "Allows fruits to spawn in the mine entrance as well (after spawning in the Farm Cave, if Max Daily Spawns is not yet hit.",
   "UseVanillaFruitOnly.title": "Use Vanilla Fruit Only",
   "UseVanillaFruitOnly.description": "If true, will cause mod to only spawn the six vanilla tree fruit usually spawned in the fruit cave (and the four vanilla forage fruit).",
-  "SeasonalOnly.title": "Seasonal Fruit Only",
-  "SeasonalOnly.description": "Restrict to this season's fruit only",
+  "SeasonalOnly.title": "Seasonal Fruit",
+  "SeasonalOnly.description": "Allows restricting to the current season only. ",
   "AllowAnyTreeProduct.title": "Allow Any Tree Product",
   "AllowAnyTreeProduct.description": "If enabled, all products from fruit trees are allowed. If disabled, restricted to just fruit.",
   "EdiblesOnly.title": "Restrict to Edible",
@@ -39,6 +39,9 @@
   "PriceCap.title": "Price Cap",
   "PriceCap.description": "Removes fruit if their base price is above this.",
 
+  "config.SeasonalBehavior.AllSeasons": "Spawn from all seasons.",
+  "config.SeasonalBehavior.SeasonalOnly":  "Current season only.",
+  "config.SeasonalBehavior.SeasonalExceptWinter" :  "Current season, except in winter.",
 
   //Errors
   "ExcessRegexMatches": "Do not recognize pattern {{loc}}; skipping for now.",

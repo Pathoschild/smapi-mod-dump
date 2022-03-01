@@ -19,10 +19,11 @@ sealed class Config : Resample.Scalers.Config {
 
 	// These are the default values:
 	internal readonly double LuminanceWeight;
-	internal readonly double EqualColorTolerance;
+	internal readonly uint EqualColorTolerance;
 	internal readonly double DominantDirectionThreshold;
 	internal readonly double SteepDirectionThreshold;
 	internal readonly double CenterDirectionBias;
+	internal readonly bool UseRedmean;
 
 	// Precalculated
 	internal readonly double ChrominanceWeight;
@@ -32,18 +33,22 @@ sealed class Config : Resample.Scalers.Config {
 		Vector2B wrapped,
 		bool hasAlpha = true,
 		double luminanceWeight = 1.0,
-		double equalColorTolerance = 30.0,
+		uint equalColorTolerance = 30,
 		double dominantDirectionThreshold = 3.6,
 		double steepDirectionThreshold = 2.2,
-		double centerDirectionBias = 4.0
+		double centerDirectionBias = 4.0,
+		bool gammaCorrected = true,
+		bool useRedmean = false
 	) : base(
 		wrapped: wrapped,
-		hasAlpha: hasAlpha
+		hasAlpha: hasAlpha,
+		gammaCorrected: gammaCorrected
 	){
-		EqualColorTolerance = equalColorTolerance * 256.0;
+		EqualColorTolerance = equalColorTolerance << 8;
 		DominantDirectionThreshold = dominantDirectionThreshold;
 		SteepDirectionThreshold = steepDirectionThreshold;
 		CenterDirectionBias = centerDirectionBias;
+		UseRedmean = useRedmean;
 
 		var adjustedLuminanceWeight = luminanceWeight / (luminanceWeight + 1.0);
 		LuminanceWeight = adjustedLuminanceWeight * 2.0;

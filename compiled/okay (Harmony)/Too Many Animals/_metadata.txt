@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11033
+IDs: furyx639.TooManyAnimals
+update keys: Nexus:11033, GitHub:ImJustMatt/StardewMods

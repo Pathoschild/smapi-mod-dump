@@ -84,7 +84,7 @@ namespace EscasModdingPlugins
             {
                 defaultAsset = default(T); //output the given type's default value (e.g. null)
                 return false; //failure
-            }    
+            }
         }
 
         /// <summary>Sets a default instance to load for the named asset.</summary>

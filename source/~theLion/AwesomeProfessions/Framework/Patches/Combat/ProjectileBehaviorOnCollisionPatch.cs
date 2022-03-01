@@ -42,11 +42,11 @@ internal class ProjectileBehaviorOnCollisionPatch : BasePatch
     private static void ProjectileBehaviorOnCollisionPostfix(Projectile __instance, NetInt ___currentTileSheetIndex,
         NetPosition ___position, NetCharacterRef ___theOneWhoFiredMe, GameLocation location)
     {
-        if (__instance is not BasicProjectile basic) return;
+        if (__instance is not BasicProjectile projectile) return;
 
-        var hashCode = basic.GetHashCode();
-        ModEntry.State.Value.BouncedBullets.Remove(hashCode);
-        if (ModEntry.State.Value.AuxiliaryBullets.Remove(hashCode)) return;
+        var hashCode = projectile.GetHashCode();
+        ModEntry.PlayerState.Value.BouncedBullets.Remove(hashCode);
+        if (ModEntry.PlayerState.Value.AuxiliaryBullets.Remove(hashCode)) return;
 
         var firer = ___theOneWhoFiredMe.Get(location) is Farmer farmer ? farmer : Game1.player;
         if (!firer.HasProfession(Profession.Rascal)) return;

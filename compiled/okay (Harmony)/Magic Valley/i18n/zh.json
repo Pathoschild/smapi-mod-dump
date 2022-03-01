@@ -49,6 +49,9 @@
   "menutype.ShopIceCream": "冰淇淋摊",
   "menutype.BuyBackpack": "购买大背包",
   "menutype.ShippingBin": "出货箱",
+  "menutype.TaggedChests": "标记箱",
+  "menutype.DresserFurniture": "梳妆台",
+  "menutype.TaggedChestsWorkbench": "标记箱工作台",
 
   "mapname.Mine": "矿井",
   "mapname.QuarryMine": "采石场矿井",
@@ -99,7 +102,7 @@
   "WorldChest.description": "在全部的存档中都可以放入或取出祝尼魔共享箱的物品\n建议不要放入斧头稿子等工具哦",
   "menutype.JunimoChest": "祝尼魔箱",
   "JunimoChest.description": "不同的祝尼魔箱共用相同的储存空间\n由齐先生核桃房售卖",
-  "menutype.ToolEnchantment": "附魔魔法",
+  "menutype.ToolEnchantment": "工具附魔",
   "ToolEnchantment.description": "附魔你当前持有的工具或武器",
   "menutype.AutoFishing": "自动钓鱼",
   "AutoFishing.description": "手持鱼竿，面朝大海，开启钓鱼之旅\n按下移动键停止钓鱼",
@@ -151,5 +154,10 @@
   "sve.map.Custom_CastleVillageOutpost": "城堡村前哨",
   "sve.map.Custom_DesertRailway": "城堡村铁路",
   "sve.map.Custom_CrimsonBadlands": "猩红荒地",
-  "tips.ShortcutKey": "快捷键"
+  "tips.ShortcutKey": "快捷键",
+
+  "description.TaggedChestsShortcutKeys": "标记箱界面可用快捷键\n-----\n切换到另一个箱子: 点击箱子颜色 或 使用鼠标滚轮\n批量导入到全部箱子: Control+点击导入按钮 或 Shift+点击导入按钮\n移动正在展示的箱子: Control+Shift+方向键\n打造配方工作台: Control+Shift+C\n打开梳妆台: Control+Shift+D\n打开祝尼魔箱: Control+Shift+J\n打开出货箱: Control+Shift+S\n显示物品的染料色: Control+Shift+O (开启后鼠标移到物品上)\n显示物品可缝纫的衣服: Control+Shift+P (开启后鼠标移到物品上)\n-----\n标记箱自动检测范围：\n农场、农场建筑、农场洞穴；\n姜岛农场、姜岛小屋、核桃房；\n巴士站、矿井入口；",
+  "description.CaptureScreenshot": "更新地图\n可能花费较长时间",
+  "description.CaptureScreenshot.Island": "更新姜岛地图\n会花费较长时间",
+  "description.DefaultScreenshot.Island": "显示姜岛原地图"
 }

@@ -15,7 +15,7 @@ namespace SpriteMaster.Types;
 /// <summary>
 /// A Texture2D that represents internal SpriteMaster data, and thus shouldn't continue down any resampling pipelines
 /// </summary>
-abstract class InternalTexture2D : XNA.Graphics.Texture2D {
+class InternalTexture2D : XNA.Graphics.Texture2D {
 	private const string DefaultName = "Texture (Internal)";
 
 	internal InternalTexture2D(GraphicsDevice graphicsDevice, int width, int height) : base(graphicsDevice, width, height) {

@@ -40,6 +40,7 @@ namespace AllProfessions.Framework
 
             // add config UI based on profession map
             api.Register(manifest, reset, save);
+            api.AddParagraph(manifest, I18n.Config_Intro);
             foreach ((Skill skill, int level, Profession[] professions) in GenericModConfigMenuIntegration.GetProfessionMappings(professionData))
             {
                 api.AddSectionTitle(manifest, () => I18n.Config_SkillLevel(skillName: GetDisplayName(skill), level: level));
@@ -50,13 +51,13 @@ namespace AllProfessions.Framework
                         name: () => GetDisplayName(profession),
                         tooltip: () => GetTooltip(skill, level, profession),
                         getValue: () => !getConfig().ShouldIgnore(profession),
-                        setValue: value =>
+                        setValue: shouldAdd =>
                         {
                             var config = getConfig();
 
                             config.IgnoreProfessions.Remove(profession.ToString());
                             config.IgnoreProfessions.Remove(((int)profession).ToString());
-                            if (value)
+                            if (!shouldAdd)
                                 config.IgnoreProfessions.Add(profession.ToString());
                         }
                     );

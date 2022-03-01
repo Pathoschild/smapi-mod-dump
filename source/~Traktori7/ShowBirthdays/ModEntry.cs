@@ -15,19 +15,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace ShowBirthdays
 {
-	class ModEntry : Mod
+	class ModEntry : Mod, IAssetLoader
 	{
 		private CycleType cycleType;
 		// Flag for if the calendar is open
 		private bool calendarOpen = false;
 
-		// Interval in ticks for changing the birthday sprite
-		private int spriteCycleTicks = 120;
+		// Current cycle in render ticks for changing the birthday sprite
 		private int currentCycle = 0;
 
 		private int clickedDay = -1;
@@ -37,6 +37,7 @@ namespace ShowBirthdays
 		private ModConfig config;
 
 		private Texture2D iconTexture;
+		private readonly string assetName = PathUtilities.NormalizeAssetName("Traktori.ShowBirthdays/Icon");
 		private readonly string iconPath = "assets/Icon.png";
 
 
@@ -45,37 +46,72 @@ namespace ShowBirthdays
 			helper.Events.Display.MenuChanged += OnMenuChanged;
 			helper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
 			helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
-			helper.Events.GameLoop.GameLaunched += OnLaunched;
+			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 			helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
-			helper.Events.Input.ButtonPressed += OnButtonPressed;
-			helper.Events.Input.CursorMoved += OnCursorMoved;
 		}
 
 
-		private void OnLaunched(object sender, GameLaunchedEventArgs e)
+		/// <summary>
+		/// Get whether this instance can load the initial version of the given asset.
+		/// </summary>
+		public bool CanLoad<T>(IAssetInfo asset)
+		{
+			return asset.AssetNameEquals(assetName);
+		}
+
+
+		/// <summary>
+		/// Load a matched asset.
+		/// </summary>
+		public T Load<T>(IAssetInfo asset)
+		{
+			return Helper.Content.Load<T>(iconPath, ContentSource.ModFolder);
+		}
+
+
+		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
 		{
 			// Load the config for generic mod config menu
 			config = Helper.ReadConfig<ModConfig>();
-			var api = Helper.ModRegistry.GetApi<GenericModConfigAPI>("spacechase0.GenericModConfigMenu");
+			var api = Helper.ModRegistry.GetApi<IGenericModConfigAPI>("spacechase0.GenericModConfigMenu");
 
 			// Register options for GMCM
 			if (api != null)
 			{
-				api.RegisterModConfig(ModManifest, () => config = new ModConfig(), () => Helper.WriteConfig(config));
+				api.Register(
+					mod: ModManifest,
+					reset: () => config = new ModConfig(),
+					save: () => Helper.WriteConfig(config)
+				);
 
-				api.RegisterClampedOption(ModManifest, Helper.Translation.Get("duration-label"), Helper.Translation.Get("duration-desc"), () => config.cycleDuration, (int val) => config.cycleDuration = val, 1, 600);
-				api.RegisterChoiceOption(ModManifest, Helper.Translation.Get("type-label"), Helper.Translation.Get("type-desc"), () => config.cycleType, (string val) => config.cycleType = val, ModConfig.cycleTypes);
-				api.RegisterSimpleOption(ModManifest, Helper.Translation.Get("icon-label"), Helper.Translation.Get("icon-desc"), () => config.showIcon, (bool val) => config.showIcon = val);
-			}
+				api.AddNumberOption(
+					mod: ModManifest,
+					getValue: () => config.cycleDuration,
+					setValue: (int val) => config.cycleDuration = val,
+					name: () => Helper.Translation.Get("duration-label"),
+					tooltip: () => Helper.Translation.Get("duration-desc"),
+					min: 1,
+					max: 600
+				);
 
-			// Load the icon from the mod folder
-			iconTexture = Helper.Content.Load<Texture2D>(iconPath, ContentSource.ModFolder);
+				api.AddTextOption(
+					mod: ModManifest,
+					getValue: () => config.cycleType,
+					//setValue: (string val) => config.cycleType = val,
+					setValue: (string val) => ChangeCycleType(val),
+					name: () => Helper.Translation.Get("type-label"),
+					tooltip: () => Helper.Translation.Get("type-desc"),
+					allowedValues: ModConfig.cycleTypes
+				);
 
-			// Check if the loading succeeded
-			if (iconTexture == null)
-			{
-				Monitor.Log("Failed loading " + iconPath, LogLevel.Error);
+				api.AddBoolOption(
+					mod: ModManifest,
+					getValue: () => config.showIcon,
+					setValue: (bool val) => config.showIcon = val,
+					name: () => Helper.Translation.Get("icon-label"),
+					tooltip: () => Helper.Translation.Get("icon-desc")
+				);
 			}
 		}
 
@@ -91,57 +127,20 @@ namespace ShowBirthdays
 		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
 		{
 			// Initialize the helper
-			bdHelper = new BirthdayHelper(Monitor);
+			bdHelper = new BirthdayHelper(Monitor, Helper.ModRegistry);
 			// Refresh the config
 			config = Helper.ReadConfig<ModConfig>();
 
-			// Subscribe to the correct events to prevent unnecessary event checks
-			switch (cycleType)
-			{
-				case CycleType.Always:
-					break;
-				case CycleType.Hover:
-					Helper.Events.Input.CursorMoved += OnCursorMoved;
-					break;
-				case CycleType.Click:
-					Helper.Events.Input.ButtonPressed += OnButtonPressed;
-					break;
-				default:
-					break;
-			}
+			// Update the cycle type
+			ChangeCycleType(config.cycleType);
 
-			// Read the config options and fix the values if needed
-			switch (config.cycleType)
-			{
-				case "Always":
-					cycleType = CycleType.Always;
-					break;
-				case "Hover":
-					cycleType = CycleType.Hover;
-					break;
-				case "Click":
-					cycleType = CycleType.Click;
-					break;
-				default:
-					Monitor.Log("The only accepted cycle types are Always, Hover and Click. Defaulting to Always.", LogLevel.Error);
-					cycleType = CycleType.Always;
-					break;
-			}
+			// Load the icon from the mod folder
+			iconTexture = Game1.content.Load<Texture2D>(assetName);
 
-			spriteCycleTicks = config.cycleDuration;
-			if (spriteCycleTicks < 1)
+			// Check if the loading succeeded
+			if (iconTexture == null)
 			{
-				Monitor.Log("Cycle duration can't be less than 1", LogLevel.Error);
-				spriteCycleTicks = 1;
-			}
-
-			foreach (NPC n in Utility.getAllCharacters())
-			{
-				// Checking for 0 should eliminate a lot of the non-friendable NPCs, needs verification
-				if (n.isVillager() && n.Birthday_Day > 0)
-				{
-					bdHelper.AddBirthday(n.Birthday_Season, n.Birthday_Day, n);
-				}
+				Monitor.Log("Failed loading the icon " + assetName, LogLevel.Error);
 			}
 		}
 
@@ -151,26 +150,19 @@ namespace ShowBirthdays
 		/// </summary>
 		private void OnMenuChanged(object sender, MenuChangedEventArgs e)
 		{
-			if (e.NewMenu == null || !(e.NewMenu is Billboard billboard))
+			if (!IsCalendarActive(e.NewMenu))
 			{
-				calendarOpen = false;
 				return;
 			}
 
-			// Check if we're looking the calendar or the quest part of the billboard
-			bool dailyQuests = this.Helper.Reflection.GetField<bool>(billboard, "dailyQuestBoard").GetValue();
-
-			// Do nothing if looking at the quest board
-			if (dailyQuests)
-				return;
-
-			// We are looking at the calendar so update the flag for it
-			calendarOpen = true;
-
-			List<ClickableTextureComponent> days = billboard.calendarDays;
+			bdHelper.RecheckBirthdays();
 
 			// List of all the birthday days for the season
 			List<int> list = bdHelper.GetDays(Game1.currentSeason);
+
+			// Get the calendar's days since the menu is quaranteed to be the calendar
+			Billboard billboard = e.NewMenu as Billboard;
+			List<ClickableTextureComponent> days = billboard.calendarDays;
 
 			// NOTE: Remember that i goes from 1 to 28, so substract 1 from it to use as the index!
 			for (int i = 1; i <= days.Count; i++)
@@ -209,7 +201,7 @@ namespace ShowBirthdays
 
 						NPC n = listOfNPCs[j];
 						// Build the hover text just like in the base game. I'm not touching that.
-						newHoverText += ((n.displayName.Last() != 's' && (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.de || (n.displayName.Last() != 'x' && n.displayName.Last() != 'ß' && n.displayName.Last() != 'z'))) ? Game1.content.LoadString("Strings\\UI:Billboard_Birthday", n.displayName) : Game1.content.LoadString("Strings\\UI:Billboard_SBirthday", n.displayName));
+						newHoverText += (n.displayName.Last() != 's' && (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.de || (n.displayName.Last() != 'x' && n.displayName.Last() != 'ß' && n.displayName.Last() != 'z'))) ? Game1.content.LoadString("Strings\\UI:Billboard_Birthday", n.displayName) : Game1.content.LoadString("Strings\\UI:Billboard_SBirthday", n.displayName);
 					}
 				}
 				else
@@ -252,26 +244,26 @@ namespace ShowBirthdays
 		/// </summary>
 		private void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
 		{
-			if (Game1.activeClickableMenu == null || !(Game1.activeClickableMenu is Billboard billboard))
+			if (!IsCalendarActive(Game1.activeClickableMenu))
 				return;
 
-			if (currentCycle < spriteCycleTicks)
-			{
+			if (currentCycle < config.cycleDuration)
 				currentCycle++;
-			}
 
-			// Get the calendarDays component, it will be null if we're looking at the questboard
-			List<ClickableTextureComponent> days = billboard.calendarDays;
+			// Get birthday days that are shared
+			List<int> listOfDays = bdHelper.GetDays(Game1.currentSeason, true);
 
-			if (days == null)
+			if (listOfDays.Count == 0)
 				return;
 
-			List<int> listOfDays = bdHelper.GetDays(Game1.currentSeason, true);
+			// Get the calendar's days since the menu is quaranteed to be the calendar
+			Billboard billboard = Game1.activeClickableMenu as Billboard;
+			List<ClickableTextureComponent> days = billboard.calendarDays;
 
 			switch (cycleType)
 			{
 				case CycleType.Always:
-					if (currentCycle == spriteCycleTicks)
+					if (currentCycle >= config.cycleDuration)
 					{
 						for (int i = 0; i < listOfDays.Count; i++)
 						{
@@ -291,7 +283,7 @@ namespace ShowBirthdays
 					}
 					break;
 				case CycleType.Hover:
-					if (currentCycle == spriteCycleTicks)
+					if (currentCycle >= config.cycleDuration)
 					{
 						for (int i = 0; i < listOfDays.Count; i++)
 						{
@@ -324,17 +316,18 @@ namespace ShowBirthdays
 		/// </summary>
 		private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
 		{
-			if (Game1.activeClickableMenu == null || !(Game1.activeClickableMenu is Billboard billboard) || !config.showIcon)
-				return;
-
-			// Get the calendarDays component, it will be null if we're looking at the questboard
-			List<ClickableTextureComponent> days = billboard.calendarDays;
-
-			if (days == null)
+			if (!config.showIcon || !IsCalendarActive(Game1.activeClickableMenu))
 				return;
 
 			// Get birthday days that are shared
 			List<int> listOfDays = bdHelper.GetDays(Game1.currentSeason, true);
+
+			if (listOfDays.Count == 0)
+				return;
+
+			// Get the calendar's days since the menu is quaranteed to be the calendar
+			Billboard billboard = Game1.activeClickableMenu as Billboard;
+			List<ClickableTextureComponent> days = billboard.calendarDays;
 
 			int offsetX = iconTexture.Width * Game1.pixelZoom;
 			int offsetY = iconTexture.Height * Game1.pixelZoom;
@@ -374,6 +367,12 @@ namespace ShowBirthdays
 				// Dangerous conversion, but calendarOpen should prevent problems for now
 				List<ClickableTextureComponent> days = (Game1.activeClickableMenu as Billboard).calendarDays;
 
+				if (days == null || days.Count < 28)
+				{
+					Monitor.Log("Calendar days are messed up for some reason in OnButtonPressed, aborting any drawing by the mod.");
+					return;
+				}
+
 				for (int i = 0; i < days.Count; i++)
 				{
 					// Force the game in UIMode to get the correct scaling for pixel coordinates, since for calendar UIMode = false, for some reason...
@@ -394,6 +393,7 @@ namespace ShowBirthdays
 
 		/// <summary>
 		/// Tracks the cursor position to change the sprite if hovered over
+		/// TODO: Broken for 1.5.6 for some reason. Did the ui scaling get fixed/changed or something?
 		/// </summary>
 		private void OnCursorMoved(object sender, CursorMovedEventArgs e)
 		{
@@ -407,19 +407,176 @@ namespace ShowBirthdays
 			});
 		}
 
-		
+
+		/// <summary>
+		/// Checks if the birthday calendar is active and updates the flag for it
+		/// </summary>
+		private bool IsCalendarActive(IClickableMenu activeMenu)
+		{
+			// Set to false by default to avoid repeating and switch to true at the end if everything was okay
+			calendarOpen = false;
+
+			if (activeMenu == null || activeMenu is not Billboard billboard)
+				return false;
+
+			// Check if we're looking the calendar or the quest part of the billboard
+			bool dailyQuests = this.Helper.Reflection.GetField<bool>(billboard, "dailyQuestBoard").GetValue();
+
+			// Do nothing if looking at the quest board
+			if (dailyQuests)
+				return false;
+
+			List<ClickableTextureComponent> days = billboard.calendarDays;
+
+			if (days == null || days.Count< 28)
+			{
+				Monitor.Log("Calendar days are messed up for some reason in OnMenuChanged, aborting any drawing by the mod.");
+				return false;
+			}
+
+			// We are looking at the calendar and everything seems to be ok so update the flag for it
+			calendarOpen = true;
+
+			return true;
+		}
+
+
+		/// <summary>
+		/// Updates the cycle type and the needed input events
+		/// </summary>
+		private void ChangeCycleType(string newType)
+		{
+			// Unsubscribe from the events just incase
+			Helper.Events.Input.ButtonPressed -= OnButtonPressed;
+			Helper.Events.Input.CursorMoved -= OnCursorMoved;
+
+			//Change the cycle type and subscribe to the correct events to prevent unnecessary event checks
+			config.cycleType = newType;
+
+			switch (newType)
+			{
+				case "Always":
+					cycleType = CycleType.Always;
+					break;
+				case "Hover":
+					cycleType = CycleType.Hover;
+					Helper.Events.Input.CursorMoved += OnCursorMoved;
+					break;
+				case "Click":
+					cycleType = CycleType.Click;
+					Helper.Events.Input.ButtonPressed += OnButtonPressed;
+					break;
+				default:
+					Monitor.Log("The only accepted cycle types are Always, Hover and Click. Defaulting to Always.", LogLevel.Error);
+					cycleType = CycleType.Always;
+					break;
+			}
+		}
+
+
 		class BirthdayHelper
 		{
 			// Reference to the monitor to allow error logging
 			private readonly IMonitor monitor;
+			private readonly IModRegistry modRegistry;
 			public List<Birthday>[] birthdays = new List<Birthday>[4];
 
 
-			public BirthdayHelper(IMonitor m)
+			public BirthdayHelper(IMonitor m, IModRegistry mr)
 			{
 				monitor = m;
+				modRegistry = mr;
 
 				// Initialize the array of lists
+				for (int i = 0; i < birthdays.Length; i++)
+				{
+					birthdays[i] = new List<Birthday>();
+				}
+			}
+
+
+			internal void RecheckBirthdays()
+			{
+				// Reset the birthday lists
+				Reset();
+
+				// Load Custom NPC Exclusions exclusion rules if they exists
+				bool exclusionRulesFound = false;
+				Dictionary<string, string> exclusionRules = new Dictionary<string, string>();
+
+				if (modRegistry.IsLoaded("Esca.CustomNPCExclusions"))
+				{
+					IModInfo modInfo = modRegistry.Get("Esca.CustomNPCExclusions");
+
+					// Is the version new enough to contain the calendar exclusion
+					if (modInfo.Manifest.Version.CompareTo(new SemanticVersion("1.4.0")) >= 0)
+					{
+						monitor.Log("Custom NPC Exclusions 1.4.0 or newer found.");
+
+						try
+						{
+							exclusionRules = Game1.content.Load<Dictionary<string, string>>("Data/CustomNPCExclusions");
+							exclusionRulesFound = true;
+						}
+						catch (Exception e)
+						{
+							monitor.Log("Loading Custom NPC Exclusion rules failed." + e, LogLevel.Error);
+						}
+					}
+				}
+
+				// Loop through all of the NPCs, filter out characters that don't have a proper birthday
+				foreach (NPC n in Utility.getAllCharacters())
+				{
+					// Checking for 0 should eliminate a lot of the non-friendable NPCs, needs verification
+					if (n.isVillager() && n.Birthday_Day > 0)
+					{
+						bool hideBirthday = false;
+
+						// Was Custom NPC Exclusions found
+						if (exclusionRulesFound)
+						{
+							// Try if the NPC's name is in the rules
+							if (exclusionRules.TryGetValue(n.Name, out string s1))
+							{
+								// Entry found, split it into the different rules
+								string[] rules = s1.Split(' ', ',', '/');
+
+								for (int i = 0; i < rules.Length; i++)
+								{
+									// Check if it contains 'All' or 'Calendar'
+									if (rules[i].Equals("All", StringComparison.OrdinalIgnoreCase) || rules[i].Equals("Calendar", StringComparison.OrdinalIgnoreCase))
+									{
+										monitor.Log("Custom NPC Exclusions wants to hide " + n.Name + " from the calendar. Complying...");
+										hideBirthday = true;
+										break;
+									}
+								}
+							}
+						}
+
+						// This check needs further testing, especially with custom npcs
+						if (!n.CanSocialize && !Game1.player.friendshipData.ContainsKey(n.Name))
+						{
+							hideBirthday = true;
+						}
+
+						if (!hideBirthday)
+						{
+							AddBirthday(n.Birthday_Season, n.Birthday_Day, n);
+						}
+						else
+						{
+							monitor.Log(string.Format("NPC: {0} Birthday: {1} {2} was hidden from the calendar.", n.Name, n.Birthday_Season, n.Birthday_Day));
+						}
+					}
+				}
+			}
+
+
+			private void Reset()
+			{
+				// Reinitialize the array of lists
 				for (int i = 0; i < birthdays.Length; i++)
 				{
 					birthdays[i] = new List<Birthday>();
@@ -523,7 +680,7 @@ namespace ShowBirthdays
 				}
 				catch (Exception)
 				{
-					monitor.Log("Index problems", LogLevel.Error);
+					monitor.Log("Unknown season " + season, LogLevel.Error);
 					return null;
 				}
 
@@ -549,7 +706,7 @@ namespace ShowBirthdays
 			// The day
 			public int day;
 			// List of NPCs who have a birthday that day
-			private List<NPC> npcs = new List<NPC>();
+			private readonly List<NPC> npcs = new List<NPC>();
 
 			// Keep track of which npc is currently shown for the day
 			private int currentSpriteIndex = 0;
@@ -563,38 +720,15 @@ namespace ShowBirthdays
 			}
 
 
-			public List<NPC> GetNPCs(bool hideUnmet = true)
+			public List<NPC> GetNPCs()
 			{
-				List<NPC> list = new List<NPC>();
-
-				for (int i = 0; i < npcs.Count; i++)
-				{
-					// This should filter out NPCs you haven't met yet, maybe...
-					if (ShowNPC(npcs[i], hideUnmet))
-					{
-						list.Add(npcs[i]);
-					}
-				}
-
-				return list;
+				return npcs;
 			}
 
 
 			public void AddNPC(NPC n)
 			{
 				npcs.Add(n);
-			}
-
-
-			internal bool ShowNPC(NPC npc, bool hideUnmet)
-			{
-				if (!hideUnmet)
-					return true;
-				if (npc.CanSocialize)
-					return true;
-				else if (Game1.player.friendshipData.ContainsKey(npc.Name))
-					return true;
-				return false;
 			}
 
 
@@ -661,12 +795,11 @@ namespace ShowBirthdays
 	}
 
 
-	public interface GenericModConfigAPI
+	public interface IGenericModConfigAPI
 	{
-		void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
-
-		void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
-		void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
-		void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
+		void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+		void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+		void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
+		void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 	}
 }

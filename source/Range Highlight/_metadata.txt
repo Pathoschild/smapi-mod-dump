@@ -6,9 +6,9 @@ mods:
    Range Highlight
 
 latest commit:
-   commit bca2ff433db6820f6ffd7d880c0445aaf34daae8
+   commit ff4099dc4a67701fca9c5bd419c0676d9a0e7f38
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sun Jan 9 22:19:57 2022 -0500
+   Date:   Tue Feb 22 22:20:57 2022 -0500
    
-       release 3.1.0
+       Integration with Better Beehouses; v3.2.0
    

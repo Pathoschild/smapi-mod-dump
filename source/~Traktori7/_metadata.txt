@@ -10,9 +10,9 @@ mods:
    Show Birthdays
 
 latest commit:
-   commit aa6d32da510ebf2152ff863ae987a0d169fdb825
+   commit 3d76f40ff73ec4536484e093d9af429b4726a3d3
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Sun Jan 30 05:59:43 2022 +0200
+   Date:   Wed Feb 23 11:15:05 2022 +0200
    
-       Version 1.2.0 release
+       Version 1.7.2 release
    

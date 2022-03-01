@@ -10,6 +10,8 @@
 
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
+using SpriteMaster.Harmonize.Patches.Game;
+using SpriteMaster.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using static SpriteMaster.Harmonize.Harmonize;
@@ -25,12 +27,25 @@ static class PlatformRenderBatch {
 			return reference;
 		}
 
-		if (texture is ManagedTexture2D managedTexture/* && managedTexture.Texture != null*/) {
-			return SamplerState.LinearClamp;
+		if (texture is InternalTexture2D managedTexture/* && managedTexture.Texture != null*/ || (texture?.NormalizedName().StartsWith(@"LooseSprites\Lighting\") ?? false)) {
+			if (reference.AddressU == TextureAddressMode.Wrap && reference.AddressV == TextureAddressMode.Wrap) {
+				return SamplerState.LinearWrap;
+			}
+			else if (reference.AddressU == TextureAddressMode.Border && reference.AddressV == TextureAddressMode.Border) {
+				return DrawState.LinearBorder.Value;
+			}
+			else if (reference.AddressU == TextureAddressMode.Mirror && reference.AddressV == TextureAddressMode.Mirror) {
+				return DrawState.LinearMirror.Value;
+			}
+			else {
+				return SamplerState.LinearClamp;
+			}
 		}
 
 		return reference;
 	}
+
+	internal readonly record struct States(SamplerState? SamplerState, BlendState? BlendState);
 
 	[Harmonize(
 		"Microsoft.Xna.Framework.Graphics",
@@ -47,24 +62,49 @@ static class PlatformRenderBatch {
 		Effect effect,
 		Texture texture,
 		GraphicsDevice ____device,
-		ref SamplerState? __state
+		ref States __state
 	) {
+		if (!Config.IsEnabled) {
+			return true;
+		}
+
+		SamplerState? originalSamplerState = null;
+		BlendState? originalBlendState = null;
+
 		try {
-			var originalState = ____device?.SamplerStates[0] ?? SamplerState.PointClamp;
+			using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
-			var newState = GetNewSamplerState(texture, originalState);
+			{
+				var originalState = ____device?.SamplerStates[0] ?? SamplerState.PointClamp;
 
-			if (newState != originalState && ____device?.SamplerStates != null) {
-				__state = originalState;
-				____device.SamplerStates[0] = newState;
+				var newState = GetNewSamplerState(texture, originalState);
+
+				if (newState != originalState && ____device?.SamplerStates != null) {
+					originalSamplerState = originalState;
+					____device.SamplerStates[0] = newState;
+				}
+				else {
+					originalSamplerState = null;
+				}
 			}
-			else {
-				__state = null;
+			{
+				if (____device is not null) {
+					var originalState = ____device.BlendState;
+					if (texture == Line.LineTexture.Value) {
+						____device.BlendState = BlendState.AlphaBlend;
+					}
+					originalBlendState = originalState;
+				}
+				else {
+					originalBlendState = null;
+				}
 			}
 		}
 		catch (Exception ex) {
 			ex.PrintError();
 		}
+
+		__state = new(originalSamplerState, originalBlendState);
 
 		return true;
 	}
@@ -84,11 +124,20 @@ static class PlatformRenderBatch {
 	Effect effect,
 	Texture texture,
 	GraphicsDevice ____device,
-	SamplerState? __state
+	States __state
 ) {
+		if (!Config.IsEnabled) {
+			return;
+		}
+
 		try {
-			if (__state is not null && ____device?.SamplerStates != null && __state != ____device.SamplerStates[0]) {
-				____device.SamplerStates[0] = __state;
+			using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
+
+			if (__state.SamplerState is not null && ____device?.SamplerStates != null && __state.SamplerState != ____device.SamplerStates[0]) {
+				____device.SamplerStates[0] = __state.SamplerState;
+			}
+			if (__state.BlendState is not null && ____device?.BlendState != null && __state.BlendState != ____device.BlendState) {
+				____device.BlendState = __state.BlendState;
 			}
 		}
 		catch (Exception ex) {

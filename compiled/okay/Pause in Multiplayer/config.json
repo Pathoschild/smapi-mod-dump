@@ -3,6 +3,7 @@
   "FixSkullTime": true,
   "DisableSkullShaftFix": false,
   "LockMonsters": true,
+  "AnyCutscenePauses": false,
   "EnableVotePause": true,
   "JoinVoteMatchesHost": true,
   "VotePauseHotkey": "Pause",

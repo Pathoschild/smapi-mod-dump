@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StardewModdingAPI;
+using System.Threading;
 
 namespace ItemPipes.Framework.Util
 {
@@ -28,7 +29,13 @@ namespace ItemPipes.Framework.Util
 
         public static void Info(String message)
         {
-            _monitor.Log(message, LogLevel.Info);
+            try
+            {
+                _monitor.Log(message, LogLevel.Info);
+            }
+            catch (ThreadInterruptedException exception)
+            {
+            }
         }
 
         public static void Warn(String message)

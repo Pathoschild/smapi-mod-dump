@@ -41,4 +41,7 @@ static class Common {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void Swap<T>(ref T l, ref T r) => (r, l) = (l, r);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static string GetTypeName(this object obj) => obj.GetType().Name;
 }

@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>Shockah.XPView</RootNamespace>
+		<Version>1.0.1</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<EnableHarmony>true</EnableHarmony>
+		<IgnoreModFilePatterns>SpaceCore\.dll</IgnoreModFilePatterns>
+	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="TranspileHelper.cs" />
+	  <Compile Remove="TranspileWorker.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+	<Import Project="..\_Common\_Common.projitems" Label="Shared" />
+</Project>

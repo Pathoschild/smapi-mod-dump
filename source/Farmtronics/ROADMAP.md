@@ -49,15 +49,21 @@ This is our "minimum viable product".
 
 These will be addressed ASAP.
 
-- When you pick up a bot, its inventory is reset, and anything other than the starter tools is lost.
-- If you leave the farm while a bot is chopping down a tree or stump (with an axe), when you return it may be trying to use a scythe instead.
+- If you buy more than one bot at a time from Pierre's store, the resulting bots are conjoined under the hood in a way that makes them malfunction.  Workaround: close the shop menu after each purchase.  (Sleeping will probably fix them, too.)
+- When a bot tries to break something its tools aren't strong enough for (e.g. a large stump with the default axe), it causes a dialog to briefly appear and the player farmer to jitter in place, even if they are nowhere near the bot.
+- Under certain circumstances, when two bots are moving at the same time (perhaps onto the same space?), one of them may disappear.
+
+## Coming Soon
+
+- Bots no longer lose their inventory when picked up.
+- You can get or set the name of a bot as `bot.name`, and these names persist across saves and pick-up/set-down.
+- Tile information (e.g. from `bot.ahead` or `Location.tile` now includes characters (players and NPCs).
 
 ## Unscheduled Future Version
 
 The following features are definitely things we want to include, but they have not yet been scheduled for a particular version.
 
 - multiplayer support
-- movable UI, so (if your screen is big enough) you can move it to the side and see your bot at the same time
 - improved copy/paste support in the editor
 - console autocompletion (as in [https://miniscript.org/MiniMicro](MiniMicro)
 - `mouse` module (allowing for point-and-click UI)

@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Menus;
 
-using AssetLoaders;
+using Utility;
 
 #endregion using directives
 
@@ -38,7 +38,7 @@ internal class SkillsPageCtorPatch : BasePatch
     ///     bars to green for level >10.
     /// </summary>
     [HarmonyPostfix]
-    private static void SkillsPageCtorPostfix(ref SkillsPage __instance)
+    private static void SkillsPageCtorPostfix(SkillsPage __instance)
     {
         if (!ModEntry.Config.EnablePrestige) return;
 

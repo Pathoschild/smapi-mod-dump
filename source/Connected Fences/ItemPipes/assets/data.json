@@ -12,18 +12,25 @@
   "ModItems": [
     "Iron Pipe",
     "Gold Pipe",
+    "Iridium Pipe",
     "Extractor Pipe",
+    "Gold Extractor Pipe",
+    "Iridium Extractor Pipe",
     "Inserter Pipe",
     "Polymorphic Pipe",
     "Filter Pipe",
     "Chest",
     "Shipping Bin",
-    "Mini-Fridge"
+    "Mini-Fridge",
+    "P.P.M."
   ],
   "NetworkItems": [
     "Iron Pipe",
     "Gold Pipe",
+    "Iridium Pipe",
     "Extractor Pipe",
+    "Gold Extractor Pipe",
+    "Iridium Extractor Pipe",
     "Inserter Pipe",
     "Polymorphic Pipe",
     "Filter Pipe"
@@ -31,13 +38,18 @@
   "PipeNames": [
     "Iron Pipe",
     "Gold Pipe",
+    "Iridium Pipe",
     "Extractor Pipe",
+    "Gold Extractor Pipe",
+    "Iridium Extractor Pipe",
     "Inserter Pipe",
     "Polymorphic Pipe",
     "Filter Pipe"
   ],
   "IOPipeNames": [
     "Extractor Pipe",
+    "Gold Extractor Pipe",
+    "Iridium Extractor Pipe",
     "Inserter Pipe",
     "Polymorphic Pipe",
     "Filter Pipe"

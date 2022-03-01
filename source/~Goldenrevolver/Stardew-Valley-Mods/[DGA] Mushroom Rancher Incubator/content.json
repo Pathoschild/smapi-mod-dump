@@ -1,0 +1,87 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+[
+    {
+        "$ItemType": "BigCraftable",
+        "ID": "MushroomIncubator",
+        "Texture": "big-craftables.png:0"
+    },
+	{
+        "$ItemType": "CraftingRecipe",
+        "ID": "Mushroom Incubator",
+		"SkillUnlockName": "Foraging",
+		"SkillUnlockLevel": "6",
+        "Result": {
+            "Value": "Goldenrevolver.MushroomRancherIncubator/MushroomIncubator",
+            "Quantity": 1
+        },
+        "Ingredients": [
+            {
+                "Type": "VanillaObject",
+                "Value": 709,
+                "Quantity": 1
+            },
+			{
+                "Type": "VanillaObject",
+                "Value": 388,
+                "Quantity": 20
+            }
+        ]
+    },
+	{
+        "$ItemType": "MachineRecipe",
+        "MachineId": "Goldenrevolver.MushroomRancherIncubator/MushroomIncubator",
+        "MinutesToProcess": 2880,
+        "Ingredients": [
+            {
+                "Type": "VanillaObject",
+                "Value": 420
+            },
+            {
+                "Type": "VanillaObject",
+                "Value": 773,
+                "Quantity": 5
+            }
+        ],
+        "Result": {
+            "Type": "VanillaObject",
+            "Value": 420
+        },
+        "WorkingLightOverride": false,
+        "MachineWorkingTextureOverride": "big-craftables.png:1",
+        "MachinePulseWhileWorking": true,
+		"StartWorkingSound": "coin"
+    },
+	{
+        "$ItemType": "MachineRecipe",
+        "MachineId": "Goldenrevolver.MushroomRancherIncubator/MushroomIncubator",
+        "MinutesToProcess": 2880,
+        "Ingredients": [
+            {
+                "Type": "VanillaObject",
+                "Value": 851
+            },
+            {
+                "Type": "VanillaObject",
+                "Value": 773,
+                "Quantity": 5
+            }
+        ],
+        "Result": {
+            "Type": "VanillaObject",
+            "Value": 851
+        },
+        "WorkingLightOverride": false,
+        "MachineWorkingTextureOverride": "big-craftables.png:2",
+        "MachinePulseWhileWorking": true,
+		"StartWorkingSound": "coin"
+    }
+]

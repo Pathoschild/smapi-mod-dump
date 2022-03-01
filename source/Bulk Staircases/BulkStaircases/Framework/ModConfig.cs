@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI.Utilities;
+using System.Collections.Generic;
 
 namespace BulkStaircases.Framework
 {
@@ -51,6 +52,9 @@ namespace BulkStaircases.Framework
 
         /// <summary>Whether to skip mushroom levels.</summary>
         public bool SkipMushroomLevels { get; set; } = false;
+
+        /// <summaryDon't skip level with the monsters given here if there are at least the given number of them.</summary>
+        public Dictionary<string, int> MonsterFilters { get; set; } = new ();
         
         public KeybindList ToggleKey { get; set; } = KeybindList.Parse("LeftShift + C");
     }

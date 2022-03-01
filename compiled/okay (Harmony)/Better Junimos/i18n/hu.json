@@ -1,5 +1,5 @@
 {
-  "junimosWillNotWorkText": "A Junimok addig nem fognak dolgozni, amíg nem kapnak fizetést.",
-  "spawnJunimoCommandText": "Csak a farmon tud Junimokat hívni.",
-  "checkForWagesText": "A Junimok örülnek a fizetésüknek!"
+  "msg.no-work-until-paid": "A Junimok addig nem fognak dolgozni, amíg nem kapnak fizetést.",
+  "msg.cannot-spawn-here": "Csak a farmon tud Junimokat hívni.",
+  "msg.happy-with-payment": "A Junimok örülnek a fizetésüknek!"
 }

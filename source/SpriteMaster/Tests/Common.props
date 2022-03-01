@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<Copyright>mkuklinski</Copyright>
+		
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<Platforms>x64</Platforms>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NullableReferenceTypes>true</NullableReferenceTypes>
+		<Nullable>enable</Nullable>
+		<ErrorReport>prompt</ErrorReport>
+		<ApplicationIcon>$(SolutionDir)pufferchick_xbrz.ico</ApplicationIcon>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)SpriteMaster\SpriteMaster.csproj" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="xTile">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\xTile.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

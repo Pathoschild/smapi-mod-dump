@@ -6,9 +6,9 @@ mods:
    Farmtronics
 
 latest commit:
-   commit ea79ed5cbf214bd2601d653d3f1b30305991237c
-   Author: Joe Strout <joe@strout.net>
-   Date:   Sun Jan 30 10:47:37 2022 -0700
+   commit 9b1c157002e4c8abf5923f40507bed6aff3cfa17
+   Author: JoeStrout <joe@strout.net>
+   Date:   Wed Feb 9 20:49:13 2022 -0700
    
-       Invaders game now done except for (1) player hits; (2) levels, and (3) UFO.
+       Update ROADMAP.md
    

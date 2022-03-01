@@ -7,9 +7,11 @@ mods:
    SAAT.Mod
 
 latest commit:
-   commit 432dd73ee61d6d916c07ba872d73909fd7f51af5
-   Author: David Weil <gamemx25@gmail.com>
-   Date:   Sat Jan 22 13:26:01 2022 -0800
+   commit ecc71ef840ab51960f6abbe9c08ee9342011ff34
+   Author: ZeroMeters <gamemx25@gmail.com>
+   Date:   Mon Jan 31 17:05:21 2022 -0800
    
-       Typo corrections
+       Update README.md
+       
+       Typo
    

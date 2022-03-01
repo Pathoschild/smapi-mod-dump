@@ -1,7 +1,7 @@
 {
   "Name": "PlatoTK",
   "Author": "Platonymous",
-  "Version": "1.9.5",
+  "Version": "1.10.0",
   "Description": "Modding Toolkit",
   "UniqueID": "Platonymous.PlatoTK",
   "EntryDll": "PlatoTK.dll",

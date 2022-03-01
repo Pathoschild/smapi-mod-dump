@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Bulk Staircases",
   "Author": "BananaFruit",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Description": "Use staircases in bulk",
   "UniqueID": "BananaFruit.BulkStaircases",
   "EntryDll": "BulkStaircases.dll",

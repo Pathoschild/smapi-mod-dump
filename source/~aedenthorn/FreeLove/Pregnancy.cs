@@ -21,28 +21,21 @@ using System.Linq;
 
 namespace FreeLove
 {
-    public static class Pregnancy
+    public partial class ModEntry
     {
-        private static IMonitor Monitor;
-
-        // call this method from your Entry class
-        public static void Initialize(IMonitor monitor)
-        {
-            Monitor = monitor;
-        }
 
         public static bool Utility_pickPersonalFarmEvent_Prefix(ref FarmEvent __result)
         {
             lastBirthingSpouse = null;
             lastPregnantSpouse = null;
-            ModEntry.PMonitor.Log("picking event");
+            PMonitor.Log("picking event");
             if (Game1.weddingToday)
             {
                 __result = null;
                 return false;
             }
 
-            List<NPC> allSpouses = Misc.GetSpouses(Game1.player,1).Values.ToList();
+            List<NPC> allSpouses = Misc.GetSpouses(Game1.player,true).Values.ToList();
 
             Misc.ShuffleList(ref allSpouses);
             
@@ -50,7 +43,7 @@ namespace FreeLove
             {
                 if (spouse == null)
                 {
-                    Monitor.Log($"Utility_pickPersonalFarmEvent_Prefix spouse is null");
+                    PMonitor.Log($"Utility_pickPersonalFarmEvent_Prefix spouse is null");
                     continue;
                 }
                 Farmer f = spouse.getSpouse();
@@ -66,6 +59,8 @@ namespace FreeLove
             }
             foreach (NPC spouse in allSpouses)
             {
+                if (spouse == null)
+                    continue;
                 Farmer f = spouse.getSpouse();
                 if (!ModEntry.Config.RoommateRomance && f.friendshipData[spouse.Name].RoommateMarriage)
                     continue;

@@ -14,10 +14,9 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Fishing;
 
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewValley;
 using StardewValley.Buildings;
 
-using Stardew.Common.Extensions;
+using Extensions;
 
 #endregion using directives
 
@@ -37,13 +36,7 @@ internal class FishPondOnFishTypeChangedPatch : BasePatch
     private static void FishPondOnFishTypeChangedPostfix(FishPond __instance)
     {
         if (!ModEntry.Config.EnableFishPondRebalance) return;
-
-        var who = Game1.getFarmerMaybeOffline(__instance.owner.Value) ?? Game1.MasterPlayer;
-        var qualityRatingByFishPond =
-            ModData.Read(DataField.QualityRatingByFishPond, who).ToDictionary<int, int>(",", ";");
-        var thisFishPond = __instance.GetCenterTile().ToString().GetDeterministicHashCode();
-        qualityRatingByFishPond.Remove(thisFishPond);
-        ModData.Write(DataField.QualityRatingByFishPond, qualityRatingByFishPond.ToString(",", ";"), who);
+        __instance.WriteData("QualityRating", null);
     }
 
     #endregion harmony patches

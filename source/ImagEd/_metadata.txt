@@ -6,9 +6,9 @@ mods:
    ImagEd
 
 latest commit:
-   commit 59a17330604d2556d29df49559ef63bc658dc11b
+   commit 692e12998efa93a2a7d95ea3da207decff7e51a0
    Author: Candidus <candidus@xmail.net>
-   Date:   Sun Jan 30 17:58:02 2022 +0100
+   Date:   Sun Feb 13 20:05:06 2022 +0100
    
-       Prepare for release.
+       Fix: NullReferenceException when mask is set to 'None'.
    

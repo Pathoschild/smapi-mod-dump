@@ -17,7 +17,11 @@ namespace UtilityGrid
         public float water;
         public float electric;
         public bool mustBeOn;
+        public bool onlyMorning;
+        public bool onlyDay;
+        public bool onlyNight;
         public bool mustBeFull;
+        public bool mustNeedOther;
         public string mustContain;
         public bool mustBeWorking;
         public bool onlyInWater;
@@ -31,6 +35,5 @@ namespace UtilityGrid
         public float waterDischargeRate;
         public float electricDischargeRate;
         public bool fillWaterFromRain;
-        public Object worldObj;
     }
 }

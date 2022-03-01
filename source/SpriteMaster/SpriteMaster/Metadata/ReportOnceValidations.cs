@@ -34,10 +34,10 @@ static class ReportOnceValidations {
 #if false
 		if (source.Left < 0 || source.Top < 0 || source.Right >= reference.Width || source.Bottom >= reference.Height) {
 			if (source.Right - reference.Width > 1 || source.Bottom - reference.Height > 1)
-				Debug.WarningLn($"Out of range source '{source}' for texture '{reference.SafeName()}' ({reference.Width}, {reference.Height})");
+				Debug.Warning($"Out of range source '{source}' for texture '{reference.SafeName()}' ({reference.Width}, {reference.Height})");
 		}
 		if (source.Right < source.Left || source.Bottom < source.Top) {
-			Debug.WarningLn($"Inverted range source '{source}' for texture '{reference.SafeName()}'");
+			Debug.Warning($"Inverted range source '{source}' for texture '{reference.SafeName()}'");
 		}
 #endif
 	}
@@ -49,22 +49,22 @@ static class ReportOnceValidations {
 
 	[Conditional("DEBUG")]
 	private static void EmitOverlappingWarning(in Bounds sourceBounds, XTexture2D referenceTexture) {
-		if (referenceTexture.Meta().ShouldReportError(ReportOnceErrors.OverlappingSource)) {
-			Debug.WarningLn($"Overlapping sprite source '{sourceBounds}' for texture '{referenceTexture.SafeName()}' ({referenceTexture.Extent()})");
+		if (referenceTexture is not InternalTexture2D && referenceTexture.Meta().ShouldReportError(ReportOnceErrors.OverlappingSource)) {
+			Debug.Warning($"Overlapping sprite source '{sourceBounds}' for texture '{referenceTexture.NormalizedName()}' ({referenceTexture.Extent()})");
 		}
 	}
 
 	[Conditional("DEBUG")]
 	private static void EmitInvertedWarning(in Bounds sourceBounds, XTexture2D referenceTexture) {
-		if (referenceTexture.Meta().ShouldReportError(ReportOnceErrors.InvertedSource)) {
-			Debug.WarningLn($"Inverted sprite source '{sourceBounds}' for texture '{referenceTexture.SafeName()}' ({referenceTexture.Extent()})");
+		if (referenceTexture is not InternalTexture2D && referenceTexture.Meta().ShouldReportError(ReportOnceErrors.InvertedSource)) {
+			Debug.Warning($"Inverted sprite source '{sourceBounds}' for texture '{referenceTexture.NormalizedName()}' ({referenceTexture.Extent()})");
 		}
 	}
 
 	[Conditional("DEBUG")]
 	private static void EmitDegenerateWarning(in Bounds sourceBounds, XTexture2D referenceTexture) {
-		if (referenceTexture.Meta().ShouldReportError(ReportOnceErrors.DegenerateSource)) {
-			Debug.WarningLn($"Degenerate sprite source '{sourceBounds}' for texture '{referenceTexture.SafeName()}' ({referenceTexture.Extent()})");
+		if (referenceTexture is not InternalTexture2D && referenceTexture.Meta().ShouldReportError(ReportOnceErrors.DegenerateSource)) {
+			Debug.Warning($"Degenerate sprite source '{sourceBounds}' for texture '{referenceTexture.NormalizedName()}' ({referenceTexture.Extent()})");
 		}
 	}
 }

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using PyTK.CustomElementHandler;
 using StardewValley;
 using StardewValley.Objects;

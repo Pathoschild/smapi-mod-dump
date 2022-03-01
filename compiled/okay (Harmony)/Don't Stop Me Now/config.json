@@ -1,0 +1,13 @@
+{
+  "SlowMove": true,
+  "MoveWhileSwingingTools": false,
+  "MoveWhileSwingingMeleeWeapons": true,
+  "MoveWhileSpecial": true,
+  "MoveWhileAimingSlingshot": true,
+  "MoveWhileChargingTools": false,
+  "FixToolFacing": true,
+  "FixMeleeWeaponFacing": true,
+  "FixChargingToolFacing": true,
+  "FixFacingOnMouse": true,
+  "FixFacingOnController": false
+}

@@ -743,6 +743,46 @@ namespace FarmTypeManager
                             validTypes[x].Settings.Remove("Segments"); //remove the setting
                         }
                     }
+
+                    //validate sight range
+                    if (validTypes[x].Settings.ContainsKey("SightRange"))
+                    {
+                        if (validTypes[x].Settings["SightRange"] is long) //if this is a readable integer
+                        {
+                            //do nothing
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"SightRange\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("SightRange"); //remove the setting
+                        }
+                    }
+
+                    //validate ranged attacks
+                    if (validTypes[x].Settings.ContainsKey("RangedAttacks"))
+                    {
+                        if (!(validTypes[x].Settings["RangedAttacks"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"RangedAttacks\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("RangedAttacks"); //remove the setting
+                        }
+                    }
+
+                    //validate extra loot
+                    if (validTypes[x].Settings.ContainsKey("ExtraLoot"))
+                    {
+                        if (!(validTypes[x].Settings["ExtraLoot"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"ExtraLoot\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("ExtraLoot"); //remove the setting
+                        }
+                    }
                 }
 
                 return validTypes;

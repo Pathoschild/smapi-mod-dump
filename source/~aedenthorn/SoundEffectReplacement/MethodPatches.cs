@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework.Audio;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +23,7 @@ namespace SoundEffectReplacement
         {
             if (!Config.EnableMod || !replacementDict.ContainsKey(cueName))
                 return true;
-            cueName = replacementDict[cueName];
+            cueName = GetReplacement(cueName);
             if (cueName.Length == 0)
                 return false;
             if (soundEffectDict.ContainsKey(cueName))
@@ -36,7 +37,7 @@ namespace SoundEffectReplacement
         {
             if (!Config.EnableMod || !replacementDict.ContainsKey(name))
                 return true;
-            name = replacementDict[name];
+            name = GetReplacement(name);
             if (name.Length == 0)
                 return false;
             if (soundEffectDict.ContainsKey(name))
@@ -57,7 +58,7 @@ namespace SoundEffectReplacement
             bool reverb = cue_definition.sounds[0].useReverb;
             CueDefinition cue_definition2 = cue_definition;
 
-            string newName = replacementDict[name];
+            string newName = GetReplacement(name);
             if (newName.Length == 0)
             {
                 cue_definition2.sounds = new List<XactSoundBankSound>()
@@ -78,6 +79,13 @@ namespace SoundEffectReplacement
             }
             __result = (Cue)AccessTools.Constructor(typeof(Cue), new Type[] { typeof(AudioEngine), typeof(CueDefinition) }).Invoke(new object[] { ____audioengine, cue_definition2 });
             return false;
+        }
+
+        private static string GetReplacement(string key)
+        {
+            string replacementList = replacementDict[key];
+            var parts = replacementList.Split('|');
+            return parts[Game1.random.Next(parts.Length)];
         }
     }
 }

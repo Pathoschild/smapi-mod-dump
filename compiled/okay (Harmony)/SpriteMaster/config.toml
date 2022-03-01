@@ -1,178 +1,218 @@
 [Config]
-ConfigVersion = "0.13.0"
-# Should SpriteMaster be enabled?
+ConfigVersion = "0.13.0.102"
 Enabled = true
-# Button to toggle SpriteMaster
 ToggleButton = "F11"
 PreferredMaxTextureDimension = 16384
-ShowIntroMessage = true
-# If the data cache is preferred to be elsewhere, it can be set here
+ShowIntroMessage = false
 DataStoreOverride = ""
 
+[Config.WatchDog]
+Enabled = false
+DefaultSleepInterval = 5000
+ShortSleepInterval = 500
+InterruptInterval = 10000
+
 [Config.Garbage]
-# Should unowned textures be marked in the garbage collector's statistics?
 CollectAccountUnownedTextures = false
-# Should owned textures be marked in the garbage collector's statistics?
 CollectAccountOwnedTextures = false
-# Should SM attempt to detect and prevent texture memory leaks?
-LeakPreventTexture = false
-# Should SM attempt to detect and prevent disposable object memory leaks?
-LeakPreventAll = false
-# The amount of free memory required by SM after which it triggers recovery operations
 RequiredFreeMemory = 64
-# Hysterisis applied to RequiredFreeMemory
 RequiredFreeMemoryHysterisis = 1.5
+SeasonalPurge = true
+LatencyMode = "SustainedLowLatency"
 
 [Config.Debug.Logging]
 LogLevel = "Trace"
 
 [Config.DrawState]
-# Enable linear sampling for sprites
 SetLinear = true
-# Enable MSAA
-EnableMSAA = false
-# Disable the depth buffer (unused in this game)
+MSAASamples = 0
 DisableDepthBuffer = false
-# The default backbuffer format to request
 BackbufferFormat = "Color"
 
+[Config.Performance]
+TransientGCTickCount = 150
+
 [Config.Resample]
-# Should resampling be enabled?
 Enabled = true
-# Should texture rescaling be enabled?
 Scale = true
-# Should we assume that input sprites are gamma corrected?
 AssumeGammaCorrected = false
-# Should the scale factor of water be adjusted to account for water sprites being unusual?
 TrimWater = true
-# Positive bias applied to sprite scaling calculations
 ScaleBias = 0.1000000014901161
-# Maximum scale factor of sprites (dependant on chosen scaler)
 MaxScale = 4294967295
-# Minimum edge length of a sprite to be considered for resampling
 MinimumTextureDimensions = 1
-# Should wrapped addressing be enabled for sprite resampling (when analysis suggests it)?
 EnableWrappedAddressing = false
-# Should resampling be stalled if it is determined that it will cause hitches?
 UseFrametimeStalling = true
-# Should color enhancement/rebalancing be performed?
 UseColorEnhancement = true
-# What threshold should be used when determining if a sprite uses premultiplied alpha?
 PremultipliedAlphaThreshold = 1
-# Should transparent pixels be premultiplied to prevent a 'halo' effect?
 PremultiplyAlpha = true
-# Should sprites be assumed to be premultiplied, or should they instead by analyzed?
 PremultiplyAlphaAssume = true
-# What spritesheets will absolutely not be resampled or processed?
+SlicedTextures = [
+	"LooseSprites\\Cursors::0,2000:640,256", 
+	"LooseSprites\\Cloudy_Ocean_BG", 
+	"LooseSprites\\Cloudy_Ocean_BG_Night", 
+	"LooseSprites\\stardewPanorama", 
+	"Maps\\nightSceneMaru", 
+	"Maps\\nightSceneMaruTrees", 
+	"Maps\\sebastianMountainTiles", 
+	"Maps\\sebastianRideTiles", 
+	"Tilesheets\\GuntherExpedition2_Shadows", 
+	"Tilesheets\\Highlands_Fog", 
+	"Tilesheets\\Highlands_FogBackground"
+]
+TwoXTextures = [
+	"Maps\\WoodBuildings"
+]
+FourXTextures = [
+	"Characters\\Monsters\\Crow", 
+	"Characters\\femaleRival", 
+	"Characters\\maleRival", 
+	"LooseSprites\\Bat", 
+	"LooseSprites\\buildingPlacementTiles", 
+	"LooseSprites\\chatBox", 
+	"LooseSprites\\daybg", 
+	"LooseSprites\\DialogBoxGreen", 
+	"LooseSprites\\hoverBox", 
+	"LooseSprites\\nightbg", 
+	"LooseSprites\\robinAtWork", 
+	"LooseSprites\\skillTitles", 
+	"LooseSprites\\textBox", 
+	"Maps\\busPeople", 
+	"Maps\\cavedarker", 
+	"Maps\\FarmhouseTiles", 
+	"Maps\\GreenHouseInterior", 
+	"Maps\\MenuTiles", 
+	"Maps\\MenuTilesUncolored", 
+	"Maps\\spring_BusStop", 
+	"Maps\\TownIndoors", 
+	"TerrainFeatures\\BuffsIcons", 
+	"TerrainFeatures\\DiggableWall_basic", 
+	"TerrainFeatures\\DiggableWall_basic_dark", 
+	"TerrainFeatures\\DiggableWall_frost", 
+	"TerrainFeatures\\DiggableWall_frost_dark", 
+	"TerrainFeatures\\DiggableWall_lava", 
+	"TerrainFeatures\\DiggableWall_lava_dark", 
+	"TerrainFeatures\\Stalagmite", 
+	"TerrainFeatures\\Stalagmite_Frost", 
+	"TerrainFeatures\\Stalagmite_Lava", 
+	"TileSheets\\Fireball", 
+	"TileSheets\\rain", 
+	"TileSheets\\animations"
+]
 Blacklist = [
-	"LooseSprites/Lighting/", 
-	"LooseSprites/Cloudy_Ocean_BG", 
-	"LooseSprites/Cloudy_Ocean_BG_Night"
+	"LooseSprites\\Lighting\\", 
+	"@^Maps\\\\.+Mist", 
+	"@^Maps\\\\.+mist", 
+	"@^Maps\\\\.+Shadow", 
+	"@^Maps\\\\.+Shadows", 
+	"@^Maps\\\\.+Fog", 
+	"@^Maps\\\\.+FogBackground"
 ]
 
-[Config.Resample.BlockCompression]
-# Should block compression of sprites be enabled?
+[Config.Resample.BlockMultipleAnalysis]
 Enabled = true
-# Should block compression of sprites be synchronous?
-Synchronized = false
-# What quality level should be used?
+EqualityThreshold = 1
+MaxInequality = 1
+
+[Config.Resample.BlockCompression]
+Enabled = true
 Quality = "Highest"
-# What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?
 HardAlphaDeviationThreshold = 7
 
 [Config.Resample.Padding]
-# Should padding be applied to sprites to allow resampling to extend beyond the natural sprite boundaries?
 Enabled = true
-# What is the minimum edge size of a sprite for padding to be enabled?
 MinimumSizeTexels = 4
-# Should unknown (unnamed) sprites be ignored by the padding system?
 IgnoreUnknown = false
-# Should solid edges be padded?
 PadSolidEdges = false
-# What spritesheets should have a stricter edge-detection algorithm applied?
 StrictList = [
-	"LooseSprites/Cursors"
+	"LooseSprites\\Cursors"
 ]
-# What spritesheets should always be padded?
-Whitelist = [
-	"LooseSprites/font_bold", 
-	"Characters/Farmer/hairstyles", 
-	"Characters/Farmer/hairstyles2", 
-	"Characters/Farmer/hats", 
-	"Characters/Farmer/pants", 
-	"Characters/Farmer/shirts", 
-	"TileSheets/weapons", 
-	"TileSheets/bushes", 
-	"TerrainFeatures/grass", 
-	"TileSheets/debris", 
-	"TileSheets/animations", 
-	"Maps/springobjects", 
-	"Maps/summerobjects", 
-	"Maps/winterobjects", 
-	"Maps/fallobjects", 
-	"Buildings/houses", 
-	"TileSheets/furniture", 
-	"TerrainFeatures/tree1_spring", 
-	"TerrainFeatures/tree2_spring", 
-	"TerrainFeatures/tree3_spring", 
-	"TerrainFeatures/tree1_summer", 
-	"TerrainFeatures/tree2_summer", 
-	"TerrainFeatures/tree3_summer", 
-	"TerrainFeatures/tree1_fall", 
-	"TerrainFeatures/tree2_fall", 
-	"TerrainFeatures/tree3_fall", 
-	"TerrainFeatures/tree1_winter", 
-	"TerrainFeatures/tree2_winter", 
-	"TerrainFeatures/tree3_winter"
-]
-# What spritesheets should never be padded?
-Blacklist = [
-	"LooseSprites/Cloudy_Ocean_BG", 
-	"LooseSprites/Cloudy_Ocean_BG_Night"
+AlwaysList = [
+	"LooseSprites\\font_bold", 
+	"Characters\\Farmer\\hairstyles", 
+	"Characters\\Farmer\\hairstyles2", 
+	"Characters\\Farmer\\hats", 
+	"Characters\\Farmer\\pants", 
+	"Characters\\Farmer\\shirts", 
+	"TileSheets\\weapons", 
+	"TileSheets\\bushes", 
+	"TerrainFeatures\\grass", 
+	"TileSheets\\debris", 
+	"TileSheets\\animations", 
+	"Maps\\springobjects", 
+	"Maps\\summerobjects", 
+	"Maps\\winterobjects", 
+	"Maps\\fallobjects", 
+	"Buildings\\houses", 
+	"TileSheets\\furniture", 
+	"TerrainFeatures\\tree1_spring", 
+	"TerrainFeatures\\tree2_spring", 
+	"TerrainFeatures\\tree3_spring", 
+	"TerrainFeatures\\tree1_summer", 
+	"TerrainFeatures\\tree2_summer", 
+	"TerrainFeatures\\tree3_summer", 
+	"TerrainFeatures\\tree1_fall", 
+	"TerrainFeatures\\tree2_fall", 
+	"TerrainFeatures\\tree3_fall", 
+	"TerrainFeatures\\tree1_winter", 
+	"TerrainFeatures\\tree2_winter", 
+	"TerrainFeatures\\tree3_winter"
 ]
 
 [Config.Resample.xBRZ]
-# The weight provided to luminance as opposed to chrominance when performing color comparisons
 LuminanceWeight = 1
-# The tolerance for colors to be considered equal - [0, 256)
 EqualColorTolerance = 20
-# The threshold for a corner-direction to be considered 'dominant'
 DominantDirectionThreshold = 4.4
-# The threshold for a corner-direction to be considered 'steep'
 SteepDirectionThreshold = 2.2
-# Bias towards kernel center applied to corner-direction calculations
 CenterDirectionBias = 3
+UseGradientBlockCopy = false
 
 [Config.WrapDetection]
-# What is the threshold percentage of alpha values to be used to determine if it is a wrapping edge?
 edgeThreshold = 0.2000000029802322
-# What is the minimum alpha value assumed to be opaque?
 alphaThreshold = 1
 
 [Config.AsyncScaling]
-# Should asynchronous scaling be enabled for unknown textures?
 EnabledForUnknownTextures = true
-# Should synchronous stores always be used?
 ForceSynchronousStores = true
-# Should synchronous stores be throttled?
 ThrottledSynchronousLoads = true
-# Should we fetch and load texture data within the same frame?
 CanFetchAndLoadSameFrame = true
 
 [Config.MemoryCache]
-# Should the memory cache be enabled?
 Enabled = true
-# Should memory cache elements always be flushed upon update?
 AlwaysFlush = false
-# Should the memory cache be asynchronous?
-Async = true
+
+[Config.SuspendedCache]
+Enabled = true
+
+[Config.SMAPI]
+TextureCacheEnabled = true
+TextureCacheHighMemoryEnabled = false
+ApplyPatchEnabled = true
+ApplyPatchUseCache = true
+ApplyPatchPinMemory = false
+
+[Config.Extras]
+FastQuit = true
+SmoothLines = true
+OptimizeWarpPoints = true
+TrueShortestPath = false
+AllowNPCsOnFarm = false
+StableSort = true
+PreventUnresponsive = true
+OptimizeEngineTaskRunner = true
+
+[Config.Extras.Snow]
+Enabled = true
+MinimumDensity = 1024
+MaximumDensity = 3072
+MaximumRotationSpeed = 0.01666666666666667
+MaximumScale = 3
+PuffersnowChance = -1
+
+[Config.Extras.ModPatches]
+PatchCustomNPCFixes = false
 
 [Config.FileCache]
-# Should the file cache be enabled?
 Enabled = true
-# What compression algorithm should be used?
 Compress = "Zstd"
-# Should files be compressed regardless of if it would be beneficial?
 ForceCompress = false
-# Should system compression (such as NTFS compression) be preferred?
 PreferSystemCompression = false

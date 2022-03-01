@@ -28,7 +28,6 @@ using StardewValley.Projectiles;
 
 using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
-using Extensions;
 using SuperMode;
 
 #endregion using directives
@@ -36,6 +35,8 @@ using SuperMode;
 [UsedImplicitly]
 internal class ProjectileUpdatePatch : BasePatch
 {
+    private static readonly FieldInfo _DamagesMonsters = typeof(Projectile).Field("damagesMonsters");
+
     /// <summary>Construct an instance.</summary>
     internal ProjectileUpdatePatch()
     {
@@ -53,26 +54,21 @@ internal class ProjectileUpdatePatch : BasePatch
         if (__instance is not BasicProjectile projectile) return;
 
         // check if damages monsters
-        var damagesMonsters = ModEntry.ModHelper.Reflection.GetField<NetBool>(__instance, "damagesMonsters")
-            .GetValue().Value;
+        var damagesMonsters = ((NetBool) _DamagesMonsters.GetValue(__instance)!).Value;
         if (!damagesMonsters) return;
 
         // check if firer is has Desperado Super Mode
         var firer = ___theOneWhoFiredMe.Get(Game1.currentLocation) is Farmer farmer ? farmer : Game1.player;
-        if (!firer.IsLocalPlayer || ModEntry.State.Value.SuperMode?.Index != SuperModeIndex.Desperado) return;
+        if (!firer.IsLocalPlayer || ModEntry.PlayerState.Value.SuperMode is not DesperadoTemerity desperadoTemerity) return;
 
         // check for powered bullet
-        var bulletPower = firer.GetDesperadoBulletPower() - 1f;
+        var bulletPower = desperadoTemerity.GetShootingPower() - 1f;
         if (bulletPower <= 0f) return;
-
-        // check if current power makes a difference for cross section
-        var originalHitbox = __instance.getBoundingBox();
-        if (originalHitbox.Width * bulletPower < 1f) return;
 
         // check if already collided
         if (__result)
         {
-            if (!ModEntry.State.Value.PiercedBullets.Remove(projectile.GetHashCode())) return;
+            if (!ModEntry.PlayerState.Value.PiercedBullets.Remove(projectile.GetHashCode())) return;
 
             projectile.damageToFarmer.Value = (int) (projectile.damageToFarmer.Value * 0.6f);
             __result = false;
@@ -85,6 +81,7 @@ internal class ProjectileUpdatePatch : BasePatch
         if (angle > 180) angle -= 360;
 
         // check for extended collision
+        var originalHitbox = __instance.getBoundingBox();
         var newHitbox = new Rectangle(originalHitbox.X, originalHitbox.Y, originalHitbox.Width, originalHitbox.Height);
         var isBulletTravelingVertically = Math.Abs(angle) is >= 45 and <= 135;
         if (isBulletTravelingVertically)
@@ -128,14 +125,14 @@ internal class ProjectileUpdatePatch : BasePatch
     /// <summary>Patch for prestiged Rascal trick shot.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> ProjectileUpdateTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// Injected: BouncedBullets.Add(this.GetHashCode());
         /// After: bouncesLeft.Value--;
 
-        var notTrickShot = iLGenerator.DefineLabel();
+        var notTrickShot = generator.DefineLabel();
         try
         {
             helper
@@ -166,11 +163,11 @@ internal class ProjectileUpdatePatch : BasePatch
                     new CodeInstruction(OpCodes.Bgt_Un_S, notTrickShot),
                     // add to bounced bullet set
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.State))),
+                        typeof(ModEntry).PropertyGetter(nameof(ModEntry.PlayerState))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(PerScreen<ModState>).PropertyGetter(nameof(PerScreen<ModState>.Value))),
+                        typeof(PerScreen<PlayerState>).PropertyGetter(nameof(PerScreen<PlayerState>.Value))),
                     new CodeInstruction(OpCodes.Callvirt,
-                        typeof(ModState).PropertyGetter(nameof(ModState.BouncedBullets))),
+                        typeof(PlayerState).PropertyGetter(nameof(PlayerState.BouncedBullets))),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Callvirt, typeof(Projectile).MethodNamed(nameof(GetHashCode))),
                     new CodeInstruction(OpCodes.Callvirt,
@@ -181,6 +178,7 @@ internal class ProjectileUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching prestiged Rascal trick shot.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

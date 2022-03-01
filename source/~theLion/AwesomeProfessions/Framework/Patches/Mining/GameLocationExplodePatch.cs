@@ -13,12 +13,14 @@ namespace DaLion.Stardew.Professions.Framework.Patches.Mining;
 #region using directives
 
 using System;
+using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
 using Stardew.Common.Classes;
+using Stardew.Common.Extensions;
 using Events.GameLoop;
 using Extensions;
 using Utility;
@@ -31,6 +33,8 @@ using SObject = StardewValley.Object;
 [UsedImplicitly]
 internal class GameLocationExplodePatch : BasePatch
 {
+    private static readonly FieldInfo _Multiplayer = typeof(Game1).Field("multiplayer");
+
     /// <summary>Construct an instance.</summary>
     internal GameLocationExplodePatch()
     {
@@ -92,8 +96,7 @@ internal class GameLocationExplodePatch : BasePatch
                         if (isPrestigedBlaster)
                             Game1.createObjectDebris(SObject.coal, (int) tile.X, (int) tile.Y,
                                 who.UniqueMultiplayerID, __instance);
-                        ModEntry.ModHelper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer")
-                            .GetValue()
+                        ((Multiplayer) _Multiplayer.GetValue(null))!
                             .broadcastSprites(__instance,
                                 new TemporaryAnimatedSprite(25,
                                     new(tile.X * Game1.tileSize, tile.Y * Game1.tileSize), Color.White,
@@ -179,8 +182,8 @@ internal class GameLocationExplodePatch : BasePatch
 
         // get excited speed buff
         var distanceFromEpicenter = (int) (tileLocation - who.getTileLocation()).Length();
-        if (distanceFromEpicenter < radius * 2 + 1) ModEntry.State.Value.DemolitionistExcitedness = 6;
-        if (distanceFromEpicenter < radius + 1) ModEntry.State.Value.DemolitionistExcitedness += 2;
+        if (distanceFromEpicenter < radius * 2 + 1) ModEntry.PlayerState.Value.DemolitionistExcitedness = 6;
+        if (distanceFromEpicenter < radius + 1) ModEntry.PlayerState.Value.DemolitionistExcitedness += 2;
         EventManager.Enable(typeof(DemolitionistBuffDisplayUpdateTickedEvent));
     }
 

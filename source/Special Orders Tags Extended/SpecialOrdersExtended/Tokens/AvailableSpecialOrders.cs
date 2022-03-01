@@ -20,8 +20,8 @@ internal class AvailableSpecialOrders : AbstractToken
     {
         if (SpecialOrder.IsSpecialOrdersBoardUnlocked())
         {
-            List<string>? specialOrderNames = Game1.player?.team?.availableSpecialOrders?.Select((SpecialOrder s) => s.questKey.ToString()).OrderBy(a => a).ToList()
-                ?? SaveGame.loaded?.availableSpecialOrders?.Select((SpecialOrder s) => s.questKey.ToString()).OrderBy(a => a).ToList();
+            List<string>? specialOrderNames = Game1.player?.team?.availableSpecialOrders?.Select((SpecialOrder s) => s.questKey.Value).OrderBy(a => a).ToList()
+                ?? SaveGame.loaded?.availableSpecialOrders?.Select((SpecialOrder s) => s.questKey.Value).OrderBy(a => a).ToList();
             return this.UpdateCache(specialOrderNames);
         }
         else

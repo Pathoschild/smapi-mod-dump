@@ -10,11 +10,7 @@
 
 using Microsoft.Xna.Framework.Graphics;
 
-using SpriteMaster.Harmonize;
-
 using System;
-using System.Diagnostics;
-using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 
@@ -25,28 +21,41 @@ static class Garbage {
 	internal static volatile bool ManualCollection = false;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void ExecuteSafe(Action call) {
-		try {
-			call.Invoke();
-		}
-		catch (Exception) {
-			// ignore the exception
-		}
-	}
-
-	static Garbage() {
-		ExecuteSafe(() => GCSettings.LatencyMode = GCLatencyMode.Interactive);
+	internal static void EnterNonInteractive() {
+		GCSettings.LatencyMode = GCLatencyMode.Interactive;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-#if NETFRAMEWORK && (NET20 || NET35 || NET40 || NET45)
-		[Conditional("FALSE")]
-#endif
+	internal static void EnterInteractive() {
+		//Debug.Error("Interactive GC");
+
+		try {
+			GCSettings.LatencyMode = Config.Garbage.LatencyMode;
+			Debug.Info($"GC Latency Mode set to {Config.Garbage.LatencyMode}");
+		}
+		catch (Exception ex) {
+			Debug.Warning($"Failed to set GC Latency Mode to '{Config.Garbage.LatencyMode}': {ex.GetTypeName()}: {ex.Message}, attempting to fall back...");
+
+			foreach (var mode in new[] { GCLatencyMode.SustainedLowLatency, GCLatencyMode.LowLatency, GCLatencyMode.Interactive }) {
+				try {
+					GCSettings.LatencyMode = mode;
+					Debug.Warning($"Set GC Latency Mode to '{mode}'");
+					break;
+				}
+				catch { }
+			}
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void MarkCompact() {
-		Debug.TraceLn("Marking for Compact");
-#if !NETFRAMEWORK || !(NET20 || NET35 || NET40 || NET45)
-		ExecuteSafe(() => GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce);
-#endif
+		Debug.Trace("Marking for Compact");
+		try {
+			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+		}
+		catch (Exception ex) {
+			Debug.WarningOnce($"Failed to set LargeObjectHeapCompactionMode: {ex.GetTypeName()}: {ex.Message}");
+		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -54,7 +63,7 @@ static class Garbage {
 		try {
 			ManualCollection = true;
 
-			Debug.TraceLn("Garbage Collecting");
+			Debug.Trace("Garbage Collecting");
 			if (compact) {
 				MarkCompact();
 			}
@@ -85,7 +94,9 @@ static class Garbage {
 					GCSettings.LatencyMode = latencyMode;
 				}
 			}
-			catch (Exception) {
+			catch (Exception ex) {
+				Debug.Trace("Failed to call preferred GC Collect", ex);
+
 				// Just in case the user's GC doesn't support the preivous properties like LatencyMode
 				GC.Collect(
 					generation: int.MaxValue,

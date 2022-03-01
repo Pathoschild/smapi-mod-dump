@@ -39,22 +39,9 @@ namespace Farmtronics {
 		public static ValString _stackAtBreak = new ValString("_stackAtBreak");
 		static ValString _size = new ValString("size");
 		static ValString _name = new ValString("name");
-		static ValString _type = new ValString("type");
-		static ValString _treeType = new ValString("treeType");
-		static ValString _growthStage = new ValString("growthStage");
-		static ValString _health = new ValString("health");
-		static ValString _stump = new ValString("stump");
-		static ValString _tapped = new ValString("tapped");
-		static ValString _hasSeed = new ValString("hasSeed");
 		static ValString _handle = new ValString("_handle");
-		static ValString _crop = new ValString("crop");
-		static ValString _mature = new ValString("mature");
-		static ValString _phase = new ValString("phase");
-		static ValString _dry = new ValString("dry");
-		static ValString _dead = new ValString("dead");
-		static ValString _maxPhase = new ValString("maxPhase");
-		static ValString _harvestable = new ValString("harvestable");
-		static ValString _harvestMethod = new ValString("harvestMethod");
+
+		public static ValMap locationsMap;	// key: name; value: Location subclass
 
 		public static void Init(Shell shell) {
 			M1API.shell = shell;
@@ -67,7 +54,7 @@ namespace Farmtronics {
 
 			if (shell.bot == null) HostInfo.name = "Farmtronics Home Computer";
 			else HostInfo.name = "Farmtronics Bot";
-			HostInfo.version = 1.05;
+			HostInfo.version = 1.06;
 			HostInfo.info = "https://github.com/JoeStrout/Farmtronics/";
 		
 			Intrinsic f;
@@ -81,6 +68,18 @@ namespace Farmtronics {
 				string s = context.variables.GetString("s");
 				Debug.Log(s);
 				return Intrinsic.Result.Null;
+			};
+
+			f = Intrinsic.Create("_lerpColor");
+			f.AddParam("colorA", "#FFFFFF");
+			f.AddParam("colorB", "#FFFFFF");
+			f.AddParam("t", 0.5f);
+			f.code = (context, partialResult) => {
+				var colorA = ColorUtils.ToColor(context.GetLocalString("colorA"));
+				var colorB = ColorUtils.ToColor(context.GetLocalString("colorB"));
+				var t = context.GetLocalFloat("t");
+				var resultColor = ColorUtils.Lerp(colorA, colorB, t);
+				return new Intrinsic.Result(new ValString(resultColor.ToHexString()));
 			};
 
 			f = Intrinsic.Create("bot");
@@ -108,13 +107,7 @@ namespace Farmtronics {
 			f = Intrinsic.Create("farm");
 			f.code = (context, partialResult) => {
 				var loc = (Farm)Game1.getLocationFromName("Farm");
-				var layer = loc.map.Layers[0];
-				var result = new ValMap();
-				result.map[ValString.magicIsA] = LocationClass();
-				result.map[_name] = new ValString("Farm");
-				
-				result.map[_size] = ToList(layer.LayerWidth, layer.LayerHeight);
-				return new Intrinsic.Result(result);
+				return new Intrinsic.Result(LocationSubclass(loc));
 			};
 			
 			f = Intrinsic.Create("file");
@@ -129,7 +122,27 @@ namespace Farmtronics {
 			f.code = (context, partialResult) => {
 				return new Intrinsic.Result(FileHandleClass());
 			};
-			
+
+			f = Intrinsic.Create("getLocation");
+			f.AddParam("name");
+			f.code = (context, partialResult) => {
+				string name = context.GetLocalString("name");
+				if (string.IsNullOrEmpty(name)) return Intrinsic.Result.Null;
+				var loc = Game1.getLocationFromName(name);
+				if (loc == null) return Intrinsic.Result.Null;
+				return new Intrinsic.Result(LocationSubclass(loc));
+			};
+
+			f = Intrinsic.Create("locations");
+			f.code = (context, partialResult) => {
+				if (locationsMap == null) {
+					locationsMap = new ValMap();
+					foreach (var loc in Game1.locations) {
+						locationsMap[loc.Name] = LocationSubclass(loc);
+					}
+				}
+				return new Intrinsic.Result(locationsMap);
+			};
 
 			f = Intrinsic.Create("import");
 			f.AddParam("libname");
@@ -223,7 +236,25 @@ namespace Farmtronics {
 			};
 
 			f = Intrinsic.Create("Location");
+			f.AddParam("name");
 			f.code = (context, partialResult) => {
+				Value name = context.GetVar("name");
+
+				GameLocation loc;
+				if (name != null) {
+					loc = Game1.getLocationFromName(name.ToString());
+				} else {
+					Shell sh = context.interpreter.hostData as Shell;
+					var bot = sh.bot;
+					if (bot == null) {
+						loc = Game1.currentLocation;
+					} else {
+						loc = sh.bot.currentLocation;
+					}
+				}
+				if (loc == null) {
+					return Intrinsic.Result.Null;
+				}
 				return new Intrinsic.Result(LocationClass());
 			};
 
@@ -281,6 +312,13 @@ namespace Farmtronics {
 			f = Intrinsic.Create("");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
+				return new Intrinsic.Result(new ValString(sh.bot.Name));
+			};
+			botModule["name"] = f.GetFunc();
+
+			f = Intrinsic.Create("");
+			f.code = (context, partialResult) => {
+				Shell sh = context.interpreter.hostData as Shell;
 				return new Intrinsic.Result(new ValNumber(sh.bot.facingDirection));
 			};
 			botModule["facing"] = f.GetFunc();
@@ -327,7 +365,7 @@ namespace Farmtronics {
 				ValList result = new ValList();
 				if (sh.bot.inventory != null) {
 					foreach (var item in sh.bot.inventory) {
-						result.values.Add(ToMap(item));
+						result.values.Add(TileInfo.ToMap(item));
 					}
 				}
 				return new Intrinsic.Result(result);
@@ -347,14 +385,10 @@ namespace Farmtronics {
 				Shell sh = context.interpreter.hostData as Shell;
 				var pos = sh.bot.TileLocation;
 				var loc = sh.bot.currentLocation;
-				Debug.Log($"Got location {loc} ({loc.Name}, {loc.uniqueName}), pos {pos}");
 				var result = new ValMap();
 				result["x"] = new ValNumber(pos.X);
 				result["y"] = new ValNumber(pos.Y);
-				var area = new ValMap();
-				area.map[ValString.magicIsA] = LocationClass();
-				area.map[_name] = new ValString(loc.NameOrUniqueName);
-				result["area"] = area;
+				result["area"] = LocationSubclass(loc);
 				return new Intrinsic.Result(result);
 			};
 			botModule["position"] = f.GetFunc();
@@ -409,7 +443,11 @@ namespace Farmtronics {
 				string keyStr = key.ToString();
 				if (keyStr == "_") return false;
 				//Debug.Log($"botModule {key} = {value}");
-				if (keyStr == "statusColor") {
+				if (keyStr == "name") {
+					string name = value.ToString();
+					if (!string.IsNullOrEmpty(name)) Shell.runningInstance.bot.Name = name;
+					return true;
+				} else if (keyStr == "statusColor") {
 					Shell.runningInstance.bot.statusColor = value.ToString().ToColor();
 					return true;
 				} else if (keyStr == "currentToolIndex") {
@@ -682,17 +720,21 @@ namespace Farmtronics {
 			f.AddParam("lines");
 			f.code = (context, partialResult) => {
 				Shell sh = context.interpreter.hostData as Shell;
-				string path = context.GetLocalString("path");
+				string origPath = context.GetLocalString("path");
 				Value linesVal = context.GetLocal("lines");
 				if (linesVal == null) return new Intrinsic.Result("Error: lines parameter is required");
 			
 				string err = null;
-				path = sh.ResolvePath(path, out err);
+				string path = sh.ResolvePath(origPath, out err);
 				if (path == null) return new Intrinsic.Result(err);
 
-				Disk disk = FileUtils.GetDisk(ref path);
-				if (!disk.IsWriteable()) return new Intrinsic.Result("Error: disk is not writeable");
-				disk.WriteLines(path, linesVal.ToStrings());
+				try {
+					Disk disk = FileUtils.GetDisk(ref path);
+					if (!disk.IsWriteable()) return new Intrinsic.Result("Error: disk is not writeable");
+					disk.WriteLines(path, linesVal.ToStrings());
+				} catch (System.Exception) {
+					return new Intrinsic.Result("Error: unable to write " + origPath);
+				}
 				return Intrinsic.Result.Null;
 			};
 			fileModule["writeLines"] = f.GetFunc();
@@ -899,11 +941,15 @@ namespace Farmtronics {
 			// .read
 			f = Intrinsic.Create("");
 			f.AddParam("self");
+			f.AddParam("codePointCount");
 			f.code = (context, partialResult) => {
 				string err;
 				OpenFile file = GetOpenFile(context, out err);
 				if (err != null) return Intrinsic.Result.Null;
-				string s = file.ReadToEnd();
+				string s;
+				Value count = context.GetLocal("codePointCount");
+				if (count == null) s = file.ReadToEnd();
+				else s = file.ReadChars(count.IntValue());
 				return new Intrinsic.Result(s);
 			};		
 			fileHandleClass["read"] = f.GetFunc();
@@ -1152,36 +1198,24 @@ namespace Farmtronics {
 
 			return keyModule;
 		}
-	
 
-		static ValMap locationClass;
+		static ValMap locationClass = null;
 		public static ValMap LocationClass() {
 			if (locationClass != null) return locationClass;
-
 			locationClass = new ValMap();
-			locationClass.map[_name] = null;
-		
+			locationClass.map[_name] = new ValString("Location");
+			locationClass.map[new ValString("width")] = ValNumber.zero;
+			locationClass.map[new ValString("height")] = ValNumber.zero;
+
 			Intrinsic f;
 
-			// Location.height
-			f = Intrinsic.Create("");
-			f.code = (context, partialResult) => {
-				ValMap self = context.GetVar("self") as ValMap;
-				string name = self.Lookup(_name).ToString();
-				var loc = Game1.getLocationFromName(name);
-				if (loc == null) return Intrinsic.Result.Null;
-				return new Intrinsic.Result(new ValNumber(loc.map.Layers[0].LayerHeight));
-			};
-			locationClass["height"] = f.GetFunc();
-
-			// Location.tile
+			// Location.tile (gets info on a particular tile in this location)
 			f = Intrinsic.Create("");
 			f.AddParam("self");
 			f.AddParam("x", ValNumber.zero);
 			f.AddParam("y", ValNumber.zero);
 			f.code = (context, partialResult) => {
 				ValMap self = context.GetVar("self") as ValMap;
-				if (self == null) throw new RuntimeException("Map required for Location.tile parameter");
 				int x = context.GetLocalInt("x", 0);
 				int y = context.GetLocalInt("y", 0);
 				Vector2 xy = new Vector2(x,y);
@@ -1189,73 +1223,28 @@ namespace Farmtronics {
 				var loc = Game1.getLocationFromName(name);
 				if (loc == null) return Intrinsic.Result.Null;
 
-				ValMap result = null;
-
-				// check objects
-				StardewValley.Object obj = null;
-				loc.objects.TryGetValue(xy, out obj);
-				//Debug.Log($"Object at {xy}: {obj}");
-				if (obj != null) {
-					result = ToMap(obj);
-				} else {
-					// check terrain features
-					TerrainFeature feature = null;
-					if (!loc.terrainFeatures.TryGetValue(new Vector2(x,y), out feature)) {
-						//Debug.Log($"no terrain features at {xy}");
-						return Intrinsic.Result.Null;
-					}
-					Debug.Log($"terrain features at {xy}: {feature}");
-					if (result == null) result = new ValMap();
-					result.map[_type] = result["name"] = new ValString(feature.GetType().Name);
-					if (feature is Tree tree) {
-						result.map[_treeType] = new ValNumber(tree.treeType.Value);
-						result.map[_growthStage] = new ValNumber(tree.growthStage.Value);
-						result.map[_health] = new ValNumber(tree.health.Value);
-						result.map[_stump] = ValNumber.Truth(tree.stump.Value);
-						result.map[_tapped] = ValNumber.Truth(tree.tapped.Value);
-						result.map[_hasSeed] = ValNumber.Truth(tree.hasSeed.Value);
-					} else if (feature is HoeDirt hoeDirt) {
-						result.map[_dry] = ValNumber.Truth(hoeDirt.state.Value != 1);
-						var crop = hoeDirt.crop;
-						if (crop == null) result.map[_crop] = null;
-						else {
-							ValMap cropInfo = new ValMap();
-							cropInfo.map[_phase] = new ValNumber(crop.currentPhase.Value);
-							cropInfo.map[_maxPhase] = new ValNumber(crop.phaseDays.Count - 1);
-							cropInfo.map[_mature] = ValNumber.Truth(crop.fullyGrown.Value);
-							cropInfo.map[_dead] = ValNumber.Truth(crop.dead.Value);
-							cropInfo.map[_harvestMethod] = ValNumber.Truth(crop.harvestMethod.Value);
-							bool harvestable = (int)crop.currentPhase.Value >= crop.phaseDays.Count - 1
-							  && (!crop.fullyGrown.Value || (int)crop.dayOfCurrentPhase.Value <= 0);
-							cropInfo.map[_harvestable] = ValNumber.Truth(harvestable);
-
-							//Note: we might be able to get the name of the crop
-							// using crop.indexOfHarvest or crop.netSeedIndex
-							var product = new StardewValley.Object(crop.indexOfHarvest.Value, 0);
-							cropInfo.map[_name] = new ValString(product.DisplayName);
-
-							result.map[_crop] = cropInfo;
-						}
-					}
-				}
+				ValMap result = TileInfo.GetInfo(loc, xy);
 				if (result == null) return Intrinsic.Result.Null;
 				return new Intrinsic.Result(result);
 			};
 			locationClass["tile"] = f.GetFunc();
 
-			// Location.width
-			f = Intrinsic.Create("");
-			f.code = (context, partialResult) => {
-				ValMap self = context.GetVar("self") as ValMap;
-				string name = self.Lookup(_name).ToString();
-				var loc = Game1.getLocationFromName(name);
-				if (loc == null) return Intrinsic.Result.Null;
-				return new Intrinsic.Result(new ValNumber(loc.map.Layers[0].LayerWidth));
-			};
-			locationClass["width"] = f.GetFunc();
-
-
 			return locationClass;
+		}
+
+		public static Dictionary<string, ValMap> locationCache = new Dictionary<string, ValMap>();
+		public static ValMap LocationSubclass(GameLocation loc) {
+			if (locationCache.ContainsKey(loc.NameOrUniqueName)) {
+				return locationCache[loc.NameOrUniqueName];
+			}
+			var subclass = new ValMap();
+			subclass.map[ValString.magicIsA] = LocationClass();
+			subclass.map[_name] = new ValString(loc.NameOrUniqueName);
+			subclass.map[new ValString("width")] = new ValNumber(loc.map.Layers[0].LayerWidth);
+			subclass.map[new ValString("height")] = new ValNumber(loc.map.Layers[0].LayerHeight);
+			locationCache.Add(loc.NameOrUniqueName, subclass);
+
+			return subclass;
 		}
 
 
@@ -1656,44 +1645,6 @@ namespace Farmtronics {
 			var result = new ValList();
 			result.values.Add(new ValNumber(a));
 			result.values.Add(new ValNumber(b));
-			return result;
-		}
-
-		static ValMap ToMap(StardewValley.Object obj) {
-			var result = new ValMap();
-			string type = obj.Type;
-			if (type == "asdf") type = obj.Name;
-			result.map[_type] = new ValString(type);
-			// ToDo: limit the following to ones that really apply for this type.
-			result.map[_name] = new ValString(obj.Name);
-			result["displayName"] = new ValString(obj.DisplayName);
-			result["health"] = new ValNumber(obj.getHealth());
-			if (obj.isLamp.Get()) result["isOn"] = ValNumber.Truth(obj.IsOn);
-			result["quality"] = new ValNumber(obj.Quality);
-			result["readyForHarvest"] = ValNumber.Truth(obj.readyForHarvest.Get());
-			result["minutesTillReady"] = new ValNumber(obj.MinutesUntilReady);
-			result["value"] = new ValNumber(obj.sellToStorePrice());
-			result["description"] = new ValString(obj.getDescription());
-			return result;
-		}
-
-		static ValMap ToMap(StardewValley.Item item) {
-			if (item == null) return null;
-			var result = new ValMap();
-			result.map[_type] = new ValString(item.GetType().Name);
-			// ToDo: limit the following to ones that really apply for this type.
-			result.map[_name] = new ValString(item.Name);
-			result["displayName"] = new ValString(item.DisplayName);
-			result["stack"] = new ValNumber(item.Stack);
-			result["maxStack"] = new ValNumber(item.maximumStackSize());
-			result["category"] = new ValString(item.getCategoryName());
-			result["value"] = new ValNumber(item.salePrice());
-			result["description"] = new ValString(item.getDescription().Trim());
-			if (item is StardewValley.Tools.WateringCan can) {
-				result["waterLeft"] = new ValNumber(can.WaterLeft);
-				result["waterMax"] = new ValNumber(can.waterCanMax);
-			}
-
 			return result;
 		}
 

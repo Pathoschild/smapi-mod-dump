@@ -17,7 +17,11 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch;
 static class Begin {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	[Harmonize("Begin", fixation: Harmonize.Fixation.Postfix, priority: Harmonize.PriorityLevel.Last)]
-	internal static void OnBegin(SpriteBatch __instance, SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix? transformMatrix) {
+	public static void OnBegin(SpriteBatch __instance, SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix? transformMatrix) {
+		if (!Config.IsEnabled) {
+			return;
+		}
+
 		DrawState.OnBegin(
 			__instance,
 			sortMode,

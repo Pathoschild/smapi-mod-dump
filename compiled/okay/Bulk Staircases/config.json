@@ -7,5 +7,6 @@
   "SkipSlimeLevels": false,
   "SkipMonsterLevels": false,
   "SkipMushroomLevels": false,
+  "MonsterFilters": {},
   "ToggleKey": "LeftShift + C"
 }

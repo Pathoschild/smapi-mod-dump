@@ -18,9 +18,11 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Tools;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using Extensions;
 using Utility;
@@ -30,6 +32,7 @@ using SUtility = StardewValley.Utility;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class GameLocationGetFishPatch : BasePatch
 {
     /// <summary>Construct an instance.</summary>
@@ -43,20 +46,21 @@ internal class GameLocationGetFishPatch : BasePatch
     /// <summary>Patch for Fisher to reroll reeled fish if first roll resulted in trash.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> GameLocationGetFishTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// Injected: if (ShouldRerollFish(who, whichFish, hasRerolled)) goto <choose_fish>
         ///	Before: caught = new Object(whichFish, 1);
 
-        var startOfFishRoll = iLGenerator.DefineLabel();
-        var shouldntReroll = iLGenerator.DefineLabel();
-        var hasRerolled = iLGenerator.DeclareLocal(typeof(bool));
+        var startOfFishRoll = generator.DefineLabel();
+        var shouldntReroll = generator.DefineLabel();
+        var hasRerolled = generator.DeclareLocal(typeof(bool));
         var shuffleMethod = typeof(SUtility).GetMethods().Where(mi => mi.Name == "Shuffle").ElementAtOrDefault(1);
         if (shuffleMethod is null)
         {
             Log.E($"Failed to acquire {typeof(SUtility)}::Shuffle method.");
+            transpilationFailed = true;
             return null;
         }
 
@@ -96,6 +100,7 @@ internal class GameLocationGetFishPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Fisher fish reroll.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -108,7 +113,7 @@ internal class GameLocationGetFishPatch : BasePatch
 
     private static bool ShouldRerollFish(Farmer who, int currentFish, bool hasRerolled)
     {
-        return currentFish is > 166 and < 173 or 152 or 153 or 157
+        return (currentFish is > 166 and < 173 || ModEntry.Config.SeaweedIsJunk && currentFish.IsAlgae())
                && who.CurrentTool is FishingRod rod
                && ObjectLookups.BaitById.TryGetValue(rod.getBaitAttachmentIndex(), out var baitName)
                && baitName != "Magnet"

@@ -16,7 +16,7 @@ namespace UtilityGrid
     public class PipeGroup
     {
         public List<Vector2> pipes = new List<Vector2>();
-        public Dictionary<Vector2, UtilityObject> objects = new Dictionary<Vector2, UtilityObject>();
-        public float excessUse;
+        public Vector2 powerVector = Vector2.Zero;
+        public Vector2 storageVector = Vector2.Zero;
     }
 }

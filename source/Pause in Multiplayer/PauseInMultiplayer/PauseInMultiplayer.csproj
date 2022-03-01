@@ -5,10 +5,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <ImplicitUsings>false</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyVersion>1.6.3</AssemblyVersion>
-    <FileVersion>1.6.3</FileVersion>
-    <Version>1.6.3</Version>
-    <PackageReleaseNotes>vote to pause feature additions</PackageReleaseNotes>
+    <AssemblyVersion>1.7.0</AssemblyVersion>
+    <FileVersion>1.7.0</FileVersion>
+    <Version>1.7.0</Version>
+    <PackageReleaseNotes>any cutscene pause option added</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

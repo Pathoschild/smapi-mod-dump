@@ -18,6 +18,8 @@ using System.Xml.Serialization;
 using StardewValley;
 using SpaceCore;
 using ItemPipes.Framework.Util;
+using ItemPipes.Framework.Items.Objects;
+
 
 namespace ItemPipes.Framework.Items.Recipes
 {

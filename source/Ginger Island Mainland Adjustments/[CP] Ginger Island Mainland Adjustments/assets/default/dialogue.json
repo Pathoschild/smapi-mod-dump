@@ -1,0 +1,214 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/Ginger-Island-Mainland-Adjustments
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "LogName": "Abby dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Abigail",
+            "Entries": {
+                "Resort": "Wish I could go wandering around a bit more today...brought my sword and everything...",
+                "Resort_Adventure": "Looking forward to a day spent wandering in the wilderness...er, for some defintions of 'wilderness'.",
+                "Resort_Volcano": "Wow! I wonder what monsters I can find in there?",
+                "Resort_Tent": "Professor Snail showed me a bunch of really interesting fossils!",
+                "Resort_AdventureReturn": "I can't wait to come back here! Wonder what else I'll find next?",
+                "Resort_Approach": "Lookin' forward to exploring the island today!",
+
+                // This key will only be called if the **group** PierreFamily goes to the Resort.
+                "Resort_Approach_PierreFamily": "Heya @, I'm going to be headed to Ginger Island with my family today. Not sure I'm looking forward to spending the day with my dad...",
+                "Resort_Approach_bandKids": "@! I'll be going to Ginger Island today with Sam and Sebastian! You wanna join us?",
+                "Resort_Left": "Ahh, nothing like a nice relaxing vacation...$h"
+            }
+        },
+        {
+            "LogName": "Sam dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Sam",
+            "Entries": {
+                "Resort": "Man, I love coming here! So many interesting things to explore!$h",
+                "Resort_Adventure": "Dude, this place is super cool!",
+                "Resort_Tent": "Man, I can see myself becoming an archeologist...maybe...",
+                "Resort_AdventureReturn": "That was fun! But I'm glad to be headed home. I'm whacked!",
+                "Resort_Approach": "@, I'll be off to Ginger Island today! You coming too?",
+                "Resort_Left_Saloon": "#$c .5#@! Wanna join us for a game of pool?#Spent the day at the Resort, spending my evening playing pool, what could be better?#",
+                "Resort_Left_Saloon_bandKids": "@! How're ya doing today?#$b#Me? Got to spend the day at Ginger Island with my friends!$h"
+            }
+        },
+        {
+            "LogName": "Sebastian dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Sebastian",
+            "Entries": {
+                //Resort_Antisocial temporarily removed until I can figure out what about IslandSoutheast makes NPCs vanish... :(
+                "Resort_Antisocial": "Heya @, whatcha up to?#$b#Me? Just taking a break from all those people...#$b#Vacations are fun, but they're also tiring.",
+                "Resort_Antisocial_2": "Glad I'm wearing this shirt. Otherwise, I'd definitely be sunburning right about now.",
+                "Resort_Approach_RobinFamily": "@, I'll be headed to Ginger Island today with my family. I'm...not sure I'm looking forward to it.",
+            }
+        },
+        {
+            "LogName": "Demetrius dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Demetrius",
+            "Entries": {
+                "Resort_IslandNorth": "@, I wish I had some more time to study the unique folliage of this island today....",
+                "Resort_Adventure": "I'm looking forward to analyzing the ecology of the island today!",
+                "Resort_Volcano": "@, did you know that this volcano only appeared here about ten thousand years back?",
+                "Resort_Volcano_2": "Volcanos can also form on other planets! The biggest one in the solar system is Olympus Mons on Mars.",
+                "Resort_Tent": "Professor Snail was just telling me about all the unique shells he's collected over the years!",
+                "Resort_Tent_2": "Oh, look at all these amazing mushrooms!",
+                "Resort_AdventureReturn": "I can't wait to come back! So much more data to gather!",
+                "Resort_Approach_RobinFamily": "Looking forward to a nice vacation with my wife and kids!"
+                // This key will only get called if the group RobinFamily is headed to the Resort.
+            }
+        },
+        {
+            "LogName": "Maru dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Maru",
+            "Entries": {
+                "Resort_IslandNorth": "@, have you looked at these coconut trees? Something's a little different about them...",
+                "Resort_Adventure": "@, I'm looking forward to spending a day out here!",
+                "Resort_Volcano": "I wonder if Dad will let me explore in there...Probably not.",
+                "Resort_Tent": "This is making me want to become an archeologist!",
+                "Resort_AdventureReturn": "Ah, that was a nice day! I'm ready to head home now, though."
+            }
+        },
+        {
+            "LogName": "Maru -- married",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Maru",
+            "Entries": {
+                "Resort_AdventureReturn": "Well, that was fun. I'll see you at home, @?"
+            },
+            "When": {
+                "Relationship:Maru": "Married"
+            }
+        },
+        {
+            "LogName": "Leah dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Leah",
+            "Entries": {
+                "Resort_IslandNorth": "Oh, @, I love the foliage here! Look at how the light shines through the trees!",
+                "Resort_Adventure": "I brought my sketchbook and I'm definitely looking forward to getting some drawing done!",
+                "Resort_Volcano": "Look at these rocks, @! Aren't they beautiful? The way they reflect the light!",
+                "Resort_Tent": "Professor Snail has such a wonderful collection of flowers!",
+                "Resort_Tent_2": "Oh, look at how beautiful these old biology diagrams are!",
+                "Resort_AdventureReturn": "Today was lovely! But I'm definitely ready to return home now.$h",
+                "Resort_Pier": "This water is such a pretty shade of blue.",
+                //Resort_Antisocial temporarily removed until I can figure out what about IslandSoutheast makes NPCs vanish... :(
+                "Resort_Antisocial": "Heya @, how are you today? I'm just observing the sea. This would be so lovely to draw."
+            }
+        },
+        {
+            "LogName": "Leah dialogue -- married",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Leah",
+            "Entries": {
+                "Resort_Leaving": "Well, that was deeply relaxing. I'll see you at home, dear.$l",
+                "Resort_Adventure": "Oh, hi, @! What are you planning on doing today?#$b#Me, I'm planning on drawing some of the birds on this island.",
+                "Resort_Adventure_2": "Oh, @! It's so nice seeing you here. Look at how the light comes through those trees, isn't it so beautiful?",
+                "Resort_AdventureReturn": "@! I had a great day today, did you? I'll see you at home!$l#$b#Don't stay out too late!",
+                //Resort_Antisocial temporarily removed until I can figure out what about IslandSoutheast makes NPCs vanish... :(
+                "Resort_Antisocial": "Oh, @, you've found me here. How are you today? The Resort is just a little too busy for me right now.",
+                "Resort_Pier": "This water is such a pretty shade of blue. @, would you be interested in going snorkeling one day?"
+            },
+            "When": {
+                "Relationship:Leah": "Married",
+                "Hearts:Leah": "12,13,14"
+            }
+        },
+        {
+            "LogName": "Elliott dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Elliott",
+            "Entries": {
+                "Resort_Approach": "@, I'll be taking a vacation today! Care to join me?",
+                "Resort Pier": "Nothing like basking in the nice warm sun, surrounded by such beautiful waters.",
+                "Resort_IslandNorth": "Ah, this place stimulates the creative spirit! Nothing like a nice tropical mango to get the writing brain in gear.",
+            }
+        },
+        {
+            "LogName": "Jodi dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Jodi",
+            "Entries": {
+                "Resort_Approach": "I'm definitely looking forward to going to the Resort today!$h",
+                "Resort_Left": "Ahhh...I had a great day at the Resort!$h"
+            }
+        },
+        {
+            "LogName": "Pierre dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Pierre",
+            "Entries": {
+                "Resort_Approach": "I'm headed off to the Island today. Looking forward to going on vacation!",
+                "Resort_Left": "Ah, nothing like a nice relaxing vacation...$h",
+                "Resort_Pier": "The water's so blue here, isn't it?"
+            }
+        },
+        {
+            "LogName": "Caroline dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Caroline",
+            "Entries": {
+                "winterResort_Approach": "@! I'm looking forward to going to Ginger Island today.$h#$b#Will be so nice to get some sun...", 
+                "Resort_Approach_PierreFamily": "Finally convinced Caroline to come to Ginger Island with us. Looking forward to a family vacation!$h",
+                "Resort_Approach_aerobicsClub": "The aerobics club are going to Ginger Island today! Hope my effort pays off!$h",
+            }
+        },
+        {
+            "LogName": "Alex dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Alex",
+            "Entries":{
+                "winterResort_Approach": "Lookin' forward to basking in the sun on the Island today! Hey, @, you wanna come with?",
+            }
+        },
+        {
+            "LogName": "Haley dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Haley",
+            "Entries": {
+                "Resort_Pier": "Wish I brought my camera...#$e#Say, do you think Willy will let us go snorkeling?",
+                "Resort_Approach": "I'm going to be going on vacation today! Gonna be spending all day soaking up the sun.$h"
+            }
+        },
+        {
+            "LogName": "Pam dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Pam",
+            "Entries": {
+                "Resort_Pier": "Look at all the fish swimming in these waters!",
+                "Resort_Approach": "@, I'm gonna be headed to Ginger Island today! Got a nice vacation day from the bus company."
+            }
+        },
+        {
+            "LogName": "Penny dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Penny",
+            "Entries": {
+                "Resort_Approach_PamFamily": "Convinced mom to go to Ginger Island with me today! I'm looking forward to spending some time with her."
+            }
+        },
+        {
+            "LogName": "Emily dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Emily",
+            "Entries": {
+                "Resort_IslandNorth": "Did you see those birds? Aren't they lovely?",
+                "Resort_Left": "Ah, I'm so glad I got to go on vacation today!",
+                "Resort_Left4": "I had a great time today at Ginger Island. @, you should consider relaxing and taking a break more often?",
+                "winterResort_Left": "Brr! Town seems so cold after spending all day on Ginger Island!"
+            }
+        }
+    ]
+}

@@ -15,6 +15,7 @@ using FashionSense.Framework.Models.Hair;
 using FashionSense.Framework.Models.Hat;
 using FashionSense.Framework.Models.Pants;
 using FashionSense.Framework.Models.Shirt;
+using FashionSense.Framework.Models.Shoes;
 using FashionSense.Framework.Models.Sleeves;
 using FashionSense.Framework.Utilities;
 using Microsoft.Xna.Framework;
@@ -97,6 +98,11 @@ namespace FashionSense.Framework.UI
                     break;
                 case HandMirrorMenu.SLEEVES_FILTER_BUTTON:
                     appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is SleevesContentPack).ToList();
+
+                    if (callbackMenu.GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
+                    {
+                        appearancePacks = FashionSense.textureManager.GetAllAppearanceModels().Where(m => m is ShoesContentPack).ToList();
+                    }
                     break;
             }
 
@@ -219,14 +225,17 @@ namespace FashionSense.Framework.UI
                             appearanceModel = (targetPack as PantsContentPack).GetPantsFromFacingDirection(fakeFarmers[i].facingDirection);
                             break;
                         case HandMirrorMenu.SLEEVES_FILTER_BUTTON:
-                            modDataKey = ModDataKeys.CUSTOM_SLEEVES_ID;
-                            appearanceModel = (targetPack as SleevesContentPack).GetSleevesFromFacingDirection(fakeFarmers[i].facingDirection);
+                            if (_callbackMenu.GetCurrentFeatureSlotKey() == ModDataKeys.CUSTOM_SHOES_ID)
+                            {
+                                modDataKey = ModDataKeys.CUSTOM_SHOES_ID;
+                                appearanceModel = (targetPack as ShoesContentPack).GetShoesFromFacingDirection(fakeFarmers[i].facingDirection);
+                            }
+                            else
+                            {
+                                modDataKey = ModDataKeys.CUSTOM_SLEEVES_ID;
+                                appearanceModel = (targetPack as SleevesContentPack).GetSleevesFromFacingDirection(fakeFarmers[i].facingDirection);
+                            }
                             break;
-                    }
-
-                    if (appearanceModel is null)
-                    {
-                        continue;
                     }
 
                     fakeFarmers[i].modData[modDataKey] = targetPack.Id;

@@ -48,9 +48,21 @@ namespace UpgradablePan
 			}
 		}
 
+		private static Pan getPan(Farmer who)
+		{
+			foreach (Item t in who.items)
+			{
+				if (t != null && t is Pan pan)
+				{
+					return pan;
+				}
+			}
+			return null;
+		}
+
 		public static void getBlacksmithUpgradeStock_Postfix(Farmer who, ref Dictionary<ISalable, int[]> __result)
 		{
-			Tool pan = who.getToolFromName("Pan");
+			Tool pan = getPan(who);
 			if (pan != null && pan.UpgradeLevel < 4)
 			{
 				Tool shopPan = new Pan();

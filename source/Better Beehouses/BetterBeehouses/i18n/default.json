@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/BetterBeehouses
+**
+*************************************************/
+
+{
+  "general.startup": "Starting up...",
+  "general.pfmWarning": "Producer Framework Mod detected! Disabling pfm bee houses.",
+  "general.automateWarning": "Automate detected! Patching automate now.",
+  "general.patchedModsWarning": "One or more other mods were patched by Better Beehouses. If you experience issues with them, try disabling this mod first!",
+  "general.removedPfmBeehouse": "PFM beehouses are disabled while Better Beehouses is installed.",
+  "config.title": "Better Beehouses",
+  "config.daysToProduce.name": "Days to produce",
+  "config.daysToProduce.desc": "How many days it takes to produce honey",
+  "config.flowerRange.name": "Flower Range",
+  "config.flowerRange.desc": "The range to search for flowers in",
+  "config.usableIn.name": "Usable in",
+  "config.usableIn.desc": "Places bee houses can produce honey",
+  "config.produceInWinter.name": "Produce in winter",
+  "config.produceInWinter.desc": "Places bee houses can produce in winter",
+  "config.usePottedFlowers.name": "Use potted flowers",
+  "config.usePottedFlowers.desc": "Places bee houses will use potted flowers",
+  "config.valueMultiplier.name": "Honey price multiplier",
+  "config.valueMultiplier.desc": "Honey produced by bee houses is multiplied by this",
+  "config.useForage.name": "Use Forage Flowers",
+  "config.useForage.desc": "If bee houses should detect forage flowers",
+  "config.particles.name": "Bee Particles",
+  "config.particles.desc": "Show cosmetic bee swarms around bee houses.",
+  "config.useQuality.name": "Honey quality",
+  "config.useQuality.desc": "Honey can have quality",
+  "config.usableOptions.Outdoors": "Outdoors",
+  "config.usableOptions.Greenhouse": "Outdoors & Greenhouse",
+  "config.usableOptions.Anywhere": "Anywhere",
+  "config.produceWhere.Never": "Nowhere",
+  "config.produceWhere.Indoors": "Indoors",
+  "config.produceWhere.Always": "Anywhere"
+}

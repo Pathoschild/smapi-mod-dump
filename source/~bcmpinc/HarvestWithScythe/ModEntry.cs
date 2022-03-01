@@ -200,8 +200,6 @@ namespace StardewHack.HarvestWithScythe
         /** Determine whether the given object can be harvested using the given method. 
          * Assumes that isForage() returned true. */
         public static bool CanHarvestObject(StardewValley.Object obj, GameLocation loc, int method) {
-            if (PlayerIsMounted) return true;
-
             // Get harvest settings from config
             ModConfig.HarvestModeClass config = getInstance().config.HarvestMode;
             HarvestModeEnum mode;

@@ -23,6 +23,6 @@ internal class DebugCursorMovedEvent : CursorMovedEvent
     /// <inheritdoc />
     protected override void OnCursorMovedImpl(object sender, CursorMovedEventArgs e)
     {
-        ModEntry.State.Value.CursorPosition = e.NewPosition;
+        ModEntry.DebugCursorPosition = e.NewPosition;
     }
 }

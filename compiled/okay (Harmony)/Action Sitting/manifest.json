@@ -1,0 +1,10 @@
+{
+  "Name": "Action Sitting",
+  "Author": "greentodd",
+  "Version": "1.0.0",
+  "Description": "Do things while sitting!",
+  "UniqueID": "greentodd.ActionSitting",
+  "EntryDll": "ActionSitting.dll",
+  "MinimumApiVersion": "3.13.2",
+  "UpdateKeys": [ "Nexus: 10943" ]
+}

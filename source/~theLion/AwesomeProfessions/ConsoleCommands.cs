@@ -125,6 +125,12 @@ internal static class ConsoleCommands
             return;
         }
 
+        if (!Game1.player.professions.Any())
+        {
+            Log.I($"Farmer {Game1.player.Name} doesn't have any professions.");
+            return;
+        }
+
         var message = $"Farmer {Game1.player.Name}'s professions:";
         foreach (var professionsIndex in Game1.player.professions)
             try
@@ -165,8 +171,8 @@ internal static class ConsoleCommands
         {
             if (arg == "all")
             {
-                var range = Enumerable.Range(0, 30).ToHashSet();
-                if (prestige) range = range.Concat(Enumerable.Range(100, 30)).ToHashSet();
+                var range = Enumerable.Range(0, 30).ToArray();
+                if (prestige) range = range.Concat(Enumerable.Range(100, 30)).ToArray();
 
                 professionsToAdd.AddRange(range);
                 Log.I($"Added all {(prestige ? "prestiged " : "")}professions to farmer {Game1.player.Name}.");
@@ -213,8 +219,8 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModEntry.State.Value.SuperMode = null;
-        ModData.Write(DataField.SuperModeIndex, null);
+        ModEntry.PlayerState.Value.SuperMode = null;
+        Game1.player.WriteData(DataField.SuperModeIndex, null);
         for (var i = Game1.player.professions.Count - 1; i >= 0; --i)
         {
             var professionIndex = Game1.player.professions[i];
@@ -225,7 +231,7 @@ internal static class ConsoleCommands
         LevelUpMenu.RevalidateHealth(Game1.player);
     }
 
-    /// <summary>Set <see cref="ModEntry.State.Value.SuperModeGaugeValue" /> to the desired value, or max it out if no value is specified.</summary>
+    /// <summary>Set <see cref="SuperModeGauge.Value" /> to the desired value, or max it out if no value is specified.</summary>
     internal static void SetSuperModeGaugeValue(string command, string[] args)
     {
         if (!Context.IsWorldReady)
@@ -234,7 +240,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        if (ModEntry.State.Value.SuperMode is null)
+        if (ModEntry.PlayerState.Value.SuperMode is null)
         {
             Log.W("Not registered to any Super Mode.");
             return;
@@ -242,7 +248,7 @@ internal static class ConsoleCommands
 
         if (!args.Any())
         {
-            ModEntry.State.Value.SuperMode.Gauge.CurrentValue = SuperModeGauge.MaxValue;
+            ModEntry.PlayerState.Value.SuperMode.ChargeValue = SuperMode.MaxValue;
             return;
         }
 
@@ -258,7 +264,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModEntry.State.Value.SuperMode.Gauge.CurrentValue = SuperModeGauge.MaxValue * (double)value / 100;
+        ModEntry.PlayerState.Value.SuperMode.ChargeValue = SuperMode.MaxValue * (double)value / 100;
     }
 
     /// <summary>
@@ -298,20 +304,28 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModEntry.State.Value.SuperMode = new(index);
-        ModData.Write(DataField.SuperModeIndex, index.ToString());
+#pragma warning disable CS8509
+        ModEntry.PlayerState.Value.SuperMode = index switch
+#pragma warning restore CS8509
+        {
+            SuperModeIndex.Brute => new BruteFury(),
+            SuperModeIndex.Poacher => new PoacherColdBlood(),
+            SuperModeIndex.Piper => new PiperEubstance(),
+            SuperModeIndex.Desperado => new DesperadoTemerity()
+        };
+        Game1.player.WriteData(DataField.SuperModeIndex, index.ToString());
     }
 
     /// <summary>Print the currently registered Super Mode profession.</summary>
     internal static void PrintSuperModeIndex(string command, string[] args)
     {
-        if (ModEntry.State.Value.SuperMode is null)
+        if (ModEntry.PlayerState.Value.SuperMode is null)
         {
             Log.I("Not registered to any Super Mode.");
             return;
         }
 
-        var key = ModEntry.State.Value.SuperMode.Index;
+        var key = ModEntry.PlayerState.Value.SuperMode.Index;
         var professionDisplayName = ModEntry.ModHelper.Translation.Get(key + ".name.male");
         var buffName = ModEntry.ModHelper.Translation.Get(key + ".buff");
         Log.I($"Registered to {professionDisplayName}'s {buffName}.");
@@ -436,37 +450,37 @@ internal static class ConsoleCommands
         }
 
         var message = $"Farmer {Game1.player.Name}'s mod data:";
-        var value = ModData.Read(DataField.EcologistItemsForaged);
+        var value = Game1.player.ReadData(DataField.EcologistItemsForaged);
         message += "\n\t- " +
             (!string.IsNullOrEmpty(value)
                 ? $"{DataField.EcologistItemsForaged}: {value} ({ModEntry.Config.ForagesNeededForBestQuality - int.Parse(value)} needed for best quality)"
                 : $"Mod data does not contain an entry for {DataField.EcologistItemsForaged}.");
 
-        value = ModData.Read(DataField.GemologistMineralsCollected);
+        value = Game1.player.ReadData(DataField.GemologistMineralsCollected);
         message += "\n\t- " +
             (!string.IsNullOrEmpty(value)
                 ? $"{DataField.GemologistMineralsCollected}: {value} ({ModEntry.Config.MineralsNeededForBestQuality - int.Parse(value)} needed for best quality)"
                 : $"Mod data does not contain an entry for {DataField.GemologistMineralsCollected}.");
 
-        value = ModData.Read(DataField.ProspectorHuntStreak);
+        value = Game1.player.ReadData(DataField.ProspectorHuntStreak);
         message += "\n\t- " +
             (!string.IsNullOrEmpty(value)
                 ? $"{DataField.ProspectorHuntStreak}: {value} (affects treasure quality)"
                 : $"Mod data does not contain an entry for {DataField.ProspectorHuntStreak}.");
 
-        value = ModData.Read(DataField.ScavengerHuntStreak);
+        value = Game1.player.ReadData(DataField.ScavengerHuntStreak);
         message += "\n\t- " +
             (!string.IsNullOrEmpty(value)
                 ? $"{DataField.ScavengerHuntStreak}: {value} (affects treasure quality)"
                 : $"Mod data does not contain an entry for {DataField.ScavengerHuntStreak}.");
 
-        value = ModData.Read(DataField.ConservationistTrashCollectedThisSeason);
+        value = Game1.player.ReadData(DataField.ConservationistTrashCollectedThisSeason);
         message += "\n\t- " +
             (!string.IsNullOrEmpty(value)
                 ? $"{DataField.ConservationistTrashCollectedThisSeason}: {value} (expect a {Math.Min(int.Parse(value) / ModEntry.Config.TrashNeededPerTaxLevel, (int) (ModEntry.Config.TaxDeductionCeiling * 100))}% tax deduction next season)"
                 : $"Mod data does not contain an entry for {DataField.ConservationistTrashCollectedThisSeason}.");
 
-        value = ModData.Read(DataField.ConservationistActiveTaxBonusPct);
+        value = Game1.player.ReadData(DataField.ConservationistActiveTaxBonusPct);
         message += "\n\t- " + 
             (!string.IsNullOrEmpty(value)
                 ? $"{DataField.ConservationistActiveTaxBonusPct}: {float.Parse(value) * 100}%"
@@ -548,15 +562,15 @@ internal static class ConsoleCommands
             return;
         }
 
-        if (!ModEntry.State.Value.ScavengerHunt.IsActive && !ModEntry.State.Value.ProspectorHunt.IsActive)
+        if (!ModEntry.PlayerState.Value.ScavengerHunt.IsActive && !ModEntry.PlayerState.Value.ProspectorHunt.IsActive)
         {
             Log.W("There is no Treasure Hunt currently active.");
             return;
         }
 
-        if (ModEntry.State.Value.ScavengerHunt.IsActive)
+        if (ModEntry.PlayerState.Value.ScavengerHunt.IsActive)
         {
-            var v = ModEntry.State.Value.ScavengerHunt.ChooseTreasureTile(Game1.currentLocation);
+            var v = ModEntry.ModHelper.Reflection.GetMethod(ModEntry.PlayerState.Value.ScavengerHunt, "ChooseTreasureTile").Invoke<Vector2?>(Game1.currentLocation);
             if (v is null)
             {
                 Log.W("Couldn't find a valid treasure tile after 10 tries.");
@@ -564,24 +578,24 @@ internal static class ConsoleCommands
             }
 
             Game1.currentLocation.MakeTileDiggable(v.Value);
-            ModEntry.ModHelper.Reflection.GetProperty<Vector2?>(ModEntry.State.Value.ScavengerHunt, "TreasureTile")
+            ModEntry.ModHelper.Reflection.GetProperty<Vector2?>(ModEntry.PlayerState.Value.ScavengerHunt, "TreasureTile")
                 .SetValue(v);
-            ModEntry.ModHelper.Reflection.GetField<uint>(ModEntry.State.Value.ScavengerHunt, "elapsed").SetValue(0);
+            ModEntry.ModHelper.Reflection.GetField<uint>(ModEntry.PlayerState.Value.ScavengerHunt, "elapsed").SetValue(0);
 
             Log.I("The Scavenger Hunt was reset.");
         }
-        else if (ModEntry.State.Value.ProspectorHunt.IsActive)
+        else if (ModEntry.PlayerState.Value.ProspectorHunt.IsActive)
         {
-            var v = ModEntry.State.Value.ProspectorHunt.ChooseTreasureTile(Game1.currentLocation);
+            var v = ModEntry.ModHelper.Reflection.GetMethod(ModEntry.PlayerState.Value.ProspectorHunt, "ChooseTreasureTile").Invoke<Vector2?>(Game1.currentLocation);
             if (v is null)
             {
                 Log.W("Couldn't find a valid treasure tile after 10 tries.");
                 return;
             }
 
-            ModEntry.ModHelper.Reflection.GetProperty<Vector2?>(ModEntry.State.Value.ProspectorHunt, "TreasureTile")
+            ModEntry.ModHelper.Reflection.GetProperty<Vector2?>(ModEntry.PlayerState.Value.ProspectorHunt, "TreasureTile")
                 .SetValue(v);
-            ModEntry.ModHelper.Reflection.GetField<int>(ModEntry.State.Value.ProspectorHunt, "Elapsed").SetValue(0);
+            ModEntry.ModHelper.Reflection.GetField<int>(ModEntry.PlayerState.Value.ProspectorHunt, "Elapsed").SetValue(0);
 
             Log.I("The Prospector Hunt was reset.");
         }
@@ -641,7 +655,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModData.Write(DataField.EcologistItemsForaged, value.ToString());
+        Game1.player.WriteData(DataField.EcologistItemsForaged, value.ToString());
         Log.I($"Items foraged as Ecologist was set to {value}.");
     }
 
@@ -654,7 +668,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModData.Write(DataField.GemologistMineralsCollected, value.ToString());
+        Game1.player.WriteData(DataField.GemologistMineralsCollected, value.ToString());
         Log.I($"Minerals collected as Gemologist was set to {value}.");
     }
 
@@ -667,7 +681,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModData.Write(DataField.ProspectorHuntStreak, value.ToString());
+        Game1.player.WriteData(DataField.ProspectorHuntStreak, value.ToString());
         Log.I($"Prospector Hunt was streak set to {value}.");
     }
 
@@ -680,7 +694,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModData.Write(DataField.ScavengerHuntStreak, value.ToString());
+        Game1.player.WriteData(DataField.ScavengerHuntStreak, value.ToString());
         Log.I($"Scavenger Hunt streak was set to {value}.");
     }
 
@@ -693,7 +707,7 @@ internal static class ConsoleCommands
             return;
         }
 
-        ModData.Write(DataField.ConservationistTrashCollectedThisSeason, value.ToString());
+        Game1.player.WriteData(DataField.ConservationistTrashCollectedThisSeason, value.ToString());
         Log.I($"Conservationist trash collected in the current season was set to {value}.");
     }
 

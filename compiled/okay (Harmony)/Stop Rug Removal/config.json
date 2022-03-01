@@ -1,3 +1,5 @@
 {
-  "Enabled": true
+  "Enabled": true,
+  "PreventRemovalFromTable": true,
+  "FurniturePlacementKey": "LeftShift + Z"
 }

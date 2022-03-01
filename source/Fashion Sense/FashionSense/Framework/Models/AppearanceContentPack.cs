@@ -27,7 +27,8 @@ namespace FashionSense.Framework.Models
             Hat,
             Shirt,
             Pants,
-            Sleeves
+            Sleeves,
+            Shoes
         }
 
         internal Type PackType { get; set; }
@@ -37,5 +38,7 @@ namespace FashionSense.Framework.Models
         internal string Id { get; set; }
         internal string PackName { get; set; }
         internal Texture2D Texture { get; set; }
+        internal Texture2D ColorMaskTexture { get; set; }
+        internal Texture2D SkinMaskTexture { get; set; }
     }
 }

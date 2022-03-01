@@ -11,10 +11,8 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CustomNPCExclusions
 {
@@ -52,7 +50,8 @@ namespace CustomNPCExclusions
                      || entry.StartsWith("Greet", StringComparison.OrdinalIgnoreCase) //OR if the greeter is excluded from greeting others
                     ))
                     {
-                        ModEntry.Instance.Monitor.Log($"Excluded NPC from greeting someone: {greeterName}", LogLevel.Trace);
+                        if (ModEntry.Instance.Monitor.IsVerbose)
+                            ModEntry.Instance.Monitor.Log($"Excluded NPC from greeting someone: {greeterName}", LogLevel.Trace);
                         return false; //skip the original method
                     }
                     else if (greeterExclusions.Exists(entry => entry.StartsWith("BeGreeted", StringComparison.OrdinalIgnoreCase))) //if the greeter CAN greet others, but is excluded from being greeted
@@ -69,7 +68,8 @@ namespace CustomNPCExclusions
                      || entry.StartsWith("BeGreeted", StringComparison.OrdinalIgnoreCase) //OR if the recipient is excluded from being greeted
                     ))
                     {
-                        ModEntry.Instance.Monitor.Log($"Excluded NPC from being greeted: {recipientName}", LogLevel.Trace);
+                        if (ModEntry.Instance.Monitor.IsVerbose)
+                            ModEntry.Instance.Monitor.Log($"Excluded NPC from being greeted: {recipientName}", LogLevel.Trace);
                         return false; //skip the original method
                     }
                     else if (recipientExclusions.Exists(entry => entry.StartsWith("Greet", StringComparison.OrdinalIgnoreCase))) //if the recipient CAN be greeted, but is excluded from greeting others
@@ -83,7 +83,8 @@ namespace CustomNPCExclusions
                     if (__instance.getHi(recipientName) is string greetingText) //if possible,
                         __instance.showTextAboveHead(greetingText); //display the greeting (imitating the original code in "NPC.sayHiTo", as of SDV 1.5.4)
 
-                    ModEntry.Instance.Monitor.Log($"Excluded NPC from replying to greeting: {recipientName} replying to {greeterName}", LogLevel.Trace);
+                    if (ModEntry.Instance.Monitor.IsVerbose)
+                        ModEntry.Instance.Monitor.Log($"Excluded NPC from replying to greeting: {recipientName} replying to {greeterName}", LogLevel.Trace);
                     return false; //skip the original method
                 }
 

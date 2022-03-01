@@ -19,9 +19,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
-using Netcode;
 using StardewValley;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using Extensions;
 
@@ -44,7 +44,7 @@ internal class CropHarvestPatch : BasePatch
     /// </summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> CropHarvestTranspiler(IEnumerable<CodeInstruction> instructions,
-        ILGenerator iLGenerator, MethodBase original)
+        ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -73,6 +73,7 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Ecologist spring onion quality.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -80,15 +81,15 @@ internal class CropHarvestPatch : BasePatch
         ///		Data.IncrementField("EcologistItemsForaged", amount: @object.Stack)
         ///	After: Game1.stats.ItemsForaged += @object.Stack;
 
-        // this particular method is too edgy for Harmony Access Tool, so we use some old-fashioned reflection trickery to find this particular overload of ModData.Increment<T>
-        var mi = typeof(ModData)
-                     .GetMember("Increment*", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static)
+        // this particular method is too edgy for Harmony Access Tool, so we use some old-fashioned reflection trickery to find this particular overload of FarmerExtensions.IncrementData<T>
+        var mi = typeof(FarmerExtensions)
+                     .GetMember("IncrementData*", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static)
                      .Cast<MethodInfo>()
                      .FirstOrDefault(mi => mi.GetParameters().Length == 3) ??
                  throw new MissingMethodException("Increment method not found.");
         mi = mi.MakeGenericMethod(typeof(uint));
 
-        var dontIncreaseEcologistCounter = iLGenerator.DefineLabel();
+        var dontIncreaseEcologistCounter = generator.DefineLabel();
         try
         {
             helper
@@ -112,6 +113,7 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Ecologist counter increment.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -120,7 +122,7 @@ internal class CropHarvestPatch : BasePatch
 
         var fertilizerQualityLevel = mb.LocalVariables[8];
         var random2 = mb.LocalVariables[9];
-        var isAgriculturist = iLGenerator.DefineLabel();
+        var isAgriculturist = generator.DefineLabel();
         try
         {
             helper.AdvanceUntil( // find index of Crop.fertilizerQualityLevel >= 3
@@ -138,6 +140,7 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Agriculturist crop harvest quality.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -146,8 +149,8 @@ internal class CropHarvestPatch : BasePatch
         ///		numToHarvest++
 
         var numToHarvest = mb.LocalVariables[6];
-        var dontIncreaseNumToHarvest = iLGenerator.DefineLabel();
-        var dontDuplicateChance = iLGenerator.DefineLabel();
+        var dontIncreaseNumToHarvest = generator.DefineLabel();
+        var dontDuplicateChance = generator.DefineLabel();
         try
         {
             helper
@@ -200,6 +203,7 @@ internal class CropHarvestPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Harvester extra crop yield.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

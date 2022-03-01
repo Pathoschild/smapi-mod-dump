@@ -10,6 +10,13 @@
 
 namespace FarmCaveSpawn;
 
+public enum SeasonalBehavior
+{
+    AllSeasons,
+    SeasonalOnly,
+    SeasonalExceptWinter,
+}
+
 #pragma warning disable SA1623 // Property summary documentation should match accessors
 #pragma warning disable SA1201 // Elements should appear in the correct order - fields are kept next to their accessors for this class.
 /// <summary>
@@ -80,7 +87,7 @@ public class ModConfig
     /// <summary>
     /// Should I limit myself to just fruits in season?.
     /// </summary>
-    public bool SeasonalOnly { get; set; } = false;
+    public SeasonalBehavior SeasonalOnly { get; set; } = SeasonalBehavior.AllSeasons;
 
     /// <summary>
     /// Should I allow any fruit tree product, even if it's not categorized as fruit.

@@ -15,11 +15,11 @@
 	// HUD messages
 	"message.furnace-running": "A kemence jelenleg működik!",
 	"message.more-coal": "Az olvasztás megkezdéséhez {{coalAmount}} szénre van szükség.",
-	"message.place-something-first": "Az olvasztáshoz helyezzen valamit a kemencébe.",
+	"message.place-something-first": "Az olvasztáshoz helyezz valamit a kemencébe.",
 	"message.cant-smelt-this": "Ezt nem lehet megolvasztani!",
-	"message.need-more-ore": "Ezek megolvasztásához legalább {{oreAmount}} érc szükséges.",
+	"message.need-more-ore": "A megolvasztásához legalább {{oreAmount}} érc szükséges.",
 	// GenericModConfigMenu
-	"gmcm.main-label": "Beállítási lehetőségek az ipari kemencéhez.",
+	"gmcm.main-label": "Beállítási lehetőségek az ipari kemencéhez",
 	"gmcm.coal-amount-label": "Szén mennyiség",
 	"gmcm.coal-amount-description": "A kemence beindításához szükséges szénmennyiség.",
 	"gmcm.instant-smelting-label": "Azonnali olvasztás",

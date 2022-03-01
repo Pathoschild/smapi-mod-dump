@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -50,7 +50,7 @@ namespace Portraiture
         }
           private void harmonyFix()
         {
-            HarmonyInstance instance = HarmonyInstance.Create("Platonymous.Portraiture");
+            Harmony instance = new Harmony("Platonymous.Portraiture");
             instance.PatchAll(Assembly.GetExecutingAssembly());
         }
 

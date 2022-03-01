@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Screenshot Everywhere",
   "Author": "Gaiadin",
-  "Version": "1.4.0",
+  "Version": "1.4.1",
   "Description": "Take a screenshot the first time you visit any map each day",
   "UniqueID": "Gaiadin.Stardew-Screenshot-Everywhere",
   "EntryDll": "Stardew-Screenshot-Everywhere.dll",

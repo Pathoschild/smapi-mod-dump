@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/YTSC/StardewValleyMods
+**
+*************************************************/
+
+{
+  "InfinitySlingshotName": "Infinity Slingshot",
+  "InfinitySlingshotDescription": "The true form of the Galaxy Slingshot.",
+  "AutomatedEnchantment": "Automated",
+  "ExpertEnchantment": "Expert",
+  "HunterEnchantment": "Hunter",
+  "PreservingEnchantment": "Preserving",
+  "MinerEnchantment": "Miner",
+  "BugKillerEnchantment": "Bug Killer",
+  "PreciseEnchantment": "Precise",
+  "SwiftEnchantment": "Swift",
+  "VampiricEnchantment": "Vampiric"
+}

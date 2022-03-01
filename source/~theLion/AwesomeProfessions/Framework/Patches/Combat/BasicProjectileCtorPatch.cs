@@ -39,14 +39,14 @@ internal class BasicProjectileCtorPatch : BasePatch
 
     /// <summary>Patch for all classes to eliminate travel grace period + add Rascal trick shot.</summary>
     [HarmonyPostfix]
-    private static void BasicProjectileCtorPostfix(BasicProjectile __instance, ref NetInt ___bouncesLeft,
+    private static void BasicProjectileCtorPostfix(BasicProjectile __instance, NetInt ___bouncesLeft,
         bool damagesMonsters, Character firer)
     {
         if (!damagesMonsters || firer is not Farmer farmer) return;
 
         __instance.ignoreTravelGracePeriod.Value = true;
 
-        if (!farmer.HasProfession(Profession.Rascal) || !ModEntry.Config.Modkey.IsDown()) return;
+        if (!farmer.HasProfession(Profession.Rascal) || !ModEntry.Config.ModKey.IsDown()) return;
         ++___bouncesLeft.Value;
         __instance.damageToFarmer.Value = (int) (__instance.damageToFarmer.Value * 0.6);
     }

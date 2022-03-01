@@ -22,6 +22,12 @@ using Integrations;
 [UsedImplicitly]
 internal class StaticGameLaunchedEvent : GameLaunchedEvent
 {
+    /// <summary>Construct an instance.</summary>
+    internal StaticGameLaunchedEvent()
+    {
+        Enable();
+    }
+
     /// <inheritdoc />
     protected override void OnGameLaunchedImpl(object sender, GameLaunchedEventArgs e)
     {

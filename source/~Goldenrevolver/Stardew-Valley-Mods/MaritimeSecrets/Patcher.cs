@@ -212,7 +212,8 @@ namespace MaritimeSecrets
                     {
                         if (dropInItem is StardewObject o && o.ParentSheetIndex == driftWoodId && who.IsLocalPlayer)
                         {
-                            __instance.ConsumeInventoryItem(who, driftWoodId, 1);
+                            who.consumeObject(driftWoodId, 1);
+                            // __instance.ConsumeInventoryItem(who, driftWoodId, 1);
 
                             who.currentLocation.playSound("slimeHit", NetAudio.SoundContext.Default);
 
@@ -448,7 +449,7 @@ namespace MaritimeSecrets
                     bool selectedMinorSecret = false;
                     while (!selectedMinorSecret)
                     {
-                        if (Game1.whichFarm == 6 && !who.mailReceived.Contains("gotBoatPainting"))
+                        if (Game1.whichFarm == Farm.beach_layout && !who.mailReceived.Contains("gotBoatPainting"))
                         {
                             translation = "BeachFarmBoatPainting";
                             selectedMinorSecret = true;

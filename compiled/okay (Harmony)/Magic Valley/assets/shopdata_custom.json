@@ -47,16 +47,19 @@
     },
     {
       "itemId": 848,
+      "itemName": "Cinder Shard",
       "price": 100
     },
     {
       "itemId": 165,
+      "itemName": "Auto-Grabber",
       "price": 500,
       "stock": 2,
       "itemType": "BigCraftable"
     },
     {
       "itemId": 272,
+      "itemName": "Auto-Petter",
       "price": 1000,
       "stock": 2,
       "itemType": "BigCraftable"

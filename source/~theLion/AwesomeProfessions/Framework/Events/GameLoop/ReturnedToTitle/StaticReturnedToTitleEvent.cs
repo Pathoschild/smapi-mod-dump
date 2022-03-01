@@ -20,6 +20,12 @@ using StardewModdingAPI.Events;
 [UsedImplicitly]
 internal class StaticReturnedToTitleEvent : ReturnedToTitleEvent
 {
+    /// <summary>Construct an instance.</summary>
+    internal StaticReturnedToTitleEvent()
+    {
+        Enable();
+    }
+
     /// <inheritdoc />
     protected override void OnReturnedToTitleImpl(object sender, ReturnedToTitleEventArgs e)
     {
@@ -27,6 +33,6 @@ internal class StaticReturnedToTitleEvent : ReturnedToTitleEvent
         EventManager.DisableAllForLocalPlayer();
 
         // reset mod state
-        ModEntry.State.Value = new();
+        ModEntry.PlayerState.Value = new();
     }
 }

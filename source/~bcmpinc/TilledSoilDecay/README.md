@@ -54,7 +54,7 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * Removed changing soil decay at the start of a new season, as it seems to have been removed from the game.
 
 #### 5.6:
-* Added back changing soil decay at the start of a new season, due to populair request.
+* Added back changing soil decay at the start of a new season, due to popular request.
 * Updated for Stardew Valley 1.5.6
 
 #### 5.7:

@@ -63,6 +63,7 @@ and not yet exploded shows its ranges (unless disabled in configuration).
 * If Simple Sprinklers is installed then the range of Sprinklers will use its configured ranges.  (Range shown may be incorrect if the Simple Sprinkler configuration is /smaller/ than the base sprinkler range.)
 * If Line Sprinklers is installed then the ranges of the line sprinklers will be shown.  (Correctly, as of 2.4.0, rather than as if they were the non-line versions.)
 * If Radioactive Tools is installed then the range of the radioactive sprinkler will be highlighted.
+* If Better Beehouses is installed then the range of beehouses will use the value it has configured for Flower Search radius.
 * May have issues in split-screen.  (I think it's working as of v2.2.1, but this is not regularly tested, so problems may creep back into later versions even if everything is working in v2.2.1.)
 
 ### Installation

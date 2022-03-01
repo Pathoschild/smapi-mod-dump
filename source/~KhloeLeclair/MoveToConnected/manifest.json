@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"Name": "Move To Connected",
+	"Author": "Khloe Leclair",
+	"Version": "1.0.0",
+	"Description": "Adds buttons to inventory menus allowing you to move your items to not just the chest you're using, but also connected chests. It also works for a workbench's connected chests.",
+	"UniqueID": "leclair.movetoconnected",
+	"EntryDll": "MoveToConnected.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": []
+}

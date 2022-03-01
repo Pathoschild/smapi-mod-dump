@@ -125,11 +125,11 @@ static class CgMath {
 		color.A
 	);
 
-	internal static float Difference(float a, float b) => Math.Abs(a - b);
+	internal static float Difference(float a, float b) => MathF.Abs(a - b);
 
 	internal static float Difference(in DiffTexel a, in DiffTexel b) {
 		float yufDiff = Difference(a.YUV, b.YUV);
-		float alphaScalar = Math.Min(a.Alpha, b.Alpha);
+		float alphaScalar = MathF.Min(a.Alpha, b.Alpha);
 		float alphaDiff = Difference(a.Alpha, b.Alpha);
 		return alphaScalar * yufDiff + alphaDiff;
 	}

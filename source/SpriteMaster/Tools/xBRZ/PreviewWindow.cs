@@ -28,45 +28,29 @@ public partial class PreviewWindow : Form {
 		PreviewProgram.OnLoad(this);
 	}
 
-	private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e) {
+	private void MainRightPanel_Paint(object sender, PaintEventArgs e) {
 
 	}
 
-	private void pictureBox1_Click(object sender, EventArgs e) {
-
-	}
-
-	private void label1_Click(object sender, EventArgs e) {
-
-	}
-
-	private void scale_ValueChanged(object sender, EventArgs e) {
+	private void Scale_ValueChanged(object sender, EventArgs e) {
 		if (sender is NumericUpDown nud) {
 			PreviewProgram.Scale = (uint)nud.Value;
 			PreviewProgram.OnConfigChanged();
 		}
 	}
 
-	private void luminanceWeight_Scroll(object sender, ScrollEventArgs e) {
+	private void EqualColorTolerance_Scroll(object sender, ScrollEventArgs e) {
 		if (sender is HScrollBar bar) {
-			PreviewProgram.LuminanceWeight = (double)bar.Value / 100.0;
-			currentLuminanceWeight.Text = PreviewProgram.LuminanceWeight.ToString();
+			PreviewProgram.EqualColorTolerance = (uint)bar.Value;
+			EqualColorToleranceCurrent.Text = PreviewProgram.EqualColorTolerance.ToString();
 			PreviewProgram.OnConfigChanged();
 		}
 	}
 
-	private void equalColorTolerance_Scroll(object sender, ScrollEventArgs e) {
-		if (sender is HScrollBar bar) {
-			PreviewProgram.EqualColorTolerance = (double)bar.Value;
-			currentEqualColorTolerance.Text = ((int)PreviewProgram.EqualColorTolerance).ToString();
-			PreviewProgram.OnConfigChanged();
-		}
-	}
-
-	private void dominantDirectionThreshold_Scroll(object sender, ScrollEventArgs e) {
+	private void DominantDirectionThreshold_Scroll(object sender, ScrollEventArgs e) {
 		if (sender is HScrollBar bar) {
 			PreviewProgram.DominantDirectionThreshold = (double)bar.Value / 100.0;
-			currentDominantDirectionThreshold.Text = PreviewProgram.DominantDirectionThreshold.ToString();
+			DominantDirectionThresholdCurrent.Text = PreviewProgram.DominantDirectionThreshold.ToString();
 			PreviewProgram.OnConfigChanged();
 		}
 	}
@@ -74,7 +58,7 @@ public partial class PreviewWindow : Form {
 	private void SteepDirectionThreshold_Scroll(object sender, ScrollEventArgs e) {
 		if (sender is HScrollBar bar) {
 			PreviewProgram.SteepDirectionThreshold = (double)bar.Value / 100.0;
-			currentSteepDirectionThreshold.Text = PreviewProgram.SteepDirectionThreshold.ToString();
+			SteepDirectionThresholdCurrent.Text = PreviewProgram.SteepDirectionThreshold.ToString();
 			PreviewProgram.OnConfigChanged();
 		}
 	}
@@ -82,50 +66,43 @@ public partial class PreviewWindow : Form {
 	private void CenterDirectionBias_Scroll(object sender, ScrollEventArgs e) {
 		if (sender is HScrollBar bar) {
 			PreviewProgram.CenterDirectionBias = (double)bar.Value / 100.0;
-			currentCenterDirectionBias.Text = PreviewProgram.CenterDirectionBias.ToString();
+			CenterDirectionBiasCurrent.Text = PreviewProgram.CenterDirectionBias.ToString();
 			PreviewProgram.OnConfigChanged();
 		}
 	}
 
-	private void gammaCorrection_CheckedChanged(object sender, EventArgs e) {
+	private void GammaCorrection_CheckedChanged(object sender, EventArgs e) {
 		if (sender is CheckBox cbox) {
 			PreviewProgram.GammaCorrection = cbox.Checked;
 			PreviewProgram.OnConfigChanged();
 		}
 	}
 
-	private void alphaPremultiplication_CheckedChanged(object sender, EventArgs e) {
+	private void AlphaPremultiplication_CheckedChanged(object sender, EventArgs e) {
 		if (sender is CheckBox cbox) {
 			PreviewProgram.AlphaPremultiplication = cbox.Checked;
 			PreviewProgram.OnConfigChanged();
 		}
 	}
 
-	private void label2_Click(object sender, EventArgs e) {
+	private int[]? CustomColors = null;
 
-	}
+	private void BackgroundColorButton_Click(object sender, EventArgs e) {
+		if (CustomColors is null) {
+			CustomColors = new int[] { MainLeftPanel.BackColor.ToArgb() };
+		}
 
-	private void currentLuminanceWeight_Click(object sender, EventArgs e) {
+		using var colorDialog = new ColorDialog {
+			AllowFullOpen = true,
+			ShowHelp = false,
+			Color = MainLeftPanel.BackColor,
+			CustomColors = CustomColors
+		};
 
-	}
+		if (colorDialog.ShowDialog() == DialogResult.OK) {
+			MainLeftPanel.BackColor = colorDialog.Color;
+		}
 
-	private void label4_Click(object sender, EventArgs e) {
-
-	}
-
-	private void label3_Click(object sender, EventArgs e) {
-
-	}
-
-	private void label5_Click(object sender, EventArgs e) {
-
-	}
-
-	private void label6_Click(object sender, EventArgs e) {
-
-	}
-
-	private void currentCenterDirectionBias_Click(object sender, EventArgs e) {
-
+		CustomColors = colorDialog.CustomColors;
 	}
 }

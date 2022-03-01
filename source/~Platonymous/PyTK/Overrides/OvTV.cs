@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewValley.Objects;
 using System.Reflection;
 using SFarmer = StardewValley.Farmer;

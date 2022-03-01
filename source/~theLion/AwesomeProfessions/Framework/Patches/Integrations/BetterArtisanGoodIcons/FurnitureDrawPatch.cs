@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.BetterArtisanGoodIcons;
 
 #region using directives
 
@@ -20,7 +20,7 @@ using Netcode;
 using StardewValley;
 using StardewValley.Objects;
 
-using AssetLoaders;
+using Utility;
 
 #endregion using directives
 

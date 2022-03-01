@@ -6,9 +6,9 @@ mods:
    Special Orders Tags Extended
 
 latest commit:
-   commit 63f3d00514d7ca82c32571ff03fa461c572ac266
+   commit d3a4ce203260ad4a9c9c1845e201f9ea9feb8bdb
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Fri Jan 21 19:15:21 2022 -0500
+   Date:   Wed Feb 23 16:07:17 2022 -0500
    
-       Reorganization.
+       Reorganization and cleanup. Use AtraShared/AtraBase to reduce code duplication.
    

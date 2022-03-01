@@ -116,28 +116,5 @@
     "MinimalNumberOfMeat": 1,
     "MaximumNumberOfMeat": 1
   },
-  "CustomAnimals": [
-    {
-      "Name": "Golden Chicken",
-      "MinimalNumberOfMeat": 1,
-      "MaximumNumberOfMeat": 4,
-      "MinimumDaysBetweenTreats": 4,
-      "LikedTreats": [
-        78
-      ],
-      "MinimumDaysUtillBirth": null,
-      "CanUseDeluxeItemForPregnancy": false
-    },
-    {
-      "Name": "Ostrich",
-      "MinimalNumberOfMeat": 7,
-      "MaximumNumberOfMeat": 32,
-      "MinimumDaysBetweenTreats": 4,
-      "LikedTreats": [
-        78
-      ],
-      "MinimumDaysUtillBirth": null,
-      "CanUseDeluxeItemForPregnancy": false
-    }
-  ]
+  "CustomAnimals": []
 }

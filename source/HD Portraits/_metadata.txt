@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tlitookilakin/HDPortraits
+   Git: https://github.com/tlitookilakin/HDPortraits.git
+
+mods:
+   HD Portraits
+
+latest commit:
+   commit 4d65223d1e7315f7365a9513f894b4c125d81094
+   Author: tlitookilakin <swyrlyy@gmail.com>
+   Date:   Mon Feb 14 22:48:32 2022 -0500
+   
+       refactor
+   

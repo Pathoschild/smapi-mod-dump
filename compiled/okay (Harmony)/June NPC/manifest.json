@@ -1,7 +1,7 @@
 {
   "Name": "June NPC - SMAPI mod",
   "Author": "ch20youk",
-  "Version": "1.1.1",
+  "Version": "1.2.0",
   "Description": "Implements animation patch through SMAPI for NPC June",
   "UniqueID": "ch20youk.JuneNPCSMAPI",
   "EntryDll": "JuneNPC.dll",

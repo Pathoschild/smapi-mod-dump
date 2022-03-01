@@ -133,7 +133,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
     /// </summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> ObjectPerformObjectDropInActionTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -141,7 +141,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
         ///		Data.IncrementField<uint>("GemologistMineralsCollected")
         ///	After: Game1.stats.GeodesCracked++;
 
-        var dontIncreaseGemologistCounter = iLGenerator.DefineLabel();
+        var dontIncreaseGemologistCounter = generator.DefineLabel();
         try
         {
             helper
@@ -153,11 +153,11 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
                 .InsertProfessionCheckForLocalPlayer((int) Profession.Gemologist,
                     dontIncreaseGemologistCounter)
                 .Insert(
+                    new CodeInstruction(OpCodes.Call, typeof(Game1).PropertyGetter(nameof(Game1.player))),
                     new CodeInstruction(OpCodes.Ldstr, DataField.GemologistMineralsCollected.ToString()),
-                    new CodeInstruction(OpCodes.Ldnull),
                     new CodeInstruction(OpCodes.Call,
-                        typeof(ModData)
-                            .MethodNamed(nameof(ModData.Increment), new[] {typeof(DataField), typeof(Farmer)})
+                        typeof(FarmerExtensions)
+                            .MethodNamed(nameof(FarmerExtensions.IncrementData), new[] {typeof(Farmer), typeof(DataField)})
                             .MakeGenericMethod(typeof(uint)))
                 )
                 .AddLabels(dontIncreaseGemologistCounter);
@@ -165,6 +165,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Gemologist counter increment.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -176,8 +177,8 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
         repeat:
         try
         {
-            var notPrestigedBreeder = iLGenerator.DefineLabel();
-            var resumeExecution = iLGenerator.DefineLabel();
+            var notPrestigedBreeder = generator.DefineLabel();
+            var resumeExecution = generator.DefineLabel();
             helper
                 .FindProfessionCheck((int) Profession.Breeder, true)
                 .RetreatUntil(
@@ -215,6 +216,7 @@ internal class ObjectPerformObjectDropInActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Breeder incubation bonus.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

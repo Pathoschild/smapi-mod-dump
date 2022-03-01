@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/JudeRV/Stardew-ReportMobCounts
+   Git: https://github.com/JudeRV/Stardew-ReportMobCounts.git
+
+mods:
+   Mob Count Reports
+
+latest commit:
+   commit e5ae897f39427329f2116f7e67d84114bc460757
+   Author: Jude Vargas <judevargas22@gmail.com>
+   Date:   Mon Jan 31 18:57:58 2022 -0500
+   
+       Initial commit
+   

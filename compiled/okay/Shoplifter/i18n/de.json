@@ -1,0 +1,33 @@
+{
+    "TheMightyAmondee.Shoplifter/Shoplift": "Diebstahl?",
+    "TheMightyAmondee.Shoplifter/Banned": "Du hast wegen Diebstahl Hausverbot bekommen. Treibe es nicht zu weit...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Du hast heute schon gestohlen. Das reicht...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "Du hast heute schon {{shopliftingamount}} Mal gestohlen. Das reicht...",
+    "TheMightyAmondee.Shoplifter/AlreadyShopliftedSameShop": "Es gibt hier nichts zu stehlen...",
+    "TheMightyAmondee.Shoplifter/BanFromShop_Single": "#$b#Du hast diesen Monat genug geklaut @, ich werde dir für einen Tag Hausverbot geben.$2",
+    "TheMightyAmondee.Shoplifter/BanFromShop": "#$b#@, Du hast diesen Monat genug geklaut, ich werde dir für {{daysbanned}} Tage Hausverbot geben.$2",
+
+    "TheMightyAmondee.Shoplifter/CaughtGeneric": "Du stiehlst von mir, @?$2#$b#*stöhn* Du musst mir dafür {{fineamount}} G Strafe zahlen.$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre": "Du klaust bei mir??!! Was denkst du dir dabei?!$4#$b#Zahle mir {{fineamount}} G und ich lass es dir nochmal durchgehen, @.$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly": "Ich merke das, wenn du klaust, @... Der Gestank folgt dir...$2#$b#Du zahlst mir jetzt {{fineamount}} G dafür.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin": "Ernsthaft, @? Dachtest du etwa, du könntest einen kostenlosen Fernseher bekommen... Ich bewahre meine teuren Sachen hier nicht auf...$3#$b#Ich will dafür {{fineamount}} G haben... Vielleicht wird dir das eine Lehre sein.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie": "Stehlen wir hier mein Heu, @? Nur weil ich selten im Laden bin, kannst du noch lange nicht von mir klauen.$4#$b#Wenn du mir {{fineamount}} G zahlst, halte ich da Lewis raus...$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus": "Ich weiß ja, dass das heutige Menü toll aussieht, aber zahlen musst du dafür trotzdem, @.$3#$b#*stöhn* Wenn du mir {{fineamount}} G gibst, vergessen wir die ganze Sache einfach, okay?$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey": "Was tust du da, @? Das Zeug kann ohne ärztliche Aufsicht gefährlich sein!...$8#$b#Ich muss dir dafür eine Strafe über {{fineamount}} G auferlegen, @, das ist kein Spaß.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint": "Du klaust von mir, @! Ich hätte mehr von dir gehalten.$3#$b#Du weißt, dass Diebstahl hier {{fineamount}} G kostet, oder? Das musst du mir schon zahlen.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy": "Dass ich weiter von den anderen weg bin heißt nicht, dass du von mir klauen kannst, @.$2#$b#Zahle die Strafe von {{fineamount}} G und wir vergessen das Ganze.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex": "Brauchst du ein Eis wirklich so sehr, @?$7#$b#Ich hätte nie damit gerechnet, dass ich jemanden Strafe zahlen lassen muss,aber das kostet dich {{fineamount}} G.$2",
+
+    "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "Du stiehlst von mir, @?$2#$b#*stöhn* Ich würde dich ja Strafe zahlen lassen, aber du kannst dir das nicht leisten.$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre_NoMoney": "Du klaust bei mir??!! Was denkst du dir dabei?!$4#$b#Dein Glück, dass du die Strafe nicht zahlen kannst.$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "Ich merke das, wenn du klaust, @... Der Gestank folgt dir...$2#$b#Gib einfach das Zeug zurück, du könntest dir die Strafe nicht leisten.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Ernsthaft, @? Dachtest du etwa, du könntest einen kostenlosen Fernseher bekommen... Ich bewahre meine teuren Sachen hier nicht auf...$3#$b#*stöhn* Ich lass es dir noch einmal durchgehen.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Stehlen wir hier mein Heu, @? Nur weil ich selten im Laden bin, kannst du noch lange nicht von mir klauen.$4#$b#Eigentlich gibt es dafür eine Strafe, aber was du nicht zahlen kannst, kannst du halt nicht zahlen.$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus_NoMoney": "Ich weiß ja, dass das heutige Menü toll aussieht, aber zahlen musst du dafür trotzdem, @.$3#$b#*stöhn* Vergessen wir die ganze Sache einfach, okay? Tu es einfach nie wieder.$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Was tust du da, @? Das Zeug kann ohne ärztliche Aufsicht gefährlich sein!...$8#$b#Das ist kein Spaß, gib es einfach wieder zurück, bevor sich noch wer was tut.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Du klaust von mir, @! Ich hätte mehr von dir gehalten.$3#$b#Du weißt, dass Diebstahl hier bestraft wird, oder? Ich lass es dir noch ein letztes Mal durchgehen.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Dass ich weiter von den anderen weg bin heißt nicht, dass du von mir klauen kannst, @.$2#$b#Vergessen wir das Ganze. Geh einfach, @.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Brauchst du ein Eis wirklich so sehr, @?$7#$b#Heute kommst du noch einmal mit einer Warnung davon.$2"
+}
+
+

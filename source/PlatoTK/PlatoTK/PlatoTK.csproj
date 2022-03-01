@@ -3,7 +3,7 @@
     <AssemblyName>PlatoTK</AssemblyName>
     <RootNamespace>PlatoTK</RootNamespace>
     <Version>1.9.5</Version>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Authors>Platonymous</Authors>
     <Description>Modding Toolkit for Stardew Valley</Description>
     <Copyright>Copyright 2020</Copyright>
@@ -15,8 +15,10 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/Platonymous/PlatoTK/master/LICENSE</PackageLicenseUrl>
     <PackageId>Platonymous.PlatoTK</PackageId>
     <Product>Platonymous.PlatoTK</Product>
-  </PropertyGroup>  
-  
+
+    <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MoonSharp" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -24,21 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
-  <Reference Include="BmFont">
-    <HintPath>$(GamePath)\BmFont.dll</HintPath>
-    <Private>true</Private>
-    <SpecificVersion>false</SpecificVersion>
-  </Reference>
-    <Reference Include="TMXTile">
-      <HintPath>$(GamePath)\smapi-internal\TMXTile.dll</HintPath>
-      <Private>False</Private>
-      <SpecificVersion>false</SpecificVersion>
-    </Reference>
-</ItemGroup>
+    <Reference Include="BmFont" HintPath="$(GamePath)\BmFont.dll" Private="false" />
+    <Reference Include="TMXTile" HintPath="$(GamePath)\smapi-internal\TMXTile.dll" Private="false" />
+  </ItemGroup>
 
   <Import Project="$(SolutionDir)\common.targets" />
 
-  <ItemGroup>
-    <PackageReference Update="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
-  </ItemGroup>
 </Project>

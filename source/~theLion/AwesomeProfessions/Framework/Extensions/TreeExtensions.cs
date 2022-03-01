@@ -20,7 +20,7 @@ using Common.Extensions;
 
 #endregion using directives
 
-public static class TreeExtensions
+internal static class TreeExtensions
 {
     /// <summary>Whether a given common tree satisfies all conditions to advance a stage.</summary>
     public static bool CanGrow(this Tree tree)

@@ -21,8 +21,8 @@ using JetBrains.Annotations;
 using Netcode;
 using StardewValley.TerrainFeatures;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -40,15 +40,15 @@ internal class TreePerformBushDestroy : BasePatch
     /// <summary>Patch to add bonus wood for prestiged Lumberjack.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> TreePerformBushDestroyTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// From: Game1.getFarmer(lastPlayerToHit).professions.Contains(<lumberjack_id>) ? 1.25 : 1.0
         /// To: Game1.getFarmer(lastPlayerToHit).professions.Contains(100 + <lumberjack_id>) ? 1.4 : Game1.getFarmer(lastPlayerToHit).professions.Contains(12) ? 1.25 : 1.0
 
-        var isPrestiged = iLGenerator.DefineLabel();
-        var resumeExecution = iLGenerator.DefineLabel();
+        var isPrestiged = generator.DefineLabel();
+        var resumeExecution = generator.DefineLabel();
         try
         {
             helper
@@ -78,6 +78,7 @@ internal class TreePerformBushDestroy : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Lumberjack bonus wood.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

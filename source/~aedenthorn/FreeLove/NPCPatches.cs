@@ -234,7 +234,7 @@ namespace FreeLove
         {
             try
             {
-                if (Misc.GetSpouses(Game1.player, 0).ContainsKey(__instance.Name))
+                if (Misc.GetSpouses(Game1.player, false).ContainsKey(__instance.Name))
                 {
                     ModEntry.tempOfficialSpouse = __instance;
                 }
@@ -392,6 +392,15 @@ namespace FreeLove
             }
             return true;
         }
+        public static bool NPC_setUpForOutdoorPatioActivity_Prefix(NPC __instance)
+        {
+            if (!Helper.ModRegistry.IsLoaded("aedenthorn.CustomSpousePatioRedux") && Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth).Equals("Sat") && Game1.MasterPlayer.spouse != __instance.Name)
+            {
+                Monitor.Log($"preventing {__instance.Name} from going to spouse patio");
+                return false;
+            }
+            return true;
+        }
         public static void NPC_engagementResponse_Postfix(NPC __instance, Farmer who, bool asRoommate = false)
         {
             Misc.ResetSpouses(who);
@@ -479,7 +488,7 @@ namespace FreeLove
         {
             try
             {
-                if (Misc.GetSpouses(Game1.player, 0).ContainsKey(__instance.Name))
+                if (Misc.GetSpouses(Game1.player, false).ContainsKey(__instance.Name))
                 {
                     __state = Game1.player.spouse;
                     Game1.player.spouse = __instance.Name;
@@ -516,7 +525,7 @@ namespace FreeLove
             {
                 Misc.ResetSpouses(who);
 
-                if ((__instance.Name.Equals(who.spouse) || Misc.GetSpouses(who, 1).ContainsKey(__instance.Name)) && __instance.Sprite.CurrentAnimation == null && who.IsLocalPlayer)
+                if ((__instance.Name.Equals(who.spouse) || Misc.GetSpouses(who, true).ContainsKey(__instance.Name)) && __instance.Sprite.CurrentAnimation == null && who.IsLocalPlayer)
                 {
                     Monitor.Log($"{__instance.Name} is married to {who.Name}");
 
@@ -687,7 +696,7 @@ namespace FreeLove
         {
             try
             {
-                if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name) && Game1.NPCGiftTastes.ContainsKey(__instance.Name))
+                if (Misc.GetSpouses(who, true).ContainsKey(__instance.Name) && Game1.NPCGiftTastes.ContainsKey(__instance.Name))
                 {
                     Monitor.Log($"Gift to spouse {__instance.Name}");
                     __state = new List<int> {
@@ -715,12 +724,25 @@ namespace FreeLove
                         __state[3] = 1; // flag to say we set it to 2
                     }
                 }
-                if (who.ActiveObject.ParentSheetIndex == 808 && __instance.Name.Equals("Krobus"))
+                string safe_name = __instance.Name.ToLower().Replace(' ', '_');
+                if (who.ActiveObject.HasContextTag("propose_roommate_" + safe_name))
                 {
-                    Monitor.Log($"Void pendant to {__instance.Name}");
-                    if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= 10 && who.HouseUpgradeLevel >= 1 && !who.isEngaged())
+                    Monitor.Log($"Roommate proposal item {who.ActiveObject.Name} to {__instance.Name}");
+
+                    if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= 10 && who.HouseUpgradeLevel >= 1)
                     {
-                        typeof(NPC).GetMethod("engagementResponse", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { who, true });
+                        Monitor.Log($"proposal success!");
+                        AccessTools.Method(typeof(NPC), "engagementResponse").Invoke(__instance, new object[] { who, true });
+                        return false;
+                    }
+                    Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Characters:MovieInvite_NoTheater", __instance.displayName)));
+                    return false;
+                }
+                else if (who.ActiveObject.ParentSheetIndex == 808 && __instance.Name.Equals("Krobus"))
+                {
+                    if (who.getFriendshipHeartLevelForNPC(__instance.Name) >= 10 && who.HouseUpgradeLevel >= 1)
+                    {
+                        AccessTools.Method(typeof(NPC), "engagementResponse").Invoke(__instance, new object[] { who, true });
                         return false;
                     }
                 }
@@ -728,7 +750,7 @@ namespace FreeLove
                 {
                     Monitor.Log($"Try give bouquet to {__instance.Name}");
 
-                    if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name))
+                    if (Misc.GetSpouses(who, true).ContainsKey(__instance.Name))
                     {
                         who.spouse = __instance.Name;
                         Misc.ResetSpouses(who);
@@ -755,24 +777,24 @@ namespace FreeLove
                     }
                     else
                     {
-                        if (__instance.datable.Value && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].IsDating())
+                        if (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].IsDating())
                         {
                             Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:AlreadyDatingBouquet", __instance.displayName));
                             return false;
                         }
-                        if (__instance.datable.Value && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].IsDivorced())
+                        if (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].IsDivorced())
                         {
                             __instance.CurrentDialogue.Push(new Dialogue(Game1.content.LoadString("Strings\\Characters:Divorced_bouquet"), __instance));
                             Game1.drawDialogue(__instance);
                             return false;
                         }
-                        if (__instance.datable.Value && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate / 2f)
+                        if (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate / 2f)
                         {
                             __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3958") : Game1.LoadStringByGender(__instance.Gender, "Strings\\StringsFromCSFiles:NPC.cs.3959"), __instance));
                             Game1.drawDialogue(__instance);
                             return false;
                         }
-                        if (__instance.datable.Value && who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate)
+                        if (who.friendshipData.ContainsKey(__instance.Name) && who.friendshipData[__instance.Name].Points < Config.MinPointsToDate)
                         {
                             __instance.CurrentDialogue.Push(new Dialogue((ModEntry.myRand.NextDouble() < 0.5) ? Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3960") : Game1.content.LoadString("Strings\\StringsFromCSFiles:NPC.cs.3961"), __instance));
                             Game1.drawDialogue(__instance);
@@ -861,7 +883,7 @@ namespace FreeLove
                 else if (who.ActiveObject.ParentSheetIndex == 809 && !who.ActiveObject.bigCraftable.Value)
                 {
                     Monitor.Log($"Tried to give movie ticket to {__instance.Name}");
-                    if (Misc.GetSpouses(who, 1).ContainsKey(__instance.Name) && Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && !__instance.Name.Equals("Krobus") && who.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && !Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) && Game1.timeOfDay <= 2100 && __instance.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && MovieTheater.GetResponseForMovie(__instance) != "reject")
+                    if (Misc.GetSpouses(who, true).ContainsKey(__instance.Name) && Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && !__instance.Name.Equals("Krobus") && who.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && !Utility.isFestivalDay(Game1.dayOfMonth, Game1.currentSeason) && Game1.timeOfDay <= 2100 && __instance.lastSeenMovieWeek.Value < Game1.Date.TotalWeeks && MovieTheater.GetResponseForMovie(__instance) != "reject")
                     {
                         Monitor.Log($"Tried to give movie ticket to spouse");
                         foreach (MovieInvitation invitation in who.team.movieInvitations)

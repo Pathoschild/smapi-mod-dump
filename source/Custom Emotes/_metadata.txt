@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/purrplingcat/CustomEmotes
+   Git: https://github.com/purrplingcat/CustomEmotes.git
+
+mods:
+   Custom Emotes
+
+latest commit:
+   commit e300dd1df88fe66fe178f71858a26aa0bc6b3c28
+   Author: Ellen Jana FawkesovÃ¡ <4710267+purrplingcat@users.noreply.github.com>
+   Date:   Mon Jan 31 16:45:47 2022 +0100
+   
+       Create LICENSE
+   

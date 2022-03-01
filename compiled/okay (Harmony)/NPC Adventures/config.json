@@ -11,8 +11,8 @@
   "Experimental": {},
   "AllowGainFriendship": true,
   "FightThruCompanion": true,
-  "UseCheckForEventsPatch": true,
   "AllowEntryLockedCompanionHouse": true,
   "UseAsk2FollowCursor": true,
-  "AllowLegacyContentPacks": false
+  "AllowLegacyContentPacks": false,
+  "EnableSuggestions": true
 }

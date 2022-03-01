@@ -8,136 +8,119 @@
 **
 *************************************************/
 
+using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
+
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
 static class StableSort {
-#if STABLE_SORT
-		private static class Comparer {
-			private static FieldInfo TextureField;
-			private static FieldInfo SpriteField;
-			private static MethodInfo TextureComparer;
-			private static MethodInfo SpriteGetter;
-			private static FieldInfo GetSource;
-			private static FieldInfo GetOrigin;
+	private static readonly Type? SpriteBatchItemType = typeof(XNA.Graphics.SpriteBatch).Assembly.GetType("Microsoft.Xna.Framework.Graphics.SpriteBatchItem");
 
-			static Comparer () {
-				TextureField = typeof(SpriteBatch).GetField("spriteTextures", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-				SpriteField = typeof(SpriteBatch).GetField("spriteQueue", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-				TextureComparer = typeof(Texture).GetMethod("CompareTo", BindingFlags.Instance | BindingFlags.NonPublic);
-				SpriteGetter = SpriteField.FieldType.GetMethod("GetValue", new Type[] { typeof(int) });
-				GetSource = SpriteField.FieldType.GetElementType().GetField("Source", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-				GetOrigin = SpriteField.FieldType.GetElementType().GetField("Origin", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static void Swap<T>(ref T a, ref T b) => (a, b) = (b, a);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static int Partition<T>(Span<T> data, Span<int> indices, int low, int high) where T : IComparable<T> {
+		var pivot = data[high];
+		var pivotIndex = indices[high];
+
+		var i = low - 1;
+
+		for (int j = low; j <= high - 1; ++j) {
+			var jIndex = indices[j];
+			var compareResult = data[j].CompareTo(pivot);
+			if (compareResult == 0) {
+				compareResult = jIndex - pivotIndex;
 			}
-
-			static int Compare (in Vector2 lhs, in Vector2 rhs) {
-				if (lhs.X < rhs.X) {
-					return -1;
-				}
-				else if (lhs.X > rhs.X) {
-					return 1;
-				}
-
-				if (lhs.Y < rhs.Y) {
-					return -1;
-				}
-				else if (lhs.Y > rhs.Y) {
-					return 1;
-				}
-
-				return 0;
-			}
-
-			static int Compare (in Vector4 lhs, in Vector4 rhs) {
-				int comparison = Compare(new Vector2(lhs.X, lhs.Y), new Vector2(rhs.X, rhs.Y));
-				if (comparison != 0) {
-					return comparison;
-				}
-
-				return Compare(new Vector2(lhs.Z, lhs.W), new Vector2(rhs.Z, rhs.W));
-			}
-
-			[HarmonyPatch(typeof(SpriteBatch), "BackToFrontComparer", "Compare", isChild: true, HarmonyPatch.Fixation.Postfix, HarmonyExt.PriorityLevel.Last)]
-			internal static void BFComparer (object __instance, ref int __result, SpriteBatch ___parent, int x, int y) {
-				if (__result != 0)
-					return;
-
-				var textures = (Texture[])TextureField.GetValue(___parent);
-
-				var texture1 = textures[x];
-				var texture2 = textures[y];
-
-				var comparison = (int)TextureComparer.Invoke(texture1, new object[] { texture2 });
-				if (comparison != 0) {
-					__result = comparison;
-					return;
-				}
-
-				var spriteQueue = SpriteField.GetValue(___parent);
-
-				var sprite1 = SpriteGetter.Invoke(spriteQueue, new object[] { x });
-				var sprite2 = SpriteGetter.Invoke(spriteQueue, new object[] { y });
-
-				var source1 = (Vector4)GetSource.GetValue(sprite1);
-				var source2 = (Vector4)GetSource.GetValue(sprite2);
-
-				comparison = Compare(source1, source2);
-				if (comparison != 0) {
-					__result = comparison;
-					return;
-				}
-
-				var origin1 = (Vector2)GetOrigin.GetValue(sprite1);
-				var origin2 = (Vector2)GetOrigin.GetValue(sprite2);
-
-				comparison = Compare(origin1, origin2);
-				if (comparison != 0) {
-					__result = comparison;
-					return;
-				}
-
-				__result = y.CompareTo(x);
-			}
-
-			[HarmonyPatch(typeof(SpriteBatch), "FrontToBackComparer", "Compare", isChild: true, HarmonyPatch.Fixation.Postfix, HarmonyExt.PriorityLevel.Last)]
-			internal static void FBComparer (object __instance, ref int __result, SpriteBatch ___parent, int x, int y) {
-				if (__result != 0)
-					return;
-
-				var textures = (Texture[])TextureField.GetValue(___parent);
-
-				var texture1 = textures[y];
-				var texture2 = textures[x];
-
-				var comparison = (int)TextureComparer.Invoke(texture1, new object[] { texture2 });
-				if (comparison != 0) {
-					__result = comparison;
-					return;
-				}
-
-				var spriteQueue = SpriteField.GetValue(___parent);
-
-				var sprite1 = SpriteGetter.Invoke(spriteQueue, new object[] { y });
-				var sprite2 = SpriteGetter.Invoke(spriteQueue, new object[] { x });
-
-				var source1 = (Vector4)GetSource.GetValue(sprite1);
-				var source2 = (Vector4)GetSource.GetValue(sprite2);
-
-				comparison = Compare(source1, source2);
-				if (comparison != 0) {
-					__result = comparison;
-					return;
-				}
-
-				var origin1 = (Vector2)GetOrigin.GetValue(sprite1);
-				var origin2 = (Vector2)GetOrigin.GetValue(sprite2);
-
-				comparison = Compare(origin1, origin2);
-				if (comparison != 0) {
-					__result = comparison;
-					return;
-				}
-
-				__result = x.CompareTo(y);
+			if (compareResult < 0) {
+				++i;
+				Swap(ref data[i], ref data[j]);
+				Swap(ref indices[i], ref indices[j]);
 			}
 		}
-#endif
+		Swap(ref data[i + 1], ref data[high]);
+		Swap(ref indices[i + 1], ref indices[high]);
+		return i + 1;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static void QuickSort<T>(Span<T> data, Span<int> indices, int low, int high) where T : IComparable<T> {
+		if (data.Length <= 1) {
+			return;
+		}
+
+		if (low < high) {
+			var pIndex = Partition(data, indices, low, high);
+			QuickSort(data, indices, low, pIndex - 1);
+			QuickSort(data, indices, pIndex + 1, high);
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static void ArrayStableSort<T>(T[] array, int index, int length) where T : IComparable<T> {
+		if (!Config.Enabled || !Config.Extras.StableSort) {
+			Array.Sort(array, index, length);
+			return;
+		}
+
+		// Not _optimal_, really need a proper stable sort. Optimize later.
+		Span<int> indices = stackalloc int[length];
+		for (int i = 0; i < length; ++i) {
+			indices[i] = i;
+		}
+		var span = new Span<T>(array, index, length);
+		QuickSort(span, indices, 0, length - 1);
+	}
+
+	[Harmonize(
+		typeof(XNA.Graphics.SpriteBatch),
+		"Microsoft.Xna.Framework.Graphics.SpriteBatcher",
+		"DrawBatch",
+		fixation: Harmonize.Fixation.Transpile
+	)]
+	internal static IEnumerable<CodeInstruction> SpriteBatcherTranspiler(IEnumerable<CodeInstruction> instructions) {
+		if (SpriteBatchItemType is null) {
+			Debug.Error($"Could not apply SpriteBatcher stable sorting patch: {nameof(SpriteBatchItemType)} was null");
+			return instructions;
+		}
+
+
+		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
+
+		if (newMethod is null) {
+			Debug.Error($"Could not apply SpriteBatcher stable sorting patch: could not find MethodInfo for ArrayStableSort");
+			return instructions;
+		}
+
+		IEnumerable<CodeInstruction> ApplyPatch() {
+			foreach (var instruction in instructions) {
+				if (
+					instruction.opcode.Value != OpCodes.Call.Value ||
+					instruction.operand is not MethodInfo callee ||
+					!callee.IsGenericMethod ||
+					callee.GetGenericArguments().FirstOrDefault() != SpriteBatchItemType ||
+					callee.DeclaringType != typeof(Array) ||
+					callee.Name != "Sort" ||
+					callee.GetParameters().Length != 3
+				) {
+					yield return instruction;
+					continue;
+				}
+
+				yield return new CodeInstruction(OpCodes.Call, newMethod);
+			}
+		}
+
+		var result = ApplyPatch();
+
+		if (result.SequenceEqual(instructions)) {
+			Debug.Error("Could not apply SpriteBatcher stable sorting patch: Sort call could not be found in IL");
+		}
+
+		return result;
+	}
 }

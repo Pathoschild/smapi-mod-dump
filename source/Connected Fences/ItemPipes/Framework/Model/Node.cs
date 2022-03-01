@@ -25,7 +25,7 @@ using System.Threading;
 
 namespace ItemPipes.Framework.Model
 {
-    public class Node
+    public abstract class Node
     {
         public string Name { get; set; }
         public Vector2 Position { get; set; }
@@ -65,11 +65,6 @@ namespace ItemPipes.Framework.Model
             Adjacents.Add(Sides.East, null);
 
             ParentNetwork = null;
-        }
-
-        public virtual string GetState()
-        {
-            return State;
         }
 
         public List<Node> TraverseAll()
@@ -124,80 +119,6 @@ namespace ItemPipes.Framework.Model
             return returns;
         }
 
-        public bool CanConnectedWith(Node target)
-        {
-            bool connected = false;
-            List<Node> path = GetPath(target);
-            if (path.Count > 0 && path.Last().Equals(target))
-            {
-                connected = true;
-            }
-            return connected;
-        }
-
-        public List<Node> GetPath(Node target)
-        {
-            if (Globals.Debug) { Printer.Info($"Getting path for {target.Print()}"); }
-            List<Node> path = new List<Node>();
-            path = GetPathRecursive(target, path);
-            /*
-            Printer.Info("-----------------");
-            foreach (Node node in path)
-            {
-                Printer.Info(node.Print());
-            }
-            Printer.Info("-----------------");
-            */
-            return path;
-        }
-
-        public List<Node> GetPathRecursive(Node target, List<Node> path)
-        {
-            if (Globals.UltraDebug) { Printer.Info(Print()); }
-            Node adj;
-            if (path.Contains(target))
-            {
-                return path;
-            }
-            else
-            {
-                path.Add(this);
-                if (Adjacents.TryGetValue(Sides.North, out adj) && !path.Contains(target))
-                {
-                    if (adj != null && !path.Contains(adj))
-                    {
-                        path = adj.GetPathRecursive(target, path);
-                    }
-                }
-                if (Adjacents.TryGetValue(Sides.South, out adj) && !path.Contains(target))
-                {
-                    if (adj != null && !path.Contains(adj))
-                    {
-                        path = adj.GetPathRecursive(target, path);
-                    }
-                }
-                if (Adjacents.TryGetValue(Sides.East, out adj) && !path.Contains(target))
-                {
-                    if (adj != null && !path.Contains(adj))
-                    {
-                        path = adj.GetPathRecursive(target, path);
-                    }
-                }
-                if (Adjacents.TryGetValue(Sides.West, out adj) && !path.Contains(target))
-                {
-                    if (adj != null && !path.Contains(adj))
-                    {
-                        path = adj.GetPathRecursive(target, path);
-                    }
-                }
-                if (!path.Contains(target))
-                {
-                    path.Remove(this);
-                }
-                return path;
-            }
-        }
-
         public List<Network> Scan()
         {
             List<Network> retList = new List<Network>();
@@ -211,26 +132,26 @@ namespace ItemPipes.Framework.Model
             return retList;
         }
 
-        public virtual bool AddAdjacent(Side side, Node entity)
+        public virtual bool AddAdjacent(Side side, Node node)
         {
             bool added = false;
             if (Adjacents[side] == null)
             {
                 added = true;
-                Adjacents[side] = entity;
-                entity.AddAdjacent(Sides.GetInverse(side), this);
+                Adjacents[side] = node;
+                node.AddAdjacent(Sides.GetInverse(side), this);
             }
             return added;
         }
 
-        public virtual bool RemoveAdjacent(Side side, Node entity)
+        public virtual bool RemoveAdjacent(Side side, Node node)
         {
             bool removed = false;
             if (Adjacents[side] != null)
             {
                 removed = true;
                 Adjacents[side] = null;
-                entity.RemoveAdjacent(Sides.GetInverse(side), this);
+                node.RemoveAdjacent(Sides.GetInverse(side), this);
             }
             return removed;
         }
@@ -245,7 +166,6 @@ namespace ItemPipes.Framework.Model
                 {
                     removed = true;
                     RemoveAdjacent(adj.Key, adj.Value);
-                    Adjacents[adj.Key] = null;
                 }
             }
             return removed;

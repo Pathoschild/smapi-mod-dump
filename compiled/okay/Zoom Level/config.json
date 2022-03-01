@@ -5,11 +5,15 @@
   "KeybindListResetZoomOrUI": "None",
   "KeybindListMaxZoomOrUI": "None",
   "KeybindListMinZoomOrUI": "None",
+  "KeybindListToggleUI": "None",
+  "KeybindListToggleHideUIWithCertainZoom": "None",
   "ZoomLevelIncreaseValue": 0.05,
   "ZoomLevelDecreaseValue": -0.05,
   "MaxZoomOutLevelAndUIValue": 0.35,
   "MaxZoomInLevelAndUIValue": 2.0,
   "ResetZoomOrUIValue": 1.0,
+  "ZoomLevelThatHidesUI": 0.35,
   "SuppressControllerButton": true,
-  "ZoomAndUIControlEverywhere": false
+  "ZoomAndUIControlEverywhere": false,
+  "IsHideUIWithCertainZoom": false
 }

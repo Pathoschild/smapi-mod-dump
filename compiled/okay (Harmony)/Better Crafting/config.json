@@ -1,0 +1,19 @@
+{
+  "ReplaceCooking": true,
+  "ReplaceCrafting": true,
+  "UseCategories": true,
+  "ShowSettingsButton": true,
+  "MaxQuality": "Iridium",
+  "LowQualityFirst": true,
+  "SuppressBC": "LeftShift",
+  "UseUniformGrid": false,
+  "SortBigLast": false,
+  "UseSeasoning": "Enabled",
+  "HideUnknown": false,
+  "UseDiscovery": true,
+  "MaxInventories": 15,
+  "MaxDistance": 20,
+  "MaxCheckedTiles": 500,
+  "UseDiagonalConnections": true,
+  "ValidConnectors": []
+}

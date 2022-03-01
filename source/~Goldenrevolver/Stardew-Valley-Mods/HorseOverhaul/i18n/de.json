@@ -19,7 +19,25 @@
   "GotWater": "Wasser gegeben: {{value}}",
   "GotFood": "Essen gegeben: {{value}}",
   "Friendship": "Freundschaft: {{value}}",
+  "HorseWarning": "Während des Reitens nicht möglich!",
   "AteEnough": "{{name}} hat für heute genug gegessen.",
   "AteFood": "{{name}} hat deine/n {{foodName}} gegessen.",
-  "HorseWarning": "Während des Reitens nicht möglich!"
+  "AteFoodLove": "Es hat es geliebt.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodLike": "Es hat es gemocht.", // this is added after the translation of AteFood, the "they" refers to the horse
+  "AteFoodDislike": "Der Snack war zu öde um wirklich zu schmecken.", // this is added after the translation of AteFood, the "they" refers to the horse (this is used for things like salmon berries and black berries for balancing)
+  "HasHeater": "Hat Heizgerät: {{value}}",
+  "DontFeedChocolate": "Schokolade? Ernsthaft?!",
+  "LactoseIntolerantPets": "Die meisten Katzen und Hunde sind Laktose-intolerant.",
+  "LactoseIntolerantHorses": "Die meisten ausgewachsenen Pferde sind Laktose-intolerant.",
+  "HorseHerbivore": "Pferde sind Pflanzenfresser, sie können keinen Fleisch essen.",
+  "HorseNoBread": "Pferde sollten keine verarbeiteten Lebensmittel wie Brot essen.",
+  "HorseEatShouldnt": "Dein Pferd sollte das nicht essen.",
+  "HorseEatHay": "Dein Pferd hat genug Heu im Stall.",
+  "HorseEatFiber": "Dein Pferd hat überall genug Grass zum Fressen.",
+  "HorseEatCoffee": "Pferde sollten keine Art von Kaffee oder Koffein konsumieren.",
+  "HorseEatCabbage": "Pferde sollten keinen Kohl oder verwandte Pflanzenfamilien essen.",
+  "HorseEatOnion": "Pferde sollten keine Zwiebeln oder verwandte Pflanzenfamilien essen.",
+  "HorseEatNightshade": "Pferde sollten keine Nachtschattengewächse essen, wie Kartoffeln, Tomaten, Paprika oder Auberginen.",
+  "HorseEatHorseRadish": "Meerrettich ist sehr gefährlich für Pferde, Garten-Rettich hingegen ist okay.",
+  "HorseEatDislike": "Dein Pferd möchte das nicht essen."
 }

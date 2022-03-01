@@ -13,14 +13,15 @@ mods:
    Horse Overhaul
    Just Relax
    Maritime Secrets
+   Mushroom Rancher
    Permanent Cookout Kit And Better Charcoal Kiln
    Ring Overhaul
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit 31d5d453014e7d3e9048d0fc11c38a141fa5f226
+   commit b0279eb7e97cd2fd1a88e3d4e8eb888cc0203d91
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Fri Jan 28 23:53:51 2022 +0100
+   Date:   Wed Feb 9 11:24:10 2022 +0100
    
-       Ring Overhaul better ring compatibility, crafting recipe translation bug fix, increment times crafted for furnace recipes
+       Update for Watering Grants Experience (no saltwater watering), Ring Overhaul crafting fix, Horse Overhaul translations, first work on Expert Mode Beach Map mod, more work on Forage Fantasy update, request mod: Mermaid Show Clam Mover
    

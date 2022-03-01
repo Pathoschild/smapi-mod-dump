@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Farm info
+    *********/
+    "farm.name": "Küçük Sahil Çiftliği",
+    "farm.description": "Hem nehir hem de okyanus balıklarını yakalayabileceğiniz küçük, verimli bir cep plajı.",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.campfire.name": "Kamp ateşi ekle",
+    "config.campfire.tooltip": "Çiftlik evinin önüne işlevsel bir kamp ateşi ekler.",
+
+    "config.islands.name": "Adalar ekle",
+    "config.islands.tooltip": "Ekstra arazi alanına sahip okyanus adaları ekler.",
+
+    "config.beach-sounds.name": "Plaj sesleri çal",
+    "config.beach-sounds.tooltip": "Sahil çiftliğinde plajın fon müziğini (yani dalga sesleri) çalar."
+}

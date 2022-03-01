@@ -6,11 +6,9 @@ mods:
    Upgradable Pan
 
 latest commit:
-   commit b7bf1a0697ada0a6ea08995a56fe49edaabdf6aa
+   commit 35619f085911c8afc8cb0201401920ce6324a195
    Author: Anthony Hilyard <anthony.hilyard@gmail.com>
-   Date:   Mon Jul 19 11:13:42 2021 -0700
+   Date:   Sun Feb 20 12:01:35 2022 -0800
    
-       Fixed a bug that caused copper pans to be invisible after shift-clicking
-       them.  Fixed a bug that caused upgraded pans to disappear if you
-       tried to equip them while wearing a different hat.
+       Fixed frying pan upgrade bug when Love of Cooking is installed.
    

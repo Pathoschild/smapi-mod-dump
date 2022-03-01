@@ -21,6 +21,7 @@ See [the main readme](readme.md) for other information about EMP.
   * [Using the data asset](#using-the-data-asset)
 * [Kitchen Features](#kitchen-features)
   * [Allow Mini-Fridges](#allow-mini-fridges)
+* [Water Color](#water-color)
 
 ## Bed Placement
 This feature allows players to place moveable (furniture) beds at additional locations.
@@ -151,3 +152,14 @@ This feature allows players to place [Mini-Fridges](https://stardewvalleywiki.co
 To enable mini-fridge placement at a location, add the map property `Esca.EMP/AllowMiniFridges` and set its value to `true`:
 
 ![Esca.EMP/AllowMiniFridges: true](images/AllowMiniFridges_MapProperty.png)
+
+## Water Color
+This feature allows mods to change the color of water at a location.
+
+To use this feature at a location, add the map property `Esca.EMP/WaterColor` and give it one of the following values:
+
+* The name of a color from [C#'s KnownColor list](https://docs.microsoft.com/en-us/dotnet/api/system.drawing.knowncolor). Example: `Esca.EMP/WaterColor` `Red`
+* RGB values from 0 to 255, separated by spaces. Example: `Esca.EMP/WaterColor` `255 0 0`
+* RGBA values from 0 to 255, separated by spaces. Example: `Esca.EMP/WaterColor` `255 0 0 255`
+
+![Esca.EMP/WaterColor: Red](images/WaterColor_MapProperty.png)

@@ -6,9 +6,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit f60208b4ccd2338e311689194c3fa073873e39e4
+   commit 7ca39f71abe607ba210923a63fdec253a864139c
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sat Aug 7 07:26:57 2021 -0500
+   Date:   Sun Feb 6 16:50:11 2022 -0600
    
-       Add remarks for MovieInvitation transpiler
+       Trim/sort/format
    

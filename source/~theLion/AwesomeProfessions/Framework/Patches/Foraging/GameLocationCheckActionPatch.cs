@@ -20,6 +20,7 @@ using HarmonyLib;
 using StardewValley;
 using StardewValley.Network;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using Extensions;
 
@@ -43,7 +44,7 @@ internal class GameLocationCheckActionPatch : BasePatch
     /// </summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> GameLocationCheckActionTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -87,12 +88,13 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Ecologist forage quality.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
         /// Injected: else if (who.professions.Contains(<gemologist_id>) && IsForagedMineral(objects[key])) objects[key].Quality = GetMineralQualityForGemologist()
 
-        var gemologistCheck = iLGenerator.DefineLabel();
+        var gemologistCheck = generator.DefineLabel();
         try
         {
             helper
@@ -157,6 +159,7 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding modded Gemologist foraged mineral quality.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -184,14 +187,15 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding Ecologist and Gemologist counter increment.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
         /// From: if (random.NextDouble() < 0.2)
         /// To: if (random.NextDouble() < who.professions.Contains(100 + <forager_id>) ? 0.4 : 0.2
 
-        var notPrestigedForager = iLGenerator.DefineLabel();
-        var resumeExecution = iLGenerator.DefineLabel();
+        var notPrestigedForager = generator.DefineLabel();
+        var resumeExecution = generator.DefineLabel();
         try
         {
             helper
@@ -226,6 +230,7 @@ internal class GameLocationCheckActionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while adding prestiged Foraged double forage bonus.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -239,9 +244,9 @@ internal class GameLocationCheckActionPatch : BasePatch
     private static void CheckActionSubroutine(SObject obj, GameLocation location, Farmer who)
     {
         if (who.HasProfession(Profession.Ecologist) && obj.isForage(location) && !obj.IsForagedMineral())
-            ModData.Increment<uint>(DataField.EcologistItemsForaged);
+            who.IncrementData<uint>(DataField.EcologistItemsForaged);
         else if (who.HasProfession(Profession.Gemologist) && obj.IsForagedMineral())
-            ModData.Increment<uint>(DataField.GemologistMineralsCollected);
+            who.IncrementData<uint>(DataField.GemologistMineralsCollected);
     }
 
     #endregion private methods

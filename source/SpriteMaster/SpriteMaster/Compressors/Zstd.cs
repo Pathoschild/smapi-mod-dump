@@ -63,9 +63,14 @@ static class Zstd {
 		internal byte[] Unwrap(byte[] data, int size) => Delegate.Unwrap(data, size);
 	}
 
+	private static bool? IsSupported_ = null;
 	internal static bool IsSupported {
 		[MethodImpl(MethodImpl.RunOnce)]
 		get {
+			if (IsSupported_.HasValue) {
+				return IsSupported_.Value;
+			}
+
 			try {
 				var dummyData = new byte[16];
 				var compressedData = CompressTest(dummyData);
@@ -73,17 +78,19 @@ static class Zstd {
 				if (!dummyData.SequenceEqualF(uncompressedData)) {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
-				Debug.InfoLn("Zstd Compression is supported".Pastel(DrawingColor.LightGreen));
-				return true;
+				Debug.Info("Zstd Compression is supported".Pastel(DrawingColor.LightGreen));
+				IsSupported_ = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.InfoLn($"Zstd Compression not supported".Pastel(DrawingColor.LightGreen));
-				return false;
+				Debug.Info($"Zstd Compression not supported".Pastel(DrawingColor.LightGreen));
+				IsSupported_ = false;
 			}
 			catch (Exception ex) {
-				Debug.InfoLn($"Zstd Compression not supported: '{ex}'".Pastel(DrawingColor.Red));
-				return false;
+				Debug.Info($"Zstd Compression not supported: '{ex.GetType().Name} {ex.Message}'".Pastel(DrawingColor.Red));
+				IsSupported_ = false;
 			}
+
+			return IsSupported_.Value;
 		}
 	}
 

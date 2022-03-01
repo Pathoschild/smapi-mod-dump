@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="BetterJunimos, Version=2.0.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\..\..\..\..\.steam\steam\steamapps\common\Stardew Valley\Mods\BetterJunimos\BetterJunimos.dll</HintPath>
+        </Reference>
+        <Reference Include="StardewValley">
+            <HintPath>..\..\..\..\..\.steam\steam\steamapps\common\Stardew Valley\Stardew Valley.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+</Project>

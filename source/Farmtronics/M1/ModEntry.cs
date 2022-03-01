@@ -90,7 +90,7 @@ namespace Farmtronics
 					Debug.Log($"Mail in mailbox: {msg}");
 					if (msg == "FarmtronicsFirstBotMail") {
 						Debug.Log($"Changing recoveredItem from {Game1.player.recoveredItem} to Bot");
-						Game1.player.recoveredItem = new Bot();
+						Game1.player.recoveredItem = new Bot(null);
 						break;
 					}
 				}
@@ -107,7 +107,7 @@ namespace Farmtronics
 						Debug.Log($"Shop item {index}: {item} with {item.Name}");
 						if (item.Name == "Catalogue" || (index>0 && shop.forSale[index-1].Name == "Flooring")) break;
 					}
-					var botForSale = new Bot();
+					var botForSale = new Bot(null);
 					shop.forSale.Insert(index, botForSale);
 					shop.itemPriceAndStock.Add(botForSale, new int[2] { 2500, int.MaxValue });	// sale price and available stock
 				}
@@ -152,7 +152,7 @@ namespace Farmtronics
 				Debug.Log($"Mail in mailbox: {msg}");
 				if (msg == "FarmtronicsFirstBotMail") {
 					Debug.Log($"Changing recoveredItem from {Game1.player.recoveredItem} to Bot");
-					Game1.player.recoveredItem = new Bot();
+					Game1.player.recoveredItem = new Bot(null);
 					break;
 				}
 			}
@@ -212,7 +212,7 @@ namespace Farmtronics
 				Debug.Log($"mail in mailbox: {msg}");
 				if (msg == "FarmtronicsFirstBotMail") {
 					Debug.Log($"Changing recoveredItem from {Game1.player.recoveredItem} to Bot");
-					Game1.player.recoveredItem = new Bot();
+					Game1.player.recoveredItem = new Bot(null);
 					break;
 				}
 			}

@@ -1,0 +1,6 @@
+{
+  "stardewEventID": 19921,
+  "eventStringId": "HappyBirthday_Events_Married_BirthdayParty_Elliott_Farmhouse_2",
+  "EventData": "playful/7 14/farmer 10 14 0 Elliott 7 14 0/skippable/faceDirection farmer 3 True/Omegasis.HappyBirthday.Events.MakeObjectsTemporarilyInvisible 7 14 8 14 9 14 10 14/globalFadeToClear 0.007/move farmer -2 0 3 False/faceDirection Elliott 1 True/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Elliott SpouseBirthdayEvent_Elliott_0/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Elliott SpouseBirthdayEvent_Elliott_1/Omegasis.HappyBirthday.Events.GivePlayerFavoriteGift/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Elliott SpouseBirthdayEvent_Elliott_2/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Elliott SpouseBirthdayEvent_Elliott_3/emote farmer 20/emote Elliott 20/globalFade 0.01/viewport -400 -400 true/Omegasis.HappyBirthday.Events.ShowTranslatedMessage SpousePartyOver/end",
+  "EventPreconditionData": "Omegasis.HappyBirthday.Framework.EventPreconditions.FarmerBirthdayPrecondition/StardustCore.Events.Preconditions.TimeSpecific.TimeOfDayPrecondition 600 2600/Omegasis.HappyBirthday.Framework.EventPreconditions.GameLocationIsHome/Omegasis.HappyBirthday.Framework.EventPreconditions.FarmHouseLevelPrecondition 2/Omegasis.HappyBirthday.Framework.EventPreconditions.IsMarriedToPrecondition Elliott/"
+}

@@ -15,6 +15,8 @@ Hardcoded events (weddings) and PlayerKilled events won't be skipped.
 
 Exclusions to which events are affected can also be configured. If there's a cutscene you never want skipped this can be done by listing its id in the Exceptions config option.
 
+Now with GMCM support! Long exception lists will extend past the textbox in the menu though.
+
 The mod does use Harmony, just FYI.
 
 Installation and use:
@@ -25,3 +27,5 @@ Installation and use:
 
 ### Versions: ###
 1.0.0 Initial release
+
+1.1.0 Added Generic Mod Config Menu support

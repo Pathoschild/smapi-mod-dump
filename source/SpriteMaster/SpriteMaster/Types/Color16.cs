@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types;
 
-[DebuggerDisplay("[{R.Value}, {G.Value}, {B.Value}, {A.Value}}")]
+[DebuggerDisplay("[{R.Value}, {G.Value}, {B.Value}, {A.Value}]")]
 [StructLayout(LayoutKind.Explicit, Pack = sizeof(ulong), Size = sizeof(ulong))]
 struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 	internal static readonly Color16 Zero = new(0UL);

@@ -6,9 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 4b7d011a7bc1950c9f88234b6691c92ae822e9a4
+   commit fdec231e49f9cbd2dca4acc570930e542a1a0dcd
    Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
-   Date:   Sun Jan 30 22:25:02 2022 +0530
+   Date:   Mon Feb 14 00:12:07 2022 +0530
    
-       Added screen reader support for linux
+       Update DialoguePatches.cs
    

@@ -8,10 +8,7 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
-using StardewValley.TerrainFeatures;
-
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
@@ -21,18 +18,21 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 using Extensions;
-
-using Object = StardewValley.Object;
 
 #endregion using directives
 
 [UsedImplicitly]
 internal class BushMachineGetOutputPatch : BasePatch
 {
+    private static MethodInfo _GetMachine;
+
     /// <summary>Construct an instance.</summary>
     internal BushMachineGetOutputPatch()
     {
@@ -55,12 +55,13 @@ internal class BushMachineGetOutputPatch : BasePatch
     {
         if (__instance is null || !ModEntry.Config.ShouldCountAutomatedHarvests) return;
 
-        var machine = ModEntry.ModHelper.Reflection.GetProperty<Bush>(__instance, "Machine").GetValue();
+        _GetMachine ??= __instance.GetType().PropertyGetter("Machine");
+        var machine = (Bush) _GetMachine.Invoke(__instance, null);
         if (machine is null || machine.size.Value == 3) return;
 
         if (!Context.IsMainPlayer || !Game1.player.HasProfession(Profession.Ecologist)) return;
 
-        ModData.Increment<uint>(DataField.EcologistItemsForaged);
+        Game1.player.IncrementData<uint>(DataField.EcologistItemsForaged);
     }
 
     /// <summary>Patch for automated Berry Bush quality.</summary>
@@ -94,6 +95,7 @@ internal class BushMachineGetOutputPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching automated Berry Bush quality.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

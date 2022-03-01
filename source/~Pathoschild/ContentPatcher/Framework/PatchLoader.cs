@@ -95,13 +95,7 @@ namespace ContentPatcher.Framework
 
             // ignore null patches with a warning
             PatchConfig[] patches = rawPatches
-                .Where((patch, i) =>
-                {
-                    bool isValid = patch != null;
-                    if (!isValid)
-                        this.Monitor.Log($"Ignored {path.With($"patch at index {i}")}: patch is null.", LogLevel.Warn);
-                    return isValid;
-                })
+                .Where(patch => patch != null)
                 .ToArray();
 
             // preprocess patches
@@ -306,9 +300,22 @@ namespace ContentPatcher.Framework
         /// <param name="patch">The patch to name.</param>
         private string GetDefaultPatchName(PatchConfig patch)
         {
-            return Enum.TryParse(patch.Action, ignoreCase: true, out PatchType type) && type == PatchType.Include
-                ? $"{type} {PathUtilities.NormalizeAssetName(patch.FromFile)}"
-                : $"{patch.Action} {PathUtilities.NormalizeAssetName(patch.Target)}";
+            // default name if valid
+            if (Enum.TryParse(patch.Action, ignoreCase: true, out PatchType type))
+            {
+                string path = type == PatchType.Include
+                    ? patch.FromFile
+                    : patch.Target;
+
+                return !string.IsNullOrWhiteSpace(path)
+                    ? $"{type} {PathUtilities.NormalizeAssetName(path)}"
+                    : $"{type} invalid";
+            }
+
+            // invalid patch with missing required fields
+            return !string.IsNullOrWhiteSpace(patch.Action)
+                ? $"{patch.Action}"
+                : "invalid";
         }
 
         /// <summary>Unload patches matching a condition.</summary>
@@ -503,16 +510,17 @@ namespace ContentPatcher.Framework
                             }
 
                             // parse data changes
-                            bool TryParseFields(IContext context, PatchConfig rawFields, out List<EditDataPatchRecord> parsedEntries, out List<EditDataPatchField> parsedFields, out List<EditDataPatchMoveRecord> parsedMoveEntries, out string parseError)
+                            bool TryParseFields(IContext context, PatchConfig rawFields, out List<EditDataPatchRecord> parsedEntries, out List<EditDataPatchField> parsedFields, out List<EditDataPatchMoveRecord> parsedMoveEntries, out List<IManagedTokenString> targetField, out string parseError)
                             {
-                                return this.TryParseEditDataFields(rawFields, tokenParser, immutableRequiredModIDs, path, out parsedEntries, out parsedFields, out parsedMoveEntries, out parseError);
+                                return this.TryParseEditDataFields(rawFields, tokenParser, immutableRequiredModIDs, path, out parsedEntries, out parsedFields, out parsedMoveEntries, out targetField, out parseError);
                             }
                             List<EditDataPatchRecord> entries = null;
                             List<EditDataPatchField> fields = null;
                             List<EditDataPatchMoveRecord> moveEntries = null;
+                            List<IManagedTokenString> targetField = null;
                             if (fromAsset == null)
                             {
-                                if (!TryParseFields(tokenParser.Context, entry, out entries, out fields, out moveEntries, out string error))
+                                if (!TryParseFields(tokenParser.Context, entry, out entries, out fields, out moveEntries, out targetField, out string error))
                                     return TrackSkip(error);
                             }
 
@@ -531,11 +539,11 @@ namespace ContentPatcher.Framework
                                 fields: fields,
                                 moveRecords: moveEntries,
                                 textOperations: textOperations,
+                                targetField: targetField,
                                 updateRate: updateRate,
                                 contentPack: pack,
                                 parentPatch: parentPatch,
                                 monitor: this.Monitor,
-                                reflection: this.Reflection,
                                 normalizeAssetName: this.NormalizeAssetName,
                                 tryParseFields: TryParseFields
                             );
@@ -827,13 +835,15 @@ namespace ContentPatcher.Framework
         /// <param name="entries">The parsed data entry changes.</param>
         /// <param name="fields">The parsed data field changes.</param>
         /// <param name="moveEntries">The parsed move entry records.</param>
+        /// <param name="targetField">The field within the data asset to which edits should be applied, or empty to apply to the root asset.</param>
         /// <param name="error">The error message indicating why parsing failed, if applicable.</param>
         /// <returns>Returns whether parsing succeeded.</returns>
-        private bool TryParseEditDataFields(PatchConfig entry, TokenParser tokenParser, InvariantHashSet assumeModIds, LogPathBuilder path, out List<EditDataPatchRecord> entries, out List<EditDataPatchField> fields, out List<EditDataPatchMoveRecord> moveEntries, out string error)
+        private bool TryParseEditDataFields(PatchConfig entry, TokenParser tokenParser, InvariantHashSet assumeModIds, LogPathBuilder path, out List<EditDataPatchRecord> entries, out List<EditDataPatchField> fields, out List<EditDataPatchMoveRecord> moveEntries, out List<IManagedTokenString> targetField, out string error)
         {
             entries = new List<EditDataPatchRecord>();
             fields = new List<EditDataPatchField>();
             moveEntries = new List<EditDataPatchMoveRecord>();
+            targetField = new List<IManagedTokenString>();
 
             bool Fail(string reason, out string outReason)
             {
@@ -911,6 +921,20 @@ namespace ContentPatcher.Framework
 
                     // create move entry
                     moveEntries.Add(new EditDataPatchMoveRecord(moveId, beforeId, afterId, toPosition));
+                }
+            }
+
+            // parse target field
+            {
+                int i = 0;
+                foreach (string fieldName in entry.TargetField)
+                {
+                    LogPathBuilder localPath = path.With(nameof(entry.TargetField), i++.ToString());
+
+                    if (!tokenParser.TryParseString(fieldName, assumeModIds, localPath, out string fieldError, out IManagedTokenString fieldKey))
+                        return Fail($"{nameof(PatchConfig.Fields)} > target path {i - 1} is invalid: {fieldError}", out error);
+
+                    targetField.Add(fieldKey);
                 }
             }
 

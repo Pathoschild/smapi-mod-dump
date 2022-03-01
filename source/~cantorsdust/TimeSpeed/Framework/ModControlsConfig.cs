@@ -28,7 +28,7 @@ namespace TimeSpeed.Framework
         /// <summary>Speed up time by one second per 10-game-minutes. Combine with Control to decrease by 100 seconds, Shift to decrease by 10 seconds, or Alt to decrease by 0.1 seconds.</summary>
         public KeybindList DecreaseTickInterval { get; set; } = new(SButton.OemComma);
 
-        /// <summary>Reload all values from the config file and apply them immediately. Time will stay frozen if it was frozen via hotkey.</summary>
+        /// <summary>Reload all values from the config file and apply them immediately. Time will stay frozen if it was frozen via keybind.</summary>
         public KeybindList ReloadConfig { get; set; } = new(SButton.B);
     }
 }

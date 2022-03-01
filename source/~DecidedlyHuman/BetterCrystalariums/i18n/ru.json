@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+  "bettercrystalariums.wrong-mineral": "Сломайте аппарат, чтобы добавить новый минерал.",
+  "bettercrystalariums.no-gmcm": "GMCM (Generic Mod Config Menu) не обнаружен. Не критическая проблема.",
+  "bettercrystalariums.debug-setting-title": "Режим дебага",
+  "bettercrystalariums.debug-setting-description": "Включать только если я Вас попросил лично, или если Вы хотите разобраться в проблеме сами. Эта опция расширит логирование."
+}

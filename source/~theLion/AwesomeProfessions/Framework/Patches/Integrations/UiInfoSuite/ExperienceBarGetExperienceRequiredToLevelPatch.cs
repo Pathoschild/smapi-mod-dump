@@ -8,14 +8,14 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.UiInfoSuite;
 
 #region using directives
 
 using HarmonyLib;
 using JetBrains.Annotations;
 
-using Stardew.Common.Harmony;
+using Stardew.Common.Extensions;
 
 #endregion using directives
 

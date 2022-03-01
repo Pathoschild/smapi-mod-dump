@@ -14,18 +14,21 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UtilityGrid
 {
     /// <summary>The mod entry point.</summary>
     public partial class ModEntry
     {
+        private Vector2 lastCursorTile = new Vector2(-1,-1);
+
         public void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
             if (!Config.EnableMod || !Context.IsWorldReady || Game1.activeClickableMenu != null)
                 return;
 
-            string location = Game1.player.currentLocation.Name;
+            string location = Game1.player.currentLocation.NameOrUniqueName;
 
             if (e.Button == Config.ToggleGrid)
             {
@@ -43,7 +46,14 @@ namespace UtilityGrid
                 }
                 if (handler != null)
                 {
-                    KeyValuePair<GameLocation, int> args = new KeyValuePair<GameLocation, int>(Game1.getLocationFromName(location), (int)CurrentGrid);
+                    GameLocation gl = Game1.getLocationFromName(location);
+                    if (gl == null)
+                    {
+                        gl = Game1.getLocationFromName(location, true);
+                        if (gl == null)
+                            return;
+                    }
+                    KeyValuePair<GameLocation, int> args = new KeyValuePair<GameLocation, int>(gl, (int)CurrentGrid);
                     handler(context, args);
                 }
 
@@ -87,48 +97,10 @@ namespace UtilityGrid
                     CurrentRotation %= 4;
                 //Monitor.Log($"Showing tile: {CurrentTile},{CurrentRotation}");
             }
-            else if (e.Button == Config.PlaceTile)
-            {
-                Helper.Input.Suppress(e.Button);
-                Dictionary<Vector2, GridPipe> pipeDict;
-                if (CurrentGrid == GridType.electric)
-                {
-                    pipeDict = utilitySystemDict[location].electricPipes;
-                }
-                else
-                {
-                    pipeDict = utilitySystemDict[location].waterPipes;
-                }
-
-                if (pipeDict.ContainsKey(Game1.lastCursorTile))
-                {
-                    if (!PayForPipe(true))
-                        return;
-                    Monitor.Log($"Removing tile at {Game1.currentCursorTile}");
-                }
-                else if (!PayForPipe(false))
-                    return;
-
-                Monitor.Log($"Placing tile {CurrentTile},{CurrentRotation} at {Game1.currentCursorTile}");
-                pipeDict[Game1.lastCursorTile] = new GridPipe() { index = CurrentTile, rotation = CurrentRotation };
-                if (Config.PipeSound?.Length > 0)
-                {
-                    Game1.player.currentLocation.playSound(Config.PipeSound);
-                }
-                RemakeGroups(location, CurrentGrid);
-            }
             else if (e.Button == Config.DestroyTile)
             {
                 Helper.Input.Suppress(e.Button);
-                Dictionary<Vector2, GridPipe> pipeDict;
-                if (CurrentGrid == GridType.electric)
-                {
-                    pipeDict = utilitySystemDict[location].electricPipes;
-                }
-                else
-                {
-                    pipeDict = utilitySystemDict[location].waterPipes;
-                }
+                Dictionary<Vector2, GridPipe> pipeDict = utilitySystemDict[location][CurrentGrid].pipes;
                 if (!pipeDict.ContainsKey(Game1.lastCursorTile))
                 {
                     Monitor.Log($"No tile to remove at {Game1.currentCursorTile}");
@@ -149,39 +121,23 @@ namespace UtilityGrid
             if (!Config.EnableMod || !ShowingGrid || Game1.activeClickableMenu != null)
                 return;
 
-            string location = Game1.player.currentLocation.Name;
+            string location = Game1.player.currentLocation.NameOrUniqueName;
 
             if (!utilitySystemDict.ContainsKey(location))
             {
-                utilitySystemDict[location] = new UtilitySystem();
-                RemakeAllGroups(Game1.player.currentLocation.Name);
+                RemakeAllGroups(location);
             }
-            List<PipeGroup> groupList;
-            Dictionary<Vector2, GridPipe> pipeDict;
-            Dictionary<Vector2, UtilityObject> objectDict;
-            Color color;
-            if (CurrentGrid == GridType.electric)
-            {
-                groupList = utilitySystemDict[location].electricGroups;
-                pipeDict = utilitySystemDict[location].electricPipes;
-                objectDict = utilitySystemDict[location].electricUnconnectedObjects;
-                color = Config.ElectricityColor;
-            }
-            else
-            {
-                groupList = utilitySystemDict[location].waterGroups;
-                pipeDict = utilitySystemDict[location].waterPipes;
-                objectDict = utilitySystemDict[location].waterUnconnectedObjects;
-                color = Config.WaterColor;
-            }
-
-            bool carrying = Game1.player.IsCarrying();
+            Dictionary<Vector2, GridPipe> pipeDict = utilitySystemDict[location][CurrentGrid].pipes;
+            List<PipeGroup> groupList = utilitySystemDict[location][CurrentGrid].groups;
+            Dictionary<Vector2, UtilityObjectInstance> objectDict = utilitySystemDict[location][CurrentGrid].objects;
+            Color color = CurrentGrid == GridType.electric ? Config.ElectricityColor : Config.WaterColor;
 
             foreach (var group in groupList)
             {
                 Vector2 power = GetGroupPower(location, group, CurrentGrid);
+                Vector2 storedPower = GetGroupStoragePower(location, group, CurrentGrid);
                 float netPower = power.X + power.Y;
-                bool powered = power.X > 0 && netPower >= 0;
+                bool powered = power.X > 0 && netPower + storedPower.X >= 0;
                 foreach (var pipe in group.pipes)
                 {
                     if (Utility.isOnScreen(new Vector2(pipe.X * 64 + 32, pipe.Y * 64 + 32), 32))
@@ -192,19 +148,14 @@ namespace UtilityGrid
                             DrawTile(e.SpriteBatch, pipe, pipeDict[pipe], powered ? color : Config.UnpoweredGridColor);
                     }
                 }
-                foreach (var kvp in group.objects)
-                {
-                    DrawAmount(e.SpriteBatch, kvp, netPower, color);
-                    DrawCharge(e.SpriteBatch, kvp, color);
-                }
 
             }
             foreach (var kvp in objectDict)
             {
-                DrawAmount(e.SpriteBatch, kvp, CurrentGrid == GridType.electric ? kvp.Value.electric : kvp.Value.water, color);
+                DrawAmount(e.SpriteBatch, kvp, kvp.Value.CurrentPowerVector.X + kvp.Value.CurrentPowerVector.Y, color);
                 DrawCharge(e.SpriteBatch, kvp, color);
             }
-            if (ShowingEdit && !carrying)
+            if (ShowingEdit)
             {
                 if (CurrentTile == 4)
                 {
@@ -222,23 +173,60 @@ namespace UtilityGrid
                     DrawTile(e.SpriteBatch, Game1.currentCursorTile + new Vector2(2, 2) / 64, new GridPipe() { index = CurrentTile, rotation = CurrentRotation }, Config.ShadowColor);
                     DrawTile(e.SpriteBatch, Game1.currentCursorTile, new GridPipe() { index = CurrentTile, rotation = CurrentRotation }, color);
                 }
+                if (Helper.Input.IsDown(Config.PlaceTile) || Helper.Input.IsSuppressed(Config.PlaceTile))
+                {
+                    if(lastCursorTile != Game1.lastCursorTile)
+                    {
+                        Helper.Input.Suppress(Config.PlaceTile);
+                        lastCursorTile = Game1.lastCursorTile;
+                        if (pipeDict.ContainsKey(Game1.lastCursorTile))
+                        {
+                            if (!PayForPipe(true))
+                                return;
+                            Monitor.Log($"Removing tile at {Game1.currentCursorTile}");
+                        }
+                        else if (!PayForPipe(false))
+                            return;
+
+                        Monitor.Log($"Placing tile {CurrentTile},{CurrentRotation} at {Game1.currentCursorTile}");
+                        pipeDict[Game1.lastCursorTile] = new GridPipe() { index = CurrentTile, rotation = CurrentRotation };
+                        if (Config.PipeSound?.Length > 0)
+                        {
+                            Game1.player.currentLocation.playSound(Config.PipeSound);
+                        }
+                        RemakeGroups(location, CurrentGrid);
+                    }
+                }
+                else
+                {
+                    lastCursorTile = new Vector2(-1,-1);
+                }
             }
         }
 
         private void GameLoop_TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)
         {
-            if (!Config.EnableMod || Game1.timeOfDay % 100 != 0)
-                return;
-
-            foreach(var kvp in utilitySystemDict)
+            float elapsed = (e.NewTime / 100 - e.OldTime / 100) + (e.NewTime % 100 - e.OldTime % 100) / 60f;
+            foreach (var key in utilitySystemDict.Keys)
             {
-                foreach(var group in kvp.Value.electricGroups)
+                var val = utilitySystemDict[key];
+                for (int i = 0; i < val[GridType.electric].groups.Count; i++)
                 {
-                    GetGroupElectricPower(kvp.Key, group, true);
+                    val[GridType.electric].groups[i].powerVector = GetGroupPower(key, val[GridType.electric].groups[i], GridType.electric);
+                    val[GridType.electric].groups[i].storageVector = GetGroupStoragePower(key, val[GridType.electric].groups[i], GridType.electric);
                 }
-                foreach(var group in kvp.Value.waterGroups)
+                for (int i = 0; i < val[GridType.water].groups.Count; i++)
                 {
-                    GetGroupWaterPower(kvp.Key, group, true);
+                    val[GridType.water].groups[i].powerVector = GetGroupPower(key, val[GridType.water].groups[i], GridType.water);
+                    val[GridType.water].groups[i].storageVector = GetGroupStoragePower(key, val[GridType.water].groups[i], GridType.water);
+                }
+                foreach (var group in val[GridType.electric].groups)
+                {
+                    ChangeStorageObjects(key, group, GridType.electric, elapsed);
+                }
+                foreach (var group in val[GridType.water].groups)
+                {
+                    ChangeStorageObjects(key, group, GridType.water, elapsed);
                 }
             }
         }
@@ -247,28 +235,36 @@ namespace UtilityGrid
             if (!Config.EnableMod)
                 return;
 
-            int elapsed = 6 - Game1.timeOfDay / 100;
+            float elapsed = 6 - (Game1.timeOfDay / 100 + Game1.timeOfDay % 100 / 60f);
             if (elapsed <= 0)
                 elapsed += 24;
-            for(int i = 0; i < elapsed; i++)
+            foreach (var key in utilitySystemDict.Keys)
             {
-                foreach (var kvp in utilitySystemDict)
+                var val = utilitySystemDict[key];
+                for(int i = 0; i < val[GridType.electric].groups.Count; i++)
                 {
-                    foreach (var group in kvp.Value.electricGroups)
-                    {
-                        GetGroupElectricPower(kvp.Key, group, true);
-                    }
-                    foreach (var group in kvp.Value.waterGroups)
-                    {
-                        GetGroupWaterPower(kvp.Key, group, true);
-                    }
+                    val[GridType.electric].groups[i].powerVector = GetGroupPower(key, val[GridType.electric].groups[i], GridType.electric);
+                    val[GridType.electric].groups[i].storageVector = GetGroupStoragePower(key, val[GridType.electric].groups[i], GridType.electric);
+                }
+                for (int i = 0; i < val[GridType.water].groups.Count; i++)
+                {
+                    val[GridType.water].groups[i].powerVector = GetGroupPower(key, val[GridType.water].groups[i], GridType.water);
+                    val[GridType.water].groups[i].storageVector = GetGroupStoragePower(key, val[GridType.water].groups[i], GridType.water);
+                }
+                foreach (var group in val[GridType.electric].groups)
+                {
+                    ChangeStorageObjects(key, group, GridType.electric, elapsed);
+                }
+                foreach (var group in val[GridType.water].groups)
+                {
+                    ChangeStorageObjects(key, group, GridType.water, elapsed);
                 }
             }
         }
 
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
-            utilitySystemDict = new Dictionary<string, UtilitySystem>();
+            utilitySystemDict = new Dictionary<string, Dictionary<GridType, UtilitySystem>>();
             ShowingGrid = false;
             CurrentRotation = 0;
             CurrentTile = 0;
@@ -281,14 +277,16 @@ namespace UtilityGrid
                 foreach (var kvp in systemDataDict.dict)
                 {
                     Monitor.Log($"reading {kvp.Value.electricData.Count} ep and {kvp.Value.waterData.Count} wp for location {kvp.Key}");
-                    utilitySystemDict[kvp.Key] = new UtilitySystem();
+                    utilitySystemDict[kvp.Key] = new Dictionary<GridType, UtilitySystem>();
+                    utilitySystemDict[kvp.Key][GridType.electric] = new UtilitySystem();
+                    utilitySystemDict[kvp.Key][GridType.water] = new UtilitySystem();
                     foreach (var arr in kvp.Value.waterData)
                     {
-                        utilitySystemDict[kvp.Key].waterPipes[new Vector2(arr[0], arr[1])] = new GridPipe() { index = arr[2], rotation = arr[3] };
+                        utilitySystemDict[kvp.Key][GridType.water].pipes[new Vector2(arr[0], arr[1])] = new GridPipe() { index = arr[2], rotation = arr[3] };
                     }
                     foreach (var arr in kvp.Value.electricData)
                     {
-                        utilitySystemDict[kvp.Key].electricPipes[new Vector2(arr[0], arr[1])] = new GridPipe() { index = arr[2], rotation = arr[3] };
+                        utilitySystemDict[kvp.Key][GridType.electric].pipes[new Vector2(arr[0], arr[1])] = new GridPipe() { index = arr[2], rotation = arr[3] };
                     }
                     RemakeAllGroups(kvp.Key);
                 }
@@ -304,7 +302,7 @@ namespace UtilityGrid
             Monitor.Log($"writing grid data for {utilitySystemDict.Count} locations from save");
             foreach (var kvp in utilitySystemDict)
             {
-                UtilitySystemData gridData = new UtilitySystemData(kvp.Value.waterPipes, kvp.Value.electricPipes);
+                UtilitySystemData gridData = new UtilitySystemData(kvp.Value[GridType.water].pipes, kvp.Value[GridType.electric].pipes);
                 dict.dict[kvp.Key] = gridData;
                 Monitor.Log($"writing {gridData.electricData.Count} ep and {gridData.waterData.Count} wp for location {kvp.Key} to save");
             }

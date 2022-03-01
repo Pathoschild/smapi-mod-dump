@@ -92,8 +92,6 @@ namespace CombatControlsRedux
             MyHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
             MyHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             MyHelper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
-
-            //Monitor.Log($"MinGameVersion={Constants.MinimumGameVersion}, MaxGameVersion={Constants.MaximumGameVersion}", LogLevel.Debug);
         }
 
         internal String I18nGet(String str)
@@ -337,10 +335,9 @@ namespace CombatControlsRedux
                         // .Cursor.AbsolutePixels are map relative coords
                         //  who.GetBoundingBox().Center.X/Y, who.Position.X/Y
                         //  should I use BoundingBox center?
-                        //Monitor.Log($"Pos.X,Y {(int) who.Position.X},{(int) who.Position.Y} " +
+                        //Log.Debug($"Pos.X,Y {(int) who.Position.X},{(int) who.Position.Y} " +
                         //                $"Center.X,Y {(int) who.GetBoundingBox().Center.X},{(int) who.GetBoundingBox().Center.Y} " +
-                        //                $"Cursor.X,Y {(int) e.Cursor.AbsolutePixels.X},{(int) e.Cursor.AbsolutePixels.Y}",
-                        //            LogLevel.Debug);
+                        //                $"Cursor.X,Y {(int) e.Cursor.AbsolutePixels.X},{(int) e.Cursor.AbsolutePixels.Y}");
                         //float mouseDirectionX = e.Cursor.AbsolutePixels.X - who.Position.X;
                         //float mouseDirectionY = e.Cursor.AbsolutePixels.Y - who.Position.Y;
                         Microsoft.Xna.Framework.Point pos = who.GetBoundingBox().Center;

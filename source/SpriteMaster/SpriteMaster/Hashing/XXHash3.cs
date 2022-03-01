@@ -12,6 +12,7 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
@@ -39,143 +40,143 @@ partial class Hashing {
 		private const int XXH_STRIPE_LEN = 64;
 		private const int XXH_ACC_NB = (XXH_STRIPE_LEN / sizeof(ulong));
 
-		private static readonly byte[] XXH3_SECRET;
+		private static readonly byte[] XXH3_SECRET = new byte[] {
+			0xb8, 0xfe, 0x6c, 0x39, 0x23, 0xa4, 0x4b, 0xbe, 0x7c, 0x01, 0x81, 0x2c, 0xf7, 0x21, 0xad, 0x1c,
+			0xde, 0xd4, 0x6d, 0xe9, 0x83, 0x90, 0x97, 0xdb, 0x72, 0x40, 0xa4, 0xa4, 0xb7, 0xb3, 0x67, 0x1f,
+			0xcb, 0x79, 0xe6, 0x4e, 0xcc, 0xc0, 0xe5, 0x78, 0x82, 0x5a, 0xd0, 0x7d, 0xcc, 0xff, 0x72, 0x21,
+			0xb8, 0x08, 0x46, 0x74, 0xf7, 0x43, 0x24, 0x8e, 0xe0, 0x35, 0x90, 0xe6, 0x81, 0x3a, 0x26, 0x4c,
+			0x3c, 0x28, 0x52, 0xbb, 0x91, 0xc3, 0x00, 0xcb, 0x88, 0xd0, 0x65, 0x8b, 0x1b, 0x53, 0x2e, 0xa3,
+			0x71, 0x64, 0x48, 0x97, 0xa2, 0x0d, 0xf9, 0x4e, 0x38, 0x19, 0xef, 0x46, 0xa9, 0xde, 0xac, 0xd8,
+			0xa8, 0xfa, 0x76, 0x3f, 0xe3, 0x9c, 0x34, 0x3f, 0xf9, 0xdc, 0xbb, 0xc7, 0xc7, 0x0b, 0x4f, 0x1d,
+			0x8a, 0x51, 0xe0, 0x4b, 0xcd, 0xb4, 0x59, 0x31, 0xc8, 0x9f, 0x7e, 0xc9, 0xd9, 0x78, 0x73, 0x64,
+			0xea, 0xc5, 0xac, 0x83, 0x34, 0xd3, 0xeb, 0xc3, 0xc5, 0x81, 0xa0, 0xff, 0xfa, 0x13, 0x63, 0xeb,
+			0x17, 0x0d, 0xdd, 0x51, 0xb7, 0xf0, 0xda, 0x49, 0xd3, 0x16, 0x55, 0x26, 0x29, 0xd4, 0x68, 0x9e,
+			0x2b, 0x16, 0xbe, 0x58, 0x7d, 0x47, 0xa1, 0xfc, 0x8f, 0xf8, 0xb8, 0xd1, 0x7a, 0xd0, 0x31, 0xce,
+			0x45, 0xcb, 0x3a, 0x8f, 0x95, 0x16, 0x04, 0x28, 0xaf, 0xd7, 0xfb, 0xca, 0xbb, 0x4b, 0x40, 0x7e,
+		};
 
-		static XXHash3() {
-			XXH3_SECRET = GC.AllocateUninitializedArray<byte>(192);
-			unsafe {
-				byte* data = stackalloc byte[192] {
-					0xb8, 0xfe, 0x6c, 0x39, 0x23, 0xa4, 0x4b, 0xbe, 0x7c, 0x01, 0x81, 0x2c, 0xf7, 0x21, 0xad, 0x1c,
-					0xde, 0xd4, 0x6d, 0xe9, 0x83, 0x90, 0x97, 0xdb, 0x72, 0x40, 0xa4, 0xa4, 0xb7, 0xb3, 0x67, 0x1f,
-					0xcb, 0x79, 0xe6, 0x4e, 0xcc, 0xc0, 0xe5, 0x78, 0x82, 0x5a, 0xd0, 0x7d, 0xcc, 0xff, 0x72, 0x21,
-					0xb8, 0x08, 0x46, 0x74, 0xf7, 0x43, 0x24, 0x8e, 0xe0, 0x35, 0x90, 0xe6, 0x81, 0x3a, 0x26, 0x4c,
-					0x3c, 0x28, 0x52, 0xbb, 0x91, 0xc3, 0x00, 0xcb, 0x88, 0xd0, 0x65, 0x8b, 0x1b, 0x53, 0x2e, 0xa3,
-					0x71, 0x64, 0x48, 0x97, 0xa2, 0x0d, 0xf9, 0x4e, 0x38, 0x19, 0xef, 0x46, 0xa9, 0xde, 0xac, 0xd8,
-					0xa8, 0xfa, 0x76, 0x3f, 0xe3, 0x9c, 0x34, 0x3f, 0xf9, 0xdc, 0xbb, 0xc7, 0xc7, 0x0b, 0x4f, 0x1d,
-					0x8a, 0x51, 0xe0, 0x4b, 0xcd, 0xb4, 0x59, 0x31, 0xc8, 0x9f, 0x7e, 0xc9, 0xd9, 0x78, 0x73, 0x64,
-					0xea, 0xc5, 0xac, 0x83, 0x34, 0xd3, 0xeb, 0xc3, 0xc5, 0x81, 0xa0, 0xff, 0xfa, 0x13, 0x63, 0xeb,
-					0x17, 0x0d, 0xdd, 0x51, 0xb7, 0xf0, 0xda, 0x49, 0xd3, 0x16, 0x55, 0x26, 0x29, 0xd4, 0x68, 0x9e,
-					0x2b, 0x16, 0xbe, 0x58, 0x7d, 0x47, 0xa1, 0xfc, 0x8f, 0xf8, 0xb8, 0xd1, 0x7a, 0xd0, 0x31, 0xce,
-					0x45, 0xcb, 0x3a, 0x8f, 0x95, 0x16, 0x04, 0x28, 0xaf, 0xd7, 0xfb, 0xca, 0xbb, 0x4b, 0x40, 0x7e,
-				};
-				fixed (byte* dest = XXH3_SECRET) {
-					Unsafe.CopyBlock(dest, data, sizeof(byte) * 192);
-				}
-			}
-		}
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		public static ulong Hash64(ReadOnlySpan<byte> data) => Hash64(data, data.Length, XXH3_SECRET);
 
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		public static ulong Hash64(ReadOnlySpan<byte> data, ulong seed = 0) => Hash64(data, data.Length, XXH3_SECRET, XXH3_SECRET.Length, seed);
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		public static ulong Hash64(ReadOnlySpan<byte> data, int length) => Hash64(data, length, XXH3_SECRET);
 
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		public static ulong Hash64(ReadOnlySpan<byte> data, int length, ulong seed = 0) => Hash64(data, length, XXH3_SECRET, XXH3_SECRET.Length, seed);
-
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		public static ulong Hash64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, int secretLength, ulong seed) {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		private static ulong Hash64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
 			if (length <= 16) {
-				return xxh3_0to16_64(data, length, secret, seed);
+				return xxh3_0to16_64(data, length, secret);
 			}
 			else if (length <= 128) {
-				return xxh3_17to128_64(data, length, secret, secretLength, seed);
+				return xxh3_17to128_64(data, length, secret);
 			}
 			else if (length <= 240) {
-				return xxh3_129to240_64(data, length, secret, secretLength, seed);
+				return xxh3_129to240_64(data, length, secret);
 			}
 			else {
-				return xxh3_hashLong_64(data, length, secret, secretLength, seed);
+				return xxh3_hashLong_64(data, length, secret);
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		private static ulong xxh3_0to16_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, ulong seed) {
-			if (length > 8) return xxh3_len_9to16_64(data, length, secret, seed);
-			else if (length >= 4) return xxh3_len_4to8_64(data, length, secret, seed);
-			else if (length > 0) return xxh3_len_1to3_64(data, length, secret, seed);
-			else return xxh3_avalanche(seed ^ (read_le64(secret[56..]) ^ read_le64(secret[64..])));
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		private static ulong xxh3_0to16_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
+			if (length > 8) return xxh3_len_9to16_64(data, length, secret);
+			else if (length >= 4) return xxh3_len_4to8_64(data, length, secret);
+			else if (length > 0) return xxh3_len_1to3_64(data, length, secret);
+			else return xxh3_avalanche(read_le64(secret[56..]) ^ read_le64(secret[64..]));
 
-
-			static ulong xxh3_len_9to16_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, ulong seed) {
-				ulong bitflip1 = (read_le64(secret[24..]) ^ read_le64(secret[32..])) + seed;
-				ulong bitflip2 = (read_le64(secret[40..]) ^ read_le64(secret[48..])) - seed;
+			[MethodImpl(Runtime.MethodImpl.Hot)]
+			static ulong xxh3_len_9to16_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
+				ulong bitflip1 = (read_le64(secret[24..]) ^ read_le64(secret[32..]));
+				ulong bitflip2 = (read_le64(secret[40..]) ^ read_le64(secret[48..]));
 				ulong input_low = read_le64(data) ^ bitflip1;
 				ulong input_high = read_le64(data[(length - 8)..]) ^ bitflip2;
 				ulong acc = (ulong)length + swap64(input_low) + input_high + xxh3_mul128_fold64(input_low, input_high);
 
 				return xxh3_avalanche(acc);
 			}
-			static ulong xxh3_len_4to8_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, ulong seed) {
-				seed ^= (ulong)swap32((uint)seed) << 32;
 
+			[MethodImpl(Runtime.MethodImpl.Hot)]
+			static ulong xxh3_len_4to8_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
 				uint input1 = read_le32(data);
 				uint input2 = read_le32(data[(length - 4)..]);
-				ulong bitflip = (read_le64(secret[8..]) ^ read_le64(secret[16..])) - seed;
+				ulong bitflip = (read_le64(secret[8..]) ^ read_le64(secret[16..]));
 				ulong input64 = input2 + (((ulong)input1) << 32);
 				ulong keyed = input64 ^ bitflip;
 
 				return xxh3_rrmxmx(keyed, (ulong)length);
 			}
-			static ulong xxh3_len_1to3_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, ulong seed) {
+
+			[MethodImpl(Runtime.MethodImpl.Hot)]
+			static ulong xxh3_len_1to3_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
 				byte c1 = data[0];
 				byte c2 = data[length >> 1];
 				byte c3 = data[length - 1];
 				uint combined = ((uint)c1 << 16) | ((uint)c2 << 24) | ((uint)c3 << 0) | ((uint)length << 8);
-				ulong bitflip = (read_le32(secret) ^ read_le32(secret[4..])) + seed;
+				ulong bitflip = (read_le32(secret) ^ read_le32(secret[4..]));
 				ulong keyed = (ulong)combined ^ bitflip;
 
 				return xxh64_avalanche(keyed);
 			}
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		private static ulong xxh3_17to128_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, int secretLength, ulong seed) {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		private static ulong xxh3_17to128_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
 			ulong acc = (ulong)length * XXH_PRIME64_1;
 
 			if (length > 32) {
 				if (length > 64) {
 					if (length > 96) {
-						acc += xxh3_mix16B(data[48..], secret[96..], seed);
-						acc += xxh3_mix16B(data[(length - 64)..], secret[112..], seed);
+						acc += xxh3_mix16B(data[48..], secret[96..]);
+						acc += xxh3_mix16B(data[(length - 64)..], secret[112..]);
 					}
 
-					acc += xxh3_mix16B(data[32..], secret[64..], seed);
-					acc += xxh3_mix16B(data[(length - 48)..], secret[80..], seed);
+					acc += xxh3_mix16B(data[32..], secret[64..]);
+					acc += xxh3_mix16B(data[(length - 48)..], secret[80..]);
 				}
 
-				acc += xxh3_mix16B(data[16..], secret[32..], seed);
-				acc += xxh3_mix16B(data[(length - 32)..], secret[48..], seed);
+				acc += xxh3_mix16B(data[16..], secret[32..]);
+				acc += xxh3_mix16B(data[(length - 32)..], secret[48..]);
 			}
 
-			acc += xxh3_mix16B(data, secret, seed);
-			acc += xxh3_mix16B(data[(length - 16)..], secret[16..], seed);
+			acc += xxh3_mix16B(data, secret);
+			acc += xxh3_mix16B(data[(length - 16)..], secret[16..]);
 
 			return xxh3_avalanche(acc);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		private static ulong xxh3_129to240_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, int secretLength, ulong seed) {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		private static ulong xxh3_129to240_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
 			ulong acc = (ulong)length * XXH_PRIME64_1;
 
 			int round_count = length / 16;
 			for (int i = 0; i < 8; i++) {
-				acc += xxh3_mix16B(data[(16 * i)..], secret[(16 * i)..], seed);
+				acc += xxh3_mix16B(data[(16 * i)..], secret[(16 * i)..]);
 			}
 
 			acc = xxh3_avalanche(acc);
 
 			for (int i = 8; i < round_count; i++) {
-				acc += xxh3_mix16B(data[(16 * i)..], secret[((16 * (i - 8)) + 3)..], seed);
+				acc += xxh3_mix16B(data[(16 * i)..], secret[((16 * (i - 8)) + 3)..]);
 			}
 
-			acc += xxh3_mix16B(data[(length - 16)..], secret[(136 - 17)..], seed);
+			acc += xxh3_mix16B(data[(length - 16)..], secret[(136 - 17)..]);
 
 			return xxh3_avalanche(acc);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-		private static unsafe ulong xxh3_hashLong_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret, int secretLength, ulong seed) {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		private static unsafe ulong xxh3_hashLong_64(ReadOnlySpan<byte> data, int length, ReadOnlySpan<byte> secret) {
+			int secretLength = secret.Length;
+
 			Span<ulong> acc = stackalloc ulong[8] {
-				XXH_PRIME32_3, XXH_PRIME64_1, XXH_PRIME64_2, XXH_PRIME64_3,
-				XXH_PRIME64_4, XXH_PRIME32_2, XXH_PRIME64_5, XXH_PRIME32_1
+				XXH_PRIME32_3,
+				XXH_PRIME64_1,
+				XXH_PRIME64_2,
+				XXH_PRIME64_3,
+				XXH_PRIME64_4,
+				XXH_PRIME32_2,
+				XXH_PRIME64_5,
+				XXH_PRIME32_1
 			};
 
 			int stripesPerBlock = (secretLength - XXH_STRIPE_LEN) / 8;
@@ -243,13 +244,13 @@ partial class Hashing {
 		}
 
 		[MethodImpl(MethodImpl.Hot)]
-		private static ulong xxh3_mix16B(ReadOnlySpan<byte> data, ReadOnlySpan<byte> secret, ulong seed) {
+		private static ulong xxh3_mix16B(ReadOnlySpan<byte> data, ReadOnlySpan<byte> secret) {
 			ulong input_low = read_le64(data);
 			ulong input_high = read_le64(data[8..]);
 
 			return xxh3_mul128_fold64(
-					input_low ^ (read_le64(secret) + seed),
-					input_high ^ (read_le64(secret[8..]) - seed));
+					input_low ^ (read_le64(secret)),
+					input_high ^ (read_le64(secret[8..])));
 		}
 
 		[MethodImpl(MethodImpl.Hot)]
@@ -266,10 +267,11 @@ partial class Hashing {
 				ulong data_key = data_val ^ read_le64(secret[(i * 8)..]);
 
 				acc[i ^ 1] += data_val;
-				acc[i] += xxh_mul32to64(data_key & 0xFFFFFFFF, data_key >> 32);
+				acc[i] += xxh_mul32to64(data_key, data_key >> 32);
 			}
 		}
 
+		[MethodImpl(Runtime.MethodImpl.Hot)]
 		private static void xxh3_accumulate_512_sse2(Span<ulong> acc, ReadOnlySpan<byte> data, ReadOnlySpan<byte> secret) {
 			//Span<Vector128<uint>> xacc = MemoryMarshal.Cast<ulong, Vector128<uint>>(acc);
 			//ReadOnlySpan<Vector128<uint>> xdata = MemoryMarshal.Cast<byte, Vector128<uint>>(data);
@@ -290,6 +292,8 @@ partial class Hashing {
 			//    xacc[i] = Sse2.Add(product, sum);
 			//}
 		}
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
 		private static void xxh3_accumulate_512_avx2(Span<ulong> acc, ReadOnlySpan<byte> data, ReadOnlySpan<byte> secret) {
 
 		}
@@ -307,9 +311,13 @@ partial class Hashing {
 				acc[i] = acc64;
 			}
 		}
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
 		private static void xxh3_scramble_acc_sse2(Span<ulong> acc, ReadOnlySpan<byte> secret) {
 
 		}
+
+		[MethodImpl(Runtime.MethodImpl.Hot)]
 		private static void xxh3_scramble_acc_avx2(Span<ulong> acc, ReadOnlySpan<byte> secret) {
 		}
 
@@ -344,11 +352,11 @@ partial class Hashing {
 		[MethodImpl(MethodImpl.Hot)]
 		private static ulong swap64(ulong value) => BinaryPrimitives.ReverseEndianness(value);
 		[MethodImpl(MethodImpl.Hot)]
-		private static ulong rotl64(ulong value, int shift) => (value << shift) | (value >> (64 - shift));
+		private static ulong rotl64(ulong value, int shift) => BitOperations.RotateLeft(value, shift);
 		[MethodImpl(MethodImpl.Hot)]
-		private static ulong rotr64(ulong value, int shift) => (value << (64 - shift)) | (value >> shift);
+		private static ulong rotr64(ulong value, int shift) => BitOperations.RotateRight(value, shift);
 
 		[MethodImpl(MethodImpl.Hot)]
-		public static byte _mm_shuffle(byte p3, byte p2, byte p1, byte p0) => (byte)((p3 << 6) | (p2 << 4) | (p1 << 2) | p0);
+		private static byte _mm_shuffle(byte p3, byte p2, byte p1, byte p0) => (byte)((p3 << 6) | (p2 << 4) | (p1 << 2) | p0);
 	}
 }

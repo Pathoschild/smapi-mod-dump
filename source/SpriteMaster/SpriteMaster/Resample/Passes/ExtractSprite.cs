@@ -25,28 +25,48 @@ static class ExtractSprite {
 			return Extract(data, textureBounds, spriteBounds, stride, out newExtent);
 		}
 
-		if (!block.IsPow2()) {
-			throw new ArgumentException($"Block size {block} is not a power-of-two");
-		}
+		Span<Color8> result;
 
-		Bounds bounds = new Bounds(
-			spriteBounds.Offset & ~(block - 1), // 'block' is a power-of-two
-			(spriteBounds.Extent / block).Max((1, 1))
-		);
+		if (block.IsPow2()) {
+			Bounds bounds = new Bounds(
+				spriteBounds.Offset & ~(block - 1), // 'block' is a power-of-two
+				(spriteBounds.Extent / block).Max((1, 1))
+			);
 
-		var result = SpanExt.MakeUninitialized<Color8>(bounds.Area);
+			result = SpanExt.MakeUninitialized<Color8>(bounds.Area);
 
-		int startOffset = (bounds.Offset.Y * stride) + bounds.Offset.X;
-		int outOffset = 0;
+			int startOffset = (bounds.Offset.Y * stride) + bounds.Offset.X;
+			int outOffset = 0;
 
-		for (int y = 0; y < bounds.Extent.Height; ++y) {
-			int offset = startOffset + ((y * block) * stride);
-			for (int x = 0; x < bounds.Extent.Width; ++x) {
-				result[outOffset++] = data[offset + (x * block)];
+			for (int y = 0; y < bounds.Extent.Height; ++y) {
+				int offset = startOffset + ((y * block) * stride);
+				for (int x = 0; x < bounds.Extent.Width; ++x) {
+					result[outOffset++] = data[offset + (x * block)];
+				}
 			}
-		}
 
-		newExtent = bounds.Extent;
+			newExtent = bounds.Extent;
+		}
+		else {
+			Bounds bounds = new Bounds(
+				spriteBounds.Offset,
+				(spriteBounds.Extent / block).Max((1, 1))
+			);
+
+			result = SpanExt.MakeUninitialized<Color8>(bounds.Area);
+
+			int startOffset = (bounds.Offset.Y * stride) + bounds.Offset.X;
+			int outOffset = 0;
+
+			for (int y = 0; y < bounds.Extent.Height; ++y) {
+				int offset = startOffset + ((y * block) * stride);
+				for (int x = 0; x < bounds.Extent.Width; ++x) {
+					result[outOffset++] = data[offset + (x * block)];
+				}
+			}
+
+			newExtent = bounds.Extent;
+		}
 		return result;
 	}
 

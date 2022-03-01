@@ -17,6 +17,12 @@ namespace SAAT.API
     /// </summary>
     public interface IAudioManager
     {
+        /// <summary>
+        /// Get the defaulting cue. A special cue instance that is silent. 
+        /// "Plays" when retrieving or loading a cue fails.
+        /// </summary>
+        ICue DefaultingCue { get; }
+
         /// <summary>Gets the implementation of the sound bank used by Stardew Valley.</summary>
         ISoundBank SoundBank { get; }
 

@@ -21,8 +21,8 @@ using JetBrains.Annotations;
 using Netcode;
 using StardewValley;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -42,8 +42,8 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
     ///     produce quality boosts.
     /// </summary>
     [HarmonyTranspiler]
-    protected static IEnumerable<CodeInstruction> FarmAnimalDayUpdateTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+    private static IEnumerable<CodeInstruction> FarmAnimalDayUpdateTranspiler(
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
@@ -52,8 +52,8 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
         ///		? Game1.getFarmer(FarmAnimal.ownerID).professions.Contains(100 + <producer_id>)) ? 3 : 2
         ///		: 1
 
-        var notPrestigedProducer = iLGenerator.DefineLabel();
-        var resumeExecution1 = iLGenerator.DefineLabel();
+        var notPrestigedProducer = generator.DefineLabel();
+        var resumeExecution1 = generator.DefineLabel();
         try
         {
             helper
@@ -130,6 +130,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching modded Producer produce frequency.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -155,6 +156,7 @@ internal class FarmAnimalDayUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while removing vanilla Coopmaster + Shepherd produce quality bonuses.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

@@ -11,11 +11,8 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -75,8 +72,8 @@ namespace CustomNPCExclusions
                 for (int x = patched.Count - 1; x >= 2; x--) //for each instruction (looping backward, skipping the first 2)
                 {
                     if (patched[x].opcode == OpCodes.Call && (patched[x].operand as MethodInfo) == getNearbyMethod //if this instruction checks the player's mail flags
-                        && patched[x-1].opcode == OpCodes.Ldstr && (patched[x-1].operand as string) == "ccMovieTheater" //and the previous instruction loads the string "ccMovieTheater"
-                        && patched[x-2].opcode == OpCodes.Brtrue) //and the previous instruction is "break if true"
+                        && patched[x - 1].opcode == OpCodes.Ldstr && (patched[x - 1].operand as string) == "ccMovieTheater" //and the previous instruction loads the string "ccMovieTheater"
+                        && patched[x - 2].opcode == OpCodes.Brtrue) //and the previous instruction is "break if true"
                     {
                         Label goHereIfNotExcluded = generator.DefineLabel();
                         patched[x - 1].labels.Add(goHereIfNotExcluded); //add the label to the first original instruction following these patched instructions 
@@ -116,7 +113,8 @@ namespace CustomNPCExclusions
                      || exclusion.StartsWith("MovieInvite", StringComparison.OrdinalIgnoreCase)) //OR if this NPC is excluded from movie invitations
                     {
                         DrawMovieExclusionDialogue(npc); //generate exclusion dialogue for this NPC
-                        ModEntry.Instance.Monitor.Log($"Excluded NPC from being invited to a movie: {npc.Name}", LogLevel.Trace);
+                        if (ModEntry.Instance.Monitor.IsVerbose)
+                            ModEntry.Instance.Monitor.Log($"Excluded NPC from being invited to a movie: {npc.Name}", LogLevel.Trace);
                         return true; //this NPC was excluded
                     }
                 }

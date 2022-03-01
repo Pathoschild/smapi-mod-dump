@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.SpaceCore;
 
 #region using directives
 
@@ -20,9 +20,8 @@ using StardewValley;
 using StardewValley.Menus;
 
 using Stardew.Common.Extensions;
-using Stardew.Common.Harmony;
-using AssetLoaders;
 using Extensions;
+using Utility;
 
 #endregion using directives
 

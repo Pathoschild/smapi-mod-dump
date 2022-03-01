@@ -6,9 +6,9 @@ mods:
    Pause in Multiplayer
 
 latest commit:
-   commit f7f07a9a61486fd2261bff8491eeb43fe1d2a0a3
+   commit 4de03ab259c1c3f0fbbc3fccd83064aa50e97fe7
    Author: jorgamun <jorgamun@gmail.com>
-   Date:   Sun Jan 23 17:27:42 2022 -0800
+   Date:   Fri Feb 4 02:09:25 2022 -0800
    
-       vote pause additions
+       AnyCutscenePauses functionality and minor bugfixes
    

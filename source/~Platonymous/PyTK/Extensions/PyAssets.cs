@@ -16,6 +16,7 @@ using StardewModdingAPI;
 using StardewValley;
 using xTile;
 using Microsoft.Xna.Framework;
+using Range = PyTK.Types.Range;
 
 namespace PyTK.Extensions
 {

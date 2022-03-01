@@ -30,7 +30,6 @@ namespace AnimalHusbandryMod.common
     public class DataLoader : IAssetEditor, IAssetLoader
     {
         private static readonly string[] MeatDishes = { "652", "653", "654", "655", "656", "657", "658", "659", "660", "661", "662", "663", "664", "665", "666" };
-        private static readonly string[] BaseGameAnimals = new string[] { "White Chicken", "Brown Chicken", "Blue Chicken", "Void Chicken", "Duck", "Rabbit", "Dinosaur", "White Cow", "Brown Cow", "Goat", "Pig", "Hog", "Sheep" };
 
         public static IModHelper Helper;
         public static ModConfig ModConfig;
@@ -334,7 +333,7 @@ namespace AnimalHusbandryMod.common
             
             foreach (KeyValuePair<string, string> farmAnimal in data)
             {
-                if (!BaseGameAnimals.Contains(farmAnimal.Key))
+                if (!AnimalData.BaseGameAnimals.Contains(farmAnimal.Key))
                 {
                     if (!DataLoader.AnimalData.CustomAnimals.Exists(a => farmAnimal.Key.Contains(a.Name)))
                     {
@@ -442,21 +441,21 @@ namespace AnimalHusbandryMod.common
 
                 api.RegisterLabel(manifest, "Main Features:", "Properties to disable the mod main features.");
 
-                api.RegisterSimpleOption(manifest, "Disable Meat", "Disable all features related to meat. Meat Cleaver/Wand will not be delivered , and if already owned, will not work. Meat items and meat dishes will not be loaded. Any item still on the inventory will be bugged. You should sell/trash all of them before disabling meat. Meat Friday will not show on TV. You will not receive any more meat recipe letter from the villagers. Learned recipes will still be known, but will not show on the cooking menu. If re-enabled, they will show again.", () => DataLoader.ModConfig.DisableMeat, (bool val) => DataLoader.ModConfig.DisableMeat = val);
+                api.RegisterSimpleOption(manifest, "Disable Meat", "Disable all features related to meat. Meat Cleaver/Wand will not be delivered , and if already owned, will not work. Meat items and meat dishes will not be loaded. Any item still on the inventory will be bugged. You should sell/trash all of them before disabling meat. Meat Friday will not show on TV. You will not receive any more meat recipe letter from the villagers. Learned recipes will still be known, but will not show on the cooking menu. If re-enabled, they will show again. Restart the game after changing this.", () => DataLoader.ModConfig.DisableMeat, (bool val) => DataLoader.ModConfig.DisableMeat = val);
                 
-                api.RegisterSimpleOption(manifest, "Disable Pregnancy", "Disable all features related to pregnancy. Syringe will not be delivered, and if already owned, it will not work. Pregnancy status will not update but will not reset. Animals that were pregnant will be with random pregnancy disabled unless changed. If re-enabled, everything will resume as it was before.", () => DataLoader.ModConfig.DisablePregnancy, (bool val) => DataLoader.ModConfig.DisablePregnancy = val);
+                api.RegisterSimpleOption(manifest, "Disable Pregnancy", "Disable all features related to pregnancy. Syringe will not be delivered, and if already owned, it will not work. Pregnancy status will not update but will not reset. Animals that were pregnant will be with random pregnancy disabled unless changed. If re-enabled, everything will resume as it was before. Restart the game after changing this.", () => DataLoader.ModConfig.DisablePregnancy, (bool val) => DataLoader.ModConfig.DisablePregnancy = val);
                 
-                api.RegisterSimpleOption(manifest, "Disable Treats", "Disable all features related to treats. The basket will not be delivered, and if already owned, it will not work. Treat status will update while the treat feature is disable. Animals that were feed treats before will be able to eat again if the appropriate amount of days has passed when the mod was disabled.", () => DataLoader.ModConfig.DisableTreats, (bool val) => DataLoader.ModConfig.DisableTreats = val);
+                api.RegisterSimpleOption(manifest, "Disable Treats", "Disable all features related to treats. The basket will not be delivered, and if already owned, it will not work. Treat status will update while the treat feature is disable. Animals that were feed treats before will be able to eat again if the appropriate amount of days has passed when the mod was disabled. Restart the game after changing this.", () => DataLoader.ModConfig.DisableTreats, (bool val) => DataLoader.ModConfig.DisableTreats = val);
                 
-                api.RegisterSimpleOption(manifest, "Disable Animal Contest", "Disable all features related to the animal contest. You won't receive any more participant ribbons. Bonus from previous winners will still apply though.", () => DataLoader.ModConfig.DisableAnimalContest, (bool val) => DataLoader.ModConfig.DisableAnimalContest = val);
+                api.RegisterSimpleOption(manifest, "Disable Animal Contest", "Disable all features related to the animal contest. You won't receive any more participant ribbons. Bonus from previous winners will still apply though. Restart the game after changing this.", () => DataLoader.ModConfig.DisableAnimalContest, (bool val) => DataLoader.ModConfig.DisableAnimalContest = val);
 
                 api.RegisterLabel(manifest, "Meat Properties:", "Properties to configure the meat feature.");
 
-                api.RegisterSimpleOption(manifest, "Softmode", "Enable the Softmode. When enabled the Meat Cleaver is replaced with the Meat Want. They work the same, but sound, text and effects are changed to resemble magic.", () => DataLoader.ModConfig.Softmode, (bool val) => DataLoader.ModConfig.Softmode = val);
+                api.RegisterSimpleOption(manifest, "Softmode", "Enable the Softmode. When enabled the Meat Cleaver is replaced with the Meat Want. They work the same, but sound, text and effects are changed to resemble magic. Restart the game after changing this.", () => DataLoader.ModConfig.Softmode, (bool val) => DataLoader.ModConfig.Softmode = val);
 
                 api.RegisterSimpleOption(manifest, "Disable Rancher Affect Meat", "Disable the patch that make Rancher Profession work on meat items.", () => DataLoader.ModConfig.DisableRancherMeatPriceAjust, (bool val) => DataLoader.ModConfig.DisableRancherMeatPriceAjust = val);
 
-                api.RegisterSimpleOption(manifest, "Disable Meat In Bundle", "Disable the addition of meat to the Animal Bundle in the Community Center.", () => DataLoader.ModConfig.DisableMeatInBlundle, (bool val) => DataLoader.ModConfig.DisableMeatInBlundle = val);
+                api.RegisterSimpleOption(manifest, "Disable Meat In Bundle", "Disable the addition of meat to the Animal Bundle in the Community Center. Needs to start a new game so it can take effect.", () => DataLoader.ModConfig.DisableMeatInBlundle, (bool val) => { DataLoader.ModConfig.DisableMeatInBlundle = val; Helper.Content.InvalidateCache("Data\\Bundles"); });
 
                 api.RegisterSimpleOption(manifest, "Disable Meat From Dinosaur", "Disable dinosaur giving a random kind of meat.", () => DataLoader.ModConfig.DisableMeatFromDinosaur, (bool val) => DataLoader.ModConfig.DisableMeatFromDinosaur = val);
 
@@ -490,7 +489,7 @@ namespace AnimalHusbandryMod.common
 
                 api.RegisterLabel(manifest, "Misc. Properties:", "Miscellaneous Properties.");
 
-                api.RegisterSimpleOption(manifest, "Force Draw Attachment", "Force the patch that draw the hover menu for the feeding basket and insemination syringe on any OS", () => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS, (bool val) => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS = val);
+                api.RegisterSimpleOption(manifest, "Force Draw Attachment", "Force the patch that draw the hover menu for the feeding basket and insemination syringe on any OS. Restart the game after changing this.", () => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS, (bool val) => DataLoader.ModConfig.ForceDrawAttachmentOnAnyOS = val);
 
                 api.RegisterSimpleOption(manifest, "Disable TV Channels", "Disable all TV channels added by this mod.", () => DataLoader.ModConfig.DisableTvChannels, (bool val) => DataLoader.ModConfig.DisableTvChannels = val);
             }

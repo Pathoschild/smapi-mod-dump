@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/DecidedlyHuman/StardewValleyMods
+   Git: https://github.com/DecidedlyHuman/StardewValleyMods.git
+
+mods:
+   Better Crystalariums
+   Default Window Size
+   Smart Building
+
+latest commit:
+   commit f6fb4b518c161aa363e05a1b4d6fd2669820b3fb
+   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
+   Date:   Sat Feb 26 16:32:45 2022 +0000
+   
+       Updated .editorconfig with extra settings from Rider.
+   

@@ -31,7 +31,7 @@ internal class SpelunkerWarpedEvent : WarpedEvent
         if (e.NewLocation is MineShaft newShaft && e.OldLocation is MineShaft oldShaft &&
             newShaft.mineLevel > oldShaft.mineLevel)
         {
-            ++ModEntry.State.Value.SpelunkerLadderStreak;
+            ++ModEntry.PlayerState.Value.SpelunkerLadderStreak;
 
             if (e.Player.HasProfession(Profession.Spelunker, true))
             {
@@ -40,12 +40,12 @@ internal class SpelunkerWarpedEvent : WarpedEvent
                 player.Stamina = Math.Min(player.Stamina + player.MaxStamina * 0.05f, player.MaxStamina);
             }
 
-            EventManager.Enable(typeof(SpelunkerBuffDisplayUpdateTickedEvent));
+            EventManager.Enable(typeof(SpelunkerUpdateTickedEvent));
         }
-        else if (e.OldLocation is MineShaft)
+        else if (e.NewLocation is not MineShaft && e.OldLocation is MineShaft)
         {
-            ModEntry.State.Value.SpelunkerLadderStreak = 0;
-            EventManager.Disable(typeof(SpelunkerBuffDisplayUpdateTickedEvent));
+            ModEntry.PlayerState.Value.SpelunkerLadderStreak = 0;
+            EventManager.Disable(typeof(SpelunkerUpdateTickedEvent));
         }
     }
 }

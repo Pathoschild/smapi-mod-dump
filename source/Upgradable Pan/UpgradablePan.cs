@@ -18,7 +18,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.Tools;
-using Harmony;
+using HarmonyLib;
 
 namespace UpgradablePan
 {
@@ -142,7 +142,7 @@ namespace UpgradablePan
 			// Listen for newly-added pans.
 			helper.Events.Player.InventoryChanged += OnInventoryChanged;
 
-			HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID);
+			Harmony harmony = new Harmony(ModManifest.UniqueID);
 
 			// Patch the blacksmith upgrade inventory to add the pan as an upgradable tool.
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Utility), nameof(StardewValley.Utility.getBlacksmithUpgradeStock)),
@@ -167,7 +167,7 @@ namespace UpgradablePan
 						  prefix: new HarmonyMethod(typeof(ItemPatches), nameof(ItemPatches.canBeTrashed_Prefix)));
 
 			// Get a copy of the actionWhenPurchased method prior to patching so we can call it without causing a stack overflow.
-			actionWhenPurchasedOriginal = harmony.Patch(AccessTools.Method(typeof(StardewValley.Item), nameof(StardewValley.Item.actionWhenPurchased)));
+			actionWhenPurchasedOriginal = (DynamicMethod) harmony.Patch(AccessTools.Method(typeof(StardewValley.Item), nameof(StardewValley.Item.actionWhenPurchased)));
 
 			// Patch the tool's upgrade purchase method to allow proper pan upgrading functionality.
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Tool), nameof(StardewValley.Tool.actionWhenPurchased)),
@@ -179,11 +179,13 @@ namespace UpgradablePan
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Tool), "get_IndexOfMenuItemView"),
 						  prefix: new HarmonyMethod(typeof(ToolPatches), nameof(ToolPatches.get_IndexOfMenuItemView_Prefix)));
 
-			// Patch the pan's usage method and rolled loot to support new upgrades.
+			// Patch the pan's usage method and rolled loot to support new upgrades, and the getOne method for mod compatibility.
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Tools.Pan), nameof(StardewValley.Tools.Pan.beginUsing)),
 						  prefix: new HarmonyMethod(typeof(PanPatches), nameof(PanPatches.beginUsing_Prefix)));
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Tools.Pan), nameof(StardewValley.Tools.Pan.getPanItems)),
 						  prefix: new HarmonyMethod(typeof(PanPatches), nameof(PanPatches.getPanItems_Prefix)));
+			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.Tools.Pan), nameof(StardewValley.Tools.Pan.getOne)),
+						  postfix: new HarmonyMethod(typeof(PanPatches), nameof(PanPatches.getOne_Postfix)));
 
 			// Patch the farmer renderer's draw method to draw our new pan animations.
 			harmony.Patch(original: AccessTools.Method(typeof(StardewValley.FarmerRenderer), nameof(StardewValley.FarmerRenderer.draw),

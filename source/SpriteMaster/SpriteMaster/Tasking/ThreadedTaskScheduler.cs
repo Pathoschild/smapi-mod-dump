@@ -23,7 +23,7 @@ namespace SpriteMaster.Tasking;
 [DebuggerTypeProxy(typeof(ThreadedTaskSchedulerDebugView))]
 [DebuggerDisplay("Id={Id}, ScheduledTasks = {DebugTaskCount}")]
 sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
-	internal static readonly ThreadedTaskScheduler Instance = new();
+	internal static readonly ThreadedTaskScheduler Instance = new(useBackgroundThreads: true);
 	internal static readonly TaskFactory TaskFactory = new(Instance);
 
 	private class ThreadedTaskSchedulerDebugView {
@@ -50,7 +50,7 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 	internal ThreadedTaskScheduler(
 		int? concurrencyLevel = null,
 		Func<int, string>? threadNameFunction = null,
-		bool useForegroundThreads = false,
+		bool useBackgroundThreads = false,
 		ThreadPriority threadPriority = ThreadPriority.Lowest,
 		Action<Thread, int>? onThreadInit = null,
 		Action<Thread, int>? onThreadFinally = null
@@ -74,7 +74,7 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 			for (int i = 0; i < Threads.Length; ++i) {
 				Threads[i] = new(index => DispatchLoop((int)index!, onThreadInit, onThreadFinally)) {
 					Priority = threadPriority,
-					IsBackground = true,
+					IsBackground = useBackgroundThreads,
 					Name = threadNameFunction is null ? $"ThreadedTaskScheduler Thread {i}" : threadNameFunction(i),
 				};
 				try {
@@ -107,6 +107,7 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 						try {
 							foreach (var task in PendingTasks.GetConsumingEnumerable(DisposeCancellation.Token)) {
 								if (task is not null) {
+									using var workingState = WatchDog.WatchDog.ScopedWorkingState;
 									if (TryExecuteTask(task) || task.IsCompleted) {
 										task.Dispose();
 									}
@@ -117,6 +118,9 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 							if (!Environment.HasShutdownStarted && !AppDomain.CurrentDomain.IsFinalizingForUnload()) {
 								Thread.ResetAbort();
 							}
+						}
+						catch (ThreadInterruptedException) {
+							// Thread was interrupted by watchdog
 						}
 					}
 				}

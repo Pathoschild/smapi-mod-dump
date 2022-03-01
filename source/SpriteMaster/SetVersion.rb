@@ -83,12 +83,20 @@ class SemanticVersion
 				elements = tag_string.split('.', 2).map(&:strip)
 				tag = elements[0] if tag.nil?
 				tag_version = elements[1] if tag_version.nil?
+				unless tag_version.nil?
+					tag_version = tag_version.to_i
+					tag_build = tag_version
+					case tag
+						when "beta"
+							tag_build += 100
+					end
+				end
 			end
 		end
 		@major = major
 		@minor = minor
 		@patch = patch
-		@build = build || tag_version
+		@build = build || tag_build
 		@tag = tag
 		@tag_version = tag_version || build
 	end

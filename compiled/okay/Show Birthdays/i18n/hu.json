@@ -1,0 +1,8 @@
+{
+  "duration-label": "Ismétlődési idő",
+  "duration-desc": "Mozgó grafikus elemek ismétlődésének az ideje.",
+  "type-label": "Ismétlődés típusa",
+  "type-desc": "Grafikus elemek ismétlődésének a típusa.",
+  "icon-label": "Ikon megjelenítése",
+  "icon-desc": "Megosztott születésnapok ikonjának megjelenítése."
+}

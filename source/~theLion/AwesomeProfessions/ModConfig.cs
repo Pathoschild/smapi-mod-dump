@@ -20,7 +20,7 @@ using StardewModdingAPI.Utilities;
 public class ModConfig
 {
     /// <summary>Mod key used by Prospector and Scavenger professions.</summary>
-    public KeybindList Modkey { get; set; } = KeybindList.Parse("LeftShift, LeftShoulder");
+    public KeybindList ModKey { get; set; } = KeybindList.Parse("LeftShift, LeftShoulder");
 
     /// <summary>You must forage this many items before your forage becomes iridium-quality.</summary>
     public uint ForagesNeededForBestQuality { get; set; } = 500;
@@ -32,7 +32,7 @@ public class ModConfig
     public bool ShouldCountAutomatedHarvests { get; set; } = false;
 
     /// <summary>The chance that a scavenger or prospector hunt will trigger in the right conditions.</summary>
-    public double ChanceToStartTreasureHunt { get; set; } = 0.2;
+    public double ChanceToStartTreasureHunt { get; set; } = 0.1;
 
     /// <summary>Whether a Scavenger Hunt can trigger while entering a farm map.</summary>
     public bool AllowScavengerHuntsOnFarm { get; set; } = false;
@@ -47,10 +47,19 @@ public class ModConfig
     public float TreasureDetectionDistance { get; set; } = 3f;
 
     /// <summary>The maximum speed bonus a Spelunker can reach.</summary>
-    public int SpelunkerSpeedCap { get; set; } = 10;
+    public uint SpelunkerSpeedCap { get; set; } = 10;
 
     /// <summary>Toggles the Get Excited buff when a Demolitionist is hit by an explosion.</summary>
     public bool EnableGetExcited { get; set; } = true;
+
+    /// <summary>Whether Seaweed and Algae are considered junk for fishing purposes.</summary>
+    public bool SeaweedIsJunk { get; set; } = true;
+
+    /// <summary>You must catch this many fish of a given species to achieve instant catch.</summary>
+    public uint FishNeededForInstantCatch { get; set; } = 500;
+
+    /// <summary>If multiple new fish mods are installed, you may want to adjust this to a sensible value. Limits the price multiplier for fish sold by Angler.</summary>
+    public float AnglerMultiplierCeiling { get; set; } = 1f;
 
     /// <summary>You must collect this many junk items from crab pots for every 1% of tax deduction next season.</summary>
     public uint TrashNeededPerTaxLevel { get; set; } = 100;
@@ -64,7 +73,7 @@ public class ModConfig
     /// <summary>Required to allow Super Mode activation. Super Stat continues to apply.</summary>
     public bool EnableSuperMode { get; set; } = true;
 
-    /// <summary>Mod key used to activate Super Mode. Can be the same as <see cref="Modkey" />.</summary>
+    /// <summary>Mod key used to activate Super Mode. Can be the same as <see cref="ModKey" />.</summary>
     public KeybindList SuperModeKey { get; set; } = KeybindList.Parse("LeftShift, LeftShoulder");
 
     /// <summary>Whether Super Mode is activated on <see cref="SuperModeKey" /> hold (as opposed to press).</summary>
@@ -74,7 +83,7 @@ public class ModConfig
     public float SuperModeActivationDelay { get; set; } = 1f;
 
     /// <summary>Affects the rate at which one builds the Super Mode gauge. Increase this if you feel the gauge raises too slowly.</summary>
-    public float SuperModeGainFactor { get; set; } = 1f;
+    public double SuperModeGainFactor { get; set; } = 1f;
 
     /// <summary>Affects the rate at which the Super Mode gauge depletes during Super Mode. Increase this to make Super Mode last longer..</summary>
     public double SuperModeDrainFactor { get; set; } = 3.0;
@@ -92,9 +101,10 @@ public class ModConfig
     public bool AllowPrestigeMultiplePerDay { get; set; } = false;
 
     /// <summary>Multiplies all skill experience gained from the start of the game.</summary>
-    public float BaseSkillExpMultiplier { get; set; } = 1f;
+    /// <remarks>The order is Farming, Fishing, Foraging, Mining, Combat.</remarks>
+    public float[] BaseSkillExpMultiplierPerSkill { get; set; } = {1f, 1f, 1f, 1f, 1f};
 
-    /// <summary>Multiplies all skill experience gained after each respective prestige.</summary>
+    /// <summary>Cumulative bonus that multiplies a skill's experience gain after each respective skill reset.</summary>
     public float BonusSkillExpPerReset { get; set; } = 0.1f;
 
     /// <summary>How much skill experience is required for each level up beyond 10.</summary>
@@ -106,7 +116,7 @@ public class ModConfig
     /// <summary>Monetary cost of changing the combat Super Mode. Set to 0 to change for free.</summary>
     public uint ChangeUltCost { get; set; } = 0;
 
-    /// <summary>Enable if using the Vintage Interface mod.</summary>
+    /// <summary>Enable if using the Vintage Interface v2 mod.</summary>
     public bool UseVintageInterface { get; set; } = false;
 
     /// <summary>The visual style for different honey mead icons, if using BetterArtisanGoodIcons. Allowed values: 'ColoredBottles', 'ColoredCaps'.</summary>
@@ -114,6 +124,12 @@ public class ModConfig
 
     /// <summary>Causes Fish Ponds to produce Roe, Ink or Algae in proportion to fish population.</summary>
     public bool EnableFishPondRebalance { get; set; } = true;
+
+    /// <summary>Replicates SVE's config setting of the same name.</summary>
+    public bool UseGaldoranThemeAllTimes { get; set; } = false;
+    
+    /// <summary>Replicates SVE's config setting of the same name.</summary>
+    public bool DisableGaldoranTheme { get; set; } = false;
 
     /// <summary>Key used by trigger UI debugging events.</summary>
     public KeybindList DebugKey { get; set; } = KeybindList.Parse("LeftControl");

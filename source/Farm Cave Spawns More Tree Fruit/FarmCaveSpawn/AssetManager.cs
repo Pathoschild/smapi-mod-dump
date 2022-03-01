@@ -30,6 +30,8 @@ internal class AssetManager : IAssetLoader
     public readonly string ADDITIONAL_LOCATIONS_LOCATION = PathUtilities.NormalizeAssetName("Mods/atravita_FarmCaveSpawn_additionalLocations");
 #pragma warning restore SA1401 // Fields should be private
 
+
+
     /// <inheritdoc/>
     public bool CanLoad<T>(IAssetInfo asset)
     {

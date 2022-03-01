@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
 
 #endregion using directives
@@ -24,6 +25,8 @@ using Stardew.Common.Harmony;
 /// <summary>Base implementation for Harmony patch classes.</summary>
 internal abstract class BasePatch : IPatch
 {
+    protected static bool transpilationFailed;
+
     /// <summary>Construct an instance.</summary>
     protected BasePatch()
     {
@@ -32,14 +35,14 @@ internal abstract class BasePatch : IPatch
         if (Prefix is not null) ++PatchManager.TotalPrefixCount;
         if (Postfix is not null) ++PatchManager.TotalPostfixCount;
         if (Transpiler is not null) ++PatchManager.TotalTranspilerCount;
-        if (ReversePatch is not null) ++PatchManager.TotalReversePatchCount;
+        //if (ReversePatch is not null) ++PatchManager.TotalReversePatchCount;
     }
 
     protected MethodBase Original { get; set; }
     protected HarmonyMethod Prefix { get; set; }
     protected HarmonyMethod Postfix { get; set; }
     protected HarmonyMethod Transpiler { get; set; }
-    protected HarmonyMethod ReversePatch { get; set; }
+    //protected HarmonyMethod ReversePatch { get; set; }
 
     /// <inheritdoc />
     public virtual void Apply(Harmony harmony)
@@ -51,7 +54,7 @@ internal abstract class BasePatch : IPatch
             if (Prefix is not null) ++PatchManager.IgnoredPrefixCount;
             if (Postfix is not null) ++PatchManager.IgnoredPostfixCount;
             if (Transpiler is not null) ++PatchManager.IgnoredTranspilerCount;
-            if (ReversePatch is not null) ++PatchManager.FailedReversePatchCount;
+            //if (ReversePatch is not null) ++PatchManager.FailedReversePatchCount;
 
             return;
         }
@@ -63,12 +66,23 @@ internal abstract class BasePatch : IPatch
 
             if (Prefix is not null) ++PatchManager.AppliedPrefixCount;
             if (Postfix is not null) ++PatchManager.AppliedPostfixCount;
-            if (Transpiler is not null) ++PatchManager.AppliedTranspilerCount;
+            if (Transpiler is not null)
+            {
+                if (transpilationFailed)
+                {
+                    ++PatchManager.FailedTranspilerCount;
+                    transpilationFailed = false;
+                }
+                else
+                {
+                    ++PatchManager.AppliedTranspilerCount;
+                }
+            }
 
-            if (ReversePatch is null) return;
+            //if (ReversePatch is null) return;
 
-            harmony.CreateReversePatcher(Original, ReversePatch).Patch();
-            ++PatchManager.AppliedReversePatchCount;
+            //harmony.CreateReversePatcher(Original, ReversePatch).Patch();
+            //++PatchManager.AppliedReversePatchCount;
         }
         catch (Exception ex)
         {
@@ -77,7 +91,7 @@ internal abstract class BasePatch : IPatch
             if (Prefix is not null) ++PatchManager.FailedPrefixCount;
             if (Postfix is not null) ++PatchManager.FailedPostfixCount;
             if (Transpiler is not null) ++PatchManager.FailedTranspilerCount;
-            if (ReversePatch is not null) ++PatchManager.FailedReversePatchCount;
+            //if (ReversePatch is not null) ++PatchManager.FailedReversePatchCount;
         }
     }
 

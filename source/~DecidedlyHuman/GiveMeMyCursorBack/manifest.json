@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Give Me My Cursor Back!",
+  "Author": "DecidedlyHuman",
+  "Version": "1.0.3",
+  "Description": "Are you tired of your cursor being invisible in the game window when alt-tabbed if you don't have the hardware cursor setting enabled? This solves that problem!",
+  "UniqueID": "DecidedlyHuman.GiveMeMyCursorBack",
+  "EntryDll": "GiveMeMyCursorBack.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:9976"]
+}

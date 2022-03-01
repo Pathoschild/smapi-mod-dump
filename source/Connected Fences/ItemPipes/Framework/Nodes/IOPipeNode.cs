@@ -25,61 +25,69 @@ namespace ItemPipes.Framework
     public abstract class IOPipeNode : PipeNode
     {
         public ContainerNode ConnectedContainer { get; set; }
-        public bool Connecting { get; set; }
-
+        public string Signal { get; set; }
 
         public IOPipeNode() : base()
         {
             ConnectedContainer = null;
-            State = "unconnected";
+            Signal = "unconnected";
             Connecting = false;
         }
         
         public IOPipeNode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
             ConnectedContainer = null;
-            State = "nochest";
+            Signal = "nochest";
             Connecting = false;
 
         }
 
-        public virtual void UpdateState()
+        public virtual void UpdateSignal()
         {
-            if (ConnectedContainer == null)
+            if(!Signal.Equals("off"))
             {
-                State = "nochest";
-            }
-            else if (ConnectedContainer != null)
-            {
-                State = "on";
+                if (ConnectedContainer == null)
+                {
+                    Signal = "nochest";
+                }
+                else if (ConnectedContainer != null)
+                {
+                    Signal = "on";
+                }
             }
         }
 
-        public override string GetState()
+        public virtual void ChangeSignal()
         {
-            if (Connecting)
+            if(Signal.Equals("off"))
             {
-                return "connecting_"+State;
+                if (ConnectedContainer == null)
+                {
+                    Signal = "nochest";
+                }
+                else if (ConnectedContainer != null)
+                {
+                    Signal = "on";
+                }
             }
             else
             {
-                return State;
-            }
+                Signal = "off";
+            }           
         }
 
-        public bool AddConnectedContainer(Node entity)
+        public bool AddConnectedContainer(Node node)
         {
             bool added = false;
-            if (Globals.UltraDebug) { Printer.Info($"[?] Adding {entity.Name} container to {Print()} "); }
+            if (Globals.UltraDebug) { Printer.Info($"[?] Adding {node.Name} container to {Print()} "); }
             if (Globals.UltraDebug) { Printer.Info($"[?] Alreadyhas a container? {ConnectedContainer != null}"); }
-            if (ConnectedContainer == null && entity is ContainerNode)
+            if (ConnectedContainer == null && node is ContainerNode)
             {
                 if (Globals.UltraDebug) { Printer.Info($"[?] Connecting adjacent container.."); }
-                ContainerNode container = (ContainerNode)entity;
-                if ((this is OutputNode && container.Output == null) ||
-                    (this is InputNode && container.Input == null))
+                ContainerNode container = (ContainerNode)node;
+                if (container.IOPipes.Count < 4)
                 {
-                    ConnectedContainer = (ContainerNode)entity;
+                    ConnectedContainer = (ContainerNode)node;
                     ConnectedContainer.AddIOPipe(this);
                     if (Globals.UltraDebug) { Printer.Info($"[?] CONNECTED CONTAINER ADDED"); }
                 }
@@ -92,23 +100,70 @@ namespace ItemPipes.Framework
             {
                 if (Globals.UltraDebug) { Printer.Info($"[?] Didnt add adj container"); }
             }
-            UpdateState();
+            UpdateSignal();
             added = true;
             return added;
         }
 
-        public bool RemoveConnectedContainer(Node entity)
+        public bool RemoveConnectedContainer(Node node)
         {
             bool removed = false;
-            if (Globals.UltraDebug) { Printer.Info($"[?] Removing {entity.Name} container "); }
-            if (ConnectedContainer != null && entity is ContainerNode)
+            if (Globals.UltraDebug) { Printer.Info($"[?] Removing {node.Name} container "); }
+            if (ConnectedContainer != null && node is ContainerNode)
             {
                 ConnectedContainer.RemoveIOPipe(this);
                 ConnectedContainer = null;
                 if (Globals.UltraDebug) { Printer.Info($"[?] CONNECTED CONTAINER REMOVED"); }
                 removed = true;
             }
-            UpdateState();
+            UpdateSignal();
+            return removed;
+        }
+
+        public override bool AddAdjacent(Side side, Node node)
+        {
+            bool added = false;
+            if (Adjacents[side] == null)
+            {
+                added = true;
+                Adjacents[side] = node;
+                node.AddAdjacent(Sides.GetInverse(side), this);
+                if(node is ContainerNode)
+                {
+                    AddConnectedContainer(node);
+                }
+            }
+            return added;
+        }
+
+        public override bool RemoveAdjacent(Side side, Node node)
+        {
+            bool removed = false;
+            if (Adjacents[side] != null)
+            {
+                removed = true;
+                Adjacents[side] = null;
+                node.RemoveAdjacent(Sides.GetInverse(side), this);
+                if (node is ContainerNode)
+                {
+                    RemoveConnectedContainer(node);
+                }
+            }
+            return removed;
+        }
+
+
+        public override bool RemoveAllAdjacents()
+        {
+            bool removed = false;
+            foreach (KeyValuePair<Side, Node> adj in Adjacents.ToList())
+            {
+                if (adj.Value != null)
+                {
+                    removed = true;
+                    RemoveAdjacent(adj.Key, adj.Value);
+                }
+            }
             return removed;
         }
     }

@@ -35,103 +35,106 @@ partial class PreviewWindow {
 	/// </summary>
 	private void InitializeComponent() {
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PreviewWindow));
-			this.mainContainer = new System.Windows.Forms.SplitContainer();
-			this.previewBox = new System.Windows.Forms.PictureBox();
-			this.alphaPremultiplication = new System.Windows.Forms.CheckBox();
-			this.gammaCorrection = new System.Windows.Forms.CheckBox();
-			this.currentCenterDirectionBias = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
+			this.MainContainer = new System.Windows.Forms.SplitContainer();
+			this.BackgroundColorButton = new System.Windows.Forms.Button();
+			this.ImagePreviewBox = new System.Windows.Forms.PictureBox();
+			this.AlphaPremultiplication = new System.Windows.Forms.CheckBox();
+			this.GammaCorrection = new System.Windows.Forms.CheckBox();
+			this.CenterDirectionBiasCurrent = new System.Windows.Forms.Label();
+			this.CenterDirectionBiasLabel = new System.Windows.Forms.Label();
 			this.CenterDirectionBias = new System.Windows.Forms.HScrollBar();
-			this.currentSteepDirectionThreshold = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
+			this.SteepDirectionThresholdCurrent = new System.Windows.Forms.Label();
+			this.SteepDirectionThresholdLabel = new System.Windows.Forms.Label();
 			this.SteepDirectionThreshold = new System.Windows.Forms.HScrollBar();
-			this.currentDominantDirectionThreshold = new System.Windows.Forms.Label();
-			this.ddt_label = new System.Windows.Forms.Label();
-			this.dominantDirectionThreshold = new System.Windows.Forms.HScrollBar();
-			this.currentEqualColorTolerance = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.equalColorTolerance = new System.Windows.Forms.HScrollBar();
-			this.currentLuminanceWeight = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.luminanceWeight = new System.Windows.Forms.HScrollBar();
-			this.label1 = new System.Windows.Forms.Label();
-			this.scale = new System.Windows.Forms.NumericUpDown();
-			((System.ComponentModel.ISupportInitialize)(this.mainContainer)).BeginInit();
-			this.mainContainer.Panel1.SuspendLayout();
-			this.mainContainer.Panel2.SuspendLayout();
-			this.mainContainer.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.previewBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.scale)).BeginInit();
+			this.DominantDirectionThresholdCurrent = new System.Windows.Forms.Label();
+			this.DominantDirectionThresholdLabel = new System.Windows.Forms.Label();
+			this.DominantDirectionThreshold = new System.Windows.Forms.HScrollBar();
+			this.EqualColorToleranceCurrent = new System.Windows.Forms.Label();
+			this.EqualColorToleranceLabel = new System.Windows.Forms.Label();
+			this.EqualColorTolerance = new System.Windows.Forms.HScrollBar();
+			this.ScaleLabel = new System.Windows.Forms.Label();
+			this.ScaleChanger = new System.Windows.Forms.NumericUpDown();
+			((System.ComponentModel.ISupportInitialize)(this.MainContainer)).BeginInit();
+			this.MainContainer.Panel1.SuspendLayout();
+			this.MainContainer.Panel2.SuspendLayout();
+			this.MainContainer.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.ImagePreviewBox)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.ScaleChanger)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// mainContainer
+			// MainContainer
 			// 
-			this.mainContainer.Cursor = System.Windows.Forms.Cursors.VSplit;
-			resources.ApplyResources(this.mainContainer, "mainContainer");
-			this.mainContainer.Name = "mainContainer";
+			this.MainContainer.Cursor = System.Windows.Forms.Cursors.VSplit;
+			resources.ApplyResources(this.MainContainer, "MainContainer");
+			this.MainContainer.Name = "MainContainer";
 			// 
-			// mainContainer.Panel1
+			// MainContainer.Panel1
 			// 
-			this.mainContainer.Panel1.Controls.Add(this.previewBox);
+			resources.ApplyResources(this.MainContainer.Panel1, "MainContainer.Panel1");
+			this.MainContainer.Panel1.Controls.Add(this.BackgroundColorButton);
+			this.MainContainer.Panel1.Controls.Add(this.ImagePreviewBox);
 			// 
-			// mainContainer.Panel2
+			// MainContainer.Panel2
 			// 
-			this.mainContainer.Panel2.Controls.Add(this.alphaPremultiplication);
-			this.mainContainer.Panel2.Controls.Add(this.gammaCorrection);
-			this.mainContainer.Panel2.Controls.Add(this.currentCenterDirectionBias);
-			this.mainContainer.Panel2.Controls.Add(this.label7);
-			this.mainContainer.Panel2.Controls.Add(this.CenterDirectionBias);
-			this.mainContainer.Panel2.Controls.Add(this.currentSteepDirectionThreshold);
-			this.mainContainer.Panel2.Controls.Add(this.label6);
-			this.mainContainer.Panel2.Controls.Add(this.SteepDirectionThreshold);
-			this.mainContainer.Panel2.Controls.Add(this.currentDominantDirectionThreshold);
-			this.mainContainer.Panel2.Controls.Add(this.ddt_label);
-			this.mainContainer.Panel2.Controls.Add(this.dominantDirectionThreshold);
-			this.mainContainer.Panel2.Controls.Add(this.currentEqualColorTolerance);
-			this.mainContainer.Panel2.Controls.Add(this.label4);
-			this.mainContainer.Panel2.Controls.Add(this.equalColorTolerance);
-			this.mainContainer.Panel2.Controls.Add(this.currentLuminanceWeight);
-			this.mainContainer.Panel2.Controls.Add(this.label2);
-			this.mainContainer.Panel2.Controls.Add(this.luminanceWeight);
-			this.mainContainer.Panel2.Controls.Add(this.label1);
-			this.mainContainer.Panel2.Controls.Add(this.scale);
-			this.mainContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
+			this.MainContainer.Panel2.Controls.Add(this.AlphaPremultiplication);
+			this.MainContainer.Panel2.Controls.Add(this.GammaCorrection);
+			this.MainContainer.Panel2.Controls.Add(this.CenterDirectionBiasCurrent);
+			this.MainContainer.Panel2.Controls.Add(this.CenterDirectionBiasLabel);
+			this.MainContainer.Panel2.Controls.Add(this.CenterDirectionBias);
+			this.MainContainer.Panel2.Controls.Add(this.SteepDirectionThresholdCurrent);
+			this.MainContainer.Panel2.Controls.Add(this.SteepDirectionThresholdLabel);
+			this.MainContainer.Panel2.Controls.Add(this.SteepDirectionThreshold);
+			this.MainContainer.Panel2.Controls.Add(this.DominantDirectionThresholdCurrent);
+			this.MainContainer.Panel2.Controls.Add(this.DominantDirectionThresholdLabel);
+			this.MainContainer.Panel2.Controls.Add(this.DominantDirectionThreshold);
+			this.MainContainer.Panel2.Controls.Add(this.EqualColorToleranceCurrent);
+			this.MainContainer.Panel2.Controls.Add(this.EqualColorToleranceLabel);
+			this.MainContainer.Panel2.Controls.Add(this.EqualColorTolerance);
+			this.MainContainer.Panel2.Controls.Add(this.ScaleLabel);
+			this.MainContainer.Panel2.Controls.Add(this.ScaleChanger);
+			this.MainContainer.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.MainRightPanel_Paint);
 			// 
-			// previewBox
+			// BackgroundColorButton
 			// 
-			resources.ApplyResources(this.previewBox, "previewBox");
-			this.previewBox.Name = "previewBox";
-			this.previewBox.TabStop = false;
-			this.previewBox.Click += new System.EventHandler(this.pictureBox1_Click);
+			resources.ApplyResources(this.BackgroundColorButton, "BackgroundColorButton");
+			this.BackgroundColorButton.ForeColor = System.Drawing.Color.Black;
+			this.BackgroundColorButton.Name = "BackgroundColorButton";
+			this.BackgroundColorButton.UseVisualStyleBackColor = true;
+			this.BackgroundColorButton.Click += new System.EventHandler(this.BackgroundColorButton_Click);
 			// 
-			// alphaPremultiplication
+			// ImagePreviewBox
 			// 
-			resources.ApplyResources(this.alphaPremultiplication, "alphaPremultiplication");
-			this.alphaPremultiplication.Checked = true;
-			this.alphaPremultiplication.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.alphaPremultiplication.Name = "alphaPremultiplication";
-			this.alphaPremultiplication.UseVisualStyleBackColor = true;
-			this.alphaPremultiplication.CheckedChanged += new System.EventHandler(this.alphaPremultiplication_CheckedChanged);
+			resources.ApplyResources(this.ImagePreviewBox, "ImagePreviewBox");
+			this.ImagePreviewBox.Name = "ImagePreviewBox";
+			this.ImagePreviewBox.TabStop = false;
 			// 
-			// gammaCorrection
+			// AlphaPremultiplication
 			// 
-			resources.ApplyResources(this.gammaCorrection, "gammaCorrection");
-			this.gammaCorrection.Checked = true;
-			this.gammaCorrection.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.gammaCorrection.Name = "gammaCorrection";
-			this.gammaCorrection.UseVisualStyleBackColor = true;
-			this.gammaCorrection.CheckedChanged += new System.EventHandler(this.gammaCorrection_CheckedChanged);
+			resources.ApplyResources(this.AlphaPremultiplication, "AlphaPremultiplication");
+			this.AlphaPremultiplication.Checked = true;
+			this.AlphaPremultiplication.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.AlphaPremultiplication.Name = "AlphaPremultiplication";
+			this.AlphaPremultiplication.UseVisualStyleBackColor = true;
+			this.AlphaPremultiplication.CheckedChanged += new System.EventHandler(this.AlphaPremultiplication_CheckedChanged);
 			// 
-			// currentCenterDirectionBias
+			// GammaCorrection
 			// 
-			resources.ApplyResources(this.currentCenterDirectionBias, "currentCenterDirectionBias");
-			this.currentCenterDirectionBias.Name = "currentCenterDirectionBias";
-			this.currentCenterDirectionBias.Click += new System.EventHandler(this.currentCenterDirectionBias_Click);
+			resources.ApplyResources(this.GammaCorrection, "GammaCorrection");
+			this.GammaCorrection.Checked = true;
+			this.GammaCorrection.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.GammaCorrection.Name = "GammaCorrection";
+			this.GammaCorrection.UseVisualStyleBackColor = true;
+			this.GammaCorrection.CheckedChanged += new System.EventHandler(this.GammaCorrection_CheckedChanged);
 			// 
-			// label7
+			// CenterDirectionBiasCurrent
 			// 
-			resources.ApplyResources(this.label7, "label7");
-			this.label7.Name = "label7";
+			resources.ApplyResources(this.CenterDirectionBiasCurrent, "CenterDirectionBiasCurrent");
+			this.CenterDirectionBiasCurrent.Name = "CenterDirectionBiasCurrent";
+			// 
+			// CenterDirectionBiasLabel
+			// 
+			resources.ApplyResources(this.CenterDirectionBiasLabel, "CenterDirectionBiasLabel");
+			this.CenterDirectionBiasLabel.Name = "CenterDirectionBiasLabel";
 			// 
 			// CenterDirectionBias
 			// 
@@ -142,16 +145,15 @@ partial class PreviewWindow {
 			this.CenterDirectionBias.Value = 300;
 			this.CenterDirectionBias.Scroll += new System.Windows.Forms.ScrollEventHandler(this.CenterDirectionBias_Scroll);
 			// 
-			// currentSteepDirectionThreshold
+			// SteepDirectionThresholdCurrent
 			// 
-			resources.ApplyResources(this.currentSteepDirectionThreshold, "currentSteepDirectionThreshold");
-			this.currentSteepDirectionThreshold.Name = "currentSteepDirectionThreshold";
+			resources.ApplyResources(this.SteepDirectionThresholdCurrent, "SteepDirectionThresholdCurrent");
+			this.SteepDirectionThresholdCurrent.Name = "SteepDirectionThresholdCurrent";
 			// 
-			// label6
+			// SteepDirectionThresholdLabel
 			// 
-			resources.ApplyResources(this.label6, "label6");
-			this.label6.Name = "label6";
-			this.label6.Click += new System.EventHandler(this.label6_Click);
+			resources.ApplyResources(this.SteepDirectionThresholdLabel, "SteepDirectionThresholdLabel");
+			this.SteepDirectionThresholdLabel.Name = "SteepDirectionThresholdLabel";
 			// 
 			// SteepDirectionThreshold
 			// 
@@ -162,94 +164,69 @@ partial class PreviewWindow {
 			this.SteepDirectionThreshold.Value = 220;
 			this.SteepDirectionThreshold.Scroll += new System.Windows.Forms.ScrollEventHandler(this.SteepDirectionThreshold_Scroll);
 			// 
-			// currentDominantDirectionThreshold
+			// DominantDirectionThresholdCurrent
 			// 
-			resources.ApplyResources(this.currentDominantDirectionThreshold, "currentDominantDirectionThreshold");
-			this.currentDominantDirectionThreshold.Name = "currentDominantDirectionThreshold";
+			resources.ApplyResources(this.DominantDirectionThresholdCurrent, "DominantDirectionThresholdCurrent");
+			this.DominantDirectionThresholdCurrent.Name = "DominantDirectionThresholdCurrent";
 			// 
-			// ddt_label
+			// DominantDirectionThresholdLabel
 			// 
-			resources.ApplyResources(this.ddt_label, "ddt_label");
-			this.ddt_label.Name = "ddt_label";
-			this.ddt_label.Click += new System.EventHandler(this.label5_Click);
+			resources.ApplyResources(this.DominantDirectionThresholdLabel, "DominantDirectionThresholdLabel");
+			this.DominantDirectionThresholdLabel.Name = "DominantDirectionThresholdLabel";
 			// 
-			// dominantDirectionThreshold
+			// DominantDirectionThreshold
 			// 
-			resources.ApplyResources(this.dominantDirectionThreshold, "dominantDirectionThreshold");
-			this.dominantDirectionThreshold.LargeChange = 5;
-			this.dominantDirectionThreshold.Maximum = 1000;
-			this.dominantDirectionThreshold.Name = "dominantDirectionThreshold";
-			this.dominantDirectionThreshold.Value = 440;
-			this.dominantDirectionThreshold.Scroll += new System.Windows.Forms.ScrollEventHandler(this.dominantDirectionThreshold_Scroll);
+			resources.ApplyResources(this.DominantDirectionThreshold, "DominantDirectionThreshold");
+			this.DominantDirectionThreshold.LargeChange = 5;
+			this.DominantDirectionThreshold.Maximum = 1000;
+			this.DominantDirectionThreshold.Name = "DominantDirectionThreshold";
+			this.DominantDirectionThreshold.Value = 440;
+			this.DominantDirectionThreshold.Scroll += new System.Windows.Forms.ScrollEventHandler(this.DominantDirectionThreshold_Scroll);
 			// 
-			// currentEqualColorTolerance
+			// EqualColorToleranceCurrent
 			// 
-			resources.ApplyResources(this.currentEqualColorTolerance, "currentEqualColorTolerance");
-			this.currentEqualColorTolerance.Name = "currentEqualColorTolerance";
-			this.currentEqualColorTolerance.Click += new System.EventHandler(this.label3_Click);
+			resources.ApplyResources(this.EqualColorToleranceCurrent, "EqualColorToleranceCurrent");
+			this.EqualColorToleranceCurrent.Name = "EqualColorToleranceCurrent";
 			// 
-			// label4
+			// EqualColorToleranceLabel
 			// 
-			resources.ApplyResources(this.label4, "label4");
-			this.label4.Name = "label4";
-			this.label4.Click += new System.EventHandler(this.label4_Click);
+			resources.ApplyResources(this.EqualColorToleranceLabel, "EqualColorToleranceLabel");
+			this.EqualColorToleranceLabel.Name = "EqualColorToleranceLabel";
 			// 
-			// equalColorTolerance
+			// EqualColorTolerance
 			// 
-			resources.ApplyResources(this.equalColorTolerance, "equalColorTolerance");
-			this.equalColorTolerance.LargeChange = 5;
-			this.equalColorTolerance.Maximum = 255;
-			this.equalColorTolerance.Name = "equalColorTolerance";
-			this.equalColorTolerance.Value = 20;
-			this.equalColorTolerance.Scroll += new System.Windows.Forms.ScrollEventHandler(this.equalColorTolerance_Scroll);
+			resources.ApplyResources(this.EqualColorTolerance, "EqualColorTolerance");
+			this.EqualColorTolerance.LargeChange = 5;
+			this.EqualColorTolerance.Maximum = 255;
+			this.EqualColorTolerance.Name = "EqualColorTolerance";
+			this.EqualColorTolerance.Value = 20;
+			this.EqualColorTolerance.Scroll += new System.Windows.Forms.ScrollEventHandler(this.EqualColorTolerance_Scroll);
 			// 
-			// currentLuminanceWeight
+			// ScaleLabel
 			// 
-			resources.ApplyResources(this.currentLuminanceWeight, "currentLuminanceWeight");
-			this.currentLuminanceWeight.Name = "currentLuminanceWeight";
-			this.currentLuminanceWeight.Click += new System.EventHandler(this.currentLuminanceWeight_Click);
+			resources.ApplyResources(this.ScaleLabel, "ScaleLabel");
+			this.ScaleLabel.Name = "ScaleLabel";
 			// 
-			// label2
+			// ScaleChanger
 			// 
-			resources.ApplyResources(this.label2, "label2");
-			this.label2.Name = "label2";
-			this.label2.Click += new System.EventHandler(this.label2_Click);
-			// 
-			// luminanceWeight
-			// 
-			this.luminanceWeight.LargeChange = 5;
-			resources.ApplyResources(this.luminanceWeight, "luminanceWeight");
-			this.luminanceWeight.Maximum = 1000;
-			this.luminanceWeight.Name = "luminanceWeight";
-			this.luminanceWeight.Value = 100;
-			this.luminanceWeight.Scroll += new System.Windows.Forms.ScrollEventHandler(this.luminanceWeight_Scroll);
-			// 
-			// label1
-			// 
-			resources.ApplyResources(this.label1, "label1");
-			this.label1.Name = "label1";
-			this.label1.Click += new System.EventHandler(this.label1_Click);
-			// 
-			// scale
-			// 
-			resources.ApplyResources(this.scale, "scale");
-			this.scale.Maximum = new decimal(new int[] {
+			resources.ApplyResources(this.ScaleChanger, "ScaleChanger");
+			this.ScaleChanger.Maximum = new decimal(new int[] {
             6,
             0,
             0,
             0});
-			this.scale.Minimum = new decimal(new int[] {
+			this.ScaleChanger.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.scale.Name = "scale";
-			this.scale.Value = new decimal(new int[] {
+			this.ScaleChanger.Name = "ScaleChanger";
+			this.ScaleChanger.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
-			this.scale.ValueChanged += new System.EventHandler(this.scale_ValueChanged);
+			this.ScaleChanger.ValueChanged += new System.EventHandler(this.Scale_ValueChanged);
 			// 
 			// PreviewWindow
 			// 
@@ -257,44 +234,45 @@ partial class PreviewWindow {
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-			this.Controls.Add(this.mainContainer);
+			this.Controls.Add(this.MainContainer);
 			this.DoubleBuffered = true;
 			this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Name = "PreviewWindow";
 			this.Load += new System.EventHandler(this.PreviewWindow_Load);
-			this.mainContainer.Panel1.ResumeLayout(false);
-			this.mainContainer.Panel2.ResumeLayout(false);
-			this.mainContainer.Panel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.mainContainer)).EndInit();
-			this.mainContainer.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.previewBox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.scale)).EndInit();
+			this.MainContainer.Panel1.ResumeLayout(false);
+			this.MainContainer.Panel1.PerformLayout();
+			this.MainContainer.Panel2.ResumeLayout(false);
+			this.MainContainer.Panel2.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.MainContainer)).EndInit();
+			this.MainContainer.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.ImagePreviewBox)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.ScaleChanger)).EndInit();
 			this.ResumeLayout(false);
 
 	}
 
 	#endregion
 
-	private SplitContainer mainContainer;
-	private PictureBox previewBox;
-	private Label label1;
-	private NumericUpDown scale;
-	private HScrollBar luminanceWeight;
-	private Label label2;
-	private Label currentLuminanceWeight;
-	private Label currentEqualColorTolerance;
-	private Label label4;
-	private HScrollBar equalColorTolerance;
-	private Label currentDominantDirectionThreshold;
-	private Label ddt_label;
-	private HScrollBar dominantDirectionThreshold;
-	private Label currentCenterDirectionBias;
-	private Label label7;
-	private HScrollBar CenterDirectionBias;
-	private Label currentSteepDirectionThreshold;
-	private Label label6;
-	private HScrollBar SteepDirectionThreshold;
-	private CheckBox gammaCorrection;
-	private CheckBox alphaPremultiplication;
+	internal SplitContainer MainContainer;
+	internal Panel MainLeftPanel => MainContainer.Panel1;
+	internal Panel MainRightPanel => MainContainer.Panel2;
+	internal PictureBox ImagePreviewBox;
+	internal Label ScaleLabel;
+	internal NumericUpDown ScaleChanger;
+	internal Label EqualColorToleranceCurrent;
+	internal Label EqualColorToleranceLabel;
+	internal HScrollBar EqualColorTolerance;
+	internal Label DominantDirectionThresholdCurrent;
+	internal Label DominantDirectionThresholdLabel;
+	internal HScrollBar DominantDirectionThreshold;
+	internal Label CenterDirectionBiasCurrent;
+	internal Label CenterDirectionBiasLabel;
+	internal HScrollBar CenterDirectionBias;
+	internal Label SteepDirectionThresholdCurrent;
+	internal Label SteepDirectionThresholdLabel;
+	internal HScrollBar SteepDirectionThreshold;
+	internal CheckBox GammaCorrection;
+	internal CheckBox AlphaPremultiplication;
+	internal Button BackgroundColorButton;
 }

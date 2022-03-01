@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace RangeHighlight {
     internal class Integrations {
@@ -22,6 +23,9 @@ namespace RangeHighlight {
             IntegratePrismaticTools();
             IntegrateRadioactiveTools();
             IntegrateBetterJunimos();
+            if (theMod.config.ShowBeehouseRange) {
+                IntegrateBetterBeehouses();
+            }
             if (theMod.config.ShowSprinklerRange) {
                 IntegrateBetterSprinklers();
                 IntegrateSimpleSprinklers();
@@ -48,6 +52,36 @@ namespace RangeHighlight {
             } else {
                 theMod.Monitor.Log($"ignoring nonsense value {r} from Better Junimos for Junimo Hut radius", LogLevel.Info);
             }
+        }
+        private void IntegrateBetterBeehouses() {
+            IBetterBeehousesAPI api = theMod.helper.ModRegistry.GetApi<IBetterBeehousesAPI>("tlitookilakin.BetterBeehouses");
+            if (api == null) return;
+            theMod.api.RemoveItemRangeHighlighter("jltaylor-us.RangeHighlight/beehouse");
+            bool[,] beehouseShape = { };
+            int lastVal = 0;
+            theMod.api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/better-beehouses", theMod.config.ShowBeehouseRangeKey,
+                theMod.config.ShowOtherBeehousesWhenHoldingBeehouse,
+                () => {
+                    int r = api.GetSearchRadius();
+                    if (r != lastVal) {
+                        lastVal = r;
+                        if (r > 1) {
+                            beehouseShape = theMod.api.GetManhattanCircle((uint)r);
+                        } else {
+                            theMod.Monitor.Log($"ignoring nonsense value {r} from Better Beehouses for Flower search radius", LogLevel.Info);
+                            beehouseShape = theMod.defaultShapes.beehouse;
+                        }
+                    }
+                },
+                (item, itemID, itemName) => {
+                    if (itemName.Contains("bee house")) {
+                        return new Tuple<Color, bool[,]>(theMod.config.BeehouseRangeTint, beehouseShape);
+                    } else {
+                        return null;
+                    }
+                },
+                () => { });
+
         }
         private void IntegrateSprinklerCommon(string highlighterName, Func<IDictionary<int,Vector2[]>> getCoverage, bool fallbackToDefault) {
             theMod.api.RemoveItemRangeHighlighter("jltaylor-us.RangeHighlight/sprinkler");
@@ -130,5 +164,9 @@ namespace RangeHighlight {
     public interface RadioactiveToolsAPI {
         int SprinklerRange { get; }
         int SprinklerIndex { get; }
+    }
+    public interface IBetterBeehousesAPI {
+        public bool GetEnabledHere(GameLocation location, bool isWinter);
+        public int GetSearchRadius();
     }
 }

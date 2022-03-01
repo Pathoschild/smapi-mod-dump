@@ -21,9 +21,10 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit b9dbfc265fdf0a81cc8c019a90a712ec37d9a539
+   commit 9ebcd6365f96fd025afcbb0fc2b74b3ba233fdf8
+   Merge: e83ce17d 3e3cbe10
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jan 29 00:14:14 2022 -0500
+   Date:   Sun Feb 27 20:56:21 2022 -0500
    
-       tweak docs
+       Merge branch 'develop' into stable
    

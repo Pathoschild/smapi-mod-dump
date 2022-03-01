@@ -1,0 +1,31 @@
+{
+    "TheMightyAmondee.Shoplifter/Shoplift":"Voler ?",  
+    "TheMightyAmondee.Shoplifter/Banned": "Vous avez été banni pour vol à l'étalage. Ne poussez pas votre chance trop loin...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted_Single": "Vous avez déjà volé aujourd’hui. Ça suffit...",
+    "TheMightyAmondee.Shoplifter/AlreadyShoplifted": "Vous avez déjâ voler {{shopliftingamount}} fois aujourd'hui . Ça suffit...",
+    "TheMightyAmondee.Shoplifter/AlreadyShopliftedSameShop":"Il y a rien à voler ici...",
+    "TheMightyAmondee.Shoplifter/BanFromShop_Single":"#$b# Tu m'as assez volé comme ça ce mois-ci @,je vais devoir te bannir pendant 1 journée.$1",
+    "TheMightyAmondee.Shoplifter/BanFromShop":"#$b#Tu m'as assez volé comme ça ce mois-ci @, Je vais devoir te bannir pendant {{daysbanned}} journées.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric": "T'est vraiment en train de voler là @?$2#$b#*soupir* Je vais devoir t’infliger une amende de {{fineamount}}po pour ça.$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre": "Tu voles??!! Mais à quoi tu pensais?!$4#$b#Paye {{fineamount}}po d'amende et je te laisse partir @.$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly": "Je sais quand tu est en train de voler @... L'odeur te suit $2#$b#Je te retire{{fineamount}}po pour ça.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin": "Vraiment @? Tu pensais que tu pourrais avoir une télé gratuite... je ne garde pas mes gros objets là-bas...$3#$b#Je te retire {{fineamount}}po pour ça... Peut être que ça vas te dissuader.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie": "Voler mon foin, mais où sommes-nous @? Juste parce que je ne suis jamais à mon magasin ne signifie pas que tu as le droit de me voler.$4#$b#Si tu peut payer {{fineamount}}po d'amende je ne vais pas impliquer Lewis...$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus": "Je sais que le menu d'aujourd'hui a l'air bon @, mais tu dois quand même payer pour ça.$3#$b#*soupir* Si tu peut payer {{fineamount}}po d'amende .Je vais oublier que ta voler aujourd’hui. Ok ??$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey": "Qu'est ce tu pensais faire avec ça @? Ces objets sont dangeureux sans les conseils d'un médecin...$8#$b#Je te retire {{fineamount}}po pour vol à l'étalage @, c'est sérieux.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint": "Tu me voles @! Je pensais que tu étais une meilleure personne que ça.$3#$b#Tu sais que l'amende pour vol est de {{fineamount}}po pas vrai ? Et beh c'est ce que tu me dois pour ça.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy": "Être loin des autres ne rend pas mon magasin plus facile à voler, @.$2#$b#Paye {{fineamount}}po d'amende et j'oublie ce qui c'est passer.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex": "Tu est à ce point désésperer pour voler de la glace, @?$7#$b#J'aurais jamais penser mettre une amende à quelqu'un mais ça va te coûter {{fineamount}}po.$2",
+  
+    "TheMightyAmondee.Shoplifter/CaughtGeneric_NoMoney": "T'est vraiment en train de voler là @?$2#$b#*soupir* Je t’infligerais une amende, mais là tu ne pourras pas la payer!$2",
+    "TheMightyAmondee.Shoplifter/CaughtPierre_NoMoney": "Tu voles??!! Mais à quoi tu pensais?!?!$4#$b#Tu as de la chance tu ne peut pas payer cette amende !$3",
+    "TheMightyAmondee.Shoplifter/CaughtWilly_NoMoney": "Je sais quand tu est en train de voler @... L'odeur te suit...$2#$b#Rend moi ce que ta voler. Je peut pas te mettre une amende si tu ne peut pas la payer.$2",
+    "TheMightyAmondee.Shoplifter/CaughtRobin_NoMoney": "Vraiment @? Tu pensais que tu pourrais avoir une télé gratuite... je ne garde pas mes gros objets là-bas...$3#$b#Puisque tu ne peux pas te le permettre, je vais laisser passer cette fois ci.$2",
+    "TheMightyAmondee.Shoplifter/CaughtMarnie_NoMoney": "Voler mon foin, mais où sommes-nous @? Juste parce que je ne suis jamais à mon magasin ne signifie pas que tu as le droit de me voler.$4#$b#En générale il y a une ammende, mais vu que tu n'as pas de quoi la payer je te laisse partir.$3",
+    "TheMightyAmondee.Shoplifter/CaughtGus_NoMoney": "Je sais que le menu d'aujourd'hui a l'air bon @, mais tu dois quand même payer pour ça.$3#$b#*soupir* Je vais te donner un avertissment vu que tu n'as pas assez d'argent.$2",
+    "TheMightyAmondee.Shoplifter/CaughtHarvey_NoMoney": "Qu'est ce tu pensais faire avec ça @? Ces objets sont dangeureux sans les conseils d'un médecin...$8#$b#Tu ne peut pas payer l'amende ducoup je vais rien faire . Mais ne revole plus.$5",
+    "TheMightyAmondee.Shoplifter/CaughtClint_NoMoney": "Tu me voles @! Je pensais que tu étais une meilleure personne que ça.$3#$b#Je vais rien te prendre @, vu que tu n'as pas de quoi payer.$2",
+    "TheMightyAmondee.Shoplifter/CaughtSandy_NoMoney": "Être loin des autres ne rend pas mon magasin plus facile à voler, @.$2#$b#T'inquiète pas à propos de cette amende @, juste pars.$2",
+    "TheMightyAmondee.Shoplifter/CaughtAlex_NoMoney": "Tu est à ce point désésperer pour voler de la glace, @?$7#$b#Je vais juste te laisser partir avec un avertissment cette fois ci.$5"
+  }

@@ -14,4 +14,5 @@
 	"Price": 0,
 	"CanTrash": false,
     "CanSell": false,
+	"TranslationKey": "object.lance-schelude"
 }

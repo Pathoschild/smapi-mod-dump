@@ -11,11 +11,11 @@
 {
   "Name": "Utility Grid",
   "Author": "aedenthorn",
-  "Version": "0.5.4",
+  "Version": "0.6.2",
   "Description": "Utility grid.",
   "UniqueID": "aedenthorn.UtilityGrid",
   "EntryDll": "UtilityGrid.dll",
-  "MinimumApiVersion": "3.13.0-beta.20211018",
+  "MinimumApiVersion": "3.13.0",
   "ModUpdater": {
     "Repository": "StardewValleyMods",
     "User": "aedenthorn",

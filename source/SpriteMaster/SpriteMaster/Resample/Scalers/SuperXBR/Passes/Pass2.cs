@@ -105,7 +105,7 @@ sealed class Pass2 : Pass {
 					WeightedDifferenceHorizontalVertical(e, f, h, i, d, f4, g, i4);
 
 				float limits = Configuration.EdgeStrength + 0.000001f;
-				float edgeStrength = SmoothStep(0.0f, limits, Math.Abs(dEdge));
+				float edgeStrength = SmoothStep(0.0f, limits, MathF.Abs(dEdge));
 
 				// Filter weights. Two taps only.
 				Float4 w1 = (-Weight1, Weight1 + 0.5f, Weight1 + 0.5f, -Weight1);

@@ -18,6 +18,12 @@ And these archived mods which are no longer actively maintained:
 * ~~[Skull Cave Saver](_archived/SkullCaveSaver) ([Nexus](https://www.nexusmods.com/stardewvalley/mods/175))~~ (see [alternatives](https://mods.smapi.io/#Skull_Cave_Saver))
 
 ## Translating the mods
+<!--
+
+    This section is auto-generated using a script, there's no need to edit it manually.
+    https://gist.github.com/Pathoschild/040ff6c8dc863ed2a7a828aa04447033
+
+-->
 The mods can be translated into any language supported by the game, and SMAPI will automatically
 use the right translations.
 
@@ -26,19 +32,19 @@ on the wiki for help contributing translations.
 
 (❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
 
-&nbsp;     | All Professions | Instant Grow Trees | Recatch Legendary Fish | TimeSpeed
----------- | :-------------- | :----------------- | :--------------------- | :--------------------------
-Chinese    | ❑               | ❑                  | ❑                      | [↻](TimeSpeed/i18n/pt.json)
-French     | ❑               | ❑                  | ❑                      | ❑
-German     | ❑               | ❑                  | ❑                      | ❑
-Hungarian  | ❑               | ❑                  | ❑                      | ❑
-Italian    | ❑               | ❑                  | ❑                      | ❑
-Japanese   | ❑               | ❑                  | ❑                      | ❑
-Korean     | ❑               | ❑                  | ❑                      | ❑
-Portuguese | ❑               | ❑                  | ❑                      | [↻](TimeSpeed/i18n/pt.json)
-Russian    | ❑               | ❑                  | ❑                      | ❑
-Spanish    | ❑               | ❑                  | ❑                      | [↻](TimeSpeed/i18n/es.json)
-Turkish    | ❑               | ❑                  | ❑                      | ❑
+&nbsp;     | All Professions                  | Instant Grow Trees                 | Recatch Legendary Fish                 | TimeSpeed
+:--------- | :------------------------------- | :--------------------------------- | :------------------------------------- | :--------------------------
+Chinese    | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [↻](TimeSpeed/i18n/zh.json)
+French     | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [❑](TimeSpeed/i18n)
+German     | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [✓](TimeSpeed/i18n/de.json)
+Hungarian  | [↻](AllProfessions/i18n/hu.json) | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [❑](TimeSpeed/i18n)
+Italian    | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [❑](TimeSpeed/i18n)
+Japanese   | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [❑](TimeSpeed/i18n)
+Korean     | [❑](AllProfessions/i18n)         | [✓](InstantGrowTrees/i18n/ko.json) | [✓](RecatchLegendaryFish/i18n/ko.json) | [✓](TimeSpeed/i18n/ko.json)
+Portuguese | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [↻](TimeSpeed/i18n/pt.json)
+Russian    | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [❑](TimeSpeed/i18n)
+Spanish    | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [↻](TimeSpeed/i18n/es.json)
+Turkish    | [❑](AllProfessions/i18n)         | [❑](InstantGrowTrees/i18n)         | [❑](RecatchLegendaryFish/i18n)         | [❑](TimeSpeed/i18n)
 
 ## Compiling the mods
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to

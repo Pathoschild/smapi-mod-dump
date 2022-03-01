@@ -1,0 +1,7 @@
+{
+  "AnimalShopLimit": 30,
+  "ControlScheme": {
+    "NextPage": "DPadRight",
+    "PreviousPage": "DPadLeft"
+  }
+}

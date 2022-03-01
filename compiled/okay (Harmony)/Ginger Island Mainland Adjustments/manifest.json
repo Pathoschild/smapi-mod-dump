@@ -1,0 +1,16 @@
+{
+   "Name": "Ginger Island Mainland Adjustments",
+   "Author": "atravita",
+   "Version": "1.1.2",
+   "Description": "Dialogue keys for NPCs headed to or away from Ginger Island, post-Ginger Island Schedules, and so on.",
+   "UniqueID": "atravita.GingerIslandMainlandAdjustments",
+   "EntryDll": "GingerIslandMainlandAdjustments.dll",
+  "UpdateKeys": [ "Nexus:10004@CodePack", "GitHub:atravita-mods/Ginger-Island-Mainland-Adjustments", "ModDrop:1098263@CodePack" ],
+   "MinimumApiVersion": "3.0",
+   "Dependencies": [
+	   {
+	   "UniqueID": "Pathoschild.ContentPatcher",
+	   "IsRequired": false
+	   }
+   ]
+}

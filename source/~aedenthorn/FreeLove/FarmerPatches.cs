@@ -96,7 +96,7 @@ namespace FreeLove
         {
             try
             {
-                __result = __instance.team.IsMarried(__instance.UniqueMultiplayerID) || Misc.GetSpouses(__instance, 1).Count > 0;
+                __result = __instance.team.IsMarried(__instance.UniqueMultiplayerID) || Misc.GetSpouses(__instance, true).Count > 0;
                 return false;
             }
             catch (Exception ex)
@@ -145,6 +145,7 @@ namespace FreeLove
         {
             try
             {
+
                 if (ModEntry.tempOfficialSpouse != null && __instance.friendshipData.ContainsKey(ModEntry.tempOfficialSpouse.Name) && __instance.friendshipData[ModEntry.tempOfficialSpouse.Name].IsMarried())
                 {
                     __result = ModEntry.tempOfficialSpouse;
@@ -162,6 +163,7 @@ namespace FreeLove
         {
             try
             {
+
                 if (ModEntry.tempOfficialSpouse != null && __instance.friendshipData.ContainsKey(ModEntry.tempOfficialSpouse.Name) && __instance.friendshipData[ModEntry.tempOfficialSpouse.Name].IsMarried())
                 {
                     __result = __instance.friendshipData[ModEntry.tempOfficialSpouse.Name];

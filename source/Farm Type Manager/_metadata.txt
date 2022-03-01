@@ -6,9 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit d080caa557d2bb631c771d6b3264bdfa451a09f7
+   commit d1b140e1bb9af6f5a5803ba6fc4aa87b34dd920c
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Jan 26 22:34:00 2022 -0600
+   Date:   Thu Feb 3 06:47:50 2022 -0600
    
-       Automatic cleanup (remove/sort usings)
+       Add monster settings "SightRange", "RangedAttacks", "ExtraLoot"
    

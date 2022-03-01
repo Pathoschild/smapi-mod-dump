@@ -48,14 +48,14 @@ internal class LevelUpMenuUpdatePatch : BasePatch
     /// <summary>Patch to prevent duplicate profession acquisition + display end of level up dialogues.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> LevelUpMenuUpdateTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
         /// From: if (currentLevel == 5)
         /// To: if (currentLevel is 5 or 15)
 
-        var isLevel5 = iLGenerator.DefineLabel();
+        var isLevel5 = generator.DefineLabel();
         try
         {
             helper
@@ -80,6 +80,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching level 15 profession choices. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -119,6 +120,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching 2nd-tier profession choices to reflect last chosen 1st-tier profession. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -131,11 +133,11 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         ///			  if (ShouldCongratulateOnFullPrestige(currentLevel, professionsToChoose[i])) shouldCongratulateOnFullPrestige = true;
         /// Before: isActive = false;
 
-        var dontGetImmediatePerks = iLGenerator.DefineLabel();
-        var isNotPrestigeLevel = iLGenerator.DefineLabel();
-        var chosenProfession = iLGenerator.DeclareLocal(typeof(int));
-        var shouldProposeFinalQuestion = iLGenerator.DeclareLocal(typeof(bool));
-        var shouldCongratulateFullSkillMastery = iLGenerator.DeclareLocal(typeof(bool));
+        var dontGetImmediatePerks = generator.DefineLabel();
+        var isNotPrestigeLevel = generator.DefineLabel();
+        var chosenProfession = generator.DeclareLocal(typeof(int));
+        var shouldProposeFinalQuestion = generator.DeclareLocal(typeof(bool));
+        var shouldCongratulateFullSkillMastery = generator.DeclareLocal(typeof(bool));
         var i = 0;
         repeat1:
         try
@@ -210,6 +212,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching level up profession redundancy and injecting dialogues. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -220,9 +223,9 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         /// Aand: if (shouldCongratulateOnFullPrestige) CongratulateOnFullPrestige(chosenProfession)
         /// Before: if (!isActive || !informationUp)
 
-        var dontProposeFinalQuestion = iLGenerator.DefineLabel();
-        var dontCongratulateOnFullPrestige = iLGenerator.DefineLabel();
-        var resumeExecution = iLGenerator.DefineLabel();
+        var dontProposeFinalQuestion = generator.DefineLabel();
+        var dontCongratulateOnFullPrestige = generator.DefineLabel();
+        var resumeExecution = generator.DefineLabel();
         try
         {
             helper
@@ -270,6 +273,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while injecting level up profession final question. Helper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 
@@ -283,8 +287,8 @@ internal class LevelUpMenuUpdatePatch : BasePatch
     private static bool ShouldProposeFinalQuestion(int chosenProfession)
     {
         return ModEntry.Config.EnablePrestige && chosenProfession is >= 26 and < 30 &&
-               ModEntry.State.Value.SuperMode is not null &&
-               (int) ModEntry.State.Value.SuperMode.Index != chosenProfession;
+               ModEntry.PlayerState.Value.SuperMode is not null &&
+               (int) ModEntry.PlayerState.Value.SuperMode.Index != chosenProfession;
     }
 
     private static bool ShouldCongratulateOnFullSkillMastery(int currentLevel, int chosenProfession)
@@ -294,7 +298,7 @@ internal class LevelUpMenuUpdatePatch : BasePatch
 
     private static void ProposeFinalQuestion(int chosenProfession, bool shouldCongratulateFullSkillMastery)
     {
-        var oldProfessionKey = ModEntry.State.Value.SuperMode.Index.ToString().ToLower();
+        var oldProfessionKey = ModEntry.PlayerState.Value.SuperMode.Index.ToString().ToLower();
         var oldProfessionDisplayName = ModEntry.ModHelper.Translation.Get(oldProfessionKey + ".name.male");
         var oldBuff = ModEntry.ModHelper.Translation.Get(oldProfessionKey + ".buff");
         var newProfessionKey = chosenProfession.ToProfessionName();
@@ -316,8 +320,17 @@ internal class LevelUpMenuUpdatePatch : BasePatch
                 if (answer == "Yes")
                 {
                     var newIndex = (SuperModeIndex) chosenProfession;
-                    ModEntry.State.Value.SuperMode = new(newIndex);
-                    ModData.Write(DataField.SuperModeIndex, newIndex.ToString());
+                    ModEntry.PlayerState.Value.SuperMode =
+#pragma warning disable CS8509
+                        ModEntry.PlayerState.Value.SuperMode = newIndex switch
+#pragma warning restore CS8509
+                        {
+                            SuperModeIndex.Brute => new BruteFury(),
+                            SuperModeIndex.Poacher => new PoacherColdBlood(),
+                            SuperModeIndex.Piper => new PiperEubstance(),
+                            SuperModeIndex.Desperado => new DesperadoTemerity()
+                        };
+                    Game1.player.WriteData(DataField.SuperModeIndex, newIndex.ToString());
                 }
 
                 if (shouldCongratulateFullSkillMastery) CongratulateOnFullSkillMastery(chosenProfession);

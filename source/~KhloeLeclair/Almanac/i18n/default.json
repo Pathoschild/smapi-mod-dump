@@ -1,0 +1,155 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"mod-name": "Almanac",
+
+	"almanac.open": "Open Almanac",
+
+	"almanac.cover": "The\nFerngill\nFarmer's\nAlmanac",
+	"almanac.cover-island": "The\nFerngill\nand\nFern Islands\nFarmer's\nAlmanac",
+
+	"calendar.when": "{{season}}, Year {{year}}",
+
+	"calendar.day.1": "M",
+	"calendar.day.2": "T",
+	"calendar.day.3": "W",
+	"calendar.day.4": "Th",
+	"calendar.day.5": "F",
+	"calendar.day.6": "Sa",
+	"calendar.day.7": "Su",
+
+	"page.crops": "Planting Dates",
+
+	"crop.last-day": "Last Day For:",
+
+	"crop.toggle": "Toggle {{mode}}",
+	"crop.paddy": "Paddy Bonus",
+
+	"crop.using-none": "The following growth times and dates assume you have no fertilizer or skill.",
+	"crop.using-agri": "The following growth times and dates assume you are an {{agriculturist}}.",
+	"crop.using-speed": "The following growth times and dates assume you are using {{fertilizer}}.",
+	"crop.using-both": "The following growth times and dates assume you are an {{agriculturist}} and that you are using {{fertilizer}}.",
+	"crop.using-paddy": "They also assume crops that benefit from it are grown near water.",
+
+	"crop.grow-time": "Grows in {{count}} days.",
+	"crop.harvests": "Expect {{count}} harvests this year.",
+	"crop.harvests-date": "Expect {{count}} harvests this year when planted on {{date}}.",
+	"crop.last-date": "Plant no later than {{date}}.",
+	"crop.regrow-time": "Regrows every {{count}} days.",
+	"crop.paddy-note": "Grows faster near water.",
+	"crop.giant-note": "Able to grow to giant size.",
+	"crop.trellis-note": "Requires a trellis.",
+
+	"page.weather": "Weather Forecast",
+	"page.weather-island": "Ginger Island Forecast",
+
+	"festival.about": "The following festivals are scheduled to be held within the greater Pelican Town area in {{season}}:",
+
+	"festival.when": "When:",
+	"festival.when-times": "{{start}} to {{end}}",
+	"festival.where": "Where:",
+	"festival.date": "Date:",
+
+	"weather.sunny": "Sunny",
+	"weather.rain": "Rain",
+	"weather.debris": "Windy",
+	"weather.lightning": "Thunderstorms",
+	"weather.festival": "Sunny",
+	"weather.snow": "Snow",
+
+	"page.train": "Train Schedule",
+	"page.train.about": "@BWarning:@b Trains will be passing by the Stardew Valley station at the following times. For your safety, always remain clear of the tracks when a train is present.",
+
+	"page.train.notice": "Notice: Train service to the Stardew Valley service is suspended throughout Spring as scheduled track maintenance is performed.",
+
+	"page.fortune": "Fortune",
+
+	"page.fortune.luck-awful": "Displeased spirits will make life difficult.",
+	"page.fortune.luck-bad": "Annoyed spirits won't be bringing anyone luck.",
+	"page.fortune.luck-neutral": "The spirits will be in perfect balance. The day, in your hands.",
+	"page.fortune.luck-good": "Good humored spirits will bring extra luck.",
+	"page.fortune.luck-great": "Happy spirits will shower everyone with good fortune.",
+
+	"page.fortune.event.none": "Expect a peaceful season. You must find excitement within, and seek joy in your daily life.",
+
+	"page.fortune.about": "Here's what might be happening in {{Season}}, or what might not be.",
+
+	"page.fortune.garbage-hat": "One's trash is another's treasure.",
+
+	"page.fortune.event.fairy": "A good natured fairy will pass through over the night. Those with good luck might find a bountiful harvest awaiting them.",
+	"page.fortune.event.witch": "Witches are expected in the area this night.",
+	"page.fortune.event.meteorite": "Meteor showers are expected throughout Ferngill.",
+	"page.fortune.event.owl": "Shrouded in mystery, stone guardians descend on the valley.",
+
+	"page.mines": "The Underground",
+	"page.mines.about": "The following is a summary of predicted monster activity in {{Season}}:",
+
+	"page.mines.type.Mushroom": "Mushrooms",
+	"page.mines.type.InfestedMonster": "Infestation",
+	"page.mines.type.InfestedSlime": "Slime Infestation",
+	"page.mines.type.Quarry": "Quarry",
+	"page.mines.type.InfestedQuarry": "Quarry Infestation",
+	"page.mines.type.Dino": "Cavern Dinosaurs",
+
+	// Settings
+
+	"settings.button": "Show Almanac Button",
+	"settings.button-desc": "When enabled, a button to open the Almanac will be added to the inventory menu.",
+
+	"settings.available": "Almanac Always Available",
+	"settings.available-desc": "When enabled, the Almanac will always be available regardless of whether you've received a copy.",
+
+	"settings.island": "Island Always Available",
+	"settings.island-desc": "When enabled, the Almanac will always be expanded to display Ginger Island content.",
+
+	"settings.magic": "Magic Pages Always Available",
+	"settings.magic-desc": "When enabled, magic pages will always be available and not require the event with the wizard.",
+
+	"settings.weather.deterministic": "Use Deterministic Weather",
+	"settings.weather.deterministic-desc": "In order for the weather forecast of the Almanac to work, we replace the calculation for tomorrow's weather with one that uses a predictable source of randomness. If this is causing problems, you can disable the behavior here. However, doing so will disable the extended weather forecast.",
+
+	"settings.weather.rules": "Enable Weather Rules",
+	"settings.weather.rules-desc": "Weather Rules apply extra constraints to the random weather. The default rules ensure a trio of rainy days near the end of Spring to make upgrading watering cans easier, and that each week has at least one rainy day and at least one sunny day.",
+
+	"settings.controls": "Controls",
+
+	"settings.controls.almanac": "Open Almanac",
+	"settings.controls.almanac-desc": "Pressing this key will open the Almanac interface.",
+
+	"settings.enable": "Enable Page",
+	"settings.enable-desc": "Whether or not this page should be added to the Almanac.",
+
+	"settings.crops": "Page: Planting Dates",
+
+	"settings.crops.preview": "Crop Previews",
+	"settings.crops.preview-desc": "When Crop Previews are enabled, hovering over a crop in the Planting Dates tab will show you with the calendar what stage the crop will be at on a given day.",
+
+	"settings.crops.preview.enable": "Enable Previews",
+
+	"settings.crops.preview.plantonfirst": "Always Plant on First",
+	"settings.crops.preview.plantonfirst-desc": "When enabled, the month overview you see when a crop is selected will always start planting on the first even if the current date is after the first of the month.",
+
+	"settings.crops.preview.sprite": "Use Harvest Sprites",
+	"settings.crops.preview.sprite-desc": "When enabled, an image of the harvest product will be used rather than the final growth stage, to make it more easily apparent what days the crop is harvestable.",
+
+	"settings.fortune": "Page: Fortune",
+
+	"settings.fortune.deterministic": "Use Deterministic Luck",
+	"settings.fortune.deterministic-desc": "In order for the daily luck predictions of the Almanac to work, we replace the calculation for daily fortune with one that uses a predictable source of randomness. If this is causing problems, you can disable the behavior here. However, doing so will disable the daily luck forecast.",
+
+	"settings.fortune.exact": "Show Luck Percentages",
+	"settings.fortune.exact-desc": "When enabled, the exact daily luck percentage will be displayed in Fortune calendar tooltips.",
+
+	"settings.train": "Page: Train Schedule",
+
+	"settings.weather": "Page: Weather Forecast"
+
+}

@@ -36,6 +36,7 @@ namespace ItemPipes.Framework.Patches
 
 		public static void Apply(Harmony harmony)
 		{
+			/*
 			try
 			{
 				harmony.Patch(
@@ -53,7 +54,7 @@ namespace ItemPipes.Framework.Patches
 				/*harmony.Patch(
 					original: AccessTools.Method(typeof(Fence), nameof(Fence.drawInMenu), new Type[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }),
 					prefix: new HarmonyMethod(typeof(FencePatcher), nameof(FencePatcher.Fence_drawInMenu_Prefix))
-				);*/
+				);
 				harmony.Patch(
 					original: AccessTools.Method(typeof(Fence), nameof(Fence.draw), new Type[] { typeof(SpriteBatch), typeof(int), typeof(int), typeof(float) }),
 					prefix: new HarmonyMethod(typeof(FencePatcher), nameof(FencePatcher.Fence_draw_Prefix))
@@ -72,8 +73,9 @@ namespace ItemPipes.Framework.Patches
 			{
 				if (Globals.UltraDebug) { Printer.Info($"Failed to add fence patch: {ex}"); }
 			}
+			*/
 		}
-		
+		/*
 		private static bool Fence_checkForAction_Prefix(Fence __instance)
 		{
 			DataAccess DataAccess = DataAccess.GetDataAccess();
@@ -373,9 +375,10 @@ namespace ItemPipes.Framework.Patches
 				sourceRectPosition = GetNewDrawGuide(__instance)[drawSum];
 				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
 				Node node = nodes.Find(n => n.Position.Equals(__instance.TileLocation));
-				if (node != null)
+				if (node != null && node is PipeNode)
 				{
-					Texture2D signalTexture = Helper.GetHelper().Content.Load<Texture2D>($"assets/Pipes/{node.GetName()}/{node.GetState()}.png");
+					PipeNode pipeNode = (PipeNode)node;
+					Texture2D signalTexture = Helper.GetHelper().Content.Load<Texture2D>($"assets/Pipes/{node.GetName()}/{pipeNode.GetState()}.png");
 					b.Draw(signalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), new Rectangle(sourceRectPosition * Fence.fencePieceWidth % __instance.fenceTexture.Value.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / __instance.fenceTexture.Value.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)(y * 64 + 32) / 10000f);
 				}
 				else

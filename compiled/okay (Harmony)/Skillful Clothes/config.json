@@ -1,5 +1,7 @@
 {
   "EnableShirtEffects": true,
   "EnablePantsEffects": true,
-  "EnableHatEffects": true
+  "EnableHatEffects": true,
+  "AllItemsCanBeTailored": false,
+  "LoadCustomEffectDefinitions": false
 }

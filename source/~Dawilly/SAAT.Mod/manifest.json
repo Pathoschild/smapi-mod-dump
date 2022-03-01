@@ -11,7 +11,7 @@
 {
   "Name": "SAAT.Mod",
   "Author": "ZeroMeters",
-  "Version": "1.1.0",
+  "Version": "1.1.1",
   "Description": "Custom Audio Loader & Management for SMAPI",
   "UniqueID": "ZeroMeters.SAAT.Mod",
   "EntryDll": "SAAT.Mod.dll",

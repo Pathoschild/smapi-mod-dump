@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/jeffgillean/StardewValleyMods
+   Git: https://github.com/jeffgillean/StardewValleyMods.git
+
+mods:
+   Frugal Farm Menu
+
+latest commit:
+   commit 02f93cf74f6505b9c38baf61b242cdb3974084a4
+   Author: Jeff Gillean <jeffgillean@gmail.com>
+   Date:   Wed Feb 23 02:06:01 2022 -0600
+   
+       Fix #1
+       Fix #2
+       Add SMAPI MinimumApiVersion
+   

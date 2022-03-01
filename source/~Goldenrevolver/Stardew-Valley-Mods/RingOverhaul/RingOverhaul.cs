@@ -36,6 +36,7 @@ namespace RingOverhaul
 
         // TODO add API
         // TODO make fake assets to make this CP changeable
+        // TODO make rings of the same category type not equippable at the same time (care for compatibility with equip more rings)
 
         public override void Entry(IModHelper helper)
         {

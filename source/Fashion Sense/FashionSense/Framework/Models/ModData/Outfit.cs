@@ -36,6 +36,7 @@ namespace FashionSense.Framework.Models
         public string ShirtId { get; set; }
         public string SleevesId { get; set; }
         public string PantsId { get; set; }
+        public string ShoesId { get; set; }
 
         // Colors
         public string AccessoryOneColor { get; set; }
@@ -65,6 +66,7 @@ namespace FashionSense.Framework.Models
             ShirtId = who.modData[ModDataKeys.CUSTOM_SHIRT_ID];
             SleevesId = who.modData[ModDataKeys.CUSTOM_SLEEVES_ID];
             PantsId = who.modData[ModDataKeys.CUSTOM_PANTS_ID];
+            ShoesId = who.modData[ModDataKeys.CUSTOM_SHOES_ID];
 
             HairColor = who.hairstyleColor.Value.PackedValue.ToString();
             AccessoryOneColor = who.modData[ModDataKeys.UI_HAND_MIRROR_ACCESSORY_COLOR];

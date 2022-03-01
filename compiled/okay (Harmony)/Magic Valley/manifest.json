@@ -1,7 +1,7 @@
 ﻿{
   "Name": "MagicValley",
   "Author": "season",
-  "Version": "0.2.1",
+  "Version": "0.2.2",
   "Description": "Make the valley full of magic.",
   "UniqueID": "season.MagicValley",
   "EntryDll": "MagicValley.dll",

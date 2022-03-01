@@ -17,8 +17,10 @@ using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Volatile;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using static SpriteMaster.ResourceManager;
 using WeakInstanceList = System.Collections.Generic.LinkedList<System.WeakReference<SpriteMaster.ManagedSpriteInstance>>;
 using WeakInstanceListNode = System.Collections.Generic.LinkedListNode<System.WeakReference<SpriteMaster.ManagedSpriteInstance>>;
 using WeakTexture = System.WeakReference<Microsoft.Xna.Framework.Graphics.Texture2D>;
@@ -39,6 +41,10 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		meta.Purge();
 	}
 
+	internal static ulong GetHash(SpriteInfo info, TextureType type) => Resampler.GetHash(info, type);
+
+	internal static ulong? GetHash(in SpriteInfo.Initializer info, TextureType type) => Resampler.GetHash(in info, type);
+
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool Validate(Texture2D texture, bool clean = false) {
 		var meta = texture.Meta();
@@ -49,7 +55,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (texture is InternalTexture2D) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is Internal Texture");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Internal Texture");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -66,7 +72,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is System Render Target");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is System Render Target");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -81,7 +87,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (texture is RenderTarget2D) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is Render Target");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Render Target");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -93,7 +99,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (Math.Max(texture.Width, texture.Height) <= Config.Resample.MinimumTextureDimensions) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is Too Small: ({texture.Extent().ToString(DrawingColor.Orange)} < {Config.Resample.MinimumTextureDimensions.ToString(DrawingColor.Orange)})");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Too Small: ({texture.Extent().ToString(DrawingColor.Orange)} <= {Config.Resample.MinimumTextureDimensions.ToString(DrawingColor.Orange)})");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -105,7 +111,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (texture.Area() == 0) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Zero Area (Degenerate)");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Zero Area (Degenerate)");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -118,7 +124,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (texture.IsDisposed || texture.GraphicsDevice.IsDisposed) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is Zombie");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Zombie");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -131,7 +137,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (Config.IgnoreUnknownTextures && texture.Anonymous()) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is Unknown Texture");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Unknown Texture");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -143,7 +149,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (texture.LevelCount > 1) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Multi-Level Textures Unsupported: {texture.LevelCount.ToString(DrawingColor.Orange)} levels");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Multi-Level Textures Unsupported: {texture.LevelCount.ToString(DrawingColor.Orange)} levels");
 			}
 			meta.Validation = false;
 			return false;
@@ -152,7 +158,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		if (!HasLegalFormat(texture)) {
 			if (!meta.TracePrinted) {
 				meta.TracePrinted = true;
-				Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Format Unsupported: {texture.Format.ToString(DrawingColor.Orange)}");
+				Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Format Unsupported: {texture.Format.ToString(DrawingColor.Orange)}");
 			}
 			meta.Validation = false;
 			if (clean) {
@@ -162,11 +168,11 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		}
 
 		if (!texture.Anonymous()) {
-			foreach (var blacklisted in Config.Resample.Blacklist) {
-				if (texture.SafeName().StartsWith(blacklisted)) {
+			foreach (var blacklistPattern in Config.Resample.BlacklistPatterns) {
+				if (blacklistPattern.IsMatch(texture.NormalizedName())) {
 					if (!meta.TracePrinted) {
 						meta.TracePrinted = true;
-						Debug.TraceLn($"Not Scaling Texture '{texture.SafeName(DrawingColor.LightYellow)}', Is Blacklisted");
+						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Blacklisted ({blacklistPattern})");
 					}
 					meta.Validation = false;
 					if (clean) {
@@ -223,6 +229,9 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		}
 
 		if (SpriteMap.TryGetReady(texture, source, expectedScale, out var scaleTexture)) {
+			if (scaleTexture?.NoResample ?? false) {
+				return null;
+			}
 			return scaleTexture;
 		}
 
@@ -230,25 +239,34 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	static internal ManagedSpriteInstance? FetchOrCreate(Texture2D texture, in Bounds source, uint expectedScale) {
-		using var _ = Performance.Track();
-
+	static internal ManagedSpriteInstance? FetchOrCreate(Texture2D texture, in Bounds source, uint expectedScale, bool sliced) {
 		if (!Validate(texture, clean: true)) {
 			return null;
 		}
 
+		bool textureChain = false;
 		ManagedSpriteInstance? currentInstance = null;
 
 		if (SpriteMap.TryGet(texture, source, expectedScale, out var scaleTexture)) {
 			if (scaleTexture.Invalidated) {
 				currentInstance = scaleTexture;
+				textureChain = true;
 			}
-			else if (!scaleTexture.IsReady && scaleTexture.PreviousSpriteInstance is not null && scaleTexture.PreviousSpriteInstance.IsReady) {
-				return scaleTexture.PreviousSpriteInstance;
-			}
-			else {
+			else if (scaleTexture.IsReady) {
 				return scaleTexture;
 			}
+			else if (!scaleTexture.IsReady && scaleTexture.PreviousSpriteInstance is not null && scaleTexture.PreviousSpriteInstance.IsReady) {
+				currentInstance = scaleTexture.PreviousSpriteInstance;
+				textureChain = false;
+			}
+			else {
+				currentInstance = scaleTexture;
+				textureChain = false;
+			}
+		}
+
+		if ((currentInstance?.NoResample ?? false) || texture.Meta().IsNoResample(source)) {
+			return null;
 		}
 
 		bool useStalling = Config.Resample.UseFrametimeStalling && !GameState.IsLoading;
@@ -269,7 +287,41 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		}
 
 		string getNameString() {
-			return $"'{texture.SafeName(DrawingColor.LightYellow)}'{getMetadataString()}";
+			return $"'{texture.NormalizedName(DrawingColor.LightYellow)}'{getMetadataString()}";
+		}
+
+		// TODO : We should really only populate the average when we are performing an expensive operation like GetData.
+		var watch = System.Diagnostics.Stopwatch.StartNew();
+
+		TextureType textureType;
+		if (sliced) {
+			textureType = TextureType.SlicedImage;
+		}
+		else if (!source.Offset.IsZero || source.Extent != texture.Extent()) {
+			textureType = TextureType.Sprite;
+		}
+		else {
+			textureType = TextureType.Image;
+		}
+
+		// TODO : break this up somewhat so that we can delay hashing for things by _one_ frame (still deterministic, but offset so we can parallelize the work).
+		// Presently, this cannot be done because the initializer is a 'ref struct' and is used immediately. If we want to check the suspended cache, it needs to be jammed away
+		// so the hashing can be performed before the next frame.
+		SpriteInfo.Initializer spriteInfoInitializer = new SpriteInfo.Initializer(reference: texture, dimensions: source, expectedScale: expectedScale, textureType: textureType);
+
+		// Check for a suspended sprite instance that happens to match.
+		if (Config.SuspendedCache.Enabled) {
+			var spriteHash = ManagedSpriteInstance.GetHash(spriteInfoInitializer, textureType);
+			if (spriteHash.HasValue && SuspendedSpriteCache.TryFetch(spriteHash.Value, out var instance)) {
+				var spriteMapHash = SpriteMap.SpriteHash(texture, source, expectedScale);
+				if (instance.Resurrect(texture, spriteMapHash)) {
+					return instance;
+				}
+			}
+		}
+
+		if (!textureChain && currentInstance is not null) {
+			return currentInstance;
 		}
 
 		if (useStalling && DrawState.PushedUpdateWithin(0)) {
@@ -281,27 +333,10 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 			var estimatedDuration = GetTimer(texture: texture, async: useAsync, out bool cached).Estimate((int)texture.Format.SizeBytes(source.Area));
 			isCached = cached;
 			if (estimatedDuration > TimeSpan.Zero && estimatedDuration > remainingTime) {
-				Debug.TraceLn($"Not enough frame time left to begin resampling {getNameString()} ({estimatedDuration.TotalMilliseconds.ToString(DrawingColor.LightBlue)} ms >= {remainingTime?.TotalMilliseconds.ToString(DrawingColor.LightBlue)} ms)");
+				Debug.Trace($"Not enough frame time left to begin resampling {getNameString()} ({estimatedDuration.TotalMilliseconds.ToString(DrawingColor.LightBlue)} ms >= {remainingTime?.TotalMilliseconds.ToString(DrawingColor.LightBlue)} ms)");
 				return currentInstance;
 			}
 		}
-
-		// TODO : We should really only populate the average when we are performing an expensive operation like GetData.
-		var watch = System.Diagnostics.Stopwatch.StartNew();
-
-		TextureType textureType;
-		if (!source.Offset.IsZero || source.Extent != texture.Extent()) {
-			textureType = TextureType.Sprite;
-		}
-		else {
-			textureType = TextureType.Image;
-		}
-
-		if (SpriteOverrides.IsWater(source, texture)) {
-			//textureType = TextureType.Image;
-		}
-
-		SpriteInfo.Initializer spriteInfoInitializer = new SpriteInfo.Initializer(reference: texture, dimensions: source, expectedScale: expectedScale, textureType: textureType);
 
 		string getRemainingTime() {
 			if (!remainingTime.HasValue) {
@@ -312,11 +347,9 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 		// If this is null, it can only happen due to something being blocked, so we should try again later.
 		if (spriteInfoInitializer.ReferenceData is null) {
-			Debug.TraceLn($"Texture Data fetch for {getNameString()} was {"blocked".Pastel(DrawingColor.Red)}; retrying later#{getRemainingTime()}");
+			Debug.Trace($"Texture Data fetch for {getNameString()} was {"blocked".Pastel(DrawingColor.Red)}; retrying later#{getRemainingTime()}");
 			return currentInstance;
 		}
-
-		Debug.TraceLn($"Beginning Rescale Process for {getNameString()} #{getRemainingTime()}");
 
 		DrawState.PushedUpdateThisFrame = true;
 
@@ -343,7 +376,11 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 			var averager = GetTimer(cached: spriteInfoInitializer.WasCached, async: useAsync);
 			TimeSpanSamples++;
 			MeanTimeSpan += duration;
-			Debug.TraceLn($"Duration {getNameString()}: {(MeanTimeSpan / TimeSpanSamples).TotalMilliseconds.ToString(DrawingColor.LightYellow)} ms");
+			var remainingTimeStr = getRemainingTime();
+			if (!string.IsNullOrEmpty(remainingTimeStr)) {
+				remainingTimeStr = $"({remainingTimeStr} was remaining)";
+			}
+			Debug.Trace($"Rescale Duration {getNameString()}: {(MeanTimeSpan / TimeSpanSamples).TotalMilliseconds.ToString(DrawingColor.LightYellow)} ms {remainingTimeStr}");
 			averager.Add(source.Area, duration);
 		}
 	}
@@ -374,10 +411,12 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	private readonly Vector2I originalSize;
 	private readonly Bounds SourceRectangle;
 	private readonly uint ExpectedScale;
-	internal readonly ulong SpriteMapHash;
+	internal ulong SpriteMapHash { get; private set; }
 	private readonly uint ReferenceScale;
 	internal ManagedSpriteInstance? PreviousSpriteInstance = null;
 	internal volatile bool Invalidated = false;
+	internal volatile bool Suspended = false;
+	internal bool NoResample = false;
 
 	internal ulong LastReferencedFrame = DrawState.CurrentFrame;
 
@@ -387,7 +426,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	/// Node into the most-recent accessed instance list.
 	/// Should only be <seealso cref="null"/> after the instance is <seealso cref="ManagedSpriteInstance.Dispose">disposed</seealso>
 	/// </summary>
-	private WeakInstanceListNode? RecentAccessNode = null;
+	internal WeakInstanceListNode? RecentAccessNode = null;
 	internal VolatileBool IsDisposed { get; private set; } = false;
 
 	internal static long TotalMemoryUsage = 0U;
@@ -400,12 +439,6 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 			}
 			return Texture.SizeBytes();
 		}
-	}
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	~ManagedSpriteInstance() {
-		Debug.Trace($"ManagedSpriteInstance '{Name}' reached destructor; was not initially disposed");
-		Dispose();
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -424,14 +457,14 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	internal static void PurgeTextures(long purgeTotalBytes) {
 		Contracts.AssertPositive(purgeTotalBytes);
 
-		Debug.TraceLn($"Attempting to purge {purgeTotalBytes.AsDataSize()} from currently loaded textures");
+		Debug.Trace($"Attempting to purge {purgeTotalBytes.AsDataSize()} from currently loaded textures");
 
 		lock (RecentAccessList) {
 			long totalPurge = 0;
 			while (purgeTotalBytes > 0 && RecentAccessList.Count > 0) {
 				if (RecentAccessList.Last?.Value.TryGetTarget(out var target) ?? false) {
 					var textureSize = (long)target.MemorySize;
-					Debug.TraceLn($"Purging {target.SafeName()} ({textureSize.AsDataSize()})");
+					Debug.Trace($"Purging {target.NormalizedName()} ({textureSize.AsDataSize()})");
 					purgeTotalBytes -= textureSize;
 					totalPurge += textureSize;
 					target.RecentAccessNode = null;
@@ -439,25 +472,17 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 				}
 				RecentAccessList.RemoveLast();
 			}
-			Debug.TraceLn($"Total Purged: {totalPurge.AsDataSize()}");
+			Debug.Trace($"Total Purged: {totalPurge.AsDataSize()}");
 		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal ManagedSpriteInstance(string assetName, SpriteInfo textureWrapper, in Bounds sourceRectangle, TextureType textureType, bool async, uint expectedScale, ManagedSpriteInstance? previous = null) {
-		using var _ = Performance.Track();
-
+	internal ManagedSpriteInstance(string assetName, SpriteInfo spriteInfo, in Bounds sourceRectangle, TextureType textureType, bool async, uint expectedScale, ManagedSpriteInstance? previous = null) {
 		PreviousSpriteInstance = previous;
 
 		TexType = textureType;
 
-		ulong GetHash() {
-			using (Performance.Track("Upscaler.GetHash")) {
-				return Resampler.GetHash(textureWrapper, textureType);
-			}
-		}
-
-		var source = textureWrapper.Reference;
+		var source = spriteInfo.Reference;
 
 		OriginalSourceRectangle = sourceRectangle;
 		Reference = source.MakeWeak();
@@ -465,7 +490,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		ExpectedScale = expectedScale;
 		ReferenceScale = expectedScale;
 		SpriteMapHash = SpriteMap.SpriteHash(source, sourceRectangle, expectedScale);
-		Name = source.Anonymous() ? assetName.SafeName() : source.SafeName();
+		Name = source.Anonymous() ? assetName.NormalizedName() : source.NormalizedName();
 		// TODO : I believe we need a lock here until when the texture is _fully created_, preventing new instantiations from starting of a texture
 		// already in-flight
 		if (!SpriteMap.AddReplaceInvalidated(source, this)) {
@@ -484,15 +509,16 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 					originalSize = source.Extent();
 					break;
 				case TextureType.SlicedImage:
-					throw new NotImplementedException("Sliced Images not yet implemented");
+					originalSize = sourceRectangle.Extent;
+					break;
 			}
 
 			// TODO store the HD Texture in _this_ object instead. Will confuse things like subtexture updates, though.
-			Hash = GetHash();
+			Hash = GetHash(spriteInfo, textureType);
 			this.Texture = Resampler.Upscale(
 				spriteInstance: this,
 				scale: ref ReferenceScale,
-				input: textureWrapper,
+				input: spriteInfo,
 				hash: Hash,
 				wrapped: ref Wrapped,
 				async: false
@@ -500,13 +526,17 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 			// TODO : I would love to dispose of this texture _now_, but we rely on it disposing to know if we need to dispose of ours.
 			// There is a better way to do this using weak references, I just need to analyze it further. Memory leaks have been a pain so far.
-			source.Disposing += (object? sender, EventArgs args) => { OnParentDispose(sender as Texture2D); };
+			// TODO 2: This won't get hit if the texture is disposed of via the finalizer.
+			source.Disposing += OnParentDispose;
 
 			lock (RecentAccessList) {
 				RecentAccessNode = RecentAccessList.AddFirst(this.MakeWeak());
 			}
 		}
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	public void OnParentDispose(object? sender, EventArgs args) => OnParentDispose(sender as Texture2D);
 
 	// Async Call
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -523,23 +553,24 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		UpdateReferenceFrame();
 
 		Interlocked.Add(ref TotalMemoryUsage, texture.SizeBytes());
+		// TODO : this won't get hit if the texture is disposed of via the finalizer
 		texture.Disposing += (object? sender, EventArgs args) => { Interlocked.Add(ref TotalMemoryUsage, -texture.SizeBytes()); };
 
 		{
 			var formatString = texture.Format.ToString(DrawingColor.LightCoral);
-			var nameString = this.SafeName(DrawingColor.LightYellow);
+			var nameString = this.NormalizedName(DrawingColor.LightYellow);
 			switch (TexType) {
 				case TextureType.Sprite:
-					Debug.TraceLn($"Creating Sprite [{formatString} x{ReferenceScale}]: {nameString} {SourceRectangle}");
+					Debug.Trace($"Creating Sprite [{formatString} x{ReferenceScale}]: {nameString} {SourceRectangle}");
 					break;
 				case TextureType.Image:
-					Debug.TraceLn($"Creating Image [{formatString} x{ReferenceScale}]: {nameString}");
+					Debug.Trace($"Creating Image [{formatString} x{ReferenceScale}]: {nameString}");
 					break;
 				case TextureType.SlicedImage:
-					Debug.TraceLn($"Creating Sliced Image [{formatString} x{ReferenceScale}]: {nameString}");
+					Debug.Trace($"Creating Sliced Image [{formatString} x{ReferenceScale}]: {nameString}");
 					break;
 				default:
-					Debug.TraceLn($"Creating UNKNOWN [{formatString} x{ReferenceScale}]: {nameString}");
+					Debug.Trace($"Creating UNKNOWN [{formatString} x{ReferenceScale}]: {nameString}");
 					break;
 			}
 		}
@@ -549,7 +580,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		Thread.MemoryBarrier();
 		_isReady = true;
 		if (PreviousSpriteInstance is not null) {
-			PreviousSpriteInstance.Dispose(true);
+			PreviousSpriteInstance.Suspend(true);
 			PreviousSpriteInstance = null;
 		}
 	}
@@ -564,13 +595,43 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 		lock (RecentAccessList) {
 			if (RecentAccessNode is not null) {
-				RecentAccessList.Remove(RecentAccessNode);
+				if (RecentAccessNode.List == RecentAccessList) {
+					try {
+						RecentAccessList.Remove(RecentAccessNode);
+					}
+					catch {
+						// Failure is unimportant.
+					}
+				}
 				RecentAccessList.AddFirst(RecentAccessNode);
 			}
 			else {
 				RecentAccessNode = RecentAccessList.AddFirst(this.MakeWeak());
 			}
 		}
+	}
+
+	internal readonly struct CleanupData {
+		internal readonly ManagedSpriteInstance? PreviousSpriteInstance;
+		internal readonly WeakReference<XNA.Graphics.Texture2D> ReferenceTexture;
+		internal readonly LinkedListNode<System.WeakReference<ManagedSpriteInstance>>? RecentAccessNode;
+		internal readonly ulong MapHash;
+
+		internal CleanupData(ManagedSpriteInstance instance) {
+			PreviousSpriteInstance = instance.PreviousSpriteInstance;
+			ReferenceTexture = instance.Reference;
+			RecentAccessNode = instance.RecentAccessNode;
+			MapHash = instance.SpriteMapHash;
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	~ManagedSpriteInstance() {
+		if (IsDisposed) {
+			return;
+		}
+		//Debug.Trace($"ManagedSpriteInstance '{Name}' reached destructor; was not initially disposed");
+		ReleasedSpriteInstances.Push(new(this));
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -591,28 +652,132 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		}
 
 		if (PreviousSpriteInstance is not null) {
-			PreviousSpriteInstance.Dispose(true);
+			PreviousSpriteInstance.Suspend(true);
 			PreviousSpriteInstance = null;
 		}
 
 		if (Reference.TryGetTarget(out var reference)) {
 			SpriteMap.Remove(this, reference);
+			reference.Disposing -= OnParentDispose;
 		}
 		if (RecentAccessNode is not null) {
 			lock (RecentAccessList) {
-				RecentAccessList.Remove(RecentAccessNode);
+				try {
+					RecentAccessList.Remove(RecentAccessNode);
+				}
+				catch {
+					// Error is unimportant
+				}
 			}
 			RecentAccessNode = null;
 		}
 		IsDisposed = true;
 
+		if (Suspended) {
+			SuspendedSpriteCache.Remove(this);
+			Suspended = false;
+		}
+
 		GC.SuppressFinalize(this);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private void OnParentDispose(Texture2D? texture) {
-		Debug.TraceLn($"Parent Texture Disposing: {texture?.SafeName() ?? "[NULL]"}, disposing ManagedSpriteInstance");
+	internal static void Cleanup(in CleanupData data) {
+		Debug.Trace("Cleaning up finalized ManagedSpriteInstance");
 
-		Dispose();
+		if (data.PreviousSpriteInstance is not null) {
+			data.PreviousSpriteInstance.Suspend(true);
+		}
+
+		if (data.ReferenceTexture.TryGetTarget(out var reference)) {
+			SpriteMap.Remove(data, reference);
+		}
+
+		if (data.RecentAccessNode is not null) {
+			lock (RecentAccessList) {
+				if (data.RecentAccessNode.List == RecentAccessList) {
+					try {
+						RecentAccessList.Remove(data.RecentAccessNode);
+					}
+					catch {
+						// Error is unimportant
+					}
+				}
+			}
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private void OnParentDispose(Texture2D? texture) {
+		Debug.Trace($"Parent Texture Disposing: {texture?.NormalizedName() ?? "[NULL]"}, suspending/disposing ManagedSpriteInstance");
+
+		Suspend();
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal void Suspend(bool clearChildrenIfDispose = false) {
+		if (IsDisposed || Suspended) {
+			return;
+		}
+
+		if (StardewValley.Game1.quit) {
+			return;
+		}
+
+		if (!_isReady || !Config.SuspendedCache.Enabled) {
+			Dispose(clearChildrenIfDispose);
+			return;
+		}
+
+		// TODO : Handle clearing any reference to _this_
+		PreviousSpriteInstance = null;
+
+		if (RecentAccessNode is not null) {
+			lock (RecentAccessList) {
+				try {
+					RecentAccessList.Remove(RecentAccessNode);
+				}
+				catch {
+					// Error is unimportant
+				}
+			}
+			RecentAccessNode = null;
+		}
+		Invalidated = false;
+
+		Reference.SetTarget(null!);
+
+		Suspended = true;
+		SuspendedSpriteCache.Add(this);
+
+		Debug.Trace($"Sprite Instance '{Name}' {"Suspended".Pastel(System.Drawing.Color.LightGoldenrodYellow)}");
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal bool Resurrect(Texture2D texture, ulong spriteMapHash) {
+		if (StardewValley.Game1.quit) {
+			return false;
+		}
+
+		if (IsDisposed || !Suspended) {
+			SuspendedSpriteCache.Remove(this);
+			return false;
+		}
+
+		if (!_isReady || !Config.SuspendedCache.Enabled) {
+			SuspendedSpriteCache.Remove(this);
+			return false;
+		}
+
+		SuspendedSpriteCache.Remove(this);
+		Suspended = false;
+		Reference.SetTarget(texture);
+
+		SpriteMapHash = spriteMapHash;
+		texture.Meta().ReplaceInSpriteInstanceTable(SpriteMapHash, this);
+
+		Debug.Trace($"Sprite Instance '{Name}' {"Resurrected".Pastel(System.Drawing.Color.LightCyan)}");
+
+		return true;
 	}
 }

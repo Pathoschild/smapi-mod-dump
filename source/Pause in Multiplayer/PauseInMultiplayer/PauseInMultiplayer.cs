@@ -24,6 +24,9 @@ namespace PauseInMultiplayer
     public class PauseInMultiplayer : Mod
     {
 
+        Dictionary<long, bool> eventStatus;
+        public bool lastEventCheck = false;
+        
         int timeInterval = -100;
         int foodDuration = -100;
         int drinkDuration = -100;
@@ -178,7 +181,15 @@ namespace PauseInMultiplayer
                 getValue: () => this.config.PauseOverrideHotkey,
                 setValue: value => this.config.PauseOverrideHotkey = value
             );
-            
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Any cutscene pauses",
+                tooltip: () => "(host only)\nWhen enabled, time will pause if any player is in a cutscene.",
+                getValue: () => this.config.AnyCutscenePauses,
+                setValue: value => this.config.AnyCutscenePauses = value
+            );
+
 
         }
 
@@ -247,6 +258,7 @@ namespace PauseInMultiplayer
                 pauseTimeAll.Remove(e.Peer.PlayerID);
                 inSkullAll.Remove(e.Peer.PlayerID);
                 votePauseAll.Remove(e.Peer.PlayerID);
+                eventStatus.Remove(e.Peer.PlayerID);
             }
                 
         }
@@ -258,9 +270,14 @@ namespace PauseInMultiplayer
                 pauseTimeAll[e.Peer.PlayerID] = "false";
                 inSkullAll[e.Peer.PlayerID] = "false";
                 votePauseAll[e.Peer.PlayerID] = false;
+                eventStatus[e.Peer.PlayerID] = false;
+
+                //send current pause state
+                this.Helper.Multiplayer.SendMessage(shouldPauseLast ? "true" : "false", "pauseCommand", new[] { this.ModManifest.UniqueID }, new[] {e.Peer.PlayerID});
 
                 //send message denoting whether or not monsters will be locked
                 this.Helper.Multiplayer.SendMessage(lockMonsters ? "true" : "false", "lockMonsters", modIDs: new[] {this.ModManifest.UniqueID}, playerIDs: new[] {e.Peer.PlayerID});
+
 
                 //check for version match
                 IMultiplayerPeerMod pauseMod = null;
@@ -343,6 +360,8 @@ namespace PauseInMultiplayer
                             Game1.chatBox.addInfoMessage($"{Game1.getFarmer(e.FromPlayerID).Name} voted to unpause the game. ({votedYes}/{Game1.getOnlineFarmers().Count})");
                         }
                     }
+                    else if (e.Type == "eventUp")
+                        eventStatus[e.FromPlayerID] = e.ReadAs<bool>();
 
                 }
             }
@@ -380,6 +399,9 @@ namespace PauseInMultiplayer
 
                 votePauseAll = new Dictionary<long, bool>();
                 votePauseAll[Game1.player.UniqueMultiplayerID] = false;
+
+                eventStatus = new Dictionary<long, bool>();
+                eventStatus[Game1.player.UniqueMultiplayerID] = false;
             }
 
         }
@@ -388,6 +410,22 @@ namespace PauseInMultiplayer
         {
             //this mod does nothing if a game isn't running
             if (!Context.IsWorldReady) return;
+
+            //start with checking for events
+            if (lastEventCheck != Game1.eventUp)
+            {
+                //host
+                if (Context.IsMainPlayer)
+                {
+                    eventStatus[Game1.player.UniqueMultiplayerID] = Game1.eventUp;
+                }
+                //client
+                else
+                {
+                    this.Helper.Multiplayer.SendMessage<bool>(Game1.eventUp, "eventUp", modIDs: new[] { this.ModManifest.UniqueID }, playerIDs: new[] { Game1.MasterPlayer.UniqueMultiplayerID });
+                }
+                lastEventCheck = Game1.eventUp;
+            }
 
             //set the pause time data to whether or not time should be paused for this player
             var pauseTime2 = (!Context.IsPlayerFree) ? "true" : "false";
@@ -651,9 +689,11 @@ namespace PauseInMultiplayer
             {
                 if (Context.IsMainPlayer)
                 {
+                    //override
                     if (config.EnablePauseOverride && pauseOverride)
                         return true;
 
+                    //votes
                     if(config.EnableVotePause)
                     {
                         bool votedPause = true;
@@ -664,6 +704,15 @@ namespace PauseInMultiplayer
                             return true;
                     }
 
+                    //events
+                    if(config.AnyCutscenePauses)
+                    {
+                        foreach (bool up in eventStatus.Values)
+                            if (up)
+                                return true;
+                    }
+
+                    //normal pause logic (terminates via false)
                     foreach (string pauseTime in pauseTimeAll.Values)
                         if (pauseTime == "false") return false;
 
@@ -724,6 +773,8 @@ namespace PauseInMultiplayer
 
         public bool DisableSkullShaftFix { get; set; } = false;
         public bool LockMonsters { get; set; } = true;
+
+        public bool AnyCutscenePauses { get; set; } = false;
        
         public bool EnableVotePause { get; set; } = true;
 

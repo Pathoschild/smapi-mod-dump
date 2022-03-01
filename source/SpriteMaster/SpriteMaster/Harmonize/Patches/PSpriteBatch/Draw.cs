@@ -13,6 +13,7 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -25,13 +26,33 @@ static class Draw {
 	private const bool Stop = false;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static bool Cleanup(this ref Bounds sourceRectangle, Texture2D reference) {
-		if (Config.ClampInvalidBounds) {
-			sourceRectangle = sourceRectangle.ClampTo(new(reference.Width, reference.Height));
+	private static bool GetIsSliced(in Bounds bounds, Texture2D reference, [NotNullWhen(true)] out Config.TextureRef? result) {
+		foreach (var slicedTexture in Config.Resample.SlicedTexturesS) {
+			if (!reference.NormalizedName().StartsWith(slicedTexture.Texture)) {
+				continue;
+			}
+			if (slicedTexture.Bounds.IsEmpty) {
+				result = slicedTexture;
+				return true;
+			}
+			if (slicedTexture.Bounds.Contains(bounds)) {
+				result = slicedTexture;
+				return true;
+			}
+		}
+		result = null;
+		return false;
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static bool Cleanup(this ref Bounds sourceBounds, Texture2D reference) {
+		if (Config.ClampInvalidBounds && !sourceBounds.ClampToChecked(reference.Extent(), out var clampedBounds)) {
+			//Debug.Warning($"Draw.Cleanup: '{reference.SafeName()}' bounds '{sourceBounds}' are not contained in reference bounds '{(Bounds)reference.Bounds}' - clamped ({(sourceBounds.Degenerate ? "degenerate" : "")})");
+			sourceBounds = clampedBounds;
 		}
 
 		// Let's just skip potentially invalid draws since I have no idea what to do with them.
-		return !sourceRectangle.Degenerate;
+		return !sourceBounds.Degenerate;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -58,11 +79,15 @@ static class Draw {
 		ref Bounds source,
 		bool create = false
 	) {
-		var newSource = source;
+		var clampedSource = source;
 
 		try {
+			if (reference is InternalTexture2D) {
+				return null;
+			}
+
 			// If the (potentially-clamped) source bounds are invalid, return null
-			if (!newSource.Cleanup(reference)) {
+			if (!clampedSource.Cleanup(reference)) {
 				return null;
 			}
 
@@ -76,9 +101,15 @@ static class Draw {
 				return null;
 			}
 
+			bool isSliced = false;
+			if (GetIsSliced(clampedSource, reference, out var textureRef)) {
+				clampedSource = textureRef.Value.Bounds;
+				isSliced = true;
+			}
+
 			var spriteInstance = create ?
-				ManagedSpriteInstance.FetchOrCreate(texture: reference, source: newSource, expectedScale: expectedScale) :
-				ManagedSpriteInstance.Fetch(texture: reference, source: newSource, expectedScale: expectedScale);
+				ManagedSpriteInstance.FetchOrCreate(texture: reference, source: clampedSource, expectedScale: expectedScale, sliced: isSliced) :
+				ManagedSpriteInstance.Fetch(texture: reference, source: clampedSource, expectedScale: expectedScale);
 
 			if (spriteInstance is null || !spriteInstance.IsReady) {
 				return null;
@@ -106,7 +137,9 @@ static class Draw {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private static void GetDrawParameters(Texture2D texture, in XNA.Rectangle? source, out Bounds bounds, out float scaleFactor) {
-		texture.Meta().UpdateLastAccess();
+		if (texture is not InternalTexture2D) {
+			texture.Meta().UpdateLastAccess();
+		}
 
 		var sourceRectangle = (Bounds)source.GetValueOrDefault(new(0, 0, texture.Width, texture.Height));
 
@@ -135,14 +168,16 @@ static class Draw {
 		float layerDepth,
 		ref ManagedTexture2D __state
 	) {
-		using var _ = Performance.Track();
+		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
+		/*
 		if (destination.Width < 0 || destination.Height < 0) {
 			Debug.Trace("destination invert");
 		}
 		if (source is XNA.Rectangle sourceRect && (sourceRect.Width < 0 || sourceRect.Height < 0)) {
 			Debug.Trace("source invert");
 		}
+		*/
 
 		GetDrawParameters(
 			texture: texture,
@@ -168,6 +203,13 @@ static class Draw {
 		}
 		spriteInstance.UpdateReferenceFrame();
 
+		if (referenceRectangle.X < 0) {
+			destinationBounds.Left -= referenceRectangle.X;
+		}
+		if (referenceRectangle.Y < 0) {
+			destinationBounds.Top -= referenceRectangle.Y;
+		}
+
 		var resampledTexture = spriteInstance.Texture!;
 
 		if (!spriteInstance.Padding.IsZero) {
@@ -179,6 +221,10 @@ static class Draw {
 			var newScale = destinationSize / originalSize;
 			var newPosition = destinationBounds.OffsetF;
 
+			if ((destinationBounds.Invert.X || destinationBounds.Invert.Y) && DrawState.CurrentRasterizerState.CullMode == CullMode.CullCounterClockwiseFace) {
+				// Winding order is invalid
+				return Stop;
+			}
 			if (destinationBounds.Invert.X) {
 				effects ^= SpriteEffects.FlipHorizontally;
 			}
@@ -218,13 +264,13 @@ static class Draw {
 		ref float layerDepth,
 		ref ManagedTexture2D __state
 	) {
-		using var _ = Performance.Track("OnDraw0");
-
 		Bounds sourceRectangle;
 		ManagedSpriteInstance? spriteInstance;
 		ManagedTexture2D resampledTexture;
 
 		Bounds destinationBounds = destination;
+
+		var referenceSource = source.GetValueOrDefault();
 
 		if (__state is null) {
 			GetDrawParameters(
@@ -244,6 +290,11 @@ static class Draw {
 			)) {
 				return Continue;
 			}
+
+			if (spriteInstance.TexType == TextureType.SlicedImage) {
+				sourceRectangle = source ?? spriteInstance.Texture!.Bounds;
+			}
+
 			spriteInstance.UpdateReferenceFrame();
 
 			resampledTexture = spriteInstance.Texture!;
@@ -252,6 +303,24 @@ static class Draw {
 			resampledTexture = __state;
 			spriteInstance = resampledTexture.Texture;
 			sourceRectangle = resampledTexture.Dimensions;
+			if (spriteInstance.TexType == TextureType.SlicedImage) {
+				sourceRectangle = source ?? resampledTexture.Bounds;
+				if (source.HasValue) {
+					sourceRectangle = new Bounds(
+						(Vector2I)source.Value.Location - spriteInstance.OriginalSourceRectangle.Offset,
+						source.Value.Size
+					);
+					sourceRectangle.Offset = (sourceRectangle.OffsetF * spriteInstance.Scale).NearestInt();
+					sourceRectangle.Extent = (sourceRectangle.ExtentF * spriteInstance.Scale).NearestInt();
+				}
+			}
+		}
+
+		if (referenceSource.X < 0) {
+			destination.X -= referenceSource.X;
+		}
+		if (referenceSource.Y < 0) {
+			destination.Y -= referenceSource.Y;
 		}
 
 		var scaledOrigin = (Vector2F)origin / spriteInstance.Scale;
@@ -276,6 +345,8 @@ static class Draw {
 		return Resample.Scalers.IScaler.Current.ClampScale(factoredScaleN);
 	}
 
+	private static Vector2I test = (0, 1408);
+
 	internal static bool OnDraw(
 		this SpriteBatch @this,
 		ref Texture2D texture,
@@ -288,14 +359,14 @@ static class Draw {
 		SpriteEffects effects,
 		ref float layerDepth
 	) {
-		using var _ = Performance.Track("OnDraw1");
-
 		GetDrawParameters(
 			texture: texture,
 			source: source,
 			bounds: out var sourceRectangle,
 			scaleFactor: out var scaleFactor
 		);
+
+		var originalSourceRect = sourceRectangle;
 
 		ManagedSpriteInstance? spriteInstance;
 		ManagedTexture2D? resampledTexture;
@@ -321,9 +392,28 @@ static class Draw {
 			return Continue;
 		}
 
+		if (originalSourceRect.X < 0) {
+			position.X -= originalSourceRect.X * scale.X;
+		}
+		if (originalSourceRect.Y < 0) {
+			position.Y -= originalSourceRect.Y * scale.Y;
+		}
+
 		var adjustedScale = (Vector2F)scale / (Vector2F)spriteInstance.Scale;
 		var adjustedPosition = position;
 		var adjustedOrigin = (Vector2F)origin;
+
+		if (spriteInstance.TexType == TextureType.SlicedImage) {
+			sourceRectangle = source ?? resampledTexture.Bounds;
+			if (source is not null) {
+				sourceRectangle = new Bounds(
+					(Vector2I)source.Value.Location - spriteInstance.OriginalSourceRectangle.Offset,
+					source.Value.Size
+				);
+				sourceRectangle.Offset = (sourceRectangle.OffsetF * spriteInstance.Scale).NearestInt();
+				sourceRectangle.Extent = (sourceRectangle.ExtentF * spriteInstance.Scale).NearestInt();
+			}
+		}
 
 		if (!spriteInstance.Padding.IsZero) {
 			var textureSize = new Vector2F(sourceRectangle.Extent);

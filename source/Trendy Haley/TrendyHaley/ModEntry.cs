@@ -26,10 +26,13 @@ namespace TrendyHaley {
         private ModConfig config_;
         private Color actualHairColor_;
 
+        private Color spouseHairColor_;
+
         public override void Entry(IModHelper helper) {
             this.Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             this.Helper.Events.GameLoop.SaveLoaded   += OnSaveLoaded;
             this.Helper.Events.GameLoop.DayStarted   += OnDayStarted;
+            this.Helper.Events.GameLoop.Saving       += OnSaving;
         }
 
         /// <summary>Implements <see cref="IAssetEditor.CanEdit"/>.</summary>
@@ -127,7 +130,8 @@ namespace TrendyHaley {
                 this.Monitor.Log($"Haley chose a new hair color for this season: {config_.SaveGame[saveGameName].HairColor}");
 
                 if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
-                    Game1.player.changeHairColor(config_.SaveGame[saveGameName].HairColor);
+                    spouseHairColor_ = config_.SaveGame[saveGameName].HairColor;
+                    Game1.player.changeHairColor(spouseHairColor_);
                     this.Monitor.Log($"{Game1.player.Name} has the same hair color as Haley");
                 }
 
@@ -164,10 +168,39 @@ namespace TrendyHaley {
                 this.Monitor.Log($"Haley's hair color faded: {fadedColor}");
 
                 if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
-                    Game1.player.changeHairColor(colorFadedColor);
+                    spouseHairColor_ = colorFadedColor;
+                    Game1.player.changeHairColor(spouseHairColor_);
                     this.Monitor.Log($"{Game1.player.Name} has the same hair color as Haley");
                 }
             }
+            else {
+                // We have to load the recolored hair overlay every day, otherwise it falls back to vanilla.
+                Color hairColor = config_.SaveGame[saveGameName].HairColor;
+
+                SetHairColor(hairColor);
+            }
+        }
+
+        private void OnSaving(object sender, SavingEventArgs e) {
+            string saveGameName = $"{Game1.GetSaveGameName()}_{Game1.uniqueIDForThisGame}";
+
+            // Check relationship of farmer and Haley.
+            bool isFarmerMarriedToHaley = Game1.player.isMarried() && Game1.player.getSpouse().Name.Equals("Haley");
+
+            if (config_.SaveGame[saveGameName].SpouseLookAlike && isFarmerMarriedToHaley) {
+                Color actualSpouseHairColor = Game1.player.hairstyleColor.Value;
+                if (actualSpouseHairColor != spouseHairColor_)
+                {
+                    // Spouse chose a new hair color and so does Haley.
+                    config_.SaveGame[saveGameName].HairColor = actualSpouseHairColor;
+                    // Save config.
+                    this.Helper.WriteConfig(config_);
+
+                    this.Monitor.Log($"Haley has the same hair color as {Game1.player.Name}: {actualSpouseHairColor}");
+                }
+            }
+            // Read persisted config.
+            config_ = this.Helper.ReadConfig<ModConfig>();
         }
 
         /// <summary>Sets color and triggers sprite reload.</summary>

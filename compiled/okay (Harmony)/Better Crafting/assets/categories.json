@@ -1,0 +1,338 @@
+{
+	"Cooking": [
+		{
+			"Id": "farming",
+			"Name": "Farming and Foraging",
+			"I18nKey": "category.food.farming",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 10,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"Recipes": [
+				"Complete Breakfast",
+				"Hashbrowns",
+				"Pancakes",
+				"Pepper Poppers",
+				"Tom Kha Soup",
+				"Autumn's Bounty",
+				"Farmer's Lunch",
+				"Survival Burger",
+				"Maple Bar",
+				"Tropical Curry"
+			]
+		},
+		{
+			"Id": "mining",
+			"Name": "Mining and Magnetism",
+			"I18nKey": "category.food.mining",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 30,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"Recipes": [
+				"Bean Hotpot",
+				"Crispy Bass",
+				"Eggplant Parm.",
+				"Cran. Sauce",
+				"Miner's Treat",
+				"Banana Pudding",
+				"Squid Ink Ravioli"
+			]
+		},
+		{
+			"Id": "fishing",
+			"Name": "Fishing",
+			"I18nKey": "category.food.fishing",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 20,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"Recipes": [
+				"Fish Taco",
+				"Trout Soup",
+				"Dish o' The Sea",
+				"Seafoam Pudding",
+				"Chowder",
+				"Fish Stew",
+				"Escargot",
+				"Lobster Bisque",
+				"Maple Bar",
+				"Shrimp Cocktail"
+			]
+		},
+		{
+			"Id": "combat",
+			"Name": "Combat",
+			"I18nKey": "category.food.combat",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 120,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"Recipes": [
+				"Fried Mushroom",
+				"Eggplant Parm.",
+				"Autumn's Bounty",
+				"Pumpkin Soup",
+				"Stuffing",
+				"Roots Platter",
+				"Crab Cakes",
+				"Banana Pudding",
+				"Mango Sticky Rice",
+				"Squid Ink Ravioli"
+			]
+		},
+		{
+			"Id": "other",
+			"Name": "Luck, Speed, and Others",
+			"I18nKey": "category.food.other",
+			"Icon": {
+				"Type": "Texture",
+				"Source": "MouseCursors",
+				"Rect": {
+					"X": 50,
+					"Y": 428,
+					"Width": 10,
+					"Height": 10
+				}
+			},
+			"Recipes": [
+				"Complete Breakfast",
+				"Lucky Lunch",
+				"Bean Hotpot",
+				"Pepper Poppers",
+				"Tom Kha Soup",
+				"Fried Eel",
+				"Spicy Eel",
+				"Red Plate",
+				"Pumpkin Soup",
+				"Super Meal",
+				"Triple Shot Espresso",
+				"Lobster Bisque",
+				"Crab Cakes",
+				"Shrimp Cocktail",
+				"Ginger Ale",
+				"Banana Pudding"
+			]
+		}
+	],
+	"Crafting": [
+		{
+			"Id": "decoration",
+			"Name": "Decoration",
+			"I18nKey": "category.decoration",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Wood Fence"
+			},
+			"Recipes": [
+				"Gate",
+				"Wood Fence",
+				"Stone Fence",
+				"Iron Fence",
+				"Hardwood Fence",
+				"Wood Floor",
+				"Stone Floor",
+				"Weathered Floor",
+				"Crystal Floor",
+				"Straw Floor",
+				"Gravel Path",
+				"Wood Path",
+				"Crystal Path",
+				"Cobblestone Path",
+				"Stepping Stone Path",
+				"Brick Floor",
+				"Rustic Plank Floor",
+				"Stone Walkway Floor",
+				"Torch",
+				"Campfire",
+				"Wooden Brazier",
+				"Stone Brazier",
+				"Gold Brazier",
+				"Carved Brazier",
+				"Stump Brazier",
+				"Barrel Brazier",
+				"Skull Brazier",
+				"Marble Brazier",
+				"Wood Lamp-post",
+				"Iron Lamp-post",
+				"Jack-O-Lantern",
+				"Tub o' Flowers",
+				"Wicked Statue",
+				"Flute Block",
+				"Drum Block",
+				"Wood Sign",
+				"Stone Sign",
+				"Dark Sign",
+				"Garden Pot",
+				"Scarecrow",
+				"Deluxe Scarecrow"
+			]
+		},
+		{
+			"Id": "fertilizer_seeds",
+			"Name": "Fertilizer and Seeds",
+			"I18nKey": "category.fertilizer_seeds",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Basic Fertilizer"
+			},
+			"Recipes": [
+				"Basic Fertilizer",
+				"Quality Fertilizer",
+				"Deluxe Fertilizer",
+				"Speed-Gro",
+				"Deluxe Speed-Gro",
+				"Hyper Speed-Gro",
+				"Basic Retaining Soil",
+				"Quality Retaining Soil",
+				"Deluxe Retaining Soil",
+				"Tree Fertilizer",
+				"Wild Seeds (Sp)",
+				"Wild Seeds (Su)",
+				"Wild Seeds (Fa)",
+				"Wild Seeds (Wi)",
+				"Ancient Seeds",
+				"Grass Starter",
+				"Tea Sapling",
+				"Fiber Seeds"
+			]
+		},
+		{
+			"Id": "consumables",
+			"Name": "Consumables",
+			"I18nKey": "category.consumables",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Field Snack"
+			},
+			"Recipes": [
+				"Field Snack",
+				"Bug Steak",
+				"Life Elixir",
+				"Oil Of Garlic",
+				"Monster Musk",
+				"Fairy Dust",
+				"Warp Totem: Beach",
+				"Warp Totem: Mountains",
+				"Warp Totem: Farm",
+				"Warp Totem: Desert",
+				"Warp Totem: Island",
+				"Rain Totem",
+				"Cookout Kit"
+			]
+		},
+		{
+			"Id": "fishing",
+			"Name": "Fishing",
+			"I18nKey": "category.fishing",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Barbed Hook"
+			},
+			"Recipes": [
+				"Bait",
+				"Wild Bait",
+				"Magic Bait",
+				"Spinner",
+				"Trap Bobber",
+				"Cork Bobber",
+				"Quality Bobber",
+				"Treasure Hunter",
+				"Dressed Spinner",
+				"Barbed Hook",
+				"Magnet",
+				"Crab Pot"
+			]
+		},
+		{
+			"Id": "machinery",
+			"Name": "Machinery",
+			"I18nKey": "category.machinery",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Chest"
+			},
+			"Recipes": [
+				"Chest",
+				"Stone Chest",
+				"Sprinkler",
+				"Quality Sprinkler",
+				"Iridium Sprinkler",
+				"Mayonnaise Machine",
+				"Bee House",
+				"Preserves Jar",
+				"Cheese Press",
+				"Loom",
+				"Keg",
+				"Oil Maker",
+				"Cask",
+				"Charcoal Kiln",
+				"Crystalarium",
+				"Furnace",
+				"Lightning Rod",
+				"Solar Panel",
+				"Recycling Machine",
+				"Seed Maker",
+				"Slime Incubator",
+				"Ostrich Incubator",
+				"Slime Egg-Press",
+				"Tapper",
+				"Heavy Tapper",
+				"Worm Bin",
+				"Bone Mill",
+				"Geode Crusher",
+				"Mini-Jukebox",
+				"Mini-Obelisk",
+				"Farm Computer",
+				"Hopper"
+			]
+		},
+		{
+			"Id": "combat_rings",
+			"Name": "Combat and Rings",
+			"I18nKey": "category.combat_rings",
+			"Icon": {
+				"Type": "Item",
+				"RecipeName": "Sturdy Ring"
+			},
+			"Recipes": [
+				"Cherry Bomb",
+				"Bomb",
+				"Mega Bomb",
+				"Sturdy Ring",
+				"Warrior Ring",
+				"Ring of Yoba",
+				"Thorns Ring",
+				"Glowstone Ring",
+				"Iridium Band",
+				"Wedding Ring",
+				"Staircase",
+				"Explosive Ammo"
+			]
+		}
+	]
+}

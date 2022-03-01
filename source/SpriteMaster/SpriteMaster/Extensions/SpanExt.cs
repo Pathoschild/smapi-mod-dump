@@ -54,6 +54,7 @@ static class SpanExt {
 	internal static Span<U> AsSpan<U>(this Color8[] array) where U : unmanaged => array.AsSpan().Cast<Color8, U>();
 	internal static Span<U> AsSpan<U>(this Color16[] array) where U : unmanaged => array.AsSpan().Cast<Color16, U>();
 
+	internal static ReadOnlySpan<T> AsReadOnlySpan<T>(this T[] array) => array;
 	internal static ReadOnlySpan<U> AsReadOnlySpan<T, U>(this T[] array) where T : unmanaged where U : unmanaged => array.AsSpan().Cast<T, U>();
 	internal static ReadOnlySpan<U> AsReadOnlySpan<U>(this byte[] array) where U : unmanaged => array.AsSpan().Cast<byte, U>();
 	internal static ReadOnlySpan<U> AsReadOnlySpan<U>(this int[] array) where U : unmanaged => array.AsSpan().Cast<int, U>();

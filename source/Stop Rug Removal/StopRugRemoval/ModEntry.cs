@@ -8,12 +8,10 @@
 **
 *************************************************/
 
-using System.Reflection;
-using System.Text;
+using AtraShared.Integrations;
+using AtraShared.Utils.Extensions;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
-using StardewValley.Objects;
 
 namespace StopRugRemoval;
 
@@ -25,23 +23,21 @@ public class ModEntry : Mod
     // the following two fields are set in the entry method, which is approximately as close as I can get to the constructor anyways.
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     /// <summary>
-    /// Instance that holds the logger for this file.
+    /// Gets the logger for this file.
     /// </summary>
-    [SuppressMessage("ReSharper", "CA2211", Justification = "This is needed to give harmony patches access to the logger. Also, multithreading is not used anyways.")]
-    [SuppressMessage("StyleCop", "SA1401", Justification = "The logger, so unlikely to change in the future")]
-    public static IMonitor ModMonitor;
+    public static IMonitor ModMonitor { get; private set; }
 
     /// <summary>
-    /// Instance that holds the configuration for this mod.
+    /// Gets instance that holds the configuration for this mod.
     /// </summary>
-    [SuppressMessage("ReSharper", "CA2211", Justification = "This is needed to give harmony patches access to the configuration. Also, multithreading is not used anyways.")]
-    [SuppressMessage("StyleCop", "SA1401", Justification = "The config file, unlikely to change in the future")]
-    public static ModConfig Config;
+    public static ModConfig Config { get; private set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     /// <inheritdoc/>
     public override void Entry(IModHelper helper)
     {
+        I18n.Init(helper.Translation);
+        ModMonitor = this.Monitor;
         try
         {
             Config = this.Helper.ReadConfig<ModConfig>();
@@ -51,9 +47,6 @@ public class ModEntry : Mod
             this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
             Config = new();
         }
-
-        ModMonitor = this.Monitor;
-        I18n.Init(helper.Translation);
 
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
 
@@ -68,36 +61,16 @@ public class ModEntry : Mod
     /// <param name="harmony">My harmony instance.</param>
     private void ApplyPatches(Harmony harmony)
     {
-        // handle patches from annotations.
-        harmony.PatchAll();
-        foreach (MethodBase? method in harmony.GetPatchedMethods())
+        try
         {
-            if (method is null)
-            {
-                continue;
-            }
-            Patches patches = Harmony.GetPatchInfo(method);
-
-            StringBuilder sb = new();
-            sb.Append("Patched method ").Append(method.GetFullName());
-            foreach (Patch patch in patches.Prefixes.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
-            {
-                sb.AppendLine().Append("\tPrefixed with method: ").Append(patch.PatchMethod.GetFullName());
-            }
-            foreach (Patch patch in patches.Postfixes.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
-            {
-                sb.AppendLine().Append("\tPostfixed with method: ").Append(patch.PatchMethod.GetFullName());
-            }
-            foreach (Patch patch in patches.Transpilers.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
-            {
-                sb.AppendLine().Append("\tTranspiled with method: ").Append(patch.PatchMethod.GetFullName());
-            }
-            foreach (Patch patch in patches.Finalizers.Where((Patch p) => p.owner.Equals(this.ModManifest.UniqueID)))
-            {
-                sb.AppendLine().Append("\tFinalized with method: ").Append(patch.PatchMethod.GetFullName());
-            }
-            ModMonitor.Log(sb.ToString(), LogLevel.Trace);
+            // handle patches from annotations.
+            harmony.PatchAll();
         }
+        catch (Exception ex)
+        {
+            ModMonitor.Log($"Mod crashed while applying harmony patches\n\n{ex}", LogLevel.Error);
+        }
+        harmony.Snitch(this.Monitor, this.ModManifest.UniqueID);
     }
 
     /// <summary>
@@ -110,40 +83,29 @@ public class ModEntry : Mod
 
     private void SetUpConfig(object? sender, GameLaunchedEventArgs e)
     {
-        IModInfo gmcm = this.Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu");
-        if (gmcm is null)
-        {
-            this.Monitor.Log(I18n.GmcmNotFound(), LogLevel.Debug);
-            return;
-        }
-        if (gmcm.Manifest.Version.IsOlderThan("1.6.0"))
-        {
-            this.Monitor.Log(I18n.GmcmVersionMessage(version: "1.6.0", currentversion: gmcm.Manifest.Version), LogLevel.Info);
-            return;
-        }
-
-        var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-        if (configMenu is null)
+        GMCMHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, this.ModManifest);
+        if (!helper.TryGetAPI())
         {
             return;
         }
 
-        configMenu.Register(
-            mod: this.ModManifest,
-            reset: () => Config = new ModConfig(),
-            save: () => this.Helper.WriteConfig(Config)
-            );
-
-        configMenu.AddParagraph(
-            mod: this.ModManifest,
-            text: I18n.Mod_Description
-            );
-
-        configMenu.AddBoolOption(
-            mod: this.ModManifest,
-            getValue: () => Config.Enabled,
-            setValue: value => Config.Enabled = value,
-            name: I18n.Enabled_Title
-            );
+        helper.Register(
+                reset: () => Config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(Config))
+            .AddParagraph(I18n.Mod_Description)
+            .AddBoolOption(
+                getValue: () => Config.Enabled,
+                setValue: value => Config.Enabled = value,
+                name: I18n.Enabled_Title)
+            .AddBoolOption(
+                getValue: () => Config.PreventRemovalFromTable,
+                setValue: value => Config.PreventRemovalFromTable = value,
+                name: I18n.TableRemoval_Title,
+                tooltip: I18n.TableRemoval_Description)
+            .AddKeybindList(
+                getValue: () => Config.FurniturePlacementKey,
+                setValue: value => Config.FurniturePlacementKey = value,
+                name: I18n.FurniturePlacementKey_Title,
+                tooltip: I18n.FurniturePlacementKey_Description);
     }
 }

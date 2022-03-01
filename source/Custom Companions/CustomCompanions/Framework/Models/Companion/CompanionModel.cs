@@ -42,6 +42,7 @@ namespace CustomCompanions.Framework.Models.Companion
         public int MinHaltTime { get; set; } = 2000;
         public int MaxHaltTime { get; set; } = 10000;
         public PortraitModel Portrait { get; set; }
+        public string PortraitSheetPath { get; set; }
         public string InspectionDialogue { get; set; }
         public int OverheadTextCheckInterval { get; set; } = 5000;
         public float OverheadTextChance { get; set; } = 0.5f;
@@ -102,7 +103,8 @@ namespace CustomCompanions.Framework.Models.Companion
                 $"\tUpAnimation: {(UpAnimation is null ? null : UpAnimation)}\n" +
                 $"\tDownAnimation: {(DownAnimation is null ? null : DownAnimation)}\n" +
                 $"\tLeftAnimation: {(LeftAnimation is null ? null : LeftAnimation)}\n" +
-                $"\tRightAnimation: {(RightAnimation is null ? null : RightAnimation)}\n]";
+                $"\tRightAnimation: {(RightAnimation is null ? null : RightAnimation)}\n" +
+                $"\tPortrait: {Portrait} | PortraitSheetPath: {PortraitSheetPath}\n]";
         }
     }
 }

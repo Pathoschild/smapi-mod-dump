@@ -48,9 +48,12 @@ mods:
    Visualize
 
 latest commit:
-   commit 129ebf52348ec932711018a133b45bfab4299ddd
+   commit 595dca8b273931eabd6157ed691b000e131fcfa6
+   Merge: f6f8e31 b4604dc
    Author: David <david@millionideas.de>
-   Date:   Mon Aug 23 21:58:18 2021 +0200
+   Date:   Sat Feb 5 14:52:45 2022 +0100
    
-       update releases
+       Merge pull request #121 from ellipszist/master
+       
+       Add Thai translations
    

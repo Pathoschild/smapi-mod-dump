@@ -22,7 +22,7 @@ static class PreviewProgram {
 	internal static bool AlphaPremultiplication = true;
 	internal static uint Scale = 1;
 	internal static double LuminanceWeight = Config.Resample.xBRZ.LuminanceWeight;
-	internal static double EqualColorTolerance = Config.Resample.xBRZ.EqualColorTolerance;
+	internal static uint EqualColorTolerance = Config.Resample.xBRZ.EqualColorTolerance;
 	internal static double DominantDirectionThreshold = Config.Resample.xBRZ.DominantDirectionThreshold;
 	internal static double SteepDirectionThreshold = Config.Resample.xBRZ.SteepDirectionThreshold;
 	internal static double CenterDirectionBias = Config.Resample.xBRZ.CenterDirectionBias;
@@ -30,12 +30,15 @@ static class PreviewProgram {
 	private static PictureBox PreviewBox = null!;
 	private static Bitmap? PreviewBitmap = null;
 
-	internal static int SubMain(string[] args) {
-		var actualArgs = args.Where(s => s != "--ui" && s != "--preview");
-		var previewFile = actualArgs.FirstOrDefault();
+	internal static int SubMain(Options options, List<Argument> args) {
+		var previewFile = options.Paths.FirstOrDefault();
 		if (previewFile is not null) {
 			var fileData = Common.ReadFile(new Uri(previewFile), out var fileSize);
+
 			SpriteData = Color16.Convert(fileData).ToArray();
+			// It doesn't appear as though the file data is premultiplied!
+			SpriteMaster.Resample.Passes.PremultipliedAlpha.Apply(SpriteData, fileSize);
+
 			SpriteSize = fileSize;
 		}
 
@@ -49,14 +52,20 @@ static class PreviewProgram {
 			return;
 		}
 
-		PreviewBox = (window.Controls.Find("previewBox", true)[0] as PictureBox)!;
+		PreviewBox = window.ImagePreviewBox;
 		ProcessSprite();
 		PreviewBox.Image = PreviewBitmap;
+		if (PreviewBitmap is not null) {
+			PreviewBox.Size = PreviewBitmap.Size;
+		}
 	}
 
 	internal static void OnConfigChanged() {
 		ProcessSprite();
 		PreviewBox.Image = PreviewBitmap;
+		if (PreviewBitmap is not null) {
+			PreviewBox.Size = PreviewBitmap.Size;
+		}
 	}
 
 	private static unsafe void ProcessSprite() {
@@ -66,10 +75,10 @@ static class PreviewProgram {
 		
 		var spriteDataArray = SpriteData!.Clone() as Color16[];
 		var spriteData = spriteDataArray.AsSpan();
-		if (AlphaPremultiplication)
-			SpriteMaster.Resample.Passes.PremultipliedAlpha.Reverse(spriteData, spriteSize);
 		if (GammaCorrection)
 			SpriteMaster.Resample.Passes.GammaCorrection.Linearize(spriteData, spriteSize);
+		if (AlphaPremultiplication)
+			SpriteMaster.Resample.Passes.PremultipliedAlpha.Reverse(spriteData, spriteSize);
 
 		if (scale != 1) {
 			var xBRZInterface = new SpriteMaster.Resample.Scalers.xBRZ.Scaler.ScalerInterface();
@@ -78,6 +87,7 @@ static class PreviewProgram {
 				new SpriteMaster.Resample.Scalers.xBRZ.Config(
 					wrapped: Vector2B.False,
 					luminanceWeight: LuminanceWeight,
+					gammaCorrected: !GammaCorrection,
 					equalColorTolerance: EqualColorTolerance,
 					dominantDirectionThreshold: DominantDirectionThreshold,
 					steepDirectionThreshold: SteepDirectionThreshold,
@@ -92,10 +102,10 @@ static class PreviewProgram {
 			spriteSize = scaledSize;
 		}
 
-		if (GammaCorrection)
-			SpriteMaster.Resample.Passes.GammaCorrection.Delinearize(spriteData, spriteSize);
 		if (AlphaPremultiplication)
 			SpriteMaster.Resample.Passes.PremultipliedAlpha.Apply(spriteData, spriteSize);
+		if (GammaCorrection)
+			SpriteMaster.Resample.Passes.GammaCorrection.Delinearize(spriteData, spriteSize);
 
 		var resampledData = Color8.Convert(spriteData);
 

@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "ToneModKey": "LeftAlt",
+  "PitchModKey": "LeftShift",
+  "CurrentTone": "flute",
+  "PitchStep": 100,
+  "CurrentPitch": 0,
+  "ToneList": "flute,toyPiano,crystal,clam_tone,toolCharge"
+}

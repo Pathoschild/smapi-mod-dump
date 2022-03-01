@@ -64,6 +64,10 @@ static class SerializeConfig {
 	private static bool Parse(DocumentSyntax Data, bool retain) {
 		try {
 			foreach (var table in Data.Tables) {
+				if (table?.Name is null) {
+					continue;
+				}
+
 				string tableName = "";
 				try {
 					tableName = table.Name.ToString();
@@ -99,6 +103,9 @@ static class SerializeConfig {
 					}
 
 					foreach (var value in table.Items) {
+						if (value?.Key is null) {
+							continue;
+						}
 						try {
 							var keyString = value.Key.ToString().Trim();
 							var field = configClass.GetField(keyString, StaticFlags);
@@ -125,35 +132,35 @@ static class SerializeConfig {
 							object? fieldValue = field.GetValue(null);
 							switch (fieldValue) {
 								case string v:
-									field.SetValue(null, (string)((StringValueSyntax)value.Value).Value.Trim());
+									field.SetValue(null, (string?)((StringValueSyntax?)value.Value)?.Value?.Trim());
 									break;
 								case sbyte v:
-									field.SetValue(null, (sbyte)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (sbyte?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case byte v:
-									field.SetValue(null, (byte)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (byte?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case short v:
-									field.SetValue(null, (short)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (short?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case ushort v:
-									field.SetValue(null, (ushort)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (ushort?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case int v:
-									field.SetValue(null, (int)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (int?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case uint v:
-									field.SetValue(null, (uint)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (uint?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case ulong v:
-									field.SetValue(null, (ulong)((IntegerValueSyntax)value.Value).Value);
+									field.SetValue(null, (ulong?)((IntegerValueSyntax?)value.Value)?.Value);
 									break;
 								case float v: {
 										if (value.Value is IntegerValueSyntax ivalue) {
 											field.SetValue(null, (float)ivalue.Value);
 										}
 										else {
-											field.SetValue(null, (float)((FloatValueSyntax)value.Value).Value);
+											field.SetValue(null, (float?)((FloatValueSyntax?)value.Value)?.Value);
 										}
 									}
 									break;
@@ -162,22 +169,27 @@ static class SerializeConfig {
 											field.SetValue(null, (double)ivalue.Value);
 										}
 										else {
-											field.SetValue(null, (double)((FloatValueSyntax)value.Value).Value);
+											field.SetValue(null, (double?)((FloatValueSyntax?)value.Value)?.Value);
 										}
 									}
 									break;
 								case bool v:
-									field.SetValue(null, (bool)((BooleanValueSyntax)value.Value).Value);
+									field.SetValue(null, (bool?)((BooleanValueSyntax?)value.Value)?.Value);
 									break;
 								default:
 									switch (fieldValue) {
 										case List<string> _: {
-												var arrayValue = ((ArraySyntax)value.Value).Items;
+												var arrayValue = ((ArraySyntax?)value.Value)?.Items;
+												if (arrayValue is null) {
+													break;
+												}
 												var list = new List<string>(arrayValue.ChildrenCount);
 												foreach (var obj in arrayValue) {
 													var ovalue = obj.Value;
 													if (ovalue is StringValueSyntax svalue) {
-														list.Add(svalue.Value);
+														if (svalue.Value is not null) {
+															list.Add(svalue.Value);
+														}
 													}
 													else if (ovalue is IntegerValueSyntax ivalue) {
 														list.Add(ivalue.Value.ToString());
@@ -186,12 +198,17 @@ static class SerializeConfig {
 												field.SetValue(null, list);
 											} break;
 										case List<int> _: {
-												var arrayValue = ((ArraySyntax)value.Value).Items;
+												var arrayValue = ((ArraySyntax?)value.Value)?.Items;
+												if (arrayValue is null) {
+													break;
+												}
 												var list = new List<int>(arrayValue.ChildrenCount);
 												foreach (var obj in arrayValue) {
 													var ovalue = obj.Value;
 													if (ovalue is StringValueSyntax svalue) {
-														list.Add(Int32.Parse(svalue.Value));
+														if (svalue.Value is not null) {
+															list.Add(Int32.Parse(svalue.Value));
+														}
 													}
 													else if (ovalue is IntegerValueSyntax ivalue) {
 														list.Add((int)ivalue.Value);
@@ -203,18 +220,20 @@ static class SerializeConfig {
 												var enumNames = fieldValue.GetType().GetEnumNames();
 												var values = fieldValue.GetType().GetEnumValues();
 
-												var configValue = ((StringValueSyntax)value.Value).Value.Trim();
+												var configValue = ((StringValueSyntax?)value.Value)?.Value?.Trim();
 
-												bool found = false;
-												foreach (int index in 0.RangeTo(enumNames.Length)) {
-													if (enumNames[index] == configValue) {
-														field.SetValue(null, values.GetValue(index));
-														found = true;
-														break;
+												if (configValue is not null) {
+													bool found = false;
+													foreach (int index in 0.RangeTo(enumNames.Length)) {
+														if (enumNames[index] == configValue) {
+															field.SetValue(null, values.GetValue(index));
+															found = true;
+															break;
+														}
 													}
-												}
-												if (!found) {
-													throw new InvalidDataException($"Unknown Enumeration Value Type '{summedClass}.{keyString}' = '{value.Value}'");
+													if (!found) {
+														throw new InvalidDataException($"Unknown Enumeration Value Type '{summedClass}.{keyString}' = '{value.Value}'");
+													}
 												}
 											} break;
 										default:
@@ -257,6 +276,10 @@ static class SerializeConfig {
 
 			ValueSyntax? value = null;
 			object? fieldValue = field.GetValue(null);
+
+			if (fieldValue is null) {
+				continue;
+			}
 
 			switch (fieldValue) {
 				case string v:
@@ -301,7 +324,10 @@ static class SerializeConfig {
 							value = new ArraySyntax(intList.ToArray());
 							break;
 						case Enum enumValue:
-							value = new StringValueSyntax(enumValue.GetType().GetEnumName(fieldValue));
+							var enumName = enumValue.GetType().GetEnumName(fieldValue);
+							if (enumName is not null) {
+								value = new StringValueSyntax(enumName);
+							}
 							break;
 					}
 
@@ -310,7 +336,7 @@ static class SerializeConfig {
 							item.AddLeadingTrivia(TokenKind.NewLine, "\n\t");
 						}
 						if (valueSyntax.Items.ChildrenCount != 0) {
-							valueSyntax.CloseBracket.AddLeadingTrivia(TokenKind.NewLine, "\n");
+							valueSyntax.CloseBracket?.AddLeadingTrivia(TokenKind.NewLine, "\n");
 						}
 					}
 					break;
@@ -325,8 +351,11 @@ static class SerializeConfig {
 				value
 			);
 
-			if (field.GetAttribute<Config.CommentAttribute>(out var attribute)) {
-				keyValue.AddLeadingTrivia(TokenKind.Comment, $"# {attribute.Message}\n");
+			var commentAttributes = field.GetCustomAttributes<Config.CommentAttribute>();
+			if (commentAttributes?.IsEmpty() ?? false) {
+				foreach (var attribute in commentAttributes) {
+					keyValue.AddLeadingTrivia(TokenKind.Comment, $"# {attribute.Message}\n");
+				}
 			}
 
 			tableItems.Add(keyValue);

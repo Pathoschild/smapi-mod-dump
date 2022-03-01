@@ -11,7 +11,6 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ namespace CustomNPCExclusions
             );
         }
 
-        /// <summary>Replaces calls to <see cref="Utility.getRandomTownNPC()"/> with <see cref="GetRandomTownNPC_WinterStarExclusions()"/>.</summary>
+        /// <summary>Replaces calls to <see cref="Utility.getRandomTownNPC()"/> with <see cref="GetRandomTownNPC_ShopDialogExclusions()"/>.</summary>
         public static IEnumerable<CodeInstruction> Game1_UpdateShopPlayerItemInventory(IEnumerable<CodeInstruction> instructions)
         {
             try
@@ -87,7 +86,7 @@ namespace CustomNPCExclusions
                 npc = Utility.getRandomTownNPC(); //get another random NPC
             }
 
-            if (rerolledNames.Count > 0) //if any NPCs were excluded
+            if (rerolledNames.Count > 0 && ModEntry.Instance.Monitor.IsVerbose) //if any NPCs were excluded
             {
                 string logMessage = String.Join(", ", rerolledNames);
                 ModEntry.Instance.Monitor.Log($"Excluded NPCs from random shop dialog: {logMessage}", LogLevel.Trace);

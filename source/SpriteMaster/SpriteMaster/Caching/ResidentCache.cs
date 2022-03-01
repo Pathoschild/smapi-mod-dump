@@ -8,14 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
+using SpriteMaster.Types;
 using System.Runtime.CompilerServices;
 using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpriteMaster.Caching;
 
@@ -27,25 +22,25 @@ static class ResidentCache {
 	internal static bool Enabled => Config.MemoryCache.Enabled;
 
 	private static readonly SharedLock CacheLock = new();
-	private static MemoryCache Cache = CreateCache();
+	private static TypedMemoryCache<byte[]> Cache = CreateCache();
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static MemoryCache CreateCache() => Enabled ? new(name: "ResidentCache", config: null) : null!;
+	private static TypedMemoryCache<byte[]> CreateCache() => Enabled ? new(name: "ResidentCache") : null!;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static T? Get<T>(string key) where T : class => Cache.Get(key) as T;
+	internal static byte[]? Get(string key) => Cache.Get(key);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool TryGet<T>(string key, out T? value) where T : class {
-		var result = Get<T>(key);
+	internal static bool TryGet(string key, out byte[]? value) {
+		var result = Get(key);
 		value = result;
 		return result is not null;
 	}
 
-	internal static T? Set<T>(string key, T value) where T : class => (Cache[key] = value) as T;
+	internal static byte[]? Set(string key, byte[] value) => Cache.Set(key, value);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static T? Remove<T>(string key) where T : class => Cache.Remove(key) as T;
+	internal static byte[]? Remove(string key) => Cache.Remove(key);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void Purge() {
@@ -54,8 +49,7 @@ static class ResidentCache {
 		}
 
 		using (CacheLock.Write) {
-			Cache?.Dispose();
-			Cache = CreateCache();
+			Cache?.Clear();
 		}
 	}
 

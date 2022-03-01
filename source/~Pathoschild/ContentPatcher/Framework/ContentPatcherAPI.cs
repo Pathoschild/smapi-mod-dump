@@ -24,6 +24,9 @@ namespace ContentPatcher.Framework
         /*********
         ** Fields
         *********/
+        /// <summary>A pattern which matches a valid token name.</summary>
+        private static readonly Regex ValidNamePattern = new("^[a-z]+$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         /// <summary>The unique mod ID for Content Patcher.</summary>
         private readonly string ContentPatcherID;
 
@@ -35,9 +38,6 @@ namespace ContentPatcher.Framework
 
         /// <summary>The action to add a mod token.</summary>
         private readonly Action<ModProvidedToken> AddModToken;
-
-        /// <summary>A regex pattern matching a valid token name.</summary>
-        private readonly Regex ValidNameFormat = new("^[a-z]+$", RegexOptions.IgnoreCase);
 
         /// <summary>Whether the conditions API is initialized and ready for use.</summary>
         private readonly Func<bool> IsConditionsApiReadyImpl;
@@ -141,7 +141,7 @@ namespace ContentPatcher.Framework
                 this.Monitor.Log($"Rejected token added by {mod.Name} because the token has no name.", LogLevel.Error);
                 return;
             }
-            if (!this.ValidNameFormat.IsMatch(name))
+            if (!ContentPatcherAPI.ValidNamePattern.IsMatch(name))
             {
                 this.Monitor.Log($"Rejected token added by {mod.Name} because the token name is invalid (it can only contain alphabetical characters).", LogLevel.Error);
                 return;

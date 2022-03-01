@@ -21,9 +21,15 @@ namespace SpriteMaster.Compressors;
 // TODO : Implement a continual training dictionary so each stream doesn't require its own dictionary for in-memory compression.
 //[HarmonizeFinalizeCatcher<SevenLZMA.Encoder, DllNotFoundException>(critical: false)]
 static class LZMA {
+
+	private static bool? IsSupported_ = null;
 	internal static bool IsSupported {
 		[MethodImpl(Runtime.MethodImpl.RunOnce)]
 		get {
+			if (IsSupported_.HasValue) {
+				return IsSupported_.Value;
+			}
+
 			try {
 				var dummyData = new byte[16];
 				var compressedData = CompressTest(dummyData);
@@ -31,17 +37,19 @@ static class LZMA {
 				if (!dummyData.SequenceEqualF(uncompressedData)) {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
-				Debug.InfoLn("LZMA Compression is supported");
-				return true;
+				Debug.Info("LZMA Compression is supported");
+				IsSupported_ = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.InfoLn($"LZMA Compression not supported");
-				return false;
+				Debug.Info($"LZMA Compression not supported");
+				IsSupported_ = false;
 			}
 			catch (Exception ex) {
-				Debug.InfoLn($"LZMA Compression not supported: '{ex}'");
-				return false;
+				Debug.Info($"LZMA Compression not supported: '{ex.GetType().Name} {ex.Message}'");
+				IsSupported_ = false;
 			}
+
+			return IsSupported_.Value;
 		}
 	}
 

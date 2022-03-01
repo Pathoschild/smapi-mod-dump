@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+	"SpringBurger": "救生汉堡(春季)",
+	"SummerBurger": "救生汉堡(夏季)",
+	"FallBurger": "救生汉堡(秋季)",
+	"WinterBurger": "救生汉堡(冬季)"
+}

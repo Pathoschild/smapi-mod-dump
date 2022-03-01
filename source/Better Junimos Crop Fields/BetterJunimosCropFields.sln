@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterJunimosCropFields", "BetterJunimosCropFields\BetterJunimosCropFields.csproj", "{69D94014-C2EE-4725-A6E2-52A9D5E8A2CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{69D94014-C2EE-4725-A6E2-52A9D5E8A2CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69D94014-C2EE-4725-A6E2-52A9D5E8A2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69D94014-C2EE-4725-A6E2-52A9D5E8A2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69D94014-C2EE-4725-A6E2-52A9D5E8A2CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

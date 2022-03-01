@@ -15,32 +15,39 @@ using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using SpriteDictionary = System.Collections.Generic.Dictionary<ulong, SpriteMaster.ManagedSpriteInstance>;
 
 namespace SpriteMaster.Metadata;
 
-sealed class Texture2DMeta {
-	private readonly SpriteDictionary SpriteInstanceTable = new();
+// TODO : This needs a Finalize thread dispatcher, and needs to remove cached data for it from the ResidentCache.
+sealed class Texture2DMeta : IDisposable {
+	private static readonly ConcurrentDictionary<ulong, SpriteDictionary> SpriteDictionaries = new();
+	private readonly SpriteDictionary SpriteInstanceTable;
+	private readonly ConcurrentDictionary<Bounds, bool> NoResampleSet = new();
 
 	internal IReadOnlyDictionary<ulong, ManagedSpriteInstance> GetSpriteInstanceTable() => SpriteInstanceTable;
 
-	internal void ClearSpriteInstanceTable() {
+	internal void ClearSpriteInstanceTable(bool allowSuspend = false) {
 		using (Lock.Write) {
 			foreach (var spriteInstance in SpriteInstanceTable.Values) {
-				spriteInstance?.Dispose();
+				if (allowSuspend) {
+					spriteInstance?.Suspend();
+				}
+				else {
+					spriteInstance?.Dispose();
+				}
 			}
 			SpriteInstanceTable.Clear();
 		}
 	}
 
-	internal bool RemoveFromSpriteInstanceTable(ulong key) {
+	internal bool RemoveFromSpriteInstanceTable(ulong key, bool dispose, out ManagedSpriteInstance? instance) {
 		using (Lock.Write) {
-			if (SpriteInstanceTable.Remove(key, out var value)) {
-				value?.Dispose();
+			if (SpriteInstanceTable.Remove(key, out instance)) {
 				return true;
 			}
 			return false;
@@ -59,10 +66,19 @@ sealed class Texture2DMeta {
 		}
 	}
 
+	internal void AddNoResample(in Bounds bounds) {
+		NoResampleSet.TryAdd(bounds, true);
+	}
+
+	internal bool IsNoResample(in Bounds bounds) {
+		return NoResampleSet.ContainsKey(bounds);
+	}
+
 	/// <summary>The current (static) ID, incremented every time a new <see cref="Texture2DMeta"/> is created.</summary>
 	private static ulong CurrentID = 0U;
 	/// <summary>Whenever a new <see cref="Texture2DMeta"/> is created, <see cref="CurrentID"/> is incremented and <see cref="UniqueIDString"/> is set to a string representation of it.</summary>
-	private readonly string UniqueIDString = Interlocked.Increment(ref CurrentID).ToString64();
+	private readonly ulong MetaID = Interlocked.Increment(ref CurrentID);
+	private readonly string UniqueIDString;
 
 	internal readonly SharedLock Lock = new(LockRecursionPolicy.SupportsRecursion);
 
@@ -79,9 +95,11 @@ sealed class Texture2DMeta {
 	internal InterlockedULong Hash { get; private set; } = 0;
 
 	internal Texture2DMeta(Texture2D texture) {
+		UniqueIDString = MetaID.ToString64();
 		IsCompressed = texture.Format.IsCompressed();
 		Format = texture.Format;
 		Size = texture.Extent();
+		SpriteInstanceTable = SpriteDictionaries.GetOrAdd(MetaID, id => new());
 	}
 
 	// TODO : this presently is not threadsafe.
@@ -116,7 +134,7 @@ sealed class Texture2DMeta {
 
 			if (data.IsNull) {
 				if (!hasCachedData) {
-					Debug.TraceLn($"Clearing '{reference.SafeName(DrawingColor.LightYellow)}' Cache");
+					Debug.Trace($"Clearing '{reference.NormalizedName(DrawingColor.LightYellow)}' Cache");
 				}
 				CachedRawData = null;
 				return;
@@ -132,11 +150,11 @@ sealed class Texture2DMeta {
 					forcePurge = true;
 				}
 				else if (!bounds.HasValue && data.Offset == 0 && data.Length == refSize) {
-					Debug.TraceLn($"{(hasCachedData ? "Overriding" : "Setting")} '{reference.SafeName(DrawingColor.LightYellow)}' Cache in Purge: {bounds.HasValue}, {data.Offset}, {data.Length}");
+					Debug.Trace($"{(hasCachedData ? "Overriding" : "Setting")} '{reference.NormalizedName(DrawingColor.LightYellow)}' Cache in Purge: {bounds.HasValue}, {data.Offset}, {data.Length}");
 					CachedRawData = data.Data;
 				}
 				else if (!IsCompressed && (bounds.HasValue != (data.Offset != 0)) && CachedRawData is var currentData && currentData is not null) {
-					Debug.TraceLn($"{(hasCachedData ? "Updating" : "Setting")} '{reference.SafeName(DrawingColor.LightYellow)}' Cache in Purge: {bounds.HasValue}");
+					Debug.Trace($"{(hasCachedData ? "Updating" : "Setting")} '{reference.NormalizedName(DrawingColor.LightYellow)}' Cache in Purge: {bounds.HasValue}");
 
 					if (bounds.HasValue) {
 						var source = data.Data.AsSpan<uint>();
@@ -162,7 +180,7 @@ sealed class Texture2DMeta {
 				}
 				else {
 					if (hasCachedData) {
-						Debug.TraceLn($"Forcing full '{reference.SafeName(DrawingColor.LightYellow)}' Purge");
+						Debug.Trace($"Forcing full '{reference.NormalizedName(DrawingColor.LightYellow)}' Purge");
 					}
 					forcePurge = true;
 				}
@@ -224,7 +242,7 @@ sealed class Texture2DMeta {
 					using (Lock.Write) {
 						_CachedRawData.SetTarget(null!);
 						_CachedData.SetTarget(null!);
-						ResidentCache.Remove<byte[]>(UniqueIDString);
+						ResidentCache.Remove(UniqueIDString);
 					}
 				}
 				else {
@@ -249,14 +267,20 @@ sealed class Texture2DMeta {
 
 	internal byte[]? CachedData {
 		get {
-			if (_CachedData.TryGetTarget(out var data)) {
-				return data;
+			using (Lock.Read) {
+				if (_CachedData?.TryGetTarget(out var data) ?? false) {
+					return data;
+				}
+				return null;
 			}
-			return null;
 		}
 	}
 
-	internal void SetCachedDataUnsafe(Span<byte> data) => _CachedData.SetTarget(data.ToArray());
+	internal void SetCachedDataUnsafe(Span<byte> data) {
+		using (Lock.Write) {
+			_CachedData.SetTarget(data.ToArray());
+		}
+	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal void UpdateLastAccess() {
@@ -288,4 +312,30 @@ sealed class Texture2DMeta {
 		ReportedErrors |= error;
 		return true;
 	}
+
+	~Texture2DMeta() => Dispose();
+
+	public void Dispose() {
+		ResourceManager.ReleasedTextureMetas.Push(MetaID);
+		//ResourceManager.SuspendableSpriteInstances.Push(new(SpriteInstanceTable.Values));
+
+		GC.SuppressFinalize(this);
+	}
+
+	internal static void Cleanup(in ulong id) {
+		ResidentCache.Remove(id.ToString64());
+		if (SpriteDictionaries.Remove(id, out var instances)) {
+			foreach (var instance in instances.Values) {
+				instance.Suspend();
+			}
+		}
+	}
+
+	/*
+	internal static void Cleanup(in List<ManagedSpriteInstance> instances) {
+		foreach (var instance in instances) {
+			SpriteMap.DirectRemove(instance);
+		}
+	}
+	*/
 }

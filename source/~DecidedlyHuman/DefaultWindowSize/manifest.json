@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "Default Window Size",
+	"Author": "DecidedlyHuman",
+	"Version": "1.0.0",
+	"Description": "Allows you to specify a default windowed resolution for Stardew Valley to start in. Also has a command to allow you to set a specific resolution on demand.",
+	"UniqueID": "DecidedlyHuman.DefaultWindowSize",
+	"EntryDll": "DefaultWindowSize.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:10939"
+	]
+}

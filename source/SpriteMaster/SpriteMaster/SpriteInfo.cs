@@ -16,7 +16,9 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
 using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 
 namespace SpriteMaster;
 
@@ -57,43 +59,52 @@ sealed class SpriteInfo : IDisposable {
 				SpriteDataHash = 0;
 			}
 			else {
-				float realFormatSize = (float)Reference.Format.SizeBytes(4) / 4.0f;
-				var format = Reference.Format.IsCompressed() ? SurfaceFormat.Color : Reference.Format;
-				
-				int actualWidth = (int)format.SizeBytes(Bounds.Extent.X);
-
-				try {
-					var spriteData = new Span2D<byte>(
-						array: _ReferenceData,
-						offset: RawOffset,
-						width: actualWidth,
-						height: Bounds.Extent.Y,
-						// 'pitch' is the distance between the end of one row and the start of another
-						// whereas 'stride' is the distance between the starts of rows
-						// Ergo, 'pitch' is 'stride' - 'width'.
-						pitch: RawStride - actualWidth
-					);
-
-					SpriteDataHash = spriteData.Hash();
+				var result = GetDataHash(_ReferenceData, Reference, Bounds, RawOffset, RawStride);
+				if (result.HasValue) {
+					SpriteDataHash = result.Value;
 				}
-				catch (ArgumentOutOfRangeException) {
-					var errorBuilder = new StringBuilder();
-					errorBuilder.AppendLine("SpriteInfo.ReferenceData: arguments out of range");
-					errorBuilder.AppendLine($"Reference: {Reference.SafeName()}");
-					errorBuilder.AppendLine($"Reference Extent: {Reference.Extent()}");
-					errorBuilder.AppendLine($"raw offset: {RawOffset}");
-					errorBuilder.AppendLine($"offset: {Bounds.Offset}");
-					errorBuilder.AppendLine($"extent: {Bounds.Extent}");
-					errorBuilder.AppendLine($"formatSize: {realFormatSize} ({Reference.Format})");
-					errorBuilder.AppendLine($"New Format: {format}");
-					errorBuilder.AppendLine($"pitch: {RawStride - actualWidth}");
-					errorBuilder.AppendLine($"referenceDataSize: {_ReferenceData.Length}");
-					Debug.ErrorLn(errorBuilder.ToString());
+				else {
 					_Broken = true;
 					_ReferenceData = null;
 				}
 			}
 		}
+	}
+
+	private static ulong? GetDataHash(byte[] data, Texture2D reference, in Bounds bounds, int rawOffset, int rawStride) {
+		//var format = reference.Format.IsCompressed() ? SurfaceFormat.Color : reference.Format;
+		int actualWidth = (int)reference.Format.SizeBytes(bounds.Extent.X);
+
+		try {
+			var spriteData = new Span2D<byte>(
+				array: data,
+				offset: rawOffset,
+				width: actualWidth,
+				height: bounds.Extent.Y,
+				// 'pitch' is the distance between the end of one row and the start of another
+				// whereas 'stride' is the distance between the starts of rows
+				// Ergo, 'pitch' is 'stride' - 'width'.
+				pitch: rawStride - actualWidth
+			);
+
+			return spriteData.Hash();
+		}
+		catch (ArgumentOutOfRangeException) {
+			float realFormatSize = (float)reference.Format.SizeBytes(4) / 4.0f;
+
+			var errorBuilder = new StringBuilder();
+			errorBuilder.AppendLine("SpriteInfo.ReferenceData: arguments out of range");
+			errorBuilder.AppendLine($"Reference: {reference.NormalizedName()}");
+			errorBuilder.AppendLine($"Reference Extent: {reference.Extent()}");
+			errorBuilder.AppendLine($"raw offset: {rawOffset}");
+			errorBuilder.AppendLine($"offset: {bounds.Offset}");
+			errorBuilder.AppendLine($"extent: {bounds.Extent}");
+			errorBuilder.AppendLine($"Format: {reference.Format}");
+			errorBuilder.AppendLine($"pitch: {rawStride - actualWidth}");
+			errorBuilder.AppendLine($"referenceDataSize: {data.Length}");
+			Debug.Error(errorBuilder.ToString());
+		}
+		return null;
 	}
 
 	private InterlockedULong _Hash = 0;
@@ -110,7 +121,7 @@ sealed class SpriteInfo : IDisposable {
 					SpriteDataHash,
 					Bounds.Extent.GetLongHashCode(),
 					BlendEnabled.GetLongHashCode(),
-					//ExpectedScale.GetLongHashCode(),
+					ExpectedScale.GetLongHashCode(),
 					IsWater.GetLongHashCode(),
 					IsFont.GetLongHashCode(),
 					Reference.Format.GetLongHashCode()
@@ -135,25 +146,26 @@ sealed class SpriteInfo : IDisposable {
 		internal readonly Bounds Bounds;
 		internal readonly Texture2D Reference;
 		internal readonly BlendState BlendState;
+		internal readonly SamplerState SamplerState;
 		internal readonly uint ExpectedScale;
 		internal readonly TextureType TextureType;
 		// For statistics and throttling
 		internal readonly bool WasCached;
+		internal readonly ulong? Hash;
 
 		internal Initializer(Texture2D reference, in Bounds dimensions, uint expectedScale, TextureType textureType) {
 			Reference = reference;
 			BlendState = DrawState.CurrentBlendState;
+			SamplerState = DrawState.CurrentSamplerState;
 			ExpectedScale = expectedScale;
 			Bounds = dimensions;
 
 			TextureType = textureType;
 
 			// Truncate the bounds so that it fits if it wouldn't otherwise fit
-			var oldBounds = Bounds;
-			Bounds = Bounds.ClampTo(Reference.Bounds);
-
-			if (Bounds != oldBounds) {
-				Debug.WarningLn($"SpriteInfo for '{reference.SafeName()}' bounds '{dimensions}' are not contained in reference bounds '{(Bounds)reference.Bounds}'");
+			if (!Bounds.ClampToChecked(Reference.Bounds, out var clampedBounds)) {
+				Debug.Warning($"SpriteInfo for '{reference.NormalizedName()}' bounds '{dimensions}' are not contained in reference bounds '{(Bounds)reference.Bounds}'");
+				Bounds = clampedBounds;
 			}
 
 			var refMeta = reference.Meta();
@@ -162,7 +174,7 @@ sealed class SpriteInfo : IDisposable {
 			if (refData is null) {
 				// TODO : Switch this around to use ReadOnlySequence so our hash is specific to the sprite
 				refData = new byte[reference.SizeBytes()];
-				Debug.TraceLn($"Reloading Texture Data (not in cache): {reference.SafeName(DrawingColor.LightYellow)}");
+				Debug.Trace($"Reloading Texture Data (not in cache): {reference.NormalizedName(DrawingColor.LightYellow)}");
 				reference.GetData(refData);
 				reference.Meta().CachedRawData = refData;
 				if (refMeta.IsCompressed) {
@@ -179,6 +191,41 @@ sealed class SpriteInfo : IDisposable {
 			}
 
 			ReferenceData = refData;
+
+			Hash = null;
+			if (Config.SuspendedCache.Enabled) {
+				Hash = GetHash();
+			}
+		}
+
+		private readonly ulong? GetHash() {
+			if (ReferenceData is null) {
+				return null;
+			}
+
+			var format = Reference.Format.IsCompressed() ? SurfaceFormat.Color : Reference.Format;
+			int rawStride = (int)format.SizeBytes(Reference.Width);
+			int rawOffset = (rawStride * Bounds.Top) + (int)format.SizeBytes(Bounds.Left);
+
+			bool blendEnabled = BlendState.AlphaSourceBlend != Blend.One;
+			bool isWater = TextureType == TextureType.Sprite && SpriteOverrides.IsWater(Bounds, Reference);
+			bool isFont = !isWater && TextureType == TextureType.Sprite && SpriteOverrides.IsFont(Reference, Bounds.Extent, Reference.Extent());
+			var dataHash = GetDataHash(ReferenceData, Reference, Bounds, rawOffset, rawStride);
+
+			if (dataHash is null) {
+				return null;
+			}
+
+			var result = Hashing.Combine(
+				dataHash,
+				Bounds.Extent.GetLongHashCode(),
+				blendEnabled.GetLongHashCode(),
+				ExpectedScale.GetLongHashCode(),
+				isWater.GetLongHashCode(),
+				isFont.GetLongHashCode(),
+				Reference.Format.GetLongHashCode()
+			);
+			return result;
 		}
 	}
 
@@ -198,20 +245,23 @@ sealed class SpriteInfo : IDisposable {
 			throw new ArgumentNullException(nameof(initializer.ReferenceData));
 		}
 
-		BlendEnabled = DrawState.CurrentBlendState.AlphaSourceBlend != Blend.One;
+		BlendEnabled = initializer.BlendState.AlphaSourceBlend != Blend.One;
 		Wrapped = new(
-			DrawState.CurrentSamplerState.AddressU == TextureAddressMode.Wrap,
-			DrawState.CurrentSamplerState.AddressV == TextureAddressMode.Wrap
+			initializer.SamplerState.AddressU == TextureAddressMode.Wrap,
+			initializer.SamplerState.AddressV == TextureAddressMode.Wrap
 		);
 
 		IsWater = TextureType == TextureType.Sprite && SpriteOverrides.IsWater(Bounds, Reference);
 		IsFont = !IsWater && TextureType == TextureType.Sprite && SpriteOverrides.IsFont(Reference, Bounds.Extent, ReferenceSize);
+
+		if (initializer.Hash.HasValue) {
+			_Hash = initializer.Hash.Value;
+		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public void Dispose() {
 		ReferenceData = null;
 		_Hash = 0;
-		GC.SuppressFinalize(this);
 	}
 }

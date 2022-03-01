@@ -21,7 +21,7 @@ static class SpriteOverrides {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool IsWater(in Bounds bounds, Texture2D texture) {
-		if (bounds.Right <= 640 && bounds.Top >= 2000 && bounds.Extent.MinOf >= WaterBlock && texture.SafeName() == "LooseSprites/Cursors") {
+		if (bounds.Right <= 640 && bounds.Top >= 2000 && bounds.Extent.MinOf >= WaterBlock && texture.NormalizedName() == @"LooseSprites\Cursors") {
 			return true;
 		}
 		return false;

@@ -6,9 +6,10 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit d53193d560700df83611b68fc567b962a252ba84
+   commit 09abd8978a4d599e5a45a3b4fbc51bed5e00c9fd
+   Merge: 9490314 70f1adb
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Fri Jan 28 16:10:00 2022 +0800
+   Date:   Mon Feb 28 16:25:04 2022 +0800
    
-       Update default.json
+       Merge branch 'main' of https://github.com/Rafseazz/Ridgeside-Village-Mod
    

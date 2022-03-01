@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
+using SpriteMaster.Metadata;
 using SpriteMaster.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -81,8 +83,48 @@ static class PTexture2D {
 
 	#region SetData
 
+	private static bool CheckDataChange<T>(Texture2D instance, int level, int arraySlice, in XNA.Rectangle? inRect, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		Bounds rect = inRect ?? instance.Bounds;
+
+		if (instance.TryMeta(out var meta) && meta.CachedData is byte[] cachedData) {
+			var dataSpan = data.AsReadOnlySpan().Cast<T, byte>();
+			var cachedDataSpan = cachedData.AsReadOnlySpan();
+
+			unsafe {
+				var inSpan = new Span2D<byte>(
+					pointer: Unsafe.AsPointer(ref dataSpan.DangerousGetReferenceAt(startIndex * sizeof(T))),
+					width: rect.Width * sizeof(T),
+					height: rect.Height,
+					pitch: (instance.Width - rect.Width) * sizeof(T)
+				);
+
+				var cachedSpan = new Span2D<byte>(
+					array: cachedData,
+					offset: startIndex * sizeof(T),
+					width: rect.Width * sizeof(T),
+					height: rect.Height,
+					pitch: (instance.Width - rect.Width) * sizeof(T)
+				);
+
+				bool equal = true;
+				for (int y = 0; y < rect.Height; ++y) {
+					var inSpanRow = inSpan.GetRowSpan(y);
+					var cachedSpanRow = cachedSpan.GetRowSpan(y);
+					if (!inSpanRow.SequenceEqual(cachedSpanRow)) {
+						equal = false;
+						break;
+					}
+				}
+
+				return !equal;
+			}
+		}
+
+		return true;
+	}
+
 	[Harmonize("SetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
-	private static bool OnSetData<T>(Texture2D __instance, T[] data) where T : struct {
+	public static bool OnSetData<T>(Texture2D __instance, T[] data) where T : unmanaged {
 		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
 			return true;
 		}
@@ -91,29 +133,56 @@ static class PTexture2D {
 	}
 
 	[Harmonize("SetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
-	private static bool OnSetData<T>(Texture2D __instance, T[] data, int startIndex, int elementCount) where T : struct {
+	public static bool OnSetData<T>(Texture2D __instance, T[] data, int startIndex, int elementCount) where T : unmanaged {
 		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
 			return true;
 		}
+
 		__instance.SetData(0, 0, null, data, startIndex, elementCount);
 		return false;
 	}
 
 	[Harmonize("SetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
-	private static bool OnSetData<T>(Texture2D __instance, int level, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : struct {
+	public static bool OnSetData<T>(Texture2D __instance, int level, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : unmanaged {
 		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
 			return true;
 		}
-		__instance.SetData(level, 0, rect, data, startIndex, elementCount);
+
+		__instance.SetData(0, level, rect, data, startIndex, elementCount);
 		return false;
 	}
 
+	[Harmonize("SetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
+	public static bool OnSetData<T>(Texture2D __instance, int level, int arraySlice, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
+			return true;
+		}
+
+		if (!CheckDataChange(__instance, level, arraySlice, rect, data, startIndex, elementCount)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/*
+	[Harmonize("SetData", Harmonize.Fixation.Reverse, PriorityLevel.Last, Harmonize.Generic.Struct)]
+	public static void OnSetDataOriginal<T>(Texture2D __instance, int level, int arraySlice, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : struct {
+		throw new NotImplementedException("Reverse Patch");
+	}*/
+
+	/*
 	[Harmonize("SetData", Harmonize.Fixation.Postfix, PriorityLevel.Last, Harmonize.Generic.Struct)]
-	private static void OnSetData<T>(Texture2D __instance, int level, int arraySlice, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : struct {
+	public static void OnSetDataPost<T>(Texture2D __instance, int level, int arraySlice, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : unmanaged {
 		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
 			return;
 		}
-		using var _ = Performance.Track("SetData");
+
+		if (!CheckDataChange(__instance, level, arraySlice, rect, data, startIndex, elementCount)) {
+			return;
+		}
+
+		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		SetDataPurge(
 			__instance,
 			rect,
@@ -121,73 +190,40 @@ static class PTexture2D {
 			startIndex,
 			elementCount
 		);
-	}
 
-	#endregion
-
-	/*
-	[Harmonize("PlatformSetData", Harmonize.Fixation.Postfix, PriorityLevel.Last, Harmonize.Generic.Struct, platform: Harmonize.Platform.MonoGame)]
-	private static void OnPlatformSetData<T>(Texture2D __instance, int level, T[] data, int startIndex, int elementCount) where T : struct {
-		using var _ = Performance.Track("OnPlatformSetData0");
-		SetDataPurge(
-			__instance,
-			null,
-			data,
-			startIndex,
-			elementCount
-		);
-	}
-
-	[Harmonize("PlatformSetData", Harmonize.Fixation.Postfix, PriorityLevel.Last, Harmonize.Generic.Struct, platform: Harmonize.Platform.MonoGame)]
-	private static void OnPlatformSetData<T>(Texture2D __instance, int level, int arraySlice, XNA.Rectangle rect, T[] data, int startIndex, int elementCount) where T : struct {
-		using var _ = Performance.Track("OnPlatformSetData1");
-		SetDataPurge(
-			__instance,
-			null,
-			data,
-			startIndex,
-			elementCount
-		);
+		TextureCache.Remove(__instance);
 	}
 	*/
 
-	// A horrible, horrible hack to stop a rare-ish crash when zooming or when the device resets. It doesn't appear to originate in SpriteMaster, but SM most certainly
-	// makes it worse. This will force the texture to regenerate on the fly if it is in a zombie state.
-	[Harmonize("Microsoft.Xna.Framework", "Microsoft.Xna.Framework.Helpers", "CheckDisposed", Harmonize.Fixation.Prefix, PriorityLevel.Last, instance: false, platform: Harmonize.Platform.XNA)]
-	private static unsafe bool CheckDisposed(object obj, ref IntPtr pComPtr) {
-		if (obj is ManagedTexture2D) {
-			return true;
+	#endregion
+
+	[Harmonize("PlatformSetData", Harmonize.Fixation.Postfix, PriorityLevel.Average, Harmonize.Generic.Struct, platform: Harmonize.Platform.MonoGame)]
+	public static void OnPlatformSetDataPost<T>(Texture2D __instance, int level, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
+			return;
 		}
 
-		if (obj is GraphicsResource resource) {
-			if (pComPtr == IntPtr.Zero || resource.IsDisposed) {
-				if (!resource.IsDisposed) {
-					resource.Dispose();
-				}
+		SetDataPurge(
+			__instance,
+			null,
+			data,
+			startIndex,
+			elementCount
+		);
+	}
 
-				if (resource is Texture2D texture) {
-					Debug.WarningLn("CheckDisposed is going to throw, attempting to restore state");
-
-					// TODO : we should probably use the helper function it calls instead, just in case the user defined a child class.
-					var ctor = texture.GetType().GetConstructor(
-						BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
-						null,
-						new[] {
-								typeof(GraphicsDevice),
-								typeof(int),
-								typeof(int),
-								typeof(bool),
-								typeof(SurfaceFormat)
-						},
-						null
-					);
-
-					ctor?.Invoke(texture, new object[] { DrawState.Device, texture.Width, texture.Height, texture.LevelCount > 1, texture.Format });
-					//pComPtr = (IntPtr)(void*)texture.GetField("pComPtr");
-					return false;
-				}
-			}
+	[Harmonize("PlatformSetData", Harmonize.Fixation.Postfix, PriorityLevel.Average, Harmonize.Generic.Struct, platform: Harmonize.Platform.MonoGame)]
+	public static void OnPlatformSetDataPost<T>(Texture2D __instance, int level, int arraySlice, XNA.Rectangle rect, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
+			return;
 		}
-		return true;
+
+		SetDataPurge(
+			__instance,
+			null,
+			data,
+			startIndex,
+			elementCount
+		);
 	}
 }

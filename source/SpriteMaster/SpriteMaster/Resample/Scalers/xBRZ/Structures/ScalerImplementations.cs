@@ -41,10 +41,6 @@ abstract class IScaler {
 		//this works because 8 upper bits are free
 		var dst = dstRef;
 		var a = BlendComponent(n, m, dst.A, color.A);
-		//if (alphaComponent == 0) {
-		//	dstRef = 0;
-		//	return;
-		//}
 		var r = BlendComponent(n, m, dst.R, color.R);
 		var g = BlendComponent(n, m, dst.G, color.G);
 		var b = BlendComponent(n, m, dst.B, color.B);

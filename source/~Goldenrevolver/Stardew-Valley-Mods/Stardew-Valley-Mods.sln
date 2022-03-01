@@ -27,7 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RingOverhaul", "RingOverhau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnchantableScythes", "EnchantableScythes\EnchantableScythes.csproj", "{CCED9A88-03E1-432B-B472-2A299F8C6797}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MaritimeSecrets", "MaritimeSecrets\MaritimeSecrets.csproj", "{8EA067AB-FD84-4291-8698-9CA97D7CCA2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaritimeSecrets", "MaritimeSecrets\MaritimeSecrets.csproj", "{8EA067AB-FD84-4291-8698-9CA97D7CCA2E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MushroomRancher", "MushroomRancher\MushroomRancher.csproj", "{D7C9468B-AFF9-4408-8B97-D3F0223D76B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MermaidShowClamMover", "MermaidShowClamMover\MermaidShowClamMover.csproj", "{B9794856-1BE0-43FF-A65A-1E446DFD2024}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpertModeBeachMap", "ExpertModeBeachMap\ExpertModeBeachMap.csproj", "{FFE8C126-7F64-4F51-BAD2-9983860126FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,6 +92,18 @@ Global
 		{8EA067AB-FD84-4291-8698-9CA97D7CCA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EA067AB-FD84-4291-8698-9CA97D7CCA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EA067AB-FD84-4291-8698-9CA97D7CCA2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7C9468B-AFF9-4408-8B97-D3F0223D76B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7C9468B-AFF9-4408-8B97-D3F0223D76B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7C9468B-AFF9-4408-8B97-D3F0223D76B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7C9468B-AFF9-4408-8B97-D3F0223D76B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9794856-1BE0-43FF-A65A-1E446DFD2024}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9794856-1BE0-43FF-A65A-1E446DFD2024}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9794856-1BE0-43FF-A65A-1E446DFD2024}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9794856-1BE0-43FF-A65A-1E446DFD2024}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFE8C126-7F64-4F51-BAD2-9983860126FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE8C126-7F64-4F51-BAD2-9983860126FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE8C126-7F64-4F51-BAD2-9983860126FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE8C126-7F64-4F51-BAD2-9983860126FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

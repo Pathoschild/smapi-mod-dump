@@ -7,117 +7,30 @@ mods:
    Faster Path Speed
 
 latest commit:
-   commit dcea900404a893638e1f36bfe647d2892649a7fe
+   commit 1929c40b6cd17961c14a433087b0af7973b9ab9d
    Author: Alan Perrow <65362286+alanperrow@users.noreply.github.com>
-   Date:   Tue Dec 21 12:03:13 2021 -0500
+   Date:   Mon Jan 31 23:15:42 2022 -0500
    
-       Convenient inventory (#5)
+       Convenient Inventory 1.2.0 (#7)
        
-       * Migrated in from separate repo.
-       WIP - initial work for drawing nearby chests in quick stack button tooltip
+       * Initial work for v1.2.0 release.
        
-       * Slight renaming. Normal/stone chests now draw correctly in quick stack tooltip. Overall tooltip layout and other types of chests are still WIP.
+       * Create README.md
        
-       * Tab instead of spaces.
-       WIP - draw typed chests in tooltip.
+       * Update README.md
        
-       * Chests are rendered in correct position in tooltip.
+       * Fix assets directory issue due to capitalization.
+       Add hotkey for quick stack via opt-in config option.
        
-       * Implemented GetChestType method
+       * ModEntry "Context" => "Instance", so I can access SMAPI's Context class without it being confusing.
+       Added context checks for OnButtonPressed events (favorite items hotkey, quick stack hotkey).
        
-       * Buildings are now scaled and positioned correctly in Quick Stack tooltip.
-       Junimo Hut sprite needs season change.
-       Check if Mill is under construction before considering its chest.
+       * Fixed bug where GMCM "default" button would create a new ModConfig without having ModEntry.Config reference it (so any future config changes would not be saved).
        
-       * Draw special chests (mini shipping bins, junimo chests). Correctly draw junimo hut based on current season.
+       Changed default FavoriteItemsControllerHotkey to LeftShoulder.
+       Changed default QuickStackControllerHotkey to LeftStick.
        
-       * Included island fridge as possible chest type.
-       Kitchen fridge (both types) is now drawn correctly in tooltip.
-       With this change, all chest types are now being drawn correctly on tooltip.
+       These hotkeys make more sense, in my opinion. Will have to bring awareness to the keybind change when publishing.
        
-       * Finished quick stack.
-       Initial work on favorite items.
-       
-       * WIP - Favorite items basic functionality is working.
-       TODO:
-       - Quick stack: Check if mill is under construction
-       - Handle favorited items logic for other situations:
-         - Auto stash
-         - Clicking into chest
-         - Dropping item
-         - etc...
-       - Persist favorites per player.
-       - Draw highlight under items, not over.
-       - Only allow favoriting items, not empty slots.
-       - Draw highlights on hotbar.
-       - Shift favorites down/up a row when swapping hotbar rows.
-       
-       * Workaround for FavoriteItemSlots not initialized when first inventory menu opened is not player's inventory page.
-       
-       * Favorite item slots now save and are unique for each player. Crafting page now correctly draws favorite items.
-       
-       * Slight changes to favorite item highlight styles
-       
-       * Added TODO plans for drawing favorite items highlights underneath items.
-       
-       * Added TODO notes for mod support
-       
-       * Favorite item slots now correctly shift when shifting toolbar in either direction
-       
-       * Update TODO
-       
-       * Initial work on transpiler patch for favorited item slot highlights
-       
-       * Reordered methods
-       
-       * Cleaned up code. Condensed multiple method overloads into single generically-typed methods.
-       
-       * Finished InventoryMenu transpiler for drawing highlights underneath items.
-       
-       * Attempted to show a favorite signifier on the item tooltip, might not be easily doable.
-       
-       * Removed attempt to signify favorite in item tooltip
-       
-       * WIP - draw favorite texture box border using transpiler
-       
-       * Favorited item tool tip border is now drawn correctly
-       
-       * Favoriting an item no longer selects the item at the same time.
-       
-       * Elaborated on TODO list
-       
-       * WIP - Favorite item slots are tracked when moving around in the inventory (for most cases, not all at the moment).
-       Favoriting prevents dropping and selling.
-       Implemented favorite item support for shops and other instant menus.
-       
-       * Finished incomplete favorite item slot "tracking" for Item.canStackWith logic and shift-click logic.
-       
-       * Eating/gifting/etc the last item of a favorited item slot now unfavorites it.
-       Toolbar now draws favorite item slot highlights.
-       
-       * Cleaned up TODO
-       
-       * Convenient inventory sdv1.5.5 smapi3.13.1 (#3)
-       
-       * Updated to support Stardew Valley 1.5.5 (requires SMAPI 3.13.1)
-       
-       * Fixed favorite item slots being overwritten between local splitscreen players.
-       Now supports splitscreen via SMAPI's "PerScreen<T>" type for favorite item slots.
-       
-       * Favorited items are now ignored when pressing the Organize button in inventories.
-       
-       * Finished implementing favorite items.
-       TODO: Make sure each functionality correctly checks for IsEnableFavoriteItems
-       
-       * Caught any missing config checks for IsEnableFavoriteItems.
-       This finalizes the features for a v1.0.0 release.
-       
-       * Fixed favorite item slot swapping not tracking the newly selected favorite item.
-       
-       * Added NexusMods update key.
-       
-       * Added support for inventory expansion mods.
-       Specifically, fixed all (?) compatibility errors when playing with the Bigger Backpack mod.
-       
-       Co-authored-by: Alan Perrow <aperrow@informasoftware.com>
+       * Formatting
    

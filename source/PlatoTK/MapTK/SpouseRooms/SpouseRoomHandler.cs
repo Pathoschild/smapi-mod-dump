@@ -18,7 +18,7 @@ using xTile;
 using PlatoTK.Reflection;
 using xTile.Tiles;
 using xTile.Layers;
-using Harmony;
+using HarmonyLib;
 
 namespace MapTK.SpouseRooms
 {
@@ -41,7 +41,7 @@ namespace MapTK.SpouseRooms
             var api = Helper.ModRegistry.GetApi<PlatoTK.APIs.IContentPatcher>("Pathoschild.ContentPatcher");
             api.RegisterToken(Helper.ModRegistry.Get(Helper.ModRegistry.ModID).Manifest, "SpouseRoomX", new SpouseRoomTokenX());
             api.RegisterToken(Helper.ModRegistry.Get(Helper.ModRegistry.ModID).Manifest, "SpouseRoomY", new SpouseRoomTokenY());
-            HarmonyInstance harmony = HarmonyInstance.Create("Platonymous.MapTK.SpouseRooms");
+            Harmony harmony = new Harmony("Platonymous.MapTK.SpouseRooms");
 
             harmony.Patch(
                 AccessTools.Method(typeof(FarmHouse), "loadSpouseRoom"),

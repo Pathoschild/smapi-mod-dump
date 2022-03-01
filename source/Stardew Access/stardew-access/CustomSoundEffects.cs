@@ -16,7 +16,8 @@ namespace stardew_access
 {
     internal class CustomSoundEffects
     {
-        internal enum TYPE{
+        internal enum TYPE
+        {
             Sound,
             Footstep
         }
@@ -64,15 +65,15 @@ namespace stardew_access
                     }
 
                     SoundEffect effect;
-                    string filePath = Path.Combine(MainClass.ModHelper.DirectoryPath,"sounds" , $"{soundEffect.Key}.wav");
+                    string filePath = Path.Combine(MainClass.ModHelper.DirectoryPath, "sounds", $"{soundEffect.Key}.wav");
                     using (FileStream stream = new(filePath, FileMode.Open))
                     {
                         effect = SoundEffect.FromStream(stream);
                     }
 
-                    if(soundEffect.Value == TYPE.Sound)
+                    if (soundEffect.Value == TYPE.Sound)
                         cueDefinition.SetSound(effect, Game1.audioEngine.GetCategoryIndex("Sound"), false);
-                    else if(soundEffect.Value == TYPE.Footstep)
+                    else if (soundEffect.Value == TYPE.Footstep)
                         cueDefinition.SetSound(effect, Game1.audioEngine.GetCategoryIndex("Footsteps"), false);
 
                     Game1.soundBank.AddCue(cueDefinition);
@@ -80,7 +81,7 @@ namespace stardew_access
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to initialize custom sounds:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
     }

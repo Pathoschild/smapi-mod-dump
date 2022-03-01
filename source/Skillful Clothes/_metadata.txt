@@ -6,10 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 74f1561d69b13e53f7e3c37a9f8a3cbd4f5461f8
+   commit 371a2dcb994674763641d8e33baaf7b7aa781114
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Fri Jun 18 15:10:05 2021 +0200
+   Date:   Mon Feb 28 23:33:37 2022 +0100
    
-       Fix: ShopPatches for adventure guild not executed correctly
-       Fix: in Multiplayer mode ShopPatches could not be applied by NPC id (always -1), now using NPC name as identifier
+       When writing the defautl effects to json, serialize enum values as string (name of the value instead of the ordinal)
    

@@ -8,6 +8,10 @@ for queries and analysis.**
 
 # Changelog
 
+## 1.4.1
+
+- Recompiled native for SDV 1.5.6
+
 ## 1.4.0
 
 This version reworked some C# Quest apis (used by new [Quest Essentials mod](https://www.nexusmods.com/stardewvalley/mods/8827), the QF extension), fixes lot of problems with QF quests, adds fields for mail letters after quest completion and new some new conditions for interact between inventory and quests and current location. Also this upgrades to new Harmony 2.1 and SMAPI 3.12, adds Hungarian and Spanish translations.

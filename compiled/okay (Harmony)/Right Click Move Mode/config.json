@@ -1,10 +1,12 @@
 {
-  "ExtendedModeDefault": true,
+  "MouseWhellingMaxZoom": 2.0,
+  "MouseWhellingMinZoom": 0.75,
   "RightClickMoveModeDefault": true,
-  "RightClickMoveModeToggleButton": "G",
+  "RightClickMoveModeToggleButton": "F6",
+  "ForceMoveButton": "Space",
+  "HoldTickCount": 15,
   "HoldingMoveOnly": false,
-  "HoldTickCount": 10,
-  "StopAfterHold": true,
-  "WeaponsSpecticalInteraction": true,
-  "WeaponsSpecticalInteractionType": 1
+  "WeaponsSpecticalInteractionType": 2,
+  "ExtendedModeDefault": true,
+  "FullScreenKeybindShortcut": "RightAlt + Enter"
 }

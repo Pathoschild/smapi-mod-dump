@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11019
+IDs: aedenthorn.FieldHarvest
+update keys: Nexus:11019, GitHub:aedenthorn/StardewValleyMods

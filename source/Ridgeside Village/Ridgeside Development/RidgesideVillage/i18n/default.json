@@ -21,6 +21,7 @@
 	"HotelCounter.Booking.AlreadyBooked": "You have already booked a room.",
 	"HotelCounter.Booking.NotEnoughMoney": "You don't have enough money to book a room.",
 	"HotelRoom.DirectionsAlert": "My room is at the bottom left-most part of the floor.",
+	"HotelCounter.Booking.Free": "As a friend of the owner, the room to the bottom-left of the second floor is yours to use as you please, free of charge.",
 
 	"EventHallCounter.Booking.Question": "Would you like to reserve an event?",
 	"EventHallCounter.Booking.AlreadyBooked": "You have already booked an event.",
@@ -115,7 +116,7 @@
 	"Daia.RelicHint1": "'Mountain Fossils'^Inside the Forest of the Ridge,^Near waterfalls, ancient fossils appear.^One of an inked remains of an ancient beast,^And one of silver bones of a fish.",
 	"Daia.RelicHint2": "'The Night and Monsters'^A diamond tinted with the night sky.^Hidden among the rich minerals of the mountain forest.^Be wary as you enter the place.^As cursed ancient serpentine beasts roam.^Eliminate them, and obtain the relics of an ancient race.",
 	"Daia.RelicHint3": "'Long Lost Lover'^During dates that are multiples of three,^A lost spirit roams the mountain forest among other ghosts.^Pale blue in color, but you'll see,^That it's friendly, and gives out the cursed rose.",
-	"Daia.RelicHint4": "'The Moose'^An animal hides behind the bench that looks at the sky,^In front of the tree that yearns to fly.^^'The Fox'^A sentence is an hour.^Patience is rewarded when in front of the fox's purple gem.^Patience is rewarded when in front of the fox's purple gem.",
+	"Daia.RelicHint4": "'The Moose'^An animal hides behind the bench that looks at the sky,^In front of the tree that yearns to fly.^^'The Fox'^A sentence is an hour.^Patience is rewarded when in front of the fox's purple gem.^Yes, patience is rewarded when in front of the fox's purple gem.",
 	"Daia.RelicHint5": "'Music behind the Walls'^An ancient singer is trapped behind a picture of a dancer,^Chop it down to free her.^^'The Forgotten Hero'^When you fish upon the rich's well,^A forgotten figure is saved from where it fell.^^'The Elven Comb'^In the hike trail, an abandoned house is found.^Somewhere beside it, a comb is buried to hide the traitor's secret.",
 
 	"CompleteCrystalsNotif": "The mountains seem to speak...#'Thank you, farmer... I'll take it from here...'#'Come back by tomorrow, and we'll finally meet...'#'Take care, my friend's grandchild...'",
@@ -127,6 +128,13 @@
 	"RSV.UndreyaSchedStop": "Stop playing Hide-and-seek with Undreya?",
 	"RSV.UndreyaWillPlay": "Undreya will hide tomorrow!",
 	"RSV.UndreyaWontPlay": "Undreya will stay home tomorrow.",
+
+	"RSV.MaiveError": "Only the host can access this!",
+	"RSV.BeginLoan": "Take out a loan for 500,000 G from Maive?",
+	"RSV.LoanBegun": "500,000 G has been wired to your account. Return to this location to pay your debt.",
+	"RSV.LoanInterest": "Amount of yesterday's profits deducted as interest: ",
+	"RSV.PayLoan": "Pay back your debt of 500,000 G?",
+	"RSV.LoanPaid": "Your balance has been paid off in full. Return to this location to take out another loan.",
 
 	"Aniv.1st": "The Book of Airyn",
 	"Aniv.2nd": "The Book of Kabuto N.",

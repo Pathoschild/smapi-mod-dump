@@ -45,7 +45,7 @@ namespace EscasModdingPlugins
             MapPropertyName = ModEntry.PropertyPrefix + "DestroyableBushes"; //assign map property name
             TilePropertyName = ModEntry.PropertyPrefix + "DestroyableBushes"; //assign tile property name
 
-            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_DestroyableBushes)}\": postfixing SDV method \"Bush.isDestroyable(GameLocation, Vector2)\".", LogLevel.Trace);
+            Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_DestroyableBushes)}\": postfixing method \"Bush.isDestroyable(GameLocation, Vector2)\".", LogLevel.Trace);
             harmony.Patch(
                 original: AccessTools.Method(typeof(Bush), nameof(Bush.isDestroyable), new[] { typeof(GameLocation), typeof(Vector2) }),
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_DestroyableBushes), nameof(Bush_isDestroyable))

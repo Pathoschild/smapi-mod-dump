@@ -1,0 +1,13 @@
+﻿{
+	"config.daysToRetain.section.text": "Days to retain water",
+	"config.daysToRetain.section.tooltip": "0: will never retain water\n-1: will always retain water",
+
+	"config.daysToRetain.basic.name": "Basic Retaining Soil",
+	"config.daysToRetain.quality.name": "Quality Retaining Soil",
+	"config.daysToRetain.deluxe.name": "Deluxe Retaining Soil",
+
+	"retainingSoil.tooltip.infinite": "This soil will stay watered overnight.\nMix into tilled soil.",
+	"retainingSoil.tooltip.zero": "This soil will not stay watered overnight.\nMix into tilled soil.",
+	"retainingSoil.tooltip.one": "This soil will stay watered overnight once.\nMix into tilled soil.",
+	"retainingSoil.tooltip.other": "This soil will stay watered overnight for {{Days}} nights.\nMix into tilled soil."
+}

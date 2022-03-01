@@ -1,0 +1,10 @@
+﻿{
+  "ConfigHutchInterior": "Hutch Interior Change",
+  "ConfigHutchInteriorDisabled": "Disabled",
+  "ConfigHutchInteriorDynamic": "Dynamic",
+  "ConfigHutchInteriorSlime": "Slime Cave",
+  "ConfigHutchInteriorCave": "Cave",
+  "ConfigHutchInteriorVolcano": "Volcano",
+  "ConfigRemovableSlimeHutchIncubator": "Removable Slime Hutch Incubator",
+  "ConfigRandomizeMonsterPositionInHutch": "Randomize Monster Position\nIn Hutch Daily"
+}

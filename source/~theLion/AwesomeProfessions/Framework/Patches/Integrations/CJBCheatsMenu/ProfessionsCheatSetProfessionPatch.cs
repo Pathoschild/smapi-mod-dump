@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.CJBCheatsMenu;
 
 #region using directives
 
@@ -20,8 +20,8 @@ using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 
+using Stardew.Common.Extensions;
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -64,6 +64,7 @@ internal class ProfessionsCheatSetProfessionPatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while moving CJB Profession Cheat health bonus from Defender to Brute.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

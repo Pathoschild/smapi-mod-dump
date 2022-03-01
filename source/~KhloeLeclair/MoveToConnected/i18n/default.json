@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"tooltip.insert": "Add to Connected",
+	"tooltip.insert.held": "Add Held to Connected",
+	"tooltip.extract": "Fill from Connected",
+	"tooltip.extract.held": "Fill Held from Connected"
+}

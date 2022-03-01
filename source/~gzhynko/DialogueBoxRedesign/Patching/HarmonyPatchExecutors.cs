@@ -42,6 +42,22 @@ namespace DialogueBoxRedesign.Patching
 		    var portraitTexture = dialogueBox.characterDialogue.overridePortrait ?? dialogueBox.characterDialogue.speaker.Portrait;
 		    var portraitSource = Game1.getSourceRectForStandardTileSheet(portraitTexture,
 			    dialogueBox.characterDialogue.getPortraitIndex(), 64, 64);
+
+			/* HD Portraits Compat */
+			if(ModEntry.HDPortraitsAPI != null)
+            {
+				var data = ModEntry.HDPortraitsAPI.GetTextureAndRegion(
+					dialogueBox.characterDialogue.speaker,
+					dialogueBox.characterDialogue.getPortraitIndex(),
+					Game1.currentGameTime.ElapsedGameTime.Milliseconds
+					); //no need to force reset, HD portraits auto-resets after dialogue box close
+
+				if (dialogueBox.characterDialogue.overridePortrait == null)
+                {
+					portraitTexture = data.Item2;
+					portraitSource = data.Item1;
+				}
+            }
 		    
 		    if (!portraitTexture.Bounds.Contains(portraitSource)) portraitSource = new Rectangle(0, 0, 64, 64);
 
@@ -50,8 +66,8 @@ namespace DialogueBoxRedesign.Patching
 			    : 0;
 		    
 		    /* Portrait */
-		    spriteBatch.Draw(portraitTexture, new Vector2(portraitBoxX + 16 + xOffset, Game1.uiViewport.Height - portraitSource.Height * portraitScale),
-				    portraitSource, Color.White, 0f, Vector2.Zero, portraitScale, SpriteEffects.None, 0.88f);
+			spriteBatch.Draw(portraitTexture, new Rectangle(portraitBoxX + 16 + xOffset, Game1.uiViewport.Height - 256, 256, 256), 
+				portraitSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.88f);
 
 		    var speakerNameX = xPositionOfPortraitArea + widthOfPortraitArea / 2;
 		    var speakerNameY = portraitBoxY + 50;

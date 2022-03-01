@@ -321,6 +321,7 @@ namespace AnimalHusbandryMod.tools
                 case Animal.Duck:
                 case Animal.Chicken:
                 case Animal.Dinosaur:
+                case Animal.Ostrich:
                     return true;
                 default:
                     return false;

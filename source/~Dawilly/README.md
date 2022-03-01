@@ -60,7 +60,7 @@ Naturally, SAAT.Mod depends on SAAT.API.
 
 You can add your own audio track to the game via SAAT.Mod. The structure is similiar to a Content Patcher mod.
 
-You will need to create a SMAPI Mod, label the mod as a Content Pack for `ZeroMeters.SAAT.Mod`, add the audio files and a `track.json` file. The structure of `track.json` is as followed:
+You will need to create a SMAPI Mod, label the mod as a Content Pack for `ZeroMeters.SAAT.Mod`, add the audio files and a `tracks.json` file. The structure of `tracks.json` is as followed:
 
 ```
 [

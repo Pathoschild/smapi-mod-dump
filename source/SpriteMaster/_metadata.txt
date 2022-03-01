@@ -6,13 +6,24 @@ mods:
    SpriteMaster
 
 latest commit:
-   commit 27fd6be1fdaddf9ccc655043d28a2715c4a5b39b
+   commit c5b87e8032d4ec0d9439a1f11d3481455d8c9b8b
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Tue Jan 25 23:39:59 2022 -0600
+   Date:   Wed Feb 23 03:39:40 2022 -0600
    
-       Improvements to the padding system.
-       
-       Some work on deposterization and whitelisting.
-       
-       More work on SuperXBR.
+       Added benchmarking project.
+       Added gradient detection and mitigation.
+       Added Redmean color comparison support.
+       Disabled PyTK's SM mitigation.
+       Added 'NoResample' capabilities.
+       Until I can figure out why RecentAccessNode has sporadic crashes, it is being mitigated through exception handling.
+       Updated Tomlyn.
+       Refactored color comparison code.
+       Added rudimentary support for Harmony reverse patches.
+       Reworked SetData so that SetData calls that are doing nothing (writing the data that is already existing) are cancelled.
+       General improvements to pathfinding patches.
+       XXHash3 optimizations.
+       Adding high/low pass to premultiplied alpha reverse.
+       Resampler (xBRZ) optimlzations.
+       Added fixed-point clamped divides.
+       Improvements to xBRZ test program.
    

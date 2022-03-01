@@ -1,0 +1,117 @@
+{
+	// Settings
+	"setting.show-adv": "Show Adv. Crafting Info",
+	"setting.show-adv.tip": "Show advanced crafting information, such as how many ingredients you have and how many times you've crafted a recipe before. This is the same as the vanilla setting, duplicated here for convenience.",
+
+	"setting.general": "General Options",
+
+	"setting.suppress": "Disable Key",
+	"setting.suppress.tip": "When this key is held and you open a crafting menu, Better Crafting will not replace it.",
+
+	"setting.replace-crafting": "Replace Crafting Menu",
+	"setting.replace-crafting.tip": "When enabled, the crafting menu is replaced with a reimplementation.",
+
+	"setting.replace-cooking": "Replace Cooking Menu",
+	"setting.replace-cooking.tip": "When enabled, the cooking menu is replaced with a reimplementation.",
+
+	"setting.enable-categories": "Enable Categories",
+	"setting.enable-categories.tip": "Display category tabs in crafting menus, rather than one big list of everything.",
+
+	"setting.settings": "Show Settings Button",
+	"setting.settings.tip": "When enabled, a button to open Better Crafting's settings will be added to the Better Crafting menu.",
+
+	"setting.nearby": "Extended Workbench",
+	"setting.nearby.tip": "This feature allows Workbenches and your kitchen to connect to more chests at once, improving on the game's default range of one block. You can create chains of connected chests, or use allowed connectors to bridge gaps.",
+
+	"setting.nearby.enable": "Enable Extended Workbench",
+
+	"setting.nearby.diagonal": "Allow Diagonal Connections",
+	"setting.nearby.diagonal.tip": "When enabled, chests and connectors can be placed diagonally and still connect.",
+
+	"setting.nearby.performance": "Performance",
+	"setting.nearby.performance.tip": "Settings that limit the extent of Extended Workbench to improve performance.",
+
+	"setting.nearby.max-chests": "Max Inventories",
+	"setting.nearby.max-chests.tip": "The maximum number of inventories a workbench will use.",
+
+	"setting.nearby.max-distance": "Max Distance",
+	"setting.nearby.max-distance.tip": "The maximum distance an inventory can be from the workbench.",
+
+	"setting.nearby.max-check": "Max Checks",
+	"setting.nearby.max-check.tip": "The maximum number of tiles to check when discovering nearby inventories.",
+
+	"setting.nearby.connectors": "Allowed Connectors",
+	"setting.nearby.connectors.tip": "Placeable objects that can be used as connectors. You should avoid adding unnecessary connector types to keep performance up. Please note that these entries are examples, and you can manually edit your config file to add other objects and terrain features.",
+
+	"setting.nearby.floors": "Flooring",
+	"setting.nearby.other": "Other Examples",
+
+	// Quality
+
+	"setting.quality": "Quality",
+	"setting.quality.tip": "Please note that some recipes added by other sources, such as SpaceCore, may not respect these settings due to API limitations.",
+
+	"setting.enable-quality": "Enable Quality Limit",
+	"setting.enable-quality.tip": "When enabled, a button will be displayed allowing you to choose a maximum quality of items to use when crafting.",
+
+	"setting.sort-quality": "Use Low Quality First",
+	"setting.sort-quality.tip": "When enabled, recipes will be crafted using lower quality items first.",
+
+	// Crafting
+	"setting.crafting": "Crafting",
+	"setting.crafting.tip": "These settings apply specifically to the reimplemented crafting menu.",
+
+	"setting.uniform-grid": "Force Uniform Sizes",
+	"setting.uniform-grid.tip": "When enabled, big craftables will be squished down to fit in a single row.",
+
+	"setting.big-craftables-last": "Sort Big Craftables Last",
+	"setting.big-craftables-last.tip": "When enabled, big craftables will all be put at the end of the list.",
+
+	// Cooking
+	"setting.cooking": "Cooking",
+	"setting.cooking.tip": "These settings apply specifically to the reimplemented cooking menu.",
+
+	"setting.seasoning": "Use Seasoning",
+	"setting.seasoning.tip": "Whether or not seasoning should be used to enhance cooked items. When set to \"Inventory Only\", seasoning will only be used from your inventory and not from the fridge or any other source.",
+
+	"seasoning.disabled": "Never",
+	"seasoning.enabled": "Always",
+	"seasoning.inventory": "Inventory Only",
+
+	"setting.hide-unknown": "Hide Unknown Recipes",
+	"setting.hide-unknown.tip": "When enabled, recipes you haven't learned yet won't be displayed in the menu.",
+
+	// Tooltips
+	"tooltip.crafted": "Crafted {{count}} Times",
+
+	// Buttons
+	"tooltip.edit-mode": "Edit Categories",
+	"tooltip.favorites": "Only Show Favorites",
+	"tooltip.seasoning": "Use Seasoning",
+	"tooltip.uniform": "Use Uniform Grid",
+	"tooltip.settings": "Open Settings",
+
+	"tooltip.quality.none": "Only use low-quality items.",
+	"tooltip.quality.silver": "Only use low and silver quality items.",
+	"tooltip.quality.gold": "Only use low, silver, and gold quality items.",
+	"tooltip.quality.iridium": "Use any quality items.",
+
+	"tooltip.quality-unsupported": "This recipe does not support quality settings.",
+
+	// Categories
+	"category.new": "New Category",
+	"category.favorites": "Favorites",
+	"category.combat_rings": "Combat and Rings",
+	"category.consumables": "Consumables",
+	"category.decoration": "Decoration",
+	"category.fertilizer_seeds": "Fertilizer and Seeds",
+	"category.fishing": "Fishing",
+	"category.machinery": "Machinery",
+	"category.misc": "Miscellaneous",
+
+	"category.food.farming": "Farming and Foraging",
+	"category.food.mining": "Mining and Magnetism",
+	"category.food.fishing": "Fishing",
+	"category.food.combat": "Combat",
+	"category.food.other": "Luck, Speed, and Others"
+}

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewModdingAPI.Enums;
+
 namespace DaLion.Stardew.Professions.Framework.Patches.Prestige;
 
 #region using directives
@@ -39,7 +41,8 @@ internal class FarmerGainExperiencePatch : BasePatch
     [HarmonyPrefix]
     private static bool FarmerGainExperiencePrefix(Farmer __instance, int which, ref int howMuch)
     {
-        howMuch = (int) (howMuch * ModEntry.Config.BaseSkillExpMultiplier);
+        if (which is >= (int) SkillType.Farming and <= (int) SkillType.Combat)
+            howMuch = (int) (howMuch * ModEntry.Config.BaseSkillExpMultiplierPerSkill[which]);
 
         if (!ModEntry.Config.EnablePrestige) return true; // run original logic
 

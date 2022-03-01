@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tlitookilakin/BetterBeehouses
+   Git: https://github.com/tlitookilakin/BetterBeehouses.git
+
+mods:
+   Better Beehouses
+
+latest commit:
+   commit 2c0c1dbe01df71739374d67f858c8cc8c55e687a
+   Author: tlitookilakin <swyrlyy@gmail.com>
+   Date:   Sun Feb 27 19:53:29 2022 -0500
+   
+       cleanup
+   

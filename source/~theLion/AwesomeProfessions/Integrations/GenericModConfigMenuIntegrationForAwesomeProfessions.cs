@@ -13,10 +13,13 @@ namespace DaLion.Stardew.Professions.Integrations;
 #region using directives
 
 using System;
+using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewValley;
 
-using Framework.AssetLoaders;
 using Common.Integrations;
+using Framework.Utility;
 
 #endregion using directives
 
@@ -56,18 +59,18 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
             .AddKeyBinding(
                 () => "Mod Key",
                 () => "The key used by Prospector and Scavenger professions.",
-                config => config.Modkey,
-                (config, value) => config.Modkey = value
+                config => config.ModKey,
+                (config, value) => config.ModKey = value
             )
             .AddCheckbox(
-                () => "Use Vintage Skill Bars",
-                () => "Enable this option if using the Vintage Interface mod.",
+                () => "Use Vintage UI Elements",
+                () => "Enable this option if using the Vintage Interface v2 mod.",
                 config => config.UseVintageInterface,
                 (config, value) =>
                 {
                     config.UseVintageInterface = value;
-                    Textures.ReloadGauge();
-                    Textures.ReloadSkillBars();
+                    Textures.SuperModeGaugeTx = Game1.content.Load<Texture2D>(Path.Combine(ModEntry.Manifest.UniqueID, "SuperModeGauge"));
+                    Textures.SkillBarTx = Game1.content.Load<Texture2D>(Path.Combine(ModEntry.Manifest.UniqueID, "SkillBars"));
                 }
             );
 
@@ -79,7 +82,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                     (config, value) =>
                     {
                         config.HoneyMeadStyle = value;
-                        Textures.ReloadHoneyMead();
+                        Textures.HoneyMeadTx = Game1.content.Load<Texture2D>($"{ModEntry.Manifest.UniqueID}/BetterHoneyMeadIcons");
                     },
                     new[] {"ColoredBottles", "ColoredCaps"},
                     value => value
@@ -104,8 +107,8 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
             .AddKeyBinding(
                 () => "Super Mode key",
                 () => "The key used to activate Super Mode.",
-                config => config.Modkey,
-                (config, value) => config.Modkey = value
+                config => config.SuperModeKey,
+                (config, value) => config.SuperModeKey = value
             )
             .AddCheckbox(
                 () => "Hold-To-Activate",
@@ -125,7 +128,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
             .AddNumberField(
                 () => "Gain Factor",
                 () => "Affects the rate at which one builds the Super Mode gauge. Increase this if you feel the gauge raises too slowly.",
-                config => config.SuperModeGainFactor,
+                config => (float) config.SuperModeGainFactor,
                 (config, value) => config.SuperModeGainFactor = value,
                 1f,
                 10f,
@@ -160,7 +163,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 0.2f
             )
             .AddCheckbox(
-                () => "Forget Recipes On Skill Reset",
+                () => "Forget Recipes on Skill Reset",
                 () => "Disable this to keep all skill recipes upon reseting.",
                 config => config.ForgetRecipesOnSkillReset,
                 (config, value) => config.ForgetRecipesOnSkillReset = value
@@ -172,17 +175,53 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 (config, value) => config.AllowPrestigeMultiplePerDay = value
             )
             .AddNumberField(
-                () => "Base Skill Experience Multiplier",
+                () => "Base Farming Experience Multiplier",
                 () => "Multiplies all skill experience gained from the start of the game.",
-                config => config.BaseSkillExpMultiplier,
-                (config, value) => config.BaseSkillExpMultiplier = value,
+                config => config.BaseSkillExpMultiplierPerSkill[0],
+                (config, value) => config.BaseSkillExpMultiplierPerSkill[0] = value,
+                0.2f,
+                2f,
+                0.2f
+            )
+            .AddNumberField(
+                () => "Base Fishing Experience Multiplier",
+                () => "Multiplies all skill experience gained from the start of the game.",
+                config => config.BaseSkillExpMultiplierPerSkill[1],
+                (config, value) => config.BaseSkillExpMultiplierPerSkill[1] = value,
+                0.2f,
+                2f,
+                0.2f
+            )
+            .AddNumberField(
+                () => "Base Foraging Experience Multiplier",
+                () => "Multiplies all skill experience gained from the start of the game.",
+                config => config.BaseSkillExpMultiplierPerSkill[2],
+                (config, value) => config.BaseSkillExpMultiplierPerSkill[2] = value,
+                0.2f,
+                2f,
+                0.2f
+            )
+            .AddNumberField(
+                () => "Base Mining Experience Multiplier",
+                () => "Multiplies all skill experience gained from the start of the game.",
+                config => config.BaseSkillExpMultiplierPerSkill[3],
+                (config, value) => config.BaseSkillExpMultiplierPerSkill[3] = value,
+                0.2f,
+                2f,
+                0.2f
+            )
+            .AddNumberField(
+                () => "Base Combat Experience Multiplier",
+                () => "Multiplies all skill experience gained from the start of the game.",
+                config => config.BaseSkillExpMultiplierPerSkill[4],
+                (config, value) => config.BaseSkillExpMultiplierPerSkill[4] = value,
                 0.2f,
                 2f,
                 0.2f
             )
             .AddNumberField(
                 () => "Bonus Skill Experience Per Reset",
-                () => "Multiplies all skill experience gained after each respective reset.",
+                () => "Cumulative bonus that multiplies a skill's experience gain after each respective skill reset.",
                 config => config.BonusSkillExpPerReset,
                 (config, value) => config.BonusSkillExpPerReset = value,
                 0f,
@@ -221,7 +260,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
             // professions
             .AddSectionTitle(() => "Profession Settings")
             .AddNumberField(
-                () => "Forages needed for best quality",
+                () => "Forages Needed for Best Quality",
                 () => "Ecologists must forage this many items to reach iridium quality.",
                 config => (int) config.ForagesNeededForBestQuality,
                 (config, value) => config.ForagesNeededForBestQuality = (uint) value,
@@ -229,10 +268,10 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 1000
             )
             .AddNumberField(
-                () => "Minerals needed for best quality",
+                () => "Minerals Needed for Best Quality",
                 () => "Gemologists must mine this many minerals to reach iridium quality.",
-                config => (int) config.ForagesNeededForBestQuality,
-                (config, value) => config.ForagesNeededForBestQuality = (uint) value,
+                config => (int) config.MineralsNeededForBestQuality,
+                (config, value) => config.MineralsNeededForBestQuality = (uint) value,
                 0,
                 1000
             );
@@ -248,7 +287,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
 
         _configMenu
             .AddNumberField(
-                () => "Chance to start treasure hunt",
+                () => "Chance to Start Treasure Hunt",
                 () => "The chance that your Scavenger or Prospector hunt senses will start tingling.",
                 config => (float) config.ChanceToStartTreasureHunt,
                 (config, value) => config.ChanceToStartTreasureHunt = value,
@@ -257,13 +296,13 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 0.05f
             )
             .AddCheckbox(
-                () => "Allow Scavenger hunts on farm",
+                () => "Allow Scavenger Hunts on Farm",
                 () => "Whether a Scavenger Hunt can trigger while entering a farm map.",
                 config => config.AllowScavengerHuntsOnFarm,
                 (config, value) => config.AllowScavengerHuntsOnFarm = value
             )
             .AddNumberField(
-                () => "Scavenger Hunt handicap",
+                () => "Scavenger Hunt Handicap",
                 () => "Increase this number if you find that Scavenger hunts end too quickly.",
                 config => config.ScavengerHuntHandicap,
                 (config, value) => config.ScavengerHuntHandicap = value,
@@ -272,7 +311,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 0.5f
             )
             .AddNumberField(
-                () => "Prospector Hunt handicap",
+                () => "Prospector Hunt Handicap",
                 () => "Increase this number if you find that Prospector hunts end too quickly.",
                 config => config.ProspectorHuntHandicap,
                 (config, value) => config.ProspectorHuntHandicap = value,
@@ -281,7 +320,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 0.5f
             )
             .AddNumberField(
-                () => "Treasure detection distance",
+                () => "Treasure Detection Distance",
                 () => "How close you must be to the treasure tile to reveal it's location, in tiles.",
                 config => config.TreasureDetectionDistance,
                 (config, value) => config.TreasureDetectionDistance = value,
@@ -290,10 +329,10 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 0.5f
             )
             .AddNumberField(
-                () => "Spelunker speed cap",
+                () => "Spelunker Speed Cap",
                 () => "The maximum speed a Spelunker can reach in the mines.",
-                config => config.SpelunkerSpeedCap,
-                (config, value) => config.SpelunkerSpeedCap = value,
+                config => (int) config.SpelunkerSpeedCap,
+                (config, value) => config.SpelunkerSpeedCap = (uint) value,
                 1,
                 10
             )
@@ -303,8 +342,23 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 config => config.EnableGetExcited,
                 (config, value) => config.EnableGetExcited = value
             )
+            .AddCheckbox(
+                () => "Seaweed Is Junk",
+                () => "Whether Seaweed and Algae are considered junk for fishing purposes.",
+                config => config.SeaweedIsJunk,
+                (config, value) => config.SeaweedIsJunk = value
+            )
             .AddNumberField(
-                () => "Trash needed per tax level",
+                () => "Angler Multiplier Ceiling",
+                () => "If multiple new fish mods are installed, you may want to adjust this to a sensible value. Limits the price multiplier for fish sold by Angler.",
+                config => config.AnglerMultiplierCeiling,
+                (config, value) => config.AnglerMultiplierCeiling = value,
+                0.5f,
+                2f,
+                0.1f
+            )
+            .AddNumberField(
+                () => "Trash Needed Per Tax Level",
                 () => "Conservationists must collect this much trash for every 1% tax deduction the following season.",
                 config => (int) config.TrashNeededPerTaxLevel,
                 (config, value) => config.TrashNeededPerTaxLevel = (uint) value,
@@ -312,7 +366,7 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 1000
             )
             .AddNumberField(
-                () => "Trash needed per friendship point",
+                () => "Trash Needed Per Friendship Point",
                 () => "Conservationists must collect this much trash for every 1 friendship point towards villagers.",
                 config => (int) config.TrashNeededPerFriendshipPoint,
                 (config, value) => config.TrashNeededPerFriendshipPoint = (uint) value,
@@ -320,13 +374,31 @@ internal class GenericModConfigMenuIntegrationForAwesomeProfessions
                 1000
             )
             .AddNumberField(
-                () => "Tax deduction ceiling",
+                () => "Tax Deduction Ceiling",
                 () => "The maximum tax deduction allowed by the Ferngill Revenue Service.",
                 config => config.TaxDeductionCeiling,
                 (config, value) => config.TaxDeductionCeiling = value,
                 0f,
                 1f,
                 0.05f
+            );
+
+        if (!ModEntry.ModHelper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP")) return;
+
+        _configMenu
+            // SVE
+            .AddSectionTitle(() => "SVE Settings")
+            .AddCheckbox(
+                () => "Use Galdoran Theme All Times",
+                () => "Replicates SVE's config settings of the same name.",
+                config => config.UseGaldoranThemeAllTimes,
+                (config, value) => config.UseGaldoranThemeAllTimes = value
+            )
+            .AddCheckbox(
+                () => "Disable Galdoran Theme",
+                () => "Replicates SVE's config settings of the same name.",
+                config => config.DisableGaldoranTheme,
+                (config, value) => config.DisableGaldoranTheme = value
             );
     }
 }

@@ -4,14 +4,12 @@
     <AssemblyName>EMP</AssemblyName>
     <RootNamespace>EMP</RootNamespace>
     <Version>1.0.0</Version>
-    <TargetFramework>net452</TargetFramework>
-    <Platforms>AnyCPU</Platforms>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
   </ItemGroup>
 
 </Project>

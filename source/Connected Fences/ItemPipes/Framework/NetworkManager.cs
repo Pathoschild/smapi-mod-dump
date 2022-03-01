@@ -23,6 +23,8 @@ using Microsoft.Xna.Framework;
 using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Factories;
 using ItemPipes.Framework.Items;
+using ItemPipes.Framework.Nodes.ObjectNodes;
+
 
 namespace ItemPipes.Framework
 {
@@ -58,135 +60,75 @@ namespace ItemPipes.Framework
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
             if (Globals.UltraDebug) { Printer.Info("Adding new object: " + obj.Key.ToString() + obj.Value.Name); }
-            if (obj.Value is PipeItem)
-            {
-                List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                Node newNode = NodeFactory.CreateElement(obj.Key, Game1.currentLocation, obj.Value);
-                int x = (int)newNode.Position.X;
-                int y = (int)newNode.Position.Y;
-                nodes.Add(newNode);
-                Vector2 north = new Vector2(x, y - 1);
-                Node northNode = nodes.Find(n => n.Position.Equals(north));
-                if (northNode != null)
-                {
-                    if(northNode is not ContainerNode)
-                    {
-                        newNode.AddAdjacent(SideStruct.GetSides().North, northNode);
-                    }
-                    else if(northNode is ContainerNode && newNode is IOPipeNode)
-                    {
-                        IOPipeNode IOPipeNode = (IOPipeNode)newNode;
-                        IOPipeNode.AddConnectedContainer(northNode);
-                    }
-                }
-                Vector2 south = new Vector2(x, y + 1);
-                Node southNode = nodes.Find(n => n.Position.Equals(south));
-                if (southNode != null)
-                {
-                    if (southNode is not ContainerNode)
-                    {
-                        newNode.AddAdjacent(SideStruct.GetSides().South, southNode);
-                    }
-                    else if (southNode is ContainerNode && newNode is IOPipeNode)
-                    {
-                        IOPipeNode IOPipeNode = (IOPipeNode)newNode;
-                        IOPipeNode.AddConnectedContainer(southNode);
-                    }
-                }
-                Vector2 east = new Vector2(x + 1, y);
-                Node eastNode = nodes.Find(n => n.Position.Equals(east));
-                if (eastNode != null)
-                {
-                    if (eastNode is not ContainerNode)
-                    {
-                        newNode.AddAdjacent(SideStruct.GetSides().East, eastNode);
-                    }
-                    else if (eastNode is ContainerNode && newNode is IOPipeNode)
-                    {
-                        IOPipeNode IOPipeNode = (IOPipeNode)newNode;
-                        IOPipeNode.AddConnectedContainer(eastNode);
-                    }
-                }
-                Vector2 west = new Vector2(x - 1, y);
-                Node westNode = nodes.Find(n => n.Position.Equals(west));
-                if (westNode != null)
-                {
-                    if (westNode is not ContainerNode)
-                    {
-                        newNode.AddAdjacent(SideStruct.GetSides().West, westNode);
-                    }
-                    else if (westNode is ContainerNode && newNode is IOPipeNode)
-                    {
-                        IOPipeNode IOPipeNode = (IOPipeNode)newNode;
-                        IOPipeNode.AddConnectedContainer(westNode);
-                    }
-                }
-                if (Globals.UltraDebug) { newNode.Print(); }
-                if (DataAccess.NetworkItems.Contains(Game1.currentLocation.getObjectAtTile(x, y).Name))
-                {
-                    if (Globals.UltraDebug) { Printer.Info("Assigning network to new node"); }
-                    List<Network> uncheckedAdjNetworks = newNode.Scan();
-                    List<Network> adjNetworks = new List<Network>();
-                    foreach (Network network in uncheckedAdjNetworks)
-                    {
-                        if (network != null)
-                        {
-                            adjNetworks.Add(network);
-                        }
-                    }
-                    if (Globals.UltraDebug) { Printer.Info("Adjacent network amount: " + adjNetworks.Count.ToString()); }
-                    if (adjNetworks.Count == 0)
-                    {
-                        if (Globals.UltraDebug) { Printer.Info("No adjacent networks, creating new one... "); }
-                        Network network = CreateLocationNetwork(Game1.currentLocation);
-                        AddNewElement(newNode, network);
-                    }
-                    else
-                    {
-                        List<Network> orderedAdjNetworks = adjNetworks.OrderByDescending(s => s.Nodes.Count).ToList();
-                        newNode.ParentNetwork = orderedAdjNetworks[0];
-                        AddNewElement(newNode, orderedAdjNetworks[0]);
-                        MergeNetworks(orderedAdjNetworks);
-                    }
-                }
-            }
-            else if (obj.Value is Chest)
-            {
-                List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                Node newNode = NodeFactory.CreateElement(obj.Key, Game1.currentLocation, obj.Value);
-                int x = (int)newNode.Position.X;
-                int y = (int)newNode.Position.Y;
-                nodes.Add(newNode);
-                Vector2 north = new Vector2(x, y - 1);
-                Node northNode = nodes.Find(n => n.Position.Equals(north));
-                if (northNode != null && northNode is IOPipeNode)
-                {
-                    IOPipeNode northIOPipeNode = (IOPipeNode)northNode;
-                    northIOPipeNode.AddConnectedContainer(newNode);
-                }
-                Vector2 south = new Vector2(x, y + 1);
-                Node southNode = nodes.Find(n => n.Position.Equals(south));
-                if (southNode != null && southNode is IOPipeNode)
-                {
-                    IOPipeNode southIOPipeNode = (IOPipeNode)southNode;
-                    southIOPipeNode.AddConnectedContainer(newNode);
-                }
-                Vector2 west = new Vector2(x + 1, y);
-                Node westNode = nodes.Find(n => n.Position.Equals(west));
-                if (westNode != null && westNode is IOPipeNode)
-                {
-                    IOPipeNode westIOPipeNode = (IOPipeNode)westNode;
-                    westIOPipeNode.AddConnectedContainer(newNode);
-                }
-                Vector2 east = new Vector2(x - 1, y);
-                Node eastNode = nodes.Find(n => n.Position.Equals(east));
-                if (eastNode != null && eastNode is IOPipeNode)
-                {
-                    IOPipeNode eastIOPipeNode = (IOPipeNode)eastNode;
-                    eastIOPipeNode.AddConnectedContainer(newNode);
-                }
-            }
 
+            List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+            Node newNode = NodeFactory.CreateElement(obj.Key, Game1.currentLocation, obj.Value);
+            int x = (int)newNode.Position.X;
+            int y = (int)newNode.Position.Y;
+            nodes.Add(newNode);
+            Vector2 north = new Vector2(x, y - 1);
+            Node northNode = nodes.Find(n => n.Position.Equals(north));
+            if (northNode != null)
+            {
+                newNode.AddAdjacent(SideStruct.GetSides().North, northNode);
+            }
+            Vector2 south = new Vector2(x, y + 1);
+            Node southNode = nodes.Find(n => n.Position.Equals(south));
+            if (southNode != null)
+            {
+                newNode.AddAdjacent(SideStruct.GetSides().South, southNode);
+            }
+            Vector2 east = new Vector2(x + 1, y);
+            Node eastNode = nodes.Find(n => n.Position.Equals(east));
+            if (eastNode != null)
+            {
+                newNode.AddAdjacent(SideStruct.GetSides().East, eastNode);
+            }
+            Vector2 west = new Vector2(x - 1, y);
+            Node westNode = nodes.Find(n => n.Position.Equals(west));
+            if (westNode != null)
+            {
+                newNode.AddAdjacent(SideStruct.GetSides().West, westNode);
+            }
+            if (Globals.UltraDebug) { newNode.Print(); }
+            if (DataAccess.NetworkItems.Contains(Game1.currentLocation.getObjectAtTile(x, y).Name))
+            {
+                if (Globals.UltraDebug) { Printer.Info("Assigning network to new node"); }
+                List<Network> uncheckedAdjNetworks = newNode.Scan();
+                List<Network> adjNetworks = new List<Network>();
+                foreach (Network network in uncheckedAdjNetworks)
+                {
+                    if (network != null)
+                    {
+                        adjNetworks.Add(network);
+                    }
+                }
+                if (Globals.UltraDebug) { Printer.Info("Adjacent network amount: " + adjNetworks.Count.ToString()); }
+                if (adjNetworks.Count == 0)
+                {
+                    if (Globals.UltraDebug) { Printer.Info("No adjacent networks, creating new one... "); }
+                    Network network = CreateLocationNetwork(Game1.currentLocation);
+                    AddNewElement(newNode, network);
+                }
+                else
+                {
+                    List<Network> orderedAdjNetworks = adjNetworks.OrderByDescending(s => s.Nodes.Count).ToList();
+                    newNode.ParentNetwork = orderedAdjNetworks[0];
+                    AddNewElement(newNode, orderedAdjNetworks[0]);
+                    MergeNetworks(orderedAdjNetworks);
+                }
+            }
+            Node node = nodes.Find(n => n.Position.Equals(obj.Key));
+            foreach(KeyValuePair<Side, Node> pair in node.Adjacents)
+            {
+                if(pair.Value is PPMNode)
+                {
+                    Printer.Info("Adding newnode network to invis");
+                    PPMNode invisibilizerNode = (PPMNode)pair.Value;
+                    invisibilizerNode.AdjNetworks.Add(node.ParentNetwork);
+                    newNode.ParentNetwork.AddNode(invisibilizerNode);
+                }
+            }
         }
 
         private static void MergeNetworks(List<Network> network)
@@ -209,76 +151,39 @@ namespace ItemPipes.Framework
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
             if (Globals.UltraDebug) { Printer.Info("Removing object: " + obj.Key.ToString() + obj.Value.Name); }
-            if (obj.Value is PipeItem)
+            List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+            Node node = nodes.Find(n => n.Position.Equals(obj.Key));
+            nodes.Remove(node);
+            
+            if (node is IOPipeNode)
             {
-                List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                Node node = nodes.Find(n => n.Position.Equals(obj.Key));
-                nodes.Remove(node); //Doesn't update
-                if (node is IOPipeNode)
+                IOPipeNode IOPipeNode = (IOPipeNode)node;
+                if(IOPipeNode.ConnectedContainer != null)
                 {
-                    IOPipeNode IOPipeNode = (IOPipeNode)node;
-                    if(IOPipeNode.ConnectedContainer != null)
-                    {
-                        IOPipeNode.ConnectedContainer.RemoveIOPipe(IOPipeNode);
-                    }
-                }
-                if (DataAccess.NetworkItems.Contains(obj.Value.Name))
-                {
-                    if (node.ParentNetwork != null)
-                    {
-                        List<Network> adjNetworks = node.Scan();
-                        node.ParentNetwork.RemoveNode(node);
-                        DataAccess.LocationNetworks[Game1.currentLocation].Remove(node.ParentNetwork);
-                        if (adjNetworks.Count > 0)
-                        {
-                            RemakeNetwork(node);
-                        }
-                    }
-                node.RemoveAllAdjacents();
+                    IOPipeNode.ConnectedContainer.RemoveIOPipe(IOPipeNode);
                 }
             }
-            else if (obj.Value is Chest)
+            
+            if (DataAccess.NetworkItems.Contains(obj.Value.Name))
             {
-                List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-                Node node = nodes.Find(n => n.Position.Equals(obj.Key));
-                int x = (int)node.Position.X;
-                int y = (int)node.Position.Y;
-                Vector2 north = new Vector2(x, y - 1);
-                Node northNode = nodes.Find(n => n.Position.Equals(north));
-                if (northNode != null && northNode is IOPipeNode)
+                if (node.ParentNetwork != null)
                 {
-                    IOPipeNode northIOPipeNode = (IOPipeNode)northNode;
-                    northIOPipeNode.RemoveConnectedContainer(node);
-                }
-                Vector2 south = new Vector2(x, y + 1);
-                Node southNode = nodes.Find(n => n.Position.Equals(south));
-                if (southNode != null)
-                {
-                    IOPipeNode southIOPipeNode = (IOPipeNode)southNode;
-                    southIOPipeNode.RemoveConnectedContainer(node);
-                }
-                Vector2 west = new Vector2(x + 1, y);
-                Node westNode = nodes.Find(n => n.Position.Equals(west));
-                if (westNode != null)
-                {
-                    IOPipeNode westIOPipeNode = (IOPipeNode)westNode;
-                    westIOPipeNode.RemoveConnectedContainer(node);
-                }
-                Vector2 east = new Vector2(x - 1, y);
-                Node eastNode = nodes.Find(n => n.Position.Equals(east));
-                if (eastNode != null)
-                {
-                    IOPipeNode eastIOPipeNode = (IOPipeNode)eastNode;
-                    eastIOPipeNode.RemoveConnectedContainer(node);
+                    List<Network> adjNetworks = node.Scan();
+                    node.ParentNetwork.RemoveNode(node);
+                    DataAccess.LocationNetworks[Game1.currentLocation].Remove(node.ParentNetwork);
+                    if (adjNetworks.Count > 0)
+                    {
+                        RemakeNetwork(node);
+                    }
                 }
             }
+            node.RemoveAllAdjacents();
         }
 
         public static void RemakeNetwork(Node node)
         {
             DataAccess DataAccess = DataAccess.GetDataAccess();
             if (Globals.UltraDebug) { Printer.Info("Remaking networks..."); }
-            List<Network> networkList;
             foreach (KeyValuePair<Side, Node> adj in node.Adjacents)
             {
                 if (adj.Value != null)
@@ -293,15 +198,6 @@ namespace ItemPipes.Framework
                         }
                         Node newNode = NetworkBuilder.BuildNetworkRecursive(adj.Value.Position, Game1.currentLocation, null);
                     }
-                }
-            }
-            networkList = DataAccess.LocationNetworks[Game1.currentLocation];
-            if (Globals.UltraDebug) 
-            { 
-                Printer.Info("NUMBER OF GRAPGHS: " + networkList.Count.ToString()); 
-                foreach (Network network in networkList)
-                {
-                    Printer.Info(network.Print());
                 }
             }
         }

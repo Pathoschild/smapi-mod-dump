@@ -30,6 +30,8 @@ static class PGraphicsDeviceManager {
 		internal bool Initialized = false;
 		internal bool IsFullscreen = false;
 
+		public DeviceState() { }
+
 		internal bool Dirty(GraphicsDeviceManager instance) {
 			bool isFullscreen = instance.IsFullScreen;
 			Vector2I size = (
@@ -52,8 +54,8 @@ static class PGraphicsDeviceManager {
 	[Harmonize(typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D), Harmonize.Constructor, Harmonize.Fixation.Prefix, PriorityLevel.Last)]
 	internal static bool OnRenderTarget2DConstruct(
 		GraphicsDevice graphicsDevice,
-		int width,
-		int height,
+		ref int width,
+		ref int height,
 		bool mipMap,
 		ref SurfaceFormat preferredFormat,
 		ref DepthFormat preferredDepthFormat,
@@ -63,6 +65,7 @@ static class PGraphicsDeviceManager {
 		int arraySize,
 		out bool __state
 	) {
+		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		var stackTrace = new StackTrace(fNeedFileInfo: false);
 
 		if (stackTrace.GetFrame(0)?.GetMethod()?.DeclaringType == typeof(StardewValley.Game1)) {
@@ -87,7 +90,7 @@ static class PGraphicsDeviceManager {
 							return true;
 					}
 
-					preferredMultiSampleCount = Config.DrawState.EnableMSAA ? 16 : 0;
+					preferredMultiSampleCount = (Config.DrawState.MSAASamples > 1) ? Config.DrawState.MSAASamples : 0;
 					preferredDepthFormat = device.PresentationParameters.DepthStencilFormat;
 					preferredFormat = device.PresentationParameters.BackBufferFormat;
 				} return true;
@@ -119,6 +122,7 @@ static class PGraphicsDeviceManager {
 		int arraySize,
 		bool __state
 	) {
+		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		if (__state) {
 			__instance.Meta().IsSystemRenderTarget = true;
 		}
@@ -126,6 +130,7 @@ static class PGraphicsDeviceManager {
 
 	[Harmonize("ApplyChanges", Harmonize.Fixation.Prefix, PriorityLevel.First)]
 	internal static bool OnApplyChanges(GraphicsDeviceManager __instance) {
+		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		var @this = __instance;
 
 		if (!LastState.Dirty(@this)) {
@@ -135,7 +140,7 @@ static class PGraphicsDeviceManager {
 		DrawState.UpdateDeviceManager(@this);
 
 		@this.GraphicsProfile = GraphicsProfile.HiDef;
-		@this.PreferMultiSampling = Config.DrawState.EnableMSAA;
+		//@this.PreferMultiSampling = Config.DrawState.MSAASamples > 1;
 		@this.SynchronizeWithVerticalRetrace = true;
 		@this.PreferredBackBufferFormat = Config.DrawState.BackbufferFormat;
 		if (Config.DrawState.DisableDepthBuffer) {
@@ -150,6 +155,7 @@ static class PGraphicsDeviceManager {
 
 	[Harmonize("ApplyChanges", Harmonize.Fixation.Postfix, PriorityLevel.Last)]
 	internal static void OnApplyChangesPost(GraphicsDeviceManager __instance) {
+		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		var @this = __instance;
 
 		var device = @this.GraphicsDevice;

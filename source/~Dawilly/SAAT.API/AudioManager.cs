@@ -35,6 +35,9 @@ namespace SAAT.API
         /// <inheritdoc/>
         public ISoundBank SoundBank { get; }
 
+        /// <inheritdoc/>
+        public ICue DefaultingCue { get; }
+
         /// <summary>
         /// Creates a new instance of the <see cref="AudioManager"/> class.
         /// </summary>
@@ -43,10 +46,13 @@ namespace SAAT.API
             this.cueTable = new Dictionary<string, ICue>();
             this.trackTable = new Dictionary<string, Track>();
 
-            //this.engine = Game1.audioEngine;
-            this.SoundBank = Game1.soundBank;
-
             this.monitor = monitor;
+
+            var defaultCue = AudioManager.GenerateDefaultingCue();
+
+            //this.engine = Game1.audioEngine;
+            this.SoundBank = new SAATSoundBankWrapper(defaultCue, this.monitor, Game1.soundBank);
+            Game1.soundBank = this.SoundBank;
         }
 
         /// <inheritdoc/>
@@ -178,6 +184,25 @@ namespace SAAT.API
 
             this.monitor.Log($"Category: {track.Category}", LogLevel.Info);
             this.monitor.Log($"Is Looping: {track.Loop}", LogLevel.Info);
+        }
+
+        /// <summary>
+        /// Helper method that generates a silent cue to utilize when cue retrieval / loading fails.
+        /// </summary>
+        /// <returns>A new <see cref="ICue"/> instance.</returns>
+        private static CueDefinition GenerateDefaultingCue()
+        {
+            const int sampleRate = 44000;
+            const AudioChannels channels = AudioChannels.Stereo;
+
+            var audioLength = new TimeSpan(0, 0, 1);
+
+            // Its already all zeros! lol.
+            var buffer = new byte[audioLength.Seconds * sampleRate * (int)channels];
+
+            var soundEffect = new SoundEffect(buffer, sampleRate, channels);
+
+            return new CueDefinition("Default", soundEffect, (int)Category.Sound);
         }
 
         /// <summary>

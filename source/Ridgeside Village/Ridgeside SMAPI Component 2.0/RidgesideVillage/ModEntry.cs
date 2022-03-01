@@ -36,6 +36,12 @@ namespace RidgesideVillage
             ModMonitor = Monitor;
             Helper = helper;
 
+            if (!Helper.ModRegistry.IsLoaded("Rafseazz.RSVCP"))
+            {
+                Log.Error("Ridgeside Village appears to be installed incorrectly. Delete it and reinstall it please. If you need help, visit our Discord server!");
+                return;
+            }
+
             ConfigMenu = new ConfigMenu(this);
             CustomCPTokens = new CustomCPTokens(this);
             Patcher = new Patcher(this);
@@ -47,6 +53,7 @@ namespace RidgesideVillage
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
 
+
             Minecarts.Initialize(this);
             SpiritRealm.Initialize(this);
 
@@ -57,6 +64,8 @@ namespace RidgesideVillage
             Elves.Initialize(this);
 
             Greenhouses.Initialize(this);
+
+            Loan.Initialize(this);
 
             PaulaClinic.Initialize(this);
             Offering.OfferingTileAction.Initialize(this);
@@ -183,6 +192,24 @@ namespace RidgesideVillage
                 }
                 location.isGreenhouse.Value = true;
                 Log.Trace($"{name} set to greenhouse");
+            }
+
+            //remove corrupted Fire SO if the player shouldnt have it
+            var team = Game1.player.team;
+            if (Game1.player.IsMainPlayer && team.SpecialOrderActive(("RSV.UntimedSpecialOrder.SpiritRealmFlames")))
+            {
+                //if player has NOT seen portal opening or HAS seen the cleansing event remove the fire quest
+                if (!Game1.player.eventsSeen.Contains(75160256) || Game1.player.eventsSeen.Contains(75160263))
+                {
+                    for (int i = 0; i<team.specialOrders.Count; i++)
+                    {
+                        if (team.specialOrders[i].questKey.Equals("RSV.UntimedSpecialOrder.SpiritRealmFlames"))
+                        {
+                            team.specialOrders.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
             }
         }
 

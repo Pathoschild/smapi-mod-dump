@@ -244,6 +244,19 @@ namespace FarmTypeManager
                         serpent.segmentCount.Value = segments; //set the number of additional body segments this serpent has
                     }
                 }
+
+                //set sight range
+                if (settings.ContainsKey("SightRange"))
+                {
+                    monster.moveTowardPlayer(Convert.ToInt32(settings["SightRange"])); //set "moveTowardPlayerThreshold" value and "isWalkingTowardPlayer" flag
+                }
+
+                //set extra loot
+                if (settings.ContainsKey("ExtraLoot"))
+                {
+                    if (settings["ExtraLoot"] is bool extraLoot && extraLoot == false) //if this setting is false
+                        monster.modData[HarmonyPatch_ToggleExtraLoot.ModDataKey] = "false"; //flag this in the monster's mod data
+                }
             }
         }
     }

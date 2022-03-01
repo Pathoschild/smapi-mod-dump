@@ -23,57 +23,64 @@ using Netcode;
 
 namespace ItemPipes.Framework
 {
-    public class ContainerNode : PipeNode
+    public abstract class ContainerNode : Node
     {
         public string Type { get; set; }
-        public OutputNode Output { get; set; }
-        public InputNode Input { get; set; }
-        public List<string> Filter { get; set; }
+        public List<IOPipeNode> IOPipes { get; set; }
+        public NetObjectList<Item> Filter { get; set; }
 
         public ContainerNode() { }
         public ContainerNode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
             Type = "";
-            Output = null;
-            Input = null;
-            Filter = new List<string>();
+            IOPipes = new List<IOPipeNode>();
+            Filter = new NetObjectList<Item>();
         }
 
+        public abstract bool CanSendItems();
 
-        public bool AddIOPipe(Node entity)
+        public abstract bool CanRecieveItems();
+        public abstract bool CanRecieveItem(Item item);
+        public abstract bool CanStackItem(Item item);
+        public abstract bool InsertItem(Item item);
+
+        public abstract bool IsEmpty();
+        public abstract Item GetItemForInput(InputPipeNode input);
+
+        public bool HasFilter()
+        {
+            bool hasFilter = false;
+            if (Filter.Count > 0)
+            {
+                hasFilter = true;
+            }
+
+            return hasFilter;
+        }
+
+        public bool AddIOPipe(Node node)
         {
             bool added = false;
-            if (Output == null && entity is OutputNode)
+
+            if (IOPipes.Count < 4 && !IOPipes.Contains(node) && node is IOPipeNode)
             {
-                Output = (OutputNode)entity;
                 added = true;
-                if (Globals.UltraDebug) { Printer.Info($"[?] OUTPUT ADDED"); }
-            }
-            else if (Input == null && entity is InputNode)
-            {
-                Input = (InputNode)entity;
-                added = true;
-                if (Globals.UltraDebug) { Printer.Info($"[?] INPUT ADDED"); }
+                IOPipes.Add(node as IOPipeNode);
+                if (Globals.UltraDebug) { Printer.Info($"[?] IOPipe ADDED"); }
             }
             return added;
         }
 
-        public bool RemoveIOPipe(Node entity)
+        public bool RemoveIOPipe(Node node)
         {
             bool removed = false;
-            if (Output != null && entity is OutputNode)
+            if (IOPipes.Count > 0 && IOPipes.Contains(node) && node is IOPipeNode)
             {
-                Output = null;
                 removed = true;
-                if (Globals.UltraDebug) { Printer.Info($"[?] OUTPUT REMOVED"); }
+                IOPipes.Remove(node as IOPipeNode);
+                if (Globals.UltraDebug) { Printer.Info($"[?] IOPipe REMOVED"); }
             }
-            else if (Input != null && entity is InputNode)
-            {
-                Input = null;
-                removed = true;
-                if (Globals.UltraDebug) { Printer.Info($"[?] INPUT REMOVED"); }
-            }
-            if(removed)
+            if (removed)
             {
                 ScanMoreIOPipes();
             }
@@ -116,13 +123,58 @@ namespace ItemPipes.Framework
             }
         }
 
-
-        public virtual bool IsEmpty()
+        public override bool AddAdjacent(Side side, Node node)
         {
-            return false;
+            bool added = false;
+            if (Adjacents[side] == null)
+            {
+                added = true;
+                Adjacents[side] = node;
+                node.AddAdjacent(Sides.GetInverse(side), this);
+                if (node is IOPipeNode)
+                {
+                    IOPipeNode iOPipeNode = (IOPipeNode)node;
+                    iOPipeNode.AddConnectedContainer(this);
+                }
+            }
+            return added;
         }
 
-        public virtual List<string> UpdateFilter(NetObjectList<Item> filteredItems)
+        public override bool RemoveAdjacent(Side side, Node node)
+        {
+            bool removed = false;
+            if (Adjacents[side] != null)
+            {
+                removed = true;
+                Adjacents[side] = null;
+                node.RemoveAdjacent(Sides.GetInverse(side), this);
+                if (node is IOPipeNode)
+                {
+                    IOPipeNode iOPipeNode = (IOPipeNode)node;
+                    iOPipeNode.RemoveConnectedContainer(this);
+                }
+            }
+            return removed;
+        }
+
+
+        public override bool RemoveAllAdjacents()
+        {
+            bool removed = false;
+            foreach (KeyValuePair<Side, Node> adj in Adjacents.ToList())
+            {
+                if (adj.Value != null)
+                {
+                    removed = true;
+                    RemoveAdjacent(adj.Key, adj.Value);
+                }
+            }
+            return removed;
+        }
+
+
+
+        public virtual NetObjectList<Item> UpdateFilter(NetObjectList<Item> filteredItems)
         {
             return null;
         }

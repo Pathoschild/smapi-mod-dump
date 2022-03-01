@@ -9,8 +9,12 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Improved translations. Thanks to wally232 (updated Korean) and ZijieFeng (updated Chinese)!
+## 1.21.3
+Released 27 February 2022 for SMAPI 3.13.0 or later.
+
+* Fixed dropdown options not selectable when gamepad mode is enabled.
+* Optimized legacy save migration a bit (thanks to Michael Kuklinski / Ameisen!).
+* Improved translations. Thanks to EmWhyKay (updated Turkish), wally232 (updated Korean), and ZijieFeng (updated Chinese)!
 
 ## 1.21.2
 Released 14 January 2022 for SMAPI 3.13.0 or later.

@@ -115,24 +115,24 @@ namespace FarmTypeManager
                     }
                 }
 
-                bool seesPlayers = false; //whether the monster automatically "sees" players at spawn (handled differently by some monster types)
+                //set fields that affect some monster types in different ways
+                bool seesPlayers = false; //whether the monster automatically "sees" players at spawn
+                int facingDirection = 2; //the direction the monster should be facing at spawn
+                bool rangedAttacks = true; //whether the monster is allowed to use its ranged attacks (if any)
+
                 if (monsterType.Settings != null) //if settings were provided
                 {
                     if (monsterType.Settings.ContainsKey("SeesPlayersAtSpawn")) //if this setting was provided
                     {
-                        seesPlayers = (bool)monsterType.Settings["SeesPlayersAtSpawn"]; //use the provided setting
+                        seesPlayers = (bool)monsterType.Settings["SeesPlayersAtSpawn"]; //use it
                     }
-                }
 
-                int facingDirection = 2; //the direction the monster should be facing at spawn (handled differently by some monster types)
-                if (monsterType.Settings != null) //if settings were provided
-                {
                     if (monsterType.Settings.ContainsKey("FacingDirection")) //if this setting was provided
                     {
-                        string directionString = (string)monsterType.Settings["FacingDirection"]; //get the provided setting
+                        string directionString = (string)monsterType.Settings["FacingDirection"]; //get it
                         switch (directionString.Trim().ToLower())
                         {
-                            //get an integer representing the provided direction
+                            //get an integer representing the direction
                             case "up":
                                 facingDirection = 0;
                                 break;
@@ -146,6 +146,11 @@ namespace FarmTypeManager
                                 facingDirection = 3;
                                 break;
                         }
+                    }
+
+                    if (monsterType.Settings.ContainsKey("RangedAttacks")) //if this setting was provided
+                    {
+                        rangedAttacks = (bool)monsterType.Settings["RangedAttacks"]; //use it
                     }
                 }
 
@@ -194,7 +199,7 @@ namespace FarmTypeManager
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
                         }
-                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        if (seesPlayers)
                         {
                             monster.IsWalkingTowardPlayer = true;
                         }
@@ -208,7 +213,7 @@ namespace FarmTypeManager
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
                         }
-                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        if (seesPlayers)
                         {
                             monster.IsWalkingTowardPlayer = true;
                         }
@@ -222,7 +227,7 @@ namespace FarmTypeManager
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
                         }
-                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        if (seesPlayers)
                         {
                             monster.IsWalkingTowardPlayer = true;
                         }
@@ -260,6 +265,12 @@ namespace FarmTypeManager
                     case "pepper rex":
                     case "rex":
                         monster = new DinoMonster(tile);
+                        if (!rangedAttacks)
+                        {
+                            DinoMonster dino = monster as DinoMonster;
+                            dino.timeUntilNextAttack = int.MaxValue;
+                            dino.nextFireTime = int.MaxValue;
+                        }
                         break;
                     case "duggy":
                         monster = new DuggyFTM(tile);
@@ -395,7 +406,7 @@ namespace FarmTypeManager
                         break;
                     case "lavalurk":
                     case "lava lurk":
-                        monster = new LavaLurk(tile);
+                        monster = new LavaLurkFTM(tile, rangedAttacks);
                         break;
                     case "leaper":
                         monster = new Leaper(tile);
@@ -453,28 +464,34 @@ namespace FarmTypeManager
                     case "shadowshaman":
                     case "shadow shaman":
                         monster = new ShadowShaman(tile);
+                        if (!rangedAttacks)
+                        {
+                            Helper.Reflection.GetField<int>(monster, "coolDown", false)?.SetValue(int.MaxValue); //set spell cooldown to max
+                        }
                         break;
                     case "sniper":
                     case "shadowsniper":
                     case "shadow sniper":
                         monster = new Shooter(tile);
+                        if (!rangedAttacks)
+                        {
+                            (monster as Shooter).nextShot = float.MaxValue; //set shot cooldown to max
+                        }
                         break;
                     case "skeleton":
-                        monster = new Skeleton(tile);
-                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        monster = new SkeletonFTM(tile, false, rangedAttacks);
+                        if (seesPlayers)
                         {
-                            IReflectedField<bool> spottedPlayer = Helper.Reflection.GetField<bool>(monster, "spottedPlayer"); //try to access this skeleton's private "spottedPlayer" field
-                            spottedPlayer.SetValue(true);
+                            Helper.Reflection.GetField<bool>(monster, "spottedPlayer", false)?.SetValue(true); //set "spotted player" field to true
                             monster.IsWalkingTowardPlayer = true;
                         }
                         break;
                     case "skeletonmage":
                     case "skeleton mage":
-                        monster = new Skeleton(tile, true);
-                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        monster = new SkeletonFTM(tile, true, rangedAttacks);
+                        if (seesPlayers)
                         {
-                            IReflectedField<bool> spottedPlayer = Helper.Reflection.GetField<bool>(monster, "spottedPlayer"); //try to access this skeleton's private "spottedPlayer" field
-                            spottedPlayer.SetValue(true);
+                            Helper.Reflection.GetField<bool>(monster, "spottedPlayer", false)?.SetValue(true); //set "spotted player" field to true
                             monster.IsWalkingTowardPlayer = true;
                         }
                         break;
@@ -484,6 +501,10 @@ namespace FarmTypeManager
                     case "squidkid":
                     case "squid kid":
                         monster = new SquidKidFTM(tile);
+                        if (!rangedAttacks)
+                        {
+                            Helper.Reflection.GetField<int>(monster, "lastFireball", false)?.SetValue(int.MaxValue); //set fireball cooldown to max
+                        }
                         break;
                     default: //if the name doesn't match any directly known monster types
                         Type externalType = GetTypeFromName(monsterType.MonsterName, typeof(Monster)); //find a monster subclass with a matching name

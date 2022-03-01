@@ -10,7 +10,9 @@ for queries and analysis.**
 
 Tired of having to pick up half your living room because you accidentally picked up the rug? So was I. This mod prevents you from being able to pick up a rug if there's something on it.
 
-Single configuration option Enabled works with Generic Mod Config Menu in case you want to temporarily disable the mod while playing.
+Configuration option `Enabled` works with Generic Mod Config Menu in case you want to temporarily disable the mod while playing.
+
+Additionally: Prevents you from removing items from tables unless the `FurniturePlacementKey` is held down. (Default is `LeftShift + Z`). You can disable this behavior by deselecting `PreventRemovalFromTable`.
 
 Installation: unzip and place in Mods folder. Uninstallation: simply delete from Mods folder.
 

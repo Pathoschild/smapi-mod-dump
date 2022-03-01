@@ -21,6 +21,13 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
     internal class QueryValueProvider : BaseValueProvider
     {
         /*********
+        ** Fields
+        *********/
+        /// <summary>A pattern which matches the 'Cannot find column' error message.</summary>
+        private static readonly Regex CannotFindColumnPattern = new(@"Cannot find column \[([^\]]+)]\.", RegexOptions.Compiled);
+
+
+        /*********
         ** Private methods
         *********/
         /// <summary>The underlying data table used to parse expressions.</summary>
@@ -99,7 +106,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             catch (Exception ex)
             {
                 string reason = ex.Message;
-                reason = Regex.Replace(reason, @"Cannot find column \[([^\]]+)]\.", "invalid expression '$1'.");
+                reason = QueryValueProvider.CannotFindColumnPattern.Replace(reason, "invalid expression '$1'.");
 
                 result = 0;
                 error = $"Can't parse '{input}' as a math expression: {reason}";

@@ -71,7 +71,7 @@ In the simplest case, you can use this to organize your patches into subfiles:
 
 ```js
 {
-   "Format": "1.24.0",
+   "Format": "1.25.0",
    "Changes": [
       {
          "Action": "Include",
@@ -85,7 +85,7 @@ You can combine this with tokens and conditions to load files dynamically:
 
 ```js
 {
-   "Format": "1.24.0",
+   "Format": "1.25.0",
    "Changes": [
       {
          "Action": "Include",

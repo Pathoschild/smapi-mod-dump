@@ -1,0 +1,6 @@
+{
+    "bettercrystalariums.wrong-mineral": "Rompe la máquina para agregar un nuevo mineral.",
+    "bettercrystalariums.no-gmcm": "El usuario no parece tener instalado GMCM. Esto no es un problema.",
+    "bettercrystalariums.debug-setting-title": "Modo de depuración",
+    "bettercrystalariums.debug-setting-description": "Habilite esto solo si se lo he pedido o si desea investigar un problema usted mismo. Esto habilitará el registro adicional."
+  }

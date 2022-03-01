@@ -11,7 +11,7 @@
 {
     "Name": "All Professions",
     "Author": "cantorsdust and Pathoschild",
-    "Version": "1.5.0",
+    "Version": "1.5.1",
     "Description": "Gives you all possible professions when you level up, instead of just the one chosen.",
     "UniqueID": "cantorsdust.AllProfessions",
     "EntryDll": "AllProfessions.dll",

@@ -1,0 +1,10 @@
+{
+  "Name": "Plato Warp Menu",
+  "Author": "Platonymous",
+  "Version": "1.10.0",
+  "Description": "Platonymous Warp Menu",
+  "UniqueID": "Platonymous.PlatoWarpMenu",
+  "EntryDll": "PlatoWarpMenu.dll",
+  "MinimumApiVersion": "3.2.0",
+  "UpdateKeys": [ "Nexus:5384" ]
+}

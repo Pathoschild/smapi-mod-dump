@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/10965
+IDs: aedenthorn.ImportMap
+update keys: Nexus:10965, GitHub:aedenthorn/StardewValleyMods

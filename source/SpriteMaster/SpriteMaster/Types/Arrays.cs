@@ -34,61 +34,6 @@ static class Arrays {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static T[] Of<T>(params T[] values) => values;
 
-	private sealed class WrappedUnmanagedMemoryStream<T> : UnmanagedMemoryStream {
-		private readonly GCHandle Handle;
-		private volatile bool IsDisposed = false;
-
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		private unsafe WrappedUnmanagedMemoryStream(GCHandle handle, int offset, int size, FileAccess access) :
-			base(
-				(byte*)(handle.AddrOfPinnedObject() + (Marshal.SizeOf(typeof(T)) * offset)),
-				size * Marshal.SizeOf(typeof(T)),
-				size * Marshal.SizeOf(typeof(T)),
-				access
-			) => Handle = handle;
-
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		internal static WrappedUnmanagedMemoryStream<T> Get(T[] data, int offset, int size, FileAccess access) {
-			var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			try {
-				return new WrappedUnmanagedMemoryStream<T>(handle, offset, size, access);
-			}
-			catch {
-				handle.Free();
-				throw;
-			}
-		}
-
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		~WrappedUnmanagedMemoryStream() => Dispose(true);
-
-		[SecuritySafeCritical]
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		protected override void Dispose(bool disposing) {
-			if (IsDisposed) {
-				return;
-			}
-
-			base.Dispose(disposing);
-
-			Handle.Free();
-			IsDisposed = true;
-
-			GC.SuppressFinalize(this);
-		}
-	}
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static UnmanagedMemoryStream Stream<T>(this T[] data) where T : struct => WrappedUnmanagedMemoryStream<T>.Get(data, 0, data.Length, FileAccess.ReadWrite);
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static UnmanagedMemoryStream Stream<T>(this T[] data, int offset = 0, int length = -1, FileAccess access = FileAccess.ReadWrite) {
-		if (length == -1) {
-			length = data.Length - offset;
-		}
-		return WrappedUnmanagedMemoryStream<T>.Get(data, offset, length, access);
-	}
-
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static MemoryStream Stream(this byte[] data) => new MemoryStream(data, 0, data.Length, true, true);
 

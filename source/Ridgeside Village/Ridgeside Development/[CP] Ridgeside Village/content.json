@@ -47,7 +47,7 @@
 
 		"FullFestivals": {
 			"AllowValues": "true, false",
-			"Default": "false",
+			"Default": "true",
 			"Description": "The true RSV experience. Almost all of RSV NPCs attend the vanilla festivals. Might be incompatible with other mods, especially SVE."
 		},
 
@@ -59,9 +59,15 @@
 
 		"AutoWeddingReception": {
 			"AllowValues": "true, false",
-			"Default": "true",
+			"Default": "false",
 			"Description": "Whether Naomi automatically takes you to the reception after your wedding, or if you must go there yourself. Recommended setting 'false' for custom farm users."
 		},
+
+		"PoleAtBackwoods": {
+			"AllowValues": "true, false",
+			"Default": "true",
+			"Description": "Enable/Disable the cable car pole at the backwoods."
+		}
 
 /*		"EnableVanillaEdits": {
 			"AllowValues": "true, false",
@@ -395,7 +401,7 @@
 			},
 			{
 				"Name": "Custom_Ridgeside_AguarCaveTemporary",
-				"FromMapFile": "Assets/Maps/EventMaps/AguarCaveTemporary.tmx",
+				"FromMapFile": "Assets/Maps/EventMaps/AguarCaveFixed_alt.tmx",
 				"MigrateLegacyNames": [ "AguarCaveTemporary" ]
 			},
 			/*********
@@ -429,6 +435,10 @@
 				"Name": "Custom_Ridgeside_PrincessVilleDate",
 				"FromMapFile": "Assets/Maps/EventMaps/PrincessVilleDate.tmx",
 				"MigrateLegacyNames": [ "PrincessVilleDate" ]
+			},
+			{
+				"Name": "Custom_Ridgeside_RSVWestCliff",
+				"FromMapFile": "Assets/Maps/EventMaps/RSVWestCliff.tmx",
 			},
 			/*********
 			** Public Greenhouses
@@ -469,6 +479,10 @@
 			{
 				"Name": "Custom_Ridgeside_LogCabinEventHall_Birthday",
 				"FromMapFile": "Assets/Maps/EventMaps/LogCabinEventHall_Birthday.tmx",
+			},
+			{
+				"Name": "Custom_Ridgeside_LogCabinEventHall_NightParty",
+				"FromMapFile": "Assets/Maps/EventMaps/LogCabinEventHall_NightParty.tmx",
 			},
 		/*********
 		** FestivalMaps
@@ -712,6 +726,12 @@
 			"FromMapFile": "Assets/Maps/EventMaps/WeddingReceptionPic.tmx",
 		},
 
+		//Extras
+			{
+				"Name": "Custom_Ridgeside_KiarraPick",
+				"FromMapFile": "Assets/Maps/EventMaps/KiarraPick.tmx",
+			},
+
 	],
 
 	/*********
@@ -730,6 +750,16 @@
 	{
 		"Action": "Include",
 		"FromFile": "Data/DependencyData/CustomCompanions.json, Data/DependencyData/CustomCompanionsTourists.json, Data/DependencyData/FarmTypeManager.json, Data/DependencyData/QuestFramework.json, Data/DependencyData/AntiSocialNPCs.json, Data/DependencyData/CustomNPCExclusions.json",
+	},
+
+	//Include GIMA Data
+	/*
+		Optional stuff for Pika's island shop when he visits.
+	*/
+	{
+		"Action": "Include",
+		"FromFile": "Data/DependencyData/GingerIslandMainlandAdjustments.json",
+		"When": { "HasMod |contains=atravita.GingerIslandMainlandAdjustments": true }
 	},
 
 	//Include Event Data

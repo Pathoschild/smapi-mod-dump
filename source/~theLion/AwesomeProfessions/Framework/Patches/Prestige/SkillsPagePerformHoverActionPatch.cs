@@ -20,8 +20,8 @@ using StardewValley;
 using StardewValley.Menus;
 
 using Stardew.Common.Extensions;
-using AssetLoaders;
 using Extensions;
+using Utility;
 
 #endregion using directives
 

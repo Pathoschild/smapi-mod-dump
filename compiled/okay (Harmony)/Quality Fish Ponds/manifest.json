@@ -1,0 +1,10 @@
+﻿{
+  "Name": "QualityFishPonds",
+  "Author": "ytsc",
+  "Version": "1.1.0",
+  "Description": "Keeps the quality of the fish you put on Fish Ponds, and get chance of quality fish on multiply.",
+  "UniqueID": "ytsc.QualityFishPonds",
+  "EntryDll": "QualityFishPonds.dll",
+  "MinimumApiVersion": "2.11",
+  "UpdateKeys": [ "Nexus:11021" ]
+}

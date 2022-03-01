@@ -9,7 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using stardew_access.Game;
+using stardew_access.Features;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -29,10 +29,10 @@ namespace stardew_access.Patches
                 if (!Context.IsPlayerFree)
                     return true;
 
-                if(!Game1.player.isMoving())
+                if (!Game1.player.isMoving())
                     return true;
 
-                if(cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
+                if (cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
                 {
                     Vector2 nextTile = CurrentPlayer.getNextTile();
                     if (ReadTile.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
@@ -48,7 +48,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
 
             return true;
@@ -58,32 +58,32 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
 
-                if(__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
+                if (__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker($"Next Page Button", true);
+                    MainClass.GetScreenReader().SayWithMenuChecker($"Next Page Button", true);
                     return;
                 }
 
                 if (__instance.previousPageButton != null && __instance.previousPageButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker($"Previous Page Button", true);
+                    MainClass.GetScreenReader().SayWithMenuChecker($"Previous Page Button", true);
                     return;
                 }
 
-                for(int i=0; i<__instance.languages.Count; i++)
+                for (int i = 0; i < __instance.languages.Count; i++)
                 {
-                    if(__instance.languages[i].containsPoint(x, y))
+                    if (__instance.languages[i].containsPoint(x, y))
                     {
-                        MainClass.screenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
+                        MainClass.GetScreenReader().SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
                         break;
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -91,19 +91,19 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y; // Mouse x and y position
-                for (int i=0; i<___elevators.Count; i++)
+                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                for (int i = 0; i < ___elevators.Count; i++)
                 {
-                    if(___elevators[i].containsPoint(x, y))
+                    if (___elevators[i].containsPoint(x, y))
                     {
-                        MainClass.screenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
+                        MainClass.GetScreenReader().SayWithMenuChecker($"{___elevators[i].name} level", true);
                         break;
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -115,11 +115,11 @@ namespace stardew_access.Patches
                 ___textBox.SelectMe();
                 string toSpeak = $"{title}";
 
-                MainClass.screenReader.SayWithChecker(toSpeak, true);
+                MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -127,29 +127,34 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
 
-                MainClass.screenReader.SayWithMenuChecker(___message, true);
-                if(__instance.okButton.containsPoint(x, y))
+                MainClass.GetScreenReader().SayWithMenuChecker(___message, true);
+                if (__instance.okButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker("Ok Button", false);
-                } else if (__instance.cancelButton.containsPoint(x, y))
+                    MainClass.GetScreenReader().SayWithMenuChecker("Ok Button", false);
+                }
+                else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    MainClass.screenReader.SayWithMenuChecker("Cancel Button", false);
+                    MainClass.GetScreenReader().SayWithMenuChecker("Cancel Button", false);
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
-        internal static void LevelUpMenuPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title)
+        internal static void LevelUpMenuPatch(LevelUpMenu __instance, List<int> ___professionsToChoose, List<string> ___leftProfessionDescription, List<string> ___rightProfessionDescription, List<string> ___extraInfoForLevel, List<CraftingRecipe> ___newCraftingRecipes, string ___title, bool ___isActive, bool ___isProfessionChooser)
         {
             try
             {
-                int x = Game1.getMousePosition(true).X, y = Game1.getMousePosition(true).Y;
+                int x = Game1.getMouseX(), y = Game1.getMouseY();
                 string leftProfession = " ", rightProfession = " ", extraInfo = " ", newCraftingRecipe = " ", toSpeak = " ";
+
+                bool isOpenBracketPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets); // for left click
+                bool isLeftCtrlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter);
 
                 if (!__instance.informationUp)
                 {
@@ -171,10 +176,38 @@ namespace stardew_access.Patches
                     }
 
                     if (__instance.leftProfession.containsPoint(x, y))
+                    {
+                        if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed && __instance.readyToClose()))
+                        {
+                            Game1.player.professions.Add(___professionsToChoose[0]);
+                            __instance.getImmediateProfessionPerk(___professionsToChoose[0]);
+                            ___isActive = false;
+                            __instance.informationUp = false;
+                            ___isProfessionChooser = false;
+                            __instance.RemoveLevelFromLevelList();
+                            __instance.exitThisMenu();
+                            return;
+                        }
+
                         toSpeak = $"Selected: {leftProfession} Left click to choose.";
+                    }
 
                     if (__instance.rightProfession.containsPoint(x, y))
+                    {
+                        if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed && __instance.readyToClose()))
+                        {
+                            Game1.player.professions.Add(___professionsToChoose[1]);
+                            __instance.getImmediateProfessionPerk(___professionsToChoose[1]);
+                            ___isActive = false;
+                            __instance.informationUp = false;
+                            ___isProfessionChooser = false;
+                            __instance.RemoveLevelFromLevelList();
+                            __instance.exitThisMenu();
+                            return;
+                        }
+
                         toSpeak = $"Selected: {rightProfession} Left click to choose.";
+                    }
                 }
                 else
                 {
@@ -189,24 +222,27 @@ namespace stardew_access.Patches
 
                         newCraftingRecipe += $"{message}, ";
                     }
+                }
 
-                    if (__instance.okButton.containsPoint(x, y))
-                    {
-                        toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
-                    }
+                if (__instance.okButton.containsPoint(x, y))
+                {
+                    if (isOpenBracketPressed || (isLeftCtrlPressed && isEnterPressed))
+                        __instance.okButtonClicked();
+
+                    toSpeak = $"{___title} {extraInfo} {newCraftingRecipe}. Left click to close.";
                 }
 
                 if (toSpeak != " ")
-                    MainClass.screenReader.SayWithMenuChecker(toSpeak, true);
+                    MainClass.GetScreenReader().SayWithMenuChecker(toSpeak, true);
                 else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
                 {
-                    MainClass.screenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
+                    MainClass.GetScreenReader().SayWithMenuChecker($"{___title}. Select a new profession.", true);
                     currentLevelUpTitle = $"{___title}. Select a new profession.";
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -214,28 +250,37 @@ namespace stardew_access.Patches
         {
             try
             {
+                bool isLeftControlPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl);
+                bool isOpenBracketPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.OemOpenBrackets); // for left click
+                bool isEnterPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Enter);
+
                 if (__instance.currentPage == -1)
                 {
                     int total = ___categoryTotals[5];
                     string toSpeak;
-                    if (__instance.okButton.containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                    if (__instance.okButton.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                     {
+                        // Perform Left Click
+                        if (isOpenBracketPressed || (isLeftControlPressed && isEnterPressed))
+                        {
+                            Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                        }
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
-                        MainClass.screenReader.SayWithChecker(toSpeak, true);
+                        MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
-                        if (__instance.categories[i].containsPoint(Game1.getMousePosition(true).X, Game1.getMousePosition(true).Y))
+                        if (__instance.categories[i].containsPoint(Game1.getMouseX(), Game1.getMouseY()))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
-                            MainClass.screenReader.SayWithChecker(toSpeak, true);
+                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -270,12 +315,12 @@ namespace stardew_access.Patches
                     currentLetterText = toSpeak;
 
                     // snap mouse to accept quest button
-                    if (__instance.acceptQuestButton!=null && __instance.acceptQuestButton.visible)
+                    if (__instance.acceptQuestButton != null && __instance.acceptQuestButton.visible)
                     {
                         toSpeak += "\t\n Left click to accept quest.";
                         __instance.acceptQuestButton.snapMouseCursorToCenter();
                     }
-                    MainClass.screenReader.Say(toSpeak, false);
+                    MainClass.GetScreenReader().Say(toSpeak, false);
                 }
                 #endregion
 
@@ -288,7 +333,7 @@ namespace stardew_access.Patches
                         string label = c.label;
 
                         if (c.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
-                            MainClass.screenReader.SayWithChecker($"Grab: {name} \t\n {label}", false);
+                            MainClass.GetScreenReader().SayWithChecker($"Grab: {name} \t\n {label}", false);
                     }
                 }
                 #endregion
@@ -296,7 +341,7 @@ namespace stardew_access.Patches
             catch (Exception e)
             {
 
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -311,13 +356,34 @@ namespace stardew_access.Patches
                     GameMenuPatches.inventoryPageQueryKey = "";
                     GameMenuPatches.exitPageQueryKey = "";
                     GameMenuPatches.optionsPageQueryKey = "";
+                    GameMenuPatches.socialPageQuery = "";
                     GameMenuPatches.currentSelectedCraftingRecipe = -1;
                     GameMenuPatches.isSelectingRecipe = false;
                 }
+
+                if (Game1.activeClickableMenu is JunimoNoteMenu)
+                {
+                    GameMenuPatches.currentIngredientListItem = -1;
+                    GameMenuPatches.currentIngredientInputSlot = -1;
+                    GameMenuPatches.currentInventorySlot = -1;
+                    GameMenuPatches.junimoNoteMenuQuery = "";
+                }
+
+                if (Game1.activeClickableMenu is ShopMenu)
+                {
+                    GameMenuPatches.shopMenuQueryKey = "";
+                }
+
+                if (Game1.activeClickableMenu is ItemGrabMenu)
+                {
+                    GameMenuPatches.itemGrabMenuQueryKey = "";
+                }
+
+                GameMenuPatches.hoveredItemQueryKey = "";
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
@@ -325,7 +391,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                if(__instance is GeodeMenu)
+                if (__instance is GeodeMenu)
                 {
                     GameMenuPatches.geodeMenuQueryKey = "";
                 }
@@ -340,18 +406,42 @@ namespace stardew_access.Patches
                     GameMenuPatches.shopMenuQueryKey = "";
                 }
 
+                if (__instance is CarpenterMenu)
+                {
+                    BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
+                    BuildingNAnimalMenuPatches.isUpgrading = false;
+                    BuildingNAnimalMenuPatches.isDemolishing = false;
+                    BuildingNAnimalMenuPatches.isPainting = false;
+                    BuildingNAnimalMenuPatches.isMoving = false;
+                    BuildingNAnimalMenuPatches.isConstructing = false;
+                    BuildingNAnimalMenuPatches.carpenterMenu = null;
+                }
+
+                if (__instance is PurchaseAnimalsMenu)
+                {
+                    BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
+                    BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
+                    BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
+                }
+
+                if (__instance is DialogueBox)
+                {
+                    DialoguePatches.isDialogueAppearingFirstTime = true;
+                    DialoguePatches.currentDialogue = " ";
+                }
+
                 GameMenuPatches.hoveredItemQueryKey = "";
             }
             catch (Exception e)
             {
-                MainClass.monitor.Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
             }
         }
 
         internal static void ExitEventPatch()
         {
-            if(MainClass.screenReader!=null)
-                MainClass.screenReader.CloseScreenReader();
+            if (MainClass.GetScreenReader() != null)
+                MainClass.GetScreenReader().CloseScreenReader();
         }
         internal static void resetGlobalVars()
         {

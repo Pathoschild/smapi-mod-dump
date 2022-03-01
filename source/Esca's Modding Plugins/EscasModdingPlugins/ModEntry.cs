@@ -27,6 +27,12 @@ namespace EscasModdingPlugins
             AssetHelper.Initialize(helper);
             TileData.Monitor = Monitor;
 
+            //load config.json
+            ModConfig.Initialize(helper, Monitor);
+
+            //initialize mod interactions
+            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched_InitializeModInteractions;
+
             //initialize Harmony and mod features
             Harmony harmony = new Harmony(ModManifest.UniqueID);
 
@@ -48,7 +54,18 @@ namespace EscasModdingPlugins
             //kitchen features
             HarmonyPatch_ActionKitchen.ApplyPatch(harmony, Monitor);
             HarmonyPatch_AllowMiniFridges.ApplyPatch(harmony, Monitor);
+
+            //water color
+            WaterColor.Enable(helper, Monitor);
         }
+
+        /// <summary>Initializes mod interactions when all mods have finished loading.</summary>
+        private void GameLoop_GameLaunched_InitializeModInteractions(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        {
+            ModInteractions.GMCM.Initialize(Helper, Monitor, ModManifest);
+        }
+
+
 
         /************************/
         /* IAssetLoader methods */

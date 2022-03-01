@@ -26,7 +26,7 @@ static class MathExt {
 	internal static int Min(int a, int b, int c) => Math.Min(a, Math.Min(b, c));
 	internal static ulong Min(ulong a, ulong b, ulong c) => Math.Min(a, Math.Min(b, c));
 	internal static long Min(long a, long b, long c) => Math.Min(a, Math.Min(b, c));
-	internal static float Min(float a, float b, float c) => Math.Min(a, Math.Min(b, c));
+	internal static float Min(float a, float b, float c) => MathF.Min(a, MathF.Min(b, c));
 	internal static double Min(double a, double b, double c) => Math.Min(a, Math.Min(b, c));
 	internal static Fixed8 Min(Fixed8 a, Fixed8 b, Fixed8 c) => MathExt.Min(a, MathExt.Min(b, c));
 	internal static Fixed16 Min(Fixed16 a, Fixed16 b, Fixed16 c) => MathExt.Min(a, MathExt.Min(b, c));
@@ -44,7 +44,7 @@ static class MathExt {
 	internal static int Max(int a, int b, int c) => Math.Max(a, Math.Max(b, c));
 	internal static ulong Max(ulong a, ulong b, ulong c) => Math.Max(a, Math.Max(b, c));
 	internal static long Max(long a, long b, long c) => Math.Max(a, Math.Max(b, c));
-	internal static float Max(float a, float b, float c) => Math.Max(a, Math.Max(b, c));
+	internal static float Max(float a, float b, float c) => MathF.Max(a, MathF.Max(b, c));
 	internal static double Max(double a, double b, double c) => Math.Max(a, Math.Max(b, c));
 	internal static Fixed8 Max(Fixed8 a, Fixed8 b, Fixed8 c) => MathExt.Max(a, MathExt.Max(b, c));
 	internal static Fixed16 Max(Fixed16 a, Fixed16 b, Fixed16 c) => MathExt.Max(a, MathExt.Max(b, c));
@@ -56,10 +56,10 @@ static class MathExt {
 	#endregion
 
 	#region RoundToInt/Long
-	internal static int RoundToInt(this float v) => (int)Math.Round(v);
+	internal static int RoundToInt(this float v) => (int)MathF.Round(v);
 	internal static int RoundToInt(this double v) => (int)Math.Round(v);
 
-	internal static long RoundToLong(this float v) => (long)Math.Round(v);
+	internal static long RoundToLong(this float v) => (long)MathF.Round(v);
 	internal static long RoundToLong(this double v) => (long)Math.Round(v);
 	#endregion
 }

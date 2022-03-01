@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -169,7 +169,7 @@ namespace CustomWallsAndFloorsRedux
             }, 100, SerializationType.JSON);
             wallpaperReceiver.start();
 
-            var harmony = HarmonyInstance.Create("Platonymous.CustomWallsAndFloorsRedux");
+            var harmony = new Harmony("Platonymous.CustomWallsAndFloorsRedux");
             harmony.Patch(typeof(GameLocation).GetMethod("setMapTileIndex", BindingFlags.Public | BindingFlags.Instance), new HarmonyMethod(GetType().GetMethod("setMapTileIndexPrefix", BindingFlags.Public | BindingFlags.Static)), new HarmonyMethod(GetType().GetMethod("setMapTileIndex", BindingFlags.Public | BindingFlags.Static)));
             harmony.Patch(typeof(Wallpaper).GetMethod("placementAction", BindingFlags.Public | BindingFlags.Instance), prefix: new HarmonyMethod(GetType().GetMethod("placementAction", BindingFlags.Public | BindingFlags.Static)));
 

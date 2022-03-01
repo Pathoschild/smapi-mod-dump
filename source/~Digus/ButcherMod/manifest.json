@@ -11,7 +11,7 @@
 {
    "Name": "Animal Husbandry Mod",
    "Author": "Digus",
-   "Version": "2.6.0",
+   "Version": "2.6.2",
    "Description": "Adds features related to animal husbandry.",
    "UniqueID": "DIGUS.ANIMALHUSBANDRYMOD",
    "EntryDll": "AnimalHusbandryMod.dll",

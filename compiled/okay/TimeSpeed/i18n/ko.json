@@ -1,0 +1,72 @@
+﻿{
+    /*********
+    ** In-game messages
+    *********/
+    // changed manually
+    "message.config-reloaded": "지금은 시간이 다르게 느껴집니다.",
+    "message.speed-changed": "10분이 {{seconds}}초처럼 느껴집니다.",
+    "message.time-stopped": "시간을 멈췄습니다.",
+    "message.time-resumed": "이제 시간이 평소와 같이 느껴집니다.",
+
+    // changed based on time
+    "message.on-time-change.time-stopped": "시간이 갑자기 멈췄습니다.",
+
+    // changed based on location
+    "message.on-location-change.time-stopped-globally": "어디서든 시간이 멈춥니다.",
+    "message.on-location-change.time-stopped-here": "여기 시간이 멈췄습니다",
+    "message.on-location-change.time-speed-here": "여기서 10분이 {{seconds}}초처럼 느껴집니다.",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // general options
+    "config.general-options": "일반 옵션",
+    "config.enable-on-festival-days.name": "축제일 활성화",
+    "config.enable-on-festival-days.desc": "축제일 틱 길이를 변경할지 여부.",
+    "config.location-notify.name": "워프에 시간 정보 표시",
+    "config.location-notify.desc": "위치를 입력할 때 시간 설정에 대한 메시지를 표시할지 여부.",
+
+    // seconds per minute section
+    "config.seconds-per-minute": "분당 초",
+    "config.indoors-speed.name": "실내",
+    "config.indoors-speed.desc": "실내에 있는 게임 내 분당 시간(초)입니다.",
+    "config.outdoors-speed.name": "야외",
+    "config.outdoors-speed.desc": "실외에서 게임 내 분당 시간(초)입니다.",
+    "config.mine-speed.name": "광산",
+    "config.mine-speed.desc": "광산에 있는 동안 게임 내 분당 시간(초)입니다.",
+    "config.skull-cavern-speed.name": "해골 동굴",
+    "config.skull-cavern-speed.desc": "해골 동굴에 있는 동안 게임 내 분당 시간(초)입니다.",
+    "config.volcano-dungeon-speed.name": "화산 던전",
+    "config.volcano-dungeon-speed.desc": "화산 던전에 있는 동안 게임 내 분당 시간(초)입니다.",
+
+    // freeze time section
+    "config.freeze-time": "정지 시간",
+    "config.anywhere-at-time.name": "시간 고정",
+    "config.anywhere-at-time.desc": "모든 곳에서 시간을 고정할 시간입니다. 이것은 600(오전 6시)에서 2400(자정) 및 2600(오전 2시)까지의 24시간 군사 시간이어야 합니다. 다음을 설정할 수 있습니다. 비활성화하려면 2600으로 설정하십시오.",
+    "config.freeze-time-indoors.name": "실내",
+    "config.freeze-time-indoors.desc": "실내에서 시간을 정지할지 여부.",
+    "config.freeze-time-outdoors.name": "야외",
+    "config.freeze-time-outdoors.desc": "야외에서 시간을 고정할지 여부.",
+    "config.freeze-time-mine.name": "광산",
+    "config.freeze-time-mine.desc": "광산에 있는 동안 시간을 고정할지 여부.",
+    "config.freeze-time-skull-cavern.name": "해골 동굴",
+    "config.freeze-time-skull-cavern.desc": "해골 동굴에 있는 동안 시간을 고정할지 여부.",
+    "config.freeze-time-volcano-dungeon.name": "화산 던전",
+    "config.freeze-time-volcano-dungeon.desc": "화산 던전에 있는 동안 시간을 정지할지 여부.",
+    "config.freeze-time-freeze-names.name": "위치 이름 고정",
+    "config.freeze-time-freeze-names.desc": "시간을 고정할 특정 위치의 이름입니다. 위치 이름은 디버그 모드 모드를 사용하여 게임 내에서 볼 수 있습니다. 여러 개를 쉼표로 나열할 수 있습니다.",
+    "config.freeze-time-dont-freeze-names.name": "위치 이름을 고정하지 않음",
+    "config.freeze-time-dont-freeze-names.desc": "이전 설정에 관계없이 시간이 고정되어서는 안 되는 특정 위치의 이름입니다. 위치 이름은 디버그 모드 모드를 사용하여 게임 내에서 볼 수 있습니다. 여러 개를 쉼표로 나열할 수 있습니다.",
+
+    // controls
+    "config.controls": "컨트롤",
+    "config.freeze-time-key.name": "정지 시간",
+    "config.freeze-time-key.desc": "시간을 고정하거나 고정 해제하는 키입니다. 고정 시간은 고정을 해제할 때까지 유효합니다. 고정 해제 시간은 시간 설정으로 새 위치를 입력할 때까지 유효합니다.",
+    "config.slow-time-key.name": "느린 시간",
+    "config.slow-time-key.desc": "게임 10분당 1 초씩 시간을 늦추는 키입니다. Control과 100초, Shift를 10초, Alt를 0.1초 동안 조합합니다.",
+    "config.speed-up-time-key.name": "시간 단축",
+    "config.speed-up-time-key.desc": "10게임 분당 1 초씩 시간을 단축 하는 키입니다. Control과 100초, Shift를 10초, Alt를 0.1초 동안 조합합니다.",
+    "config.reload-key.name": "구성 다시 로드",
+    "config.reload-key.desc": "구성 파일에서 모든 값을 다시 로드하고 즉시 적용하는 키입니다. 핫키를 통해 고정된 경우 시간이 고정된 상태로 유지됩니다."
+}

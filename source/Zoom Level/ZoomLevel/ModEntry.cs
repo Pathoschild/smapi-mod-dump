@@ -20,12 +20,15 @@ namespace ZoomLevel
 {
     public class ModEntry : Mod
     {
-        private ModConfig modConfigs;
-  
+        private ModConfig configsForTheMod;
+        private bool wasToggleUIDone = false;
+        private float previousUIValueToggleUI = 1.0f;
+        private float previousUIValueToggleUIWithCertainValue = -1.0f;
+
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            modConfigs = helper.ReadConfig<ModConfig>();
+            configsForTheMod = helper.ReadConfig<ModConfig>();
 
             helper.Events.GameLoop.GameLaunched += onLaunched;
             helper.Events.Input.ButtonPressed += this.Events_Input_ButtonPressed;
@@ -37,210 +40,218 @@ namespace ZoomLevel
 
             if (genericModConfigMenuAPI != null)
             {
-                genericModConfigMenuAPI.Register(ModManifest, () => modConfigs = new ModConfig(), () => Helper.WriteConfig(modConfigs));
+                genericModConfigMenuAPI.Register(ModManifest, () => configsForTheMod = new ModConfig(), () => Helper.WriteConfig(configsForTheMod));
 
-                genericModConfigMenuAPI.AddSectionTitle(ModManifest, "Keybinds:".ToString   , "All the keybinds that can be added or changed.".ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => modConfigs.KeybindListHoldToChangeUI, (KeybindList val) => modConfigs.KeybindListHoldToChangeUI = val, "UI hold Key".ToString, "Keybinds that you need to hold to change the UI.".ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => modConfigs.KeybindListIncreaseZoomOrUI, (KeybindList val) => modConfigs.KeybindListIncreaseZoomOrUI = val, "Zoom or UI Levels Increase".ToString, "Keybinds to Increase Zoom or UI Level.".ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => modConfigs.KeybindListDecreaseZoomOrUI, (KeybindList val) => modConfigs.KeybindListDecreaseZoomOrUI = val, "Zoom or UI Levels Decrease".ToString, "Keybinds to Decrease Zoom or UI Level.".ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => modConfigs.KeybindListResetZoomOrUI, (KeybindList val) => modConfigs.KeybindListResetZoomOrUI = val, "Zoom or UI Levels Reset".ToString, "Keybinds that you use to Reset the Zoom or UI Level.".ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => modConfigs.KeybindListMaxZoomOrUI, (KeybindList val) => modConfigs.KeybindListMaxZoomOrUI = val, "Zoom or UI Max Levels".ToString, "Keybinds to Max the Zoom out or Maximize the UI.".ToString);
-                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => modConfigs.KeybindListMinZoomOrUI, (KeybindList val) => modConfigs.KeybindListMinZoomOrUI = val, "Zoom or UI Min Levels".ToString, "Keybinds to Max the Zoom in or Minimize the UI.".ToString);
+                genericModConfigMenuAPI.AddSectionTitle(ModManifest, "Keybinds:".ToString, "All the keybinds that can be added or changed.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListHoldToChangeUI, (KeybindList val) => configsForTheMod.KeybindListHoldToChangeUI = val, "UI hold Key".ToString, "Keybinds that you need to hold to change the UI.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListIncreaseZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListIncreaseZoomOrUI = val, "Zoom or UI Increase".ToString, "Keybinds to Increase Zoom or UI Level.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListDecreaseZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListDecreaseZoomOrUI = val, "Zoom or UI Decrease".ToString, "Keybinds to Decrease Zoom or UI Level.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListResetZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListResetZoomOrUI = val, "Zoom or UI Reset".ToString, "Keybinds that you use to Reset the Zoom or UI Level.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMaxZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListMaxZoomOrUI = val, "Zoom or UI Max Levels".ToString, "Keybinds to Max the Zoom out or Maximize the UI.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListMinZoomOrUI, (KeybindList val) => configsForTheMod.KeybindListMinZoomOrUI = val, "Zoom or UI Min Levels".ToString, "Keybinds to Max the Zoom in or Minimize the UI.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleUI, (KeybindList val) => configsForTheMod.KeybindListToggleUI = val, "Toggle UI Visibility".ToString, "Keybinds to toggle the UI Visibility.".ToString);
+                genericModConfigMenuAPI.AddKeybindList(ModManifest, () => configsForTheMod.KeybindListToggleHideUIWithCertainZoom, (KeybindList val) => configsForTheMod.KeybindListToggleHideUIWithCertainZoom = val, "Hide UI at Certain Zoom".ToString, "Keybinds to hides the UI at a certain Zoom Level.".ToString);
 
                 genericModConfigMenuAPI.AddSectionTitle(ModManifest, "Values:".ToString, "All the values that changes the Zoom Level and UI Level.".ToString);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => modConfigs.ZoomLevelIncreaseValue, (float val) => modConfigs.ZoomLevelIncreaseValue = val, "Zoom or UI Levels Increase".ToString, "The amount of Zoom or UI Level increase.".ToString, 0.01f, 0.50f,0.01f);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => modConfigs.ZoomLevelDecreaseValue, (float val) => modConfigs.ZoomLevelDecreaseValue = val, "Zoom or UI Levels Decrease".ToString, "The amount of Zoom or UI Level decrease.".ToString, -0.50f, -0.01f, 0.01f);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => modConfigs.MaxZoomOutLevelAndUIValue, (float val) => modConfigs.MaxZoomOutLevelAndUIValue = val, "Zoom or UI Max Level".ToString, "The value of the max Zoom out Level or Max UI.".ToString, 0.15f, 1f, 0.01f);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => modConfigs.MaxZoomInLevelAndUIValue, (float val) => modConfigs.MaxZoomInLevelAndUIValue = val, "Zoom or UI Min  Level".ToString, "The value of the max Zoom in Level or Min UI.".ToString, 1f, 2.5f, 0.01f);
-                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => modConfigs.ResetZoomOrUIValue, (float val) => modConfigs.ResetZoomOrUIValue = val, "Zoom or UI Reset Level".ToString, "The value of the Zoom or UI level reset.".ToString, 0.15f, 2.5f, 0.01f);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelIncreaseValue, (float val) => configsForTheMod.ZoomLevelIncreaseValue = val, "Zoom or UI Levels Increase".ToString, "The amount of Zoom or UI Level increase.".ToString, 0.01f, 0.50f, 0.01f);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelDecreaseValue, (float val) => configsForTheMod.ZoomLevelDecreaseValue = val, "Zoom or UI Levels Decrease".ToString, "The amount of Zoom or UI Level decrease.".ToString, -0.50f, -0.01f, 0.01f);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.MaxZoomOutLevelAndUIValue, (float val) => configsForTheMod.MaxZoomOutLevelAndUIValue = val, "Zoom or UI Max Level".ToString, "The value of the max Zoom out Level or Max UI.".ToString, 0.15f, 1f, 0.01f);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.MaxZoomInLevelAndUIValue, (float val) => configsForTheMod.MaxZoomInLevelAndUIValue = val, "Zoom or UI Min  Level".ToString, "The value of the max Zoom in Level or Min UI.".ToString, 1f, 2.5f, 0.01f);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ResetZoomOrUIValue, (float val) => configsForTheMod.ResetZoomOrUIValue = val, "Zoom or UI Reset Level".ToString, "The value of the Zoom or UI level reset.".ToString, 0.15f, 2.5f, 0.01f);
+                genericModConfigMenuAPI.AddNumberOption(ModManifest, () => configsForTheMod.ZoomLevelThatHidesUI, (float val) => configsForTheMod.ZoomLevelThatHidesUI = val, "Zoom Level that Hides UI".ToString, "The value of the Zoom level that hides the UI.".ToString, 0.15f, 2.5f, 0.01f);
 
 
                 genericModConfigMenuAPI.AddSectionTitle(ModManifest, "Other:".ToString, "All the other options that you can change.".ToString);
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => modConfigs.SuppressControllerButton, (bool val) => modConfigs.SuppressControllerButton = val, "Suppress Controller Buttons".ToString, "If your controller inputs are supressed or not.".ToString);
-                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => modConfigs.ZoomAndUIControlEverywhere, (bool val) => modConfigs.ZoomAndUIControlEverywhere = val, "Zoom and UI Anywhere".ToString, "If activated you can control your Zoom and UI Levels anywhere.".ToString);
-                
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.SuppressControllerButton, (bool val) => configsForTheMod.SuppressControllerButton = val, "Suppress Controller Buttons".ToString, "If your controller inputs are supressed or not.".ToString);
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.ZoomAndUIControlEverywhere, (bool val) => configsForTheMod.ZoomAndUIControlEverywhere = val, "Zoom and UI Anywhere".ToString, "If activated you can control your Zoom and UI Levels anywhere. ".ToString);
+                genericModConfigMenuAPI.AddBoolOption(ModManifest, () => configsForTheMod.IsHideUIWithCertainZoom, (bool val) => configsForTheMod.IsHideUIWithCertainZoom = val, "Hide UI with Certain Zoom".ToString, "If activated your UI hides when it reaches a certain zoom level.\nIt can be changed by the 'Toggle Hide UI at Certain Zoom'. ".ToString);
+
             }
         }
 
 
         private void Events_Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsWorldReady || (!Context.IsPlayerFree && !modConfigs.ZoomAndUIControlEverywhere)) { return; }
+            if (!Context.IsWorldReady || (!Context.IsPlayerFree && !configsForTheMod.ZoomAndUIControlEverywhere)) { return; }
             bool wasThePreviousButtonPressSucessfull = false;
 
-            if (modConfigs.KeybindListHoldToChangeUI.IsDown())
+            if (configsForTheMod.KeybindListHoldToChangeUI.IsDown())
             {
-                if (modConfigs.KeybindListIncreaseZoomOrUI.JustPressed())
+                if (configsForTheMod.KeybindListIncreaseZoomOrUI.JustPressed())
                 {
-                    ChangeUILevel(modConfigs.ZoomLevelIncreaseValue);
+                    ChangeUILevel(configsForTheMod.ZoomLevelIncreaseValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
-                else if (modConfigs.KeybindListDecreaseZoomOrUI.JustPressed())
+                else if (configsForTheMod.KeybindListDecreaseZoomOrUI.JustPressed())
                 {
-                    ChangeUILevel(modConfigs.ZoomLevelDecreaseValue);
+                    ChangeUILevel(configsForTheMod.ZoomLevelDecreaseValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
-                else if (modConfigs.KeybindListResetZoomOrUI.JustPressed())
+                else if (configsForTheMod.KeybindListResetZoomOrUI.JustPressed())
                 {
                     ResetUI();
                     wasThePreviousButtonPressSucessfull = true;
                 }
-                else if (modConfigs.KeybindListMaxZoomOrUI.JustPressed())
+                else if (configsForTheMod.KeybindListMaxZoomOrUI.JustPressed())
                 {
-                    CapUILevel(modConfigs.MaxZoomOutLevelAndUIValue);
+                    CapUILevel(configsForTheMod.MaxZoomOutLevelAndUIValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
-                else if (modConfigs.KeybindListMinZoomOrUI.JustPressed())
+                else if (configsForTheMod.KeybindListMinZoomOrUI.JustPressed())
                 {
-                    CapUILevel(modConfigs.MaxZoomInLevelAndUIValue);
+                    CapUILevel(configsForTheMod.MaxZoomInLevelAndUIValue);
                     wasThePreviousButtonPressSucessfull = true;
                 }
+                else if (configsForTheMod.KeybindListToggleUI.JustPressed())
+                {
+                    ToggleUI();
+                }
+                else if (configsForTheMod.KeybindListToggleHideUIWithCertainZoom.JustPressed())
+                {
+                    configsForTheMod.IsHideUIWithCertainZoom = !configsForTheMod.IsHideUIWithCertainZoom;
+                    Game1.addHUDMessage(new HUDMessage("Hide UI With Certain Zoom is now: " + configsForTheMod.IsHideUIWithCertainZoom.ToString(), 2));
+                }
             }
-            else if (modConfigs.KeybindListIncreaseZoomOrUI.JustPressed())
+            else if (configsForTheMod.KeybindListIncreaseZoomOrUI.JustPressed())
             {
-                ChangeZoomLevel(modConfigs.ZoomLevelIncreaseValue);
+                ChangeZoomLevel(configsForTheMod.ZoomLevelIncreaseValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (modConfigs.KeybindListDecreaseZoomOrUI.JustPressed())
+            else if (configsForTheMod.KeybindListDecreaseZoomOrUI.JustPressed())
             {
-                ChangeZoomLevel(modConfigs.ZoomLevelDecreaseValue);
+                ChangeZoomLevel(configsForTheMod.ZoomLevelDecreaseValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (modConfigs.KeybindListResetZoomOrUI.JustPressed())
+            else if (configsForTheMod.KeybindListResetZoomOrUI.JustPressed())
             {
                 ResetZoom();
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (modConfigs.KeybindListMaxZoomOrUI.JustPressed())
+            else if (configsForTheMod.KeybindListMaxZoomOrUI.JustPressed())
             {
-                CapZoomLevel(modConfigs.MaxZoomOutLevelAndUIValue);
+                CapZoomLevel(configsForTheMod.MaxZoomOutLevelAndUIValue);
                 wasThePreviousButtonPressSucessfull = true;
             }
-            else if (modConfigs.KeybindListMinZoomOrUI.JustPressed())
+            else if (configsForTheMod.KeybindListMinZoomOrUI.JustPressed())
             {
-                CapZoomLevel(modConfigs.MaxZoomInLevelAndUIValue);
+                CapZoomLevel(configsForTheMod.MaxZoomInLevelAndUIValue);
                 wasThePreviousButtonPressSucessfull = true;
+            }
+            else if (configsForTheMod.KeybindListToggleUI.JustPressed())
+            {
+                ToggleUI();
+            }
+            else if (configsForTheMod.KeybindListToggleHideUIWithCertainZoom.JustPressed())
+            {
+                configsForTheMod.IsHideUIWithCertainZoom = !configsForTheMod.IsHideUIWithCertainZoom;
+                Game1.addHUDMessage(new HUDMessage("Hide UI With Certain Zoom is now: " + configsForTheMod.IsHideUIWithCertainZoom.ToString(), 2));
             }
 
-            if (modConfigs.SuppressControllerButton == true && wasThePreviousButtonPressSucessfull == true)
+            if (configsForTheMod.SuppressControllerButton == true && wasThePreviousButtonPressSucessfull == true)
             {
                 Helper.Input.Suppress(e.Button);
             }
         }
 
+        private void CheckAndUpdateUIValues()
+        {
+            if (configsForTheMod.IsHideUIWithCertainZoom == true)
+            {
+                if (Game1.options.desiredBaseZoomLevel <= configsForTheMod.ZoomLevelThatHidesUI && previousUIValueToggleUIWithCertainValue <= 0.0f)
+                {
+                    previousUIValueToggleUIWithCertainValue = Game1.options.desiredUIScale;
+                    Game1.options.desiredUIScale = 0.0f;
+                }
+                else if (Game1.options.desiredBaseZoomLevel > configsForTheMod.ZoomLevelThatHidesUI && previousUIValueToggleUIWithCertainValue > 0.0f)
+                {
+                    Game1.options.desiredUIScale = previousUIValueToggleUIWithCertainValue <= 0.0f ? 1.0f : previousUIValueToggleUIWithCertainValue;
+                    previousUIValueToggleUIWithCertainValue = 0.0f;
+                }
+                RefreshWindow();
+            }
+        }
+
+        private void ToggleUI()
+        {
+            float uiValue = 0.0f;
+
+            if (wasToggleUIDone == true)
+            {
+                uiValue = previousUIValueToggleUI <= 0.0f ? 1.0f : previousUIValueToggleUI;
+            }
+            wasToggleUIDone = !wasToggleUIDone;
+
+
+            if (wasToggleUIDone == true)
+            {
+                previousUIValueToggleUI = Game1.options.desiredUIScale;
+            }
+
+            //Changes ZoomLevel
+            Game1.options.desiredUIScale = uiValue;
+
+            RefreshWindow();
+        }
+
         private void CapZoomLevel(float zoomValue)
         {
 
+            Game1.options.desiredBaseZoomLevel = zoomValue;
 
-            if (!Context.IsSplitScreen)
-            {
-                //Changes ZoomLevel
-                Game1.options.singlePlayerBaseZoomLevel = zoomValue;
-            }
-            else if (Context.IsSplitScreen)
-            {
-                //Changes ZoomLevel
-                Game1.options.localCoopBaseZoomLevel = zoomValue;
-            }
             RefreshWindow();
+            CheckAndUpdateUIValues();
         }
 
         private void CapUILevel(float uiValue)
         {
+            Game1.options.desiredUIScale = uiValue;
 
-            if (!Context.IsSplitScreen)
-            {
-                //Changes ZoomLevel
-                Game1.options.singlePlayerDesiredUIScale = uiValue;
-            }
-            else if (Context.IsSplitScreen)
-            {
-                //Changes ZoomLevel
-                Game1.options.localCoopDesiredUIScale = uiValue;
-            }
             RefreshWindow();
         }
 
         private void ResetUI()
         {
-            if (!Context.IsSplitScreen)
-            {
-                Game1.options.singlePlayerDesiredUIScale = modConfigs.ResetZoomOrUIValue;
-            }
-            else
-            {
-                Game1.options.localCoopDesiredUIScale = modConfigs.ResetZoomOrUIValue;
-            }
+            Game1.options.desiredUIScale = configsForTheMod.ResetZoomOrUIValue;
+
             RefreshWindow();
         }
 
         private void ResetZoom()
         {
-            if (!Context.IsSplitScreen)
-            {
-                Game1.options.singlePlayerBaseZoomLevel = modConfigs.ResetZoomOrUIValue;
-            }
-            else
-            {
-                Game1.options.localCoopBaseZoomLevel = modConfigs.ResetZoomOrUIValue;
-            }
+            Game1.options.desiredBaseZoomLevel = configsForTheMod.ResetZoomOrUIValue;
+
             RefreshWindow();
         }
 
         private void ChangeZoomLevel(float amount = 0)
         {
 
-            if (!Context.IsSplitScreen)
-            {
-                //Changes ZoomLevel
-                Game1.options.singlePlayerBaseZoomLevel = (float)Math.Round(Game1.options.singlePlayerBaseZoomLevel + amount, 2);
+            //Changes ZoomLevel
+            Game1.options.desiredBaseZoomLevel = (float)Math.Round(Game1.options.desiredBaseZoomLevel + amount, 2);
 
-                //Caps Max Zoom In Level
-                Game1.options.singlePlayerBaseZoomLevel = Game1.options.singlePlayerBaseZoomLevel >= modConfigs.MaxZoomInLevelAndUIValue ? modConfigs.MaxZoomInLevelAndUIValue : Game1.options.singlePlayerBaseZoomLevel;
+            //Caps Max Zoom In Level
+            Game1.options.desiredBaseZoomLevel = Game1.options.desiredBaseZoomLevel >= configsForTheMod.MaxZoomInLevelAndUIValue ? configsForTheMod.MaxZoomInLevelAndUIValue : Game1.options.desiredBaseZoomLevel;
 
-                //Caps Max Zoom Out Level
-                Game1.options.singlePlayerBaseZoomLevel = Game1.options.singlePlayerBaseZoomLevel <= modConfigs.MaxZoomOutLevelAndUIValue ? modConfigs.MaxZoomOutLevelAndUIValue : Game1.options.singlePlayerBaseZoomLevel;
+            //Caps Max Zoom Out Level
+            Game1.options.desiredBaseZoomLevel = Game1.options.desiredBaseZoomLevel <= configsForTheMod.MaxZoomOutLevelAndUIValue ? configsForTheMod.MaxZoomOutLevelAndUIValue : Game1.options.desiredBaseZoomLevel;
 
-            }
-            else if (Context.IsSplitScreen)
-            {
-                //Changes ZoomLevel
-                Game1.options.localCoopBaseZoomLevel = (float)Math.Round(Game1.options.localCoopBaseZoomLevel + amount, 2);
 
-                //Caps Max Zoom In Level
-                Game1.options.localCoopBaseZoomLevel = Game1.options.localCoopBaseZoomLevel >= modConfigs.MaxZoomInLevelAndUIValue ? modConfigs.MaxZoomInLevelAndUIValue : Game1.options.localCoopBaseZoomLevel;
+            CheckAndUpdateUIValues();
 
-                //Caps Max Zoom Out Level
-                Game1.options.localCoopBaseZoomLevel = Game1.options.localCoopBaseZoomLevel <= modConfigs.MaxZoomOutLevelAndUIValue ? modConfigs.MaxZoomOutLevelAndUIValue : Game1.options.localCoopBaseZoomLevel;
-            }
+
             RefreshWindow();
         }
 
         private void ChangeUILevel(float amount = 0)
         {
-            if (!Context.IsSplitScreen)
-            {
-                //Changes UI Zoom Level
-                Game1.options.singlePlayerDesiredUIScale = (float)Math.Round(Game1.options.singlePlayerDesiredUIScale + amount, 2);
+            //Changes UI Zoom Level
+            Game1.options.desiredUIScale = (float)Math.Round(Game1.options.desiredUIScale + amount, 2);
 
-                //Caps Max UI Zoom In Level
-                Game1.options.singlePlayerDesiredUIScale = Game1.options.singlePlayerDesiredUIScale >= modConfigs.MaxZoomInLevelAndUIValue ? modConfigs.MaxZoomInLevelAndUIValue : Game1.options.singlePlayerDesiredUIScale;
+            //Caps Max UI Zoom In Level
+            Game1.options.desiredUIScale = Game1.options.desiredUIScale >= configsForTheMod.MaxZoomInLevelAndUIValue ? configsForTheMod.MaxZoomInLevelAndUIValue : Game1.options.desiredUIScale;
 
-                //Caps Max UI Zoom Out Level
-                Game1.options.singlePlayerDesiredUIScale = Game1.options.singlePlayerDesiredUIScale <= modConfigs.MaxZoomOutLevelAndUIValue ? modConfigs.MaxZoomOutLevelAndUIValue : Game1.options.singlePlayerDesiredUIScale;
-
-            }
-            else if (Context.IsSplitScreen)
-            {
-                //Changes UI Zoom Level
-                Game1.options.localCoopDesiredUIScale = (float)Math.Round(Game1.options.localCoopDesiredUIScale + amount, 2);
-
-                //Caps Max UI Zoom In Level
-                Game1.options.localCoopDesiredUIScale = Game1.options.localCoopDesiredUIScale >= modConfigs.MaxZoomInLevelAndUIValue ? modConfigs.MaxZoomInLevelAndUIValue : Game1.options.localCoopDesiredUIScale;
-
-                //Caps Max UI Zoom Out Level
-                Game1.options.localCoopDesiredUIScale = Game1.options.localCoopDesiredUIScale <= modConfigs.MaxZoomOutLevelAndUIValue ? modConfigs.MaxZoomOutLevelAndUIValue : Game1.options.localCoopDesiredUIScale;
-            }
+            //Caps Max UI Zoom Out Level
+            Game1.options.desiredUIScale = Game1.options.desiredUIScale <= configsForTheMod.MaxZoomOutLevelAndUIValue ? configsForTheMod.MaxZoomOutLevelAndUIValue : Game1.options.desiredUIScale;
 
             RefreshWindow();
         }
@@ -248,21 +259,12 @@ namespace ZoomLevel
         private void RefreshWindow()
         {
             /*
-            if (!Context.IsSplitScreen)
-            {
-                //Monitor Current Zoom Level
-                this.Monitor.Log($"{Game1.options.singlePlayerBaseZoomLevel}.", LogLevel.Debug);
-                //Monitor Current UI Level
-                this.Monitor.Log($"{Game1.options.singlePlayerDesiredUIScale}.", LogLevel.Debug);
-            }
-            else if (Context.IsSplitScreen)
-            {
-                //Monitor Current Zoom Level
-                this.Monitor.Log($"{Game1.options.localCoopBaseZoomLevel}.", LogLevel.Debug);
-                //Monitor Current UI Level
-                this.Monitor.Log($"{Game1.options.localCoopDesiredUIScale}.", LogLevel.Debug);
-            }
+            //Monitor Current Zoom Level
+            this.Monitor.Log($"{Game1.options.desiredBaseZoomLevel}.", LogLevel.Debug);
+            //Monitor Current UI Level
+            this.Monitor.Log($"{Game1.options.desiredUIScale}.", LogLevel.Debug);
             */
+
             Program.gamePtr.refreshWindowSettings();
         }
     }
@@ -271,7 +273,7 @@ namespace ZoomLevel
     //Generic Mod Config Menu API
     public interface GenericModConfigMenuAPI
     {
-         
+
         /*********
         ** Methods
         *********/

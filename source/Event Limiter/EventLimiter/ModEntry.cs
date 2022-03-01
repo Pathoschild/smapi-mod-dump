@@ -9,14 +9,27 @@
 *************************************************/
 
 using System;
+using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace EventLimiter
 {
+    /// <summary>The API which lets other mods add a config UI through Generic Mod Config Menu.</summary>
+    public interface IGenericModConfigMenuApi
+    {
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
+
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
+    }
+
     public class ModEntry
         : Mod
     {
@@ -25,7 +38,6 @@ namespace EventLimiter
         // Counters for event tracking
         public static readonly PerScreen<int> EventCounterDay = new PerScreen<int>();
         public static readonly PerScreen<int> EventCounterRow = new PerScreen<int>();
-
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -41,11 +53,12 @@ namespace EventLimiter
                 this.Monitor.Log("Error reading config, using default values...", LogLevel.Warn);
                 this.Monitor.Log($"An error occured reading the config. Details:\n{ex}");
             }
-            
+
             // Add harmony patches
             Patches.Hook(harmony, this.Monitor, this.config);
 
             // Add event handlers
+            helper.Events.GameLoop.GameLaunched += this.GameLaunched;
             helper.Events.GameLoop.DayStarted += this.DayStarted;
             helper.Events.Input.ButtonPressed += this.ButtonPressed;
         }
@@ -66,6 +79,61 @@ namespace EventLimiter
             EventCounterDay.Value = 0;
             EventCounterRow.Value = 0;
             this.Monitor.Log("Resetting event counters");
+        }
+
+        private void GameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // get Generic Mod Config Menu's API (if it's installed)
+            var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+            {
+                return;
+            }         
+
+            // register mod
+            configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(this.config)
+            );
+
+            // Add EventsPerDay option
+            configMenu.AddNumberOption(
+                mod: this.ModManifest, 
+                getValue: () => this.config.EventsPerDay, 
+                setValue: value => this.config.EventsPerDay = value,
+                min: 0,
+                tooltip: () => "The maximum number of events shown in a day",
+                name: () => "Events per day");
+
+            // Add EventsInARow option
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                getValue: () => this.config.EventsInARow,
+                setValue: value => this.config.EventsInARow = value,
+                min: 0,
+                tooltip: () => "The maximum number of events shown when entering a new location",
+                name: () => "Events in a row");
+
+            // Add Exceptions option
+            configMenu.AddTextOption(
+                mod: this.ModManifest,
+                name: () => "Exceptions",
+                tooltip: () => "Event ids which will never be skipped. Enter only numbers separated by commas",
+                getValue: () => string.Join(", ", this.config.Exceptions), 
+                setValue: value => this.config.Exceptions = GetExceptionsFromString(value));
+
+
+        }
+
+        private int[] GetExceptionsFromString(string value)
+        {
+            var formattedstring = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(p => p.Trim()).ToArray();
+
+            var ints = from field in formattedstring.Where((x) => { int y; return Int32.TryParse(x, out y); })
+                       select Int32.Parse(field);
+
+            return ints.ToArray();
         }
     }
 }

@@ -17,7 +17,7 @@
 	{
 	"ShopName": "RSVJericShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -19,-74 ],
+	"CategoriesToSellHere": [ -19,-74 ],
 	"PortraitPath": "assets/JericShop.png",
 	"Quote": "Hey! How can I help you?",
 	"ClosedMessage": "Closed! Come back next time!",
@@ -27,7 +27,7 @@
 	"PriceMultiplierWhen": {
 		"0.6": ["f Jeric 2000"]
 		},
-	"When": ["NPCAt Jeric 2 13/t 900 1600"],
+	"When": ["NPCAt Jeric 2 13"],
 	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
@@ -610,7 +610,7 @@
 	{
 	"ShopName": "RSVPikaShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7 ],
+	"CategoriesToSellHere": [ -7 ],
 	"PortraitPath": "assets/PikaShop.png",
 	"Quote": "Welcome to Pika's!",
 	"ClosedMessage": "Sorry, we're closed!",
@@ -682,6 +682,38 @@
 				],
 			"Stock": 1,
 		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Springtime Primetime",
+				],
+			"Stock": 1,
+			"When": [ "!z spring/n PikaSpring" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Summer Mountain Blessing",
+				],
+			"Stock": 1,
+			"When": [ "!z summer/n PikaSummer" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Autumnal Serenity",
+				],
+			"Stock": 1,
+			"When": [ "!z fall/n PikaFall" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Winter Night Feast",
+				],
+			"Stock": 1,
+			"When": [ "!z winter/n PikaWinter" ]
+		},
 	],
 	},
 	//------------
@@ -690,7 +722,7 @@
 	{
 	"ShopName": "RSVPikaRecipes",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7 ],
+	"CategoriesToSellHere": [ -7 ],
 	"PortraitPath": "assets/PikaShop.png",
 	"Quote": "Welcome to Pika's!",
 	"ClosedMessage": "Sorry, we're closed!",
@@ -749,6 +781,38 @@
 				"Zesty Tuna",
 				],
 		},
+    {
+			"ItemType": "Object",
+      "IsRecipe": true,
+			"ItemNames": [
+				"Springtime Primetime",
+				],
+			"When": [ "!z spring/n PikaSpring" ]
+		},
+    {
+			"ItemType": "Object",
+      "IsRecipe": true,
+			"ItemNames": [
+				"Summer Mountain Blessing",
+				],
+			"When": [ "!z summer/n PikaSummer" ]
+		},
+    {
+			"ItemType": "Object",
+      "IsRecipe": true,
+			"ItemNames": [
+				"Autumnal Serenity",
+				],
+			"When": [ "!z fall/n PikaFall" ]
+		},
+    {
+			"ItemType": "Object",
+      "IsRecipe": true,
+			"ItemNames": [
+				"Winter Night Feast",
+				],
+			"When": [ "!z winter/n PikaWinter" ]
+		},
 	],
 	},
 
@@ -758,12 +822,12 @@
 	{
 	"ShopName": "RSVLolaShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7,-98 ],
+	"CategoriesToSellHere": [ -7,-98 ],
 	"PortraitPath": "assets/LolaShop.png",
 	"Quote": "Weapons available today.",
 	"MaxNumItemsSoldInStore": 2,
 	"ShopPrice": -1,
-	"DefaultSellPriceMultiplier": 1.0,
+	"DefaultSellPriceMultiplier": 10.0,
 	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
@@ -807,7 +871,7 @@
 	{
 	"ShopName": "RSVMysticFalls1",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -98 ],
+	"CategoriesToSellHere": [ -98 ],
 	"Quote": "Mystic Falls of Companions: 'Those who bond with their neighbors and share their joy and sorrow are blessed by Yoba.'",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1012,7 +1076,7 @@
 	{
 	"ShopName": "RSVMysticFalls2",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -98 ],
+	"CategoriesToSellHere": [ -98 ],
 	"Quote": "Mystic Falls of Love: 'Being able to capture the heart of someone is both a blessing and a curse. But in the presence of these waterfalls, love prefers to be a blessing.'",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1069,7 +1133,7 @@
 		},
 		{
 			"ItemType": "Weapon",
-			"ItemNames": [ "Observer's Axe", ],
+			"ItemNames": [ "Observer's Hatchet", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160133" ],
@@ -1111,7 +1175,7 @@
 	{
 	"ShopName": "RSVMysticFalls3",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -98, -95 ],
+	"CategoriesToSellHere": [ -98, -95 ],
 	"Quote": "Mystic Falls of Sacrifice: 'Among the heaviest of burdens are those carried by those who fight for the greater good.'",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1180,6 +1244,13 @@
 			"StockCurrencyStack": 100,
 			"When": [ "f Maive 2500" ],
 		},
+		{
+			"ItemType": "Object",
+			"ItemNames": [ "Old Lucky Foxtail Charm", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 1,
+			"When": [ "e 75160333" ],
+		},
 	],
 	},
 
@@ -1189,7 +1260,7 @@
 	{
 	"ShopName": "RSVFestPika",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7 ],
+	"CategoriesToSellHere": [ -7 ],
 	"Quote": "Welcome to Gus and Pika's!",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1262,7 +1333,7 @@
 	{
 	"ShopName": "RSVFestGirls",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7 ],
+	"CategoriesToSellHere": [ -7 ],
 	"Quote": "Girls rule!!",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1395,7 +1466,7 @@
 	{
 	"ShopName": "RSVFestBoys",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7 ],
+	"CategoriesToSellHere": [ -7 ],
 	"Quote": "Boys rule!!",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1522,7 +1593,7 @@
 	{
 	"ShopName": "RSVJioShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -98, -95 ],
+	"CategoriesToSellHere": [ -98, -95 ],
 	"Quote": "What do you desire?",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1568,7 +1639,7 @@
 	{
 	"ShopName": "RSVMalayaShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -7 ],
+	"CategoriesToSellHere": [ -7 ],
 	"PortraitPath": "assets/MalayaShop.png",
 	"Quote": "Welcome! What would you like, dear?",
 	"ClosedMessage": "Sorry, we're closed!",
@@ -1578,7 +1649,8 @@
 	"PriceMultiplierWhen": {
 		"0.6": ["f Malaya 2000"]
 		},
-	"When": ["t 900 1600"],
+	"When": ["t 900 1600/d Sat/w sunny",
+           "t 900 1600/w rainy"],
 	"LocalizedQuote": {
     	//remove the "//" from your language
         //"es": "PLACEHOLDER",
@@ -1676,7 +1748,7 @@
 	{
 	"ShopName": "RSVKimpoiShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -19,-74 ],
+	"CategoriesToSellHere": [ -19,-74 ],
 	"PortraitPath": "assets/KimpoiShop.png",
 	"Quote": "Seeds from our travels. Come take your pick.",
 	"ShopPrice": -1,
@@ -1684,7 +1756,7 @@
 	"PriceMultiplierWhen": {
 		"0.3": ["f Kimpoi 2000"]
 		},
-	"When": ["t 900 1600"],
+	"When": ["NPCAt Kimpoi 10 5"],
 	"ClosedMessage": "Sorry, we're closed!",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1718,6 +1790,11 @@
 	"ItemStocks": [
 		{
 			"ItemType": "Object",
+			"ItemNames": [ "Tree Fertilizer", ],
+			"StockPrice": 150,
+		},
+		{
+			"ItemType": "Object",
 			"ItemNames": [
 				"Cherry Pluot Sapling",
 				"Highland Jostaberry Sapling",
@@ -1727,7 +1804,7 @@
 				"Tropi Ugli Fruit Sapling",
 				],
 		},
-		//Year 2
+		//Year Two
 		{
 			"ItemType": "Object",
 			"ItemNames": [
@@ -1745,14 +1822,46 @@
 	{
 	"ShopName": "RSVHeapsStore",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -2,-12,-5,-6,-14,-18,-26,-27,-28,-74,-75,-79,-80,-81 ],
+	"CategoriesToSellHere": [
+		-2,
+		-4,
+		-5,
+		-6,
+		-7,
+		-8,
+		-9,
+		-12,
+		-14,
+		-15,
+		-16,
+		-17,
+		-18,
+		-19,
+		-20,
+		-21,
+		-22,
+		-23,
+		-24,
+		-25,
+		-26,
+		-27,
+		-28,
+		-74,
+		-75,
+		-79,
+		-80,
+		-81,
+		-95,
+		-96,
+		-98
+	],
 	"PortraitPath": "assets/HeapsShop.png",
 	"Quote": "Welcome! You can sell almost anything here too!",
 	"DefaultSellPriceMultiplier": 0.8,
 	"PriceMultiplierWhen": {
 		"0.6": ["f Lorenzo 2000"]
 		},
-	"When": ["t 900 1800/d Sat"],
+	"When": ["NPCAt Lorenzo 8 7"],
 	"ClosedMessage": "Sorry, we're closed!",
 	"LocalizedQuote": {
     	//remove the "//" from your language
@@ -1848,7 +1957,7 @@
 	{
 	"ShopName": "RSVFayeShop",
 	"StoreCurrency": "Money",
-	"CategoriesToSell": [ -98, -95 ],
+	"CategoriesToSellHere": [ -98, -95 ],
 	"Quote": "Place your order! Designs change everyday!",
 	"MaxNumItemsSoldInStore": 2,
 	"LocalizedQuote": {
@@ -1875,6 +1984,97 @@
 				"Village Color Shirt",
 				 ],
 			"StockPrice": 3000,
+			"Stock": 1,
+		},
+    {
+			"ItemType": "Clothing",
+			"ItemNames": [
+				"Cof-Faye Jacket",
+				 ],
+			"StockPrice": 5000,
+			"Stock": 1,
+      "When": [ "n RSV.FayeJacket" ]
+		},
+    {
+			"ItemType": "Clothing",
+			"ItemNames": [
+				"Cray-Faye Abstract Shirt",
+				 ],
+			"StockPrice": 5000,
+			"Stock": 1,
+      "When": [ "n RSV.FayeMisc" ]
+		},
+    {
+			"ItemType": "Clothing",
+			"ItemNames": [
+				"Faye-rytale Pastel",
+				 ],
+			"StockPrice": 5000,
+			"Stock": 1,
+      "When": [ "n RSV.FayePastel" ]
+		},
+	],
+	},
+
+  //------------
+	//PikaIslandShop
+	//------------
+	{
+	"ShopName": "RSVPikaIslandShop",
+	"StoreCurrency": "Money",
+	"CategoriesToSellHere": [ -7 ],
+	"PortraitPath": "assets/PikaShop.png",
+	"Quote": "Aloha! How about a nice drink to cool off?",
+	"ShopPrice": -1,
+	"MaxNumItemsSoldInStore": 6,
+	"DefaultSellPriceMultiplier": 0.7,
+	"When": ["NPCAt Pika 14 21"],
+	"LocalizedQuote": {
+    	//remove the "//" from your language
+        //"es": "PLACEHOLDER",
+        //"ko": "PLACEHOLDER",
+        //"de": "PLACEHOLDER",
+        //"fr": "PLACEHOLDER",
+        //"hu": "PLACEHOLDER",
+        //"it": "PLACEHOLDER",
+        //"ja": "PLACEHOLDER",
+        //"pt": "PLACEHOLDER",
+        //"ru": "PLACEHOLDER",
+        //"tr": "PLACEHOLDER",
+        //"zh": "PLACEHOLDER",
+    	},
+	"LocalizedClosedMessage": {
+    	//remove the "//" from your language
+        //"es": "PLACEHOLDER",
+        //"ko": "PLACEHOLDER",
+        //"de": "PLACEHOLDER",
+        //"fr": "PLACEHOLDER",
+        //"hu": "PLACEHOLDER",
+        //"it": "PLACEHOLDER",
+        //"ja": "PLACEHOLDER",
+        //"pt": "PLACEHOLDER",
+        //"ru": "PLACEHOLDER",
+        //"tr": "PLACEHOLDER",
+        //"zh": "PLACEHOLDER",
+    	},
+	"ItemStocks": [
+		//Food
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Ridgeside Shaketini",
+				"Autumn Dew Drop Juice",
+				"Cherry Berry Shakey",
+				"Snowball Slurpee",
+        "Summit Iced Tea",
+        "Apricot Juice",
+        "Clementine Juice",
+        "Wild Apple Juice",
+				"Highland Ice Cream",
+				"Snow Bowl Surprise",
+        "Holiday Ice",
+        "Tropic Mango Cake"
+				],
 			"Stock": 1,
 		},
 	],

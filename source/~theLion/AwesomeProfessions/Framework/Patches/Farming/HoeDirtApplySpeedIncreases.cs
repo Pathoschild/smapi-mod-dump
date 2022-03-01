@@ -21,7 +21,6 @@ using JetBrains.Annotations;
 using StardewValley.TerrainFeatures;
 
 using Stardew.Common.Harmony;
-using Extensions;
 
 #endregion using directives
 
@@ -38,21 +37,22 @@ internal class HoeDirtApplySpeedIncreases : BasePatch
 
     /// <summary>Patch to increase prestiged Agriculturist crop growth speed.</summary>
     [HarmonyTranspiler]
-    protected static IEnumerable<CodeInstruction> HoeDirtApplySpeedIncreasesTranspiler(
-        IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator, MethodBase original)
+    private static IEnumerable<CodeInstruction> HoeDirtApplySpeedIncreasesTranspiler(
+        IEnumerable<CodeInstruction> instructions, ILGenerator generator, MethodBase original)
     {
         var helper = new ILHelper(original, instructions);
 
-        /// Injected: if (who.professions.Contains(100 + <agriculturist_id>)) speedIncrease += 0.1f;
+        /// From: if (who.professions.Contains(<agriculturist_id>)) speedIncrease += 0.1f;
+        /// To: if (who.professions.Contains(<agriculturist_id>)) speedIncrease += who.professions.Contains(100 + <agriculturist_id>)) ? 0.2f : 0.1f;
 
-        var notPrestigedAgriculturist = iLGenerator.DefineLabel();
-        var resumeExecution = iLGenerator.DefineLabel();
+        var notPrestigedAgriculturist = generator.DefineLabel();
+        var resumeExecution = generator.DefineLabel();
         try
         {
             helper
                 .FindProfessionCheck((int) Profession.Agriculturist)
                 .Advance()
-                .FindProfessionCheck((int) Profession.Agriculturist)
+                .FindProfessionCheck((int) Profession.Agriculturist, true)
                 .AdvanceUntil(
                     new CodeInstruction(OpCodes.Ldc_R4, 0.1f)
                 )
@@ -72,6 +72,7 @@ internal class HoeDirtApplySpeedIncreases : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching prestiged Agriculturist bonus.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

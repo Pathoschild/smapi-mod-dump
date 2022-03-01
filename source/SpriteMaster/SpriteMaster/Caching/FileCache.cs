@@ -37,30 +37,33 @@ static class FileCache {
 
 	private static readonly bool SystemCompression = false;
 
-	private static readonly ThreadedTaskScheduler TaskScheduler = new(threadNameFunction: index => $"FileCache IO Thread #{index}");
+	private static readonly ThreadedTaskScheduler TaskScheduler = new(threadNameFunction: index => $"FileCache IO Thread #{index}", threadPriority: ThreadPriority.BelowNormal);
 	private static readonly TaskFactory TaskFactory = new(TaskScheduler);
+	internal static readonly ManualCondition Initialized = new(false);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static string GetPath(params string[] path) => Path.Combine(LocalDataPath, Path.Combine(path));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string GetDumpPath(params string[] path) => Path.Combine(DumpPath, Path.Combine(path));
+	internal static string GetDumpPath(params string[] path) => Path.Combine(DumpPath, Path.Combine(path)).Replace('=', '_');
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
 	private struct CacheHeader {
 		internal ulong Assembly = AssemblyHash;
 		internal ulong ConfigHash = SerializeConfig.ConfigHash;
-		internal ulong DataHash;
-		internal Vector2I Size;
-		internal PaddingQuad Padding;
-		internal Vector2I BlockPadding;
-		internal TextureFormat Format;
+		internal ulong DataHash = default;
+		internal Vector2I Size = default;
+		internal PaddingQuad Padding = default;
+		internal Vector2I BlockPadding = default;
+		internal TextureFormat Format = default;
 		[MarshalAs(UnmanagedType.U4)]
-		internal Compression.Algorithm Algorithm;
-		internal uint RefScale;
-		internal uint UncompressedDataLength;
-		internal uint DataLength;
-		internal Vector2B Wrapped;
+		internal Compression.Algorithm Algorithm = default;
+		internal uint RefScale = default;
+		internal uint UncompressedDataLength = default;
+		internal uint DataLength = default;
+		internal Vector2B Wrapped = default;
+
+		public CacheHeader() { }
 
 		[MethodImpl(Runtime.MethodImpl.Hot)]
 		internal static CacheHeader Read(BinaryReader reader) {
@@ -202,7 +205,7 @@ static class FileCache {
 
 					if (Config.FileCache.Profile) {
 						var mean_ticks = CacheProfiler.AddFetchTime((ulong)(DateTime.Now.Ticks - start_time));
-						Debug.InfoLn($"Mean Time Per Fetch: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
+						Debug.Info($"Mean Time Per Fetch: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
 					}
 
 					return true;
@@ -217,7 +220,7 @@ static class FileCache {
 							try { File.Delete(path); } catch { }
 							return false;
 						case IOException iox when WasLocked(iox):
-							Debug.TraceLn($"File was locked when trying to load cache file '{path}': {ex} - {ex.Message} [{retries} retries]");
+							Debug.Trace($"File was locked when trying to load cache file '{path}': {ex} - {ex.Message} [{retries} retries]");
 							Thread.Sleep(Config.FileCache.LockSleepMS);
 							break;
 					}
@@ -247,8 +250,6 @@ static class FileCache {
 
 		TaskFactory.StartNew(obj => {
 			var data = (byte[])obj!;
-			Thread.CurrentThread.Priority = ThreadPriority.BelowNormal;
-			using var _ = new AsyncTracker($"File Cache Write {path}");
 			bool failure = false;
 			try {
 				long start_time = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
@@ -290,15 +291,15 @@ static class FileCache {
 
 				if (Config.FileCache.Profile) {
 					var mean_ticks = CacheProfiler.AddStoreTime((ulong)(DateTime.Now.Ticks - start_time));
-					Debug.InfoLn($"Mean Time Per Store: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
+					Debug.Info($"Mean Time Per Store: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
 				}
 			}
 			catch (IOException ex) {
-				Debug.TraceLn($"Failed to write texture cache file '{path}': {ex.Message}");
+				Debug.Trace($"Failed to write texture cache file '{path}': {ex.Message}");
 				failure = true;
 			}
 			catch (Exception ex) {
-				Debug.WarningLn($"Internal Error writing texture cache file '{path}': {ex} - {ex.Message}");
+				Debug.Warning($"Internal Error writing texture cache file '{path}': {ex} - {ex.Message}");
 				failure = true;
 			}
 			if (failure) {
@@ -321,76 +322,81 @@ static class FileCache {
 	private static bool IsSymbolic(string path) => new FileInfo(path).Attributes.HasFlag(FileAttributes.ReparsePoint);
 
 	static FileCache() {
-		Config.FileCache.Compress = Compression.GetPreferredAlgorithm(Config.FileCache.Compress);
-
-		// Delete any old caches.
 		try {
-			foreach (var root in new[] { Config.LocalRoot }) {
-				var directories = Directory.EnumerateDirectories(root);
-				foreach (var directory in directories) {
-					try {
-						if (!Directory.Exists(directory)) {
-							continue;
+			Config.FileCache.Compress = Compression.GetPreferredAlgorithm(Config.FileCache.Compress);
+
+			// Delete any old caches.
+			try {
+				foreach (var root in new[] { Config.LocalRoot }) {
+					var directories = Directory.EnumerateDirectories(root);
+					foreach (var directory in directories) {
+						try {
+							if (!Directory.Exists(directory)) {
+								continue;
+							}
+							if (IsSymbolic(directory)) {
+								continue;
+							}
+							var endPath = Path.GetFileName(directory);
+							if (Config.FileCache.Purge || (endPath != CacheName && endPath != JunctionCacheName)) {
+								// If it doesn't match, it's outdated and should be deleted.
+								Directory.Delete(directory, true);
+							}
 						}
-						if (IsSymbolic(directory)) {
-							continue;
-						}
-						var endPath = Path.GetFileName(directory);
-						if (Config.FileCache.Purge || (endPath != CacheName && endPath != JunctionCacheName)) {
-							// If it doesn't match, it's outdated and should be deleted.
-							Directory.Delete(directory, true);
-						}
+						catch { /* Ignore failures */ }
 					}
-					catch { /* Ignore failures */ }
 				}
 			}
-		}
-		catch { /* Ignore failures */ }
+			catch { /* Ignore failures */ }
 
-		if (Config.FileCache.Enabled) {
+			if (Config.FileCache.Enabled) {
+				try {
+					// Create the directory path
+					Directory.CreateDirectory(LocalDataPath);
+				}
+				catch (Exception ex) {
+					ex.PrintWarning();
+				}
+				try {
+					if (Runtime.IsWindows) {
+						// Use System compression if it is preferred and no other compression algorithm is supported for some reason.
+						// https://stackoverflow.com/questions/624125/compress-a-folder-using-ntfs-compression-in-net
+						if (Config.FileCache.PreferSystemCompression || (int)Config.FileCache.Compress <= (int)Compression.Algorithm.Deflate) {
+							SystemCompression = NTFS.CompressDirectory(LocalDataPath);
+						}
+					}
+				}
+				catch (Exception ex) {
+					ex.PrintWarning();
+				}
+			}
+
 			try {
-				// Create the directory path
 				Directory.CreateDirectory(LocalDataPath);
-			}
-			catch (Exception ex) {
-				ex.PrintWarning();
-			}
-			try {
-				if (Runtime.IsWindows) {
-					// Use System compression if it is preferred and no other compression algorithm is supported for some reason.
-					// https://stackoverflow.com/questions/624125/compress-a-folder-using-ntfs-compression-in-net
-					if (Config.FileCache.PreferSystemCompression || (int)Config.FileCache.Compress <= (int)Compression.Algorithm.Deflate) {
-						SystemCompression = NTFS.CompressDirectory(LocalDataPath);
-					}
+				if (Config.Debug.Sprite.DumpReference || Config.Debug.Sprite.DumpResample) {
+					Directory.CreateDirectory(DumpPath);
 				}
 			}
 			catch (Exception ex) {
 				ex.PrintWarning();
 			}
-		}
 
-		try {
-			Directory.CreateDirectory(LocalDataPath);
-			if (Config.Debug.Sprite.DumpReference || Config.Debug.Sprite.DumpResample) {
-				Directory.CreateDirectory(DumpPath);
+			// Set up a symbolic link to aid in debugging.
+			try {
+				Directory.Delete(Path.Combine(Config.LocalRoot, JunctionCacheName), false);
 			}
+			catch { /* Ignore failure */ }
+			try {
+				CreateSymbolicLink(
+					Link: Path.Combine(Config.LocalRoot, JunctionCacheName),
+					Target: Path.Combine(LocalDataPath),
+					Type: LinkType.Directory
+				);
+			}
+			catch { /* Ignore failure */ }
 		}
-		catch (Exception ex) {
-			ex.PrintWarning();
+		finally {
+			Initialized.Set();
 		}
-
-		// Set up a symbolic link to aid in debugging.
-		try {
-			Directory.Delete(Path.Combine(Config.LocalRoot, JunctionCacheName), false);
-		}
-		catch { /* Ignore failure */ }
-		try {
-			CreateSymbolicLink(
-				Link: Path.Combine(Config.LocalRoot, JunctionCacheName),
-				Target: Path.Combine(LocalDataPath),
-				Type: LinkType.Directory
-			);
-		}
-		catch { /* Ignore failure */ }
 	}
 }

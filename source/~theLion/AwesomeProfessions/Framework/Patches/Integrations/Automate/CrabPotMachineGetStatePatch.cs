@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-namespace DaLion.Stardew.Professions.Framework.Patches.Integrations;
+namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
@@ -16,9 +16,11 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Stardew.Common.Harmony;
 using HarmonyLib;
 using JetBrains.Annotations;
-using Stardew.Common.Harmony;
+
+using Stardew.Common.Extensions;
 
 #endregion using directives
 
@@ -64,6 +66,7 @@ internal class CrabPotMachineGetStatePatch : BasePatch
         catch (Exception ex)
         {
             Log.E($"Failed while patching bait conditions for automated Crab Pots.\nHelper returned {ex}");
+            transpilationFailed = true;
             return null;
         }
 

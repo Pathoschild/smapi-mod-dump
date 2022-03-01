@@ -1,0 +1,14 @@
+{
+  "GridModeActiveByDefault": true,
+  "GridCenterPlayerKey": "Home",
+  "GridUpKey": "W",
+  "GridRightKey": "D",
+  "GridDownKey": "S",
+  "GridLeftKey": "A",
+  "MovementTypeToggle": "I",
+  "TrackingModeRead": "Home",
+  "TrackingModeCycleUp": "PageUp",
+  "TrackingModeCycleDown": "PageDown",
+  "TrackingModeGetTile": "End",
+  "TrackingToggleSortingMode": "Scroll"
+}

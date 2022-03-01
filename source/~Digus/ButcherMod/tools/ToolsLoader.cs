@@ -224,12 +224,13 @@ namespace AnimalHusbandryMod.tools
 
             bool MeatCleaverCondition(Letter l)
             {
-                return !DataLoader.ModConfig.DisableMeatToolLetter && HasAnimal() && (!ItemUtility.HasModdedItem(MeatCleaverOverrides.MeatCleaverKey) || !Game1.player.mailReceived.Contains(l.Id));
+                return !DataLoader.ModConfig.DisableMeat && !DataLoader.ModConfig.DisableMeatToolLetter && HasAnimal() && (!ItemUtility.HasModdedItem(MeatCleaverOverrides.MeatCleaverKey) || !Game1.player.mailReceived.Contains(l.Id));
             }
 
             List<string> validBuildingsForInsemination = new List<string>(new string[] { "Deluxe Barn", "Big Barn", "Deluxe Coop" });
             bool InseminationSyringeCondition(Letter l)
             {
+                if (DataLoader.ModConfig.DisablePregnancy) return false;
                 bool hasAnimalInValidBuildings = Game1.locations.Any((location) =>
                 {
                     if (location is Farm farm)
@@ -245,109 +246,95 @@ namespace AnimalHusbandryMod.tools
 
             bool FeedingBasketCondition(Letter l)
             {
-
-                return !Game1.player.mailReceived.Contains(l.Id) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 2 && (Game1.player.hasPet() || HasAnimal());
+                return !DataLoader.ModConfig.DisableTreats && !Game1.player.mailReceived.Contains(l.Id) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 2 && (Game1.player.hasPet() || HasAnimal());
             }
 
             bool FeedingBasketRedeliveryCondition(Letter l)
             {
-                
-                return Game1.player.mailReceived.Contains("feedingBasket") && !ItemUtility.HasModdedItem(FeedingBasketOverrides.FeedingBasketKey) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
+                return !DataLoader.ModConfig.DisableTreats && Game1.player.mailReceived.Contains("feedingBasket") && !ItemUtility.HasModdedItem(FeedingBasketOverrides.FeedingBasketKey) && Game1.player.getFriendshipHeartLevelForNPC("Marnie") >= 6;
             }
 
-            if (!DataLoader.ModConfig.DisableMeat)
+            Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, new List<Item> { ToolsFactory.GetMeatCleaver() }, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
             {
-                Letter meatCleaverLetter = new Letter("meatCleaver", meatCleaverText, new List<Item> { ToolsFactory.GetMeatCleaver() }, MeatCleaverCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+                GroupId = "AHM.InterdimentionalFriend",
+                Title = meatCleaverTitle
+            };
+            meatCleaverLetter.LetterTexture = _customLetterBG;
+            meatCleaverLetter.TextColor = 4;
+            MailDao.SaveLetter(meatCleaverLetter);
+
+            Letter inseminationSyringeLetter = new Letter("inseminationSyringe", DataLoader.i18n.Get("Tool.InseminationSyringe.Letter"), new List<Item> { ToolsFactory.GetInseminationSyringe() }, InseminationSyringeCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+            {
+                GroupId = "AHM.InterdimentionalFriend",
+                Title = DataLoader.i18n.Get("Tool.InseminationSyringe.Letter.Title")
+            };
+            inseminationSyringeLetter.LetterTexture = _customLetterBG;
+            inseminationSyringeLetter.TextColor = 4;
+            MailDao.SaveLetter(inseminationSyringeLetter);
+
+            MailDao.SaveLetter
+            (
+                new Letter
+                (
+                    "participantRibbon"
+                    , DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter")
+                    , new List<Item> { ToolsFactory.GetParticipantRibbon() }
+                    , (l) => !DataLoader.ModConfig.DisableAnimalContest && SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() == 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
+                    , (l) =>
+                    {
+                        Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey());
+                        if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id);
+                    })
                 {
-                    GroupId = "AHM.InterdimentionalFriend",
-                    Title = meatCleaverTitle
-                };
-                meatCleaverLetter.LetterTexture = _customLetterBG;
-                meatCleaverLetter.TextColor = 4;
-                MailDao.SaveLetter(meatCleaverLetter);
-            }
-            
-            if (!DataLoader.ModConfig.DisablePregnancy)
-            {
-                Letter inseminationSyringeLetter = new Letter("inseminationSyringe", DataLoader.i18n.Get("Tool.InseminationSyringe.Letter"), new List<Item> { ToolsFactory.GetInseminationSyringe() }, InseminationSyringeCondition, (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); })
+                    Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter.Title")
+                }
+            );
+            MailDao.SaveLetter
+            (
+                new Letter
+                (
+                    "participantRibbonRedelivery"
+                    , DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery")
+                    , new List<Item> { ToolsFactory.GetParticipantRibbon() }
+                    , (l) => !DataLoader.ModConfig.DisableAnimalContest && SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() > 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
+                    , (l) =>
+                    {
+                        Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey());
+                        if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id);
+                    })
                 {
-                    GroupId = "AHM.InterdimentionalFriend",
-                    Title = DataLoader.i18n.Get("Tool.InseminationSyringe.Letter.Title")
-                };
-                inseminationSyringeLetter.LetterTexture = _customLetterBG;
-                inseminationSyringeLetter.TextColor = 4;
-                MailDao.SaveLetter(inseminationSyringeLetter);
-            }
+                    Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery.Title")
+                }
+            );
 
-            if (!DataLoader.ModConfig.DisableAnimalContest)
-            {
-                MailDao.SaveLetter
+            MailDao.SaveLetter
+            (
+                new Letter
                 (
-                    new Letter
-                    (
-                        "participantRibbon"
-                        , DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter")
-                        , new List<Item> { ToolsFactory.GetParticipantRibbon() }
-                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() == 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
-                        , (l) =>
-                        {
-                            Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey());
-                            if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id);
-                        })
-                    {
-                        Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.Letter.Title")
-                    }
-                );
-                MailDao.SaveLetter
+                    "feedingBasket",
+                    DataLoader.i18n.Get("Tool.FeedingBasket.Letter"),
+                    new List<Item> {ToolsFactory.GetFeedingBasket()},
+                    FeedingBasketCondition,
+                    (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
+                )
+                {
+                    Title = DataLoader.i18n.Get("Tool.FeedingBasket.Letter.Title")
+                }
+            );
+            MailDao.SaveLetter
+            (
+                new Letter
                 (
-                    new Letter
-                    (
-                        "participantRibbonRedelivery"
-                        , DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery")
-                        , new List<Item> { ToolsFactory.GetParticipantRibbon() }
-                        , (l) => SDate.Now().AddDays(1).Equals(AnimalContestController.GetNextContestDate()) && AnimalContestController.GetContestCount() > 0 && !Game1.player.mailReceived.Contains(l.Id + AnimalContestController.GetNextContestDateKey())
-                        , (l) =>
-                        {
-                            Game1.player.mailReceived.Add(l.Id + AnimalContestController.GetNextContestDateKey());
-                            if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id);
-                        })
-                    {
-                        Title = DataLoader.i18n.Get("Tool.ParticipantRibbon.LetterRedelivery.Title")
-                    }
-                );
-            }
-
-            if (!DataLoader.ModConfig.DisableTreats)
-            {
-                MailDao.SaveLetter
-                (
-                    new Letter
-                    (
-                        "feedingBasket",
-                        DataLoader.i18n.Get("Tool.FeedingBasket.Letter"),
-                        new List<Item> {ToolsFactory.GetFeedingBasket()},
-                        FeedingBasketCondition,
-                        (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
-                    )
-                    {
-                        Title = DataLoader.i18n.Get("Tool.FeedingBasket.Letter.Title")
-                    }
-                );
-                MailDao.SaveLetter
-                (
-                    new Letter
-                    (
-                        "feedingBasketRedelivery",
-                        DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery"),
-                        new List<Item> { ToolsFactory.GetFeedingBasket() },
-                        FeedingBasketRedeliveryCondition,
-                        (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
-                    )
-                    {
-                        Title = DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery.Title")
-                    }
-                );
-            }
+                    "feedingBasketRedelivery",
+                    DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery"),
+                    new List<Item> { ToolsFactory.GetFeedingBasket() },
+                    FeedingBasketRedeliveryCondition,
+                    (l) => { if (!Game1.player.mailReceived.Contains(l.Id)) Game1.player.mailReceived.Add(l.Id); }
+                )
+                {
+                    Title = DataLoader.i18n.Get("Tool.FeedingBasket.LetterRedelivery.Title")
+                }
+            );
         }
 
         public void RemoveAllToolsCommand(string n, string[] d)

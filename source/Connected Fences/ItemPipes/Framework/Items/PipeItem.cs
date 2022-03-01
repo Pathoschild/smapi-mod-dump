@@ -25,86 +25,59 @@ using System.Xml.Serialization;
 using StardewValley.Network;
 using SObject = StardewValley.Object;
 using ItemPipes.Framework.Factories;
+using ItemPipes.Framework.Items;
+using ItemPipes.Framework.Items.Objects;
+
 
 
 namespace ItemPipes.Framework
 {
-	public class PipeItem : SObject
+	public abstract class PipeItem : CustomObjectItem
 	{
-        public string IDName { get; set; }
-		public string Description { get; set; }
 		[XmlIgnore]
 		public Texture2D SpriteTexture { get; set; }
-		public string SpriteTexturePath { get; set; }
 		[XmlIgnore]
-		public Texture2D ItemTexture { get; set; }
-		public string ItemTexturePath { get; set; }
+		public Texture2D DefaultSprite { get; set; }
 		[XmlIgnore]
-		public Dictionary<int, int> DrawGuide { get; set; }
-		public string State { get; set; }
-		public bool Passable { get; set; }
-		public PipeItem()
+		public Texture2D ConnectingSprite { get; set; }
+		[XmlIgnore]
+		public Texture2D ItemMovingSprite { get; set; }
+		[XmlIgnore]
+		public Dictionary<string, int> DrawGuide { get; set; }
+
+        public PipeItem() : base()
 		{
-			Name = "DEFAULT NAME";
-			Description = "DEFAULT DESCRIPTION";
-			State = "default";
-			type.Value = "Crafting";
-			canBeSetDown.Value = true;
+			DrawGuide = new Dictionary<string, int>();
+			PopulateDrawGuide();
 		}
 
-		public PipeItem(Vector2 position) : this()
+		public PipeItem(Vector2 position) : base(position)
 		{
-			Name = "DEFAULT NAME";
-			Description = "DEFAULT DESCRIPTION";
-			State = "default";
-			type.Value = "Crafting";
-			TileLocation = position;
-			base.boundingBox.Value = new Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64);
 			Passable = false;
-			canBeSetDown.Value = true;
+			DrawGuide = new Dictionary<string, int>();
+			PopulateDrawGuide();
 		}
 
-		public virtual void LoadTextures()
-		{
-			ItemTexturePath = $"assets/Pipes/{IDName}/{IDName}_Item.png";
-			ItemTexture = ModEntry.helper.Content.Load<Texture2D>(ItemTexturePath);
-			SpriteTexturePath = $"assets/Pipes/{IDName}/{IDName}_Sprite.png";
-			SpriteTexture = ModEntry.helper.Content.Load<Texture2D>(SpriteTexturePath);
-		}
+		public void Save()
+        {
+			modData.Add("State", State);
+        }
 
-		public override string getDescription()
+		public virtual void Init()
 		{
-			return Description;
-		}
-
-		protected override int getDescriptionWidth()
-		{
-			int minimum_size = 272;
-			if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.fr)
-			{
-				minimum_size = 384;
+            try
+            {
+				ItemTexture = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_Item.png");
+				DefaultSprite = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_default_Sprite.png");
+				ConnectingSprite = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_connecting_Sprite.png");
+				ItemMovingSprite = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_item_Sprite.png");
 			}
-			return Math.Max(minimum_size, (int)Game1.dialogueFont.MeasureString((Name == null) ? "" : Name).X);
-		}
+			catch(Exception e)
+            {
+				Printer.Info("Can't load pipe sprites!");
+            }
 
-		public override string getCategoryName()
-		{
-			return "Item Pipes";
-		}
-
-		public override Color getCategoryColor()
-		{
-			return Color.Black;
-		}
-
-		protected override string loadDisplayName()
-		{
-			return Name;
-		}
-
-		public override bool isPassable()
-		{
-			return Passable;
+			SpriteTexture = DefaultSprite;
 		}
 
 		public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
@@ -142,50 +115,6 @@ namespace ItemPipes.Framework
 				this.performToolAction(null, who.currentLocation);
 			}
 			return true;
-		}
-
-		public override bool placementAction(GameLocation location, int x, int y, Farmer who = null)
-		{
-			Vector2 placementTile = new Vector2(x / 64, y / 64);
-			if (location.objects.ContainsKey(placementTile))
-			{
-				return false;
-			}
-			SObject obj = ItemFactory.CreateObject(placementTile, this);
-			if (obj != null)
-			{
-				location.objects.Add(placementTile, obj);
-				location.playSound("axe");
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-
-		public override bool performToolAction(Tool t, GameLocation location)
-		{
-			if (t is Pickaxe)
-			{
-				var who = t.getLastFarmerToUse();
-				this.performRemoveAction(this.TileLocation, location);
-				Debris deb = new Debris(getOne(), who.GetToolLocation(), new Vector2(who.GetBoundingBox().Center.X, who.GetBoundingBox().Center.Y));
-				Game1.currentLocation.debris.Add(deb);
-				Game1.currentLocation.objects.Remove(this.TileLocation);
-				return false;
-			}
-			return false;
-		}
-
-		public override bool performObjectDropInAction(Item dropIn, bool probe, Farmer who)
-		{
-			return base.performObjectDropInAction(dropIn, probe, who);
-		}
-
-		public override Item getOne()
-		{
-			return ItemFactory.CreateItem(this);
 		}
 
 		public override void drawWhenHeld(SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f)
@@ -237,15 +166,181 @@ namespace ItemPipes.Framework
 
 		public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
 		{
+			string drawSum = this.GetSpriteKey(Game1.currentLocation);
+			int sourceRectPosition = DrawGuide[drawSum];
 			DataAccess DataAccess = DataAccess.GetDataAccess();
-			int sourceRectPosition = 1;
-			int drawSum = this.getDrawSum(Game1.currentLocation);
-			sourceRectPosition = GetNewDrawGuide()[drawSum];
-			SpriteTexture = Helper.GetHelper().Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_Sprite.png");
-			spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), new Rectangle(sourceRectPosition * Fence.fencePieceWidth % SpriteTexture.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / SpriteTexture.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+			if (DataAccess.LocationNodes.ContainsKey(Game1.currentLocation))
+			{
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				Node node = nodes.Find(n => n.Position.Equals(TileLocation));
+				if (node != null && node is PipeNode)
+				{
+					PipeNode pipe = (PipeNode)node;
+					float transparency = 1f;
+					if (pipe.Passable)
+					{
+						Passable = true;
+						transparency = 0.5f;
+					}
+					else
+					{
+						Passable = false;
+						transparency = 1f;
+					}
+					if (pipe.PassingItem)
+					{
+						SpriteTexture = ItemMovingSprite;
+						spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64)),
+							new Rectangle(sourceRectPosition * 16 % SpriteTexture.Bounds.Width,
+							sourceRectPosition * 16 / SpriteTexture.Bounds.Width * 16,
+							16, 16), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+						drawItem(pipe, spriteBatch, x, y);
+					}
+					else if (State == "connecting")
+					{
+						SpriteTexture = ConnectingSprite;
+						spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64)),
+							new Rectangle(sourceRectPosition * 16 % SpriteTexture.Bounds.Width,
+							sourceRectPosition * 16 / SpriteTexture.Bounds.Width * 16,
+							16, 16), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+					}
+					else
+					{
+						SpriteTexture = DefaultSprite;
+						spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64)),
+							new Rectangle(sourceRectPosition * 16 % SpriteTexture.Bounds.Width,
+							sourceRectPosition * 16 / SpriteTexture.Bounds.Width * 16,
+							16, 16), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+					}
+					/*
+					spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)),
+						new Rectangle(sourceRectPosition * Fence.fencePieceWidth % SpriteTexture.Bounds.Width,
+						sourceRectPosition * Fence.fencePieceWidth / SpriteTexture.Bounds.Width * Fence.fencePieceHeight,
+						Fence.fencePieceWidth, Fence.fencePieceHeight), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+					*/
+				}
+			}
 		}
 
-		public bool countsForDrawing(SObject adj)
+		public void drawItem(PipeNode pipe, SpriteBatch spriteBatch, int x, int y)
+		{
+			Item item = pipe.StoredItem;
+			Texture2D SpriteSheet;
+			Rectangle srcRect;
+			Vector2 originalPosition;
+			Vector2 position;
+			//How to handle drawing custom mod items
+			if (item is PipeItem)
+			{
+				PipeItem pipeItem = (PipeItem)item;
+				SpriteSheet = pipeItem.ItemTexture;
+				srcRect = new Rectangle(0, 0, 16, 16);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 16, originalPosition.Y + 64 + 16);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+			else if (item is SObject && (item as SObject).bigCraftable.Value)
+			{
+				SpriteSheet = Game1.bigCraftableSpriteSheet;
+				srcRect = SObject.getSourceRectForBigCraftable(item.ParentSheetIndex);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 23, originalPosition.Y + 64 + 10);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 1.2f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+			else if (item is Tool)
+			{
+				Tool tool = (Tool)item;
+				if (item is MeleeWeapon || item is Slingshot || item is Sword)
+				{
+					SpriteSheet = Tool.weaponsTexture;
+					srcRect = Game1.getSquareSourceRectForNonStandardTileSheet(SpriteSheet, 16, 16, tool.IndexOfMenuItemView);
+					originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+					position = new Vector2(originalPosition.X + 19, originalPosition.Y + 64 + 19);
+					spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 1.7f, SpriteEffects.None,
+						((float)(y * 64 + 32) / 10000f) + 0.002f);
+				}
+				else
+				{
+					SpriteSheet = Game1.toolSpriteSheet;
+					srcRect = Game1.getSquareSourceRectForNonStandardTileSheet(SpriteSheet, 16, 16, tool.IndexOfMenuItemView);
+					originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+					position = new Vector2(originalPosition.X + 19, originalPosition.Y + 64 + 18);
+					spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 1.7f, SpriteEffects.None,
+						((float)(y * 64 + 32) / 10000f) + 0.002f);
+				}
+			}
+			//Boots = standard
+			else if (item is Boots)
+			{
+				Boots boot = (Boots)item;
+				SpriteSheet = Game1.objectSpriteSheet;
+				srcRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, boot.indexInTileSheet.Value, 16, 16);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 18, originalPosition.Y + 64 + 16);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+			//rings = standard
+			else if (item is Ring)
+			{
+				SpriteSheet = Game1.objectSpriteSheet;
+				srcRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, item.ParentSheetIndex, 16, 16);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 10, originalPosition.Y + 64 + 14);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 2.5f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+			else if (item is Hat)
+			{
+				Hat hat = (Hat)item;
+				SpriteSheet = FarmerRenderer.hatsTexture;
+				srcRect = new Rectangle((int)hat.which * 20 % FarmerRenderer.hatsTexture.Width, (int)hat.which * 20 / FarmerRenderer.hatsTexture.Width * 20 * 4, 20, 20);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 12, originalPosition.Y + 64 + 18);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+			else if (item is Clothing)
+			{
+				Clothing cloth = (Clothing)item;
+				Color clothes_color = cloth.clothesColor;
+				if (cloth.isPrismatic.Value)
+				{
+					clothes_color = Utility.GetPrismaticColor();
+				}
+				if (cloth.clothesType.Value == 0)
+				{
+					SpriteSheet = FarmerRenderer.shirtsTexture;
+					srcRect = new Rectangle(cloth.indexInTileSheetMale.Value * 8 % 128, cloth.indexInTileSheetMale.Value * 8 / 128 * 32, 8, 8);
+					originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+					position = new Vector2(originalPosition.X + 20, originalPosition.Y + 64 + 20);
+					spriteBatch.Draw(SpriteSheet, position, srcRect, clothes_color, 0f, Vector2.Zero, 3f, SpriteEffects.None,
+						((float)(y * 64 + 32) / 10000f) + 0.002f);
+				}
+				else if (cloth.clothesType.Value == 1)
+				{
+					SpriteSheet = FarmerRenderer.pantsTexture;
+					srcRect = new Rectangle(192 * (cloth.indexInTileSheetMale.Value % (FarmerRenderer.pantsTexture.Width / 192)), 688 * (cloth.indexInTileSheetMale.Value / (FarmerRenderer.pantsTexture.Width / 192)) + 672, 16, 16);
+					originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+					position = new Vector2(originalPosition.X + 8, originalPosition.Y + 64 + 10);
+					spriteBatch.Draw(SpriteSheet, position, srcRect, clothes_color, 0f, Vector2.Zero, 3f, SpriteEffects.None,
+						((float)(y * 64 + 32) / 10000f) + 0.002f);
+				}
+			}
+			else
+			{
+				SpriteSheet = Game1.objectSpriteSheet;
+				srcRect = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, item.ParentSheetIndex, 16, 16);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 17, originalPosition.Y + 64 + 17);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 1.9f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+		}
+
+		public virtual bool countsForDrawing(SObject adj)
 		{
 			if (adj is PipeItem)
 			{
@@ -257,7 +352,7 @@ namespace ItemPipes.Framework
 			}
 
 		}
-
+		/*
 		public int getDrawSum(GameLocation location)
 		{
 			DataAccess DataAccess = DataAccess.GetDataAccess();
@@ -270,7 +365,8 @@ namespace ItemPipes.Framework
 			surroundingLocations.X += 1f;
 			//0 = 6
 			//West = 100 = 11
-			if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this))
+			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
+				|| location.objects[surroundingLocations] is PPMItem))
 			{
 				drawSum += 100;
 			}
@@ -281,7 +377,8 @@ namespace ItemPipes.Framework
 			//East = 10 = 10
 			//W + E = 110 = 8
 			surroundingLocations.X -= 2f;
-			if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this))
+			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
+				|| location.objects[surroundingLocations] is PPMItem))
 			{
 				drawSum += 10;
 			}
@@ -295,7 +392,8 @@ namespace ItemPipes.Framework
 			//S + E + W = 610
 			surroundingLocations.X += 1f;
 			surroundingLocations.Y += 1f;
-			if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this))
+			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
+				|| location.objects[surroundingLocations] is PPMItem))
 			{
 				drawSum += 500;
 			}
@@ -312,7 +410,8 @@ namespace ItemPipes.Framework
 			//N + E + S = 1600 = 1
 			//N + S + W = 1510 = 3
 			//N + E + W  + S = 1610 = 5
-			if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this))
+			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
+				|| location.objects[surroundingLocations] is PPMItem))
 			{
 				drawSum += 1000;
 			}
@@ -331,9 +430,9 @@ namespace ItemPipes.Framework
 			{
 				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
 				Node node = nodes.Find(n => n.Position.Equals(this.TileLocation));
-				if (node is ConnectorNode)
+				if (node is ConnectorPipeNode)
 				{
-					ConnectorNode connector = (ConnectorNode)node;
+					ConnectorPipeNode connector = (ConnectorPipeNode)node;
 					if (connector.PassingItem)
 					{
 						drawSum += 5;
@@ -343,7 +442,45 @@ namespace ItemPipes.Framework
 			}
 			return drawSum;
 		}
+		*/
+		public virtual string GetSpriteKey(GameLocation location)
+		{
+			string key = "";
+			Vector2 position = this.TileLocation;
+			position.Y -= 1f;
+			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
+				|| location.objects[position] is PPMItem))
+			{
+				key += "N";
+			}
+			position = this.TileLocation;
+			position.Y += 1f;
+			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
+				|| location.objects[position] is PPMItem))
+			{
+				key += "S";
+			}
+			position = this.TileLocation;
+			position.X += 1f;
+			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
+				|| location.objects[position] is PPMItem))
+			{
+				key += "W";
+			}
+			position = this.TileLocation;
+			position.X -= 1f;
+			if (location.objects.ContainsKey(position) && (location.objects[position] is PipeItem && ((PipeItem)location.objects[position]).countsForDrawing(this)
+				|| location.objects[position] is PPMItem))
+			{
+				key += "E";
+			}
+			return key;
+		}
 
+
+
+
+		/*
 		private static int GetAdjChestsSum(int drawSum, bool CN, bool CS, bool CW, bool CE)
 		{
 			switch (drawSum)
@@ -401,7 +538,8 @@ namespace ItemPipes.Framework
 			}
 			return drawSum;
 		}
-
+		*/
+		/*
 		public virtual Dictionary<int, int> GetNewDrawGuide()
 		{
 			Dictionary<int, int> DrawGuide = new Dictionary<int, int>();
@@ -439,6 +577,27 @@ namespace ItemPipes.Framework
 			DrawGuide.Add(615, 29);
 			DrawGuide.Add(1615, 30);
 			return DrawGuide;
+		}
+		*/
+		public virtual void PopulateDrawGuide()
+		{
+			DrawGuide.Clear();
+			DrawGuide.Add("", 0);
+			DrawGuide.Add("N", 1);
+			DrawGuide.Add("S", 2);
+			DrawGuide.Add("W", 3);
+			DrawGuide.Add("E", 4);
+			DrawGuide.Add("NS", 5);
+			DrawGuide.Add("NW", 6);
+			DrawGuide.Add("NE", 7);
+			DrawGuide.Add("SW", 8);
+			DrawGuide.Add("SE", 9);
+			DrawGuide.Add("WE", 10);
+			DrawGuide.Add("NSW", 11);
+			DrawGuide.Add("NSE", 12);
+			DrawGuide.Add("NWE", 13);
+			DrawGuide.Add("SWE", 14);
+			DrawGuide.Add("NSWE", 15);
 		}
 	}
 }

@@ -58,168 +58,202 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="mainContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="MainContainer.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="mainContainer.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="MainContainer.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
-  </data>
-  <data name="previewBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="previewBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="previewBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1292, 942</value>
-  </data>
-  <data name="previewBox.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>CenterImage</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="previewBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;previewBox.Name" xml:space="preserve">
-    <value>previewBox</value>
-  </data>
-  <data name="&gt;&gt;previewBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;previewBox.Parent" xml:space="preserve">
-    <value>mainContainer.Panel1</value>
-  </data>
-  <data name="&gt;&gt;previewBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;mainContainer.Panel1.Name" xml:space="preserve">
-    <value>mainContainer.Panel1</value>
-  </data>
-  <data name="&gt;&gt;mainContainer.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mainContainer.Panel1.Parent" xml:space="preserve">
-    <value>mainContainer</value>
-  </data>
-  <data name="&gt;&gt;mainContainer.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="alphaPremultiplication.AutoSize" type="System.Boolean, mscorlib">
+  <data name="MainContainer.Panel1.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="alphaPremultiplication.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="BackgroundColorButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
   </data>
-  <data name="alphaPremultiplication.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 293</value>
+  <data name="BackgroundColorButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="alphaPremultiplication.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 19</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BackgroundColorButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="alphaPremultiplication.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+  <data name="BackgroundColorButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="alphaPremultiplication.Text" xml:space="preserve">
-    <value>Alpha Premultiplication</value>
-  </data>
-  <data name="&gt;&gt;alphaPremultiplication.Name" xml:space="preserve">
-    <value>alphaPremultiplication</value>
-  </data>
-  <data name="&gt;&gt;alphaPremultiplication.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;alphaPremultiplication.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;alphaPremultiplication.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="gammaCorrection.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="gammaCorrection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>157, 268</value>
-  </data>
-  <data name="gammaCorrection.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 19</value>
-  </data>
-  <data name="gammaCorrection.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="gammaCorrection.Text" xml:space="preserve">
-    <value>Gamma Correction</value>
-  </data>
-  <data name="&gt;&gt;gammaCorrection.Name" xml:space="preserve">
-    <value>gammaCorrection</value>
-  </data>
-  <data name="&gt;&gt;gammaCorrection.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gammaCorrection.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;gammaCorrection.ZOrder" xml:space="preserve">
+  <data name="BackgroundColorButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="currentCenterDirectionBias.AutoSize" type="System.Boolean, mscorlib">
+  <data name="BackgroundColorButton.Text" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="BackgroundColorButton.TextImageRelation" type="System.Windows.Forms.TextImageRelation, System.Windows.Forms">
+    <value>TextAboveImage</value>
+  </data>
+  <data name="&gt;&gt;BackgroundColorButton.Name" xml:space="preserve">
+    <value>BackgroundColorButton</value>
+  </data>
+  <data name="&gt;&gt;BackgroundColorButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BackgroundColorButton.Parent" xml:space="preserve">
+    <value>MainContainer.Panel1</value>
+  </data>
+  <data name="&gt;&gt;BackgroundColorButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ImagePreviewBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="ImagePreviewBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1292, 942</value>
+  </data>
+  <data name="ImagePreviewBox.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="ImagePreviewBox.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;ImagePreviewBox.Name" xml:space="preserve">
+    <value>ImagePreviewBox</value>
+  </data>
+  <data name="&gt;&gt;ImagePreviewBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ImagePreviewBox.Parent" xml:space="preserve">
+    <value>MainContainer.Panel1</value>
+  </data>
+  <data name="&gt;&gt;ImagePreviewBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;MainContainer.Panel1.Name" xml:space="preserve">
+    <value>MainContainer.Panel1</value>
+  </data>
+  <data name="&gt;&gt;MainContainer.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;MainContainer.Panel1.Parent" xml:space="preserve">
+    <value>MainContainer</value>
+  </data>
+  <data name="&gt;&gt;MainContainer.Panel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="AlphaPremultiplication.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="currentCenterDirectionBias.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="AlphaPremultiplication.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="currentCenterDirectionBias.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="AlphaPremultiplication.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 293</value>
+  </data>
+  <data name="AlphaPremultiplication.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 19</value>
+  </data>
+  <data name="AlphaPremultiplication.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="AlphaPremultiplication.Text" xml:space="preserve">
+    <value>Alpha Premultiplication</value>
+  </data>
+  <data name="&gt;&gt;AlphaPremultiplication.Name" xml:space="preserve">
+    <value>AlphaPremultiplication</value>
+  </data>
+  <data name="&gt;&gt;AlphaPremultiplication.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AlphaPremultiplication.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;AlphaPremultiplication.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="GammaCorrection.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="GammaCorrection.Location" type="System.Drawing.Point, System.Drawing">
+    <value>157, 268</value>
+  </data>
+  <data name="GammaCorrection.Size" type="System.Drawing.Size, System.Drawing">
+    <value>127, 19</value>
+  </data>
+  <data name="GammaCorrection.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="GammaCorrection.Text" xml:space="preserve">
+    <value>Gamma Correction</value>
+  </data>
+  <data name="&gt;&gt;GammaCorrection.Name" xml:space="preserve">
+    <value>GammaCorrection</value>
+  </data>
+  <data name="&gt;&gt;GammaCorrection.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;GammaCorrection.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
+  </data>
+  <data name="&gt;&gt;GammaCorrection.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="CenterDirectionBiasCurrent.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="CenterDirectionBiasCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CenterDirectionBiasCurrent.Location" type="System.Drawing.Point, System.Drawing">
     <value>273, 218</value>
   </data>
-  <data name="currentCenterDirectionBias.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="CenterDirectionBiasCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 15</value>
   </data>
-  <data name="currentCenterDirectionBias.TabIndex" type="System.Int32, mscorlib">
+  <data name="CenterDirectionBiasCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="currentCenterDirectionBias.Text" xml:space="preserve">
+  <data name="CenterDirectionBiasCurrent.Text" xml:space="preserve">
     <value>3.0</value>
   </data>
-  <data name="&gt;&gt;currentCenterDirectionBias.Name" xml:space="preserve">
-    <value>currentCenterDirectionBias</value>
+  <data name="&gt;&gt;CenterDirectionBiasCurrent.Name" xml:space="preserve">
+    <value>CenterDirectionBiasCurrent</value>
   </data>
-  <data name="&gt;&gt;currentCenterDirectionBias.Type" xml:space="preserve">
+  <data name="&gt;&gt;CenterDirectionBiasCurrent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;currentCenterDirectionBias.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;CenterDirectionBiasCurrent.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;currentCenterDirectionBias.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;CenterDirectionBiasCurrent.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="label7.AutoSize" type="System.Boolean, mscorlib">
+  <data name="CenterDirectionBiasLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="CenterDirectionBiasLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="CenterDirectionBiasLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 218</value>
   </data>
-  <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="CenterDirectionBiasLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 15</value>
   </data>
-  <data name="label7.TabIndex" type="System.Int32, mscorlib">
+  <data name="CenterDirectionBiasLabel.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="label7.Text" xml:space="preserve">
+  <data name="CenterDirectionBiasLabel.Text" xml:space="preserve">
     <value>Center Direction Bias</value>
   </data>
-  <data name="&gt;&gt;label7.Name" xml:space="preserve">
-    <value>label7</value>
+  <data name="&gt;&gt;CenterDirectionBiasLabel.Name" xml:space="preserve">
+    <value>CenterDirectionBiasLabel</value>
   </data>
-  <data name="&gt;&gt;label7.Type" xml:space="preserve">
+  <data name="&gt;&gt;CenterDirectionBiasLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label7.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;CenterDirectionBiasLabel.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;CenterDirectionBiasLabel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="CenterDirectionBias.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -241,69 +275,69 @@
     <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CenterDirectionBias.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+    <value>MainContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;CenterDirectionBias.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="currentSteepDirectionThreshold.AutoSize" type="System.Boolean, mscorlib">
+  <data name="SteepDirectionThresholdCurrent.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="currentSteepDirectionThreshold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="SteepDirectionThresholdCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="currentSteepDirectionThreshold.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="SteepDirectionThresholdCurrent.Location" type="System.Drawing.Point, System.Drawing">
     <value>273, 172</value>
   </data>
-  <data name="currentSteepDirectionThreshold.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="SteepDirectionThresholdCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 15</value>
   </data>
-  <data name="currentSteepDirectionThreshold.TabIndex" type="System.Int32, mscorlib">
+  <data name="SteepDirectionThresholdCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="currentSteepDirectionThreshold.Text" xml:space="preserve">
+  <data name="SteepDirectionThresholdCurrent.Text" xml:space="preserve">
     <value>2.2</value>
   </data>
-  <data name="&gt;&gt;currentSteepDirectionThreshold.Name" xml:space="preserve">
-    <value>currentSteepDirectionThreshold</value>
+  <data name="&gt;&gt;SteepDirectionThresholdCurrent.Name" xml:space="preserve">
+    <value>SteepDirectionThresholdCurrent</value>
   </data>
-  <data name="&gt;&gt;currentSteepDirectionThreshold.Type" xml:space="preserve">
+  <data name="&gt;&gt;SteepDirectionThresholdCurrent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;currentSteepDirectionThreshold.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;SteepDirectionThresholdCurrent.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;currentSteepDirectionThreshold.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;SteepDirectionThresholdCurrent.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+  <data name="SteepDirectionThresholdLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="SteepDirectionThresholdLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="SteepDirectionThresholdLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 172</value>
   </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="SteepDirectionThresholdLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>142, 15</value>
   </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+  <data name="SteepDirectionThresholdLabel.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
+  <data name="SteepDirectionThresholdLabel.Text" xml:space="preserve">
     <value>Steep Direction Threshold</value>
   </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
+  <data name="&gt;&gt;SteepDirectionThresholdLabel.Name" xml:space="preserve">
+    <value>SteepDirectionThresholdLabel</value>
   </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+  <data name="&gt;&gt;SteepDirectionThresholdLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;SteepDirectionThresholdLabel.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;SteepDirectionThresholdLabel.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="SteepDirectionThreshold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -325,336 +359,258 @@
     <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SteepDirectionThreshold.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+    <value>MainContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;SteepDirectionThreshold.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="currentDominantDirectionThreshold.AutoSize" type="System.Boolean, mscorlib">
+  <data name="DominantDirectionThresholdCurrent.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="currentDominantDirectionThreshold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="DominantDirectionThresholdCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="currentDominantDirectionThreshold.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="DominantDirectionThresholdCurrent.Location" type="System.Drawing.Point, System.Drawing">
     <value>273, 123</value>
   </data>
-  <data name="currentDominantDirectionThreshold.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="DominantDirectionThresholdCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 15</value>
   </data>
-  <data name="currentDominantDirectionThreshold.TabIndex" type="System.Int32, mscorlib">
+  <data name="DominantDirectionThresholdCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="currentDominantDirectionThreshold.Text" xml:space="preserve">
+  <data name="DominantDirectionThresholdCurrent.Text" xml:space="preserve">
     <value>4.4</value>
   </data>
-  <data name="&gt;&gt;currentDominantDirectionThreshold.Name" xml:space="preserve">
-    <value>currentDominantDirectionThreshold</value>
+  <data name="&gt;&gt;DominantDirectionThresholdCurrent.Name" xml:space="preserve">
+    <value>DominantDirectionThresholdCurrent</value>
   </data>
-  <data name="&gt;&gt;currentDominantDirectionThreshold.Type" xml:space="preserve">
+  <data name="&gt;&gt;DominantDirectionThresholdCurrent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;currentDominantDirectionThreshold.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;DominantDirectionThresholdCurrent.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;currentDominantDirectionThreshold.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;DominantDirectionThresholdCurrent.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="ddt_label.AutoSize" type="System.Boolean, mscorlib">
+  <data name="DominantDirectionThresholdLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="ddt_label.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="DominantDirectionThresholdLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="ddt_label.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="DominantDirectionThresholdLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 123</value>
   </data>
-  <data name="ddt_label.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="DominantDirectionThresholdLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>166, 15</value>
   </data>
-  <data name="ddt_label.TabIndex" type="System.Int32, mscorlib">
+  <data name="DominantDirectionThresholdLabel.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="ddt_label.Text" xml:space="preserve">
+  <data name="DominantDirectionThresholdLabel.Text" xml:space="preserve">
     <value>Dominant Direction Threshold</value>
   </data>
-  <data name="&gt;&gt;ddt_label.Name" xml:space="preserve">
-    <value>ddt_label</value>
+  <data name="&gt;&gt;DominantDirectionThresholdLabel.Name" xml:space="preserve">
+    <value>DominantDirectionThresholdLabel</value>
   </data>
-  <data name="&gt;&gt;ddt_label.Type" xml:space="preserve">
+  <data name="&gt;&gt;DominantDirectionThresholdLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ddt_label.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;DominantDirectionThresholdLabel.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;ddt_label.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;DominantDirectionThresholdLabel.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="dominantDirectionThreshold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="DominantDirectionThreshold.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="dominantDirectionThreshold.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="DominantDirectionThreshold.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 142</value>
   </data>
-  <data name="dominantDirectionThreshold.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="DominantDirectionThreshold.Size" type="System.Drawing.Size, System.Drawing">
     <value>294, 18</value>
   </data>
-  <data name="dominantDirectionThreshold.TabIndex" type="System.Int32, mscorlib">
+  <data name="DominantDirectionThreshold.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;dominantDirectionThreshold.Name" xml:space="preserve">
-    <value>dominantDirectionThreshold</value>
+  <data name="&gt;&gt;DominantDirectionThreshold.Name" xml:space="preserve">
+    <value>DominantDirectionThreshold</value>
   </data>
-  <data name="&gt;&gt;dominantDirectionThreshold.Type" xml:space="preserve">
+  <data name="&gt;&gt;DominantDirectionThreshold.Type" xml:space="preserve">
     <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;dominantDirectionThreshold.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;DominantDirectionThreshold.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;dominantDirectionThreshold.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;DominantDirectionThreshold.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="currentEqualColorTolerance.AutoSize" type="System.Boolean, mscorlib">
+  <data name="EqualColorToleranceCurrent.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="currentEqualColorTolerance.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="EqualColorToleranceCurrent.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="currentEqualColorTolerance.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="EqualColorToleranceCurrent.Location" type="System.Drawing.Point, System.Drawing">
     <value>273, 74</value>
   </data>
-  <data name="currentEqualColorTolerance.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="EqualColorToleranceCurrent.Size" type="System.Drawing.Size, System.Drawing">
     <value>19, 15</value>
   </data>
-  <data name="currentEqualColorTolerance.TabIndex" type="System.Int32, mscorlib">
+  <data name="EqualColorToleranceCurrent.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="currentEqualColorTolerance.Text" xml:space="preserve">
+  <data name="EqualColorToleranceCurrent.Text" xml:space="preserve">
     <value>20</value>
   </data>
-  <data name="&gt;&gt;currentEqualColorTolerance.Name" xml:space="preserve">
-    <value>currentEqualColorTolerance</value>
+  <data name="&gt;&gt;EqualColorToleranceCurrent.Name" xml:space="preserve">
+    <value>EqualColorToleranceCurrent</value>
   </data>
-  <data name="&gt;&gt;currentEqualColorTolerance.Type" xml:space="preserve">
+  <data name="&gt;&gt;EqualColorToleranceCurrent.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;currentEqualColorTolerance.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;EqualColorToleranceCurrent.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;currentEqualColorTolerance.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;EqualColorToleranceCurrent.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="EqualColorToleranceLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="EqualColorToleranceLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="EqualColorToleranceLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 74</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="EqualColorToleranceLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>121, 15</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+  <data name="EqualColorToleranceLabel.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
+  <data name="EqualColorToleranceLabel.Text" xml:space="preserve">
     <value>Equal Color Tolerance</value>
   </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
+  <data name="&gt;&gt;EqualColorToleranceLabel.Name" xml:space="preserve">
+    <value>EqualColorToleranceLabel</value>
   </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;EqualColorToleranceLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;EqualColorToleranceLabel.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;EqualColorToleranceLabel.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="equalColorTolerance.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="EqualColorTolerance.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="equalColorTolerance.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="EqualColorTolerance.Location" type="System.Drawing.Point, System.Drawing">
     <value>14, 93</value>
   </data>
-  <data name="equalColorTolerance.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="EqualColorTolerance.Size" type="System.Drawing.Size, System.Drawing">
     <value>294, 18</value>
   </data>
-  <data name="equalColorTolerance.TabIndex" type="System.Int32, mscorlib">
+  <data name="EqualColorTolerance.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;equalColorTolerance.Name" xml:space="preserve">
-    <value>equalColorTolerance</value>
+  <data name="&gt;&gt;EqualColorTolerance.Name" xml:space="preserve">
+    <value>EqualColorTolerance</value>
   </data>
-  <data name="&gt;&gt;equalColorTolerance.Type" xml:space="preserve">
+  <data name="&gt;&gt;EqualColorTolerance.Type" xml:space="preserve">
     <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;equalColorTolerance.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;EqualColorTolerance.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;equalColorTolerance.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;EqualColorTolerance.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="currentLuminanceWeight.AutoSize" type="System.Boolean, mscorlib">
+  <data name="ScaleLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="currentLuminanceWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>273, 26</value>
-  </data>
-  <data name="currentLuminanceWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>22, 15</value>
-  </data>
-  <data name="currentLuminanceWeight.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="currentLuminanceWeight.Text" xml:space="preserve">
-    <value>1.0</value>
-  </data>
-  <data name="&gt;&gt;currentLuminanceWeight.Name" xml:space="preserve">
-    <value>currentLuminanceWeight</value>
-  </data>
-  <data name="&gt;&gt;currentLuminanceWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;currentLuminanceWeight.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;currentLuminanceWeight.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 26</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 15</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Luminance Weight</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="luminanceWeight.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 45</value>
-  </data>
-  <data name="luminanceWeight.Size" type="System.Drawing.Size, System.Drawing">
-    <value>294, 18</value>
-  </data>
-  <data name="luminanceWeight.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;luminanceWeight.Name" xml:space="preserve">
-    <value>luminanceWeight</value>
-  </data>
-  <data name="&gt;&gt;luminanceWeight.Type" xml:space="preserve">
-    <value>System.Windows.Forms.HScrollBar, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;luminanceWeight.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
-  </data>
-  <data name="&gt;&gt;luminanceWeight.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="ScaleLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>157, 2</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ScaleLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>34, 15</value>
   </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="ScaleLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
+  <data name="ScaleLabel.Text" xml:space="preserve">
     <value>Scale</value>
   </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
+  <data name="&gt;&gt;ScaleLabel.Name" xml:space="preserve">
+    <value>ScaleLabel</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;ScaleLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;ScaleLabel.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>17</value>
+  <data name="&gt;&gt;ScaleLabel.ZOrder" xml:space="preserve">
+    <value>14</value>
   </data>
-  <data name="scale.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Right</value>
+  <data name="ScaleChanger.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="scale.Location" type="System.Drawing.Point, System.Drawing">
-    <value>197, 0</value>
-  </data>
-  <data name="scale.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ScaleChanger.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 23</value>
   </data>
-  <data name="scale.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="ScaleChanger.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
   </data>
-  <data name="&gt;&gt;scale.Name" xml:space="preserve">
-    <value>scale</value>
+  <data name="&gt;&gt;ScaleChanger.Name" xml:space="preserve">
+    <value>ScaleChanger</value>
   </data>
-  <data name="&gt;&gt;scale.Type" xml:space="preserve">
+  <data name="&gt;&gt;ScaleChanger.Type" xml:space="preserve">
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;scale.Parent" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;ScaleChanger.Parent" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;scale.ZOrder" xml:space="preserve">
-    <value>18</value>
+  <data name="&gt;&gt;ScaleChanger.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Panel2.Name" xml:space="preserve">
-    <value>mainContainer.Panel2</value>
+  <data name="&gt;&gt;MainContainer.Panel2.Name" xml:space="preserve">
+    <value>MainContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Panel2.Type" xml:space="preserve">
+  <data name="&gt;&gt;MainContainer.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Panel2.Parent" xml:space="preserve">
-    <value>mainContainer</value>
+  <data name="&gt;&gt;MainContainer.Panel2.Parent" xml:space="preserve">
+    <value>MainContainer</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Panel2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;MainContainer.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="mainContainer.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="MainContainer.Size" type="System.Drawing.Size, System.Drawing">
     <value>1613, 942</value>
   </data>
-  <data name="mainContainer.SplitterDistance" type="System.Int32, mscorlib">
+  <data name="MainContainer.SplitterDistance" type="System.Int32, mscorlib">
     <value>1292</value>
   </data>
-  <data name="mainContainer.TabIndex" type="System.Int32, mscorlib">
+  <data name="MainContainer.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Name" xml:space="preserve">
-    <value>mainContainer</value>
+  <data name="&gt;&gt;MainContainer.Name" xml:space="preserve">
+    <value>MainContainer</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Type" xml:space="preserve">
+  <data name="&gt;&gt;MainContainer.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;mainContainer.Parent" xml:space="preserve">
+  <data name="&gt;&gt;MainContainer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;mainContainer.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;MainContainer.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

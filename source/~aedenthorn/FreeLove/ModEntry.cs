@@ -40,6 +40,9 @@ namespace FreeLove
         public static string spouseToDivorce = null;
         public static int divorceHeartsLost;
 
+        public static Dictionary<long, Dictionary<string, NPC>> currentSpouses = new Dictionary<long, Dictionary<string, NPC>>();
+        public static Dictionary<long, Dictionary<string, NPC>> currentUnofficialSpouses = new Dictionary<long, Dictionary<string, NPC>>();
+
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
@@ -55,11 +58,11 @@ namespace FreeLove
             mp = helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
             myRand = new Random();
 
+            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle; ;
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
             helper.Events.GameLoop.SaveLoaded += GameLoop_SaveLoaded;
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
-
             PathFindControllerPatches.Initialize(Monitor, Config, helper);
             Integrations.Initialize(Monitor, Config, helper);
             Divorce.Initialize(Monitor, Config, helper);
@@ -79,7 +82,7 @@ namespace FreeLove
                original: AccessTools.Method(typeof(NPC), nameof(NPC.marriageDuties)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_marriageDuties_Postfix))
             );
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.getSpouse)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_getSpouse_Prefix))
@@ -99,7 +102,7 @@ namespace FreeLove
                original: AccessTools.Method(typeof(NPC), nameof(NPC.isMarriedOrEngaged)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_isMarriedOrEngaged_Prefix))
             );
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.tryToReceiveActiveObject)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_tryToReceiveActiveObject_Prefix)),
@@ -112,7 +115,12 @@ namespace FreeLove
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_engagementResponse_Prefix)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_engagementResponse_Postfix))
             );
-
+            
+            harmony.Patch(
+               original: AccessTools.Method(typeof(NPC), nameof(NPC.setUpForOutdoorPatioActivity)),
+               prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_setUpForOutdoorPatioActivity_Prefix))
+            );
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.playSleepingAnimation)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_playSleepingAnimation_Postfix))
@@ -129,11 +137,11 @@ namespace FreeLove
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_loadCurrentDialogue_Prefix)),
                postfix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_loadCurrentDialogue_Postfix))
             );
-
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.tryToRetrieveDialogue)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_tryToRetrieveDialogue_Prefix))
             );
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
                prefix: new HarmonyMethod(typeof(NPCPatches), nameof(NPCPatches.NPC_checkAction_Prefix))
@@ -148,7 +156,7 @@ namespace FreeLove
             );
 
             // Path patches
-
+            
             harmony.Patch(
                original: AccessTools.Constructor(typeof(PathFindController), new Type[] { typeof(Character), typeof(GameLocation), typeof(Point), typeof(int), typeof(bool), typeof(bool) }),
                prefix: new HarmonyMethod(typeof(PathFindControllerPatches), nameof(PathFindControllerPatches.PathFindController_Prefix))
@@ -161,10 +169,10 @@ namespace FreeLove
                original: AccessTools.Constructor(typeof(PathFindController), new Type[] { typeof(Character), typeof(GameLocation), typeof(Point), typeof(int) }),
                prefix: new HarmonyMethod(typeof(PathFindControllerPatches), nameof(PathFindControllerPatches.PathFindController_Prefix))
             );
-
+            
 
             // Location patches
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.GetSpouseBed)),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_GetSpouseBed_Postfix))
@@ -174,7 +182,7 @@ namespace FreeLove
                original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.getSpouseBedSpot)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_getSpouseBedSpot_Prefix))
             );
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(Beach), nameof(Beach.checkAction)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Beach_checkAction_Prefix))
@@ -184,12 +192,12 @@ namespace FreeLove
                original: AccessTools.Method(typeof(Beach), "resetLocalState"),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Beach_resetLocalState_Postfix))
             );
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(GameLocation), "checkEventPrecondition"),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.GameLocation_checkEventPrecondition_Prefix))
             );
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(Desert), nameof(Desert.getDesertMerchantTradeStock)),
                postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.Desert_getDesertMerchantTradeStock_Postfix))
@@ -215,21 +223,21 @@ namespace FreeLove
 
             harmony.Patch(
                original: AccessTools.Method(typeof(Utility), nameof(Utility.pickPersonalFarmEvent)),
-               prefix: new HarmonyMethod(typeof(Pregnancy), nameof(Pregnancy.Utility_pickPersonalFarmEvent_Prefix))
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Utility_pickPersonalFarmEvent_Prefix))
             );
             harmony.Patch(
                original: AccessTools.Method(typeof(QuestionEvent), nameof(QuestionEvent.setUp)),
-               prefix: new HarmonyMethod(typeof(Pregnancy), nameof(Pregnancy.QuestionEvent_setUp_Prefix))
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.QuestionEvent_setUp_Prefix))
             );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(BirthingEvent), nameof(BirthingEvent.setUp)),
-               prefix: new HarmonyMethod(typeof(Pregnancy), nameof(Pregnancy.BirthingEvent_setUp_Prefix))
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.BirthingEvent_setUp_Prefix))
             );
 
             harmony.Patch(
                original: AccessTools.Method(typeof(BirthingEvent), nameof(BirthingEvent.tickUpdate)),
-               prefix: new HarmonyMethod(typeof(Pregnancy), nameof(Pregnancy.BirthingEvent_tickUpdate_Prefix))
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.BirthingEvent_tickUpdate_Prefix))
             );
 
 
@@ -239,7 +247,7 @@ namespace FreeLove
                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.doDivorce)),
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_doDivorce_Prefix))
             );
-
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.isMarried)),
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_isMarried_Prefix))
@@ -249,16 +257,16 @@ namespace FreeLove
                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.getSpouse)),
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_getSpouse_Prefix))
             );
-
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.GetSpouseFriendship)),
+               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_GetSpouseFriendship_Prefix))
+            );
+            
             harmony.Patch(
                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.checkAction)),
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_checkAction_Prefix))
             );
 
-            harmony.Patch(
-               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.GetSpouseFriendship)),
-               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_GetSpouseFriendship_Prefix))
-            );
 
             // UI patches
 
@@ -287,6 +295,8 @@ namespace FreeLove
             );
 
         }
+
+
         public override object GetApi()
         {
             return new FreeLoveAPI();

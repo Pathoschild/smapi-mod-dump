@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
@@ -34,8 +35,7 @@ using SObject = StardewValley.Object;
 /// <summary>Manages treasure hunt events for Scavenger professions.</summary>
 internal class ScavengerHunt : TreasureHunt
 {
-    private readonly IEnumerable<int> _artifactsThatCanBeFound = new HashSet<int>
-    {
+    private readonly int[] _artifactsThatCanBeFound = {
         100, // chipped amphora
         101, // arrowhead
         103, // ancient doll
@@ -53,8 +53,6 @@ internal class ScavengerHunt : TreasureHunt
         588 // palm fossil
     };
 
-    #region public methods
-
     /// <summary>Construct an instance.</summary>
     public ScavengerHunt()
     {
@@ -63,8 +61,17 @@ internal class ScavengerHunt : TreasureHunt
         iconSourceRect = new(80, 656, 16, 16);
     }
 
-    /// <summary>Try to start a new scavenger hunt at this location.</summary>
-    /// <param name="location">The game location.</param>
+    #region public methods
+
+    /// <inheritdoc />
+    public override void Fail()
+    {
+        Game1.addHUDMessage(new HuntNotification(huntFailedMessage));
+        Game1.player.WriteData(DataField.ScavengerHuntStreak, "0");
+        End(false);
+    }
+
+    /// <inheritdoc />
     public override void TryStartNewHunt(GameLocation location)
     {
         if (!base.TryStartNewHunt()) return;
@@ -78,13 +85,23 @@ internal class ScavengerHunt : TreasureHunt
         timeLimit = Math.Max(timeLimit, 30);
 
         elapsed = 0;
-        EventManager.Enable(typeof(IndicatorUpdateTickedEvent), typeof(ScavengerHuntRenderedHudEvent),
+        EventManager.Enable(typeof(PointerUpdateTickedEvent), typeof(ScavengerHuntRenderedHudEvent),
             typeof(ScavengerHuntUpdateTickedEvent));
         Game1.addHUDMessage(new HuntNotification(huntStartedMessage, iconSourceRect));
+        if (!Context.IsMultiplayer || Context.IsMainPlayer ||
+            !Game1.player.HasProfession(Profession.Scavenger, true)) return;
+        
+        Framework.Utility.Multiplayer.SendPublicChat($"{Game1.player.Name} is hunting for treasure.");
+        ModEntry.ModHelper.Multiplayer.SendMessage("HuntIsOn", "RequestEvent",
+            new[] {ModEntry.Manifest.UniqueID}, new[] {Game1.MasterPlayer.UniqueMultiplayerID});
     }
 
+    #endregion public methods
+
+    #region protected methods
+
     /// <inheritdoc />
-    public override Vector2? ChooseTreasureTile(GameLocation location)
+    protected override Vector2? ChooseTreasureTile(GameLocation location)
     {
         Vector2 v;
         var failsafe = 0;
@@ -108,18 +125,6 @@ internal class ScavengerHunt : TreasureHunt
     }
 
     /// <inheritdoc />
-    public override void Fail()
-    {
-        End();
-        Game1.addHUDMessage(new HuntNotification(huntFailedMessage));
-        ModData.Write(DataField.ScavengerHuntStreak, "0");
-    }
-
-    #endregion public methods
-
-    #region protected methods
-
-    /// <inheritdoc />
     protected override void CheckForCompletion()
     {
         if (Game1.player.CurrentTool is not Hoe || !Game1.player.UsingTool) return;
@@ -128,17 +133,25 @@ internal class ScavengerHunt : TreasureHunt
             (int) (Game1.player.GetToolLocation().Y / Game1.tileSize));
         if (TreasureTile is null || actionTile != TreasureTile.Value) return;
 
-        End();
         var getTreasure = new DelayedAction(200, BeginFindTreasure);
         Game1.delayedActions.Add(getTreasure);
-        ModData.Increment<uint>(DataField.ScavengerHuntStreak);
+        Game1.player.IncrementData<uint>(DataField.ScavengerHuntStreak);
+        End(true);
     }
 
     /// <inheritdoc />
-    protected override void End()
+    protected override void End(bool successful)
     {
         EventManager.Disable(typeof(ScavengerHuntRenderedHudEvent), typeof(ScavengerHuntUpdateTickedEvent));
         TreasureTile = null;
+        if (!Context.IsMultiplayer || Context.IsMainPlayer ||
+            !Game1.player.HasProfession(Profession.Scavenger, true)) return;
+
+        Framework.Utility.Multiplayer.SendPublicChat(successful
+            ? $"{Game1.player.Name} has found the treasure!"
+            : $"{Game1.player.Name} failed to find the treasure.");
+        ModEntry.ModHelper.Multiplayer.SendMessage("HuntIsOff", "RequestEvent",
+            new[] {ModEntry.Manifest.UniqueID}, new[] {Game1.MasterPlayer.UniqueMultiplayerID});
     }
 
     #endregion protected methods
@@ -243,7 +256,7 @@ internal class ScavengerHunt : TreasureHunt
                     else if (Game1.player.archaeologyFound.Any()) // artifacts
                         treasures.Add(new SObject(
                             random.NextDouble() < 0.5
-                                ? _artifactsThatCanBeFound.ElementAt(random.Next(_artifactsThatCanBeFound.Count()))
+                                ? _artifactsThatCanBeFound[random.Next(_artifactsThatCanBeFound.Length)]
                                 : random.NextDouble() < 0.25
                                     ? 114
                                     : 535, 1));
@@ -296,7 +309,7 @@ internal class ScavengerHunt : TreasureHunt
 
                         case 2:
                             var luckModifier = 1.0 + Game1.player.DailyLuck * 10;
-                            var streak = ModData.ReadAs<uint>(DataField.ScavengerHuntStreak);
+                            var streak = Game1.player.ReadDataAs<uint>(DataField.ScavengerHuntStreak);
                             if (random.NextDouble() < 0.025 * luckModifier &&
                                 !Game1.player.specialItems.Contains(15))
                                 treasures.Add(new MeleeWeapon(15) {specialItem = true}); // forest sword

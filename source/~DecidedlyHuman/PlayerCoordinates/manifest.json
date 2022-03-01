@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "Player Co-ordinate Display",
+  "Author": "DecidedlyHuman",
+  "Version": "0.7.2-IAssetDev",
+  "Description": "A simple mod to draw the player's co-ordinates to the screen. Also allows you to log them to a file in the mod directory.",
+  "UniqueID": "DecidedlyHuman.PlayerCoordinates",
+  "EntryDll": "PlayerCoordinates.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:7969"]
+}
