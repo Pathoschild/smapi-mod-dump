@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Pathoschild.Stardew.Common.Commands;
 using StardewModdingAPI;
+using StardewModdingAPI.Framework.ContentManagers;
 using StardewValley;
 
 namespace ContentPatcher.Framework.Commands.Commands
@@ -27,12 +28,24 @@ namespace ContentPatcher.Framework.Commands.Commands
     internal class ExportCommand : BaseCommand
     {
         /*********
+        ** Fields
+        *********/
+        /// <summary>The content helper with which to manage loaded assets.</summary>
+        private readonly IGameContentHelper ContentHelper;
+
+
+
+        /*********
         ** Public methods
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
-        public ExportCommand(IMonitor monitor)
-            : base(monitor, "export") { }
+        /// <param name="contentHelper">The content helper with which to manage loaded assets.</param>
+        public ExportCommand(IMonitor monitor, IGameContentHelper contentHelper)
+            : base(monitor, "export")
+        {
+            this.ContentHelper = contentHelper;
+        }
 
         /// <inheritdoc />
         public override string GetDescription()
@@ -83,8 +96,8 @@ namespace ContentPatcher.Framework.Commands.Commands
             }
 
             // init export path
-            string fullTargetPath = Path.Combine(StardewModdingAPI.Constants.ExecutionPath, "patch export", string.Join("_", assetName.Split(Path.GetInvalidFileNameChars())));
-            Directory.CreateDirectory(Path.GetDirectoryName(fullTargetPath));
+            string fullTargetPath = Path.Combine(StardewModdingAPI.Constants.GamePath, "patch export", string.Join("_", assetName.Split(Path.GetInvalidFileNameChars())));
+            Directory.CreateDirectory(Path.GetDirectoryName(fullTargetPath)!);
 
             // export
             if (asset is Texture2D texture)
@@ -184,14 +197,11 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <param name="assetName">The asset path relative to the loader root directory, not including the <c>.xnb</c> extension.</param>
         private bool IsAssetLoaded(ContentManager contentManager, string assetName)
         {
-            // get SMAPI's IsLoaded method
-            Type type = contentManager.GetType();
-            MethodInfo method = type.GetMethod("IsLoaded", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            if (method == null)
-                throw new InvalidOperationException("Can't access 'IsLoaded' method on the main content manager.");
+            IAssetName parsedName = this.ContentHelper.ParseAssetName(assetName);
 
-            // get value
-            return (bool)method.Invoke(contentManager, new object[] { assetName, LocalizedContentManager.CurrentLanguageCode });
+            return contentManager is IContentManager managed
+                ? managed.IsLoaded(parsedName)
+                : throw new InvalidOperationException($"Can't access internals for content manager with type {contentManager?.GetType().FullName ?? "null"}, expected implementation of {typeof(IContentManager).FullName}.");
         }
     }
 }

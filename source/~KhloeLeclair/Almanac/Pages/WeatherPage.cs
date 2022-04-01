@@ -24,14 +24,19 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace Leclair.Stardew.Almanac.Pages {
-	public class WeatherPage : BasePage, ICalendarPage {
+	public class WeatherPage : BasePage<BaseState>, ICalendarPage {
+
+		public static readonly Rectangle WEATHER_ICON = new(384, 352, 16, 16);
 
 		private readonly int Seed;
+		private IFlowNode[] Nodes;
 		private int[] Forecast;
+		private bool[] Festivals;
+		private bool[] Pirates;
 
 		readonly bool IsIsland;
 
-		private IEnumerable<IFlowNode> Flow;
+		private readonly SpriteInfo FestivalFlag;
 
 		#region Lifecycle
 
@@ -55,36 +60,56 @@ namespace Leclair.Stardew.Almanac.Pages {
 		public WeatherPage(AlmanacMenu menu, ModEntry mod, bool isIsland) : base(menu, mod) {
 			Seed = Mod.GetBaseWorldSeed();
 			IsIsland = isIsland;
-			UpdateForecast();
+
+			if (!IsIsland)
+				FestivalFlag = new SpriteInfo(
+					Game1.temporaryContent.Load<Texture2D>("LooseSprites\\Billboard"),
+					new Rectangle(
+						1, 398,
+						84, 12
+					),
+					baseFrames: 6
+				);
+
+			Update();
 		}
 
 		#endregion
 
 		#region Logic
 
-		public void UpdateForecast() {
-			Forecast = new int[WorldDate.DaysPerMonth];
+		public override void Update() {
+			base.Update();
+
+			Forecast = new int[ModEntry.DaysPerMonth];
+			Nodes = new IFlowNode[ModEntry.DaysPerMonth];
+			Festivals = IsIsland ? null : new bool[ModEntry.DaysPerMonth];
+			Pirates = IsIsland ? new bool[ModEntry.DaysPerMonth] : null;
 			WorldDate date = new(Menu.Date);
 
 			FlowBuilder builder = new();
 			List<int> pirateDays = IsIsland ? new() : null;
 
 			if (!IsIsland)
-				builder.FormatText($"{I18n.Festival_About(Utility.getSeasonNameFromNumber(date.SeasonIndex))}\n\n");
+				builder.FormatText(I18n.Festival_About(Utility.getSeasonNameFromNumber(date.SeasonIndex)));
 
-			for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 				date.DayOfMonth = day;
 				int weather = Forecast[day - 1] = Mod.Weather.GetWeatherForDate(Seed, date, IsIsland ? GameLocation.LocationContext.Island : GameLocation.LocationContext.Default);
 
-				if (IsIsland && day % 2 == 0 && ! WeatherHelper.IsRainOrSnow(weather))
-					pirateDays.Add(day);
+				if (IsIsland) {
+					bool pirates = Pirates[day - 1] = day % 2 == 0 && ! WeatherHelper.IsRainOrSnow(weather);
+					if (pirates)
+						pirateDays.Add(day);
 
-				if (! IsIsland && Utility.isFestivalDay(day, date.Season)) {
+				} else if ( Utility.isFestivalDay(day, date.Season)) {
 					SDate sdate = new(day, date.Season);
 
 					var data = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + date.Season + day);
 					if (!data.ContainsKey("name") || !data.ContainsKey("conditions"))
 						continue;
+
+					Festivals[day - 1] = true;
 
 					string name = data["name"];
 					string[] conds = data["conditions"].Split('/');
@@ -101,36 +126,60 @@ namespace Leclair.Stardew.Almanac.Pages {
 						}
 					}
 
-					builder.Text($"{name}\n", font: Game1.dialogueFont, shadow: true);
-					builder.FormatText($"  {I18n.Festival_Date()} ", shadow: false);
-					builder.Text($"{sdate.ToLocaleString(withYear: false)}\n");
+					foreach(GameLocation loc in Game1.locations) {
+						if (loc?.Name == where) {
+							where = Mod.GetLocationName(loc);
+							break;
+						}
+					}
 
-					builder.FormatText($"  {I18n.Festival_Where()} ", shadow: false);
-					builder.Text($"{where}\n");
+					var node = new TextNode(
+						$"{name}\n",
+						new TextStyle(
+							font: Game1.dialogueFont,
+							shadow: true
+						),
+						onClick: (_,_,_) => false
+					);
+
+					Nodes[day - 1] = node;
+
+					builder
+						.Text("\n\n")
+						.Add(node)
+						.FormatText($"  {I18n.Festival_Date()} ", shadow: false)
+						.Text($"{sdate.ToLocaleString(withYear: false)}\n")
+
+						.FormatText($"  {I18n.Festival_Where()} ", shadow: false)
+						.Text(where);
 
 					if (start >= 0 && end >= 0) {
-						builder.FormatText($"  {I18n.Festival_When()} ", shadow: false);
-						builder.Translate(Mod.Helper.Translation.Get("festival.when-times"), new {
-							start = TimeHelper.FormatTime(start),
-							end = TimeHelper.FormatTime(end)
-						}, new TextStyle(shadow: false));
-						builder.Text("\n\n");
+						builder
+							.FormatText($"\n  {I18n.Festival_When()} ", shadow: false)
+							.Translate(Mod.Helper.Translation.Get("festival.when-times"), new {
+								start = TimeHelper.FormatTime(start),
+								end = TimeHelper.FormatTime(end)
+							}, new TextStyle(shadow: false));
 					}
 				}
 			}
 
 			if (IsIsland) {
-				builder.Text($"Island Weather\n", font: Game1.dialogueFont, shadow: true);
+				builder.FormatText($"{I18n.Page_WeatherIsland()}\n\n", font: Game1.dialogueFont);
 
 				if (pirateDays.Count > 0) {
-					builder.Text($"Pirate activity is expected near the island on the following dates: {string.Join(", ", pirateDays)}\n");
-				}
+					string dates = string.Join(", ", pirateDays);
 
+					builder.FormatText($"{I18n.Page_Weather_Pirates()}\n");
+
+					foreach (int day in pirateDays) {
+						SDate sdate = new(day, date.Season);
+						builder.Text($"\n  {sdate.ToLocaleString(withYear: false)}", shadow: false);
+					}
+				}
 			}
 
-			Flow = builder?.Build();
-			if (Active)
-				Menu.SetFlow(Flow, 2);
+			SetRightFlow(builder, 2);
 		}
 
 		#endregion
@@ -146,20 +195,11 @@ namespace Leclair.Stardew.Almanac.Pages {
 			SpriteHelper.GetTexture(Common.Enums.GameTexture.MouseCursors2) : Menu.background;
 
 		public override Rectangle? TabSource => IsIsland ?
-			SpriteHelper.MouseIcons2.GOLDEN_NUT : WeatherHelper.GetWeatherIcon(0, null);
+			SpriteHelper.MouseIcons2.GOLDEN_NUT : WEATHER_ICON; // WeatherHelper.GetWeatherIcon(0, null);
 
 		#endregion
 
 		#region IAlmanacPage
-
-		public override void Activate() {
-			base.Activate();
-			Menu.SetFlow(Flow, 2);
-		}
-
-		public override void DateChanged(WorldDate old, WorldDate newDate) {
-			UpdateForecast();
-		}
 
 		#endregion
 
@@ -172,6 +212,8 @@ namespace Leclair.Stardew.Almanac.Pages {
 			if (Forecast == null)
 				return;
 
+			int day = date.DayOfMonth - 1;
+
 			Utility.drawWithShadow(
 				b,
 				Menu.background,
@@ -179,13 +221,37 @@ namespace Leclair.Stardew.Almanac.Pages {
 					bounds.X + (bounds.Width - 64) / 2,
 					bounds.Y + (bounds.Height - 64) / 2
 				),
-				WeatherHelper.GetWeatherIcon(Forecast[date.DayOfMonth - 1], date.Season),
+				WeatherHelper.GetWeatherIcon(Forecast[day], date.Season),
 				Color.White,
 				0f,
 				Vector2.Zero,
 				scale: 4f,
 				horizontalShadowOffset: 0
 			);
+
+			if (Festivals != null && Festivals[day])
+				FestivalFlag?.Draw(
+					b,
+					new Vector2(
+						bounds.X + 4,
+						bounds.Y + bounds.Height - 26
+					),
+					scale: 2,
+					size: 14
+				);
+
+			if (Pirates != null && Pirates[day])
+				b.Draw(
+					SpriteHelper.GetTexture(Common.Enums.GameTexture.Hats),
+					new Vector2(bounds.X + bounds.Width - 22, bounds.Y + bounds.Height - 22),
+					new Rectangle(80, 480, 20, 20),
+					color: Color.White,
+					rotation: 0f,
+					origin: Vector2.Zero,
+					scale: 1f,
+					effects: SpriteEffects.None,
+					layerDepth: 1f
+				);
 		}
 
 		public void DrawOverCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
@@ -193,6 +259,12 @@ namespace Leclair.Stardew.Almanac.Pages {
 		}
 
 		public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
+			int day = date.DayOfMonth;
+			if (Nodes?[day - 1] is IFlowNode node && Menu.ScrollRightFlow(node)) {
+				Game1.playSound("shiny4");
+				return true;
+			}
+
 			return false;
 		}
 

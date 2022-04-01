@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/TrashDoesNotConsumeBait
+   Git: https://github.com/atravita-mods/TrashDoesNotConsumeBait.git
+
+mods:
+   Trash Does Not Consume Bait
+
+latest commit:
+   commit 95e9655afb06fd0fa87730f091cde628c88f9610
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Mon Mar 28 14:49:50 2022 -0400
+   
+       update change log
+   

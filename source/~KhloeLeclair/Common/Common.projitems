@@ -13,6 +13,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)CombinedRingSpriteInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CraftingHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CraftingPageHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\Season.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\TimeScale.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\TransferMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\TransferDirection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\MenuSubscriber.cs" />
@@ -24,6 +26,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\EventSubscriber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\Subscriber.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Crafting\IIngredient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\Converters\ColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TranslationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\CaseInsensitiveDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Types\RecommendIntegrations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InventoryHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inventory\BaseInventoryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Inventory\ChestProvider.cs" />
@@ -35,6 +41,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Inventory\WorkingInventory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Crafting\IRecipe.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Crafting\IRecipeProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoadingHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\Converters\ItemConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\Converters\RectangleConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpriteHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpriteInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TileHelper.cs" />
@@ -50,8 +61,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\FlowNode\CachedFlow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\FlowNode\CachedFlowLine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Alignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\FlowNode\ComponentNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\FlowNode\DividerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ThemeManager.cs" />
+    <Compile Include="..\Common\UI\FlowNode\SelectableNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Overlay\BaseOverlay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Overlay\IOverlay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI\ScrollableFlow.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\SimpleBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\SimpleHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\SimpleLayout\DividerNode.cs" />

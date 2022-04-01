@@ -33,9 +33,11 @@ namespace Leclair.Stardew.Common {
 		public int BaseFrames;
 		public int OverlayFrames;
 		public int FramesPerRow;
+		public int FrameTime;
+		public int FrameDelay;
 
 
-		public SpriteInfo(Texture2D texture, Rectangle baseSource, Color? baseColor = null, float baseScale = 1f, Texture2D overlayTexture = null, Rectangle? overlaySource = null, Color? overlayColor = null, float overlayScale = 1f, bool isPrismatic = false, int baseFrames = 1, int overlayFrames = 1, int framesPerRow = int.MaxValue) {
+		public SpriteInfo(Texture2D texture, Rectangle baseSource, Color? baseColor = null, float baseScale = 1f, Texture2D overlayTexture = null, Rectangle? overlaySource = null, Color? overlayColor = null, float overlayScale = 1f, bool isPrismatic = false, int baseFrames = 1, int overlayFrames = 1, int framesPerRow = int.MaxValue, int frameTime = 100, int frameDelay = 0) {
 			Texture = texture;
 			BaseSource = baseSource;
 			BaseColor = baseColor;
@@ -48,6 +50,8 @@ namespace Leclair.Stardew.Common {
 			BaseFrames = baseFrames;
 			OverlayFrames = overlayFrames;
 			FramesPerRow = framesPerRow;
+			FrameTime = frameTime;
+			FrameDelay = frameDelay;
 		}
 
 		public int Width {
@@ -117,12 +121,15 @@ namespace Leclair.Stardew.Common {
 		}
 
 
-		public static Rectangle GetFrame(Rectangle source, int frame, int frames, int cols) {
+		public static Rectangle GetFrame(Rectangle source, int frame, int frames, int cols, int frameTime = 100, int frameDelay = 0) {
 			if (frames <= 1)
 				return source;
 
 			if (frame < 0)
-				frame = ((int) Math.Floor(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 100)) % frames;
+				frame = (int) ((
+					Game1.currentGameTime.TotalGameTime.TotalMilliseconds
+					+ frameDelay
+				) / frameTime) % frames;
 
 			if (cols > frames)
 				cols = frames;
@@ -143,9 +150,9 @@ namespace Leclair.Stardew.Common {
 		}
 
 		public virtual void Draw(SpriteBatch batch, Vector2 location, float scale, int frame = -1, float size = 16, Color? baseColor = null, Color? overlayColor = null, float alpha = 1) {
-			Rectangle source = GetFrame(BaseSource, frame, BaseFrames, FramesPerRow);
+			Rectangle source = GetFrame(BaseSource, frame, BaseFrames, FramesPerRow, FrameTime, FrameDelay);
 			Rectangle? overlay = OverlaySource.HasValue ?
-				GetFrame(OverlaySource.Value, frame, OverlayFrames, FramesPerRow)
+				GetFrame(OverlaySource.Value, frame, OverlayFrames, FramesPerRow, FrameTime, FrameDelay)
 				: null;
 
 			float width = source.Width * BaseScale;
@@ -170,7 +177,20 @@ namespace Leclair.Stardew.Common {
 			if (!baseColor.HasValue && IsPrismatic && ! overlay.HasValue)
 				color = Utility.GetPrismaticColor();
 
-			batch.Draw(Texture, new Vector2(location.X + offsetX, location.Y + offsetY), source, color * alpha, 0f, Vector2.Zero, bs, SpriteEffects.None, 1f);
+			batch.Draw(
+				Texture,
+				new Vector2(
+					(float) Math.Floor(location.X + offsetX),
+					(float) Math.Floor(location.Y + offsetY)
+				),
+				source,
+				color * alpha,
+				0f,
+				Vector2.Zero,
+				bs,
+				SpriteEffects.None,
+				1f
+			);
 
 			if (OverlaySource != null) {
 				float os = s * OverlayScale;
@@ -181,7 +201,90 @@ namespace Leclair.Stardew.Common {
 				if (! overlayColor.HasValue && IsPrismatic)
 					color = Utility.GetPrismaticColor();
 
-				batch.Draw(OverlayTexture ?? Texture, new Vector2(location.X + offsetX, location.Y + offsetY), overlay.Value, color * alpha, 0f, Vector2.Zero, os, SpriteEffects.None, 1f);
+				batch.Draw(
+					OverlayTexture ?? Texture,
+					new Vector2(
+						(float) Math.Floor(location.X + offsetX),
+						(float) Math.Floor(location.Y + offsetY)
+					),
+					overlay.Value,
+					color * alpha,
+					0f,
+					Vector2.Zero,
+					os,
+					SpriteEffects.None,
+					1f
+				);
+			}
+		}
+
+		public virtual void Draw(SpriteBatch batch, Vector2 location, float scale, Vector2 size, int frame = -1, Color? baseColor = null, Color? overlayColor = null, float alpha = 1) {
+			Rectangle source = GetFrame(BaseSource, frame, BaseFrames, FramesPerRow, FrameTime, FrameDelay);
+			Rectangle? overlay = OverlaySource.HasValue ?
+				GetFrame(OverlaySource.Value, frame, OverlayFrames, FramesPerRow, FrameTime, FrameDelay)
+				: null;
+
+			float width = source.Width * BaseScale;
+			float height = source.Height * BaseScale;
+
+			if (overlay.HasValue) {
+				width = Math.Max(width, overlay.Value.Width * OverlayScale);
+				height = Math.Max(height, overlay.Value.Height * OverlayScale);
+			}
+
+			
+			float targetWidth = scale * size.X;
+			float targetHeight = scale * size.Y;
+
+			float s = Math.Min(scale, Math.Min(targetWidth / width, targetHeight / height));
+
+			// Draw the base.
+			float bs = s * BaseScale;
+			float offsetX = Math.Max((targetWidth - (source.Width * bs)) / 2, 0);
+			float offsetY = Math.Max((targetHeight - (source.Height * bs)) / 2, 0);
+
+			Color color = baseColor ?? BaseColor ?? Color.White;
+			if (!baseColor.HasValue && IsPrismatic && !overlay.HasValue)
+				color = Utility.GetPrismaticColor();
+
+			batch.Draw(
+				Texture,
+				new Vector2(
+					(float) Math.Floor(location.X + offsetX),
+					(float) Math.Floor(location.Y + offsetY)
+				),
+				source,
+				color * alpha,
+				0f,
+				Vector2.Zero,
+				bs,
+				SpriteEffects.None,
+				1f
+			);
+
+			if (OverlaySource != null) {
+				float os = s * OverlayScale;
+				offsetX = Math.Max((targetWidth - (overlay.Value.Width * os)) / 2, 0);
+				offsetY = Math.Max((targetHeight - (overlay.Value.Height * os)) / 2, 0);
+
+				color = overlayColor ?? OverlayColor ?? Color.White;
+				if (!overlayColor.HasValue && IsPrismatic)
+					color = Utility.GetPrismaticColor();
+
+				batch.Draw(
+					OverlayTexture ?? Texture,
+					new Vector2(
+						(float) Math.Floor(location.X + offsetX),
+						(float) Math.Floor(location.Y + offsetY)
+					),
+					overlay.Value,
+					color * alpha,
+					0f,
+					Vector2.Zero,
+					os,
+					SpriteEffects.None,
+					1f
+				);
 			}
 		}
 	}

@@ -26,25 +26,16 @@ using ItemPipes.Framework.Items.CustomFilter;
 
 namespace ItemPipes.Framework.Items.Objects
 {
-    [XmlType("Mods_sergiomadd.ItemPipes_FilterPipeItem")]
     public class FilterPipeItem : InputPipeItem
     {
 		public Filter Filter { get; set; }
 
 		public FilterPipeItem() : base()
         {
-			Name = "Filter Pipe";
-			IDName = "FilterPipe";
-			Description = "Type: Input Pipe\nInserts items into an adjacent container, it filters only the items already on the Filter Pipe Inventory. Right click the Filter Pipe to open the Inventory.";
-			Init();
 		}
 
         public FilterPipeItem(Vector2 position) : base(position)
         {
-			Name = "Filter Pipe";
-			IDName = "FilterPipe";
-			Description = "Type: Input Pipe\nInserts items into an adjacent container, it filters only the items already on the Filter Pipe Inventory. Right click the Filter Pipe to open the Inventory.";
-			Init();
 			Filter = new Filter(9);
 		}
 

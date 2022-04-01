@@ -8,11 +8,8 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading;
 using static SpriteMaster.Harmonize.Harmonize;
 
 namespace SpriteMaster.Harmonize.Patches;
@@ -26,13 +23,12 @@ static class PGraphicsDevice {
 	//internal static void PresentPost(GraphicsDevice __instance, in Rectangle? sourceRectangle, in Rectangle? destinationRectangle, IntPtr overrideWindowHandle) => DrawState.OnPresentPost();
 
 	[Harmonize("Present", fixation: Harmonize.Fixation.Prefix, priority: PriorityLevel.Last)]
-	internal static bool Present(GraphicsDevice __instance) {
+	public static void PresentPre(GraphicsDevice __instance) {
 		DrawState.OnPresent();
-		return true;
 	}
 
 	[Harmonize("Present", fixation: Harmonize.Fixation.Postfix, priority: PriorityLevel.Last)]
-	internal static void OnPresent(GraphicsDevice __instance) {
+	public static void PresentPost(GraphicsDevice __instance) {
 		DrawState.OnPresentPost();
 	}
 
@@ -41,7 +37,7 @@ static class PGraphicsDevice {
 	#region Reset
 
 	[Harmonize("Reset", fixation: Harmonize.Fixation.Postfix, priority: PriorityLevel.Last)]
-	internal static void OnResetPost(GraphicsDevice __instance) {
+	public static void OnResetPost(GraphicsDevice __instance) {
 		DrawState.OnPresentPost();
 	}
 

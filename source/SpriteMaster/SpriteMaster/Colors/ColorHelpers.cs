@@ -31,9 +31,15 @@ static class ColorHelpers {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte ScalarToValue8(this double scalar) => (byte)((scalar * 255.0) + 0.5);
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static byte ScalarToValue8(this float scalar) => (byte)((scalar * 255.0f) + 0.5f);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ushort ScalarToValue16(this double scalar) => (ushort)((scalar * 655_35.0) + 0.5);
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static ushort ScalarToValue16(this float scalar) => (ushort)((scalar * 655_35.0f) + 0.5f);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static uint ScalarToValue32(this double scalar) => (uint)((scalar * 4_294_967_295.0) + 0.5);
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static uint ScalarToValue32(this float scalar) => (uint)((scalar * 4_294_967_295.0f) + 0.5f);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ushort Color8To16(this byte value) => (ushort)((value << 8) | value);

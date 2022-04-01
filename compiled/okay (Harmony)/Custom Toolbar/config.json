@@ -1,0 +1,14 @@
+{
+  "EnableMod": true,
+  "ShowWithActiveMenu": false,
+  "Vertical": false,
+  "RotateKey": "MouseMiddle",
+  "SetPosition": true,
+  "PinnedPosition": "bottom",
+  "PositionX": -1,
+  "PositionY": -1,
+  "MarginX": 64,
+  "MarginY": 64,
+  "OffsetX": 0,
+  "OffsetY": 50
+}

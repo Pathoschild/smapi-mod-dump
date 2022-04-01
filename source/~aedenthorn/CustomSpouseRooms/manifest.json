@@ -11,7 +11,7 @@
 {
   "Name": "Custom Spouse Rooms",
   "Author": "aedenthorn",
-  "Version": "0.5.1",
+  "Version": "0.6.0",
   "Description": "Custom spouse rooms.",
   "UniqueID": "aedenthorn.CustomSpouseRooms",
   "EntryDll": "CustomSpouseRooms.dll",

@@ -22,6 +22,8 @@ namespace Leclair.Stardew.Almanac {
 
 	public interface IAlmanacAPI {
 
+		int DaysPerMonth { get; }
+
 		void SetCropPriority(IManifest manifest, int priority);
 
 		void SetCropCallback(IManifest manifest, Action action);
@@ -35,55 +37,21 @@ namespace Leclair.Stardew.Almanac {
 			Item item,
 			string name,
 
-			bool isTrellisCrop,
+			int regrow,
 			bool isGiantCrop,
 			bool isPaddyCrop,
-
-			IList<int> phases,
-			IList<Texture2D> phaseSpriteTextures,
-			IList<Rectangle?> phaseSpriteSources,
-			IList<Color?> phaseSpriteColors,
-			IList<Texture2D> phaseSpriteOverlayTextures,
-			IList<Rectangle?> phaseSpriteOverlaySources,
-			IList<Color?> phaseSpriteOverlayColors,
-
-			int regrow,
-
-			WorldDate start,
-			WorldDate end
-		);
-
-		void AddCrop(
-			IManifest manifest,
-
-			string id,
-
-			Item item,
-			string name,
-
-			Texture2D spriteTexture,
-			Rectangle? spriteSource,
-			Color? spriteColor,
-			Texture2D spriteOverlayTexture,
-			Rectangle? spriteOverlaySource,
-			Color? spriteOverlayColor,
-
 			bool isTrellisCrop,
-			bool isGiantCrop,
-			bool isPaddyCrop,
 
-			IList<int> phases,
-			IList<Texture2D> phaseSpriteTextures,
-			IList<Rectangle?> phaseSpriteSources,
-			IList<Color?> phaseSpriteColors,
-			IList<Texture2D> phaseSpriteOverlayTextures,
-			IList<Rectangle?> phaseSpriteOverlaySources,
-			IList<Color?> phaseSpriteOverlayColors,
-
-			int regrow,
+			Item[] seeds,
 
 			WorldDate start,
-			WorldDate end
+			WorldDate end,
+
+			Tuple<Texture2D, Rectangle?, Color?, Texture2D, Rectangle?, Color?> sprite,
+			Tuple<Texture2D, Rectangle?, Color?, Texture2D, Rectangle?, Color?> giantSprite,
+
+			IReadOnlyCollection<int> phases,
+			IReadOnlyCollection<Tuple<Texture2D, Rectangle?, Color?, Texture2D, Rectangle?, Color?>> phaseSprites
 		);
 
 		void RemoveCrop(IManifest manifest, string id);
@@ -91,5 +59,6 @@ namespace Leclair.Stardew.Almanac {
 		void ClearCrops(IManifest manifest);
 
 		void InvalidateCrops();
+
 	}
 }

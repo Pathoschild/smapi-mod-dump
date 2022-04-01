@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/TrashDoesNotConsumeBait
+**
+*************************************************/
+
+{
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  "BaitReplaced": "You've run out of {{original}} and have replaced it with {{newbait}}.",
+  "BaitReplacedSame": "You've run out of {{original}} on your fishing rod, so you've added more.",
+  "TackleReplaced": "Your {{original}} has broken; you've replaced it with {{newtackle}}.",
+  "TackleReplacedSame": "Your {{original}} broke, so you replaced it with a new one.",
+
+  //GMCM
+
+  "AutomaticRefill.title": "Automatic Refill",
+  "AutomaticRefill.description": "Automatically refills your bait and replaces your tackle when it breaks. Takes from inventory; will do nothing if you do not have more bait/tackles in your inventory.",
+  "SameTackleOnly.title": "Same Tackle Only",
+  "SameTackleOnly.description": "Will replace broken tackles with the same tackle only",
+  "SameBaitOnly.title": "Same Bait Only",
+  "SameBaitOnly.description":  "Will refill bait with the same bait only",
+  "CheatyStuffTitle": "Cheatier Options",
+  "ConsumeChanceNormal.title": "Consume Chance (Normal)",
+  "ConsumeChanceNormal.description": "The probability that bait and tackle will be consumed for a fishing rod without the enchantment Preserving.",
+  "ConsumeChancePreserving.title": "Consume Chance (Preserving)",
+  "ConsumeChancePreserving.description":  "The probability that bait and tackle will be consumed for a fishing rod with the enchantment Preserving."
+}

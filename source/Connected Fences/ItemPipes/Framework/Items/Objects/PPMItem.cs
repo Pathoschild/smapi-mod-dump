@@ -30,29 +30,32 @@ using ItemPipes.Framework.Nodes.ObjectNodes;
 
 namespace ItemPipes.Framework.Items.Objects
 {
-	[XmlType("Mods_sergiomadd.ItemPipes_PPMItem")]
 
 	public class PPMItem : CustomBigCraftableItem
 	{
         public bool ToolCall { get; set; }
-        public PPMItem() : base()
+		[XmlIgnore]
+		public Texture2D OnTexture { get; set; }
+		[XmlIgnore]
+		public Texture2D OffTexture { get; set; }
+
+		public PPMItem() : base()
 		{
-			Name = "P.P.M.";
-			IDName = "PPM";
-			Description = "A machine that when right clickled, will turn all connected pipes crossable.";
 			State = "off";
-			ItemTexture = ModEntry.helper.Content.Load<Texture2D>($"assets/Objects/{IDName}/{IDName}_{State}.png");
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			OnTexture = DataAccess.Sprites[IDName + "_on"];
+			OffTexture = DataAccess.Sprites[IDName + "_off"];
+			ItemTexture = OffTexture;
 			ToolCall = false;
 		}
 
 		public PPMItem(Vector2 position) : base(position)
 		{
-			Name = "P.P.M.";
-			IDName = "PPM";
-			Description = "P.P.M. DESCRIPTION";
 			State = "off";
-			ItemTexture = ModEntry.helper.Content.Load<Texture2D>($"assets/Objects/{IDName}/{IDName}_{State}.png");
-
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			OnTexture = DataAccess.Sprites[IDName + "_on"];
+			OffTexture = DataAccess.Sprites[IDName + "_off"];
+			ItemTexture = OffTexture;
 			ToolCall = false;
 		}
 
@@ -156,12 +159,22 @@ namespace ItemPipes.Framework.Items.Objects
 			{
 				PPMNode invis = (PPMNode)node;
 				State = invis.State;
+				float transparency = 1f;
+				if (State.Equals("on"))
+                {
+					ItemTexture = OnTexture;
+					transparency = 0.5f;
+					Rectangle srcRect = new Rectangle(0, 0, 16, 32);
+					spriteBatch.Draw(ItemTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+				}
+				else if(State.Equals("off"))
+                {
+					ItemTexture = OffTexture;
+					transparency = 1f;
+					Rectangle srcRect = new Rectangle(0, 0, 16, 32);
+					spriteBatch.Draw(ItemTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
+				}
 			}
-
-			Rectangle srcRect = new Rectangle(0, 0, 16, 32);
-			//srcRect =  new Rectangle(srcRect * Fence.fencePieceWidth % SpriteTexture.Bounds.Width, sourceRectPosition * Fence.fencePieceWidth / SpriteTexture.Bounds.Width * Fence.fencePieceHeight, Fence.fencePieceWidth, Fence.fencePieceHeight)
-			ItemTexture = Helper.GetHelper().Content.Load<Texture2D>($"assets/Objects/{IDName}/{IDName}_{State}.png");
-			spriteBatch.Draw(ItemTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64)), srcRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
 		}
 
 	}

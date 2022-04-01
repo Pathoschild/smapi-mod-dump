@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11317
+IDs: tlitookilakin.MessyCrops
+update keys: GitHub:tlitookilakin/MessyCrops, Nexus:11317

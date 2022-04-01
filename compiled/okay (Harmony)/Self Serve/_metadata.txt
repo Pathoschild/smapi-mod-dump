@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11313
+IDs: aedenthorn.SelfServe
+update keys: Nexus:11313, GitHub:aedenthorn/StardewValleyMods

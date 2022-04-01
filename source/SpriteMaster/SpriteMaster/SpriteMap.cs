@@ -83,6 +83,20 @@ static class SpriteMap {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void AddReplace(Texture2D reference, ManagedSpriteInstance instance) {
+		AddInternal(instance);
+
+		var meta = reference.Meta();
+
+		using (meta.Lock.Write) {
+			var result = meta.TryAddToSpriteInstanceTable(instance.SpriteMapHash, instance);
+			if (!result) {
+				meta.ReplaceInSpriteInstanceTable(instance.SpriteMapHash, instance);
+			}
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool TryGetReady(Texture2D texture, in Bounds source, uint expectedScale, [NotNullWhen(true)] out ManagedSpriteInstance? result) {
 		if (TryGet(texture, source, expectedScale, out var internalResult)) {
 			if (internalResult.IsReady) {
@@ -202,7 +216,7 @@ static class SpriteMap {
 	// The logic needs to be overridden and previously-cached textures stored in some fashion for sprites
 	// that are determined to be animated
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void Purge(Texture2D reference, in Bounds? sourceRectangle = null) {
+	internal static void Purge(Texture2D reference, in Bounds? sourceRectangle = null, bool animated = false) {
 		try {
 			var meta = reference.Meta();
 			var spriteTable = meta.GetSpriteInstanceTable();
@@ -266,7 +280,7 @@ static class SpriteMap {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void Invalidate(Texture2D reference, in Bounds? sourceRectangle = null) {
+	internal static void Invalidate(Texture2D reference, in Bounds? sourceRectangle = null, bool animated = false) {
 		try {
 			var meta = reference.Meta();
 			var spriteTable = meta.GetSpriteInstanceTable();

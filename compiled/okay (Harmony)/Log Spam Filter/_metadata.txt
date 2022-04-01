@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11252
+IDs: aedenthorn.LogSpamFilter
+update keys: Nexus:11252, GitHub:aedenthorn/StardewValleyMods

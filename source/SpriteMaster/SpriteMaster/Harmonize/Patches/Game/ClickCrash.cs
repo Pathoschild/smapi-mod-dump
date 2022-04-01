@@ -13,17 +13,20 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
 static class ClickCrash {
-	private static bool HasWindow => StardewValley.Game1.game1.Window != null;
+	private const BindingFlags AllMethods = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+
+	private static bool HasWindow => StardewValley.Game1.game1.Window is not null;
+	private static readonly TimeSpan RunLoopAfter = TimeSpan.FromMilliseconds(100);
 
 	private static readonly Stopwatch SdlUpdate = Stopwatch.StartNew();
-	private static readonly Thread SdlUpdateThread;
 	private static readonly Action? SdlLoopMethod;
-	//private static Texture2D? FishTexture;
+	private static readonly Func<bool>? IsOnUIThread;
+	private static readonly bool IsRunnable = false;
 
 	static ClickCrash() {
 		try {
@@ -34,14 +37,18 @@ static class ClickCrash {
 				GetType("Microsoft.Xna.Framework.SdlGamePlatform");
 			var sdlLoopMethodInfo =
 				sdlGamePlatformType?.
-				GetMethod("SdlRunLoop", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy);
+				GetMethod("SdlRunLoop", BindingFlags.Instance | AllMethods);
 			SdlLoopMethod = sdlLoopMethodInfo?.CreateDelegate<Action>(platform) ?? throw new NullReferenceException(nameof(SdlLoopMethod));
-			SdlUpdateThread = ThreadExt.Run(SdlUpdateLoop, background: true, name: "Click-Crash Thread");
+			var isOnUIThreadMethodInfo = typeof(XNA.Color).Assembly.
+				GetType("Microsoft.Xna.Framework.Threading")?.
+				GetMethod("IsOnUIThread", BindingFlags.Static | AllMethods);
+			IsOnUIThread = isOnUIThreadMethodInfo?.CreateDelegate<Func<bool>>() ?? throw new NullReferenceException(nameof(IsOnUIThread));
 		}
 		catch (Exception ex) {
 			Debug.Error("Failed to configure SDL ticker", ex);
 		}
-		SdlUpdateThread = null!;
+
+		IsRunnable = SdlLoopMethod is not null && IsOnUIThread is not null;
 	}
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
@@ -59,100 +66,63 @@ static class ClickCrash {
 		critical: false
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static void SdlRunLoop(object __instance) {
+	public static void SdlRunLoopPost(object __instance) {
+		if (!Config.IsEnabled) {
+			return;
+		}
+
+		if (IsRunnable) {
+			SdlUpdate.Restart();
+		}
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	private static void OnStartTask() {
+		if (!IsRunnable || SdlUpdate.Elapsed < RunLoopAfter) {
+			return;
+		}
+
+		if (!IsOnUIThread!()) {
+			return;
+		}
+
+		SdlLoopMethod!();
+
 		SdlUpdate.Restart();
 	}
 
 	[Harmonize(
-		typeof(XNA.Color),
-		"Microsoft.Xna.Framework.Threading",
-		"EnsureUIThread",
+		typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade),
+		"StardewModdingAPI.Framework.SModHooks",
+		"StartTask",
 		Harmonize.Fixation.Prefix,
 		Harmonize.PriorityLevel.Last,
-		instance: false,
 		critical: false
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static bool EnsureUIThread() => false;
-
-	private static volatile bool UIThreadOverride = false;
-
-	[Harmonize(
-		typeof(XNA.Color),
-		"Microsoft.Xna.Framework.Threading",
-		"IsOnUIThread",
-		Harmonize.Fixation.Prefix,
-		Harmonize.PriorityLevel.Last,
-		instance: false,
-		critical: false
-	)]
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static bool IsOnUIThread(ref bool __result) {
-		if (UIThreadOverride) {
-			__result = true;
-			return false;
-		}
-		return true;
-	}
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void SdlUpdateLoop() {
-		if (SdlLoopMethod is null) {
+	public static void StartTaskPre(object __instance, Task task, string id) {
+		if (!Config.IsEnabled) {
 			return;
 		}
 
-		while (true) {
-			if (!Config.Enabled || !Config.Extras.PreventUnresponsive) {
-				Thread.Sleep(10_000);
-				continue;
-			}
+		OnStartTask();
+	}
 
-			if (!HasWindow || !SpriteMaster.Self.IsGameLoaded) {
-				Thread.Sleep(1_000);
-				continue;
-			}
-
-			var elapsed = SdlUpdate.ElapsedMilliseconds;
-			if (elapsed <= 200) {
-				Thread.Sleep(100);
-				continue;
-			}
-
-			//Debug.Info($"Game has not triggered 'SdlUpdateLoop' for {elapsed} ms, triggering asynchronously (loading: {GameState.IsLoading})");
-			
-			SdlLoopMethod();
-
-			/*
-			if (GameState.IsLoading && FishTexture is not null) {
-				var device = StardewValley.Game1.game1.GraphicsDevice;
-				try {
-					UIThreadOverride = true;
-					Game1.graphics.BeginDraw();
-					device.SetRenderTarget(null);
-					device.Clear(ClearOptions.Target | ClearOptions.Stencil | ClearOptions.DepthBuffer, new XNA.Color(5, 3, 4), 1.0f, 0);
-					var b = StardewValley.Game1.spriteBatch;
-					b.Begin(XNA.Graphics.SpriteSortMode.Immediate, XNA.Graphics.BlendState.Opaque, XNA.Graphics.SamplerState.PointClamp);
-					Game1.spriteBatch.Draw(
-						FishTexture,
-						Game1.viewport.ToXna(),
-						new XNA.Rectangle(0, 0, 24, 24),
-						XNA.Color.White,
-						0.0f,
-						XNA.Vector2.Zero,
-						SpriteEffects.None,
-						0.0f
-					);
-					b.End();
-					Game1.graphics.EndDraw();
-				}
-				catch (Exception ex) {
-					ex = ex;
-				}
-				finally {
-					UIThreadOverride = false;
-				}
-			}
-			*/
+	[Harmonize(
+		typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade),
+		"StardewModdingAPI.Framework.SModHooks",
+		"StartTask",
+		Harmonize.Fixation.Postfix,
+		Harmonize.PriorityLevel.Last,
+		generic: Harmonize.Generic.Class,
+		critical: false
+	)]
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	public static void StartTaskPre<T>(T __instance, Task<T> task, string id) {
+		if (!Config.IsEnabled) {
+			return;
 		}
+
+		OnStartTask();
 	}
 }

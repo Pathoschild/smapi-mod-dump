@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/S1mmyy/StardewMods
+**
+*************************************************/
+
+{
+    "Name": "The Throngler",
+    "Description": "This weapon looks to be very capable at throngling enemies.",
+    "Type": "dagger",
+    "MinimumDamage": 4,
+    "MaximumDamage": 7,
+    "Knockback": 2,
+    "Speed": 5,
+    "Accuracy": 95,
+    "Defense": 1,
+    "MineDropVar": -1,
+    "MineDropMinimumLevel": 0,
+    "ExtraSwingArea": 2,
+    "CritChance": 0.5,
+    "CritMultiplier": 5.0,
+}

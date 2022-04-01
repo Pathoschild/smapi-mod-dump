@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/BetterBeehouses
+**
+*************************************************/
+
+{
+  "general.startup": "Починаємо...",
+  "general.patchedModsWarning": "Слухняні дітки читають свої журнали перед сном, інакше жучина фея прийде до них вночі, щоб віднести до модової в'язниці.",
+  "general.pfmPatchDisabled": "Інтеграцію з модом PF вимкнено, але мод PF знайдено. Мод Better Beehouses може працювати не так, як очікувалося. Інтеграцію можна увімкнути в сурисуванні мода.",
+  "general.automatePatchDisabled": "Інтеграцію з модом Automate вимкнено, але мод Automate знайдено. Мод Better Beehouses може працювати не так, як очікувалося. Інтеграцію можна увімкнути в сурисуванні мода.",
+  "general.removedPfmBeehouse": "PF мод вимкнено, поки встановлено мод Better Beehouses.",
+  "config.title": "Better Beehouses",
+  "config.daysToProduce.name": "Дні(в) для виготовлення",
+  "config.daysToProduce.desc": "Скільки треба днів для виготовлення меду",
+  "config.flowerRange.name": "Діапазон дії квітів",
+  "config.flowerRange.desc": "Діапазон пошуку квітів бджолами",
+  "config.usableIn.name": "Придатні",
+  "config.usableIn.desc": "Місця, де вулики можуть виготовляти мед",
+  "config.produceInWinter.name": "Виготовляти взимку",
+  "config.produceInWinter.desc": "Бджоли у вуликах можуть виготовляти мед взимку",
+  "config.usePottedFlowers.name": "Використовувати квітки у горщиках",
+  "config.usePottedFlowers.desc": "Бджоли у вуликах будуть використовувати квіти у горщиках",
+  "config.valueMultiplier.name": "Множник ціни меду",
+  "config.valueMultiplier.desc": "Мед, виготовлений бджолами помножується у стільки разів",
+  "config.useForage.name": "Використовувати дикі квіти",
+  "config.useForage.desc": "Чи варто бджолам з вуликів шукати дикі квіти",
+  "config.particles.name": "Бджолині частинки",
+  "config.particles.desc": "Показує декоративні бджолині рої навколо вуликів",
+  "config.useQuality.name": "Якість меду",
+  "config.useQuality.desc": "Мед може мати якість",
+  "config.patchAutomate.name": "Інтеграція з модом Automate",
+  "config.patchAutomate.desc": "Підлатати мод Automate для того, щоб він правильно працював з модом Better Beehouses",
+  "config.patchPFM.name": "Інтеграція з модом Producer Framework",
+  "config.patchPFM.desc": "Підлатати мод Producer Framework для того, щоб він правильно працював з модом Better Beehouses",
+  "config.capFactor.name": "М'яке обмеження",
+  "config.capFactor.desc": "Точка, в якій вартість меду зменшується, повертається",
+  "config.capCurve.name": "Чинник обмеження",
+  "config.capCurve.desc": "Розмір, за яким ціна повинна бути знижена після обмеження",
+  "config.bearBoost.name": "Підвищення ведмежої якості",
+  "config.bearBoost.desc": "Чинник підвищення якості від Ведмежої мудрості. Встановіть 1, щоб вимкнути. Застосовується лише тоді, коли ввімкнено якість",
+  "config.integration.name": "Інтеграція",
+  "config.integration.desc": "Сурисувати інтеграцію з іншими модами",
+  "config.price.name": "Ціна",
+  "config.price.desc": "Варіанти збалансування вартості меду",
+  "config.usableOptions.Outdoors": "На вулиці",
+  "config.usableOptions.Greenhouse": "На вулиці та в теплиці",
+  "config.usableOptions.Anywhere": "Будь-де",
+  "config.produceWhere.Never": "Ніде",
+  "config.produceWhere.Indoors": "В приміщенні",
+  "config.produceWhere.Always": "Будь-де"
+}

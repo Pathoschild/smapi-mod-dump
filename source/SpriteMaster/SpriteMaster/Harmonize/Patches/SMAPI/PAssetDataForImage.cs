@@ -46,72 +46,39 @@ static class PAssetDataForImage {
 		Texture2D target = __instance.Data;
 
 		// get areas
-		Bounds sourceBounds = sourceArea ?? new Bounds(source.Extent());
-		Bounds targetBounds = targetArea ?? new Bounds(source.Extent());
+		sourceArea ??= new(0, 0, source.Width, source.Height);
+		targetArea ??= new(0, 0, Math.Min(sourceArea.Value.Width, target.Width), Math.Min(sourceArea.Value.Height, target.Height));
 
 		// validate
-		if (!new Bounds(source.Bounds).Contains(sourceBounds))
+		if (!source.Bounds.Contains(sourceArea.Value))
 			throw new ArgumentOutOfRangeException(nameof(sourceArea), "The source area is outside the bounds of the source texture.");
-		if (!new Bounds(target.Bounds).Contains(targetBounds))
+		if (!target.Bounds.Contains(targetArea.Value))
 			throw new ArgumentOutOfRangeException(nameof(targetArea), "The target area is outside the bounds of the target texture.");
-		if (sourceBounds.Extent != targetBounds.Extent)
+		if (sourceArea.Value.Size != targetArea.Value.Size)
 			throw new InvalidOperationException("The source and target areas must be the same size.");
 
 		// get source data
-		int texelCount = sourceBounds.Area;
-		// TODO : make me a span when I add Span overrides for GetData and SetData
-		//ReadOnlySpan<Color8> sourceData = (texelCount > MaxStackSize) ? SpanExt.MakeUninitialized<Color8>(texelCount) : stackalloc Color8[texelCount];
-
-		static byte[] GetTextureData(Texture2D texture, in Bounds bounds, int count) {
-			count *= sizeof(Color8);
-			byte[] dataArray;
-			if (Config.SMAPI.ApplyPatchUseCache && texture.TryMeta(out var sourceMeta) && sourceMeta.CachedData is byte[] cachedSourceData) {
-				if (bounds == texture.Bounds) {
-					dataArray = cachedSourceData;
-				}
-				else {
-					// We need a subcopy
-					dataArray = GC.AllocateUninitializedArray<byte>(count, pinned: Config.SMAPI.ApplyPatchPinMemory);
-					var cachedData = cachedSourceData.AsReadOnlySpan<Color8>();
-					var destData = dataArray.AsSpan<Color8>();
-					int sourceStride = texture.Width;
-					int destStride = bounds.Width;
-					int sourceOffset = (bounds.Top * sourceStride) + bounds.Left;
-					int destOffset = 0;
-					for (int y = 0; y < bounds.Height; ++y) {
-						cachedData.Slice(sourceOffset, destStride).CopyTo(destData.Slice(destOffset, destStride));
-						sourceOffset += sourceStride;
-						destOffset += destStride;
-					}
-				}
-			}
-			else {
-				dataArray = GC.AllocateUninitializedArray<byte>(count, pinned: Config.SMAPI.ApplyPatchPinMemory);
-				texture.GetData(0, bounds, dataArray, 0, count);
-			}
-			return dataArray;
-		}
-
-		byte[] sourceDataArray = GetTextureData(source, sourceBounds, texelCount);
-		var sourceData = sourceDataArray.AsSpan<Color8>();
+		int pixelCount = sourceArea.Value.Width * sourceArea.Value.Height;
+		var sourceData = GC.AllocateUninitializedArray<XNA.Color>(pixelCount);
+		source.GetData(0, sourceArea, sourceData, 0, pixelCount);
 
 		// merge data in overlay mode
 		if (patchMode == PatchMode.Overlay) {
 			// get target data
-			byte[] targetDataArray = GetTextureData(target, targetBounds, texelCount);
-			var targetData = targetDataArray.AsReadOnlySpan<Color8>();
+			var targetData = GC.AllocateUninitializedArray<XNA.Color>(pixelCount);
+			target.GetData(0, targetArea, targetData, 0, pixelCount);
 
 			// merge pixels
-			for (int i = 0; i < texelCount; i++) {
+			for (int i = 0; i < sourceData.Length; i++) {
 				var above = sourceData[i];
 				var below = targetData[i];
 
 				// shortcut transparency
-				if (above.A.Value < MinOpacity) {
+				if (above.A < MinOpacity) {
 					sourceData[i] = below;
 					continue;
 				}
-				if (below.A.Value < MinOpacity) {
+				if (below.A < MinOpacity) {
 					sourceData[i] = above;
 					continue;
 				}
@@ -120,19 +87,18 @@ static class PAssetDataForImage {
 				// This performs a conventional alpha blend for the pixels, which are already
 				// premultiplied by the content pipeline. The formula is derived from
 				// https://shawnhargreaves.com/blog/premultiplied-alpha.html.
-				Fixed8 alphaBelow = (byte)(byte.MaxValue - above.A.Value);
-				sourceData[i] = new(
-					r: above.R.AddClamped(below.R * alphaBelow),
-					g: above.G.AddClamped(below.G * alphaBelow),
-					b: above.B.AddClamped(below.B * alphaBelow),
-					a: MathExt.Max(above.A, below.A)
+				float alphaBelow = 1 - (above.A / 255f);
+				sourceData[i] = new XNA.Color(
+						(int)(above.R + (below.R * alphaBelow)), // r
+						(int)(above.G + (below.G * alphaBelow)), // g
+						(int)(above.B + (below.B * alphaBelow)), // b
+						Math.Max(above.A, below.A) // a
 				);
 			}
 		}
 
 		// patch target texture
-		target.SetData(0, targetBounds, sourceDataArray, 0, texelCount * sizeof(Color8));
-
+		target.SetData(0, targetArea, sourceData, 0, pixelCount);
 		return false;
 	}
 }

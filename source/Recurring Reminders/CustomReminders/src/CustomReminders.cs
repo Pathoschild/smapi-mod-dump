@@ -22,11 +22,11 @@ namespace Dem1se.CustomReminders
     /// <summary>The mod entry point.</summary>
     public class ModEntry : Mod
     {
-        private ModConfig Config;
-        private string NotificationSound;
+        ModConfig Config;
+        string NotificationSound;
 
         /// <summary> List of absolute file paths to reminders that have matured and are awaiting cleanup </summary>
-        private Queue<string> DeleteQueue = new();
+        Queue<string> DeleteQueue = new();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -76,7 +76,7 @@ namespace Dem1se.CustomReminders
         }
 
         ///<summary> Defines what happens when a save is loaded</summary>
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // set the SaveFolderName field if multiplayer host or singleplayer
             if (Context.IsMainPlayer)
@@ -108,7 +108,7 @@ namespace Dem1se.CustomReminders
         }
 
         /// <summary> Defines what happens when user press the config button </summary>
-        private void OnButtonPressed(object sender, ButtonPressedEventArgs ev)
+        void OnButtonPressed(object sender, ButtonPressedEventArgs ev)
         {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady) return;
@@ -122,8 +122,7 @@ namespace Dem1se.CustomReminders
         {
             // These are all the variables that hold the values of the reminder 
             string reminderMessage;
-            int reminderDate;
-            int reminderTime;
+            int reminderDate, reminderTime;
 
             ModConfig config = Utilities.Globals.Helper.ReadConfig<ModConfig>();
 
@@ -192,13 +191,13 @@ namespace Dem1se.CustomReminders
         }
 
         /// <summary> Loop that checks if any reminders are mature.</summary>
-        private void ReminderNotifier(object sender, TimeChangedEventArgs ev)
+        void ReminderNotifier(object sender, TimeChangedEventArgs ev)
         {
             ReminderNotifierLoop(ev.NewTime);
         }
 
         // Json-x-ly Notes: Separated for OnSaveLoaded check since loading a new game does not send a TimeChanged event for the 600 hour
-        private void ReminderNotifierLoop(int newTime)
+        void ReminderNotifierLoop(int newTime)
         {
             // returns function if game time isn't multiple of 30 in-game minutes.
             string timeString = Convert.ToString(newTime);

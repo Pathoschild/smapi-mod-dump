@@ -10,10 +10,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Integrations.FarmExpansion;
 using Pathoschild.Stardew.Common.Utilities;
@@ -33,7 +31,7 @@ using StardewValley.Menus;
 namespace Pathoschild.Stardew.TractorMod
 {
     /// <summary>The mod entry point.</summary>
-    internal class ModEntry : Mod, IAssetLoader
+    internal class ModEntry : Mod
     {
         /*********
         ** Fields
@@ -68,9 +66,6 @@ namespace Pathoschild.Stardew.TractorMod
         /// <summary>The message ID for a request to warp a tractor to the given farmhand.</summary>
         private readonly string RequestTractorMessageID = "TractorRequest";
 
-        /// <summary>A case-insensitive list of files in the <c>assets</c> folder.</summary>
-        private readonly IDictionary<string, string> AssetMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
         /****
         ** State
         ****/
@@ -80,17 +75,14 @@ namespace Pathoschild.Stardew.TractorMod
         /// <summary>The configured key bindings.</summary>
         private ModConfigKeys Keys => this.Config.Controls;
 
+        /// <summary>Manages textures loaded for the tractor and garage.</summary>
+        private TextureManager TextureManager;
+
         /// <summary>The backing field for <see cref="TractorManager"/>.</summary>
         private PerScreen<TractorManager> TractorManagerImpl;
 
         /// <summary>The tractor being ridden by the current player.</summary>
         private TractorManager TractorManager => this.TractorManagerImpl.Value;
-
-        /// <summary>The garage texture to apply.</summary>
-        private Texture2D GarageTexture;
-
-        /// <summary>The tractor texture to apply.</summary>
-        private Texture2D TractorTexture;
 
         /// <summary>Whether the mod is enabled for the current farmhand.</summary>
         private bool IsEnabled = true;
@@ -108,6 +100,12 @@ namespace Pathoschild.Stardew.TractorMod
 
             // init
             I18n.Init(helper.Translation);
+            this.TextureManager = new(
+                directoryPath: this.Helper.DirectoryPath,
+                publicAssetBasePath: this.PublicAssetBasePath,
+                contentHelper: helper.ModContent,
+                monitor: this.Monitor
+            );
             this.TractorManagerImpl = new(() =>
             {
                 var manager = new TractorManager(this.Config, this.Keys, this.Helper.Reflection);
@@ -115,10 +113,10 @@ namespace Pathoschild.Stardew.TractorMod
                 return manager;
             });
             this.UpdateConfig();
-            this.InitAssetMap();
 
             // hook events
             IModEvents events = helper.Events;
+            events.Content.AssetRequested += this.OnAssetRequested;
             events.GameLoop.GameLaunched += this.OnGameLaunched;
             events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             events.GameLoop.DayStarted += this.OnDayStarted;
@@ -138,32 +136,6 @@ namespace Pathoschild.Stardew.TractorMod
                 this.Monitor.Log("The translation files in this mod's i18n folder seem to be missing. The mod will still work, but you'll see 'missing translation' messages. Try reinstalling the mod to fix this.", LogLevel.Warn);
         }
 
-        /// <summary>Get whether this instance can load the initial version of the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            return
-                asset.AssetNameEquals($"Buildings/{this.BlueprintBuildingType}")
-                || asset.AssetNameEquals($"{this.PublicAssetBasePath}/Tractor")
-                || asset.AssetNameEquals($"{this.PublicAssetBasePath}/Garage");
-        }
-
-        /// <summary>Load a matched asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public T Load<T>(IAssetInfo asset)
-        {
-            // Allow for garages from older versions that didn't get normalized correctly.
-            // This can be removed once support for legacy data is dropped.
-            if (asset.AssetNameEquals($"Buildings/{this.BlueprintBuildingType}"))
-                return (T)(object)this.GarageTexture;
-
-            // load tractor or garage texture
-            string key = PathUtilities.GetSegments(asset.AssetName).Last();
-            return this.TryLoadFromFile(key, out Texture2D texture, out string error)
-                ? (T)(object)texture
-                : throw new InvalidOperationException(error);
-        }
-
 
         /*********
         ** Private methods
@@ -171,9 +143,9 @@ namespace Pathoschild.Stardew.TractorMod
         /****
         ** Event handlers
         ****/
-        /// <summary>The event called after the first game update, once all mods are loaded.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             // add to Farm Expansion carpenter menu
@@ -204,9 +176,9 @@ namespace Pathoschild.Stardew.TractorMod
             ).Register();
         }
 
-        /// <summary>The event called after a save slot is loaded.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // load legacy data
@@ -232,19 +204,16 @@ namespace Pathoschild.Stardew.TractorMod
             }
         }
 
-        /// <summary>The event called when a new day begins.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             if (!this.IsEnabled)
                 return;
 
             // reload textures
-            if (!this.TryLoadFromContent("tractor", out this.TractorTexture, out string error))
-                this.Monitor.Log(error, LogLevel.Error);
-            if (!this.TryLoadFromContent("garage", out this.GarageTexture, out error))
-                this.Monitor.Log(error, LogLevel.Error);
+            this.TextureManager.UpdateTextures();
 
             // init garages + tractors
             if (Context.IsMainPlayer)
@@ -276,16 +245,24 @@ namespace Pathoschild.Stardew.TractorMod
                             tractor.ownerId.Value = 0;
 
                         // apply textures
-                        this.ApplyTextures(garage);
-                        this.ApplyTextures(tractor);
+                        this.TextureManager.ApplyTextures(garage, this.IsGarage);
+                        this.TextureManager.ApplyTextures(tractor, this.IsTractor);
                     }
                 }
             }
         }
 
-        /// <summary>The event called after the location list changes.</summary>
+        /// <inheritdoc cref="IContentEvents.AssetRequested"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            this.TextureManager.OnAssetRequested(e);
+        }
+
+        /// <inheritdoc cref="IWorldEvents.LocationListChanged"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnLocationListChanged(object sender, LocationListChangedEventArgs e)
         {
             if (!this.IsEnabled)
@@ -302,9 +279,9 @@ namespace Pathoschild.Stardew.TractorMod
             }
         }
 
-        /// <summary>The event called after the list of NPCs in a location changes.</summary>
+        /// <inheritdoc cref="IWorldEvents.NpcListChanged"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnNpcListChanged(object sender, NpcListChangedEventArgs e)
         {
             if (!this.IsEnabled)
@@ -326,9 +303,9 @@ namespace Pathoschild.Stardew.TractorMod
             }
         }
 
-        /// <summary>The event called after the player warps into a new location.</summary>
+        /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (!e.IsLocalPlayer || !this.TractorManager.IsCurrentPlayerRiding)
@@ -345,9 +322,9 @@ namespace Pathoschild.Stardew.TractorMod
                 Game1.player.mount.dismount();
         }
 
-        /// <summary>The event called when the game updates (roughly sixty times per second).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (!this.IsEnabled)
@@ -360,24 +337,36 @@ namespace Pathoschild.Stardew.TractorMod
                 if (e.IsMultipleOf(updateRate))
                 {
                     foreach (Horse horse in this.GetTractorsIn(Game1.currentLocation))
-                        this.ApplyTextures(horse);
+                        this.TextureManager.ApplyTextures(horse, this.IsTractor);
                     foreach (Stable stable in this.GetGaragesIn(Game1.currentLocation))
-                        this.ApplyTextures(stable);
+                        this.TextureManager.ApplyTextures(stable, this.IsGarage);
                 }
             }
 
             // override blueprint texture
             if (Game1.activeClickableMenu != null)
-                this.ApplyTextures(Game1.activeClickableMenu);
+            {
+                IClickableMenu menu = Game1.activeClickableMenu;
+                bool isFarmExpansion = menu.GetType().FullName == this.FarmExpansionMenuFullName;
+                bool isPelicanFiber = !isFarmExpansion && menu.GetType().FullName == this.PelicanFiberMenuFullName;
+
+                this.TextureManager.ApplyTextures(
+                    menu: menu,
+                    isFarmExpansion: isFarmExpansion,
+                    isPelicanFiber: isPelicanFiber,
+                    isGarage: blueprint => blueprint.maxOccupants == this.MaxOccupantsID,
+                    reflection: this.Helper.Reflection
+                );
+            }
 
             // update tractor effects
             if (Context.IsPlayerFree)
                 this.TractorManager?.Update();
         }
 
-        /// <summary>The event called before the day ends.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             if (!this.IsEnabled)
@@ -417,17 +406,17 @@ namespace Pathoschild.Stardew.TractorMod
             }
         }
 
-        /// <summary>The event called after the game saves.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.Saved"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnSaved(object sender, SavedEventArgs e)
         {
             Migrator.AfterSave();
         }
 
-        /// <summary>The event called after the game draws the world to the screen.</summary>
+        /// <inheritdoc cref="IDisplayEvents.RenderedWorld"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
         {
             if (!this.IsEnabled)
@@ -438,9 +427,9 @@ namespace Pathoschild.Stardew.TractorMod
                 this.TractorManager.DrawRadius(Game1.spriteBatch);
         }
 
-        /// <summary>The event called after an active menu is opened or closed.</summary>
+        /// <inheritdoc cref="IDisplayEvents.MenuChanged"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnMenuChanged(object sender, MenuChangedEventArgs e)
         {
             if (!this.IsEnabled || !Context.IsWorldReady)
@@ -471,7 +460,7 @@ namespace Pathoschild.Stardew.TractorMod
             }
         }
 
-        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -485,9 +474,9 @@ namespace Pathoschild.Stardew.TractorMod
                 this.DismissTractor(Game1.player.mount);
         }
 
-        /// <summary>Raised after a mod message is received over the network.</summary>
+        /// <inheritdoc cref="IMultiplayerEvents.ModMessageReceived"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
             // tractor request from a farmhand
@@ -545,22 +534,6 @@ namespace Pathoschild.Stardew.TractorMod
             });
         }
 
-        /// <summary>Initialize the <see cref="AssetMap"/> from the files on disk.</summary>
-        private void InitAssetMap()
-        {
-            // get assets folder
-            DirectoryInfo dir = new DirectoryInfo(Path.Combine(this.Helper.DirectoryPath, "assets"));
-            if (!dir.Exists)
-            {
-                this.Monitor.Log("Tractor Mod's 'assets' folder is missing. The mod will not work correctly. Try reinstalling the mod to fix this.", LogLevel.Error);
-                return;
-            }
-
-            // create map
-            foreach (FileInfo file in dir.GetFiles())
-                this.AssetMap[file.Name] = file.Name;
-        }
-
         /// <summary>Summon an unused tractor to the player's current position, if any are available.</summary>
         private void SummonTractor()
         {
@@ -606,7 +579,7 @@ namespace Pathoschild.Stardew.TractorMod
             {
                 tractor = new Horse(Guid.NewGuid(), 0, 0);
                 TractorManager.SetTractorInfo(tractor);
-                this.ApplyTextures(tractor);
+                this.TextureManager.ApplyTextures(tractor, this.IsTractor);
             }
 
             // warp to player
@@ -751,111 +724,6 @@ namespace Pathoschild.Stardew.TractorMod
         private Vector2 GetDefaultTractorTile(Stable garage)
         {
             return new Vector2(garage.tileX.Value + 1, garage.tileY.Value + 1);
-        }
-
-        /// <summary>Try to load the asset for a texture from the game's content folder so other mods can apply edits.</summary>
-        /// <param name="spritesheet">The spritesheet name without the path or extension (like 'Tractor' or 'Garage').</param>
-        /// <param name="texture">The loaded texture, if found.</param>
-        /// <param name="error">A human-readable error to show to the user if texture wasn't found.</param>
-        private bool TryLoadFromContent(string spritesheet, out Texture2D texture, out string error)
-        {
-            try
-            {
-                texture = Game1.content.Load<Texture2D>($"{this.PublicAssetBasePath}/{spritesheet}");
-                error = null;
-            }
-            catch (Exception ex)
-            {
-                texture = null;
-                error = ex.ToString();
-                return false;
-            }
-
-            return texture != null;
-        }
-
-        /// <summary>Try to load the asset for a texture from the assets folder (including seasonal logic if applicable).</summary>
-        /// <param name="spritesheet">The spritesheet name without the path or extension (like 'tractor' or 'garage').</param>
-        /// <param name="texture">The loaded texture, if found.</param>
-        /// <param name="error">A human-readable error to show to the user if texture wasn't found.</param>
-        private bool TryLoadFromFile(string spritesheet, out Texture2D texture, out string error)
-        {
-            texture = this.TryGetTextureKey(spritesheet, out string key, out error)
-                ? this.Helper.Content.Load<Texture2D>(key)
-                : null;
-
-            return texture != null;
-        }
-
-        /// <summary>Try to get the asset key for a texture from the assets folder (including seasonal logic if applicable).</summary>
-        /// <param name="spritesheet">The spritesheet name without the path or extension (like 'tractor' or 'garage').</param>
-        /// <param name="key">The asset key to use, if found.</param>
-        /// <param name="error">A human-readable error to show to the user if texture wasn't found.</param>
-        private bool TryGetTextureKey(string spritesheet, out string key, out string error)
-        {
-            string seasonalKey = $"{Game1.currentSeason}_{spritesheet}.png";
-            string defaultKey = $"{spritesheet}.png";
-
-            foreach (string possibleKey in new[] { seasonalKey, defaultKey })
-            {
-                if (this.AssetMap.TryGetValue(possibleKey, out string actualKey) && File.Exists(Path.Combine(this.Helper.DirectoryPath, $"assets/{actualKey}")))
-                {
-                    key = $"assets/{actualKey}";
-                    error = null;
-                    return true;
-                }
-            }
-
-            key = null;
-            error = $"Couldn't find file '{defaultKey}' in the mod folder. This mod isn't installed correctly; try reinstalling the mod to fix it.";
-            return false;
-        }
-
-        /// <summary>Apply the mod textures to the given menu, if applicable.</summary>
-        /// <param name="menu">The menu to change.</param>
-        private void ApplyTextures(IClickableMenu menu)
-        {
-            // vanilla menu
-            if (menu is CarpenterMenu carpenterMenu)
-            {
-                if (carpenterMenu.CurrentBlueprint.maxOccupants == this.MaxOccupantsID)
-                {
-                    Building building = this.Helper.Reflection.GetField<Building>(carpenterMenu, "currentBuilding").GetValue();
-                    if (building.texture.Value != this.GarageTexture && this.GarageTexture != null)
-                        building.texture = new Lazy<Texture2D>(() => this.GarageTexture);
-                }
-                return;
-            }
-
-            // Farm Expansion & Pelican Fiber menus
-            bool isFarmExpansion = menu.GetType().FullName == this.FarmExpansionMenuFullName;
-            bool isPelicanFiber = !isFarmExpansion && menu.GetType().FullName == this.PelicanFiberMenuFullName;
-            if (isFarmExpansion || isPelicanFiber)
-            {
-                BluePrint currentBlueprint = this.Helper.Reflection.GetProperty<BluePrint>(menu, isFarmExpansion ? "CurrentBlueprint" : "currentBlueprint").GetValue();
-                if (currentBlueprint.maxOccupants == this.MaxOccupantsID)
-                {
-                    Building building = this.Helper.Reflection.GetField<Building>(menu, "currentBuilding").GetValue();
-                    if (building.texture.Value != this.GarageTexture && this.GarageTexture != null)
-                        building.texture = new Lazy<Texture2D>(() => this.GarageTexture);
-                }
-            }
-        }
-
-        /// <summary>Apply the mod textures to the given stable, if applicable.</summary>
-        /// <param name="horse">The horse to change.</param>
-        private void ApplyTextures(Horse horse)
-        {
-            if (this.TractorTexture != null && this.IsTractor(horse))
-                horse.Sprite.spriteTexture = this.TractorTexture;
-        }
-
-        /// <summary>Apply the mod textures to the given stable, if applicable.</summary>
-        /// <param name="stable">The stable to change.</param>
-        private void ApplyTextures(Stable stable)
-        {
-            if (this.GarageTexture != null && this.IsGarage(stable))
-                stable.texture = new Lazy<Texture2D>(() => this.GarageTexture);
         }
     }
 }

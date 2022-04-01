@@ -1,7 +1,7 @@
 {
   "Name": "Minor Light Tweaks",
   "Author": "greentodd",
-  "Version": "2.0.0",
+  "Version": "2.1.0",
   "Description": "Several indoor night-time lighting tweaks + automatic fireplaces",
   "UniqueID": "greentodd.MinorLightTweaks",
   "EntryDll": "MinorLightTweaks.dll",

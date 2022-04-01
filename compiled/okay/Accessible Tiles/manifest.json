@@ -1,7 +1,7 @@
 {
   "Name": "AccessibleTiles",
   "Author": "GrumpyCrouton",
-  "Version": "2.2.3",
+  "Version": "2.2.4",
   "Description": "Moved the player based on the tile grid",
   "UniqueID": "GrumpyCrouton.AccessibleTiles",
   "EntryDll": "AccessibleTiles.dll",

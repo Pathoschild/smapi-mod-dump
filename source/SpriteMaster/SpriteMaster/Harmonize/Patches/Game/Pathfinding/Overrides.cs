@@ -10,10 +10,8 @@
 
 using SpriteMaster.Extensions;
 using StardewValley;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -32,6 +30,11 @@ static partial class Pathfinding {
 	public static bool GetLocationRoute(NPC __instance, ref List<string>? __result, string startingLocation, string endingLocation) {
 		if (!Config.Enabled || !Config.Extras.OptimizeWarpPoints) {
 			return true;
+		}
+
+		if (__instance is StardewValley.Monsters.Monster) {
+			__result = null;
+			return false;
 		}
 
 		// TODO : Handle the MensLocker/WomensLocker overrides. We effectively will need two more route maps (or one if gender can never be 'neither'.

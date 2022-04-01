@@ -11,7 +11,7 @@
 {
   "Name": "Better Chests",
   "Author": "furyx639",
-  "Version": "1.7.2",
+  "Version": "1.7.3",
   "Description": "Framework that adds new features to chests.",
   "UniqueID": "furyx639.BetterChests",
   "EntryDll": "BetterChests.dll",
@@ -23,7 +23,7 @@
     {
       "UniqueID": "furyx639.FuryCore",
       "IsRequired": true,
-      "MinimumVersion": "1.6.1"
+      "MinimumVersion": "1.6.3"
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",

@@ -12,6 +12,9 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Shockah.CommonModCode;
+using Shockah.CommonModCode.GMCM;
+using Shockah.CommonModCode.IL;
+using Shockah.CommonModCode.UI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -21,14 +24,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
-namespace Shockah.XPView
+namespace Shockah.XPDisplay
 {
 	public class XPDisplay: Mod
 	{
 		private static readonly Rectangle SmallObtainedLevelCursorsRectangle = new(137, 338, 7, 9);
 		private static readonly Rectangle BigObtainedLevelCursorsRectangle = new(159, 338, 13, 9);
 		private static readonly int[] OrderedSkillIndexes = new[] { 0, 3, 2, 1, 4, 5 };
-		private static readonly string LuckSkillModQualifiedName = "LuckSkill.Mod, LuckSkill";
 		private static readonly string SpaceCoreNewSkillsPageQualifiedName = "SpaceCore.Interface.NewSkillsPage, SpaceCore";
 
 		private static XPDisplay Instance = null!;
@@ -36,6 +38,8 @@ namespace Shockah.XPView
 		private bool IsWalkOfLifeInstalled = false;
 		private int[] XPValues = null!;
 
+		private static readonly IDictionary<(int uiSkillIndex, string? spaceCoreSkillName), (Vector2?, Vector2?)> SkillBarCorners = new Dictionary<(int uiSkillIndex, string? spaceCoreSkillName), (Vector2?, Vector2?)>();
+		private static readonly IList<(Vector2, Vector2)> SkillBarHoverExclusions = new List<(Vector2, Vector2)>();
 		private static readonly IList<Action> SkillsPageDrawQueuedDelegates = new List<Action>();
 
 		public override void Entry(IModHelper helper)
@@ -59,30 +63,24 @@ namespace Shockah.XPView
 
 				harmony.Patch(
 					original: AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.draw), new Type[] { typeof(SpriteBatch) }),
+					postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Postfix)),
 					transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Transpiler))
 				);
-
-				if (Helper.ModRegistry.IsLoaded("spacechase0.LuckSkill"))
-				{
-					harmony.Patch(
-						original: AccessTools.Method(AccessTools.TypeByName(LuckSkillModQualifiedName), "DrawLuckSkill", new Type[] { typeof(SkillsPage) }),
-						transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(LuckSkill_DrawLuckSkill_Transpiler))
-					);
-				}
 
 				if (Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
 				{
 					harmony.Patch(
 						original: AccessTools.Method(AccessTools.TypeByName(SpaceCoreNewSkillsPageQualifiedName), "draw", new Type[] { typeof(SpriteBatch) }),
+						postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Postfix)),
 						transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Transpiler))
 					);
 				}
 
-				IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.AwesomeProfessions");
+				IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions");
 			}
 			catch (Exception ex)
 			{
-				Monitor.Log($"Could not patch methods - XP View probably won't work.\nReason: {ex}", LogLevel.Error);
+				Monitor.Log($"Could not patch methods - XP Display probably won't work.\nReason: {ex}", LogLevel.Error);
 			}
 		}
 
@@ -134,6 +132,11 @@ namespace Shockah.XPView
 			return instructions;
 		}
 
+		private static void SkillsPage_draw_Postfix(SpriteBatch b)
+		{
+			DrawSkillsPageExperienceTooltip(b);
+		}
+
 		private static IEnumerable<CodeInstruction> SkillsPage_draw_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
 		{
 			var instructions = enumerableInstructions.ToList();
@@ -150,7 +153,7 @@ namespace Shockah.XPView
 			});
 			if (worker is null)
 			{
-				Instance.Monitor.Log($"Could not patch methods - XP View probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch methods - XP Display probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
 				return instructions;
 			}
 
@@ -182,54 +185,22 @@ namespace Shockah.XPView
 			}, occurence: 2);
 			if (worker is null)
 			{
-				Instance.Monitor.Log($"Could not patch methods - XP View probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch methods - XP Display probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
 				return instructions;
 			}
 
 			worker.Insert(1, new[]
 			{
+				new CodeInstruction(OpCodes.Ldarg_1), // `SpriteBatch`
 				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates)))
 			});
 
 			return instructions;
 		}
 
-		private static IEnumerable<CodeInstruction> LuckSkill_DrawLuckSkill_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
+		private static void SpaceCore_NewSkillsPage_draw_Postfix(SpriteBatch b)
 		{
-			var instructions = enumerableInstructions.ToList();
-
-			// IL to find:
-			// IL_0381: ldloc.s 7
-			// IL_0383: ldc.i4.s 9
-			// IL_0385: bne.un IL_044a
-			var worker = TranspileWorker.FindInstructions(instructions, new Func<CodeInstruction, bool>[]
-			{
-				i => i.IsLdloc(),
-				i => i.IsLdcI4(9),
-				i => i.IsBneUn()
-			});
-			if (worker is null)
-			{
-				Instance.Monitor.Log($"Could not patch Luck Skill methods - XP View probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
-				return instructions;
-			}
-
-			worker.Insert(1, new[]
-			{
-				new CodeInstruction(OpCodes.Ldloc_0), // this *should* be the `sb` local (SpriteBatch)
-
-				new CodeInstruction(OpCodes.Ldloc, 4), // this *should* be the `num` local
-				new CodeInstruction(OpCodes.Ldloc, 6), // this *should* be the `num3` local
-				new CodeInstruction(OpCodes.Add),
-
-				new CodeInstruction(OpCodes.Ldloc, 5), // this *should* be the `y` local
-				new CodeInstruction(OpCodes.Ldloc, 7), // this *should* be the `i` local - the currently drawn level index (0-9)
-				new CodeInstruction(OpCodes.Ldc_I4, 5), // the skill index of the luck skill
-				new CodeInstruction(OpCodes.Ldnull), // no skill name, it's a "built-in" one
-				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_QueueDelegate)))
-			});
-
-			return instructions;
+			DrawSkillsPageExperienceTooltip(b);
 		}
 
 		private static IEnumerable<CodeInstruction> SpaceCore_NewSkillsPage_draw_Transpiler(IEnumerable<CodeInstruction> enumerableInstructions)
@@ -248,7 +219,8 @@ namespace Shockah.XPView
 			});
 			if (worker is null)
 			{
-				Instance.Monitor.Log($"Could not patch SpaceCore methods - XP View probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch SpaceCore methods - XP Display probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				return instructions;
 			}
 			else
 			{
@@ -281,7 +253,8 @@ namespace Shockah.XPView
 			}, startIndex: worker?.EndIndex ?? 0);
 			if (worker is null)
 			{
-				Instance.Monitor.Log($"Could not patch SpaceCore methods - XP View probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch SpaceCore methods - XP Display probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				return instructions;
 			}
 			else
 			{
@@ -315,12 +288,13 @@ namespace Shockah.XPView
 			}, occurence: 2);
 			if (worker is null)
 			{
-				Instance.Monitor.Log($"Could not patch SpaceCore methods - XP View probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
+				Instance.Monitor.Log($"Could not patch SpaceCore methods - XP Display probably won't work.\nReason: Could not find IL to transpile.", LogLevel.Error);
 				return instructions;
 			}
 
 			worker.Insert(1, new[]
 			{
+				new CodeInstruction(OpCodes.Ldarg_1), // `SpriteBatch`
 				new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates)))
 			});
 
@@ -329,7 +303,28 @@ namespace Shockah.XPView
 
 		public static void SkillsPage_draw_QueueDelegate(SpriteBatch b, int x, int y, int levelIndex, int uiSkillIndex, string? spaceCoreSkillName)
 		{
+			bool isBigLevel = (levelIndex + 1) % 5 == 0;
+			Texture2D barTexture = Game1.mouseCursors;
+			Rectangle barTextureRectangle = isBigLevel ? BigObtainedLevelCursorsRectangle : SmallObtainedLevelCursorsRectangle;
+			float scale = 4f;
+
+			Vector2 topLeft = new(x + levelIndex * 36, y - 4 + uiSkillIndex * 56);
+			Vector2 bottomRight = topLeft + new Vector2(barTextureRectangle.Width, barTextureRectangle.Height) * scale;
+			if (levelIndex is 0 or 9)
+			{
+				var key = (uiSkillIndex, spaceCoreSkillName);
+				if (!SkillBarCorners.ContainsKey(key))
+					SkillBarCorners[key] = (null, null);
+				if (levelIndex == 0)
+					SkillBarCorners[key] = (topLeft, SkillBarCorners[key].Item2);
+				else if (levelIndex == 9)
+					SkillBarCorners[key] = (SkillBarCorners[key].Item1, bottomRight);
+			}
+
 			int currentLevel = GetUnmodifiedSkillLevel(uiSkillIndex, spaceCoreSkillName);
+			if (levelIndex is 4 or 9 && currentLevel >= levelIndex)
+				SkillBarHoverExclusions.Add((topLeft, bottomRight));
+
 			if (currentLevel % 10 != levelIndex)
 				return;
 			int nextLevelXP = GetLevelXP(currentLevel, spaceCoreSkillName);
@@ -337,59 +332,90 @@ namespace Shockah.XPView
 			int currentXP = GetCurrentXP(uiSkillIndex, spaceCoreSkillName);
 			float nextLevelProgress = Math.Clamp(1f * (currentXP - currentLevelXP) / (nextLevelXP - currentLevelXP), 0f, 1f);
 
-			float scale = 4f;
-			bool isBigLevel = (levelIndex + 1) % 5 == 0;
-			Texture2D barTexture = Game1.mouseCursors;
-			Rectangle barTextureRectangle = isBigLevel ? BigObtainedLevelCursorsRectangle : SmallObtainedLevelCursorsRectangle;
-			ModConfig.Orientation orientation = isBigLevel ? Instance.Config.BigBarOrientation : Instance.Config.SmallBarOrientation;
+			Orientation orientation = isBigLevel ? Instance.Config.BigBarOrientation : Instance.Config.SmallBarOrientation;
 
 			if (currentLevel >= 10 && Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled())
 				(barTexture, barTextureRectangle) = isBigLevel ? WalkOfLifeBridge.GetExtendedBigBar() : WalkOfLifeBridge.GetExtendedSmallBar();
 
+			Vector2 barPosition;
 			switch (orientation)
 			{
-				case ModConfig.Orientation.Horizontal:
-					int rectangleWidthPixels = (int)(barTextureRectangle.Height * nextLevelProgress);
-					SkillsPageDrawQueuedDelegates.Add(() =>
-					{
-						b.Draw(
-							barTexture,
-							new Vector2(x + levelIndex * 36, y - 4 + uiSkillIndex * 56),
-							new Rectangle(
-								barTextureRectangle.Left,
-								barTextureRectangle.Top,
-								rectangleWidthPixels,
-								barTextureRectangle.Height
-							),
-							Color.White * Instance.Config.Alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.87f
-						);
-					});
+				case Orientation.Horizontal:
+					int rectangleWidthPixels = (int)(barTextureRectangle.Width * nextLevelProgress);
+					barPosition = topLeft;
+					barTextureRectangle = new(
+						barTextureRectangle.Left,
+						barTextureRectangle.Top,
+						rectangleWidthPixels,
+						barTextureRectangle.Height
+					);
 					break;
-				case ModConfig.Orientation.Vertical:
+				case Orientation.Vertical:
 					int rectangleHeightPixels = (int)(barTextureRectangle.Height * nextLevelProgress);
-					SkillsPageDrawQueuedDelegates.Add(() =>
-					{
-						b.Draw(
-							barTexture,
-							new Vector2(x + levelIndex * 36, y - 4 + uiSkillIndex * 56 + (barTextureRectangle.Height - rectangleHeightPixels) * scale),
-							new Rectangle(
-								barTextureRectangle.Left,
-								barTextureRectangle.Top + barTextureRectangle.Height - rectangleHeightPixels,
-								barTextureRectangle.Width,
-								rectangleHeightPixels
-							),
-							Color.White * Instance.Config.Alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.87f
-						);
-					});
+					barPosition = topLeft + new Vector2(0f, (barTextureRectangle.Height - rectangleHeightPixels) * scale);
+					barTextureRectangle = new(
+						barTextureRectangle.Left,
+						barTextureRectangle.Top + barTextureRectangle.Height - rectangleHeightPixels,
+						barTextureRectangle.Width,
+						rectangleHeightPixels
+					);
 					break;
+				default:
+					throw new ArgumentException($"{nameof(Orientation)} has an invalid value.");
 			}
+			SkillsPageDrawQueuedDelegates.Add(() => b.Draw(barTexture, barPosition, barTextureRectangle, Color.White * Instance.Config.Alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.87f));
 		}
 
-		public static void SkillsPage_draw_CallQueuedDelegates()
+		public static void SkillsPage_draw_CallQueuedDelegates(SpriteBatch b)
 		{
 			foreach (var @delegate in SkillsPageDrawQueuedDelegates)
 				@delegate();
 			SkillsPageDrawQueuedDelegates.Clear();
+		}
+
+		private static void DrawSkillsPageExperienceTooltip(SpriteBatch b)
+		{
+			int mouseX = Game1.getMouseX();
+			int mouseY = Game1.getMouseY();
+			bool isHoverExcluded = SkillBarHoverExclusions.Any(e => mouseX >= e.Item1.X && mouseY >= e.Item1.Y && mouseX < e.Item2.X && mouseY < e.Item2.Y);
+			if (!isHoverExcluded)
+			{
+				(int uiSkillIndex, string? spaceCoreSkillName)? hoveredUiSkill = SkillBarCorners
+				.Where(kv => kv.Value.Item1 is not null && kv.Value.Item2 is not null)
+				.Where(kv => mouseX >= kv.Value.Item1!.Value.X && mouseY >= kv.Value.Item1!.Value.Y && mouseX < kv.Value.Item2!.Value.X && mouseY < kv.Value.Item2!.Value.Y)
+				.FirstOrNull()
+				?.Key;
+				if (hoveredUiSkill is not null)
+				{
+					var (uiSkillIndex, spaceCoreSkillName) = hoveredUiSkill.Value;
+					int currentLevel = GetUnmodifiedSkillLevel(uiSkillIndex, spaceCoreSkillName);
+					int nextLevelXP = GetLevelXP(currentLevel, spaceCoreSkillName);
+					int currentLevelXP = currentLevel == 0 ? 0 : GetLevelXP(currentLevel - 1, spaceCoreSkillName);
+					int currentXP = GetCurrentXP(uiSkillIndex, spaceCoreSkillName);
+					float nextLevelProgress = Math.Clamp(1f * (currentXP - currentLevelXP) / (nextLevelXP - currentLevelXP), 0f, 1f);
+
+					if (currentXP < nextLevelXP)
+					{
+						string tooltip = Instance.Helper.Translation.Get(
+							"tooltip.text",
+							new
+							{
+								CurrentXP = currentXP - currentLevelXP,
+								NextLevelXP = nextLevelXP - currentLevelXP,
+								LevelPercent = (int)(nextLevelProgress * 100f)
+							}
+						);
+						IClickableMenu.drawToolTip(
+							b,
+							tooltip,
+							null,
+							null
+						);
+					}
+				}
+			}
+			SkillBarCorners.Clear();
+			SkillBarHoverExclusions.Clear();
 		}
 
 		private static int GetUnmodifiedSkillLevel(int uiSkillIndex, string? spaceCoreSkillName)

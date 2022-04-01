@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Trash Does Not Consume Bait",
+  "Author": "atravita",
+  "Version": "0.1.2",
+  "Description": "Prevents trash from consuming bait.",
+  "UniqueID": "atravita.TrashDoesNotConsumeBait",
+  "EntryDll": "TrashDoesNotConsumeBait.dll",
+  "UpdateKeys": [ "Nexus:11426", "GitHub:atravita-mods/TrashDoesNotConsumeBait" ],
+  "MinimumApiVersion": "3.13"
+}

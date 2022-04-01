@@ -29,15 +29,22 @@ using SObject = StardewValley.Object;
 namespace Leclair.Stardew.Common {
 	public static class SpriteHelper {
 
+		// Helper
+		private static IModHelper modHelper;
+
+		public static void SetHelper(IModHelper helper) {
+			modHelper = helper;
+		}
+
 		// Shared Textures
 
-		public static Texture2D KeyTexture = null;
+		public static Texture2D KeyTexture { get; private set; } = null;
 		private readonly static object loadLock = new();
 
-		public static void LoadKeyTexture(IModHelper Helper) {
+		public static void LoadKeyTexture() {
 			lock (loadLock) {
 				if (KeyTexture == null)
-					KeyTexture = Helper.Content.Load<Texture2D>("assets/keys.png");
+					KeyTexture = modHelper.Content.Load<Texture2D>("assets/keys.png");
 			}
 		}
 
@@ -53,22 +60,6 @@ namespace Leclair.Stardew.Common {
 		public static class MouseIcons2 {
 			public static readonly Rectangle GOLDEN_NUT = new(0, 240, 16, 16);
 		}
-
-		/*public static class Buttons {
-			public static Rectangle INSERT = new Rectangle(0, 0, 16, 16);
-			public static Rectangle INSERT_FADED = new Rectangle(0, 16, 16, 16);
-			public static Rectangle EXTRACT = new Rectangle(0, 32, 16, 16);
-			public static Rectangle EXTRACT_FADED = new Rectangle(0, 48, 16, 16);
-
-			public static Rectangle UNIFORM_OFF = new Rectangle(16, 0, 16, 16);
-			public static Rectangle UNIFORM_ON = new Rectangle(16, 16, 16, 16);
-			public static Rectangle FAVORITES_ON = new Rectangle(16, 32, 16, 16);
-			public static Rectangle FAVORITES_OFF = new Rectangle(16, 48, 16, 16);
-
-			public static Rectangle SEASONING_ON = new Rectangle(32, 0, 16, 16);
-			public static Rectangle SEASONING_OFF = new Rectangle(32, 16, 16, 16);
-		}*/
-
 
 		public static void DrawBounded(this ClickableTextureComponent cmp, SpriteBatch b, Color? color = null, float? layerDepth = null, int frameOffset = 0) {
 			if (!cmp.visible || cmp.texture == null)
@@ -194,30 +185,34 @@ namespace Leclair.Stardew.Common {
 					return Projectile.projectileSheet;
 				case GameTexture.Wallpaper:
 					return Game1.content.Load<Texture2D>("Maps\\walls_and_floors");
+				case GameTexture.Emoji:
+					if (ChatBox.emojiTexture == null)
+						ChatBox.emojiTexture = Game1.content.Load<Texture2D>("LooseSprites\\emojis");
+					return ChatBox.emojiTexture;
 			}
 
 			return null;
 		}
 
-		public static SpriteInfo GetSprite(SButton button, IModHelper helper) {
+		public static SpriteInfo GetSprite(SButton button) { 
 			Texture2D texture = Game1.mouseCursors;
 			Rectangle source;
 
 			switch (button) {
 				case SButton.MouseLeft:
-					LoadKeyTexture(helper);
+					LoadKeyTexture();
 					texture = KeyTexture;
 					source = Game1.getSourceRectForStandardTileSheet(texture, 0, 11, 11);
 					break;
 
 				case SButton.MouseMiddle:
-					LoadKeyTexture(helper);
+					LoadKeyTexture();
 					texture = KeyTexture;
 					source = Game1.getSourceRectForStandardTileSheet(texture, 2, 11, 11);
 					break;
 
 				case SButton.MouseRight:
-					LoadKeyTexture(helper);
+					LoadKeyTexture();
 					texture = KeyTexture;
 					source = Game1.getSourceRectForStandardTileSheet(texture, 1, 11, 11);
 					break;
@@ -242,6 +237,18 @@ namespace Leclair.Stardew.Common {
 					source.Width = source.Height = 11;
 					break;
 
+				case SButton.ControllerBack:
+					LoadKeyTexture();
+					texture = KeyTexture;
+					source = Game1.getSourceRectForStandardTileSheet(texture, 3, 11, 11);
+					break;
+
+				case SButton.ControllerStart:
+					LoadKeyTexture();
+					texture = KeyTexture;
+					source = Game1.getSourceRectForStandardTileSheet(texture, 4, 11, 11);
+					break;
+
 				default:
 					return null;
 			}
@@ -252,7 +259,7 @@ namespace Leclair.Stardew.Common {
 
 		#region Stupid DynamicGameAssets Reflection
 
-		private static SpriteInfo GetDGACustomObjectSprite(Item item, IModHelper helper) {
+		private static SpriteInfo GetDGACustomObjectSprite(Item item) {
 			/*if (DGAObjectPackData == null) {
 				DGAObjectPackData = Type.GetType("DynamicGameAssets.PackData.ObjectPackData, DynamicGameAssets");
 				if (DGAObjectPackData == null)
@@ -265,16 +272,16 @@ namespace Leclair.Stardew.Common {
 			//	.GetProperty("Data", BindingFlags.Instance | BindingFlags.Public)
 			//	.GetValue(item);
 
-			object Data = helper.Reflection.GetProperty<object>(item, "Data", required: false)?.GetValue();
+			object Data = modHelper.Reflection.GetProperty<object>(item, "Data", required: false)?.GetValue();
 			if (Data == null)
 				return null;
 
-			object Tex = helper.Reflection.GetMethod(Data, "GetTexture", required: false)?.Invoke<object>();
+			object Tex = modHelper.Reflection.GetMethod(Data, "GetTexture", required: false)?.Invoke<object>();
 			if (Tex == null)
 				return null;
 
-			Texture2D texture = helper.Reflection.GetProperty<Texture2D>(Tex, "Texture", required: false)?.GetValue();
-			Rectangle? rect = helper.Reflection.GetProperty<Rectangle?>(Tex, "Rect", required: false)?.GetValue();
+			Texture2D texture = modHelper.Reflection.GetProperty<Texture2D>(Tex, "Texture", required: false)?.GetValue();
+			Rectangle? rect = modHelper.Reflection.GetProperty<Rectangle?>(Tex, "Rect", required: false)?.GetValue();
 
 			if (texture == null)
 				return null;
@@ -291,14 +298,14 @@ namespace Leclair.Stardew.Common {
 
 		private static Type RGBEntry = null;
 
-		private static Texture2D GetRGBTexture(string spriteKey, IModHelper helper) {
+		private static Texture2D GetRGBTexture(string spriteKey) {
 			if (RGBEntry == null) {
 				RGBEntry = Type.GetType("RaisedGardenBeds.ModEntry, RaisedGardenBeds");
 				if (RGBEntry == null)
 					return null;
 			}
 
-			var dict = helper.Reflection.GetField<Dictionary<string, Texture2D>>(RGBEntry, "Sprites", required: false)?.GetValue();
+			var dict = modHelper.Reflection.GetField<Dictionary<string, Texture2D>>(RGBEntry, "Sprites", required: false)?.GetValue();
 			if (dict == null)
 				return null;
 
@@ -306,17 +313,17 @@ namespace Leclair.Stardew.Common {
 			return result;
 		}
 
-		private static SpriteInfo GetGardenPotSprite(Item item, IModHelper helper) {
+		private static SpriteInfo GetGardenPotSprite(Item item) {
 			Type type = item.GetType();
 			if (type.ToString() != "RaisedGardenBeds.OutdoorPot")
 				return null;
 
-			string spriteKey = helper.Reflection.GetProperty<string>(item, "SpriteKey", required: false)?.GetValue();
-			int spriteIndex = helper.Reflection.GetProperty<int>(item, "SpriteIndex", required: false)?.GetValue() ?? -1;
-			IReflectedMethod method = helper.Reflection.GetMethod(type, "GetSpriteSourceRectangle", required: false);
+			string spriteKey = modHelper.Reflection.GetProperty<string>(item, "SpriteKey", required: false)?.GetValue();
+			int spriteIndex = modHelper.Reflection.GetProperty<int>(item, "SpriteIndex", required: false)?.GetValue() ?? -1;
+			IReflectedMethod method = modHelper.Reflection.GetMethod(type, "GetSpriteSourceRectangle", required: false);
 
 			if (!string.IsNullOrEmpty(spriteKey) && method != null) {
-				Texture2D tex = GetRGBTexture(spriteKey, helper);
+				Texture2D tex = GetRGBTexture(spriteKey);
 				Rectangle? source = null;
 				try {
 					source = method.Invoke<Rectangle>(spriteIndex, false);
@@ -334,21 +341,21 @@ namespace Leclair.Stardew.Common {
 
 		#endregion
 
-		public static SpriteInfo GetSprite(Item item, IModHelper helper) {
+		public static SpriteInfo GetSprite(Item item) {
 			int tileSize = SObject.spriteSheetTileSize;
 			Type type = item.GetType();
 			string ts = type.ToString();
 
 			// DynamicGameAssets Compatibility
 			if (ts.Equals("DynamicGameAssets.Game.CustomObject")) {
-				SpriteInfo sprite = GetDGACustomObjectSprite(item, helper);
+				SpriteInfo sprite = GetDGACustomObjectSprite(item);
 				if (sprite != null)
 					return sprite;
 			}
 
 			// RaisedGardenBed Compatibility
 			if (ts.Equals("RaisedGardenBeds.OutdoorPot")) {
-				SpriteInfo sprite = GetGardenPotSprite(item, helper);
+				SpriteInfo sprite = GetGardenPotSprite(item);
 				if (sprite != null)
 					return sprite;
 			}
@@ -359,8 +366,8 @@ namespace Leclair.Stardew.Common {
 
 				if (ts.Equals("CustomFurniture.CustomFurniture")) {
 					// TODO: More advanced furniture with layers.
-					if (helper != null)
-						texture = helper.Reflection.GetField<Texture2D>(item, "texture", required: false)?.GetValue() ?? texture;
+					if (modHelper != null)
+						texture = modHelper.Reflection.GetField<Texture2D>(item, "texture", required: false)?.GetValue() ?? texture;
 				}
 
 				return new SpriteInfo(
@@ -405,12 +412,12 @@ namespace Leclair.Stardew.Common {
 
 				Rectangle source;
 
-				if (helper == null)
+				if (modHelper == null)
 					source = Rectangle.Empty;
 				else if (wallpaper.isFloor.Value)
-					source = helper.Reflection.GetField<Rectangle>(typeof(Wallpaper), "floorContainerRect").GetValue();
+					source = modHelper.Reflection.GetField<Rectangle>(typeof(Wallpaper), "floorContainerRect").GetValue();
 				else
-					source = helper.Reflection.GetField<Rectangle>(typeof(Wallpaper), "wallpaperContainerRect").GetValue();
+					source = modHelper.Reflection.GetField<Rectangle>(typeof(Wallpaper), "wallpaperContainerRect").GetValue();
 
 				return new SpriteInfo(
 					texture: Game1.mouseCursors2,

@@ -200,12 +200,29 @@ static partial class Pathfinding {
 					// Check for a valid path. Locked because the 'findPath' methods rely on some internal state within the game
 					// and thus are not threadsafe
 					Stack<XNA.Point>? result;
-					lock (node) {
-						if (node.Name == "Farm") {
-							result = FindPathOnFarm(qLocation.StartPosition.Value, point, node, int.MaxValue);
-						}
-						else {
-							result = findPathForNPCSchedules(qLocation.StartPosition.Value, point, node, int.MaxValue);
+
+					if (qLocation.StartPosition.Value == point) {
+						result = new();
+						result.Push(point);
+					}
+					else {
+						lock (node) {
+							if (node.Name == "Farm") {
+								try {
+									result = FindPathOnFarm(qLocation.StartPosition.Value, point, node, int.MaxValue);
+								}
+								catch {
+									result = null;
+								}
+							}
+							else {
+								try {
+									result = findPathForNPCSchedules(qLocation.StartPosition.Value, point, node, int.MaxValue);
+								}
+								catch {
+									result = null;
+								}
+							}
 						}
 					}
 					int? count = result?.Count;

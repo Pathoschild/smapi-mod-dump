@@ -19,7 +19,7 @@ namespace SpriteMaster.Extensions;
 static class Untraced {
 	[DebuggerStepThrough, DebuggerHidden()]
 	[MethodImpl(Runtime.MethodImpl.ErrorPath)]
-	internal static bool IsUntraced(this MethodBase method) => method != null && (method.IsDefined(typeof(DebuggerStepThroughAttribute), true) || method.IsDefined(typeof(DebuggerHiddenAttribute), true));
+	internal static bool IsUntraced(this MethodBase method) => method is not null && (method.IsDefined(typeof(DebuggerStepThroughAttribute), true) || method.IsDefined(typeof(DebuggerHiddenAttribute), true));
 
 	[DebuggerStepThrough, DebuggerHidden()]
 	[MethodImpl(Runtime.MethodImpl.ErrorPath)]

@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 
 #endregion using directives
 
+/// <summary>Extensions for the <see cref="string"/> primitive type.</summary>
 public static class StringExtensions
 {
     /// <summary>Determine if the string instance contains any of the specified substrings.</summary>
@@ -70,7 +71,7 @@ public static class StringExtensions
     /// <summary>Parse the string instance to a generic type.</summary>
     public static T Parse<T>(this string s)
     {
-        if (s is null) throw new ArgumentNullException();
+        if (string.IsNullOrEmpty(s)) throw new ArgumentException("Cannot parse null or empty string.");
 
         var converter = TypeDescriptor.GetConverter(typeof(T));
         if (converter.CanConvertTo(typeof(T)) && converter.CanConvertFrom(typeof(string)))
@@ -121,25 +122,77 @@ public static class StringExtensions
         }
     }
 
-    /// <summary>Parse a flattened string of key-value pairs back into a <see cref="Dictionary{TKey,TValue}" />.</summary>
-    /// <param name="keyValueSeparator">Character that separates keys and values.</param>
-    /// <param name="pairSeparator">Character that separates pairs.</param>
-    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this string s, char keyValueSeparator,
-        char pairSeparator) where TKey : notnull
+    /// <summary>Split the string with provided <paramref name="separator"/> and parse the resulting elements into a tuple.</summary>
+    /// <param name="separator">A string separator.</param>
+    public static (T t, U u) ParseTuple<T, U>(this string s, string separator = ",")
+        where T : struct
+        where U : struct
     {
-        if (pairSeparator == keyValueSeparator)
-            throw new ArgumentException("Pair separator must be different from key-value separator.");
+        var split = s.Split(separator);
+        if (split.Length < 2)
+            throw new InvalidOperationException("Insufficient elements after string split.");
 
-        var pairs = s.Split(new[] { pairSeparator }, StringSplitOptions.RemoveEmptyEntries);
-        return pairs.Select(p => p.Split(new[] { keyValueSeparator }, StringSplitOptions.RemoveEmptyEntries))
-            .ToDictionary(p => p[0].Parse<TKey>(), p => p[1].Parse<TValue>());
+        if (!split[0].TryParse<T>(out var t) || !split[1].TryParse<U>(out var u))
+            throw new InvalidOperationException("The string could not be parsed");
+
+        return (t, u);
+    }
+
+    /// <summary>Split the string with provided <paramref name="separator"/> and parse the resulting elements into a tuple.</summary>
+    /// <param name="separator">A string separator.</param>
+    public static (T, U, V) ParseTuple<T, U, V>(this string s, string separator = ",")
+        where T : struct
+        where U : struct
+        where V : struct
+    {
+        var split = s.Split(separator);
+        if (split.Length < 3)
+            throw new InvalidOperationException("Insufficient elements after string split.");
+
+        if (!split[0].TryParse<T>(out var t) || !split[1].TryParse<U>(out var u) || !split[2].TryParse<V>(out var v))
+            throw new InvalidOperationException("The string could not be parsed");
+
+        return (t, u, v);
+    }
+
+    /// <summary>Split the string with provided <paramref name="separator"/> and parse the resulting elements into a tuple.</summary>
+    /// <param name="separator">A string separator.</param>
+    public static (T, U, V, W) ParseTuple<T, U, V, W>(this string s, string separator = ",")
+        where T : struct
+        where U : struct
+        where V : struct
+        where W : struct
+    {
+        var split = s.Split(separator);
+        if (split.Length < 4)
+            throw new InvalidOperationException("Insufficient elements after string split.");
+
+        if (!split[0].TryParse<T>(out var t) || !split[1].TryParse<U>(out var u) || !split[2].TryParse<V>(out var v) || !split[3].TryParse<W>(out var w))
+            throw new InvalidOperationException("The string could not be parsed");
+
+        return (t, u, v, w);
+    }
+
+    /// <summary>Split the string with provided <paramref name="separator"/> and parse the resulting elements into a list.</summary>
+    /// <param name="separator">A string separator.</param>
+    public static List<T>? ParseList<T>(this string s, string separator = ",")
+    {
+        var split = s.Split(separator);
+        try
+        {
+            return split.Select(e => e.Parse<T>()).ToList();
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     /// <summary>Parse a flattened string of key-value pairs back into a <see cref="Dictionary{TKey,TValue}" />.</summary>
     /// <param name="keyValueSeparator">String that separates keys and values.</param>
     /// <param name="pairSeparator">String that separates pairs.</param>
-    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this string s, string keyValueSeparator,
-        string pairSeparator) where TKey : notnull
+    public static Dictionary<TKey, TValue> ParseDictionary<TKey, TValue>(this string s, string keyValueSeparator = ",",
+        string pairSeparator = ";") where TKey : notnull
     {
         if (pairSeparator == keyValueSeparator)
             throw new ArgumentException("Pair separator must be different from key-value separator.");

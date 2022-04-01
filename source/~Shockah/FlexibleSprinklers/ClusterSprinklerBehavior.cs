@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Shockah.CommonModCode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,7 +104,6 @@ namespace Shockah.FlexibleSprinklers
 					var sprinklerClusterCount = GetClustersForSprinkler(sprinklerPosition, allClusters).Count();
 					var sprinklerRange = FlexibleSprinklers.Instance.GetFloodFillSprinklerRange((int)Math.Ceiling(1.0 * info.Power / sprinklerClusterCount));
 
-					var pathLengthGrid = new int?[grid.GetLength(0), grid.GetLength(1)];
 					ISet<IntPoint> @checked = new HashSet<IntPoint>();
 					var toCheck = new LinkedList<(IntPoint point, int pathLength)>();
 
@@ -113,10 +113,7 @@ namespace Shockah.FlexibleSprinklers
 						{
 							var point = sprinklerPosition + new IntPoint((int)layoutPoint.X, (int)layoutPoint.Y);
 							if (cluster.Tiles.Contains(point))
-							{
 								toCheck.AddLast((point, 1));
-								pathLengthGrid[point.X - minX, point.Y - minY] = 1;
-							}
 						}
 					}
 
@@ -127,7 +124,6 @@ namespace Shockah.FlexibleSprinklers
 						if (@checked.Contains(point))
 							continue;
 						@checked.Add(point);
-						pathLengthGrid[point.X - minX, point.Y - minY] = Math.Min(pathLengthGrid[point.X - minX, point.Y - minY] ?? int.MaxValue, pathLength);
 
 						var tileSprinklers = grid[point.X - minX, point.Y - minY] ?? new List<(IntPoint position, SprinklerInfo info)>();
 						tileSprinklers.Add((sprinklerPosition, info));
@@ -367,6 +363,8 @@ namespace Shockah.FlexibleSprinklers
 							break;
 						case ClusterSprinklerBehaviorClusterOrdering.Equally:
 							break;
+						default:
+							throw new ArgumentException($"{nameof(ClusterSprinklerBehaviorClusterOrdering)} has an invalid value.");
 					}
 
 					var nextClusters = nextClustersEnumerable.ToList();
@@ -473,6 +471,8 @@ namespace Shockah.FlexibleSprinklers
 								}
 								done:;
 								break;
+							default:
+								throw new ArgumentException($"{nameof(ClusterSprinklerBehaviorInClusterBalanceMode)} has an invalid value.");
 						}
 					}
 				}

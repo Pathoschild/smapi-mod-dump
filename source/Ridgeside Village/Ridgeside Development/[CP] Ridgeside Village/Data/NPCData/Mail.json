@@ -30,6 +30,11 @@
       "DaiaDate": "{{i18n:Mail.DaiaDate}}",
 			"MaiveSOLetter": "{{i18n:Mail.MaiveSOLetter}}",
 			"RichardSOLetter": "{{i18n:Mail.RichardSOLetter}}",
+			"CarmenSOLetter": "{{i18n:Mail.CarmenSOLetter}}",
+			"MythFlowerLetter": "{{i18n:Mail.MythFlowerLetter}}",
+			"LinkedFishesLetter": "{{i18n:Mail.LinkedFishesLetter}}",
+			"ViperialSlayLetter": "{{i18n:Mail.SlayViperialLetter}}",
+			"SeanLetter": "{{i18n:Mail.SeanLetter}}"
 		},
 	},
 

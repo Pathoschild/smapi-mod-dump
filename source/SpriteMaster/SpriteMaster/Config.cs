@@ -26,6 +26,8 @@ using TeximpNet.Compression;
 
 namespace SpriteMaster;
 
+using SMResample = Resample;
+
 static class Config {
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
 	internal sealed class CommentAttribute : Attribute {
@@ -97,7 +99,7 @@ static class Config {
 
 	internal static string ConfigVersion = "";
 	[ConfigIgnore]
-	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 13, 0, 0, BuildType.Beta, 2);
+	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 13, 0, 0, BuildType.Final, 0);
 
 	[ConfigIgnore]
 	internal static bool ForcedDisable = false;
@@ -166,7 +168,7 @@ static class Config {
 		[Comment("Should owned textures be marked in the garbage collector's statistics?")]
 		internal static bool CollectAccountOwnedTextures = false;
 		[Comment("The amount of free memory required by SM after which it triggers recovery operations")]
-		internal static int RequiredFreeMemory = 64;
+		internal static int RequiredFreeMemory = 128;
 		[Comment("Hysterisis applied to RequiredFreeMemory")]
 		internal static double RequiredFreeMemoryHysterisis = 1.5;
 		[Comment("Should sprites containing season names be purged on a seasonal basis?")]
@@ -196,6 +198,10 @@ static class Config {
 		internal static bool DisableDepthBuffer = false;
 		[Comment("The default backbuffer format to request")]
 		internal static SurfaceFormat BackbufferFormat = SurfaceFormat.Color;
+		[Comment("The default HDR backbuffer format to request")]
+		internal static SurfaceFormat BackbufferHDRFormat = SurfaceFormat.Rgba64;
+		[Comment("Should the system HDR settings be honored?")]
+		internal static bool HonorHDRSettings = true;
 	}
 
 	internal static class Performance {
@@ -220,10 +226,8 @@ static class Config {
 		internal static bool AssumeGammaCorrected = true;
 		[Comment("Should the scale factor of water be adjusted to account for water sprites being unusual?")]
 		internal static bool TrimWater = true;
-		[Comment("Positive bias applied to sprite scaling calculations")]
-		internal static float ScaleBias = 0.1f;
 		[Comment("Maximum scale factor of sprites (dependant on chosen scaler)")]
-		internal static uint MaxScale = uint.MaxValue;
+		internal static uint MaxScale = SMResample.Scalers.IScaler.Current.MaxScale;
 		[Comment("Minimum edge length of a sprite to be considered for resampling")]
 		internal static int MinimumTextureDimensions = 1;
 		[Comment("Should wrapped addressing be enabled for sprite resampling (when analysis suggests it)?")]
@@ -234,8 +238,11 @@ static class Config {
 		internal static bool UseColorEnhancement = true;
 		[Comment("Should transparent pixels be premultiplied to prevent a 'halo' effect?")]
 		internal static bool PremultiplyAlpha = true;
+		[Comment("Low pass value that should be filtered when reversing premultiplied alpha.")]
+		internal static int PremultiplicationLowPass = 1024;
 		[Comment("Use redmean algorithm for perceptual color comparisons?")]
 		internal static bool UseRedmean = false;
+		[Comment("What textures are drawn in 'slices' and thus should be special-cased to be resampled as one texture?")]
 		internal static List<string> SlicedTextures = new() {
 			@"LooseSprites\Cursors::0,2000:640,256",
 			@"LooseSprites\Cloudy_Ocean_BG",
@@ -252,7 +259,7 @@ static class Config {
 
 		};
 		[ConfigIgnore]
-		internal static List<TextureRef> SlicedTexturesS = new();
+		internal static TextureRef[] SlicedTexturesS = Array.Empty<TextureRef>();
 		internal static class BlockMultipleAnalysis {
 			[Comment("Should sprites be analyzed to see if they are block multiples?")]
 			internal static bool Enabled = true;
@@ -307,7 +314,7 @@ static class Config {
 			[Comment("Max color difference to not consider a sprite to be a gradient?")]
 			internal static int MaxGradientColorDifference = 38;
 			[Comment("Minimum different shades required (per channel) for a sprite to be a gradient?")]
-			internal static int MinimumGradientShades = 5;
+			internal static int MinimumGradientShades = 2;
 			[Comment("Use redmean algorithm for perceptual color comparisons?")]
 			internal static bool UseRedmean = true;
 		}
@@ -332,12 +339,20 @@ static class Config {
 			SurfaceFormat.Color,
 			SurfaceFormat.Dxt5,
 			SurfaceFormat.Dxt5SRgb,
-			SurfaceFormat.Dxt3,
-			SurfaceFormat.Dxt3SRgb,
 			SurfaceFormat.Dxt1,
 			SurfaceFormat.Dxt1SRgb,
 			SurfaceFormat.Dxt1a,
 		};
+
+		[Comment("Experimental resample-based recolor support")]
+		internal static class Recolor {
+			[Comment("Should (experimental) resample-based recoloring be enabled?")]
+			internal static bool Enabled = false;
+			internal static double RScalar = 0.897642;
+			internal static double GScalar = 0.998476;
+			internal static double BScalar = 1.18365;
+		}
+
 		internal static class BlockCompression {
 			[Comment("Should block compression of sprites be enabled?")]
 			internal static bool Enabled = DevEnabled && (!Runtime.IsMacintosh || MacSupported) && true; // I cannot build a proper libnvtt for OSX presently.
@@ -360,7 +375,13 @@ static class Config {
 			@"@^Maps\\.+FogBackground",
 		};
 		[ConfigIgnore]
-		internal static List<Regex> BlacklistPatterns = new();
+		internal static Regex[] BlacklistPatterns = new Regex[0];
+		[Comment("What spritesheets will absolutely not be treated as gradients?")]
+		internal static List<string> GradientBlacklist = new() {
+			@"TerrainFeatures\hoeDirt"
+		};
+		[ConfigIgnore]
+		internal static Regex[] GradientBlacklistPatterns = new Regex[0];
 		internal static class Padding {
 			[Comment("Should padding be applied to sprites to allow resampling to extend beyond the natural sprite boundaries?")]
 			internal static bool Enabled = DevEnabled && true;
@@ -371,6 +392,13 @@ static class Config {
 			internal static bool IgnoreUnknown = false;
 			[Comment("Should solid edges be padded?")]
 			internal static bool PadSolidEdges = false;
+
+			[Comment("What spritesheets should not be padded?")]
+			internal static List<string> BlackList = new() {
+				@"LooseSprites\Cursors::256,308:50,34", // UI borders
+			};
+			[ConfigIgnore]
+			internal static TextureRef[] BlackListS = Array.Empty<TextureRef>();
 
 			[Comment("What spritesheets should have a stricter edge-detection algorithm applied?")]
 			internal static List<string> StrictList = new() {
@@ -460,9 +488,9 @@ static class Config {
 		[Comment("Should the suspended sprite cache be enabled?")]
 		internal static bool Enabled = true;
 		[Comment("What is the maximum size (in bytes) to store in suspended sprite cache?")]
-		internal static long MaxCacheSize = 0x2000_0000L;
-		//[Comment("What is the maximum number of sprites to store in suspended sprite cache?")]
-		//internal static long MaxCacheCount = 2_000L;
+		internal static long MaxCacheSize = 0x1000_0000L;
+		[Comment("What is the maximum number of sprites to store in suspended sprite cache?")]
+		internal static long MaxCacheCount = 2_000L;
 	}
 
 	internal static class SMAPI {
@@ -473,17 +501,21 @@ static class Config {
 		internal static bool TextureCacheHighMemoryEnabled = false;
 		[Comment("Should the ApplyPatch method be patched?")]
 		internal static bool ApplyPatchEnabled = true;
-		[Comment("Should the ApplyPatch patch use SpriteMaster caches?")]
-		internal static bool ApplyPatchUseCache = true;
 		[Comment("Should ApplyPatch pin temporary memory?")]
 		internal static bool ApplyPatchPinMemory = false;
+		[Comment("Should 'GetData' be patched to use SM caches?")]
+		internal static bool ApplyGetDataPatch = true;
 	}
 
 	internal static class Extras {
 		[Comment("Should the game have 'fast quitting' enabled?")]
-		internal static bool FastQuit = true;
+		internal static bool FastQuit = false;
 		[Comment("Should line drawing be smoothed?")]
 		internal static bool SmoothLines = true;
+		[Comment("Should Harmony patches have inlining re-enabled?")]
+		internal static bool HarmonyInlining = false;
+		[Comment("Should the game's 'parseMasterSchedule' method be fixed and optimized?")]
+		internal static bool FixMasterSchedule = true;
 		[Comment("Should NPC Warp Points code be optimized?")]
 		internal static bool OptimizeWarpPoints = true;
 		[Comment("Should NPCs take true shortest paths?")]

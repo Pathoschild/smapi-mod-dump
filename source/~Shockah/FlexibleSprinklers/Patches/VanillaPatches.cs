@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Shockah.CommonModCode;
 using StardewModdingAPI;
 using StardewValley;
 using System;

@@ -1,7 +1,7 @@
 {
   "Name": "MinesTokens",
   "Author": "Vertigon",
-  "Version": "1.0.0", // fixed locally
+  "Version": "1.0.3",
   "Description": "Custom CP token to determine if the current mine level is using the quarry tilesheet.",
   "UniqueID": "Vertigon.MinesTokens",
   "EntryDll": "MinesTokens.dll",

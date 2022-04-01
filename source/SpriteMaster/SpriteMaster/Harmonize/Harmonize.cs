@@ -140,8 +140,22 @@ static class Harmonize {
 						);
 					}
 					break;
+				case Generic.Class:
+					Patch(
+						@this,
+						instanceType,
+						typeof(object),
+						methodName,
+						pre: (attribute.PatchFixation == Fixation.Prefix) ? method : null,
+						post: (attribute.PatchFixation == Fixation.Postfix) ? method : null,
+						finalizer: (attribute.PatchFixation == Fixation.Finalizer) ? method : null,
+						trans: (attribute.PatchFixation == Fixation.Transpile) ? method : null,
+						reverse: (attribute.PatchFixation == Fixation.Reverse) ? method : null,
+						instanceMethod: attribute.Instance
+					);
+					break;
 				default:
-					throw new NotImplementedException("Non-struct Generic Harmony Types unimplemented");
+					throw new NotImplementedException($"Unknown Generic Enum: {attribute.GenericType}");
 			}
 		}
 		catch (Exception ex) {
@@ -160,7 +174,7 @@ static class Harmonize {
 			}
 		}
 		catch (Exception ex) {
-			Debug.Error($"Exception Patching Method {method.GetFullName()}", ex);
+			Debug.Warning($"Exception Patching Method {method.GetFullName()}", ex);
 		}
 	}
 
@@ -246,6 +260,12 @@ static class Harmonize {
 
 		var methodParameters = method.GetArguments();
 
+		int numGenericArguments = 0;
+		bool isGeneric = method.IsGenericMethod;
+		if (isGeneric) {
+			numGenericArguments = method.GetGenericArguments().Length;
+		}
+
 		if (isFinalizer && !methodParameters.IsEmpty()) {
 			// Remove the last (exception) argument for Harmony finalizers
 			if (methodParameters.LastF().RemoveRef().IsAssignableTo(typeof(Exception))) {
@@ -260,13 +280,22 @@ static class Harmonize {
 				types: methodParameters,
 				modifiers: null
 			) :
-			type!.GetMethod(
-				name: name,
-				bindingAttr: bindingFlags,
-				binder: null,
-				types: methodParameters,
-				modifiers: null
-			);
+			isGeneric ?
+				type!.GetMethod(
+					name: name,
+					genericParameterCount: numGenericArguments,
+					bindingAttr: bindingFlags,
+					binder: null,
+					types: methodParameters,
+					modifiers: null
+				) :
+				type!.GetMethod(
+					name: name,
+					bindingAttr: bindingFlags,
+					binder: null,
+					types: methodParameters,
+					modifiers: null
+				);
 		MethodBase? typeMethod = null;
 		Exception? exception = null;
 		try {
@@ -313,8 +342,17 @@ static class Harmonize {
 					continue;
 				}
 
+				if (isGeneric) {
+					if (!testMethod.IsGenericMethod) {
+						continue;
+					}
+					if (testMethod.GetGenericArguments().Length != numGenericArguments) {
+						continue;
+					}
+				}
+
 				bool found = true;
-				foreach (int i in 0.RangeTo(testParameters.Length)) {
+				for (int i = 0; i < testParameters.Length; ++i) {
 					var testParameter = testParameters[i].ParameterType.RemoveRef();
 					var testParameterRef = testParameter.AddRef();
 					var testBaseParameter = testParameter.IsArray ? testParameter.GetElementType()! : testParameter;
@@ -324,8 +362,16 @@ static class Harmonize {
 					if (
 						!(testParameter.IsPointer && methodParameter.IsPointer) &&
 						!testParameterRef.Equals(methodParameterRef) &&
-						!(testBaseParameter.IsGenericParameter && baseParameter.IsGenericParameter) &&
-						!methodParameter.Equals(typeof(object)) && !(testParameter.IsArray && methodParameter.IsArray && baseParameter.Equals(typeof(object)))) {
+						!(
+							(testBaseParameter.IsGenericType && baseParameter.IsGenericType) ||
+							(testBaseParameter.IsGenericParameter && baseParameter.IsGenericParameter)
+						) &&
+						!methodParameter.Equals(typeof(object)) &&
+						!(
+							testParameter.IsArray &&
+							methodParameter.IsArray &&
+							baseParameter.Equals(typeof(object)))
+						) {
 						found = false;
 						break;
 					}
@@ -337,7 +383,7 @@ static class Harmonize {
 			}
 
 			if (typeMethod is null) {
-				Debug.Error($"Failed to patch {type.Name.Pastel(DrawingColor.LightYellow)}.{name.Pastel(DrawingColor.LightYellow)}");
+				Debug.Warning($"Failed to patch {type.Name.Pastel(DrawingColor.LightYellow)}.{name.Pastel(DrawingColor.LightYellow)}");
 				return null;
 			}
 		}
@@ -400,6 +446,8 @@ static class Harmonize {
 			);
 		}
 		if (reverse is not null) {
+			priority = Priority.Normal;
+
 			var typeMethod = GetPatchMethod(
 				type,
 				name,
@@ -431,7 +479,7 @@ static class Harmonize {
 		HarmonyMethod? MakeHarmonyMethod(MethodInfo? methodInfo) => (methodInfo is null) ? null : new(methodInfo.MakeGenericMethod(genericType)) { priority = GetPriority(methodInfo, priority) };
 
 		var referenceMethod = pre ?? post ?? finalizer;
-		if (referenceMethod != null) {
+		if (referenceMethod is not null) {
 			var typeMethod = GetPatchMethod(
 				type,
 				name,
@@ -463,6 +511,8 @@ static class Harmonize {
 			);
 		}
 		if (reverse is not null) {
+			priority = Priority.Normal;
+
 			var typeMethod = GetPatchMethod(
 				type,
 				name,

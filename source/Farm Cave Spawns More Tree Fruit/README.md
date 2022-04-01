@@ -47,7 +47,9 @@ Farm Cave Framework is handled seperately - this mod will check to see if that m
 
 The console command `av.fcs.list_fruits` will tell you which tree fruits are available for spawning.
 
-**Denylist**: Don't want this mod to spawn *your* fruit? If you use Content Patcher to add an entry to `Mods/atravita_FarmCaveSpawn_denylist` that looks like
+#### Denylist
+
+Don't want this mod to spawn *your* fruit? If you use Content Patcher to add an entry to `Mods/atravita_FarmCaveSpawn_denylist` that looks like
 
 ```
 {
@@ -61,7 +63,9 @@ The console command `av.fcs.list_fruits` will tell you which tree fruits are ava
 
 this mod won't spawn your fruit.
 
-**AdditionalLocations**: Want this mod to spawn fruit in a mod-added location? Just use Content patcher to add an entry to `Mods/atravita_FarmCaveSpawn_additionalLocations` that looks like
+#### AdditionalLocations
+
+Want this mod to spawn fruit in a mod-added location? Just use Content patcher to add an entry to `Mods/atravita_FarmCaveSpawn_additionalLocations` that looks like
 
 ```
 {

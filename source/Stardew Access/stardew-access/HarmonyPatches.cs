@@ -11,6 +11,7 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using stardew_access.Patches;
 using StardewValley;
 using StardewValley.Menus;
@@ -51,7 +52,7 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.NewGameMenuPatch))
+                postfix: new HarmonyMethod(typeof(TitleMenuPatches), nameof(TitleMenuPatches.CharacterCustomizationMenuPatch))
             );
 
             harmony.Patch(
@@ -147,6 +148,16 @@ namespace stardew_access
                 original: AccessTools.Method(typeof(LanguageSelectionMenu), nameof(LanguageSelectionMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LanguageSelectionMenuPatch))
             );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
+                prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MuseumMenuKeyPressPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MuseumMenuPatch))
+            );
             #endregion
 
             #region Quest Patches
@@ -169,7 +180,7 @@ namespace stardew_access
             #region Chat Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(ChatBox), nameof(ChatBox.update), new Type[] { typeof(GameTime) }),
-                    postfix: new HarmonyMethod(typeof(ChatManuPatches), nameof(ChatManuPatches.ChatBoxPatch))
+                    postfix: new HarmonyMethod(typeof(ChatMenuPatches), nameof(ChatMenuPatches.ChatBoxPatch))
                 );
             #endregion
 

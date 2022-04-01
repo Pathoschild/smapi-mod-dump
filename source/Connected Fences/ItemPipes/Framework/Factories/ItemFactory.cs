@@ -20,106 +20,121 @@ using ItemPipes.Framework.Items;
 using ItemPipes.Framework.Util;
 using SObject = StardewValley.Object;
 using ItemPipes.Framework.Items.Objects;
+using ItemPipes.Framework.Items.Tools;
+
 
 
 namespace ItemPipes.Framework.Factories
 {
     public static class ItemFactory
     {
-        public static SObject CreateItem(SObject obj)
+        public static CustomObjectItem CreateItem(string name)
         {
-            if (obj.name.Equals("Extractor Pipe"))
+            if (name.Equals("ExtractorPipe"))
             {
                 return new ExtractorPipeItem();
             }
-            else if (obj.name.Equals("Gold Extractor Pipe"))
+            else if (name.Equals("GoldExtractorPipe"))
             {
                 return new GoldExtractorPipeItem();
             }
-            else if (obj.name.Equals("Iridium Extractor Pipe"))
+            else if (name.Equals("IridiumExtractorPipe"))
             {
                 return new IridiumExtractorPipeItem();
             }
-            else if (obj.name.Equals("Inserter Pipe"))
+            else if (name.Equals("InserterPipe"))
             {
                 return new InserterPipeItem();
             }
-            else if (obj.name.Equals("Polymorphic Pipe"))
+            else if (name.Equals("PolymorphicPipe"))
             {
                 return new PolymorphicPipeItem();
             }
-            else if (obj.name.Equals("Filter Pipe"))
+            else if (name.Equals("FilterPipe"))
             {
                 return new FilterPipeItem();
             }
-            else if (obj.name.Equals("Iron Pipe"))
+            else if (name.Equals("IronPipe"))
             {
                 return new IronPipeItem();
             }
-            else if (obj.name.Equals("Gold Pipe"))
+            else if (name.Equals("GoldPipe"))
             {
                 return new GoldPipeItem();
             }
-            else if (obj.name.Equals("Iridium Pipe"))
+            else if (name.Equals("IridiumPipe"))
             {
                 return new IridiumPipeItem();
             }
-            else if (obj.name.Equals("P.P.M."))
+            else if (name.Equals("PPM"))
             {
                 return new PPMItem();
             }
             else
             {
-                Printer.Info($"Item creation for {obj.Name} failed.");
+                Printer.Info($"Item creation for {name} failed.");
                 return null;
             }
         }
 
-        public static SObject CreateObject(Vector2 position, SObject obj)
+        public static CustomToolItem CreateTool(string name)
         {
-            if (obj.name.Equals("Extractor Pipe"))
+            if (name.Equals("Wrench"))
+            {
+                return new WrenchItem();
+            }
+            else
+            {
+                Printer.Info($"Item creation for {name} failed.");
+                return null;
+            }
+        }
+
+        public static CustomObjectItem CreateObject(Vector2 position, string name)
+        {
+            if (name.Equals("ExtractorPipe"))
             {
                 return new ExtractorPipeItem(position);
             }
-            else if (obj.name.Equals("Gold Extractor Pipe"))
+            else if (name.Equals("GoldExtractorPipe"))
             {
                 return new GoldExtractorPipeItem(position);
             }
-            else if (obj.name.Equals("Iridium Extractor Pipe"))
+            else if (name.Equals("IridiumExtractorPipe"))
             {
                 return new IridiumExtractorPipeItem(position);
             }
-            else if (obj.name.Equals("Inserter Pipe"))
+            else if (name.Equals("InserterPipe"))
             {
                 return new InserterPipeItem(position);
             }
-            else if (obj.name.Equals("Polymorphic Pipe"))
+            else if (name.Equals("PolymorphicPipe"))
             {
                 return new PolymorphicPipeItem(position);
             }
-            else if (obj.name.Equals("Filter Pipe"))
+            else if (name.Equals("FilterPipe"))
             {
                 return new FilterPipeItem(position);
             }
-            else if (obj.name.Equals("Iron Pipe"))
+            else if (name.Equals("IronPipe"))
             {
                 return new IronPipeItem(position);
             }
-            else if (obj.name.Equals("Gold Pipe"))
+            else if (name.Equals("GoldPipe"))
             {
                 return new GoldPipeItem(position);
             }
-            else if (obj.name.Equals("Iridium Pipe"))
+            else if (name.Equals("IridiumPipe"))
             {
                 return new IridiumPipeItem(position);
             }
-            else if (obj.name.Equals("P.P.M."))
+            else if (name.Equals("PPM"))
             {
                 return new PPMItem(position);
             }
             else
             {
-                Printer.Info($"Object creation for {obj.Name} failed.");
+                Printer.Info($"Object creation for {name} failed.");
                 return null;
             }
         }

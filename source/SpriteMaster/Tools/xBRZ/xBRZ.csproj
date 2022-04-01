@@ -8,6 +8,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
+		<Configurations>Debug;Release;Shipping</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,12 +11,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 using Microsoft.Xna.Framework;
 
 using Leclair.Stardew.Common.Inventory;
 
 using StardewValley;
+using StardewValley.Objects;
+using StardewValley.Tools;
 using StardewValley.Locations;
 using StardewValley.Network;
 using StardewValley.TerrainFeatures;
@@ -43,9 +46,108 @@ namespace Leclair.Stardew.Common {
 		public override int GetHashCode() {
 			return HashCode.Combine(Source, Location);
 		}
+
+		public static bool operator ==(LocatedInventory left, LocatedInventory right) {
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(LocatedInventory left, LocatedInventory right) {
+			return !(left == right);
+		}
 	}
 
 	public static class InventoryHelper {
+
+		#region Item Creation
+
+		public static readonly Regex ITEM_REGEX = new(@"^\(([^)]+)\)(.+)$");
+
+		public static string GetItemQualifiedId(Item item) {
+			if (item is Boots boots)
+				return $"(B){boots.indexInTileSheet.Value}";
+
+			if (item is Furniture furniture)
+				return $"(F){furniture.ParentSheetIndex}";
+
+			if (item is Hat hat)
+				return $"(H){hat.which.Value}";
+
+			if (item is Clothing clothing) {
+				string type;
+				switch (clothing.clothesType.Value) {
+					case 0: // Shirt
+						type = "S";
+						break;
+					case 1: // Pants
+						type = "P";
+						break;
+					case 2: // Accessories
+						type = "A";
+						break;
+					default:
+						throw new ArgumentException($"unknown clothing type \"{clothing.clothesType.Value}\"", nameof(item));
+				}
+
+				return $"({type}){clothing.ParentSheetIndex}";
+			}
+
+			if (item is MeleeWeapon weapon)
+				return $"(W){weapon.InitialParentTileIndex}";
+
+			if (item is SObject sobj) {
+				string type = "O";
+				if (sobj.bigCraftable.Value)
+					type = "BC";
+
+				return $"({type}){sobj.ParentSheetIndex}";
+			}
+
+			throw new ArgumentException($"unknown item type", nameof(item));
+		}
+
+		public static Item CreateItemById(string id) {
+			var match = ITEM_REGEX.Match(id);
+			string type;
+			int nid;
+
+			if (match.Success) {
+				type = match.Groups[1].Value;
+				if (!int.TryParse(match.Groups[2].Value, out nid))
+					throw new ArgumentException("invalid item id", nameof(id));
+
+			} else {
+				type = "O";
+				if (!int.TryParse(id, out nid))
+					throw new ArgumentException("invalid item id", nameof(id));
+			}
+
+			switch(type) {
+				case "BC":
+					return new SObject(Vector2.Zero, nid);
+				case "B":
+					return new Boots(nid);
+				case "F":
+					return new Furniture(nid, Vector2.Zero);
+				case "H":
+					return new Hat(nid);
+				case "O":
+					return new SObject(nid, 1);
+				case "P":
+				case "S":
+					return new Clothing(nid);
+				case "W":
+					return new MeleeWeapon(nid);
+				default:
+					throw new ArgumentException($"unsupported item type \"{type}\"", nameof(id));
+			}
+		}
+
+		#endregion
+
+		#region Item Iteration
+
+
+		#endregion
 
 		#region Discovery
 
@@ -359,9 +461,8 @@ namespace Leclair.Stardew.Common {
 			List<LocatedInventory> result = new();
 
 			int i = start;
-			int limit = 100;
 
-			while(i < potentials.Count && i < limit) {
+			while(i < potentials.Count && i < scanLimit) {
 				AbsolutePosition abs = potentials[i++];
 
 				SObject obj;

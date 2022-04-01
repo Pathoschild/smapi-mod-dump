@@ -6,11 +6,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit c7d686e822e5015008afbb9e379dad2a5024dbf6
+   commit 9b2de2b684651418139733e482d4a8b71993c731
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Sat Dec 11 14:07:45 2021 -0800
+   Date:   Thu Mar 31 12:36:59 2022 -0700
    
-       1.4.1 update
-       
-       Added failsafe if config menu setup errors, and updated for Stardew 1.5.5
+       1.4.4 update
    

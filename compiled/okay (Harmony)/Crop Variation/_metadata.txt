@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11467
+IDs: aedenthorn.CropVariation
+update keys: Nexus:11467, GitHub:aedenthorn/StardewValleyMods

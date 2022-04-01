@@ -318,7 +318,7 @@ namespace ItemBags.Bags
 
             //  Group the Nested Bags by their type
             //  and only keep the largest size of each unique type id
-            foreach (IGrouping<string, ItemBag> Group in NestedBags.GroupBy(x => x.GetTypeId()))
+            foreach (IGrouping<string, ItemBag> Group in NestedBags.GroupBy(x => x.GetTypeId() ?? "Invalid"))
             {
                 string TypeId = Group.Key;
                 List<ItemBag> Instances = Group.ToList();

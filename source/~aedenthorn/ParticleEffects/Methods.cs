@@ -10,12 +10,9 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Object = StardewValley.Object;
 
 namespace ParticleEffects
@@ -68,22 +65,33 @@ namespace ParticleEffects
             ShowParticleEffect(b, particleList, ped, instance.getBoundingBox(new Vector2(x, y)).Center.ToVector2() + new Vector2(ped.fieldOffsetX, ped.fieldOffsetY), Math.Max(0f, ((y + 1) * 64 - 24) / 10000f) + x * 1E-05f);
             objectEffectDict[oKey] = entityParticleData;
         }
-        private static void ShowLocationParticleEffect(SpriteBatch b, GameLocation instance, string key, ParticleEffectData ped)
+        private static void ShowLocationParticleEffect(SpriteBatch b, GameLocation instance, ParticleEffectData ped)
         {
             if (!locationEffectDict.TryGetValue(instance.Name, out EntityParticleData entityParticleData))
             {
                 entityParticleData = new EntityParticleData();
                 locationEffectDict[instance.Name] = entityParticleData;
             }
-            if (!entityParticleData.particleDict.TryGetValue(key, out var particleList))
+            List<ParticleData> particleList;
+            if (!entityParticleData.particleDict.TryGetValue(ped.key, out particleList))
             {
                 particleList = new List<ParticleData>();
-                locationEffectDict[instance.Name].particleDict[key] = particleList;
+                locationEffectDict[instance.Name].particleDict[ped.key] = particleList;
             }
             ShowParticleEffect(b, particleList, ped, new Vector2(ped.fieldOffsetX, ped.fieldOffsetY), 1f);
             locationEffectDict[instance.Name] = entityParticleData;
         }
-        private static void ShowParticleEffect(SpriteBatch b, List<ParticleData> particleList, ParticleEffectData ped, Vector2 center, float drawDepth)
+        private static void ShowScreenParticleEffect(SpriteBatch b, ParticleEffectData ped)
+        {
+            List<ParticleData> particleList;
+            if (!screenEffectDict.particleDict.TryGetValue(ped.key, out particleList))
+            {
+                particleList = new List<ParticleData>();
+                screenEffectDict.particleDict[ped.key] = particleList;
+            }
+            ShowParticleEffect(b, particleList, ped, new Vector2(ped.fieldOffsetX, ped.fieldOffsetY), 1f, true);
+        }
+        private static void ShowParticleEffect(SpriteBatch b, List<ParticleData> particleList, ParticleEffectData ped, Vector2 center, float drawDepth, bool screen = false)
         {
             for (int i = particleList.Count - 1; i >= 0; i--)
             {
@@ -145,6 +153,28 @@ namespace ParticleEffects
                 {
                     double x;
                     double y;
+                    if (screen)
+                    {
+                        if (ped.fieldOffsetX < 0)
+                            ped.fieldOffsetX = Game1.viewport.Width / 2;
+                        if (ped.fieldOffsetY < 0)
+                            ped.fieldOffsetY = Game1.viewport.Height / 2;
+                        if (ped.fieldOuterWidth < 0)
+                            ped.fieldOuterWidth = Game1.viewport.Width;
+                        if (ped.fieldOuterHeight < 0)
+                            ped.fieldOuterHeight = Game1.viewport.Height;
+                    }
+                    else
+                    {
+                        if (ped.fieldOffsetX < 0)
+                            ped.fieldOffsetX = Game1.currentLocation.map.DisplayWidth / 2;
+                        if (ped.fieldOffsetY < 0)
+                            ped.fieldOffsetY = Game1.currentLocation.map.DisplayHeight / 2;
+                        if (ped.fieldOuterWidth < 0)
+                            ped.fieldOuterWidth = Game1.currentLocation.map.DisplayWidth;
+                        if (ped.fieldOuterHeight < 0)
+                            ped.fieldOuterHeight = Game1.currentLocation.map.DisplayHeight;
+                    }
                     if (ped.fieldInnerHeight > 0)
                     {
                         var innerTop = (ped.fieldOuterHeight - ped.fieldInnerHeight) / 2;
@@ -194,7 +224,7 @@ namespace ParticleEffects
             {
                 float depthOffset = ped.belowOffset >= 0 ? (ped.aboveOffset >= 0 ? (Game1.random.NextDouble() < 0.5 ? ped.aboveOffset : ped.belowOffset) : ped.belowOffset) : ped.aboveOffset;
                 int frame = (int)Math.Round(particle.age * ped.frameSpeed) % frames;
-                b.Draw(ped.spriteSheet, new Rectangle(Utility.Vector2ToPoint(Game1.GlobalToLocal(particle.position)), new Point((int)(ped.particleWidth * particle.scale), (int)(ped.particleHeight * particle.scale))), new Rectangle(frame * ped.particleWidth, particle.option * ped.particleHeight, ped.particleWidth, ped.particleHeight), Color.White * particle.alpha, particle.rotation, new Vector2(ped.particleWidth / 2, ped.particleHeight / 2), SpriteEffects.None, drawDepth + depthOffset);
+                b.Draw(ped.spriteSheet, new Rectangle(Utility.Vector2ToPoint(screen ? particle.position : Game1.GlobalToLocal(particle.position)), new Point((int)(ped.particleWidth * particle.scale), (int)(ped.particleHeight * particle.scale))), new Rectangle(frame * ped.particleWidth, particle.option * ped.particleHeight, ped.particleWidth, ped.particleHeight), Color.White * particle.alpha, particle.rotation, new Vector2(ped.particleWidth / 2, ped.particleHeight / 2), SpriteEffects.None, drawDepth + depthOffset);
             }
         }
 
@@ -224,8 +254,43 @@ namespace ParticleEffects
             effectDict = Game1.content.Load<Dictionary<string, ParticleEffectData>>(dictPath);
             foreach (var key in effectDict.Keys)
             {
+                effectDict[key].key = key;
                 effectDict[key].spriteSheet = Game1.content.Load<Texture2D>(effectDict[key].spriteSheetPath);
             }
+        }
+
+
+        public static ParticleEffectData CloneParticleEffect(string key, string type, string name, int x, int y, ParticleEffectData template)
+        {
+            return new ParticleEffectData()
+            {
+                key = key,
+                type = type,
+                name = name,
+                movementType = template.movementType,
+                movementSpeed = template.movementSpeed,
+                frameSpeed = template.frameSpeed,
+                acceleration = template.acceleration,
+                restrictOuter = template.restrictOuter,
+                restrictInner = template.restrictInner,
+                minRotationRate = template.minRotationRate,
+                maxRotationRate = template.maxRotationRate,
+                particleWidth = template.particleWidth,
+                particleHeight = template.particleHeight,
+                fieldInnerWidth = template.fieldInnerWidth,
+                fieldInnerHeight = template.fieldInnerHeight,
+                fieldOuterWidth = template.fieldOuterWidth,
+                fieldOuterHeight = template.fieldOuterHeight,
+                minParticleScale = template.minParticleScale,
+                maxParticleScale = template.maxParticleScale,
+                maxParticles = template.maxParticles,
+                minLifespan = template.minLifespan,
+                maxLifespan = template.maxLifespan,
+                spriteSheetPath = template.spriteSheetPath,
+                spriteSheet = template.spriteSheet,
+                fieldOffsetX = x,
+                fieldOffsetY = y
+            };
         }
     }
 }

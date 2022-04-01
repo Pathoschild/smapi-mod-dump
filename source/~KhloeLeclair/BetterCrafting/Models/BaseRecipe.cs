@@ -56,7 +56,7 @@ namespace Leclair.Stardew.BetterCrafting.Models {
 			return 0;
 		}
 
-		public virtual SpriteInfo Sprite => SpriteHelper.GetSprite(CreateItem(), Mod.Helper);
+		public virtual SpriteInfo Sprite => SpriteHelper.GetSprite(CreateItem());
 
 		public virtual Texture2D Texture => Recipe.bigCraftable ?
 			Game1.bigCraftableSpriteSheet :

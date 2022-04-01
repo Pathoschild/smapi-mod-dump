@@ -19,11 +19,21 @@ using StardewValley.Menus;
 namespace Leclair.Stardew.Almanac.Pages {
 	public interface IAlmanacPage {
 
+		// Id
+		string Id { get; }
+
 		// Type
 		PageType Type { get; }
 		bool IsMagic { get; }
 
+		// State
+		object GetState();
+		void LoadState(object state);
+
 		// Events
+		void Refresh();
+
+		void ThemeChanged();
 		void Activate();
 		void Deactivate();
 		void DateChanged(WorldDate oldDate, WorldDate newDate);
@@ -43,6 +53,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 	public enum PageType {
 		Blank,
+		Seasonal,
 		Calendar,
 		Cover
 	}

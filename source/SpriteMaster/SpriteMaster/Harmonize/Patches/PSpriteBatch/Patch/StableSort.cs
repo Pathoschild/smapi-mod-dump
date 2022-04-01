@@ -8,7 +8,11 @@
 **
 *************************************************/
 
+//#define PROFILE_STABLESORT
+
 using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,61 +23,91 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
 static class StableSort {
 	private static readonly Type? SpriteBatchItemType = typeof(XNA.Graphics.SpriteBatch).Assembly.GetType("Microsoft.Xna.Framework.Graphics.SpriteBatchItem");
+	private static readonly Func<object?, float>? GetSortKeyImpl = SpriteBatchItemType?.GetFieldGetter<object?, float>("SortKey");
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void Swap<T>(ref T a, ref T b) => (a, b) = (b, a);
+	internal static class BySortKey {
+		[MethodImpl(Runtime.MethodImpl.Hot)]
+		private static float GetSortKey(object? obj) => obj is null ? float.MinValue : GetSortKeyImpl!(obj);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static int Partition<T>(Span<T> data, Span<int> indices, int low, int high) where T : IComparable<T> {
-		var pivot = data[high];
-		var pivotIndex = indices[high];
+		private readonly record struct KeyType(float Key, int Index);
 
-		var i = low - 1;
-
-		for (int j = low; j <= high - 1; ++j) {
-			var jIndex = indices[j];
-			var compareResult = data[j].CompareTo(pivot);
-			if (compareResult == 0) {
-				compareResult = jIndex - pivotIndex;
-			}
-			if (compareResult < 0) {
-				++i;
-				Swap(ref data[i], ref data[j]);
-				Swap(ref indices[i], ref indices[j]);
+		private sealed class KeyTypeComparerClass : IComparer<KeyType> {
+			public int Compare(KeyType x, KeyType y) {
+				int result = x.Key.CompareTo(y.Key);
+				if (result != 0) {
+					return result;
+				}
+				return x.Index.CompareTo(y.Index);
 			}
 		}
-		Swap(ref data[i + 1], ref data[high]);
-		Swap(ref indices[i + 1], ref indices[high]);
-		return i + 1;
+		private static readonly KeyTypeComparerClass KeyTypeComparer = new();
+
+		private static KeyType[] KeyList = Array.Empty<KeyType>();
+
+		internal static void StableSort<T>(T[] array, int index, int length) where T : IComparable<T> {
+			int requiredLength = length + index;
+			if (requiredLength > KeyList.Length) {
+				KeyList = GC.AllocateUninitializedArray<KeyType>(requiredLength);
+			}
+			for (int i = index; i < requiredLength; ++i) {
+				KeyList[i] = new(Key: GetSortKey(array[i]), Index: i);
+			}
+
+			Array.Sort<KeyType, T>(KeyList, array, index, length, KeyTypeComparer);
+		}
+	}
+
+	internal static class ByInterface<T> where T : IComparable<T> {
+		private readonly record struct KeyType(T Key, int Index);
+
+		private sealed class KeyTypeComparerClass : IComparer<KeyType> {
+			public int Compare(KeyType x, KeyType y) {
+				int result = x.Key.CompareTo(y.Key);
+				if (result != 0) {
+					return result;
+				}
+				return x.Index.CompareTo(y.Index);
+			}
+		}
+		private static readonly KeyTypeComparerClass KeyTypeComparer = new();
+
+		private static KeyType[] KeyList = Array.Empty<KeyType>();
+
+		internal static void StableSort(T[] array, int index, int length) {
+			int requiredLength = length + index;
+			if (requiredLength > KeyList.Length) {
+				KeyList = GC.AllocateUninitializedArray<KeyType>(requiredLength);
+			}
+			for (int i = index; i < requiredLength; ++i) {
+				KeyList[i] = new(Key: array[i], Index: i);
+			}
+
+			Array.Sort<KeyType, T>(KeyList, array, index, length, KeyTypeComparer);
+		}
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void QuickSort<T>(Span<T> data, Span<int> indices, int low, int high) where T : IComparable<T> {
-		if (data.Length <= 1) {
+	public static void ArrayStableSort<T>(T[] array, int index, int length, SpriteSortMode sortMode) where T : IComparable<T> {
+		if (DrawState.CurrentBlendState == Microsoft.Xna.Framework.Graphics.BlendState.Additive) {
+			// There is basically no reason to sort when the blend state is additive.
 			return;
 		}
 
-		if (low < high) {
-			var pIndex = Partition(data, indices, low, high);
-			QuickSort(data, indices, low, pIndex - 1);
-			QuickSort(data, indices, pIndex + 1, high);
+		if (sortMode != SpriteSortMode.FrontToBack) {
+			return;
 		}
-	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void ArrayStableSort<T>(T[] array, int index, int length) where T : IComparable<T> {
 		if (!Config.Enabled || !Config.Extras.StableSort) {
 			Array.Sort(array, index, length);
 			return;
 		}
 
-		// Not _optimal_, really need a proper stable sort. Optimize later.
-		Span<int> indices = stackalloc int[length];
-		for (int i = 0; i < length; ++i) {
-			indices[i] = i;
+		if (GetSortKeyImpl is not null) {
+			BySortKey.StableSort(array, index, length);
 		}
-		var span = new Span<T>(array, index, length);
-		QuickSort(span, indices, 0, length - 1);
+		else {
+			ByInterface<T>.StableSort(array, index, length);
+		}
 	}
 
 	[Harmonize(
@@ -82,14 +116,19 @@ static class StableSort {
 		"DrawBatch",
 		fixation: Harmonize.Fixation.Transpile
 	)]
-	internal static IEnumerable<CodeInstruction> SpriteBatcherTranspiler(IEnumerable<CodeInstruction> instructions) {
+	public static IEnumerable<CodeInstruction> SpriteBatcherTranspiler(IEnumerable<CodeInstruction> instructions) {
 		if (SpriteBatchItemType is null) {
 			Debug.Error($"Could not apply SpriteBatcher stable sorting patch: {nameof(SpriteBatchItemType)} was null");
 			return instructions;
 		}
 
+		if (GetSortKeyImpl is null) {
+			Debug.Warning($"Could not get accessor for SpriteBatchItem 'SortKey' - slower path being used");
+		}
 
-		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
+
+		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
+		//var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
 
 		if (newMethod is null) {
 			Debug.Error($"Could not apply SpriteBatcher stable sorting patch: could not find MethodInfo for ArrayStableSort");
@@ -111,6 +150,7 @@ static class StableSort {
 					continue;
 				}
 
+				yield return new CodeInstruction(OpCodes.Ldarg_1);
 				yield return new CodeInstruction(OpCodes.Call, newMethod);
 			}
 		}

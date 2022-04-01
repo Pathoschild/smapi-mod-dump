@@ -41,6 +41,22 @@ namespace RidgesideVillage
             TileActionHandler.RegisterTileAction("RSVMaiveLoan", RSVMaiveLoan);
         }
 
+        private static void OnDayEnding(object sender, DayEndingEventArgs e)
+        {
+            if ((Game1.player.mailReceived.Contains(LOANMAIL)) & (Game1.player.IsMainPlayer))
+            {
+                ApplyInterest();
+            }
+        }
+        private static void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+
+            if ((Game1.player.mailReceived.Contains(LOANMAIL)) & (Game1.player.IsMainPlayer))
+            {
+                SendReminder();
+            }
+        }
+
         private static void RSVMaiveLoan(string tileActionString, Vector2 position)
         {
             if (!Game1.player.IsMainPlayer && Game1.player.mailReceived.Contains(REWARDLETTER))
@@ -88,6 +104,12 @@ namespace RidgesideVillage
                     Game1.activeClickableMenu = new DialogueBoxWithActions(Helper.Translation.Get("RSV.PayLoan"), responses, responseActions);
                 }
             }
+        }
+
+        public static void SendReminder()
+        {
+            string content = Helper.Translation.Get("RSV.LoanInterest") + deducted.ToString() + " G";
+            Game1.chatBox.addInfoMessage(content);
         }
 
         public static void ApplyInterest()
@@ -169,28 +191,6 @@ namespace RidgesideVillage
                         default:
                             return 4;
                     }
-            }
-        }
-
-        public static void SendReminder()
-        {
-            string content = Helper.Translation.Get("RSV.LoanInterest") + deducted.ToString() + " G";
-            Game1.chatBox.addInfoMessage(content);
-        }
-
-        private static void OnDayEnding(object sender, DayEndingEventArgs e)
-        {
-            if ((Game1.player.mailReceived.Contains(LOANMAIL)) & (Game1.player.IsMainPlayer))
-            {
-                ApplyInterest();
-            }
-        }
-        private static void OnDayStarted(object sender, DayStartedEventArgs e)
-        {
-
-            if ((Game1.player.mailReceived.Contains(LOANMAIL)) & (Game1.player.IsMainPlayer))
-            {
-                SendReminder();
             }
         }
 

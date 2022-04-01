@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 
 using Leclair.Stardew.Common;
@@ -21,19 +22,18 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 
 using Leclair.Stardew.Almanac.Menus;
+using Leclair.Stardew.Almanac.Models;
 
 namespace Leclair.Stardew.Almanac.Pages {
-	public class FortunePage : BasePage, ICalendarPage {
+	public class FortunePage : BasePage<BaseState>, ICalendarPage {
 
 		public static readonly Rectangle CRYSTAL_BALL = new(272, 352, 16, 16);
 
 		private readonly int Seed;
 		private double[] Luck;
 		private SpriteInfo[] Sprites;
-		private SpriteInfo[] Extras;
+		private SpriteInfo[][] Extras;
 		private IFlowNode[] Nodes;
-
-		private IEnumerable<IFlowNode> Flow;
 
 		private readonly bool HasLuck;
 
@@ -53,18 +53,20 @@ namespace Leclair.Stardew.Almanac.Pages {
 			Seed = Mod.GetBaseWorldSeed();
 			HasLuck = Mod.Config.EnableDeterministicLuck;
 
-			UpdateLuck();
+			Update();
 		}
 
 		#endregion
 
 		#region Logic
 
-		public void UpdateLuck() {
-			Luck = HasLuck ? new double[WorldDate.DaysPerMonth] : null;
-			Sprites = HasLuck ? new SpriteInfo[WorldDate.DaysPerMonth] : null;
-			Extras = new SpriteInfo[WorldDate.DaysPerMonth];
-			Nodes = new IFlowNode[WorldDate.DaysPerMonth];
+		public override void Update() {
+			base.Update();
+
+			Luck = HasLuck ? new double[ModEntry.DaysPerMonth] : null;
+			Sprites = HasLuck ? new SpriteInfo[ModEntry.DaysPerMonth] : null;
+			Extras = new SpriteInfo[ModEntry.DaysPerMonth][];
+			Nodes = new IFlowNode[ModEntry.DaysPerMonth];
 			WorldDate date = new(Menu.Date);
 
 			FlowBuilder builder = new();
@@ -75,59 +77,85 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 			bool had_event = false;
 
-			for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 				date.DayOfMonth = day;
 				SpriteInfo sprite;
 				if (HasLuck) {
-					double luck = LuckHelper.GetLuckForDate(Seed, date);
-					sprite = Sprites[day - 1] = LuckHelper.GetLuckSprite(luck);
+					double luck = Mod.Luck.GetModifiedLuckForDate(Seed, date);
+					sprite = Sprites[day - 1] = Mod.Luck.GetLuckSprite(luck);
 					Luck[day - 1] = luck;
 				} else
 					sprite = null;
 
-				LuckHelper.IHoroscopeEvent evt = LuckHelper.GetEventForDate(Seed, date);
-				if ( evt == null )
-					evt = LuckHelper.GetTrashEvent(Seed, date);
+				FlowBuilder db = new();
+				List<SpriteInfo> extra = new();
 
-				if ( evt == null )
+				foreach (var evt in Mod.Luck.GetEventsForDate(Seed, date)) {
+					if (evt == null)
+						continue;
+
+					bool has_simple = !string.IsNullOrEmpty(evt.SimpleLabel);
+					bool has_line = has_simple || evt.AdvancedLabel != null;
+
+					Func<IFlowNodeSlice, int, int, bool> onHover = null;
+
+					if (has_line) {
+						db.Text("\n");
+						if (evt.Item != null)
+							onHover = (_,_,_) => {
+								Menu.HoveredItem = evt.Item;
+								return true;
+							};
+					}
+
+					if (evt.Sprite != null) {
+						extra.Add(evt.Sprite);
+
+						/*if (has_line)
+							db
+								.Sprite(evt.Sprite, 3f)
+								.Text(" ");*/
+					}
+
+					if (evt.AdvancedLabel != null)
+						db.AddRange(evt.AdvancedLabel);
+					else if (has_simple)
+						db.FormatText(evt.SimpleLabel, align: Alignment.Middle, onHover: onHover);
+				}
+
+				Extras[day - 1] = extra.Count > 0 ? extra.ToArray() : null;
+
+				if (db.Count == 0)
 					continue;
 
 				had_event = true;
 
 				SDate sdate = new(day, date.Season);
 
-				IFlowNode node = new SpriteNode(sprite, 3, Alignment.Bottom, size: 13);
+				IFlowNode node = new SpriteNode(sprite, 3, Alignment.Middle, size: 13);
 				Nodes[day - 1] = node;
 
 				builder
 					.Text("\n\n")
 					.Add(node)
-					.Text($" {sdate.ToLocaleString(withYear: false)}\n", font: Game1.dialogueFont);
-
-				builder.Text("  ");
-
-				if (evt.Sprite != null)
-					Extras[day - 1] = evt.Sprite;
-
-				if (evt.AdvancedLabel != null)
-					builder.AddRange(evt.AdvancedLabel);
-				else if (!string.IsNullOrEmpty(evt.SimpleLabel))
-					builder.FormatText(evt.SimpleLabel);
+					.Text(" ")
+					.Text(sdate.ToLocaleString(withYear: false), font: Game1.dialogueFont)
+					.AddRange(db);
 			}
 
 			if (!had_event)
-				builder.FormatText($"\n\n{I18n.Page_Fortune_Event_None()}");
+				builder
+					.Text("\n\n")
+					.FormatText(I18n.Page_Fortune_Event_None());
 
-			Flow = builder.Build();
-			if (Active)
-				Menu.SetFlow(Flow, 2);
+			SetRightFlow(builder, 2);
 		}
 
 		#endregion
 
 		#region ITab
 
-		public override int SortKey => 10;
+		public override int SortKey => 50;
 		public override string TabSimpleTooltip => I18n.Page_Fortune();
 
 		public override Texture2D TabTexture => Menu.background;
@@ -140,15 +168,6 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 		public override bool IsMagic => true;
 
-		public override void Activate() {
-			base.Activate();
-			Menu.SetFlow(Flow, 2);
-		}
-
-		public override void DateChanged(WorldDate oldDate, WorldDate newDate) {
-			UpdateLuck();
-		}
-
 		#endregion
 
 		#region ICalendarPage
@@ -159,43 +178,36 @@ namespace Leclair.Stardew.Almanac.Pages {
 		public void DrawUnderCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
 			int day = date.DayOfMonth;
 			SpriteInfo sprite = Sprites?[day - 1];
-			SpriteInfo extra = Extras?[day - 1];
+			SpriteInfo[] extras = Extras?[day - 1];
 
-			if (sprite == null && extra == null)
+			if (sprite == null && extras == null)
 				return;
 
 			sprite?.Draw(
 				b,
 				new Vector2(
 					bounds.Center.X - 39 / 2,
-					bounds.Center.Y - 39 / 2 - (extra != null ? 16 : 0)
+					bounds.Center.Y - 39 / 2 - (extras != null ? 16 : 0)
 				),
 				3,
 				size: 13
 			);
 
-			if (extra == null)
+			if (extras == null)
 				return;
 
+			Vector2 pos;
 			if (sprite == null)
-				extra.Draw(
-					b,
-					new Vector2(
-						bounds.Center.X - 48 / 2,
-						bounds.Center.Y - 33 / 2
-					),
-					3,
-					size: 16
-				);
+				pos = new(bounds.Center.X - 48 / 2, bounds.Center.Y - 33 / 2);
 			else
-				extra.Draw(
-					b,
-					new Vector2(
-						bounds.Right - 40,
-						bounds.Bottom - 40
-					),
-					2
-				);
+				pos = new(bounds.Right - 40, bounds.Bottom - 40);
+
+			int idx = (int) (
+					Game1.currentGameTime.TotalGameTime.TotalMilliseconds
+					% (Mod.Config.CycleTime * extras.Length)) / Mod.Config.CycleTime;
+
+			SpriteInfo extra = extras[idx];
+			extra?.Draw(b, pos, sprite == null ? 3f : 2f);
 		}
 
 		public void DrawOverCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
@@ -205,7 +217,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 		public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
 			IFlowNode node = Nodes?[date.DayOfMonth - 1];
 			if (node != null) {
-				if (Menu.ScrollFlow(node)) {
+				if (Menu.ScrollRightFlow(node)) {
 					Game1.playSound("shiny4");
 					return true;
 				}
@@ -223,7 +235,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 				return;
 
 			double luck = Luck[date.DayOfMonth - 1];
-			string fortune = LuckHelper.GetLuckText(luck);
+			string fortune = Mod.Luck.GetLuckText(luck);
 
 			Menu.HoverMagic = true;
 			Menu.HoverText = Mod.Config.ShowExactLuck

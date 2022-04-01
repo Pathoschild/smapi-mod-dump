@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,7 +48,7 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 			}
 		}
 
-		private Vector2 MinSize {
+		public Vector2 MinSize {
 			get => _MinSize;
 			set {
 				_MinSize = value;
@@ -65,7 +66,7 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 
 		public LayoutDirection Direction { get; }
 
-		public bool DeferSize => _Children == null ? false : _Children.Any(val => val.DeferSize);
+		public bool DeferSize => _Children != null && _Children.Any(val => val.DeferSize);
 
 		public LayoutNode(LayoutDirection direction, ISimpleNode[] children, int margin = 0, Vector2? minSize = null, Alignment alignment = Alignment.None) {
 			Direction = direction;
@@ -89,10 +90,10 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 					break;
 			}
 
-			Vector2 size = new Vector2(width, height);
+			Vector2 size = new(width, height);
 
 			bool initial = true;
-			int count = _Children.Length;
+			int count = _Children?.Length ?? 0;
 			Sizes = new Vector2[count];
 			bool had_deferred = false;
 			bool deferred = false;
@@ -111,38 +112,41 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 
 					Vector2 nsize = Sizes[i] = node.GetSize(defaultFont, size);
 
+					float nsX = (float) Math.Ceiling(nsize.X);
+					float nsY = (float) Math.Ceiling(nsize.Y);
+
 					switch (Direction) {
 						case LayoutDirection.Horizontal:
 							// Add widths, take maximum height.
-							if (nsize.X > 0) {
+							if (nsX > 0) {
 								if (initial)
 									initial = false;
 								else
 									width += Margin;
-								width += nsize.X;
+								width += nsX;
 								size.X = width;
 							}
 
-							if (nsize.Y > height)
-								height = size.Y = nsize.Y;
+							if (nsY > height)
+								height = size.Y = nsY;
 
 							break;
 
 						case LayoutDirection.Vertical:
 						default:
 							// Add heights, take maximum width.
-							if (nsize.Y > 0) {
+							if (nsY > 0) {
 								if (initial)
 									initial = false;
 								else
 									height += Margin;
 
-								height += nsize.Y;
+								height += nsY;
 								size.Y = height;
 							}
 
-							if (nsize.X > width)
-								width = size.X = nsize.X;
+							if (nsX > width)
+								width = size.X = nsX;
 
 							break;
 					}
@@ -171,7 +175,7 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 
 			// Draw our children.
 			bool initial = true;
-			int count = _Children.Length;
+			int count = _Children?.Length ?? 0;
 
 			float x = position.X;
 			float y = position.Y;
@@ -189,24 +193,24 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 					break;
 			}
 
-			if (extra > 0) {
+			if (extra > 0 && _Children != null) {
 				int spaces = 0;
 				foreach (ISimpleNode node in _Children)
 					if (node is SpaceNode space && space.Expand)
 						spaces++;
 
 				if (spaces > 0) {
-					float perspace = extra / spaces;
+					float perspace = (float) Math.Floor(extra / spaces);
 					for (int i = 0; i < count; i++) {
 						ISimpleNode node = _Children[i];
 						if (node is SpaceNode space && space.Expand) {
 							switch (Direction) {
 								case LayoutDirection.Horizontal:
-									Sizes[i].X = perspace + space.Size;
+									Sizes[i].X = perspace + (float) Math.Ceiling(space.Size);
 									break;
 								case LayoutDirection.Vertical:
 								default:
-									Sizes[i].Y = perspace + space.Size;
+									Sizes[i].Y = perspace + (float) Math.Ceiling(space.Size);
 									break;
 							}
 						}
@@ -252,19 +256,19 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 				if (align == Alignment.None && Direction == LayoutDirection.Horizontal)
 					align = Alignment.Middle;
 
-				if (AlignmentHelper.HasFlag(align, Alignment.Left)) {
+				if (align.HasFlag(Alignment.Left)) {
 					/* nothing ~ */
-				} else if (AlignmentHelper.HasFlag(align, Alignment.Center))
-					offsetX += (ownSize.X - size.X) / 2;
-				else if (AlignmentHelper.HasFlag(align, Alignment.Right))
-					offsetX += ownSize.X - size.X;
+				} else if (align.HasFlag(Alignment.Center))
+					offsetX += (float) Math.Ceiling((ownSize.X - size.X) / 2);
+				else if (align.HasFlag(Alignment.Right))
+					offsetX += (float) Math.Ceiling(ownSize.X - size.X);
 
-				if (AlignmentHelper.HasFlag(align, Alignment.Top)) {
+				if (align.HasFlag(Alignment.Top)) {
 					/* nothing ~ */
-				} else if (AlignmentHelper.HasFlag(align, Alignment.Middle))
-					offsetY += (ownSize.Y - size.Y) / 2;
-				else if (AlignmentHelper.HasFlag(align, Alignment.Bottom))
-					offsetY += ownSize.Y - size.Y;
+				} else if (align.HasFlag(Alignment.Middle))
+					offsetY += (float) Math.Ceiling((ownSize.Y - size.Y) / 2);
+				else if (align.HasFlag(Alignment.Bottom))
+					offsetY += (float) Math.Ceiling(ownSize.Y - size.Y);
 
 				node.Draw(
 					batch,
@@ -295,13 +299,13 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 				switch (Direction) {
 					// Add horizontal size.
 					case LayoutDirection.Horizontal:
-						x += size.X;
+						x += (float) Math.Ceiling(size.X);
 						break;
 
 					// Add vertical size.
 					case LayoutDirection.Vertical:
 					default:
-						y += size.Y;
+						y += (float) Math.Ceiling(size.Y);
 						break;
 				}
 			}

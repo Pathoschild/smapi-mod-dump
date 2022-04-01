@@ -1,0 +1,10 @@
+{
+  "Name": "AnkiStudyBreak",
+  "Author": "nymvaline",
+  "Version": "1.0.1",
+  "Description": "Forces you to pause occasionally to do some Anki cards.",
+  "UniqueID": "nymvaline.AnkiStudyBreak",
+  "EntryDll": "AnkiStudyBreak.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:11279" ]
+}

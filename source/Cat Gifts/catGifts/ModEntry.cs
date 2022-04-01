@@ -109,7 +109,7 @@ namespace catGifts
             midGifts = new List<int>();
             hiGifts = new List<int>();
 
-            for (int i = 0; i < 803; i++)
+            for (int i = 0; i < 908; i++)
             {
                 switch (i)
                 {
@@ -193,6 +193,11 @@ namespace catGifts
                     case 720:
                     case 723:
                     case 774:
+                    case 815:
+                    case 829:                    
+                    case 833:                    
+                    case 835:
+                    case 885:
                         midGifts.Add(i);
                         break;
 
@@ -225,6 +230,8 @@ namespace catGifts
                     case 484: // Summer
                     case 485: // Summer
                     case 496: // Summer
+                    case 832:
+                    case 834:                     
                         if (Game1.currentSeason.Equals("Summer"))
                             midGifts.Add(i);
                         break;
@@ -278,6 +285,10 @@ namespace catGifts
                     case 242:
                     case 305:
                     case 446:
+                    case 787:
+                    case 802:
+                    case 874:
+                    case 908:
                         hiGifts.Add(i);
                         break;
 
@@ -310,6 +321,8 @@ namespace catGifts
         // If the cat gave a gift, warp him next to it the first time the player enters the farm        
         public void Warped(object sender, EventArgs e)
         {
+            Random r = new Random();
+
             if (Game1.currentLocation is Farm && giftToday && !warpedToday)
             {
                 foreach (NPC pet in Game1.getLocationFromName("Farm").getCharacters())
@@ -323,10 +336,10 @@ namespace catGifts
 
                 if (thePet != null)
                 {
-                    if (thePet is StardewValley.Characters.Cat) {
+                    if (thePet is StardewValley.Characters.Cat) {                        
 
                         // Have a chance of Dusty digging up something instead of the cat
-                        if (Game1.currentLocation.characters.Contains(Game1.getCharacterFromName("Dusty", true)) && Game1.random.Next(1, 10) > 8)
+                        if (Game1.currentLocation.characters.Contains(Game1.getCharacterFromName("Dusty", true)) && r.Next(1, 10) > 8)
                             this.DogSpawn(null, Game1.getCharacterFromName("Dusty", true));
                         else {
                             int x = (int)Game1.player.Position.X / 64;
@@ -383,7 +396,7 @@ namespace catGifts
                     if (thePet is StardewValley.Characters.Dog)
                     {
                         // Have a chance of Dusty digging something up instead of the dog
-                        if (Game1.currentLocation.characters.Contains(Game1.getCharacterFromName("Dusty", true)) && Game1.random.Next(1, 10) > 8)
+                        if (Game1.currentLocation.characters.Contains(Game1.getCharacterFromName("Dusty", true)) && r.Next(1, 10) > 8)
                             this.DogSpawn(null, Game1.getCharacterFromName("Dusty", true));
                         else
                             this.DogSpawn(thePet, null);
@@ -391,14 +404,14 @@ namespace catGifts
 
                     String dog = "";
 
-                    if (thePet is StardewValley.Characters.Dog) { 
-                        dog = " Search your farm carefully to find it!";
+                    if (thePet is StardewValley.Characters.Dog) {                        
+                        dog = " " + Helper.Translation.Get("dog-message");
                         isCat = false;
                     }
 
                     msgDisplayed = true;                    
                     Helper.Content.InvalidateCache(@"LooseSprites\Cursors.xnb");                    
-                    HUDMessage msg = new HUDMessage(thePet.Name + " brought you a gift." + dog, 1);
+                    HUDMessage msg = new HUDMessage(thePet.Name + " " + Helper.Translation.Get("gift-message") + dog, 2);
                     Game1.addHUDMessage(msg);
                 }
             }
@@ -413,8 +426,7 @@ namespace catGifts
             StardewValley.Characters.Pet theDog = null;
             warpedToday = false;
             GameLocation theFarm = Game1.getLocationFromName("Farm");
-
-            
+            Random r = new Random();
 
             tile = theFarm.getRandomTile();
             // Find a free tile to generate dirt                
@@ -493,35 +505,35 @@ namespace catGifts
                 //this.Monitor.Log("Did the cat give a gift?\nFriendship: " + catFriendship + "\nGift chance: " + giftChance + "\nGifts received this week: " + giftsGiven);
 
                 // Draw a random gift ID. For clarity we do this in multiple steps
-                // Step 1: Determine if cat gives a gift at all                                
-                int random = Game1.random.Next(0, 100);
+                // Step 1: Determine if cat gives a gift at all                
+                int random = r.Next(0, 100);
 
                 //this.Monitor.Log("Random number: " + random + " --- must be larger than " + (100 - giftChance));
 
-                if (random > (100 - giftChance) && !Game1.isRaining && giftsGiven <= MAX_WEEKLY_GIFTS)
+                if (random > (100 - giftChance) && !Game1.IsRainingHere(Game1.getLocationFromName("Farm")) && giftsGiven <= MAX_WEEKLY_GIFTS)
                 {
                     //this.Monitor.Log("Cat will give a gift ... maybe :3 (may still not happen if this is the second consecutive high tier gift)");
 
                     // Step 2: Determine quality: low = mid > high -> 40% / 40% / 20%
-                    int rand = Game1.random.Next(0, 100);
+                    int rand = r.Next(0, 100);
 
                     // Pick a random item
                     if (rand <= LOW_CHANCE)
                     {
                         //this.Monitor.Log("Low quality");
-                        giftId = lowGifts.ElementAt(Game1.random.Next(lowGifts.Count - 1));
+                        giftId = lowGifts.ElementAt(r.Next(lowGifts.Count - 1));
                         highTierYesterday = false;
                     }
                     else if (rand > LOW_CHANCE && rand <= (LOW_CHANCE + MID_CHANCE))
                     {
                         //this.Monitor.Log("Medium quality");
-                        giftId = midGifts.ElementAt(Game1.random.Next(midGifts.Count - 1));
+                        giftId = midGifts.ElementAt(r.Next(midGifts.Count - 1));
                         highTierYesterday = false;
                     }
                     else if (rand > (100 - HI_CHANCE) && !highTierYesterday)
                     {
                         //this.Monitor.Log("High quality! :3");
-                        giftId = hiGifts.ElementAt(Game1.random.Next(hiGifts.Count - 1));
+                        giftId = hiGifts.ElementAt(r.Next(hiGifts.Count - 1));
                         highTierYesterday = true;
                     }
 
@@ -566,34 +578,34 @@ namespace catGifts
 
                 // Draw a random gift ID. For clarity we do this in multiple steps
                 // Step 1: Determine if cat gives a gift at all                                
-                int random = Game1.random.Next(0, 100);
+                int random = r.Next(0, 100);
 
                 //this.Monitor.Log("Random number: " + random + " --- must be larger than " + (100 - giftChance));
 
-                if (random > (100 - giftChance) && !Game1.isRaining && giftsGiven <= MAX_WEEKLY_GIFTS)
+                if (random > (100 - giftChance) && !Game1.IsRainingHere(Game1.getLocationFromName("Farm")) && giftsGiven <= MAX_WEEKLY_GIFTS)
                 {
                     //this.Monitor.Log("Dog will give a gift ... maybe :3 (may still not happen if this is the second consecutive high tier gift)");
 
                     // Step 2: Determine quality: low = mid > high -> 40% / 40% / 20%
-                    int rand = Game1.random.Next(0, 100);
+                    int rand = r.Next(0, 100);
 
                     // Pick a random item
                     if (rand <= LOW_CHANCE)
                     {
                         //this.Monitor.Log("Low quality");
-                        giftId = lowGifts.ElementAt(Game1.random.Next(lowGifts.Count - 1));
+                        giftId = lowGifts.ElementAt(r.Next(lowGifts.Count - 1));
                         highTierYesterday = false;
                     }
                     else if (rand > LOW_CHANCE && rand <= (LOW_CHANCE + MID_CHANCE))
                     {
                         //this.Monitor.Log("Medium quality");
-                        giftId = midGifts.ElementAt(Game1.random.Next(midGifts.Count - 1));
+                        giftId = midGifts.ElementAt(r.Next(midGifts.Count - 1));
                         highTierYesterday = false;
                     }
                     else if (rand > (100 - HI_CHANCE) && !highTierYesterday)
                     {
                         //this.Monitor.Log("High quality! :3");
-                        giftId = hiGifts.ElementAt(Game1.random.Next(hiGifts.Count - 1));
+                        giftId = hiGifts.ElementAt(r.Next(hiGifts.Count - 1));
                         highTierYesterday = true;
                     }
 

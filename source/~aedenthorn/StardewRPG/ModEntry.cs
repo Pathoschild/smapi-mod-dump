@@ -56,8 +56,6 @@ namespace StardewRPG
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
-
-
             // Buff patches
 
             harmony.Patch(
@@ -187,6 +185,13 @@ namespace StardewRPG
             );
 
 
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Game1), nameof(Game1.UpdateOther)),
+               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Game1_UpdateOther_Prefix)),
+               postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.Game1_UpdateOther_Postfix))
+            );
+
+
             // NPC patches
 
             harmony.Patch(
@@ -264,8 +269,6 @@ namespace StardewRPG
             );
             harmony.Patch(
                original: AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.draw), new Type[] { typeof(SpriteBatch) }),
-               prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.SkillsPage_draw_Prefix)),
-               transpiler: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.SkillsPage_draw_Transpiler)),
                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.SkillsPage_draw_Postfix))
             );
             harmony.Patch(
@@ -273,8 +276,7 @@ namespace StardewRPG
                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.SkillsPage_receiveLeftClick_Postfix))
             );
             harmony.Patch(
-               original: AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.performHoverAction)),
-               postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.SkillsPage_performHoverAction_Postfix))
+               original: AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.performHoverAction))
             );
             harmony.Patch(
                original: AccessTools.Method(typeof(CharacterCustomization), nameof(CharacterCustomization.performHoverAction)),
@@ -299,6 +301,7 @@ namespace StardewRPG
             );
             Monitor.Log("Mod loaded");
         }
+
         public override object GetApi()
         {
             return new StardewRPGApi();
@@ -344,7 +347,7 @@ namespace StardewRPG
                     if (!Context.IsWorldReady)
                         return null;
 
-                    return new[] { GetStatValue(Game1.player, "str", Config.BaseStatValue) +"" };
+                    return new[] { GetStatValue(Game1.player, "con", Config.BaseStatValue) +"" };
                 });
                 cpapi.RegisterToken(ModManifest, "PlayerDex", () =>
                 {
@@ -352,7 +355,7 @@ namespace StardewRPG
                     if (!Context.IsWorldReady)
                         return null;
 
-                    return new[] { GetStatValue(Game1.player, "con", Config.BaseStatValue) +"" };
+                    return new[] { GetStatValue(Game1.player, "dex", Config.BaseStatValue) +"" };
                 });
                 cpapi.RegisterToken(ModManifest, "PlayerInt", () =>
                 {

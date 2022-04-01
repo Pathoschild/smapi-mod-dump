@@ -1,0 +1,6 @@
+{
+  "ModEnabled": true,
+  "max_persons": 50,
+  "show_maxhearts": 10,
+  "low_to_high": false
+}

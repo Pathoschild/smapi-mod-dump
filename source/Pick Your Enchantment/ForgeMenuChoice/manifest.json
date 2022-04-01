@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/ForgeMenuChoice
+**
+*************************************************/
+
+{
+  "Name": "Pick Your Enchantment",
+  "Author": "atravita",
+  "Version": "1.0.2",
+  "Description": "Allows you to pick which enchantment you get.",
+  "UniqueID": "atravita.ForgeMenuChoice",
+  "EntryDll": "ForgeMenuChoice.dll",
+  "UpdateKeys": [ "Nexus:11376", "GitHub:atravita-mods/ForgeMenuChoice" ],
+  "MinimumApiVersion": "3.13"
+}

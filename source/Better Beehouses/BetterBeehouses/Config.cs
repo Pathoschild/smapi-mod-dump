@@ -26,6 +26,21 @@ namespace BetterBeehouses
         public float ValueMultiplier { get; set; } = 1f;
         public bool Particles { get; set; } = true;
         public bool UseQuality { get; set; } = false;
+        public bool PatchAutomate { get; set; } = true;
+        public bool PatchPFM { get; set; } = true;
+        public int CapFactor { get; set; } = 700;
+        private float capCurve = 0f;
+        public float CapCurve
+        {
+            get { return capCurve; }
+            set { capCurve = Math.Clamp(value, 0f, 1f); }
+        }
+        private float bearBoost = 1f;
+        public float BearBoost
+        {
+            get { return bearBoost; }
+            set { bearBoost = Math.Clamp(value, 1f, 3f); }
+        }
 
         private ITranslationHelper i18n => ModEntry.helper.Translation;
 
@@ -40,12 +55,19 @@ namespace BetterBeehouses
             UseForageFlowers = false;
             Particles = true;
             UseQuality = false;
+            PatchAutomate = true;
+            PatchPFM = true;
+            CapFactor = 700;
+            CapCurve = 0f;
+            BearBoost = 1f;
         }
 
         public void ApplyConfig()
         {
             ModEntry.helper.WriteConfig(this);
             ModEntry.helper.Content.InvalidateCache("Mods/aedenthorn.ParticleEffects/dict");
+            integration.AutomatePatch.Setup();
+            integration.PFMPatch.Setup();
         }
 
         public void RegisterModConfigMenu(IManifest manifest)
@@ -57,7 +79,6 @@ namespace BetterBeehouses
 
             api.Register(manifest, ResetToDefault, ApplyConfig);
 
-            api.AddSectionTitle(manifest, () => i18n.Get("config.title"));
             api.AddNumberOption(manifest,
                 () => DaysToProduce,
                 (n) => DaysToProduce = n,
@@ -81,27 +102,20 @@ namespace BetterBeehouses
                 (s) => TranslatedOption("usableOptions",s)
             ); 
             api.AddTextOption(manifest,
-                 () => ProduceInWinter.ToString(),
-                 (s) => ProduceInWinter = (ProduceWhere)Enum.Parse(typeof(ProduceWhere), s),
-                 () => i18n.Get("config.produceInWinter.name"),
-                 () => i18n.Get("config.produceInWinter.desc"),
-                 Enum.GetNames(typeof(ProduceWhere)),
-                 (s) => TranslatedOption("produceWhere", s)
+                () => ProduceInWinter.ToString(),
+                (s) => ProduceInWinter = (ProduceWhere)Enum.Parse(typeof(ProduceWhere), s),
+                () => i18n.Get("config.produceInWinter.name"),
+                () => i18n.Get("config.produceInWinter.desc"),
+                Enum.GetNames(typeof(ProduceWhere)),
+                (s) => TranslatedOption("produceWhere", s)
             );
             api.AddTextOption(manifest,
-                 () => UsePottedFlowers.ToString(),
-                 (s) => UsePottedFlowers = (ProduceWhere)Enum.Parse(typeof(ProduceWhere), s),
-                 () => i18n.Get("config.usePottedFlowers.name"),
-                 () => i18n.Get("config.usePottedFlowers.desc"),
-                 Enum.GetNames(typeof(ProduceWhere)),
-                 (s) => TranslatedOption("produceWhere", s)
-            );
-            api.AddNumberOption(manifest,
-                () => ValueMultiplier,
-                (n) => ValueMultiplier = n,
-                () => i18n.Get("config.valueMultiplier.name"),
-                () => i18n.Get("config.valueMultiplier.desc"),
-                .1f, 2f, .1f
+                () => UsePottedFlowers.ToString(),
+                (s) => UsePottedFlowers = (ProduceWhere)Enum.Parse(typeof(ProduceWhere), s),
+                () => i18n.Get("config.usePottedFlowers.name"),
+                () => i18n.Get("config.usePottedFlowers.desc"),
+                Enum.GetNames(typeof(ProduceWhere)),
+                (s) => TranslatedOption("produceWhere", s)
             );
             api.AddBoolOption(manifest,
                 () => UseForageFlowers,
@@ -115,6 +129,18 @@ namespace BetterBeehouses
                 () => i18n.Get("config.useQuality.name"),
                 () => i18n.Get("config.useQuality.desc")
             );
+            api.AddNumberOption(manifest,
+                () => BearBoost,
+                (n) => BearBoost = n,
+                () => i18n.Get("config.bearBoost.name"),
+                () => i18n.Get("config.bearBoost.desc"),
+                1f, 3f, .05f
+            );
+            api.AddPageLink(manifest, "price", () => i18n.Get("config.price.name"), () => i18n.Get("config.price.desc"));
+            api.AddPageLink(manifest, "integration", () => i18n.Get("config.integration.name"), () => i18n.Get("config.integration.desc"));
+
+            //integration
+            api.AddPage(manifest, "integration", () => i18n.Get("config.integration.name"));
             if (ModEntry.helper.ModRegistry.IsLoaded("aedenthorn.ParticleEffects"))
                 api.AddBoolOption(manifest,
                     () => Particles,
@@ -122,6 +148,42 @@ namespace BetterBeehouses
                     () => i18n.Get("config.particles.name"),
                     () => i18n.Get("config.particles.desc")
                 );
+            api.AddBoolOption(manifest,
+                () => PatchAutomate,
+                (b) => PatchAutomate = b,
+                () => i18n.Get("config.patchAutomate.name"),
+                () => i18n.Get("config.patchAutomate.desc")
+            );
+            api.AddBoolOption(manifest,
+                () => PatchPFM,
+                (b) => PatchPFM = b,
+                () => i18n.Get("config.patchPFM.name"),
+                () => i18n.Get("config.patchPFM.desc")
+            );
+
+            //price balancing
+            api.AddPage(manifest, "price", () => i18n.Get("config.price.name"));
+            api.AddNumberOption(manifest,
+                () => ValueMultiplier,
+                (n) => ValueMultiplier = n,
+                () => i18n.Get("config.valueMultiplier.name"),
+                () => i18n.Get("config.valueMultiplier.desc"),
+                .1f, 2f, .1f
+            );
+            api.AddNumberOption(manifest,
+                () => CapFactor,
+                (v) => CapFactor = v,
+                () => i18n.Get("config.capFactor.name"),
+                () => i18n.Get("config.capFactor.desc"),
+                100
+            );
+            api.AddNumberOption(manifest,
+                () => CapCurve,
+                (v) => CapCurve = v,
+                () => i18n.Get("config.capCurve.name"),
+                () => i18n.Get("config.capCurve.desc"),
+                0f, 1f, .01f
+            );
         }
         public string TranslatedOption(string enumName, string value)
         {

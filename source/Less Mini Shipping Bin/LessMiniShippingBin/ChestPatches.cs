@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System.Diagnostics.CodeAnalysis;
 using HarmonyLib;
 using StardewValley.Objects;
 

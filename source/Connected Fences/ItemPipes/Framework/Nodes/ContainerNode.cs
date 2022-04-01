@@ -36,16 +36,14 @@ namespace ItemPipes.Framework
             IOPipes = new List<IOPipeNode>();
             Filter = new NetObjectList<Item>();
         }
-
         public abstract bool CanSendItems();
-
         public abstract bool CanRecieveItems();
+        public abstract bool CanStackItems();
         public abstract bool CanRecieveItem(Item item);
         public abstract bool CanStackItem(Item item);
         public abstract bool InsertItem(Item item);
-
         public abstract bool IsEmpty();
-        public abstract Item GetItemForInput(InputPipeNode input);
+        public abstract Item GetItemForInput(InputPipeNode input, int flux);
 
         public bool HasFilter()
         {

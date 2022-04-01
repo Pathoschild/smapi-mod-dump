@@ -1,0 +1,10 @@
+{
+    "Name": "LuckyRabbitsFoot",
+    "Author": "Chelsea Bingiel",
+    "Version": "1.0.0-beta.3",
+    "Description": "Makes carrying around a rabbit's foot actually lucky!",
+    "UniqueID": "ChelseaBingiel.LuckyRabbitsFoot",
+    "EntryDll": "LuckyRabbitsFoot.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:11447" ]
+}

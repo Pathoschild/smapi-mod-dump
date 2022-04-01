@@ -1,0 +1,11 @@
+[
+	{
+		"Id": "leclair.bcspacecore",
+		"Name": "SpaceCore Support",
+		"Url": "https://www.nexusmods.com/stardewvalley/mods/11115/?tab=files",
+		"Mods": [
+			"spacechase0.SpaceCore",
+			"spacechase0.DynamicGameAssets"
+		]
+	}
+]

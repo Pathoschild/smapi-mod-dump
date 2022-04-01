@@ -8,13 +8,10 @@
 **
 *************************************************/
 
-using SpriteMaster.Numeric;
 using SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 using SpriteMaster.Types;
 using System;
 using System.Runtime.CompilerServices;
-
-using static SpriteMaster.Resample.Scalers.SuperXBR.Cg.CgMath;
 
 namespace SpriteMaster.Resample.Scalers.SuperXBR.Passes;
 

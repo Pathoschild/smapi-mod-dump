@@ -275,7 +275,7 @@ namespace BetterBeehouses
             {
                 var s = Anchors[marker];
                 var code = cursor.Current;
-                if (code.opcode == s.opcode && CompareOperands(code.operand, s.operand))
+                if (s is null || (code.opcode == s.opcode && CompareOperands(code.operand, s.operand)))
                 {
                     saved[marker] = code;
                     marker++;
@@ -448,13 +448,15 @@ namespace BetterBeehouses
         }
         public static bool CompareOperands(object op1, object op2)
         {
-            if (op1 == null || op1.Equals(op2))
+            if (op1 == null || op1 is Label || op1.Equals(op2))
                 return true;
 
+            if (op1 is sbyte bt && op2 is int bt2)
+                return Convert.ToInt32(bt) == bt2;
+
             if (op1 is LocalBuilder oper1 && op2 is ValueTuple<int, Type> oper2)
-            {
                 return (oper2.Item1 < 0 || oper1.LocalIndex == oper2.Item1) && (oper2.Item2 == null || oper1.LocalType == oper2.Item2);
-            }
+
             return false;
         }
     }

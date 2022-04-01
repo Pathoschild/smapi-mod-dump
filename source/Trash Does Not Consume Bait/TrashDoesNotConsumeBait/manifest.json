@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/TrashDoesNotConsumeBait
+**
+*************************************************/
+
+{
+  "Name": "Trash Does Not Consume Bait",
+  "Author": "atravita",
+  "Version": "0.1.2",
+  "Description": "Prevents trash from consuming bait.",
+  "UniqueID": "atravita.TrashDoesNotConsumeBait",
+  "EntryDll": "TrashDoesNotConsumeBait.dll",
+  "UpdateKeys": [ "Nexus:11426", "GitHub:atravita-mods/TrashDoesNotConsumeBait" ],
+  "MinimumApiVersion": "3.13"
+}

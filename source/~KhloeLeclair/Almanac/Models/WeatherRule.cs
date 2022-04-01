@@ -12,18 +12,14 @@ using System;
 
 using Newtonsoft.Json;
 
+using Leclair.Stardew.Common.Enums;
+
 namespace Leclair.Stardew.Almanac.Models {
 
 	public enum RuleContext {
 		Default,
 		Island,
 		All
-	};
-
-	public enum RulePeriod {
-		Week,
-		Season,
-		Year
 	};
 
 	public enum RuleWeather {
@@ -42,13 +38,6 @@ namespace Leclair.Stardew.Almanac.Models {
 		End
 	};
 
-	public enum RuleSeason {
-		Spring = 0,
-		Summer = 1,
-		Fall = 2,
-		Winter = 3
-	};
-
 	public struct RuleDateRange {
 		public int Start { get; set; }
 		public int End { get; set; }
@@ -62,6 +51,11 @@ namespace Leclair.Stardew.Almanac.Models {
 	public struct RulePatternEntry {
 		public RuleWeather Weather { get; set; }
 		public float Weight { get; set; } = 1;
+
+		public RulePatternEntry(RuleWeather weather, float weight) {
+			Weather = weather;
+			Weight = weight;
+		}
 	}
 
 	public class WeatherRule {
@@ -75,14 +69,14 @@ namespace Leclair.Stardew.Almanac.Models {
 
 		public int[] ValidYears { get; set; } = null;
 
-		public RuleSeason[] ValidSeasons { get; set; } = new RuleSeason[] {
-			RuleSeason.Spring,
-			RuleSeason.Summer,
-			RuleSeason.Fall,
-			RuleSeason.Winter,
+		public Season[] ValidSeasons { get; set; } = new[] {
+			Season.Spring,
+			Season.Summer,
+			Season.Fall,
+			Season.Winter,
 		};
 
-		public RulePeriod Period { get; set; }
+		public TimeScale Period { get; set; }
 		public RuleDateRange[] Dates { get; set; }
 
 		public RulePatternEntry[][] WeightedPattern { get; set; }

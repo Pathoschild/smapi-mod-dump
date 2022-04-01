@@ -16,28 +16,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Tools;
+using StardewValley.Objects;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using SVObject = StardewValley.Objects;
+using SObject = StardewValley.Object;
 using ItemPipes.Framework;
 using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Patches;
-using ItemPipes.Framework.Nodes;
+using ItemPipes.Framework.Factories;
+using ItemPipes.Framework.Items;
 using ItemPipes.Framework.Items.Objects;
-using ItemPipes.Framework.Items.Recipes;
+using ItemPipes.Framework.Items.Tools;
 using HarmonyLib;
-using SpaceCore;
 using System.Diagnostics;
 using System.Threading;
 
 
 namespace ItemPipes
 {
-    public interface ISpaceCoreApi
-    {
-        void RegisterSerializerType(Type type);
-    }
     class ModEntry : Mod, IAssetEditor
     {
         public static IModHelper helper;
@@ -118,7 +116,8 @@ namespace ItemPipes
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
             //FencePatcher.Apply(harmony);
-            ChestPatcher.Apply(harmony);
+            //ChestPatcher.Apply(harmony);
+            CraftingPatcher.Apply(harmony);
             
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
@@ -127,49 +126,20 @@ namespace ItemPipes
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.GameLoop.Saving += this.OnSaving;
+            helper.Events.GameLoop.Saved += this.OnSaved;
 
         }
 
-        private void OnSaving(object sender, SavingEventArgs e)
-        {
-            if (Globals.Debug) { Printer.Info("Waiting for all items to arrive at input..."); }
-            //Quick end all threads
-            while (DataAccess.Threads.Count > 0)
-            {
-                foreach (Thread thread in DataAccess.Threads.ToList())
-                {
-                    if (thread != null && thread.IsAlive)
-                    {
-                        thread.Interrupt();
-                    }
-                }
-                
-            }
-        }
+
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
+            DataAccess.LoadItems();
+            DataAccess.LoadSprites();
+            DataAccess.LoadRecipes();
             Helper.Content.AssetEditors.Add(this);
-            var spaceCore = this.Helper.ModRegistry.GetApi<ISpaceCoreApi>("spacechase0.SpaceCore");
-            spaceCore.RegisterSerializerType(typeof(IronPipeItem));
-            spaceCore.RegisterSerializerType(typeof(GoldPipeItem));
-            spaceCore.RegisterSerializerType(typeof(IridiumPipeItem));
-
-            spaceCore.RegisterSerializerType(typeof(ExtractorPipeItem));
-            spaceCore.RegisterSerializerType(typeof(GoldExtractorPipeItem));
-            spaceCore.RegisterSerializerType(typeof(IridiumExtractorPipeItem));
-
-            spaceCore.RegisterSerializerType(typeof(InserterPipeItem));
-            spaceCore.RegisterSerializerType(typeof(PolymorphicPipeItem));
-            spaceCore.RegisterSerializerType(typeof(FilterPipeItem));
-
-            spaceCore.RegisterSerializerType(typeof(PPMItem));
-
-
-            spaceCore.RegisterSerializerType(typeof(WrenchItem));
-            //spaceCore.RegisterSerializerType(typeof(IronPipeRecipe));
-            CustomCraftingRecipe.CraftingRecipes.Add("Iron Pipe", new IronPipeRecipe());
         }
+
         public bool CanLoad<T>(IAssetInfo asset)
         {
             if (asset.AssetNameEquals("Data/ObjectInformation"))
@@ -192,26 +162,110 @@ namespace ItemPipes
 
         public void Edit<T>(IAssetData asset)
         {
+            if (asset.AssetNameEquals("Data/ObjectInformation"))
+            {
+                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                string daffodil = "Daffodil/30/0/Basic -81/Daffodil/A traditional spring flower that makes a nice gift.";
+                string ironPipe = "Iron Pipe/0/-300/Basic -2/Iron Pipe/test.";
+                string fakeRecipe = "0 1//0 1/false//Test Recipe";
+                if (!data.ContainsKey("Iron Pipe"))
+                {
+                    data.Add("12340", ironPipe);
+                }
+                else
+                {
+                    data["12340"] = ironPipe;
+                }
+            }
             if (asset.AssetNameEquals("Data/CraftingRecipes"))
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
                 string hardwoodFenceTest = "709 1/Field/298/false/Mining 3";
-                string ironPipe = "388 20 709 1/Home/0 1/false/Mining 3";
-                string fakeRecipe = "0 1//0 1/false//Test Recipe";
+                string ironPipe = "388 20 709 1/Home/12340/false/Mining 3";
+                string fakeRecipe = "0 1//0 1/false/null/Fake Recipe";
                 if (!data.ContainsKey("Iron Pipe"))
                 {
-                    data.Add("Iron Pipe", fakeRecipe);
+                    data.Add("Iron Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("Gold Pipe", "0 1//0 1/false/Mining 6/Fake Recipe");
+                    data.Add("Iridium Pipe", "0 1//0 1/false/Mining 9/Fake Recipe");
+                    data.Add("Extractor Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("Gold Extractor Pipe", "0 1//0 1/false/Mining 6/Fake Recipe");
+                    data.Add("Iridium Extractor Pipe", "0 1//0 1/false/Mining 9/Fake Recipe");
+                    data.Add("Inserter Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("Polymorphic Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("Filter Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("P.P.M.", "0 1//0 1/false/Mining 6/Fake Recipe");
                 }
                 else
                 {
-                    data["Iron Pipe"] = fakeRecipe;
+                    data["Iron Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["Gold Pipe"] = "0 1//0 1/false/Mining 6/Fake Recipe";
+                    data["Iridium Pipe"] = "0 1//0 1/false/Mining 9/Fake Recipe";
+                    data["Extractor Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["Gold Extractor Pipe"] = "0 1//0 1/false/Mining 6/Fake Recipe";
+                    data["Iridium Extractor Pipe"] = "0 1//0 1/false/Mining 9/Fake Recipe";
+                    data["Inserter Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["Polymorphic Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["Filter Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["P.P.M."] = "0 1//0 1/false/Mining 6/Fake Recipe";
                 }
+            }
+
+        }
+
+        private void OnSaving(object sender, SavingEventArgs e)
+        {
+            if (Context.IsMainPlayer)
+            {
+                if (Globals.Debug) { Printer.Info("Waiting for all items to arrive at input..."); }
+                //Quick end all threads
+                while (DataAccess.Threads.Count > 0)
+                {
+                    foreach (Thread thread in DataAccess.Threads.ToList())
+                    {
+                        if (thread != null && thread.IsAlive)
+                        {
+                            Printer.Info("INTERRUPTION "+ thread.ManagedThreadId.ToString());
+                            
+                            thread.Interrupt();
+                        }
+                    }
+                }
+                Printer.Info("Threads cleaned");
+                ConvertToVanillaMap();
+                ConvertToVanillaPlayer();
+            }
+        }
+
+        public void OnSaved(object sender, SavedEventArgs args)
+        {
+            if (Context.IsMainPlayer) 
+            {
+                Reset();
+                ConvertFromVanillaMap();
+                ConvertFromVanillaPlayer();
+                
+                foreach (GameLocation location in Game1.locations)
+                {
+                    DataAccess.LocationNetworks.Add(location, new List<Network>());
+                    DataAccess.LocationNodes.Add(location, new List<Node>());
+                    NetworkBuilder.BuildLocationNetworks(location);
+                    NetworkManager.UpdateLocationNetworks(location);
+                }
+                
+                if (Globals.UltraDebug) { Printer.Info("Location networks loaded!"); }
             }
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-        {
+        {    
             Reset();
+            if (Context.IsMainPlayer)
+            {
+                ConvertFromVanillaMap();
+                ConvertFromVanillaPlayer();
+            }
+
             foreach (GameLocation location in Game1.locations)
             {
                 DataAccess.LocationNetworks.Add(location, new List<Network>());
@@ -221,13 +275,144 @@ namespace ItemPipes
             }
             if (Globals.UltraDebug) { Printer.Info("Location networks loaded!"); }
 
+
         }
+
 
         private void Reset()
         {
             DataAccess.LocationNodes.Clear();
             DataAccess.LocationNetworks.Clear();
             DataAccess.UsedNetworkIDs.Clear();
+            DataAccess.Threads.Clear();
+        }
+
+        public void ConvertToVanillaMap()
+        {
+            foreach (GameLocation location in Game1.locations)
+            {
+                foreach (KeyValuePair<Vector2, SObject> obj in location.Objects.Pairs.ToList())
+                {
+                    if (obj.Value is CustomObjectItem)
+                    {
+                        CustomObjectItem customObj = (CustomObjectItem)obj.Value;
+                        SObject tempObj = customObj.Save();
+                        location.objects.Remove(obj.Key);
+                        location.objects.Add(obj.Key, tempObj);
+
+                    }
+                    if (obj.Value is Chest && (obj.Value as Chest).items.Any(i => i is CustomObjectItem || i is CustomToolItem))
+                    {
+                        for (int i = 0; i < (obj.Value as Chest).items.Count; i++)
+                        {
+                            if ((obj.Value as Chest).items[i] is CustomObjectItem)
+                            {
+                                CustomObjectItem customObj = (CustomObjectItem)(obj.Value as Chest).items[i];
+                                SObject tempObj = customObj.Save();
+                                (obj.Value as Chest).items.RemoveAt(i);
+                                (obj.Value as Chest).items.Insert(i, tempObj);
+                            }
+                            else if ((obj.Value as Chest).items[i] is CustomToolItem)
+                            {
+                                CustomToolItem customTool = (CustomToolItem)(obj.Value as Chest).items[i];
+                                Tool tempTool = customTool.Save();
+                                (obj.Value as Chest).items.RemoveAt(i);
+                                (obj.Value as Chest).items.Insert(i, tempTool);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        public void ConvertToVanillaPlayer()
+        {
+            if (Game1.player.Items.Any(i => i is CustomObjectItem || i is CustomToolItem))
+            {
+                for (int i = 0; i < Game1.player.Items.Count; i++)
+                {
+                    if (Game1.player.Items[i] is CustomObjectItem)
+                    {
+                        CustomObjectItem customObj = (CustomObjectItem)Game1.player.Items[i];
+                        SObject tempObj = customObj.Save();
+                        Game1.player.Items.RemoveAt(i);
+                        Game1.player.Items.Insert(i, tempObj);
+                    }
+                    else if (Game1.player.Items[i] is CustomToolItem)
+                    {
+                        CustomToolItem customTool = (CustomToolItem)Game1.player.Items[i];
+                        Tool tempTool = customTool.Save();
+                        Game1.player.Items.RemoveAt(i);
+                        Game1.player.Items.Insert(i, tempTool);
+                    }
+                }
+            }
+        }
+
+        public void ConvertFromVanillaMap()
+        {
+            foreach (GameLocation location in Game1.locations)
+            {
+                foreach (KeyValuePair<Vector2, SObject> obj in location.Objects.Pairs.ToList())
+                {
+                    if (obj.Value is Fence && obj.Value.modData.ContainsKey("ItemPipes"))
+                    {
+                        if (obj.Value.modData["Type"] != null)
+                        {
+                            CustomObjectItem customObj = ItemFactory.CreateObject(obj.Key, obj.Value.modData["Type"]);
+                            customObj.Load(obj.Value.modData);
+                            location.objects.Remove(obj.Key);
+                            location.objects.Add(obj.Key, customObj);
+                        }
+                    }
+                    if (obj.Value is Chest && (obj.Value as Chest).items.Any(i => i is Fence))
+                    {
+                        for (int i = 0; i < (obj.Value as Chest).items.Count; i++)
+                        {
+                            if ((obj.Value as Chest).items[i] is Fence && (obj.Value as Chest).items[i].modData.ContainsKey("ItemPipes"))
+                            {
+                                Fence tempObj = (Fence)(obj.Value as Chest).items[i];
+                                CustomObjectItem customObj = ItemFactory.CreateItem(tempObj.modData["Type"]);
+                                customObj.stack.Value = Int32.Parse(tempObj.modData["Stack"]);
+                                (obj.Value as Chest).items.RemoveAt(i);
+                                (obj.Value as Chest).items.Insert(i, customObj);
+                            }
+                            else if ((obj.Value as Chest).items[i] is Axe && (obj.Value as Chest).items[i].modData.ContainsKey("ItemPipes"))
+                            {
+                                Axe tempTool = (Axe)(obj.Value as Chest).items[i];
+                                CustomToolItem customObj = ItemFactory.CreateTool(tempTool.modData["Type"]);
+                                (obj.Value as Chest).items.RemoveAt(i);
+                                (obj.Value as Chest).items.Insert(i, customObj);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void ConvertFromVanillaPlayer()
+        {
+            if (Game1.player.Items.Any(i => 
+                (i is Fence && (i as Fence).modData.ContainsKey("ItemPipes"))
+                || (i is Axe && (i as Axe).modData.ContainsKey("ItemPipes"))))
+            {
+                for (int i = 0; i < Game1.player.Items.Count; i++)
+                {
+                    if (Game1.player.Items[i] is Fence && Game1.player.Items[i].modData.ContainsKey("ItemPipes"))
+                    {
+                        CustomObjectItem customObj = ItemFactory.CreateItem(Game1.player.Items[i].modData["Type"]);
+                        customObj.Load(Game1.player.Items[i].modData);
+                        Game1.player.Items.RemoveAt(i);
+                        Game1.player.Items.Insert(i, customObj);
+                    }
+                    else if (Game1.player.Items[i] is Axe && Game1.player.Items[i].modData.ContainsKey("ItemPipes"))
+                    {
+                        CustomToolItem customTool = ItemFactory.CreateTool(Game1.player.Items[i].modData["Type"]);
+                        customTool.Load(Game1.player.Items[i].modData);
+                        Game1.player.Items.RemoveAt(i);
+                        Game1.player.Items.Insert(i, customTool);
+                    }
+                }
+            }
         }
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -248,11 +433,10 @@ namespace ItemPipes
                                 foreach (Network network in networks)
                                 {
                                     //Printer.Info(network.Print());
-                                    if (network.Outputs.Count > 0)
+                                    if (network != null && network.Outputs.Count > 0)
                                     {
                                         network.ProcessExchanges(1);
                                     }
-
                                 }
                             }
                         }
@@ -269,7 +453,7 @@ namespace ItemPipes
                                 foreach (Network network in networks)
                                 {
                                     //Printer.Info(network.Print());
-                                    if (network.Outputs.Count > 0)
+                                    if (network != null && network.Outputs.Count > 0)
                                     {
                                         network.ProcessExchanges(2);
                                     }
@@ -288,7 +472,7 @@ namespace ItemPipes
                             {
                                 foreach (Network network in networks)
                                 {
-                                    if (network.Outputs.Count > 0)
+                                    if (network != null && network.Outputs.Count > 0)
                                     {
                                         network.ProcessExchanges(3);
                                     }
@@ -299,30 +483,7 @@ namespace ItemPipes
                 }
             }
         }
-        /*
-        private void ProcessNetworks()
-        {
-            DataAccess DataAccess = DataAccess.GetDataAccess();
-            foreach (GameLocation location in Game1.locations)
-            {
-                List<Network> networks = DataAccess.LocationNetworks[location];
-                if (networks.Count > 0)
-                {
-                    //if (Globals.UltraDebug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
-                    foreach (Network network in networks)
-                    {
-                        //Printer.Info(network.Print());
-                        if (network.Outputs.Count > 0)
-                        {
-                            network.ProcessExchanges(1);
-                        }
 
-                    }
-                }
-            }
-            DataAccess.GetDataAccess().Threads.Add(Thread.CurrentThread);
-        }
-        */
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
             List<KeyValuePair<Vector2, StardewValley.Object>> addedObjects = e.Added.ToList();

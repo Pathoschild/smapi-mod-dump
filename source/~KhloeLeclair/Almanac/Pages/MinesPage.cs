@@ -23,7 +23,7 @@ using StardewValley;
 using Leclair.Stardew.Almanac.Menus;
 
 namespace Leclair.Stardew.Almanac.Pages {
-	public class MinesPage : BasePage, ICalendarPage {
+	public class MinesPage : BasePage<BaseState>, ICalendarPage {
 
 		private readonly int Seed;
 
@@ -31,12 +31,10 @@ namespace Leclair.Stardew.Almanac.Pages {
 		private Dictionary<LevelType, List<int>>[] Levels;
 		private IFlowNode[] Nodes;
 
-		private IEnumerable<IFlowNode> Flow;
-
 		#region Lifecycle
 
 		public static MinesPage GetPage(AlmanacMenu menu, ModEntry mod) {
-			if (!mod.HasMagic(Game1.player))
+			if (!mod.Config.ShowMines || !mod.HasMagic(Game1.player))
 				return null;
 
 			return new(menu, mod);
@@ -48,19 +46,15 @@ namespace Leclair.Stardew.Almanac.Pages {
 			Sprites = new();
 
 			Sprites[LevelType.Mushroom] = SpriteHelper.GetSprite(
-				new Object(420, 1), // Red Mushroom
-				Mod.Helper
+				new Object(420, 1) // Red Mushroom
 			);
 
 			Sprites[LevelType.InfestedMonster] = SpriteHelper.GetSprite(
-				new StardewValley.Tools.MeleeWeapon(0), // Rusty Sword
-				//new Object(109, 1), // Ancient Sword
-				Mod.Helper
+				new StardewValley.Tools.MeleeWeapon(0) // Rusty Sword
 			);
 
 			Sprites[LevelType.InfestedSlime] = SpriteHelper.GetSprite(
-				new Object(766, 1), // Slime
-				Mod.Helper
+				new Object(766, 1) // Slime
 			);
 
 			Sprites[LevelType.Quarry] = new SpriteInfo(
@@ -74,20 +68,21 @@ namespace Leclair.Stardew.Almanac.Pages {
 			);
 
 			Sprites[LevelType.Dino] = SpriteHelper.GetSprite(
-				new Object(107, 1), // Dino Egg
-				Mod.Helper
+				new Object(107, 1) // Dino Egg
 			);
 
-			UpdateLevels();
+			Update();
 		}
 
 		#endregion
 
 		#region Logic
 
-		public void UpdateLevels() {
-			Levels = new Dictionary<LevelType, List<int>>[WorldDate.DaysPerMonth];
-			Nodes = new IFlowNode[WorldDate.DaysPerMonth];
+		public override void Update() {
+			base.Update();
+
+			Levels = new Dictionary<LevelType, List<int>>[ModEntry.DaysPerMonth];
+			Nodes = new IFlowNode[ModEntry.DaysPerMonth];
 			WorldDate date = new(Menu.Date);
 
 			FlowBuilder builder = new();
@@ -96,7 +91,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 				I18n.Page_Mines_About(Utility.getSeasonNameFromNumber(date.SeasonIndex))
 			);
 
-			for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 				date.DayOfMonth = day;
 				int days = date.TotalDays;
 				Levels[day - 1] = new();
@@ -142,7 +137,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 				var node = new TextNode(
 					$"{sdate.ToLocaleString(withYear: false)}\n",
 					new TextStyle(font: Game1.dialogueFont),
-					onClick: slice => false
+					onClick: (_,_,_) => false
 				);
 
 				Nodes[day - 1] = node;
@@ -163,41 +158,25 @@ namespace Leclair.Stardew.Almanac.Pages {
 						builder.Sprite(Sprites[entry.Key], 2);
 
 					builder
-						.FormatText($" {Mod.Helper.Translation.Get(key)}: ", color: Color.White * 0.5f);
+						.FormatText($" {Mod.Helper.Translation.Get(key)}: ", shadow: false);
 
 					builder.Text(
 						string.Join(", ", entry.Value),
 						color: Color.White * 0.75f
 					);
-
-					/*bool first = true;
-					foreach (int floor in entry.Value) {
-						if (!first)
-							builder.Text(", ");
-						else
-							first = false;
-
-						builder.Add(new TextNode($"{floor}", onClick: slice => {
-							Game1.enterMine(floor + (entry.Key == LevelType.Dino ? 120 : 0));
-							return true;
-						}));
-					}*/
 				}
 			}
 
-			Flow = builder.Build();
-			if (Active)
-				Menu.SetFlow(Flow, 4);
+			SetRightFlow(builder, 4);
 		}
 
 		#endregion
 
 		#region ITab
 
-		public override int SortKey => 11;
+		public override int SortKey => 55;
 		public override string TabSimpleTooltip => I18n.Page_Mines();
-		public override Texture2D TabTexture =>
-			SpriteHelper.GetTexture(Common.Enums.GameTexture.MouseCursors);
+		public override Texture2D TabTexture => Game1.mouseCursors;
 		public override Rectangle? TabSource => new(30, 428, 10, 10);
 
 		#endregion
@@ -205,15 +184,6 @@ namespace Leclair.Stardew.Almanac.Pages {
 		#region IAlmanacPage
 
 		public override bool IsMagic => true;
-
-		public override void Activate() {
-			base.Activate();
-			Menu.SetFlow(Flow, 4);
-		}
-
-		public override void DateChanged(WorldDate oldDate, WorldDate newDate) {
-			UpdateLevels();
-		}
 
 		#endregion
 
@@ -254,8 +224,8 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 		public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
 			int day = date.DayOfMonth;
-			if (Nodes?[day - 1] is IFlowNode node && Menu.ScrollFlow(node)) {
-				Game1.playSound("smallSelect");
+			if (Nodes?[day - 1] is IFlowNode node && Menu.ScrollRightFlow(node)) {
+				Game1.playSound("shiny4");
 				return true;
 			}
 

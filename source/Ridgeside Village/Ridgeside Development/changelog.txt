@@ -53,3 +53,33 @@ Added new portrait and sprite variant for Daia
 Changed AutoWeddingReception to be defaulted to false
 Added PoleAtBackwoods config option
 Updated the sprites of RSV flower forageables (By Taiyo)
+Added new unique special order reward items
+Reworked Undreya's Portrait
+Fixed crash when playing Alissa's 8 heart event with East Scarp installed
+Remade all the concession tastes. Now has specific loved and hate snacks. (Thanks Orthorn!)
+Added Movie and Concession tastes to the new 2.0 NPCs
+Fixed a bug where Jio, Daia, and Kiwi couldn't be invited to the movies
+Added mapstrings for WIP content for clarity
+Player death in the Ridge Forest will now result to the player ending up at the Ridgeside Clinic instead at the Pelican Town Hospital (Thanks to moetrash and wamc!)
+Player death in the Spirit Realm will now result to the player ending up at the RidgeFalls instead at the Pelican Town Hospital (Thanks to moetrash and wamc!)
+Added Ridgeside Warp Totem
+Changed Zayne's visit requirements, now requiring to see Maive's 4 heart event rather than playing 20 in-game days
+Added randomizing dialogue for Flor when she's reading
+Added compatibility with Walk of Life so that RSV legendary fish can be recaught if the player has WoL and has the Angler profession
+Pika now supplies you with the items during Pika's Special Delivery Special Order
+Added a working calendar to Lenny's office
+Fixed a bug with the anniversary event happening more than once
+Fixed a multiplayer bug where sometimes the boxes in front of the minecarts aren't removed
+Hopefully fixed Helen spawning on top of the bookshelf at the ninja house
+Fixed some dialogue errors in spouse summit events
+Added spouse summit events for Jio, Daia, Kiarra, and Sean
+Added new mechanic of 10% chance of a randomized valuable item sold cheaply appearing in Heaps
+Fixed bug where Kek's style shortcake would only accept regular egg in recipe
+Made hotel bookings apply to all farmers
+Added new randomizing dialogue for marriage NPCs, alternating 5 lines for  spouseroom, patio, funleave, and funreturn dialogue keys each
+All RSV Villagers will now visit Paula's clinic occasionally
+Added new dialogue when visiting Paula's clinic
+Anton and Kiarra can now man the counter in place of Paula at the Ridgeside Clinic
+Added new sprites for some villagers
+Added Ginger Island Mainland Adjustments compatibility with over 100 lines of dialogue
+Moved a table by one tile at Pika's and adjusted schedules and events accordingly

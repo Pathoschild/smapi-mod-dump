@@ -13,12 +13,32 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XPDisplay", "XPDisplay\XPDi
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "_Common", "_Common\_Common.shproj", "{5755B5E3-AC9D-4A3E-9C01-2731828B9CAA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineStatus", "MachineStatus\MachineStatus.csproj", "{2FCB0A9C-FBE0-480D-A896-72300866BFBE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "_CommonWithHarmony", "_CommonWithHarmony\_CommonWithHarmony.shproj", "{D9B27087-1AAA-4459-81EC-8C2F80D2E5FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PleaseGiftMeInPerson", "PleaseGiftMeInPerson\PleaseGiftMeInPerson.csproj", "{99E6295D-7903-48C2-9855-1C5A21FA5717}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailPersistenceFramework", "MailPersistenceFramework\MailPersistenceFramework.csproj", "{B108B66C-902D-4515-83B9-59249014D784}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hibernation", "Hibernation\Hibernation.csproj", "{7ED542FC-8015-4D98-A5EC-EFA429D34A3B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		_Common\_Common.projitems*{2270e272-3de2-4e0d-8907-29e32ecf68fe}*SharedItemsImports = 5
+		_CommonWithHarmony\_CommonWithHarmony.projitems*{2fcb0a9c-fbe0-480d-a896-72300866bfbe}*SharedItemsImports = 5
+		_Common\_Common.projitems*{2fcb0a9c-fbe0-480d-a896-72300866bfbe}*SharedItemsImports = 5
 		_Common\_Common.projitems*{5755b5e3-ac9d-4a3e-9c01-2731828b9caa}*SharedItemsImports = 13
+		_CommonWithHarmony\_CommonWithHarmony.projitems*{5ae05c77-966b-49a8-8000-2fb2486dd82f}*SharedItemsImports = 5
 		_Common\_Common.projitems*{5ae05c77-966b-49a8-8000-2fb2486dd82f}*SharedItemsImports = 5
+		_CommonWithHarmony\_CommonWithHarmony.projitems*{7ed542fc-8015-4d98-a5ec-efa429d34a3b}*SharedItemsImports = 5
+		_Common\_Common.projitems*{7ed542fc-8015-4d98-a5ec-efa429d34a3b}*SharedItemsImports = 5
+		_CommonWithHarmony\_CommonWithHarmony.projitems*{99e6295d-7903-48c2-9855-1c5a21fa5717}*SharedItemsImports = 5
+		_Common\_Common.projitems*{99e6295d-7903-48c2-9855-1c5a21fa5717}*SharedItemsImports = 5
+		_Common\_Common.projitems*{b108b66c-902d-4515-83b9-59249014d784}*SharedItemsImports = 5
+		_CommonWithHarmony\_CommonWithHarmony.projitems*{d49f8392-3b72-43d5-ab06-206fb71eeea4}*SharedItemsImports = 5
 		_Common\_Common.projitems*{d49f8392-3b72-43d5-ab06-206fb71eeea4}*SharedItemsImports = 5
+		_CommonWithHarmony\_CommonWithHarmony.projitems*{d9b27087-1aaa-4459-81ec-8c2f80d2e5fc}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +61,22 @@ Global
 		{5AE05C77-966B-49A8-8000-2FB2486DD82F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE05C77-966B-49A8-8000-2FB2486DD82F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE05C77-966B-49A8-8000-2FB2486DD82F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FCB0A9C-FBE0-480D-A896-72300866BFBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99E6295D-7903-48C2-9855-1C5A21FA5717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B108B66C-902D-4515-83B9-59249014D784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B108B66C-902D-4515-83B9-59249014D784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B108B66C-902D-4515-83B9-59249014D784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B108B66C-902D-4515-83B9-59249014D784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ED542FC-8015-4D98-A5EC-EFA429D34A3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ED542FC-8015-4D98-A5EC-EFA429D34A3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ED542FC-8015-4D98-A5EC-EFA429D34A3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ED542FC-8015-4D98-A5EC-EFA429D34A3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -17,7 +17,7 @@
 		"de": "Fischglas",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "金魚鉢",
 		//"tr": "", *Turkish
 	},
 	"DescriptionLocalization": {
@@ -30,7 +30,7 @@
 		"de": "Goldiges Fischlein!",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "かわいいお魚さん！",
 		//"tr": "", *Turkish
 	}
 }

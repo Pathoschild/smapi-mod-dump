@@ -11,7 +11,8 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Shockah.CommonModCode;
+using Shockah.CommonModCode.GMCM;
+using Shockah.CommonModCode.IL;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -129,6 +130,7 @@ namespace Shockah.DontStopMeNow
 			helper.AddBoolOption("config.facing.tools", () => Config.FixToolFacing);
 			helper.AddBoolOption("config.facing.meleeWeapons", () => Config.FixMeleeWeaponFacing);
 			helper.AddBoolOption("config.facing.chargingTools", () => Config.FixChargingToolFacing);
+			helper.AddBoolOption("config.facing.fishingRod", () => Config.FixFishingRodFacing);
 			helper.AddBoolOption("config.facing.mouse", () => Config.FixFacingOnMouse);
 			helper.AddBoolOption("config.facing.controller", () => Config.FixFacingOnController);
 		}
@@ -191,7 +193,8 @@ namespace Shockah.DontStopMeNow
 				return;
 
 			LastToolButton.Value = e.Button;
-			FixFacingDirectionIfNeeded();
+			if (ShouldFixFacing(player))
+				FixFacingDirectionIfNeeded();
 		}
 
 		private void OnButtonReleased(object? sender, ButtonReleasedEventArgs e)
@@ -222,6 +225,8 @@ namespace Shockah.DontStopMeNow
 						return;
 					FixMouseFacingDirection();
 					break;
+				default:
+					throw new ArgumentException($"{nameof(InputHelper.ButtonType)} has an invalid value.");
 			}
 		}
 
@@ -258,13 +263,9 @@ namespace Shockah.DontStopMeNow
 		{
 			var player = Game1.player;
 			if (Math.Abs(direction.X) > Math.Abs(direction.Y))
-			{
 				player.FacingDirection = direction.X >= 0 ? Game1.right : Game1.left;
-			}
 			else
-			{
 				player.FacingDirection = direction.Y >= 0 ? Game1.down : Game1.up;
-			}
 		}
 
 		private bool? IsUsingPoweredUpOnHoldTool(Farmer player)
@@ -309,6 +310,10 @@ namespace Shockah.DontStopMeNow
 			else if (player.CurrentTool is Slingshot)
 			{
 				return false;
+			}
+			else if (player.CurrentTool is FishingRod)
+			{
+				return Config.FixFishingRodFacing;
 			}
 			else
 			{

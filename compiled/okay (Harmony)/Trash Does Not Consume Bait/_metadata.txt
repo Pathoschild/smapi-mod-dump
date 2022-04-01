@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11426
+IDs: atravita.TrashDoesNotConsumeBait
+update keys: Nexus:11426, GitHub:atravita-mods/TrashDoesNotConsumeBait

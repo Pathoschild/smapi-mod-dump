@@ -25,3 +25,6 @@ A SMAPI mod to set reminders with messages that notify every set amount of days.
 
 # Installation
 Download the CustomReminders mod from [NexusMods](https://www.nexusmods.com/stardewvalley/mods/6215) and install like a regular SMAPI mod (extract into `/mods` folder).
+
+# For Contributors
+Sorry for the over-documentation. I didn't know better 😅

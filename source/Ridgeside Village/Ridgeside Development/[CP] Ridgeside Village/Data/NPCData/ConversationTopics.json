@@ -10,9 +10,9 @@
 
 {
 "Changes": [
-	
+
 	//Conversation Topics Dialogue
-	
+
 	//RSV Girls
 	{
 		"LogName": "Alissa",
@@ -57,7 +57,7 @@
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 		},
 	},
-	
+
 	//RSV Boys
 	{
 		"LogName": "Ian",
@@ -101,7 +101,7 @@
 			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
-	
+
 	//RSV Citizens
 	{
 		"LogName": "Aguar",
@@ -196,8 +196,9 @@
 		"Action": "EditData",
 		"Target": "Characters/Dialogue/Pika",
 		"Entries": {
+			// pika_pickup goes in SOStrings
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
-			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}",
+			"event_postweddingreception": "{{i18n:postweddingreception.{{TargetWithoutPath}}}}"
 		},
 	},
 	{
@@ -210,8 +211,8 @@
 			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
-	
-	
+
+
 	//Kids
 	{
 		"LogName": "Keahi",
@@ -262,7 +263,7 @@
 			"Naomi_Return": "{{i18n:NaomiReturn.{{TargetWithoutPath}}}}"
 		},
 	},
-	
+
 	//Vanilla Girls
 	{
 		"LogName": "Abigail",
@@ -312,7 +313,7 @@
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 		},
 	},
-	
+
 	//Vanilla Boys
 	{
 		"LogName": "Alex",
@@ -362,7 +363,7 @@
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 		},
 	},
-	
+
 	//Vanilla Villagers
 	{
 		"LogName": "Caroline",
@@ -614,7 +615,7 @@
 			"keahi_prank": "{{i18n:keahiprank.{{TargetWithoutPath}}}}",
 		},
 	},
-	
+
 	{
 		"LogName": "Bryle",
 		"Action": "EditData",

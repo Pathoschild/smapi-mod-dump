@@ -8,9 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +18,9 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace RangedTools
 {
@@ -36,6 +36,7 @@ namespace RangedTools
         public static Vector2 specialClickLocation = Vector2.Zero;
         public static List<SButton> knownToolButtons = new List<SButton>();
         
+        public static bool disableToolLocationOverride = false;
         public static bool eventUpReset = false;
         public static bool eventUpOld = false;
         public static int tileRadiusOverride = 0;
@@ -64,6 +65,13 @@ namespace RangedTools
                 patchPrefix(harmonyInstance, typeof(Farmer), nameof(Farmer.useTool),
                             typeof(ModEntry), nameof(ModEntry.Prefix_useTool));
                 
+                patchPostfix(harmonyInstance, typeof(Farmer), nameof(Farmer.useTool),
+                             typeof(ModEntry), nameof(ModEntry.Postfix_useTool));
+                
+                patchPrefix(harmonyInstance, typeof(Character), nameof(Character.GetToolLocation),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_GetToolLocation),
+                            new Type[] { typeof(Vector2), typeof(bool) });
+                
                 patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.isWithinTileWithLeeway),
                             typeof(ModEntry), nameof(ModEntry.Prefix_isWithinTileWithLeeway));
                 
@@ -78,16 +86,20 @@ namespace RangedTools
                              typeof(ModEntry), nameof(ModEntry.Postfix_draw),
                              new Type[] { typeof(SpriteBatch) });
                 
-                if (helper.ModRegistry.IsLoaded("furyx639.ExpandedStorage")) // Additional methods to fix Expanded Storage conflict
+                patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_playerCanPlaceItemHere));
+                
+                patchPostfix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
+                                typeof(ModEntry), nameof(ModEntry.Postfix_playerCanPlaceItemHere));
+                
+                patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.withinRadiusOfPlayer),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_withinRadiusOfPlayer));
+                
+                if (helper.ModRegistry.IsLoaded("Thor.HoeWaterDirection"))
                 {
-                    patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
-                                typeof(ModEntry), nameof(ModEntry.Prefix_playerCanPlaceItemHere));
-                    
-                    patchPostfix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
-                                 typeof(ModEntry), nameof(ModEntry.Postfix_playerCanPlaceItemHere));
-                    
-                    patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.withinRadiusOfPlayer),
-                                typeof(ModEntry), nameof(ModEntry.Prefix_withinRadiusOfPlayer));
+                    patchPostfix(harmonyInstance, null, "",
+                                 typeof(ModEntry), nameof(ModEntry.Postfix_HandleChangeDirectoryImpl),
+                                 null, "Thor.Stardew.Mods.HoeWaterDirection.ModEntry:HandleChangeDirectoryImpl");
                 }
             }
             catch (Exception e)
@@ -103,11 +115,17 @@ namespace RangedTools
         /// <param name="patchClass">The class the patch method is part of.</param>
         /// <param name="patchName">The name of the patch method.</param>
         /// <param name="sourceParameters">The source method's parameter list, when needed for disambiguation.</param>
-        void patchPrefix(Harmony harmonyInstance, System.Type sourceClass, string sourceName, System.Type patchClass, string patchName, Type[] sourceParameters = null)
+        /// <param name="sourceLiteralName">The source method given as a string, if type cannot be directly accessed.</param>
+        void patchPrefix(Harmony harmonyInstance, System.Type sourceClass, string sourceName, System.Type patchClass, string patchName, Type[] sourceParameters = null, string sourceLiteralName = "")
         {
             try
             {
-                MethodBase sourceMethod = AccessTools.Method(sourceClass, sourceName, sourceParameters);
+                MethodBase sourceMethod;
+                if (sourceLiteralName != "")
+                    sourceMethod = AccessTools.Method(sourceLiteralName, sourceParameters);
+                else
+                    sourceMethod = AccessTools.Method(sourceClass, sourceName, sourceParameters);
+                
                 HarmonyMethod prefixPatch = new HarmonyMethod(patchClass, patchName);
                 
                 if (sourceMethod != null && prefixPatch != null)
@@ -133,11 +151,17 @@ namespace RangedTools
         /// <param name="patchClass">The class the patch method is part of.</param>
         /// <param name="patchName">The name of the patch method.</param>
         /// <param name="sourceParameters">The source method's parameter list, when needed for disambiguation.</param>
-        void patchPostfix(Harmony harmonyInstance, Type sourceClass, string sourceName, Type patchClass, string patchName, Type[] sourceParameters = null)
+        /// <param name="sourceLiteralName">The source method given as a string, if type cannot be directly accessed.</param>
+        void patchPostfix(Harmony harmonyInstance, Type sourceClass, string sourceName, Type patchClass, string patchName, Type[] sourceParameters = null, string sourceLiteralName = "")
         {
             try
             {
-                MethodBase sourceMethod = AccessTools.Method(sourceClass, sourceName, sourceParameters);
+                MethodBase sourceMethod;
+                if (sourceLiteralName != "")
+                    sourceMethod = AccessTools.Method(sourceLiteralName, sourceParameters);
+                else
+                    sourceMethod = AccessTools.Method(sourceClass, sourceName, sourceParameters);
+                
                 HarmonyMethod postfixPatch = new HarmonyMethod(patchClass, patchName);
                 
                 if (sourceMethod != null && postfixPatch != null)
@@ -362,7 +386,7 @@ namespace RangedTools
                 if (e.Button.IsUseToolButton() && (withClick || !Config.CustomRangeOnClickOnly))
                 {
                     Farmer player = Game1.player;
-                    if (player.CurrentTool != null && !player.UsingTool) // Have a tool selected, not in the middle of using it
+                    if (player != null && player.CurrentTool != null && !player.UsingTool) // Have a tool selected, not in the middle of using it
                     {
                         Vector2 mousePosition = e.Cursor.AbsolutePixels;
                         
@@ -370,14 +394,15 @@ namespace RangedTools
                         if (withClick && shouldToolTurnToFace(player.CurrentTool))
                             player.faceGeneralDirection(mousePosition);
                         
+                        // Begin tool location override, setting it to current mouse position if in range.
+                        specialClickActive = true;
                         if (positionValidForExtendedRange(player, mousePosition))
-                        {
-                            // Set this as an override location for when tool is used.
-                            specialClickActive = true;
                             specialClickLocation = mousePosition;
-                            if (!knownToolButtons.Contains(e.Button)) // Keep a list of Tool Buttons (accounting for click-only option)
-                                knownToolButtons.Add(e.Button);
-                        }
+                        else
+                            specialClickLocation = Vector2.Zero;
+                        
+                        if (!knownToolButtons.Contains(e.Button)) // Keep a list of Tool Buttons (accounting for click-only option)
+                            knownToolButtons.Add(e.Button);
                     }
                 }
             }
@@ -394,8 +419,12 @@ namespace RangedTools
         {
             try
             {
-                if (holdingToolButton()) // Update override location as long as a Tool Button is held (range validity checked later)
-                    specialClickLocation = e.NewPosition.AbsolutePixels;
+                // Update override location as long as a Tool Button is held.
+                if (Game1.player != null && specialClickActive && holdingToolButton())
+                {
+                    if (positionValidForExtendedRange(Game1.player, e.NewPosition.AbsolutePixels)) // Update if in a valid range
+                        specialClickLocation = e.NewPosition.AbsolutePixels;
+                }
             }
             catch (Exception ex)
             {
@@ -408,6 +437,9 @@ namespace RangedTools
         /// <param name="mousePosition">The position of the mouse.</param>
         public static bool positionValidForExtendedRange(Farmer who, Vector2 mousePosition)
         {
+            if (mousePosition.Equals(Vector2.Zero)) // Not set, not valid
+                return false;
+            
             Tool currentTool = who.CurrentTool;
             
             if (isToolOverridable(currentTool)) // Only override ToolLocation for applicable tools
@@ -486,7 +518,7 @@ namespace RangedTools
                  : 1;
         }
        
-        /// <summary>Returns "usable on player tile" setting for overridable tools (1 for any others).</summary>
+        /// <summary>Returns "usable on player tile" setting for overridable tools (true for any others).</summary>
         /// <param name="tool">The Tool being checked.</param>
         public static bool getPlayerTileSetting(Tool tool)
         {
@@ -500,43 +532,18 @@ namespace RangedTools
          ** Method Patches **
          ********************/
         
-        /// <summary>Prefix to Farmer.useTool that overrides GetToolLocation with click location.</summary>
+        /// <summary>Prefix to Farmer.useTool that updates specialClickActive just before use.</summary>
         /// <param name="who">The Farmer using the tool.</param>
         public static bool Prefix_useTool(Farmer who)
         {
             try
             {
-                if (!positionValidForExtendedRange(who, specialClickLocation)) // Disable override if target position is out of range
+                if (!positionValidForExtendedRange(who, specialClickLocation) // Disable override if target position is out of range
+                 || (who.toolPower > 0 && !Config.AllowRangedChargeEffects)) // Disable override for charged tool use unless enabled
                     specialClickActive = false;
                 else if (holdingToolButton()) // Itherwise, force use of override as long as a Tool Button is being held
                     specialClickActive = true;
-                // Note that simply clicking and letting go should leave specialClickActive as true for the next use.
                 
-                if (specialClickActive)
-                {
-                    if (who.toolOverrideFunction == null) // Equivalent to "else" branch of original function, only relevant part
-                    {
-                        if (who.CurrentTool == null) // Check from original function
-                            return true; // Go to original function (where it should just terminate due to tool being null, but still)
-                        if (who.toolPower > 0 && !Config.AllowRangedChargeEffects) // Don't override charged tool use unless enabled
-                            return true; // Go to original function
-                        
-                        float stamina = who.stamina; // From original function
-                        if (who.IsLocalPlayer) // From original function
-                        {
-                            // Call DoFunction like original function, but on the override location
-                            who.CurrentTool.DoFunction(who.currentLocation, (int)specialClickLocation.X, (int)specialClickLocation.Y, 1, who);
-                            if (!holdingToolButton()) // Performed action, and button has been let go, so don't use override anymore
-                                specialClickActive = false;
-                        }
-                        
-                        // Usual post-DoFunction tasks from original function
-                        who.lastClick = Vector2.Zero;
-                        who.checkForExhaustion(stamina);
-                        Game1.toolHold = 0.0f;
-                        return false; // Don't do original function anymore
-                    }
-                }
                 return true; // Go to original function
             }
             catch (Exception e)
@@ -544,6 +551,32 @@ namespace RangedTools
                 Log("Error in useTool: " + e.Message + Environment.NewLine + e.StackTrace);
                 return true; // Go to original function
             }
+        }
+        
+        /// <summary>Postfix to Farmer.useTool that disables override after use if button has been let go.</summary>
+        public static void Postfix_useTool()
+        {
+            if (!holdingToolButton())
+                specialClickActive = false;
+        }
+        
+        /// <summary>Prefix to Character.GetToolLocation function that overrides it with click location.</summary>
+        /// <param name="__result">The result of the function.</param>
+        public static bool Prefix_GetToolLocation(ref Vector2 __result)
+        {
+            // If tool has been charged and ranged charge option is not enabled, disable override.
+            if (Game1.player != null && Game1.player.toolPower > 0 && !Config.AllowRangedChargeEffects)
+            {
+                specialClickActive = false;
+                return true; // Go to original function
+            }
+            
+            if (specialClickActive && !specialClickLocation.Equals(Vector2.Zero) && !disableToolLocationOverride)
+            {
+                __result = specialClickLocation;
+                return false; // Don't do original function anymore
+            }
+            return true; // Go to original function
         }
         
         /// <summary>Rewrite of Utility.isWithinTileWithLeeway that returns true if within object/seed custom range.</summary>
@@ -602,8 +635,10 @@ namespace RangedTools
                 if (Game1.player == null) // Go to original function
                     return true;
                 
-                if (specialClickActive && holdingToolButton(true) && shouldToolTurnToFace(Game1.player.CurrentTool, true))
+                if (specialClickActive && !specialClickLocation.Equals(Vector2.Zero)
+                 && holdingToolButton(true) && shouldToolTurnToFace(Game1.player.CurrentTool, true))
                     Game1.player.faceGeneralDirection(specialClickLocation);
+                
                 return true; // Go to original function
             }
             catch (Exception e)
@@ -620,8 +655,7 @@ namespace RangedTools
         {
             try
             {
-                // Not necessary on Old Logic setting
-                if (Config.ToolHitLocationDisplay == 0)
+                if (__instance.toolPower > 0) // If charging tool, just use original function
                     return true; // Go to original function
                 
                 // Abort cases from original function
@@ -637,7 +671,7 @@ namespace RangedTools
                   && __instance.IsLocalPlayer))
                     return true; // Go to original function
                 
-                // Conditions for drawing tool hit indicator from original function
+                // Conditions for drawing tool hit indicator
                 if (Game1.activeClickableMenu == null
                  && !Game1.eventUp
                  && (__instance.IsLocalPlayer && __instance.CurrentTool != null)
@@ -646,25 +680,39 @@ namespace RangedTools
                  && (!Game1.options.hideToolHitLocationWhenInMotion || !__instance.isMoving()))
                 {
                     Vector2 mousePosition = Utility.PointToVector2(Game1.getMousePosition()) 
-                                          + new Vector2((float)Game1.viewport.X, (float)Game1.viewport.Y);
+                                            + new Vector2((float)Game1.viewport.X, (float)Game1.viewport.Y);
+                    
+                    disableToolLocationOverride = true; // Use old logic for GetToolLocation
                     Vector2 limitedLocal = Game1.GlobalToLocal(Game1.viewport, Utility.clampToTile(__instance.GetToolLocation(mousePosition)));
+                    disableToolLocationOverride = false;
                     Vector2 extendedLocal = Game1.GlobalToLocal(Game1.viewport, Utility.clampToTile(mousePosition));
-                    if (!limitedLocal.Equals(extendedLocal)) // Just fall back on original if clamped position is the same
+                    
+                    bool drawnExtended = false;
+                    if (Config.ToolHitLocationDisplay == 1 || Config.ToolHitLocationDisplay == 2) // New Logic or Combined
                     {
                         if (positionValidForExtendedRange(__instance, mousePosition))
                         {
+                            drawnExtended = true;
                             b.Draw(Game1.mouseCursors, extendedLocal,
-                                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
-                                   Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, extendedLocal.Y / 10000f);
-                            
-                            if (Config.ToolHitLocationDisplay == 1) // 2 shows both, but 1 should hide the default indicator
-                            {
-                                eventUpOld = Game1.eventUp;
-                                Game1.eventUp = true; // Temporarily set this to disable drawing of original indicator
-                                eventUpReset = true; // Make sure it's set back to original value in the postfix
-                            }
+                                    new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
+                                    Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, extendedLocal.Y / 10000f);
                         }
                     }
+                    
+                    if (!drawnExtended || !extendedLocal.Equals(limitedLocal)) // Don't draw in same position twice
+                    {
+                        if (!drawnExtended // Always draw original if extended position wasn't valid
+                            || Config.ToolHitLocationDisplay == 0 || Config.ToolHitLocationDisplay == 2) // Old Logic or Combined
+                        {
+                            b.Draw(Game1.mouseCursors, limitedLocal,
+                                    new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
+                                    Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, limitedLocal.Y / 10000f);
+                        }
+                    }
+                    
+                    eventUpOld = Game1.eventUp;
+                    Game1.eventUp = true; // Temporarily set this to disable original drawing of indicator
+                    eventUpReset = true; // Make sure it's set back to original value in the postfix
                 }
                 return true; // Go to original function
             }
@@ -685,8 +733,8 @@ namespace RangedTools
             }
         }
         
-        /// <summary>Prefix to Utility.playerCanPlaceItemHere used if Extended Storage is installed.
-        /// Extended Storage has a postfix to this method that uses withinRadiusOfPlayer, so this sets an override for it.</summary>
+        /// <summary>Prefix to Utility.playerCanPlaceItemHere to aid in mod compatibility.
+        /// Some methods add postfixes to use withinRadiusOfPlayer, so this sets an override for it.</summary>
         /// <param name="location">The location being tested.</param>
         /// <param name="item">The object being tested.</param>
         /// <param name="x">The X position.</param>
@@ -740,6 +788,20 @@ namespace RangedTools
             {
                 Log("Error in withinRadiusOfPlayer: " + e.Message + Environment.NewLine + e.StackTrace);
                 return true; // Go to original function
+            }
+        }
+        
+        /// <summary>Postfix to function in Hoe and Water Direction mod that shifts affected tiles to match target location.</summary>
+        /// <param name="__result">The result of the function.</param>
+        /// <param name="tileLocation">The targeted location.</param>
+        public static void Postfix_HandleChangeDirectoryImpl(ref List<Vector2> __result, ref Vector2 tileLocation)
+        {
+            if (specialClickActive)
+            {
+                // __result[0] is tileLocations[0], which is always the "start point"; shift all tiles to match target tile instead
+                Vector2 offset = tileLocation - __result[0];
+                for (int index = 0; index < __result.Count; index++)
+                    __result[index] += offset;
             }
         }
         

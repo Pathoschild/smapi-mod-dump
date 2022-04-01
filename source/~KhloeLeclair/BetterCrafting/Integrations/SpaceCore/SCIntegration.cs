@@ -26,6 +26,8 @@ namespace Leclair.Stardew.BetterCrafting.Integrations.SpaceCore {
 			if (!IsLoaded)
 				return;
 
+			
+
 			API.AddExperienceForCustomSkill(farmer, skill, amt);
 		}
 

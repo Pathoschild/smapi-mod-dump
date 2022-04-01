@@ -132,7 +132,7 @@ static class SerializeConfig {
 							object? fieldValue = field.GetValue(null);
 							switch (fieldValue) {
 								case string v:
-									field.SetValue(null, (string?)((StringValueSyntax?)value.Value)?.Value?.Trim());
+									field.SetValue(null, (string?)((StringValueSyntax?)value.Value)?.Value?.Trim()?.Intern());
 									break;
 								case sbyte v:
 									field.SetValue(null, (sbyte?)((IntegerValueSyntax?)value.Value)?.Value);
@@ -188,15 +188,37 @@ static class SerializeConfig {
 													var ovalue = obj.Value;
 													if (ovalue is StringValueSyntax svalue) {
 														if (svalue.Value is not null) {
-															list.Add(svalue.Value);
+															list.Add(svalue.Value.Intern());
 														}
 													}
 													else if (ovalue is IntegerValueSyntax ivalue) {
-														list.Add(ivalue.Value.ToString());
+														list.Add(ivalue.Value.ToString().Intern());
 													}
 												}
 												field.SetValue(null, list);
 											} break;
+										case string[] _: {
+												var arrayValue = ((ArraySyntax?)value.Value)?.Items;
+												if (arrayValue is null) {
+													break;
+												}
+												var list = new string[arrayValue.ChildrenCount];
+												int i = 0;
+												foreach (var obj in arrayValue) {
+													var ovalue = obj.Value;
+													if (ovalue is StringValueSyntax svalue) {
+														if (svalue.Value is not null) {
+															list[i++] = svalue.Value.Intern();
+														}
+													}
+													else if (ovalue is IntegerValueSyntax ivalue) {
+														list[i++] = ivalue.Value.ToString().Intern();
+													}
+												}
+												Array.Resize(ref list, i);
+												field.SetValue(null, list);
+											}
+											break;
 										case List<int> _: {
 												var arrayValue = ((ArraySyntax?)value.Value)?.Items;
 												if (arrayValue is null) {
@@ -216,6 +238,27 @@ static class SerializeConfig {
 												}
 												field.SetValue(null, list);
 											} break;
+										case int[] _: {
+												var arrayValue = ((ArraySyntax?)value.Value)?.Items;
+												if (arrayValue is null) {
+													break;
+												}
+												var list = new int[arrayValue.ChildrenCount];
+												int i = 0;
+												foreach (var obj in arrayValue) {
+													var ovalue = obj.Value;
+													if (ovalue is StringValueSyntax svalue) {
+														if (svalue.Value is not null) {
+															list[i++] = Int32.Parse(svalue.Value);
+														}
+													}
+													else if (ovalue is IntegerValueSyntax ivalue) {
+														list[i++] = (int)ivalue.Value;
+													}
+												}
+												field.SetValue(null, list);
+											}
+											break;
 										case Enum enumValue: {
 												var enumNames = fieldValue.GetType().GetEnumNames();
 												var values = fieldValue.GetType().GetEnumValues();
@@ -260,14 +303,22 @@ static class SerializeConfig {
 		return true;
 	}
 
-	private static void SaveClass(Type type, DocumentSyntax document, KeySyntax? key = null) {
+	private static void SaveClass(int depth, Type type, DocumentSyntax document, KeySyntax? key = null) {
 		key ??= new(type.Name);
+		string indent = new string('\t', depth);
 
 		var fields = type.GetFields(StaticFlags);
 		var children = type.GetNestedTypes(StaticFlags);
 
 		var table = new TableSyntax(key);
 		var tableItems = table.Items;
+
+		var typeCommentAttributes = type.GetCustomAttributes<Config.CommentAttribute>();
+		if (typeCommentAttributes is not null) {
+			foreach (var attribute in typeCommentAttributes) {
+				table.AddLeadingTrivia(TokenKind.Comment, $"{indent}# {attribute.Message}");
+			}
+		}
 
 		foreach (var field in fields) {
 			if (field.IsPrivate || field.IsInitOnly || !field.IsStatic || field.IsLiteral || IsFieldIgnored(field)) {
@@ -320,8 +371,14 @@ static class SerializeConfig {
 						case List<string> stringList:
 							value = new ArraySyntax(stringList.ToArray());
 							break;
+						case string[] stringList:
+							value = new ArraySyntax(stringList);
+							break;
 						case List<int> intList:
 							value = new ArraySyntax(intList.ToArray());
+							break;
+						case int[] intList:
+							value = new ArraySyntax(intList);
 							break;
 						case Enum enumValue:
 							var enumName = enumValue.GetType().GetEnumName(fieldValue);
@@ -333,10 +390,13 @@ static class SerializeConfig {
 
 					if (value is ArraySyntax valueSyntax) {
 						foreach (var item in valueSyntax.Items) {
-							item.AddLeadingTrivia(TokenKind.NewLine, "\n\t");
+							item.AddLeadingTrivia(TokenKind.NewLine, $"\n\t{indent}");
 						}
 						if (valueSyntax.Items.ChildrenCount != 0) {
 							valueSyntax.CloseBracket?.AddLeadingTrivia(TokenKind.NewLine, "\n");
+							if (indent.Length != 0) {
+								valueSyntax.CloseBracket?.AddLeadingTrivia(TokenKind.Whitespaces, indent);
+							}
 						}
 					}
 					break;
@@ -352,10 +412,14 @@ static class SerializeConfig {
 			);
 
 			var commentAttributes = field.GetCustomAttributes<Config.CommentAttribute>();
-			if (commentAttributes?.IsEmpty() ?? false) {
+			if (commentAttributes is not null) {
 				foreach (var attribute in commentAttributes) {
-					keyValue.AddLeadingTrivia(TokenKind.Comment, $"# {attribute.Message}\n");
+					keyValue.AddLeadingTrivia(TokenKind.Comment, $"{indent}# {attribute.Message}\n");
 				}
+			}
+
+			if (indent.Length != 0) {
+				keyValue.AddLeadingTrivia(TokenKind.Whitespaces, indent);
 			}
 
 			tableItems.Add(keyValue);
@@ -368,11 +432,16 @@ static class SerializeConfig {
 			document.Tables.Add(table);
 		}
 
+		if (indent.Length != 0) {
+			table.AddLeadingTrivia(TokenKind.Whitespaces, indent);
+		}
+
 		foreach (var child in children) {
 			if (child.IsNestedPrivate || IsClassIgnored(child)) {
 				continue;
 			}
 			var childKey = new KeySyntax(typeof(Config).Name);
+
 			string?[] parentKey = key.ToString().Split('.');
 			if (parentKey.Length != 0) {
 				parentKey[0] = null;
@@ -384,7 +453,7 @@ static class SerializeConfig {
 				childKey.DotKeys.Add(new(subKey));
 			}
 			childKey.DotKeys.Add(new(child.Name));
-			SaveClass(child, document, childKey);
+			SaveClass(depth + 1, child, document, childKey);
 		}
 	}
 
@@ -426,7 +495,7 @@ static class SerializeConfig {
 		try {
 			var Document = new DocumentSyntax();
 
-			SaveClass(typeof(Config), Document);
+			SaveClass(0, typeof(Config), Document);
 
 			using var writer = new StreamWriter(stream);
 			Document.WriteTo(writer);
@@ -446,7 +515,7 @@ static class SerializeConfig {
 		try {
 			var Document = new DocumentSyntax();
 
-			SaveClass(typeof(Config), Document);
+			SaveClass(0, typeof(Config), Document);
 
 			using var writer = File.CreateText(ConfigPath);
 			Document.WriteTo(writer);

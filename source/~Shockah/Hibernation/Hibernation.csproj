@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>Shockah.Hibernation</RootNamespace>
+		<Version>1.0.0</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>Nullable</WarningsAsErrors>
+		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+	<Import Project="..\_CommonWithHarmony\_CommonWithHarmony.projitems" Label="Shared" />
+	<Import Project="..\_Common\_Common.projitems" Label="Shared" />
+</Project>

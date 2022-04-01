@@ -1,0 +1,78 @@
+﻿{
+	// task names and keywords (for parsing)
+	"task.basic": "Basic",
+	"task.blacksmith": "Upgrade Tool",
+	"task.blacksmith.keywords": "upgrade",
+	"task.build": "Build",
+	"task.build.keywords": "build,construct,raise,buy,purchase,get",
+	"task.buy": "Buy",
+	"task.buy.keywords": "buy,purchase,get",
+	"task.collect": "Collect",
+	"task.collect.keywords": "collect,chop,harvest,gather,forage,fish,catch,mine,find,retrieve,get",
+	"task.craft": "Craft",
+	"task.craft.keywords": "craft,cook,create,make,get",
+	"task.gift": "Gift",
+	"task.gift.keywords": "gift,give",
+	"task.sell": "Sell",
+	"task.sell.keywords": "sell,ship",
+	
+	// journal button (when the player has no active quests)
+	"ui.taskbutton.hover": "Journal ({{key}})",
+
+	// tab/page names
+	"ui.tab.quests": "Quests",
+	"ui.tab.tasks": "Tasks",
+	"ui.tab.notes": "Notes",
+	
+	// tasks page
+	"ui.tasks.help": "Press the Add Task button",
+	"ui.tasks.addbutton.hover": "Add Task",
+	"ui.tasks.editbox.hover": "Edit Task",
+	"ui.tasks.removebutton.hover": "Remove Task",
+	"ui.tasks.renewbutton.hover": "Renew Task",
+	"ui.tasks.renew.day": "{{count}} Day",
+	"ui.tasks.renew.days": "{{count}} Days",
+	"ui.tasks.moneybox.hover0": "Total Amount to Pay/Gain",
+	"ui.tasks.moneybox.hover1": "Net Wealth",
+	"ui.tasks.moneybutton.hover": "Change View",
+
+	// add new task menu
+	"ui.tasks.new": "Add New Task",
+	"ui.tasks.new.optionsbutton.hover": "Options",
+	"ui.tasks.new.cancelbutton.hover": "Cancel",
+	"ui.tasks.new.smartokbutton.hover": "Smart Add",
+	"ui.tasks.new.smarttip": "Smart Add automatically applies advanced options to a task.",
+
+	// task options menu
+	"ui.tasks.options": "Task Options",
+	"ui.tasks.options.name": "Name",
+	"ui.tasks.options.renew": "Renew Period",
+	"ui.tasks.options.renew.Never": "Never",
+	"ui.tasks.options.renew.Daily": "Daily",
+	"ui.tasks.options.renew.Weekly": "Weekly",
+	"ui.tasks.options.renew.Monthly": "Monthly",
+	"ui.tasks.options.renew.Annually": "Annually",
+	"ui.tasks.options.type": "Task Type",
+
+	// task parameter names
+	"ui.tasks.parameter.building": "Building",
+	"ui.tasks.parameter.count": "Count",
+	"ui.tasks.parameter.item": "Item",
+	"ui.tasks.parameter.npc": "NPC",
+	"ui.tasks.parameter.tool": "Tool",
+
+	// seasons
+	"seasons.spring": "Spring",
+	"seasons.summer": "Summer",
+	"seasons.fall": "Fall",
+	"seasons.winter": "Winter",
+
+	// weekdays
+	"weekdays.monday": "Monday",
+	"weekdays.tuesday": "Tuesday",
+	"weekdays.wednesday": "Wednesday",
+	"weekdays.thursday": "Thursday",
+	"weekdays.friday": "Friday",
+	"weekdays.saturday": "Saturday",
+	"weekdays.sunday": "Sunday"
+}

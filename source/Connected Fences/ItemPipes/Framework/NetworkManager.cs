@@ -36,7 +36,10 @@ namespace ItemPipes.Framework
             List<Network> networkList = DataAccess.LocationNetworks[location];
             foreach (Network network in networkList)
             {
-                network.Update();
+                if(network != null)
+                {
+                    network.Update();
+                }
             }
         }
 
@@ -65,6 +68,7 @@ namespace ItemPipes.Framework
             Node newNode = NodeFactory.CreateElement(obj.Key, Game1.currentLocation, obj.Value);
             int x = (int)newNode.Position.X;
             int y = (int)newNode.Position.Y;
+
             nodes.Add(newNode);
             Vector2 north = new Vector2(x, y - 1);
             Node northNode = nodes.Find(n => n.Position.Equals(north));
@@ -91,7 +95,8 @@ namespace ItemPipes.Framework
                 newNode.AddAdjacent(SideStruct.GetSides().West, westNode);
             }
             if (Globals.UltraDebug) { newNode.Print(); }
-            if (DataAccess.NetworkItems.Contains(Game1.currentLocation.getObjectAtTile(x, y).Name))
+
+            if (DataAccess.NetworkItems.Contains(obj.Value.Name))
             {
                 if (Globals.UltraDebug) { Printer.Info("Assigning network to new node"); }
                 List<Network> uncheckedAdjNetworks = newNode.Scan();
@@ -117,13 +122,20 @@ namespace ItemPipes.Framework
                     AddNewElement(newNode, orderedAdjNetworks[0]);
                     MergeNetworks(orderedAdjNetworks);
                 }
+                Printer.Info($"Assigned network: [N{newNode.ParentNetwork.ID}]");
+                
             }
             Node node = nodes.Find(n => n.Position.Equals(obj.Key));
+            List<Network> networks = DataAccess.LocationNetworks[node.Location];
+            if (!networks.Contains(node.ParentNetwork))
+            {
+                networks.Add(node.ParentNetwork);
+            }
             foreach(KeyValuePair<Side, Node> pair in node.Adjacents)
             {
                 if(pair.Value is PPMNode)
                 {
-                    Printer.Info("Adding newnode network to invis");
+                    Printer.Info($"Adding newnode network [N{node.ParentNetwork.ID}] to invis");
                     PPMNode invisibilizerNode = (PPMNode)pair.Value;
                     invisibilizerNode.AdjNetworks.Add(node.ParentNetwork);
                     newNode.ParentNetwork.AddNode(invisibilizerNode);
@@ -166,6 +178,8 @@ namespace ItemPipes.Framework
             
             if (DataAccess.NetworkItems.Contains(obj.Value.Name))
             {
+                Printer.Info((node==null).ToString());
+                Printer.Info(node.Print());
                 if (node.ParentNetwork != null)
                 {
                     List<Network> adjNetworks = node.Scan();

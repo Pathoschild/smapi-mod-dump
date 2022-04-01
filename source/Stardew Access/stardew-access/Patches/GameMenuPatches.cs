@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -39,7 +38,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 if (!___specificBundlePage)
                 {
                     currentIngredientListItem = -1;
@@ -114,15 +113,21 @@ namespace stardew_access.Patches
 
                     if (isIPressed && !isUsingCustomButtons)
                     {
+                        isUsingCustomButtons = true;
                         JunimoNoteCustomButtons(__instance, ___currentPageBundle, 0, isLeftShiftPressed);
+                        Task.Delay(200).ContinueWith(_ => { isUsingCustomButtons = false; });
                     }
                     else if (isVPressed && !isUsingCustomButtons)
                     {
+                        isUsingCustomButtons = true;
                         JunimoNoteCustomButtons(__instance, ___currentPageBundle, 1, isLeftShiftPressed);
+                        Task.Delay(200).ContinueWith(_ => { isUsingCustomButtons = false; });
                     }
                     else if (isCPressed && !isUsingCustomButtons)
                     {
+                        isUsingCustomButtons = true;
                         JunimoNoteCustomButtons(__instance, ___currentPageBundle, 2, isLeftShiftPressed);
+                        Task.Delay(200).ContinueWith(_ => { isUsingCustomButtons = false; });
                     }
                     else if (isBackPressed && __instance.backButton != null && !__instance.backButton.containsPoint(x, y))
                     {
@@ -139,13 +144,12 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private static async void JunimoNoteCustomButtons(JunimoNoteMenu __instance, Bundle ___currentPageBundle, int signal, bool isLeftShiftPressed = false)
+        private static void JunimoNoteCustomButtons(JunimoNoteMenu __instance, Bundle ___currentPageBundle, int signal, bool isLeftShiftPressed = false)
         {
-            isUsingCustomButtons = true;
             try
             {
 
@@ -244,19 +248,19 @@ namespace stardew_access.Patches
                         break;
                     case 2: // For inventory slots
                         {
-                            if (__instance.inventory != null && __instance.inventory.inventory.Count >= 0)
+                            if (__instance.inventory != null && __instance.inventory.actualInventory.Count >= 0)
                             {
                                 int prevSlotIndex = currentInventorySlot;
                                 currentInventorySlot = currentInventorySlot + (isLeftShiftPressed ? -1 : 1);
-                                if (currentInventorySlot >= __instance.inventory.inventory.Count)
+                                if (currentInventorySlot >= __instance.inventory.actualInventory.Count)
                                     if (isLeftShiftPressed)
-                                        currentInventorySlot = __instance.inventory.inventory.Count - 1;
+                                        currentInventorySlot = __instance.inventory.actualInventory.Count - 1;
                                     else
                                         currentInventorySlot = 0;
 
                                 if (currentInventorySlot < 0)
                                     if (isLeftShiftPressed)
-                                        currentInventorySlot = __instance.inventory.inventory.Count - 1;
+                                        currentInventorySlot = __instance.inventory.actualInventory.Count - 1;
                                     else
                                         currentInventorySlot = 0;
 
@@ -299,18 +303,15 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
-
-            await Task.Delay(200);
-            isUsingCustomButtons = false;
         }
 
         internal static void SocialPagePatch(SocialPage __instance, List<ClickableTextureComponent> ___sprites, int ___slotPosition, List<string> ___kidsNames)
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 for (int i = ___slotPosition; i < ___slotPosition + 5; i++)
                 {
                     if (i < ___sprites.Count)
@@ -318,7 +319,7 @@ namespace stardew_access.Patches
                         if (__instance.names[i] is string)
                         {
                             #region  For NPCs
-                            if (__instance.characterSlots[i].bounds.Contains(Game1.getMouseX(), Game1.getMouseY()))
+                            if (__instance.characterSlots[i].bounds.Contains(Game1.getMouseX(true), Game1.getMouseY(true)))
                             {
                                 string name = $"{__instance.names[i] as string}";
                                 int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(name);
@@ -450,7 +451,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -458,7 +459,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
@@ -558,7 +559,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -570,7 +571,7 @@ namespace stardew_access.Patches
                 if (__instance.currentTab != 0 && __instance.currentTab != 4 && __instance.currentTab != 6 && __instance.currentTab != 7)
                     return;
 
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 for (int i = 0; i < __instance.tabs.Count; i++)
                 {
@@ -588,7 +589,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -596,7 +597,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 #region Narrate the treasure recieved on breaking the geode
                 if (__instance.geodeTreasure != null)
@@ -672,7 +673,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -680,7 +681,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
@@ -863,7 +864,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -944,7 +945,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                 bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I);
                 bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
                 bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
@@ -965,7 +966,9 @@ namespace stardew_access.Patches
                 }
                 else if (isCPressed && !isSelectingRecipe)
                 {
-                    _ = CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+                    isSelectingRecipe = true;
+                    CycleThroughRecipies(__instance.pagesOfCraftingRecipes, ___currentCraftingPage, __instance);
+                    Task.Delay(200).ContinueWith(_ => { isSelectingRecipe = false; });
                 }
 
                 #region Narrate buttons in the menu
@@ -1109,23 +1112,18 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private static async Task CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
+        private static void CycleThroughRecipies(List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes, int ___currentCraftingPage, CraftingPage __instance)
         {
-            isSelectingRecipe = true;
-
             currentSelectedCraftingRecipe++;
             if (currentSelectedCraftingRecipe < 0 || currentSelectedCraftingRecipe >= pagesOfCraftingRecipes[0].Count)
                 currentSelectedCraftingRecipe = 0;
 
             __instance.setCurrentlySnappedComponentTo(pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.myID);
             pagesOfCraftingRecipes[___currentCraftingPage].ElementAt(currentSelectedCraftingRecipe).Key.snapMouseCursorToCenter();
-
-            await Task.Delay(200);
-            isSelectingRecipe = false;
         }
 
         // This method is used to get the inventory items to check if the player has enough ingredients for a recipe
@@ -1148,7 +1146,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                int x = Game1.getMouseX(), y = Game1.getMouseY(); // Mouse x and y position
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
                 #region Narrate buttons in the menu
                 if (__instance.inventory.dropItemInvisibleButton != null && __instance.inventory.dropItemInvisibleButton.containsPoint(x, y))
@@ -1327,7 +1325,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -1336,7 +1334,7 @@ namespace stardew_access.Patches
             try
             {
                 int currentItemIndex = Math.Max(0, Math.Min(__instance.options.Count - 7, __instance.currentItemIndex));
-                int x = Game1.getMouseX(), y = Game1.getMouseY();
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
                 for (int i = 0; i < __instance.optionSlots.Count; i++)
                 {
                     if (__instance.optionSlots[i].bounds.Contains(x, y) && currentItemIndex + i < __instance.options.Count && __instance.options[currentItemIndex + i].bounds.Contains(x - __instance.optionSlots[i].bounds.X, y - __instance.optionSlots[i].bounds.Y))
@@ -1380,7 +1378,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -1389,7 +1387,7 @@ namespace stardew_access.Patches
             try
             {
                 if (__instance.exitToTitle.visible &&
-                        __instance.exitToTitle.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                        __instance.exitToTitle.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string toSpeak = "Exit to Title Button";
                     if (exitPageQueryKey != toSpeak)
@@ -1401,7 +1399,7 @@ namespace stardew_access.Patches
                     return;
                 }
                 if (__instance.exitToDesktop.visible &&
-                    __instance.exitToDesktop.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                    __instance.exitToDesktop.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string toSpeak = "Exit to Desktop Button";
                     if (exitPageQueryKey != toSpeak)
@@ -1415,7 +1413,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
 

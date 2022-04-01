@@ -46,7 +46,6 @@ namespace ExtraMapLayers
             PMonitor = Monitor;
             PHelper = helper;
 
-
             harmony = new Harmony(ModManifest.UniqueID);
 
             harmony.Patch(

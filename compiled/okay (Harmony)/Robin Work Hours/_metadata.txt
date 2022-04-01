@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11244
+IDs: aedenthorn.RobinWorkHours
+update keys: Nexus:11244, GitHub:aedenthorn/StardewValleyMods

@@ -115,7 +115,6 @@ namespace stardew_access.Patches
                             else
                                 toSpeak = response;
 
-                            MainClass.GetMonitor().Log(toSpeak, LogLevel.Debug);
                             MainClass.GetScreenReader().Say(toSpeak, true);
                         }
                     }
@@ -140,7 +139,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
             }
 
         }
@@ -325,7 +324,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}", LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate dialog:\n{e.StackTrace}\n{e.Message}");
             }
         }
     }

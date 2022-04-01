@@ -212,9 +212,20 @@ namespace ImagEd.Framework {
 
         /// <summary>Extracts a sub image using the given mask and brightness.</summary>
         private Texture2D ExtractSubImage(Texture2D source, Texture2D mask, Desaturation.Mode desaturationMode, float brightness) {
-            if (mask != null && (mask.Width != source.Width || mask.Height != source.Height)) {
-                throw new ArgumentException("Sizes of image and mask don't match");
+            // Size checks.
+            if (mask != null) {
+                if (source.Width != mask.Width) {
+                    throw new ArgumentException($"Widths of image and mask don't match: {source.Width} != {mask.Width}");
+                }
+
+                if (source.Height < mask.Height) {
+                    monitor_.Log($"Height of the image is less than height of the mask: {source.Height} < {mask.Height}", LogLevel.Info);
+                }
+                else if (source.Height > mask.Height) {
+                    monitor_.Log($"Height of the image is greater than height of the mask. Parts of the image not covered by mask won't be recolored: {source.Height} > {mask.Height}", LogLevel.Warn);
+                }
             }
+
             if (brightness < 0.0f) {
                 throw new ArgumentException("Brightness must not be negative");
             }
@@ -223,16 +234,29 @@ namespace ImagEd.Framework {
             Color[] maskPixels = mask != null ? Utility.TextureToArray(mask) : null;
             Color[] extractedPixels = new Color[source.Width * source.Height];
 
+            // If mask is null recolor the whole image.
+            var getMaskValue = maskPixels == null ? (Func<Color[], int, byte>) ((p, i) => (byte) 0xFF)
+                                                  : GetMaskValue;
+
             for (int i = 0; i < sourcePixels.Length; i++) {
                 Color pixel = Desaturation.Desaturate(sourcePixels[i], desaturationMode);
-                // Treat mask as grayscale (luma).
-                byte maskValue = maskPixels != null ? Desaturation.Desaturate(maskPixels[i], Desaturation.Mode.DesaturateLuma).R : (byte) 0xFF;
+                byte maskValue = getMaskValue(maskPixels, i);
                 // Multiplication is all we need: If maskValue is zero the resulting pixel is zero (TransparentBlack).
                 // Clamping is done automatically on assignment.
                 extractedPixels[i] = pixel * (maskValue / 255.0f) * brightness;
             }
 
             return Utility.ArrayToTexture(extractedPixels, source.Width, source.Height);
+        }
+
+        /// <summary>
+        /// Returns the mask value at the given index.
+        /// This is either the grayscale value (luma) or zero if index is too big.
+        /// </summary>
+        private static byte GetMaskValue(Color[] maskPixels, int index) {
+            // Treat mask as grayscale (luma).
+            // Mask might be smaller than image. Return zero, we don't want to recolor the unmasked part of the image.
+            return Desaturation.Desaturate(maskPixels.ElementAtOrDefault(index), Desaturation.Mode.DesaturateLuma).R;
         }
 
         /// <summary>Flipping is special: We can't just flip the overlay, we need the whole image!</summary>

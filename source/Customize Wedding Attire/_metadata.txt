@@ -6,9 +6,9 @@ mods:
    Customize Wedding Attire
 
 latest commit:
-   commit 719227da448bbdc3fcc0dad8e8204617aab84d7b
+   commit f5c8a95d7fcf598021c8192fedee240dcd3609da
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Thu Jan 27 20:52:46 2022 -0500
+   Date:   Mon Mar 7 19:26:03 2022 -0500
    
-       Updating readme to mention GMCM options
+       Updating release notes for v1.0.2
    

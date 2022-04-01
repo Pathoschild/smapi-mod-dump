@@ -15,9 +15,9 @@ mods:
    Too Many Animals
 
 latest commit:
-   commit 3a01018e125db29f6aefe5c60e03d6c4353ebd3b
+   commit 96310f118c8a8d779fdf19901021ad7914a840a6
    Author: Matthew <justmatt@outlook.com>
-   Date:   Sat Feb 26 23:15:47 2022 -0600
+   Date:   Fri Mar 25 11:17:34 2022 -0700
    
-       Optimize code that caused excessive looping over all items.
+       Added Translations
    

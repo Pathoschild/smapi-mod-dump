@@ -1,0 +1,19 @@
+﻿{
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  // GMCM
+  "mod-description": "Allows you to pick your enchantment at the forge.",
+
+  "TooltipBehavior.title": "Tooltip Behavior.",
+  "TooltipBehavior.description": "Whether or not to display tooltips that tell you what each enchantment does. Immersive: tooltips are only shown after seeing a certain journal scrap.",
+
+  "config.TooltipBehavior.On": "On",
+  "config.TooltipBehavior.Off": "Off",
+  "config.TooltipBehavior.Immersive": "Immersive",
+
+  "EnableTooltipAutogeneration.title": "Enables tooltip autogeneration.",
+  "EnableTooltipAutogeneration.description": "Enables tooltip autogeneration from journal scrap 9. Disable this if you have an mod that edits that."
+}

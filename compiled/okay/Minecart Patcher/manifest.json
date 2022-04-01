@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MinecartPatcher",
+  "Author": "bwdy",
+  "Version": "1.0.0",
+  "Description": "My minecart brings all the farmers to the yard...",
+  "UniqueID": "bwdymods.minecartpatcher",
+  "EntryDll": "MinecartPatcher.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:11424" ]
+}

@@ -7,5 +7,10 @@
   "UseForageFlowers": false,
   "ValueMultiplier": 1.0,
   "Particles": true,
-  "UseQuality": false
+  "UseQuality": false,
+  "PatchAutomate": true,
+  "PatchPFM": true,
+  "CapFactor": 700,
+  "CapCurve": 0.0,
+  "BearBoost": 1.0
 }

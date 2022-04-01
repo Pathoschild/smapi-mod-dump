@@ -34,6 +34,7 @@ namespace MoreConversationTopics
         {
             try
             {
+                Monitor.Log("Adding Harmony postfix to setUp() in BirthingEvent.cs",LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(BirthingEvent),nameof(BirthingEvent.setUp)),
                     postfix: new HarmonyMethod(typeof(BirthPatcher), nameof(BirthPatcher.BirthingEvent_setUp_Postfix))
@@ -46,6 +47,7 @@ namespace MoreConversationTopics
 
             try
             {
+                Monitor.Log("Adding Harmony postfix to setUp() in PlayerCoupleBirthingEvent.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(PlayerCoupleBirthingEvent), nameof(PlayerCoupleBirthingEvent.setUp)),
                     postfix: new HarmonyMethod(typeof(BirthPatcher), nameof(BirthPatcher.PlayerCoupleBirthingEvent_setUp_Postfix))
@@ -65,11 +67,11 @@ namespace MoreConversationTopics
             {
                 if (___isMale)
                 {
-                    Game1.player.activeDialogueEvents.Add("babyBoy", Config.BirthDuration);
+                    MCTHelperFunctions.AddMaybePreExistingCT("babyBoy", Config.BirthDuration);
                 }
                 else
                 {
-                    Game1.player.activeDialogueEvents.Add("babyGirl", Config.BirthDuration);
+                    MCTHelperFunctions.AddMaybePreExistingCT("babyGirl", Config.BirthDuration);
                 }
             }
             catch (Exception ex)
@@ -87,11 +89,11 @@ namespace MoreConversationTopics
                 {
                     if (___isMale)
                     {
-                        Game1.player.activeDialogueEvents.Add("babyBoy", Config.BirthDuration);
+                        MCTHelperFunctions.AddMaybePreExistingCT("babyBoy", Config.BirthDuration);
                     }
                     else
                     {
-                        Game1.player.activeDialogueEvents.Add("babyGirl", Config.BirthDuration);
+                        MCTHelperFunctions.AddMaybePreExistingCT("babyGirl", Config.BirthDuration);
                     }
                 }
             }
@@ -106,11 +108,11 @@ namespace MoreConversationTopics
                 {
                     if (___isMale)
                     {
-                        ___spouse.activeDialogueEvents.Add("babyBoy", Config.BirthDuration);
+                        MCTHelperFunctions.AddMaybePreExistingCT(___spouse, "babyBoy", Config.BirthDuration);
                     }
                     else
                     {
-                        ___spouse.activeDialogueEvents.Add("babyGirl", Config.BirthDuration);
+                        MCTHelperFunctions.AddMaybePreExistingCT(___spouse, "babyGirl", Config.BirthDuration);
                     }
                 }
             }

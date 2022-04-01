@@ -24,10 +24,7 @@ internal class TagManager
     {
         get
         {
-            if (random is null)
-            {
-                random = new Random(((int)Game1.uniqueIDForThisGame * 26) + (int)(Game1.stats.DaysPlayed / 7 * 36));
-            }
+            random ??= new Random(((int)Game1.uniqueIDForThisGame * 26) + (int)(Game1.stats.DaysPlayed / 7 * 36));
             return random;
         }
     }
@@ -52,7 +49,7 @@ internal class TagManager
         try
         {
             string[] vals = __0.Split('_');
-            switch(vals[0])
+            switch(vals[0].ToLowerInvariant())
             {
                 case "year":
                     // year_X
@@ -81,9 +78,28 @@ internal class TagManager
                         __result = int.TryParse(vals[1], out int daysplayed) && Game1.stats.DaysPlayed >= daysplayed;
                     }
                     return false;
-                case "dropboxRoom":
+                case "anyplayermail":
+                    // anyplayermail_mailkey, anyplayermail_mailkey_not
+                    __result = Game1.getAllFarmers().Any((Farmer f) => f.mailReceived.Contains(vals[1]));
+                    if (vals.Length >= 2 && vals[2].Equals("not", StringComparison.OrdinalIgnoreCase))
+                    {
+                        __result = !__result;
+                    }
+                    return false;
+                case "anyplayerseenevent":
+                    // anyplayerseenevent_eventID, anyplayerseenevent_eventID_not
+                    if (vals.Length >= 2 && vals[2].Equals("not", StringComparison.OrdinalIgnoreCase))
+                    {
+                        __result = int.TryParse(vals[1], out int eventid) && Game1.getAllFarmers().All((Farmer f) => !f.eventsSeen.Contains(eventid));
+                    }
+                    else
+                    {
+                        __result = int.TryParse(vals[1], out int eventid) && Game1.getAllFarmers().Any((Farmer f) => f.eventsSeen.Contains(eventid));
+                    }
+                    return false;
+                case "dropboxroom":
                     // dropboxRoom_roomName
-                    string roomname = __0["dropboxRoom_".Length..];
+                    string roomname = vals[1];
                     foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders)
                     {
                         if (specialOrder.questState.Value != SpecialOrder.QuestState.InProgress)
@@ -115,7 +131,7 @@ internal class TagManager
                     string monster = vals[1].Replace('-', ' ');
                     if (vals[2].Equals("under", StringComparison.OrdinalIgnoreCase))
                     {
-                        __result = int.TryParse(vals[3], out int numkilled) && Game1.getAllFarmers().Any((Farmer farmer) => farmer.stats.getMonstersKilled(monster) < numkilled);
+                        __result = int.TryParse(vals[3], out int numkilled) && Game1.getAllFarmers().All((Farmer farmer) => farmer.stats.getMonstersKilled(monster) < numkilled);
                     }
                     else
                     {
@@ -126,7 +142,7 @@ internal class TagManager
                     // friendship_NPCname_X, friendship_NPCname_under_X
                     if (vals[2].Equals("under", StringComparison.OrdinalIgnoreCase))
                     {
-                        __result = int.TryParse(vals[3], out int friendshipNeeded) && Game1.getAllFarmers().Any((Farmer farmer) => farmer.getFriendshipLevelForNPC(vals[1]) < friendshipNeeded);
+                        __result = int.TryParse(vals[3], out int friendshipNeeded) && Game1.getAllFarmers().All((Farmer farmer) => farmer.getFriendshipLevelForNPC(vals[1]) < friendshipNeeded);
                     }
                     else
                     {
@@ -156,7 +172,7 @@ internal class TagManager
                     // houselevel_X, houselevel_under_X
                     if (vals[1].Equals("under", StringComparison.OrdinalIgnoreCase))
                     {
-                        __result = int.TryParse(vals[2], out int houseLevel) && Game1.getAllFarmers().Any((Farmer farmer) => farmer.HouseUpgradeLevel < houseLevel);
+                        __result = int.TryParse(vals[2], out int houseLevel) && Game1.getAllFarmers().All((Farmer farmer) => farmer.HouseUpgradeLevel < houseLevel);
                     }
                     else
                     {
@@ -271,7 +287,7 @@ internal class TagManager
                     // stats_statsname_X, stats_statsname_under_X
                     if (vals[2].Equals("under", StringComparison.OrdinalIgnoreCase))
                     {
-                        __result = uint.TryParse(vals[3], out uint stat) && Game1.getAllFarmers().Any((Farmer farmer) => StatsManager.GrabBasicProperty(vals[1], farmer.stats) < stat);
+                        __result = uint.TryParse(vals[3], out uint stat) && Game1.getAllFarmers().All((Farmer farmer) => StatsManager.GrabBasicProperty(vals[1], farmer.stats) < stat);
                     }
                     else
                     {
@@ -325,36 +341,41 @@ internal class TagManager
     {
         int? professionNumber = profession switch
         {
-            "rancher" => 0,
-            "tiller" => 1,
-            "coopmaster" => 2,
-            "shepherd" => 3,
-            "artisan" => 4,
-            "agriculturist" => 5,
-            "fisher" => 6,
-            "trapper" => 7,
-            "angler" => 8,
-            "pirate" => 9,
-            "mariner" => 10,
-            "luremaster" => 11,
-            "forester" => 12,
-            "gatherer" => 13,
-            "lumberjack" => 14,
-            "tapper" => 15,
-            "botanist" => 16,
-            "tracker" => 17,
-            "miner" => 18,
-            "geologist" => 19,
-            "blacksmith" => 20,
-            "prospector" => 21,
-            "excavator" => 22,
-            "gemologist" => 23,
-            "fighter" => 24,
-            "scout" => 25,
-            "brute" => 26,
-            "defender" => 27,
-            "acrobat" => 28,
-            "desperado" => 29,
+            /* Farming professions */
+            "rancher" => Farmer.rancher,
+            "tiller" => Farmer.tiller,
+            "coopmaster" => Farmer.butcher, // [sic]
+            "shepherd" => Farmer.shepherd,
+            "artisan" => Farmer.artisan,
+            "agriculturist" => Farmer.agriculturist,
+            /* Fishing professions */
+            "fisher" => Farmer.fisher,
+            "trapper" => Farmer.trapper,
+            "angler" => Farmer.angler,
+            "pirate" => Farmer.pirate,
+            "mariner" => Farmer.baitmaster, // [sic]
+            "luremaster" => Farmer.mariner, // [sic]
+            /* Foraging professions */
+            "forester" => Farmer.forester,
+            "gatherer" => Farmer.gatherer,
+            "lumberjack" => Farmer.lumberjack,
+            "tapper" => Farmer.tapper,
+            "botanist" => Farmer.botanist,
+            "tracker" => Farmer.tracker,
+            /* Mining professions */
+            "miner" => Farmer.miner,
+            "geologist" => Farmer.geologist,
+            "blacksmith" => Farmer.blacksmith,
+            "prospector" => Farmer.burrower, // [sic]
+            "excavator" => Farmer.excavator,
+            "gemologist" => Farmer.gemologist,
+            /* Combat professions */
+            "fighter" => Farmer.fighter,
+            "scout" => Farmer.scout,
+            "brute" => Farmer.brute,
+            "defender" => Farmer.defender,
+            "acrobat" => Farmer.acrobat,
+            "desperado" => Farmer.desperado,
             _ => null
         };
         if (professionNumber is null && skill is not null)

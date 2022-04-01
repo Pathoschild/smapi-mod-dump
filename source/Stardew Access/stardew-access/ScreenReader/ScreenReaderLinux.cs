@@ -8,6 +8,11 @@
 **
 *************************************************/
 
+/*
+    Linux speech dispatcher library used:
+    https://github.com/shoaib11120/libspeechdwrapper
+*/
+
 using System.Runtime.InteropServices;
 
 namespace stardew_access.ScreenReader

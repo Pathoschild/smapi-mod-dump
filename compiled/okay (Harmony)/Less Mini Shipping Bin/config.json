@@ -1,3 +1,4 @@
 {
-  "Capacity": 36
+  "MiniShippingCapacity": 36,
+  "JuminoCapcaity": 9
 }

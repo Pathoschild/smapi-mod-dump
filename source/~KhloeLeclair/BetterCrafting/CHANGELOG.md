@@ -8,6 +8,129 @@ for queries and analysis.**
 
 # Changelog
 
+## 0.15.0
+Released March 15th, 2022.
+
+### Mod Compatibility
+
+* Added built-in support for Vintage Interface 2, Overgrown Flowery Interface,
+  and Starry Sky Interface.
+
+### API Changes
+
+* Added a `bc_theme` command to list all themes, or change the current theme
+  if called with an argument. `bc_theme reload` will reload all themes,
+  including the active theme. `bc_retheme` can be used as a shortcut for that.
+* We now have support for themes. Themes allow you to replace the buttons
+  texture, as well as set custom colors for a few things in the menu. See
+  the Vintage Interface 2 theme for an idea. Content packs can add a theme
+  by including a theme.json.
+
+
+## 0.14.1
+Released March 14th, 2022.
+
+### Fixes
+
+* When opening settings from the game menu and closing it, the menu could
+  appear with a strange offset in some situations.
+
+### Translation
+
+* Added Chinese language support.
+
+
+## 0.14.0
+Released March 12th, 2022.
+
+### General
+
+* Added support for scrolling the category tabs.
+* Removed the limit on the number of categories.
+* Added a console command to clear the recipe cache.
+* Add a warning in the console when DynamicGameAssets is detected but
+  our compatibility mod is not.
+
+### Fixes
+
+* Use separate recipe caches for each player in split-screen, as certain
+  recipe adjustments may only affect one player.
+* Clear the recipe cache at the start of every new day in case recipes
+  have been adjusted due to levelling up, etc.
+* Use integer positioning for all UI elements to avoid odd rendering of
+  text and sprites.
+
+## 0.13.2
+Released March 7th, 2022.
+
+### General
+
+* Fixed issue where custom categories for cooking recipes would not be saved.
+* Do not display the GMCM Settings button on the crafting menu for split-screen
+  players. The GMCM menu is not controller accessible and opening it may
+  soft lock that player.
+* Play a sound when opening the icon picker.
+* Make it easier to navigate to the category name and icon picker controls when
+  using a controller for input.
+
+### Translation
+
+* Improved Spanish language support.
+
+
+## 0.13.1
+Released March 6th, 2022.
+
+### General
+
+* Add support for localizations overriding the ingredient search character.
+* Fix the search pop-up's tip not having localization support.
+* Improve tool-tip positioning logic to avoid covering the cursor.
+
+### Translation
+
+* Improved Russian language support.
+
+
+## 0.13.0
+Released March 6th, 2022.
+
+### General
+
+* Added a search button to the crafting menu! Search by recipe name, description,
+  and optionally its ingredients.
+* When searching, the matching bits of text in tool-tips are highlighted.
+* Added an option to sort recipes alphabetically. I might need to change the way
+  this is handled to make sense in other languages. Let me know if so!
+* When editing a category, you can now hold shift to view an item's full tooltip.
+  This should make it easier to double check where you want to put something,
+  especially when categorizing foods.
+* Center parts of the Bulk Crafting menu to make it look nicer.
+
+
+## 0.12.0
+Released March 4th, 2022.
+
+### General
+
+* Added "Bulk Crafting"! This changes the default action performed when you use
+  the Use Tool key (Right-Click) on a recipe.
+* Added configuration for how the `Use Tool` and `Action` keys behave.
+* Added separate key bindings for `Favorite` and `Open Bulk Crafting`.
+* Added icon picker for categories for setting icons unrelated to icons.
+
+### Mod Compatibility
+
+* Disable the theoretical StackSplit Redux support for bulk crafting recipes,
+  since the new Bulk Crafting interface works much better for that. Still waiting
+  on SSR to accept my pull request though, so it's not like anyone is missing out.
+
+### Other Stuff
+
+* Add an update key for ModDrop to hopefully make SMAPI stop saying there's
+  an update when the update is for the SpaceCore support optional file.
+
+
 ## 0.11.0
 Released February 26th, 2022.
 

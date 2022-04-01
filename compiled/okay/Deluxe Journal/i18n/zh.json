@@ -1,0 +1,79 @@
+﻿{
+	// task names and keywords (for parsing)
+	"task.basic": "基本",
+	"task.blacksmith": "升级工具",
+	"task.blacksmith.keywords": "升级",
+	"task.build": "建造",
+	"task.build.keywords": "造,建,买,获得",
+	"task.buy": "买",
+	"task.buy.keywords": "买,购买,获得",
+	"task.collect": "收集",
+	"task.collect.keywords": "收集,砍,收获,采集,钓鱼,采矿,找回",
+	"task.craft": "制造",
+	"task.craft.keywords": "制造,烹饪,制作",
+	"task.gift": "礼物",
+	"task.gift.keywords": "送礼物",
+	"task.sell": "出售",
+	"task.sell.keywords": "出售,售卖",
+	
+	// journal button (when the player has no active quests)
+	"ui.taskbutton.hover": "日志 ({{key}})",
+
+	// tab/page names
+	"ui.tab.quests": "人物",
+	"ui.tab.tasks": "任务",
+	"ui.tab.notes": "笔记",
+	
+	// tasks page
+	"ui.tasks.help": "点击加号新建任务",
+	"ui.tasks.addbutton.hover": "新建任务",
+	"ui.tasks.editbox.hover": "编辑任务",
+	"ui.tasks.removebutton.hover": "取消任务",
+	"ui.tasks.renewbutton.hover": "刷新任务",
+	"ui.tasks.renew.day": "{{count}} 天",
+	"ui.tasks.renew.days": "{{count}} 天",
+	"ui.tasks.moneybox.hover0": "净收入/支出或利润",
+	"ui.tasks.moneybox.hover1": "目前资金",
+	"ui.tasks.moneybutton.hover": "切换金额",
+
+	// add new task menu
+	"ui.tasks.new": "新建任务",
+	"ui.tasks.new.optionsbutton.hover": "选项",
+	"ui.tasks.new.cancelbutton.hover": "取消",
+	"ui.tasks.new.smartokbutton.hover": "智能添加",
+	"ui.tasks.new.smarttip": "智能添加选项可以自动为任务应用高级选项.",
+
+	// task options menu
+	"ui.tasks.options": "任务选项",
+	"ui.tasks.options.name": "任务名",
+	"ui.tasks.options.renew": "刷新时间",
+	"ui.tasks.options.renew.Never": "从不刷新",
+	"ui.tasks.options.renew.Daily": "每天刷新",
+	"ui.tasks.options.renew.Weekly": "每周刷新",
+	"ui.tasks.options.renew.Monthly": "每月刷新",
+	"ui.tasks.options.renew.Annually": "每年刷新",
+	"ui.tasks.options.type": "任务类型",
+
+	// task parameter names
+	"ui.tasks.parameter.building": "建筑",
+	"ui.tasks.parameter.count": "需要",
+	"ui.tasks.parameter.item": "物品",
+	"ui.tasks.parameter.monster": "怪物",
+	"ui.tasks.parameter.npc": "NPC",
+	"ui.tasks.parameter.tool": "工具",
+
+	// seasons
+	"seasons.spring": "春季",
+	"seasons.summer": "夏季",
+	"seasons.fall": "秋季",
+	"seasons.winter": "冬季",
+
+	// weekdays
+	"weekdays.monday": "周一",
+	"weekdays.tuesday": "周二",
+	"weekdays.wednesday": "周三",
+	"weekdays.thursday": "周四",
+	"weekdays.friday": "周五",
+	"weekdays.saturday": "周六",
+	"weekdays.sunday": "周日"
+}

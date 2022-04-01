@@ -6,9 +6,12 @@ mods:
    Event Limiter
 
 latest commit:
-   commit d186da771c9e52b730692d4d92cd07f18c082698
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Fri Feb 18 14:49:01 2022 +1100
+   commit 6f91c9b98a6b6e85fcf0a8765d39b76f143eb9cb
+   Merge: d186da7 8bee6ea
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Fri Apr 1 11:01:21 2022 +1100
    
-       updated manifest
+       Merge pull request #1 from TheMightyAmondee/add-license-1
+       
+       Create LICENSE
    

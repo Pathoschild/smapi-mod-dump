@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 
+using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.UI;
 using Leclair.Stardew.Common.UI.FlowNode;
 using Leclair.Stardew.Common.UI.SimpleLayout;
@@ -24,140 +25,127 @@ using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
 
+using StardewModdingAPI.Utilities;
+
 using Leclair.Stardew.Almanac.Pages;
 
 namespace Leclair.Stardew.Almanac.Menus {
+
+	public class MenuState {
+		public string LastPage;
+		public int TabScroll;
+		public Dictionary<string, object> States;
+	}
+
 	public class AlmanacMenu : IClickableMenu {
 
+		public static readonly PerScreen<MenuState> PreviousState = new();
+
 		// Static Stuff
+
+		public static readonly int MAX_TABS = 9;
+		public static readonly int VISIBLE_TABS = MAX_TABS - 2;
 
 		public static readonly int REGION_LEFT_PAGE = 1;
 		public static readonly int REGION_RIGHT_PAGE = 2;
 		public static readonly int REGION_TABS = 3;
 
-		public static readonly Rectangle MAGIC_BG = new Rectangle(288, 352, 15, 15);
+		public static readonly Rectangle MAGIC_BG = new(288, 352, 15, 15);
+		public static readonly Rectangle DAY_BORDER = new(379, 357, 3, 3);
 
-		public static readonly Color MAGIC_SHADOW_COLOR = new Color(19, 16, 57);
+		public static readonly Color MAGIC_SHADOW_COLOR = new(19, 16, 57);
 
-		public static readonly Rectangle[] LEFT_BUTTON = new Rectangle[] {
-			new(0, 256, 64, 64),
-			new(208, 352, 16, 16)
-		};
-
-		public static readonly Rectangle[] RIGHT_BUTTON = new Rectangle[] {
-			new(0, 192, 64, 64),
-			new(224, 352, 16, 16)
-		};
-
-		public static readonly Rectangle[] UP_ARROW = new Rectangle[] {
-			new(64, 64, 64, 64),
-			new(176, 352, 16, 16)
-		};
-
-		public static readonly Rectangle[] DOWN_ARROW = new Rectangle[] {
-			new(0, 64, 64, 64),
-			new(192, 352, 16, 16)
-		};
-
-		public static readonly Rectangle[] SCROLL_BG = new Rectangle[] {
-			new(403, 383, 6, 6),
-			new(160, 352, 6, 6)
-		};
-
-		public static readonly Rectangle[] SCROLL_THUMB = new Rectangle[] {
-			new(435, 463, 6, 10),
-			new(160, 358, 6, 10)
-		};
-
-		public static readonly Rectangle COVER = new(0, 185, 160, 185);
+		public static readonly Rectangle COVER = Sprites.COVER_PAGE;
 
 		public static readonly Rectangle[] OPEN_PAGES = new Rectangle[] {
-			new(0, 0, 320, 185),
-			new(320, 0, 320, 185)
+			Sprites.OPEN_PAGE,
+			Sprites.MAGIC_PAGE
 		};
 
 		public static readonly Rectangle[] CALENDAR = new Rectangle[] {
-			new(160, 192, 144, 160),
-			new(304, 192, 144, 160)
+			Sprites.CALENDAR,
+			Sprites.MAGIC_CALENDAR
 		};
 
 		public static readonly Rectangle[][] TABS = new Rectangle[][] {
-			new Rectangle[] {
-				new(448, 192, 16, 16),
-				new(448, 208, 16, 16),
-				new(448, 224, 16, 16),
-				new(448, 240, 16, 16),
-			},
-			new Rectangle[] {
-				new(464, 192, 16, 16),
-				new(464, 208, 16, 16),
-				new(464, 224, 16, 16),
-				new(464, 240, 16, 16),
-			},
+			Sprites.TABS,
+			Sprites.MAGIC_TABS
 		};
 
 		// Rendering Stuff
 
-		public readonly Texture2D background;
+		public Texture2D background;
+		public readonly ModEntry Mod;
 
 		// Buttons
-		public ClickableTextureComponent btnPageUp;
-		public ClickableTextureComponent btnPageDown;
-
 		public ClickableTextureComponent btnPrevious;
 		public ClickableTextureComponent btnNext;
 		public List<ClickableComponent> calDays;
 		public List<ClickableComponent> TabComponents = new();
 
-		public List<ClickableComponent> FlowComponents = new();
 		public List<ClickableComponent> PageComponents = new();
 
 		// Current Date
 		public WorldDate Date { get; protected set; }
 		public int Year => Date.Year;
 		public int Season => Date.SeasonIndex;
+		public int Day => Date.DayOfMonth;
 
 		// Pages
 		private readonly IAlmanacPage[] Pages;
 
 		private int PageIndex = -1;
-		private IAlmanacPage CurrentPage => (Pages == null || PageIndex < 0 || PageIndex >= Pages.Length) ? null : Pages[PageIndex];
+		public IAlmanacPage CurrentPage => (Pages == null || PageIndex < 0 || PageIndex >= Pages.Length) ? null : Pages[PageIndex];
 
-		private bool IsMagic => CurrentPage?.IsMagic ?? false;
+		public bool IsMagic => CurrentPage?.IsMagic ?? false;
+		public Models.Style Style => IsMagic ? Mod.Theme?.Magic : Mod.Theme?.Standard;
 
 		// Tabs
-		private List<Tuple<ClickableComponent, int, int, int>> Tabs = new();
+		public ClickableTextureComponent btnTabsUp;
+		public ClickableTextureComponent btnTabsDown;
+		private int TabScroll = 0;
+
+		private readonly List<Tuple<ClickableComponent, int, int, int>> Tabs = new();
 
 		// Flow Rendering
-		private CachedFlow? Flow;
-		private int FlowStep = 1;
-		private int FlowOffset;
-		private int MaxFlowOffset;
+		private readonly ScrollableFlow LeftFlow;
+		private readonly ScrollableFlow RightFlow;
 
-		public ClickableTextureComponent FlowScrollBar;
-		public Rectangle FlowScrollArea;
-		private bool FlowScrolling;
+		// Proxy Flow Elements
+		public ClickableTextureComponent btnLeftPageUp;
+		public ClickableTextureComponent btnLeftPageDown;
+
+		public ClickableTextureComponent btnRightPageUp;
+		public ClickableTextureComponent btnRightPageDown;
+
+		public List<ClickableComponent> LeftFlowComponents;
+		public List<ClickableComponent> RightFlowComponents;
 
 		// Tooltip
 		public bool HoverMagic;
 		public ISimpleNode HoverNode;
 		public string HoverText;
 
-		private Cache<ISimpleNode, string> CachedHoverText;
+		private readonly Cache<ISimpleNode, string> CachedHoverText;
 
 		// Lookup Anything support.
 		public Item HoveredItem = null;
 
-		public AlmanacMenu(int year)
+		public AlmanacMenu(ModEntry mod, int year)
 		: base(0, 0, 0, 0, true) {
-			background = ModEntry.instance.Helper.Content.Load<Texture2D>("assets/Menu.png");
-			Date = new(Game1.Date);
+			Mod = mod;
+			background = Mod.ThemeManager.Load<Texture2D>("Menu.png");
 
-			ModEntry mod = ModEntry.instance;
+			if (year == Game1.Date.Year)
+				Date = new(Game1.Date);
+			else
+				Date = new(year, "spring", 1);
+
+			Date.DayOfMonth = 1;
 
 			// CachedHoverText
 			CachedHoverText = new(
-				str => string.IsNullOrEmpty(str) ? null : SimpleHelper.Builder().Text(str).GetLayout(),
+				str => string.IsNullOrEmpty(str) ? null : SimpleHelper.Builder().FormatText(str).GetLayout(),
 				() => HoverText
 			);
 
@@ -189,65 +177,152 @@ namespace Leclair.Stardew.Almanac.Menus {
 				}
 			}
 
+			if (Tabs.Count > MAX_TABS) {
+				btnTabsUp = new ClickableTextureComponent(
+					new Rectangle(0, 0, 64, 64),
+					Game1.mouseCursors,
+					Sprites.UP_ARROW,
+					0.8f
+				) {
+					region = REGION_TABS,
+					myID = 9,
+					upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+					downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+					leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+					rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
+				};
+
+				btnTabsDown = new ClickableTextureComponent(
+					new Rectangle(0, 0, 64, 64),
+					Game1.mouseCursors,
+					Sprites.DOWN_ARROW,
+					0.8f
+				) {
+					region = REGION_TABS,
+					myID = 11 + Pages.Length,
+					upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+					downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+					leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+					rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
+				};
+			}
+
 			Tabs.Sort((a, b) => a.Item3.CompareTo(b.Item3));
 
-			FlowScrollBar = new ClickableTextureComponent(
-				new Rectangle(0, 0, 44, 48),
-				background,
-				Rectangle.Empty,
-				4f
+			// Flow
+			LeftFlow = new(
+				this,
+				xPositionOnScreen, yPositionOnScreen,
+				400, 400,
+				region: REGION_LEFT_PAGE,
+				firstID: 90000
+			);
+			
+			btnLeftPageUp = LeftFlow.btnPageUp;
+			btnLeftPageDown = LeftFlow.btnPageDown;
+			LeftFlowComponents = LeftFlow.DynamicComponents;
+
+			RightFlow = new(
+				this,
+				xPositionOnScreen, yPositionOnScreen,
+				400, 400,
+				region: REGION_RIGHT_PAGE,
+				firstID: 100000
 			);
 
-			btnPageUp = new ClickableTextureComponent(
-				new Rectangle(0, 0, 64, 64),
-				background,
-				Rectangle.Empty,
-				3.2f
-			) {
-				region = REGION_RIGHT_PAGE,
-				myID = 1,
-				upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-				downNeighborID = 2,
-				rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-				leftNeighborID = ClickableComponent.SNAP_AUTOMATIC
-			};
+			btnRightPageUp = RightFlow.btnPageUp;
+			btnRightPageDown = RightFlow.btnPageDown;
+			RightFlowComponents = RightFlow.DynamicComponents;
 
-			btnPageDown = new ClickableTextureComponent(
-				new Rectangle(0, 0, 64, 64),
-				background,
-				Rectangle.Empty,
-				3.2f
-			) {
-				region = REGION_RIGHT_PAGE,
-				myID = 2,
-				upNeighborID = 1,
-				downNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-				leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-				rightNeighborID = ClickableComponent.SNAP_AUTOMATIC
-			};
+			MenuState state = PreviousState.Value;
+			if (state != null && mod.Config.RestoreAlmanacState) {
+				TabScroll = PreviousState.Value.TabScroll;
 
-			ChangePage(0);
+				int idx = 0;
+				for(int i = 0; i < Pages.Length; i++) {
+					var page = Pages[i];
+					string id = page.Id;
+					if (id == state.LastPage)
+						idx = i;
+
+					if (state.States.TryGetValue(id, out object pstate))
+						page.LoadState(pstate);	
+				}
+
+				ChangePage(idx);
+			} else
+				ChangePage(0);
+
 			Game1.playSound("bigSelect");
 		}
 
-		public bool ChangeSeason(int delta) {
-			int newSeason = Season + delta;
-			if (newSeason < 0)
-				newSeason = 0;
-			if (newSeason >= WorldDate.MonthsPerYear)
-				newSeason = WorldDate.MonthsPerYear - 1;
+		protected override void cleanupBeforeExit() {
+			base.cleanupBeforeExit();
 
-			if (Season == newSeason)
+			MenuState state = new() {
+				LastPage = CurrentPage?.Id,
+				TabScroll = TabScroll,
+				States = new()
+			};
+
+			foreach (var page in Pages) {
+				object pstate = page.GetState();
+				if (pstate != null)
+					state.States[page.Id] = pstate;
+			}
+
+			PreviousState.Value = state;
+		}
+
+		public bool ChangeSeason(int delta) {
+			bool change_season = true;
+
+			int newSeason = Season;
+
+			// Do we have longer months?
+			int newDay = Day + (delta * 28);
+			if (newDay < 1 || newDay > ModEntry.DaysPerMonth)
+				newDay = Day;
+			else if (newDay != Day)
+				change_season = false;
+
+			if (change_season) {
+				newSeason = Season + delta;
+				if (newSeason < 0)
+					newSeason = 0;
+				if (newSeason >= WorldDate.MonthsPerYear)
+					newSeason = WorldDate.MonthsPerYear - 1;
+
+				if (Season != newSeason)
+					newDay = 1;
+			}
+
+			if (Season == newSeason && Day == newDay)
 				return false;
 
 			WorldDate oldDate = Date;
-			Date = new(Year, WeatherHelper.GetSeasonName(newSeason), 1);
+			Date = new(Year, WeatherHelper.GetSeasonName(newSeason), newDay);
 
 			foreach (IAlmanacPage page in Pages)
 				page?.DateChanged(oldDate, Date);
 
 			//CurrentPage?.DateChanged(oldDate, Date);
 			return true;
+		}
+
+
+		public void RefreshPages() {
+			foreach (IAlmanacPage page in Pages)
+				page.Refresh();
+		}
+
+		public void RefreshTheme() {
+			background = Mod.ThemeManager.Load<Texture2D>("Menu.png");
+			Recenter();
+			UpdateScrollComponents();
+
+			foreach (IAlmanacPage page in Pages)
+				page.ThemeChanged();
 		}
 
 
@@ -263,23 +338,67 @@ namespace Leclair.Stardew.Almanac.Menus {
 			}
 		}
 
-		public bool PrevPage() {
+		public bool ScrollTabs(int direction) {
+			if (Tabs.Count <= MAX_TABS || direction == 0)
+				return false;
+
+			int old = TabScroll;
+			TabScroll += (direction > 0) ? 1 : -1;
+			if (TabScroll < 0)
+				TabScroll = 0;
+			if (TabScroll > (Tabs.Count - VISIBLE_TABS))
+				TabScroll = Tabs.Count - VISIBLE_TABS;
+
+			if (TabScroll == old)
+				return false;
+
+			UpdateTabs();
+			return true;
+		}
+
+		public bool CenterTab(int index) {
+			if (Tabs.Count <= MAX_TABS)
+				return false;
+
+			int old = TabScroll;
+			TabScroll = index - (VISIBLE_TABS / 2);
+			if (TabScroll < 0)
+				TabScroll = 0;
+			if (TabScroll > (Tabs.Count - VISIBLE_TABS))
+				TabScroll = Tabs.Count - VISIBLE_TABS;
+
+			if (TabScroll == old)
+				return false;
+
+			UpdateTabs();
+			return true;
+		}
+
+		public bool PrevPage(bool wrap = false) {
 			int tab = CurrentTab - 1;
-			if (tab < 0)
-				return false;
+			if (tab < 0) {
+				if (wrap)
+					tab = Tabs.Count - 1;
+				else
+					return false;
+			}
 
-			return ChangePage(Tabs[tab].Item2);
+			return ChangePage(Tabs[tab].Item2, true);
 		}
 
-		public bool NextPage() {
+		public bool NextPage(bool wrap = false) {
 			int tab = CurrentTab + 1;
-			if (tab >= Tabs.Count)
-				return false;
+			if (tab >= Tabs.Count) {
+				if (wrap)
+					tab = 0;
+				else
+					return false;
+			}
 
-			return ChangePage(Tabs[tab].Item2);
+			return ChangePage(Tabs[tab].Item2, true);
 		}
 
-		public bool ChangePage(int index) {
+		public bool ChangePage(int index, bool center_tab = false) {
 			if (index >= Pages.Length)
 				index = Pages.Length - 1;
 			if (index < 0)
@@ -290,8 +409,12 @@ namespace Leclair.Stardew.Almanac.Menus {
 
 			CurrentPage?.Deactivate();
 			PageComponents = null;
-			SetFlow(null);
+			SetLeftFlow(null);
+			SetRightFlow(null);
 			PageIndex = index;
+
+			if (center_tab)
+				CenterTab(CurrentTab);
 
 			// Apply the size of the new page type.
 			height = 185 * 4;
@@ -302,6 +425,7 @@ namespace Leclair.Stardew.Almanac.Menus {
 					break;
 				case PageType.Blank:
 				case PageType.Calendar:
+				case PageType.Seasonal:
 				default:
 					width = 320 * 4;
 					break;
@@ -309,40 +433,69 @@ namespace Leclair.Stardew.Almanac.Menus {
 
 			CurrentPage?.Activate();
 			Recenter();
+			UpdateScrollComponents();
 
+			return true;
+		}
+
+		public void UpdateScrollComponents() {
 			// Update component textures, source rects, and scales.
 			bool is_magic = IsMagic;
+			bool custom_scroll = Style?.CustomScroll ?? is_magic;
+			ScrollbarTheme stheme = custom_scroll ?
+				(is_magic ? Sprites.MAGIC_SCROLL : Sprites.STANDARD_SCROLL) : null;
 
-			if (btnPageDown != null) {
-				btnPageDown.texture = is_magic ? background : Game1.mouseCursors;
-				btnPageDown.scale = btnPageDown.baseScale = is_magic ? 3.2f : 0.8f;
-				btnPageDown.sourceRect = DOWN_ARROW[is_magic ? 1 : 0];
+			LeftFlow.ScrollAreaTexture = custom_scroll ? background : Game1.mouseCursors;
+			LeftFlow.ScrollAreaSource = stheme?.SCROLL_BG ?? Sprites.SCROLL_BG;
+
+			RightFlow.ScrollAreaTexture = custom_scroll ? background : Game1.mouseCursors;
+			RightFlow.ScrollAreaSource = stheme?.SCROLL_BG ?? Sprites.SCROLL_BG;
+
+			if (LeftFlow.ScrollBar != null) {
+				LeftFlow.ScrollBar.texture = custom_scroll ? background : Game1.mouseCursors;
+				LeftFlow.ScrollBar.sourceRect = stheme?.SCROLL_THUMB ?? Sprites.SCROLL_THUMB;
 			}
 
-			if (btnPageUp != null) {
-				btnPageUp.texture = is_magic ? background : Game1.mouseCursors;
-				btnPageUp.scale = btnPageUp.baseScale = is_magic ? 3.2f : 0.8f;
-				btnPageUp.sourceRect = UP_ARROW[is_magic ? 1 : 0];
+			if (RightFlow.ScrollBar != null) {
+				RightFlow.ScrollBar.texture = custom_scroll ? background : Game1.mouseCursors;
+				RightFlow.ScrollBar.sourceRect = stheme?.SCROLL_THUMB ?? Sprites.SCROLL_THUMB;
+			}
+
+			if (btnLeftPageDown != null) {
+				btnLeftPageDown.texture = custom_scroll ? background : Game1.mouseCursors;
+				btnLeftPageDown.scale = btnLeftPageDown.baseScale = custom_scroll ? 3.2f : 0.8f;
+				btnLeftPageDown.sourceRect = stheme?.DOWN_ARROW ?? Sprites.DOWN_ARROW;
+			}
+
+			if (btnLeftPageUp != null) {
+				btnLeftPageUp.texture = custom_scroll ? background : Game1.mouseCursors;
+				btnLeftPageUp.scale = btnLeftPageUp.baseScale = custom_scroll ? 3.2f : 0.8f;
+				btnLeftPageUp.sourceRect = stheme?.UP_ARROW ?? Sprites.UP_ARROW;
+			}
+
+			if (btnRightPageDown != null) {
+				btnRightPageDown.texture = custom_scroll ? background : Game1.mouseCursors;
+				btnRightPageDown.scale = btnRightPageDown.baseScale = custom_scroll ? 3.2f : 0.8f;
+				btnRightPageDown.sourceRect = stheme?.DOWN_ARROW ?? Sprites.DOWN_ARROW;
+			}
+
+			if (btnRightPageUp != null) {
+				btnRightPageUp.texture = custom_scroll ? background : Game1.mouseCursors;
+				btnRightPageUp.scale = btnRightPageUp.baseScale = custom_scroll ? 3.2f : 0.8f;
+				btnRightPageUp.sourceRect = stheme?.UP_ARROW ?? Sprites.UP_ARROW;
 			}
 
 			if (btnPrevious != null) {
-				btnPrevious.texture = is_magic ? background : Game1.mouseCursors;
-				btnPrevious.scale = btnPrevious.baseScale = is_magic ? 3.2f : 0.8f;
-				btnPrevious.sourceRect = LEFT_BUTTON[is_magic ? 1 : 0];
+				btnPrevious.texture = custom_scroll ? background : Game1.mouseCursors;
+				btnPrevious.scale = btnPrevious.baseScale = custom_scroll ? 3.2f : 0.8f;
+				btnPrevious.sourceRect = stheme?.LEFT_ARROW ?? Sprites.LEFT_ARROW;
 			}
 
 			if (btnNext != null) {
-				btnNext.texture = is_magic ? background : Game1.mouseCursors;
-				btnNext.scale = btnNext.baseScale = is_magic ? 3.2f : 0.8f;
-				btnNext.sourceRect = RIGHT_BUTTON[is_magic ? 1 : 0];
+				btnNext.texture = custom_scroll ? background : Game1.mouseCursors;
+				btnNext.scale = btnNext.baseScale = custom_scroll ? 3.2f : 0.8f;
+				btnNext.sourceRect = stheme?.RIGHT_ARROW ?? Sprites.RIGHT_ARROW;
 			}
-
-			if (FlowScrollBar != null) {
-				FlowScrollBar.texture = is_magic ? background : Game1.mouseCursors;
-				FlowScrollBar.sourceRect = SCROLL_THUMB[is_magic ? 1 : 0];
-			}
-
-			return true;
 		}
 
 		public void Recenter() {
@@ -355,8 +508,8 @@ namespace Leclair.Stardew.Almanac.Menus {
 			yPositionOnScreen = (int) pos.Y;
 
 			var view = Game1.uiViewport;
-			if (view.Width >= 1280 && view.Width <= 1376) {
-				xPositionOnScreen -= (1376 - view.Width) / 2;
+			if (view.Width >= 1280 && view.Width <= 1376 && width > 1200) {
+				xPositionOnScreen -= (1376 - view.Width) / 2 - 8;
 			}
 
 			int yOffset = 0;
@@ -374,37 +527,73 @@ namespace Leclair.Stardew.Almanac.Menus {
 					upperRightCloseButton.bounds.Height
 				);
 
-			btnPageUp.bounds = new Rectangle(
-					xPositionOnScreen + width - 64 - 16,
-					yPositionOnScreen + 60 + (IsMagic ? 32 : 0),
-					64, 64
-				);
 
-			btnPageDown.bounds = new Rectangle(
-					xPositionOnScreen + width - 64 - 16,
-					yPositionOnScreen + height - 64 - 60 + (IsMagic ? 32 : 0),
-					64,
-					64
-				);
+			int rightMarginTop = 0;
+			int rightMarginBottom = 0;
+			int rightMarginLeft = 0;
+			int rightMarginRight = 0;
+			int rightScrollTop = Style?.ScrollOffsetTop ?? -9999;
+			if (rightScrollTop == -9999)
+				rightScrollTop = IsMagic ? 32 : 16;
+			int rightScrollBottom = Style?.ScrollOffsetBottom ?? -9999;
+			if (rightScrollBottom == -9999)
+				rightScrollBottom = IsMagic ? -32 : 0;
 
-			FlowScrollArea = new Rectangle(
-				xPositionOnScreen + width - 66,
-				yPositionOnScreen + 124 + (IsMagic ? 32 : 0),
-				24,
-				height - 256
+			int leftMarginTop = 0;
+			int leftMarginBottom = 0;
+			int leftMarginLeft = 0;
+			int leftMarginRight = 0;
+			int leftScrollTop = 0;
+			int leftScrollBottom = 0;
+
+			if (CurrentPage is IRightFlowMargins rfm) {
+				rightMarginTop = rfm.RightMarginTop;
+				rightMarginBottom = rfm.RightMarginBottom;
+				rightMarginLeft = rfm.RightMarginLeft;
+				rightMarginRight = rfm.RightMarginRight;
+				rightScrollTop = rfm.RightScrollMarginTop;
+				rightScrollBottom = rfm.RightScrollMarginBottom;
+			}
+
+			if (CurrentPage?.Type == PageType.Seasonal || CurrentPage?.Type == PageType.Calendar)
+				leftMarginTop = 64;
+
+			if (CurrentPage is ILeftFlowMargins lfm) {
+				leftMarginTop = lfm.LeftMarginTop;
+				leftMarginLeft = lfm.LeftMarginLeft;
+				leftMarginRight = lfm.LeftMarginRight;
+				leftMarginBottom = lfm.LeftMarginBottom;
+				leftScrollTop = lfm.LeftScrollMarginTop;
+				leftScrollBottom = lfm.LeftScrollMarginBottom;
+			}
+
+			LeftFlow.Reposition(
+				xPositionOnScreen + 32 + 16 + leftMarginLeft,
+				yPositionOnScreen + 40 + leftMarginTop,
+				width / 2 - 64 + 16 - leftMarginLeft - leftMarginRight,
+				height - 100 - leftMarginTop - leftMarginBottom,
+				leftScrollTop,
+				leftScrollBottom
+			);
+
+			RightFlow.Reposition(
+				xPositionOnScreen + width / 2 + 32 + rightMarginLeft,
+				yPositionOnScreen + 40 + rightMarginTop,
+				width / 2 - 64 + 16 - rightMarginLeft - rightMarginRight,
+				height - 100 - rightMarginTop - rightMarginBottom,
+				rightScrollTop,
+				rightScrollBottom
 			);
 
 			UpdateTabs();
 			UpdateCalendarComponents();
 			CurrentPage?.UpdateComponents();
 			PageComponents = CurrentPage?.GetComponents();
-			UpdateFlowComponents(false);
 			populateClickableComponentList();
 		}
 
-
-
 		public void UpdateTabs() {
+			int offsetX = 0;
 			int offsetY = 60;
 
 			var view = Game1.uiViewport;
@@ -412,35 +601,68 @@ namespace Leclair.Stardew.Almanac.Menus {
 				offsetY += 3 * (752 - view.Height) / 2;
 			}
 
-			foreach (var entry in Tabs) {
+			if (view.Width >= 1280 && view.Width <= 1376 && width > 1200)
+				offsetX = -8;
+
+			if (btnTabsUp != null) {
+				btnTabsUp.bounds = new Rectangle(
+					xPositionOnScreen + width + offsetX,
+					yPositionOnScreen + offsetY,
+					64, 64
+				);
+
+				offsetY += 68;
+			};
+
+			for(int i = 0; i < Tabs.Count; i++) {
+				var entry = Tabs[i];
 				ClickableComponent cmp = entry.Item1;
-				if (Pages[entry.Item2] is not ITab tab || cmp == null)
+				if (Pages[entry.Item2] is not ITab || cmp == null)
 					continue;
 
+				if (btnTabsUp != null && (i < TabScroll || i >= (TabScroll + VISIBLE_TABS))) {
+					cmp.visible = false;
+					continue;
+				}
+
+				cmp.visible = true;
 				cmp.bounds = new Rectangle(
-					xPositionOnScreen + width - 8,
+					xPositionOnScreen + width - 8 + offsetX,
 					yPositionOnScreen + offsetY,
 					64, 64
 				);
 
 				offsetY += 68;
 			}
+
+			if (btnTabsDown != null)
+				btnTabsDown.bounds = new Rectangle(
+					xPositionOnScreen + width + offsetX,
+					yPositionOnScreen + offsetY,
+					64, 64
+				);
 		}
 
 		public void UpdateCalendarComponents() {
-			if (CurrentPage?.Type != PageType.Calendar) {
+			PageType type = CurrentPage?.Type ?? PageType.Cover;
+			if (type != PageType.Calendar && type != PageType.Seasonal) {
 				calDays = null;
 				btnNext = null;
 				btnPrevious = null;
 				return;
 			}
 
+			bool is_magic = IsMagic;
+			bool custom_scroll = Style?.CustomScroll ?? is_magic;
+			ScrollbarTheme stheme = custom_scroll ?
+				(is_magic ? Sprites.MAGIC_SCROLL : Sprites.STANDARD_SCROLL) : null;
+
 			if (btnPrevious == null)
 				btnPrevious = new ClickableTextureComponent(
 					Rectangle.Empty,
-					IsMagic ? background : Game1.mouseCursors,
-					LEFT_BUTTON[IsMagic ? 1 : 0],
-					IsMagic ? 3.2f : 0.8f
+					custom_scroll ? background : Game1.mouseCursors,
+					stheme?.LEFT_ARROW ?? Sprites.LEFT_ARROW,
+					custom_scroll ? 3.2f : 0.8f
 				) {
 					region = REGION_LEFT_PAGE,
 					myID = 88,
@@ -453,9 +675,9 @@ namespace Leclair.Stardew.Almanac.Menus {
 			if (btnNext == null)
 				btnNext = new ClickableTextureComponent(
 					Rectangle.Empty,
-					IsMagic ? background : Game1.mouseCursors,
-					RIGHT_BUTTON[IsMagic ? 1 : 0],
-					IsMagic ? 3.2f : 0.8f
+					custom_scroll ? background : Game1.mouseCursors,
+					stheme?.RIGHT_ARROW ?? Sprites.RIGHT_ARROW,
+					custom_scroll ? 3.2f : 0.8f
 				) {
 					region = REGION_LEFT_PAGE,
 					myID = 89,
@@ -465,37 +687,42 @@ namespace Leclair.Stardew.Almanac.Menus {
 					downNeighborID = ClickableComponent.SNAP_AUTOMATIC
 				};
 
-			if (calDays == null) {
-				calDays = new();
-				for (int day = 1; day <= WorldDate.DaysPerMonth; day++)
-					calDays.Add(new ClickableComponent(
-						Rectangle.Empty, Convert.ToString(day)
-					) {
-						region = REGION_LEFT_PAGE,
-						myID = 100 + day,
-						leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-						rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-						upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-						downNeighborID = ClickableComponent.SNAP_AUTOMATIC
-					});
-			}
-
-			int col = 0;
-			int row = 0;
-
-			for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
-				calDays[day - 1].bounds = new Rectangle(
-						xPositionOnScreen + 64 + 76 * col,
-						yPositionOnScreen + 120 + 52 + 128 * row,
-						72, 124
-					);
-
-				col++;
-				if (col >= 7) {
-					col = 0;
-					row++;
+			if (type == PageType.Calendar) {
+				if (calDays == null) {
+					calDays = new();
+					// We can only display up to 28 days at a time, so don't use
+					// the DaysPerMonth.
+					for (int day = 1; day <= 28; day++)
+						calDays.Add(new ClickableComponent(
+							Rectangle.Empty, Convert.ToString(day)
+						) {
+							region = REGION_LEFT_PAGE,
+							myID = 100 + day,
+							leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+							rightNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+							upNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+							downNeighborID = ClickableComponent.SNAP_AUTOMATIC
+						});
 				}
-			}
+
+				int col = 0;
+				int row = 0;
+
+				for (int day = 1; day <= 28; day++) {
+					calDays[day - 1].bounds = new Rectangle(
+							xPositionOnScreen + 64 + 76 * col,
+							yPositionOnScreen + 120 + 52 + 128 * row,
+							72, 124
+						);
+
+					col++;
+					if (col >= 7) {
+						col = 0;
+						row++;
+					}
+				}
+			} else
+				calDays = null;
 
 			btnPrevious.bounds = new Rectangle(
 				xPositionOnScreen + 60,
@@ -508,102 +735,59 @@ namespace Leclair.Stardew.Almanac.Menus {
 				yPositionOnScreen + 34,
 				64, 64
 			);
+
+			UpdateScrollComponents();
 		}
 
-		public void SetFlow(IEnumerable<IFlowNode> nodes) {
-			SetFlow(nodes, 1);
+		public int GetLeftFlowScroll() {
+			return LeftFlow?.Position ?? 0;
 		}
 
-		public void SetFlow(IEnumerable<IFlowNode> nodes, int step) {
-			FlowStep = step;
-
-			if (nodes == null) {
-				Flow = null;
-				FlowOffset = MaxFlowOffset = 0;
-				FlowScrollBar.visible = false;
-				btnPageDown.visible = false;
-				btnPageUp.visible = false;
-				UpdateFlowComponents();
-				return;
-			}
-
-			CachedFlow flow = FlowHelper.CalculateFlow(
-				nodes,
-				width / 2 - 80 - 64
-			);
-			Flow = flow;
-
-			// Starting at the end of the flow, determine how many
-			// lines we have to skip to view the end.
-
-			float remaining = height - 64;
-			int oldMax = MaxFlowOffset;
-			MaxFlowOffset = 0;
-
-			for (int i = flow.Lines.Length - 1; i >= 0; i--) {
-				remaining -= flow.Lines[i].Height;
-				if (remaining <= 0) {
-					MaxFlowOffset = i + 1;
-					MaxFlowOffset += MaxFlowOffset % FlowStep;
-					break;
-				}
-			}
-
-			btnPageDown.visible = MaxFlowOffset > 0;
-			btnPageUp.visible = MaxFlowOffset > 0;
-			FlowScrollBar.visible = MaxFlowOffset > 0;
-
-			if (oldMax == 0)
-				FlowOffset = 0;
-			else {
-				if (FlowOffset < 0)
-					FlowOffset = 0;
-				if (FlowOffset > MaxFlowOffset)
-					FlowOffset = MaxFlowOffset;
-			}
-
-			UpdateFlowComponents();
+		public int GetRightFlowScroll() {
+			return RightFlow?.Position ?? 0;
 		}
 
-		public void UpdateFlowComponents(bool callbacks = true) {
+		public void SetLeftFlow(IEnumerable<IFlowNode> nodes) {
+			LeftFlow.Set(nodes);
+		}
 
-			if (MaxFlowOffset > 0) {
-				FlowScrollBar.bounds.X = FlowScrollArea.X;
+		public void SetLeftFlow(IEnumerable<IFlowNode> nodes, int step) {
+			LeftFlow.Set(nodes, step);
+		}
 
-				int height = FlowScrollArea.Height - FlowScrollBar.bounds.Height + 8;
-				float progress = FlowOffset / (float) Math.Max(1, MaxFlowOffset);
+		public void SetLeftFlow(IEnumerable<IFlowNode> nodes, int step, int scroll) {
+			LeftFlow.Set(nodes, step, scroll);
+		}
 
-				FlowScrollBar.bounds.Y = FlowScrollArea.Y + (int) Math.Floor(height * progress);
-			}
+		public void SetRightFlow(IEnumerable<IFlowNode> nodes) {
+			RightFlow.Set(nodes);
+		}
 
-			if (Flow.HasValue)
-				FlowHelper.UpdateComponentsForFlow(
-					Flow.Value,
-					FlowComponents,
-					xPositionOnScreen + (width / 2) + 40,
-					yPositionOnScreen + 40,
-					lineOffset: FlowOffset,
-					maxHeight: height - 120,
-					onCreate: callbacks ? cmp => {
-						cmp.region = REGION_RIGHT_PAGE;
-						allClickableComponents.Add(cmp);
-					}
-				: null,
-					onDestroy: callbacks ? cmp => allClickableComponents.Remove(cmp) : null
-				);
-			else {
-				foreach (ClickableComponent cmp in FlowComponents)
-					allClickableComponents.Remove(cmp);
-				FlowComponents.Clear();
-			}
+		public void SetRightFlow(IEnumerable<IFlowNode> nodes, int step) {
+			RightFlow.Set(nodes, step);
+		}
+
+		public void SetRightFlow(IEnumerable<IFlowNode> nodes, int step, int scroll) {
+			RightFlow.Set(nodes, step, scroll);
+		}
+
+		public bool ScrollLeftFlow(IFlowNode node, int offset = 0) {
+			return LeftFlow.ScrollTo(node, offset);
+		}
+
+		public bool ScrollRightFlow(IFlowNode node, int offset = 0) {
+			return RightFlow.ScrollTo(node, offset);
 		}
 
 		#region Events
 
 		protected override bool _ShouldAutoSnapPrioritizeAlignedElements() {
-			return true;
+			return false; // return true;
 		}
 
+		public override void automaticSnapBehavior(int direction, int oldRegion, int oldID) {
+			base.automaticSnapBehavior(direction, oldRegion, oldID);
+		}
 
 		public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) {
 			base.gameWindowSizeChanged(oldBounds, newBounds);
@@ -631,76 +815,55 @@ namespace Leclair.Stardew.Almanac.Menus {
 			}
 		}
 
-		public bool ScrollFlow(int direction) {
-			int old = FlowOffset;
-			FlowOffset += direction < 0 ? -FlowStep : FlowStep;
-			if (FlowOffset < 0)
-				FlowOffset = 0;
-			if (FlowOffset > MaxFlowOffset)
-				FlowOffset = MaxFlowOffset;
-
-			if (old != FlowOffset)
-				UpdateFlowComponents();
-
-			return old != FlowOffset;
-		}
-
-		public bool ScrollFlow(IFlowNode node) {
-			if (!Flow.HasValue || node == null)
-				return false;
-
-			int old = FlowOffset;
-			bool found = false;
-
-			// Find the node in the flow.
-			for (int i = 0; i < Flow.Value.Lines.Length; i++) {
-				CachedFlowLine line = Flow.Value.Lines[i];
-				foreach (IFlowNodeSlice slice in line.Slices) {
-					if (slice.Node.Equals(node)) {
-						FlowOffset = i;
-						found = true;
-						break;
-					}
-				}
-				if (found)
-					break;
-			}
-
-			FlowOffset -= FlowOffset % FlowStep;
-			if (FlowOffset < 0)
-				FlowOffset = 0;
-			if (FlowOffset > MaxFlowOffset)
-				FlowOffset = MaxFlowOffset;
-
-			if (old != FlowOffset) {
-				UpdateFlowComponents();
-				return true;
-			}
-
-			return false;
-		}
-
 		public override void receiveScrollWheelAction(int direction) {
 			base.receiveScrollWheelAction(direction);
 
 			int x = Game1.getOldMouseX();
 			int y = Game1.getOldMouseY();
 
-			if (CurrentPage?.ReceiveScroll(x, y, direction) ?? false)
-				return;
-
-			bool left = (x - xPositionOnScreen) < (width / 2);
-
-			if (CurrentPage?.Type == PageType.Calendar && left && !Game1.options.gamepadControls) {
-				if (ChangeSeason(direction > 0 ? -1 : 1))
-					Game1.playSound("shwip");
+			if (x > (xPositionOnScreen + width)) {
+				if (ScrollTabs(direction > 0 ? -1 : 1)) {
+					Game1.playSound("shiny4");
+					if (Game1.options.SnappyMenus)
+						snapCursorToCurrentSnappedComponent();
+				}
 
 				return;
 			}
 
-			if (Flow.HasValue) {
-				if (ScrollFlow(direction > 0 ? -1 : 1))
+			if (CurrentPage?.ReceiveScroll(x, y, direction) ?? false)
+				return;
+
+			bool left = (x - xPositionOnScreen) < (width / 2);
+			PageType type = CurrentPage?.Type ?? PageType.Cover;
+
+			if (left && LeftFlow.HasValue && y >= LeftFlow.Y) {
+				if (LeftFlow.Scroll(direction > 0 ? -1 : 1)) {
 					Game1.playSound("shiny4");
+					if (Game1.options.SnappyMenus)
+						snapCursorToCurrentSnappedComponent();
+				}
+
+				return;
+			}
+
+			if ((type == PageType.Calendar || type == PageType.Seasonal) && left && !Game1.options.gamepadControls) {
+				if (ChangeSeason(direction > 0 ? -1 : 1)) {
+					Game1.playSound("shwip");
+					if (Game1.options.SnappyMenus)
+						snapCursorToCurrentSnappedComponent();
+				}
+
+				return;
+			}
+
+			if (RightFlow.HasValue) {
+				//if (ScrollRightFlow(direction > 0 ? -1 : 1)) {
+				if (RightFlow.Scroll(direction > 0 ? -1 : 1)) {
+					Game1.playSound("shiny4");
+					if (Game1.options.SnappyMenus)
+						snapCursorToCurrentSnappedComponent();
+				}
 
 				return;
 			}
@@ -711,39 +874,71 @@ namespace Leclair.Stardew.Almanac.Menus {
 
 			if (CurrentPage?.ReceiveKeyPress(key) ?? false)
 				return;
+
+			if (key == Keys.F5 && Mod.Config.DebugMode) {
+				Mod.Invalidate();
+				RefreshPages();
+				Game1.playSound("bigSelect");
+				return;
+			}
+
+			if (key == Keys.Tab) {
+				if (
+					Game1.oldKBState.IsKeyDown(Keys.LeftShift) ?
+						PrevPage(true) :
+						NextPage(true)
+				)
+					Game1.playSound("smallSelect");
+			}
+
+			// TODO: Determine which flow is active, between
+			// the left and right, if we have both.
+			ScrollableFlow active = RightFlow.HasValue ? RightFlow : null;
+			if (LeftFlow.HasValue && active == null)
+				active = LeftFlow;
+
+			int x = Game1.getOldMouseX();
+			int y = Game1.getOldMouseY();
+
+			if (LeftFlow.HasValue && LeftFlow.Bounds.Contains(x, y))
+				active = LeftFlow;
+
+			if (key == Keys.PageDown) {
+				if (active.ScrollPage(1))
+					Game1.playSound("shiny4");
+			}
+
+			if (key == Keys.PageUp) {
+				if (active.ScrollPage(-1))
+					Game1.playSound("shiny4");
+			}
+
+			if (key == Keys.Home) {
+				if (active.ScrollToStart())
+					Game1.playSound("shiny4");
+			}
+
+			if (key == Keys.End) {
+				if (active.ScrollToEnd())
+					Game1.playSound("shiny4");
+			}
 		}
 
 		public override void leftClickHeld(int x, int y) {
 			base.leftClickHeld(x, y);
 
-			if (FlowScrolling) {
-				int oldY = FlowScrollBar.bounds.Y;
-				int half = FlowScrollBar.bounds.Height / 2;
+			if (LeftFlow.HasValue && LeftFlow.LeftClickHeld(x, y))
+				return;
 
-				int minY = FlowScrollArea.Y + half;
-				int height = FlowScrollArea.Height - FlowScrollBar.bounds.Height;
-				int maxY = minY + height;
-
-				float progress = (float) (y - minY) / height;
-
-				int OldOffset = FlowOffset;
-				FlowOffset = (int) Math.Floor(progress * MaxFlowOffset);
-				if (FlowOffset < 0)
-					FlowOffset = 0;
-				if (FlowOffset > MaxFlowOffset)
-					FlowOffset = MaxFlowOffset;
-
-				if (OldOffset == FlowOffset)
-					return;
-
-				UpdateFlowComponents();
-				Game1.playSound("shiny4");
-			}
+			if (RightFlow.HasValue && RightFlow.LeftClickHeld(x, y))
+				return;
 		}
 
 		public override void releaseLeftClick(int x, int y) {
 			base.releaseLeftClick(x, y);
-			FlowScrolling = false;
+
+			LeftFlow.ReleaseLeftClick(x, y);
+			RightFlow.ReleaseLeftClick(x, y);
 		}
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true) {
@@ -753,55 +948,47 @@ namespace Leclair.Stardew.Almanac.Menus {
 				return;
 
 			if (calDays != null && CurrentPage is ICalendarPage page) {
-				for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+				for (int day = 1; day <= Math.Min(28, ModEntry.DaysPerMonth); day++) {
 					ClickableComponent cmp = calDays[day - 1];
 					if (cmp.containsPoint(x, y)) {
-						WorldDate date = new(Date);
-						date.DayOfMonth = day;
+						int oday = day + Day - 1;
+						if (oday <= ModEntry.DaysPerMonth) {
+							WorldDate date = new(Date);
+							date.DayOfMonth = oday;
 
-						int cx = x - cmp.bounds.X;
-						int cy = y - cmp.bounds.Y;
+							int cx = x - cmp.bounds.X;
+							int cy = y - cmp.bounds.Y;
 
-						if (page.ReceiveCellLeftClick(cx, cy, date, cmp.bounds))
-							return;
+							if (page.ReceiveCellLeftClick(cx, cy, date, cmp.bounds))
+								return;
+						}
 
 						break;
 					}
 				}
 			}
 
-			if (FlowScrollBar.visible && FlowScrollArea.Contains(x, y)) {// FlowScrollBar.containsPoint(x, y)) {
-				FlowScrolling = true;
+			if (LeftFlow.HasValue && LeftFlow.ReceiveLeftClick(x, y, playSound))
 				return;
-			}
 
-			if (Flow.HasValue) {
-				int fx = x - (xPositionOnScreen + width / 2 + 40);
-				int fy = y - (yPositionOnScreen + 40);
-
-				if (FlowHelper.ClickFlow(Flow.Value, fx, fy, lineOffset: FlowOffset, maxHeight: height - 120))
-					return;
-			}
-
-			if ((btnPageUp?.containsPoint(x, y) ?? false)) {
-				btnPageUp.scale = btnPageUp.baseScale;
-				if (ScrollFlow(-1) && playSound)
-					Game1.playSound("shiny4");
-
+			if (RightFlow.HasValue && RightFlow.ReceiveLeftClick(x, y, playSound))
 				return;
-			}
-
-			if ((btnPageDown?.containsPoint(x, y) ?? false)) {
-				btnPageDown.scale = btnPageDown.baseScale;
-				if (ScrollFlow(1) && playSound)
-					Game1.playSound("shiny4");
-
-				return;
-			}
 
 			// Tabs
-			foreach (var entry in Tabs) {
-				if (entry.Item1.containsPoint(x, y)) {
+			if (btnTabsDown?.containsPoint(x, y) ?? false) {
+				btnTabsDown.scale = btnTabsDown.baseScale;
+				if (ScrollTabs(1) && playSound)
+					Game1.playSound("shiny4");
+			}
+
+			if (btnTabsUp?.containsPoint(x, y) ?? false) {
+				btnTabsUp.scale = btnTabsUp.baseScale;
+				if (ScrollTabs(-1) && playSound)
+					Game1.playSound("shiny4");
+			}
+
+			foreach(var entry in Tabs) {
+				if (entry.Item1.visible && entry.Item1.containsPoint(x, y)) {
 					if (ChangePage(entry.Item2) && playSound)
 						Game1.playSound("smallSelect");
 					return;
@@ -827,21 +1014,38 @@ namespace Leclair.Stardew.Almanac.Menus {
 		public override void receiveRightClick(int x, int y, bool playSound = true) {
 			base.receiveRightClick(x, y, playSound);
 
+			if (upperRightCloseButton?.containsPoint(x, y) ?? false) {
+				if (ChangePage(0) && playSound)
+					Game1.playSound("smallSelect");
+
+				return;
+			}
+
 			if (CurrentPage?.ReceiveRightClick(x, y, playSound) ?? false)
 				return;
 
+			if (LeftFlow.HasValue && LeftFlow.ReceiveRightClick(x, y, playSound))
+				return;
+
+			if (RightFlow.HasValue && RightFlow.ReceiveRightClick(x, y, playSound))
+				return;
+
 			if (calDays != null && CurrentPage is ICalendarPage page) {
-				for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+				for (int day = 1; day <= Math.Min(28, ModEntry.DaysPerMonth); day++) {
 					ClickableComponent cmp = calDays[day - 1];
 					if (cmp.containsPoint(x, y)) {
-						WorldDate date = new(Date);
-						date.DayOfMonth = day;
+						int oday = day + Day - 1;
 
-						int cx = x - cmp.bounds.X;
-						int cy = y - cmp.bounds.Y;
+						if (oday <= ModEntry.DaysPerMonth) {
+							WorldDate date = new(Date);
+							date.DayOfMonth = oday;
 
-						if (page.ReceiveCellRightClick(cx, cy, date, cmp.bounds))
-							return;
+							int cx = x - cmp.bounds.X;
+							int cy = y - cmp.bounds.Y;
+
+							if (page.ReceiveCellRightClick(cx, cy, date, cmp.bounds))
+								return;
+						}
 
 						break;
 					}
@@ -858,14 +1062,33 @@ namespace Leclair.Stardew.Almanac.Menus {
 			HoverNode = null;
 			HoverText = null;
 
+			// Our flows are high priority because they perform
+			// middle click scrolling within their hover action,
+			// and we want to stop all other hover behavior if
+			// scrolling.
+			bool skip_hover = false;
+
+			if (RightFlow.IsMiddleScrolling() && RightFlow.PerformMiddleScroll(x, y))
+				skip_hover = true;
+			else if ((LeftFlow.IsMiddleScrolling() || LeftFlow.HasValue) && LeftFlow.PerformMiddleScroll(x, y))
+				skip_hover = true;
+			else if (RightFlow.HasValue && RightFlow.PerformMiddleScroll(x, y))
+				skip_hover = true;
+
+			if (skip_hover)
+				y = -1;
+
 			btnPrevious?.tryHover(x, Season > 0 ? y : -1);
 			btnNext?.tryHover(x, Season < WorldDate.MonthsPerYear - 1 ? y : -1);
 
-			btnPageDown?.tryHover(x, FlowOffset < MaxFlowOffset ? y : -1);
-			btnPageUp?.tryHover(x, FlowOffset > 0 ? y : -1);
+			btnTabsUp?.tryHover(x, y);
+			btnTabsDown?.tryHover(x, y);
+
+			if (skip_hover)
+				return;
 
 			foreach (var entry in Tabs) {
-				if (entry.Item1.containsPoint(x, y) && Pages[entry.Item2] is ITab tab) {
+				if (entry.Item1.visible && entry.Item1.containsPoint(x, y) && Pages[entry.Item2] is ITab tab) {
 					HoverNode = tab.TabAdvancedTooltip;
 					HoverText = tab.TabSimpleTooltip;
 					HoverMagic = tab.TabMagic;
@@ -874,16 +1097,17 @@ namespace Leclair.Stardew.Almanac.Menus {
 			}
 
 			if (calDays != null && CurrentPage is ICalendarPage page) {
-				for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+				for (int day = 1; day <= Math.Min(28, ModEntry.DaysPerMonth); day++) {
 					ClickableComponent cmp = calDays[day - 1];
 					if (cmp.containsPoint(x, y)) {
-						WorldDate date = new(Date);
-						date.DayOfMonth = day;
+						int oday = day + Day - 1;
 
-						page.PerformCellHover(x - cmp.bounds.X, y - cmp.bounds.Y, date, cmp.bounds);
+						if (oday <= ModEntry.DaysPerMonth) {
+							WorldDate date = new(Date);
+							date.DayOfMonth = day + Day - 1;
 
-						//HoverText = page.GetCellHoverText(date);
-						//HoverNode = page.GetCellHoverNode(date);
+							page.PerformCellHover(x - cmp.bounds.X, y - cmp.bounds.Y, date, cmp.bounds);
+						}
 
 						break;
 					}
@@ -892,13 +1116,19 @@ namespace Leclair.Stardew.Almanac.Menus {
 
 			CurrentPage?.PerformHover(x, y);
 
-			if (Flow.HasValue) {
-				int fx = x - (xPositionOnScreen + width / 2 + 40);
-				int fy = y - (yPositionOnScreen + 40);
+			if (LeftFlow.HasValue) {
+				if (HoveredItem == null && LeftFlow.GetExtraAt(x, y) is Item item)
+					HoveredItem = item;
 
-				FlowHelper.HoverFlow(Flow.Value, fx, fy, lineOffset: FlowOffset, maxHeight: height - 120);
+				LeftFlow.PerformHover(x, y);
 			}
 
+			if (RightFlow.HasValue) {
+				if (HoveredItem == null && RightFlow.GetExtraAt(x, y) is Item item)
+					HoveredItem= item;
+
+				RightFlow.PerformHover(x, y);
+			}
 		}
 
 		#endregion
@@ -906,6 +1136,8 @@ namespace Leclair.Stardew.Almanac.Menus {
 		#region Drawing
 
 		public override void draw(SpriteBatch b) {
+
+			PageType type = CurrentPage?.Type ?? PageType.Blank;
 
 			WorldDate date = new(Date);
 			int today = Game1.Date.TotalDays;
@@ -918,10 +1150,23 @@ namespace Leclair.Stardew.Almanac.Menus {
 				Color.Black * 0.75f
 			);
 
+			var pageSource = CurrentPage?.Type == PageType.Cover ?
+				COVER : OPEN_PAGES[IsMagic ? 1 : 0];
+
+			Models.PageOffset offset = null;
+
+			if (CurrentPage != null && Mod.Theme?.PageOffsets != null)
+				Mod.Theme.PageOffsets.TryGetValue(CurrentPage.Id, out offset);
+
 			b.Draw(
 				background,
 				new Vector2(xPositionOnScreen, yPositionOnScreen),
-				CurrentPage?.Type == PageType.Cover ? COVER : OPEN_PAGES[IsMagic ? 1 : 0],
+				offset == null ? pageSource : new Rectangle(
+					pageSource.X + offset.X,
+					pageSource.Y + offset.Y,
+					pageSource.Width,
+					pageSource.Height
+				),
 				Color.White,
 				0f,
 				Vector2.Zero,
@@ -933,10 +1178,10 @@ namespace Leclair.Stardew.Almanac.Menus {
 			// Page Draw.
 			CurrentPage?.Draw(b);
 
-			// Calendar Draw
+			// Calendar / Seasonal Draw
 
-			if (CurrentPage?.Type == PageType.Calendar) {
-				// The Grid
+			// The Grid
+			if (type == PageType.Calendar)
 				b.Draw(
 					background,
 					new Vector2(xPositionOnScreen + 40, yPositionOnScreen + 72),
@@ -949,8 +1194,9 @@ namespace Leclair.Stardew.Almanac.Menus {
 					1f
 				);
 
-				// Title
-				SpriteText.drawStringHorizontallyCenteredAt(
+			// Title
+			if (type == PageType.Calendar || type == PageType.Seasonal) {
+				RenderHelper.DrawCenteredSpriteText(
 					b,
 					I18n.Calendar_When(
 						season: Utility.getSeasonNameFromNumber(date.SeasonIndex),
@@ -958,7 +1204,8 @@ namespace Leclair.Stardew.Almanac.Menus {
 					),
 					xPositionOnScreen + (width / 4),
 					yPositionOnScreen + 40,
-					color: IsMagic ? 4 : -1
+					color: Style?.SeasonTextColor ??
+						(IsMagic ? Color.White : null)
 				);
 
 				// Navigation
@@ -971,12 +1218,15 @@ namespace Leclair.Stardew.Almanac.Menus {
 					btnNext?.draw(b);
 				else
 					btnNext?.draw(b, Color.Black * 0.35f, 0.89f);
+			}
 
+			// The Rest of the Calendar
+			if (type == PageType.Calendar) {
 				// Headers
 				for (int day = 1; day <= 7; day++) {
 					int x = xPositionOnScreen + 64 + 76 * (day - 1);
-					int y = yPositionOnScreen + 116;
-					string text = ModEntry.instance.Helper.Translation.Get($"calendar.day.{day}");
+					int y = yPositionOnScreen + 108;
+					string text = Mod.Helper.Translation.Get($"calendar.day.{day}");
 
 					Vector2 size = Game1.dialogueFont.MeasureString(text);
 
@@ -985,35 +1235,43 @@ namespace Leclair.Stardew.Almanac.Menus {
 						text,
 						new Vector2(
 							x + (76 - size.X) / 2,
-							y
+							y + (60 - size.Y) / 2
 						),
-						color: IsMagic ? Color.SkyBlue : Game1.textColor
-					);
+						color: Style?.CalendarLabelColor ??
+							(IsMagic ? Color.SkyBlue : Game1.textColor)
+					) ;
 				}
 
 				// Days
 				ICalendarPage page = CurrentPage as ICalendarPage;
 
-				for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
-					date.DayOfMonth = day;
+				for (int day = 1; day <= 28; day++) {
+					int oday = day + Day - 1;
+					date.DayOfMonth = oday;
 					int ddays = date.TotalDays;
 
 					ClickableComponent cmp = calDays[day - 1];
 					if (cmp == null)
 						continue;
 
+					if (oday > ModEntry.DaysPerMonth) {
+						b.Draw(Game1.staminaRect, cmp.bounds, (IsMagic ? Color.Black : Color.Gray) * 0.25f);
+						continue;
+					}
+
 					if ((page?.ShouldHighlightToday ?? false) && ddays == today) {
 						int num = 4 + (int) (2.0 * Game1.dialogueButtonScale / 8.0);
-						IClickableMenu.drawTextureBox(
+						RenderHelper.DrawBox(
 							b,
-							Game1.mouseCursors,
-							new Rectangle(379, 357, 3, 3),
-							cmp.bounds.X - num,
-							cmp.bounds.Y - num,
-							cmp.bounds.Width + num * 2,
-							cmp.bounds.Height + num * 2,
-							Color.Blue,
-							4f, false
+							texture: Game1.mouseCursors,
+							sourceRect: DAY_BORDER,
+							x: cmp.bounds.X - num,
+							y: cmp.bounds.Y - num,
+							width: cmp.bounds.Width + num * 2,
+							height: cmp.bounds.Height + num * 2,
+							color: Style?.CalendarHighlightColor ?? Color.Blue,
+							scale: 4f,
+							drawShadow: false
 						);
 					}
 
@@ -1021,22 +1279,42 @@ namespace Leclair.Stardew.Almanac.Menus {
 
 					b.DrawString(
 						Game1.smallFont,
-						Convert.ToString(day),
+						Convert.ToString(oday),
 						new Vector2(cmp.bounds.X, cmp.bounds.Y - 4),
-						color: IsMagic ? Color.LightSkyBlue : Game1.textColor
+						color: Style?.CalendarDayColor ??
+							(IsMagic ? Color.LightSkyBlue : Game1.textColor)
 					);
 
 					page?.DrawOverCell(b, date, cmp.bounds);
 
 					if ((page?.ShouldDimPastCells ?? false) && ddays < today)
-						b.Draw(Game1.staminaRect, cmp.bounds, (IsMagic ? Color.Black : Color.Gray) * 0.25f);
+						b.Draw(
+							Game1.staminaRect,
+							cmp.bounds,
+							Style?.CalendarDimColor != null ?
+								(Style.CalendarDimColor.Value * (Style.CalendarDimOpacity ?? 1f)) :
+								(IsMagic ? Color.Black * .4f : Color.Gray * 0.35f)
+						);
 				}
+			}
+
+			// Tabs
+			if (btnTabsDown != null) {
+				if (TabScroll + VISIBLE_TABS >= Tabs.Count)
+					btnTabsDown.draw(b, Color.Gray, 0.89f);
+				else
+					btnTabsDown.draw(b);
+
+				if (TabScroll == 0)
+					btnTabsUp.draw(b, Color.Gray, 0.89f);
+				else
+					btnTabsUp.draw(b);
 			}
 
 			for (int i = 0; i < Tabs.Count; i++) {
 				ClickableComponent cmp = Tabs[i].Item1;
 				int page = Tabs[i].Item2;
-				if (cmp != null && Pages[page] is ITab tab) {
+				if (cmp != null && cmp.visible && Pages[page] is ITab tab) {
 					int x = cmp.bounds.X - (page == PageIndex ? 16 : 0);
 
 					bool reflect = false;
@@ -1087,59 +1365,24 @@ namespace Leclair.Stardew.Almanac.Menus {
 
 			// Flow Draw
 
-			if (Flow.HasValue) {
-				if (MaxFlowOffset > 0) {
-					/*btnPageDown.texture = IsMagic ? background : Game1.mouseCursors;
-					btnPageUp.texture = IsMagic ? background : Game1.mouseCursors;
-					btnPageDown.sourceRect = DOWN_ARROW[IsMagic ? 1 : 0];
-					btnPageUp.sourceRect = UP_ARROW[IsMagic ? 1 : 0];
-
-					btnPageDown.baseScale = IsMagic ? 3.2f : .8f;
-					btnPageUp.baseScale = IsMagic ? 3.2f : .8f;
-
-					FlowScrollBar.texture = IsMagic ? background : Game1.mouseCursors;
-					FlowScrollBar.sourceRect = SCROLL_THUMB[IsMagic ? 1 : 0];*/
-
-					// Scroll Buttons
-					if (FlowOffset > 0)
-						btnPageUp.draw(b);
-					else
-						btnPageUp.draw(b, Color.Black * 0.35f, 0.89f);
-
-					if (FlowOffset < MaxFlowOffset)
-						btnPageDown.draw(b);
-					else
-						btnPageDown.draw(b, Color.Black * 0.35f, 0.89f);
-
-					// Scroll Bar
-					IClickableMenu.drawTextureBox(
-						b,
-						IsMagic ? background : Game1.mouseCursors,
-						SCROLL_BG[IsMagic ? 1 : 0],
-						FlowScrollArea.X,
-						FlowScrollArea.Y,
-						FlowScrollArea.Width,
-						FlowScrollArea.Height,
-						Color.White,
-						4f,
-						false
-					);
-
-					FlowScrollBar.draw(b);
-				}
-
-				FlowHelper.RenderFlow(
+			if (LeftFlow.HasValue)
+				LeftFlow.Draw(
 					b,
-					Flow.Value,
-					new Vector2(xPositionOnScreen + width / 2 + 40, yPositionOnScreen + 40),
-					IsMagic ? Color.White : Game1.textColor,
-					defaultShadowColor: IsMagic ? MAGIC_SHADOW_COLOR : null,
-					lineOffset: FlowOffset,
-					maxHeight: height - 120
+					Style?.TextColor ?? (IsMagic ? Color.White : Game1.textColor),
+					Style?.TextShadowColor ?? (IsMagic ? MAGIC_SHADOW_COLOR : null)
 				);
-			}
+
+			if (RightFlow.HasValue)
+				RightFlow.Draw(
+					b,
+					Style?.TextColor ?? (IsMagic ? Color.White : Game1.textColor),
+					Style?.TextShadowColor ?? (IsMagic ? MAGIC_SHADOW_COLOR : null)
+				);
 
 			base.draw(b);
+
+			LeftFlow.DrawMiddleScroll(b);
+			RightFlow.DrawMiddleScroll(b);
 
 			// Mouse
 			Game1.mouseCursorTransparency = 1f;
@@ -1154,8 +1397,12 @@ namespace Leclair.Stardew.Almanac.Menus {
 					bgTexture: HoverMagic ? background : null,
 					bgSource: HoverMagic ? MAGIC_BG : null,
 					bgScale: HoverMagic? 4f : 1f,
-					defaultColor: HoverMagic ? Color.White : Game1.textColor,
-					defaultShadowColor: HoverMagic ? MAGIC_SHADOW_COLOR : null
+					defaultColor: HoverMagic ?
+						(Mod.Theme?.Magic?.TextColor ?? Color.White) :
+						(Mod.Theme?.Standard?.TextColor ?? Game1.textColor),
+					defaultShadowColor: HoverMagic ?
+						(Mod.Theme?.Magic?.TextShadowColor ?? MAGIC_SHADOW_COLOR) :
+						(Mod.Theme?.Standard?.TextShadowColor ?? null)
 				);
 		}
 

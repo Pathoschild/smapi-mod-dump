@@ -1,5 +1,6 @@
 {
   "minimumFriendshipLevelForBirthdayWish": 2,
   "minimumFriendshipLevelForCommunityBirthdayParty": 5,
+  "fallbackToEnglishTranslationWhenPossible": false,
   "KeyBinding": "O"
 }

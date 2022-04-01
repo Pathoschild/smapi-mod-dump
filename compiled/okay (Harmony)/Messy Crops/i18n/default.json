@@ -1,0 +1,6 @@
+﻿{
+	"config.offset.name": "Max Offset",
+	"config.offset.desc": "The maximum number of tile pixels to offset by",
+	"config.applyTrellis.name": "Apply to Trellis",
+	"config.applyTrellis.desc": "If trellis crops should also be offset"
+}

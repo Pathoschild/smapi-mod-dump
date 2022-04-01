@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Don't Stop Me Now",
 	"Author": "Shockah",
-	"Version": "1.1.0",
+	"Version": "1.2.0",
 	"Description": "No more stopping for any actions.",
 	"UniqueID": "Shockah.DontStopMeNow",
 	"EntryDll": "DontStopMeNow.dll",

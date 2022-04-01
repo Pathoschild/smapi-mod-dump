@@ -63,7 +63,7 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 
 			if (Value != null) {
 				Vector2 pos = new(position.X, position.Y + offsetY);
-				if (SpriteHelper.GetSprite(Value, Helper) is SpriteInfo sprite)
+				if (SpriteHelper.GetSprite(Value) is SpriteInfo sprite)
 					sprite.Draw(batch, pos, Scale);
 				else
 					// Fallback. This is basically guaranteed to be

@@ -120,7 +120,7 @@ sealed class SharedLock : CriticalFinalizerObject, IDisposable {
 	internal bool IsReadLock => Lock?.IsReadLockHeld ?? false;
 	internal bool IsWriteLock => Lock?.IsWriteLockHeld ?? false;
 	internal bool IsReadWriteLock => Lock?.IsUpgradeableReadLockHeld ?? false;
-	internal bool IsDisposed => Lock == null;
+	internal bool IsDisposed => Lock is null;
 
 	internal ReadCookie Read => ReadCookie.Create(Lock!);
 	internal ReadCookie TryRead => ReadCookie.TryCreate(Lock!);

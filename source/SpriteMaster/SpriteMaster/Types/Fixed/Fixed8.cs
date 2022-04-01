@@ -65,9 +65,9 @@ struct Fixed8 : IEquatable<Fixed8>, IEquatable<byte>, ILongHash {
 		}
 		var result = InternalDivide(this, denominator);
 		// Check if it oversaturated the value
-		if ((result & 0xFFFF_0000) != 0) {
-			return Fixed8.Max;
-		}
+		//if ((result & 0xFFFF_0000) != 0) {
+		//	return Fixed8.Max;
+		//}
 		return (byte)(result >> 8);
 	}
 

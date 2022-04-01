@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Shockah.CommonModCode;
 using System.Collections.Generic;
 using System.Linq;
 

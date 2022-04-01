@@ -19,7 +19,7 @@ Most item sources are included, but not every possible one - I prioritized the e
 
 ## Supported Languages
 
-**English, Japanese, Portuguese (provided by Cosmiky), French (provided by Azurys), Spanish (provided by vlcoo), Russian (provided by angel4killer & AppleNorris), Thai (provided by ellipszist), German (provided by NotErikWasTaken & randomC0der)**
+**English, Japanese, Portuguese (provided by Cosmiky), French (provided by Azurys), Spanish (provided by vlcoo), Russian (provided by angel4killer & AppleNorris), Thai (provided by ellipszist), German (provided by NotErikWasTaken & randomC0der), Chinese (provided by sansenenlemon), Ukrainian (provided by ChulkyBow)**
 
 (Even in unsupported languages, item and character names refer directly to the data, so those will use the proper names for that language.)
 

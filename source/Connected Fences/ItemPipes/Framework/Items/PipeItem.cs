@@ -56,29 +56,105 @@ namespace ItemPipes.Framework
 			Passable = false;
 			DrawGuide = new Dictionary<string, int>();
 			PopulateDrawGuide();
+			LoadTextures();
 		}
 
-		public void Save()
-        {
-			modData.Add("State", State);
-        }
-
-		public virtual void Init()
+		public virtual void LoadTextures()
 		{
-            try
-            {
-				ItemTexture = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_Item.png");
-				DefaultSprite = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_default_Sprite.png");
-				ConnectingSprite = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_connecting_Sprite.png");
-				ItemMovingSprite = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/{IDName}_item_Sprite.png");
-			}
-			catch(Exception e)
-            {
-				Printer.Info("Can't load pipe sprites!");
-            }
-
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			DefaultSprite = DataAccess.Sprites[IDName + "_default_Sprite"];
+			ConnectingSprite = DataAccess.Sprites[IDName + "_connecting_Sprite"];
+			ItemMovingSprite = DataAccess.Sprites[IDName + "_item_Sprite"];
 			SpriteTexture = DefaultSprite;
 		}
+
+		public override SObject Save()
+		{
+			Printer.Info("SAVINGGGG");
+			if (!modData.ContainsKey("ItemPipes")) { modData.Add("ItemPipes", "true"); }
+			else { modData["ItemPipes"] = "true"; }
+			if (!modData.ContainsKey("Type")) { modData.Add("Type", IDName); }
+			else { modData["Type"] = IDName; }
+			if (!modData.ContainsKey("Stack")) { modData.Add("Stack", Stack.ToString()); }
+			else { modData["Type"] = IDName; }
+			if (!modData.ContainsKey("State")) { modData.Add("State", State); }
+			else { modData["State"] = State; }
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			if (DataAccess.LocationNodes.ContainsKey(Game1.currentLocation))
+			{
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				Node node = nodes.Find(n => n.Position.Equals(TileLocation));
+				if (node != null && node is PipeNode)
+				{
+					PipeNode pipe = (PipeNode)node;
+					if (pipe.StoredItem != null)
+					{
+						Printer.Info("Pipe with item");
+
+						if (!modData.ContainsKey("StoredItem")) { modData.Add("StoredItem", pipe.StoredItem.Name); }
+						else { modData["StoredItem"] = pipe.StoredItem.Name; }
+						if (!modData.ContainsKey("StoredItemStack")) { modData.Add("StoredItemStack", pipe.StoredItem.Stack.ToString()); }
+						else { modData["StoredItemStack"] = pipe.StoredItem.Stack.ToString(); }
+						//Implement with 1.6
+						//Create item with utility method
+						//Temp solution:
+						//Return to extractor
+						if (Globals.Debug) { Printer.Info("Waiting for clogged pipes to return to output..."); }
+						int i = 0;
+						bool sent = false;
+						while (i < pipe.ParentNetwork.Outputs.Count && !sent)
+						{
+							if (pipe.ParentNetwork.Outputs[i].ConnectedContainer.CanRecieveItem(pipe.StoredItem))
+							{
+								pipe.SendItem(pipe.StoredItem, pipe.ParentNetwork.Outputs[i]);
+								sent = true;
+							}
+							i++;
+						}
+					}
+				}
+			}
+
+			Fence fence = new Fence(tileLocation, 1, false);
+			fence.modData = modData;
+
+			return fence;
+		}
+
+		public override void Load(ModDataDictionary data)
+		{
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			modData = data;
+			if (DataAccess.LocationNodes.ContainsKey(Game1.currentLocation))
+			{
+				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
+				Node node = nodes.Find(n => n.Position.Equals(TileLocation));
+				if (node != null && node is PipeNode)
+				{
+					PipeNode pipe = (PipeNode)node;
+					if (modData["StoredItem"] != null)
+					{
+						string name = modData["StoredItem"];
+						if (DataAccess.ModItems.Contains(name) && name != "Wrench")
+						{
+							CustomObjectItem obj = Factories.ItemFactory.CreateItem(name);
+							if (modData["StoredItemStack"] != null)
+							{
+								obj.stack.Value = Int32.Parse(modData["StoredItemStack"]);
+							}
+							pipe.StoredItem = obj;
+													}
+						else if (DataAccess.ModItems.Contains(name) && name == "Wrench")
+						{
+							CustomToolItem obj = Factories.ItemFactory.CreateTool(name);
+							pipe.StoredItem = obj;
+						}
+					}
+
+				}
+			}
+		}
+
 
 		public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
 		{
@@ -196,7 +272,7 @@ namespace ItemPipes.Framework
 							16, 16), Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.001f);
 						drawItem(pipe, spriteBatch, x, y);
 					}
-					else if (State == "connecting")
+					else if (pipe.Connecting)
 					{
 						SpriteTexture = ConnectingSprite;
 						spriteBatch.Draw(SpriteTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64)),
@@ -230,6 +306,9 @@ namespace ItemPipes.Framework
 			Vector2 originalPosition;
 			Vector2 position;
 			//How to handle drawing custom mod items
+			//Igual hacer como coger la sprite y redimensionarla 
+			//relativamente a su size original y listo
+			//try catch para loadear la sprite
 			if (item is PipeItem)
 			{
 				PipeItem pipeItem = (PipeItem)item;
@@ -238,6 +317,16 @@ namespace ItemPipes.Framework
 				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
 				position = new Vector2(originalPosition.X + 16, originalPosition.Y + 64 + 16);
 				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None,
+					((float)(y * 64 + 32) / 10000f) + 0.002f);
+			}
+			else if (item is PPMItem)
+            {
+				PPMItem PPM = (PPMItem)item;
+				SpriteSheet = PPM.ItemTexture;
+				srcRect = new Rectangle(0, 0, 16, 32);
+				originalPosition = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64 - 64));
+				position = new Vector2(originalPosition.X + 23, originalPosition.Y + 64 + 10);
+				spriteBatch.Draw(SpriteSheet, position, srcRect, Color.White, 0f, Vector2.Zero, 1.2f, SpriteEffects.None,
 					((float)(y * 64 + 32) / 10000f) + 0.002f);
 			}
 			else if (item is SObject && (item as SObject).bigCraftable.Value)
@@ -352,97 +441,6 @@ namespace ItemPipes.Framework
 			}
 
 		}
-		/*
-		public int getDrawSum(GameLocation location)
-		{
-			DataAccess DataAccess = DataAccess.GetDataAccess();
-			bool CN = false;
-			bool CS = false;
-			bool CW = false;
-			bool CE = false;
-			int drawSum = 0;
-			Vector2 surroundingLocations = this.TileLocation;
-			surroundingLocations.X += 1f;
-			//0 = 6
-			//West = 100 = 11
-			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
-				|| location.objects[surroundingLocations] is PPMItem))
-			{
-				drawSum += 100;
-			}
-			else if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is Chest)
-			{
-				CW = true;
-			}
-			//East = 10 = 10
-			//W + E = 110 = 8
-			surroundingLocations.X -= 2f;
-			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
-				|| location.objects[surroundingLocations] is PPMItem))
-			{
-				drawSum += 10;
-			}
-			else if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is Chest)
-			{
-				CE = true;
-			}
-			//South = 500 = 6
-			//S + E = 600 = 1
-			//S + W = 510 = 3
-			//S + E + W = 610
-			surroundingLocations.X += 1f;
-			surroundingLocations.Y += 1f;
-			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
-				|| location.objects[surroundingLocations] is PPMItem))
-			{
-				drawSum += 500;
-			}
-			else if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is Chest)
-			{
-				CS = true;
-			}
-			surroundingLocations.Y -= 2f;
-			//North = 1000 = 4
-			//N + E = 1100 = 7
-			//N + W = 1010 = 9
-			//N + S = 1500 = 4
-			//N + E + W = 1110 = 8
-			//N + E + S = 1600 = 1
-			//N + S + W = 1510 = 3
-			//N + E + W  + S = 1610 = 5
-			if (location.objects.ContainsKey(surroundingLocations) && (location.objects[surroundingLocations] is PipeItem && ((PipeItem)location.objects[surroundingLocations]).countsForDrawing(this)
-				|| location.objects[surroundingLocations] is PPMItem))
-			{
-				drawSum += 1000;
-			}
-			else if (location.objects.ContainsKey(surroundingLocations) && location.objects[surroundingLocations] is Chest)
-			{
-				CN = true;
-			}
-			if (DataAccess.IOPipeNames.Contains(this.Name))
-			{
-				if (CN || CS || CW || CE)
-				{
-					drawSum = GetAdjChestsSum(drawSum, CN, CS, CW, CE);
-				}
-			}
-			if (this.Name.Equals("ConnectorPipe"))
-			{
-				List<Node> nodes = DataAccess.LocationNodes[Game1.currentLocation];
-				Node node = nodes.Find(n => n.Position.Equals(this.TileLocation));
-				if (node is ConnectorPipeNode)
-				{
-					ConnectorPipeNode connector = (ConnectorPipeNode)node;
-					if (connector.PassingItem)
-					{
-						drawSum += 5;
-					}
-
-				}
-			}
-			return drawSum;
-		}
-		*/
 		public virtual string GetSpriteKey(GameLocation location)
 		{
 			string key = "";
@@ -477,108 +475,6 @@ namespace ItemPipes.Framework
 			return key;
 		}
 
-
-
-
-		/*
-		private static int GetAdjChestsSum(int drawSum, bool CN, bool CS, bool CW, bool CE)
-		{
-			switch (drawSum)
-			{
-				case 0:
-					if (CN) { drawSum = 500; }
-					else if (CS) { drawSum = 1000; }
-					else if (CW) { drawSum = 10; }
-					else if (CE) { drawSum = 100; }
-					break;
-				case 1000:
-					if (CS) { drawSum += 2; }
-					else if (CW) { drawSum += 3; }
-					else if (CE) { drawSum += 4; }
-					break;
-				case 500:
-					if (CN) { drawSum += 1; }
-					else if (CW) { drawSum += 3; }
-					else if (CE) { drawSum += 4; }
-					break;
-				case 100:
-					if (CN) { drawSum += 1; }
-					else if (CS) { drawSum += 2; }
-					else if (CE) { drawSum += 4; }
-					break;
-				case 10:
-					if (CN) { drawSum += 1; }
-					else if (CS) { drawSum += 2; }
-					else if (CW) { drawSum += 3; }
-					break;
-				case 1500:
-					if (CW) { drawSum += 3; }
-					else if (CE) { drawSum += 4; }
-					break;
-				case 110:
-					if (CN) { drawSum += 1; }
-					else if (CS) { drawSum += 2; }
-					break;
-				case 1100:
-					if (CS) { drawSum += 2; }
-					else if (CE) { drawSum += 4; }
-					break;
-				case 1010:
-					if (CS) { drawSum += 2; }
-					else if (CW) { drawSum += 3; }
-					break;
-				case 600:
-					if (CN) { drawSum += 1; }
-					else if (CE) { drawSum += 4; }
-					break;
-				case 510:
-					if (CN) { drawSum += 1; }
-					else if (CW) { drawSum += 3; }
-					break;
-			}
-			return drawSum;
-		}
-		*/
-		/*
-		public virtual Dictionary<int, int> GetNewDrawGuide()
-		{
-			Dictionary<int, int> DrawGuide = new Dictionary<int, int>();
-			DataAccess DataAccess = DataAccess.GetDataAccess();
-			DrawGuide.Add(0, 0);
-			DrawGuide.Add(1000, 1);
-			DrawGuide.Add(500, 2); ;
-			DrawGuide.Add(100, 3);
-			DrawGuide.Add(10, 4);
-			DrawGuide.Add(1500, 5);
-			DrawGuide.Add(1100, 6);
-			DrawGuide.Add(1010, 7);
-			DrawGuide.Add(600, 8);
-			DrawGuide.Add(510, 9);
-			DrawGuide.Add(110, 10);
-			DrawGuide.Add(1600, 11);
-			DrawGuide.Add(1510, 12);
-			DrawGuide.Add(1110, 13);
-			DrawGuide.Add(610, 14);
-			DrawGuide.Add(1610, 15);
-			DrawGuide.Add(5, 0);
-			DrawGuide.Add(1005, 16);
-			DrawGuide.Add(505, 17); ;
-			DrawGuide.Add(105, 18);
-			DrawGuide.Add(15, 19);
-			DrawGuide.Add(1505, 20);
-			DrawGuide.Add(1105, 21);
-			DrawGuide.Add(1015, 22);
-			DrawGuide.Add(605, 23);
-			DrawGuide.Add(515, 24);
-			DrawGuide.Add(115, 25);
-			DrawGuide.Add(1605, 26);
-			DrawGuide.Add(1515, 27);
-			DrawGuide.Add(1115, 28);
-			DrawGuide.Add(615, 29);
-			DrawGuide.Add(1615, 30);
-			return DrawGuide;
-		}
-		*/
 		public virtual void PopulateDrawGuide()
 		{
 			DrawGuide.Clear();

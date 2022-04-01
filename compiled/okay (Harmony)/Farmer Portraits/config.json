@@ -1,0 +1,9 @@
+{
+  "EnableMod": true,
+  "ShowWithQuestions": true,
+  "ShowWithEvents": false,
+  "ShowWithNPCPortrait": true,
+  "FacingFront": false,
+  "UseCustomPortrait": false,
+  "UseCustomBackground": true
+}

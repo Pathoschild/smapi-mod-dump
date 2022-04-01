@@ -76,9 +76,9 @@ namespace Pathoschild.Stardew.HorseFluteAnywhere
         /*********
         ** Private methods
         *********/
-        /// <summary>The event called after the first game update, once all mods are loaded.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
             // add Generic Mod Config Menu integration
@@ -101,7 +101,7 @@ namespace Pathoschild.Stardew.HorseFluteAnywhere
             ).Register();
         }
 
-        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -122,9 +122,9 @@ namespace Pathoschild.Stardew.HorseFluteAnywhere
             }
         }
 
-        /// <summary>The event called after the location list changes.</summary>
+        /// <inheritdoc cref="IWorldEvents.LocationListChanged"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnLocationListChanged(object sender, LocationListChangedEventArgs e)
         {
             // rescue lost horses
@@ -138,9 +138,9 @@ namespace Pathoschild.Stardew.HorseFluteAnywhere
             }
         }
 
-        /// <summary>The event called after the player warps into a new location.</summary>
+        /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (!e.IsLocalPlayer || !this.IsRidingHorse(Game1.player))

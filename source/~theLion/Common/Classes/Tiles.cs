@@ -8,15 +8,16 @@
 **
 *************************************************/
 
-namespace DaLion.Common.Classes;
+namespace DaLion.Stardew.Common.Classes;
 
 #region using directives
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DaLion.Stardew.Common.Extensions;
 using Microsoft.Xna.Framework;
+
+using Extensions;
 
 #endregion using directives
 

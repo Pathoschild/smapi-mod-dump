@@ -75,10 +75,10 @@ sealed partial class Scaler {
 		Vector2I targetSize
 	) {
 		/*
-		if (sourceData == null) {
+		if (sourceData is null) {
 			throw new ArgumentNullException(nameof(sourceData));
 		}
-		if (targetData == null) {
+		if (targetData is null) {
 			throw new ArgumentNullException(nameof(targetData));
 		}
 		*/

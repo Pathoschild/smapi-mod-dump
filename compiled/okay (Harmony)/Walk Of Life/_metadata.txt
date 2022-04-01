@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/8111
-IDs: DaLion.AwesomeProfessions, thelion.AwesomeProfessions
-update keys: Nexus:8111

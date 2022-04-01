@@ -28,6 +28,10 @@ static class PremultipliedAlpha {
 	internal static void Reverse(Span<Color16> data, in Vector2I size) {
 		foreach (ref Color16 color in data) {
 			if (color.A != Types.Fixed.Fixed16.Zero && color.A != Types.Fixed.Fixed16.Max) {
+				if (color.A.Value < Config.Resample.PremultiplicationLowPass) {
+					continue;
+				}
+
 				color.R = color.R.ClampedDivide(color.A);
 				color.G = color.G.ClampedDivide(color.A);
 				color.B = color.B.ClampedDivide(color.A);

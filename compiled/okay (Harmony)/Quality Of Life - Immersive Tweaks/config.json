@@ -1,0 +1,10 @@
+{
+  "AgeTapperTrees": true,
+  "TappersRewardExp": true,
+  "AgeBeeHouses": true,
+  "BerryBushesRewardExp": true,
+  "PreventFruitTreeGrowthInWinter": true,
+  "KegsRememberHoneyFlower": true,
+  "LargeProducsYieldQuantityOverQuality": true,
+  "HoneyMeadStyle": "ColoredBottles"
+}

@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/11115
 IDs: leclair.bcspacecore
-update keys: Nexus:11115@SpaceCore, Nexus:11115, GitHub:KhloeLeclair/StardewMods
+update keys: Nexus:11115@SpaceCore, ModDrop:1115749@SpaceCore, Nexus:11115, GitHub:KhloeLeclair/StardewMods

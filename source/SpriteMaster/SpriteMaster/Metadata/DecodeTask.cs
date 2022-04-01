@@ -22,7 +22,7 @@ static class DecodeTask {
 
 	private static void DecodeFunction(Texture2DMeta? metadata) {
 		var rawData = metadata!.CachedRawData;
-		if (rawData == null) {
+		if (rawData is null) {
 			return;
 		}
 

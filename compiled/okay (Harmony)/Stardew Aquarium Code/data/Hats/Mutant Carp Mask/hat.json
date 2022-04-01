@@ -13,7 +13,7 @@
 		"de": "Mutantenkarpfen Maske",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "ミュータントゴイのマスク",
 		//"tr": "", *Turkish
     },
     "DescriptionLocalization": {
@@ -26,7 +26,7 @@
 		"de": "Maske des legendären Mutantenkarpfens.",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "伝説のミュータントゴイのマスク",
 		//"tr": "", *Turkish
     }
 }

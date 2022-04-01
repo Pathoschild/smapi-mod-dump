@@ -1,6 +1,0 @@
-{
-  "stardewEventID": 19946,
-  "eventStringId": "HappyBirthday_Events_AskPlayerForFavoriteGift_Farmhouse_2_Alex",
-  "EventData": "playful/6 5/farmer 9 5 0 Alex 6 5 0/faceDirection farmer 3 True/globalFadeToClear 0.007/move farmer -2 0 3 False/faceDirection Alex 1 True/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Alex SpouseAskPlayerForFavoriteGift_0/Omegasis.HappyBirthday.Events.ShowFavoriteGiftSelectionMenu/Omegasis.HappyBirthday.Events.SpeakWithTranslatedMessage Alex SpouseAskPlayerForFavoriteGift_1/globalFade 0.01/viewport -100 -100 true/end",
-  "EventPreconditionData": "Omegasis.HappyBirthday.Framework.EventPreconditions.FarmerBirthdayPrecondition/StardustCore.Events.Preconditions.TimeSpecific.TimeOfDayPrecondition 600 2600/Omegasis.HappyBirthday.Framework.EventPreconditions.GameLocationIsHome/Omegasis.HappyBirthday.Framework.EventPreconditions.HasChosenFavoriteGiftPrecondition False/Omegasis.HappyBirthday.Framework.EventPreconditions.FarmHouseLevelPrecondition 1/Omegasis.HappyBirthday.Framework.EventPreconditions.IsMarriedToPrecondition Alex/"
-}

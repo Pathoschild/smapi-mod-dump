@@ -35,6 +35,8 @@ struct Fixed16 : IEquatable<Fixed16>, IEquatable<ushort>, ILongHash {
 	internal readonly Fixed8 Narrow => Value.Color16to8();
 	internal readonly float Real => (float)ColorHelpers.ValueToScalar(Value);
 
+	internal static Fixed16 FromReal(float value) => ColorHelpers.ScalarToValue16(value);
+
 	[MethodImpl(MethodImpl.Hot)]
 	internal Fixed16(ushort value) => InternalValue = value;
 	[MethodImpl(MethodImpl.Hot)]
@@ -65,9 +67,9 @@ struct Fixed16 : IEquatable<Fixed16>, IEquatable<ushort>, ILongHash {
 		}
 		var result = InternalDivide(this, denominator);
 		// Check if it oversaturated the value
-		if ((result & 0xFFFF_FFFF_0000_0000) != 0) {
-			return (Value <= (32U << 8)) ? Fixed16.Zero : Fixed16.Max;
-		}
+		//if ((result & 0xFFFF_FFFF_0000_0000) != 0) {
+		//	return (Value <= (32U << 8)) ? Fixed16.Zero : Fixed16.Zero;
+		//}
 		return (ushort)(result >> 16);
 	}
 

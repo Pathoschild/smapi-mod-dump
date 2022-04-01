@@ -99,6 +99,47 @@ static class Collections {
 	}
 	#endregion
 
+	#region TryAt
+	internal static bool TryAt<T>(this List<T> list, int index, out T? item) {
+		if (index < 0) {
+			throw new ArgumentOutOfRangeException(nameof(index), $"{index} is less than zero");
+		}
+		if (index >= list.Count) {
+			item = default(T);
+			return false;
+		}
+
+		item = list[index];
+		return true;
+	}
+
+	internal static bool TryAt<T>(this IReadOnlyList<T> list, int index, out T? item) {
+		if (index < 0) {
+			throw new ArgumentOutOfRangeException(nameof(index), $"{index} is less than zero");
+		}
+		if (index >= list.Count) {
+			item = default(T);
+			return false;
+		}
+
+		item = list[index];
+		return true;
+	}
+
+	internal static bool TryAt<T>(this T[] array, int index, out T? item) {
+		if (index < 0) {
+			throw new ArgumentOutOfRangeException(nameof(index), $"{index} is less than zero");
+		}
+		if (index >= array.Length) {
+			item = default(T);
+			return false;
+		}
+
+		item = array[index];
+		return true;
+	}
+	#endregion
+
 	#region Ranges
 	internal static class ArrayExt {
 		internal static int[] Range(int start, int count, int change = 1) {

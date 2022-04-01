@@ -10,7 +10,6 @@
 
 using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Extensions;
-using SpriteMaster.Types;
 using System;
 using System.Buffers;
 using System.IO;

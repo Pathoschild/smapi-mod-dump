@@ -1,0 +1,102 @@
+[
+	{
+		"Map": "Beach",
+		"Season": "Summer",
+		"AddFish": [
+			"159" // Crimsonfish
+		]
+	},
+	{
+		"Map": "Beach",
+		"AddFish": [
+			"898" // Son of Crimsonfish
+		]
+	},
+	{
+		"Map": "Forest",
+		"Season": "Winter",
+		"AddFish": [
+			"775" // Glacierfish
+		]
+	},
+	{
+		"Map": "Forest",
+		"AddFish": [
+			"902" // Glacierfish Jr.
+		]
+	},
+	{
+		"Map": "Mountain",
+		"Season": "Spring",
+		"AddFish": [
+			"163" // Legend
+		]
+	},
+	{
+		"Map": "Mountain",
+		"AddFish": [
+			"900" // Legend II
+		]
+	},
+	{
+		"Map": "Sewer",
+		"AddFish": [
+			"682", // Mutant Carp
+			"901" // Radioactive Carp
+		]
+	},
+	{
+		"Map": "Town",
+		"Season": "Fall",
+		"AddFish": [
+			"160" // Angler
+		]
+	},
+	{
+		"Map": "Town",
+		"AddFish": [
+			"899" // Ms. Angler
+		]
+	},
+	{
+		"Map": "UndergroundMine",
+		"Zone": 20,
+		"AddFish": [
+			"158" // Stonefish
+		]
+	},
+	{
+		"Map": "UndergroundMine",
+		"Zone": 60,
+		"AddFish": [
+			"161" // Ice Pip
+		]
+	},
+	{
+		"Map": "UndergroundMine",
+		"Zone": 100,
+		"AddFish": [
+			"162" // Lava Eel
+		]
+	},
+	{
+		"Map": "Submarine",
+		"Season": "Winter",
+		"AddFish": [
+			"800", // Blobfish
+			"799", // Spook Fish
+			"798", // Midnight Squid
+			"154", // Sea Cucumber
+			"155", // Super Cucumber
+			"148", // Eel
+			"797", // Pearl
+			"152" // Seaweed
+		]
+	},
+	{
+		"Map": "Caldera",
+		"AddFish": [
+			"162" // Lava Eel
+		]
+	}
+]

@@ -79,7 +79,9 @@ class SemanticVersion
 				build = elements[3] if build.nil?
 			end
 
-			unless tag_string.blank?
+			if tag_string.blank?
+				tag_build = 300
+			else
 				elements = tag_string.split('.', 2).map(&:strip)
 				tag = elements[0] if tag.nil?
 				tag_version = elements[1] if tag_version.nil?
@@ -87,8 +89,21 @@ class SemanticVersion
 					tag_version = tag_version.to_i
 					tag_build = tag_version
 					case tag
+						when nil
+							tag_build += 300
+							tag = nil
+						when "alpha"
+							# do nothing
 						when "beta"
 							tag_build += 100
+						when "rc"
+							tag_build += 200
+						when "final"
+							tag_build += 300
+							tag = nil
+						else
+							STDERR.puts "Unknown Tag: #{tag}"
+							exit 2
 					end
 				end
 			end

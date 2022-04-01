@@ -27,11 +27,11 @@ namespace CasualLife
         {
             Monitor = monitor;
         }
-        static bool is24Hour;
+        public static bool Is24Hour { get; set; }
 
         public static bool receiveRightClick(int x, int y, bool playSound = true)
         {
-            is24Hour = !is24Hour;
+            Is24Hour = !Is24Hour;
             return true;
         }
 
@@ -113,7 +113,7 @@ namespace CasualLife
                 case LocalizedContentManager.LanguageCode.ko:
                 case LocalizedContentManager.LanguageCode.it:
                     {
-                        if (is24Hour)
+                        if (Is24Hour)
                         {
                             hours = string.Concat(Game1.timeOfDay / 100 % 24);
                             hours = (Game1.timeOfDay / 100 % 24 <= 9 ? string.Concat("0", hours) : hours);
@@ -158,7 +158,7 @@ namespace CasualLife
             }
 
             string timeText = string.Concat(new object[] { hours, ":", zeroPad, Game1.timeOfDay % 100 });
-            if (!is24Hour)
+            if (!Is24Hour)
             {
                 if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.it)
                 {

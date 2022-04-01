@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Shockah.CommonModCode;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -153,6 +154,8 @@ namespace Shockah.FlexibleSprinklers
 						continue;
 					case SoilType.NonWaterable:
 						continue;
+					default:
+						throw new ArgumentException($"{nameof(SoilType)} has an invalid value.");
 				}
 
 				if (tilePathLength == sprinklerRange)
@@ -267,6 +270,8 @@ namespace Shockah.FlexibleSprinklers
 							}
 							done:;
 							break;
+						default:
+							throw new ArgumentException($"{nameof(FlexibleSprinklerBehaviorTileWaterBalanceMode)} has an invalid value.");
 					}
 				}
 			}

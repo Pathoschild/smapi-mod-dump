@@ -21,10 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 9ebcd6365f96fd025afcbb0fc2b74b3ba233fdf8
-   Merge: e83ce17d 3e3cbe10
+   commit 972ddc858951044eecd6b625e07a7a2982fba741
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Feb 27 20:56:21 2022 -0500
+   Date:   Wed Mar 30 23:57:42 2022 -0400
    
-       Merge branch 'develop' into stable
+       add fix for legacy XNB behavior with new content API
    

@@ -72,7 +72,7 @@ namespace IndustrialFurnaceAutomate
 				IndustrialFurnaceController controller = industrialFurnaceAPI.GetController(building.maxOccupants.Value);
 
 				if (controller != null)
-					return new IndustrialFurnaceMachine(controller, location, tile);
+					return new IndustrialFurnaceMachine(controller, location, new Vector2(building.tileX.Value, building.tileY.Value));
 			}
 				
 

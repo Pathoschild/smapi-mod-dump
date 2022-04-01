@@ -16,7 +16,10 @@ using Netcode;
 using System.Collections.Generic;
 using System.Linq;
 using ItemPipes.Framework.Util;
+using ItemPipes.Framework.Items;
 using System;
+using SObject = StardewValley.Object;
+
 
 namespace ItemPipes.Framework.Nodes.ObjectNodes
 {
@@ -50,14 +53,79 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
                 Farm.getShippingBin(Game1.MasterPlayer).Add(item);
                 ShippingBin.showShipment(item as StardewValley.Object, playThrowSound: false);
                 Farm.lastItemShipped = item;
-                Printer.Info("SHIPPED ITEMS");
-                for(int i=0;i<Farm.getShippingBin(Game1.MasterPlayer).Count;i++)
-                {
-                    Printer.Info(i+" "+Farm.getShippingBin(Game1.MasterPlayer)[i].Name);
-                }
                 shipped = true;
             }
             return shipped;
+        }
+
+        public void ShowShipment(SObject o, bool playThrowSound = true)
+        {
+            if (Farm != null)
+            {
+                if (playThrowSound)
+                {
+                    Farm.localSound("backpackIN");
+                }
+                DelayedAction.playSoundAfterDelay("Ship", playThrowSound ? 250 : 0);
+
+                if (o is CustomObjectItem)
+                {
+                    //Need texture item to be required, not path
+                    int temp = Game1.random.Next();
+                    Farm.temporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(524, 218, 34, 22), new Vector2((int)ShippingBin.tileX, (int)ShippingBin.tileY - 1) * 64f + new Vector2(-1f, 5f) * 4f, flipped: false, 0f, Color.White)
+                    {
+                        interval = 100f,
+                        totalNumberOfLoops = 1,
+                        animationLength = 3,
+                        pingPong = true,
+                        alpha = 1f,
+                        scale = 4f,
+                        layerDepth = (float)(((int)ShippingBin.tileY + 1) * 64) / 10000f + 0.0002f,
+                        id = temp,
+                        extraInfoForEndBehavior = temp,
+                        endFunction = Farm.removeTemporarySpritesWithID
+                    });
+                }
+                else
+                {
+                    int temp = Game1.random.Next();
+                    Farm.temporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(524, 218, 34, 22), new Vector2((int)ShippingBin.tileX, (int)ShippingBin.tileY - 1) * 64f + new Vector2(-1f, 5f) * 4f, flipped: false, 0f, Color.White)
+                    {
+                        interval = 100f,
+                        totalNumberOfLoops = 1,
+                        animationLength = 3,
+                        pingPong = true,
+                        alpha = 1f,
+                        scale = 4f,
+                        layerDepth = (float)(((int)ShippingBin.tileY + 1) * 64) / 10000f + 0.0002f,
+                        id = temp,
+                        extraInfoForEndBehavior = temp,
+                        endFunction = Farm.removeTemporarySpritesWithID
+                    });
+                    Farm.temporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(524, 230, 34, 10), new Vector2((int)ShippingBin.tileX, (int)ShippingBin.tileY - 1) * 64f + new Vector2(-1f, 17f) * 4f, flipped: false, 0f, Color.White)
+                    {
+                        interval = 100f,
+                        totalNumberOfLoops = 1,
+                        animationLength = 3,
+                        pingPong = true,
+                        alpha = 1f,
+                        scale = 4f,
+                        layerDepth = (float)(((int)ShippingBin.tileY + 1) * 64) / 10000f + 0.0003f,
+                        id = temp,
+                        extraInfoForEndBehavior = temp
+                    });
+                    Farm.temporarySprites.Add(new TemporaryAnimatedSprite("Maps\\springobjects", Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, o.parentSheetIndex, 16, 16), new Vector2((int)ShippingBin.tileX, (int)ShippingBin.tileY - 1) * 64f + new Vector2(7 + Game1.random.Next(6), 2f) * 4f, flipped: false, 0f, Color.White)
+                    {
+                        interval = 9999f,
+                        scale = 4f,
+                        alphaFade = 0.045f,
+                        layerDepth = (float)(((int)ShippingBin.tileY + 1) * 64) / 10000f + 0.000225f,
+                        motion = new Vector2(0f, 0.3f),
+                        acceleration = new Vector2(0f, 0.2f),
+                        scaleChange = -0.05f
+                    });
+                }
+            }
         }
 
         public override NetObjectList<Item> UpdateFilter(NetObjectList<Item> filteredItems)
@@ -88,6 +156,10 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         }
         public override bool CanRecieveItem(Item item)
         {
+            if (item is Tool)
+            {
+                return false;
+            }
             return true;
         }
         public override bool CanStackItem(Item item)
@@ -99,7 +171,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
             return ShipItem(item);
         }
 
-        public override Item GetItemForInput(InputPipeNode input)
+        public override Item GetItemForInput(InputPipeNode input, int flux)
         {
             Item item = null;
             if (input != null)
@@ -126,17 +198,18 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         }
         public Item TryExtractItem(ContainerNode input, NetCollection<Item> itemList)
         {
+            Printer.Info("ShippingBin");
             //Exception for multiple thread collisions
-            Printer.Info("EXTRAATING");
-            Item item = null;
-            try
+            Item source = itemList.Last();
+            Item tosend = null;
+            if (source is SObject)
             {
-                if (input.CanStackItem(item))
+                SObject obj = (SObject)source;
+                SObject tosendObject = (SObject)tosend;
+                if (input.CanRecieveItem(source))
                 {
-                    item = itemList.Last();
+                    tosendObject = obj;
                     itemList.Remove(itemList.Last());
-                    //item.Stack = 20;
-                    //itemList[index].Stack = itemList[index].Stack-20;
                     Farm.lastItemShipped = itemList.Last();
                     if (itemList.Count == 1)
                     {
@@ -146,28 +219,25 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
                     {
                         Farm.lastItemShipped = itemList.Last();
                     }
-                }
-                else if (input.CanRecieveItems())
-                {
-                    item = itemList.Last();
-                    itemList.Remove(itemList.Last());
-                    //item.Stack = 20;
-                    //itemList[index].Stack = itemList[index].Stack-20;
-                    if(itemList.Count == 1)
-                    {
-                        Farm.lastItemShipped = null;
-                    }
-                    else
-                    {
-                        Farm.lastItemShipped = itemList.Last();
-                    }
+                    return tosendObject;
                 }
             }
-            catch (Exception e)
+            else if (source is Tool)
             {
-
+                /*
+                Tool tool = (Tool)source;
+                Tool tosendTool = (Tool)tosend;
+                if (input.CanRecieveItems())
+                {
+                    tosendTool = tool;
+                    itemList.RemoveAt(index);
+                }
+                Chest.clearNulls();
+                */
+                return null;
+                
             }
-            return item;
+            return null;
         }
 
         public override bool IsEmpty()
@@ -181,6 +251,10 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
                 return true;
             }
         }
-        
+
+        public override bool CanStackItems()
+        {
+            return true;
+        }
     }
 }

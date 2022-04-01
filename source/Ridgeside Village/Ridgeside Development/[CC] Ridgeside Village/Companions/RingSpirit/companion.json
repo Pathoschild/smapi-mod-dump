@@ -1,0 +1,81 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Name": "RingSpirit",
+  "Type": "Flying",
+  "TileSheetPath": "Characters\\RSVSpirits\\RingSpirit",
+  "FrameSizeWidth": 16,
+  "FrameSizeHeight": 32,
+  "TravelSpeed": 1,
+
+  "IdleBehavior": "Hover",
+  "IdleArguments": [ -1 ],
+  "MaxDistanceBeforeTeleport": -1,
+  "MaxIdleDistance": 2,
+
+  "EnableBreathing": false,
+  "EnableFarmerCollision": false,
+  "EnableShadow": true,
+  "Shadow": {
+    "OffsetX": 0,
+    "OffsetY": 8,
+    "Scale": 1,
+    "Alpha": 255
+  },
+
+  "DownAnimation": {
+    "StartingFrame": 0,
+    "NumberOfFrames": 4,
+    "Duration": 500,
+
+    "IdleAnimation": {
+      "StartingFrame": 0,
+      "NumberOfFrames": 4,
+      "Duration": 800
+    }
+  },
+
+  "RightAnimation": {
+    "StartingFrame": 12,
+    "NumberOfFrames": 4,
+    "Duration": 500,
+
+    "IdleAnimation": {
+      "StartingFrame": 12,
+      "NumberOfFrames": 4,
+      "Duration": 800
+    }
+  },
+
+  "UpAnimation": {
+    "StartingFrame": 8,
+    "NumberOfFrames": 4,
+    "Duration": 500,
+
+    "IdleAnimation": {
+      "StartingFrame": 8,
+      "NumberOfFrames": 4,
+      "Duration": 800
+    }
+  },
+
+  "LeftAnimation": {
+    "StartingFrame": 4,
+    "NumberOfFrames": 4,
+    "Duration": 500,
+
+    "IdleAnimation": {
+      "StartingFrame": 4,
+      "NumberOfFrames": 4,
+      "Duration": 800
+    }
+  },
+}

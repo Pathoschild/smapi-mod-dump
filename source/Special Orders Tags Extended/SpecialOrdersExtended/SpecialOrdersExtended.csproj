@@ -2,12 +2,13 @@
   <Import Project="..\..\AtraBase\AtraBase.projitems" Label="Shared" />
   <Import Project="..\..\AtraShared\AtraShared.projitems" Label="Shared" />
   <PropertyGroup>
-    <Version>1.0.3</Version>
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DefineConstants>HARMONY;</DefineConstants>
     <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
@@ -25,5 +26,8 @@
     <Using Include="StardewModdingAPI" />
     <Using Include="System.Diagnostics.CodeAnalysis" />
     <Using Include="JetBrains.Annotations" />
+    <Using Alias="NotNullAttribute" Include="System.Diagnostics.CodeAnalysis.NotNullAttribute"/>
+    <Using Alias="Object" Include="System.Object"/>
+    <Using Alias="SObject" Include="StardewValley.Object"/>
   </ItemGroup>
 </Project>

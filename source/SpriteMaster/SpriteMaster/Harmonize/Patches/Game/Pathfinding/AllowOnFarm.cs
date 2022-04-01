@@ -26,12 +26,12 @@ static partial class Pathfinding {
 		typeof(NPC).GetMethod("pathfindToNextScheduleLocation", BindingFlags.Instance | BindingFlags.NonPublic)?.
 		CreateDelegate<Func<NPC?, string?, int, int, string?, int, int, int, string?, string?, SchedulePathDescription>>();
 
+	/*
 	[Harmonize(
 		typeof(NPC),
 		"prepareToDisembarkOnNewSchedulePath",
 		Harmonize.Fixation.Prefix,
 		Harmonize.PriorityLevel.Last,
-		instance: false,
 		critical: false
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -46,6 +46,7 @@ static partial class Pathfinding {
 
 		return false;
 	}
+	*/
 
 	// Override 'warpCharacter' so that family entities (pets, spouses, children) actually path to destinations rather than warping.
 	[Harmonize(
@@ -92,7 +93,7 @@ static partial class Pathfinding {
 		// If the character is family, a pet, or a spouse, run the logic.
 		if (isFamily || character == player.getSpouse() || character == player.getPet()) {
 			// If the character is still sleeping, warp it because otherwise it just glides on the floor creepily.
-			if (character.isSleeping || character.layingDown) {
+			if (character.isSleeping.Value || character.layingDown) {
 				return true;
 			}
 

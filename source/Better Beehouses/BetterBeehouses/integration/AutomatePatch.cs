@@ -9,9 +9,10 @@
 *************************************************/
 
 using HarmonyLib;
-using Netcode;
 using StardewModdingAPI;
 using StardewValley;
+using SObject = StardewValley.Object;
+using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
@@ -19,39 +20,45 @@ namespace BetterBeehouses.integration
 {
     class AutomatePatch
     {
-        private static ILHelper getStatePatch;
-        private static ILHelper getOutputPatch;
-        private static ILHelper resetPatch;
+        private static readonly Lazy<ILHelper> getStatePatch = new(statePatch);
+        private static readonly Lazy<ILHelper> getOutputPatch = new(outputPatch);
+        private static readonly Lazy<ILHelper> resetPatch = new(getResetPatch);
+        private static bool isPatched = false;
         public static bool Setup()
         {
             if (!ModEntry.helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
                 return false;
 
-            ModEntry.monitor.Log(ModEntry.helper.Translation.Get("general.automateWarning"), LogLevel.Warn);
-
             var targetClass = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.BeeHouseMachine");
-            getStatePatch = statePatch();
-            getOutputPatch = outputPatch();
-            resetPatch = getResetPatch();
-
-            ModEntry.harmony.Patch(targetClass.MethodNamed("GetState"),transpiler: new(typeof(AutomatePatch),"PatchState"));
-            ModEntry.harmony.Patch(targetClass.MethodNamed("GetOutput"), transpiler: new(typeof(AutomatePatch), "PatchOutput"));
-            ModEntry.harmony.Patch(targetClass.MethodNamed("Reset"), transpiler: new(typeof(AutomatePatch), "PatchReset"));
+            if (!isPatched && ModEntry.config.PatchAutomate)
+            {
+                isPatched = false;
+                ModEntry.harmony.Patch(targetClass.MethodNamed("GetState"), transpiler: new(typeof(AutomatePatch), "PatchState"));
+                ModEntry.harmony.Patch(targetClass.MethodNamed("GetOutput"), transpiler: new(typeof(AutomatePatch), "PatchOutput"));
+                ModEntry.harmony.Patch(targetClass.MethodNamed("Reset"), transpiler: new(typeof(AutomatePatch), "PatchReset"));
+                isPatched = true;
+            } else if (isPatched && !ModEntry.config.PatchAutomate)
+            {
+                ModEntry.harmony.Unpatch(targetClass.MethodNamed("GetState"), HarmonyPatchType.Transpiler, ModEntry.ModID);
+                ModEntry.harmony.Unpatch(targetClass.MethodNamed("GetOutput"), HarmonyPatchType.Transpiler, ModEntry.ModID);
+                ModEntry.harmony.Unpatch(targetClass.MethodNamed("Reset"), HarmonyPatchType.Transpiler, ModEntry.ModID);
+                isPatched = false;
+            }
 
             return true;
         }
 
         public static IEnumerable<CodeInstruction> PatchState(IEnumerable<CodeInstruction> instructions)
         {
-            return getStatePatch.Run(instructions);
+            return getStatePatch.Value.Run(instructions);
         }
         public static IEnumerable<CodeInstruction> PatchOutput(IEnumerable<CodeInstruction> instructions)
         {
-            return getOutputPatch.Run(instructions);
+            return getOutputPatch.Value.Run(instructions);
         }
         public static IEnumerable<CodeInstruction> PatchReset(IEnumerable<CodeInstruction> instructions)
         {
-            return resetPatch.Run(instructions);
+            return resetPatch.Value.Run(instructions);
         }
 
         private static ILHelper statePatch()
@@ -76,11 +83,11 @@ namespace BetterBeehouses.integration
                 {
                     new(OpCodes.Dup),
                     new(OpCodes.Ldloc_0),
-                    new(OpCodes.Callvirt,typeof(Object).MethodNamed("get_Price"))
+                    new(OpCodes.Callvirt,typeof(SObject).MethodNamed("get_Price"))
                 })
                 .SkipTo(new CodeInstruction[]
                 {
-                    new(OpCodes.Callvirt, typeof(Object).MethodNamed("set_Price"))
+                    new(OpCodes.Callvirt, typeof(SObject).MethodNamed("set_Price"))
                 })
                 .Add(new CodeInstruction[]
                 {

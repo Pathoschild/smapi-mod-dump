@@ -1,0 +1,13 @@
+{
+  "SnowCrabChance": 0.125,
+  "SnowCrabHealth": 60,
+  "SnowCrabDamageToFarmer": 10,
+  "SnowCrabResilience": 2,
+  "SnowCrabExperienceGained": 8,
+  "SnowCrabObjectsToDrop": "717 .20 286 .2 287 .2 97 .005 99 .001",
+  "SnowCrabQuestChance": 0.333,
+  "SnowCrabQuestMinimum": 2,
+  "SnowCrabQuestMaximum": 5,
+  "SnowCrabQuestRewardPerKill": 125,
+  "SnowCrabDebugOutput": false
+}

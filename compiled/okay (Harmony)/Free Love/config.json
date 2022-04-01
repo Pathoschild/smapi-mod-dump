@@ -8,7 +8,7 @@
   "MaxGiftsPerSpousePerWeek": 2,
   "PreventHostileDivorces": true,
   "ComplexDivorce": true,
-  "RoommateRomance": true,
+  "RoommateRomance": false,
   "RomanceAllVillagers": false,
   "ShowParentNames": false,
   "SpouseSleepOrder": "",

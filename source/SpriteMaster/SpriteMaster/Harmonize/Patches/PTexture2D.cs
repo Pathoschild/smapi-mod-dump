@@ -14,7 +14,9 @@ using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -46,7 +48,7 @@ static class PTexture2D {
 	private static bool Cacheable(Texture2D texture) => texture.LevelCount <= 1;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void SetDataPurge<T>(Texture2D texture, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : struct {
+	private static void SetDataPurge<T>(Texture2D texture, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount, bool animated) where T : struct {
 		if (!ManagedSpriteInstance.Validate(texture, clean: true)) {
 			return;
 		}
@@ -74,7 +76,8 @@ static class PTexture2D {
 				data: byteData,
 				offset: startIndex * elementSize,
 				length: elementCount * elementSize
-			)
+			),
+			animated: animated
 		);
 #endif
 	}
@@ -165,6 +168,80 @@ static class PTexture2D {
 		return true;
 	}
 
+	[Harmonize("GetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
+	public static bool OnGetData<T>(Texture2D __instance, T[] data) where T : unmanaged {
+		return OnGetData<T>(__instance, 0, null, data, 0, data.Length);
+	}
+
+	[Harmonize("GetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
+	public static bool OnGetData<T>(Texture2D __instance, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		return OnGetData<T>(__instance, 0, null, data, startIndex, elementCount);
+	}
+
+	[Harmonize("GetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
+	public static bool OnGetData<T>(Texture2D __instance, int level, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		return OnGetData<T>(__instance, level, 0, rect, data, startIndex, elementCount);
+	}
+
+	[Harmonize("GetData", Harmonize.Fixation.Prefix, PriorityLevel.Last, Harmonize.Generic.Struct)]
+	public static unsafe bool OnGetData<T>(Texture2D __instance, int level, int arraySlice, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : unmanaged {
+		if (!Config.IsEnabled || !Config.SMAPI.ApplyGetDataPatch) {
+			return true;
+		}
+		
+		if (data is null) {
+			throw new ArgumentNullException(nameof(data));
+		}
+
+		try {
+			if (
+				level == 0 &&
+				arraySlice == 0 &&
+				__instance.TryMeta(out var sourceMeta) && sourceMeta.CachedData is byte[] cachedSourceData
+			) {
+				Bounds bounds = rect ?? __instance.Bounds;
+
+				if (cachedSourceData.Length < elementCount * sizeof(T)) {
+					throw new ArgumentException($"{cachedSourceData.Length} < {elementCount * sizeof(T)}", nameof(elementCount));
+				}
+
+				if (data.Length < elementCount + startIndex) {
+					throw new ArgumentException($"{data.Length} < {elementCount + startIndex}", nameof(data));
+				}
+
+				if (bounds == __instance.Bounds) {
+					ReadOnlySpan<byte> sourceBytes = cachedSourceData;
+					var source = sourceBytes.Cast<T>();
+					Span<T> dest = data;
+					source.CopyTo(dest, 0, startIndex, elementCount);
+
+					return false;
+				}
+				else if (__instance.Bounds.Contains(bounds)) {
+					// We need a subcopy
+					var cachedData = cachedSourceData.AsReadOnlySpan<T>();
+					var destData = data.AsSpan();
+					int sourceStride = __instance.Width;
+					int destStride = bounds.Width;
+					int sourceOffset = (bounds.Top * sourceStride) + bounds.Left;
+					int destOffset = startIndex;
+					for (int y = 0; y < bounds.Height; ++y) {
+						cachedData.Slice(sourceOffset, destStride).CopyTo(destData.Slice(destOffset, destStride));
+						sourceOffset += sourceStride;
+						destOffset += destStride;
+					}
+
+					return false;
+				}
+			}
+		}
+		catch (Exception ex) {
+			Debug.Error("OnGetData optimization threw an exception", ex);
+		}
+
+		return true;
+	}
+
 	/*
 	[Harmonize("SetData", Harmonize.Fixation.Reverse, PriorityLevel.Last, Harmonize.Generic.Struct)]
 	public static void OnSetDataOriginal<T>(Texture2D __instance, int level, int arraySlice, in XNA.Rectangle? rect, T[] data, int startIndex, int elementCount) where T : struct {
@@ -197,6 +274,29 @@ static class PTexture2D {
 
 	#endregion
 
+	//private void PlatformSetData<T>(int level, T[] data, int startIndex, int elementCount) where T : struct
+
+	//private void PlatformSetData<T>(int level, int arraySlice, Rectangle rect, T[] data, int startIndex, int elementCount) where T : struct
+
+
+	private static readonly Assembly? CPAAssembly = AppDomain.CurrentDomain.GetAssemblies().SingleOrDefault(assembly => assembly.GetName().Name == "ContentPatcherAnimations");
+	private static bool IsFromContentPatcherAnimations() {
+		if (CPAAssembly is null) {
+			return false;
+		}
+
+		var stackTrace = new StackTrace(skipFrames: 2, fNeedFileInfo: false);
+		foreach (var frame in stackTrace.GetFrames()) {
+			if (frame.GetMethod() is MethodBase method) {
+				if (method.DeclaringType?.Assembly == CPAAssembly) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	[Harmonize("PlatformSetData", Harmonize.Fixation.Postfix, PriorityLevel.Average, Harmonize.Generic.Struct, platform: Harmonize.Platform.MonoGame)]
 	public static void OnPlatformSetDataPost<T>(Texture2D __instance, int level, T[] data, int startIndex, int elementCount) where T : unmanaged {
 		if (__instance is (ManagedTexture2D or InternalTexture2D)) {
@@ -208,7 +308,8 @@ static class PTexture2D {
 			null,
 			data,
 			startIndex,
-			elementCount
+			elementCount,
+			animated: IsFromContentPatcherAnimations()
 		);
 	}
 
@@ -220,10 +321,11 @@ static class PTexture2D {
 
 		SetDataPurge(
 			__instance,
-			null,
+			rect,
 			data,
 			startIndex,
-			elementCount
+			elementCount,
+			animated: IsFromContentPatcherAnimations()
 		);
 	}
 }

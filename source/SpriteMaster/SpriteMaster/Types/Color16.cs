@@ -39,10 +39,10 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 
 	private static ulong MakeMask(bool r, bool g, bool b, bool a) {
 		// ToShort returns 0 or 1 for the mask. Negating it will turn that into 0 or -1, and -1 is 0xFF...
-		var rr = (ulong)(ushort)(-r.ToShort());
-		var gg = ((ulong)(ushort)(-g.ToShort())) << 16;
-		var bb = ((ulong)(ushort)(-b.ToShort())) << 32;
-		var aa = ((ulong)(ushort)(-a.ToShort())) << 48;
+		var rr = (ulong)(ushort)(-r.ToUShort());
+		var gg = ((ulong)(ushort)(-g.ToUShort())) << 16;
+		var bb = ((ulong)(ushort)(-b.ToUShort())) << 32;
+		var aa = ((ulong)(ushort)(-a.ToUShort())) << 48;
 		return rr | gg | bb | aa;
 	}
 	internal readonly Color16 Mask(bool r = true, bool g = true, bool b = true, bool a = true) => new(Packed & MakeMask(r, g, b, a));

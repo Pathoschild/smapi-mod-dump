@@ -10,8 +10,6 @@
 
 using SpriteMaster.Extensions;
 using SpriteMaster.Tasking;
-using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace SpriteMaster.Resample;
@@ -23,6 +21,10 @@ static class ResampleTask {
 
 	private static ManagedSpriteInstance? ResampleFunction(in TaskParameters parameters) {
 		try {
+			if (ManagedSpriteInstance.TryResurrect(parameters.SpriteInfo, out var resurrectedInstance)) {
+				return resurrectedInstance;
+			}
+
 			return new ManagedSpriteInstance(
 				assetName: parameters.SpriteInfo.Reference.NormalizedName(),
 				spriteInfo: parameters.SpriteInfo,

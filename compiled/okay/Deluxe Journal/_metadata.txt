@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11436
+IDs: MolsonCAD.DeluxeJournal
+update keys: Nexus:11436, GitHub:MolsonCAD/DeluxeJournal

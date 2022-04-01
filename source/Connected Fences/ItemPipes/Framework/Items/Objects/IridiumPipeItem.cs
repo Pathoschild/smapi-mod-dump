@@ -22,10 +22,8 @@ using StardewValley;
 
 namespace ItemPipes.Framework.Items.Objects
 {
-    [XmlType("Mods_sergiomadd.ItemPipes_IridiumPipeItem")]
     public class IridiumPipeItem : ConnectorPipeItem
     {
-        public int Stage { get; set; }
         //Stage 1
         [XmlIgnore]
         public Texture2D ItemTexture1 { get; set; }
@@ -64,49 +62,42 @@ namespace ItemPipes.Framework.Items.Objects
 
         public IridiumPipeItem() : base()
         {
-            Stage = 1;
-            Name = "Iridium Pipe";
-            IDName = "IridiumPipe";
-            Description = "Type: Connector Pipe\nThe link between IO pipes. It moves items at 5 tiles/1 second.";
             LoadStages();
             Init();
         }
 
         public IridiumPipeItem(Vector2 position) : base(position)
         {
-            Stage = 1;
-            Name = "Iridium Pipe";
-            IDName = "IridiumPipe";
-            Description = "Type: Connector Pipe\nThe link between IO pipes. It moves items at 5 tiles/1 second.";
             LoadStages();
             Init();
         }
 
         public void LoadStages()
         {
+            DataAccess DataAccess = DataAccess.GetDataAccess();
             //Stage 1
-            ItemMovingSprite1 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/1/{IDName}_item_Sprite.png");
-            DefaultSprite1 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/1/{IDName}_default_Sprite.png");
-            ConnectingSprite1 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/1/{IDName}_connecting_Sprite.png");
-            ItemTexture1 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/1/{IDName}_Item.png");
+            ItemTexture1 = DataAccess.Sprites[IDName + "_Item1"];
+            DefaultSprite1 = DataAccess.Sprites[IDName + "_default_Sprite1"];
+            ConnectingSprite1 = DataAccess.Sprites[IDName + "_connecting_Sprite1"];
+            ItemMovingSprite1 = DataAccess.Sprites[IDName + "_item_Sprite1"];
             SpriteTexture1 = DefaultSprite1;
 
             //Stage 2
-            ItemMovingSprite2 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/2/{IDName}_item_Sprite.png");
-            DefaultSprite2 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/2/{IDName}_default_Sprite.png");
-            ConnectingSprite2 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/2/{IDName}_connecting_Sprite.png");
-            ItemTexture2 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/2/{IDName}_Item.png");
+            ItemTexture2 = DataAccess.Sprites[IDName + "_Item2"];
+            DefaultSprite2 = DataAccess.Sprites[IDName + "_default_Sprite2"];
+            ConnectingSprite2 = DataAccess.Sprites[IDName + "_connecting_Sprite2"];
+            ItemMovingSprite2 = DataAccess.Sprites[IDName + "_item_Sprite2"];
             SpriteTexture2 = DefaultSprite2;
 
             //Stage 3
-            ItemMovingSprite3 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/3/{IDName}_item_Sprite.png");
-            DefaultSprite3 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/3/{IDName}_default_Sprite.png");
-            ConnectingSprite3 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/3/{IDName}_connecting_Sprite.png");
-            ItemTexture3 = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/{IDName}/3/{IDName}_Item.png");
+            ItemTexture3 = DataAccess.Sprites[IDName + "_Item3"];
+            DefaultSprite3 = DataAccess.Sprites[IDName + "_default_Sprite3"];
+            ConnectingSprite3 = DataAccess.Sprites[IDName + "_connecting_Sprite3"];
+            ItemMovingSprite3 = DataAccess.Sprites[IDName + "_item_Sprite3"];
             SpriteTexture3 = DefaultSprite3;
         }
 
-        public override void Init()
+        public override void LoadTextures()
         {
             ItemTexture = ItemTexture1;
             SpriteTexture = SpriteTexture1;
@@ -119,7 +110,6 @@ namespace ItemPipes.Framework.Items.Objects
         {
             if (((int)Game1.currentGameTime.TotalGameTime.TotalSeconds) % 2 == 0 && ((int)Game1.currentGameTime.TotalGameTime.TotalSeconds) % 3 == 0)
             {
-                Stage = 3;
                 ItemTexture = ItemTexture3;
                 SpriteTexture = SpriteTexture3;
                 ItemMovingSprite = ItemMovingSprite3;
@@ -128,7 +118,6 @@ namespace ItemPipes.Framework.Items.Objects
             }
             else if (((int)Game1.currentGameTime.TotalGameTime.TotalSeconds) % 2 == 0)
             {
-                Stage = 2;
                 ItemTexture = ItemTexture2;
                 SpriteTexture = SpriteTexture2;
                 ItemMovingSprite = ItemMovingSprite2;
@@ -137,7 +126,6 @@ namespace ItemPipes.Framework.Items.Objects
             }
             else
             {
-                Stage = 1;
                 ItemTexture = ItemTexture1;
                 SpriteTexture = SpriteTexture1;
                 ItemMovingSprite = ItemMovingSprite1;

@@ -11,6 +11,7 @@
 using HarmonyLib;
 using Netcode;
 using StardewValley;
+using MathF = System.MathF;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 
@@ -195,7 +196,14 @@ namespace BetterBeehouses
         public static void ManipulateObject(Object obj, Farmer who = null)
         {
             obj.Quality = GetQuality(who);
-            obj.Price = (int)(obj.Price * GetMultiplier(obj.Quality));
+            float val = obj.Price * GetMultiplier(obj.Quality);
+            int cap = ModEntry.config.CapFactor;
+            if(val > cap)
+                val = cap * MathF.Pow(
+                    val / cap,
+                    1f / (1f + ModEntry.config.CapCurve)
+                );
+            obj.Price = (int)(val + .5f);
         }
         public static bool CantProduceToday(bool isWinter, GameLocation loc)
         {
@@ -223,7 +231,9 @@ namespace BetterBeehouses
             if (!ModEntry.config.UseQuality)
                 return 0;
 
-            double chanceForGoldQuality = 0.2 * (who.FarmingLevel / 10.0) + 0.2 * ((who.FarmingLevel + 2.0) / 12.0) + 0.01;
+            float boost = (who.eventsSeen.Contains(2120303)) ? ModEntry.config.BearBoost : 1f;
+
+            double chanceForGoldQuality = 0.2 * (who.FarmingLevel / 10.0) + 0.2 * boost * ((who.FarmingLevel + 2.0) / 12.0) + 0.01;
             double chanceForSilverQuality = System.Math.Min(0.75, chanceForGoldQuality * 2.0);
             return (Game1.random.NextDouble() < chanceForGoldQuality / 2.0) ? 4 :
                 (Game1.random.NextDouble() < chanceForGoldQuality) ? 2 :

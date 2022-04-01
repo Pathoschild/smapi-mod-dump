@@ -1,0 +1,164 @@
+{
+	"mod-name": "Almanac",
+
+	"almanac.open": "Abrir Almanaque",
+
+	"almanac.cover": "The\nFerngill\nFarmer's\nAlmanac",
+	"almanac.cover-island": "The\nFerngill\nand\nFern Islands\nFarmer's\nAlmanac",
+
+	"calendar.when": "{{season}}, Ano {{year}}",
+
+	"calendar.day.1": "S",
+	"calendar.day.2": "T",
+	"calendar.day.3": "Q",
+	"calendar.day.4": "Q",
+	"calendar.day.5": "S",
+	"calendar.day.6": "S",
+	"calendar.day.7": "D",
+
+	"page.crops": "Datas de Plantio",
+
+	"crop.last-day": "Último Dia Para:",
+
+	"crop.toggle": "Alternar {{mode}}",
+	"crop.paddy": "Bônus de Proximidade de Água",
+
+	"crop.using-none": "Os tempos de crescimento e datas assumem falta de fertilizante ou habilidade.",
+	"crop.using-agri": "Os tempos de crescimento e datas assumem que você seja um {{agriculturist}}.",
+	"crop.using-speed": "Os tempos de crescimento e datas assumem que você faz uso de {{fertilizer}}.",
+	"crop.using-both": "Os tempos de crescimento e datas assumem que você seja um {{agriculturist}} e faz uso de {{fertilizer}}.",
+	"crop.using-paddy": "Também é assumido que o seu plantio @Bcresça próximo à água@b.",
+
+	"crop.grow-time": "Cresce em {{count}} dias.",
+	"crop.harvests": "Espera-se {{count}} colheitas este ano.",
+	"crop.harvests-date": "Espera-se {{count}} colheitas este ano quando plantado em {{date}}.",
+	"crop.last-date": "Não plante mais tarde que {{date}}.",
+	"crop.regrow-time": "Recresce a cada {{count}} dias.",
+	"crop.paddy-note": "Cresce mais rápido próximo à água.",
+	"crop.giant-note": "Pode se tornar gigante.",
+	"crop.trellis-note": "Requer uma treliça.",
+
+	"page.weather": "Previsão do Tempo",
+	"page.weather-island": "Previsão do Tempo - Ilha Gengibre",
+
+	"page.weather.pirates": "A Guilda dos Aventureiros avisou de possíveis atividades piratas na Ilha Gengibre nas seguintes:",
+
+	"festival.about": "Os seguintes festivais estão agendados para a área do Vale do Orvalho em {{season}}:",
+
+	"festival.when": "Quando:",
+	"festival.when-times": "{{start}} a {{end}}",
+	"festival.where": "Onde:",
+	"festival.date": "Data:",
+
+	"festival.location.Town": "Vila Pelicanos",
+	"festival.location.Beach": "A Praia",
+	"festival.location.Forest": "Floresta Cinzaseiva",
+
+	"weather.sunny": "Endsolarado",
+	"weather.rain": "Chuvoso",
+	"weather.debris": "Ventania",
+	"weather.lightning": "Trovoada",
+	"weather.festival": "Ensolarado",
+	"weather.snow": "Nevasca",
+
+	"page.train": "Agendamento do Trem",
+	"page.train.about": "@BAviso:@b Trens passarão pela estação do Vale do Orvalho nos seguintes horários. Para sua segurança, sempre permaneça distante do trilho quando o trem está passando.",
+
+	"page.train.notice": "O serviço ferroviário da estação do Vale do Orvalho será suspenso durante a Primavera enquanto a manutenção agendada dos trilhos é realizada.",
+
+	"page.fortune": "Fortuna",
+
+	"page.fortune.luck-awful": "Espíritos emburrados farão seu dia difícil .",
+	"page.fortune.luck-bad": "Espíritos estressados não trarão sorte a ninguém.",
+	"page.fortune.luck-neutral": "Os espíritos estarão em perfeito balanceamento",
+	"page.fortune.luck-good": "Espíritos alegres trarão boa sorte.",
+	"page.fortune.luck-great": "Espíritos festivos expalharão boa sorte a todos.",
+
+	"page.fortune.event.none": "Espere uma estação pacífica. Procure diversão por si próprio, e busque por felicidade no dia a dia.",
+
+	"page.fortune.about": "Aqui está o que pode acontecer em {{Season}}, ou o que não pode.",
+
+	"page.fortune.garbage-hat": "O lixo de um é o tesouro de outro.",
+
+	"page.fortune.event.fairy": "Uma fada de natureza boa passará durante a noite. Aqueles com a boa sorte podem esperar uma farta colheita junto disto",
+	"page.fortune.event.witch": "Bruxas são esperadas na área por esta noite.",
+	"page.fortune.event.meteorite": "Chuvas de meteoro são esperadas por toda Ferngill.",
+	"page.fortune.event.owl": "Banhados em mistério, guardiões de rocha descerão sobre o vale.",
+
+	"page.mines": "O Subterrâneo",
+	"page.mines.about": "O sumário seguinte prevê atividade de monstros em {{Season}}:",
+
+	"page.mines.type.Mushroom": "Cogumelos",
+	"page.mines.type.InfestedMonster": "Infestação",
+	"page.mines.type.InfestedSlime": "Infestação de Geléias",
+	"page.mines.type.Quarry": "Pedreira",
+	"page.mines.type.InfestedQuarry": "Infestação de Pedreira",
+	"page.mines.type.Dino": "Dinossauros Cavernosos",
+
+	"page.notices": "Notícias Locais",
+
+	"page.notices.berries": "Estação de {{item}} vai de {{start}} até {{end}}.",
+	"page.notices.summer": "É esperado que os oceanos de verão acertarão a Praia Pelicanos com detritos extras entre os dias 12 a 14.",
+	"page.notices.market": "O Mercado Noturno abrirá ao anoitecer dos dias 15 a 17.",
+
+	"page.notices.birthday.no-s": "É o aniversário de {{name}}!",
+	"page.notices.birthday.s": "É o aniversário de {{name}}!",
+
+	"settings.button": "Mostrar Botão de Almanaque",
+	"settings.button-desc": "Quando ativado, um botão para abrir o almanaque será adicionado ao menu do inventário.",
+
+	"settings.available": "Almanaque Sempre Disponível",
+	"settings.available-desc": "Quando ativo, você possuirá o almanaque independentemente de ter recebido uma cópia.",
+
+	"settings.island": "Ilha Sempre Disponível",
+	"settings.island-desc": "Quando ativo, seu almanaque sempre estará expandido com conteúdo da Ilha Gengibre",
+
+	"settings.magic": "Páginas Mágicas Sempre Disponíveis",
+	"settings.magic-desc": "Quando ativo, você pode acessar as páginas mágicas antes do evento com o Feiticeiro.",
+
+	"settings.weather.deterministic": "Usar Tempo Determinístico",
+	"settings.weather.deterministic-desc": "Para que a previsão do tempo do almanaque funciona, nós trocamos a forma de randomização do tempo por uma mais previsível. Caso esteja causando problemas, você pode desabilitá-lo aqui. Porém, fazer isso desabilitará a previsão do tempo extendida.",
+
+	"settings.weather.rules": "Habilitar Regras do Tempo",
+	"settings.weather.rules-desc": "Regras do tempo aplicam certas limitações a ele. A regra padrão força três dias seguidos de chuva ao fim da primavera para facilitar a melhoria do regador, além de que a cada semana haverá ao mínimo um dia chuvoso e um ensolarado.",
+
+	"settings.controls": "Controles",
+
+	"settings.controls.almanac": "Abrir Almanaque",
+	"settings.controls.almanac-desc": "Pressionar esta tecla abrirá a interface do almanaque.",
+
+	"settings.enable": "Habilitar Página",
+	"settings.enable-desc": "Determina se esta página deve ou não estar presente no almanaque.",
+
+	"settings.crops": "Página: Datas de Plantio",
+
+	"settings.crops.preview": "Prévia de Plantio",
+	"settings.crops.preview-desc": "Quando habilitado, passar sobre a aba de datas de plantio te mostrará um calendário referente a cada estado diário do plantio.",
+
+	"settings.crops.preview.enable": "Permitir Prévias",
+
+	"settings.crops.preview.plantonfirst": "Sempre Plantar no Primeiro",
+	"settings.crops.preview.plantonfirst-desc": "Quando habilitado, a visão mensal do plantio selecionado sempre mostrará plantado no primeiro dia mesmo que a data atual não seja o primeiro dia do mês.",
+
+	"settings.crops.preview.sprite": "Usar Sprites de Colheita",
+	"settings.crops.preview.sprite-desc": "Quando ativado, a imagem do item do produto será mostrada ao invés do estágio final de crescimento, para tornar mais fácil identificar quando o produto pode ser colhido.",
+
+	"settings.fortune": "Página: Fortuna",
+
+	"settings.fortune.deterministic": "Usar Sorte Determinística",
+	"settings.fortune.deterministic-desc": "Para que a previsão de sorte do almanaque funcione, nós trocamos a forma de randomização da sorte por uma mais previsível. Caso esteja causando problemas, você pode desabilitá-la aqui. Porém, fazer isso desabilitará a previsão de sorte extendida.",
+
+	"settings.fortune.exact": "Mostrar Porcentagem de Sorte",
+	"settings.fortune.exact-desc": "Quando ativo, a exata porcentagem de sorte será mostrada na descrição do calendário.",
+
+	"settings.train": "Página: Agendamento do Trem",
+
+	"settings.weather": "Página: Previsão do Tempo",
+
+	"settings.mines": "Página: O Subterrâneo",
+
+	"settings.notices": "Página: Notícias",
+
+	"settings.notices.cycle-time": "Tempo de Ciclagem",
+	"settings.notices.cycle-time.desc": "Quando diversas representações visuais servirem para o mesmo dia, cada uma será mostrada por esta quantidade de segundos."
+}

@@ -10,17 +10,13 @@
 
 using SpriteMaster.Types;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SpriteMaster.Resample.Passes;
 
 static class BlockMultipleAnalysis {
 	private static bool BlockTest(ReadOnlySpan<Color8> data, in Bounds textureBounds, in Bounds spriteBounds, int stride, int block) {
 		// If it doesn't align to the bounds, then we cannot analyze this multiple.
-		if (spriteBounds.Extent % block != Vector2I.Zero) {
+		if ((spriteBounds.Extent % block) != Vector2I.Zero) {
 			return false;
 		}
 
@@ -55,9 +51,43 @@ static class BlockMultipleAnalysis {
 		return true;
 	}
 
+	private static int QuickBlockTest(ReadOnlySpan<Color8> data, in Bounds textureBounds, in Bounds spriteBounds, int stride) {
+		// Scan row by row, just seeing what the largest sequential sequence of texels is. Return the smallest.
+		int minimumBlock = Math.Min(spriteBounds.Width, spriteBounds.Height);
+
+		var initialOffset = spriteBounds.Top * stride + spriteBounds.Left;
+		for (int y = 0; y < spriteBounds.Height; ++y) {
+			var yBaseOffset = initialOffset + y * stride;
+
+			int currentContiguousSpan = 1;
+			var lastColor = data[yBaseOffset];
+			for (int x = 1; x < spriteBounds.Width; ++x) {
+				int offset = yBaseOffset + x;
+				var currentColor = data[offset];
+
+				if (currentColor.Equals(lastColor, Config.Resample.BlockMultipleAnalysis.EqualityThreshold)) {
+					++currentContiguousSpan;
+				}
+				else {
+					minimumBlock = Math.Min(minimumBlock, currentContiguousSpan);
+					currentContiguousSpan = 1;
+				}
+
+				lastColor = currentColor;
+			}
+
+			minimumBlock = Math.Min(minimumBlock, currentContiguousSpan);
+		}
+
+		return minimumBlock;
+	}
+
 	internal static int Analyze(ReadOnlySpan<Color8> data, in Bounds textureBounds, in Bounds spriteBounds, int stride) {
+		// A very quick test to determine the maximum possible block size, just checking horizontal stride
+		var maxBlockLimit = QuickBlockTest(data, in textureBounds, in spriteBounds, stride);
+
 		// Common multiples
-		for (int block = 4; block > 1; --block) {
+		for (int block = maxBlockLimit; block > 1; --block) {
 			if (BlockTest(data, textureBounds, spriteBounds, stride, block)) {
 				return block;
 			}

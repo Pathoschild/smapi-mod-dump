@@ -80,17 +80,18 @@ namespace FarmerHelper
 
             foreach (var terrainFeature in Game1.getFarm().terrainFeatures.Values)
             {
-                if (terrainFeature is HoeDirt && Config.WarnAboutPlantsUnwateredBeforeSleep && (terrainFeature as HoeDirt).crop != null && !(terrainFeature as HoeDirt).hasPaddyCrop() && (terrainFeature as HoeDirt).state.Value == 0)
+                if (terrainFeature is HoeDirt && Config.WarnAboutPlantsUnwateredBeforeSleep && (terrainFeature as HoeDirt).crop != null && !(terrainFeature as HoeDirt).hasPaddyCrop() && (terrainFeature as HoeDirt).state.Value == 0 && (terrainFeature as HoeDirt).crop.currentPhase.Value >= (terrainFeature as HoeDirt).crop.phaseDays.Count - 1)
                 {
                     question = string.Format(SHelper.Translation.Get("plants-need-watering"), question);
                     break;
                 }
             }
+            var ignoreCrops = Config.IgnoreHarvestCrops.Split(',');
             foreach (var obj in Game1.getFarm().terrainFeatures.Values)
             {
                 if (!(obj is HoeDirt))
                     continue;
-                if (Config.WarnAboutPlantsUnharvestedBeforeSleep && (obj as HoeDirt).readyForHarvest())
+                if (Config.WarnAboutPlantsUnharvestedBeforeSleep && (obj as HoeDirt).readyForHarvest() && (!ignoreCrops.Contains((obj as HoeDirt).crop?.indexOfHarvest.Value+"")))
                 {
                     question = string.Format(SHelper.Translation.Get("plants-ready-for-harvest"), question);
                     break;

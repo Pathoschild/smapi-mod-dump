@@ -18,6 +18,10 @@ using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Features
 {
+    public enum MachineState
+    {
+        Ready, Busy, Waiting
+    }
     public class ReadTile
     {
         public static bool isReadingTile = false;
@@ -28,17 +32,26 @@ namespace stardew_access.Features
             isReadingTile = false;
         }
 
-        public static async void run(bool manuallyTriggered = false)
+        public static void run(bool manuallyTriggered = false, bool playersPosition = false)
         {
-            isReadingTile = true;
-
             try
             {
-                #region Get Next Grab Tile
-                Vector2 tile = CurrentPlayer.getNextTile();
-                int x = (int)tile.X;
-                int y = (int)tile.Y;
+                Vector2 tile;
+                int x, y;
+                #region Get Tile
+                if (!playersPosition)
+                {
+                    // Grab tile
+                    tile = CurrentPlayer.getNextTile();
+                }
+                else
+                {
+                    // Player's standing tile
+                    tile = CurrentPlayer.getPosition();
+                }
                 #endregion
+                x = (int)tile.X;
+                y = (int)tile.Y;
 
                 if (Context.IsPlayerFree)
                 {
@@ -68,32 +81,36 @@ namespace stardew_access.Features
                     }
                     #endregion
 
-                    prevTile = tile;
+                    if (!manuallyTriggered)
+                        prevTile = tile;
                 }
 
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}", LogLevel.Debug);
+                MainClass.ErrorLog($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
             }
-
-            await Task.Delay(100);
-            isReadingTile = false;
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
-        public static (string?, string?) getNameWithCategoryNameAtTile(Vector2 tile)
+        public static (string? name, string? categoryName) getNameWithCategoryNameAtTile(Vector2 tile)
         {
-            (string?, CATEGORY?) tileDetail = getNameWithCategoryAtTile(tile);
+            (string? name, CATEGORY? category) tileDetail = getNameWithCategoryAtTile(tile);
 
-            if (tileDetail.Item2 == null)
-                tileDetail.Item2 = CATEGORY.Others;
+            if (tileDetail.category == null)
+                tileDetail.category = CATEGORY.Others;
 
-            return (tileDetail.Item1, tileDetail.Item2.ToString());
+            return (tileDetail.name, tileDetail.category.ToString());
+        }
+
+        ///<summary>Returns the name of the object at tile</summary>
+        public static string? getNameAtTile(Vector2 tile)
+        {
+            return getNameWithCategoryAtTile(tile).name;
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category</summary>
-        public static (string?, CATEGORY?) getNameWithCategoryAtTile(Vector2 tile)
+        public static (string? name, CATEGORY? category) getNameWithCategoryAtTile(Vector2 tile)
         {
             int x = (int)tile.X;
             int y = (int)tile.Y;
@@ -103,7 +120,7 @@ namespace stardew_access.Features
             bool isColliding = isCollidingAtTile(x, y);
             Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
             string? door = getDoorAtTile(x, y);
-            (CATEGORY?, string?) tileInfo = getTileInfo(x, y);
+            (CATEGORY? category, string? name) tileInfo = getTileInfo(x, y);
             string? junimoBundle = getJunimoBundleAt(x, y);
             string? resourceClump = getResourceClumpAtTile(x, y);
             string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
@@ -129,18 +146,18 @@ namespace stardew_access.Features
             }
             else if (Game1.currentLocation.isObjectAtTile(x, y))
             {
-                (string?, CATEGORY?) obj = getObjectAtTile(x, y);
-                toReturn = obj.Item1;
-                category = obj.Item2;
+                (string? name, CATEGORY? category) obj = getObjectAtTile(x, y);
+                toReturn = obj.name;
+                category = obj.category;
             }
             else if (terrainFeature.ContainsKey(tile))
             {
-                (string?, CATEGORY) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
-                string? terrain = tf.Item1;
+                (string? name, CATEGORY category) tf = getTerrainFeatureAtTile(terrainFeature[tile]);
+                string? terrain = tf.name;
                 if (terrain != null)
                 {
                     toReturn = terrain;
-                    category = tf.Item2;
+                    category = tf.category;
                 }
 
             }
@@ -174,10 +191,10 @@ namespace stardew_access.Features
                 toReturn = "Elevator";
                 category = CATEGORY.Doors;
             }
-            else if (tileInfo.Item2 != null)
+            else if (tileInfo.name != null)
             {
-                toReturn = tileInfo.Item2;
-                category = tileInfo.Item1;
+                toReturn = tileInfo.name;
+                category = tileInfo.category;
             }
             else if (junimoBundle != null)
             {
@@ -189,83 +206,6 @@ namespace stardew_access.Features
                 return (null, category);
 
             return (toReturn, category);
-        }
-
-        ///<summary>Returns the name of the object at tile</summary>
-        public static string? getNameAtTile(Vector2 tile)
-        {
-            int x = (int)tile.X;
-            int y = (int)tile.Y;
-            string? toReturn = "";
-
-            bool isColliding = isCollidingAtTile(x, y);
-            Dictionary<Vector2, Netcode.NetRef<TerrainFeature>> terrainFeature = Game1.currentLocation.terrainFeatures.FieldDict;
-            string? door = getDoorAtTile(x, y);
-            (CATEGORY?, string?) tileInfo = getTileInfo(x, y);
-            string? junimoBundle = getJunimoBundleAt(x, y);
-            string? resourceClump = getResourceClumpAtTile(x, y);
-            string? farmAnimal = getFarmAnimalAt(Game1.currentLocation, x, y);
-
-            if (Game1.currentLocation.isCharacterAtTile(tile) != null)
-            {
-                NPC npc = Game1.currentLocation.isCharacterAtTile(tile);
-                toReturn = npc.displayName;
-            }
-            else if (farmAnimal != null)
-            {
-                toReturn = farmAnimal;
-            }
-            else if (Game1.currentLocation.isWaterTile(x, y) && isColliding)
-            {
-                toReturn = "Water";
-            }
-            else if (Game1.currentLocation.isObjectAtTile(x, y))
-            {
-                toReturn = getObjectAtTile(x, y).Item1;
-            }
-            else if (terrainFeature.ContainsKey(tile))
-            {
-                string? terrain = getTerrainFeatureAtTile(terrainFeature[tile]).Item1;
-                if (terrain != null)
-                    toReturn = terrain;
-            }
-            else if (Game1.currentLocation.getLargeTerrainFeatureAt(x, y) != null)
-            {
-                toReturn = getBushAtTile(x, y);
-            }
-            else if (resourceClump != null)
-            {
-                toReturn = resourceClump;
-            }
-            else if (door != null)
-            {
-                toReturn = door;
-            }
-            else if (isMineDownLadderAtTile(x, y))
-            {
-                toReturn = "Ladder";
-            }
-            else if (isMineUpLadderAtTile(x, y))
-            {
-                toReturn = "Up Ladder";
-            }
-            else if (isElevatorAtTile(x, y))
-            {
-                toReturn = "Elevator";
-            }
-            else if (tileInfo.Item2 != null)
-            {
-                toReturn = tileInfo.Item2;
-            }
-            else if (junimoBundle != null)
-            {
-                toReturn = junimoBundle;
-            }
-
-            if (toReturn == "")
-                return null;
-
-            return toReturn;
         }
 
         public static string? getBushAtTile(int x, int y)
@@ -320,26 +260,35 @@ namespace stardew_access.Features
 
         public static string? getJunimoBundleAt(int x, int y)
         {
-            if (Game1.currentLocation is not CommunityCenter)
-                return null;
-
-            CommunityCenter communityCenter = ((CommunityCenter)Game1.currentLocation);
-
-            string? name = (x, y) switch
+            string? name = null;
+            if (Game1.currentLocation is CommunityCenter communityCenter)
             {
-                (14, 5) => "Pantry",
-                (14, 23) => "Crafts Room",
-                (40, 10) => "Fish Tank",
-                (63, 14) => "Boiler Room",
-                (55, 6) => "Vault",
-                (46, 11) => "Bulletin Board",
-                _ => null,
-            };
+                name = (x, y) switch
+                {
+                    (14, 5) => "Pantry",
+                    (14, 23) => "Crafts Room",
+                    (40, 10) => "Fish Tank",
+                    (63, 14) => "Boiler Room",
+                    (55, 6) => "Vault",
+                    (46, 11) => "Bulletin Board",
+                    _ => null,
+                };
+                if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
+                    return $"{name} bundle";
+            }
+            else if (Game1.currentLocation is AbandonedJojaMart)
+            {
+                name = (x, y) switch
+                {
+                    (8, 8) => "Missing",
+                    _ => null,
+                };
 
-            if (name != null && communityCenter.shouldNoteAppearInArea(CommunityCenter.getAreaNumberFromName(name)))
-                return $"{name} bundle";
-            else
-                return null;
+                if (name != null)
+                    return $"{name} bundle";
+            }
+
+            return null;
         }
 
         public static bool isCollidingAtTile(int x, int y)
@@ -401,9 +350,9 @@ namespace stardew_access.Features
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <returns>Item1: This is the category of the tile. Default to Furnitures.
-        /// <br/>Item2: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
-        public static (CATEGORY?, string?) getTileInfo(int x, int y)
+        /// <returns>category: This is the category of the tile. Default to Furnitures.
+        /// <br/>name: This is the name of the tile. Default to null if the tile tile has nothing on it.</returns>
+        public static (CATEGORY? category, string? name) getTileInfo(int x, int y)
         {
 
             int? index = null;
@@ -459,7 +408,7 @@ namespace stardew_access.Features
             return (null, null);
         }
 
-        public static (string?, CATEGORY) getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
+        public static (string? name, CATEGORY category) getTerrainFeatureAtTile(Netcode.NetRef<TerrainFeature> terrain)
         {
             string? toReturn = null;
             CATEGORY category = CATEGORY.Others;
@@ -528,7 +477,7 @@ namespace stardew_access.Features
                 if (toReturn.Contains("feature"))
                     toReturn.Replace("feature", "");
             }
-            else if (terrain.Get() is Flooring)
+            else if (terrain.Get() is Flooring && MainClass.Config.ReadFlooring)
             {
                 category = CATEGORY.Flooring;
                 Flooring flooring = (Flooring)terrain.Get();
@@ -649,15 +598,63 @@ namespace stardew_access.Features
             return seedName;
         }
 
-        public static (string?, CATEGORY) getObjectAtTile(int x, int y)
+        #region Objects
+        public static (string? name, CATEGORY category) getObjectAtTile(int x, int y)
         {
-            string? toReturn = null;
+            (string? name, CATEGORY category) toReturn = (null, CATEGORY.Others);
 
             StardewValley.Object obj = Game1.currentLocation.getObjectAtTile(x, y);
             int index = obj.ParentSheetIndex;
-            toReturn = obj.DisplayName;
+            toReturn.name = obj.DisplayName;
 
             // Get object names based on index
+            (string? name, CATEGORY category) correctNameAndCategory = getCorrectNameAndCategoryFromIndex(index);
+            if (correctNameAndCategory.name != null)
+                toReturn = correctNameAndCategory;
+
+            if (toReturn.name.ToLower().Equals("stone")) // Fix for `Busy stone`
+                toReturn.category = CATEGORY.Debris;
+
+            if (obj is Chest)
+            {
+                Chest chest = (Chest)obj;
+                toReturn = (chest.DisplayName, CATEGORY.Chests);
+            }
+
+            if (obj is Furniture)
+                toReturn.category = CATEGORY.Furnitures;
+
+            if (toReturn.category == CATEGORY.Others) // Fix for `Harvestable table` and `Busy nodes`
+            {
+                MachineState machineState = GetMachineState(obj);
+                if (machineState == MachineState.Ready)
+                    toReturn.name = $"Harvestable {toReturn.name}";
+                else if (machineState == MachineState.Busy)
+                    toReturn.name = $"Busy {toReturn.name}";
+            }
+            return toReturn;
+        }
+
+        private static MachineState GetMachineState(StardewValley.Object machine)
+        {
+            if (machine is CrabPot crabPot)
+                if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
+                    return MachineState.Busy;
+            return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.heldObject);
+        }
+
+        private static MachineState GetMachineState(bool readyForHarvest, int minutesUntilReady, StardewValley.Object? heldObject)
+        {
+            if (readyForHarvest || (heldObject is not null && minutesUntilReady <= 0))
+                return MachineState.Ready;
+            else if (minutesUntilReady > 0)
+                return MachineState.Busy;
+            else
+                return MachineState.Waiting;
+        }
+
+        private static (string? name, CATEGORY category) getCorrectNameAndCategoryFromIndex(int index)
+        {
             switch (index)
             {
                 case 313:
@@ -777,20 +774,9 @@ namespace stardew_access.Features
                 }
             }
 
-            if (obj is Chest)
-            {
-                Chest chest = (Chest)obj;
-                return (chest.DisplayName, CATEGORY.Chests);
-            }
-
-            if (obj is Furniture)
-                return (toReturn, CATEGORY.Furnitures);
-
-            if (toReturn != null)
-                return (toReturn, CATEGORY.Others);
-
             return (null, CATEGORY.Others);
         }
+        #endregion  
 
         public static bool isMineDownLadderAtTile(int x, int y)
         {

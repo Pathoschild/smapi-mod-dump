@@ -196,6 +196,7 @@ $filtered_dotnet_libraries.freeze
 def loud_call(*args)
 	args = args.map(&:to_s)
 	puts "< #{args.map{|s| s.match(/\s/) ? s.enquote('"') : s}.join(' ')} >"
+	STDOUT.flush
 	system(*args)
 	return $?
 end
@@ -212,7 +213,7 @@ def remove_common_prefix(strings)
 end
 
 def RepackBinary(libraries:, target:)
-	il_repack_binary = (ILRepack + "tools" + "ILRepack.exe") rescue nil
+	il_repack_binary = (ILRepack + "ILRepack.exe") rescue nil
 	return false if il_repack_binary.nil? || !il_repack_binary.executable?
 	
 	puts "Linking .NET assemblies..."
@@ -224,6 +225,8 @@ def RepackBinary(libraries:, target:)
 	others = libraries.reject(&:primary?)
 	puts "primary: #{primary}"
 	#puts "others: #{others}"
+
+	STDOUT.flush
 
 	return loud_call(
 		il_repack_binary,

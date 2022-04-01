@@ -66,7 +66,7 @@ If you have a mod that changes the Ginger Island maps, this mod may be incompati
 
 #### Current compatibility list:
 
-* **Child2NPC**: For NPCs created with Child2NPC, my schedules won't parse *unless* they have a defined `GIRemainder` schedule. (This has to do with scheduling code changing between 1.4 and 1.5). For GIMA versions 1.1.2 and above, child NPCs can only go the Resort as part of a group, so for now I'd recommend either not putting them into a group or defining a `GIRemainder` schedule for them. I'm definitely working on compatibility for this!
+* No known incompatabilities!
 
 ### Additionally...
 

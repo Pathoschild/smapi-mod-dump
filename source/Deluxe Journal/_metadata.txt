@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/MolsonCAD/DeluxeJournal
+   Git: https://github.com/MolsonCAD/DeluxeJournal.git
+
+mods:
+   Deluxe Journal
+
+latest commit:
+   commit c5be9acf482b5d30f27d92685ab5bb784ba276e6
+   Author: Alec Hogerland <alechogerland@gmail.com>
+   Date:   Sun Mar 27 12:32:01 2022 -0400
+   
+       Remove Spanish translation.
+   

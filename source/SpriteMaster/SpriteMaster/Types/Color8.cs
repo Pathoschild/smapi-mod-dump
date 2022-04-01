@@ -18,7 +18,7 @@ namespace SpriteMaster.Types;
 
 [DebuggerDisplay("[{R.Value}, {G.Value}, {B.Value}, {A.Value}]")]
 [StructLayout(LayoutKind.Explicit, Pack = sizeof(uint), Size = sizeof(uint))]
-struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
+partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 	internal static readonly Color8 Zero = new(0U);
 
 	[FieldOffset(0)]
@@ -35,14 +35,18 @@ struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 	[FieldOffset(3)]
 	internal Fixed8 A = 0;
 
+	internal uint ARGB => new PackedUInt(
+		A.Value, R.Value, G.Value, B.Value
+	);
+
 	internal readonly Color8 NoAlpha => new(R, G, B, 0);
 
 	private static uint MakeMask(bool r, bool g, bool b, bool a) {
 		// ToSByte returns 0 or 1 for the mask. Negating it will turn that into 0 or -1, and -1 is 0xFF...
-		var rr = (uint)(byte)(-r.ToSByte());
-		var gg = ((uint)(byte)(-g.ToSByte())) << 8;
-		var bb = ((uint)(byte)(-b.ToSByte())) << 16;
-		var aa = ((uint)(byte)(-a.ToSByte())) << 24;
+		var rr = (uint)(byte)(-r.ToByte());
+		var gg = ((uint)(byte)(-g.ToByte())) << 8;
+		var bb = ((uint)(byte)(-b.ToByte())) << 16;
+		var aa = ((uint)(byte)(-a.ToByte())) << 24;
 		return rr | gg | bb | aa;
 	}
 	internal readonly Color8 Mask(bool r = true, bool g = true, bool b = true, bool a = true) => new(Packed & MakeMask(r, g, b, a));
@@ -94,6 +98,9 @@ struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 
 	public static explicit operator uint(Color8 value) => value.Packed;
 	public static explicit operator Color8(uint value) => new(value);
+
+	public static implicit operator XNA.Color(Color8 value) => new(value.Packed);
+	public static implicit operator Color8(XNA.Color value) => new(value.PackedValue);
 
 	public override readonly bool Equals(object? obj) {
 		if (obj is Color8 color) {

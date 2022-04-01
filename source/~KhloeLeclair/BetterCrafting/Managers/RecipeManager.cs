@@ -21,6 +21,7 @@ using Leclair.Stardew.Common.Types;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 
 using StardewValley;
 
@@ -35,14 +36,25 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 		private readonly List<IRecipeProvider> Providers = new();
 
 		// Recipes
-		private int CraftingCount = 0;
-		private int CookingCount = 0;
+		// These are per-screen in case there is vanilla CraftingRecipe behavior
+		// that does things separately per player. As an example, if a player has
+		// the profession that makes Crab Pots cheaper, they should have the
+		// cheaper recipe while the other player should now.
 
-		private readonly Dictionary<string, IRecipe> CraftingRecipesByName = new();
-		private readonly Dictionary<string, IRecipe> CookingRecipesByName = new();
+		private readonly PerScreen<int> CraftingCount = new(() => 0);
+		private readonly PerScreen<int> CookingCount = new(() =>0);
 
-		private readonly List<IRecipe> CraftingRecipes = new();
-		private readonly List<IRecipe> CookingRecipes = new();
+		private readonly PerScreen<Dictionary<string, IRecipe>> CraftingRecipesByName = new(() => new());
+		private readonly PerScreen<Dictionary<string, IRecipe>> CookingRecipesByName = new(() => new());
+
+		//private readonly Dictionary<string, IRecipe> CraftingRecipesByName = new();
+		//private readonly Dictionary<string, IRecipe> CookingRecipesByName = new();
+
+		private readonly PerScreen<List<IRecipe>> CraftingRecipes = new(() => new());
+		private readonly PerScreen<List<IRecipe>> CookingRecipes = new(() => new());
+
+		//private readonly List<IRecipe> CraftingRecipes = new();
+		//private readonly List<IRecipe> CookingRecipes = new();
 
 		// Categories
 		private Category[] DefaultCraftingCategories;
@@ -56,7 +68,7 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 
 		public RecipeManager(ModEntry mod) : base(mod) { }
 
-		private void AssertFarmer(Farmer who) {
+		private static void AssertFarmer(Farmer who) {
 			if (who == null)
 				throw new ArgumentNullException("who cannot be null");
 		}
@@ -67,6 +79,11 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
 			LoadRecipes();
 			LoadCategories();
+		}
+
+		[Subscriber]
+		private void OnDayStarted(object sender, DayStartedEventArgs e) {
+			Invalidate();
 		}
 
 		#endregion
@@ -80,16 +97,16 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 		}
 
 		private void WithRecipes(Action action) {
-			lock ((CraftingRecipes as ICollection).SyncRoot) {
-				lock ((CookingRecipes as ICollection).SyncRoot) {
+			lock ((CraftingRecipes.Value as ICollection).SyncRoot) {
+				lock ((CookingRecipes.Value as ICollection).SyncRoot) {
 					action();
 				}
 			}
 		}
 
 		private void WithRecipesByName(Action action) {
-			lock ((CraftingRecipesByName as ICollection).SyncRoot) {
-				lock ((CookingRecipesByName as ICollection).SyncRoot) {
+			lock ((CraftingRecipesByName.Value as ICollection).SyncRoot) {
+				lock ((CookingRecipesByName.Value as ICollection).SyncRoot) {
 					action();
 				}
 			}
@@ -114,15 +131,16 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 		#region Recipe Handling
 
 		public List<IRecipe> GetRecipes(bool cooking) {
-			if (CraftingCount != CraftingRecipe.craftingRecipes.Count || CookingCount != CraftingRecipe.cookingRecipes.Count) {
-				Log("Recipe count changed. Re-caching recipes.", LogLevel.Info);
+			if (CraftingCount.Value != CraftingRecipe.craftingRecipes.Count || CookingCount.Value != CraftingRecipe.cookingRecipes.Count) {
+				if (CraftingCount.Value != 0 || CookingCount.Value != 0)
+					Log("Recipe count changed. Re-caching recipes.", LogLevel.Info);
 				LoadRecipes();
 			}
 
 			if (cooking)
-				return CookingRecipes;
+				return CookingRecipes.Value;
 
-			return CraftingRecipes;
+			return CraftingRecipes.Value;
 		}
 
 
@@ -146,7 +164,7 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 					CraftingCategories.TryGetValue(id, out result);
 			});
 
-			return result ?? (cooking ? DefaultCookingCategories : DefaultCraftingCategories) ?? new Category[0];
+			return result ?? (cooking ? DefaultCookingCategories : DefaultCraftingCategories) ?? Array.Empty<Category>();
 		}
 
 		public void SetCategories(Farmer who, IEnumerable<Category> categories, bool cooking) {
@@ -183,7 +201,8 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 		#region Recipe Providers
 
 		public void Invalidate() {
-			CraftingCount = CookingCount = 0;
+			CraftingCount.ResetAllScreens();
+			CookingCount.ResetAllScreens();
 		}
 
 		public void AddProvider(IRecipeProvider provider) {
@@ -234,51 +253,51 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 
 		public void LoadRecipes() {
 			WithRecipes(() => WithRecipesByName(() => {
-				CraftingRecipesByName.Clear();
-				CookingRecipesByName.Clear();
+				CraftingRecipesByName.Value.Clear();
+				CookingRecipesByName.Value.Clear();
 
-				CraftingRecipes.Clear();
-				CookingRecipes.Clear();
+				CraftingRecipes.Value.Clear();
+				CookingRecipes.Value.Clear();
 
-				CookingCount = CraftingRecipe.cookingRecipes.Count;
-				CraftingCount = CraftingRecipe.craftingRecipes.Count;
+				CookingCount.Value = CraftingRecipe.cookingRecipes.Count;
+				CraftingCount.Value = CraftingRecipe.craftingRecipes.Count;
 
 				// Cooking
 				foreach (string key in CraftingRecipe.cookingRecipes.Keys) {
 					IRecipe recipe = GetProvidedRecipe(key, true);
 
-					CookingRecipesByName.Add(key, recipe);
-					CookingRecipes.Add(recipe);
+					CookingRecipesByName.Value.Add(key, recipe);
+					CookingRecipes.Value.Add(recipe);
 				}
 
 				foreach (IRecipeProvider provider in Providers) {
 					var recipes = provider.GetAdditionalRecipes(true);
 					if (recipes != null)
 						foreach(IRecipe recipe in recipes) {
-							CookingRecipesByName.Add(recipe.Name, recipe);
-							CookingRecipes.Add(recipe);
+							CookingRecipesByName.Value.Add(recipe.Name, recipe);
+							CookingRecipes.Value.Add(recipe);
 						}
 				}
 
-				CookingRecipes.Sort((a, b) => a.SortValue.CompareTo(b.SortValue));
+				CookingRecipes.Value.Sort((a, b) => a.SortValue.CompareTo(b.SortValue));
 
 				// Crafting
 				foreach (string key in CraftingRecipe.craftingRecipes.Keys) {
 					IRecipe recipe = GetProvidedRecipe(key, false);
-					CraftingRecipesByName.Add(key, recipe);
-					CraftingRecipes.Add(recipe);
+					CraftingRecipesByName.Value.Add(key, recipe);
+					CraftingRecipes.Value.Add(recipe);
 				}
 
 				foreach (IRecipeProvider provider in Providers) {
 					var recipes = provider.GetAdditionalRecipes(false);
 					if (recipes != null)
 						foreach (IRecipe recipe in recipes) {
-							CraftingRecipesByName.Add(recipe.Name, recipe);
-							CraftingRecipes.Add(recipe);
+							CraftingRecipesByName.Value.Add(recipe.Name, recipe);
+							CraftingRecipes.Value.Add(recipe);
 						}
 				}
 
-				Log($"Loaded {CookingRecipes.Count} cooking recipes and {CraftingRecipes.Count} crafting recipes.", LogLevel.Debug);
+				Log($"Loaded {CookingRecipes.Value.Count} cooking recipes and {CraftingRecipes.Value.Count} crafting recipes.", LogLevel.Debug);
 			}));
 		}
 
@@ -331,11 +350,11 @@ namespace Leclair.Stardew.BetterCrafting.Managers {
 
 					Category[] valid = entry.Value.Where(cat => {
 						return
-							(cat.Recipes == null || cat.Recipes.Count == 0) &&
+							!((cat.Recipes == null || cat.Recipes.Count == 0) &&
 							cat.Name.Equals(newName) &&
 							(cat.Icon == null ||
 								(cat.Icon.Type == CategoryIcon.IconType.Item
-								&& !string.IsNullOrEmpty(cat.Icon.RecipeName)));
+								&& !string.IsNullOrEmpty(cat.Icon.RecipeName))));
 					}).ToArray();
 
 					if (valid.Length == 0)

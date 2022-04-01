@@ -119,7 +119,7 @@ namespace Pathoschild.Stardew.Common.UI
             return false;
         }
 
-        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         protected virtual void ReceiveButtonsChanged(object sender, ButtonsChangedEventArgs e) { }
@@ -164,9 +164,9 @@ namespace Pathoschild.Stardew.Common.UI
         /****
         ** Event listeners
         ****/
-        /// <summary>The method called when the game finishes drawing components to the screen.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <inheritdoc cref="IDisplayEvents.Rendered"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnRendered(object sender, RenderedEventArgs e)
         {
             if (Context.ScreenId != this.ScreenId)
@@ -188,9 +188,9 @@ namespace Pathoschild.Stardew.Common.UI
                 this.DrawUi(Game1.spriteBatch);
         }
 
-        /// <summary>The method called when the game finishes drawing components to the screen.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <inheritdoc cref="IDisplayEvents.RenderedWorld"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
         {
             if (Context.ScreenId != this.ScreenId)
@@ -199,9 +199,9 @@ namespace Pathoschild.Stardew.Common.UI
             this.DrawWorld(e.SpriteBatch);
         }
 
-        /// <summary>The method called once per event tick.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             if (Context.ScreenId == this.ScreenId)
@@ -226,7 +226,7 @@ namespace Pathoschild.Stardew.Common.UI
                 this.Dispose();
         }
 
-        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -237,9 +237,9 @@ namespace Pathoschild.Stardew.Common.UI
             this.ReceiveButtonsChanged(sender, e);
         }
 
-        /// <summary>The method invoked when the player presses a key.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (Context.ScreenId != this.ScreenId)
@@ -262,9 +262,9 @@ namespace Pathoschild.Stardew.Common.UI
                 this.InputHelper.Suppress(e.Button);
         }
 
-        /// <summary>The method invoked when the mouse wheel is scrolled.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <inheritdoc cref="IInputEvents.MouseWheelScrolled"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnMouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
         {
             if (Context.ScreenId != this.ScreenId)
@@ -287,9 +287,9 @@ namespace Pathoschild.Stardew.Common.UI
             }
         }
 
-        /// <summary>The method invoked when the in-game cursor is moved.</summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The event arguments.</param>
+        /// <inheritdoc cref="IInputEvents.CursorMoved"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
         private void OnCursorMoved(object sender, CursorMovedEventArgs e)
         {
             if (Context.ScreenId != this.ScreenId)

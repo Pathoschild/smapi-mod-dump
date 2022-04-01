@@ -1,0 +1,167 @@
+{
+	// Settings
+	"setting.show-adv": "Mostrar info. de fabricación avanzada",
+	"setting.show-adv.tip": "Mostrar información de fabricación avanzada, como cuántos ingredientes tienes y cuántas veces ha elaborado una receta antes. Esto es lo mismo que el ajuste de vainilla, duplicado aquí para mayor comodidad.",
+
+	"setting.general": "Opciones generales",
+
+	"setting.alphabetic": "Ordenar alfabéticamente",
+	"setting.alphabetic.tip": "Cuando está habilitado, las recetas se ordenarán alfabéticamente en lugar de usar el orden predeterminado.",
+
+	"setting.replace-crafting": "Reemplazar menú de fabricación",
+	"setting.replace-crafting.tip": "Cuando está habilitado, el menú de fabricación se reemplaza con una reimplementación.",
+
+	"setting.replace-cooking": "Reemplazar menú para cocinar",
+	"setting.replace-cooking.tip": "Cuando está habilitado, el menú para cocinar se reemplaza con una reimplementación.",
+
+	"setting.enable-categories": "Habilitar categorías",
+	"setting.enable-categories.tip": "Muestre pestañas de categorías en los menús de fabricación, en lugar de una gran lista de todo.",
+
+	"setting.settings": "Mostrar botón de configuración",
+	"setting.settings.tip": "Cuando está habilitado, se agregará un botón para abrir la configuración de Better Crafting al menú de Better Crafting.",
+
+	"setting.bindings": "Teclas de acceso rápido y acciones",
+	"setting.bindings.tip": "Ajustes relacionados con la entrada y las combinaciones de teclas.",
+
+	"setting.suppress": "Botón de deshabilitación",
+	"setting.suppress.tip": "Cuando se mantiene presionado este botón y se abre el menú de fabricación, Better Crafting no la reemplazará.",
+
+	"setting.key.search": "Botón de Búsqueda",
+	"setting.key.search.tip": "Presione esta tecla para abrir una búsqueda para filtrar las recetas mostradas.",
+
+	"setting.key.favorite": "Receta favorita",
+	"setting.key.favorite.tip": "Presione este botón en una receta para marcarla como favorita o para quitarla de favorita.",
+
+	"setting.key.bulk": "Fabricación masiva",
+	"setting.key.bulk.tip": "Presione este botón en una receta para abrir la creación masiva de esa receta.",
+
+	"setting.key.behavior.left": "Comportamiento de Clic-Izquierdo / A",
+	"setting.key.behavior.left.tip": "Al hacer clic izquierdo (o presionar A en un control) en una receta, se realizará esta acción.",
+	"setting.key.behavior.right": "Comportamiento de Clic-Derecho / X",
+	"setting.key.behavior.right.tip": "Al hacer clic derecho (o presionar X en un control) en una receta, se realizará esta acción.",
+
+	"setting.key.tooltip": "Mostrar teclas de acceso rápido en barra de herramientas",
+	"setting.key.tooltip.tip":"Cuando está habilitado, las teclas de acceso rápido se mostrarán en la parte inferior de la barra de herramientas.",
+
+	"setting.ttwhen.Never": "Nunca",
+	"setting.ttwhen.ForController": "Cuando usar un control.",
+	"setting.ttwhen.Always": "Siempre",
+
+	"setting.action.None": "Nada",
+	"setting.action.Craft": "Fabricar",
+	"setting.action.Favorite": "Alternar favorito",
+	"setting.action.BulkCraft": "Fabricar masivamente",
+
+	"setting.nearby": "Banco de trabajo extendido",
+	"setting.nearby.tip": "Esta característica permite que los bancos de trabajo y tu cocina se conecten a más cofres a la vez, mejorando el rango predeterminado de un bloque. Puede crear cadenas de cofres conectados o usar conectores permitidos para cerrar brechas.",
+
+	"setting.nearby.enable": "Habilitar banco de trabajo extendido",
+
+	"setting.nearby.diagonal": "Permitir conexiones diagonales",
+	"setting.nearby.diagonal.tip": "Cuando están habilitados, los cofres y los conectores se pueden colocar en diagonal y seguir conectados.",
+
+	"setting.nearby.performance": "Rendimiento",
+	"setting.nearby.performance.tip": "Configuraciones que limitan la extensión del banco de trabajo extendido para mejorar el rendimiento.",
+
+	"setting.nearby.max-chests": "Inventarios máximos",
+	"setting.nearby.max-chests.tip": "El número máximo de inventarios que utilizará un banco de trabajo.",
+
+	"setting.nearby.max-distance": "Distancia maxima",
+	"setting.nearby.max-distance.tip": "La distancia máxima a la que puede estar un inventario del banco de trabajo.",
+
+	"setting.nearby.max-check": "Chequeos Máximos",
+	"setting.nearby.max-check.tip": "El número máximo de mosaicos para verificar al descubrir inventarios cercanos.",
+
+	"setting.nearby.connectors": "Conectores permitidos",
+	"setting.nearby.connectors.tip": "Objetos colocables que se pueden utilizar como conectores. Debe evitar agregar tipos de conectores innecesarios para mantener el rendimiento. Tenga en cuenta que estas entradas son ejemplos y puede editar manualmente su archivo de configuración para agregar otros objetos y características del terreno.",
+
+	"setting.nearby.floors": "Pisos cercanos",
+	"setting.nearby.other": "Otros ejemplos",
+
+	// Quality
+
+	"setting.quality": "Calidad",
+	"setting.quality.tip": "Tenga en cuenta que algunas recetas agregadas por otras fuentes, como SpaceCore, pueden no respetar esta configuración debido a las limitaciones de la API.",
+
+	"setting.enable-quality": "Habilitar límite de calidad",
+	"setting.enable-quality.tip": "Cuando está habilitado, se mostrará un botón que le permitirá elegir una calidad máxima de elementos para usar al fabricar.",
+
+	"setting.sort-quality": "Usar calidad baja primero",
+	"setting.sort-quality.tip": "Cuando está habilitado, las recetas se elaborarán primero con elementos de menor calidad.",
+
+	// Crafting
+	"setting.crafting": "Fabricación",
+	"setting.crafting.tip": "Estos ajustes se aplican específicamente al menú de fabricación reimplementado.",
+
+	"setting.uniform-grid": "Forzar tamaños uniformes",
+	"setting.uniform-grid.tip": "Cuando está habilitado, el tamaño de las creaciones grandes se reducirán para que quepan en una sola fila.",
+
+	"setting.big-craftables-last": "Ordena los craftables grandes al final",
+	"setting.big-craftables-last.tip": "Cuando está habilitado, las creaciones grandes se colocarán al final de la lista.",
+
+	// Cooking
+	"setting.cooking": "Cocina",
+	"setting.cooking.tip": "Estos ajustes se aplican específicamente al menú de cocina reimplementado.",
+
+	"setting.seasoning": "Usar Condimento Qi",
+	"setting.seasoning.tip": "Si se debe usar o no el condimento para realzar los alimentos cocinados. cuando se establece en \"Solo inventario\", el condimento solo se utilizará de su inventario y no del refrigerador ni de ninguna otra fuente.",
+
+	"seasoning.disabled": "Nunca",
+	"seasoning.enabled": "Siempre",
+	"seasoning.inventory": "Solo inventario",
+
+	"setting.hide-unknown": "Ocultar recetas desconocidas",
+	"setting.hide-unknown.tip": "Cuando está habilitado, las recetas que aún no has aprendido no se mostrarán en el menú.",
+
+	// Tooltips
+	"tooltip.crafted": "Fabricado {{count}} veces",
+
+	"tooltip.toggle-recipe": "Alternar en categoría",
+	"tooltip.use-as-icon": "Usar como icono",
+
+	// Buttons
+	"tooltip.edit-mode": "Editar categorías",
+	"tooltip.favorites": "Mostrar solo favoritos",
+	"tooltip.seasoning": "usar Condimento Qi",
+	"tooltip.uniform": "Usar cuadrícula uniforme",
+	"tooltip.settings": "Abrir Configuración",
+	
+	"tooltip.search": "Buscar Recetas",
+	"tooltip.search.tip": "Tip: Comience su búsqueda con \"@B{{prefix}}@b\" para buscar también por ingredientes.",	
+
+	"search.ingredient-prefix": "!",
+
+	"search.none": "No hay recetas coincidentes.",
+	"search.none.category": "No hay recetas coincidentes en esta categoría.",
+
+	"tooltip.select-icon": "Seleccionar icono",
+
+	"tooltip.quality.none": "Utilizar únicamente artículos de baja calidad.",
+	"tooltip.quality.silver": "Utilizar únicamente artículos de calidad baja y plateada.",
+	"tooltip.quality.gold": "Usar solo artículos de baja calidad, plata y oro.",
+	"tooltip.quality.iridium": "Usar cualquier artículo de calidad.",
+
+	"tooltip.quality-unsupported": "Esta receta no admite configuraciones de calidad.",
+
+	// Bulk Crafting
+	"bulk.crafting": "Fabricación masiva",
+	"bulk.craftable": "{{count}} fabricable",
+	"bulk.craft": "Fabricar {{count}} de {{name}}",
+
+	// Categories
+	"category.new": "Nueva categoría",
+	"category.favorites": "Favoritos",
+	"category.combat_rings": "Armas y Anillos",
+	"category.consumables": "Consumibles",
+	"category.decoration": "Decoraciones",
+	"category.fertilizer_seeds": "Semillas y fertilizantes",
+	"category.fishing": "Pesca",
+	"category.machinery": "Maquinarias",
+	"category.misc": "Diversos",
+
+	"category.food.farming": "agricultura y forrajeo",
+	"category.food.mining": "Minería y Magnetismo",
+	"category.food.fishing": "Pesca",
+	"category.food.combat": "Combate",
+	"category.food.other": "Suerte, velocidad y otros"
+}

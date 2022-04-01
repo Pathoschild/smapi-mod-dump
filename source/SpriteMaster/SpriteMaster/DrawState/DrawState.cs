@@ -16,7 +16,6 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -101,6 +100,12 @@ static partial class DrawState {
 
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
+		Debug.Mode.Draw();
+
+		if (!Config.Enabled) {
+			return;
+		}
+
 		if (TriggerGC.GetAndClear()) {
 			ManagedSpriteInstance.PurgeTextures((Config.Garbage.RequiredFreeMemory * Config.Garbage.RequiredFreeMemoryHysterisis).NearestLong() * 1024 * 1024);
 			Garbage.Collect(compact: true, blocking: true, background: false);
@@ -166,6 +171,8 @@ static partial class DrawState {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void OnPresentPost() {
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
+
+		Core.OnDrawImpl.ResetLastDrawCache();
 
 		// Apply the PyTK mediation here because we do not know when it might be set up
 		ApplyPyTKMitigation();

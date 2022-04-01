@@ -6,9 +6,9 @@ mods:
    Cat Gifts
 
 latest commit:
-   commit 8cc9b15842499796d5c354a6ae24398afee6b193
+   commit 3342383245e27c3d8102e587a31be124c7676939
    Author: SkuldOMG <SkuldOMG@gmx.net>
-   Date:   Mon Nov 30 21:17:35 2020 +0100
+   Date:   Thu Mar 24 11:50:08 2022 +0100
    
-       Updated version no
+       Updated manifest
    

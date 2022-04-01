@@ -1,5 +1,6 @@
 {
   "EnableMod": true,
   "AllowDiagonal": true,
-  "ModButton": "LeftShift"
+  "ModButton": "LeftShift",
+  "StraightModButton": "LeftControl"
 }

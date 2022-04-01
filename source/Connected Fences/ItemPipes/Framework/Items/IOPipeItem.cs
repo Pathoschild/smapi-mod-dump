@@ -21,6 +21,8 @@ using ItemPipes.Framework.Model;
 using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Factories;
 using ItemPipes.Framework.Items.Objects;
+using ItemPipes.Framework.Items.Tools;
+
 using System.Xml.Serialization;
 
 namespace ItemPipes.Framework.Items
@@ -53,10 +55,11 @@ namespace ItemPipes.Framework.Items
 
         public void LoadSignals()
         {
-            OnSignal = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/on.png");
-            OffSignal = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/off.png");
-            UnconnectedSignal = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/unconnected.png");
-            NoChestSignal = ModEntry.helper.Content.Load<Texture2D>($"assets/Pipes/nochest.png");
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            OnSignal = DataAccess.Sprites["signal_on"];
+            OffSignal = DataAccess.Sprites["signal_off"];
+            UnconnectedSignal = DataAccess.Sprites["signal_unconnected"];
+            NoChestSignal = DataAccess.Sprites["signal_nochest"];
             SignalTexture = UnconnectedSignal;
         }
 
@@ -81,7 +84,7 @@ namespace ItemPipes.Framework.Items
         }
         public override Item getOne()
         {
-            return ItemFactory.CreateItem(this);
+            return ItemFactory.CreateItem(IDName);
         }
 
         public override bool clicked(Farmer who)

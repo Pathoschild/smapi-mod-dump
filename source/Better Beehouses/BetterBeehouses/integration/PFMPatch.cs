@@ -15,14 +15,23 @@ namespace BetterBeehouses.integration
 {
     class PFMPatch
     {
-        internal static bool setup()
+        private static bool isPatched = false;
+        internal static bool Setup()
         {
             if (!ModEntry.helper.ModRegistry.IsLoaded("Digus.ProducerFrameworkMod"))
                 return false;
 
-            ModEntry.monitor.Log(ModEntry.helper.Translation.Get("general.pfmWarning"), LogLevel.Warn);
             var target = AccessTools.TypeByName("ProducerFrameworkMod.Controllers.ProducerController").MethodNamed("ValidateConfigProducerName");
-            ModEntry.harmony.Patch(target, postfix: new(typeof(PFMPatch),"Postfix"));
+
+            if (!isPatched && ModEntry.config.PatchPFM)
+            {
+                isPatched = false;
+                ModEntry.harmony.Patch(target, postfix: new(typeof(PFMPatch), "Postfix"));
+                isPatched = true;
+            } else if(isPatched && !ModEntry.config.PatchPFM){
+                ModEntry.harmony.Unpatch(target, HarmonyPatchType.Postfix, ModEntry.ModID);
+                isPatched = false;
+            }
 
             return true;
         }

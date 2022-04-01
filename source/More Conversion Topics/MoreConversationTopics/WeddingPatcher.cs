@@ -33,6 +33,7 @@ namespace MoreConversationTopics
         {
             try
             {
+                Monitor.Log("Adding Harmony postfix to getWeddingEvent() in Utility.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Utility), nameof(Utility.getWeddingEvent)),
                     postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Utility_getWeddingEvent_Postfix))
@@ -45,6 +46,7 @@ namespace MoreConversationTopics
 
             try
             {
+                Monitor.Log("Adding Harmony postfix to getPlayerWeddingEvent() in Utility.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Utility), nameof(Utility.getPlayerWeddingEvent)),
                     postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Utility_getPlayerWeddingEvent_Postfix))
@@ -61,7 +63,7 @@ namespace MoreConversationTopics
         {
             try
             {
-                farmer.activeDialogueEvents.Add("wedding", Config.WeddingDuration);
+                MCTHelperFunctions.AddMaybePreExistingCT(farmer, "wedding", Config.WeddingDuration);
             }
             catch (Exception ex)
             {
@@ -73,7 +75,7 @@ namespace MoreConversationTopics
         {
             try
             {
-                farmer.activeDialogueEvents.Add("wedding", Config.WeddingDuration);
+                MCTHelperFunctions.AddMaybePreExistingCT(farmer, "wedding", Config.WeddingDuration);
             }
             catch (Exception ex)
             {
@@ -82,7 +84,7 @@ namespace MoreConversationTopics
 
             try
             {
-                spouse.activeDialogueEvents.Add("wedding", Config.WeddingDuration);
+                MCTHelperFunctions.AddMaybePreExistingCT(spouse, "wedding", Config.WeddingDuration);
             }
             catch (Exception ex)
             {

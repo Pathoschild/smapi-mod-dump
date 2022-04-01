@@ -10,7 +10,6 @@
 
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
-using System.Collections.Generic;
 
 namespace SpriteMaster;
 

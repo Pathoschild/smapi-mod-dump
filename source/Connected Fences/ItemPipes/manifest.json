@@ -16,11 +16,5 @@
   "UniqueID": "sergiomadd.ItemPipes",
   "EntryDll": "ItemPipes.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [],
-  "Dependencies": [
-    {
-      "UniqueID": "spacechase0.SpaceCore",
-      "IsRequired": "true"
-    }
-  ],
+  "UpdateKeys": []
 }

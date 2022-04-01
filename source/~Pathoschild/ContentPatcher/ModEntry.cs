@@ -39,6 +39,9 @@ namespace ContentPatcher
         /// <summary>Manages state for each screen.</summary>
         private PerScreen<ScreenManager> ScreenManager;
 
+        /// <summary>The raw data for loaded content packs.</summary>
+        private LoadedContentPack[] ContentPacks;
+
         /// <summary>The recognized format versions and their migrations.</summary>
         private readonly Func<ContentConfig, IMigration[]> GetFormatVersions = content => new IMigration[]
         {
@@ -65,7 +68,8 @@ namespace ContentPatcher
             new Migration_1_22(),
             new Migration_1_23(),
             new Migration_1_24(),
-            new Migration_1_25()
+            new Migration_1_25(),
+            new Migration_1_26()
         };
 
         /// <summary>The special validation logic to apply to assets affected by patches.</summary>
@@ -108,7 +112,7 @@ namespace ContentPatcher
             this.ScreenManager = new(this.CreateScreenManager);
 
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
-            LocalizedContentManager.OnLanguageChange += this.OnLocaleChanged;
+            helper.Events.Content.LocaleChanged += this.OnLocaleChanged;
         }
 
         /// <summary>Get an API that other mods can access. This is always called after <see cref="Entry"/>.</summary>
@@ -131,7 +135,7 @@ namespace ContentPatcher
         /****
         ** Event handlers
         ****/
-        /// <summary>Raised after the player presses any buttons on the keyboard, controller, or mouse.</summary>
+        /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -142,7 +146,7 @@ namespace ContentPatcher
                 if (this.Keys.ToggleDebug.JustPressed())
                 {
                     if (this.DebugOverlay.Value == null)
-                        this.DebugOverlay.Value = new DebugOverlay(this.Helper.Events, this.Helper.Input, this.Helper.Content, this.Helper.Reflection);
+                        this.DebugOverlay.Value = new DebugOverlay(this.Helper.Events, this.Helper.Input, this.Helper.GameContent, this.Helper.Reflection);
                     else
                     {
                         this.DebugOverlay.Value.Dispose();
@@ -161,7 +165,15 @@ namespace ContentPatcher
             }
         }
 
-        /// <summary>Raised when the low-level stage in the game's loading process has changed. This is an advanced event for mods which need to run code at specific points in the loading process. The available stages or when they happen might change without warning in future versions (e.g. due to changes in the game's load process), so mods using this event are more likely to break or have bugs.</summary>
+        /// <inheritdoc cref="IContentEvents.AssetRequested"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            this.ScreenManager.Value.OnAssetRequested(e);
+        }
+
+        /// <inheritdoc cref="ISpecializedEvents.LoadStageChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnLoadStageChanged(object sender, LoadStageChangedEventArgs e)
@@ -169,7 +181,7 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnLoadStageChanged(e.OldStage, e.NewStage);
         }
 
-        /// <summary>The method invoked when a new day starts.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnDayStarted(object sender, DayStartedEventArgs e)
@@ -177,7 +189,7 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnDayStarted();
         }
 
-        /// <summary>The method invoked when the in-game clock changes.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.TimeChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
@@ -185,7 +197,7 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnTimeChanged();
         }
 
-        /// <summary>The method invoked when the player warps.</summary>
+        /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnWarped(object sender, WarpedEventArgs e)
@@ -193,7 +205,7 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnWarped();
         }
 
-        /// <summary>The method invoked when the player returns to the title screen.</summary>
+        /// <inheritdoc cref="IGameLoopEvents.ReturnedToTitle"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
@@ -201,7 +213,7 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnReturnedToTitle();
         }
 
-        /// <summary>Raised after the game performs its overall update tick (≈60 times per second).</summary>
+        /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
@@ -219,9 +231,10 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnUpdateTicked();
         }
 
-        /// <summary>Raised after the game language is changed, and after SMAPI handles the change.</summary>
-        /// <param name="code">The new language code.</param>
-        private void OnLocaleChanged(LocalizedContentManager.LanguageCode code)
+        /// <inheritdoc cref="IContentEvents.LocaleChanged"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnLocaleChanged(object sender, LocaleChangedEventArgs e)
         {
             if (!this.IsFirstTick)
                 this.ScreenManager.Value.OnLocaleChanged();
@@ -236,7 +249,7 @@ namespace ContentPatcher
             var helper = this.Helper;
 
             // fetch content packs
-            LoadedContentPack[] contentPacks = this.GetContentPacks().ToArray();
+            this.ContentPacks = this.GetContentPacks().ToArray();
 
             // log custom tokens
             {
@@ -252,14 +265,10 @@ namespace ContentPatcher
             // load screen manager
             this.InitializeScreenManagerIfNeeded();
 
-            // register asset interceptor
-            var interceptor = new AssetInterceptor(this.ScreenManager);
-            helper.Content.AssetLoaders.Add(interceptor);
-            helper.Content.AssetEditors.Add(interceptor);
-
             // set up events
             if (this.Config.EnableDebugFeatures)
                 helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
+            helper.Events.Content.AssetRequested += this.OnAssetRequested;
             helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
@@ -270,15 +279,15 @@ namespace ContentPatcher
             this.CommandHandler = new CommandHandler(
                 screenManager: this.ScreenManager,
                 monitor: this.Monitor,
-                contentHelper: this.Helper.Content,
-                contentPacks: contentPacks,
+                contentHelper: this.Helper.GameContent,
+                contentPacks: this.ContentPacks,
                 getContext: modID => modID == null ? this.ScreenManager.Value.TokenManager : this.ScreenManager.Value.TokenManager.GetContextFor(modID),
                 updateContext: () => this.ScreenManager.Value.UpdateContext(ContextUpdateType.All)
             );
             this.CommandHandler.RegisterWith(helper.ConsoleCommands);
 
             // register content packs with Generic Mod Config Menu
-            foreach (LoadedContentPack contentPack in contentPacks)
+            foreach (LoadedContentPack contentPack in this.ContentPacks)
             {
                 if (contentPack.Config.Any())
                 {
@@ -314,7 +323,7 @@ namespace ContentPatcher
         {
             var manager = this.ScreenManager.Value;
             if (!manager.IsInitialized)
-                manager.Initialize(this.GetContentPacks().ToArray(), this.GetInstalledMods());
+                manager.Initialize(this.ContentPacks, this.GetInstalledMods());
         }
 
         /// <summary>Get the unique IDs for all installed mods and content packs.</summary>

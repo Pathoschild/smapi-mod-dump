@@ -1,0 +1,10 @@
+{
+   "Name": "DrawFishPondsOverGrass",
+   "Author": "atravita",
+   "Version": "0.1.0",
+   "Description": "Draws fish ponds **over** grass placed under it.",
+   "UniqueID": "atravita.DrawFishPondsOverGrass",
+   "EntryDll": "DrawFishPondsOverGrass.dll",
+   "UpdateKeys": [],
+   "MinimumApiVersion": "3.13"
+}

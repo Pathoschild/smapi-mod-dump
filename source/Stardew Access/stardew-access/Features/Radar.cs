@@ -106,12 +106,11 @@ namespace stardew_access.Features
              */
         }
 
-        public async void Run()
+        public void Run()
         {
             if (MainClass.radarDebug)
-                MainClass.GetMonitor().Log($"\n\nRead Tile started", StardewModdingAPI.LogLevel.Debug);
+                MainClass.DebugLog($"\n\nRead Tile started");
 
-            isRunning = true;
             Vector2 currPosition = Game1.player.getTileLocation();
 
             closed.Clear();
@@ -121,10 +120,7 @@ namespace stardew_access.Features
             SearchNearbyTiles(currPosition, range);
 
             if (MainClass.radarDebug)
-                MainClass.GetMonitor().Log($"\nRead Tile stopped\n\n", StardewModdingAPI.LogLevel.Debug);
-
-            await Task.Delay(delay);
-            isRunning = false;
+                MainClass.DebugLog($"\nRead Tile stopped\n\n");
         }
 
         /// <summary>
@@ -201,14 +197,14 @@ namespace stardew_access.Features
 
         public (bool, string?, string) CheckTile(Vector2 position)
         {
-            (string?, CATEGORY?) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
-            if (tileDetail.Item1 == null)
+            (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+            if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
-            if (tileDetail.Item2 == null)
-                tileDetail.Item2 = CATEGORY.Others;
+            if (tileDetail.category == null)
+                tileDetail.category = CATEGORY.Others;
 
-            return (true, tileDetail.Item1, tileDetail.Item2.ToString());
+            return (true, tileDetail.name, tileDetail.category.ToString());
 
         }
 
@@ -218,9 +214,9 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string?, CATEGORY) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
-                    string? objectName = objDetails.Item1;
-                    CATEGORY category = objDetails.Item2;
+                    (string? name, CATEGORY category) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
+                    string? objectName = objDetails.name;
+                    CATEGORY category = objDetails.category;
                     StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
 
                     if (objectName != null)
@@ -242,19 +238,19 @@ namespace stardew_access.Features
                 }
                 else
                 {
-                    (string?, CATEGORY?) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
-                    if (tileDetail.Item1 != null)
+                    (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+                    if (tileDetail.name != null)
                     {
-                        if (tileDetail.Item2 == null)
-                            tileDetail.Item2 = CATEGORY.Others;
+                        if (tileDetail.category == null)
+                            tileDetail.category = CATEGORY.Others;
 
-                        PlaySoundAt(position, tileDetail.Item1, tileDetail.Item2);
+                        PlaySoundAt(position, tileDetail.name, tileDetail.category);
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"{e.Message}\n{e.StackTrace}\n{e.Source}", StardewModdingAPI.LogLevel.Error);
+                MainClass.ErrorLog($"{e.Message}\n{e.StackTrace}\n{e.Source}");
             }
         }
 
@@ -306,7 +302,7 @@ namespace stardew_access.Features
             #endregion
 
             if (MainClass.radarDebug)
-                MainClass.GetMonitor().Log($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}", StardewModdingAPI.LogLevel.Debug);
+                MainClass.ErrorLog($"{radarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}");
 
             int px = (int)Game1.player.getTileX(); // Player's X postion
             int py = (int)Game1.player.getTileY(); // Player's Y postion
@@ -340,7 +336,7 @@ namespace stardew_access.Features
         {
             string soundName = $"_{post}";
 
-            if (!MainClass.radarStereoSound)
+            if (!MainClass.Config.RadarStereoSound)
                 soundName = $"_mono{soundName}";
 
             if (category == CATEGORY.Farmers) // Villagers and farmers

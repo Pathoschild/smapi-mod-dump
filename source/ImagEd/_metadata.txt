@@ -6,9 +6,9 @@ mods:
    ImagEd
 
 latest commit:
-   commit 692e12998efa93a2a7d95ea3da207decff7e51a0
+   commit 00c00fc9b75a7a3f59092fb7ed211325329444ea
    Author: Candidus <candidus@xmail.net>
-   Date:   Sun Feb 13 20:05:06 2022 +0100
+   Date:   Sat Mar 12 16:53:01 2022 +0100
    
-       Fix: NullReferenceException when mask is set to 'None'.
+       Fix error when image and mask sizes don't match: Different heights are allowed now.
    

@@ -2,5 +2,5 @@
     <PropertyGroup>
 		<GamePath>C:\Development\Stardew Valley\Stardew Valley-1.5.6-hotfix3_SMAPI 3.13.14\Code\Stardew Valley\bin\Release</GamePath>
 		<ModZipPath>$(SolutionDir)Release\Zip</ModZipPath>
-    </PropertyGroup>
+    </PropertyGroup>	
 </Project>

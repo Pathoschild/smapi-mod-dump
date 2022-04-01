@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Shockah.CommonModCode;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;

@@ -3,13 +3,13 @@ urls:
    Git: https://gitlab.com/theLion/smapi-mods.git
 
 mods:
-   Chargeable Axe and Pickaxe
-   Walk Of Life
+   Power Tools
+   Walk of Life
 
 latest commit:
-   commit 1513ce378f8e951c590bb68d3b07a13ec094df9a
-   Author: Mat L <matheus_is@live.com>
-   Date:   Fri Feb 25 02:17:02 2022 -0300
+   commit 7cabbc9cadbbe9b068ba3a7ffbcb9cd8ad6f6c97
+   Author: Mat L <daleao.matheus@gmail.com>
+   Date:   Mon Mar 28 12:41:38 2022 -0300
    
-       Update README.md
+       Fix problems with luck skill.
    

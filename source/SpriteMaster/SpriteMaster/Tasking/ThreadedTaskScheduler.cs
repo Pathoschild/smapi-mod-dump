@@ -77,11 +77,13 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 					IsBackground = useBackgroundThreads,
 					Name = threadNameFunction is null ? $"ThreadedTaskScheduler Thread {i}" : threadNameFunction(i),
 				};
-				try {
-					Threads[i].SetApartmentState(ApartmentState.MTA);
-				}
-				catch (PlatformNotSupportedException) {
-					/* do nothing */
+				if (Runtime.IsWindows) {
+					try {
+						Threads[i].SetApartmentState(ApartmentState.MTA);
+					}
+					catch (PlatformNotSupportedException) {
+						/* do nothing */
+					}
 				}
 			}
 

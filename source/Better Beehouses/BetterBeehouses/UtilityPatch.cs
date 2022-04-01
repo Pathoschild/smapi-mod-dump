@@ -34,6 +34,13 @@ namespace BetterBeehouses
                 new(OpCodes.Ldfld, typeof(GameLocation).FieldNamed("terrainFeatures")),
                 new(OpCodes.Ldloc_2)
             }, AddCheck)
+            .Transform(new CodeInstruction[]
+            {
+                new(OpCodes.Call, typeof(Item).MethodNamed("get_Category")),
+                new(OpCodes.Ldc_I4_S, -80),
+                new(OpCodes.Bne_Un),
+                null
+            }, AddContextTag)
             .Finish();
 
         [HarmonyPatch("findCloseFlower", new Type[]{typeof(GameLocation),typeof(Vector2),typeof(int),typeof(Func<Crop, bool>)})]
@@ -57,6 +64,22 @@ namespace BetterBeehouses
             foreach (var code in codes)
                 yield return code;
         }
+        private static IEnumerable<CodeInstruction> AddContextTag(IList<CodeInstruction> codes)
+        {
+            var jump = flowerPatch.Generator.DefineLabel();
+            var label = flowerPatch.Generator.DefineLabel();
+            codes[0].labels.Add(label);
+            codes[3].labels.Add(jump);
+
+            yield return new(OpCodes.Dup);
+            yield return new(OpCodes.Ldstr, "honey_source");
+            yield return new(OpCodes.Call, typeof(StardewValley.Object).MethodNamed("HasContextTag"));
+            yield return new(OpCodes.Brfalse, label);
+            yield return new(OpCodes.Pop);
+            yield return new(OpCodes.Br, jump);
+            foreach (var code in codes)
+                yield return code;
+        }
         public static Crop GetPotCrop(GameLocation loc, Vector2 tile, Func<Crop, bool> extraCheck)
         {
             if(loc.objects.TryGetValue(tile, out StardewValley.Object obj))
@@ -66,15 +89,18 @@ namespace BetterBeehouses
                     if (ModEntry.config.UseForageFlowers && pot.heldObject.Value != null) //forage in pot
                     {
                         var ho = pot.heldObject.Value;
-                        if (ho.CanBeGrabbed && ho.Category == -80)
+                        if (ho.CanBeGrabbed && (ho.Category == -80 || ho.HasContextTag("honey_source")))
                             return Utils.CropFromObj(ho);
                     }
                     Crop crop = pot.hoeDirt.Value?.crop;
-                    return Utils.GetProduceHere(loc, ModEntry.config.UsePottedFlowers) && IsGrown(crop, extraCheck) && new StardewValley.Object(crop.indexOfHarvest.Value, 1).Category == -80 ?
+                    if (crop is null)
+                        return null;
+                    var co = new StardewValley.Object(crop.indexOfHarvest.Value, 1);
+                    return Utils.GetProduceHere(loc, ModEntry.config.UsePottedFlowers) && IsGrown(crop, extraCheck) && (co.Category == -80 || co.HasContextTag("honey_source")) ?
                         crop : null; //flower in pot
                 } else
                 {
-                    return ModEntry.config.UseForageFlowers && obj.CanBeGrabbed && obj.Category == -80 ? Utils.CropFromObj(obj) : null;
+                    return ModEntry.config.UseForageFlowers && obj.CanBeGrabbed && (obj.Category == -80 || obj.HasContextTag("honey_source")) ? Utils.CropFromObj(obj) : null;
                     //non-pot forage
                 }
             }

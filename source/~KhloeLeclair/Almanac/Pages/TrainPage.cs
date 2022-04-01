@@ -23,11 +23,9 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace Leclair.Stardew.Almanac.Pages {
-	public class TrainPage : BasePage, ICalendarPage {
+	public class TrainPage : BasePage<BaseState>, ICalendarPage {
 
 		private int[] Schedule;
-
-		private IEnumerable<IFlowNode> Flow;
 
 		#region Lifecycle
 
@@ -39,22 +37,24 @@ namespace Leclair.Stardew.Almanac.Pages {
 		}
 
 		public TrainPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
-			UpdateSchedule();
+			Update();
 		}
 
 		#endregion
 
 		#region Logic
 
-		public void UpdateSchedule() {
-			Schedule = new int[WorldDate.DaysPerMonth];
+		public override void Update() {
+			base.Update();
+
+			Schedule = new int[ModEntry.DaysPerMonth];
 			WorldDate date = new(Menu.Date);
 
 			FlowBuilder builder = new();
 
 			builder.FormatText(I18n.Page_Train_About());
 
-			for (int day = 1; day <= WorldDate.DaysPerMonth; day++) {
+			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 				date.DayOfMonth = day;
 				int time = Schedule[day - 1] = TrainHelper.GetTrainTime(date);
 
@@ -70,9 +70,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 			if (date.SeasonIndex == 0 && date.Year == 1)
 				builder.FormatText($"\n\n{I18n.Page_Train_Notice()}", color: Color.Red);
 
-			Flow = builder.Build();
-			if (Active)
-				Menu.SetFlow(Flow, 2);
+			SetRightFlow(builder, 2);
 		}
 
 		#endregion
@@ -88,15 +86,6 @@ namespace Leclair.Stardew.Almanac.Pages {
 		#endregion
 
 		#region IAlmanacPage
-
-		public override void Activate() {
-			base.Activate();
-			Menu.SetFlow(Flow, 2);
-		}
-
-		public override void DateChanged(WorldDate old, WorldDate newDate) {
-			UpdateSchedule();
-		}
 
 		#endregion
 

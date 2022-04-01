@@ -117,7 +117,17 @@ namespace EscasModdingPlugins
                             if (location.doesTileHaveProperty(x, y, "Action", "Buildings") is string actionProperty) //if this tile has an Action property
                             {
                                 string[] args = actionProperty.Split(' ');
-                                if (args.Length > 2 && args[0].Equals("CustomBoard", StringComparison.OrdinalIgnoreCase) && args[2].Equals("true"))
+
+                                if //if this is a CustomBoard action with exclamations set to "true"
+                                (
+                                    args.Length > 2 &&
+                                    args[2].Equals("true", StringComparison.OrdinalIgnoreCase) &&
+                                    (
+                                        //"CustomBoard" or "Esca.EMP/CustomBoard"
+                                        args[0].Equals(HarmonyPatch_CustomOrderBoards.ShortActionName, StringComparison.OrdinalIgnoreCase) ||
+                                        args[0].Equals(HarmonyPatch_CustomOrderBoards.ActionName, StringComparison.OrdinalIgnoreCase)
+                                    )
+                                )
                                 {
                                     string orderType = args[1]; //use the second param as the order type
 

@@ -38,12 +38,14 @@ namespace HDPortraits
 
         public static bool TryLoadAsset<T>(string path, out T value)
         {
+            ModEntry.monitor.Log($"Attempting to load asset from {path}.");
             try
             {
                 value = ModEntry.helper.Content.Load<T>(path, ContentSource.GameContent);
                 return true;
-            } catch(Exception _)
+            } catch(Exception e)
             {
+                ModEntry.monitor.LogOnce(e.Message);
                 value = default;
                 return false;
             }

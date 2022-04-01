@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Internal changes to prepare for the upcoming Stardew Valley 1.6.
+
 ## 1.9.8
 Released 27 February 2022 for SMAPI 3.13.0 or later.
 

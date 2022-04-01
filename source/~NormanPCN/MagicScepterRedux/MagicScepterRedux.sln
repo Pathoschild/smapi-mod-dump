@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicScepterRedux", "MagicScepterRedux.csproj", "{FFD1354D-98C7-413D-8957-A000DD81289A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFD1354D-98C7-413D-8957-A000DD81289A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFD1354D-98C7-413D-8957-A000DD81289A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFD1354D-98C7-413D-8957-A000DD81289A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFD1354D-98C7-413D-8957-A000DD81289A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFBCE3D4-CC60-434F-9DD6-528CE905E505}
+	EndGlobalSection
+EndGlobal

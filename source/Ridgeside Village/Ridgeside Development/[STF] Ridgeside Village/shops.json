@@ -688,7 +688,7 @@
 				"Springtime Primetime",
 				],
 			"Stock": 1,
-			"When": [ "!z spring/n PikaSpring" ]
+			"When": [ "!z spring/n RSV.PikaSpring" ]
 		},
     {
 			"ItemType": "Object",
@@ -696,7 +696,7 @@
 				"Summer Mountain Blessing",
 				],
 			"Stock": 1,
-			"When": [ "!z summer/n PikaSummer" ]
+			"When": [ "!z summer/n RSV.PikaSummer" ]
 		},
     {
 			"ItemType": "Object",
@@ -704,7 +704,7 @@
 				"Autumnal Serenity",
 				],
 			"Stock": 1,
-			"When": [ "!z fall/n PikaFall" ]
+			"When": [ "!z fall/n RSV.PikaFall" ]
 		},
     {
 			"ItemType": "Object",
@@ -712,7 +712,7 @@
 				"Winter Night Feast",
 				],
 			"Stock": 1,
-			"When": [ "!z winter/n PikaWinter" ]
+			"When": [ "!z winter/n RSV.PikaWinter" ]
 		},
 	],
 	},
@@ -787,7 +787,7 @@
 			"ItemNames": [
 				"Springtime Primetime",
 				],
-			"When": [ "!z spring/n PikaSpring" ]
+			"When": [ "!z spring/n RSV.PikaSpring" ]
 		},
     {
 			"ItemType": "Object",
@@ -795,7 +795,7 @@
 			"ItemNames": [
 				"Summer Mountain Blessing",
 				],
-			"When": [ "!z summer/n PikaSummer" ]
+			"When": [ "!z summer/n RSV.PikaSummer" ]
 		},
     {
 			"ItemType": "Object",
@@ -803,7 +803,7 @@
 			"ItemNames": [
 				"Autumnal Serenity",
 				],
-			"When": [ "!z fall/n PikaFall" ]
+			"When": [ "!z fall/n RSV.PikaFall" ]
 		},
     {
 			"ItemType": "Object",
@@ -811,7 +811,7 @@
 			"ItemNames": [
 				"Winter Night Feast",
 				],
-			"When": [ "!z winter/n PikaWinter" ]
+			"When": [ "!z winter/n RSV.PikaWinter" ]
 		},
 	],
 	},
@@ -1620,15 +1620,31 @@
 		},
 		{
 			"ItemType": "Clothing",
-			"ItemNames": [ "Occult Dusk Top", ],
+			"ItemNames": [
+        "Occult Dusk Top",
+        "Occult Leather Jacket",
+      ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 		},
-		{
-			"ItemType": "Clothing",
-			"ItemNames": [ "Occult Leather Jacket", ],
-			"StockItemCurrency": "Spiritual Essence",
-			"StockCurrencyStack": 50,
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Belinda's Ring",
+        "Raeriyala's Ring"
+				],
+      "Stock": 1,
+      "StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 250,
+      "When": [ "n MythFlowerLetter" ],
+		},
+    {
+			"ItemType": "Weapon",
+			"ItemNames": [ "Mountain Mistblade" ],
+      "Stock": 1,
+      "StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 500,
+      "When": [ "n SlayViperialLetter/w rainy" ],
 		},
 	],
 	},
@@ -1721,6 +1737,14 @@
 				"Hundred Flavor Doughnut"
 				],
 			"Stock": 1,
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Matcha Latte",
+				],
+      "Stock": 3,
+      "When": [ "n OlgaSOLetter" ],
 		},
 		//Pastry Recipes
 		{
@@ -1893,6 +1917,41 @@
     	},
 
 	"ItemStocks": [
+		{
+			"ItemType": "Object",
+			"ItemNames": [
+				"Rare Seed",
+				"Dinosaur Egg",
+				"Energy Tonic",
+				"Muscle Remedy",
+				"Iridium Bar",
+				"Truffle",
+				"Glow Ring",
+				"Warrior Ring",
+				"Sprinkler",
+				"Sprinkler",
+				"Sprinkler",
+				"Sprinkler",
+				"Sprinkler",
+				"Sprinkler",
+				"Sprinkler",
+				"Quality Sprinkler",
+				"Pomegranate Sapling",
+				"Orange Sapling",
+				"Cherry Bomb",
+				"Cherry Bomb",
+				"Cherry Bomb",
+				"Cherry Bomb",
+				"Cherry Bomb",
+				"Cherry Bomb",
+				"Cherry Bomb",
+				"Cherry Sapling"
+			],
+			"MaxNumItemsSoldInItemStock": 1,
+			"Stock": 1,
+			"StockPrice": 500,
+			"When": [ "r .1" ]
+		},
 		{
 			"ItemType": "Object",
 			"ItemNames":[

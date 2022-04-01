@@ -15,8 +15,14 @@
 
 	"setting.general": "General Options",
 
-	"setting.suppress": "Disable Key",
-	"setting.suppress.tip": "When this key is held and you open a crafting menu, Better Crafting will not replace it.",
+	"setting.theme": "UI Theme",
+	"setting.theme-desc": "This UI theme will be used for Better Crafting's buttons. Note that most of Better Crafting's UI is drawn from standard game textures.",
+
+	"theme.automatic": "Automatic",
+	"theme.default": "Default",
+
+	"setting.alphabetic": "Sort Alphabetically",
+	"setting.alphabetic.tip": "When this is enabled, recipes will be sorted alphabetically rather than using the default order.",
 
 	"setting.replace-crafting": "Replace Crafting Menu",
 	"setting.replace-crafting.tip": "When enabled, the crafting menu is replaced with a reimplementation.",
@@ -29,6 +35,38 @@
 
 	"setting.settings": "Show Settings Button",
 	"setting.settings.tip": "When enabled, a button to open Better Crafting's settings will be added to the Better Crafting menu.",
+
+	"setting.bindings": "Hotkeys and Actions",
+	"setting.bindings.tip": "Settings related to input and keybindings.",
+
+	"setting.suppress": "Disable Key",
+	"setting.suppress.tip": "When this key is held and you open a crafting menu, Better Crafting will not replace it.",
+
+	"setting.key.search": "Search Key",
+	"setting.key.search.tip": "Press this key to open a search for filtering the displayed recipes.",
+
+	"setting.key.favorite": "Favorite Key",
+	"setting.key.favorite.tip": "Press this key on a recipe to favorite or unfavorite that recipe.",
+
+	"setting.key.bulk": "Bulk Crafting Key",
+	"setting.key.bulk.tip": "Press this key on a recipe to open Bulk Crafting for that recipe.",
+
+	"setting.key.behavior.left": "Left-Click / A Behavior",
+	"setting.key.behavior.left.tip": "When left clicking (or pressing A on controller) on a recipe, this action will be performed.",
+	"setting.key.behavior.right": "Right-Click / X Behavior",
+	"setting.key.behavior.right.tip": "When right clicking (or pressing X on controller) on a recipe, this action will be performed.",
+
+	"setting.key.tooltip": "Show Hotkeys in Tooltips",
+	"setting.key.tooltip.tip": "When enabled, hotkeys will be displayed at the bottom of Better Crafting's tooltips.",
+
+	"setting.ttwhen.Never": "Never",
+	"setting.ttwhen.ForController": "When Using Controller",
+	"setting.ttwhen.Always": "Always",
+
+	"setting.action.None": "Nothing",
+	"setting.action.Craft": "Craft",
+	"setting.action.Favorite": "Toggle Favorite",
+	"setting.action.BulkCraft": "Bulk Craft",
 
 	"setting.nearby": "Extended Workbench",
 	"setting.nearby.tip": "This feature allows Workbenches and your kitchen to connect to more chests at once, improving on the game's default range of one block. You can create chains of connected chests, or use allowed connectors to bridge gaps.",
@@ -94,6 +132,9 @@
 	// Tooltips
 	"tooltip.crafted": "Crafted {{count}} Times",
 
+	"tooltip.toggle-recipe": "Toggle in Category",
+	"tooltip.use-as-icon": "Use as Icon",
+
 	// Buttons
 	"tooltip.edit-mode": "Edit Categories",
 	"tooltip.favorites": "Only Show Favorites",
@@ -101,12 +142,27 @@
 	"tooltip.uniform": "Use Uniform Grid",
 	"tooltip.settings": "Open Settings",
 
+	"tooltip.search": "Search Recipes",
+	"tooltip.search.tip": "Tip: Start your search with \"@B{{prefix}}@b\" to also search by ingredients.",
+
+	"search.ingredient-prefix": "!",
+
+	"search.none": "There are no matching recipes.",
+	"search.none.category": "There are no matching recipes in this category.",
+
+	"tooltip.select-icon": "Select Icon",
+
 	"tooltip.quality.none": "Only use low-quality items.",
 	"tooltip.quality.silver": "Only use low and silver quality items.",
 	"tooltip.quality.gold": "Only use low, silver, and gold quality items.",
 	"tooltip.quality.iridium": "Use any quality items.",
 
 	"tooltip.quality-unsupported": "This recipe does not support quality settings.",
+
+	// Bulk Crafting
+	"bulk.crafting": "Bulk Crafting",
+	"bulk.craftable": "{{count}} Craftable",
+	"bulk.craft": "Craft {{count}} of {{name}}",
 
 	// Categories
 	"category.new": "New Category",

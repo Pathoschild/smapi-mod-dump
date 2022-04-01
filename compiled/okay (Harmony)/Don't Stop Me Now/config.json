@@ -8,6 +8,7 @@
   "FixToolFacing": true,
   "FixMeleeWeaponFacing": true,
   "FixChargingToolFacing": true,
+  "FixFishingRodFacing": true,
   "FixFacingOnMouse": true,
   "FixFacingOnController": false
 }

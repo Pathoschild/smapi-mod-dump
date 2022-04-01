@@ -27,6 +27,12 @@ namespace Leclair.Stardew.Almanac {
 
 		public bool IsTrellisCrop { get; }
 		public bool IsGiantCrop { get; }
+		public SpriteInfo GiantSprite { get; }
+
+
+		// Seeds
+		public Item[] Seeds { get; }
+
 
 		// Phases
 		public int[] Phases { get; }
@@ -39,12 +45,14 @@ namespace Leclair.Stardew.Almanac {
 		public WorldDate StartDate { get; }
 		public WorldDate EndDate { get; }
 
-		public CropInfo(string id, Item item, string name, SpriteInfo sprite, bool giantCrop, bool trellisCrop, int[] phases, int regrow, bool paddyCrop, SpriteInfo[] phaseSprites, WorldDate startDate, WorldDate endDate) {
+		public CropInfo(string id, Item item, string name, SpriteInfo sprite, bool giantCrop, SpriteInfo giantSprite, Item[] seeds, bool trellisCrop, int[] phases, int regrow, bool paddyCrop, SpriteInfo[] phaseSprites, WorldDate startDate, WorldDate endDate) {
 			Id = id;
 			Item = item;
 			Name = name;
 			Sprite = sprite;
 			IsGiantCrop = giantCrop;
+			GiantSprite = giantSprite;
+			Seeds = seeds;
 			IsTrellisCrop = trellisCrop;
 			Phases = phases;
 			Regrow = regrow;

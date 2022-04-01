@@ -662,6 +662,13 @@
                      "Amount": "10000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.LennyHelped",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
 
@@ -732,9 +739,16 @@
                      "Amount": "8000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.PikaHelped",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
-
+/*
          //Richard Power Hotel
          "RSV.SpecialOrder.HotelPower": {
             "Name": "[RSV.SpecialOrder.HotelPower_Name]",
@@ -747,7 +761,21 @@
             "Text": "[RSV.SpecialOrder.HotelPower_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RichardSOLetter",
+                    "Value": "[RSV.SpecialOrder.HotelPower_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RichardSOLetter",
+                    "Value": "[RSV.SpecialOrder.HotelPower_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -867,7 +895,21 @@
             "Text": "[RSV.SpecialOrder.LolaRings_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.LolaHelped",
+                    "Value": "[RSV.SpecialOrder.LolaRings_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RSV.LolaHelped",
+                    "Value": "[RSV.SpecialOrder.LolaRings_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -961,6 +1003,13 @@
                      "Amount": "5000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "CarmenSOLetter",
+                     "NoLetter": "false",
+                  }
+               },
             ]
          },
 
@@ -1034,6 +1083,13 @@
                "Type": "Friendship",
                "Data": {}
              },
+             {
+                "Type": "Mail",
+                "Data": {
+                   "MailReceived": "RSV.BlairHelped",
+                   "NoLetter": "true",
+                }
+             },
            ]
          },
 
@@ -1076,6 +1132,13 @@
                   "Type": "Money",
                   "Data": {
                      "Amount": "20000"
+                  }
+               },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.EzekielHelped",
+                     "NoLetter": "false",
                   }
                },
             ]
@@ -1132,6 +1195,13 @@
                      "Amount": "20000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.AguarHelped",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
 
@@ -1140,7 +1210,7 @@
             "Name": "[RSV.SpecialOrder.ShaniceGift_Name]",
             "Requester": "Lorenzo",
             "Duration": "Week",
-            "Repeatable": "true",
+            "Repeatable": "false",
             "RequiredTags": "",
             "OrderType": "QF:RSVTownSO",
             "SpecialRule": "",
@@ -1166,6 +1236,13 @@
                      "Amount": "5000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.LorenzoHelped",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
 
@@ -1181,7 +1258,21 @@
             "Text": "[RSV.SpecialOrder.MorningDrinks_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.OlgaHelped",
+                    "Value": "[RSV.SpecialOrder.MorningDrinks_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RSV.OlgaHelped",
+                    "Value": "[RSV.SpecialOrder.MorningDrinks_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -1213,6 +1304,13 @@
                      "Amount": "30000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.OlgaHelped",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
 
@@ -1225,10 +1323,24 @@
             "RequiredTags": "!dropbox_RSVFayeHouse",
             "OrderType": "QF:RSVTownSO",
             "SpecialRule": "",
-            "Text": "[RSV.SpecialOrder.FayeClothes_Text-pastel]",
+            "Text": "[RSV.SpecialOrder.FayeClothes_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": [],
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.FayePastel",
+                    "Value": "[RSV.SpecialOrder.FayeClothes_Greeting0-pastel]"
+                  },
+                  {
+                    "RequiredTags": "RSV.FayePastel",
+                    "Value": "[RSV.SpecialOrder.FayeClothes_Greeting1-pastel]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
               {
                  "Type": "Donate",
@@ -1290,10 +1402,24 @@
             "RequiredTags": "!dropbox_RSVFayeHouse",
             "OrderType": "QF:RSVTownSO",
             "SpecialRule": "",
-            "Text": "[RSV.SpecialOrder.FayeClothes_Text-jackets]",
+            "Text": "[RSV.SpecialOrder.FayeClothes_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": [],
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.FayeJacket",
+                    "Value": "[RSV.SpecialOrder.FayeClothes_Greeting0-jackets]"
+                  },
+                  {
+                    "RequiredTags": "RSV.FayeJacket",
+                    "Value": "[RSV.SpecialOrder.FayeClothes_Greeting1-jackets]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
               {
                  "Type": "Donate",
@@ -1355,10 +1481,24 @@
             "RequiredTags": "!dropbox_RSVFayeHouse",
             "OrderType": "QF:RSVTownSO",
             "SpecialRule": "",
-            "Text": "[RSV.SpecialOrder.FayeClothes_Text-misc]",
+            "Text": "[RSV.SpecialOrder.FayeClothes_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": [],
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.FayeMisc",
+                    "Value": "[RSV.SpecialOrder.FayeClothes_Greeting0-misc]"
+                  },
+                  {
+                    "RequiredTags": "RSV.FayeMisc",
+                    "Value": "[RSV.SpecialOrder.FayeClothes_Greeting1-misc]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
               {
                  "Type": "Donate",
@@ -1445,6 +1585,13 @@
                      "Amount": "10000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "RSV.MaddieHelped",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
 
@@ -1461,7 +1608,21 @@
             "Text": "[RSV.SpecialOrder.ExoticIngredients_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.PikaSpring",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RSV.PikaSpring",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -1538,7 +1699,21 @@
             "Text": "[RSV.SpecialOrder.ExoticIngredients_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.PikaSummer",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RSV.PikaSummer",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -1615,7 +1790,21 @@
             "Text": "[RSV.SpecialOrder.ExoticIngredients_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.PikaFall",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RSV.PikaFall",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -1692,7 +1881,21 @@
             "Text": "[RSV.SpecialOrder.ExoticIngredients_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!RSV.PikaWinter",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "RSV.PikaWinter",
+                    "Value": "[RSV.SpecialOrder.ExoticIngredients_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -1755,7 +1958,7 @@
                },
             ]
          },
-
+*/
 
 //--------------------------------------------------
 //Belinda's Special Orders
@@ -1791,6 +1994,13 @@
                      "Amount": "50000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "SlayViperialLetter",
+                     "NoLetter": "false",
+                  }
+               },
             ]
          },
 
@@ -1806,7 +2016,21 @@
             "Text": "[RSV.SpecialOrder.LinkedFishes_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!LinkedFishesLetter",
+                    "Value": "[RSV.SpecialOrder.LinkedFishes_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "LinkedFishesLetter",
+                    "Value": "[RSV.SpecialOrder.LinkedFishes_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Donate",
@@ -1915,6 +2139,13 @@
                      "Amount": "69000"
                   }
                },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "LinkedFishesLetter",
+                     "NoLetter": "true",
+                  }
+               },
             ]
          },
 
@@ -1930,7 +2161,21 @@
             "Text": "[RSV.SpecialOrder.MythFlower_Text]",
             "ItemToRemoveOnEnd": null,
             "MailToRemoveOnEnd": null,
-            "RandomizedElements": null,
+            "RandomizedElements": [
+              {
+                "Name": "Greeting",
+                "Values": [
+                  {
+                    "RequiredTags": "!MythFlowerLetter",
+                    "Value": "[RSV.SpecialOrder.MythFlower_Greeting0]"
+                  },
+                  {
+                    "RequiredTags": "MythFlowerLetter",
+                    "Value": "[RSV.SpecialOrder.MythFlower_Greeting1]"
+                  }
+                ]
+              }
+            ],
             "Objectives": [
                {
                   "Type": "Deliver",
@@ -1948,6 +2193,13 @@
                   "Type": "Money",
                   "Data": {
                      "Amount": "90000"
+                  }
+               },
+               {
+                  "Type": "Mail",
+                  "Data": {
+                     "MailReceived": "MythFlowerLetter",
+                     "NoLetter": "true",
                   }
                },
             ]

@@ -12,6 +12,8 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Shockah.CommonModCode;
+using Shockah.CommonModCode.GMCM;
+using Shockah.CommonModCode.Stardew;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -262,7 +264,7 @@ namespace Shockah.FlexibleSprinklers
 				ModConfig.SprinklerBehaviorEnum.Flexible => new FloodFillSprinklerBehavior(Config.TileWaterBalanceMode, new VanillaSprinklerBehavior()),
 				ModConfig.SprinklerBehaviorEnum.FlexibleWithoutVanilla => new FloodFillSprinklerBehavior(Config.TileWaterBalanceMode, null),
 				ModConfig.SprinklerBehaviorEnum.Vanilla => new VanillaSprinklerBehavior(),
-				_ => throw new ArgumentException(),
+				_ => throw new ArgumentException($"{nameof(ModConfig.SprinklerBehaviorEnum)} has an invalid value."),
 			};
 		}
 
@@ -270,7 +272,7 @@ namespace Shockah.FlexibleSprinklers
 		{
 			if (Game1.player.team.SpecialOrderRuleActive("NO_SPRINKLER"))
 				return;
-			foreach (GameLocation location in Game1.locations)
+			foreach (GameLocation location in GameExt.GetAllLocations())
 				ActivateSprinklersInLocation(location);
 		}
 

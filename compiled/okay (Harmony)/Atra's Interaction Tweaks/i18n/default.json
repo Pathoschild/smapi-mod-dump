@@ -1,0 +1,60 @@
+﻿{
+  "mod.description": "Prevents rugs from being removed if there's something on the rug. Also some other things.",
+  "Enabled.title": "Enabled",
+  "Enabled.description": "Whether to enable or diable this mod.",
+  "PreventRugRemoval.title": "Prevent Rug Removal",
+  "PreventRugRemoval.description": "Whether rugs should be prevented from being removed when things are on them.",
+  "CanPlaceRugsOutside.title": "Can Place Rug Outside",
+  "CanPlaceRugsOutside.description": "Whether or not to allow outdoor rug placement",
+  "CanPlaceRugsUnder.title": "Can Place Rugs Under",
+  "CanPlaceRugsUnder.description": "Whether or not to allow placement of rugs under things.",
+  "PreventRemovalFromTable.title": "Prevent Removal From Table",
+  "PreventRemovalFromTable.description": "If enabled, objects will not be able to be removed from tables unless the furniture placement key is held down.",
+  "PreventPlantingOnRugs.title": "Prevent Planting On Rugs",
+  "PreventPlantingOnRugs.description": "Prevents hoeing on rugs and planting saplings on rugs.",
+  "PlaceGrassUnder.title": "Place Grass Under",
+  "PlaceGrassUnder.description": "Allow placing grass under other objects",
+  "InSafeAreas.title": "In Safe Areas",
+  "InSafeAreas.description": "Whether bomb confirmation should be enabled in safe area.",
+  "InDangerousAreas.title": "In Dangerous Areas",
+  "InDangerousAreas.description": "Whether bombs should be confirmed in dangerous areas.",
+  "JukeboxesEverywhere.title": "Jukeboxes Everywhere",
+  "JukeboxesEverywhere.description": "Allows jukeboxes to be played anywhere!",
+  "GoldenCoconutsOffIsland.title": "Golden Coconuts Off Island",
+  "GoldenCoconutsOffIsland.description": "Golden coconuts can drop from palm trees off the island too! It's quite rare though.",
+
+  "FurniturePlacementKey.title": "Furniture Placement Key",
+  "FurniturePlacementKey.description": "The keybind used to allow objects to be removed from tables.",
+
+  "BombLocationDetailed": "Bomb confirmation per location",
+
+  "BombLocationDetailed.description": "Sets whether or not a location should be considered safe or dangerous when it comes to bomb confirmation. A dynamic location is considered dangerous if there is a single enemy on it.",
+
+  "config.IsSafeLocationEnum.Safe": "Safe",
+  "config.IsSafeLocationEnum.Dangerous": "Dangerous",
+  "config.IsSafeLocationEnum.Dynamic": "Dynamic",
+
+  "config.ConfirmBombEnum.Off": "Off",
+  "config.ConfirmBombEnum.NotInMultiplayer": "Not In Multiplayer",
+  "config.ConfirmBombEnum.On": "On",
+  "config.ConfirmBombEnum.InMultiplayerOnly": "In MultiplayerOnly",
+
+  "ConfirmBomb.title": "Bomb confirmation settings",
+  "ConfirmBomb.description": "Whether or not to ask for confirmation before using a bomb.",
+
+  "rug-removal-message": "Remove all items on rug before removing rug!",
+  "table-removal-message": "Hold down {{keybind}} to remove object from table.",
+  "rug-planting-message": "Planting on rugs is not allowed!",
+  "gate-removal-message": "Hold down {{keybind}} to remove gates easily",
+
+  // Config errors and messages
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+  "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) not found, integration disabled.",
+  "GmcmVersionMessage": "Please update Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) to at least version {{version}} (Current version: {{currentversion}}). GMCM integration disabled.",
+
+  // Confirm bombs?
+  "ConfirmBombs": "Place bomb?",
+  "Yes": "Yes (one)",
+  "YesArea": "Yes (for this map)",
+  "No": "No"
+}

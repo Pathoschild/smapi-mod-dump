@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11264
+IDs: aedenthorn.AdvancedCooking
+update keys: Nexus:11264, GitHub:aedenthorn/StardewValleyMods

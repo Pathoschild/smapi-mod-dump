@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11371
+IDs: lilico.TrueRandomGeodes
+update keys: Nexus:11371

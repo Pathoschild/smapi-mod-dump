@@ -12,6 +12,7 @@ using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System.Collections.Generic;
+using HDPortraits.Models;
 
 namespace HDPortraits
 {
@@ -23,6 +24,7 @@ namespace HDPortraits
         internal static Harmony harmony;
         internal static string ModID;
         private static IHDPortraitsAPI api = new API();
+        private static readonly HashSet<string> failedPaths = new();
 
         internal static Dictionary<string, MetadataModel> portraitSizes = new();
         internal static Dictionary<string, MetadataModel> backupPortraits = new();
@@ -36,7 +38,6 @@ namespace HDPortraits
             harmony = new(ModManifest.UniqueID);
             ModID = ModManifest.UniqueID;
             helper.Events.GameLoop.DayStarted += (object sender, DayStartedEventArgs ev) => ReloadData();
-            helper.Events.Player.Warped += PortraitDrawPatch.Warped;
             harmony.PatchAll();
         }
         public override object GetApi()
@@ -54,33 +55,53 @@ namespace HDPortraits
         public static void ReloadData()
         {
             monitor.Log("Reloading portrait data...", LogLevel.Debug);
+            failedPaths.Clear();
             backupPortraits = helper.Content.Load<Dictionary<string, MetadataModel>>("Mods/HDPortraits", ContentSource.GameContent);
+            foreach ((string id, MetadataModel meta) in backupPortraits)
+            {
+                meta.defaultPath = "Portraits/" + id;
+                meta.Reload();
+            }
             portraitSizes.Clear();
         }
         public static bool TryGetMetadata(string name, string suffix, out MetadataModel meta)
         {
-            if (((suffix != null && portraitSizes.TryGetValue($"Mods/HDPortraits/{name}_{suffix}", out meta)) || 
-                portraitSizes.TryGetValue($"Mods/HDPortraits/{name}", out meta)) && meta != null)
+            if (((suffix != null && 
+                portraitSizes.TryGetValue($"{name}_{suffix}", out meta)) ||
+                portraitSizes.TryGetValue(name, out meta)) &&
+                meta is not null)
             {
                 return true; //cached
             }
 
-            string path = $"Mods/HDPortraits/{name}_{suffix}";
+            string path = $"{name}_{suffix}";
 
-            if (suffix != null && suffix.Length > 0 && (Utils.TryLoadAsset(path, out meta) || backupPortraits.TryGetValue(path, out meta)) && meta != null)
+            if (failedPaths.Contains(path))
             {
+                meta = null;
+                return false;
+            }
+
+            if (suffix != null && 
+                (Utils.TryLoadAsset("Mods/HDPortraits/" + path, out meta) || 
+                backupPortraits.TryGetValue(path, out meta)) && 
+                meta is not null)
+            {
+                meta.defaultPath = "Portraits/" + path;
                 portraitSizes[path] = meta;
                 return true; //suffix
             }
 
-            path = $"Mods/HDPortraits/{name}";
-
-            if ((Utils.TryLoadAsset(path, out meta) || backupPortraits.TryGetValue(path, out meta)) && meta != null)
+            if ((Utils.TryLoadAsset("Mods/HDPortraits/" + name, out meta) || 
+                backupPortraits.TryGetValue(name, out meta)) && 
+                meta is not null)
             {
-                portraitSizes[path] = meta;
+                meta.defaultPath = "Portraits/" + name;
+                portraitSizes[name] = meta;
                 return true; //base
             }
 
+            failedPaths.Add(path);
             meta = null;
             return false; //not found
         }

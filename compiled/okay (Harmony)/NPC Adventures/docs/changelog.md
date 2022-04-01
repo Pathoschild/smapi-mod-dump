@@ -1,5 +1,10 @@
 # Full changelog
 
+## 0.17.3 "Blackhole"
+
+- Friendly and safe error when something failed while applying patch by a content pack
+- Fixed item loss while dumping companion packages at morning
+
 ## 0.17.2 "Blackhole"
 
 - Fixed CurrentController reference (avoid red errors spam when AI init failed - content packs)

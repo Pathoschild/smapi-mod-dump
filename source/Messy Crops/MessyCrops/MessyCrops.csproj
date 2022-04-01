@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>MessyCrops</AssemblyName>
+		<RootNamespace>MessyCrops</RootNamespace>
+		<Version>1.0.0</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<Platforms>x86</Platforms>
+		<PlatformTarget>x86</PlatformTarget>
+		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\STARDEW_CURRENT</GamePath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties manifest_1json__JsonSchema="https://smapi.io/schemas/manifest.json" /></VisualStudio></ProjectExtensions>
+
+</Project>

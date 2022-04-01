@@ -1,0 +1,167 @@
+{
+	// Settings
+	"setting.show-adv": "Доп. информация по изготовлению",
+	"setting.show-adv.tip": "Отображение расширенной информации о создаваемом предмете: сколько у вас ресурсов и сколько раз вы уже создавали предмет. Это просто продублированная настройка из оригинальной игры.",
+
+	"setting.general": "Основные настройки",
+
+	"setting.alphabetic": "Сортировать по алфавиту",
+	"setting.alphabetic.tip": "Рецепты будут сортироваться в алфавитном порядке, а не по умолчанию.",
+
+	"setting.replace-crafting": "Заменить меню Изготовление предметов",
+	"setting.replace-crafting.tip": "Замена старого меню на улучшенное.",
+
+	"setting.replace-cooking": "Заменить меню Готовки",
+	"setting.replace-cooking.tip": "Замена старого меню на улучшенное.",
+
+	"setting.enable-categories": "Включить Категории",
+	"setting.enable-categories.tip": "Замена единого большого списка предметов на удобные вкладки.",
+
+	"setting.settings": "Отображение Настроек",
+	"setting.settings.tip": "В меню будет добавлена кнопка для открытия настроек Better Crafting.",
+
+	"setting.bindings": "Управление клавишами",
+	"setting.bindings.tip": "Настройте горячие клавиши так, как вам удобно.",
+
+	"setting.suppress": "Клавиша отключения",
+	"setting.suppress.tip": "При открывании меню с зажатой клавишей, Better Crafting не будет его заменять.",
+
+"setting.key.search": "Клавиша Поиска",
+	"setting.key.search.tip": "Нажмите эту клавишу, чтобы открыть поиск для фильтрации рецептов.",
+
+	"setting.key.favorite": "Клавиша Избранное",
+	"setting.key.favorite.tip": "Нажмите эту клавишу, чтобы пометить рецепт как избранный.",
+
+	"setting.key.bulk": "Клавиша Масс. создание",
+	"setting.key.bulk.tip": "Нажмите эту клавишу на рецепте, чтобы открыть меню Изготовить в количестве.",
+
+	"setting.key.behavior.left": "Левый клик / Кнопка A",
+	"setting.key.behavior.left.tip": "Сделайте левый клик мыши (или нажмите A на контроллере) по рецепту, чтобы выполнить действие.",
+	"setting.key.behavior.right": "Правый клик / Кнопка X",
+	"setting.key.behavior.right.tip": "Сделайте левый клик мыши (или нажмите X на контроллере) по рецепту, чтобы выполнить действие.",
+
+	"setting.key.tooltip": "Показывать клавиши в подсказках",
+	"setting.key.tooltip.tip": "Горячие клавиши будут отображаться в нижней части всплывающих подсказок Better Crafting",
+
+	"setting.ttwhen.Never": "Никогда",
+	"setting.ttwhen.ForController": "При использовании контроллера",
+	"setting.ttwhen.Always": "Всегда",
+
+	"setting.action.None": "Ничего",
+	"setting.action.Craft": "Создать",
+	"setting.action.Favorite": "В Избранное",
+	"setting.action.BulkCraft": "Изготовить в кол-ве",
+
+	"setting.nearby": "Расширенное создание",
+	"setting.nearby.tip": "Эта функция позволяет верстакам и вашей кухне взаимодействовать с большим количеством сундуков одновременно Вы можете создавать цепочки сундуков или использовать соединители для лучшего взаимодействия.",
+
+	"setting.nearby.enable": "Включить Расширенное создание",
+
+	"setting.nearby.diagonal": "Разрешить диагональные соединители",
+	"setting.nearby.diagonal.tip": "Сундуки и соединители могут быть размещены по диагонали и при этом не терять связь между собой.",
+
+	"setting.nearby.performance": "Производительность",
+	"setting.nearby.performance.tip": "Настройки ограничивающие Расширенное создание для повышения производительности.",
+
+	"setting.nearby.max-chests": "Хранилища",
+	"setting.nearby.max-chests.tip": "Максимальное количество хранилищ, которые может использовать верстак.",
+
+	"setting.nearby.max-distance": "Дистанция",
+	"setting.nearby.max-distance.tip": "Максимальное расстояние, на котором хранилище может находиться от верстака.",
+
+	"setting.nearby.max-check": "Проверка",
+	"setting.nearby.max-check.tip": "Максимальное количество клеток для проверки при нахождении ближайщих хранилищ.",
+
+	"setting.nearby.connectors": "Разрешенные соединители",
+	"setting.nearby.connectors.tip": "Размещаемые объекты, которые можно использовать в качестве соединителей. Вам следует избегать добавления ненужных типов соединителей, чтобы не снижать производительность. Обратите внимание, что эти списки являются примером, и вы можете вручную добавить новые объекты отредактировав config.json.",
+
+	"setting.nearby.floors": "Покрытие",
+	"setting.nearby.other": "Другое",
+
+	// Quality
+
+	"setting.quality": "Качество",
+	"setting.quality.tip": "Некоторые рецепты, добавляемые другими источниками, например SpaceCore, могут не соблюдать эти настройки из-за ограничения API.",
+
+	"setting.enable-quality": "Ограничение Качеством",
+	"setting.enable-quality.tip": "Отображение кнопки, позволяющей настраивать максимальное используемое качество предметов при создании.",
+
+	"setting.sort-quality": "Использовать Низкокачественные предметы",
+	"setting.sort-quality.tip": "Рецепты будут использовать предметы более низкого качества из всего доступного.",
+
+	// Crafting
+	"setting.crafting": "Изготовление",
+	"setting.crafting.tip": "Эти настройки касаются меню Изготовление предметов.",
+
+	"setting.uniform-grid": "Равномерное расположение",
+	"setting.uniform-grid.tip": "Большие предметы будут уменьшены, дабы уместиться в один ряд с остальными.",
+
+	"setting.big-craftables-last": "Сортировать Большие предметы",
+	"setting.big-craftables-last.tip": "Все большие предметы будут распологаться в конце списка.",
+
+	// Cooking
+	"setting.cooking": "Готовка",
+	"setting.cooking.tip": "Эти настройки касаются меню Готовка.",
+
+	"setting.seasoning": "Использовать Приправы",
+	"setting.seasoning.tip": "Следует ли использовать приправы для улучшения приготовленных блюд или нет. Если установлено значение \"Только из инвентаря\", приправы будут использоваться только из вашего инвентаря, а не из холодильника или любого другого хранилища.",
+
+	"seasoning.disabled": "Никогда",
+	"seasoning.enabled": "Всегда",
+	"seasoning.inventory": "Только из инвентаря",
+
+	"setting.hide-unknown": "Скрыть неизвестные рецепты",
+	"setting.hide-unknown.tip": "Рецепты, которые вы еще не изучили, не будут отображаться в меню.",
+
+	// Tooltips
+	"tooltip.crafted": "Создано {{count}} раз(а)",
+	
+	"tooltip.toggle-recipe": "Добавить во Вкладку",
+	"tooltip.use-as-icon": "Выбрать иконку",
+
+	// Buttons
+	"tooltip.edit-mode": "Редактировать",
+	"tooltip.favorites": "Только Избранное",
+	"tooltip.seasoning": "Использовать Приправы",
+	"tooltip.uniform": "Равномерное расположение",
+	"tooltip.settings": "Настройки",
+
+	"tooltip.search": "Искать рецепт",
+	"tooltip.search.tip": "Поставьте \"@B{{prefix}}@b\" в начале, чтобы искать по ингредиентам. Например: @B!уголь@b.",
+
+	"search.ingredient-prefix": "!",
+
+	"search.none": "Ничего не найдено.",
+	"search.none.category": "В этой вкладке нет подходящего рецепта.",
+
+	"tooltip.select-icon": "Выбрать иконку",
+
+	"tooltip.quality.none": "Использовать предметы обычного качества.",
+	"tooltip.quality.silver": "Использовать предметы обычного и серебряного качества.",
+	"tooltip.quality.gold": "Использовать предметы обычного, серебряного и золотого качества.",
+	"tooltip.quality.iridium": "Использовать предметы любого качества.",
+
+	"tooltip.quality-unsupported": "Этот рецепт не поддерживает настройки качества.",
+
+	// Bulk Crafting
+	"bulk.crafting": "Изготовление",
+	"bulk.craftable": "Макс. {{count}}",
+	"bulk.craft": "Изготовить {{count}} {{name}}",
+
+	// Categories
+	"category.new": "Новая вкладка",
+	"category.favorites": "Избранное",
+	"category.combat_rings": "Оружие и Кольца",
+	"category.consumables": "Растрачиваемое",
+	"category.decoration": "Декорации",
+	"category.fertilizer_seeds": "Удобрения и Семена",
+	"category.fishing": "Рыбная ловля",
+	"category.machinery": "Оборудование",
+	"category.misc": "Прочее",
+
+	"category.food.farming": "Фермерство и Собирательство",
+	"category.food.mining": "Горное дело и Магнетизм",
+	"category.food.fishing": "Рыбная ловля",
+	"category.food.combat": "Боевые навыки",
+	"category.food.other": "Удача, Скорость, и Прочее"
+}

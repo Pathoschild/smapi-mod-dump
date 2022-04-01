@@ -19,4 +19,5 @@
 
 	<Import Project="..\Common\Common.projitems" Label="Shared" />
 	<Import Project="..\_build\common.targets" />
+	<ProjectExtensions><VisualStudio><UserProperties assets_4themes_4overgrownflowery_4theme_1json__JsonSchema="" assets_4themes_4starrysky_4theme_1json__JsonSchema="" assets_4themes_4vintageinterface2_4theme_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 </Project>

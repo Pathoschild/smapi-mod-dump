@@ -1,0 +1,13 @@
+﻿{
+  "Name": "Spouses' Island",
+  "Author": "mistyspring",
+  "Version": "2.2.0", // fixed locally
+  "Description": "Required for mod to work",
+  "UniqueID": "mistyspring.SpouseRoomCode",
+  "EntryDll": "SpouseRoomCode.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["nexus:???"],
+  "Dependencies": [
+   { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": false }
+]
+}

@@ -27,6 +27,10 @@ namespace Leclair.Stardew.Common {
 			Ring = ring;
 		}
 
+		public override void Draw(SpriteBatch batch, Vector2 location, float scale, Vector2 size, int frame = -1, Color? baseColor = null, Color? overlayColor = null, float alpha = 1) {
+			Draw(batch, location, scale, frame, size.X, baseColor, overlayColor, alpha);
+		}
+
 		public override void Draw(SpriteBatch batch, Vector2 location, float scale, int frame = -1, float size = 16, Color? baseColor = null, Color? overlayColor = null, float alpha = 1) {
 			int firstIdx = Ring.combinedRings[0].indexInTileSheet.Value;
 			int secondIdx = Ring.combinedRings[1].indexInTileSheet.Value;

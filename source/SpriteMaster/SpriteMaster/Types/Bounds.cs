@@ -227,6 +227,15 @@ partial struct Bounds :
 	);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal readonly bool Contains(Vector2I vector) =>
+	(
+		Left <= vector.X &&
+		Right >= vector.X &&
+		Top <= vector.Y &&
+		Bottom >= vector.Y
+	);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal readonly Bounds Clone() => this;
 
 	readonly object ICloneable.Clone() => this;

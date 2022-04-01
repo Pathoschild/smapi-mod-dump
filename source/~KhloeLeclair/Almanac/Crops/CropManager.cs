@@ -19,8 +19,10 @@ using StardewModdingAPI.Events;
 
 using StardewValley;
 
+using Leclair.Stardew.Almanac.Managers;
+
 namespace Leclair.Stardew.Almanac.Crops {
-	public class CropManager : EventSubscriber<ModEntry> {
+	public class CropManager : BaseManager {
 
 		public List<CropInfo> Crops = new();
 		private bool Loaded = false;
@@ -30,14 +32,7 @@ namespace Leclair.Stardew.Almanac.Crops {
 		private readonly Dictionary<string, ModProvider> ModProviders = new();
 
 		public CropManager(ModEntry mod) : base(mod) {
-			Providers.Add(new VanillaProvider());
-		}
-
-		protected void Log(string message, LogLevel level = LogLevel.Debug, Exception ex = null) {
-			string Name = GetType().Name;
-			Mod.Monitor.Log($"[{Name}] {message}", level: level);
-			if (ex != null)
-				Mod.Monitor.Log($"[{Name}] Details:\n{ex}", level: level);
+			Providers.Add(new VanillaProvider(mod));
 		}
 
 		#region Mod Providers
@@ -76,6 +71,7 @@ namespace Leclair.Stardew.Almanac.Crops {
 
 		public void Invalidate() {
 			Loaded = false;
+			Mod.Helper.Content.InvalidateCache(AssetManager.CropOverridesPath);
 		}
 
 		public void AddProvider(ICropProvider provider) {
@@ -107,7 +103,7 @@ namespace Leclair.Stardew.Almanac.Crops {
 				try {
 					crops = provider.GetCrops();
 				} catch (Exception ex) {
-					Log($"An error occurred getting crops from provider {provider.GetType().Name}.", LogLevel.Error, ex);
+					Log($"An error occurred getting crops from provider {provider.Name}.", LogLevel.Error, ex);
 					continue;
 				}
 
@@ -118,7 +114,7 @@ namespace Leclair.Stardew.Almanac.Crops {
 					}
 				}
 
-				Log($"Loaded {provided} crops from {provider.GetType().Name}");
+				Log($"Loaded {provided} crops from {provider.Name}");
 				if (provided > 0)
 					providers++;
 			}
@@ -130,18 +126,25 @@ namespace Leclair.Stardew.Almanac.Crops {
 			Loaded = true;
 		}
 
-		public List<CropInfo> GetSeasonCrops(int season) {
-			return GetSeasonCrops(WeatherHelper.GetSeasonName(season));
+		public List<CropInfo> GetSeasonCrops(int season, bool filtered = true) {
+			return GetSeasonCrops(WeatherHelper.GetSeasonName(season), filtered);
 		}
 
-		public List<CropInfo> GetSeasonCrops(string season) {
+		public List<CropInfo> GetSeasonCrops(string season, bool filtered = true) {
 			if (!Loaded)
 				RefreshCrops();
 
 			WorldDate start = new(1, season, 1);
-			WorldDate end = new(1, season, WorldDate.DaysPerMonth);
+			WorldDate end = new(1, season, ModEntry.DaysPerMonth);
 
-			return Crops.Where(crop => crop.StartDate <= end && crop.EndDate >= start).ToList();
+			var overrides = filtered ?
+				Game1.content.Load<Dictionary<string, Models.CropOverride>>(AssetManager.CropOverridesPath)
+				: null;
+
+			return Crops.Where(crop =>
+				(overrides == null || ! overrides.TryGetValue(crop.Id, out var ovr) || ovr.Visible)
+				&& crop.StartDate <= end && crop.EndDate >= start
+			).ToList();
 		}
 
 	}

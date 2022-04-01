@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11422
+IDs: aedenthorn.FruitTreeTweaks, Aedenthorn.FruitTreeTweaks
+update keys: Nexus:11422, GitHub:aedenthorn/StardewValleyMods

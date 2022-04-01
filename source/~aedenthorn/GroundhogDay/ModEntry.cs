@@ -55,6 +55,11 @@ namespace GroundhogDay
             {
                 Config.EnableMod = !Config.EnableMod;
                 Helper.WriteConfig(Config);
+                Monitor.Log($"Mod Enabled: {Config.EnableMod}");
+                if (Config.ShowMessage)
+                {
+                    Game1.addHUDMessage(new HUDMessage(string.Format(Helper.Translation.Get("mod-enabled-x"), Config.EnableMod), 1));
+                }
             }
         }
 
@@ -78,6 +83,12 @@ namespace GroundhogDay
                 name: () => "Mod Enabled?",
                 getValue: () => Config.EnableMod,
                 setValue: value => Config.EnableMod = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Show Message?",
+                getValue: () => Config.ShowMessage,
+                setValue: value => Config.ShowMessage = value
             );
             configMenu.AddKeybind(
                 mod: ModManifest,

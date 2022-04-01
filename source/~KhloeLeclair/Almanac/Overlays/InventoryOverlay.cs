@@ -38,8 +38,16 @@ namespace Leclair.Stardew.Almanac.Overlays {
 
 		#region Lifecycle
 
-		internal InventoryOverlay(InventoryPage menu, Farmer who)
-		: base(menu, ModEntry.instance, true) {
+		internal InventoryOverlay(InventoryPage menu)
+		: base(menu, ModEntry.Instance, true) {
+			Texture2D tex;
+			try {
+				tex = ModEntry.Instance.ThemeManager.Load<Texture2D>("Menu.png");
+			} catch(Exception ex) {
+				ModEntry.Instance.Log("Unable to load texture", LogLevel.Warn, ex);
+				tex = null;
+			}
+
 			btnAlmanac = new(
 				new Rectangle(
 					Menu.xPositionOnScreen - 64 - 8,
@@ -47,7 +55,7 @@ namespace Leclair.Stardew.Almanac.Overlays {
 					64,
 					64
 				),
-				ModEntry.instance.Helper.Content.Load<Texture2D>("assets/Menu.png"),
+				tex,
 				new Rectangle(240, 352, 16, 16),
 				4f
 			) {
@@ -65,7 +73,7 @@ namespace Leclair.Stardew.Almanac.Overlays {
 		public override void Dispose() {
 			base.Dispose();
 
-			Menu.allClickableComponents.Remove(btnAlmanac);
+			Menu.allClickableComponents?.Remove(btnAlmanac);
 		}
 
 		public bool MenuActive {
@@ -87,14 +95,71 @@ namespace Leclair.Stardew.Almanac.Overlays {
 		#region UI Updates
 
 		public virtual void AddButtonsToMenu() {
+			if (Menu.allClickableComponents == null)
+				return;
+
 			if (! Menu.allClickableComponents.Contains(btnAlmanac))
 				Menu.allClickableComponents.Add(btnAlmanac);
 		}
 
 		public virtual void MoveUIElements() {
 
-			GUIHelper.LinkComponents(GUIHelper.Side.Right, id => Menu.getComponentWithID(id), Menu.organizeButton, btnAlmanac);
-			GUIHelper.MoveComponents(GUIHelper.Side.Right, -1, Menu.organizeButton, btnAlmanac);
+			var pos = ModEntry.Instance.Config.AlmanacButtonPos;
+
+			// When set to Left, we set the position manually.
+
+			if (pos == ButtonPosition.TopLeft || pos == ButtonPosition.BottomLeft) {
+
+				btnAlmanac.bounds.X = Menu.xPositionOnScreen - 64 - 32;
+				if (pos == ButtonPosition.TopLeft)
+					btnAlmanac.bounds.Y = Menu.inventory.yPositionOnScreen;
+				else
+					btnAlmanac.bounds.Y = Menu.yPositionOnScreen + Menu.height - 64 - IClickableMenu.borderWidth;
+
+				btnAlmanac.leftNeighborID = ClickableComponent.ID_ignore;
+				btnAlmanac.upNeighborID = ClickableComponent.SNAP_AUTOMATIC;
+				btnAlmanac.rightNeighborID = ClickableComponent.SNAP_AUTOMATIC;
+				btnAlmanac.downNeighborID = ClickableComponent.SNAP_AUTOMATIC;
+
+				foreach (var cmp in Menu.inventory.GetBorder(InventoryMenu.BorderSide.Left))
+					if (cmp.leftNeighborID == ClickableComponent.ID_ignore)
+						cmp.leftNeighborID = ClickableComponent.SNAP_AUTOMATIC;
+
+				return;
+			}
+
+			// Relative to another component~
+
+			ClickableComponent other;
+			GUIHelper.Side side;
+
+			switch(ModEntry.Instance.Config.AlmanacButtonPos) {
+				case ButtonPosition.OrganizeRight:
+					side = GUIHelper.Side.Right;
+					other = Menu.organizeButton;
+					break;
+				case ButtonPosition.TrashRight:
+					side = GUIHelper.Side.Right;
+					other = Menu.trashCan;
+					break;
+				case ButtonPosition.TrashDown:
+					side = GUIHelper.Side.Down;
+					other = Menu.trashCan;
+					break;
+				default:
+					return;
+			}
+
+			GUIHelper.LinkComponents(
+				side,
+				id => Menu.getComponentWithID(id),
+				other, btnAlmanac
+			);
+
+			GUIHelper.MoveComponents(
+				side, -1,
+				other, btnAlmanac
+			);
 		}
 
 		#endregion
@@ -124,6 +189,12 @@ namespace Leclair.Stardew.Almanac.Overlays {
 			if (!MenuActive)
 				return;
 
+			if (Menu.allClickableComponents == null) {
+				// Something's wrong. Abort!
+				Dispose();
+				return;
+			}
+
 			AddButtonsToMenu();
 		}
 
@@ -138,7 +209,7 @@ namespace Leclair.Stardew.Almanac.Overlays {
 				Game1.playSound("bigSelect");
 
 				if (Menu.readyToClose())
-					Game1.activeClickableMenu = new Menus.AlmanacMenu(Game1.Date.Year);
+					Game1.activeClickableMenu = new Menus.AlmanacMenu(ModEntry.Instance, Game1.Date.Year);
 
 				return true;
 			}

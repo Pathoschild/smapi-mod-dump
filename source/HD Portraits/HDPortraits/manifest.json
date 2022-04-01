@@ -11,7 +11,7 @@
 {
   "Name": "HD Portraits",
   "Author": "Tlitookilakin",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Enables portraits at other resolutions & with animation.",
   "UniqueID": "tlitookilakin.HDPortraits",
   "EntryDll": "HDPortraits.dll",

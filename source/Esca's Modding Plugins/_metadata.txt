@@ -6,9 +6,9 @@ mods:
    Esca's Modding Plugins
 
 latest commit:
-   commit 7c358528324291c2e4e455b5c8ae2a9a0b8ebee1
+   commit e943d3bd254ee5b825eceebb71eba7951186a23b
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Feb 16 19:06:29 2022 -0600
+   Date:   Wed Mar 16 13:36:34 2022 -0500
    
-       Tweak log messages, move dynamic patch messages to verbose
+       Increment version to 1.2.1
    

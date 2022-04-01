@@ -33,6 +33,7 @@ namespace MoreConversationTopics
         {
             try
             {
+                Monitor.Log("Adding Harmony pass-through prefix to doDivorce() in Farmer.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Farmer), nameof(Farmer.doDivorce)),
                     prefix: new HarmonyMethod(typeof(DivorcePatcher), nameof(DivorcePatcher.Farmer_doDivorce_Prefix))
@@ -45,6 +46,7 @@ namespace MoreConversationTopics
 
             try
             {
+                Monitor.Log("Adding Harmony postfix to doDivorce() in Farmer.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Farmer), nameof(Farmer.doDivorce)),
                     postfix: new HarmonyMethod(typeof(DivorcePatcher), nameof(DivorcePatcher.Farmer_doDivorce_Postfix))
@@ -100,7 +102,7 @@ namespace MoreConversationTopics
                 case "NPC_divorce":
                     try
                     {
-                        __instance.activeDialogueEvents.Add("divorce", Config.DivorceDuration);
+                        MCTHelperFunctions.AddMaybePreExistingCT(__instance, "divorce", Config.DivorceDuration);
                     }
                     catch (Exception ex)
                     {
@@ -112,7 +114,7 @@ namespace MoreConversationTopics
                     // Add divorce conversation topic to current player
                     try
                     {
-                        __instance.activeDialogueEvents.Add("divorce", Config.DivorceDuration);
+                        MCTHelperFunctions.AddMaybePreExistingCT(__instance, "divorce", Config.DivorceDuration);
                     }
                     catch (Exception ex)
                     {
@@ -129,14 +131,14 @@ namespace MoreConversationTopics
                         // Check if spouse is offline or nonexistent, otherwise add divorce conversation topic to spouse
                         if (!Game1.getOnlineFarmers().Contains(spouse))
                         {
-                            spouse.activeDialogueEvents.Add("divorce", Config.DivorceDuration);
+                            MCTHelperFunctions.AddMaybePreExistingCT(spouse, "divorce", Config.DivorceDuration);
                             Monitor.Log($"Added divorce conversation topic to offline multiplayer spouse, unknown behavior may result", LogLevel.Warn);
                         }
                         else if (spouse == null)
                             Monitor.Log($"Player was married to multiplayer spouse in prefix but multiplayer spouse not found in postfix", LogLevel.Error);
                         else
                         {
-                            spouse.activeDialogueEvents.Add("divorce", Config.DivorceDuration);
+                            MCTHelperFunctions.AddMaybePreExistingCT(spouse, "divorce", Config.DivorceDuration);
                         }
                     }
                     catch (Exception ex)

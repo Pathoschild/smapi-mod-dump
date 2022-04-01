@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/bwdy/SDVModding
+   Git: https://github.com/bwdy/SDVModding.git
+
+mods:
+   Minecart Patcher
+
+latest commit:
+   commit 8a7a8bdbd05ca7d87be38e2edce0b0ea031d7b9a
+   Author: bwdy <47769190+bwdy@users.noreply.github.com>
+   Date:   Wed Mar 23 18:47:06 2022 -0800
+   
+       nexus release 1.0.0
+   

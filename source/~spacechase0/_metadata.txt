@@ -59,9 +59,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 5cb2af4fcfde0265db47bf02bfb031db23a6bef0
+   commit 5b80730bb3f9b830bb8912ff9ae386da63af61c6
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Fri Jan 28 18:48:30 2022 -0500
+   Date:   Tue Mar 29 22:47:38 2022 -0400
    
-       Minor fixes for NG+ and SpaceCore
+       Dyeable hats prototype and fix for Mac custom location context saving
    

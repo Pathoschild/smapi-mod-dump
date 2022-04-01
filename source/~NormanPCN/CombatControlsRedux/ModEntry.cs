@@ -402,7 +402,7 @@ namespace CombatControlsRedux
                         // too big a number and auto swing just does not work at all.
                         // the next fire may need to be set during a current fire/swing/something.
                         // even a little reduction seems somehow "nicer". what the heck.
-                        // update: fast weapons + lots of speed buffs need a real repeat short delay. maybe dump this.
+                        // update: fast weapons + lots of speed buffs need a real repeat short delay. maybe dump the repeat timing.
                         if (screen.TickCountdown > 0)
                         {
                             screen.TickCountdown -= 1;

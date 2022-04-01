@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/7965
-IDs: DaLion.AwesomeTools, theLion.AwesomeTools
-update keys: Nexus:7965

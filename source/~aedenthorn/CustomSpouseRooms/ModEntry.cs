@@ -44,6 +44,7 @@ namespace CustomSpouseRooms
 
         public static Dictionary<string, SpouseRoomData> customRoomData = new Dictionary<string, SpouseRoomData>();
         public static Dictionary<string, SpouseRoomData> currentRoomData = new Dictionary<string, SpouseRoomData>();
+        public static Dictionary<string, SpouseRoomData> currentIslandRoomData = new Dictionary<string, SpouseRoomData>();
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -83,6 +84,10 @@ namespace CustomSpouseRooms
                original: AccessTools.Method(typeof(FarmHouse), nameof(FarmHouse.updateFarmLayout)),
                prefix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.FarmHouse_updateFarmLayout_Prefix))
             );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(DecoratableLocation), nameof(DecoratableLocation.MakeMapModifications)),
+               postfix: new HarmonyMethod(typeof(LocationPatches), nameof(LocationPatches.DecoratableLocation_MakeMapModifications_Postfix))
+            );
             /*
             harmony.Patch(
                original: AccessTools.Method(typeof(DecoratableLocation), "IsFloorableOrWallpaperableTile"),
@@ -115,7 +120,7 @@ namespace CustomSpouseRooms
                 foreach (var srd in obj.data)
                 {
                     customRoomData.Add(srd.name, srd);
-                    Monitor.Log($"Added {srd.name} room data, start pose{srd.startPos}");
+                    Monitor.Log($"Added {srd.name} room data, start pos {srd.startPos}");
                 }
 
                 Monitor.Log($"Added {obj.data.Count} room datas from {contentPack.Manifest.Name}");

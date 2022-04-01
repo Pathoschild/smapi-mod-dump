@@ -1,0 +1,20 @@
+﻿{
+    "Name": "Machine Status",
+    "Author": "Shockah",
+    "Version": "1.0.0",
+    "Description": "Machine ready/waiting/busy status at a glance.",
+    "UniqueID": "Shockah.MachineStatus",
+    "EntryDll": "MachineStatus.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:11177" ],
+    "Dependencies": [
+        {
+            "UniqueID": "aedenthorn.CustomObjectProduction",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "Digus.ProducerFrameworkMod",
+            "IsRequired": false
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/S1mmyy/StardewMods
+**
+*************************************************/
+
+{
+    "Name": "The Throngler Sword",
+    "Author": "S1mmyy, Slimeybox27",
+    "Version": "1.0.0",
+    "Description": "Adds a neat little sword.",
+    "UniqueID": "S1mmyy.Throngler",
+    "UpdateKeys": ["Nexus:11485"],
+    "ContentPackFor": {
+        "UniqueID": "spacechase0.JsonAssets"
+    }
+}

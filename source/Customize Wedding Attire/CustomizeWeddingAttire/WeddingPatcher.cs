@@ -38,6 +38,7 @@ namespace CustomizeWeddingAttire
         {
             try
             {
+                Monitor.Log("Applying Harmony patch to prefix (and possibly skip) addSpecificTemporarySprite in Event.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Event), "addSpecificTemporarySprite"),
                     prefix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Event_addSpecificTemporarySprite_Prefix))
@@ -49,6 +50,7 @@ namespace CustomizeWeddingAttire
             }
             try
             {
+                Monitor.Log("Applying Harmony patch to postfix endBehaviors in Event.cs", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Event),nameof(Event.endBehaviors)),
                     postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Event_endBehaviors_Postfix))
@@ -63,8 +65,6 @@ namespace CustomizeWeddingAttire
         // Method that is used to prefix
         private static bool Event_addSpecificTemporarySprite_Prefix(string key, GameLocation location, Event __instance, ref int ___oldShirt, ref Color ___oldPants)
         {
-            // TODO add try/catch statements everywhere
-
             // If this is not a temporary sprite for a wedding, skip this prefix entirely
             if (key != "wedding")
             {
@@ -74,13 +74,11 @@ namespace CustomizeWeddingAttire
             // Put the player in a tux if desired
             try
             {
-                if (Config.WeddingAttire == ModEntry.tuxOption)
+                if (Config.WeddingAttire == ModEntry.tuxOption || (Game1.player.IsMale && Config.WeddingAttire == ModEntry.defaultOption))
                 {
                     ___oldShirt = __instance.farmer.shirt;
-                    __instance.farmer.changeShirt(10);
                     ___oldPants = __instance.farmer.pantsColor;
-                    __instance.farmer.changePantStyle(0);
-                    __instance.farmer.changePants(new Color(49, 49, 49));
+                    putInTux(__instance.farmer);
                 }
             }
             catch (Exception ex)
@@ -94,10 +92,8 @@ namespace CustomizeWeddingAttire
                 if (Config.WeddingAttire == ModEntry.dressOption)
                 {
                     ___oldShirt = __instance.farmer.shirt;
-                    __instance.farmer.changeShirt(265);
                     ___oldPants = __instance.farmer.pantsColor;
-                    __instance.farmer.changePantStyle(2);
-                    __instance.farmer.changePants(new Color(255, 255, 255));
+                    putInDress(__instance.farmer);
                 }
             }
             catch (Exception ex)
@@ -111,41 +107,41 @@ namespace CustomizeWeddingAttire
                 foreach (Farmer farmerActor in __instance.farmerActors)
                 {
                     long unqID = farmerActor.UniqueMultiplayerID;
+
+                    // If the farmer is the current player, we already handled this, so skip to the next farmer
+                    if (unqID == Game1.player.UniqueMultiplayerID)
+                    {
+                        continue;
+                    }
+
+                    // Get the copy of the other farmer in the event
                     Farmer realFarmerActor = Game1.getFarmerMaybeOffline(unqID);
 
                     // Check for the preference of the farmer in modData
                     if (!realFarmerActor.modData.TryGetValue($"{Manifest.UniqueID}/weddingAttirePref", out string farmerPreference))
                     {
                         // If no preference is recorded, use the game default
-                        if (farmerActor.isMale)
+                        if (farmerActor.IsMale)
                         {
-                            farmerActor.changeShirt(10);
-                            farmerActor.changePants(new Color(49, 49, 49));
-                            farmerActor.changePantStyle(0);
+                            putInTux(farmerActor);
                         }
                     }
                     // Use the game default if preferred
                     else if (farmerPreference == ModEntry.defaultOption) {
-                        if (farmerActor.isMale)
+                        if (farmerActor.IsMale)
                         {
-                            farmerActor.changeShirt(10);
-                            farmerActor.changePants(new Color(49, 49, 49));
-                            farmerActor.changePantStyle(0);
+                            putInTux(farmerActor);
                         }
                     }
                     // Tuxedo if preferred
                     else if(farmerPreference == ModEntry.tuxOption)                        
                     {
-                        farmerActor.changeShirt(10);
-                        farmerActor.changePants(new Color(49, 49, 49));
-                        farmerActor.changePantStyle(0);
+                        putInTux(farmerActor);
                     }
                     // Dress if preferred
                     else if (farmerPreference == ModEntry.dressOption)
                     {
-                        farmerActor.changeShirt(265);
-                        farmerActor.changePantStyle(2);
-                        farmerActor.changePants(new Color(255, 255, 255));
+                        putInDress(farmerActor);
                     }
                 }
             }
@@ -171,20 +167,25 @@ namespace CustomizeWeddingAttire
             
             return false;
         }
+
         private static void Event_endBehaviors_Postfix(string[] split, Event __instance, ref int ___oldShirt, ref Color ___oldPants)
         {
+            // After the wedding, make sure to change the player's clothes back to normal if needed
             try
             {
+                // Process the input string the same way the game does to get the key
                 if (split != null && split.Length > 1)
                 {
                     string key = split[1];
+                    // Only need to change clothes back if this was a wedding
                     if (key != "wedding")
                     {
                         return;
                     }
                     try
                     {
-                        if (Config.WeddingAttire == ModEntry.dressOption || Config.WeddingAttire == ModEntry.tuxOption)
+                        // Only need to change clothes back if preference was for changing clothes
+                        if (Config.WeddingAttire == ModEntry.dressOption || Config.WeddingAttire == ModEntry.tuxOption || (Game1.player.IsMale && Config.WeddingAttire == ModEntry.defaultOption))
                         {
                             __instance.farmer.changeShirt(-1);
                             __instance.farmer.changePants(___oldPants);
@@ -205,7 +206,20 @@ namespace CustomizeWeddingAttire
 
         }
 
-        
-    }
+        private static void putInTux(Farmer farmerActor)
+        {
+            // This is identical to the game's wedding tuxedo
+            farmerActor.changeShirt(10);
+            farmerActor.changePants(new Color(49, 49, 49));
+            farmerActor.changePantStyle(0);
+        }
 
+        private static void putInDress(Farmer farmerActor)
+        {
+            // Bridal top and long skirt, both in white
+            farmerActor.changeShirt(265);
+            farmerActor.changePantStyle(2);
+            farmerActor.changePants(new Color(255, 255, 255));
+        }
+    }
 }

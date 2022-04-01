@@ -27,9 +27,46 @@ namespace SpriteMaster.Metadata;
 sealed class Texture2DMeta : IDisposable {
 	private static readonly ConcurrentDictionary<ulong, SpriteDictionary> SpriteDictionaries = new();
 	private readonly SpriteDictionary SpriteInstanceTable;
-	private readonly ConcurrentDictionary<Bounds, bool> NoResampleSet = new();
+
+	[Flags]
+	private enum SpriteFlag : uint {
+		None =				0U,
+		NoResample =	1U << 0,
+		Animated =		1U << 1,
+	}
+
+	// Class and not a struct because we want to avoid a plethora of dictionary accesses to mutate them.
+	// TODO : use an object cache/allocator
+	private sealed class SpriteData {
+		internal ulong? Hash = null;
+		internal SpriteFlag Flags = SpriteFlag.None;
+	
+		public SpriteData() {}
+	}
+
+	private readonly ConcurrentDictionary<Bounds, SpriteData> SpriteDataMap = new();
+	private static readonly ConcurrentDictionary<string, ConcurrentDictionary<Bounds, SpriteData>> GlobalSpriteDataMaps = new();
 
 	internal IReadOnlyDictionary<ulong, ManagedSpriteInstance> GetSpriteInstanceTable() => SpriteInstanceTable;
+
+	internal void SetSpriteHash(in Bounds bounds, ulong hash) {
+		SpriteDataMap.GetOrAdd(bounds, _ => new()).Hash = hash;
+	}
+
+	internal bool TryGetSpriteHash(in Bounds bounds, out ulong hash) {
+		if (SpriteDataMap.TryGetValue(bounds, out var data) && data.Hash.HasValue) {
+			hash = data.Hash.Value;
+			return true;
+		}
+		hash = 0UL;
+		return false;
+	}
+
+	internal void ClearSpriteHashes() {
+		foreach (var pair in SpriteDataMap) {
+			pair.Value.Hash = null;
+		}
+	}
 
 	internal void ClearSpriteInstanceTable(bool allowSuspend = false) {
 		using (Lock.Write) {
@@ -67,11 +104,21 @@ sealed class Texture2DMeta : IDisposable {
 	}
 
 	internal void AddNoResample(in Bounds bounds) {
-		NoResampleSet.TryAdd(bounds, true);
+		SpriteDataMap.GetOrAdd(bounds, _ => new()).Flags |= SpriteFlag.NoResample;
 	}
 
 	internal bool IsNoResample(in Bounds bounds) {
-		return NoResampleSet.ContainsKey(bounds);
+		if (SpriteDataMap.TryGetValue(bounds, out var data)) {
+			return (data.Flags & SpriteFlag.NoResample) != 0U;
+		}
+		return false;
+	}
+
+	internal bool IsAnimated(in Bounds bounds) {
+		if (SpriteDataMap.TryGetValue(bounds, out var data)) {
+			return (data.Flags & SpriteFlag.Animated) != 0U;
+		}
+		return false;
 	}
 
 	/// <summary>The current (static) ID, incremented every time a new <see cref="Texture2DMeta"/> is created.</summary>
@@ -100,6 +147,9 @@ sealed class Texture2DMeta : IDisposable {
 		Format = texture.Format;
 		Size = texture.Extent();
 		SpriteInstanceTable = SpriteDictionaries.GetOrAdd(MetaID, id => new());
+		if (!texture.Anonymous()) {
+			SpriteDataMap = GlobalSpriteDataMaps.GetOrAdd(texture.NormalizedName(), _ => new());
+		}
 	}
 
 	// TODO : this presently is not threadsafe.
@@ -128,7 +178,7 @@ sealed class Texture2DMeta : IDisposable {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal void Purge(Texture2D reference, in Bounds? bounds, in DataRef<byte> data) {
+	internal void Purge(Texture2D reference, in Bounds? bounds, in DataRef<byte> data, bool animated) {
 		using (Lock.Write) {
 			bool hasCachedData = CachedRawData is not null;
 
@@ -137,12 +187,40 @@ sealed class Texture2DMeta : IDisposable {
 					Debug.Trace($"Clearing '{reference.NormalizedName(DrawingColor.LightYellow)}' Cache");
 				}
 				CachedRawData = null;
+				foreach (var pair in SpriteDataMap) {
+					var spriteData = pair.Value;
+					spriteData.Hash = null;
+					if (animated) {
+						spriteData.Flags |= SpriteFlag.Animated;
+					}
+				}
 				return;
 			}
 
 			var refSize = (int)reference.SizeBytes();
 
 			bool forcePurge = false;
+
+			if (bounds.HasValue) {
+				foreach (var dataPair in SpriteDataMap) {
+					if (dataPair.Key.Overlaps(bounds.Value)) {
+						dataPair.Value.Hash = null;
+						if (animated) {
+							dataPair.Value.Flags |= SpriteFlag.Animated;
+						}
+					}
+				}
+			}
+			else {
+				foreach (var pair in SpriteDataMap) {
+					var spriteData = pair.Value;
+					spriteData.Hash = null;
+					if (animated) {
+						spriteData.Flags |= SpriteFlag.Animated;
+					}
+				}
+			}
+
 
 			try {
 				// TODO : lock isn't granular enough.

@@ -7,9 +7,9 @@ mods:
    Quest Essentials
 
 latest commit:
-   commit 58ca2bde3d5052d8ccf511ca6e9c63963b9f377f
+   commit cc35215a501a9119a7c57aafaa33f7582f110d98
    Author: PurrplingCat <ellen@purrplingcat.com>
-   Date:   Wed Jan 19 19:30:38 2022 +0100
+   Date:   Tue Mar 15 09:14:37 2022 +0100
    
-       CDGU: reveal dialogues
+       CGDU: Release 1.2.0
    

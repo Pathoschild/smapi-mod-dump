@@ -13,7 +13,7 @@
 		"de": "Sternentau Aquarium Pokal",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "スターデュー水族館トロフィー",
 		//"tr": "", *Turkish
 	},
 	"DescriptionLocalization": {
@@ -26,7 +26,7 @@
 		"de": "verliehen für die Mithilfe, das Sternentau Aquarium zu seinem vollen Potential zu führen",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "スターデュー水族館の発展へ最大限に協力した功績が賞されました！",
 		//"tr": "", *Turkish
 	}
 }

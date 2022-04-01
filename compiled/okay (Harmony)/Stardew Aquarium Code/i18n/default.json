@@ -1,4 +1,4 @@
-﻿{
+{
 	//Welcome message after the stardew aquarium has been completed
 	"AquariumWelcome": "Welcome to the Stardew Aquarium! We've now acquired a full collection. And it's all thanks to you!",
 
@@ -45,7 +45,7 @@
 	"StayHydratedBois": "*drinking noises*",
 	"OutsideSign": "Welcome to the Stardew Aquarium! Enjoy your visit.",
 	"SewerTP": "Going down this grate will lead you to the sewers, where we keep a special fish which is found only in a dangerous place called a mutant bug lair.",
-	"SwampTP": "If you step on this magic circle you will be transported to an isolated part of the swamp, where we special 'void infused' specimens can thrive.",
+	"SwampTP": "If you step on this magic circle you will be transported to an isolated part of the swamp, where 'void infused' specimens can thrive.",
 	"SVETP": "Step through this door to see our exhibit of some special fish.",
 	"ComingSoon": "Coming Soon!",
 	"SVEBookOpen": "This is a cooking book. It mentions something about a Butterfish...",
@@ -182,7 +182,7 @@
 	"Tank_GreenTerror": "The Green Terror is a species of freshwater fish from the large cichlid family. It has previously been confused with other species due to its polymorphism, meaning that the same species can have different morphs or forms.",
 	"Tank_CommonPleco": "The Common Pleco also known as 'Suckermouth Catfish' is a species of freshwater loricariid catfish. It usually feeds on algae and crustaceans.",
 	"Tank_SiameseAlgaeEater": "The Siamese Algae Eater is a species of freshwater fish from the carp family. It typically dwells along the bottom of streams and rivers, where it, like its name suggests, eats algae.",
-	"Tank_Trahira": "Trahira or 'Trairas' are a family of freshwater fish. They are carnivorous and prey and other fish. Some species are even able to breathe air.",
+	"Tank_Trahira": "Trahira or 'Trairas' are a family of freshwater fish. They are carnivorous and prey on other fish. Some species are even able to breathe air.",
 	"Tank_Pacu": "Pacu is a common name that refers to a variety of omnivorous freshwater serrasalmid fish. They are related to the Piranha, but unlike its close relative they have more squarer teeth fit for a more omnivorous diet.",
 	"Tank_SnowballPleco": "The Snowball Pleco is a species of freshwater loricariid catfish. It typically feeds on algae but will sometimes also eat other organic matter.",
 	"Tank_FreshwaterPufferfish": "Although most Pufferfish live in marine environments, about 35 species spend their entire life cycles in freshwater. Like other pufferfish it has the ability to inflate when threatened, this is a defense mechanism to make up for its slow locomotion.",
@@ -222,7 +222,7 @@
 	"Tank_Thread-SailFilefish": "The Thread-Sail Filefish is a marine species of Filefish. It feeds on both plankton and smaller crustaceans making it omnivorous. Juveniles of this species typically hide in drifting seaweed for safety against predators.",
 	"Tank_Soldierfish": "The Soldierfish is a family of ray-finned fish, they can usually be found in tropical waters near reefs. They feed on larger zooplankton in the open water.",
 	"Tank_Squirrelfish": "Squirrelfish is a family of ray-finned fish, there are around 150 known species of Squirrelfish. They can typically be found near tropical waters and reefs. They feed on crustaceans, molluscs and gastropods on the bottom of the ocean.",
-	"Tank_Goldfish": "The Goldfish is a freshwater fish that belongs to the Carp family. Contrary to common belief goldfish do not have bad memory. Released aquarium pet goldfish can in some cases cause problems and actually be categorized as an invasive species.",
+	"Tank_Goldfish": "The Goldfish is a freshwater fish that belongs to the Carp family. Contrary to common belief goldfish do not have bad memory. Released aquarium pet goldfish can in some cases cause problems and can actually be categorized as an invasive species.",
 	"Tank_Ide": "The Ide or Orfe as it is also known as, is a freshwater fish that belongs to the carp family. It has bright scales and a long body.",
 	"Tank_CelestialEye": "Celestial Eye is a goldfish that belongs to the carp family, it is also known as 'Choutengan'. It has unique protruding, skywards turned eyes.",
 	"Tank_Lionhead": "The Lionhead is a goldfish that belongs to the carp family. It is easily identified by its unique head growth and hooded appearance.",
@@ -253,7 +253,7 @@
 	"Tank_FreshwaterCrab": "There are around 1,300 discovered Freshwater Crab species. These crustaceans unlike their marine counterparts show maternal care for their offspring.",
 	"Tank_FreshwaterShrimp": "The Freshwater Shrimp is a small crustacean that can be found in many areas. It serves as an important food chain for many larger animals.",
 	"Tank_HarlequinFreshwaterShrimp": "The Harlequin Freshwater Shrimp is a small crustacean. It is also commonly known as 'Celebes Beauty Shrimp' or 'Sponge Shrimp' in the aquarium trade.",
-	"Tank_RedHarlequinFreshwaterShrimp": "The Red Harlequin Freshwater Shrimp is a small crustacean, it feeds an undescribed freshwater sponge.",
+	"Tank_RedHarlequinFreshwaterShrimp": "The Red Harlequin Freshwater Shrimp is a small crustacean, it feeds on an undescribed freshwater sponge.",
 	"Tank_RedFreshwaterShrimp": "The Red Freshwater Shrimp or 'Cherry Shrimp' as it is also commonly known as. This red morph is regularly sold for aquariums.",
 	"Tank_BlueFreshwaterShrimp": "This Freshwater Shrimp is also commonly known as 'Blue Velvet Shrimp'. This blue morph, like other shrimp, feeds on algae and other microorganisms.",
 	"Tank_Ladyfish": "Ladyfish is a family of ray-finned fish. They are also commonly known as 'Skipjacks', 'Jack-rashes' or 'Tenpounders'. They usually dwell near the coast where they feed on crustaceans and smaller fish.",
@@ -261,13 +261,13 @@
 	"Tank_MimicOctopus": "The Mimic Octopus is a species of octopus that, like other octopuses, it uses chromatophores to camouflage itself. It is also known to mimic other marine animals, hence its name.",
 	"Tank_SpinnyDogfish": "The Spiny Dogfish or 'Spurdog', 'Mud Shark' or 'Piked Dogfish' belongs to a family of dogfish, which are sharks. This species can be identified by having 2 spines.",
 	"Tank_ZebraEel": "The Zebra Eel or the 'Zebra Moray' as it is also known as, is a species of moray eels. They can typically be found in rocky areas, coral reefs in shallow waters.",
-	"Tank_GhostEel": "The Ghost Eel or 'White Ribbon Eel' as it is also known as is a species of moray eel. It is a nocturnal predator that usually feeds on small crustaceans.",
+	"Tank_GhostEel": "The Ghost Eel or 'White Ribbon Eel' as it is also known as, is a species of moray eel. It is a nocturnal predator that usually feeds on small crustaceans.",
 	"Tank_LongnoseGar": "The Longnose Gar also known as 'Longnose Garpike' or 'Billy Gar'. It has an average lifespan of 15-20 years, with the longest recorded age being 39. Its appearance has remained almost the same for millions of years.",
 	"Tank_Lungfish": "The Lungfish are best known for having the ability to breathe air. There are only 6 known species of Lungfish. Lungfish are omnivorous, meaning they can survive by eating both plant and animal matter.",
 	"Tank_Tigerfish": "The Tigerfish is a predatory freshwater fish. It is mostly piscivorous, meaning it only feeds on other fish. It has an elongated silvery body with a coloured fins. Its head is large with many teeth that it can use to chop and grasp prey.",
 	"Tank_ElectricCatfish": "Electric Catfish is a family of catfish with 21 known species in total. Several members of this family have the ability to produce an electric shock of up to 350 volts.",
 	"Tank_SmallGoblinShark": "The Goblin Shark is a rare species of deep-sea shark. It has pink skin with an elongated flat snout and it can protrude its jaw when feeding.",
-	"Tank_VampireSquid": "The Vampire Squid like other squids is a mollusc or more specifically a cephalopod. It usually thrives in deep waters with low concentrations of oxygen. Contrary to its name it does not feed on blood, but rather organic matter in the form of detritus.",
+	"Tank_VampireSquid": "The Vampire Squid belongs to a class of moluscs called cephalopods. It usually thrives in deep waters with low concentrations of oxygen. Contrary to its name it does not feed on blood, but rather organic matter in the form of detritus.",
 	"Tank_GreatFireflySquid": "The Firefly Squid or 'Sparkling Enope Squid' as it is also commonly known as, is a species of squid. It can be found near the shore in spawning seasons, but otherwise it prefers deeper waters. They are bioluminescent, meaning they can emit a light from photophores. It is believed that this light is used for communication, camouflage or attracting prey.",
 	"Tank_FrilledShark": "Frilled Shark is the name of a family for 2 known species of shark. They have a long eel-like body and also move like one. It can usually be found at great depths in the ocean, but goes to the surface to feed on various cephalopods, smaller sharks and bony fish.",
 	"Tank_Shinidamachu": "Shinidamachu also known as 'Dead Soul Insects' or 'Soul Collectors'. These Creatures have been known to transport souls, better keep your distance.",
@@ -329,9 +329,102 @@
 	// SVE Fish
 	"Tank_Kittyfish": "The Kittyfish is a magical fish... or cat? Further research required.",
 	// MNF
-	"Tank_ClownTriggerfish": "The Clown Triggerfish or 'Bigspotted Triggerfish' as it's also known as, is a marine fish belonging Triggerfish family. Like most Triggerfish it has aggressive behaviour and will defend its territory.",
+	"Tank_ClownTriggerfish": "The Clown Triggerfish or 'Bigspotted Triggerfish' as it's also known as, is a marine fish belonging to the Triggerfish family. Like most Triggerfish it has aggressive behaviour and will defend its territory.",
 	"Tank_Bonnethead": "The Bonnethead Shark or 'Shovelhead Shark' as it's also known as, is a small species of hammerhead shark. It's an active tropical shark that feeds mainly on crustaceans. The females tends to be larger than the males.",
 	"Tank_BlackGhostKnifefish": "The Black Ghost Knifefish is a tropical freshwater fish that belongs to a family of ray-finned fish called Ghost Knifefish. This species is capable of generating weak electric discharges which can be used for both communication and electrolocation.",
+
+	//1.5.0 
+
+	//Not You Again (by tiakall)
+	"Tank_SeaBass": "Sea bass are famous for their delicious white meat as well as their large size. If they ingest something inedible, they open up their mouths and gills and violently shake their heads. This generally manages to expel the foreign material, though it has the added effect of looking rather odd.",
+	"Tank_PotatoCod": "This rare variety of potato cod bears a strong resemblance to the pillpintu pasña potato. It even tastes like potato!",
+	"Tank_PinkMaomao": "Hard to believe the pink maomao is in the same fishy family as its duller cousin, the sea bass.  Like the dusky grouper, these fish actually start life as female and transition to male as they age.",
+	"Tank_RedbandedPerch": "The redbanded perch is a member of the sea bass family.  Despite its small size, it is actually carnivorous, feeding primarily on crabs and smaller fish.",
+	"Tank_DuskyGrouper": "The dusky grouper, known in some cultures as 'the lamb of the sea', has a mild, slightly sweet flavor, which pairs well with lighter wines and sharp vegetables like peppers and onions.  Mmmm!",
+
+	//SVE
+	"Tank_Gemfish": "The Gemfish is a very sought after fish. It can be found in pools underground near gem deposits. The gems protruding from its body are actual gemstones, which makes this a highly priced species.",
+	"Tank_TorpedoTrout": "The Torpedo Trout is a very fast fish. Its elongated body is build for speed and will often give anglers a tough time.",
+	"Tank_Goldenfish": "The Goldenfish is a very shiny fish. Its scales gives of a golden glow, its name and appearance might be golden but the same can not be said for its sellprice.",
+	"Tank_MeteorCarp": "Astrobiologist believes this species to be intergalactic. One theory claims that it could have arrived here by meteor, hence its name: 'Meteor Carp'.",
+	"Tank_Daggerfish": "The Daggerfish has a short bill which it uses hunting. The bill somewhat resembles a dagger which gives this species its unique name.",
+	"Tank_BabyLunaloo": "This juvenile Lunaloo is a species of marine jellyfish. They can often be found migrating annually during late summer days. For unknown reasons they are attracted to light...",
+	"Tank_Lunaloo": "Lunaloo are a species of marine jellyfish also known as 'Moonlight Jelly'. They can mainly be often in tropic waters, but can be found migrating past the coasts around Stardew Valley in a local annual event known as 'Dance of the Moonlight Jellies'.",
+	"Tank_ShinyLunaloo": "This unique looking jellyfish known as Shiny Lunaloo can rarely be found within groups of regular Lunaloo jellyfish. It's currently unknown if this is a different species of Lunaloo or just a rare morph of Lunaloo.",
+	"Tank_Seahorse": "Seahorse is a name given to a group of 46 species of marine fish. Their heads and necks resembles that of a horse, which gives these fish their unique name.",
+	"Tank_SeaSponge": "Although they do not look like it, Sea Sponges are in fact animals. They rely on a constant flow of water through their bodies, since they do not possess any nervous, digestive or circulatory systems.",
+	"Tank_RadioactiveBass": "There exists many species of bass, but none like this! It is positively glowing.",
+	"Tank_Undeadfish": "Not much is known about the so called 'Undeadfish'. Initial reports says it is not recommended for consumption!",
+	"Tank_Bonefish": "This fish is nothing but skin and bones. Or rather scale and bones... Actually it doesn't even have scales!",
+
+	//KAYA	
+	"KAYABetta": "The Siamese fighting fish or 'Betta'. They are usually known for being popular freshwater aquarium pets. Their long history of breeding has resulted in a variety of different colouration and finnage. They are easily identified by their large, long flowing fins. But don't let that fool you! They can be quite aggressive.",
+	"KAYAGoldfish": "The Goldfish is a freshwater fish that belongs to the Carp family. Contrary to common belief goldfish do not have bad memory. Released aquarium pet goldfish can in some cases cause problems and actually be categorized as an invasive species.",
+	"KAYAGuppy": "The Guppy also known as 'Millionfish' or 'Rainbow fish' is a common aquarium pet. These fish, just like other species in their family are 'live-bearing'. Meaning they contain their eggs inside their body and give birth to live, free swimming young.",
+	"Tank_MoonlightJelly": "The Moonlight Jelly. They can mainly be often in tropic waters, but can be found migrating past the coasts around Stardew Valley in a local annual event known as 'Dance of the Moonlight Jellies'.",
+	"Tank_FlapjackOctopus": "The Flapjack Octopus or 'Adorabilis' as it is also known as, is like other octopuses a member of the mollusc phylum. It has fins above its eyes and its short tentacles are spread out in an umbrella like fashion around its body.",
+
+	//East Scarpe
+	"Tank_CeruleanNudibranch": "The Cerulean Nudibranch belongs to a genus called 'Berghia' which feeds sea anemones. The name 'Nudibranch' comes from the latin word 'nudus' meaning 'naked' and the greek word 'bránkhia' meaning gills. ",
+	"Tank_OrnateNudibranch": "The Ornate Nudibranch, like its other related species are usually called 'sea slugs'. This species has a translucent body with broad lateral outgrowths.",
+	"Tank_SeaBunnyNudibranch": "The Sea Bunny Nudibranch or 'Sea bunny' which it is also known as, is a gastropod mollusc which resembles a rabbit. The sea bunny is a hermaphrodite, meaning they produce both sperm and egg cells.",
+	"Tank_SunsetNudibranch": "The Sunset Nudibranch belongs to a genus called 'Phestilla', these sea slugs have an unsual habit of feeding on hard coral. Juveniles have long stining cells on its dorsal surface called 'cnidosacs', adults does not have such sacs.",
+	"Tank_GoldenTrout": "The Golden Trout or 'Brigit' as it is also known as, is a freshwater species of trout. It is closely related to the Rainbow Trout which it can hybridize with, meaning these two species can have hybrid offspring.",
+	"Tank_KokaneeSalmon": "The Kokanee Salmon is known by many other names such as 'Little redfish', 'Kikanning' and 'Walla' to name a few. Unlike other salmon species it is 'non-anadromous', meaning it does not migrate out to sea but spends all its life in freshwater.",
+
+	//RSV
+	"Tank_CutthroatTrout": "The Cutthroat Trout is a popular game fish for many anglers. It gets its name from its distinctive red colouration of its underside jaw.",
+	"Tank_DeepRidgeAngler": "The Deep Ridge Angler is a rare species of Anglerfish. It is in fact so rare that many considered it a myth or even a ghost!",
+	"Tank_MountainRedbellyDace": "The Mountain Redbelly Dace is a small fish, they can be distinguished by their black stripe along its body. 'Dace' is a name many different species share, most of these fish belong to the Carp family.",
+	"Tank_MountainWhitefish": "The Mountain Whitefish is a species of fish belonging to the salmon family. It is a bottom feeding fish, it feeds on larvae and other invertebrates such as snails, crayfish and amphipods.",
+	"Tank_RidgeBluegill": "The Ridge Bluegill is a unique species of Bluegill. Bluegills are sometimes also known as 'brim', 'sunny' or 'copper nose'. Being small of size, it is a very timid fish and likes to take shelter in aquatic plants for protection.",
+	"Tank_RidgesideBass": "The Ridgeside Bass is a unique species of Bass. It was first discovered in the waters near Ridgeside Village from which it gets its name. Like other bass species, it is a common and popular game fish for anglers.",
+	"Tank_SkulpinFish": "The Skulpin Fish or 'Sculpin' as it is also known as. It is a benthic fish, meaning it lives near the bottom. It has distinctive webbed fins with sharp rays, which is uses to hold on to substrate.",
+	"Tank_SockeyeSalmon": "The Sockeye Salmon or 'Red Salmon' or 'Blueback Salmon' as it is also known as, is a species of salmon that lives its entire life in freshwater. Unlike other salmon species it does not migrate out into saltwater as an adult.",
+	"Tank_WaterfallSnakehead": "The Waterfall Snakehead is a rare species of reptile. Aquatic snakes such as this have a 'saccular lung' which they use for buoyancy.",
+
+	//MNF
+	"Tank_RoyalStarfish": "The Royal Starfish is easily characterized by its purple colour, which is outlined by a orange colour along its arms. Like other species in its genus, the Royal Starfish feeds on organisms by swallowing them whole and digesting them in its stomach. It will often have several organisms digesting in its stomach at a given time.",
+	"Tank_BlueStarfish": "The Blue Starfish its scientific name is 'Linckia laevigata', which gives its other common name: 'Blue Linckia'. It often lives in shallow waters near the shore.",
+	"Tank_HolyGrenadeStarfish": "The Holy Grenade Starfish or 'Granulated Sea Star' or 'Big-Plated Sea Star' as it is more commonly known as. It is a large species of sea star belonging to a genus called 'Choriaster', the genus only contains this one species. It usually has pale colouration and 5 short arms.",
+	"Tank_CrownOfThornsStarfish": "The Crown-of-Thorns Starfish is a large species of starfish, it preys on mostly coral. It has venomous spines and is an effective predator. In fact it is so effective that it can kill entire coral colonies and is a major threat to many aquatic ecosystems.",
+	"Tank_Mandarinfish": "The Mandarinfish or 'Mandarin Dragonet' as it is also known as, is a species of marine fish belonging to the dragonet family. It has a characteristically vivid colouration thanks to its cellular pigmentation. It can usually be found in warm tropic waters.",
+	"Tank_Conger": "Conger is the name of a genus for some of the largest types of eels. There are currently 14 known species of Conger, they are often caught and sold as food.",
+	
+	//Custom Companion dialogue
+	"MaskTourist": "Tourist: Do you like my mask? You can buy them at the giftshop just outside!",
+	"AquariumTourist_1": "...",
+	"Iridium_Knight": "I have done all that can be done. There is nothing left. I need one last challenge!",
+	"Squire": "I'm looking for a knight in purple armor. Have you seen them?",
+	
+	//Map strings	
+	"Hatch": "There is a suspicious hatch behind the counter...",
+	
+	//Special Order Mail
+	"SA.Crabpot.Mail": "Thank you for your help the other day @. I might have more jobs for you in the future, so remember to check your Special Orders Board in town.^^Best regards, The Curator of the Stardew Aquarium.",
+	"SA.Default.Mail": "Thank you for your help once again @. I noticed when breeding these fish you can get some unique produce. I'm sending a sample with this mail. You know if you had a Fish Pond with these fish, you too could produce these items.^^Best regards, The Curator of the Stardew Aquarium.",
+	
+	//Special Order Strings
+	"SA.CrabPot.SOTitle": "Aquarium Supply Run.",
+	"SA.ScorpionCarp.SOTitle": "Breeding Program: Scorpion Carp",
+	"SA.ScorpionCarp.SOTitle": "Breeding Program: Octopus",
+	"SA.Stonefish.SOTitle": "Breeding Program: Stonefish",
+	"SA.IcePip.SOTitle": "Breeding Program: Ice Pip",
+	"SA.LavaEel.SOTitle": "Breeding Program: Lava Eel",
+	"SA.Feeding.SOText": "I could use some help with feeding some of the fish around the Aquarium.             -The Curator",
+	"SA.Breeding.SOText": "I could use some help with a breeding program for some of the endangered specimen around the Aquarium.             -The Curator",
+	"SA.CrabPot.Objective1": "Craft 100 Bait.",
+	"SA.CrabPot.Objective2": "Donate 100 Bait.",
+	"SA.ScorpionCarp.Objective1": "Catch 1 Scorpion Carp.",
+	"SA.ScorpionCarp.Objective2": "Donate 1 Scorpion Carp.",
+	"SA.Octopus.Objective1": "Catch 1 Octopus.",
+	"SA.Octopus.Objective2": "Donate 1 Octopus.",
+	"SA.Stonefish.Objective1": "Catch 1 Stonefish.",
+	"SA.Stonefish.Objective2": "Donate 1 Stonefish.",
+	"SA.IcePip.Objective1": "Catch 1 Ice Pip.",
+	"SA.IcePip.Objective2": "Donate 1 Ice Pip.",
+	"SA.LavaEel.Objective1": "Catch 1 Lava Eel.",
+	"SA.LavaEel.Objective2": "Donate 1 Lava Eel.",
 
 	//npc dialogue such long
 
@@ -400,7 +493,7 @@
 	"NPCSUMMER_30": "Tourist: Hi, going for a swim?",
 	"NPCSUMMER_31": "Tourist: I'm trying to muster up the courage to go in the water.",
 	"NPCSUMMER_32": "Tourist: I wonder if there are any sea shells on this beach.",
-	"NPCSUMMER_33": "The man is snoozing, you probably shouldn't disturb him",
+	"NPCSUMMER_33": "The man is snoozing, you probably shouldn't disturb him.",
 	"NPCSUMMER_34": "Tourist: I think I saw a crab.",
 	"NPCSUMMER_35": "Tourist: Hello, enjoying the weather?",
 	"NPCSUMMER_36": "Tourist: There are a lot of sea stars in these tidal pools.",

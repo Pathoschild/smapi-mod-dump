@@ -27,8 +27,19 @@ namespace Leclair.Stardew.Common.UI {
 	}
 
 	public static class AlignmentHelper {
-		public static bool HasFlag(Alignment alignment, Alignment flag) {
-			return (alignment & flag) == flag;
+
+		public static readonly Alignment HORIZONTAL = Alignment.Left | Alignment.Center | Alignment.Right;
+		public static readonly Alignment VERTICAL = Alignment.Top | Alignment.Middle | Alignment.Bottom;
+
+		public static Alignment With(this Alignment self, Alignment other) {
+			if ((HORIZONTAL & other) != 0)
+				return (self & ~HORIZONTAL) | other;
+
+			if ((VERTICAL & other) != 0)
+				return (self & ~VERTICAL) | other;
+
+			return self;
 		}
+
 	}
 }

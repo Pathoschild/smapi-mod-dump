@@ -12,23 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-
-/* Unmerged change from project 'MoveToConnected'
-Before:
-using StardewValley.Menus;
-
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-
-using Leclair.Stardew.Common.Events;
-After:
-using Leclair.Stardew.Common.Events;
-
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-
-using StardewValley.Menus;
-*/
 using StardewModdingAPI;
 
 using StardewValley.Menus;
@@ -40,6 +23,13 @@ namespace Leclair.Stardew.Common.Events {
 		public readonly T Mod;
 
 		private Dictionary<MethodInfo, RegisteredEvent> Events;
+
+		public MenuSubscriber(T mod, bool registerImmediate = true) : base() {
+			Mod = mod;
+
+			if (registerImmediate)
+				RegisterEvents();
+		}
 
 		public MenuSubscriber(T mod, int x, int y, int width, int height, bool registerImmediate = true) : base(x, y, width, height) {
 			Mod = mod;

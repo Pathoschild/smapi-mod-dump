@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Core;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
@@ -32,7 +33,7 @@ static class Draw {
 	 */
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
-	internal static bool OnDrawFirst(
+	public static bool OnDrawFirst(
 		SpriteBatch __instance,
 		ref Texture2D texture,
 		ref XNA.Rectangle destinationRectangle,
@@ -62,12 +63,12 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.Last)]
-	internal static bool OnDrawLast(
+	public static bool OnDrawLast(
 		SpriteBatch __instance,
 		ref Texture2D texture,
 		ref XNA.Rectangle destinationRectangle,
 		ref XNA.Rectangle? sourceRectangle,
-		XNA.Color color,
+		ref XNA.Color color,
 		float rotation,
 		ref XNA.Vector2 origin,
 		ref SpriteEffects effects,
@@ -82,7 +83,7 @@ static class Draw {
 			texture: ref texture,
 			destination: ref destinationRectangle,
 			source: ref sourceRectangle,
-			color: color,
+			color: ref color,
 			rotation: rotation,
 			origin: ref origin,
 			effects: ref effects,
@@ -121,7 +122,7 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
-	internal static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Rectangle destinationRectangle, XNA.Rectangle? sourceRectangle, XNA.Color color) {
+	public static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Rectangle destinationRectangle, XNA.Rectangle? sourceRectangle, XNA.Color color) {
 		return ForwardDraw(
 			@this: __instance,
 			texture: texture,
@@ -132,7 +133,7 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
-	internal static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Rectangle destinationRectangle, XNA.Color color) {
+	public static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Rectangle destinationRectangle, XNA.Color color) {
 		return ForwardDraw(
 			@this: __instance,
 			texture: texture,
@@ -174,7 +175,7 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.Last)]
-	internal static bool OnDraw(SpriteBatch __instance, ref Texture2D texture, ref XNA.Vector2 position, ref XNA.Rectangle? sourceRectangle, XNA.Color color, float rotation, ref XNA.Vector2 origin, ref XNA.Vector2 scale, SpriteEffects effects, float layerDepth) {
+	public static bool OnDraw(SpriteBatch __instance, ref Texture2D texture, ref XNA.Vector2 position, ref XNA.Rectangle? sourceRectangle, ref XNA.Color color, float rotation, ref XNA.Vector2 origin, ref XNA.Vector2 scale, SpriteEffects effects, float layerDepth) {
 		if (!Config.IsEnabled) {
 			return true;
 		}
@@ -183,7 +184,7 @@ static class Draw {
 			texture: ref texture,
 			position: ref position,
 			source: ref sourceRectangle,
-			color: color,
+			color: ref color,
 			rotation: rotation,
 			origin: ref origin,
 			scale: ref scale,
@@ -193,7 +194,7 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
-	internal static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Vector2 position, in XNA.Rectangle? sourceRectangle, XNA.Color color, float rotation, XNA.Vector2 origin, float scale, SpriteEffects effects, float layerDepth) {
+	public static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Vector2 position, in XNA.Rectangle? sourceRectangle, XNA.Color color, float rotation, XNA.Vector2 origin, float scale, SpriteEffects effects, float layerDepth) {
 		return ForwardDraw(
 			@this: __instance,
 			texture: texture,
@@ -209,7 +210,7 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
-	internal static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Vector2 position, in XNA.Rectangle? sourceRectangle, XNA.Color color) {
+	public static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Vector2 position, in XNA.Rectangle? sourceRectangle, XNA.Color color) {
 		return ForwardDraw(
 			@this: __instance,
 			texture: texture,
@@ -220,7 +221,7 @@ static class Draw {
 	}
 
 	[Harmonize("Draw", priority: Harmonize.PriorityLevel.First)]
-	internal static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Vector2 position, XNA.Color color) {
+	public static bool OnDraw(SpriteBatch __instance, Texture2D texture, XNA.Vector2 position, XNA.Color color) {
 		return ForwardDraw(
 			@this: __instance,
 			texture: texture,

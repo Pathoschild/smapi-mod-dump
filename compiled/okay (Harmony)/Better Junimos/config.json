@@ -1,5 +1,14 @@
 {
-  "JunimoAbilities": {},
+  "JunimoAbilities": {
+    "Water": true,
+    "Fertilize": true,
+    "PlantCrops": true,
+    "HarvestCrops": true,
+    "HarvestBushes": true,
+    "HarvestForageCrops": true,
+    "ClearDeadCrops": true,
+    "VisitGreenhouse": true
+  },
   "JunimoHuts": {
     "MaxJunimos": 3,
     "MaxRadius": 8,
@@ -12,7 +21,9 @@
     "CanWorkInRain": true,
     "CanWorkInWinter": true,
     "CanWorkInEvenings": true,
+    "CanWorkInGreenhouse": true,
     "WorkFaster": true,
+    "WorkRidiculouslyFast": false,
     "AvoidHarvestingFlowers": true,
     "AvoidHarvestingGiants": false,
     "AvoidPlantingCoffee": true
@@ -35,7 +46,9 @@
   },
   "Other": {
     "SpawnJunimoKeybind": "J",
-    "ReceiveMessages": true
+    "ReceiveMessages": true,
+    "HutClickEnabled": true,
+    "HutMenuKeybind": "None"
   },
   "Progression": {
     "Enabled": true

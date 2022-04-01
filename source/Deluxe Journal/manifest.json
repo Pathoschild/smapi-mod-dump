@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/MolsonCAD/DeluxeJournal
+**
+*************************************************/
+
+{
+	"Name": "Deluxe Journal",
+	"Author": "MolsonCAD",
+	"Version": "1.0.3",
+	"Description": "Upgrades the journal with new features.",
+	"UniqueID": "MolsonCAD.DeluxeJournal",
+	"EntryDll": "DeluxeJournal.dll",
+	"MinimumApiVersion": "3.9.0",
+	"UpdateKeys": [
+		"Nexus:11436"
+	]
+}

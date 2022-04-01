@@ -20,6 +20,8 @@
   "gate.Label": "Gates",
   "gate.tooltip": "The lifetime multiplier for fence gates",
   "fenceLife.label": "Fence life keybind",
-  "fenceLife.tooltip":  "The button you want to hold to display the fence life status.",
-  "hover.tooltip": "Approx {{daysLeft}} days of remaining life"
+  "fenceLife.tooltip": "The button you want to hold to display the fence life status.",
+  "hover.tooltip": "Approx {{daysLeft}} days of remaining life",
+  "LifeYears": "Life is specified in game years",
+  "VanillaLife":  "Vanilla life is approximately {{years}} years"
 }

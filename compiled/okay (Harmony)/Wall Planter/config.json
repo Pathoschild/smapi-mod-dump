@@ -1,0 +1,8 @@
+{
+  "EnableMod": true,
+  "ModKey": "LeftShift",
+  "UpButton": "Up",
+  "DownButton": "Down",
+  "OffsetY": 64,
+  "InnerOffsetY": 0
+}

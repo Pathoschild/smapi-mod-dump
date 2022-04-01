@@ -10,9 +10,12 @@ mods:
    Warp Snitch
 
 latest commit:
-   commit 063c0a18d71a4312a99ef55ff9b164d0e6d6bf9b
-   Author: ceruleandeep <ceruleandeep>
-   Date:   Sat Jul 10 20:17:44 2021 +1000
+   commit 21aa45d4954838b43065182d2059d7e532da3983
+   Merge: 063c0a1 90a2ba3
+   Author: ceruleandeep <83318388+ceruleandeep@users.noreply.github.com>
+   Date:   Fri Mar 18 16:59:06 2022 +1100
    
-       Initial commit
+       Merge pull request #1 from ellipszist/main
+       
+       Add Thai translations
    

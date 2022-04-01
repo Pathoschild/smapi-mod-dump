@@ -8,9 +8,9 @@ mods:
    Smart Building
 
 latest commit:
-   commit f6fb4b518c161aa363e05a1b4d6fd2669820b3fb
+   commit edd65de15da12e0eab4590266960008fac6e45d4
    Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
-   Date:   Sat Feb 26 16:32:45 2022 +0000
+   Date:   Mon Mar 28 20:59:48 2022 +0100
    
-       Updated .editorconfig with extra settings from Rider.
+       Couple of new WIP projects.
    

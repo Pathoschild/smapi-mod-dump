@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/MessyCrops
+**
+*************************************************/
+
+{
+  "Name": "Messy Crops",
+  "Author": "Tlitookilakin",
+  "Version": "1.0.0",
+  "Description": "Randomly offsets crops for a more organic look.",
+  "UniqueID": "tlitookilakin.MessyCrops",
+  "EntryDll": "MessyCrops.dll",
+  "MinimumApiVersion": "3.13",
+  "UpdateKeys": [ "GitHub:tlitookilakin/MessyCrops", "Nexus:11317", "ModDrop:1123884" ]
+}

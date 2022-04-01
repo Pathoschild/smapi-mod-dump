@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11476
+IDs: aedenthorn.WikiLinks
+update keys: Nexus:11476, GitHub:aedenthorn/StardewValleyMods

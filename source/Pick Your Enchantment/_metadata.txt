@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/ForgeMenuChoice
+   Git: https://github.com/atravita-mods/ForgeMenuChoice.git
+
+mods:
+   Pick Your Enchantment
+
+latest commit:
+   commit 64d048bc6ac258e3b32172fea016465bf62c30e8
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Mon Mar 28 15:06:08 2022 -0400
+   
+       Update manifest.
+   

@@ -6,9 +6,9 @@ mods:
    HD Portraits
 
 latest commit:
-   commit 4d65223d1e7315f7365a9513f894b4c125d81094
+   commit 5bd537994069d835aaa1c13b27c38af6f78721f2
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Mon Feb 14 22:48:32 2022 -0500
+   Date:   Tue Mar 29 00:00:38 2022 -0400
    
-       refactor
+       use default index if index is OOB
    

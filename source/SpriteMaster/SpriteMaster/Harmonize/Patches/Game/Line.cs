@@ -23,6 +23,13 @@ static class Line {
 		return texture;
 	});
 
+	// Cache to avoid fun math
+	private readonly record struct LineDrawInputData(Vector2I Position1, Vector2I Position2);
+	private readonly record struct LineDrawOutputData(Vector2F Start, Vector2F Scale, float Angle);
+
+	private static LineDrawInputData PreviousInputData = new(Vector2I.MinValue, Vector2I.MinValue);
+	private static LineDrawOutputData PreviousOutputData = new();
+
 	[Harmonize(
 		typeof(Utility),
 		"drawLineWithScreenCoordinates",
@@ -40,25 +47,50 @@ static class Line {
 		var end = new Vector2I(x1, y1);
 
 		if (start == end) {
+			// do nothing
 			return false;
 		}
 
-		var integralVector = start - end;
-		float angle = MathF.Atan2(integralVector.Y, integralVector.X);
-
-		Vector2F expectedSize = (integralVector.Length + 1.0f, 3.0f);
-		if (expectedSize.X == 0.0f || expectedSize.Y == 0.0f) {
-			return false;
-		}
+		LineDrawInputData inputData = new(end, start);
 
 		var texture = LineTexture.Value;
+		Vector2F startPoint;
+		Vector2F scale;
+		float angle;
 
-		Vector2F spriteSize = (Vector2I)texture.Bounds.Size;
-		Vector2F scale = expectedSize / spriteSize;
+		if (PreviousInputData == inputData) {
+			startPoint = PreviousOutputData.Start;
+			scale = PreviousOutputData.Scale;
+			angle = PreviousOutputData.Angle;
+		}
+		else {
+			if (start == end) {
+				return false;
+			}
 
-		var vector = ((Vector2F)integralVector).Normalized * 0.5f;
+			var integralVector = start - end;
+			angle = MathF.Atan2(integralVector.Y, integralVector.X);
 
-		Vector2F startPoint = (Vector2F)end + (0f, 2.0f) - vector;
+			Vector2F expectedSize = (integralVector.Length + 1.0f, 3.0f);
+			if (expectedSize.X == 0.0f || expectedSize.Y == 0.0f) {
+				return false;
+			}
+
+			Vector2F spriteSize = (Vector2I)texture.Bounds.Size;
+			scale = expectedSize / spriteSize;
+
+			var vector = ((Vector2F)integralVector).Normalized * 0.5f;
+
+			startPoint = (Vector2F)end + (0f, 2.0f) - vector;
+
+			PreviousInputData = inputData;
+			PreviousOutputData = new(
+				Start: startPoint,
+				Scale: scale,
+				Angle: angle
+			);
+		}
+
 		b.Draw(texture, startPoint, null, color1, angle, Vector2F.Zero, scale, SpriteEffects.None, layerDepth);
 		return false;
 	}

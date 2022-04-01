@@ -8,9 +8,7 @@
 **
 *************************************************/
 
-using SpriteMaster.Types;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 

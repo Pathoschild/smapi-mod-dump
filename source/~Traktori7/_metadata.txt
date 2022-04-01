@@ -3,6 +3,7 @@ urls:
    Git: https://github.com/Traktori7/StardewValleyMods.git
 
 mods:
+   Fix Categories in Recipes
    Industrial Furnace
    Industrial Furnace for Automate
    Quality Scrubber
@@ -10,9 +11,9 @@ mods:
    Show Birthdays
 
 latest commit:
-   commit 3d76f40ff73ec4536484e093d9af429b4726a3d3
+   commit 5f9c718ca8c17975ae57ff76395980d9256c22a3
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Wed Feb 23 11:15:05 2022 +0200
+   Date:   Wed Mar 30 16:08:56 2022 +0300
    
-       Version 1.7.2 release
+       Fixes the building being duplicated in Automate logic in some cases. Version 1.6.1 release.
    

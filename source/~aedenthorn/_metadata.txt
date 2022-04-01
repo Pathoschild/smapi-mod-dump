@@ -3,17 +3,22 @@ urls:
    Git: https://github.com/aedenthorn/StardewValleyMods.git
 
 mods:
+   Advanced Cooking
    Advanced Flute Blocks
    Advanced Loot Framework
    Advanced Melee Framework
+   Advanced Menu Positioning
    Animated Parrot and Perch
    Another Jump Mod
+   April Bug Fix Suite
    Bed Tweaks
    Better Lightning Rods
    Boss Creatures
    Coin Collector
+   Connected Garden Pots
    Craftable Butterfly Hutches
    Craftable Terrarium
+   Crop Variation
    Custom Achievements
    Custom Chest Types
    Custom Decoration Areas
@@ -26,19 +31,23 @@ mods:
    Custom Picture Frames
    Custom Renovations
    Custom Resource Clumps
+   Custom Signs
    Custom Spouse Patio
    Custom Spouse Patio Redux
    Custom Spouse Patio Wizard
    Custom Spouse Rooms
+   Custom Toolbar
    Custom Tree Tweaks
    Custom Warp Points
    Dialogue Trees
+   Email App
    Enhanced Loot Magnet
    Expert Sitting
    Extra Map Layers
    Familiars
    Farm Cave Framework
    Farmer Helper
+   Farmer Portraits
    Field Harvest
    Fire Breath
    Fishing Chests Expanded
@@ -47,6 +56,7 @@ mods:
    Free Love
    Friendly Divorce
    Fruit Tree Shaker
+   Fruit Tree Tweaks
    Furniture Adjustment
    Furniture Display Framework
    Furniture Recolor
@@ -55,6 +65,7 @@ mods:
    Here Fishy
    Hugs and Kisses
    Instant Growth Powder
+   Log Spam Filter
    Longer Seasons
    Loose Audio Files
    Map Editor
@@ -89,7 +100,9 @@ mods:
    Quotes
    Random NPCs
    Realistic Random Names
+   Robin Work Hours
    Seed Maker Tweaks
+   Self Serve
    Show Players Behind Buildings
    Simple Screenshots
    Sixty-Nine Shirt
@@ -105,15 +118,18 @@ mods:
    Underground Secrets
    Utility Grid
    Video Player
+   Wall Planter
+   Wall Televisions
    Watering Can Tweaks
    Wedding Tweaks
+   Wiki Links
    Witcher Mod
    Zombie Outbreak
 
 latest commit:
-   commit 6f553ee6d41ce3fff101c02d4b7e0b782230ad7b
+   commit b5281464f0e4c2f84768fa22f8b66ba04f097385
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Mon Feb 28 19:43:46 2022 -0500
+   Date:   Tue Mar 29 00:05:36 2022 -0400
    
        etc
    

@@ -26,6 +26,7 @@ namespace CasualLife
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
             Game1Patches.DoLighting = Config.ControlDayLightLevels;
+            DayTimeMoneyBoxPatch.Is24Hour = Config.Is24HourDefault;
 
             Harmony harmony = new Harmony(this.ModManifest.UniqueID);
             harmony.Patch(

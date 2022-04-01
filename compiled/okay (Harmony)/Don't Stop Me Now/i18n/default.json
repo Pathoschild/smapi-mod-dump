@@ -20,6 +20,8 @@
 	"config.facing.meleeWeapons.tooltip": "Allows changing the facing direction while using melee weapons.",
 	"config.facing.chargingTools.name": "Charging tools",
 	"config.facing.chargingTools.tooltip": "Allows changing the facing direction while charging a tool.",
+	"config.facing.fishingRod.name": "Fishing rod",
+	"config.facing.fishingRod.tooltip": "Allows changing the facing direction when casting a fishing rod.",
 	"config.facing.mouse.name": "Mouse",
 	"config.facing.mouse.tooltip": "Face the direction of the mouse cursor when swinging.",
 	"config.facing.controller.name": "Controller",

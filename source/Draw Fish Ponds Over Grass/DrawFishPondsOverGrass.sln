@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawFishPondsOverGrass", "DrawFishPondsOverGrass\DrawFishPondsOverGrass.csproj", "{FD1BF600-1C6D-4B4B-A987-D12A50CBB38E}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AtraShared", "..\AtraShared\AtraShared.shproj", "{7119B285-0356-4CE5-ADCA-CC008E9315DA}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AtraBase", "..\AtraBase\AtraBase.shproj", "{2DB924CC-3230-4C0A-8E9B-967CDEDA2E23}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\AtraBase\AtraBase.projitems*{2db924cc-3230-4c0a-8e9b-967cdeda2e23}*SharedItemsImports = 13
+		..\AtraShared\AtraShared.projitems*{7119b285-0356-4ce5-adca-cc008e9315da}*SharedItemsImports = 13
+		..\AtraBase\AtraBase.projitems*{fd1bf600-1c6d-4b4b-a987-d12a50cbb38e}*SharedItemsImports = 5
+		..\AtraShared\AtraShared.projitems*{fd1bf600-1c6d-4b4b-a987-d12a50cbb38e}*SharedItemsImports = 5
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD1BF600-1C6D-4B4B-A987-D12A50CBB38E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD1BF600-1C6D-4B4B-A987-D12A50CBB38E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD1BF600-1C6D-4B4B-A987-D12A50CBB38E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD1BF600-1C6D-4B4B-A987-D12A50CBB38E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B14ED4BC-1173-453A-999C-586D7D117AE6}
+	EndGlobalSection
+EndGlobal

@@ -21,6 +21,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         {
             Tier = 1;
             ItemTimer = 500;
+            Flux = 1;
         }
     }
 }

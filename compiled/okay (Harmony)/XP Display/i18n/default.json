@@ -11,5 +11,7 @@
 
     "config.appearance.section.name": "Appearance",
     "config.appearance.alpha.name": "Alpha",
-    "config.appearance.alpha.tooltip": "Transparency of the partial bars.\n0: fully transparent\n1: fully opaque"
+    "config.appearance.alpha.tooltip": "Transparency of the partial bars.\n0: fully transparent\n1: fully opaque",
+
+    "tooltip.text": "{{CurrentXP}} / {{NextLevelXP}} XP ({{LevelPercent}}%)"
 }

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SDVFactory", "SDVFactory\SDVFactory.csproj", "{592D3090-B2AF-44F9-99F6-9E52EEB7CFD6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D8FBB5AA-1C31-401D-A634-BFD068108E4C} = {D8FBB5AA-1C31-401D-A634-BFD068108E4C}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinecartPatcher", "MinecartPatcher\MinecartPatcher.csproj", "{D8FBB5AA-1C31-401D-A634-BFD068108E4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{592D3090-B2AF-44F9-99F6-9E52EEB7CFD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592D3090-B2AF-44F9-99F6-9E52EEB7CFD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592D3090-B2AF-44F9-99F6-9E52EEB7CFD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592D3090-B2AF-44F9-99F6-9E52EEB7CFD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8FBB5AA-1C31-401D-A634-BFD068108E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FBB5AA-1C31-401D-A634-BFD068108E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8FBB5AA-1C31-401D-A634-BFD068108E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8FBB5AA-1C31-401D-A634-BFD068108E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {190A295F-C2CE-4E73-8AC8-43C0588E9D22}
+	EndGlobalSection
+EndGlobal

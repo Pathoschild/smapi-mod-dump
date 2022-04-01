@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/nymvaline/StardewValley-AnkiStudyBreak
+   Git: https://github.com/nymvaline/StardewValley-AnkiStudyBreak.git
+
+mods:
+   Anki Study Break
+
+latest commit:
+   commit b514be777fd4eb6f7d567c8f122b04cd2bc349ca
+   Author: Nymvaline <nymvaline@gmail.com>
+   Date:   Wed Mar 16 20:32:26 2022 -0700
+   
+       1.0.1. Initial commit.
+   

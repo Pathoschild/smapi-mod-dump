@@ -25,23 +25,72 @@ static class SuspendedSpriteCache {
 	private static readonly Condition TrimEvent = new();
 	private static readonly Thread CacheTrimThread = ThreadExt.Run(CacheTrimLoop, background: true, name: "Cache Trim Thread");
 
-	private static void CacheTrimLoop() {
-		while (true) {
-			TrimEvent.Wait();
+	private static void TrimSize() {
+		if (Config.SuspendedCache.MaxCacheSize <= 0 || Config.SuspendedCache.MaxCacheSize == long.MaxValue) {
+			return;
+		}
 
-			var totalCachedSize = Interlocked.Read(ref TotalCachedSize);
-			if (Interlocked.Read(ref TotalCachedSize) <= Config.SuspendedCache.MaxCacheSize) {
-				continue;
-			}
+		int percentageOffset = 0;
+		var totalCachedSize = Interlocked.Read(ref TotalCachedSize);
+		while (totalCachedSize > Config.SuspendedCache.MaxCacheSize) {
 
 			// How much is needed to be reduced, with an additional safety of 25% or so?
 			var goal = (Config.SuspendedCache.MaxCacheSize * 0.75);
 			var multiplier = goal / totalCachedSize;
 			var percentageF = 1.0 - multiplier;
-			var percentageI = Math.Clamp((int)Math.Round(percentageF * 100.0), 0, 100);
+			var percentageI = Math.Clamp((int)Math.Round(percentageF * 100.0), 1, 100);
 
-			Debug.Trace($"Trimming SuspendedSpriteCache: {percentageI}%, from {totalCachedSize.AsDataSize()} to {((long)Math.Round(goal)).AsDataSize()}");
+			Debug.Trace($"Trimming (Size) SuspendedSpriteCache: {percentageI}%, from {totalCachedSize.AsDataSize()} to {((long)Math.Round(goal)).AsDataSize()}");
 			Cache.Trim(percentageI);
+
+			var currentTotalCachedSize = Interlocked.Read(ref TotalCachedSize);
+			if (currentTotalCachedSize == totalCachedSize) {
+				// We didn't trim anything...
+				++percentageOffset;
+				if (percentageI == 100 || percentageOffset == 100) {
+					Debug.Info($"Trimming (Size) SuspendedSprite Cache: Failed to trim, nothing trimmed at 100% (report to {"Ameisen".Colorized(DrawingColor.Red)})");
+					return;
+				}
+			}
+			totalCachedSize = currentTotalCachedSize;
+		}
+	}
+
+	private static void TrimCount() {
+		if (Config.SuspendedCache.MaxCacheCount <= 0 || Config.SuspendedCache.MaxCacheCount == long.MaxValue) {
+			return;
+		}
+
+		int percentageOffset = 0;
+		long totalCachedCount = Cache.Count;
+		while (totalCachedCount > Config.SuspendedCache.MaxCacheCount) {
+			// How much is needed to be reduced, with an additional safety of 25% or so?
+			var goal = (Config.SuspendedCache.MaxCacheCount * 0.75);
+			var multiplier = goal / totalCachedCount;
+			var percentageF = 1.0 - multiplier;
+			var percentageI = Math.Clamp((int)Math.Round(percentageF * 100.0) + percentageOffset, 1, 100);
+
+			Debug.Trace($"Trimming (Count) SuspendedSpriteCache: {percentageI}%, from {totalCachedCount} to {((long)Math.Round(goal))}");
+			Cache.Trim(percentageI);
+			var currentTotalCachedCount = Cache.Count;
+			if (currentTotalCachedCount == totalCachedCount) {
+				// We didn't trim anything...
+				++percentageOffset;
+				if (percentageI == 100 || percentageOffset == 100) {
+					Debug.Info($"Trimming (Count) SuspendedSprite Cache: Failed to trim, nothing trimmed at 100% (report to {"Ameisen".Colorized(DrawingColor.Red)})");
+					return;
+				}
+			}
+			totalCachedCount = currentTotalCachedCount;
+		}
+	}
+
+	private static void CacheTrimLoop() {
+		while (true) {
+			TrimEvent.Wait();
+
+			TrimSize();
+			TrimCount();
 		}
 	}
 

@@ -20,6 +20,7 @@ using HarmonyLib;
 
 #endregion using directives
 
+/// <summary>Provides extensions for simplified reflection on C# types.</summary>
 /// <remarks>Credit to <c>Pardeike</c>.</remarks>
 public static class SafeReflections
 {

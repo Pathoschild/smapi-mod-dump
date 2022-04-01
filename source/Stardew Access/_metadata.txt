@@ -6,9 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit fdec231e49f9cbd2dca4acc570930e542a1a0dcd
+   commit bfad0676bd0379436a4cc8318fa68f75ffa3910e
    Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
-   Date:   Mon Feb 14 00:12:07 2022 +0530
+   Date:   Thu Mar 31 14:31:09 2022 +0530
    
-       Update DialoguePatches.cs
+       Code Cleanup
    

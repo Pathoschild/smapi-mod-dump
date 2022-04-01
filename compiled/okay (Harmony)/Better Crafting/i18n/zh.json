@@ -1,0 +1,167 @@
+{
+	// Settings
+	"setting.show-adv": "显示高级. 制作信息",
+	"setting.show-adv.tip": "显示高级制作信息，例如您有多少成分以及您以前制作过多少次配方. 这与原版设置相同，为方便起见在此复制.",
+
+	"setting.general": "常规选项",
+
+	"setting.alphabetic": "按字母顺序排序",
+	"setting.alphabetic.tip": "启用此选项后，食谱将按字母顺序排序，而不是使用默认顺序.",
+
+	"setting.replace-crafting": "替换制作配方",
+	"setting.replace-crafting.tip": "启用后，制作配方将替换为重新使用.",
+
+	"setting.replace-cooking": "更换烹饪菜单",
+	"setting.replace-cooking.tip": "启用后，烹饪菜单将替换为重新使用.",
+
+	"setting.enable-categories": "启用类别",
+	"setting.enable-categories.tip": "在制作菜单中显示类别选项键，而不是所有内容的一大列表.",
+
+	"setting.settings": "显示设置按钮",
+	"setting.settings.tip": "启用后，打开 更好的制作 设置的按钮将添加到 更好的制作 菜单中.",
+
+	"setting.bindings": "热键和操作",
+	"setting.bindings.tip": "与输入和键绑定相关的设置.",
+
+	"setting.suppress": "禁用键",
+	"setting.suppress.tip": "按住此键并打开制作菜单时，更好的制作 不会替换它.",
+
+	"setting.key.search": "搜索键",
+	"setting.key.search.tip": "按此键打开搜索以过滤显示的食谱.",
+
+	"setting.key.favorite": "惯用键",
+	"setting.key.favorite.tip": "在食谱上按此键以收藏或取消收藏该食谱.",
+
+	"setting.key.bulk": "批量设置按键",
+	"setting.key.bulk.tip": "在配方上按此键以打开该配方的批量制作.",
+
+	"setting.key.behavior.left": "左键单击/A 行为",
+	"setting.key.behavior.left.tip": "当左键单击（或在控制器上按 A）配方时，将执行此操作.",
+	"setting.key.behavior.right": "右键单击/B 行为",
+	"setting.key.behavior.right.tip": "当右键单击（或在控制器上按 B）配方时，将执行此操作.",
+
+	"setting.key.tooltip": "在工具提示中显示热键",
+	"setting.key.tooltip.tip": "启用后，热键将显示在 更好的制作 工具提示的底部.",
+
+	"setting.ttwhen.Never": "绝不",
+	"setting.ttwhen.ForController": "使用控制器时",
+	"setting.ttwhen.Always": "总是",
+
+	"setting.action.None": "没有",
+	"setting.action.Craft": "工艺",
+	"setting.action.Favorite": "切换收藏夹",
+	"setting.action.BulkCraft": "散装工艺",
+
+	"setting.nearby": "扩展工作台",
+	"setting.nearby.tip": "此功能允许 工作台 和您的厨房一次连接到更多箱子，从而改进游戏默认的一个街区范围。 您可以创建连接的箱子链，或使用允许的连接器来弥合间隙.",
+
+	"setting.nearby.enable": "启用扩展工作台",
+
+	"setting.nearby.diagonal": "允许对角线连接",
+	"setting.nearby.diagonal.tip": "启用后，箱子和连接器可以对角放置并且仍然连接.",
+
+	"setting.nearby.performance": "表现",
+	"setting.nearby.performance.tip": "限制扩展工作台范围以提高性能的设置.",
+
+	"setting.nearby.max-chests": "最大库存",
+	"setting.nearby.max-chests.tip": "工作台将使用的最大库存数量.",
+
+	"setting.nearby.max-distance": "最大距离",
+	"setting.nearby.max-distance.tip": "库存可以与工作台的最大距离.",
+
+	"setting.nearby.max-check": "最大检查",
+	"setting.nearby.max-check.tip": "发现附近库存时要检查的最大瓷砖数量.",
+
+	"setting.nearby.connectors": "允许的连接器",
+	"setting.nearby.connectors.tip": "可用作连接器的可放置对象。 您应该避免添加不必要的连接器类型以保持性能。 请注意，这些条目是示例，您可以手动编辑配置文件以添加其他对象和地形特征.",
+
+	"setting.nearby.floors": "地板",
+	"setting.nearby.other": "其他例子",
+
+	// Quality
+
+	"setting.quality": "质量",
+	"setting.quality.tip": "请注意，由于 API 限制，其他来源（例如 SpaceCore）添加的某些配方可能不遵守这些设置.",
+
+	"setting.enable-quality": "启用质量限制",
+	"setting.enable-quality.tip": "启用后，将显示一个按钮，让您选择在制作时使用的最高质量物品.",
+
+	"setting.sort-quality": "首先使用低质量",
+	"setting.sort-quality.tip": "启用后，将首先使用较低质量的物品制作食谱.",
+
+	// Crafting
+	"setting.crafting": "制作",
+	"setting.crafting.tip": "这些设置专门适用于重新实现的制作菜单.",
+
+	"setting.uniform-grid": "强制统一尺寸",
+	"setting.uniform-grid.tip": "启用后，大型手工艺品将被挤压成一行.",
+
+	"setting.big-craftables-last": "最后对大手工艺品进行排序",
+	"setting.big-craftables-last.tip": "启用后，大型手工艺品将全部放在列表末尾.",
+
+	// Cooking
+	"setting.cooking": "烹饪",
+	"setting.cooking.tip": "这些设置专门适用于重新实现的烹饪菜单.",
+
+	"setting.seasoning": "使用调味料",
+	"setting.seasoning.tip": "是否应使用调味料来增强熟食。 当设置为“仅库存”时，调味料只会从您的库存中使用，而不是来自冰箱或任何其他来源.",
+
+	"seasoning.disabled": "绝不",
+	"seasoning.enabled": "随时",
+	"seasoning.inventory": "仅库存",
+
+	"setting.hide-unknown": "隐藏未知食谱",
+	"setting.hide-unknown.tip": "启用后，您尚未学习的食谱将不会显示在菜单中.",
+
+	// Tooltips
+	"tooltip.crafted": "制作 {{count}} 次数",
+
+	"tooltip.toggle-recipe": "在类别中切换",
+	"tooltip.use-as-icon": "用作图标",
+
+	// Buttons
+	"tooltip.edit-mode": "编辑类别",
+	"tooltip.favorites": "只显示收藏夹",
+	"tooltip.seasoning": "使用调味料",
+	"tooltip.uniform": "使用统一网格",
+	"tooltip.settings": "打开设置",
+
+	"tooltip.search": "搜索配方",
+	"tooltip.search.tip": "提示：使用 \"@B{{prefix}}@b\" 开始搜索，也可以按成分搜索.",
+
+	"search.ingredient-prefix": "!",
+
+	"search.none": "没有匹配的配方.",
+	"search.none.category": "此类别中没有匹配的配方.",
+
+	"tooltip.select-icon": "选择图标",
+
+	"tooltip.quality.none": "只使用劣质物品.",
+	"tooltip.quality.silver": "仅使用低质量和银色质量的物品.",
+	"tooltip.quality.gold": "仅使用低品质、银品质和金品质的物品.",
+	"tooltip.quality.iridium": "使用任何优质物品.",
+
+	"tooltip.quality-unsupported": "此配方不支持质量设置.",
+
+	// Bulk Crafting
+	"bulk.crafting": "批量制作",
+	"bulk.craftable": "{{count}} 个可制作的",
+	"bulk.craft": "制作 {{count}} 个 {{name}}",
+
+	// Categories
+	"category.new": "新类别",
+	"category.favorites": "收藏夹",
+	"category.combat_rings": "战斗和戒指",
+	"category.consumables": "消耗品",
+	"category.decoration": "装饰",
+	"category.fertilizer_seeds": "肥料和种子",
+	"category.fishing": "鱼类",
+	"category.machinery": "机械",
+	"category.misc": "杂项",
+
+	"category.food.farming": "农业和觅食",
+	"category.food.mining": "采矿和磁性",
+	"category.food.fishing": "钓鱼",
+	"category.food.combat": "战斗",
+	"category.food.other": "运气、速度和其他"
+}

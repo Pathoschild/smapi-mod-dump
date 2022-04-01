@@ -28,7 +28,7 @@ using ItemPipes.Framework.Factories;
 
 namespace ItemPipes.Framework.Items
 {
-    public abstract class CustomObjectItem : SObject
+	public abstract class CustomObjectItem : SObject
 	{
 		public string IDName { get; set; }
 		public string Description { get; set; }
@@ -40,6 +40,7 @@ namespace ItemPipes.Framework.Items
 
 		public CustomObjectItem()
 		{
+			Init();
 			State = "default";
 			type.Value = "Crafting";
 			canBeSetDown.Value = true;
@@ -49,6 +50,38 @@ namespace ItemPipes.Framework.Items
 		{
 			TileLocation = position;
 			base.boundingBox.Value = new Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64);
+		}
+
+		public void Init()
+		{
+			IDName = GetType().Name.Substring(0, GetType().Name.Length - 4);
+			DataAccess DataAccess = DataAccess.GetDataAccess();
+			ItemTexture = DataAccess.Sprites[IDName + "_Item"];
+			Name = DataAccess.ItemNames[IDName];
+			DisplayName = DataAccess.ItemNames[IDName];
+			Description = DataAccess.ItemDescriptions[IDName];
+			parentSheetIndex.Value = DataAccess.ItemIDs[IDName];
+		}
+
+		public virtual SObject Save()
+		{
+			if (!modData.ContainsKey("ItemPipes")){ modData.Add("ItemPipes", "true"); }
+			else { modData["ItemPipes"] = "true"; }
+			if (!modData.ContainsKey("Type")){ modData.Add("Type", IDName); }
+			else { modData["Type"] = IDName; }
+			if (!modData.ContainsKey("Stack")){ modData.Add("Stack", Stack.ToString()); }
+			else { modData["Type"] = IDName; }
+			if (!modData.ContainsKey("State")){ modData.Add("State", State); }
+			else { modData["State"] = State; }
+			Fence fence = new Fence(tileLocation, 1, false);
+			fence.modData = modData;
+			
+			return fence;
+		}
+
+		public virtual void Load(ModDataDictionary data)
+		{
+			modData = data;
 		}
 
 		public override string getDescription()
@@ -93,7 +126,7 @@ namespace ItemPipes.Framework.Items
 			{
 				return false;
 			}
-			SObject obj = ItemFactory.CreateObject(placementTile, this);
+			SObject obj = ItemFactory.CreateObject(placementTile, this.IDName);
 			if (obj != null)
 			{
 				location.objects.Add(placementTile, obj);
@@ -127,7 +160,7 @@ namespace ItemPipes.Framework.Items
 
 		public override Item getOne()
 		{
-			return ItemFactory.CreateItem(this);
+			return ItemFactory.CreateItem(IDName);
 		}
 	}
 }

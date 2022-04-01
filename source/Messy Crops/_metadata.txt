@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tlitookilakin/MessyCrops
+   Git: https://github.com/tlitookilakin/MessyCrops.git
+
+mods:
+   Messy Crops
+
+latest commit:
+   commit d341a7f87c1b7707e1b457c11e7680f6e9569153
+   Author: tlitookilakin <swyrlyy@gmail.com>
+   Date:   Tue Mar 15 13:44:12 2022 -0400
+   
+       add moddrop key
+   

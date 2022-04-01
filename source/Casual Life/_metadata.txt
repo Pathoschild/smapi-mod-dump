@@ -6,10 +6,15 @@ mods:
    Casual Life
 
 latest commit:
-   commit 028643818496585791aa3afbd888fa1b18268a6c
-   Author: David Rath <adverserath@gmail.com>
-   Date:   Wed Jan 12 10:59:50 2022 +0000
+   commit efe9a3c67e4030c66df96a5229c9f4db3eb110f6
+   Merge: 0286438 88f4282
+   Author: David Rath <37800482+adverserath@users.noreply.github.com>
+   Date:   Fri Mar 4 16:28:33 2022 +0000
    
-       * Update to 1.5.6
-       * Add time controls
+       Merge pull request #2 from ayumi-chizuru189/Test2
+       
+       add an option for 24 Hours by default
+       
+       
+       Many thanks to coder input.
    

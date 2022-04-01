@@ -13,7 +13,7 @@
 		"de": "Anglerfisch Maske",
 		//"hu": "", *Hungarian
 		//"it": "", *Italian
-		//"ja": "", *Japanese
+		"ja": "ツリビトアンコウのマスク",
 		//"tr": "", *Turkish
     },
     "DescriptionLocalization": {
@@ -26,7 +26,7 @@
 		"de": "Maske des legendären Anglerfisches.",
 		//"hu": "", Hungarian
 		//"it": "", Italian
-		//"ja": "", Japanese
+		"ja": "伝説のツリビトアンコウのマスク",
 		//"tr": "", Turkish
     }
 }

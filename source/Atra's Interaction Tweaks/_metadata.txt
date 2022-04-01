@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/StopRugRemoval
+   Git: https://github.com/atravita-mods/StopRugRemoval.git
+
+mods:
+   Atra's Interaction Tweaks
+
+latest commit:
+   commit f52698b7dde7ec1fa88bd020c3280658a01238b1
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Mon Mar 28 17:48:05 2022 -0400
+   
+       clean up readme
+   

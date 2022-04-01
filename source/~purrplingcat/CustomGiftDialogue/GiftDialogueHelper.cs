@@ -19,7 +19,6 @@ namespace CustomGiftDialogue
 {
     internal static class GiftDialogueHelper
     {
-        static readonly int[] heartLevels = { 14, 12, 10, 8, 6, 4, 2 };
         /// <summary>
         /// Try find a gift reaction dialogue text for gifted object to an NPC
         /// </summary>
@@ -29,14 +28,15 @@ namespace CustomGiftDialogue
         /// <returns>True if any gift reaction dialogue was found, otherwise false</returns>
         public static bool FetchGiftReaction(NPC npc, SObject obj, out string dialogue, string suffix = "")
         {
-            string[] possibleKeys = new string[] { 
+            HashSet<string> possibleKeys = new () { 
                 $"GiftReaction_{obj.Name.Replace(' ', '_')}{suffix}",
                 $"GiftReactionCategory_{obj.Category}{suffix}",
-                $"GiftReactionHoney_{obj.honeyType.Value}{suffix}",
-                $"GiftReactionHoney_{(obj.honeyType.Value.HasValue ? "Any" : "")}{suffix}",
                 $"GiftReactionPreserved_{obj.preserve.Value}{suffix}",
                 $"GiftReactionPreserved_{(obj.preserve.Value.HasValue ? "Any" : "")}{suffix}",
             };
+
+            // Add item context tags as possibly dialogue lines for gift reactions
+            possibleKeys.UnionWith(obj.GetContextTags().Select(tag => $"GiftReactionTag_{tag}"));
 
             foreach (string dialogueKey in possibleKeys)
             {
@@ -71,45 +71,6 @@ namespace CustomGiftDialogue
                 Game1.currentSpeaker = null;
                 Game1.activeClickableMenu = null;
             }
-        }
-
-        internal static bool GetRevealDialogue(NPC npc, out string dialogue, string npcName = null)
-        {
-            dialogue = null;
-            var dispositionsData = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
-            var randomNpcName = npcName ?? dispositionsData.ElementAt(Game1.random.Next(dispositionsData.Count)).Key;
-
-            // For a random player known NPC
-            if (Game1.player.friendshipData.ContainsKey(randomNpcName))
-            {
-
-                // With heart level
-                int heartLevel = Game1.player.friendshipData[randomNpcName].Points / 250;
-                foreach (int targetHeartLevel in heartLevels)
-                {
-                    if (heartLevel >= targetHeartLevel && DialogueHelper.GetRawDialogue(npc.Dialogue, $"Reveal_{randomNpcName}{targetHeartLevel}", out var dialoguePair))
-                    {
-                        dialogue = dialoguePair.Value;
-                        return true;
-                    }
-                }
-
-                // Without heart level
-                if (DialogueHelper.GetRawDialogue(npc.Dialogue, $"Reveal_{randomNpcName}", out var dialoguePair2))
-                {
-                    dialogue = dialoguePair2.Value;
-                    return true;
-                }
-            }
-
-            // Fallback reveal dialogue
-            if (DialogueHelper.GetRawDialogue(npc.Dialogue, $"Reveal", out var dialoguePair3))
-            {
-                dialogue = dialoguePair3.Value;
-                return true;
-            }
-
-            return false;
         }
 
         private static Dialogue GetDialogueBoxDialogue(DialogueBox dialogueBox)

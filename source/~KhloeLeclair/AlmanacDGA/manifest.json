@@ -11,12 +11,14 @@
 {
 	"Name": "Almanac: DGA Support",
 	"Author": "Khloe Leclair",
-	"Version": "1.0.0",
+	"Version": "1.1.0",
 	"Description": "Adds support for Dynamic Game Assets crops to Almanac.",
 	"UniqueID": "leclair.almanacdga",
 	"EntryDll": "AlmanacDGA.dll",
 	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [],
+	"UpdateKeys": [
+		"Nexus:11022@DGA"
+	],
 	"Dependencies": [
 		{
 			"UniqueID": "leclair.almanac"

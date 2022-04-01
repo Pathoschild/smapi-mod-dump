@@ -1,0 +1,48 @@
+[
+	{
+		"Id": "spring_can",
+		"Priority": 10,
+		"Period": "Year",
+		"Dates": [
+			{
+				"Start": 15,
+				"End": 28
+			}
+		],
+		"Weight": "End",
+		"Pattern": [
+			[ "Rain", "Storm" ],
+			[ "Rain", "Storm" ],
+			[ "Rain", "Storm" ]
+		]
+	},
+	{
+		"Id": "week_rain",
+		"Period": "Week",
+		"ValidSeasons": [
+			"Spring",
+			"Summer",
+			"Fall"
+		],
+		"Pattern": [
+			[ "Rain", "Storm" ]
+		]
+	},
+	{
+		"Id": "week_snow",
+		"Period": "Week",
+		"ValidSeasons": [
+			"Winter"
+		],
+		"Pattern": [
+			[ "Snow" ]
+		]
+	},
+	{
+		"Id": "week_sun",
+		"Period": "Week",
+		"Pattern": [
+			[ "Sun", "Wind", "Festival" ]
+		]
+	}
+]

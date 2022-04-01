@@ -3,23 +3,17 @@ urls:
    Git: https://github.com/KhloeLeclair/StardewMods.git
 
 mods:
+   Almanac
+   Almanac → DGA Support
    Better Crafting
    Better Crafting → SpaceCore Support
    See Me Rollin'
 
 latest commit:
-   commit 727c40033ed9aacfcef483eb4878f2efda6da150
+   commit a7c2a9ce2df2c519221e4aa021493188bcdd4bb7
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Mon Feb 28 19:31:22 2022 -0500
+   Date:   Thu Mar 24 02:02:08 2022 -0400
    
-       Almanac In-Dev
-       * Add a new API for adding crops that doesn't rely on interfaces.
-       * Switch AlmanacDGA to use the new API without interfaces as a test.
-       * Implement support for text formatting characters.
-       * Rename Horoscope to Fortune internally.
-       * Add magic-themed tool-tip rendering.
-       * Add support for custom backgrounds and text color when rendering SimpleLayouts.
-       * Make the fortune page appear without deterministic luck enabled.
-       * Add an option for showing exact luck percentages on the fortune page.
-       * Add a notice to the trains tab for Spring of Year 1 that the station is closed for maintenance.
+       Almanac 0.16.0
+       Almanac DGA 1.1.0
    

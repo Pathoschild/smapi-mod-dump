@@ -11,7 +11,7 @@
 {
 	"Name": "Industrial Furnace for Automate",
 	"Author": "Traktori",
-	"Version": "1.6.0",
+	"Version": "1.6.1",
 	"Description": "Integrates the Industrial Furnace with Automate.",
 	"UniqueID": "Traktori.AM.IndustrialFurnace",
 	"EntryDll": "IndustrialFurnaceAutomate.dll",
@@ -24,6 +24,6 @@
 		},
 		{
 			"UniqueID": "Traktori.IndustrialFurnace"
-		},
+		}
 	]
 }

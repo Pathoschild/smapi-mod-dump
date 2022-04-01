@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11315
+IDs: aedenthorn.AdvancedMenuPositioning
+update keys: Nexus:11315, GitHub:aedenthorn/StardewValleyMods

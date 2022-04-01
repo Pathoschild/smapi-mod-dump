@@ -1,0 +1,24 @@
+{
+  "Default": {
+    "GiftsToRemember": 5,
+    "DaysToRemember": 14,
+    "InPersonPreference": "Neutral",
+    "ByMailPreference": "HatesFrequent",
+    "InfrequentGiftPercent": 0.33,
+    "FrequentGiftPercent": 0.66,
+    "EnableModOverrides": true
+  },
+  "Spouse": {
+    "GiftsToRemember": 5,
+    "DaysToRemember": 14,
+    "InPersonPreference": "Neutral",
+    "ByMailPreference": "HatesFrequent",
+    "InfrequentGiftPercent": 0.33,
+    "FrequentGiftPercent": 0.66,
+    "EnableModOverrides": true
+  },
+  "PerNPC": {},
+  "EnableNPCOverrides": true,
+  "ConfirmUnlikedInPersonGifts": true,
+  "ShowCurrentMailModifier": true
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11496
+IDs: aedenthorn.AprilFools
+update keys: Nexus:11496, GitHub:aedenthorn/StardewValleyMods

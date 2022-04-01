@@ -58,10 +58,17 @@ namespace CustomizeWeddingAttire
 
         private void SetUpConfig(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
+            // Try to get the GMCM menu
             var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
+            {
+                // Set up the modData recording wedding attire preferences even when GMCM is not installed
+                Game1.player.modData[$"{this.ModManifest.UniqueID}/weddingAttirePref"] = this.Config.WeddingAttire;
+                Monitor.Log("Saving player preferences into modData",LogLevel.Trace);
                 return;
+            }
 
+            // Register the GMCM menu, and make sure write player preferences into moddata when the config is updated
             configMenu.Register(
                 mod: ModManifest,
                 reset: () => Config = new ModConfig(),
@@ -69,12 +76,16 @@ namespace CustomizeWeddingAttire
                     Helper.WriteConfig(Config);
                     // Refresh the modData recording wedding attire preferences for this player
                     Game1.player.modData[$"{this.ModManifest.UniqueID}/weddingAttirePref"] = this.Config.WeddingAttire;
+                    Monitor.Log("Saving player preferences into modData", LogLevel.Trace);
                 }
             );
+            // Add the mod description into the GMCM menu
             configMenu.AddParagraph(
                 mod: ModManifest,
                 text: () => Helper.Translation.Get("mod.description")
                 );
+            // If GMCM Options is not installed, add a text dropdown for the config options
+            // Otherwise, add in the fancy display options using GMCM Options
             var configMenuExt = Helper.ModRegistry.GetApi<IGMCMOptionsAPI>("jltaylor-us.GMCMOptions");
             if (configMenuExt is null) {
                 configMenu.AddTextOption(

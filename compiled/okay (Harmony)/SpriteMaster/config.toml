@@ -1,218 +1,336 @@
 [Config]
-ConfigVersion = "0.13.0.102"
+ConfigVersion = "0.13.0.300"
+# Should SpriteMaster be enabled?
 Enabled = true
+# Button to toggle SpriteMaster
 ToggleButton = "F11"
 PreferredMaxTextureDimension = 16384
 ShowIntroMessage = false
+# If the data cache is preferred to be elsewhere, it can be set here
 DataStoreOverride = ""
 
-[Config.WatchDog]
-Enabled = false
-DefaultSleepInterval = 5000
-ShortSleepInterval = 500
-InterruptInterval = 10000
+	[Config.WatchDog]
+	# Should the watchdog be enabled?
+	Enabled = false
+	# What should the default sleep interval be (in milliseconds)?
+	DefaultSleepInterval = 5000
+	# What should the short sleep interval be (in milliseconds)?
+	ShortSleepInterval = 500
+	# What should the interrupt interval be (in milliseconds)?
+	InterruptInterval = 10000
 
-[Config.Garbage]
-CollectAccountUnownedTextures = false
-CollectAccountOwnedTextures = false
-RequiredFreeMemory = 64
-RequiredFreeMemoryHysterisis = 1.5
-SeasonalPurge = true
-LatencyMode = "SustainedLowLatency"
+	[Config.Garbage]
+	# Should unowned textures be marked in the garbage collector's statistics?
+	CollectAccountUnownedTextures = false
+	# Should owned textures be marked in the garbage collector's statistics?
+	CollectAccountOwnedTextures = false
+	# The amount of free memory required by SM after which it triggers recovery operations
+	RequiredFreeMemory = 128
+	# Hysterisis applied to RequiredFreeMemory
+	RequiredFreeMemoryHysterisis = 1.5
+	# Should sprites containing season names be purged on a seasonal basis?
+	SeasonalPurge = true
+	# What runtime garbage collection latency mode should be set?
+	LatencyMode = "SustainedLowLatency"
 
-[Config.Debug.Logging]
-LogLevel = "Trace"
+		[Config.Debug.Logging]
+		LogLevel = "Trace"
 
-[Config.DrawState]
-SetLinear = true
-MSAASamples = 0
-DisableDepthBuffer = false
-BackbufferFormat = "Color"
+	[Config.DrawState]
+	# Enable linear sampling for sprites
+	SetLinear = true
+	# How many MSAA samples should be used?
+	MSAASamples = 0
+	# Disable the depth buffer (unused in this game)
+	DisableDepthBuffer = false
+	# The default backbuffer format to request
+	BackbufferFormat = "Color"
+	# The default HDR backbuffer format to request
+	BackbufferHDRFormat = "Rgba64"
+	# Should the system HDR settings be honored?
+	HonorHDRSettings = true
 
-[Config.Performance]
-TransientGCTickCount = 150
+	[Config.Performance]
+	# Perform a Generation 0 and 1 garbage collection pass every N ticks (if <= 0, disabled)
+	TransientGCTickCount = 150
 
-[Config.Resample]
-Enabled = true
-Scale = true
-AssumeGammaCorrected = false
-TrimWater = true
-ScaleBias = 0.1000000014901161
-MaxScale = 4294967295
-MinimumTextureDimensions = 1
-EnableWrappedAddressing = false
-UseFrametimeStalling = true
-UseColorEnhancement = true
-PremultipliedAlphaThreshold = 1
-PremultiplyAlpha = true
-PremultiplyAlphaAssume = true
-SlicedTextures = [
-	"LooseSprites\\Cursors::0,2000:640,256", 
-	"LooseSprites\\Cloudy_Ocean_BG", 
-	"LooseSprites\\Cloudy_Ocean_BG_Night", 
-	"LooseSprites\\stardewPanorama", 
-	"Maps\\nightSceneMaru", 
-	"Maps\\nightSceneMaruTrees", 
-	"Maps\\sebastianMountainTiles", 
-	"Maps\\sebastianRideTiles", 
-	"Tilesheets\\GuntherExpedition2_Shadows", 
-	"Tilesheets\\Highlands_Fog", 
-	"Tilesheets\\Highlands_FogBackground"
-]
-TwoXTextures = [
-	"Maps\\WoodBuildings"
-]
-FourXTextures = [
-	"Characters\\Monsters\\Crow", 
-	"Characters\\femaleRival", 
-	"Characters\\maleRival", 
-	"LooseSprites\\Bat", 
-	"LooseSprites\\buildingPlacementTiles", 
-	"LooseSprites\\chatBox", 
-	"LooseSprites\\daybg", 
-	"LooseSprites\\DialogBoxGreen", 
-	"LooseSprites\\hoverBox", 
-	"LooseSprites\\nightbg", 
-	"LooseSprites\\robinAtWork", 
-	"LooseSprites\\skillTitles", 
-	"LooseSprites\\textBox", 
-	"Maps\\busPeople", 
-	"Maps\\cavedarker", 
-	"Maps\\FarmhouseTiles", 
-	"Maps\\GreenHouseInterior", 
-	"Maps\\MenuTiles", 
-	"Maps\\MenuTilesUncolored", 
-	"Maps\\spring_BusStop", 
-	"Maps\\TownIndoors", 
-	"TerrainFeatures\\BuffsIcons", 
-	"TerrainFeatures\\DiggableWall_basic", 
-	"TerrainFeatures\\DiggableWall_basic_dark", 
-	"TerrainFeatures\\DiggableWall_frost", 
-	"TerrainFeatures\\DiggableWall_frost_dark", 
-	"TerrainFeatures\\DiggableWall_lava", 
-	"TerrainFeatures\\DiggableWall_lava_dark", 
-	"TerrainFeatures\\Stalagmite", 
-	"TerrainFeatures\\Stalagmite_Frost", 
-	"TerrainFeatures\\Stalagmite_Lava", 
-	"TileSheets\\Fireball", 
-	"TileSheets\\rain", 
-	"TileSheets\\animations"
-]
-Blacklist = [
-	"LooseSprites\\Lighting\\", 
-	"@^Maps\\\\.+Mist", 
-	"@^Maps\\\\.+mist", 
-	"@^Maps\\\\.+Shadow", 
-	"@^Maps\\\\.+Shadows", 
-	"@^Maps\\\\.+Fog", 
-	"@^Maps\\\\.+FogBackground"
-]
+	[Config.Resample]
+	# Should resampling be enabled?
+	Enabled = true
+	# Should texture rescaling be enabled?
+	Scale = true
+	# Should we assume that input sprites are gamma corrected?
+	AssumeGammaCorrected = true
+	# Should the scale factor of water be adjusted to account for water sprites being unusual?
+	TrimWater = true
+	# Maximum scale factor of sprites (dependant on chosen scaler)
+	MaxScale = 6
+	# Minimum edge length of a sprite to be considered for resampling
+	MinimumTextureDimensions = 1
+	# Should wrapped addressing be enabled for sprite resampling (when analysis suggests it)?
+	EnableWrappedAddressing = false
+	# Should resampling be stalled if it is determined that it will cause hitches?
+	UseFrametimeStalling = true
+	# Should color enhancement/rebalancing be performed?
+	UseColorEnhancement = true
+	# Should transparent pixels be premultiplied to prevent a 'halo' effect?
+	PremultiplyAlpha = true
+	# Low pass value that should be filtered when reversing premultiplied alpha.
+	PremultiplicationLowPass = 1024
+	# Use redmean algorithm for perceptual color comparisons?
+	UseRedmean = false
+	# What textures are drawn in 'slices' and thus should be special-cased to be resampled as one texture?
+	SlicedTextures = [
+		"LooseSprites\\Cursors::0,2000:640,256", 
+		"LooseSprites\\Cloudy_Ocean_BG", 
+		"LooseSprites\\Cloudy_Ocean_BG_Night", 
+		"LooseSprites\\stardewPanorama", 
+		"Maps\\nightSceneMaru", 
+		"Maps\\nightSceneMaruTrees", 
+		"Maps\\sebastianMountainTiles", 
+		"Maps\\sebastianRideTiles", 
+		"Tilesheets\\GuntherExpedition2_Shadows", 
+		"Tilesheets\\Highlands_Fog", 
+		"Tilesheets\\Highlands_FogBackground"
+	]
+	# What textures or spritesheets use 4xblock sizes?
+	TwoXTextures = [
+		"Maps\\WoodBuildings"
+	]
+	# What textures or spritesheets use 4xblock sizes?
+	FourXTextures = [
+		"Characters\\Monsters\\Crow", 
+		"Characters\\femaleRival", 
+		"Characters\\maleRival", 
+		"LooseSprites\\Bat", 
+		"LooseSprites\\buildingPlacementTiles", 
+		"LooseSprites\\chatBox", 
+		"LooseSprites\\daybg", 
+		"LooseSprites\\DialogBoxGreen", 
+		"LooseSprites\\hoverBox", 
+		"LooseSprites\\nightbg", 
+		"LooseSprites\\robinAtWork", 
+		"LooseSprites\\skillTitles", 
+		"LooseSprites\\textBox", 
+		"Maps\\busPeople", 
+		"Maps\\cavedarker", 
+		"Maps\\FarmhouseTiles", 
+		"Maps\\GreenHouseInterior", 
+		"Maps\\MenuTiles", 
+		"Maps\\MenuTilesUncolored", 
+		"Maps\\spring_BusStop", 
+		"Maps\\TownIndoors", 
+		"TerrainFeatures\\BuffsIcons", 
+		"TerrainFeatures\\DiggableWall_basic", 
+		"TerrainFeatures\\DiggableWall_basic_dark", 
+		"TerrainFeatures\\DiggableWall_frost", 
+		"TerrainFeatures\\DiggableWall_frost_dark", 
+		"TerrainFeatures\\DiggableWall_lava", 
+		"TerrainFeatures\\DiggableWall_lava_dark", 
+		"TerrainFeatures\\Stalagmite", 
+		"TerrainFeatures\\Stalagmite_Frost", 
+		"TerrainFeatures\\Stalagmite_Lava", 
+		"TileSheets\\Fireball", 
+		"TileSheets\\rain", 
+		"TileSheets\\animations"
+	]
+	# What spritesheets will absolutely not be resampled or processed?
+	Blacklist = [
+		"LooseSprites\\Lighting\\", 
+		"@^Maps\\\\.+Mist", 
+		"@^Maps\\\\.+mist", 
+		"@^Maps\\\\.+Shadow", 
+		"@^Maps\\\\.+Shadows", 
+		"@^Maps\\\\.+Fog", 
+		"@^Maps\\\\.+FogBackground"
+	]
+	# What spritesheets will absolutely not be treated as gradients?
+	GradientBlacklist = [
+		"TerrainFeatures\\hoeDirt"
+	]
 
-[Config.Resample.BlockMultipleAnalysis]
-Enabled = true
-EqualityThreshold = 1
-MaxInequality = 1
+		[Config.Resample.BlockMultipleAnalysis]
+		# Should sprites be analyzed to see if they are block multiples?
+		Enabled = true
+		# What threshold should be used for block multiple analysis?
+		EqualityThreshold = 1
+		# How many blocks can be different for the test to still pass?
+		MaxInequality = 1
 
-[Config.Resample.BlockCompression]
-Enabled = true
-Quality = "Highest"
-HardAlphaDeviationThreshold = 7
+		[Config.Resample.Analysis]
+		# Max color difference to not consider a sprite to be a gradient?
+		MaxGradientColorDifference = 38
+		# Minimum different shades required (per channel) for a sprite to be a gradient?
+		MinimumGradientShades = 2
+		# Use redmean algorithm for perceptual color comparisons?
+		UseRedmean = true
+		# Experimental resample-based recolor support
+		[Config.Resample.Recolor]
+		# Should (experimental) resample-based recoloring be enabled?
+		Enabled = false
+		RScalar = 0.8976420000000001
+		GScalar = 0.998476
+		BScalar = 1.18365
 
-[Config.Resample.Padding]
-Enabled = true
-MinimumSizeTexels = 4
-IgnoreUnknown = false
-PadSolidEdges = false
-StrictList = [
-	"LooseSprites\\Cursors"
-]
-AlwaysList = [
-	"LooseSprites\\font_bold", 
-	"Characters\\Farmer\\hairstyles", 
-	"Characters\\Farmer\\hairstyles2", 
-	"Characters\\Farmer\\hats", 
-	"Characters\\Farmer\\pants", 
-	"Characters\\Farmer\\shirts", 
-	"TileSheets\\weapons", 
-	"TileSheets\\bushes", 
-	"TerrainFeatures\\grass", 
-	"TileSheets\\debris", 
-	"TileSheets\\animations", 
-	"Maps\\springobjects", 
-	"Maps\\summerobjects", 
-	"Maps\\winterobjects", 
-	"Maps\\fallobjects", 
-	"Buildings\\houses", 
-	"TileSheets\\furniture", 
-	"TerrainFeatures\\tree1_spring", 
-	"TerrainFeatures\\tree2_spring", 
-	"TerrainFeatures\\tree3_spring", 
-	"TerrainFeatures\\tree1_summer", 
-	"TerrainFeatures\\tree2_summer", 
-	"TerrainFeatures\\tree3_summer", 
-	"TerrainFeatures\\tree1_fall", 
-	"TerrainFeatures\\tree2_fall", 
-	"TerrainFeatures\\tree3_fall", 
-	"TerrainFeatures\\tree1_winter", 
-	"TerrainFeatures\\tree2_winter", 
-	"TerrainFeatures\\tree3_winter"
-]
+		[Config.Resample.BlockCompression]
+		# Should block compression of sprites be enabled?
+		Enabled = true
+		# What quality level should be used?
+		Quality = "Highest"
+		# What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?
+		HardAlphaDeviationThreshold = 7
 
-[Config.Resample.xBRZ]
-LuminanceWeight = 1
-EqualColorTolerance = 20
-DominantDirectionThreshold = 4.4
-SteepDirectionThreshold = 2.2
-CenterDirectionBias = 3
-UseGradientBlockCopy = false
+		[Config.Resample.Padding]
+		# Should padding be applied to sprites to allow resampling to extend beyond the natural sprite boundaries?
+		Enabled = true
+		# What is the minimum edge size of a sprite for padding to be enabled?
+		MinimumSizeTexels = 4
+		# Should unknown (unnamed) sprites be ignored by the padding system?
+		IgnoreUnknown = false
+		# Should solid edges be padded?
+		PadSolidEdges = false
+		# What spritesheets should not be padded?
+		BlackList = [
+			"LooseSprites\\Cursors::256,308:50,34"
+		]
+		# What spritesheets should have a stricter edge-detection algorithm applied?
+		StrictList = [
+			"LooseSprites\\Cursors"
+		]
+		# What spritesheets should always be padded?
+		AlwaysList = [
+			"LooseSprites\\font_bold", 
+			"Characters\\Farmer\\hairstyles", 
+			"Characters\\Farmer\\hairstyles2", 
+			"Characters\\Farmer\\hats", 
+			"Characters\\Farmer\\pants", 
+			"Characters\\Farmer\\shirts", 
+			"TileSheets\\weapons", 
+			"TileSheets\\bushes", 
+			"TerrainFeatures\\grass", 
+			"TileSheets\\debris", 
+			"TileSheets\\animations", 
+			"Maps\\springobjects", 
+			"Maps\\summerobjects", 
+			"Maps\\winterobjects", 
+			"Maps\\fallobjects", 
+			"Buildings\\houses", 
+			"TileSheets\\furniture", 
+			"TerrainFeatures\\tree1_spring", 
+			"TerrainFeatures\\tree2_spring", 
+			"TerrainFeatures\\tree3_spring", 
+			"TerrainFeatures\\tree1_summer", 
+			"TerrainFeatures\\tree2_summer", 
+			"TerrainFeatures\\tree3_summer", 
+			"TerrainFeatures\\tree1_fall", 
+			"TerrainFeatures\\tree2_fall", 
+			"TerrainFeatures\\tree3_fall", 
+			"TerrainFeatures\\tree1_winter", 
+			"TerrainFeatures\\tree2_winter", 
+			"TerrainFeatures\\tree3_winter"
+		]
 
-[Config.WrapDetection]
-edgeThreshold = 0.2000000029802322
-alphaThreshold = 1
+		[Config.Resample.xBRZ]
+		# The weight provided to luminance as opposed to chrominance when performing color comparisons
+		LuminanceWeight = 1
+		# The tolerance for colors to be considered equal - [0, 256)
+		EqualColorTolerance = 20
+		# The threshold for a corner-direction to be considered 'dominant'
+		DominantDirectionThreshold = 4.4
+		# The threshold for a corner-direction to be considered 'steep'
+		SteepDirectionThreshold = 2.2
+		# Bias towards kernel center applied to corner-direction calculations
+		CenterDirectionBias = 3
+		# Should gradient block copies be used? (Note: Very Broken)
+		UseGradientBlockCopy = false
 
-[Config.AsyncScaling]
-EnabledForUnknownTextures = true
-ForceSynchronousStores = true
-ThrottledSynchronousLoads = true
-CanFetchAndLoadSameFrame = true
+	[Config.WrapDetection]
+	# What is the threshold percentage of alpha values to be used to determine if it is a wrapping edge?
+	edgeThreshold = 0.2000000029802322
+	# What is the minimum alpha value assumed to be opaque?
+	alphaThreshold = 1
 
-[Config.MemoryCache]
-Enabled = true
-AlwaysFlush = false
+	[Config.AsyncScaling]
+	# Should asynchronous scaling be enabled for unknown textures?
+	EnabledForUnknownTextures = true
+	# Should synchronous stores always be used?
+	ForceSynchronousStores = true
+	# Should synchronous stores be throttled?
+	ThrottledSynchronousLoads = true
+	# Should we fetch and load texture data within the same frame?
+	CanFetchAndLoadSameFrame = true
 
-[Config.SuspendedCache]
-Enabled = true
+	[Config.MemoryCache]
+	# Should the memory cache be enabled?
+	Enabled = true
+	# Should memory cache elements always be flushed upon update?
+	AlwaysFlush = false
 
-[Config.SMAPI]
-TextureCacheEnabled = true
-TextureCacheHighMemoryEnabled = false
-ApplyPatchEnabled = true
-ApplyPatchUseCache = true
-ApplyPatchPinMemory = false
+	[Config.SuspendedCache]
+	# Should the suspended sprite cache be enabled?
+	Enabled = true
 
-[Config.Extras]
-FastQuit = true
-SmoothLines = true
-OptimizeWarpPoints = true
-TrueShortestPath = false
-AllowNPCsOnFarm = false
-StableSort = true
-PreventUnresponsive = true
-OptimizeEngineTaskRunner = true
+	[Config.SMAPI]
+	# Should the experimental SMAPI texture cache patch be enabled?
+	TextureCacheEnabled = true
+	# Should the experimental SMAPI texture cache have high memory usage enabled?
+	# Unrecommended: This results in the game's texture being retained (and thus loaded faster) but doesn't suspend the resampled sprite instances.
+	TextureCacheHighMemoryEnabled = false
+	# Should the ApplyPatch method be patched?
+	ApplyPatchEnabled = true
+	# Should ApplyPatch pin temporary memory?
+	ApplyPatchPinMemory = false
+	# Should 'GetData' be patched to use SM caches?
+	ApplyGetDataPatch = true
 
-[Config.Extras.Snow]
-Enabled = true
-MinimumDensity = 1024
-MaximumDensity = 3072
-MaximumRotationSpeed = 0.01666666666666667
-MaximumScale = 3
-PuffersnowChance = -1
+	[Config.Extras]
+	# Should the game have 'fast quitting' enabled?
+	FastQuit = false
+	# Should line drawing be smoothed?
+	SmoothLines = true
+	# Should Harmony patches have inlining re-enabled?
+	HarmonyInlining = false
+	# Should the game's 'parseMasterSchedule' method be fixed and optimized?
+	FixMasterSchedule = true
+	# Should NPC Warp Points code be optimized?
+	OptimizeWarpPoints = true
+	# Should NPCs take true shortest paths?
+	TrueShortestPath = false
+	# Allow NPCs onto the farm?
+	AllowNPCsOnFarm = false
+	# Should the default batch sort be replaced with a stable sort?
+	StableSort = true
+	# Should the game be prevented from going 'unresponsive' during loads?
+	PreventUnresponsive = true
+	# Should the engine's deferred thread task runner be optimized?
+	OptimizeEngineTaskRunner = true
 
-[Config.Extras.ModPatches]
-PatchCustomNPCFixes = false
+		[Config.Extras.Snow]
+		# Should custom snowfall be used during snowstorms?
+		Enabled = true
+		# Minimum Snow Density
+		MinimumDensity = 1024
+		# Maximum Snow Density
+		MaximumDensity = 3072
+		# Maximum Snow Rotation Speed
+		MaximumRotationSpeed = 0.01666666666666667
+		# Maximum Snow Scale
+		MaximumScale = 3
+		# Puffersnow Chance
+		PuffersnowChance = -1
 
-[Config.FileCache]
-Enabled = true
-Compress = "Zstd"
-ForceCompress = false
-PreferSystemCompression = false
+		[Config.Extras.ModPatches]
+		# Patch CustomNPCFixes in order to improve load times?
+		PatchCustomNPCFixes = false
+		# Disable PyTK mitigation for SpriteMaster?
+		DisablePyTKMitigation = true
+
+	[Config.FileCache]
+	# Should the file cache be enabled?
+	Enabled = true
+	# What compression algorithm should be used?
+	Compress = "Zstd"
+	# Should files be compressed regardless of if it would be beneficial?
+	ForceCompress = false
+	# Should system compression (such as NTFS compression) be preferred?
+	PreferSystemCompression = false

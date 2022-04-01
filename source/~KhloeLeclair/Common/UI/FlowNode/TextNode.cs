@@ -15,12 +15,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
+using StardewValley.Menus;
 using StardewValley.BellsAndWhistles;
 
 namespace Leclair.Stardew.Common.UI.FlowNode {
 	public struct TextNode : IFlowNode {
 
-		public static char[] SEPARATORS = new char[] {
+		public static readonly char[] SEPARATORS = new char[] {
             // Whitespace
             ' ', '\t',
 
@@ -28,29 +29,54 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
             '\n',
 
             // Other Stuff
-            ',', '.'
+            ',', '.', '。', '，'
 		};
 
-		public static char[] NOWRAP_SEPARATORS = new char[] {
+		public static readonly char[] NOWRAP_SEPARATORS = new char[] {
 			'\n'
 		};
 
 		public string Text { get; }
 		public TextStyle Style { get; }
-
 		public Alignment Alignment { get; }
+		public object Extra { get; }
+		public string UniqueId { get; }
 
 		public bool NoComponent { get; }
-		public Func<IFlowNodeSlice, bool> OnClick { get; }
-		public Func<IFlowNodeSlice, bool> OnHover { get; }
+		public Func<IFlowNodeSlice, int, int, bool> OnClick { get; }
+		public Func<IFlowNodeSlice, int, int, bool> OnHover { get; }
+		public Func<IFlowNodeSlice, int, int, bool> OnRightClick { get; }
 
-		public TextNode(string text, TextStyle? style = null, Alignment? alignment = null, Func<IFlowNodeSlice, bool> onClick = null, Func<IFlowNodeSlice, bool> onHover = null, bool noComponent = false) {
+		public TextNode(
+			string text,
+			TextStyle? style = null,
+			Alignment? align = null,
+			Func<IFlowNodeSlice, int, int, bool> onClick = null,
+			Func<IFlowNodeSlice, int, int, bool> onHover = null,
+			Func<IFlowNodeSlice, int, int, bool> onRightClick = null,
+			bool noComponent = false,
+			object extra = null,
+			string id = null
+		) {
 			Text = text;
 			Style = style ?? TextStyle.EMPTY;
-			Alignment = alignment ?? Alignment.None;
+			Alignment = align ?? Alignment.None;
 			OnClick = onClick;
 			OnHover = onHover;
+			OnRightClick = onRightClick;
 			NoComponent = noComponent;
+			Extra = extra;
+			UniqueId = id;
+		}
+
+		public ClickableComponent UseComponent(IFlowNodeSlice slice) {
+			return null;
+		}
+
+		public bool? WantComponent(IFlowNodeSlice slice) {
+			if (NoComponent)
+				return false;
+			return null;
 		}
 
 		public bool IsEmpty() {
@@ -61,7 +87,8 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 			return new Vector2(SpriteText.getWidthOfString(text), SpriteText.getHeightOfString(text));
 		}
 
-		public IFlowNodeSlice Slice(IFlowNodeSlice last, SpriteFont defaultFont, float maxWidth, float remaining) {
+		public IFlowNodeSlice Slice(IFlowNodeSlice last, SpriteFont defaultFont, float maxWidth, float remaining, IFlowNodeSlice nextSlice) {
+			// TODO: Rewrite all of this.
 			int start = 0;
 			if (last is TextSlice tslice)
 				start = tslice.End;
@@ -81,6 +108,7 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 			bool pendingSpace = false;
 			Vector2 pendingSize = Vector2.Zero;
 
+			bool starting_line = remaining == maxWidth;
 			bool had_new = false;
 
 			for (int idx = Text.IndexOfAny(seps, start); idx != -1; idx = Text.IndexOfAny(seps, idx + 1)) {
@@ -134,10 +162,10 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 			// We ran out of separators.
 			// Can the rest of the string fit?
 
-			string final = Text.Substring(start);
+			string final = Text[start..];
 			int offset = 0;
 			if (had_new && final.EndsWith("\n")) {
-				final = final.Substring(0, final.Length - 1);
+				final = final[0..^1];
 				offset = 1;
 			}
 
@@ -157,16 +185,37 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 			float s = scale * (Style.Scale ?? 1f);
 			SpriteFont font = Style.Font ?? defaultFont;
 			Color color = Style.Color ?? defaultColor ?? Game1.textColor;
+			Color background = Style.BackgroundColor ?? Color.Transparent;
 			Color? shadowColor = Style.ShadowColor ?? defaultShadowColor;
 			if (Style.IsPrismatic())
 				color = Utility.GetPrismaticColor();
 
 			string text = tslice.Text;
 
-			if (Style.IsJunimo())
-				SpriteText.drawString(batch, text, (int) position.X, (int) position.Y, junimoText: true);
-			else if (Style.IsFancy())
-				SpriteText.drawString(batch, text, (int) position.X, (int) position.Y);
+			if (Style.IsInverted())
+				(color, background) = (background, color);
+
+			if (background.A > 0) {
+				float alpha = (float) background.A / 255f;
+
+				batch.Draw(
+					Game1.fadeToBlackRect,
+					new Rectangle(
+						(int) position.X, (int) position.Y,
+						(int) slice.Width, (int) slice.Height
+					),
+					background * alpha
+				);
+			}
+
+			if (Style.IsJunimo() || Style.IsFancy())
+				RenderHelper.DrawSpriteText(
+					batch,
+					text,
+					(int) position.X, (int) position.Y,
+					junimoText: Style.IsJunimo(),
+					color: color
+				);
 			else if (Style.IsBold())
 				Utility.drawBoldText(batch, text, font, position, color, s);
 			else if (Style.HasShadow()) {
@@ -196,8 +245,6 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 					batch,
 					color
 				);
-
-			// TODO: Strike and Underline
 		}
 
 		public override bool Equals(object obj) {
@@ -205,20 +252,34 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 				   Text == node.Text &&
 				   EqualityComparer<TextStyle>.Default.Equals(Style, node.Style) &&
 				   Alignment == node.Alignment &&
+				   EqualityComparer<object>.Default.Equals(Extra, node.Extra) &&
+				   UniqueId == node.UniqueId &&
 				   NoComponent == node.NoComponent &&
-				   EqualityComparer<Func<IFlowNodeSlice, bool>>.Default.Equals(OnClick, node.OnClick) &&
-				   EqualityComparer<Func<IFlowNodeSlice, bool>>.Default.Equals(OnHover, node.OnHover);
+				   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnClick, node.OnClick) &&
+				   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnHover, node.OnHover) &&
+				   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnRightClick, node.OnRightClick);
 		}
 
 		public override int GetHashCode() {
-			int hashCode = 735414917;
-			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Text);
-			hashCode = hashCode * -1521134295 + Style.GetHashCode();
-			hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
-			hashCode = hashCode * -1521134295 + NoComponent.GetHashCode();
-			hashCode = hashCode * -1521134295 + EqualityComparer<Func<IFlowNodeSlice, bool>>.Default.GetHashCode(OnClick);
-			hashCode = hashCode * -1521134295 + EqualityComparer<Func<IFlowNodeSlice, bool>>.Default.GetHashCode(OnHover);
-			return hashCode;
+			HashCode hash = new HashCode();
+			hash.Add(Text);
+			hash.Add(Style);
+			hash.Add(Alignment);
+			hash.Add(Extra);
+			hash.Add(UniqueId);
+			hash.Add(NoComponent);
+			hash.Add(OnClick);
+			hash.Add(OnHover);
+			hash.Add(OnRightClick);
+			return hash.ToHashCode();
+		}
+
+		public static bool operator ==(TextNode left, TextNode right) {
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(TextNode left, TextNode right) {
+			return !(left == right);
 		}
 	}
 
@@ -259,15 +320,15 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 		}
 
 		public override int GetHashCode() {
-			int hashCode = 837092661;
-			hashCode = hashCode * -1521134295 + EqualityComparer<IFlowNode>.Default.GetHashCode(Node);
-			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Text);
-			hashCode = hashCode * -1521134295 + Start.GetHashCode();
-			hashCode = hashCode * -1521134295 + End.GetHashCode();
-			hashCode = hashCode * -1521134295 + Width.GetHashCode();
-			hashCode = hashCode * -1521134295 + Height.GetHashCode();
-			hashCode = hashCode * -1521134295 + ForceWrap.GetHashCode();
-			return hashCode;
+			return HashCode.Combine(Node, Text, Start, End, Width, Height, ForceWrap);
+		}
+
+		public static bool operator ==(TextSlice left, TextSlice right) {
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(TextSlice left, TextSlice right) {
+			return !(left == right);
 		}
 	}
 }

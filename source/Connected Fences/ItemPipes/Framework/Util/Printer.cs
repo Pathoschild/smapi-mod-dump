@@ -37,7 +37,14 @@ namespace ItemPipes.Framework.Util
             {
             }
         }
-
+        public static void Error(String message)
+        {
+            _monitor.Log(message, LogLevel.Error);
+        }
+        public static void Alert(String message)
+        {
+            _monitor.Log(message, LogLevel.Alert);
+        }
         public static void Warn(String message)
         {
             _monitor.Log(message, LogLevel.Warn);

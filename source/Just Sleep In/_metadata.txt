@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/9Rifleman/Just-Sleep-In
+   Git: https://github.com/9Rifleman/Just-Sleep-In.git
+
+mods:
+   Just Sleep In
+
+latest commit:
+   commit 067fd88851be6888884332701bd5e94a09fdb6c0
+   Author: Jakub Prchal <Rifleman88@hotmail.com>
+   Date:   Mon Mar 14 17:30:39 2022 +0100
+   
+       Add project files.
+   

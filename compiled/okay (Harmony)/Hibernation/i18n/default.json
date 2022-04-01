@@ -1,0 +1,21 @@
+﻿{
+	"sleepDialogue.response.hibernateFor": "Hibernate for...",
+	"sleepDialogue.response.hibernateUntil": "Hibernate until...",
+	"sleepDialogue.response.hibernateUntil.nextBirthday": "Next birthday ({{NpcName}})",
+	"sleepDialogue.response.hibernateUntil.nextFestival": "Next festival ({{FestivalName}})",
+	"sleepDialogue.response.hibernateUntil.nextSeason": "Next season ({{SeasonName}})",
+	"sleepDialogue.response.hibernateUntil.nextEvent": "Next event (or a year passes)",
+	"sleepDialogue.response.cancel": "Cancel",
+
+	"hibernateLength.unit.nights": "{{Value}} night(s)",
+	"hibernateLength.unit.weeks": "{{Value}} week(s)",
+	"hibernateLength.unit.seasons": "{{Value}} season(s)",
+	"hibernateLength.unit.years": "{{Value}} year(s)",
+	"hibernateLength.unit.forever": "Forever",
+
+	"hibernation.nightsLeft": "Sleeping through {{Value}} more nights...",
+	"hibernation.nightsLeft.upTo": "Sleeping through up to {{Value}} more nights...",
+	"hibernation.forever": "Sleeping forever...",
+	"hibernation.wakingUp": "Waking up...",
+	"hibernation.escapeToWakeUp": "(Hold Escape to wake up right away)"
+}

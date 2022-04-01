@@ -59,6 +59,7 @@ namespace Leclair.Stardew.Common.Enums {
 		Chair, // Chair
 		Weapon, // Tool
 		Projectile, // Projectile
-		Wallpaper
+		Wallpaper,
+		Emoji // ChatBox
 	}
 }

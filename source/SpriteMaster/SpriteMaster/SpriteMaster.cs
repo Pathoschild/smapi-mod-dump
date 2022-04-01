@@ -11,6 +11,7 @@
 using HarmonyLib;
 using LinqFasterer;
 using SpriteMaster.Caching;
+using SpriteMaster.Experimental;
 using SpriteMaster.Extensions;
 using SpriteMaster.Harmonize;
 using SpriteMaster.Harmonize.Patches.Game;
@@ -39,10 +40,7 @@ namespace SpriteMaster;
 public sealed class SpriteMaster : Mod {
 	internal static SpriteMaster Self { get; private set; } = default!;
 
-	private static readonly bool DotNet = (Runtime.Framework != Runtime.FrameworkType.Mono);
-	private readonly Thread? MemoryPressureThread = null;
-	private readonly Thread? GarbageCollectThread = null;
-	private readonly object? CollectLock = DotNet ? new() : null;
+	internal MemoryMonitor MemoryMonitor;
 	internal bool IsGameLoaded { get; private set; } = false;
 	internal static string? AssemblyPath { get; private set; }
 
@@ -76,53 +74,6 @@ public sealed class SpriteMaster : Mod {
 		}
 	}
 
-	private void MemoryPressureLoop() {
-		for (; ; ) {
-			if (DrawState.TriggerGC && DrawState.TriggerGC.Wait()) {
-				continue;
-			}
-
-			lock (CollectLock!) {
-				try {
-					using var _ = new MemoryFailPoint(Config.Garbage.RequiredFreeMemory);
-				}
-				catch (InsufficientMemoryException) {
-					Debug.Warning($"Less than {(Config.Garbage.RequiredFreeMemory * 1024 * 1024).AsDataSize(decimals: 0)} available for block allocation, forcing full garbage collection");
-					ResidentCache.Purge();
-					SuspendedSpriteCache.Purge();
-					DrawState.TriggerGC.Set(true);
-					Thread.Sleep(10000);
-				}
-			}
-			Thread.Sleep(512);
-		}
-	}
-
-	private void GarbageCheckLoop() {
-		try {
-			for (; ; ) {
-				GC.RegisterForFullGCNotification(10, 10);
-				GC.WaitForFullGCApproach();
-				if (Garbage.ManualCollection) {
-					Thread.Sleep(128);
-					continue;
-				}
-				lock (CollectLock!) {
-					if (DrawState.TriggerGC && DrawState.TriggerGC.Wait()) {
-						continue;
-					}
-
-					ResidentCache.Purge();
-					DrawState.TriggerGC.Set(true);
-					// TODO : Do other cleanup attempts here.
-				}
-			}
-		}
-		catch {
-
-		}
-	}
-
 	private const string ConfigName = "config.toml";
 
 	private static volatile string CurrentSeason = "";
@@ -133,19 +84,7 @@ public sealed class SpriteMaster : Mod {
 
 		Garbage.EnterNonInteractive();
 
-		if (DotNet) {
-			MemoryPressureThread = new Thread(MemoryPressureLoop) {
-				Name = "Memory Pressure Thread",
-				Priority = ThreadPriority.BelowNormal,
-				IsBackground = true
-			};
-
-			GarbageCollectThread = new Thread(GarbageCheckLoop) {
-				Name = "Garbage Collection Thread",
-				Priority = ThreadPriority.BelowNormal,
-				IsBackground = true
-			};
-		}
+		MemoryMonitor = new MemoryMonitor();
 	}
 
 	private bool IsVersionOutdated(string configVersion) {
@@ -184,27 +123,19 @@ public sealed class SpriteMaster : Mod {
 	private static string GetVersionStringHeader() => $"SpriteMaster {FullVersion} build {Config.AssemblyVersionObj.Revision} ({Config.BuildConfiguration}, {ChangeList}, {BuildComputerName})";
 
 	private static void ConsoleTriggerGC() {
-		lock (Self.CollectLock!) {
-			Garbage.Collect(compact: true, blocking: true, background: false);
-			DrawState.TriggerGC.Set(true);
-		}
+		Self.MemoryMonitor.TriggerGC();
 	}
 
 	private static void ConsoleTriggerPurge() {
-		lock (Self.CollectLock!) {
-			Garbage.Collect(compact: true, blocking: true, background: false);
-			ResidentCache.Purge();
-			Garbage.Collect(compact: true, blocking: true, background: false);
-			DrawState.TriggerGC.Set(true);
-		}
+		Self.MemoryMonitor.TriggerPurge();
 	}
 
-	private static readonly Dictionary<string, (Action Action, string Description)> ConsoleCommandMap = new() {
-		{ "help", (() => ConsoleHelp(null), "Prints this command guide") }, 
-		{ "all-stats", (DumpAllStats, "Dump Statistics") },
-		{ "memory", (Debug.DumpMemory, "Dump Memory") },
-		{ "gc", (ConsoleTriggerGC, "Trigger full GC") },
-		{ "purge", (ConsoleTriggerPurge, "Trigger Purge") }
+	private static readonly Dictionary<string, (Action<string, Queue<string>> Action, string Description)> ConsoleCommandMap = new() {
+		{ "help", ((_, _) => ConsoleHelp(null), "Prints this command guide") }, 
+		{ "all-stats", ((_, _) => DumpAllStats(), "Dump Statistics") },
+		{ "memory", ((_, _) => Debug.DumpMemory(), "Dump Memory") },
+		{ "gc", ((_, _) => ConsoleTriggerGC(), "Trigger full GC") },
+		{ "purge", ((_, _) => ConsoleTriggerPurge(), "Trigger Purge") }
 	};
 
 	private static void ConsoleHelp(string? unknownCommand = null) {
@@ -236,11 +167,41 @@ public sealed class SpriteMaster : Mod {
 
 		var subCommand = argumentQueue.Dequeue().ToLowerInvariant();
 		if (ConsoleCommandMap.TryGetValue(subCommand, out var commandPair)) {
-			commandPair.Action();
+			commandPair.Action(subCommand, argumentQueue);
 		}
 		else {
 			ConsoleHelp(subCommand);
 			return;
+		}
+	}
+
+	private void InitConsoleCommands() {
+		foreach (var type in typeof(SpriteMaster).Assembly.GetTypes()) {
+			foreach (var method in type.GetMethods(BindingFlags.Static | BindingFlags.Public)) {
+				var command = method.GetCustomAttribute<CommandAttribute>();
+				if (command is not null) {
+					var parameters = method.GetParameters();
+					if (parameters.Length != 2) {
+						Debug.Error($"Console command '{command.Name}' for method '{method.GetFullName()}' does not have the expected number of parameters");
+						continue;
+					}
+					if (parameters[0].ParameterType != typeof(string)) {
+						Debug.Error($"Console command '{command.Name}' for method '{method.GetFullName()}' : parameter 0 type {parameters[0].ParameterType} is not {typeof(string)}");
+						continue;
+					}
+					if (parameters[1].ParameterType != typeof(Queue<string>)) {
+						Debug.Error($"Console command '{command.Name}' for method '{method.GetFullName()}' : parameter 1 type {parameters[1].ParameterType} is not {typeof(Queue<string>)}");
+						continue;
+					}
+
+					if (ConsoleCommandMap.ContainsKey(command.Name)) {
+						Debug.Error($"Console command is already registered: '{command.Name}'");
+						continue;
+					}
+
+					ConsoleCommandMap.Add(command.Name, (method.CreateDelegate<Action<string, Queue<string>>>(), command.Description));
+				}
+			}
 		}
 	}
 
@@ -261,49 +222,64 @@ public sealed class SpriteMaster : Mod {
 			}
 
 			if (IsVersionOutdated(Config.ConfigVersion)) {
-				Debug.Warning($"config.toml is out of date ({Config.ConfigVersion} < {Config.ClearConfigBefore}), rewriting it.");
+				Debug.Info($"config.toml is out of date ({Config.ConfigVersion} < {Config.ClearConfigBefore}), rewriting it.");
 
 				SerializeConfig.Load(tempStream, retain: true);
 				Config.ConfigVersion = Config.CurrentVersion;
 			}
 		}
 
-		// handle sliced textures. At some point I will add struct support.
-		foreach (var slicedTexture in Config.Resample.SlicedTextures) {
-			//@"LooseSprites\Cursors::0,640:2000,256"
-			var elements = slicedTexture.Split("::", 2);
-			var texture = elements[0];
-			var bounds = Bounds.Empty;
-			if (elements.Length > 1) {
-				try {
-					var boundElements = elements[1].Split(":");
-					var offsetElements = (boundElements.ElementAtOrDefaultF(0) ?? "0,0").Split(",", 2);
-					var extentElements = (boundElements.ElementAtOrDefaultF(1) ?? "0,0").Split(",", 2);
+		static Config.TextureRef[] ProcessTextureRefs(List<string> textureRefStrings) {
+			// handle sliced textures. At some point I will add struct support.
+			var result = new Config.TextureRef[textureRefStrings.Count];
+			for (int i = 0; i < result.Length; ++i) {
+				var slicedTexture = textureRefStrings[i];
+				//@"LooseSprites\Cursors::0,640:2000,256"
+				var elements = slicedTexture.Split("::", 2);
+				var texture = elements[0]!;
+				var bounds = Bounds.Empty;
+				if (elements.Length > 1) {
+					try {
+						var boundElements = elements[1].Split(':');
+						var offsetElements = (boundElements.ElementAtOrDefaultF(0) ?? "0,0").Split(',', 2);
+						var extentElements = (boundElements.ElementAtOrDefaultF(1) ?? "0,0").Split(',', 2);
 
-					var offset = new Vector2I(int.Parse(offsetElements[0]), int.Parse(offsetElements[1]));
-					var extent = new Vector2I(int.Parse(extentElements[0]), int.Parse(extentElements[1]));
+						var offset = new Vector2I(int.Parse(offsetElements[0]), int.Parse(offsetElements[1]));
+						var extent = new Vector2I(int.Parse(extentElements[0]), int.Parse(extentElements[1]));
 
-					bounds = new Bounds(offset, extent);
+						bounds = new Bounds(offset, extent);
+					}
+					catch {
+						Debug.Error($"Invalid SlicedTexture Bounds: '{elements[1]}'");
+					}
 				}
-				catch {
-					Debug.Error($"Invalid SlicedTexture Bounds: '{elements[1]}'");
-				}
-
-				Config.Resample.SlicedTexturesS.Add(new(texture, bounds));
+				result[i] = new(string.Intern(texture), bounds);
 			}
+			return result;
 		}
+
+		Config.Resample.SlicedTexturesS = ProcessTextureRefs(Config.Resample.SlicedTextures);
+		Config.Resample.Padding.BlackListS = ProcessTextureRefs(Config.Resample.Padding.BlackList);
 
 		// Compile blacklist patterns
-		Config.Resample.BlacklistPatterns.Capacity = Config.Resample.Blacklist.Count;
-		foreach (var pattern in Config.Resample.Blacklist) {
-			if (!pattern.StartsWith('@')) {
-				Config.Resample.BlacklistPatterns.Add(new($"^{Regex.Escape(pattern)}.*", RegexOptions.Compiled));
+		static Regex[] ProcessTexturePatterns(List<string> texturePatternStrings) {
+			var result = new Regex[texturePatternStrings.Count];
+			for (int i = 0; i < texturePatternStrings.Count; ++i) {
+				var pattern = texturePatternStrings[i];
+				if (!pattern.StartsWith('@')) {
+					pattern = $"^{Regex.Escape(pattern)}.*";
+				}
+				else {
+					pattern = pattern.Substring(1);
+				}
+				result[i] = new(pattern, RegexOptions.Compiled);
 			}
-			else {
-				var reducedPattern = pattern.Substring(1);
-				Config.Resample.BlacklistPatterns.Add(new(reducedPattern, RegexOptions.Compiled));
-			}
+			return result;
 		}
+
+
+		Config.Resample.BlacklistPatterns = ProcessTexturePatterns(Config.Resample.Blacklist);
+		Config.Resample.GradientBlacklistPatterns = ProcessTexturePatterns(Config.Resample.GradientBlacklist);
 
 		if (Config.ShowIntroMessage && !Config.SkipIntro) {
 			help.Events.GameLoop.GameLaunched += (_, _) => {
@@ -322,6 +298,8 @@ public sealed class SpriteMaster : Mod {
 			help.ConsoleCommands.Add("sm", "SpriteMaster Commands", ConsoleCommand);
 		}
 		catch { }
+
+		InitConsoleCommands();
 
 		help.Events.GameLoop.DayStarted += OnDayStarted;
 		// GC after major events
@@ -353,8 +331,7 @@ public sealed class SpriteMaster : Mod {
 		};
 		help.Events.Display.MenuChanged += OnMenuChanged;
 
-		MemoryPressureThread?.Start();
-		GarbageCollectThread?.Start();
+		MemoryMonitor.Start();
 
 		static void SetSystemTarget(XNA.Graphics.RenderTarget2D? target) {
 			if (target is null) {
@@ -509,17 +486,46 @@ public sealed class SpriteMaster : Mod {
 				sb.AppendLine($"\t{mod.Manifest.Name} ({mod.Manifest.UniqueID})");
 			}
 
-			Debug.Warning(sb.ToString());
+			Debug.Info(sb.ToString());
+		}
+	}
+
+	private readonly struct WaitWrapper : IDisposable {
+		private readonly object Waiter;
+
+		internal WaitWrapper(object waiter) => Waiter = waiter;
+
+		public readonly void Dispose() {
+			if (Waiter is IDisposable disposable) {
+				disposable.Dispose();
+			}
+		}
+
+		internal readonly void Wait() {
+			switch (Waiter) {
+				case Task task:
+					task.Wait();
+					break;
+				case ManualCondition condition:
+					condition.Wait();
+					break;
+				default:
+					throw new InvalidOperationException(Waiter.GetType().Name);
+			}
 		}
 	}
 
 	private void OnGameLaunched() {
-		using var modCheckTask = Task.Run(CheckMods);
+		var waiters = new WaitWrapper[] {
+			new(Task.Run(CheckMods)),
+			new(Task.Run(Inlining.Reenable)),
+			new(FileCache.Initialized)
+		};
 
-		Debug.Trace("Waiting for FileCache to initialize...");
-		FileCache.Initialized.Wait();
-
-		modCheckTask.Wait();
+		foreach (var waiter in waiters) {
+			waiter.Wait();
+			waiter.Dispose();
+		}
 
 		ForceGarbageCollect();
 		ManagedSpriteInstance.ClearTimers();

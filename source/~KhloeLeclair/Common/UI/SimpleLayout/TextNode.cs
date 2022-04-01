@@ -59,14 +59,35 @@ namespace Leclair.Stardew.Common.UI.SimpleLayout {
 			float scale = Style.Scale ?? 1f;
 			SpriteFont font = Style.Font ?? defaultFont ?? Game1.smallFont;
 			Color color = Style.Color ?? defaultColor ?? Game1.textColor;
+			Color background = Style.BackgroundColor ?? Color.Transparent;
 			Color? shadowColor = Style.ShadowColor ?? defaultShadowColor;
 			if (Style.IsPrismatic())
 				color = Utility.GetPrismaticColor();
 
-			if (Style.IsJunimo())
-				SpriteText.drawString(batch, Text, (int) position.X, (int) position.Y, junimoText: true);
-			else if (Style.IsFancy())
-				SpriteText.drawString(batch, Text, (int) position.X, (int) position.Y);
+			if (Style.IsInverted())
+				(color, background) = (background, color);
+
+			if (background.A > 0) {
+				float a = (float) background.A / 255;
+
+				batch.Draw(
+					Game1.fadeToBlackRect,
+					new Rectangle(
+						(int) position.X, (int) position.Y,
+						(int) size.X, (int) size.Y
+					),
+					background * a
+				);
+			}
+
+			if (Style.IsFancy() || Style.IsJunimo())
+				RenderHelper.DrawSpriteText(
+					batch,
+					Text,
+					(int) position.X, (int) position.Y,
+					junimoText: Style.IsJunimo(),
+					color: color
+				);
 			else if (Style.IsBold())
 				Utility.drawBoldText(batch, Text, font, position, color, scale);
 			else if (Style.HasShadow()) {

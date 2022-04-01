@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11279
+IDs: nymvaline.AnkiStudyBreak
+update keys: Nexus:11279, GitHub:nymvaline/StardewValley-AnkiStudyBreak

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 
 namespace Leclair.Stardew.Common.UI.FlowNode {
@@ -38,12 +39,15 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 		}
 
 		public override int GetHashCode() {
-			int hashCode = 1723241078;
-			hashCode = hashCode * -1521134295 + EqualityComparer<IFlowNode>.Default.GetHashCode(Node);
-			hashCode = hashCode * -1521134295 + Width.GetHashCode();
-			hashCode = hashCode * -1521134295 + Height.GetHashCode();
-			hashCode = hashCode * -1521134295 + ForceWrap.GetHashCode();
-			return hashCode;
+			return HashCode.Combine(Node, Width, Height, ForceWrap);
+		}
+
+		public static bool operator ==(UnslicedNode left, UnslicedNode right) {
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(UnslicedNode left, UnslicedNode right) {
+			return !(left == right);
 		}
 	}
 }

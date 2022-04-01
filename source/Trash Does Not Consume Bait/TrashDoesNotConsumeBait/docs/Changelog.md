@@ -1,0 +1,22 @@
+**You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+for queries and analysis.**
+
+**This is _not_ the original file, and not necessarily the latest version.**  
+**Source repository: https://github.com/atravita-mods/TrashDoesNotConsumeBait**
+
+----
+
+Changelog
+===============
+
+## Version 0.1.2
+
+Updates Journal Scrap 9 + Pick Your Enchantment's tooltips with the bait/tackle consumption chances from this mod.
+
+### Version 0.1.1
+
+Allows for swapping bait/tackle on the hotbar.
+
+### Version 0.1.0
+
+Initial upload

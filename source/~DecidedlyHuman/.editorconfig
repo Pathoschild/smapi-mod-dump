@@ -127,10 +127,7 @@ indent_size = tab
 tab_width = 4
 
 [*.{cs,vb}]
-indent_style = tab
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
-tab_width = 4
-indent_size = 4
 end_of_line = crlf
 dotnet_style_coalesce_expression = true:suggestion
 dotnet_style_null_propagation = true:suggestion

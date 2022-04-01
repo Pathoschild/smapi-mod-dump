@@ -108,7 +108,7 @@ namespace ItemPipes.Framework.Nodes
             }
         }
 
-        public void SendItem(Item item, InputPipeNode input)
+        public void SendItem(Item item, IOPipeNode input)
         {
             List<PipeNode> path = GetPath(input);
             /*
@@ -122,24 +122,61 @@ namespace ItemPipes.Framework.Nodes
             MoveItemRecursive(item, input, path, 0);
         }
 
-        public PipeNode MoveItemRecursive(Item item, InputPipeNode input, List<PipeNode> path, int index)
+        public PipeNode MoveItemRecursive(Item item, IOPipeNode input, List<PipeNode> path, int index)
         {
-            //Printer.Info($"Current node: {Print()}");
+            //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}]Current node: {Print()}");
             PipeNode node = null;
             if (this.Equals(input))
             {
                 StoredItem = item;
                 PassingItem = true;
-                while (!input.ConnectedContainer.InsertItem(item))
+                bool interrupted = false;
+                //Printer.Info((!input.ConnectedContainer.InsertItem(item)).ToString());
+                //Printer.Info(interrupted.ToString());
+                while (!input.ConnectedContainer.InsertItem(item) && !interrupted)
                 {
-                    StoredItem = item;
-                    PassingItem = true;
+                    try
+                    {
+                        StoredItem = item;
+                        PassingItem = true;
+                        System.Threading.Thread.Sleep(ItemTimer);
+                    }
+                    catch (ThreadInterruptedException exception)
+                    {
+                        if (Globals.Debug) { Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}]Waiting for {Print()} clogged item to return to output..."); }
+                        int i = 0;
+                        bool sent = false;
+                        while (i < ParentNetwork.Outputs.Count && !sent)
+                        {
+                            if (ParentNetwork.Outputs[i].ConnectedContainer.InsertItem(StoredItem))
+                            {
+                                //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}]ITEM RETURNED");
+                                sent = true;
+                                interrupted = true;
+                                try
+                                {
+                                    if (DataAccess.GetDataAccess().Threads.Contains(Thread.CurrentThread))
+                                    {
+                                        //Printer.Info("Removing T" + Thread.CurrentThread.ManagedThreadId);
+                                        DataAccess.GetDataAccess().Threads.Remove(Thread.CurrentThread);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    DataAccess.GetDataAccess().Threads.Clear();
+                                }
+                            }
+                            i++;
+                        }
+                    }
                 }
                 try
                 {
                     System.Threading.Thread.Sleep(ItemTimer);
                 }
-                catch (ThreadInterruptedException exception) { }
+                catch (ThreadInterruptedException exception) 
+                {
+                }
                 StoredItem = null;
                 PassingItem = false;
                 return input;
@@ -169,81 +206,6 @@ namespace ItemPipes.Framework.Nodes
             return node;
         }
 
-        public PipeNode MoveItem(Item item, PipeNode target, int index, List<PipeNode> path)
-        {
-            PipeNode broken = null;
-            DisplayItem(item);
-            if (!this.Equals(target))
-            {
-                //Printer.Info($"[T{ Thread.CurrentThread.ManagedThreadId}] Path lenght: "+path.Count);
-                //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] Index: " + index);
-                if (index < path.Count-1)
-                {
-                    index++;
-                    PipeNode nextNode = path[index];
-                    if (Location.getObjectAtTile((int)nextNode.Position.X, (int)nextNode.Position.Y) != null)
-                    {
-                        //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] Index: " + index);
-                        //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] Broken? " + Broken);
-                        if (!Broken)
-                        {
-                            broken = nextNode.MoveItem(item, target, index, path);
-                        }
-                        else
-                        {
-                            //Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] Broken? when true " + Broken);
-                            broken = nextNode;
-                            return broken;
-                        }
-                    }
-                    else
-                    {
-                        broken = nextNode;
-                        return broken;
-                    }
-                }
-            }
-
-            return broken;
-        }
-
-        public PipeNode MoveItem2(Item item, InputPipeNode input, int index, List<PipeNode> path)
-        {
-            PipeNode broken = null;
-
-            if(this.Equals(input))
-            {
-                while(input.TryInsertItem(item))
-                {
-                    StoredItem = item;
-                    PassingItem = true;
-                }
-                StoredItem = null;
-                PassingItem = false;
-                return input;
-            }
-            if(index < path.Count-1 && path[index + 1] != null)
-            {
-                while (path[index + 1].StoredItem != null)
-                {
-                    StoredItem = item;
-                    PassingItem = true;
-                }
-                index++;
-                try
-                {
-                    System.Threading.Thread.Sleep(ItemTimer);
-                }
-                catch (ThreadInterruptedException exception)
-                {
-                }
-                StoredItem = null;
-                PassingItem = false;
-                MoveItem2(item, input, index, path);
-            }
-            return broken;
-        }
-
         public bool DisplayItem(Item item)
         {
             bool canLoad = false;
@@ -263,53 +225,56 @@ namespace ItemPipes.Framework.Nodes
             }
             return canLoad;
         }
-
-        public PipeNode ConnectPipe(PipeNode target, int index, List<PipeNode> path)
+        public void ConnectPipe(PipeNode target)
         {
-            PipeNode broken = null;
-            if (!this.Equals(target))
+            List<PipeNode> path = GetPath(target);
+            /*
+            Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] PATH---------------");
+            foreach (Node node in path)
             {
-                DisplayConnection();
-                if (index < path.Count - 1)
+                Printer.Info(node.Print());
+            }
+            Printer.Info($"[T{Thread.CurrentThread.ManagedThreadId}] PATH---------------");
+            */
+            ConnectPipeRecursive(target, path, 0);
+            foreach (PipeNode pipe in path)
+            {
+                pipe.Connecting = false;
+                try
                 {
-                    index++;
-                    PipeNode nextNode = path[index];
-                    if (Location.getObjectAtTile((int)nextNode.Position.X, (int)nextNode.Position.Y) != null)
-                    {
-                        broken = nextNode.ConnectPipe(target, index, path);
-                    }
-                    else
-                    {
-                        broken = nextNode;
-                        return broken;
-                    }
+                    System.Threading.Thread.Sleep(20);
                 }
+                catch (ThreadInterruptedException exception) { }
+            }
+        }
+        public PipeNode ConnectPipeRecursive(PipeNode target, List<PipeNode> path, int index)
+        {
+            PipeNode node = null;
+            if (this.Equals(target))
+            {
+                Connecting = true;
+                try
+                {
+                    System.Threading.Thread.Sleep(60);
+                }
+                catch (ThreadInterruptedException exception) { }
+                return target;
             }
             else
             {
-                foreach(Node node in path)
+                if (index < path.Count - 1 && path[index + 1] != null)
                 {
-                    if (node is PipeNode)
+                    Connecting = true;
+                    try
                     {
-                        PipeNode pipe = (PipeNode)node;
-                        EndConnection(pipe);
+                        System.Threading.Thread.Sleep(60);
                     }
+                    catch (ThreadInterruptedException exception) { }
+                    index++;
+                    path[index].ConnectPipeRecursive(target, path, index);
                 }
             }
-
-            return broken;
-        }
-
-        public void DisplayConnection()
-        {
-            Connecting = true;
-            System.Threading.Thread.Sleep(60);
-        }
-
-        public void EndConnection(PipeNode pipe)
-        {
-            pipe.Connecting = false;
-            System.Threading.Thread.Sleep(10);
+            return node;
         }
     }
 }

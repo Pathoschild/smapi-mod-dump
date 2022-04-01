@@ -14,7 +14,7 @@
 
   // Add config options
   "weddingAttire.title": "WeddingAttire",
-  "weddingAttire.description": "Pick which of these options to wear at a wedding. Note that Dress is a wedding dress, and GameDefault varies by gender.",
+  "weddingAttire.description": "Pick which of these options to wear at a wedding. Note that WeddingDress is a white wedding dress, and GameDefault varies by gender.",
   "weddingAttire.noneOption": "NoClothingChange",
   "weddingAttire.tuxOption": "Tuxedo",
   "weddingAttire.dressOption": "WeddingDress",

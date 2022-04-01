@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-	"Format": "1.24.0",
+	"Format": "1.25.0",
 
 	/*********
 	** Configuration
@@ -94,7 +94,7 @@
 		// Vanilla
 		{
 			"Name": "PossibleCableCarNPCs",
-			"Value": "{{PossibleCableCarNPCs}}, Alex, Elliott, Harvey, Sam, Sebastian, Shane, Abigail, Emily, Haley, Leah, Maru, Penny, Caroline, Clint, Demetrius, Evelyn, George, Gus, Jas, Jodi, Kenneth, Lewis, Linus, Marnie, Pam, Pierre, Robin, Vincent, Willy",
+			"Value": "{{PossibleCableCarNPCs}}, Alex, Elliott, Harvey, Sam, Sebastian, Shane, Abigail, Emily, Haley, Leah, Maru, Penny, Caroline, Clint, Demetrius, Evelyn, George, Gus, Jas, Jodi, Kent, Lewis, Linus, Marnie, Pam, Pierre, Robin, Vincent, Willy",
 			"When": {
 				"EnableOtherNPCsInCableCar": true
 			}
@@ -421,6 +421,13 @@
 				"MigrateLegacyNames": [ "LolaShed" ]
 			},
 			/*********
+			** Torts
+			*********/
+			{
+				"Name": "Custom_Ridgeside_TortsRealm",
+				"FromMapFile": "Assets/Maps/EventMaps/TortsRealm.tmx",
+			},
+			/*********
 			** Undreya
 			*********/
 			{
@@ -660,6 +667,10 @@
 			"Name": "Custom_Ridgeside_RSVSpiritRealm",
 			"FromMapFile": "Assets/Maps/QuestMaps/RSVSpiritRealm.tmx",
 		},
+		{
+			"Name": "Custom_Ridgeside_RidgePond",
+			"FromMapFile": "Assets/Maps/QuestMaps/RidgePond.tmx",
+		},
 
 		/*********
 		** OutdoorMaps
@@ -824,12 +835,12 @@
 
 	//Includes NPC Data
 	/*
-		Includes all data that concerns the NPCs, that includes: Animations, Conversation Topics, Dialogue, Dispositions, GiftTastes, Mail, Movie Data, Portraits, Romance, Schedules, and Sprites
+		Includes all data that concerns the NPCs, that includes: Animations, Conversation Topics, Dialogue, Dispositions, GiftTastes, Mail, Movie Data, Portraits, Romance, Schedules, Schedule Strings, and Sprites
 	*/
 	{
 		"LogName": "Include all the NPCData",
    		"Action": "Include",
-   		"FromFile": "Data/NPCData/Animations.json, Data/NPCData/ConversationTopics.json, Data/NPCData/Dialogue.json, Data/NPCData/Dispositions.json, Data/NPCData/GiftTasteData.json, Data/NPCData/Mail.json, Data/NPCData/MovieData.json, Data/NPCData/Portraits.json, Data/NPCData/Romance.json, Data/NPCData/Schedules.json, Data/NPCData/Sprites.json",
+   		"FromFile": "Data/NPCData/Animations.json, Data/NPCData/ConversationTopics.json, Data/NPCData/Dialogue.json, Data/NPCData/Dispositions.json, Data/NPCData/GiftTasteData.json, Data/NPCData/Mail.json, Data/NPCData/MovieData.json, Data/NPCData/Portraits.json, Data/NPCData/Romance.json, Data/NPCData/Schedules.json, Data/NPCData/Sprites.json, Data/NPCData/ScheduleStrings.json",
   	},
 
 	//Includes Extras
@@ -840,38 +851,38 @@
 		"LogName": "Include Obelisk",
    		"Action": "Include",
    		"FromFile": "Data/Extras/Obelisks.json",
-  	},
-  	{
+  },
+  {
 		"LogName": "Include RSVMap",
    		"Action": "Include",
    		"FromFile": "Data/Extras/RSVMap.json",
-  	},
+  },
 	{
 		"LogName": "Include TrashCanData",
    		"Action": "Include",
    		"FromFile": "Data/Extras/TrashCanData.json",
-  	},
+  },
 	{
 		"LogName": "Include ShrinePortal",
    		"Action": "Include",
    		"FromFile": "Data/Extras/ShrinePortal.json",
-  	},
-  	{
+  },
+  {
 		"LogName": "Include Context Tags",
    		"Action": "Include",
    		"FromFile": "Data/Extras/ContextTags.json",
-  	},
+  },
 	{
 		"LogName": "Include SecretSanta Gifts",
    		"Action": "Include",
    		"FromFile": "Data/Extras/SantaGiftData.json",
-  	},
-/*	{
+  },
+	{
 		"LogName": "Include Vanilla Edits",
    		"Action": "Include",
    		"FromFile": "Data/Extras/VanillaEdits.json",
-  	},
-*/
+  },
+
 
   	//Includes Tilesheets
 	/*

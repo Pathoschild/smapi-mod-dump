@@ -44,17 +44,26 @@ namespace RidgesideVillage
 
             ConfigMenu = new ConfigMenu(this);
             CustomCPTokens = new CustomCPTokens(this);
-            Patcher = new Patcher(this);
 
-            Patcher.PerformPatching();
-
-            HotelMenu.Initialize(this);
             helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
 
+            BgUtils.Initialize(this);
+
+            TortsBackground.Initialize(this);
+
+            BloomProjectile.Initialize(this);
+            MistProjectile.Initialize(this);
+            Mistblade.Initialize(this);
+
+            Patcher = new Patcher(this);
+            Patcher.PerformPatching();
+
+            HotelMenu.Initialize(this);
 
             Minecarts.Initialize(this);
+
             SpiritRealm.Initialize(this);
 
             SpecialOrders.Initialize(this);
@@ -67,8 +76,13 @@ namespace RidgesideVillage
 
             Loan.Initialize(this);
 
+            //SummitHouse.Initialize(this);
+
+            WarpTotem.Initialize(this);
+
             PaulaClinic.Initialize(this);
             Offering.OfferingTileAction.Initialize(this);
+
             //not done (yet?)
             //new CliffBackground();
 
@@ -128,8 +142,6 @@ namespace RidgesideVillage
             RSVWorldMap.Setup(Helper);
             ExternalAPIs.Initialize(Helper);
 
-
-
             Config = Helper.ReadConfig<ModConfig>();
 
             if (!Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets"))
@@ -143,6 +155,7 @@ namespace RidgesideVillage
 
             Helper.ConsoleCommands.Add("RSV_reset_pedestals", "", this.ResetPedestals);
             Helper.ConsoleCommands.Add("RSV_open_portal", "", this.OpenPortal);
+            // RSV_rivera_secret in Patches/WalletItem
 
             // Generic Mod Config Menu setup
             //ConfigMenu.RegisterMenu();

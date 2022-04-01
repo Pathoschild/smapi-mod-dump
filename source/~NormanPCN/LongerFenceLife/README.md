@@ -47,23 +47,25 @@ The NexusMods page shows the locations of the GMCM config button(s).
 
 ### Config options
 
+On egame year is 112 days.
+
 - Wood Fence Life:  
-Base life is approximately 1/2 year.  
+Base life is approximately 1/2 year. ~56 days.  
 A value of 2.0 will give a life of approximately 1 year.
 
 - Stone Fence Life:  
-Base life is approximately 1 year.  
-A value of 2.0 will give a life of approximately 2 years.
+Base life is approximately 1 year. ~120 days.  
+A value of 2.0 will give a life of a approximately 2.1 years.
 
 - Iron Fence Life:  
-Base life is approximately 2.25 years.  
-A value of 1.3 will give a life of approximately 3 years.
+Base life is approximately 2.25 years. ~250 days. 
+A value of 1.4 will give a life of approximately 3.1 years.
 
 - Hardwood Fence Life:  
-Base life is approximately 5 years.
+Base life is approximately 5 years. ~560 days.
 
 - Gate Life:  
-Base life is approximately 4 years.
+Base life is approximately 3.9 years. ~400 days.
 
 - Fence life keybind
 The mod can also display the health/life status of your fences. 
@@ -86,3 +88,13 @@ v1.0.0:
  1.1.0
  Added a fence life display overlay and tooltip. Uses a keybind to activate.
  Spanish translation added. Thanks. Yllelder B.
+
+ 1.2.0
+ Now compatible with spouse fence repair.
+ Now compatible with the Smart Building Mod.
+
+ 1.3.0
+ GMCM interface now displays game years for config.
+
+ 1.3.1
+ Added vanilla life to GMCM interface as a reference.

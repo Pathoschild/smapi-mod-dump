@@ -19,11 +19,13 @@ namespace Helpers
 		private readonly string Prefix;
 		private readonly LogLevel Level;
 
-		public Logger(IMonitor m, LogLevel level = LogLevel.Trace, string p = "")
+		public Logger(IMonitor monitor, LogLevel level = LogLevel.Trace, string prefix = "")
 		{
-			Monitor = m;
-			Prefix = p;
-			Level = level;
+			this.Monitor = monitor;
+			this.Prefix = prefix;
+			if (this.Prefix != "")
+				this.Prefix = this.Prefix + " ";
+			this.Level = level;
 		}
 
 		private void LogIt(string logMessage, LogLevel logLevel)
@@ -66,10 +68,10 @@ namespace Helpers
 			this.LogIt(logMessage, LogLevel.Error);
 		}
 
-		public void Exception(Exception e)
+		public void Exception(string logMessage, Exception e)
 		{
-			Monitor.Log($"{Prefix} Exception: {e.Message}", LogLevel.Error);
-			Monitor.Log($"{Prefix} Full exception data: \n{e.Data}", LogLevel.Error);
+			Monitor.Log($"{Prefix}{logMessage}\n    Exception: {e.Message}", LogLevel.Error);
+			Monitor.Log($"    Full exception data: \n{e.Data}", LogLevel.Error);
 		}
 	}
 }

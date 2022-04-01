@@ -8,18 +8,25 @@
 **
 *************************************************/
 
-using Leclair.Stardew.Almanac.Menus;
+using System;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using Leclair.Stardew.Common;
 
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 
-namespace Leclair.Stardew.Almanac.Pages {
-	public class CoverPage : BasePage {
+using Leclair.Stardew.Almanac.Menus;
 
-		private string[] words;
-		private int wordHeight;
+namespace Leclair.Stardew.Almanac.Pages {
+	public class CoverPage : BasePage<BaseState> {
+
+		public static readonly Color DEFAULT_COLOR = CommonHelper.ParseColor("#974E24").Value;
+
+		private readonly string[] words;
+		private readonly int wordHeight;
 
 		#region Lifecycle
 
@@ -28,7 +35,16 @@ namespace Leclair.Stardew.Almanac.Pages {
 		}
 
 		public CoverPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
-
+			// Cache the string.
+			words = (Mod.HasIsland(Game1.player) ?
+				I18n.Almanac_CoverIsland() : I18n.Almanac_Cover()
+			).Split('\n');
+			wordHeight = 0;
+			foreach (string word in words) {
+				int height = SpriteText.getHeightOfString(word);
+				if (height > wordHeight)
+					wordHeight = height;
+			};
 		}
 
 		#endregion
@@ -45,19 +61,6 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 		public override void Activate() {
 			base.Activate();
-
-			// Cache the string when we activate the page.
-			// We do this here rather than when the class
-			// is instantiated to allow for reloading i18n.
-			words = (Game1.player.eventsSeen.Contains(ModEntry.Event_Island) ?
-				I18n.Almanac_CoverIsland() : I18n.Almanac_Cover()
-			).Split('\n');
-			wordHeight = 0;
-			foreach (string word in words) {
-				int height = SpriteText.getHeightOfString(word);
-				if (height > wordHeight)
-					wordHeight = height;
-			};
 		}
 
 		public override void Draw(SpriteBatch b) {
@@ -69,23 +72,24 @@ namespace Leclair.Stardew.Almanac.Pages {
 			int y = Menu.yPositionOnScreen + (Menu.height - (titleHeight + 60 + wordHeight)) / 2;
 
 			foreach (string word in words) {
-				SpriteText.drawStringHorizontallyCenteredAt(
+				RenderHelper.DrawCenteredSpriteText(
 					b,
 					word,
 					center,
-					y
+					y,
+					color: Mod.Theme?.CoverTextColor ?? DEFAULT_COLOR
 				);
 
 				y += wordHeight;
 			}
 
-			SpriteText.drawStringHorizontallyCenteredAt(
+			RenderHelper.DrawCenteredSpriteText(
 				b,
 				Game1.content.LoadString("Strings\\UI:Billboard_Year", Menu.Year),
 				center,
 				y + 60,
-				color: 2
-				);
+				color: Mod.Theme?.CoverYearColor ?? SpriteText.getColorFromIndex(2)
+			);
 		}
 
 		#endregion

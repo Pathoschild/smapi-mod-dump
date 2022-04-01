@@ -19,8 +19,15 @@ namespace SpriteMaster.Harmonize.Patches.Mods.CustomNPCFixes;
 
 static class PCustomNPCFixes {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	[Harmonize("CustomNPCFixes", "CustomNPCFixes.Mod", "FixSchedules", fixation: Harmonize.Fixation.Prefix, priority: Harmonize.PriorityLevel.Last, critical: false)]
-	internal static bool FixSchedules(StardewModdingAPI.Mod __instance) {
+	[Harmonize(
+		"CustomNPCFixes",
+		"CustomNPCFixes.Mod",
+		"FixSchedules",
+		fixation: Harmonize.Fixation.Prefix,
+		priority: Harmonize.PriorityLevel.Last,
+		critical: false
+	)]
+	public static bool FixSchedules(StardewModdingAPI.Mod __instance) {
 		if (!Config.IsEnabled || !Config.Extras.ModPatches.PatchCustomNPCFixes) {
 			return true;
 		}

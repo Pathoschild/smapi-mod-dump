@@ -1,6 +1,7 @@
 {
   "DarkInteriors": true,
-  "GradualDark": false,
+  "DarkInteriorsMenuKey": "L",
+  "GradualDark": true,
   "DarkVolcano": false,
   "FarmHouseAutoFireplaces": true,
   "AutoFireplacesSpring": -10,

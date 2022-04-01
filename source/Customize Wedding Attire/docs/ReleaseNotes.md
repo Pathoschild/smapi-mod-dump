@@ -8,6 +8,12 @@ for queries and analysis.**
 
 # Release Notes
 
+## v1.0.2
+- Fixes bug that occurs when GMCM is not installed (due to moddata not being set properly)
+- Properly uses local config options to determine player attire instead of moddata
+- More commments in the code
+- Logs Harmony patches to trace
+
 ## v1.0.1
 - Add live preview image to the configuration page if GMCM Options is installed (best viewed inside a save instead of from title)
 

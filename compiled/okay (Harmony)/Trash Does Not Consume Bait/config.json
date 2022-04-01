@@ -1,0 +1,7 @@
+{
+  "AutomaticRefill": true,
+  "SameTackleOnly": true,
+  "SameBaitOnly": true,
+  "ConsumeChanceNormal": 1.0,
+  "ConsumeChancePreserving": 0.5
+}

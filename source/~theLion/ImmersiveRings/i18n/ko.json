@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/theLion/smapi-mods
+**
+*************************************************/
+
+{
+  // Rings
+  "rings.jade": "옥 반지/치명타 위력을 50% 증가시켜줍니다.",
+  "rings.topaz": "방어력이 5 증가합니다."
+}

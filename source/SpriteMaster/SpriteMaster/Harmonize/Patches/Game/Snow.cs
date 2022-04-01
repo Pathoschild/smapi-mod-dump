@@ -8,8 +8,11 @@
 **
 *************************************************/
 
+#define USE_MULTIDRAW
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Core;
 using SpriteMaster.Types;
 using StardewValley;
 using StardewValley.Locations;
@@ -19,28 +22,32 @@ using System.Collections.Generic;
 namespace SpriteMaster.Harmonize.Patches.Game;
 
 static class Snow {
-	private struct ParticleData {
+	private static List<WeatherDebris>? LastDebrisWeather = null;
+	private static Dictionary<Bounds, List<SnowWeatherDebris>> MappedWeatherDebris = new();
+
+	private sealed class SnowWeatherDebris : StardewValley.WeatherDebris {
 		internal float Rotation;
 		internal readonly float RotationRate;
 		internal readonly float Scale;
 
-		internal ParticleData(float rotation, float rotationRate, float scale) {
+		internal SnowWeatherDebris(Vector2 position, int which, float rotationVelocity, float dx, float dy, float rotation, float rotationRate, float scale) :
+			base(position, which, rotationVelocity, dx, dy) {
 			Rotation = rotation;
 			RotationRate = rotationRate;
 			Scale = scale;
 		}
 
-		internal ParticleData Update() {
-			return this with { Rotation = (Rotation + RotationRate) % (2.0f * MathF.PI) };
+		internal void Update() {
+			base.update();
+			Rotation = (Rotation + RotationRate) % (2.0f * MathF.PI);
 		}
 	}
 
 	private static bool IsPuffersnow = false;
-	private static readonly List<ParticleData> ParticlesData = new();
 
-	private static bool ShouldDrawSnow => Game1.IsSnowingHere() && Game1.currentLocation.isOutdoors && Game1.currentLocation is not Desert;
+	private static bool ShouldDrawSnow => Game1.IsSnowingHere() && Game1.currentLocation.isOutdoors.Value && Game1.currentLocation is not Desert;
 
-	private static readonly Lazy<Texture2D> FishTexture = new(() => SpriteMaster.Self.Helper.Content.Load<Texture2D>("LooseSprites\\AquariumFish", StardewModdingAPI.ContentSource.GameContent));
+	private static readonly Lazy<Texture2D> FishTexture = new(() => SpriteMaster.Self.Helper.Content.Load<Texture2D>(@"LooseSprites\AquariumFish", StardewModdingAPI.ContentSource.GameContent));
 
 	[Harmonize(
 		typeof(Game1),
@@ -51,6 +58,15 @@ static class Snow {
 	)]
 	public static bool DrawWeather(Game1 __instance, GameTime time, RenderTarget2D target_screen) {
 		if (!Config.Enabled || !Config.Extras.Snow.Enabled) {
+			if (ShouldDrawSnow) {
+				if (LastDebrisWeather is null || Game1.debrisWeather.Count != 0) {
+					LastDebrisWeather = Game1.debrisWeather;
+					Game1.debrisWeather = new();
+				}
+			}
+			else {
+				LastDebrisWeather = null;
+			}
 			return true;
 		}
 
@@ -58,7 +74,12 @@ static class Snow {
 			return true;
 		}
 
-		if (Game1.debrisWeather is null) {
+		if (Game1.debrisWeather.Count == 0 && LastDebrisWeather is not null && LastDebrisWeather.Count != 0) {
+			Game1.debrisWeather = LastDebrisWeather;
+			LastDebrisWeather = null;
+		}
+
+		if (Game1.debrisWeather is null || Game1.debrisWeather.Count == 0) {
 			return true;
 		}
 
@@ -67,28 +88,99 @@ static class Snow {
 		var batchSamplerState = DrawState.CurrentSamplerState;
 
 		Game1.spriteBatch.End();
-		Game1.spriteBatch.Begin(SpriteSortMode.Deferred, IsPuffersnow ? BlendState.AlphaBlend : BlendState.Additive, SamplerState.LinearClamp);
+		Game1.spriteBatch.Begin(
+			IsPuffersnow ? SpriteSortMode.Texture : SpriteSortMode.Deferred,
+			IsPuffersnow ? BlendState.AlphaBlend : BlendState.Additive, SamplerState.LinearClamp
+		);
 
 		try {
 			if (__instance.takingMapScreenshot) {
-				int i = 0;
-				foreach (WeatherDebris w in Game1.debrisWeather) {
-					Vector2 position = w.position;
-					w.position = new Vector2(Game1.random.Next(Game1.viewport.Width - w.sourceRect.Width * 3), Game1.random.Next(Game1.viewport.Height - w.sourceRect.Height * 3));
-					var data = ParticlesData[i];
-					(Texture2D texture, Rectangle sourceRect) = IsPuffersnow ? (FishTexture.Value, new(0, 0, 24, 24)) : (Game1.mouseCursors, w.sourceRect);
-					Game1.spriteBatch.Draw(texture, w.position, sourceRect, Color.White, data.Rotation, Vector2.Zero, data.Scale * Config.Extras.Snow.MaximumScale, SpriteEffects.None, 1E-06f);
-					w.position = position;
-					++i;
+				Texture2D drawTexture = IsPuffersnow ? FishTexture.Value : Game1.mouseCursors;
+
+				foreach (WeatherDebris _item in Game1.debrisWeather) {
+					var item = (SnowWeatherDebris)_item;
+					var position = new Vector2(
+						Game1.random.Next(Game1.viewport.Width - item.sourceRect.Width * 3),
+						Game1.random.Next(Game1.viewport.Height - item.sourceRect.Height * 3)
+					);
+
+					Game1.spriteBatch.Draw(
+						texture: drawTexture,
+						position: position,
+						sourceRectangle: IsPuffersnow ? new(0, 0, 24, 24) : item.sourceRect,
+						color: Color.White,
+						rotation: item.Rotation,
+						origin: Vector2.Zero,
+						scale: item.Scale,
+						effects: SpriteEffects.None,
+						layerDepth: 1E-06f
+					);
 				}
 			}
 			else if (Game1.viewport.X > -Game1.viewport.Width) {
-				int i = 0;
-				foreach (WeatherDebris item in Game1.debrisWeather) {
-					var data = ParticlesData[i];
-					(Texture2D texture, Rectangle sourceRect) = IsPuffersnow ? (FishTexture.Value, new(0, 0, 24, 24)) : (Game1.mouseCursors, item.sourceRect);
-					Game1.spriteBatch.Draw(texture, item.position, sourceRect, Color.White, data.Rotation, Vector2.Zero, data.Scale * Config.Extras.Snow.MaximumScale, SpriteEffects.None, 1E-06f);
-					++i;
+				if (IsPuffersnow) {
+					Texture2D drawTexture = FishTexture.Value;
+
+					foreach (var mappedListPair in MappedWeatherDebris) {
+						var source = mappedListPair.Key;
+
+						foreach (SnowWeatherDebris item in mappedListPair.Value) {
+							Game1.spriteBatch.Draw(
+								texture: drawTexture,
+								position: item.position,
+								sourceRectangle: new(0, 0, 24, 24),
+								color: Color.White,
+								rotation: item.Rotation,
+								origin: Vector2.Zero,
+								scale: item.Scale,
+								effects: SpriteEffects.None,
+								layerDepth: 1E-06f
+							);
+						}
+					}
+				}
+				else {
+					Texture2D drawTexture = Game1.mouseCursors;
+
+					foreach (var mappedListPair in MappedWeatherDebris) {
+						var source = mappedListPair.Key;
+						var list = mappedListPair.Value;
+
+#if !USE_MULTIDRAW
+						foreach (SnowWeatherDebris item in list) {
+							Game1.spriteBatch.Draw(
+								texture: drawTexture,
+								position: item.position,
+								sourceRectangle: source, 
+								color: Color.White,
+								rotation: item.Rotation,
+								origin: Vector2.Zero,
+								scale: item.Scale,
+								effects: SpriteEffects.None,
+								layerDepth: 1E-06f
+							);
+						}
+#else
+						Span<OnDrawImpl.DrawInstance> instances = stackalloc OnDrawImpl.DrawInstance[list.Count];
+						for (int i = 0; i < instances.Length; ++i) {
+							instances[i] = new() {
+								Position = list[i].position,
+								Scale = list[i].Scale,
+								Rotation = list[i].Rotation
+							};
+						}
+
+						Game1.spriteBatch.DrawMulti(
+							texture: drawTexture,
+							source: source,
+							color: Color.White,
+							origin: Vector2.Zero,
+							effects: SpriteEffects.None,
+							layerDepth: 1E-06F,
+							instances: instances
+						);
+#endif
+					}
 				}
 			}
 		}
@@ -124,7 +216,7 @@ static class Snow {
 				Game1.windGust += Game1.random.Next(-10, -1) / 100f;
 				PreviousWind = WeatherDebris.globalWind;
 				WeatherDebris.globalWind += Game1.windGust;
-				if (Game1.soundBank != null) {
+				if (Game1.soundBank is not null) {
 					Game1.wind = Game1.soundBank.GetCue("wind");
 					Game1.wind.Play();
 				}
@@ -138,11 +230,9 @@ static class Snow {
 		}
 
 		// Update particles
-		int i = 0;
-		foreach (WeatherDebris item in Game1.debrisWeather) {
-			item.update();
-			ParticlesData[i] = ParticlesData[i].Update();
-			++i;
+		foreach (WeatherDebris _item in Game1.debrisWeather) {
+			var item = (SnowWeatherDebris)_item;
+			item.Update();
 		}
 
 		return false;
@@ -205,26 +295,40 @@ static class Snow {
 		int currentScreenArea = screenSize.Width * screenSize.Height;
 		double ratio = (double)currentScreenArea / ReferenceScreenArea;
 		debrisToMake = (int)Math.Round(debrisToMake * ratio);
-		ParticlesData.Clear();
-		ParticlesData.Capacity = debrisToMake;
+		MappedWeatherDebris.Clear();
 		Game1.debrisWeather.Clear();
 		Game1.debrisWeather.Capacity = debrisToMake;
 		for (int i = 0; i < debrisToMake; i++) {
-			Game1.debrisWeather.Add(
-				new(
-					position: new Vector2(Game1.random.Next(0, screenSize.Width), Game1.random.Next(0, screenSize.Height)),
-					which: 3,
-					rotationVelocity: 0.0f,
-					dx: Game1.random.Next(-10, 0) / 50f,
-					dy: Game1.random.Next(10) / 50f
-				)
-			);
-			ParticlesData.Add(new(
+			var debris = new SnowWeatherDebris(
+				position: new Vector2(Game1.random.Next(0, screenSize.Width), Game1.random.Next(0, screenSize.Height)),
+				which: 3,
+				rotationVelocity: 0.0f,
+				dx: Game1.random.Next(-10, 0) / 50f,
+				dy: Game1.random.Next(10) / 50f,
 				rotation: (float)(Game1.random.NextDouble() * 2.0 * Math.PI),
 				rotationRate: (float)(((Game1.random.NextDouble() * 2.0) - 1.0) * Config.Extras.Snow.MaximumRotationSpeed),
-				scale: (float)Math.Sqrt((Game1.random.NextDouble() * 0.75) + 0.25)
-			));
+				scale: (float)Math.Sqrt((Game1.random.NextDouble() * 0.75) + 0.25) * Config.Extras.Snow.MaximumScale
+			);
+
+			Game1.debrisWeather.Add(debris);
+
+			if (!MappedWeatherDebris.TryGetValue(debris.sourceRect, out var mappedList)) {
+				MappedWeatherDebris.Add(debris.sourceRect, mappedList = new List<SnowWeatherDebris>());
+			}
+			mappedList.Add(debris);
 		}
+		Game1.debrisWeather.Sort((d1, d2) => {
+			var sourceDiff = d1.sourceRect.GetHashCode() - d2.sourceRect.GetHashCode();
+			if (sourceDiff != 0) {
+				return sourceDiff;
+			}
+			return ((SnowWeatherDebris)d1).Scale.CompareTo(((SnowWeatherDebris)d2).Scale);
+		});
+
+		foreach (var mappedList in MappedWeatherDebris) {
+			mappedList.Value.Sort((d1, d2) => d1.Scale.CompareTo(d2.Scale));
+		}
+		LastDebrisWeather = Game1.debrisWeather;
 	}
 
 	internal static void OnWindowResized(Vector2I size) {

@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ using Leclair.Stardew.Common.Events;
 using Leclair.Stardew.Common.Integrations.GenericModConfigMenu;
 using Leclair.Stardew.Common.Inventory;
 using Leclair.Stardew.Common.Types;
+using Leclair.Stardew.Common.UI;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -38,8 +40,8 @@ namespace Leclair.Stardew.BetterCrafting {
 
 	public class ModEntry : ModSubscriber {
 
-		public static ModEntry instance;
-		public static IBetterCrafting API;
+		public static ModEntry Instance { get; private set; }
+		public static IBetterCrafting API { get; private set; }
 
 		internal Harmony Harmony;
 
@@ -58,7 +60,7 @@ namespace Leclair.Stardew.BetterCrafting {
 		public RecipeManager Recipes;
 		public FavoriteManager Favorites;
 
-		private Hashtable invProviders = new Hashtable();
+		private readonly Hashtable invProviders = new();
 		private readonly object providerLock = new();
 
 		private CaseInsensitiveHashSet ConnectorExamples;
@@ -72,12 +74,15 @@ namespace Leclair.Stardew.BetterCrafting {
 		internal Integrations.SpaceCore.SCIntegration intSCore;
 		internal Integrations.CustomCraftingStation.CCSIntegration intCCStation;
 
-		public Texture2D ButtonTexture;
+		internal ThemeManager<Models.Theme> ThemeManager;
+		internal Models.Theme Theme => ThemeManager.Theme;
 
 		public override void Entry(IModHelper helper) {
 			base.Entry(helper);
+			SpriteHelper.SetHelper(helper);
+			RenderHelper.SetHelper(helper);
 
-			instance = this;
+			Instance = this;
 			API = new ModAPI(this);
 
 			// Harmony
@@ -94,7 +99,13 @@ namespace Leclair.Stardew.BetterCrafting {
 			Recipes = new RecipeManager(this);
 			Favorites = new FavoriteManager(this);
 
-			Sprites.Load(Helper.Content);
+			ThemeManager = new ThemeManager<Models.Theme>(this, Config.Theme);
+			ThemeManager.ThemeChanged += OnThemeChanged;
+			ThemeManager.Discover();
+
+			//Sprites.Load(Helper.Content, Helper.ModRegistry);
+
+			CheckRecommendedIntegrations();
 		}
 
 		public override object GetApi() {
@@ -103,6 +114,29 @@ namespace Leclair.Stardew.BetterCrafting {
 
 
 		#region Events
+
+		private static void UpdateTextures(Texture2D oldTex, Texture2D newTex, IClickableMenu menu) {
+			if (menu.allClickableComponents != null)
+				foreach(var cmp in menu.allClickableComponents) {
+					if (cmp is ClickableTextureComponent tp && tp.texture == oldTex)
+						tp.texture = newTex;
+				}
+		}
+
+		private void OnThemeChanged(object sender, ThemeChangedEventArgs<Models.Theme> e) {
+			var oldTex = Sprites.Buttons.Texture;
+			var newTex = Sprites.Buttons.Texture = ThemeManager.Load<Texture2D>("buttons.png");
+
+			if (Game1.activeClickableMenu is GameMenu gm) {
+				foreach(var gmp in gm.pages) {
+					if (gmp is Menus.BetterCraftingPage)
+						UpdateTextures(oldTex, newTex, gmp);
+				}
+			}
+
+			if (Game1.activeClickableMenu is Menus.BetterCraftingPage page)
+				UpdateTextures(oldTex, newTex, page);
+		}
 
 		[Subscriber]
 		private void OnMenuChanged(object sender, MenuChangedEventArgs e) {
@@ -123,10 +157,20 @@ namespace Leclair.Stardew.BetterCrafting {
 					if (name.Equals("GenericModConfigMenu.Framework.ModConfigMenu")) {
 						CommonHelper.YeetMenu(menu);
 
-						menu = Game1.activeClickableMenu = Menus.BetterCraftingPage.Open(
+						GameMenu game = null;
+						if (OldCraftingGameMenu.Value) {
+							game = new GameMenu(false);
+							menu = Game1.activeClickableMenu = game;
+						}
+
+						var bcm = Menus.BetterCraftingPage.Open(
 							mod: this,
 							location: OldCraftingPage.Value.Location,
 							position: OldCraftingPage.Value.Position,
+							width: game?.width ?? -1,
+							height: game?.height ?? -1,
+							x: game?.xPositionOnScreen ?? -1,
+							y: game?.yPositionOnScreen ?? -1,
 							area: OldCraftingPage.Value.Area,
 							cooking: OldCraftingPage.Value.cooking,
 							standalone_menu: !OldCraftingGameMenu.Value,
@@ -136,12 +180,8 @@ namespace Leclair.Stardew.BetterCrafting {
 							listed_recipes: OldCraftingPage.Value.GetListedRecipes()
 						);
 
-						if (OldCraftingGameMenu.Value) {
-							var bcm = menu;
-							var game = new GameMenu(false);
-							menu = Game1.activeClickableMenu = game;
-
-							for(int i = 0; i < game.pages.Count; i++) {
+						if (game != null) {
+							for(int i =0; i < game.pages.Count; i++) {
 								if (game.pages[i] is CraftingPage cp) {
 									CommonHelper.YeetMenu(cp);
 
@@ -150,7 +190,9 @@ namespace Leclair.Stardew.BetterCrafting {
 									break;
 								}
 							}
-						}
+
+						} else
+							Game1.activeClickableMenu = bcm;
 					}
 				}
 
@@ -293,6 +335,24 @@ namespace Leclair.Stardew.BetterCrafting {
 			intSCore = new(this);
 			intCCStation = new(this);
 
+			// Commands
+			Helper.ConsoleCommands.Add("bc_update", "Invalidate cached data.", (name, args) => {
+				Recipes.Invalidate();
+				Log($"Invalided 1 cache.");
+			});
+
+			Helper.ConsoleCommands.Add("bc_retheme", "Reload all themes.", (name, args) => {
+				ThemeManager.Discover();
+				Log($"Reloaded themes. You may need to reopen menus.");
+			});
+
+			Helper.ConsoleCommands.Add("bc_theme", "List all themes, or switch to a new theme.", (name, args) => {
+				if (ThemeManager.OnThemeCommand(args)) {
+					Config.Theme = ThemeManager.ThemeKey;
+					SaveConfig();
+				}
+			});
+
 			// Load Data
 			Recipes.LoadRecipes();
 			Recipes.LoadDefaults();
@@ -364,17 +424,21 @@ namespace Leclair.Stardew.BetterCrafting {
 
 			GMCMIntegration
 				.AddLabel(I18n.Setting_General)
+				.AddChoice(
+					I18n.Setting_Theme,
+					I18n.Setting_ThemeDesc,
+					c => c.Theme,
+					(c,v) => {
+						c.Theme = v;
+						ThemeManager.SelectTheme(v);
+					},
+					ThemeManager.GetThemeChoices()
+				)
 				.Add(
 					I18n.Setting_Settings,
 					I18n.Setting_Settings_Tip,
 					c => c.ShowSettingsButton,
 					(c, v) => c.ShowSettingsButton = v
-				)
-				.Add(
-					I18n.Setting_Suppress,
-					I18n.Setting_Suppress_Tip,
-					c => c.SuppressBC,
-					(c, v) => c.SuppressBC = v
 				)
 				.Add(
 					I18n.Setting_ReplaceCrafting,
@@ -396,12 +460,21 @@ namespace Leclair.Stardew.BetterCrafting {
 				);
 
 			GMCMIntegration
+				.AddLabel(I18n.Setting_Bindings, I18n.Setting_Bindings_Tip, "page:bindings");
+
+			GMCMIntegration
 				.AddLabel(I18n.Setting_Crafting, I18n.Setting_Crafting_Tip)
 				.Add(
 					I18n.Setting_UniformGrid,
 					I18n.Setting_UniformGrid_Tip,
 					c => c.UseUniformGrid,
 					(c, val) => c.UseUniformGrid = val
+				)
+				.Add(
+					I18n.Setting_Alphabetic,
+					I18n.Setting_Alphabetic_Tip,
+					c => c.CraftingAlphabetic,
+					(c,v) => c.CraftingAlphabetic = v
 				)
 				.Add(
 					I18n.Setting_BigCraftablesLast,
@@ -412,6 +485,12 @@ namespace Leclair.Stardew.BetterCrafting {
 
 			GMCMIntegration
 				.AddLabel(I18n.Setting_Cooking, I18n.Setting_Cooking_Tip)
+				.Add(
+					I18n.Setting_Alphabetic,
+					I18n.Setting_Alphabetic_Tip,
+					c => c.CookingAlphabetic,
+					(c, v) => c.CookingAlphabetic = v
+				)
 				.AddChoice(
 					I18n.Setting_Seasoning,
 					I18n.Setting_Seasoning_Tip,
@@ -471,6 +550,73 @@ namespace Leclair.Stardew.BetterCrafting {
 					I18n.Setting_Nearby_Connectors,
 					I18n.Setting_Nearby_Connectors_Tip,
 					"page:conn"
+				);
+
+
+			Dictionary<TTWhen, Func<string>> whens = new() {
+				[TTWhen.Never] = I18n.Setting_Ttwhen_Never,
+				[TTWhen.ForController] = I18n.Setting_Ttwhen_ForController,
+				[TTWhen.Always] = I18n.Setting_Ttwhen_Always,
+			};
+
+			Dictionary<ButtonAction, Func<string>> actions = new() {
+				[ButtonAction.None] = I18n.Setting_Action_None,
+				[ButtonAction.Craft] = I18n.Setting_Action_Craft,
+				[ButtonAction.BulkCraft] = I18n.Setting_Action_BulkCraft,
+				[ButtonAction.Favorite] = I18n.Setting_Action_Favorite
+			};
+
+			GMCMIntegration
+				.StartPage("page:bindings", I18n.Setting_Bindings)
+				.AddChoice(
+					I18n.Setting_Key_Tooltip,
+					I18n.Setting_Key_Tooltip_Tip,
+					c => c.ShowKeybindTooltip,
+					(c, v) => c.ShowKeybindTooltip = v,
+					whens
+				)
+				.Add(
+					I18n.Setting_Suppress,
+					I18n.Setting_Suppress_Tip,
+					c => c.SuppressBC,
+					(c, v) => c.SuppressBC = v
+				)
+				.AddLabel("")
+				.Add(
+					I18n.Setting_Key_Search,
+					I18n.Setting_Key_Search_Tip,
+					c => c.SearchKey,
+					(c, v) => c.SearchKey = v
+				)
+				.Add(
+					I18n.Setting_Key_Favorite,
+					I18n.Setting_Key_Favorite_Tip,
+					c => c.FavoriteKey,
+					(c, v) => c.FavoriteKey = v
+				)
+				.Add(
+					I18n.Setting_Key_Bulk,
+					I18n.Setting_Key_Bulk_Tip,
+					c => c.BulkCraftKey,
+					(c, v) => c.BulkCraftKey = v
+				)
+				.AddLabel("");
+
+			// Use Tool
+			GMCMIntegration
+				.AddChoice(
+					I18n.Setting_Key_Behavior_Left,
+					I18n.Setting_Key_Behavior_Left_Tip,
+					c => c.LeftClick,
+					(c, v) => c.LeftClick = v,
+					actions
+				)
+				.AddChoice(
+					I18n.Setting_Key_Behavior_Right,
+					I18n.Setting_Key_Behavior_Right_Tip,
+					c => c.RightClick,
+					(c, v) => c.RightClick = v,
+					actions
 				);
 
 			GMCMIntegration
@@ -546,6 +692,10 @@ namespace Leclair.Stardew.BetterCrafting {
 							}
 						);
 			}
+		}
+
+		public static string GetInputLabel(InputButton[] buttons) {
+			return string.Join(", ", buttons.Reverse().Select(btn => btn.ToString()));
 		}
 
 		#endregion

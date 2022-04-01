@@ -80,7 +80,7 @@ where T : class? {
 	internal void SetTarget(T? target) => _Reference.SetTarget(target!);
 
 	public void GetObjectData(SerializationInfo info, StreamingContext context) {
-		if (info == null) {
+		if (info is null) {
 			throw new ArgumentNullException(nameof(info));
 		}
 		info.AddValue("TrackedObject", Target, typeof(T));

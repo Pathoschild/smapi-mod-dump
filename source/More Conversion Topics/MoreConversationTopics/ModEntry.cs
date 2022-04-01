@@ -26,6 +26,7 @@ namespace MoreConversationTopics
 
         // Properties
         private ModConfig Config;
+        private int countdown;
 
         /*********
         ** Public methods
@@ -42,52 +43,41 @@ namespace MoreConversationTopics
             catch (Exception)
             {
                 this.Config = new ModConfig();
-                this.Monitor.Log(this.Helper.Translation.Get("IllFormatedConfig"), LogLevel.Warn);
+                this.Monitor.Log(this.Helper.Translation.Get("IllFormattedConfig"), LogLevel.Warn);
             }
 
-            // Initialize the error logger in WeddingPatcher
-            WeddingPatcher.Initialize(this.Monitor, this.Config);
-            LuauPatcher.Initialize(this.Monitor, this.Config);
-            BirthPatcher.Initialize(this.Monitor, this.Config);
-            DivorcePatcher.Initialize(this.Monitor, this.Config);
-            RepeatPatcher.Initialize(this.Monitor, this.Config);
-            WorldChangePatcher.Initialize(this.Monitor, this.Config);
+            // Initialize the error logger and config in all the other files via a helper function
+            MCTHelperFunctions.Initialize(this.Monitor, this.Config);
 
             // Do the Harmony things
             var harmony = new Harmony(this.ModManifest.UniqueID);
+            RepeatPatcher.Apply(harmony);
             WeddingPatcher.Apply(harmony);
-            LuauPatcher.Apply(harmony);
             BirthPatcher.Apply(harmony);
             DivorcePatcher.Apply(harmony);
-            RepeatPatcher.Apply(harmony);
+            LuauPatcher.Apply(harmony);
             WorldChangePatcher.Apply(harmony);
+            NightEventPatcher.Apply(harmony);
+            IslandPatcher.Apply(harmony);
 
             // Adds a command to check current active conversation topics
-            helper.ConsoleCommands.Add("current_conversation_topics", "Returns a list of the current active dialogue events", (str, strs) =>
-            {
-                if (!Context.IsWorldReady)
-                    return;
-
-                // Add a test event to see if it's working
-                //if (!Game1.player.activeDialogueEvents.ContainsKey("testDialogueEvent"))
-                //{
-                //    Game1.player.activeDialogueEvents.Add("testDialogueEvent", 1);
-                //}
-
-                Monitor.Log(string.Join(", ", Game1.player.activeDialogueEvents.Keys),LogLevel.Debug);
-            });
+            helper.ConsoleCommands.Add("vl.mct.current_CTs", "Returns a list of the current active dialogue events.", MCTHelperFunctions.console_GetCurrentCTs);
 
             // Adds a command to see if player has a given mail flag
-            helper.ConsoleCommands.Add("player_hasmailflag", "Checks if the player has a mail flag.\n\nUsage: player_hasmailflag <flagName>\n- flagName: the possible mail flag name.", this.HasMailFlag);
+            helper.ConsoleCommands.Add("vl.mct.has_flag", "Checks if the player has a mail flag.\n\nUsage: vl.mct_hasflag <flagName>\n- flagName: the possible mail flag name.", MCTHelperFunctions.console_HasMailFlag);
 
             // Adds a command to add a conversation topic
-            helper.ConsoleCommands.Add("add_conversation_topic", "Adds the specified conversation topic with duration of 1 day.\n\nUsage: add_conversation_topic <flagName>\n- flagName: the conversation topic to add.", this.AddConversationTopic);
+            helper.ConsoleCommands.Add("vl.mct.add_CT", "Adds the specified conversation topic with duration of 1 day.\n\nUsage: vl.mct_add_CT <flagName> <duration>\n- flagName: the conversation topic to add.\n- duration: duration of conversation topic to add.", MCTHelperFunctions.console_AddConversationTopic);
 
             // Adds a command to remove a conversation topic
-            helper.ConsoleCommands.Add("remove_conversation_topic", "Removes the specified conversation topic.\n\nUsage: remove_conversation_topic <flagName>\n- flagName: the conversation topic to remove.", this.RemoveConversationTopic);
+            helper.ConsoleCommands.Add("vl.mct.remove_CT", "Removes the specified conversation topic.\n\nUsage: vl.mct_remove_CT <flagName>\n- flagName: the conversation topic to remove.", MCTHelperFunctions.console_RemoveConversationTopic);
 
             // Add GMCM
             helper.Events.GameLoop.GameLaunched += this.RegisterGMCM;
+
+            // Add asset editor
+            countdown = 5;
+            helper.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
         }
 
         /// <summary>
@@ -154,74 +144,15 @@ namespace MoreConversationTopics
             }
         }
 
-        // Helper function to check if a string is on the list of repeatable CTs added by this mod
-        public static Boolean isRepeatableCTAddedByMod(string topic)
+        // Adds asset editors when needed
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            string[] modRepeatableConversationTopics = new string[] { "wedding", "luauBest", "luauShorts", "luauPoisoned", "divorce", "babyBoy", "babyGirl" };
-            foreach (string s in modRepeatableConversationTopics)
+            // If the countdown has expired, then add the Joja event asset editor 5 ticks into the game
+            if (--countdown <= 0)
             {
-                if (s == topic)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        // Checks mail flags for console command
-        private void HasMailFlag(string command, string[] args)
-        {
-            if (!Context.IsWorldReady)
-                return;
-
-            try
-            {
-                if (Game1.player.mailReceived.Contains(args[0]))
-                {
-                    this.Monitor.Log($"Yes, you have this mail flag", LogLevel.Debug);
-                }
-                else
-                {
-                    this.Monitor.Log($"No, you don't have this mail flag", LogLevel.Debug);
-                }
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Bad or missing argument with exception: {ex}", LogLevel.Error);
-            }
-        }
-
-        // Add conversation topic for console command
-        private void AddConversationTopic(string command, string[] args)
-        {
-            if (!Context.IsWorldReady)
-                return;
-
-            try
-            {
-                Game1.player.activeDialogueEvents.Add(args[0], 1);
-                this.Monitor.Log($"Added conversation topic", LogLevel.Debug);
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Bad or missing argument with exception: {ex}", LogLevel.Error);
-            }
-        }
-
-        // Remove conversation topic for console command
-        private void RemoveConversationTopic(string command, string[] args)
-        {
-            if (!Context.IsWorldReady)
-                return;
-
-            try
-            {
-                Game1.player.activeDialogueEvents.Remove(args[0]);
-                this.Monitor.Log($"Removed conversation topic", LogLevel.Debug);
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Bad or missing argument with exception: {ex}", LogLevel.Error);
+                this.Helper.Content.AssetEditors.Add(new JojaEventAssetEditor());
+                this.Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
+                Monitor.Log("Registered Joja completion event asset editor", LogLevel.Trace);
             }
         }
     }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11400
+IDs: Traktori.CategoriesInRecipes
+update keys: Nexus:11400, GitHub:Traktori7/StardewValleyMods

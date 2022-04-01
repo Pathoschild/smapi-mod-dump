@@ -13,8 +13,6 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using SObject = StardewValley.Object;
 
 namespace CustomGiftDialogue
@@ -33,17 +31,12 @@ namespace CustomGiftDialogue
         {
             Reflection = helper.Reflection;
             Config = helper.ReadConfig<CustomGiftDialogueConfig>();
-            ModMonitor = this.Monitor;
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.receiveGift)),
                 postfix: new HarmonyMethod(this.GetType(), nameof(PATCH__After_receiveGift))
-            );
-            harmony.Patch(
-                original: AccessTools.Method(typeof(NPC), "loadCurrentDialogue"),
-                prefix: new HarmonyMethod(this.GetType(), nameof(PATCH__Before_loadCurrentDialogue))
             );
 
             if (Config.CustomSecretSantaDialogues)
@@ -54,57 +47,6 @@ namespace CustomGiftDialogue
                     postfix: new HarmonyMethod(this.GetType(), nameof(PATCH__After_chooseSecretSantaGift))
                 );
             }
-
-            helper.ConsoleCommands.Add("cdgu_reveal", "cdgu_reveal <npc> [<aboutNpc>] - Test reveal dialogue", this.CommandReveal);
-        }
-
-        private void CommandReveal(string name, string[] args)
-        {
-            if (args.Length < 1) return;
-
-            NPC npc = Game1.getCharacterFromName(args[0]);
-
-            if (npc == null)
-            {
-                this.Monitor.Log($"Unknown NPC name: ${args[0]}", LogLevel.Error);
-                return;
-            }
-
-            if (GiftDialogueHelper.GetRevealDialogue(npc, out string dialogue, args.Length > 1 ? args[1] : null))
-            {
-                npc.CurrentDialogue.Push(new Dialogue(dialogue, npc));
-                this.Monitor.Log($"A reveal dialogue was spawned for {npc.Name}", LogLevel.Info);
-                return;
-            }
-
-            this.Monitor.Log($"No reveal dialogue defined for npc {npc.Name}", LogLevel.Alert);
-        }
-
-        private static bool PATCH__Before_loadCurrentDialogue(NPC __instance, ref Stack<Dialogue> __result)
-        {
-            int heartLevel = Game1.player.friendshipData.TryGetValue(__instance.Name, out Friendship friends) 
-                ? (friends.Points / 250) 
-                : 0;
-            Random r = new(
-                (int)(Game1.stats.DaysPlayed * 77) 
-                + (int)Game1.uniqueIDForThisGame / 2 + 2 
-                + (int)__instance.DefaultPosition.X * 77 
-                + (int)__instance.DefaultPosition.Y * 777
-            );
-            
-            if (r.NextDouble() < Config.RevealDialogueChance && heartLevel >= Config.RevealDialogueMinHeartLevel)
-            {
-                if (__instance.Dialogue != null && GiftDialogueHelper.GetRevealDialogue(__instance, out string dialogue))
-                {
-                    __result = new Stack<Dialogue>();
-                    __result.Push(new Dialogue(dialogue, __instance));
-                    __instance.updatedDialogueYet = true;
-
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         private static void PATCH__After_receiveGift(NPC __instance, SObject o)

@@ -6,9 +6,9 @@ mods:
    Ginger Island Mainland Adjustments
 
 latest commit:
-   commit 37871274f650f4527d2d25d79002c431075458ea
+   commit 8b5e28b588bfc281025ca95566202ef4752ed509
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Mon Feb 7 01:58:16 2022 -0500
+   Date:   Tue Mar 8 13:33:11 2022 -0500
    
-       Update README.md
+       move license to cover just the code portion
    

@@ -13,16 +13,22 @@
 		{
 			"Id": "11022000",
 			"Conditions": [
-				"m 1000",
-				"w sunny"
+				"l leclair.almanac.has_base", // Does not have the Almanac
+				"F", // Not a Festival Day 
+				"t 600 700", // Between 6am and 7am
+				"d Wed", // Not Wednesday
+				"m 1000", // Earned at least 1000 gold
+				"w sunny" // Sunny
 			],
 			"Script": [
 				"continue",
 				"64 15",
 				"farmer 64 16 2 Pierre 64 18 0",
 				"skippable",
+				"addMailReceived leclair.almanac.saw_base",
+				"addMailReceived leclair.almanac.has_base",
 				"pause 1500",
-				"speak Pierre \"Hello there, @. It seems you're settling in well!\"",
+				"speak Pierre \"{{.0}}\"",
 				"pause 500",
 				"faceDirection Pierre 3",
 				"pause 500",
@@ -30,17 +36,17 @@
 				"pause 500",
 				"faceDirection Pierre 0",
 				"pause 500",
-				"speak Pierre \"My shipment of this year's Farmer's Almanac just arrived. Since you're new, I thought I'd bring you a copy.\"",
+				"speak Pierre \"{{.1}}\"",
 				"pause 500",
 				"playSound getNewSpecialItem",
-				"message \"Received a copy of 'Farmer's Almanac'.\"",
+				"message \"{{.2}}\"",
 				"pause 800",
-				"speak Pierre \"They're full of useful information. Weather forecasts. Crop rotations. The regional train schedule. Lots of stuff.\"",
+				"speak Pierre \"{{.3}}\"",
 				"pause 500",
 				"move Pierre 0 1 2",
 				"pause 1500",
 				"faceDirection Pierre 0",
-				"speak Pierre \"Make sure to read up on what you can grow. Once you're ready to plant, you can buy seeds from my shop.#$b#Pierre's seeds are the *best* you can find.\"",
+				"speak Pierre \"{{.4}}\"",
 				"pause 500",
 				"end"
 			]
@@ -48,27 +54,32 @@
 		{
 			"Id": "11022002",
 			"Conditions": [
-				"e 11022000",
-				"F",
-				"w sunny",
-				"f Wizard 500"
+				"l leclair.almanac.has_magic", // Does not have the Magic Almanac
+				"n leclair.almanac.has_base", // Has the Almanac
+				"F", // Not a festival day
+				"w sunny", // Sunny
+				"t 600 1700", // Between 6am and 5pm
+				"n guildMember", // Joined Adventurer's Guild
+				"f Wizard 500" // At least two hearts with Wizard
 			],
 			"Script": [
 				"WizardSong",
 				"64 15",
 				"farmer 64 16 2 Wizard 64 18 0",
 				"skippable",
+				"addMailReceived leclair.almanac.saw_magic",
+				"addMailReceived leclair.almanac.has_magic",
 				"pause 1500",
-				"speak Wizard \"Hello again... @. I've been waiting for you.#$b#Here, I'd like to give you something.\"",
+				"speak Wizard \"{{.0}}\"",
 				"pause 500",
 				"playSound getNewSpecialItem",
-				"message \"Received a copy of 'Magical Almanac'.\"",
+				"message \"{{.1}}\"",
 				"pause 800",
-				"speak Wizard \"As a farmer, you're familiar with forecasts.#$b#This almanac contains a spiritual forecast, penned by Welwick herself.#$b#It will help you stay safe and grow.\"",
+				"speak Wizard \"{{.2}}\"",
 				"pause 500",
 				"move Wizard 0 1 2",
 				"pause 500",
-				"speak Wizard \"Now, if you'll excuse me... I have much work to do.\"",
+				"speak Wizard \"{{.3}}\"",
 				"pause 1000",
 				"showFrame Wizard 16",
 				"pause 500",
@@ -84,33 +95,39 @@
 		{
 			"Id": "11022001",
 			"Conditions": [
-				"e 11022000",
-				"n willyHours"
+				"l leclair.almanac.has_island", // Does not have the Island Almanac
+				"n leclair.almanac.has_base", // Has the Almanac
+				"F", // Not a Festival Day
+				"n willyBoatFixed", // Have unlocked Ginger Island
+				"f Willy 500", // At least 2 hearts with Willy,
+				"t 800 1700" // Between 8am and 5pm
 			],
 			"Script": [
 				"continue",
 				"6 6",
 				"farmer 5 9 0 Willy -100 -100 2",
 				"skippable",
+				"addMailReceived leclair.almanac.saw_island",
+				"addMailReceived leclair.almanac.has_island",
 				"move farmer 0 -1 0",
 				"pause 1000",
 				"warp Willy 4 4",
 				"playsound doorClose",
 				"pause 100",
-				"textAboveHead Willy \"Ahoy!\"",
+				"textAboveHead Willy \"{{.0}}\"",
 				"pause 500",
 				"move Willy 1 0 2",
 				"move farmer 0 -2 0",
-				"speak Willy \"Headin' off to the island, lad?^Headin' off to the island, lass?\"",
+				"speak Willy \"{{.1}}\"",
 				"pause 500",
-				"speak Willy \"Have somethin' you might want, then. Here.\"",
+				"speak Willy \"{{.2}}\"",
 				"pause 500",
 				"playSound getNewSpecialItem",
-				"message \"Received a copy of 'Fern Islands Almanac'.\"",
+				"message \"{{.3}}\"",
 				"pause 800",
-				"speak Willy \"'s not much, but knowin' what the weather'll be is great. Some fish only come out in the rain, you know?\"",
+				"speak Willy \"{{.4}}\"",
 				"pause 500",
-				"speak Willy \"Well, I best not keep yeh. Have a good day, @.\"",
+				"speak Willy \"{{.5}}\"",
 				"end"
 			]
 		}

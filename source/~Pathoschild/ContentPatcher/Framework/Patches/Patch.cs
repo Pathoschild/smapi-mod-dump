@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
@@ -18,6 +17,7 @@ using ContentPatcher.Framework.Tokens;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace ContentPatcher.Framework.Patches
@@ -28,17 +28,17 @@ namespace ContentPatcher.Framework.Patches
         /*********
         ** Fields
         *********/
-        /// <summary>Normalize an asset name.</summary>
-        private readonly Func<string, string> NormalizeAssetNameImpl;
+        /// <summary>Parse an asset name.</summary>
+        private readonly Func<string, IAssetName> ParseAssetNameImpl;
 
         /// <summary>The underlying contextual values.</summary>
-        protected readonly AggregateContextual Contextuals = new AggregateContextual();
+        protected readonly AggregateContextual Contextuals = new();
 
         /// <summary>The tokens that are updated manually, rather than via <see cref="Contextuals"/>.</summary>
-        private readonly HashSet<IContextual> ManuallyUpdatedTokens = new HashSet<IContextual>(new ObjectReferenceComparer<IContextual>());
+        private readonly HashSet<IContextual> ManuallyUpdatedTokens = new(new ObjectReferenceComparer<IContextual>());
 
         /// <summary>Diagnostic info about the instance.</summary>
-        protected readonly ContextualState State = new ContextualState();
+        protected readonly ContextualState State = new();
 
         /// <summary>The context which provides tokens specific to this patch like <see cref="ConditionType.Target"/>.</summary>
         private readonly LocalContext PrivateContext;
@@ -84,7 +84,7 @@ namespace ContentPatcher.Framework.Patches
         public ITokenString RawFromAsset => this.ManagedRawFromAsset;
 
         /// <inheritdoc />
-        public string TargetAsset { get; private set; }
+        public IAssetName TargetAsset { get; private set; }
 
         /// <inheritdoc />
         public ITokenString RawTargetAsset => this.ManagedRawTargetAsset;
@@ -149,6 +149,14 @@ namespace ContentPatcher.Framework.Patches
             if (isReady && this.FromAsset != null)
             {
                 this.FromAssetExistsImpl = this.ContentPack.HasFile(this.FromAsset);
+
+                if (!this.FromAssetExistsImpl && this.ContentPack.HasFile($"{this.FromAsset}.xnb"))
+                {
+                    // for legacy reasons, the file extension can be omitted if it's .xnb
+                    this.FromAsset += ".xnb";
+                    this.FromAssetExistsImpl = true;
+                }
+
                 if (!this.FromAssetExistsImpl && this.Conditions.All(p => p.IsMatch))
                     this.State.AddErrors($"{nameof(PatchConfig.FromFile)} '{this.FromAsset}' does not exist");
             }
@@ -168,7 +176,7 @@ namespace ContentPatcher.Framework.Patches
         }
 
         /// <inheritdoc />
-        public virtual T Load<T>(IAssetInfo asset)
+        public virtual T Load<T>(IAssetName assetName)
         {
             throw new NotSupportedException("This patch type doesn't support loading assets.");
         }
@@ -206,11 +214,11 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="assetName">The normalized asset name to intercept.</param>
         /// <param name="conditions">The conditions which determine whether this patch should be applied.</param>
         /// <param name="updateRate">When the patch should be updated.</param>
-        /// <param name="normalizeAssetName">Normalize an asset name.</param>
+        /// <param name="parseAssetName">Parse an asset name.</param>
         /// <param name="contentPack">The content pack which requested the patch.</param>
         /// <param name="parentPatch">The parent <see cref="PatchType.Include"/> patch for which this patch was loaded, if any.</param>
         /// <param name="fromAsset">The normalized asset key from which to load the local asset (if applicable), including tokens.</param>
-        protected Patch(int[] indexPath, LogPathBuilder path, PatchType type, IManagedTokenString assetName, IEnumerable<Condition> conditions, UpdateRate updateRate, IContentPack contentPack, IPatch parentPatch, Func<string, string> normalizeAssetName, IManagedTokenString fromAsset = null)
+        protected Patch(int[] indexPath, LogPathBuilder path, PatchType type, IManagedTokenString assetName, IEnumerable<Condition> conditions, UpdateRate updateRate, IContentPack contentPack, IPatch parentPatch, Func<string, IAssetName> parseAssetName, IManagedTokenString fromAsset = null)
         {
             this.IndexPath = indexPath;
             this.Path = path;
@@ -218,7 +226,7 @@ namespace ContentPatcher.Framework.Patches
             this.ManagedRawTargetAsset = assetName;
             this.Conditions = conditions.ToArray();
             this.UpdateRate = updateRate;
-            this.NormalizeAssetNameImpl = normalizeAssetName;
+            this.ParseAssetNameImpl = parseAssetName;
             this.PrivateContext = new LocalContext(scope: contentPack.Manifest.UniqueID);
             this.ManagedRawFromAsset = fromAsset;
             this.ContentPack = contentPack;
@@ -284,14 +292,14 @@ namespace ContentPatcher.Framework.Patches
 
             if (this.RawTargetAsset.IsReady)
             {
-                this.TargetAsset = this.NormalizeAssetNameImpl(this.RawTargetAsset.Value);
-                context.SetLocalValue(ConditionType.Target.ToString(), this.TargetAsset);
-                context.SetLocalValue(ConditionType.TargetPathOnly.ToString(), System.IO.Path.GetDirectoryName(this.TargetAsset));
-                context.SetLocalValue(ConditionType.TargetWithoutPath.ToString(), System.IO.Path.GetFileName(this.TargetAsset));
+                this.TargetAsset = this.ParseAssetNameImpl(this.RawTargetAsset.Value);
+                context.SetLocalValue(ConditionType.Target.ToString(), this.TargetAsset.Name);
+                context.SetLocalValue(ConditionType.TargetPathOnly.ToString(), System.IO.Path.GetDirectoryName(this.TargetAsset.Name));
+                context.SetLocalValue(ConditionType.TargetWithoutPath.ToString(), System.IO.Path.GetFileName(this.TargetAsset.Name));
             }
             else
             {
-                this.TargetAsset = "";
+                this.TargetAsset = null;
                 context.SetLocalValue(ConditionType.Target.ToString(), "", ready: false);
                 context.SetLocalValue(ConditionType.TargetPathOnly.ToString(), "", ready: false);
                 context.SetLocalValue(ConditionType.TargetWithoutPath.ToString(), "", ready: false);
@@ -336,20 +344,9 @@ namespace ContentPatcher.Framework.Patches
         {
             try
             {
-                // normalize asset name
-                if (string.IsNullOrWhiteSpace(path))
-                    return null;
-                string newPath = this.NormalizeAssetNameImpl(path);
-
-                // add .xnb extension if needed (it's stripped from asset names)
-                string fullPath = this.ContentPack.GetFullPath(newPath);
-                if (!File.Exists(fullPath))
-                {
-                    if (File.Exists($"{fullPath}.xnb") || System.IO.Path.GetExtension(path) == ".xnb")
-                        newPath += ".xnb";
-                }
-
-                return newPath;
+                return string.IsNullOrWhiteSpace(path)
+                    ? null
+                    : PathUtilities.NormalizePath(path);
             }
             catch (Exception ex)
             {

@@ -16,11 +16,12 @@
 	<PropertyGroup Condition="$(Configuration) != 'Release'">
 		<DebugType>Portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
-    <CodeAnalysisRuleSet>Rules.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>$(SolutionDir)\_build\Rules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
 	<!-- mod build package -->
 	<ItemGroup>
+        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
 	</ItemGroup>
 </Project>

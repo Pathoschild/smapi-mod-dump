@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11380
+IDs: DaLion.ImmersiveRings
+update keys: Nexus:???, Nexus:11380

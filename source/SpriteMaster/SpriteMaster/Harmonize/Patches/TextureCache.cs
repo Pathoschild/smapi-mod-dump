@@ -13,12 +13,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Nito.Collections;
 using Pastel;
 using SpriteMaster.Extensions;
-using SpriteMaster.GL;
 using SpriteMaster.Types;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using static SpriteMaster.Harmonize.Harmonize;
@@ -32,6 +32,9 @@ static class TextureCache {
 	private static readonly ConditionalWeakTable<XTexture2D, string> TexturePaths = new();
 	private static readonly WeakSet<XTexture2D> PremultipliedTable = new();
 
+	private static readonly Type ModContentManagerType = typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade).Assembly.
+		GetType("StardewModdingAPI.Framework.ContentManagers.ModContentManager") ?? throw new NullReferenceException("Could not find 'ModContentManager type");
+
 	[Harmonize(
 		typeof(XTexture2D),
 		"FromStream",
@@ -41,14 +44,34 @@ static class TextureCache {
 		instance: false,
 		critical: false
 	)]
-	public static bool FromStreamPre(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream) {
+	public static bool FromStreamPre(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream, ref bool __state) {
 		if (!Config.SMAPI.TextureCacheEnabled) {
+			__state = false;
 			return true;
 		}
 
 		if (stream is not FileStream fileStream) {
+			__state = false;
 			return true;
 		}
+
+		bool isContentManager = false;
+		var stackTrace = new StackTrace(fNeedFileInfo: false, skipFrames: 1);
+		foreach (var frame in stackTrace.GetFrames()) {
+			if (frame.GetMethod() is MethodBase method) {
+				if (method.DeclaringType == ModContentManagerType) {
+					isContentManager = true;
+					break;
+				}
+			}
+		}
+
+		if (!isContentManager) {
+			__state = false;
+			return true;
+		}
+
+		__state = true;
 
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
@@ -77,8 +100,12 @@ static class TextureCache {
 	}
 
 	[Harmonize(typeof(XTexture2D), "FromStream", Harmonize.Fixation.Postfix, PriorityLevel.Last, platform: Harmonize.Platform.MonoGame, instance: false)]
-	public static void FromStreamPost(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream) {
+	public static void FromStreamPost(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream, bool __state) {
 		if (!Config.SMAPI.TextureCacheEnabled) {
+			return;
+		}
+
+		if (!__state) {
 			return;
 		}
 

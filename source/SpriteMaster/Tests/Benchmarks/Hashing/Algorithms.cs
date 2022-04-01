@@ -58,7 +58,7 @@ public class Algorithms {
 
 	[Benchmark(Description = "xxHash3")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong xxHash3(DataSet<byte> dataSet) {
+	public ulong xxHash3Ptr(DataSet<byte> dataSet) {
 		return SpriteMaster.Hashing.XXHash3.Hash64(dataSet.Data);
 	}
 

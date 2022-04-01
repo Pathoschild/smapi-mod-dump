@@ -9,6 +9,7 @@
 *************************************************/
 
 using LinqFasterer;
+using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
@@ -250,5 +251,20 @@ static class Padding {
 		);
 		paddedSize = paddedSpriteSize;
 		return paddedData;
+	}
+
+	internal static bool IsBlacklisted(in Bounds bounds, Texture2D reference) {
+		var normalizedName = reference.NormalizedName();
+
+		foreach (var blacklistedRef in Config.Resample.Padding.BlackListS) {
+			if (!normalizedName.StartsWith(blacklistedRef.Texture)) {
+				continue;
+			}
+			if (blacklistedRef.Bounds.IsEmpty || blacklistedRef.Bounds.Contains(bounds)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -11,7 +11,7 @@
 {
   "Name": "Pacifist Valley",
   "Author": "Aedenthorn",
-  "Version": "0.9.0",
+  "Version": "0.9.1",
   "Description": "Changes killing into kissing.",
   "UniqueID": "Aedenthorn.PacifistValley",
   "EntryDll": "PacifistValley.dll",

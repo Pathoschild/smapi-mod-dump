@@ -6,13 +6,15 @@ mods:
    Connected Fences
 
 latest commit:
-   commit 2f2cffac6bfb4f36b6ae62793f9b8e5ba55de42f
+   commit 777504bd84e04156c68b5c1a5085559b47be1df7
    Author: sergiomadd <sergiocortmon@gmail.com>
-   Date:   Tue Mar 1 00:30:42 2022 +0100
+   Date:   Sun Mar 13 18:50:15 2022 +0100
    
        [IP] beta:
-       - Reworked item sending and movement
-       - Added buffer mechanic in pipes
-       - Reworked pipe sprites from default fences to custom ones
-       - Added IOPipes item sprites
+       - Added flux values to container extracting
+       - Added shippingbin implementation of new container methods
+       - Fixed item conversions when saving
+       - Fixed chest item stacking
+       - Fixed thread deletion when in loop
+       - Added edge case. For when items get clogged in pipes on saving.
    

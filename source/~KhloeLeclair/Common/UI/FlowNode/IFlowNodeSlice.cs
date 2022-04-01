@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using System;
+
 namespace Leclair.Stardew.Common.UI.FlowNode {
 	public interface IFlowNodeSlice {
 
@@ -22,9 +24,12 @@ namespace Leclair.Stardew.Common.UI.FlowNode {
 
 	}
 
+	[Flags]
 	public enum WrapMode {
-		None,
-		ForceBefore,
-		ForceAfter
+		None = 0,
+		CannotBefore = 1,
+		CannotAfter = 2,
+		ForceBefore = 4,
+		ForceAfter = 8
 	}
 }

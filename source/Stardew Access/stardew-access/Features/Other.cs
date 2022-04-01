@@ -77,9 +77,8 @@ namespace stardew_access.Features
             Game1.setMousePosition(x, y);
         }
 
-        public static async void narrateHudMessages()
+        public static void narrateHudMessages()
         {
-            MainClass.isNarratingHudMessage = true;
             try
             {
                 if (Game1.hudMessages.Count > 0)
@@ -106,11 +105,9 @@ namespace stardew_access.Features
             }
             catch (Exception e)
             {
-                MainClass.GetMonitor().Log($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}", StardewModdingAPI.LogLevel.Error);
+                MainClass.ErrorLog($"Unable to narrate hud messages:\n{e.Message}\n{e.StackTrace}");
             }
 
-            await Task.Delay(300);
-            MainClass.isNarratingHudMessage = false;
         }
     }
 }

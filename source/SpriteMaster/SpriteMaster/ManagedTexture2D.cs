@@ -12,12 +12,10 @@ using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
-using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using static StardewValley.Menus.CharacterCustomization;
 
 namespace SpriteMaster;
 

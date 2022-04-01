@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7965
+IDs: DaLion.ImmersiveTools, thelion.AwesomeTools
+update keys: Nexus:7965

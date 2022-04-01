@@ -10,12 +10,16 @@
 
 using AtraBase.Toolkit.Reflection;
 using AtraShared.Integrations;
+using AtraShared.Integrations.Interfaces;
+using AtraShared.MigrationManager;
+using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
-using AtraUtils = AtraShared.Utils.Utils;
 using HarmonyLib;
+using SpecialOrdersExtended.HarmonyPatches;
 using SpecialOrdersExtended.Managers;
 using StardewModdingAPI.Events;
 using StardewValley.GameData;
+using AtraUtils = AtraShared.Utils.Utils;
 
 namespace SpecialOrdersExtended;
 
@@ -33,6 +37,8 @@ internal class ModEntry : Mod
     /// </summary>
     /// <remarks>If null, was not able to be loaded.</remarks>
     internal static ISpaceCoreAPI? SpaceCoreAPI => spaceCoreAPI;
+
+    private MigrationManager? migrator;
 
     // The following fields are set in the Entry method, which is about as close to the constructor as I can get
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -79,17 +85,22 @@ internal class ModEntry : Mod
             original: typeof(SpecialOrder).StaticMethodNamed("CheckTag"),
             prefix: new HarmonyMethod(typeof(TagManager), nameof(TagManager.PrefixCheckTag)));
 
+        harmony.Patch(
+            original: AccessTools.Method(typeof(SpecialOrder), nameof(SpecialOrder.GetSpecialOrder)),
+            finalizer: new HarmonyMethod(typeof(Finalizers), nameof(Finalizers.FinalizeGetSpecialOrder)));
+
         try
         {
             harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.checkForNewCurrentDialogue)),
                 postfix: new HarmonyMethod(typeof(DialogueManager), nameof(DialogueManager.PostfixCheckDialogue)));
-            ModMonitor.Log("Patching NPC::checkForNewCurrentDialogue for Special Orders Dialogue", LogLevel.Trace);
         }
         catch (Exception ex)
         {
             ModMonitor.Log($"Failed to patch NPC::checkForNewCurrentDialogue for Special Orders Dialogue. Dialogue will be disabled\n\n{ex}", LogLevel.Error);
         }
+
+        harmony.Snitch(this.Monitor, this.ModManifest.UniqueID);
 
         // Register console commands.
         helper.ConsoleCommands.Add(
@@ -151,7 +162,7 @@ internal class ModEntry : Mod
         CheckTagDelegate = typeof(SpecialOrder).StaticMethodNamed("CheckTag").CreateDelegate<Func<string, bool>>();
 
         // Bind Spacecore API
-        IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry);
+        IntegrationHelper helper = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, LogLevel.Debug);
         helper.TryGetAPI("spacechase0.SpaceCore", "1.5.10", out spaceCoreAPI);
 
         if (helper.TryGetAPI("Pathoschild.ContentPatcher", "1.20.0", out IContentPatcherAPI? api))
@@ -199,7 +210,32 @@ internal class ModEntry : Mod
     {
         this.Monitor.DebugLog("Event SaveLoaded raised");
         DialogueManager.Load(Game1.player.UniqueMultiplayerID);
+        MultiplayerHelpers.AssertMultiplayerVersions(this.Helper.Multiplayer, this.ModManifest, this.Monitor, this.Helper.Translation);
+
+        if (Context.IsSplitScreen && Context.ScreenId != 0)
+        {
+            return;
+        }
+        this.migrator = new(this.ModManifest, this.Helper, this.Monitor);
+        this.migrator.ReadVersionInfo();
+
+        this.Helper.Events.GameLoop.Saved += this.WriteMigrationData;
         RecentSOManager.Load();
+    }
+
+    /// <summary>
+    /// Writes migration data then detaches the migrator.
+    /// </summary>
+    /// <param name="sender">Smapi thing.</param>
+    /// <param name="e">Arguments for just-before-saving.</param>
+    private void WriteMigrationData(object? sender, SavedEventArgs e)
+    {
+        if (this.migrator is not null)
+        {
+            this.migrator.SaveVersionInfo();
+            this.migrator = null;
+        }
+        this.Helper.Events.GameLoop.Saved -= this.WriteMigrationData;
     }
 
     /// <summary>

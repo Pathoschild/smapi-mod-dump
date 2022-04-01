@@ -1,0 +1,17 @@
+urls:
+   web: https://gitlab.com/daleao/smapi-mods
+   Git: https://gitlab.com/daleao/smapi-mods.git
+
+mods:
+   Aquarism - Immersive Fish Ponds
+   Aquarism - Immersive Fish Ponds → Automate
+   Fellowship - Immersive Rings
+   Quality of Life - Immersive Tweaks
+
+latest commit:
+   commit 7cabbc9cadbbe9b068ba3a7ffbcb9cd8ad6f6c97
+   Author: Mat L <daleao.matheus@gmail.com>
+   Date:   Mon Mar 28 12:41:38 2022 -0300
+   
+       Fix problems with luck skill.
+   

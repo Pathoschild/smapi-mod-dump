@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Extensions;
 using System;
 using System.Text;
 
@@ -29,9 +30,16 @@ static class SystemInfo {
 		catch { }
 
 		try {
+			var memoryInfo = GC.GetGCMemoryInfo();
+			dumpBuilder.AppendLine($"\tTotal Committed Memory: {memoryInfo.TotalCommittedBytes.AsDataSize()}");
+			dumpBuilder.AppendLine($"\tTotal Available Memory: {memoryInfo.TotalAvailableMemoryBytes.AsDataSize()}");
+		}
+		catch { }
+
+		try {
 			if (!(device?.IsDisposed).GetValueOrDefault(false)) {
 				var adapter = device?.Adapter;
-				if (adapter != null) {
+				if (adapter is not null) {
 					dumpBuilder.AppendLine($"\tGraphics Adapter: {adapter}");
 					dumpBuilder.AppendLine($"\tGraphics Adapter Description: {adapter.Description}");
 				}

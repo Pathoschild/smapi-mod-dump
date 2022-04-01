@@ -11,7 +11,7 @@
 {
 	"Name": "XP Display",
 	"Author": "Shockah",
-	"Version": "1.0.1",
+	"Version": "1.1.2",
 	"Description": "Displays the progress to reach the next level of each skill.",
 	"UniqueID": "Shockah.XPDisplay",
 	"EntryDll": "XPDisplay.dll",
@@ -19,7 +19,7 @@
 	"UpdateKeys": [ "Nexus:11089" ],
 	"Dependencies": [
 		{
-			"UniqueID": "DaLion.AwesomeProfessions",
+			"UniqueID": "DaLion.ImmersiveProfessions",
 			"IsRequired": false
 		}
 	]

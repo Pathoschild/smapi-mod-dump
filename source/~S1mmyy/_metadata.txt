@@ -7,10 +7,9 @@ mods:
    Skull Cavern Drill
 
 latest commit:
-   commit 3b3aa269270887247145dd4383c36130d661024b
+   commit ee9fc0059f9065913c80ea3f240c25be795306d0
    Author: S1mmyy <simmypoo385@gmail.com>
-   Date:   Thu Feb 17 08:59:20 2022 -0500
+   Date:   Wed Mar 30 11:02:41 2022 -0400
    
-       Migrated to .NET 5
-       Switched license to GPLv3
+       Added ID for Nexus page
    

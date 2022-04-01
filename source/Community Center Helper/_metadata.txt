@@ -6,9 +6,9 @@ mods:
    Community Center Helper
 
 latest commit:
-   commit 1e551e6c645373fb02dd08dfcb41e597884f7520
+   commit f280e1503d18833b9ec75cd8f812bdad6921969a
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Tue Feb 8 13:38:44 2022 -0800
+   Date:   Thu Mar 10 14:26:23 2022 -0800
    
-       1.3.4 update (German typo fixes)
+       1.3.5 update (Ukrainian & Chinese)
    

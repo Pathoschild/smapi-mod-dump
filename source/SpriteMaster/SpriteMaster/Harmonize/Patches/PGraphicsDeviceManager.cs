@@ -51,8 +51,13 @@ static class PGraphicsDeviceManager {
 	}
 	private static DeviceState LastState = new();
 
-	[Harmonize(typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D), Harmonize.Constructor, Harmonize.Fixation.Prefix, PriorityLevel.Last)]
-	internal static bool OnRenderTarget2DConstruct(
+	[Harmonize(
+		typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D),
+		Harmonize.Constructor,
+		Harmonize.Fixation.Prefix,
+		PriorityLevel.Last
+	)]
+	public static void OnRenderTarget2DConstruct(
 		GraphicsDevice graphicsDevice,
 		ref int width,
 		ref int height,
@@ -83,32 +88,37 @@ static class PGraphicsDeviceManager {
 					__state = true;
 					GraphicsDevice? device = null;
 					if (!LastGraphicsDevice?.TryGetTarget(out device) ?? true) {
-						return true;
+						return;
 					}
 
 					if (device is null) {
-							return true;
+							return;
 					}
 
 					preferredMultiSampleCount = (Config.DrawState.MSAASamples > 1) ? Config.DrawState.MSAASamples : 0;
 					preferredDepthFormat = device.PresentationParameters.DepthStencilFormat;
 					preferredFormat = device.PresentationParameters.BackBufferFormat;
-				} return true;
+				} return;
 
 				case "Initialize":
 				case "allocateLightmap":
 				case "takeMapScreenshot": {
 					__state = true;
-				} return true;
+				} return;
 			}
 		}
 
 		__state = false;
-		return true;
+		return;
 	}
 
-	[Harmonize(typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D), Harmonize.Constructor, Harmonize.Fixation.Postfix, PriorityLevel.Last)]
-	internal static void OnRenderTarget2DConstructPost(
+	[Harmonize(
+		typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D),
+		Harmonize.Constructor,
+		Harmonize.Fixation.Postfix,
+		PriorityLevel.Last
+	)]
+	public static void OnRenderTarget2DConstructPost(
 		RenderTarget2D __instance,
 		GraphicsDevice graphicsDevice,
 		int width,
@@ -128,8 +138,12 @@ static class PGraphicsDeviceManager {
 		}
 	}
 
-	[Harmonize("ApplyChanges", Harmonize.Fixation.Prefix, PriorityLevel.First)]
-	internal static bool OnApplyChanges(GraphicsDeviceManager __instance) {
+	[Harmonize(
+		"ApplyChanges",
+		Harmonize.Fixation.Prefix,
+		PriorityLevel.First
+	)]
+	public static bool OnApplyChanges(GraphicsDeviceManager __instance) {
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		var @this = __instance;
 
@@ -142,7 +156,7 @@ static class PGraphicsDeviceManager {
 		@this.GraphicsProfile = GraphicsProfile.HiDef;
 		//@this.PreferMultiSampling = Config.DrawState.MSAASamples > 1;
 		@this.SynchronizeWithVerticalRetrace = true;
-		@this.PreferredBackBufferFormat = Config.DrawState.BackbufferFormat;
+		@this.PreferredBackBufferFormat = (Config.DrawState.HonorHDRSettings && Runtime.IsHDR) ? Config.DrawState.BackbufferHDRFormat : Config.DrawState.BackbufferFormat;
 		if (Config.DrawState.DisableDepthBuffer) {
 			@this.PreferredDepthStencilFormat = DepthFormat.None;
 		}
@@ -153,8 +167,12 @@ static class PGraphicsDeviceManager {
 	private static bool DumpedSystemInfo = false;
 	private static WeakReference<GraphicsDevice>? LastGraphicsDevice = null;
 
-	[Harmonize("ApplyChanges", Harmonize.Fixation.Postfix, PriorityLevel.Last)]
-	internal static void OnApplyChangesPost(GraphicsDeviceManager __instance) {
+	[Harmonize(
+		"ApplyChanges",
+		Harmonize.Fixation.Postfix,
+		PriorityLevel.Last
+	)]
+	public static void OnApplyChangesPost(GraphicsDeviceManager __instance) {
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 		var @this = __instance;
 

@@ -1,0 +1,8 @@
+{
+  "AnkiBreakOnDayStart": true,
+  "NumAnkiCardsForDayStart": 20,
+  "AnkiBreakAtIntervals": true,
+  "NumAnkiCardsForIntervals": 10,
+  "NumHoursForIntervals": 3,
+  "AnkiConnectURL": "http://127.0.0.1:8765"
+}

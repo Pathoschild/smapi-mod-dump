@@ -27,6 +27,8 @@ Also, nothing else about your tools is affected. They still use the same animati
 
 **NOTE:** Not much is affected under the default settings, so make sure to change these to what you want! Either edit the **config.json** file directly, or if you have [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) installed, open Mod Config from the title screen or options menu.
 
+*Config menu text translated into English, Japanese, Ukrainian (provided by ChulkyBow)*
+
 **AxeRange / PickaxeRange / HoeRange / WateringCanRange (1 or greater, -1 for unlimited range)**
 
 The maximum range of each tool, in tiles.
@@ -61,7 +63,7 @@ Affects how the Tool Hit Location display is determined (only when that game opt
 
 **AllowRangedChargeEffects (true or false)**
 
-Whether to use the custom range for charged tool use as well. If enabled (true), charge effects will activate starting from the tile the cursor is over when you release the button. (At least currently, the charge-up animation does not reflect this.) If disabled, they will always start from your farmer, like normal.
+Whether to use the custom range for charged tool use as well. If enabled (true), charge effects will activate starting from the tile the cursor is over when you release the button. (The charge-up animation should indicate the actual tiles that will be affected regardless of Tool Hit Location setting.) If disabled, they will always start from your farmer, like normal.
 
 **CustomRangeOnClickOnly (true or false)**
 
@@ -69,9 +71,9 @@ By default (true), this mod only takes effect when pressing a "use tool" button 
 
 ## Possible Mod Conflicts
 
-This mod affects the "use tool" function (adding an override for what tile the tool acts upon), as well as a range-checking function (in order to extend range of seed/object placement). If ToolHitLocationDisplay is anything but 0, it also adds a bit to the player's draw method to change the hit location display logic. I aimed to make these as unobtrusive as I could.
+This mod affects a handful of functons, particularly the function that returns what tile a tool acts upon (for the sake of tool range), as well as one of the range-checking functions (for the sake of seed/object placement range). It also overrides drawing of the Tool Hit Location indicator in the player's draw function to follow the user setting. I aimed to make these as unobtrusive as I could.
 
-However, because the "use tool" function in particular is completely overriden in many cases, it's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. I've added a specific fix for a conflict with the Expanded Storage mod; other conflicts may or may not be fixable on a case-by-case basis.
+It's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. Through both general and specific fixes, I've resolved conflicts with mods like Expanded Storage, Pipe Irrigation, and Hoe and Water Direction; other conflicts may or may not be resolvable on a case-by-case basis.
 
 ## Download
 

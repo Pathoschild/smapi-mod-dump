@@ -1,0 +1,15 @@
+{
+  "EnableMod": true,
+  "RestrictToAprilFirst": true,
+  "BeesEnabled": true,
+  "BackwardsEnabled": true,
+  "AsciiEnabled": true,
+  "PixelateEnabled": true,
+  "TreeScreamEnabled": true,
+  "InventoryEnabled": true,
+  "RavenEnabled": true,
+  "SlimeEnabled": true,
+  "GiantEnabled": true,
+  "BuildingsEnabled": true,
+  "EnableAnimalTalk": true
+}

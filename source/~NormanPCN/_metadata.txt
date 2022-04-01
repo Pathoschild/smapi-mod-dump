@@ -3,13 +3,14 @@ urls:
    Git: https://github.com/NormanPCN/StardewValleyMods.git
 
 mods:
+   Better Butterfly Hutch
    Combat Controls Redux
    Longer Fence Life
 
 latest commit:
-   commit 532b6c2e23f408de4b872782c599ec397ee916a3
+   commit 188456641c9bd1f439b0a83d2b1213e220aab8ab
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Wed Feb 2 09:23:46 2022 -0800
+   Date:   Tue Mar 22 14:41:07 2022 -0700
    
-       Update .gitignore
+       Misc minor refactors, comment changes
    

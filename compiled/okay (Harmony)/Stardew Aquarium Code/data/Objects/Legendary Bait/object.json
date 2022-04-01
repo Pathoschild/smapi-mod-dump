@@ -22,7 +22,7 @@
 		//"de": "",//German
 		//"hu": "", //Hungarian
 		//"it": "", //Italian
-		//"ja": "", //Japanese
+		"ja": "伝説の釣りエサ", //Japanese
 		//"tr": "", //Turkish
 	},
 	"DescriptionLocalization": {
@@ -35,7 +35,7 @@
 		//"de": "", //German
 		//"hu": "", //Hungarian
 		//"it": "", //Italian
-		//"ja": "", //Japanese
+		"ja": "非常に珍しい魚を惹き付けます…", //Japanese
 		//"tr": "", //Turkish
 	}
 }

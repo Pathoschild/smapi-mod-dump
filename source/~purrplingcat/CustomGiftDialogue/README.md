@@ -38,9 +38,7 @@ You can configure this mod via `config.json` file in the mod folder:
 ```js
 {
   "CustomBirthdayDialogues": true, // Allow show birthday gift custom reaction dialogues (if they are defined)
-  "CustomSecretSantaDialogues": true, // Allow show secret santa gift custom reaction dialogues (if they are defined)
-  "RevealDialogueChance": 0.025, // Chance a reveak dialogue will be shown when player tries to talk with an NPC
-  "RevealDialogueMinHeartLevel": 1 // Minimum heart levels required with talked NPC to show a reveal dialogue
+  "CustomSecretSantaDialogues": true // Allow show secret santa gift custom reaction dialogues (if they are defined)
 }
 ```
 
@@ -51,6 +49,7 @@ You can configure this mod via `config.json` file in the mod folder:
 Add custom gift dialogues is very easy. Just add into game content `Characters/Dialogue/<NpcName>` and add lines with these possible keys:
 
 - `GiftReaction_<ObjectName>` - Reaction dialogue for concrete gifted item. The `<ObjectName>` is a name of an object for which your NPC speaks a dialogue when this item was gifted to them. Spaces in the object name must be replaced with underscore `_` in the dialogue line key.
+- `GiftReactionTag_<contextTag>` - Reaction dialogue for item by their [context tag](https://stardewvalleywiki.com/Modding:Items#Context_tags) (game asset `Data/ObjectContextTags`). If you want to list object held context tags, type `debug listtags` in console.
 - `GiftReactionCategory_<CategoryNumber>` - Reaction for all object of concrete category.
 - `GiftReactionPreserved_<preserveType>` - Reaction to a preserved item (if it is preserved) by the preservation type (or any). Available preservation types:
 ```
@@ -62,25 +61,11 @@ Juice,
 Roe,
 AgedRoe
 ```
-- `GiftReactionHoney_<preserveType>` - Reaction to a honey (if item is honey) by the honey type (or any). Available honey types
-```
-Any,
-Wild,
-Poppy,
-Tulip,
-SummerSpangle,
-FairyRose,
-BlueJazz
-```
-- `Reveal_<targetNpcName>[<hearts>]` - A reveal dialogue about another NPC which the asked NPC can say. You can affect how much hearts are required with the another NPC are required to say this reveal dialogue line.
-- `Reveal` - A general reveal dialogue about anything is defined. Also this is a fallback for the targeted reveal line if that line is not defined.
 
 Also after key above you can add these suffixes:
 
 - `_Birthday` - Custom reaction to an item if this item was gifted on NPC's birthday.
 - `_SecretSanta` - Custom reaction to an item if this item was gifted as secret santa during winterstar festival.
-
-**NOTE:** These suffixes are not applicable for reveal dialogues!
 
 The `<NpcName>` (in the content asset name) is a name of NPC for which you want add custom gift reaction dialogue lines.
 Also you can add some alternate lines for gifted item by adding suffix `~<number>` after the dialogue key. (Works only for gift reaction dialogues)
@@ -92,7 +77,7 @@ Most simple way how to add custom gift reaction dialogues is do it with [Content
 
 ```js
 {
-  "Format": "1.19.0",
+  "Format": "1.24.0",
   "Changes": [
     {
       // Custom gift reaction for Chocolate Cake with some randomized alternatives gifted to Abigail
@@ -121,10 +106,6 @@ Most simple way how to add custom gift reaction dialogues is do it with [Content
 ```
 
 **Don't forget add `PurrplingCat.CustomGiftDialogue` as dependency for your content pack which adds custom gift reaction dialogues.**
-
-### A note about reveal dialogues
-
-If you have defined relatives for your NPCs in the NPC disposition file, often you can see original vanilla SDV reveal dialogue despite your custom reveal dialogue lines are defined. If you want to avoid the originals, don't define relatives in NPC disposition file.
 
 ---
 
