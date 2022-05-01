@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Configuration;
 using TeximpNet.Compression;
 
 namespace SpriteMaster.Resample.Encoder;

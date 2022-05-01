@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit.StringHandler;
+using AtraShared.Utils;
+using AtraShared.Utils.Extensions;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
 
@@ -80,22 +83,17 @@ public class AssetLoader : IAssetLoader
             try
             {
                 IDictionary<int, string> secretnotes = ModEntry.ContentHelper.Load<Dictionary<int, string>>("Data\\SecretNotes", ContentSource.GameContent);
-                string[] secretNote8 = secretnotes[1008].Split("^^", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                SpanSplit secretNote8 = secretnotes[1008].SpanSplit('^', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 // The secret note, of course, has its data in the localized name. We'll need to map that to the internal name.
                 // Using a dictionary with a StringComparer for the user's current language to make that a little easier.
                 Dictionary<string, string> tooltipmap = new(AtraUtils.GetCurrentLanguageComparer(ignoreCase: true));
-                foreach (string str in secretNote8)
+                foreach (ReadOnlySpan<char> str in secretNote8)
                 {
-                    string[] splits = str.Split(':', count: 2, options: StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    if (splits.Length < 2)
+                    int index = str.IndexOfAny(':', '：');
+                    if (index > 0)
                     {
-                        // Chinese uses a different character to split by.
-                        splits = str.Split('：', count: 2, options: StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-                    }
-                    if (splits.Length >= 2)
-                    {
-                        tooltipmap[splits[0]] = splits[1];
+                        tooltipmap[str[..index].Trim().ToString()] = str[(index + 1)..].Trim().ToString();
                     }
                 }
 
@@ -104,8 +102,7 @@ public class AssetLoader : IAssetLoader
                 // Russian needs to be handled seperately.
                 foreach (BaseEnchantment enchantment in BaseEnchantment.GetAvailableEnchantments())
                 {
-                    if (ModEntry.TranslationHelper.Get("enchantment." + enchantment.GetName()) is Translation i18nname
-                        && i18nname.HasValue())
+                    if (ModEntry.TranslationHelper.TryGetTranslation("enchantment." + enchantment.GetName(), out Translation i18nname))
                     {
                         tooltipdata[enchantment.GetName()] = i18nname;
                     }
@@ -138,10 +135,17 @@ public class AssetLoader : IAssetLoader
     /// <summary>
     /// Refreshes the Lazys.
     /// </summary>
+    /// <param name="assets">Which assets to refresh? Leave null to refresh all.</param>
     internal static void Refresh()
     {
-        uiElementLazy = new(() => ModEntry.ContentHelper.Load<Texture2D>(UI_ASSET_PATH, ContentSource.GameContent));
-        tooltipDataLazy = new(GrabAndWrapTooltips);
+        if (uiElementLazy.IsValueCreated)
+        {
+            uiElementLazy = new(() => ModEntry.ContentHelper.Load<Texture2D>(UI_ASSET_PATH, ContentSource.GameContent));
+        }
+        if (tooltipDataLazy.IsValueCreated)
+        {
+            tooltipDataLazy = new(GrabAndWrapTooltips);
+        }
     }
 
     private static Dictionary<string, string> GrabAndWrapTooltips()
@@ -149,7 +153,7 @@ public class AssetLoader : IAssetLoader
         Dictionary<string, string> tooltips = ModEntry.ContentHelper.Load<Dictionary<string, string>>(TOOLTIP_DATA_PATH, ContentSource.GameContent);
         foreach ((string k, string v) in tooltips)
         {
-            tooltips[k] = Game1.parseText(v, Game1.smallFont, 300);
+            tooltips[k] = StringUtils.ParseAndWrapText(v, Game1.smallFont, 300);
         }
         return tooltips;
     }

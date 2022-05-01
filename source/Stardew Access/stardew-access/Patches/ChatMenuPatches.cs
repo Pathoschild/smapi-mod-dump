@@ -55,7 +55,7 @@ namespace stardew_access.Patches
                         toSpeak += $"{message.message}, ";
                     });
                     if (toSpeak != " ")
-                        MainClass.GetScreenReader().SayWithChatChecker(toSpeak, false);
+                        MainClass.ScreenReader.SayWithChatChecker(toSpeak, false);
                     #endregion
                 }
             }
@@ -89,7 +89,7 @@ namespace stardew_access.Patches
                 toSpeak += $"{message.message}, ";
             });
 
-            MainClass.GetScreenReader().Say(toSpeak, true);
+            MainClass.ScreenReader.Say(toSpeak, true);
         }
     }
 }

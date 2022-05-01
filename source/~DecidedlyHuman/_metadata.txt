@@ -4,13 +4,17 @@ urls:
 
 mods:
    Better Crystalariums
+   Better Return Scepter
    Default Window Size
    Smart Building
 
 latest commit:
-   commit edd65de15da12e0eab4590266960008fac6e45d4
-   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
-   Date:   Mon Mar 28 20:59:48 2022 +0100
+   commit 74846134d96a731f3347423bfcdb10f4ff10b1df
+   Merge: f975464 058c148
+   Author: Alan <contact@decidedlyhuman.co.uk>
+   Date:   Fri Apr 29 10:09:14 2022 +0100
    
-       Couple of new WIP projects.
+       Merge pull request #9 from Becks723/chinese2
+       
+       Update Chinese translation for SmartBuilding.
    

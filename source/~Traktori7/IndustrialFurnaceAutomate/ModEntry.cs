@@ -17,8 +17,8 @@ namespace IndustrialFurnaceAutomate
 {
 	class ModEntry : Mod
 	{
-		private IIndustrialFurnaceAPI industrialFurnaceAPI;
-		private IAutomateAPI automate;
+		private IIndustrialFurnaceAPI? industrialFurnaceAPI;
+		private IAutomateAPI? automate;
 
 
 		/*********
@@ -35,7 +35,7 @@ namespace IndustrialFurnaceAutomate
 		/*********
 		** Private methods
 		*********/
-		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
 			automate = this.Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
 			industrialFurnaceAPI = this.Helper.ModRegistry.GetApi<IIndustrialFurnaceAPI>("Traktori.IndustrialFurnace");

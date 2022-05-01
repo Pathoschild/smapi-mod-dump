@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.TractorMod.Framework.Config
 {
     /// <summary>Configuration for the hoe attachment.</summary>

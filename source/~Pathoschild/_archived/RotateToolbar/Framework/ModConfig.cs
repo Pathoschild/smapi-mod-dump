@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.RotateToolbar.Framework
 {
     /// <summary>The mod configuration.</summary>

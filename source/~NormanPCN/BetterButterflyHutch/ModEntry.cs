@@ -177,11 +177,11 @@ namespace BetterButterflyHutch
                                    () => I18nGet("islandButterflies.Label"),
                                    () => I18nGet("islandButterflies.Tooltip"));
 
-                gmcm.AddBoolOption(ModManifest,
-                                   () => Config.ShakeHutch,
-                                   (bool value) => Config.ShakeHutch = value,
-                                   () => I18nGet("shakeHutch.Label"),
-                                   () => I18nGet("shakeHutch.Tooltip"));
+                //gmcm.AddBoolOption(ModManifest,
+                //                   () => Config.ShakeHutch,
+                //                   (bool value) => Config.ShakeHutch = value,
+                //                   () => I18nGet("shakeHutch.Label"),
+                //                   () => I18nGet("shakeHutch.Tooltip"));
             }
             else
             {
@@ -389,6 +389,7 @@ namespace BetterButterflyHutch
                     if (obj.ParentSheetIndex == HutchIdx)
                     {
                         // we can't distinguish from ambient and hutch spawns. only matters outdoors.
+                        // if there are multiple hutches, we cannot distinguish spawns from individual hutches
                         int count = CountButterflies(loc);
                         if (Debug)
                             Log.Debug($"Found Hutch at {loc.Name}, Outdoors={loc.IsOutdoors}, Game Butterflies={count}");

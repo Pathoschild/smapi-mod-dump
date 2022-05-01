@@ -11,48 +11,9 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 
 namespace stardew_access.Features
 {
-
-    /// <summary>
-    /// This is a custom enum class and contains the name of groups the objects are divided into for the feature
-    /// </summary>
-    public class CATEGORY
-    {
-        private string _typeKeyWord;
-
-        private CATEGORY(string typeKeyWord)
-        {
-            _typeKeyWord = typeKeyWord;
-        }
-
-        public override string ToString()
-        {
-            return _typeKeyWord;
-        }
-
-        public static CATEGORY Farmers = new CATEGORY("farmer");
-        public static CATEGORY FarmAnimals = new CATEGORY("animal");
-        public static CATEGORY NPCs = new CATEGORY("npc");
-        public static CATEGORY Furnitures = new CATEGORY("furniture");
-        public static CATEGORY Flooring = new CATEGORY("flooring");
-        public static CATEGORY Debris = new CATEGORY("debris");
-        public static CATEGORY Crops = new CATEGORY("crop");
-        public static CATEGORY Trees = new CATEGORY("tree");
-        public static CATEGORY Bush = new CATEGORY("bush");
-        public static CATEGORY Buildings = new CATEGORY("building");
-        public static CATEGORY MineItems = new CATEGORY("mine item");
-        public static CATEGORY ResourceClumps = new CATEGORY("resource clump");
-        public static CATEGORY Chests = new CATEGORY("chest");
-        public static CATEGORY JunimoBundle = new CATEGORY("bundle");
-        public static CATEGORY Doors = new CATEGORY("door"); // Also includes ladders and elevators
-        public static CATEGORY Others = new CATEGORY("other");
-        public static CATEGORY WaterTiles = new CATEGORY("water");
-
-    }
-
     public class Radar
     {
         private List<Vector2> closed;
@@ -90,7 +51,11 @@ namespace stardew_access.Features
             exclusions.Add("tree");
             exclusions.Add("flooring");
             exclusions.Add("water");
+            exclusions.Add("debris");
             exclusions.Add("grass");
+            exclusions.Add("decoration");
+            exclusions.Add("bridge");
+            exclusions.Add("other");
 
             /* Not excluded Categories
              * 
@@ -99,10 +64,14 @@ namespace stardew_access.Features
              * exclusions.Add("animal");
              * exclusions.Add("npc");
              * exclusions.Add("furniture")
-             * exclusions.Add("other");
              * exclusions.Add("building");
+             * exclusions.Add("resource clump");
              * exclusions.Add("mine item");
              * exclusions.Add("chest"); 
+             * exclusions.Add("bundle"); 
+             * exclusions.Add("door"); 
+             * exclusions.Add("machine"); 
+             * exclusions.Add("interactable"); 
              */
         }
 
@@ -197,7 +166,7 @@ namespace stardew_access.Features
 
         public (bool, string?, string) CheckTile(Vector2 position)
         {
-            (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
             if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
@@ -214,7 +183,7 @@ namespace stardew_access.Features
             {
                 if (Game1.currentLocation.isObjectAtTile((int)position.X, (int)position.Y))
                 {
-                    (string? name, CATEGORY category) objDetails = ReadTile.getObjectAtTile((int)position.X, (int)position.Y);
+                    (string? name, CATEGORY category) objDetails = TileInfo.getObjectAtTile((int)position.X, (int)position.Y);
                     string? objectName = objDetails.name;
                     CATEGORY category = objDetails.category;
                     StardewValley.Object obj = Game1.currentLocation.getObjectAtTile((int)position.X, (int)position.Y);
@@ -238,7 +207,7 @@ namespace stardew_access.Features
                 }
                 else
                 {
-                    (string? name, CATEGORY? category) tileDetail = ReadTile.getNameWithCategoryAtTile(position);
+                    (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
                     if (tileDetail.name != null)
                     {
                         if (tileDetail.category == null)

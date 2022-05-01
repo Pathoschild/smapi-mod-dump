@@ -31,5 +31,15 @@ static class Metadata {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool TryMeta(this Texture2D @this, [NotNullWhen(true)] out Texture2DMeta? value) => Texture2DMetaTable.TryGetValue(@this, out value);
+
+	internal static void Purge() {
+		Texture2DMetaTable.Clear();
+	}
+
+	internal static void FlushValidations() {
+		foreach (var p in Texture2DMetaTable) {
+			p.Value.Validation = null;
+		}
+	}
 }
 

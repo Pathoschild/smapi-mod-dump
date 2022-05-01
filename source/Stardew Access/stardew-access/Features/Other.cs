@@ -33,7 +33,7 @@ namespace stardew_access.Features
                 return;
 
             previousSlotItem = currentSlotItem;
-            MainClass.GetScreenReader().Say($"{currentSlotItem.DisplayName} Selected", true);
+            MainClass.ScreenReader.Say($"{currentSlotItem.DisplayName} Selected", true);
         }
 
         // Narrates current location's name
@@ -48,7 +48,7 @@ namespace stardew_access.Features
                 return;
 
             previousLocation = currentLocation;
-            MainClass.GetScreenReader().Say($"{currentLocation.Name} Entered", true);
+            MainClass.ScreenReader.Say($"{currentLocation.Name} Entered", true);
         }
 
         public static void SnapMouseToPlayer()
@@ -98,7 +98,7 @@ namespace stardew_access.Features
                         {
                             MainClass.hudMessageQueryKey = searchQuery;
 
-                            MainClass.GetScreenReader().Say(toSpeak, true);
+                            MainClass.ScreenReader.Say(toSpeak, true);
                         }
                     }
                 }

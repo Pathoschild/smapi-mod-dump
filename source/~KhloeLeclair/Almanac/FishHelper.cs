@@ -212,6 +212,14 @@ namespace Leclair.Stardew.Almanac {
 			// This line will forever live in shame as a stupid mistake.
 			//result = new();
 
+			// If we've got whichFarm 1 then we want to reset the list, as it never
+			// falls back to the default getFish behavior.
+			switch(Game1.whichFarm) {
+				case 1:
+					result.Clear();
+					break;
+			}
+
 			string ovr = farm.getMapProperty("FarmFishLocationOverride");
 			if (!string.IsNullOrEmpty(ovr)) {
 				string[] bits = ovr.Split(' ');
@@ -221,8 +229,14 @@ namespace Leclair.Stardew.Almanac {
 					float.TryParse(bits[1], out float value) &&
 					value > 0 &&
 					locations.ContainsKey(bits[0])
-				)
+				) {
+					// If the value is 1 or higher, we will never not use the
+					// override, so clear the list.
+					if (value >= 1)
+						result.Clear();
+
 					GetLocationFish(season, locations[bits[0]], result);
+				}
 			}
 
 			switch(Game1.whichFarm) {

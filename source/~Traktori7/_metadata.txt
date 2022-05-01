@@ -11,9 +11,9 @@ mods:
    Show Birthdays
 
 latest commit:
-   commit 5f9c718ca8c17975ae57ff76395980d9256c22a3
+   commit 8eff20e61b7d2f36a500926a3d81462abac118f1
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Wed Mar 30 16:08:56 2022 +0300
+   Date:   Wed Apr 27 21:23:46 2022 +0300
    
-       Fixes the building being duplicated in Automate logic in some cases. Version 1.6.1 release.
+       Added exceptions if the method wasn't found, just in case
    

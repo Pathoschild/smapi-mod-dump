@@ -60,8 +60,9 @@ namespace Leclair.Stardew.Almanac.Models {
 
 	public class WeatherRule {
 		public string Id { get; set; }
-		public bool Enabled { get; set; } = true;
-		public RuleContext Context { get; set; } = RuleContext.Default;
+		public string[] Contexts { get; set; }
+
+		public bool Enabled { get; set; } = true;		
 		public int Priority { get; set; } = 0;
 
 		public int FirstYear { get; set; } = 1;

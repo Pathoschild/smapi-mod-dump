@@ -8,39 +8,52 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using StardewModdingAPI;
 
-namespace Leclair.Stardew.Common.Integrations {
-	public abstract class BaseAPIIntegration<T, M> : BaseIntegration<M> where M : Mod where T : class {
+namespace Leclair.Stardew.Common.Integrations;
 
-		protected T API { get; }
+public abstract class BaseAPIIntegration<T, M> : BaseIntegration<M> where M : Mod where T : class {
 
-		protected BaseAPIIntegration(M self, string modID, string minVersion, string maxVersion = null) : base(self, modID, minVersion, maxVersion) {
-			if (!IsLoaded) {
-				API = null;
-				return;
-			}
+	protected T? API { get; }
 
-			API = GetAPI();
-
-			if (API == null) {
-				Log("Unable to obtain API instance. Disabling integration.", LogLevel.Warn);
-
-				IsLoaded = false;
-				return;
-			}
+	protected BaseAPIIntegration(M self, string modID, string? minVersion, string? maxVersion = null) : base(self, modID, minVersion, maxVersion) {
+		if (!IsLoaded) {
+			API = null;
+			return;
 		}
 
-		private T GetAPI() {
-			try {
-				return Self.Helper.ModRegistry.GetApi<T>(ModID);
-			} catch (Exception ex) {
-				Log("An error occurred calling GetApi.", LogLevel.Debug, ex);
+		API = GetAPI();
 
-				return null;
-			}
+		if (API == null) {
+			Log("Unable to obtain API instance. Disabling integration.", LogLevel.Warn);
+
+			IsLoaded = false;
+			return;
+		}
+	}
+
+	[MemberNotNullWhen(true, nameof(API))]
+	public override bool IsLoaded { get; protected set; }
+
+	[MemberNotNull(nameof(API))]
+	protected override void AssertLoaded() {
+		base.AssertLoaded();
+		if (API is null)
+			throw new InvalidOperationException($"{ModID} integration is disabled.");
+	}
+
+	private T? GetAPI() {
+		try {
+			return Self.Helper.ModRegistry.GetApi<T>(ModID);
+		} catch (Exception ex) {
+			Log("An error occurred calling GetApi.", LogLevel.Debug, ex);
+
+			return null;
 		}
 	}
 }

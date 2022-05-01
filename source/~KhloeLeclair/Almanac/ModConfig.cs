@@ -70,6 +70,9 @@ namespace Leclair.Stardew.Almanac {
 
 		public int CycleTime { get; set; } = 1000;
 
+		// Custom Seed
+		public ulong? CustomSeed { get; set; } = null;
+
 		// Page Sources
 		/*public PageUnlock SourceCrop { get; set; } = new(UnlockSource.Almanac);
 		public PageUnlock SourceWeather { get; set; } = new(UnlockSource.Almanac);
@@ -94,9 +97,8 @@ namespace Leclair.Stardew.Almanac {
 		// Weather Page
 		public bool ShowWeather { get; set; } = true;
 		public bool EnableDeterministicWeather { get; set; } = true;
-
 		public bool EnableWeatherRules { get; set; } = true;
-
+		public int WeatherForecastLength { get; set; } = -1;
 
 		// Fishing Page
 		public bool ShowFishing { get; set; } = true;
@@ -109,6 +111,7 @@ namespace Leclair.Stardew.Almanac {
 		public bool ShowFortunes { get; set; } = true;
 		public bool EnableDeterministicLuck { get; set; } = true;
 		public bool ShowExactLuck { get; set; } = false;
+		public int LuckForecastLength { get; set; } = -1;
 
 		// Train Page
 		public bool ShowTrains { get; set; } = true;

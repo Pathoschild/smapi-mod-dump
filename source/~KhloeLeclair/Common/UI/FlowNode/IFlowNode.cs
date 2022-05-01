@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 
 using Microsoft.Xna.Framework;
@@ -15,28 +17,28 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley.Menus;
 
-namespace Leclair.Stardew.Common.UI.FlowNode {
-	public interface IFlowNode {
+namespace Leclair.Stardew.Common.UI.FlowNode;
 
-		bool IsEmpty();
+public interface IFlowNode {
 
-		Alignment Alignment { get; }
+	bool IsEmpty();
 
-		string UniqueId { get; }
+	Alignment Alignment { get; }
 
-		object Extra { get; }
+	string? UniqueId { get; }
 
-		IFlowNodeSlice Slice(IFlowNodeSlice last, SpriteFont font, float maxWidth, float remaining, IFlowNodeSlice nextSlice);
+	object? Extra { get; }
 
-		void Draw(IFlowNodeSlice slice, SpriteBatch batch, Vector2 position, float scale, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor, CachedFlowLine line, CachedFlow flow);
+	IFlowNodeSlice? Slice(IFlowNodeSlice? last, SpriteFont font, float maxWidth, float remaining, IFlowNodeSlice? nextSlice);
 
-		// Interaction
+	void Draw(IFlowNodeSlice slice, SpriteBatch batch, Vector2 position, float scale, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor, CachedFlowLine line, CachedFlow flow);
 
-		ClickableComponent UseComponent(IFlowNodeSlice slice);
-		bool? WantComponent(IFlowNodeSlice slice);
+	// Interaction
 
-		Func<IFlowNodeSlice, int, int, bool> OnHover { get; }
-		Func<IFlowNodeSlice, int, int, bool> OnClick { get; }
-		Func<IFlowNodeSlice, int, int, bool> OnRightClick { get; }
-	}
+	ClickableComponent? UseComponent(IFlowNodeSlice slice);
+	bool? WantComponent(IFlowNodeSlice slice);
+
+	Func<IFlowNodeSlice, int, int, bool>? OnHover { get; }
+	Func<IFlowNodeSlice, int, int, bool>? OnClick { get; }
+	Func<IFlowNodeSlice, int, int, bool>? OnRightClick { get; }
 }

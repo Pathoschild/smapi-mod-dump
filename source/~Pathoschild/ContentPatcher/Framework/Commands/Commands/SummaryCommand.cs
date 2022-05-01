@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -482,6 +484,9 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <param name="sort">Whether to sort the values for display.</param>
         private IEnumerable<string> GetValues(IToken token, IInputArguments input, bool sort)
         {
+            if (!token.IsReady)
+                return Array.Empty<string>();
+
             IEnumerable<string> values = token.GetValues(input);
 
             if (sort && Enum.TryParse(token.Name, ignoreCase: true, out ConditionType type) && this.SortTokens.Contains(type))

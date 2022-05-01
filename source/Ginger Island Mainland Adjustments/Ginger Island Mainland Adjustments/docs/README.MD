@@ -19,16 +19,16 @@ Certain behaviors of the mod can be altered by using Content Patcher to patch in
 
 ```js
 {
-	"Format": "1.24.0",
-	"Changes": [
-		{
-			"Action": "EditData",
-			"Target": "Mods/atravita_Ginger_Island_Adjustments_groups",
-			"Entries": {
-				"GoldenTrio": "Harry, Hermione, Ron"
-			}
-		}
-	]
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/atravita_Ginger_Island_Adjustments_groups",
+            "Entries": {
+                "GoldenTrio": "Harry, Hermione, Ron"
+            }
+        }
+    ]
 }
 ```
 
@@ -38,16 +38,16 @@ The following data is what this mod will look for:
 
 ```js
 {
-	"Format": "1.24.0",
-	"Changes": [
-		{
-			"Action": "EditData",
-			"Target": "Characters/schedules/Leah",
-			"Entries": {
-				"GIRemainder": "1800 LeahHouse 8 5 0/2200 LeahHouse 13 10 2/2400 LeahHouse 2 4 3 leah_sleep"
-			}
-		}
-	]
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Characters/schedules/Leah",
+            "Entries": {
+                "GIRemainder": "1800 LeahHouse 8 5 0/2200 LeahHouse 13 10 2/2400 LeahHouse 2 4 3 leah_sleep"
+            }
+        }
+    ]
 }
 ```
 

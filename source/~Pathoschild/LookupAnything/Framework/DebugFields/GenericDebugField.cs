@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Globalization;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.DebugFields

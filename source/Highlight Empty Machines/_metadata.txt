@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/HighlightEmptyMachines
+   Git: https://github.com/atravita-mods/HighlightEmptyMachines.git
+
+mods:
+   Highlight Empty Machines
+
+latest commit:
+   commit 559c9cfa62ac349a4dad2f0c9ee5fbbca5e01174
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Thu Apr 21 11:20:42 2022 -0400
+   
+       cleanup?
+   

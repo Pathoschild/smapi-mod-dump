@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using System;
+#nullable enable
+
 using Leclair.Stardew.Common.Integrations;
 
 using StackSplitRedux;
@@ -39,33 +40,6 @@ namespace Leclair.Stardew.BetterCrafting.Integrations.StackSplitRedux {
 					return Self.Helper.Reflection.GetField<Item>(bcp, "HeldItem");
 				},
 				null
-				/*(page, point) => { 
-
-					if (page is not BetterCraftingPage bcp)
-						return null;
-
-					if (bcp.Editing)
-						return null;
-
-					if (bcp.GetChildMenu() != null)
-						return null;
-
-					var recipe = bcp.GetRecipeUnderCursor(point.X, point.Y);
-					if (recipe == null)
-						return null;
-
-					if (!bcp.CanPerformCraft(recipe))
-						return null;
-
-					return new Tuple<int, Action<bool, int>>(recipe.QuantityPerCraft, (success, amount) => {
-						int times = (int) Math.Ceiling((double) amount / recipe.QuantityPerCraft);
-
-						bcp.PerformCraft(
-							recipe,
-							times
-						);
-					});
-				}*/
 			);
 		}
 	}

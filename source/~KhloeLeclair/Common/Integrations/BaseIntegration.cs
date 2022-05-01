@@ -8,69 +8,73 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using StardewModdingAPI;
 
-namespace Leclair.Stardew.Common.Integrations {
-	public abstract class BaseIntegration<M> where M : Mod {
+namespace Leclair.Stardew.Common.Integrations;
 
-		protected M Self { get; }
+public abstract class BaseIntegration<M> where M : Mod {
 
-		public string ModID { get; }
-		public string MinVersion { get; }
-		public string MaxVersion { get; }
+	protected M Self { get; }
 
-		public bool IsLoaded { get; protected set; }
+	public string ModID { get; }
+	public string? MinVersion { get; }
+	public string? MaxVersion { get; }
 
-		public IManifest Manifest { get; }
+	[MemberNotNullWhen(true, nameof(Manifest))]
+	public virtual bool IsLoaded { get; protected set; }
 
-		public BaseIntegration(M self, string modID, string minVersion, string maxVersion = null) {
-			Self = self;
-			ModID = modID;
-			MinVersion = minVersion;
-			MaxVersion = maxVersion;
+	public IManifest? Manifest { get; }
 
-			// Look up the mod.
-			Manifest = Self.Helper.ModRegistry.Get(ModID)?.Manifest;
+	public BaseIntegration(M self, string modID, string? minVersion, string? maxVersion = null) {
+		Self = self;
+		ModID = modID;
+		MinVersion = minVersion;
+		MaxVersion = maxVersion;
+
+		// Look up the mod.
+		Manifest = Self.Helper.ModRegistry.Get(ModID)?.Manifest;
+		if (Manifest == null)
+			return;
+
+		if (!IsVersionOkay) {
+			Log($"Unsupported version {Manifest.Version} is present. Disabling integration.", LogLevel.Warn);
+			return;
+		}
+
+		IsLoaded = true;
+	}
+
+
+	protected virtual void Log(string message, LogLevel level = LogLevel.Debug, Exception? ex = null, LogLevel? exLevel = null) {
+		string name = Manifest?.Name ?? ModID;
+		Self.Monitor.Log($"[IG:{name}] {message}", level);
+		if (ex != null)
+			Self.Monitor.Log($"[IG:{name}] Details:\n{ex}", level: exLevel ?? level);
+	}
+
+	[MemberNotNull(nameof(Manifest))]
+	protected virtual void AssertLoaded() {
+		if (!IsLoaded || Manifest is null)
+			throw new InvalidOperationException($"{ModID} integration is disabled.");
+	}
+
+	protected virtual bool IsVersionOkay {
+		get {
 			if (Manifest == null)
-				return;
+				return false;
 
-			if (!IsVersionOkay) {
-				Log($"Unsupported version {Manifest.Version} is present. Disabling integration.", LogLevel.Warn);
-				return;
-			}
+			if (!string.IsNullOrEmpty(MinVersion) && Manifest.Version.IsOlderThan(MinVersion))
+				return false;
 
-			IsLoaded = true;
-		}
+			if (!string.IsNullOrEmpty(MaxVersion) && Manifest.Version.IsNewerThan(MaxVersion))
+				return false;
 
-
-		protected virtual void Log(string message, LogLevel level = LogLevel.Debug, Exception ex = null, LogLevel? exLevel = null) {
-			string name = Manifest?.Name ?? ModID;
-			Self.Monitor.Log($"[IG:{name}] {message}", level);
-			if (ex != null)
-				Self.Monitor.Log($"[IG:{name}] Details:\n{ex}", level: exLevel ?? level);
-		}
-
-		protected virtual void AssertLoaded() {
-			if (!IsLoaded)
-				throw new InvalidOperationException($"{ModID} integration is disabled.");
-		}
-
-
-		protected virtual bool IsVersionOkay {
-			get {
-				if (Manifest == null)
-					return false;
-
-				if (!string.IsNullOrEmpty(MinVersion) && Manifest.Version.IsOlderThan(MinVersion))
-					return false;
-
-				if (!string.IsNullOrEmpty(MaxVersion) && Manifest.Version.IsNewerThan(MaxVersion))
-					return false;
-
-				return true;
-			}
+			return true;
 		}
 	}
 }

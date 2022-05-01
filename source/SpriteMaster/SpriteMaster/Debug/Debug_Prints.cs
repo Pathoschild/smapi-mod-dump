@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Configuration;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;

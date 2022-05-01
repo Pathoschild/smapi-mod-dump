@@ -1,0 +1,7 @@
+﻿{
+  "Name": "Giant Crop Fertilizer",
+  "Price":  "100",
+  "Category": "Junk",
+  "Edibility": -300,
+  "TranslationKey": "giant-crop-fertilizer"
+}

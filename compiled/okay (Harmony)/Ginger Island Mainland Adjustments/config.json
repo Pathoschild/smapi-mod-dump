@@ -1,5 +1,6 @@
 {
   "EnforceGITiming": false,
+  "WearIslandClothing": "Default",
   "UseThisScheduler": true,
   "Capacity": 6,
   "GroupChance": 0.6,
@@ -8,5 +9,6 @@
   "GusChance": 0.5,
   "AllowWilly": true,
   "AllowSandy": true,
-  "AllowGeorgeAndEvelyn": true
+  "AllowGeorgeAndEvelyn": true,
+  "DebugMode": false
 }

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -18,72 +20,73 @@ using StardewModdingAPI;
 
 using Leclair.Stardew.Common.Integrations;
 
-namespace Leclair.Stardew.BetterCrafting.Integrations.CustomCraftingStation {
-	public class CCSIntegration : BaseIntegration<ModEntry> {
+namespace Leclair.Stardew.BetterCrafting.Integrations.CustomCraftingStation;
 
-		private readonly IReflectionHelper Helper;
+public class CCSIntegration : BaseIntegration<ModEntry> {
 
-		// ModEntry
-		public readonly Type EntryType;
+	private readonly IReflectionHelper Helper;
 
-		private static object Entry;
+	// ModEntry
+	public readonly Type? EntryType;
+
+	private static object? Entry;
 
 
-		public CCSIntegration(ModEntry mod)
-		: base(mod, "Cherry.CustomCraftingStations", "1.1.3") {
-			if (!IsLoaded)
-				return;
+	public CCSIntegration(ModEntry mod)
+	: base(mod, "Cherry.CustomCraftingStations", "1.1.3") {
+		Helper = mod.Helper.Reflection;
 
-			Helper = mod.Helper.Reflection;
+		if (!IsLoaded)
+			return;
 
-			try {
-				EntryType = Type.GetType("CustomCraftingStation.ModEntry, CustomCraftingStation");
-				if (EntryType == null)
-					throw new ArgumentNullException("cannot get ModEntry");
-			} catch(Exception ex) {
-				Log($"Unable to find classes. Disabling integration.", LogLevel.Info, ex, LogLevel.Debug);
-				IsLoaded = false;
-				return;
-			}
+		try {
+			EntryType = Type.GetType("CustomCraftingStation.ModEntry, CustomCraftingStation");
+			if (EntryType == null)
+				throw new ArgumentNullException("cannot get ModEntry");
 
-			mod.Harmony.Patch(
-				AccessTools.Method(EntryType, "GameLoop_SaveLoaded"),
-				new HarmonyMethod(typeof(CCSIntegration), nameof(OnSaveLoaded_Prefix))
-			);
+		} catch(Exception ex) {
+			Log($"Unable to find classes. Disabling integration.", LogLevel.Info, ex, LogLevel.Debug);
+			IsLoaded = false;
+			return;
 		}
 
-
-		public List<string> GetCookingRecipes() {
-			if (!IsLoaded || Entry == null)
-				return null;
-
-			List<string> removed = Helper.GetField<List<string>>(Entry, "_cookingRecipesToRemove", false)?.GetValue();
-			if (removed == null)
-				return null;
-
-			Log($"Removed {removed.Count} cooking recipes due to CCS.", LogLevel.Debug);
-
-			return Self.Recipes.GetRecipes(true).Select(v => v.Name).Where(v => !removed.Contains(v)).ToList();
-		}
+		mod.Harmony!.Patch(
+			AccessTools.Method(EntryType, "GameLoop_SaveLoaded"),
+			new HarmonyMethod(typeof(CCSIntegration), nameof(OnSaveLoaded_Prefix))
+		);
+	}
 
 
-		public List<string> GetCraftingRecipes() {
-			if (!IsLoaded || Entry == null)
-				return null;
+	public List<string>? GetCookingRecipes() {
+		if (!IsLoaded || Entry == null)
+			return null;
 
-			List<string> removed = Helper.GetField<List<string>>(Entry, "_craftingRecipesToRemove", false)?.GetValue();
-			if (removed == null)
-				return null;
+		List<string>? removed = Helper.GetField<List<string>>(Entry, "_cookingRecipesToRemove", false)?.GetValue();
+		if (removed == null)
+			return null;
 
-			Log($"Removed {removed.Count} crafting recipes due to CCS.", LogLevel.Debug);
+		Log($"Removed {removed.Count} cooking recipes due to CCS.", LogLevel.Debug);
 
-			return Self.Recipes.GetRecipes(false).Select(v => v.Name).Where(v => !removed.Contains(v)).ToList();
-		}
+		return Self.Recipes.GetRecipes(true).Select(v => v.Name).Where(v => !removed.Contains(v)).ToList();
+	}
 
 
-		public static bool OnSaveLoaded_Prefix(object __instance) {
-			Entry = __instance;
-			return true;
-		}
+	public List<string>? GetCraftingRecipes() {
+		if (!IsLoaded || Entry == null)
+			return null;
+
+		List<string>? removed = Helper.GetField<List<string>>(Entry, "_craftingRecipesToRemove", false)?.GetValue();
+		if (removed == null)
+			return null;
+
+		Log($"Removed {removed.Count} crafting recipes due to CCS.", LogLevel.Debug);
+
+		return Self.Recipes.GetRecipes(false).Select(v => v.Name).Where(v => !removed.Contains(v)).ToList();
+	}
+
+
+	public static bool OnSaveLoaded_Prefix(object __instance) {
+		Entry = __instance;
+		return true;
 	}
 }

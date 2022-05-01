@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,42 +37,50 @@ namespace Leclair.Stardew.Common.Inventory {
 		}
 
 		public ChestProvider(bool any) {
-			AllowedTypes = any ? CommonHelper.GetValues<Chest.SpecialChestTypes>().ToArray() : new Chest.SpecialChestTypes[0];
+			AllowedTypes = any ? CommonHelper.GetValues<Chest.SpecialChestTypes>().ToArray() : Array.Empty<Chest.SpecialChestTypes>();
 		}
 
 
-		public override bool CanExtractItems(Chest obj, GameLocation location, Farmer who) => IsValid(obj, location, who);
+		public override bool CanExtractItems(Chest obj, GameLocation? location, Farmer? who) => IsValid(obj, location, who);
 
-		public override bool CanInsertItems(Chest obj, GameLocation location, Farmer who) => IsValid(obj, location, who);
+		public override bool CanInsertItems(Chest obj, GameLocation? location, Farmer? who) => IsValid(obj, location, who);
 
-		public override void CleanInventory(Chest obj, GameLocation location, Farmer who) {
+		public override void CleanInventory(Chest obj, GameLocation? location, Farmer? who) {
 			obj.clearNulls();
 		}
 
-		public override int GetActualCapacity(Chest obj, GameLocation location, Farmer who) {
+		public override int GetActualCapacity(Chest obj, GameLocation? location, Farmer? who) {
 			return obj.GetActualCapacity();
 		}
 
-		public override IList<Item> GetItems(Chest obj, GameLocation location, Farmer who) {
+		public override IList<Item?>? GetItems(Chest obj, GameLocation? location, Farmer? who) {
 			if (who == null)
 				return obj.items;
 
 			return obj.GetItemsForPlayer(who.UniqueMultiplayerID);
 		}
 
-		public override Rectangle? GetMultiTileRegion(Chest obj, GameLocation location, Farmer who) {
+		public override bool IsItemValid(Chest obj, GameLocation? location, Farmer? who, Item item) {
+			return true;
+		}
+
+		public override Rectangle? GetMultiTileRegion(Chest obj, GameLocation? location, Farmer? who) {
 			return null;
 		}
 
-		public override NetMutex GetMutex(Chest obj, GameLocation location, Farmer who) {
+		public override NetMutex? GetMutex(Chest obj, GameLocation? location, Farmer? who) {
 			return obj.GetMutex();
 		}
 
-		public override Vector2? GetTilePosition(Chest obj, GameLocation location, Farmer who) {
+		public override bool IsMutexRequired(Chest obj, GameLocation? location, Farmer? who) {
+			return true;
+		}
+
+		public override Vector2? GetTilePosition(Chest obj, GameLocation? location, Farmer? who) {
 			return TileHelper.GetRealPosition(obj, location);
 		}
 
-		public override bool IsValid(Chest obj, GameLocation location, Farmer who) {
+		public override bool IsValid(Chest obj, GameLocation? location, Farmer? who) {
 			if (location != null) {
 				Vector2? pos = GetTilePosition(obj, location, who);
 				if (!pos.HasValue)

@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 972ddc858951044eecd6b625e07a7a2982fba741
+   commit da8f8912442c162d051fb4143422907bc317bbf3
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Mar 30 23:57:42 2022 -0400
+   Date:   Wed Apr 27 01:54:04 2022 -0400
    
-       add fix for legacy XNB behavior with new content API
+       show invalid crop seasons as-is instead of printing error
    

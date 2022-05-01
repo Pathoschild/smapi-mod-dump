@@ -6,12 +6,10 @@ mods:
    Better Beehouses
 
 latest commit:
-   commit f35754251272bd3724935cb2ebfead6de65116c8
-   Merge: c8f769b 73470fb
-   Author: Wren <grahamgrasley@gmail.com>
-   Date:   Sat Mar 19 19:41:14 2022 -0400
+   commit b7bf70c2c5c323c778196a431e00fd825ebfa9ac
+   Merge: b6cba86 f357542
+   Author: tlitookilakin <swyrlyy@gmail.com>
+   Date:   Mon Apr 11 16:10:23 2022 -0400
    
-       Merge pull request #2 from ChulkyBow/patch-2
-       
-       Update Ukrainian translation for Better Beehouses mod
+       Merge branch 'master' of https://github.com/tlitookilakin/BetterBeehouses
    

@@ -12,7 +12,7 @@
     "Name": "Gus's Underpants",
     "Description": "These definitely belong to him.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 33,
     "IsColored": false,
     "GiftTastes": {

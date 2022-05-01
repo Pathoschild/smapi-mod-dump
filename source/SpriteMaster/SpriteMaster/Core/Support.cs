@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
@@ -21,19 +22,7 @@ namespace SpriteMaster.Core;
 static partial class OnDrawImpl {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private static bool GetIsSliced(in Bounds bounds, Texture2D reference, [NotNullWhen(true)] out Config.TextureRef? result) {
-		var normalizedName = reference.NormalizedName();
-
-		foreach (var slicedTexture in Config.Resample.SlicedTexturesS) {
-			if (!normalizedName.StartsWith(slicedTexture.Texture)) {
-				continue;
-			}
-			if (slicedTexture.Bounds.IsEmpty || slicedTexture.Bounds.Contains(bounds)) {
-				result = slicedTexture;
-				return true;
-			}
-		}
-		result = null;
-		return false;
+		return reference.Meta().CheckSliced(in bounds, out result);
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
@@ -125,7 +114,12 @@ static partial class OnDrawImpl {
 
 			bool isSliced = false;
 			if (GetIsSliced(clampedSource, reference, out var textureRef)) {
-				clampedSource = textureRef.Value.Bounds;
+				if (textureRef.Value.Bounds.IsEmpty) {
+					clampedSource = reference.Extent();
+				}
+				else {
+					clampedSource = textureRef.Value.Bounds;
+				}
 				isSliced = true;
 			}
 
@@ -165,7 +159,7 @@ static partial class OnDrawImpl {
 
 		var sourceRectangle = (Bounds)source.GetValueOrDefault(new(0, 0, texture.Width, texture.Height));
 
-		if (Config.Resample.TrimWater && SpriteOverrides.IsWater(sourceRectangle, texture)) {
+		if (SpriteOverrides.IsWater(sourceRectangle, texture)) {
 			scaleFactor = 4.0f;
 		}
 		else {

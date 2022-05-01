@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/SinZ163/StardewMods
+   Git: https://github.com/SinZ163/StardewMods.git
+
+mods:
+   Automate Chests
+
+latest commit:
+   commit dd40edc0da4ee39e416d1d2a05cd01b194dd7678
+   Author: SinZ <github@361zn.is>
+   Date:   Tue Apr 19 07:35:48 2022 +1000
+   
+       Add AutomateChests
+   

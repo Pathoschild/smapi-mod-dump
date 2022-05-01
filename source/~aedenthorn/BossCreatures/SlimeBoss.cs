@@ -193,13 +193,13 @@ namespace BossCreatures
                         j %= 360;
 
 
-                        nextFireTime = 10;
+                        nextFireTime = 20;
                     }
                 }
                 if (totalFireTime <= 0)
                 {
                     totalFireTime = 0;
-                    nextFireTime = 10;
+                    nextFireTime = 20;
                     attackState.Set(0);
 
                     timeUntilNextAttack = 0;

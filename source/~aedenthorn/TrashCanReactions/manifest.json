@@ -11,7 +11,7 @@
 {
   "Name": "Trash Can Reactions",
   "Author": "aedenthorn",
-  "Version": "0.2.0",
+  "Version": "0.3.0",
   "Description": "Allows customization of NPC reactions when they see a farmer rummaging through the trash.",
   "UniqueID": "aedenthorn.TrashCanReactions",
   "EntryDll": "TrashCanReactions.dll",
@@ -26,7 +26,7 @@
       {
         "UniqueID": "Platonymous.ModUpdater",
         "IsRequired": false
-      },
+      }
   ],
   "UpdateKeys": ["Nexus:7643"]
 }

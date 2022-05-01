@@ -10,14 +10,13 @@
 
 using System;
 using StardewModdingAPI;
-using System.Collections.Generic;
 
 namespace PersonalEffects
 {
     public class Log
     {
-        private StardewModdingAPI.IMonitor Monitor;
-        internal Log(StardewModdingAPI.IMonitor monitor)
+        private readonly IMonitor Monitor;
+        internal Log(IMonitor monitor)
         {
             Monitor = monitor;
         }
@@ -26,66 +25,28 @@ namespace PersonalEffects
         // when someone sends you their error log.Trace messages won't appear in the console window 
         // by default (unless you have the "SMAPI for developers" version), though they're always 
         // written to the log file.
-        public void Trace(string message) { Monitor.Log(message, StardewModdingAPI.LogLevel.Trace); }
+        public void Trace(string message) { Monitor.Log(message); }
 
-        // Troubleshooting info that may be relevant to the player.
-        public void Debug(string message) { Monitor.Log(message, StardewModdingAPI.LogLevel.Debug); }
+        public void Debug(string message) { Monitor.Log(message, LogLevel.Debug); }
 
-        // Info relevant to the player. This should be used judiciously. 
-        public void Info(string message) { Monitor.Log(message, StardewModdingAPI.LogLevel.Info); }
-
-        // An issue the player should be aware of. This should be used rarely. 
-        public void Warn(string message) { Monitor.Log(message, StardewModdingAPI.LogLevel.Warn); }
+         // An issue the player should be aware of. This should be used rarely. 
+        public void Warn(string message) { Monitor.Log(message, LogLevel.Warn); }
 
         // A message indicating something went wrong.
-        public void Error(string message) { Monitor.Log(message, StardewModdingAPI.LogLevel.Error); }
+        public void Error(string message) { Monitor.Log(message, LogLevel.Error); }
 
-        // Important information to highlight for the player when player action is needed 
-        // (e.g. new version available). This should be used rarely to avoid alert fatigue. 
-        public void Alert(string message) { Monitor.Log(message, StardewModdingAPI.LogLevel.Alert); }
     }
 
     public static class Modworks
     {
-        internal static IModHelper Helper;
+        public static Random RNG { get; private set; }
 
-        internal static Random _RNG;
-        public static Random RNG
-        {
-            get { return _RNG; }
-        }
-        internal static Log _Log;
-        public static Log Log
-        {
-            get { return _Log; }
-        }
+        public static Log Log { get; private set; }
 
-        internal static Player _Player;
-        public static Player Player
-        {
-            get { return _Player; }
-        }
-
-        internal static NPCs _NPCs;
-        public static NPCs NPCs
-        {
-            get { return _NPCs; }
-        }
-
-        internal static Events _Events;
-        public static Events Events
-        {
-            get { return _Events; }
-        }
         internal static void Startup(Mod mod)
         {
-            _Log = new Log(mod.Monitor);
-            _RNG = new Random(DateTime.Now.Millisecond * DateTime.Now.GetHashCode());
-            _Player = new Player();
-            _NPCs = new NPCs();
-            _Events = new Events();
-
-            Helper = mod.Helper;
+            Log = new Log(mod.Monitor);
+            RNG = new Random(DateTime.Now.Millisecond * DateTime.Now.GetHashCode());
         }
     }
 }

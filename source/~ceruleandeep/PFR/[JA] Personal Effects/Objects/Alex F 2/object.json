@@ -12,7 +12,7 @@
     "Name": "Alex's Delicates",
     "Description": "Oh, these are interesting.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 27,
     "IsColored": false,
     "GiftTastes": {

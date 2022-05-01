@@ -21,6 +21,7 @@
   "EnableTreeFertilizers": false,
   "EnableTreeTappers": false,
   "EnableInsertingItemsIntoMachines": false,
+  "EnableDebugCommand": false,
   "EnableDebugControls": false,
   "IdentifyItem": "LeftControl + LeftShift + J",
   "IdentifyProducer": "LeftControl + LeftShift + K"

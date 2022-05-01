@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System.Diagnostics.CodeAnalysis;
@@ -169,7 +170,7 @@ static partial class OnDrawImpl {
 		}
 		else {
 			resampledTexture = __state;
-			spriteInstance = resampledTexture.Texture;
+			spriteInstance = resampledTexture.SpriteInstance;
 			sourceRectangle = resampledTexture.Dimensions;
 			if (spriteInstance.TexType == TextureType.SlicedImage) {
 				sourceRectangle = source ?? resampledTexture.Bounds;
@@ -191,7 +192,7 @@ static partial class OnDrawImpl {
 			destination.Y -= referenceSource.Y;
 		}
 
-		var scaledOrigin = (Vector2F)origin / spriteInstance.Scale;
+		var scaledOrigin = (Vector2F)origin * spriteInstance.Scale;
 
 		if (source.HasValue) {
 			sourceRectangle.Invert.X = source.Value.Width < 0;
@@ -201,10 +202,12 @@ static partial class OnDrawImpl {
 		if (Debug.Mode.RegisterDrawForSelect(
 			instance: spriteInstance,
 			texture: texture,
+			originalDestination: destinationBounds,
 			destination: destination,
 			source: sourceRectangle,
 			color: color,
 			rotation: rotation,
+			originalOrigin: origin,
 			origin: scaledOrigin,
 			effects: effects,
 			layerDepth: layerDepth
@@ -251,7 +254,7 @@ static partial class OnDrawImpl {
 		ManagedTexture2D? resampledTexture;
 		if (texture is ManagedTexture2D) {
 			resampledTexture = (ManagedTexture2D)texture;
-			spriteInstance = resampledTexture.Texture;
+			spriteInstance = resampledTexture.SpriteInstance;
 			sourceRectangle = resampledTexture.Dimensions;
 		}
 		else if (texture.FetchScaledTexture(
@@ -339,6 +342,7 @@ static partial class OnDrawImpl {
 			source: sourceRectangle,
 			color: color,
 			rotation: rotation,
+			originalOrigin: origin,
 			origin: adjustedOrigin,
 			scale: adjustedScale,
 			effects: effects,

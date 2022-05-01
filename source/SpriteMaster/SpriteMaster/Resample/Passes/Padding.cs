@@ -10,6 +10,7 @@
 
 using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
@@ -21,7 +22,7 @@ static class Padding {
 
 	private record struct PaddingParameters(Vector2I PaddedSize, int ExpectedPadding, Vector2B HasPaddingX, Vector2B HasPaddingY, Vector2B SolidEdgeX, Vector2B SolidEdgeY);
 
-	private static bool GetPaddingParameters(in Vector2I spriteSize, uint scale, SpriteInfo input, in Passes.Analysis.LegacyResults analysis, out PaddingParameters parameters) {
+	private static bool GetPaddingParameters(in Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Passes.Analysis.LegacyResults analysis, out PaddingParameters parameters) {
 		if (!Config.Resample.Padding.Enabled) {
 			parameters = new();
 			return false;
@@ -34,7 +35,7 @@ static class Padding {
 			analysis.RepeatX | analysis.Wrapped.X | spriteSize.Width <= 1
 		);
 
-		Vector2B solidEdgeY= (
+		Vector2B solidEdgeY = (
 			analysis.RepeatY | analysis.Wrapped.Y | spriteSize.Height <= 1
 		);
 
@@ -55,6 +56,11 @@ static class Padding {
 		else if ((hasPaddingX.Any || hasPaddingY.Any) && (Config.Resample.Padding.IgnoreUnknown && !input.Reference.Anonymous())) {
 			hasPaddingX = Vector2B.False;
 			hasPaddingY = Vector2B.False;
+		}
+
+		if (forcePadding) {
+			hasPaddingX = Vector2B.True;
+			hasPaddingY = Vector2B.True;
 		}
 
 		if (hasPaddingX.None && hasPaddingY.None) {
@@ -120,8 +126,8 @@ static class Padding {
 		return true;
 	}
 
-	internal static Span<Color16> Apply(ReadOnlySpan<Color16> data, in Vector2I spriteSize, uint scale, SpriteInfo input, in Passes.Analysis.LegacyResults analysis, out PaddingQuad padding, out Vector2I paddedSize) {
-		if (!GetPaddingParameters(spriteSize, scale, input, analysis, out var parameters)) {
+	internal static Span<Color16> Apply(ReadOnlySpan<Color16> data, in Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Passes.Analysis.LegacyResults analysis, out PaddingQuad padding, out Vector2I paddedSize) {
+		if (!GetPaddingParameters(spriteSize, scale, input, forcePadding, analysis, out var parameters)) {
 			padding = PaddingQuad.Zero;
 			paddedSize = spriteSize;
 			return data.ToSpanUnsafe();

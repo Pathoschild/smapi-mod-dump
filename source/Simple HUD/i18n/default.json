@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Enaium-StardewValleyMods/SimpleHUD
+**
+*************************************************/
+
+{
+  "setting.enable": "Enable",
+  "setting.disable": "Disable",
+  "setting.title": "Title",
+  "setting.title.description": "Set the title of HUD",
+  "setting.textColor": "Text color",
+  "input.textField.description": "Input",
+  "input.button.done.title": "Done",
+  "input.button.cancel.title": "Cancel"
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11831
+IDs: Yariazen.BuildableGreenhouse
+update keys: Nexus:11831, GitHub:Yariazen/BuildableGreenhouse

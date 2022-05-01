@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 using SpriteMaster.Types;
 using System;
@@ -171,3 +172,4 @@ sealed class Pass1 : Pass {
 		}
 	}
 }
+#endif

@@ -21,16 +21,16 @@ static class ETimeSpan {
 	internal static TimeSpan Multiply(this in TimeSpan timespan, float multiplier) => new((long)MathF.Round(timespan.Ticks * multiplier));
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static TimeSpan Multiply(this in TimeSpan timespan, double multiplier) => new((long)Math.Round(timespan.Ticks * multiplier));
+	internal static TimeSpan Multiply(this in TimeSpan timespan, double multiplier) => new((timespan.Ticks * multiplier).RoundToLong());
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static TimeSpan Divide(this in TimeSpan timespan, int divisor) => new(timespan.Ticks / divisor);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static TimeSpan Divide(this in TimeSpan timespan, float divisor) => new((long)MathF.Round(timespan.Ticks / divisor));
+	internal static TimeSpan Divide(this in TimeSpan timespan, float divisor) => new((timespan.Ticks / divisor).RoundToLong());
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static TimeSpan Divide(this in TimeSpan timespan, double divisor) => new((long)Math.Round(timespan.Ticks / divisor));
+	internal static TimeSpan Divide(this in TimeSpan timespan, double divisor) => new((timespan.Ticks / divisor).RoundToLong());
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static TimeSpan Double(this in TimeSpan timespan) => new(timespan.Ticks << 1);

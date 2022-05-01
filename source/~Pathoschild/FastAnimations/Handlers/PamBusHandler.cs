@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Pathoschild.Stardew.FastAnimations.Framework;
 using StardewValley;
 using StardewValley.Locations;

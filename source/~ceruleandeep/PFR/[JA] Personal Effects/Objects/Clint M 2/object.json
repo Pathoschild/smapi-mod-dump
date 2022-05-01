@@ -12,7 +12,7 @@
     "Name": "Clint's Underwear",
     "Description": "They have a strange, smoky property.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 40,
     "IsColored": false,
     "GiftTastes": {

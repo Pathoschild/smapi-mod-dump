@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;

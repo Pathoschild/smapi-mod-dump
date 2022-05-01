@@ -1,0 +1,19 @@
+{
+  "VerboseCoordinates": true,
+  "ReadTile": true,
+  "SnapMouse": true,
+  "Radar": false,
+  "RadarStereoSound": true,
+  "ReadFlooring": false,
+  "LeftClickMainKey": "LeftControl + Enter",
+  "RightClickMainKey": "LeftShift + Enter",
+  "LeftClickAlternateKey": "OemOpenBrackets",
+  "RightClickAlternateKey": "OemCloseBrackets",
+  "HealthNStaminaKey": "H",
+  "PositionKey": "K",
+  "LocationKey": "LeftAlt + K",
+  "MoneyKey": "R",
+  "TimeNSeasonKey": "Q",
+  "ReadTileKey": "J",
+  "ReadStandingTileKey": "LeftAlt + J"
+}

@@ -21,12 +21,14 @@ namespace stardew_access
     {
         internal static void Initialize()
         {
-            IModHelper helper = MainClass.ModHelper;
+            IModHelper? helper = MainClass.ModHelper;
+            if (helper == null)
+                return;
 
             helper.ConsoleCommands.Add("readtile", "Toggle read tile feature.", (string commmand, string[] args) =>
             {
                 MainClass.Config.ReadTile = !MainClass.Config.ReadTile;
-                MainClass.ModHelper.WriteConfig(MainClass.Config);
+                helper.WriteConfig(MainClass.Config);
 
                 MainClass.DebugLog("Read Tile is " + (MainClass.Config.ReadTile ? "on" : "off"));
             });
@@ -34,7 +36,7 @@ namespace stardew_access
             helper.ConsoleCommands.Add("snapmouse", "Toggle snap mouse feature.", (string commmand, string[] args) =>
             {
                 MainClass.Config.SnapMouse = !MainClass.Config.SnapMouse;
-                MainClass.ModHelper.WriteConfig(MainClass.Config);
+                helper.WriteConfig(MainClass.Config);
 
                 MainClass.DebugLog("Snap Mouse is " + (MainClass.Config.SnapMouse ? "on" : "off"));
             });
@@ -42,7 +44,7 @@ namespace stardew_access
             helper.ConsoleCommands.Add("flooring", "Toggle flooring in read tile.", (string commmand, string[] args) =>
             {
                 MainClass.Config.ReadFlooring = !MainClass.Config.ReadFlooring;
-                MainClass.ModHelper.WriteConfig(MainClass.Config);
+                helper.WriteConfig(MainClass.Config);
 
                 MainClass.DebugLog("Flooring is " + (MainClass.Config.ReadFlooring ? "on" : "off"));
             });
@@ -50,7 +52,7 @@ namespace stardew_access
             helper.ConsoleCommands.Add("radar", "Toggle radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.Config.Radar = !MainClass.Config.Radar;
-                MainClass.ModHelper.WriteConfig(MainClass.Config);
+                helper.WriteConfig(MainClass.Config);
 
                 MainClass.DebugLog("Radar " + (MainClass.Config.Radar ? "on" : "off"));
             });
@@ -66,7 +68,7 @@ namespace stardew_access
             helper.ConsoleCommands.Add("rstereo", "Toggle stereo sound in radar feature.", (string commmand, string[] args) =>
             {
                 MainClass.Config.RadarStereoSound = !MainClass.Config.RadarStereoSound;
-                MainClass.ModHelper.WriteConfig(MainClass.Config);
+                helper.WriteConfig(MainClass.Config);
 
                 MainClass.DebugLog("Stereo sound is " + (MainClass.Config.RadarStereoSound ? "on" : "off"));
             });
@@ -477,7 +479,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("refsr", "Refresh screen reader", (string commmand, string[] args) =>
             {
-                MainClass.GetScreenReader().InitializeScreenReader();
+                MainClass.ScreenReader.InitializeScreenReader();
 
                 MainClass.DebugLog("Screen Reader refreshed!");
             });
@@ -487,6 +489,13 @@ namespace stardew_access
                 MainClass.Config = helper.ReadConfig<ModConfig>();
 
                 MainClass.DebugLog("Mod Config refreshed!");
+            });
+
+            helper.ConsoleCommands.Add("refst", "Refresh static tiles", (string commmand, string[] args) =>
+            {
+                MainClass.STiles = new Features.StaticTiles();
+
+                MainClass.DebugLog("Static tiles refreshed!");
             });
         }
     }

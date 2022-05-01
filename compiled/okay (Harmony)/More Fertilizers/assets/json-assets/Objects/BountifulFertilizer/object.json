@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Bountiful Fertilizer",
+  "Price": "50",
+  "Category": "Junk",
+  "Edibility": -300,
+  "TranslationKey": "bountiful-fertilizer",
+  "PurchasePrice": 150,
+  "PurchaseFrom": "Pierre",
+  "CanPurchase": true,
+  "PurchaseRequirements": [ "y 2", "Hn MSB_Pierre", "d Mon Tue Thu Fri Sat" ]
+}

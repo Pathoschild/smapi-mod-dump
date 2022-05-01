@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,17 +55,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
 
         /// <summary>The backing field for <see cref="ActiveElement"/>; shouldn't be edited directly.</summary>
         private Element _activeElement;
-
-        /// <summary>The overlay element which should receive input.</summary>
-        protected Element ActiveElement
-        {
-            get => this._activeElement;
-            set
-            {
-                this._activeElement = value;
-                this.OnActiveElementChanged(value);
-            }
-        }
 
         /// <summary>The unique chest categories.</summary>
         private readonly string[] Categories;
@@ -150,10 +141,21 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         /*********
         ** Accessors
         *********/
-        /// <summary>An event raised when the player selects a chest.</summary>
+        /// <inheritdoc />
+        public Element ActiveElement
+        {
+            get => this._activeElement;
+            protected set
+            {
+                this._activeElement = value;
+                this.OnActiveElementChanged(value);
+            }
+        }
+
+        /// <inheritdoc />
         public event Action<ManagedChest> OnChestSelected;
 
-        /// <summary>An event raised when the Automate options for a chest change.</summary>
+        /// <inheritdoc />
         public event Action<ManagedChest> OnAutomateOptionsChanged;
 
 

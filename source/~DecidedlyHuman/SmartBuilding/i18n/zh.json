@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+  // Informational.
+  "smart-building.info.build-cancelled": "�뿪����ģʽ�����ڷ�����Ʒ����",
+  "smart-building.info.refunded-into-player-inventory": "�ѷ�������Ʒ����",
+
+  // Settings menu text.
+  "smart-building.settings.keybinds.title": "��λ",
+  "smart-building.settings.keybinds.paragraph.gmcm-warning": "���ò˵���ǰ��֧�����ļ�λ�󶨣����Ҫ������λ�����ֶ��༭config.json�ļ���",
+  "smart-building.settings.keybinds.binds.enter-build-mode": "���뽨��ģʽ",
+  "smart-building.settings.keybinds.binds.hold-to-draw": "��",
+  "smart-building.settings.keybinds.binds.hold-to-erase": "����",
+  "smart-building.settings.keybinds.binds.hold-to-insert": "����Ʒ�������",
+  "smart-building.settings.keybinds.binds.confirm-build": "ȷ�Ͻ���",
+  "smart-building.settings.keybinds.binds.pick-up-object": "��������",
+  "smart-building.settings.keybinds.binds.pick-up-floor": "����ذ�",
+  "smart-building.settings.keybinds.binds.pick-up-furniture": "����Ҿ�",
+
+
+  "smart-building.settings.optional-toggles.title": "��ѡ����",
+  "smart-building.settings.optional-toggles.show-build-queue": "��ʾ�������",
+  "smart-building.settings.optional-toggles.can-destroy-chests": "�Ƿ��������",
+  "smart-building.settings.optional-toggles.can-destroy-chests.tooltip": "���棺���ʹ���������Ʒɢ��һ�ء�",
+  "smart-building.settings.optional-toggles.more-lax-floor-placement": "�����Ʒ��õذ�",
+  "smart-building.settings.optional-toggles.more-lax-floor-placement.tooltip": "�������������κεط����õذ壬�������ܴ����ĵ�Ƥ������ѡ��",
+  "smart-building.settings.optional-toggles.more-lax-furniture-placement": "�����Ʒ��üҾ�",
+  "smart-building.settings.optional-toggles.more-lax-furniture-placement.tooltip": "�������������κεط����üҾߣ��������ܴ����ĵ�Ƥ������ѡ��",
+  "smart-building.settings.optional-toggles.more-lax-bed-placement": "�����Ʒ��ô�",
+  "smart-building.settings.optional-toggles.more-lax-bed-placement.tooltip": "�������������κεط����ô����������ܴ����ĵ�Ƥ������ѡ��",
+  "smart-building.settings.optional-toggles.enable-replacing-floors": "��ͬ�ذ�ֱ���滻",
+  "smart-building.settings.optional-toggles.enable-replacing-fences": "��ͬΧ��ֱ���滻",
+
+  "smart-building.settings.cheaty-options.title": "�����ƻ���Ϸƽ��",
+  "smart-building.settings.cheaty-options.crab-pots-in-any-water-tile": "з���ܷ������κ�ˮ������",
+  "smart-building.settings.cheaty-options.enable-planting-crops": "������ֲ����",
+  "smart-building.settings.cheaty-options.enable-crop-fertilisers": "����������ʩ��",
+  "smart-building.settings.cheaty-options.enable-tree-fertilisers": "��������ľʩ��",
+  "smart-building.settings.cheaty-options.enable-tree-tappers": "��������Һ�ɼ���",
+  "smart-building.settings.cheaty-options.enable-inserting-items-into-machines": "��������Ʒ�������",
+
+  "smart-building.settings.debug.title": "����",
+  "smart-building.settings.debug.enable-debug-command": "���õ�������",
+  "smart-building.settings.debug.enable-debug-keybinds": "���õ��Լ�λ",
+  "smart-building.settings.debug.identify-producer-to-console": "ʶ���������ӡ������̨",
+  "smart-building.settings.debug.identify-held-item-to-console": "ʶ����Ʒ����ӡ������̨",
+
+  "smart-building.settings.potentially-dangerous.title": "Σ��ѡ��",
+  "smart-building.settings.potentially-dangerous.paragraph": "���ô��������Ҿߣ�����ױ̨���ڵ���Ʒ����ȱʧ������ϵ���ߡ�",
+  "smart-building.settings.potentially-dangerous.enable-placing-storage-furniture": "������������Ҿ�",
+  "smart-building.settings.potentially-dangerous.enable-placing-storage-furniture.tooltip": "���棺�����з��գ��Ҿ�����Ʒ���ܻ���ʧ������ѡ��",
+
+  "smart-building.settings.json-guide.page-link": "����ֶ����ü�λ",
+  "smart-building.settings.json-guide.page-title": "����λ",
+  "smart-building.settings.json-guide.guide-1": "��: https://zh.stardewvalleywiki.com/%E6%A8%A1%E7%BB%84:%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E6%8C%89%E9%94%AE%E7%BB%91%E5%AE%9A������ժ��Ӣ�İ棩",
+  "smart-building.settings.json-guide.guide-2": "Mods using SMAPI 3.9+ features can support multi-key bindings. That lets you combine multiple button codes into a combo keybind, and list alternate keybinds. For example, \"LeftShoulder, LeftControl + S\" will apply if LeftShoulder is pressed, or if both LeftControl and S are pressed.",
+  "smart-building.settings.json-guide.guide-3": "Some things to keep in mind:",
+  "smart-building.settings.json-guide.guide-4": "The order doesn't matter, so \"LeftControl + S\" and \"S + LeftControl\" are equivalent.",
+  "smart-building.settings.json-guide.guide-5": "SMAPI doesn't prevent mods from using overlapping hotkeys. For example, if one mod uses \"S\" and the other mod uses \"LeftControl + S\", pressing LeftControl and S will activate both.",
+
+  // Errors/warnings.
+  "smart-building.error.object.placement-failed": "�޷����ø����塣������ȷ�Ͻ���ǰ���Ѿ������ˣ�",
+  "smart-building.error.terrain-feature.flooring.could-not-identify-floor-type": "δ֪���͵ذ塣������ħ�ĵĵذ�",
+  "smart-building.error.terrain-feature.generic.already-present": "�÷������Ѿ���TerrainFeature�ˡ�������ȷ�Ͻ���ǰ������/�����˵ذ壿",
+  "smart-building.error.terrain-feature.generic.unknown-error": "�÷�������ʲô������ס�ˡ�������һ������ĵ�/һ���ذ壿",
+  "smart-building.error.chest.could-not-identify-chest": "δ֪�������ӡ�������bug����ħ�ĵ����ӡ�",
+  "smart-building.error.seeds.placement-failed": "�޷����ø����ӡ�",
+  "smart-building.error.fertiliser.already-fertilised": "������/�����Ѿ�ʩ�����ˡ�",
+  "smart-building.error.fertiliser.ineligible-for-fertilisation": "�����Ѿ�ʩ�����ˣ��������������Ѿ����ʺ�ʩ���ˡ�",
+  "smart-building.error.tree-tapper.placement-failed": "�޷����ø���Ҷ�ɼ�����",
+  "smart-building.error.storage-furniture.placement-failed": "�޷����ô�����Ҿߡ�������Ӱ��Ҿ��ڵ���Ʒ��",
+  "smart-building.error.storage-furniture.setting-is-off": "Σ��ѡ�������������Ҿߣ��ѽ��á�",
+  "smart-building.error.tv-furniture.placement-failed": "�޷����ô˵��ӡ�",
+  "smart-building.error.bed-furniture.placement-failed": "�޷����ô˴���",
+  "smart-building.error.furniture.placement-failed": "�޷����ô˼Ҿߡ�",
+  "smart-building.error.refunding.generic-refund-message": "������һЩ����",
+  "smart-building.error.refunding.refunding-item-to-player-inventory": "���ڷ�����Ʒ��",
+  "smart-building.warning.gmcm-not-installed": "δ����ͨ�����ò˵�Generic Mod Config Menu��",
+
+  // Messages
+  "smart-building.message.item-name": "��Ʒ����",
+  "smart-building.message.item-parent-sheet-index": "ID",
+  "smart-building.message.item-category": "��Ϸ�ڷ���",
+  "smart-building.message.item-type": "��Ϸ������",
+  "smart-building.message.item-smart-building-type": "��ʶ��������",
+  "smart-building.message.producer-being-identified": "����ʶ���������",
+  "smart-building.message.identified-producer-type": "��ʶ���������",
+  "smart-building.message.storage-furniture.adding-item": "����������Ʒ",
+  "smart-building.message.storage-furniture.retrieval-tip": "��������˴��������ʹ����Ʒ���ƺ�ID���һ���Ʒ��",
+  "smart-buikding.message.trying-to-grab": "���ڷ���",
+
+  // Commands
+  "smart-building.commands.debug.sb-test": "If you need to read this, it is not for you. Here be dragons.",
+
+  // Mod integrations
+  "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": ""
+}

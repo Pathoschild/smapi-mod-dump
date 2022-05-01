@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using SpriteMaster;
+using SpriteMaster.Configuration;
 using SpriteMaster.Types;
 using System.Drawing.Imaging;
 using System.IO;
@@ -37,8 +37,8 @@ static class ConverterProgram {
 		if (info) {
 			Console.WriteLine("Settings:");
 			var settings = new[] {
-				("LuminanceWeight", Config.Resample.xBRZ.LuminanceWeight),
-				("EqualColorTolerance", Config.Resample.xBRZ.EqualColorTolerance),
+				("LuminanceWeight", Config.Resample.Common.LuminanceWeight),
+				("EqualColorTolerance", Config.Resample.Common.EqualColorTolerance),
 				("DominantDirectionThreshold", Config.Resample.xBRZ.DominantDirectionThreshold),
 				("SteepDirectionThreshold", Config.Resample.xBRZ.SteepDirectionThreshold),
 				("CenterDirectionBias", Config.Resample.xBRZ.CenterDirectionBias)
@@ -98,8 +98,8 @@ static class ConverterProgram {
 
 		var scalerConfig = new SpriteMaster.Resample.Scalers.xBRZ.Config(
 			wrapped: Vector2B.False,
-			luminanceWeight: Config.Resample.xBRZ.LuminanceWeight,
-			equalColorTolerance: Config.Resample.xBRZ.EqualColorTolerance,
+			luminanceWeight: Config.Resample.Common.LuminanceWeight,
+			equalColorTolerance: (uint)Config.Resample.Common.EqualColorTolerance,
 			dominantDirectionThreshold: Config.Resample.xBRZ.DominantDirectionThreshold,
 			steepDirectionThreshold: Config.Resample.xBRZ.SteepDirectionThreshold,
 			centerDirectionBias: Config.Resample.xBRZ.CenterDirectionBias

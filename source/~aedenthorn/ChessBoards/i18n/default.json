@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
+  "free-true": "Free mode enabled",
+  "free-false": "Free mode disabled",
+  "check": "Your king is in check!",
+  "turn": "It's not your turn!",
+  "which-promote": "Promote to which piece?",
+  "rook": "Rook",
+  "knight": "Knight",
+  "bishop": "Bishop",
+  "queen": "Queen"
+}

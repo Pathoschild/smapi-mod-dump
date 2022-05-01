@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Market Day",
+  "Author": "ceruleandeep",
+  "Version": "1.0.9-beta.1",
+  "Description": "Market Day",
+  "UniqueID": "ceruleandeep.MarketDay",
+  "EntryDll": "MarketDay.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.23.0"
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:11778"
+  ]
+}

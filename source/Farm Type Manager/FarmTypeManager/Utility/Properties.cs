@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using ContentPatcher;
 using StardewModdingAPI;
 using StardewValley;
 using System;
@@ -92,14 +93,26 @@ namespace FarmTypeManager
             /// <summary>The helper provided to this mod by SMAPI. Should be set during mod startup.</summary>
             public static IModHelper Helper { get; set; }
 
+            /// <summary>The manifest provided to this mod by SMAPI. Should be set during mod startup.</summary>
+            public static IManifest Manifest { get; set; }
+
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>
             public static List<FarmData> FarmDataList = new List<FarmData>();
 
             /// <summary>A series of object lists to be spawned during the current in-game day.</summary>
             public static List<List<TimedSpawn>> TimedSpawns = new List<List<TimedSpawn>>();
 
+            /// <summary>The API for Content Patcher (CP), used to check "When" conditions. Null if unavailable.</summary>
+            public static IContentPatcherAPI ContentPatcherAPI { get; set; } = null;
+
+            /// <summary>The currently installed version of Content Patcher. Defaults to the latest known version if unavailable.</summary>
+            public static ISemanticVersion ContentPatcherVersion { get; set; } = new SemanticVersion("1.25.0");
+
             /// <summary>The API for Expanded Preconditions Utility (EPU), used to check precondition strings. Null if unavailable.</summary>
             public static IConditionsChecker EPUConditionsChecker { get; set; } = null;
+
+            /// <summary>The API for Monsters The Framework (MTF), used to handle its custom monsters. Null if unavailable.</summary>
+            public static MTFPseudoAPI MonstersTheFrameworkAPI { get; set; } = null;
 
             /// <summary>The API for Dynamic Game Assets (DGA), used to spawn its custom items. Null if unavailable.</summary>
             public static IDynamicGameAssetsApi DGAItemAPI { get; set; } = null;

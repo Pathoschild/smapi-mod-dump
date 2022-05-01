@@ -46,7 +46,7 @@ namespace QualityScrubber
 				return false;
 			}
 
-			if (!(inputItem is SObject inputObject))
+			if (inputItem is not SObject inputObject)
 			{
 				//Monitor.Log("You can't scrub this!", LogLevel.Debug);
 				return false;
@@ -76,7 +76,7 @@ namespace QualityScrubber
 		}
 
 
-		public SObject GetOutputObject(Item inputItem)
+		public SObject? GetOutputObject(Item inputItem)
 		{
 			if (inputItem is SObject inputObject)
 			{
@@ -85,13 +85,13 @@ namespace QualityScrubber
 				SObject outputObject;
 
 				// Handle roe/aged roe
-				if (inputObject is ColoredObject)
+				if (inputObject is ColoredObject coloredObject)
 				{
-					outputObject = new ColoredObject(inputObject.ParentSheetIndex, 1, ((ColoredObject)inputObject).color.Value);
+					outputObject = new ColoredObject(inputObject.ParentSheetIndex, 1, coloredObject.color.Value);
 				}
 				else
 				{
-					outputObject = new StardewValley.Object(Vector2.Zero, inputObject.ParentSheetIndex, 1);
+					outputObject = new SObject(Vector2.Zero, inputObject.ParentSheetIndex, 1);
 
 					// If input is honey, copy honey type
 					if (outputObject.Name.Contains("Honey"))
@@ -152,7 +152,7 @@ namespace QualityScrubber
 
 		public void StartProcessing(SObject inputObject, SObject machine, Farmer who)
 		{
-			SObject outputObject = GetOutputObject(inputObject);
+			SObject? outputObject = GetOutputObject(inputObject);
 
 			//this.Monitor.Log("Machine starts to scrub the item", LogLevel.Debug);
 			machine.heldObject.Value = outputObject;

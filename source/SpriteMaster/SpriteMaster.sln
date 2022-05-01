@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hashing", "Tests\Benchmarks\Hashing\Hashing.csproj", "{9B425214-AB84-423A-A788-8FEF54C116AB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Regex", "Tests\Benchmarks\Regex\Regex.csproj", "{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -49,6 +51,14 @@ Global
 		{9B425214-AB84-423A-A788-8FEF54C116AB}.Release|x64.ActiveCfg = Release|x64
 		{9B425214-AB84-423A-A788-8FEF54C116AB}.Release|x64.Build.0 = Release|x64
 		{9B425214-AB84-423A-A788-8FEF54C116AB}.Shipping|x64.ActiveCfg = Release|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Debug|x64.ActiveCfg = Debug|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Debug|x64.Build.0 = Debug|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Development|x64.ActiveCfg = Debug|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Development|x64.Build.0 = Debug|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Release|x64.ActiveCfg = Release|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Release|x64.Build.0 = Release|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Shipping|x64.ActiveCfg = Debug|x64
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7}.Shipping|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +67,7 @@ Global
 		{72E4E379-FED1-4581-AC25-57681878A19B} = {5F12B6EB-38DD-4424-95BC-CA31D9A145CB}
 		{A8A32C66-9DE6-41D4-8965-89F8B0171B89} = {B052DAD0-3921-456B-8EC1-97CFCA8A04CE}
 		{9B425214-AB84-423A-A788-8FEF54C116AB} = {A8A32C66-9DE6-41D4-8965-89F8B0171B89}
+		{0E65F8F2-2E63-422A-922C-74B5FDE7BBA7} = {A8A32C66-9DE6-41D4-8965-89F8B0171B89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69AB8508-E218-4794-BD36-653EBF7B3689}

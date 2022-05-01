@@ -11,14 +11,13 @@
 {
 	"Name": "Quality Scrubber",
 	"Author": "Traktori",
-	"Version": "1.1.0",
+	"Version": "1.2.0-beta.1",
 	"Description": "Removes quality from processed items.",
 	"UniqueID": "Traktori.QualityScrubber",
 	"EntryDll": "QualityScrubber.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "3.14.0-beta",
 	"UpdateKeys": [ "Nexus:5663" ],
-	"Dependencies":
-	[
+	"Dependencies": [
 		{
 			"UniqueID": "Traktori.JA.QualityScrubber"
 		}

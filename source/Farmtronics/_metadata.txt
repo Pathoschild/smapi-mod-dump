@@ -6,10 +6,9 @@ mods:
    Farmtronics
 
 latest commit:
-   commit b8b6f10b9bba63f95738fff099fab8ae9a92a9be
-   Merge: 890ac92 9b1c157
+   commit 3f28eaeb8e4bc6bdc110a598221dbe6e6f0b49c7
    Author: Joe Strout <joe@strout.net>
-   Date:   Wed Mar 30 08:05:08 2022 -0700
+   Date:   Sun Apr 10 07:28:39 2022 -0700
    
-       Merge branch 'main' of github.com:JoeStrout/Farmtronics into main
+       Updated the version number to 1.0.9; removed some debug logging.
    

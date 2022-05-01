@@ -13,153 +13,425 @@ using Microsoft.Xna.Framework.Input;
 using stardew_access.Features;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace stardew_access.Patches
 {
     internal class MenuPatches
     {
-        private static string currentLetterText = " ";
-        private static string museumQueryKey = " ";
-        private static string currentLevelUpTitle = " ";
+        internal static string currentLevelUpTitle = " ";
+        internal static bool firstTimeInNamingMenu = true;
+        internal static bool isNarratingPondInfo = false;
+        internal static bool isNarratingAnimalInfo = false;
+        internal static string animalQueryMenuQuery = " ";
+        internal static string tailoringMenuQuery = " ";
+        internal static string pondQueryMenuQuery = " ";
+        internal static string forgeMenuQuery = " ";
+        internal static string itemListMenuQuery = " ";
         public static Vector2? prevTile = null;
-        private static bool isMoving = false;
 
-        #region Museum Menu Patch
-        internal static bool MuseumMenuKeyPressPatch()
-        {
-            try
-            {
-                if (isMoving)
-                    return false;
-
-                if (!isMoving)
-                {
-                    isMoving = true;
-                    Task.Delay(200).ContinueWith(_ => { isMoving = false; });
-                }
-
-            }
-            catch (Exception e)
-            {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-
-            return true;
-        }
-
-        internal static void MuseumMenuPatch(MuseumMenu __instance, bool ___holdingMuseumPiece)
+        internal static void ItemListMenuPatch(ItemListMenu __instance, string ___title, int ___currentTab, int ___totalValueOfItems, List<Item> ___itemsToList)
         {
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ", currentList = " ";
 
-                if (__instance.heldItem != null)
+                for (int i = ___currentTab * __instance.itemsPerCategoryPage; i < ___currentTab * __instance.itemsPerCategoryPage + __instance.itemsPerCategoryPage; i++)
                 {
-                    // Museum Inventory
-                    string toSpeak = "";
-                    int tileX = (int)(Utility.ModifyCoordinateFromUIScale(x) + (float)Game1.viewport.X) / 64;
-                    int tileY = (int)(Utility.ModifyCoordinateFromUIScale(y) + (float)Game1.viewport.Y) / 64;
-                    LibraryMuseum libraryMuseum = (LibraryMuseum)Game1.currentLocation;
+                    if (i == 0)
+                        currentList = ___title;
 
-                    if (libraryMuseum.isTileSuitableForMuseumPiece(tileX, tileY))
-                        toSpeak = $"slot {tileX}x {tileY}y";
-
-                    if (museumQueryKey != toSpeak)
+                    if (___itemsToList.Count > i)
                     {
-                        museumQueryKey = toSpeak;
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        if (___itemsToList[i] == null)
+                        {
+                            currentList = $"{currentList}, \n" + Game1.content.LoadString("Strings\\UI:ItemList_ItemsLostValue", ___totalValueOfItems);
+                            continue;
+                        }
+
+                        currentList = $"{currentList}, \n {___itemsToList[i].Stack} {___itemsToList[i].DisplayName}";
                     }
                 }
-                else
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                    toSpeak = $"Page {___currentTab + 1} of {((int)___itemsToList.Count / __instance.itemsPerCategoryPage) + 1} \n {currentList} \n ok button";
+                else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
+                    toSpeak = "Next page button";
+                else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
+                    toSpeak = "Previous page button";
+
+                if (itemListMenuQuery != toSpeak)
                 {
-                    // Player Inventory
-                    if (!narrateHoveredItemInInventory(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
-                    {
-                        if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
-                        {
-                            if (museumQueryKey != $"ok button")
-                            {
-                                museumQueryKey = $"ok button";
-                                MainClass.GetScreenReader().Say("ok button", true);
-                            }
-                        }
-                    }
+                    itemListMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, true);
                 }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
-        #endregion
 
-        internal static bool narrateHoveredItemInInventory(InventoryMenu inventoryMenu, List<ClickableComponent> inventory, IList<Item> actualInventory, int x, int y)
+        internal static void ForgeMenuPatch(ForgeMenu __instance)
         {
-            #region Narrate hovered item
-            for (int i = 0; i < inventory.Count; i++)
+            try
             {
-                if (inventory[i].containsPoint(x, y))
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ";
+
+                if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
                 {
-                    string toSpeak = "";
-                    if ((i + 1) <= actualInventory.Count)
+                    if (__instance.leftIngredientSpot.item == null)
                     {
-                        if (actualInventory[i] != null)
-                        {
-                            string name = actualInventory[i].DisplayName;
-                            int stack = actualInventory[i].Stack;
-                            string quality = "";
-
-                            #region Add quality of item
-                            if (actualInventory[i] is StardewValley.Object && ((StardewValley.Object)actualInventory[i]).quality > 0)
-                            {
-                                int qualityIndex = ((StardewValley.Object)actualInventory[i]).quality;
-                                if (qualityIndex == 1)
-                                {
-                                    quality = "Silver quality";
-                                }
-                                else if (qualityIndex == 2 || qualityIndex == 3)
-                                {
-                                    quality = "Gold quality";
-                                }
-                                else if (qualityIndex >= 4)
-                                {
-                                    quality = "Iridium quality";
-                                }
-                            }
-                            #endregion
-
-                            if (inventoryMenu.highlightMethod(inventoryMenu.actualInventory[i]))
-                                name = $"Donatable {name}";
-
-                            if (stack > 1)
-                                toSpeak = $"{stack} {name} {quality}";
-                            else
-                                toSpeak = $"{name} {quality}";
-                        }
-                        else
-                        {
-                            // For empty slot
-                            toSpeak = "Empty Slot";
-                        }
+                        toSpeak = "Input weapon or tool here";
                     }
                     else
                     {
-                        // For empty slot
-                        toSpeak = "Empty Slot";
+                        Item item = __instance.leftIngredientSpot.item;
+                        toSpeak = $"Weapon slot: {item.Stack} {item.DisplayName}";
                     }
-
-                    if (museumQueryKey != $"{toSpeak}:{i}")
+                }
+                else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.rightIngredientSpot.item == null)
                     {
-                        museumQueryKey = $"{toSpeak}:{i}";
-                        MainClass.GetScreenReader().Say(toSpeak, true);
+                        toSpeak = "Input gemstone here";
                     }
-                    return true;
+                    else
+                    {
+                        Item item = __instance.rightIngredientSpot.item;
+                        toSpeak = $"Gemstone slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
+                {
+                    toSpeak = "Star forging button";
+                }
+                else if (__instance.unforgeButton != null && __instance.unforgeButton.containsPoint(x, y))
+                {
+                    toSpeak = "Unforge button";
+                }
+                else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    toSpeak = "Trashcan";
+                }
+                else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    toSpeak = "ok button";
+                }
+                else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    toSpeak = "drop item";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
+                {
+                    toSpeak = "Left ring Slot";
+
+                    if (Game1.player.leftRing.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.leftRing.Value.DisplayName}";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
+                {
+                    toSpeak = "Right ring Slot";
+
+                    if (Game1.player.rightRing.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.rightRing.Value.DisplayName}";
+                }
+                else
+                {
+                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
+                    {
+                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
+                            continue;
+
+                        if (__instance.inventory.actualInventory[i] == null)
+                            toSpeak = "Empty slot";
+                        else
+                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                        if (forgeMenuQuery != $"{toSpeak}:{i}")
+                        {
+                            forgeMenuQuery = $"{toSpeak}:{i}";
+                            MainClass.ScreenReader.Say(toSpeak, true);
+                        }
+
+                        return;
+                    }
+                }
+
+
+                if (forgeMenuQuery != toSpeak)
+                {
+                    forgeMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, true);
+
+                    if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                        Game1.playSound("drop_item");
                 }
             }
-            #endregion
-            return false;
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static void PondQueryMenuPatch(PondQueryMenu __instance, StardewValley.Object ____fishItem, FishPond ____pond, string ____statusText, bool ___confirmingEmpty)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C);
+                string toSpeak = " ", extra = "";
+
+                if (___confirmingEmpty)
+                {
+                    if (__instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
+                        toSpeak = "Confirm button";
+                    else if (__instance.noButton != null && __instance.noButton.containsPoint(x, y))
+                        toSpeak = "Cancel button";
+                }
+                else
+                {
+                    if (isCPressed && !isNarratingPondInfo)
+                    {
+                        string pond_name_text = Game1.content.LoadString("Strings\\UI:PondQuery_Name", ____fishItem.DisplayName);
+                        string population_text = Game1.content.LoadString("Strings\\UI:PondQuery_Population", string.Concat(____pond.FishCount), ____pond.maxOccupants.Value);
+                        bool has_unresolved_needs = ____pond.neededItem.Value != null && ____pond.HasUnresolvedNeeds() && !____pond.hasCompletedRequest.Value;
+                        string bring_text = "";
+
+                        if (has_unresolved_needs && ____pond.neededItem.Value != null)
+                            bring_text = Game1.content.LoadString("Strings\\UI:PondQuery_StatusRequest_Bring") + $": {____pond.neededItemCount} {____pond.neededItem.Value.DisplayName}";
+
+                        extra = $"{pond_name_text} {population_text} {bring_text} Status: {____statusText}";
+                        pondQueryMenuQuery = " ";
+
+                        isNarratingPondInfo = true;
+                        Task.Delay(200).ContinueWith(_ => { isNarratingPondInfo = false; });
+                    }
+
+                    if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                        toSpeak = "Ok button";
+                    else if (__instance.changeNettingButton != null && __instance.changeNettingButton.containsPoint(x, y))
+                        toSpeak = "Change netting button";
+                    else if (__instance.emptyButton != null && __instance.emptyButton.containsPoint(x, y))
+                        toSpeak = "Empty pond button";
+                }
+
+                if (pondQueryMenuQuery != toSpeak)
+                {
+                    pondQueryMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(extra + " \n\t" + toSpeak, true);
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static void TailoringMenuPatch(TailoringMenu __instance)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = " ";
+
+                if (__instance.leftIngredientSpot != null && __instance.leftIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.leftIngredientSpot.item == null)
+                    {
+                        toSpeak = "Input cloth here";
+                    }
+                    else
+                    {
+                        Item item = __instance.leftIngredientSpot.item;
+                        toSpeak = $"Cloth slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
+                {
+                    if (__instance.rightIngredientSpot.item == null)
+                    {
+                        toSpeak = "Input ingredient here";
+                    }
+                    else
+                    {
+                        Item item = __instance.rightIngredientSpot.item;
+                        toSpeak = $"Ingredient slot: {item.Stack} {item.DisplayName}";
+                    }
+                }
+                else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))
+                {
+                    toSpeak = "Star tailoring button";
+                }
+                else if (__instance.trashCan != null && __instance.trashCan.containsPoint(x, y))
+                {
+                    toSpeak = "Trashcan";
+                }
+                else if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                {
+                    toSpeak = "ok button";
+                }
+                else if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                {
+                    toSpeak = "drop item";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[0].containsPoint(x, y))
+                {
+                    toSpeak = "Hat Slot";
+
+                    if (Game1.player.hat.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.hat.Value.DisplayName}";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[1].containsPoint(x, y))
+                {
+                    toSpeak = "Shirt Slot";
+
+                    if (Game1.player.shirtItem.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.shirtItem.Value.DisplayName}";
+                }
+                else if (__instance.equipmentIcons.Count > 0 && __instance.equipmentIcons[2].containsPoint(x, y))
+                {
+                    toSpeak = "Pants Slot";
+
+                    if (Game1.player.pantsItem.Value != null)
+                        toSpeak = $"{toSpeak}: {Game1.player.pantsItem.Value.DisplayName}";
+                }
+                else
+                {
+                    for (int i = 0; i < __instance.inventory.inventory.Count; i++)
+                    {
+                        if (!__instance.inventory.inventory[i].containsPoint(x, y))
+                            continue;
+
+                        if (__instance.inventory.actualInventory[i] == null)
+                            toSpeak = "Empty slot";
+                        else
+                            toSpeak = $"{__instance.inventory.actualInventory[i].Stack} {__instance.inventory.actualInventory[i].DisplayName}";
+
+                        if (tailoringMenuQuery != $"{toSpeak}:{i}")
+                        {
+                            tailoringMenuQuery = $"{toSpeak}:{i}";
+                            MainClass.ScreenReader.Say(toSpeak, true);
+                        }
+
+                        return;
+                    }
+                }
+
+
+                if (tailoringMenuQuery != toSpeak)
+                {
+                    tailoringMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say(toSpeak, true);
+
+                    if (__instance.dropItemInvisibleButton != null && __instance.dropItemInvisibleButton.containsPoint(x, y))
+                        Game1.playSound("drop_item");
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static void ChooseFromListMenuPatch(ChooseFromListMenu __instance, List<string> ___options, int ___index, bool ___isJukebox)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                string toSpeak = "";
+
+                if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                    toSpeak = "Select " + (___isJukebox ? Utility.getSongTitleFromCueName(___options[___index]) : ___options[___index]) + " button";
+                else if (__instance.cancelButton != null && __instance.cancelButton.containsPoint(x, y))
+                    toSpeak = "Cancel button";
+                else if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
+                    toSpeak = "Previous option: " + (___isJukebox ? Utility.getSongTitleFromCueName(___options[Math.Max(0, ___index - 1)]) : ___options[Math.Max(0, ___index - 1)]) + " button";
+                else if (__instance.forwardButton != null && __instance.forwardButton.containsPoint(x, y))
+                    toSpeak = "Next option: " + (___isJukebox ? Utility.getSongTitleFromCueName(___options[Math.Min(___options.Count, ___index + 1)]) : ___options[Math.Min(___options.Count, ___index + 1)]) + " button";
+
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static void AnimalQueryMenuPatch(AnimalQueryMenu __instance, bool ___confirmingSell, FarmAnimal ___animal, TextBox ___textBox, string ___parentName)
+        {
+            try
+            {
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C); // For narrating animal details
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+                string toSpeak = " ", details = " ";
+
+                if (___textBox.Selected)
+                {
+                    toSpeak = ___textBox.Text;
+
+                    if (isEscPressed)
+                    {
+                        ___textBox.Selected = false;
+                    }
+                }
+                else
+                {
+                    if (isCPressed & !isNarratingAnimalInfo)
+                    {
+                        string name = ___animal.displayName;
+                        string type = ___animal.displayType;
+                        int age = (___animal.GetDaysOwned() + 1) / 28 + 1;
+                        string ageText = (age <= 1) ? Game1.content.LoadString("Strings\\UI:AnimalQuery_Age1") : Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeN", age);
+                        string parent = "";
+                        if ((int)___animal.age.Value < (byte)___animal.ageWhenMature.Value)
+                        {
+                            ageText += Game1.content.LoadString("Strings\\UI:AnimalQuery_AgeBaby");
+                        }
+                        if (___parentName != null)
+                        {
+                            parent = Game1.content.LoadString("Strings\\UI:AnimalQuery_Parent", ___parentName);
+                        }
+
+                        details = $"Name: {name} Type: {type} \n\t Age: {ageText} {parent}";
+                        animalQueryMenuQuery = " ";
+
+                        isNarratingAnimalInfo = true;
+                        Task.Delay(200).ContinueWith(_ => { isNarratingAnimalInfo = false; });
+                    }
+
+                    if (__instance.okButton != null && __instance.okButton.containsPoint(x, y))
+                        toSpeak = "OK button";
+                    else if (__instance.sellButton != null && __instance.sellButton.containsPoint(x, y))
+                        toSpeak = $"Sell for {___animal.getSellPrice()}g button";
+                    else if (___confirmingSell && __instance.yesButton != null && __instance.yesButton.containsPoint(x, y))
+                        toSpeak = "Confirm selling animal";
+                    else if (___confirmingSell && __instance.noButton != null && __instance.noButton.containsPoint(x, y))
+                        toSpeak = "Cancel selling animal";
+                    else if (__instance.moveHomeButton != null && __instance.moveHomeButton.containsPoint(x, y))
+                        toSpeak = "Change home building button";
+                    else if (__instance.allowReproductionButton != null && __instance.allowReproductionButton.containsPoint(x, y))
+                        toSpeak = ((___animal.allowReproduction.Value) ? "Enabled" : "Disabled") + " allow reproduction button";
+                    else if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
+                        toSpeak = "Animal name text box";
+                }
+
+                if (animalQueryMenuQuery != toSpeak)
+                {
+                    animalQueryMenuQuery = toSpeak;
+                    MainClass.ScreenReader.Say($"{details} {toSpeak}", true);
+                }
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
         }
 
         internal static bool PlaySoundPatch(string cueName)
@@ -175,7 +447,7 @@ namespace stardew_access.Patches
                 if (cueName == "grassyStep" || cueName == "sandyStep" || cueName == "snowyStep" || cueName == "stoneStep" || cueName == "thudStep" || cueName == "woodyStep")
                 {
                     Vector2 nextTile = CurrentPlayer.getNextTile();
-                    if (ReadTile.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
+                    if (TileInfo.isCollidingAtTile((int)nextTile.X, (int)nextTile.Y))
                     {
                         if (prevTile != nextTile)
                         {
@@ -202,13 +474,13 @@ namespace stardew_access.Patches
 
                 if (__instance.nextPageButton != null && __instance.nextPageButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker($"Next Page Button", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"Next Page Button", true);
                     return;
                 }
 
                 if (__instance.previousPageButton != null && __instance.previousPageButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker($"Previous Page Button", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"Previous Page Button", true);
                     return;
                 }
 
@@ -216,7 +488,7 @@ namespace stardew_access.Patches
                 {
                     if (__instance.languages[i].containsPoint(x, y))
                     {
-                        MainClass.GetScreenReader().SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
+                        MainClass.ScreenReader.SayWithMenuChecker($"{__instance.languageList[i]} Button", true);
                         break;
                     }
                 }
@@ -236,7 +508,7 @@ namespace stardew_access.Patches
                 {
                     if (___elevators[i].containsPoint(x, y))
                     {
-                        MainClass.GetScreenReader().SayWithMenuChecker($"{___elevators[i].name} level", true);
+                        MainClass.ScreenReader.SayWithMenuChecker($"{___elevators[i].name} level", true);
                         break;
                     }
                 }
@@ -247,15 +519,61 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void NamingMenuPatch(NamingMenu __instance, string title, TextBox ___textBox)
+        internal static void TitleTextInputMenuPatch(TitleTextInputMenu __instance)
         {
             try
             {
-                __instance.textBoxCC.snapMouseCursor();
-                ___textBox.SelectMe();
-                string toSpeak = $"{title}";
+                string toSpeak = "";
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                if (__instance.pasteButton != null && __instance.pasteButton.containsPoint(x, y))
+                    toSpeak = $"Paste button";
+
+                if (toSpeak != "")
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
+            }
+            catch (System.Exception e)
+            {
+                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
+            }
+        }
+
+        internal static void NamingMenuPatch(NamingMenu __instance, TextBox ___textBox, string ___title)
+        {
+            try
+            {
+                string toSpeak = "";
+                int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+                bool isEscPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape); // For escaping/unselecting from the animal name text box
+
+                if (firstTimeInNamingMenu)
+                {
+                    firstTimeInNamingMenu = false;
+                    ___textBox.Selected = false;
+                }
+
+                if (___textBox.Selected)
+                {
+                    ___textBox.Update();
+                    toSpeak = ___textBox.Text;
+
+                    if (isEscPressed)
+                    {
+                        ___textBox.Selected = false;
+                    }
+                }
+                else
+                {
+                    if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
+                        toSpeak = $"{___title} text box";
+                    else if (__instance.doneNamingButton != null && __instance.doneNamingButton.containsPoint(x, y))
+                        toSpeak = $"Done naming button";
+                    else if (__instance.randomButton != null && __instance.randomButton.containsPoint(x, y))
+                        toSpeak = $"Random button";
+                }
+
+                if (toSpeak != "")
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -268,16 +586,18 @@ namespace stardew_access.Patches
             try
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true);
+                string toSpeak = ___message;
 
-                MainClass.GetScreenReader().SayWithMenuChecker(___message, true);
                 if (__instance.okButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker("Ok Button", false);
+                    toSpeak += "\n\tOk Button";
                 }
                 else if (__instance.cancelButton.containsPoint(x, y))
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker("Cancel Button", false);
+                    toSpeak += "\n\tCancel Button";
                 }
+
+                MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -369,10 +689,10 @@ namespace stardew_access.Patches
                 }
 
                 if (toSpeak != " ")
-                    MainClass.GetScreenReader().SayWithMenuChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true);
                 else if (__instance.isProfessionChooser && currentLevelUpTitle != $"{___title}. Select a new profession.")
                 {
-                    MainClass.GetScreenReader().SayWithMenuChecker($"{___title}. Select a new profession.", true);
+                    MainClass.ScreenReader.SayWithMenuChecker($"{___title}. Select a new profession.", true);
                     currentLevelUpTitle = $"{___title}. Select a new profession.";
                 }
             }
@@ -399,94 +719,20 @@ namespace stardew_access.Patches
                             Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                         }
                         toSpeak = $"{total}g in total. Press left mouse button to save.";
-                        MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                     }
                     for (int i = 0; i < __instance.categories.Count; i++)
                     {
                         if (__instance.categories[i].containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                         {
                             toSpeak = $"Money recieved from {__instance.getCategoryName(i)}: {___categoryTotals[i]}g.";
-                            MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                            MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
-            }
-        }
-
-        internal static void LetterViewerMenuPatch(LetterViewerMenu __instance)
-        {
-            try
-            {
-                if (!__instance.IsActive())
-                    return;
-
-                int x = Game1.getMousePosition().X, y = Game1.getMousePosition().Y;
-                #region Texts in the letter
-                string message = __instance.mailMessage[__instance.page];
-
-                string toSpeak = $"{message}";
-
-                if (__instance.ShouldShowInteractable())
-                {
-                    if (__instance.moneyIncluded > 0)
-                    {
-                        string moneyText = Game1.content.LoadString("Strings\\UI:LetterViewer_MoneyIncluded", __instance.moneyIncluded);
-                        toSpeak += $"\t\n\t ,Included money: {moneyText}";
-                    }
-                    else if (__instance.learnedRecipe != null && __instance.learnedRecipe.Length > 0)
-                    {
-                        string recipeText = Game1.content.LoadString("Strings\\UI:LetterViewer_LearnedRecipe", __instance.cookingOrCrafting);
-                        toSpeak += $"\t\n\t ,Learned Recipe: {recipeText}";
-                    }
-                }
-
-                if (currentLetterText != toSpeak)
-                {
-                    currentLetterText = toSpeak;
-
-                    // snap mouse to accept quest button
-                    if (__instance.acceptQuestButton != null && __instance.questID != -1)
-                    {
-                        toSpeak += "\t\n Left click to accept quest.";
-                        __instance.acceptQuestButton.snapMouseCursorToCenter();
-                    }
-                    if (__instance.mailMessage.Count > 1)
-                        toSpeak = $"Page {__instance.page + 1} of {__instance.mailMessage.Count}:\n\t{toSpeak}";
-
-                    MainClass.GetScreenReader().Say(toSpeak, false);
-                }
-                #endregion
-
-                #region Narrate items given in the mail
-                if (__instance.ShouldShowInteractable())
-                {
-                    foreach (ClickableComponent c in __instance.itemsToGrab)
-                    {
-                        string name = c.name;
-                        string label = c.label;
-
-                        if (c.containsPoint(x, y))
-                            MainClass.GetScreenReader().SayWithChecker($"Grab: {name} \t\n {label}", false);
-                    }
-                }
-                #endregion
-
-                #region Narrate buttons
-                if (__instance.backButton != null && __instance.backButton.visible && __instance.backButton.containsPoint(x, y))
-                    MainClass.GetScreenReader().SayWithChecker($"Previous page button", false);
-
-                if (__instance.forwardButton != null && __instance.forwardButton.visible && __instance.forwardButton.containsPoint(x, y))
-                    MainClass.GetScreenReader().SayWithChecker($"Next page button", false);
-
-                #endregion
-            }
-            catch (Exception e)
-            {
-
                 MainClass.ErrorLog($"Unable to narrate Text:\n{e.Message}\n{e.StackTrace}");
             }
         }
@@ -518,7 +764,19 @@ namespace stardew_access.Patches
 
         private static void Cleanup(IClickableMenu menu)
         {
-            if (menu is GameMenu)
+            if (menu is LetterViewerMenu)
+            {
+                DialoguePatches.currentLetterText = " ";
+            }
+            else if (menu is LevelUpMenu)
+            {
+                currentLevelUpTitle = " ";
+            }
+            else if (menu is Billboard)
+            {
+                QuestPatches.currentDailyQuestText = " ";
+            }
+            else if (menu is GameMenu)
             {
                 GameMenuPatches.gameMenuQueryKey = "";
                 GameMenuPatches.craftingPageQueryKey = "";
@@ -529,31 +787,26 @@ namespace stardew_access.Patches
                 GameMenuPatches.currentSelectedCraftingRecipe = -1;
                 GameMenuPatches.isSelectingRecipe = false;
             }
-
-            if (menu is JunimoNoteMenu)
+            else if (menu is JunimoNoteMenu)
             {
-                GameMenuPatches.currentIngredientListItem = -1;
-                GameMenuPatches.currentIngredientInputSlot = -1;
-                GameMenuPatches.currentInventorySlot = -1;
-                GameMenuPatches.junimoNoteMenuQuery = "";
+                BundleMenuPatches.currentIngredientListItem = -1;
+                BundleMenuPatches.currentIngredientInputSlot = -1;
+                BundleMenuPatches.currentInventorySlot = -1;
+                BundleMenuPatches.junimoNoteMenuQuery = "";
             }
-
-            if (menu is ShopMenu)
+            else if (menu is ShopMenu)
             {
                 GameMenuPatches.shopMenuQueryKey = "";
             }
-
-            if (menu is ItemGrabMenu)
+            else if (menu is ItemGrabMenu)
             {
                 GameMenuPatches.itemGrabMenuQueryKey = "";
             }
-
-            if (menu is GeodeMenu)
+            else if (menu is GeodeMenu)
             {
                 GameMenuPatches.geodeMenuQueryKey = "";
             }
-
-            if (menu is CarpenterMenu)
+            else if (menu is CarpenterMenu)
             {
                 BuildingNAnimalMenuPatches.carpenterMenuQuery = "";
                 BuildingNAnimalMenuPatches.isUpgrading = false;
@@ -563,18 +816,48 @@ namespace stardew_access.Patches
                 BuildingNAnimalMenuPatches.isConstructing = false;
                 BuildingNAnimalMenuPatches.carpenterMenu = null;
             }
-
-            if (menu is PurchaseAnimalsMenu)
+            else if (menu is PurchaseAnimalsMenu)
             {
                 BuildingNAnimalMenuPatches.purchaseAnimalMenuQuery = "";
                 BuildingNAnimalMenuPatches.firstTimeInNamingMenu = true;
                 BuildingNAnimalMenuPatches.purchaseAnimalsMenu = null;
             }
-
-            if (menu is DialogueBox)
+            else if (menu is DialogueBox)
             {
                 DialoguePatches.isDialogueAppearingFirstTime = true;
                 DialoguePatches.currentDialogue = " ";
+            }
+            else if (menu is JojaCDMenu)
+            {
+                BundleMenuPatches.jojaCDMenuQuery = "";
+            }
+            else if (menu is QuestLog)
+            {
+                QuestPatches.questLogQuery = " ";
+            }
+            else if (menu is TailoringMenu)
+            {
+                tailoringMenuQuery = " ";
+            }
+            else if (menu is ForgeMenu)
+            {
+                forgeMenuQuery = " ";
+            }
+            else if (menu is ItemListMenu)
+            {
+                itemListMenuQuery = " ";
+            }
+            else if (menu is FieldOfficeMenu)
+            {
+                DonationMenuPatches.fieldOfficeMenuQuery = " ";
+            }
+            else if (menu is MuseumMenu)
+            {
+                DonationMenuPatches.museumQueryKey = " ";
+            }
+            else if (menu is PondQueryMenu)
+            {
+                pondQueryMenuQuery = " ";
             }
 
             GameMenuPatches.hoveredItemQueryKey = "";
@@ -583,13 +866,8 @@ namespace stardew_access.Patches
 
         internal static void ExitEventPatch()
         {
-            if (MainClass.GetScreenReader() != null)
-                MainClass.GetScreenReader().CloseScreenReader();
-        }
-        internal static void resetGlobalVars()
-        {
-            currentLetterText = " ";
-            currentLevelUpTitle = " ";
+            if (MainClass.ScreenReader != null)
+                MainClass.ScreenReader.CloseScreenReader();
         }
     }
 }

@@ -51,7 +51,8 @@ namespace UIInfoSuite.Options
 
         public ModOptionsPageHandler(IModHelper helper, ModOptions _options, bool showPersonalConfigButton)
         {
-            if(showPersonalConfigButton) {
+            if (showPersonalConfigButton)
+            {
                 helper.Events.Display.MenuChanged += ToggleModOptions;
             }
             _helper = helper;
@@ -64,7 +65,7 @@ namespace UIInfoSuite.Options
             _showCalendarAndBillboardOnGameMenuButton = new ShowCalendarAndBillboardOnGameMenuButton(helper);
             _showScarecrowAndSprinklerRange = new ShowItemEffectRanges(helper);
             _experienceBar = new ExperienceBar(helper);
-            _showItemHoverInformation = new ShowItemHoverInformation(helper.Events);
+            _showItemHoverInformation = new ShowItemHoverInformation(helper);
             _shopHarvestPrices = new ShopHarvestPrices(helper);
             _showQueenOfSauceIcon = new ShowQueenOfSauceIcon(helper);
             _showTravelingMerchant = new ShowTravelingMerchant(helper);
@@ -106,7 +107,9 @@ namespace UIInfoSuite.Options
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowExperienceGain)), whichOption++, _experienceBar.ToggleShowExperienceGain, () => _options.ShowExperienceGain, v => _options.ShowExperienceGain = v));
             if (!_helper.ModRegistry.IsLoaded("Bouhm.NPCMapLocations"))
                 _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowLocationOfTownsPeople)), whichOption++, _locationOfTownsfolk.ToggleShowNPCLocationsOnMap, () => _options.ShowLocationOfTownsPeople, v => _options.ShowLocationOfTownsPeople = v));
-            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowBirthdayIcon)), whichOption++, _showBirthdayIcon.ToggleOption, () => _options.ShowBirthdayIcon, v => _options.ShowBirthdayIcon = v));
+            var BirthdayIcon = new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowBirthdayIcon)), whichOption++, _showBirthdayIcon.ToggleOption, () => _options.ShowBirthdayIcon, v => _options.ShowBirthdayIcon = v);
+            _optionsElements.Add(BirthdayIcon);
+            _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.HideBirthdayIfFullFriendShip)), whichOption++, _showBirthdayIcon.ToggleDisableOnMaxFriendshipOption, () => _options.HideBirthdayIfFullFriendShip, v => _options.HideBirthdayIfFullFriendShip = v, BirthdayIcon));
             _optionsElements.Add(new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowHeartFills)), whichOption++, _showAccurateHearts.ToggleOption, () => _options.ShowHeartFills, v => _options.ShowHeartFills = v));
             var animalPetIcon = new ModOptionsCheckbox(_helper.SafeGetString(nameof(_options.ShowAnimalsNeedPets)), whichOption++, _showWhenAnimalNeedsPet.ToggleOption, () => _options.ShowAnimalsNeedPets, v => _options.ShowAnimalsNeedPets = v);
             _optionsElements.Add(animalPetIcon);

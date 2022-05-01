@@ -6,9 +6,9 @@ mods:
    Customize Wedding Attire
 
 latest commit:
-   commit f5c8a95d7fcf598021c8192fedee240dcd3609da
+   commit 536af1caee7166cd3a062d64be11f76b3c7563a6
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Mon Mar 7 19:26:03 2022 -0500
+   Date:   Sat Apr 2 19:32:39 2022 -0400
    
-       Updating release notes for v1.0.2
+       Editing testing process
    

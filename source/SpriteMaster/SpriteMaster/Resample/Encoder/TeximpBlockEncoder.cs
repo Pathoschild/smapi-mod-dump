@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
@@ -42,7 +43,7 @@ static class TeximpBlockEncoder {
 		}
 
 		var oldSpriteFormat = format;
-		
+
 		try {
 			using var compressor = new Compressor();
 			compressor.Input.AlphaMode = (hasAlpha) ? AlphaMode.Premultiplied : AlphaMode.None;

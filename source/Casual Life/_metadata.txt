@@ -6,15 +6,13 @@ mods:
    Casual Life
 
 latest commit:
-   commit efe9a3c67e4030c66df96a5229c9f4db3eb110f6
-   Merge: 0286438 88f4282
-   Author: David Rath <37800482+adverserath@users.noreply.github.com>
-   Date:   Fri Mar 4 16:28:33 2022 +0000
+   commit 31768fb6ec88b97a6f8091d1ca6a801abbae7095
+   Author: David Rath <adverserath@gmail.com>
+   Date:   Tue Apr 19 01:12:17 2022 +0100
    
-       Merge pull request #2 from ayumi-chizuru189/Test2
-       
-       add an option for 24 Hours by default
-       
-       
-       Many thanks to coder input.
+       Update decompiled code
+       Remove Comments
+       Default to 24 hour
+       Fix Control for moving back a day
+       Update season graphics when skipping between them
    

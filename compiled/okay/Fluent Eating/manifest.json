@@ -1,0 +1,9 @@
+{
+  "Name": "Fluent Eating",
+  "Author": "Kangzoel",
+  "Version": "2.1.3",
+  "Description": "Auto-Eat without confirmation dialogue",
+  "UniqueID": "Kangzoel.FluentEating",
+  "EntryDll": "FluentEating.dll",
+  "UpdateKeys": [ "Nexus:11690" ]
+}

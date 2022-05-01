@@ -1,5 +1,13 @@
 # Full changelog
 
+## 0.17.5 "Blackhole"
+
+- Force sword for level 10 when combat level is out of range (higher than 10)
+
+## 0.17.4 "Blackhole"
+
+- Removed useless harmony patch checker
+
 ## 0.17.3 "Blackhole"
 
 - Friendly and safe error when something failed while applying patch by a content pack

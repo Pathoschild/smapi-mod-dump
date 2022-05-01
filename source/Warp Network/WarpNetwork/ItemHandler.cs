@@ -88,16 +88,15 @@ namespace WarpNetwork
             return (
                     !who.UsingTool &&
                     !Game1.pickingTool &&
-                    !Game1.menuUp &&
                     Game1.activeClickableMenu is null &&
                     !Game1.eventUp &&
                     !Game1.isFestival() &&
                     !Game1.nameSelectUp &&
                     Game1.numberOfSelectedItems == -1 &&
                     !Game1.fadeToBlack &&
-                    !who.swimming &&
-                    !who.bathingClothes &&
-                    !who.onBridge
+                    !who.swimming.Value &&
+                    !who.bathingClothes.Value &&
+                    !who.onBridge.Value
                     );
         }
         private static void DoTotemWarpEffects(Color color, string id, bool Consume, Farmer who, Func<Farmer, bool> action)

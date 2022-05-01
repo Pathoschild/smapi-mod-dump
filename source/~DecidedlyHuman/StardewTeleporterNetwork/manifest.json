@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "[SMAPI] Stardew Teleporter Network",
+	"Author": "DecidedlyHuman",
+	"Version": "1.0.0-indev",
+	"Description": "Gives you teleporters you can place down around the world.",
+	"UniqueID": "DecidedlyHuman.StardewTeleporterNetwork",
+	"EntryDll": "StardewTeleporterNetwork.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:00000"
+	]
+}

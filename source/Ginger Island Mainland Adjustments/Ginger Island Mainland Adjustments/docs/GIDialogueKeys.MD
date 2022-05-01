@@ -68,3 +68,5 @@ The vanilla resort keys are as following, documented here for easy access
 ### Marriage keys
 
 The keys `GILeave_<NPCname>` and `GIReturn_<NPCname>` will be used by married characters, similar to how `FunLeave_<NPCname>` and `FunReturn_<NPCname>` work. Examples can be found [here](https://github.com/atravita-mods/Ginger-Island-Mainland-Adjustments/blob/master/%5BCP%5D%20Ginger%20Island%20Mainland%20Adjustments/assets/default/marriage_dialogue.json).
+
+The key `GIReturn_Talked_<NPCname>` will be used, if it exists, if you've talked to your spouse while on the Island.

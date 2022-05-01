@@ -8,10 +8,10 @@
 **
 *************************************************/
 
-//#define PROFILE_STABLESORT
-
 using HarmonyLib;
+using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
+
 static class StableSort {
 	private static readonly Type? SpriteBatchItemType = typeof(XNA.Graphics.SpriteBatch).Assembly.GetType("Microsoft.Xna.Framework.Graphics.SpriteBatchItem");
 	private static readonly Func<object?, float>? GetSortKeyImpl = SpriteBatchItemType?.GetFieldGetter<object?, float>("SortKey");
@@ -97,7 +98,7 @@ static class StableSort {
 			return;
 		}
 
-		if (!Config.Enabled || !Config.Extras.StableSort) {
+		if (!Config.IsEnabled || !Config.Extras.StableSort) {
 			Array.Sort(array, index, length);
 			return;
 		}
@@ -141,7 +142,7 @@ static class StableSort {
 					instruction.opcode.Value != OpCodes.Call.Value ||
 					instruction.operand is not MethodInfo callee ||
 					!callee.IsGenericMethod ||
-					callee.GetGenericArguments().FirstOrDefault() != SpriteBatchItemType ||
+					callee.GetGenericArguments().FirstOrDefaultF() != SpriteBatchItemType ||
 					callee.DeclaringType != typeof(Array) ||
 					callee.Name != "Sort" ||
 					callee.GetParameters().Length != 3

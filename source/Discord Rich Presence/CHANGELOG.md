@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
 
 ## [2.4.2] - 2021-12-02
 ### Added
@@ -74,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Finally fixed Linux and Mac support and re-added the auto setup.
 
-## [2.3.0-beta1] - 2019-05-12
+## [2.3.0-beta.1] - 2019-05-12
 ### Added
 - Re-added RPC handler listeners.
 - Support for Ask to Join, with a config option to disable it.
@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Changed to new Discord Game SDK.
-- API's `FormatText' function now returns `""` instead of `null` if given an empty string.
+- API's `FormatText` function now returns `""` instead of `null` if given an empty string.
 
 ### Removed
 - Automatic Mac and Linux setup because it's no longer needed.
@@ -169,17 +169,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed Discord event handlers due to them not triggering.
 
 [Unreleased]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.2...HEAD
-[2.4.2]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.1..v2.4.2
+[2.4.2]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.1...v2.4.2
 [2.4.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.1...v2.4.0
 [2.3.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.0...v2.3.1
-[2.3.0]: https://github.com/FayneAldan/SVRichPresence/compare/2.3.0-beta1...v2.3.0
-[2.3.0-beta1]: https://github.com/FayneAldan/SVRichPresence/compare/2.2.2...2.3.0-beta1
-[2.2.2]: https://github.com/FayneAldan/SVRichPresence/compare/2.2.1...2.2.2
-[2.2.1]: https://github.com/FayneAldan/SVRichPresence/compare/2.2.0...2.2.1
-[2.2.0]: https://github.com/FayneAldan/SVRichPresence/compare/2.0.1...2.2.0
-[2.0.1]: https://github.com/FayneAldan/SVRichPresence/compare/2.0.0...2.0.1
-[2.0.0]: https://github.com/FayneAldan/SVRichPresence/compare/1.2.1...2.0.0
-[1.2.1]: https://github.com/FayneAldan/SVRichPresence/compare/1.2.0...1.2.1
-[1.2.0]: https://github.com/FayneAldan/SVRichPresence/compare/1.1.0...1.2.0
-[1.1.0]: https://github.com/FayneAldan/SVRichPresence/releases/tag/1.1.0
+[2.3.0]: https://github.com/FayneAldan/SVRichPresence/compare/v2.3.0-beta.1...v2.3.0
+[2.3.0-beta.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.2.2...v2.3.0-beta.1
+[2.2.2]: https://github.com/FayneAldan/SVRichPresence/compare/v2.2.1...v2.2.2
+[2.2.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.2.0...v2.2.1
+[2.2.0]: https://github.com/FayneAldan/SVRichPresence/compare/v2.0.1...v2.2.0
+[2.0.1]: https://github.com/FayneAldan/SVRichPresence/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/FayneAldan/SVRichPresence/compare/v1.2.1...v2.0.0
+[1.2.1]: https://github.com/FayneAldan/SVRichPresence/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/FayneAldan/SVRichPresence/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/FayneAldan/SVRichPresence/releases/tag/v1.1.0

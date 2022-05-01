@@ -171,7 +171,8 @@
     "Emotion": "Grumpy",
     "Situation": "Working",
     "When": {
-      "Season": "Summer"
+      "Season": "Summer",
+      "Weather": "Sun"
     }
   },
   {

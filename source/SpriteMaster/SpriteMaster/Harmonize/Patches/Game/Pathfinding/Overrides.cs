@@ -8,11 +8,12 @@
 **
 *************************************************/
 
+using LinqFasterer;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using StardewValley;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ static partial class Pathfinding {
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static bool GetLocationRoute(NPC __instance, ref List<string>? __result, string startingLocation, string endingLocation) {
-		if (!Config.Enabled || !Config.Extras.OptimizeWarpPoints) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.OptimizeWarpPoints) {
 			return true;
 		}
 
@@ -50,6 +51,8 @@ static partial class Pathfinding {
 		return true;
 	}
 
+
+
 	[Harmonize(
 		typeof(NPC),
 		"populateRoutesFromLocationToLocationList",
@@ -60,17 +63,19 @@ static partial class Pathfinding {
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static bool PopulateRoutesFromLocationToLocationList() {
-		if (!Config.Enabled || !Config.Extras.OptimizeWarpPoints) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.OptimizeWarpPoints) {
 			return true;
 		}
 
 		var routeList = new ConcurrentBag<List<string>>();
 
-		var locations = new Dictionary<string, GameLocation?>(Game1.locations.Select(location => new KeyValuePair<string, GameLocation?>(location.Name, location)));
+		var locations = new Dictionary<string, GameLocation?>(Game1.locations.SelectF(location => new KeyValuePair<string, GameLocation?>(location.Name, location)));
+
+		GameLocation? backwoodsLocation = Game1.locations.FirstOrDefaultF(location => location.Name == "Backwoods");
 
 		// Iterate over every location in parallel, and collect all paths to every other location.
 		Parallel.ForEach(Game1.locations, location => {
-			if (Config.Extras.AllowNPCsOnFarm || location is not Farm && location.Name != "Backwoods") {
+			if (Config.Extras.AllowNPCsOnFarm || location is not Farm && location != backwoodsLocation) {
 				var route = new List<string>();
 				ExploreWarpPointsImpl(location, route, routeList, locations);
 			}
@@ -82,8 +87,8 @@ static partial class Pathfinding {
 		}
 		FasterRouteMap.Clear();
 		foreach (var route in routeList) {
-			var innerRoutes = FasterRouteMap.GetOrAddDefault(route.First(), () => new Dictionary<string, List<string>>());
-			innerRoutes![route.Last()] = route;
+			var innerRoutes = FasterRouteMap.GetOrAddDefault(route.FirstF(), () => new Dictionary<string, List<string>>());
+			innerRoutes![route.LastF()] = route;
 		}
 
 		return false;
@@ -99,14 +104,14 @@ static partial class Pathfinding {
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static bool ExploreWarpPoints(ref bool __result, GameLocation l, List<string> route) {
-		if (!Config.Enabled || !Config.Extras.OptimizeWarpPoints) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.OptimizeWarpPoints) {
 			return true;
 		}
 
 		// RoutesFromLocationToLocation is always a new list when first entering this method
 		var routeList = new ConcurrentBag<List<string>>();
 
-		var locations = new Dictionary<string, GameLocation?>(Game1.locations.Select(location => new KeyValuePair<string, GameLocation?>(location.Name, location)));
+		var locations = new Dictionary<string, GameLocation?>(Game1.locations.SelectF(location => new KeyValuePair<string, GameLocation?>(location.Name, location)));
 
 		// Single location pathing search.
 		__result = ExploreWarpPointsImpl(l, route, routeList, locations);
@@ -116,8 +121,8 @@ static partial class Pathfinding {
 		}
 		FasterRouteMap.Clear();
 		foreach (var listedRoute in routeList) {
-			var innerRoutes = FasterRouteMap.GetOrAddDefault(listedRoute.First(), () => new Dictionary<string, List<string>>());
-			innerRoutes![listedRoute.Last()] = listedRoute;
+			var innerRoutes = FasterRouteMap.GetOrAddDefault(listedRoute.FirstF(), () => new Dictionary<string, List<string>>());
+			innerRoutes![listedRoute.LastF()] = listedRoute;
 		}
 		return false;
 	}

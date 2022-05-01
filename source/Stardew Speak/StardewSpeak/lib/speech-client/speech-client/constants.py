@@ -1,0 +1,86 @@
+NORTH = 0
+EAST = 1
+SOUTH = 2
+WEST = 3
+
+ACTION_BUTTON = 'actionButton'
+JOURNAL_BUTTON = 'journalButton'
+MOVE_UP_BUTTON = 'moveUpButton'
+MOVE_RIGHT_BUTTON = 'moveRightButton'
+MOVE_DOWN_BUTTON = 'moveDownButton'
+MOVE_LEFT_BUTTON = 'moveLeftButton'
+USE_TOOL_BUTTON = 'useToolButton'
+TOOLBAR_SWAP = 'toolbarSwap'
+MENU_BUTTON = 'menuButton'
+
+AXE = 'Axe'
+FISHING_ROD = 'Fishing Rod'
+HOE = 'Hoe'
+PICKAXE = 'Pickaxe'
+SCYTHE = 'Scythe'
+WATERING_CAN = 'Watering Can'
+SHEARS = 'Shears'
+MILK_PAIL = 'Milk Pail'
+PAN = 'Pan'
+MELEE_WEAPON = 'meleeWeapon'
+
+WEEDS = 'Weeds'
+STONE = 'Stone'
+MINE_ROCK = 'mineRock'
+TWIG = 'Twig'
+HOLLOW_LOG = 'hollowLog'
+STUMP = 'stump'
+BOULDER = 'boulder'
+METEORITE = 'meteorite'
+
+
+GET_LOCATION_OBJECTS = 'GET_LOCATION_OBJECTS'
+GET_RESOURCE_CLUMPS = 'GET_RESOURCE_CLUMPS'
+
+ABIGAIL = "Abigail"
+ALEX = "Alex"
+BIRDIE = "Birdie"
+BOUNCER = "Bouncer"
+CAROLINE = "Caroline"
+CLINT = "Clint"
+DEMETRIUS = "Demetrius"
+DWARF = "Dwarf"
+ELLIOTT = "Elliott"
+EMILY = "Emily"
+EVELYN = "Evelyn"
+GEORGE = "George"
+GIL = "Gil"
+GOVERNOR = "Governor"
+GRANDPA = "Grandpa"
+GUNTHER = "Gunther"
+GUS = "Gus"
+HALEY = "Haley"
+HARVEY = "Harvey"
+JAS = "Jas"
+JODI = "Jodi"
+KENT = "Kent"
+KROBUS = "Krobus"
+LEAH = "Leah"
+LEO = "Leo"
+LEWIS = "Lewis"
+LINUS = "Linus"
+MARLON = "Marlon"
+MARNIE = "Marnie"
+MARU = "Maru"
+MORRIS = "Morris"
+MR_QI = "MrQi"
+PAM = "Pam"
+PENNY = "Penny"
+PIERRE = "Pierre"
+PROFESSOR_SNAIL = "ProfessorSnail"
+ROBIN = "Robin"
+SAM = "Sam"
+SANDY = "Sandy"
+SEBASTIAN = "Sebastian"
+SHANE = "Shane"
+VINCENT = "Vincent"
+WIZARD = "Wizard"
+WILLY = "Willy"
+
+DOWN_ARROW = 'downArrow'
+UP_ARROW = 'upArrow'

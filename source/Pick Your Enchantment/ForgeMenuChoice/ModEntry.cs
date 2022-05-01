@@ -63,7 +63,7 @@ internal class ModEntry : Mod
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-        helper.Events.GameLoop.DayEnding += this.OnDayEnd;
+        helper.Events.Player.Warped += this.OnWarp;
         helper.Content.AssetLoaders.Add(AssetLoader.Instance);
     }
 
@@ -76,9 +76,6 @@ internal class ModEntry : Mod
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         AssetLoader.Refresh();
     }
-
-    private void OnDayEnd(object? sender, DayEndingEventArgs e)
-        => AssetLoader.Refresh();
 
     /// <summary>
     /// Things to run after all mods are initialized.
@@ -159,6 +156,14 @@ internal class ModEntry : Mod
         {
             ModMonitor.Log($"Mod failed while applying patches:\n{ex}", LogLevel.Error);
         }
-        harmony.Snitch(this.Monitor, this.ModManifest.UniqueID);
+        harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
+    }
+
+    private void OnWarp(object? sender, WarpedEventArgs e)
+    {
+        if (e.IsLocalPlayer)
+        {
+            AssetLoader.Refresh();
+        }
     }
 }

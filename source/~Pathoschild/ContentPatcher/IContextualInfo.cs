@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Collections.Generic;
 
 namespace ContentPatcher

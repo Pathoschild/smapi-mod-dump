@@ -8,24 +8,26 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Reflection;
 
-namespace Leclair.Stardew.Common.Events {
-	public struct RegisteredEvent : IDisposable {
+namespace Leclair.Stardew.Common.Events;
 
-		public object EventHost;
-		public EventInfo Event;
-		public Delegate Delegate;
+public struct RegisteredEvent : IDisposable {
 
-		public RegisteredEvent(object eventHost, EventInfo @event, Delegate @delegate) {
-			EventHost = eventHost;
-			Event = @event;
-			Delegate = @delegate;
-		}
+	public object EventHost;
+	public EventInfo Event;
+	public Delegate Delegate;
 
-		public void Dispose() {
-			Event.RemoveEventHandler(EventHost, Delegate);
-		}
+	public RegisteredEvent(object eventHost, EventInfo @event, Delegate @delegate) {
+		EventHost = eventHost;
+		Event = @event;
+		Delegate = @delegate;
+	}
+
+	public void Dispose() {
+		Event.RemoveEventHandler(EventHost, Delegate);
 	}
 }

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.Automate.Framework.Models
 {
     /// <summary>A mod which adds custom machine recipes and requires a separate automation component.</summary>

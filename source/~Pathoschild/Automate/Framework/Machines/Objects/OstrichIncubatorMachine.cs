@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;

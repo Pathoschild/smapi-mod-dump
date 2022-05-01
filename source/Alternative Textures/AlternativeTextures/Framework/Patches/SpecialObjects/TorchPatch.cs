@@ -89,7 +89,7 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                     }
                     return false;
                 }
-                __instance.draw(spriteBatch, x, y, alpha);
+                ObjectPatch.DrawPrefix(__instance, spriteBatch, x, y, alpha);
                 float draw_layer = Math.Max(0f, (float)((y + 1) * 64 - 24) / 10000f) + (float)x * 1E-05f;
 
                 if (!__instance.isOn)

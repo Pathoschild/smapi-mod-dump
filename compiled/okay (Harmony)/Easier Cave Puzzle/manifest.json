@@ -1,0 +1,10 @@
+{
+  "Name": "Easier Cave Puzzle",
+  "Author": "atravita",
+  "Version": "0.1.0",
+  "Description": "Makes the cave puzzle a little easier.",
+  "UniqueID": "atravita.NerfCavePuzzle",
+  "EntryDll": "NerfCavePuzzle.dll",
+  "UpdateKeys": [ "Nexus:11500", "GitHub:atravita-mods/NerfCavePuzzle" ],
+  "MinimumApiVersion": "3.13"
+}

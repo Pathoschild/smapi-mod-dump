@@ -69,7 +69,7 @@ namespace FreeLove
                     {
                         __instance.spouse = null;
                     }
-                    Misc.ResetSpouses(__instance);
+                    ModEntry.ResetSpouses(__instance);
                     Helper.Content.InvalidateCache("Maps/FarmHouse1_marriage");
                     Helper.Content.InvalidateCache("Maps/FarmHouse2_marriage");
 
@@ -96,7 +96,7 @@ namespace FreeLove
         {
             try
             {
-                __result = __instance.team.IsMarried(__instance.UniqueMultiplayerID) || Misc.GetSpouses(__instance, true).Count > 0;
+                __result = __instance.team.IsMarried(__instance.UniqueMultiplayerID) || ModEntry.GetSpouses(__instance, true).Count > 0;
                 return false;
             }
             catch (Exception ex)
@@ -176,6 +176,22 @@ namespace FreeLove
             }
             return true;
         }
+        internal static bool Farmer_getChildren_Prefix(Farmer __instance, ref List<Child> __result)
+        {
+            try
+            {
 
+                if (EventPatches.startingLoadActors && Environment.StackTrace.Contains("command_loadActors") && !Environment.StackTrace.Contains("addActor") && !Environment.StackTrace.Contains("Dialogue") && !Environment.StackTrace.Contains("checkForSpecialCharacters") && Game1Patches.lastGotCharacter != null && __instance != null)
+                {
+                    __result = Utility.getHomeOfFarmer(__instance)?.getChildren()?.FindAll(c => c.displayName.EndsWith($"({Game1Patches.lastGotCharacter})")) ?? new List<Child>();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(Farmer_getChildren_Prefix)}:\n{ex}", LogLevel.Error);
+            }
+            return true;
+        }
     }
 }

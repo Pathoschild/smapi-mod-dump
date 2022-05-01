@@ -16,12 +16,9 @@ using SpriteMaster.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Reflection;
 
 namespace SpriteMaster.Harmonize;
-
-using MethodEnumerable = IEnumerable<MethodInfo>;
 
 static class Harmonize {
 	private const BindingFlags InstanceFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
@@ -210,11 +207,11 @@ static class Harmonize {
 		return filteredParameters.SelectF(p => p.ParameterType).ToArrayF();
 	}
 
-	internal static MethodEnumerable GetMethods(this Type type, string name, BindingFlags bindingFlags) {
+	internal static IList<MethodInfo> GetMethods(this Type type, string name, BindingFlags bindingFlags) {
 		return type.GetMethods(bindingFlags).WhereF(t => t.Name == name);
 	}
 
-	internal static MethodEnumerable GetStaticMethods(this Type type, string name) {
+	internal static IList<MethodInfo> GetStaticMethods(this Type type, string name) {
 		return type.GetMethods(name, StaticFlags);
 	}
 
@@ -222,7 +219,7 @@ static class Harmonize {
 		return type.GetMethod(name, StaticFlags);
 	}
 
-	internal static MethodEnumerable GetInstanceMethods(this Type type, string name) {
+	internal static IList<MethodInfo> GetInstanceMethods(this Type type, string name) {
 		return type.GetMethods(name, InstanceFlags);
 	}
 
@@ -230,15 +227,15 @@ static class Harmonize {
 		return type.GetMethod(name, InstanceFlags);
 	}
 
-	internal static MethodEnumerable GetMethods<T>(string name, BindingFlags bindingFlags) {
+	internal static IList<MethodInfo> GetMethods<T>(string name, BindingFlags bindingFlags) {
 		return typeof(T).GetMethods(name, bindingFlags);
 	}
 
-	internal static MethodEnumerable GetStaticMethods<T>(string name) {
+	internal static IList<MethodInfo> GetStaticMethods<T>(string name) {
 		return typeof(T).GetStaticMethods(name);
 	}
 
-	internal static MethodEnumerable GetInstanceMethods<T>(string name) {
+	internal static IList<MethodInfo> GetInstanceMethods<T>(string name) {
 		return typeof(T).GetInstanceMethods(name);
 	}
 
@@ -333,7 +330,7 @@ static class Harmonize {
 		if (typeMethod is null) {
 			MethodBase[] typeMethods = constructor ?
 				type.GetConstructors(flags) :
-				type.GetMethods(name, flags).ToArray();
+				type.GetMethods(name, flags).ToArrayF();
 
 			foreach (var testMethod in typeMethods) {
 				// Compare the parameters. Ignore references.

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using ContentPatcher.Framework.ConfigModels;
 using StardewValley;
 

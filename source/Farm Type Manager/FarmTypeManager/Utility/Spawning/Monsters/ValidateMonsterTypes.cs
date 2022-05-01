@@ -184,6 +184,13 @@ namespace FarmTypeManager
                             validName = true; //the name is valid
                             break;
                         default: //if the name doesn't match any directly known monster types
+                            //check for MTF monster types
+                            if (MonstersTheFrameworkAPI.IsKnownMonsterType(validTypes[x].MonsterName, false)) //if this is a known monster type from MTF
+                            {
+                                validName = true; //the name is valid
+                                break;
+                            }
+                            //check for custom monster classes
                             Type externalType = GetTypeFromName(validTypes[x].MonsterName, typeof(Monster)); //find a monster subclass with a matching name
                             if (externalType != null) //if a matching type was found
                             {

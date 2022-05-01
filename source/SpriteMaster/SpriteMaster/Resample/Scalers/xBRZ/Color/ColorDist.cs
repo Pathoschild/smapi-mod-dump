@@ -33,22 +33,13 @@ class ColorDist {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal uint ColorDistance(in Color16 pix1, in Color16 pix2) {
-		if (Configuration.UseRedmean) {
-			return ColorHelpers.RedmeanDifference(
-				pix1,
-				pix2,
-				linear: !Configuration.GammaCorrected,
-				alpha: Configuration.HasAlpha
-			);
-		}
-		else {
-			return ColorHelpers.YccDifference(
-				pix1,
-				pix2,
-				config: YccConfiguration,
-				linear: !Configuration.GammaCorrected,
-				alpha: Configuration.HasAlpha
-			);
-		}
+		return Resample.Scalers.Common.ColorDistance(
+			useRedmean: Configuration.UseRedmean,
+			gammaCorrected: Configuration.GammaCorrected,
+			hasAlpha: Configuration.HasAlpha,
+			pix1: pix1,
+			pix2: pix2,
+			yccConfig: YccConfiguration
+		);
 	}
 }

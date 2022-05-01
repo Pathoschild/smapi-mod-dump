@@ -52,35 +52,31 @@ namespace Shockah.XPDisplay
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
 			SetupConfig();
-			
+
+			IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions");
 			var harmony = new Harmony(ModManifest.UniqueID);
-			try
+
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(Farmer), nameof(Farmer.checkForLevelGain)),
+				transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(Farmer_checkForLevelGain_Transpiler))
+			);
+
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.draw), new Type[] { typeof(SpriteBatch) }),
+				postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Postfix)),
+				transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Transpiler))
+			);
+
+			if (Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
 			{
-				harmony.Patch(
-					original: AccessTools.Method(typeof(Farmer), nameof(Farmer.checkForLevelGain)),
-					transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(Farmer_checkForLevelGain_Transpiler))
+				harmony.TryPatch(
+					monitor: Monitor,
+					original: () => AccessTools.Method(AccessTools.TypeByName(SpaceCoreNewSkillsPageQualifiedName), "draw", new Type[] { typeof(SpriteBatch) }),
+					postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Postfix)),
+					transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Transpiler))
 				);
-
-				harmony.Patch(
-					original: AccessTools.Method(typeof(SkillsPage), nameof(SkillsPage.draw), new Type[] { typeof(SpriteBatch) }),
-					postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Postfix)),
-					transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SkillsPage_draw_Transpiler))
-				);
-
-				if (Helper.ModRegistry.IsLoaded("spacechase0.SpaceCore"))
-				{
-					harmony.Patch(
-						original: AccessTools.Method(AccessTools.TypeByName(SpaceCoreNewSkillsPageQualifiedName), "draw", new Type[] { typeof(SpriteBatch) }),
-						postfix: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Postfix)),
-						transpiler: new HarmonyMethod(typeof(XPDisplay), nameof(SpaceCore_NewSkillsPage_draw_Transpiler))
-					);
-				}
-
-				IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions");
-			}
-			catch (Exception ex)
-			{
-				Monitor.Log($"Could not patch methods - XP Display probably won't work.\nReason: {ex}", LogLevel.Error);
 			}
 		}
 

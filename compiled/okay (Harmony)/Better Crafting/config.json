@@ -1,5 +1,5 @@
 {
-  "Theme": "Automatic",
+  "Theme": "automatic",
   "ReplaceCooking": true,
   "ReplaceCrafting": true,
   "UseCategories": true,
@@ -8,6 +8,7 @@
   "LowQualityFirst": true,
   "ShowKeybindTooltip": "ForController",
   "SuppressBC": "LeftShift",
+  "ModiferKey": "LeftShift, RightTrigger",
   "FavoriteKey": "F, ControllerBack",
   "BulkCraftKey": "None",
   "SearchKey": "F3",
@@ -20,9 +21,46 @@
   "HideUnknown": false,
   "CookingAlphabetic": false,
   "UseDiscovery": true,
-  "MaxInventories": 15,
+  "MaxInventories": 32,
   "MaxDistance": 20,
   "MaxCheckedTiles": 500,
   "UseDiagonalConnections": true,
-  "ValidConnectors": []
+  "ValidConnectors": [],
+  "UseTransfer": true,
+  "AddToBehaviors": {
+    "UseTool": {
+      "Mode": "All",
+      "Quantity": 1
+    },
+    "UseToolModified": {
+      "Mode": "AllButQuantity",
+      "Quantity": 1
+    },
+    "Action": {
+      "Mode": "Quantity",
+      "Quantity": 1
+    },
+    "ActionModified": {
+      "Mode": "Half",
+      "Quantity": 1
+    }
+  },
+  "FillFromBehaviors": {
+    "UseTool": {
+      "Mode": "All",
+      "Quantity": 1
+    },
+    "UseToolModified": {
+      "Mode": "AllButQuantity",
+      "Quantity": 1
+    },
+    "Action": {
+      "Mode": "Quantity",
+      "Quantity": 1
+    },
+    "ActionModified": {
+      "Mode": "Half",
+      "Quantity": 1
+    }
+  }
 }

@@ -11,6 +11,8 @@
 using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using Pastel;
+using SpriteMaster.Caching;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using SpriteMaster.Resample;
@@ -18,9 +20,11 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Volatile;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using static SpriteMaster.ResourceManager;
 using WeakInstanceList = System.Collections.Generic.LinkedList<System.WeakReference<SpriteMaster.ManagedSpriteInstance>>;
 using WeakInstanceListNode = System.Collections.Generic.LinkedListNode<System.WeakReference<SpriteMaster.ManagedSpriteInstance>>;
@@ -182,6 +186,50 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 					return false;
 				}
 			}
+
+			bool isText = texture.NormalizedName().StartsWith(@"Fonts\");
+			bool isBasicText = texture.Format == SurfaceFormat.Dxt3;
+
+			if (!(Configuration.Preview.Override.Instance?.ResampleText ?? Config.Resample.EnabledText)) {
+				if (isText) {
+					if (!meta.TracePrinted) {
+						meta.TracePrinted = true;
+						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Font (and text resampling is disabled)");
+					}
+					meta.Validation = false;
+					if (clean) {
+						PurgeInvalidated(texture);
+					}
+					return false;
+				}
+			}
+			if (!(Configuration.Preview.Override.Instance?.ResampleBasicText ?? Config.Resample.EnabledBasicText)) {
+				// The only BC2 texture that I've _ever_ seen is the internal font
+				if (isBasicText) {
+					if (!meta.TracePrinted) {
+						meta.TracePrinted = true;
+						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Basic Font (and basic text resampling is disabled)");
+					}
+					meta.Validation = false;
+					if (clean) {
+						PurgeInvalidated(texture);
+					}
+					return false;
+				}
+			}
+			if (!(Configuration.Preview.Override.Instance?.ResampleSprites ?? Config.Resample.EnabledSprites)) {
+				if (!isText && !isBasicText) {
+					if (!meta.TracePrinted) {
+						meta.TracePrinted = true;
+						Debug.Trace($"Not Scaling Texture '{texture.NormalizedName(DrawingColor.LightYellow)}', Is Sprite (and sprite resampling is disabled)");
+					}
+					meta.Validation = false;
+					if (clean) {
+						PurgeInvalidated(texture);
+					}
+					return false;
+				}
+			}
 		}
 
 		if (!texture.Anonymous()) {
@@ -225,6 +273,10 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ManagedSpriteInstance? Fetch(Texture2D texture, in Bounds source, uint expectedScale) {
+		if (!Configuration.Config.IsEnabled || !Configuration.Config.Resample.IsEnabled) {
+			return null;
+		}
+
 		if (!Validate(texture, clean: true)) {
 			return null;
 		}
@@ -249,7 +301,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 		var spriteHash = ManagedSpriteInstance.GetHash(initializer, initializer.TextureType);
 		if (spriteHash.HasValue && SuspendedSpriteCache.TryFetch(spriteHash.Value, out var instance)) {
-			var spriteMapHash = SpriteMap.SpriteHash(initializer.Reference, initializer.Bounds, initializer.ExpectedScale);
+			var spriteMapHash = SpriteMap.SpriteHash(initializer.Reference, initializer.Bounds, initializer.ExpectedScale, initializer.IsPreview);
 			if (instance.Resurrect(initializer.Reference, spriteMapHash)) {
 				resurrected = instance;
 				return true;
@@ -262,7 +314,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool TryResurrect(SpriteInfo info, [NotNullWhen(true)] out ManagedSpriteInstance? resurrected) {
-// Check for a suspended sprite instance that happens to match.
+		// Check for a suspended sprite instance that happens to match.
 		if (!Config.SuspendedCache.Enabled) {
 			resurrected = null;
 			return false;
@@ -270,7 +322,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 		var spriteHash = ManagedSpriteInstance.GetHash(info, info.TextureType);
 		if (SuspendedSpriteCache.TryFetch(spriteHash, out var instance)) {
-			var spriteMapHash = SpriteMap.SpriteHash(info.Reference, info.Bounds, info.ExpectedScale);
+			var spriteMapHash = SpriteMap.SpriteHash(info.Reference, info.Bounds, info.ExpectedScale, info.IsPreview);
 			if (instance.Resurrect(info.Reference, spriteMapHash)) {
 				resurrected = instance;
 				return true;
@@ -283,6 +335,10 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ManagedSpriteInstance? FetchOrCreate(Texture2D texture, in Bounds source, uint expectedScale, bool sliced) {
+		if (!Configuration.Config.IsEnabled || !Configuration.Config.Resample.IsEnabled) {
+			return null;
+		}
+
 		if (!Validate(texture, clean: true)) {
 			return null;
 		}
@@ -397,11 +453,25 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		DrawState.PushedUpdateThisFrame = true;
 
 		try {
-			var resampleTask = ResampleTask.Dispatch(
-				spriteInfo: new(spriteInfoInitializer),
-				async: useAsync,
-				previousInstance: currentInstance
-			);
+			bool doDispatch = true;
+			var textureMeta = texture.Meta();
+			var currentRevision = textureMeta.Revision;
+			if (textureMeta.InFlightTasks.TryGetValue(source, out var inFlightTask)) {
+				doDispatch = inFlightTask.Revision != currentRevision || inFlightTask.ResampleTask is null || inFlightTask.ResampleTask.Status != System.Threading.Tasks.TaskStatus.WaitingToRun;
+			}
+
+			Task<ManagedSpriteInstance?> resampleTask;
+			if (!useAsync || doDispatch) {
+				resampleTask = ResampleTask.Dispatch(
+					spriteInfo: new(spriteInfoInitializer),
+					async: useAsync,
+					previousInstance: currentInstance
+				);
+				textureMeta.InFlightTasks[source] = new(currentRevision, resampleTask);
+			}
+			else {
+				return null;
+			}
 
 			var result = resampleTask.IsCompletedSuccessfully ? resampleTask.Result : currentInstance;
 
@@ -431,8 +501,8 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	internal static readonly SurfaceFormat[] AllowedFormats = {
 		SurfaceFormat.Color,
 		SurfaceFormat.Dxt5,
-		SurfaceFormat.Dxt5SRgb
-		//SurfaceFormat.Dxt3 // fonts
+		SurfaceFormat.Dxt5SRgb,
+		SurfaceFormat.Dxt3 // fonts
 	};
 
 	internal ManagedTexture2D? Texture = null;
@@ -454,12 +524,14 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	private readonly Vector2I originalSize;
 	private readonly Bounds SourceRectangle;
 	private readonly uint ExpectedScale;
+	internal IScalerInfo? ScalerInfo = null;
 	internal ulong SpriteMapHash { get; private set; }
 	private readonly uint ReferenceScale;
 	internal ManagedSpriteInstance? PreviousSpriteInstance = null;
 	internal volatile bool Invalidated = false;
 	internal volatile bool Suspended = false;
 	internal bool NoResample = false;
+	internal readonly bool IsPreview = false;
 
 	internal ulong LastReferencedFrame = DrawState.CurrentFrame;
 
@@ -497,6 +569,12 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static void FullPurge(Texture2D reference, bool animated = false) {
+		SpriteInfo.Purge(reference, reference.Bounds, DataRef<byte>.Null, animated: animated);
+		SpriteMap.Purge(reference, reference.Bounds, animated: animated);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void PurgeTextures(long purgeTotalBytes) {
 		Contracts.AssertPositive(purgeTotalBytes);
 
@@ -505,7 +583,7 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		lock (RecentAccessList) {
 			long totalPurge = 0;
 			while (purgeTotalBytes > 0 && RecentAccessList.Count > 0) {
-				if (RecentAccessList.Last?.Value.TryGetTarget(out var target) ?? false) {
+				if (RecentAccessList.Last?.Value.TryGet(out var target) ?? false) {
 					var textureSize = (long)target.MemorySize;
 					Debug.Trace($"Purging {target.NormalizedName()} ({textureSize.AsDataSize()})");
 					purgeTotalBytes -= textureSize;
@@ -532,7 +610,8 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 		SourceRectangle = sourceRectangle;
 		ExpectedScale = expectedScale;
 		ReferenceScale = expectedScale;
-		SpriteMapHash = SpriteMap.SpriteHash(source, sourceRectangle, expectedScale);
+		IsPreview = spriteInfo.IsPreview;
+		SpriteMapHash = SpriteMap.SpriteHash(source, sourceRectangle, expectedScale, spriteInfo.IsPreview);
 		Name = source.Anonymous() ? assetName.NormalizedName() : source.NormalizedName();
 		// TODO : I believe we need a lock here until when the texture is _fully created_, preventing new instantiations from starting of a texture
 		// already in-flight
@@ -542,39 +621,40 @@ sealed partial class ManagedSpriteInstance : IDisposable {
 			// TODO : this should be fixed by making sure that all of the resample tasks _at least_ get to this point before the end of the frame.
 			// TODO : That might not be sufficient either if the _same_ draw ends up happening again.
 			Dispose();
+
+			return;
 		}
-		else {
-			switch (TexType) {
-				case TextureType.Sprite:
-					originalSize = sourceRectangle.Extent;
-					break;
-				case TextureType.Image:
-					originalSize = source.Extent();
-					break;
-				case TextureType.SlicedImage:
-					originalSize = sourceRectangle.Extent;
-					break;
-			}
 
-			// TODO store the HD Texture in _this_ object instead. Will confuse things like subtexture updates, though.
-			Hash = GetHash(spriteInfo, textureType);
-			this.Texture = Resampler.Upscale(
-				spriteInstance: this,
-				scale: ref ReferenceScale,
-				input: spriteInfo,
-				hash: Hash,
-				wrapped: ref Wrapped,
-				async: false
-			);
+		switch (TexType) {
+			case TextureType.Sprite:
+				originalSize = sourceRectangle.Extent;
+				break;
+			case TextureType.Image:
+				originalSize = source.Extent();
+				break;
+			case TextureType.SlicedImage:
+				originalSize = sourceRectangle.Extent;
+				break;
+		}
 
-			// TODO : I would love to dispose of this texture _now_, but we rely on it disposing to know if we need to dispose of ours.
-			// There is a better way to do this using weak references, I just need to analyze it further. Memory leaks have been a pain so far.
-			// TODO 2: This won't get hit if the texture is disposed of via the finalizer.
-			source.Disposing += OnParentDispose;
+		// TODO store the HD Texture in _this_ object instead. Will confuse things like subtexture updates, though.
+		Hash = GetHash(spriteInfo, textureType);
+		this.Texture = Resampler.Upscale(
+			spriteInstance: this,
+			scale: ref ReferenceScale,
+			input: spriteInfo,
+			hash: Hash,
+			wrapped: ref Wrapped,
+			async: false
+		);
 
-			lock (RecentAccessList) {
-				RecentAccessNode = RecentAccessList.AddFirst(this.MakeWeak());
-			}
+		// TODO : I would love to dispose of this texture _now_, but we rely on it disposing to know if we need to dispose of ours.
+		// There is a better way to do this using weak references, I just need to analyze it further. Memory leaks have been a pain so far.
+		// TODO 2: This won't get hit if the texture is disposed of via the finalizer.
+		source.Disposing += OnParentDispose;
+
+		lock (RecentAccessList) {
+			RecentAccessNode = RecentAccessList.AddFirst(this.MakeWeak());
 		}
 	}
 

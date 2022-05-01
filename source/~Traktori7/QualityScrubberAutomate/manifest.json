@@ -11,19 +11,18 @@
 {
 	"Name": "Quality Scrubber for Automate",
 	"Author": "Traktori",
-	"Version": "1.1.0",
+	"Version": "1.2.0-beta.1",
 	"Description": "Integrates the Quality Scrubber with Automate.",
 	"UniqueID": "Traktori.AM.QualityScrubber",
 	"EntryDll": "QualityScrubberAutomate.dll",
-	"MinimumApiVersion": "3.0.0",
+	"MinimumApiVersion": "3.14.0-beta",
 	"UpdateKeys": [],
-	"Dependencies":
-	[
+	"Dependencies": [
 		{
 			"UniqueID": "Pathoschild.Automate"
 		},
 		{
 			"UniqueID": "Traktori.QualityScrubber"
-		},
+		}
 	]
 }

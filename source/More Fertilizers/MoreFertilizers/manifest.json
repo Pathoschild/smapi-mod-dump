@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/MoreFertilizers
+**
+*************************************************/
+
+{
+  "Name": "More Fertilizers",
+  "Author": "atravita",
+  "Version": "0.1.1",
+  "Description": "Adds more fertilizers to the game.",
+  "UniqueID": "atravita.MoreFertilizers",
+  "EntryDll": "MoreFertilizers.dll",
+  "UpdateKeys": [ "Nexus:11837", "GitHub:atravita-mods/MoreFertilizers" ],
+  "MinimumApiVersion": "3.13",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
+}

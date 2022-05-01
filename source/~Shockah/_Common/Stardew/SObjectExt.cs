@@ -33,10 +33,14 @@ namespace Shockah.CommonModCode.Stardew
 
 		public static SObject? GetAnyHeldObject(this SObject self)
 		{
+			if (self.heldObject.Value is Chest || self.heldObject.Value?.Name == "Chest")
+				return null;
 			if (self.heldObject.Value is not null)
 				return self.heldObject.Value;
 			if (self is CrabPot crabPot && crabPot.bait.Value is not null)
 				return crabPot.bait.Value;
+			if (self is WoodChipper woodChipper && woodChipper.depositedItem.Value is not null)
+				return woodChipper.depositedItem.Value;
 			return null;
 		}
 	}

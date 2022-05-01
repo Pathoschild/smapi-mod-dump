@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Configuration;
 using StardewValley;
 using System;
 using System.Collections.Concurrent;

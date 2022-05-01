@@ -1,0 +1,12 @@
+﻿{
+	"config.safeTiles.name": "Safe tiles",
+	"config.safeTiles.tooltip": "If enabled, lightning strikes will not be able to strike tiles, destroying them. This includes crops.",
+	"config.safeFruitTrees.name": "Safe fruit trees",
+	"config.safeFruitTrees.tooltip": "If enabled, lightning strikes will not be able to strike fruit trees, temporarily turning them into coal trees.",
+	"config.bigLightningBehavior.name": "\"Big lightning\"",
+	"config.bigLightningBehavior.tooltip": "When the \"big lightning\" audiovisual effect should be used.",
+	"config.bigLightningBehavior.value.Never": "Never",
+	"config.bigLightningBehavior.value.WhenSupposedToStrike": "When supposed to strike",
+	"config.bigLightningBehavior.value.WhenActuallyStrikes": "When actually strikes",
+	"config.bigLightningBehavior.value.Always": "Always"
+}

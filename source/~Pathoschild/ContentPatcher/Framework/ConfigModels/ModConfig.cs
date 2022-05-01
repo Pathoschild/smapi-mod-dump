@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace ContentPatcher.Framework.ConfigModels
 {
     /// <summary>The mod configuration.</summary>

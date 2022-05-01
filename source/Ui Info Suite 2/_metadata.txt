@@ -6,9 +6,9 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit bba528cb0772c9884c024f7eb8090d79c709d9d6
+   commit bff185079aa8d54f9e7fd27e0d0cfbae88da9699
    Author: Annosz <tadamleanyfalu@gmail.com>
-   Date:   Tue Mar 15 22:28:56 2022 +0100
+   Date:   Tue Apr 12 21:55:31 2022 +0200
    
-       Clean up translations and modify statuses II
+       Quick fix for version 2.2.2
    

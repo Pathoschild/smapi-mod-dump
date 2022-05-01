@@ -26,7 +26,7 @@ using SObject = StardewValley.Object;
 namespace IndustrialFurnace
 {
 	/// <summary>The mod entry point.</summary>
-	public class ModEntry : Mod, IAssetEditor, IAssetLoader
+	public class ModEntry : Mod
 	{
 		private const int lightSourceIDMultiplier = 14097000;
 		private const string controllerDataSaveKey = "controller-save";
@@ -59,7 +59,6 @@ namespace IndustrialFurnace
 		private readonly string smokeAnimationDataPath = Path.Combine("assets", "SmokeAnimation.json");
 		private readonly string fireAnimationDataPath = Path.Combine("assets", "FireAnimation.json");
 
-		private int furnacesBuilt = 0;      // Used to identify furnaces, placed in maxOccupants field.
 		private ModConfig config;
 		private ModSaveData modSaveData;
 		private BlueprintData blueprintData;
@@ -68,17 +67,18 @@ namespace IndustrialFurnace
 		private SmeltingRulesContainer newSmeltingRules;
 		private ITranslationHelper i18n;
 
-		private int currentlyLookingAtFurnace = -1;
-
 		//private Texture2D furnaceOn;
 		//private Texture2D furnaceOff;
 
 		private bool customSmokeSpriteExists = false;
 		private bool customFireSpriteExists = false;
 
-		
+		private bool modInstantBuildingFound = false;
 
-		private readonly List<IndustrialFurnaceController> furnaces = new List<IndustrialFurnaceController>();
+		//Per-screen data
+		private readonly PerScreen<int> furnacesBuilt = new PerScreen<int>( () => 0) ;      // Used to identify furnaces, placed in maxOccupants field.
+		private readonly PerScreen<int> currentlyLookingAtFurnace = new PerScreen<int>( () => -1 );
+		private readonly PerScreen<List<IndustrialFurnaceController>> furnaces = new PerScreen<List<IndustrialFurnaceController>>( () => new List<IndustrialFurnaceController>() );
 		
 
 		/*********
@@ -90,38 +90,11 @@ namespace IndustrialFurnace
 		{
 			i18n = helper.Translation;
 
-			// Check if there exists a custom sprite for the smoke
-			if (File.Exists(Path.Combine(helper.DirectoryPath, smokeAnimationSpritePath)))
-			{
-				customSmokeSpriteExists = true;
-			}
-			else
-			{
-				Monitor.Log("Custom sprite for the smoke was not found. Using the default.");
-			}
-
-			// Check if there exists a custom sprite for the fire
-			if (File.Exists(Path.Combine(helper.DirectoryPath, fireAnimationSpritePath)))
-			{
-				customFireSpriteExists = true;
-			}
-			else
-			{
-				Monitor.Log("Custom sprite for the fire was not found. Using the default.");
-			}
+			CheckFilesAndModInstalls();
 
 			this.config = helper.ReadConfig<ModConfig>();
 
-			// TODO: Use the name specified in the blueprint?
-			blueprintData = helper.Data.ReadJsonFile<BlueprintData>(blueprintDataPath);
-			//newSmeltingRules = helper.Data.ReadJsonFile<SmeltingRulesContainer>(smeltingRulesDataPath);
-			newSmeltingRules = Game1.content.Load<SmeltingRulesContainer>(smeltingRulesDataName);
-			CheckSmeltingRules();
-			//smokeAnimationData = helper.Data.ReadJsonFile<SmokeAnimationData>(smokeAnimationDataPath);
-			smokeAnimationData = Game1.content.Load<SmokeAnimationData>(smokeAnimationDataName);
-			//fireAnimationData = helper.Data.ReadJsonFile<FireAnimationData>(fireAnimationDataPath);
-			fireAnimationData = Game1.content.Load<FireAnimationData>(fireAnimationDataName);
-
+			helper.Events.Content.AssetRequested += OnAssetRequested;
 			helper.Events.Display.RenderedWorld += OnRenderedWorld;
 			helper.Events.Display.MenuChanged += OnMenuChanged;
 			helper.Events.GameLoop.UpdateTicking += OnUpdateTicking;
@@ -134,124 +107,113 @@ namespace IndustrialFurnace
 			helper.Events.World.BuildingListChanged += OnBuildingListChanged;
 			helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
 			helper.Events.Player.Warped += OnWarped;
+
+
+			// TODO: Use the name specified in the blueprint?
+			blueprintData = helper.Data.ReadJsonFile<BlueprintData>(blueprintDataPath);
+
+			//newSmeltingRules = helper.Data.ReadJsonFile<SmeltingRulesContainer>(smeltingRulesDataPath);
+			//newSmeltingRules = Game1.content.Load<SmeltingRulesContainer>(smeltingRulesDataName);
+			newSmeltingRules = helper.GameContent.Load<SmeltingRulesContainer>(smeltingRulesDataName);
+
+			CheckSmeltingRules();
+
+			//smokeAnimationData = helper.Data.ReadJsonFile<SmokeAnimationData>(smokeAnimationDataPath);
+			//smokeAnimationData = Game1.content.Load<SmokeAnimationData>(smokeAnimationDataName);
+			smokeAnimationData = helper.GameContent.Load<SmokeAnimationData>(smokeAnimationDataName);
+
+			//fireAnimationData = helper.Data.ReadJsonFile<FireAnimationData>(fireAnimationDataPath);
+			//fireAnimationData = Game1.content.Load<FireAnimationData>(fireAnimationDataName);
+			fireAnimationData = helper.GameContent.Load<FireAnimationData>(fireAnimationDataName);
 		}
 
 
-		public override object GetApi()
+		private void CheckFilesAndModInstalls()
 		{
-			return new IndustrialFurnaceAPI(this);
+			// Check if there exists a custom sprite for the smoke
+			if (File.Exists(Path.Combine(Helper.DirectoryPath, smokeAnimationSpritePath)))
+			{
+				customSmokeSpriteExists = true;
+			}
+			else
+			{
+				Monitor.Log("Custom sprite for the smoke was not found. Using the default.");
+			}
+
+			// Check if there exists a custom sprite for the fire
+			if (File.Exists(Path.Combine(Helper.DirectoryPath, fireAnimationSpritePath)))
+			{
+				customFireSpriteExists = true;
+			}
+			else
+			{
+				Monitor.Log("Custom sprite for the fire was not found. Using the default.");
+			}
+
+			modInstantBuildingFound = Helper.ModRegistry.IsLoaded("BitwiseJonMods.InstantBuildings");
 		}
 
-
-		/// <summary>Get whether this instance can load the initial version of the given asset.</summary>
-		/// <param name="asset">Basic metadata about the asset being loaded.</param>
-		public bool CanLoad<T>(IAssetInfo asset)
+		private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-			if (asset.AssetNameEquals(assetOnName))
-				return true;
-
-			else if (asset.AssetNameEquals(defaultAssetName))
-				return true;
-
-			else if (asset.AssetNameEquals(smokeAnimationSpriteName))
-				return true;
-
-			else if (asset.AssetNameEquals(fireAnimationSpriteName))
-				return true;
-
-			else if (asset.AssetNameEquals(smeltingRulesDataName))
-				return true;
-
-			else if (asset.AssetNameEquals(smokeAnimationDataName))
-				return true;
-
-			else if (asset.AssetNameEquals(fireAnimationDataName))
-				return true;
-
-			return false;
-		}
-
-
-		/// <summary>Load a matched asset.</summary>
-		/// <param name="asset">Basic metadata about the asset being loaded.</param>
-		public T Load<T>(IAssetInfo asset)
-		{
-			if (asset.AssetNameEquals(assetOnName))
+			if (e.Name.IsEquivalentTo(assetOnName))
 			{
 				string seasonalTextureName = $"{Game1.currentSeason}_{onPngName}";
 
 				if (File.Exists(Path.Combine(Helper.DirectoryPath, "assets", seasonalTextureName)))
 				{
 					Monitor.Log($"Using the texture for {Game1.currentSeason}.");
-					return Helper.Content.Load<T>(Path.Combine("assets", seasonalTextureName), ContentSource.ModFolder);
+					e.LoadFromModFile<Texture2D>(Path.Combine("assets", seasonalTextureName), AssetLoadPriority.Low);
 				}
 
 				Monitor.Log($"Seasonal texture not found for season {Game1.currentSeason} state On. Using the default.");
-				return Helper.Content.Load<T>(Path.Combine("assets", onPngName), ContentSource.ModFolder);
+				e.LoadFromModFile<Texture2D>(Path.Combine("assets", onPngName), AssetLoadPriority.Low);
 			}
-			else if (asset.AssetNameEquals(defaultAssetName))
+			else if (e.Name.IsEquivalentTo(defaultAssetName))
 			{
 				string seasonalTextureName = $"{Game1.currentSeason}_{offPngName}";
 
 				if (File.Exists(Path.Combine(Helper.DirectoryPath, "assets", seasonalTextureName)))
 				{
 					Monitor.Log($"Using the texture for {Game1.currentSeason}.");
-					return Helper.Content.Load<T>(Path.Combine("assets", seasonalTextureName), ContentSource.ModFolder);
+					e.LoadFromModFile<Texture2D>(Path.Combine("assets", seasonalTextureName), AssetLoadPriority.Low);
 				}
 
 				Monitor.Log($"Seasonal texture not found for season {Game1.currentSeason} state Off. Using the default.");
-				return Helper.Content.Load<T>(Path.Combine("assets", offPngName), ContentSource.ModFolder);
+				e.LoadFromModFile<Texture2D>(Path.Combine("assets", offPngName), AssetLoadPriority.Low);
 			}
-			else if (asset.AssetNameEquals(smokeAnimationSpriteName))
+			else if (e.Name.IsEquivalentTo(smokeAnimationSpriteName))
 			{
-				return Helper.Content.Load<T>(smokeAnimationSpritePath, ContentSource.ModFolder);
+				e.LoadFromModFile<Texture2D>(smokeAnimationSpritePath, AssetLoadPriority.Low);
 			}
-			else if (asset.AssetNameEquals(fireAnimationSpriteName))
+			else if (e.Name.IsEquivalentTo(fireAnimationSpriteName))
 			{
-				return Helper.Content.Load<T>(fireAnimationSpritePath, ContentSource.ModFolder);
+				e.LoadFromModFile<Texture2D>(fireAnimationSpritePath, AssetLoadPriority.Low);
 			}
-			else if (asset.AssetNameEquals(smeltingRulesDataName))
+			else if (e.Name.IsEquivalentTo(smeltingRulesDataName))
 			{
-				return (T)(object)Helper.Data.ReadJsonFile<SmeltingRulesContainer>(smeltingRulesDataPath);
+				e.LoadFrom(() => Helper.Data.ReadJsonFile<SmeltingRulesContainer>(smeltingRulesDataPath), AssetLoadPriority.Low);
 			}
-			else if	(asset.AssetNameEquals(smokeAnimationDataName))
+			else if (e.Name.IsEquivalentTo(smokeAnimationDataName))
 			{
-				return (T)(object)Helper.Data.ReadJsonFile<SmokeAnimationData>(smokeAnimationDataPath);
+				e.LoadFrom(() => Helper.Data.ReadJsonFile<SmokeAnimationData>(smokeAnimationDataPath), AssetLoadPriority.Low);
 			}
-			else if (asset.AssetNameEquals(fireAnimationDataName))
+			else if (e.Name.IsEquivalentTo(fireAnimationDataName))
 			{
-				return (T)(object)Helper.Data.ReadJsonFile<FireAnimationData>(fireAnimationDataPath);
+				e.LoadFrom(() => Helper.Data.ReadJsonFile<FireAnimationData>(fireAnimationDataPath), AssetLoadPriority.Low);
 			}
-
-			throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
+			else if (e.NameWithoutLocale.IsEquivalentTo(blueprintsPath))
+			{
+				e.Edit(asset =>
+				{
+					var dictionary = asset.AsDictionary<string, string>();
+					dictionary.Data[furnaceBuildingType] = blueprintData.ToBlueprintString(i18n);
+				});
+			}
 		}
 
-
-		/// <summary>Get whether this instance can edit the given asset.</summary>
-		/// <param name="asset">Basic metadata about the asset being edit.</param>
-		public bool CanEdit<T>(IAssetInfo asset)
+		public override object GetApi()
 		{
-			if (asset.AssetNameEquals(blueprintsPath))
-			{
-				return true;
-			}
-
-			return false;
-		}
-
-
-		/// <summary>Edit a matched asset.</summary>
-		/// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
-		public void Edit<T>(IAssetData asset)
-		{
-			if (asset.AssetNameEquals(blueprintsPath))
-			{
-				var editor = asset.AsDictionary<string, string>();
-				editor.Data[furnaceBuildingType] = blueprintData.ToBlueprintString(i18n);
-				return;
-			}
-
-			throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
+			return new IndustrialFurnaceAPI(this);
 		}
 
 
@@ -279,7 +241,7 @@ namespace IndustrialFurnace
 			{
 				try
 				{
-					return furnaces[index];
+					return GetPerScreenFurnaceController(index);
 				}
 				catch (Exception)
 				{
@@ -307,12 +269,14 @@ namespace IndustrialFurnace
 
 				if (location != null && location.IsFarm && location.IsOutdoors)
 				{
-					for (int i = 0; i < furnaces.Count; i++)
+					for (int i = 0; i < furnaces.Value.Count; i++)
 					{
-						if (!furnaces[i].CurrentlyOn) continue;
+						IndustrialFurnaceController controller = GetPerScreenFurnaceController(i);
 
-						int x = furnaces[i].furnace.tileX.Value;
-						int y = furnaces[i].furnace.tileY.Value;
+						if (!controller.CurrentlyOn) continue;
+
+						int x = controller.furnace.tileX.Value;
+						int y = controller.furnace.tileY.Value;
 
 						TemporaryAnimatedSprite sprite;
 
@@ -364,12 +328,14 @@ namespace IndustrialFurnace
 
 				if (location != null && location.IsFarm && location.IsOutdoors)
 				{
-					for (int i = 0; i < furnaces.Count; i++)
+					for (int i = 0; i < furnaces.Value.Count; i++)
 					{
-						if (!furnaces[i].CurrentlyOn) continue;
+						IndustrialFurnaceController controller = GetPerScreenFurnaceController(i);
 
-						int x = furnaces[i].furnace.tileX.Value;
-						int y = furnaces[i].furnace.tileY.Value;
+						if (!controller.CurrentlyOn) continue;
+
+						int x = controller.furnace.tileX.Value;
+						int y = controller.furnace.tileY.Value;
 
 						TemporaryAnimatedSprite sprite;
 
@@ -478,7 +444,7 @@ namespace IndustrialFurnace
 		{
 			// Reset stuff
 			modSaveData = null;
-			furnaces.Clear();
+			furnaces.Value.Clear();
 		}
 
 
@@ -495,9 +461,9 @@ namespace IndustrialFurnace
 					InitializeFurnaceControllers(false);
 
 					// If we have a menu open and we're looking at a furnace, the menu is most likely the output menu. Redraw it!
-					if (Game1.activeClickableMenu != null && currentlyLookingAtFurnace != -1)
+					if (Game1.activeClickableMenu != null && currentlyLookingAtFurnace.Value != -1)
 					{
-						DrawOutputMenu(furnaces[GetIndexOfFurnaceControllerWithTag(currentlyLookingAtFurnace)]);
+						DrawOutputMenu(GetPerScreenFurnaceController(GetIndexOfFurnaceControllerWithTag(currentlyLookingAtFurnace.Value)));
 					}
 
 					UpdateTextures();
@@ -542,20 +508,32 @@ namespace IndustrialFurnace
 				return;
 
 			// Don't check if there are no furnaces
-			if (furnaces.Count == 0)
+			if (furnaces.Value.Count == 0)
 				return;
 			
 			// This might fix the android issue, also lets the player place items with both clicks
 			if (e.Button.IsActionButton() || e.Button.IsUseToolButton() || e.Button == SButton.MouseLeft || e.Button == SButton.MouseRight)
 			{
 				// Assumes furnaces can be built only on the farm and checks if player is on the farm map
-				if (!Game1.currentLocation.IsFarm || !Game1.currentLocation.IsOutdoors)
+				if (Game1.currentLocation is null || !Game1.currentLocation.IsFarm || !Game1.currentLocation.IsOutdoors)
 					return;
 
-				foreach (IndustrialFurnaceController furnace in furnaces)
+				foreach (IndustrialFurnaceController furnace in furnaces.Value)
 				{
+					if (furnace is null)
+					{
+						Monitor.Log("Furnace controller was null for some reason in OnButtonPressed");
+						continue;
+					}
+
 					Vector2 tile;
 					Building building = furnace.furnace;
+
+					if (building is null)
+					{
+						Monitor.Log("Furnace controller's building was null for some reason in OnButtonPressed");
+						continue;
+					}
 
 					if (building.daysOfConstructionLeft.Value > 0)
 					{
@@ -608,7 +586,7 @@ namespace IndustrialFurnace
 			if (Game1.player.IsMainPlayer)
 			{
 				// Finish smelting items
-				foreach (IndustrialFurnaceController furnace in furnaces)
+				foreach (IndustrialFurnaceController furnace in furnaces.Value)
 				{
 					if (furnace.CurrentlyOn)
 					{
@@ -634,13 +612,13 @@ namespace IndustrialFurnace
 				if (IsBuildingIndustrialFurnace(building))
 				{
 					// Add the controller that takes care of the functionality of the furnace
-					IndustrialFurnaceController controller = new IndustrialFurnaceController(furnacesBuilt, false, this)
+					IndustrialFurnaceController controller = new IndustrialFurnaceController(furnacesBuilt.Value, false, this)
 					{
 						furnace = building
 					};
 
-					furnaces.Add(controller);
-					furnacesBuilt++;
+					furnaces.Value.Add(controller);
+					furnacesBuilt.Value++;
 				}
 			}
 
@@ -653,7 +631,7 @@ namespace IndustrialFurnace
 
 					if (index > -1)
 					{
-						furnaces.RemoveAt(index);
+						furnaces.Value.RemoveAt(index);
 					}
 				}
 			}
@@ -677,13 +655,41 @@ namespace IndustrialFurnace
 				// Add furnace blueprint, and tag it uniquely based on how many have been built
 				blueprints.Add(new BluePrint(furnaceBuildingType)
 				{
-					maxOccupants = furnacesBuilt,
+					maxOccupants = furnacesBuilt.Value,
 				});
+			}
+			else if (modInstantBuildingFound && e.NewMenu is not null)
+			{
+				// Try to add the furnace to Instant Buildings' menu
+				try
+				{
+					Type instantBuildMenuType = Type.GetType("BitwiseJonMods.InstantBuildMenu, BitwiseJonMods.InstantBuildings");
+
+					if (e.NewMenu.GetType().Equals(instantBuildMenuType))
+					{
+						List<BluePrint> blueprints = Helper.Reflection.GetField<List<BluePrint>>(e.NewMenu, "blueprints").GetValue();
+
+						// Add furnace blueprint, and tag it uniquely based on how many have been built
+						blueprints.Add(new BluePrint(furnaceBuildingType)
+						{
+							maxOccupants = furnacesBuilt.Value,
+						});
+
+						// Refresh the blueprints to make building instant and maybe free depending on the mod's config
+						Helper.Reflection.GetMethod(e.NewMenu, "ModifyBlueprints").Invoke();
+					}
+				}
+				catch (Exception ex)
+				{
+					Monitor.Log("Failed editing Instant Building's menu", LogLevel.Error);
+					Monitor.Log(ex.ToString(), LogLevel.Error);
+				}
+				
 			}
 			// If a menu was closed, reset the currently looked at furnace, just in case.
 			else if (Game1.activeClickableMenu is null)
 			{
-				currentlyLookingAtFurnace = -1;
+				currentlyLookingAtFurnace.Value = -1;
 			}
 		}
 
@@ -693,7 +699,7 @@ namespace IndustrialFurnace
 		private void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
 		{
 			
-			foreach (IndustrialFurnaceController controller in furnaces)
+			foreach (IndustrialFurnaceController controller in furnaces.Value)
 			{
 				// Assumes the furnace is built in the farm to avoid rendering the notification bubble anywhere else
 				if (!Game1.player.currentLocation.IsFarm || !Game1.player.currentLocation.IsOutdoors) continue;
@@ -706,7 +712,7 @@ namespace IndustrialFurnace
 
 				// Check if there is items to render
 				if (controller.output.items.Count <= 0 || controller.output.items[0] == null)
-					return;
+					continue;
 
 				Building building = controller.furnace;
 
@@ -842,7 +848,7 @@ namespace IndustrialFurnace
 			// Show output chest only if it contains something
 			if (furnace.output.items.Count == 0) return;
 
-			currentlyLookingAtFurnace = furnace.ID;
+			currentlyLookingAtFurnace.Value = furnace.ID;
 			DrawOutputMenu(furnace);
 		}
 
@@ -915,10 +921,10 @@ namespace IndustrialFurnace
 		/// <returns>Either the index or -1 if no tag matches are found</returns>
 		private int GetIndexOfFurnaceControllerWithTag(int tag)
 		{
-			for (int i = 0; i < furnaces.Count; i++)
+			for (int i = 0; i < furnaces.Value.Count; i++)
 			{
 				// Assumes the furnace has been added to the list once
-				if (furnaces[i].ID == tag)
+				if (GetPerScreenFurnaceController(i).ID == tag)
 				{
 					return i;
 				}
@@ -935,11 +941,11 @@ namespace IndustrialFurnace
 		{
 			if (currentlyOn)
 			{
-				building.texture = new Lazy<Texture2D>(() => Game1.content.Load<Texture2D>(assetOnName));
+				building.texture = new Lazy<Texture2D>(() => Helper.GameContent.Load<Texture2D>(assetOnName));
 			}
 			else
 			{
-				building.texture = new Lazy<Texture2D>(() => Game1.content.Load<Texture2D>(defaultAssetName));
+				building.texture = new Lazy<Texture2D>(() => Helper.GameContent.Load<Texture2D>(defaultAssetName));
 			}
 		}
 
@@ -947,9 +953,9 @@ namespace IndustrialFurnace
 		/// <summary>Updates the textures of all furnaces. Used to sync with multiplayer save data changes.</summary>
 		private void UpdateTextures()
 		{
-			for (int i = 0; i < furnaces.Count; i++)
+			for (int i = 0; i < furnaces.Value.Count; i++)
 			{
-				UpdateTexture(furnaces[i].furnace, furnaces[i].CurrentlyOn);
+				UpdateTexture(GetPerScreenFurnaceController(i).furnace, GetPerScreenFurnaceController(i).CurrentlyOn);
 			}
 		}
 
@@ -960,31 +966,33 @@ namespace IndustrialFurnace
 		/// </summary>
 		private void UpdateFurnaceLights()
 		{
-			for (int i = 0; i < furnaces.Count; i++)
+			for (int i = 0; i < furnaces.Value.Count; i++)
 			{
-				if (furnaces[i].CurrentlyOn)
+				IndustrialFurnaceController controller = GetPerScreenFurnaceController(i);
+
+				if (controller.CurrentlyOn)
 				{
 					// Assumes only farm can have built buildings!
 					if (Game1.player.currentLocation != Game1.getFarm())
 						continue;
 
-					if (furnaces[i].lightSource is null)
+					if (controller.lightSource is null)
 					{
-						CreateLight(furnaces[i]);
+						CreateLight(controller);
 					}
-					else if (!Game1.currentLightSources.Contains(furnaces[i].lightSource))
+					else if (!Game1.currentLightSources.Contains(controller.lightSource))
 					{
-						Game1.currentLightSources.Add(furnaces[i].lightSource);
+						Game1.currentLightSources.Add(controller.lightSource);
 					}
 				}
-				else if (furnaces[i].lightSource != null)
+				else if (controller.lightSource != null)
 				{
-					if (Game1.currentLightSources.Contains(furnaces[i].lightSource))
+					if (Game1.currentLightSources.Contains(controller.lightSource))
 					{
-						Game1.currentLightSources.Remove(furnaces[i].lightSource);
+						Game1.currentLightSources.Remove(controller.lightSource);
 					}
 
-					furnaces[i].lightSource = null;
+					controller.lightSource = null;
 				}
 			}
 		}
@@ -1034,7 +1042,7 @@ namespace IndustrialFurnace
 		private void InitializeFurnaceControllers(bool readSaveData)
 		{
 			// Initialize the lists to prevent data leaking from previous games
-			furnaces.Clear();
+			furnaces.Value.Clear();
 
 			// Load the saved data. If not present, initialize new
 			if (readSaveData)
@@ -1046,29 +1054,44 @@ namespace IndustrialFurnace
 			}
 			else
 			{
-				modSaveData.ParseModSaveDataToControllers(furnaces, this);
+				modSaveData.ParseModSaveDataToControllers(furnaces.Value, this);
 			}
 
 			// Update furnacesBuilt counter to match the highest id of built furnaces (+1)
 			int highestId = -1;
-			for (int i = 0; i < furnaces.Count; i++)
+			for (int i = 0; i < furnaces.Value.Count; i++)
 			{
-				if (furnaces[i].ID > highestId) highestId = furnaces[i].ID;
+				if (GetPerScreenFurnaceController(i).ID > highestId) highestId = GetPerScreenFurnaceController(i).ID;
 			}
-			furnacesBuilt = highestId + 1;
+			furnacesBuilt.Value = highestId + 1;
 
 			// Repopulate the list of furnaces, only checks the farm!
 			foreach (Building building in ((BuildableGameLocation)Game1.getFarm()).buildings)
 			{
 				if (IsBuildingIndustrialFurnace(building))
 				{
-					for (int i = 0; i < furnaces.Count; i++)
+					for (int i = 0; i < furnaces.Value.Count; i++)
 					{
-						if (building.maxOccupants.Value == furnaces[i].ID)
+						if (building.maxOccupants.Value == GetPerScreenFurnaceController(i).ID)
 						{
-							furnaces[i].furnace = building;
+							GetPerScreenFurnaceController(i).furnace = building;
 						}
 					}
+				}
+			}
+
+			// Clean controllers with null buildings from the save file
+			// Caused by playing (atleast) splitscreen multiplayer with versions older than 1.7.4
+			if (readSaveData)
+			{
+				int removed = furnaces.Value.RemoveAll(item => item.furnace is null);
+
+				if (removed > 0)
+				{
+					Monitor.Log("Removed " + removed + " corrupted furnace controllers from the save file.", LogLevel.Warn);
+
+					// Refresh the modSaveData
+					modSaveData.ParseControllersToModSaveData(furnaces.Value);
 				}
 			}
 		}
@@ -1101,7 +1124,12 @@ namespace IndustrialFurnace
 		private void InitializeSaveData()
 		{
 			modSaveData.ClearOldData();
-			modSaveData.ParseControllersToModSaveData(furnaces);
+			modSaveData.ParseControllersToModSaveData(furnaces.Value);
+		}
+
+		private IndustrialFurnaceController GetPerScreenFurnaceController(int index)
+		{
+			return furnaces.Value[index];
 		}
 
 

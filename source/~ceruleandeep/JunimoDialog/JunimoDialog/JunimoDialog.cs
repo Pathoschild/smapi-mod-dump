@@ -11,7 +11,7 @@
 using System;
 using System.IO;
 using ContentPatcher;
-using Harmony;
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -41,7 +41,7 @@ namespace JunimoDialog
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.Saving += OnSaving;
 
-            HarmonyInstance harmony = HarmonyInstance.Create("ceruleandeep.JunimoDialog");
+            Harmony harmony = new Harmony("ceruleandeep.JunimoDialog");
             harmony.PatchAll();
         }
 
@@ -71,22 +71,21 @@ namespace JunimoDialog
             Dialog.cp_api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
             Dialog.Load(Path.Combine(Helper.DirectoryPath, "Assets"));
 
-            foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
+            foreach (var contentPack in Helper.ContentPacks.GetOwned())
             {
-                // this.Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}", LogLevel.Debug);
                 Dialog.Load(contentPack.DirectoryPath);
             }
             
             var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
             if (api is null) return;
             api.RegisterModConfig(ModManifest, () => Config = new ModConfig(), () => Helper.WriteConfig(Config));
-            api.SetDefaultIngameOptinValue(ModManifest, false);
+            api.SetDefaultIngameOptinValue(ModManifest, true);
 
-            api.RegisterSimpleOption(ModManifest, "Happy", "", () => Config.Happy, (bool val) => Config.Happy = val);
-            api.RegisterSimpleOption(ModManifest, "Grumpy", "", () => Config.Grumpy, (bool val) => Config.Grumpy = val);
-            api.RegisterClampedOption(ModManifest, "Dialog Chance", "Dialog Chance", () => Config.DialogChance, (float val) => Config.DialogChance = val, 0.0f, 1.0f, 0.05f);
-            api.RegisterClampedOption(ModManifest, "Junimo Language Chance", "Chance for dialog to appear in Junimo language", () => Config.JunimoTextChance, (float val) => Config.JunimoTextChance = val, 0.0f, 1.0f, 0.50f);
-            api.RegisterSimpleOption(ModManifest, "Extra debug output", "", () => Config.ExtraDebugOutput, (bool val) => Config.ExtraDebugOutput = val);
+            api.RegisterSimpleOption(ModManifest, "Happy", "", () => Config.Happy, val => Config.Happy = val);
+            api.RegisterSimpleOption(ModManifest, "Grumpy", "", () => Config.Grumpy, val => Config.Grumpy = val);
+            api.RegisterClampedOption(ModManifest, "Dialog Chance", "Dialog Chance", () => Config.DialogChance, val => Config.DialogChance = val, 0.0f, 1.0f, 0.05f);
+            api.RegisterClampedOption(ModManifest, "Junimo Language Chance", "Chance for dialog to appear in Junimo language", () => Config.JunimoTextChance, val => Config.JunimoTextChance = val, 0.0f, 1.0f, 0.50f);
+            api.RegisterSimpleOption(ModManifest, "Extra debug output", "", () => Config.ExtraDebugOutput, val => Config.ExtraDebugOutput = val);
         }
     }
 }

@@ -12,7 +12,7 @@
     "Name": "Gus's Delicates",
     "Description": "They're still kind of warm.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 36,
     "IsColored": false,
     "GiftTastes": {

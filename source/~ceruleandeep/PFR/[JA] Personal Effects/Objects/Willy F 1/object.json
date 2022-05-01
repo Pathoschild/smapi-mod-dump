@@ -12,7 +12,7 @@
     "Name": "Willy's Panties",
     "Description": "Salty.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 17,
     "IsColored": false,
     "GiftTastes": {

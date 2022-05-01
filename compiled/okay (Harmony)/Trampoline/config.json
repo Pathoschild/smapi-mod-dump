@@ -1,0 +1,10 @@
+{
+  "EnableMod": true,
+  "JumpSound": "dwop",
+  "ConvertKey": "T",
+  "HigherKey": "Up",
+  "LowerKey": "Down",
+  "SlowerKey": "Left",
+  "FasterKey": "Right",
+  "JumpSpeed": 6.0
+}

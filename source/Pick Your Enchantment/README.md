@@ -38,6 +38,10 @@ Simply delete the mod from your Mods directory.
 * Works in single player, multiplayer, and split-screen mode. Should be fine if installed for one player only.
 * Should be compatible with most other mods. Tested with [Spacecore](https://www.nexusmods.com/stardewvalley/mods/1348), [Many Enchantments](https://www.nexusmods.com/stardewvalley/mods/8824), and [Enchantable Scythes](https://www.nexusmods.com/stardewvalley/mods/10668). Note: this mod patches Spacecore's forge menu.
 
+## Additionally:
+
+* Thanks to [martin66789](https://forums.nexusmods.com/index.php?/user/27323031-martin66789/) for the Hungarian translations!
+
 ## See also
 
 [Changelog](ForgeMenuChoice/docs/Changelog.md)

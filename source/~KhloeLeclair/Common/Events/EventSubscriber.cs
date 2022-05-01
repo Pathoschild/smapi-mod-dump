@@ -8,41 +8,48 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 using StardewModdingAPI;
 
-namespace Leclair.Stardew.Common.Events {
-	public abstract class EventSubscriber<T> : IDisposable where T : Mod {
+namespace Leclair.Stardew.Common.Events;
 
-		public readonly T Mod;
+public abstract class EventSubscriber<T> : IDisposable where T : Mod {
 
-		private Dictionary<MethodInfo, RegisteredEvent> Events;
+	public readonly T Mod;
 
-		public EventSubscriber(T mod, bool registerImmediate = true) {
-			Mod = mod;
+	private Dictionary<MethodInfo, RegisteredEvent>? Events;
 
-			if (registerImmediate)
-				RegisterEvents();
-		}
+	public EventSubscriber(T mod, bool registerImmediate = true) {
+		Mod = mod;
 
-		public virtual void Dispose() {
-			UnregisterEvents();
-		}
-
-		public void RegisterEvents(Action<string, LogLevel> logger = null) {
-			Events = EventHelper.RegisterEvents(this, Mod.Helper.Events, Events, logger);
-		}
-
-		public void UnregisterEvents() {
-			if (Events == null)
-				return;
-
-			EventHelper.UnregisterEvents(Events);
-			Events = null;
-		}
-
+		if (registerImmediate)
+			RegisterEvents();
 	}
+
+	public void Dispose() {
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
+
+	public virtual void Dispose(bool disposing) {
+		UnregisterEvents();
+	}
+
+	public void RegisterEvents(Action<string, LogLevel>? logger = null) {
+		Events = EventHelper.RegisterEvents(this, Mod.Helper.Events, Events, logger);
+	}
+
+	public void UnregisterEvents() {
+		if (Events == null)
+			return;
+
+		EventHelper.UnregisterEvents(Events);
+		Events = null;
+	}
+
 }

@@ -10,12 +10,15 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
 using StardewValley;
 using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -49,16 +52,18 @@ static partial class DrawState {
 		internal const SpriteSortMode SortMode = SpriteSortMode.Deferred;
 	}
 
-	internal static readonly Lazy<SamplerState> LinearBorder = new(() => {
-		var state = SamplerStateClone!(SamplerState.LinearClamp);
-		state.AddressU = state.AddressV = TextureAddressMode.Border;
+	private static SamplerState MakeSamplerState(SamplerState reference, TextureAddressMode addressMode) {
+		var state = SamplerStateClone!(reference);
+		state.AddressU = state.AddressV = addressMode;
 		return state;
-	});
-	internal static readonly Lazy<SamplerState> LinearMirror = new(() => {
-		var state = SamplerStateClone!(SamplerState.LinearClamp);
-		state.AddressU = state.AddressV = TextureAddressMode.Mirror;
-		return state;
-	});
+	}
+
+	internal static readonly Lazy<SamplerState> AnisotropicBorder = new(() => MakeSamplerState(SamplerState.AnisotropicClamp, TextureAddressMode.Border));
+	internal static readonly Lazy<SamplerState> LinearBorder = new(() => MakeSamplerState(SamplerState.LinearClamp, TextureAddressMode.Border));
+	internal static readonly Lazy<SamplerState> PointBorder = new(() => MakeSamplerState(SamplerState.PointClamp, TextureAddressMode.Border));
+	internal static readonly Lazy<SamplerState> AnisotropicMirror = new(() => MakeSamplerState(SamplerState.AnisotropicClamp, TextureAddressMode.Mirror));
+	internal static readonly Lazy<SamplerState> LinearMirror = new(() => MakeSamplerState(SamplerState.LinearClamp, TextureAddressMode.Mirror));
+	internal static readonly Lazy<SamplerState> PointMirror = new(() => MakeSamplerState(SamplerState.PointClamp, TextureAddressMode.Mirror));
 
 	internal static SamplerState CurrentSamplerState = Defaults.SamplerState;
 	internal static BlendState CurrentBlendState = Defaults.BlendState;
@@ -80,7 +85,20 @@ static partial class DrawState {
 		ExpectedFrameTime = rate.GetValueOrDefault(ExpectedFrameTime);
 	}
 
-	internal static GraphicsDevice Device => Game1.graphics.GraphicsDevice;
+	private static GraphicsDevice? PreviousDevice = null;
+	internal static GraphicsDevice Device {
+		get {
+			UpdateDevice();
+			return PreviousDevice!;
+		}
+	}
+	internal static void UpdateDevice() {
+		var currentDevice = Game1.graphics.GraphicsDevice;
+		if (currentDevice != PreviousDevice) {
+			//Harmonize.Patches.Game.HoeDirt.OnNewGraphicsDevice(currentDevice);
+			PreviousDevice = currentDevice;
+		}
+	}
 
 	internal static bool PushedUpdateWithin(int frames) => (long)(CurrentFrame - LastPushedUpdateFrame) <= frames;
 
@@ -102,7 +120,7 @@ static partial class DrawState {
 
 		Debug.Mode.Draw();
 
-		if (!Config.Enabled) {
+		if (!Config.IsEnabled) {
 			return;
 		}
 
@@ -176,7 +194,7 @@ static partial class DrawState {
 
 		// Apply the PyTK mediation here because we do not know when it might be set up
 		ApplyPyTKMitigation();
-		
+
 		FrameStopwatch.Restart();
 	}
 

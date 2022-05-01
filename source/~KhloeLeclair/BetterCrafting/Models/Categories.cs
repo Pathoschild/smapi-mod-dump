@@ -8,11 +8,18 @@
 **
 *************************************************/
 
-namespace Leclair.Stardew.BetterCrafting.Models {
-	public class Categories {
+#nullable enable
 
-		public Category[] Cooking { get; set; }
-		public Category[] Crafting { get; set; }
+using System;
 
-	}
+namespace Leclair.Stardew.BetterCrafting.Models;
+
+public class Categories {
+
+	public Category[] Cooking { get; set; } = Array.Empty<Category>();
+
+	public Category[] Crafting { get; set; } = Array.Empty<Category>();
+
+	public AppliedDefaults? Applied { get; set; }
+
 }

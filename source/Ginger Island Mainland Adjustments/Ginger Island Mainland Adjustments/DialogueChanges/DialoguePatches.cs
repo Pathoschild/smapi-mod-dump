@@ -8,10 +8,10 @@
 **
 *************************************************/
 
-using System.Diagnostics.CodeAnalysis;
+using AtraShared.Utils.Extensions;
 using GingerIslandMainlandAdjustments.ScheduleManager;
-using GingerIslandMainlandAdjustments.Utils;
 using HarmonyLib;
+using StardewModdingAPI.Utilities;
 using StardewValley.Locations;
 
 namespace GingerIslandMainlandAdjustments.DialogueChanges;
@@ -20,10 +20,21 @@ namespace GingerIslandMainlandAdjustments.DialogueChanges;
 /// Class to handle patching of NPCs for dialogue.
 /// </summary>
 [HarmonyPatch(typeof(NPC))]
-internal class DialoguePatches
+internal static class DialoguePatches
 {
     private const string ANTISOCIAL = "Resort_Antisocial";
     private const string ISLANDNORTH = "Resort_IslandNorth";
+    private const string TOADVENTURE = "Resort_Adventure";
+    private const string FROMADVENTURE = "Resort_AdventureReturn";
+
+    private static readonly PerScreen<HashSet<string>> TalkedToTodayPerScreen = new(createNewState: () => new HashSet<string>());
+
+    private static HashSet<string> TalkedToToday => TalkedToTodayPerScreen.Value;
+
+    /// <summary>
+    /// Clears the record of whether or not you've talked to your spouse on the Island today.
+    /// </summary>
+    internal static void ClearTalkRecord() => TalkedToToday.Clear();
 
     /// <summary>
     /// Appends checkForNewCurrentDialogue to look for GI-specific dialogue.
@@ -35,30 +46,46 @@ internal class DialoguePatches
     [HarmonyPostfix]
     [HarmonyPatch(nameof(NPC.checkForNewCurrentDialogue))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Convention used by Harmony")]
-    public static void DoCheckIslandDialogue(NPC __instance, int __0, bool __1, ref bool __result)
+    private static void DoCheckIslandDialogue(NPC __instance, int __0, bool __1, ref bool __result)
     { // __0 = heartlevel, as int. __1 = whether or not to have a season prefix?
         try
         {
-            if (__result)
+            if (__instance.currentLocation is IslandLocation)
+            {
+                TalkedToToday.Add(__instance.Name);
+            }
+            if (__result || !Game1.IsVisitingIslandToday(__instance.Name) || __instance.currentLocation is FarmHouse)
             { // game code has returned a value, therefore skip me.
                 return;
             }
-            if (!Game1.IsVisitingIslandToday(__instance.Name))
-            { // am not headed to island today.
+            if (__instance.currentLocation is IslandLocation && GIScheduler.CurrentAdventurers?.Contains(__instance) == true)
+            {
+                if (Game1.timeOfDay < 1200 && __instance.Dialogue.ContainsKey(TOADVENTURE))
+                {
+                    __instance.ClearAndPushDialogue(TOADVENTURE);
+                    return;
+                }
+                else if (Game1.timeOfDay > 1700 && __instance.Dialogue.ContainsKey(FROMADVENTURE))
+                {
+                    __instance.ClearAndPushDialogue(FROMADVENTURE);
+                    return;
+                }
+            }
+            if (__instance.currentLocation is IslandEast && __instance.Dialogue.ContainsKey(ANTISOCIAL))
+            {
+                __instance.ClearAndPushDialogue(ANTISOCIAL);
                 return;
             }
-            if (__instance.currentLocation is (IslandLocation or FarmHouse))
-            { // Currently on island or is spouse in Farmhouse, handle IslandNorth/IslandSoutheast
-                if (__instance.currentLocation is IslandEast && __instance.Dialogue.ContainsKey(ANTISOCIAL))
-                {
-                    __instance.ClearAndPushDialogue(ANTISOCIAL);
-                }
-                else if (__instance.currentLocation is IslandNorth && __instance.Dialogue.ContainsKey(ISLANDNORTH))
-                {
-                    __instance.ClearAndPushDialogue(ISLANDNORTH);
-                }
+            else if (__instance.currentLocation is IslandNorth && __instance.Dialogue.ContainsKey(ISLANDNORTH))
+            {
+                __instance.ClearAndPushDialogue(ISLANDNORTH);
                 return;
             }
+            else if (__instance.currentLocation is IslandLocation)
+            {
+                return;
+            }
+
             string preface = __1 ? string.Empty : Game1.currentSeason;
 
             string baseKey;
@@ -72,7 +99,7 @@ internal class DialoguePatches
                 baseKey = preface + "Resort_Left";
                 if (!__instance.currentLocation.IsOutdoors && __instance.currentLocation is not FishShop)
                 {
-                    baseKey += __instance.currentLocation.Name; // use specific INDOOR keys.
+                    baseKey = $"{baseKey}_{__instance.currentLocation.Name}"; // use specific INDOOR keys.
                 }
             }
             else
@@ -81,22 +108,19 @@ internal class DialoguePatches
             }
 
             // Handle group-specific dialogue.
-            if (GIScheduler.CurrentVisitingGroup?.Contains(__instance) == true
-                && GIScheduler.CurrentGroup is not null
+            if (GIScheduler.CurrentGroup is not null
+                && GIScheduler.CurrentVisitingGroup?.Contains(__instance) == true
                 && DialogueUtilities.TryGetIslandDialogue(__instance, $"{baseKey}_{GIScheduler.CurrentGroup}", __0))
             {
                 __result = true;
                 return;
             }
 
-            Farmer spouse = __instance.getSpouse();
-            if (spouse is not null && spouse == Game1.player)
+            if (__instance.getSpouse() is Farmer spouse && spouse == Game1.player
+                && DialogueUtilities.TryGetIslandDialogue(__instance, baseKey + "_marriage", __0))
             {
-                if (DialogueUtilities.TryGetIslandDialogue(__instance, baseKey + "_marriage", __0))
-                {
-                    __result = true;
-                    return;
-                }
+                __result = true;
+                return;
             }
             __result = DialogueUtilities.TryGetIslandDialogue(__instance, baseKey, __0);
             return;
@@ -114,7 +138,7 @@ internal class DialoguePatches
     [HarmonyPostfix]
     [HarmonyPatch(nameof(NPC.arriveAtFarmHouse))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Convention used by Harmony")]
-    public static void AppendArrival(NPC __instance)
+    private static void AppendArrival(NPC __instance)
     {
         try
         {
@@ -122,9 +146,31 @@ internal class DialoguePatches
             {
                 return;
             }
-            __instance.currentMarriageDialogue.Clear();
-            __instance.setNewDialogue("MarriageDialogue", "GIReturn_", -1, add: false, clearOnMovement: true);
+            if (TalkedToToday.Contains(__instance.Name) && __instance.TryApplyMarriageDialogueIfExisting("GIReturn_Talked_" + __instance.Name, clearOnMovement: true))
+            {
+#if DEBUG
+                Globals.ModMonitor.Log($"Setting GIReturn_Talked_{__instance.Name}.", LogLevel.Debug);
+#endif
+            }
+            else if (__instance.TryApplyMarriageDialogueIfExisting("GIReturn_" + __instance.Name, clearOnMovement: true))
+            {
+#if DEBUG
             Globals.ModMonitor.Log($"Setting GIReturn_{__instance.Name}.", LogLevel.Debug);
+#endif
+            }
+            else
+            {
+                __instance.CurrentDialogue.Clear();
+                __instance.currentMarriageDialogue.Clear();
+                if (Game1.player.getFriendshipHeartLevelForNPC(__instance.Name) > 9)
+                {
+                    __instance.CurrentDialogue.Push(new Dialogue(I18n.GILeaveDefaultHappy(__instance.getTermOfSpousalEndearment()), __instance));
+                }
+                else
+                {
+                    __instance.CurrentDialogue.Push(new Dialogue(I18n.GILeaveDefaultUnhappy(), __instance));
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -136,27 +182,40 @@ internal class DialoguePatches
 /// <summary>
 /// Class that holds patches against IslandSouth, for dialogue.
 /// </summary>
-[HarmonyPatch(typeof(IslandSouth))]
-internal class IslandSouthDialoguePatches
+[HarmonyPatch(typeof(Game1))]
+internal class Game1DialoguePatches
 {
     /// <summary>
     /// Postfix SetupIslandSchedules to add marriage-specific dialogue.
     /// </summary>
     /// <remarks>DayStarted, unfortunately, runs *before* SetupIslandSchedules.</remarks>
     [HarmonyPostfix]
-    [HarmonyPatch(nameof(IslandSouth.SetupIslandSchedules))]
-    public static void AppendMarriageDialogue()
+    [HarmonyPatch(nameof(Game1.updateWeatherIcon))]
+    private static void AppendMarriageDialogue()
     {
         try
         {
-            NPC? spouse = Game1.player?.getSpouse();
-            if (spouse is not null && Game1.IsVisitingIslandToday(spouse.Name))
+            if (Game1.player?.getSpouse() is NPC spouse && Game1.IsVisitingIslandToday(spouse.Name))
             {
-                spouse.currentMarriageDialogue.Clear();
-                spouse.setNewDialogue("MarriageDialogue", "GILeave_", -1, add: false, clearOnMovement: true);
+                if (spouse.TryApplyMarriageDialogueIfExisting("GILeave_" + spouse.Name))
+                {
 #if DEBUG
                 Globals.ModMonitor.Log($"Setting GILeave_{spouse?.Name}", LogLevel.Trace);
 #endif
+                }
+                else if (Game1.player is not null)
+                {
+                    spouse.CurrentDialogue.Clear();
+                    spouse.currentMarriageDialogue.Clear();
+                    if (Game1.player.getFriendshipHeartLevelForNPC(spouse.Name) > 9)
+                    {
+                        spouse.CurrentDialogue.Push(new Dialogue(I18n.GILeaveDefaultHappy(spouse.getTermOfSpousalEndearment()), spouse));
+                    }
+                    else
+                    {
+                        spouse.CurrentDialogue.Push(new Dialogue(I18n.GILeaveDefaultUnhappy(), spouse));
+                    }
+                }
             }
         }
         catch (Exception ex)

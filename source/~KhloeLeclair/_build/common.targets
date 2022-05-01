@@ -6,13 +6,24 @@
 		<RepositoryUrl>https://github.com/KhloeLeclair/StardewMods</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 
+		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<GameModsPath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\DevMods</GameModsPath>
+
+		<!--GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - 1.5.6 with 3.13.4</GamePath-->
+		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - 1.5.6 with 3.14.0</GamePath>
+		<GameModsPath>$(GamePath)\DevMods</GameModsPath>
+
 		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
 		<ModZipPath>$(SolutionDir)\_releases</ModZipPath>
+
+		<DefineConstants Condition="$(EnableHarmony) == 'True'">HARMONY</DefineConstants>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	
 	<PropertyGroup Condition="$(Configuration) != 'Release'">
 		<DebugType>Portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
@@ -21,7 +32,16 @@
 
 	<!-- mod build package -->
 	<ItemGroup>
-        <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
+		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+		<PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3" />
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>$(GamePath)\smapi-internal\Newtonsoft.Json.dll</HintPath>
+		</Reference>
 	</ItemGroup>
+
+	<ItemGroup Condition="$(EnableTranslation) == 'True'">
+		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0" />
+	</ItemGroup>
+	
 </Project>

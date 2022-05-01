@@ -76,7 +76,8 @@ namespace MinecartPatcher
 				if(counter >= startCount && counter <= endCount) responses.Add(new Response(mc.Key, mc.Value.DisplayName));
 
 			}
-			PageCount = counter / 4;
+			PageCount = counter / 5;
+			if (counter % 5 > 0) PageCount += 1;
 			if (page < PageCount - 1) responses.Add(new Response("MCP.PaginationPlus", "Next Page >"));
 			responses.Add(new Response("Cancel", Game1.content.LoadString("Strings\\Locations:MineCart_Destination_Cancel")));
 			LastPage = page;
@@ -107,7 +108,7 @@ namespace MinecartPatcher
 		public MinecartInstance FindMinecart(GameLocation l, Vector2 vec)
         {
 			if (l == null || string.IsNullOrWhiteSpace(l.Name)) return null;
-            var tids = new List<int>{ 958, 1080, 1081 };
+            var tids = new List<int>{ 958, 1080, 1081, 179, 195, 208, 224 };
             int tid = l.getTileIndexAt(Utility.Vector2ToPoint(vec), "Buildings");
             if (tids.Contains(tid))
             {

@@ -45,5 +45,5 @@ sealed class HarmonizeFinalizeCatcherAttribute<T, E> : HarmonizeFinalizeCatcherF
 		platform: platform,
 		methodInfo: typeof(HarmonizeFinalizeCatcherAttribute<T, E>).GetMethod(nameof(Implementation), BindingFlags.Static | BindingFlags.NonPublic),
 		critical: critical
-	) {}
+	) { }
 }

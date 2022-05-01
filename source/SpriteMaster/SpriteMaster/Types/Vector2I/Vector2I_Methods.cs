@@ -56,4 +56,6 @@ partial struct Vector2I {
 		X.Clamp(min, max),
 		Y.Clamp(min, max)
 	);
+
+	internal readonly Vector2I Abs => (Math.Abs(X), Math.Abs(Y));
 }

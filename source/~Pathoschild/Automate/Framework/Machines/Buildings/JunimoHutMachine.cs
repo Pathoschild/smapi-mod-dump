@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 using StardewValley;
 using StardewValley.Buildings;

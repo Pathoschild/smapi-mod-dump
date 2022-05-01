@@ -11,7 +11,7 @@
 {
   "Name": "Wiki Links",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.1.2",
   "Description": "Wiki Links.",
   "UniqueID": "aedenthorn.WikiLinks",
   "EntryDll": "WikiLinks.dll",
@@ -22,7 +22,7 @@
     "Directory": "_releases",
     "ModFolder": "WikiLinks"
   },
-  "UpdateKeys": [ "Nexus:" ],
+  "UpdateKeys": [ "Nexus:11476" ],
   "Dependencies": [
     {
       "UniqueID": "Platonymous.ModUpdater",

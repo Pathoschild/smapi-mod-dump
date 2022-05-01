@@ -19,6 +19,12 @@ namespace Shockah.CommonModCode
 {
 	public static class HarmonyPatchExtensions
 	{
+		private static void WarnOnDebugAssembly(IMonitor monitor, Assembly? assembly)
+		{
+			if (assembly?.IsBuiltInDebugConfiguration() == true)
+				monitor.LogOnce($"{assembly.GetName().Name} was built in debug configuration - patching may fail. If it does fail, please ask that mod's developer to build it in release configuration.", LogLevel.Warn);
+		}
+
 		public static void Patch(
 			this Harmony self,
 			MethodBase? original,
@@ -36,6 +42,8 @@ namespace Shockah.CommonModCode
 				monitor.Log($"Could not patch method - the mod may not work correctly.\nReason: Unknown method to patch.", problemLogLevel);
 				return;
 			}
+			if (transpiler is not null)
+				WarnOnDebugAssembly(monitor, original.DeclaringType?.Assembly);
 			self.Patch(original, prefix, postfix, transpiler, finalizer);
 			monitor.Log($"Patched method {original.FullDescription()}.", successLogLevel);
 		}
@@ -60,6 +68,8 @@ namespace Shockah.CommonModCode
 					monitor.Log($"Could not patch method - the mod may not work correctly.\nReason: Unknown method to patch.", problemLogLevel);
 					return false;
 				}
+				if (transpiler is not null)
+					WarnOnDebugAssembly(monitor, originalMethod.DeclaringType?.Assembly);
 				self.Patch(originalMethod, prefix, postfix, transpiler, finalizer);
 				monitor.Log($"Patched method {originalMethod.FullDescription()}.", successLogLevel);
 				return true;

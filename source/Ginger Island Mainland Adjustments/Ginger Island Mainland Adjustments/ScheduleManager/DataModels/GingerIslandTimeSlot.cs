@@ -8,8 +8,8 @@
 **
 *************************************************/
 
-using System.Diagnostics.CodeAnalysis;
-using GingerIslandMainlandAdjustments.Utils;
+using AtraShared.Schedules.DataModels;
+using AtraShared.Utils.Extensions;
 using Microsoft.Xna.Framework;
 
 namespace GingerIslandMainlandAdjustments.ScheduleManager.DataModels;
@@ -282,7 +282,7 @@ internal class GingerIslandTimeSlot
             }
             if (!foundactivity)
             {
-                Globals.ModMonitor.DebugLog($"Warning: No activity found for {visitor.Name} at {this.timeslot}", LogLevel.Warn);
+                Globals.ModMonitor.DebugOnlyLog($"Warning: No activity found for {visitor.Name} at {this.timeslot}", LogLevel.Warn);
             }
         }
         return this.animations;
@@ -348,7 +348,9 @@ internal class GingerIslandTimeSlot
             new PossibleIslandActivity(
                 new List<Point> { new Point(26, 26), new Point(28, 29), new Point(10, 27) },
                 chanceMap: (NPC npc) => npc.Name.Equals("Abigail", StringComparison.OrdinalIgnoreCase) ? 0.5 : 0.3,
-                dialogueKey: "Resort_Umbrella"),
+                dialogueKey: "Resort_Umbrella",
+                animation: "beach_umbrella",
+                animation_required: false),
             // sitting on chair
             new PossibleIslandActivity(
                 new List<Point> { new Point(20, 24), new Point(30, 29) },
@@ -364,19 +366,25 @@ internal class GingerIslandTimeSlot
                 dialogueKey: "Resort_Antisocial",
                 basechance: 0,
                 chanceMap: (NPC npc) => npc.SocialAnxiety == NPC.shy && npc.Optimism == NPC.negative && !npc.Name.Equals("George", StringComparison.OrdinalIgnoreCase) ? 0.6 : 0.0,
-                map: "IslandSouthEast"),
+                map: "IslandSouthEast",
+                animation: "beach_antisocial",
+                animation_required: false),
 #endif
             // shore points
             new PossibleIslandActivity(
                 new List<Point> { new Point(6, 34), new Point(9, 33), new Point(13, 33), new Point(17, 33), new Point(24, 33), new Point(28, 32), new Point(32, 31), new Point(37, 31) },
                 dialogueKey: "Resort_Shore",
-                basechance: 0.25),
+                basechance: 0.25,
+                animation: "beach_shore",
+                animation_required: false),
             // pier points
             new PossibleIslandActivity(
                 new List<Point> { new Point(22, 43), new Point(22, 40) },
                 dialogueKey: "Resort_Pier",
                 basechance: 0.25,
                 direction: Game1.right,
+                animation: "beach_pier",
+                animation_required: false,
                 chanceMap: (NPC npc) => npc.Age == NPC.adult ? 0.5 : 0),
         };
     }

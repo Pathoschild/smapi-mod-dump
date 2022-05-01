@@ -12,7 +12,7 @@
     "Name": "Wizard's Underpants",
     "Description": "Almost ethereal - a fabric like you've never seen.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 49,
     "IsColored": false,
     "GiftTastes": {

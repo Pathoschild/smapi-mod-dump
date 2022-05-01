@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Pathoschild.Stardew.NoclipMode.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -44,6 +46,7 @@ namespace Pathoschild.Stardew.NoclipMode
             this.Config = helper.ReadConfig<ModConfig>();
 
             // hook events
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
         }
 
@@ -51,6 +54,22 @@ namespace Pathoschild.Stardew.NoclipMode
         /*********
         ** Private methods
         *********/
+        /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            // add Generic Mod Config Menu integration
+            new GenericModConfigMenuIntegrationForNoclipMode(
+                getConfig: () => this.Config,
+                reset: () => this.Config = new ModConfig(),
+                saveAndApply: () => this.Helper.WriteConfig(this.Config),
+                modRegistry: this.Helper.ModRegistry,
+                monitor: this.Monitor,
+                manifest: this.ModManifest
+            ).Register();
+        }
+
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>

@@ -29,8 +29,8 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 		public static readonly Rectangle CRYSTAL_BALL = new(272, 352, 16, 16);
 
-		private readonly int Seed;
-		private double[] Luck;
+		private readonly ulong Seed;
+		private double?[] Luck;
 		private SpriteInfo[] Sprites;
 		private SpriteInfo[][] Extras;
 		private IFlowNode[] Nodes;
@@ -63,7 +63,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 		public override void Update() {
 			base.Update();
 
-			Luck = HasLuck ? new double[ModEntry.DaysPerMonth] : null;
+			Luck = HasLuck ? new double?[ModEntry.DaysPerMonth] : null;
 			Sprites = HasLuck ? new SpriteInfo[ModEntry.DaysPerMonth] : null;
 			Extras = new SpriteInfo[ModEntry.DaysPerMonth][];
 			Nodes = new IFlowNode[ModEntry.DaysPerMonth];
@@ -77,8 +77,16 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 			bool had_event = false;
 
+			int today = Game1.Date.TotalDays;
+			int forecastLength = Mod.Config.LuckForecastLength;
+
 			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 				date.DayOfMonth = day;
+				if (forecastLength != -1 && date.TotalDays - today > forecastLength) {
+					Luck[day - 1] = null;
+					continue;
+				}
+
 				SpriteInfo sprite;
 				if (HasLuck) {
 					double luck = Mod.Luck.GetModifiedLuckForDate(Seed, date);
@@ -108,14 +116,8 @@ namespace Leclair.Stardew.Almanac.Pages {
 							};
 					}
 
-					if (evt.Sprite != null) {
+					if (evt.Sprite != null)
 						extra.Add(evt.Sprite);
-
-						/*if (has_line)
-							db
-								.Sprite(evt.Sprite, 3f)
-								.Text(" ");*/
-					}
 
 					if (evt.AdvancedLabel != null)
 						db.AddRange(evt.AdvancedLabel);
@@ -231,10 +233,10 @@ namespace Leclair.Stardew.Almanac.Pages {
 		}
 
 		public void PerformCellHover(int x, int y, WorldDate date, Rectangle bounds) {
-			if (Luck == null)
+			if (Luck == null || ! Luck[date.DayOfMonth - 1].HasValue)
 				return;
 
-			double luck = Luck[date.DayOfMonth - 1];
+			double luck = Luck[date.DayOfMonth - 1].Value;
 			string fortune = Mod.Luck.GetLuckText(luck);
 
 			Menu.HoverMagic = true;

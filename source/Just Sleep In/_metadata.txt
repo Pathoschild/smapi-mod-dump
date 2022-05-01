@@ -1,14 +1,14 @@
 urls:
-   web: https://github.com/9Rifleman/Just-Sleep-In
-   Git: https://github.com/9Rifleman/Just-Sleep-In.git
+   web: https://github.com/9Rifleman/JustSleepIn
+   Git: https://github.com/9Rifleman/JustSleepIn.git
 
 mods:
    Just Sleep In
 
 latest commit:
-   commit 067fd88851be6888884332701bd5e94a09fdb6c0
+   commit 4a6fdd3a5d86251c67361d77ddb1b89808a59639
    Author: Jakub Prchal <Rifleman88@hotmail.com>
-   Date:   Mon Mar 14 17:30:39 2022 +0100
+   Date:   Wed Apr 13 18:58:27 2022 +0200
    
-       Add project files.
+       1.1.0 Hotfix 1 - added another if condition for the late evening pop-up, it was supposed to be there
    

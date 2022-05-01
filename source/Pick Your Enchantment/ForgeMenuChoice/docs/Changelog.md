@@ -15,8 +15,11 @@ Changelog
 
 #### Known issues
 * Controllers probably won't be able to lock onto the arrows properly, owing to the....nontraditional menu setup here. It's likely not something I can fix, either.
-* The menu may wander a bit if you resize the window or change the zoom. I'm not good at UI, this is literally two different Stardew menus forcibly hacked together.
 * I apply the chosen enchantment when forging, not before. So if you're using a predictor, it'll just show what the game would have picked. (This goes for Many Enchantment's debug logging as well.)
+
+#### Version 1.0.3
+* Added Hungarian translations! (Thanks to [martin66789](https://forums.nexusmods.com/index.php?/user/27323031-martin66789/)!)
+* Internal optimizations.
 
 #### Version 1.0.2
 * Fixes the check for duplicate enchantments.

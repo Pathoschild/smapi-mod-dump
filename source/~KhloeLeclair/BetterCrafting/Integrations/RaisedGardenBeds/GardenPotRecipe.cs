@@ -8,10 +8,11 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System.Linq;
 
 using Leclair.Stardew.BetterCrafting.Models;
-using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Crafting;
 
 using Microsoft.Xna.Framework;
@@ -19,73 +20,87 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
 
-namespace Leclair.Stardew.BetterCrafting.Integrations.RaisedGardenBeds {
-	public class GardenPotRecipe : IRecipe {
+namespace Leclair.Stardew.BetterCrafting.Integrations.RaisedGardenBeds;
 
-		private readonly RGBIntegration RGB;
+public class GardenPotRecipe : IRecipe {
 
-		private readonly CraftingRecipe Recipe;
-		private readonly string Variant;
-		private readonly object Info;
-		private readonly string SpriteKey;
+	private readonly RGBIntegration RGB;
 
-		public GardenPotRecipe(RGBIntegration rgb, CraftingRecipe recipe) {
-			RGB = rgb;
-			Recipe = recipe;
+	private readonly CraftingRecipe Recipe;
+	private readonly string Variant;
+	private readonly object Info;
+	private readonly string SpriteKey;
 
-			Variant = RGB.GetVariantKeyFromName(Name);
-			DisplayName = RGB.GetDisplayNameFromVariantKey(Variant);
-			Description = RGB.GetRawDescription();
-			Info = RGB.GetItemDefinition(Variant);
+	public GardenPotRecipe(RGBIntegration rgb, CraftingRecipe recipe) {
+		RGB = rgb;
+		Recipe = recipe;
 
-			SpriteKey = RGB.GetSpriteKey(Info);
+		Variant = RGB.GetVariantKeyFromName(Name);
+		DisplayName = RGB.GetDisplayNameFromVariantKey(Variant);
+		Description = RGB.GetRawDescription();
+		Info = RGB.GetItemDefinition(Variant)!;
 
-			Ingredients = recipe.recipeList
-				.Select(val => new BaseIngredient(val.Key, val.Value))
-				.ToArray();
-		}
+		SpriteKey = RGB.GetSpriteKey(Info);
 
-		// Identity
+		Ingredients = recipe.recipeList
+			.Select(val => new BaseIngredient(val.Key, val.Value))
+			.ToArray();
+	}
 
-		public int SortValue => Recipe.itemToProduce[0];
+	// Identity
 
-		// Display
+	public int SortValue => Recipe.itemToProduce[0];
 
-		public string Name => Recipe.name;
-		public string DisplayName { get; }
-		public string Description { get; }
+	// Display
 
-		public virtual int GetTimesCrafted(Farmer who) {
-			if (who.craftingRecipes.ContainsKey(Name))
-				return who.craftingRecipes[Name];
+	public string Name => Recipe.name;
+	public string DisplayName { get; }
+	public string Description { get; }
 
-			return 0;
-		}
+	public virtual bool HasRecipe(Farmer who) {
+		return who.craftingRecipes.ContainsKey(Name);
+	}
 
-		public CraftingRecipe CraftingRecipe => Recipe;
+	public virtual int GetTimesCrafted(Farmer who) {
+		if (who.craftingRecipes.ContainsKey(Name))
+			return who.craftingRecipes[Name];
 
-		// Display
+		return 0;
+	}
 
-		//public SpriteInfo Sprite => new(Texture, SourceRectangle);
+	public CraftingRecipe CraftingRecipe => Recipe;
 
-		public Texture2D Texture => RGB.GetSprite(SpriteKey);
+	// Display
 
-		public Rectangle SourceRectangle => RGB.GetSpriteSourceRectangle(spriteIndex: RGB.GetSpriteIndex(Info));
+	public Texture2D Texture => RGB.GetSprite(SpriteKey);
 
-		public int GridHeight => Recipe.bigCraftable ? 2 : 1;
+	public Rectangle SourceRectangle => RGB.GetSpriteSourceRectangle(spriteIndex: RGB.GetSpriteIndex(Info));
 
-		public int GridWidth => 1;
+	public int GridHeight => Recipe.bigCraftable ? 2 : 1;
 
-		// Cost
+	public int GridWidth => 1;
 
-		public int QuantityPerCraft => Recipe.numberProducedPerCraft;
+	// Cost
 
-		public IIngredient[] Ingredients { get; }
+	public int QuantityPerCraft => Recipe.numberProducedPerCraft;
 
-		public bool Stackable => true;
+	public IIngredient[] Ingredients { get; }
 
-		public Item CreateItem() {
-			return RGB.MakeOutdoorPot(Variant);
-		}
+	public bool Stackable => true;
+
+	public bool CanCraft(Farmer who) {
+		return true;
+	}
+
+	public string? GetTooltipExtra(Farmer who) {
+		return null;
+	}
+
+	public Item? CreateItem() {
+		return RGB.MakeOutdoorPot(Variant);
+	}
+
+	public void PerformCraft(IPerformCraftEvent evt) {
+		evt.Complete();
 	}
 }

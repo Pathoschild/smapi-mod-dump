@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.LookupAnything.Framework.Data
 {
     /// <summary>Information about an Adventure Guild monster-slaying quest.</summary>

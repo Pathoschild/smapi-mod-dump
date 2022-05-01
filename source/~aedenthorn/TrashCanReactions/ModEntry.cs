@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewModdingAPI;
@@ -39,7 +39,7 @@ namespace TrashCanReactions
             PMonitor = Monitor;
             PHelper = Helper;
 
-            var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(Town), nameof(Town.checkAction)),

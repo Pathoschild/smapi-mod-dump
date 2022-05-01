@@ -11,6 +11,9 @@
 [
 	{
 		"Id": "spring_can",
+		"Contexts": [
+			"Default"
+		],
 		"Priority": 10,
 		"Period": "Year",
 		"Dates": [
@@ -28,6 +31,9 @@
 	},
 	{
 		"Id": "week_rain",
+		"Contexts": [
+			"Default"
+		],
 		"Period": "Week",
 		"ValidSeasons": [
 			"Spring",
@@ -39,7 +45,20 @@
 		]
 	},
 	{
+		"Id": "week_rain_island",
+		"Contexts": [
+			"Island"
+		],
+		"Period": "Week",
+		"Pattern": [
+			[ "Rain" ]
+		]
+	},
+	{
 		"Id": "week_snow",
+		"Contexts": [
+			"Default"
+		],
 		"Period": "Week",
 		"ValidSeasons": [
 			"Winter"
@@ -50,6 +69,10 @@
 	},
 	{
 		"Id": "week_sun",
+		"Contexts": [
+			"Default",
+			"Island"
+		],
 		"Period": "Week",
 		"Pattern": [
 			[ "Sun", "Wind", "Festival" ]

@@ -14,6 +14,7 @@
   "EnableFarmerCollision": true, // Optional parameter, determines if the companion will collide with the farmer | NOTE: Only usable with map-based spawns, does nothing for follower-based spawns (e.g. with rings)
   "EnableShadow": true, // Optional parameter, default false
   "EnablePeriodicPatchCheck": true,
+  "EnableEventAppearance": true,
   "TravelSpeed": 1, // Speed at which the companion follows the player
   "SpawnDirection": 1, // Optional parameter, determines which direction the companion will face when spawned (0 for up, 1 for right, 2 for down, 3 for right) | Default 2
   "SpawnOffsetX": 0, // X offset (from player) of where to spawn | Note: Negative values will spawn to left of player, positive will spawn to right of player

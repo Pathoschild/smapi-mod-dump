@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+  "Name": "Market Day",
+  "Author": "ceruleandeep",
+  "Version": "1.0.9-beta.1",
+  "Description": "Market Day",
+  "UniqueID": "ceruleandeep.MarketDay",
+  "EntryDll": "MarketDay.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.23.0"
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:11778"
+  ]
+}

@@ -9,7 +9,9 @@
 *************************************************/
 
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
+using static StardewValley.Menus.CharacterCustomization;
 using static StardewValley.Menus.LoadGameMenu;
 
 namespace stardew_access.Patches
@@ -52,7 +54,7 @@ namespace stardew_access.Patches
                 #endregion
 
                 if (toSpeak != " ")
-                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -102,11 +104,21 @@ namespace stardew_access.Patches
                 if (TitleMenu.subMenu != null && __instance.backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
                 {
                     string text = "Back Button";
-                    MainClass.GetScreenReader().SayWithChecker(text, true);
+                    MainClass.ScreenReader.SayWithChecker(text, true);
+                }
+
+                // Fix for back button not working using keyboard
+                if (TitleMenu.subMenu is CharacterCustomization && ((CharacterCustomization)TitleMenu.subMenu).backButton.containsPoint(Game1.getMouseX(true), Game1.getMouseY(true)))
+                {
+                    // Perform Left Click
+                    if (MainClass.Config.LeftClickMainKey.JustPressed())
+                    {
+                        __instance.backButtonPressed();
+                    }
                 }
 
                 if (TitleMenu.subMenu == null && toSpeak != "")
-                    MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                    MainClass.ScreenReader.SayWithChecker(toSpeak, true);
             }
             catch (Exception e)
             {
@@ -126,7 +138,7 @@ namespace stardew_access.Patches
                         #region Farms
                         if (___menu.deleteButtons.Count > 0 && ___menu.deleteButtons[i].containsPoint(x, y))
                         {
-                            MainClass.GetScreenReader().SayWithChecker($"Delete {__instance.Farmer.farmName} Farm", true);
+                            MainClass.ScreenReader.SayWithChecker($"Delete {__instance.Farmer.farmName.Value} Farm", true);
                             return;
                         }
 
@@ -135,20 +147,20 @@ namespace stardew_access.Patches
                             // Used diff. functions to narrate to prevent it from speaking the message again on selecting another button.
                             string message = "Really delete farm?";
 
-                            MainClass.GetScreenReader().SayWithChecker(message, true);
+                            MainClass.ScreenReader.SayWithChecker(message, true);
                             if (___menu.okDeleteButton.containsPoint(x, y))
                             {
-                                MainClass.GetScreenReader().SayWithMenuChecker("Ok Button", false);
+                                MainClass.ScreenReader.SayWithMenuChecker("Ok Button", false);
                             }
                             else if (___menu.cancelDeleteButton.containsPoint(x, y))
                             {
-                                MainClass.GetScreenReader().SayWithMenuChecker("Cancel Button", false);
+                                MainClass.ScreenReader.SayWithMenuChecker("Cancel Button", false);
                             }
                             return;
                         }
 
                         String farmerName = __instance.Farmer.displayName;
-                        String farmName = __instance.Farmer.farmName;
+                        String farmName = __instance.Farmer.farmName.Value;
                         String money = __instance.Farmer.Money.ToString();
                         String hoursPlayed = Utility.getHoursMinutesStringFromMilliseconds(__instance.Farmer.millisecondsPlayed);
                         string dateStringForSaveGame = ((!__instance.Farmer.dayOfMonthForSaveGame.HasValue ||
@@ -157,7 +169,7 @@ namespace stardew_access.Patches
 
                         string toSpeak = $"{farmName} Farm Selected, \t\n Farmer:{farmerName}, \t\nMoney:{money}, \t\nHours Played:{hoursPlayed}, \t\nDate:{dateStringForSaveGame}";
 
-                        MainClass.GetScreenReader().SayWithChecker(toSpeak, true);
+                        MainClass.ScreenReader.SayWithChecker(toSpeak, true);
                         #endregion
                     }
                 }
@@ -168,7 +180,8 @@ namespace stardew_access.Patches
             }
         }
 
-        internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro)
+        internal static void CharacterCustomizationMenuPatch(CharacterCustomization __instance, bool ___skipIntro,
+        ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel)
         {
             try
             {
@@ -177,23 +190,19 @@ namespace stardew_access.Patches
 
                 if (__instance.backButton.containsPoint != null && __instance.backButton.visible && __instance.backButton.containsPoint((int)Game1.getMouseX(true), (int)Game1.getMouseY(true)))
                 {
-                    // Perform Left Click
-                    if (MainClass.Config.LeftClickMainKey.JustPressed() || MainClass.Config.LeftClickAlternateKey.JustPressed())
-                    {
-                        Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
-                    }
+
                 }
 
                 if (isNextArrowPressed && !isRunning)
                 {
                     isRunning = true;
-                    CycleThroughItems(true, __instance, ___skipIntro);
+                    CycleThroughItems(true, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
                 else if (isPrevArrowPressed && !isRunning)
                 {
                     isRunning = true;
-                    CycleThroughItems(false, __instance, ___skipIntro);
+                    CycleThroughItems(false, __instance, ___skipIntro, ___startingCabinsLabel, ___difficultyModifierLabel);
                     Task.Delay(200).ContinueWith(_ => { isRunning = false; });
                 }
             }
@@ -203,12 +212,15 @@ namespace stardew_access.Patches
             }
         }
 
-        private static void CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro)
+        private static void CycleThroughItems(bool increase, CharacterCustomization __instance, bool ___skipIntro,
+         ClickableComponent ___startingCabinsLabel, ClickableComponent ___difficultyModifierLabel)
         {
             string toSpeak = " ";
             Dictionary<ClickableComponent, string> buttons = new();
 
             #region Add buttons with their names IF they are available
+
+            #region Character related
             if (__instance.nameBoxCC != null && __instance.nameBoxCC.visible)
                 buttons.Add(__instance.nameBoxCC, "Enter Farmer's Name");
 
@@ -218,8 +230,14 @@ namespace stardew_access.Patches
             if (__instance.favThingBoxCC != null && __instance.favThingBoxCC.visible)
                 buttons.Add(__instance.favThingBoxCC, "Enter Favourite Thing");
 
-            if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
-                buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
+            if (__instance.petPortraitBox.HasValue) // Cannot get petButtons like with others
+            {
+                ClickableComponent petPrev = __instance.getComponentWithID(511);
+                buttons.Add(petPrev, "Previous pet: " + getPetName(-1, __instance.isModifyingExistingPet));
+
+                ClickableComponent petNext = __instance.getComponentWithID(510);
+                buttons.Add(petNext, "Next pet: " + getPetName(+1, __instance.isModifyingExistingPet));
+            }
 
             if (__instance.randomButton != null && __instance.randomButton.visible)
                 buttons.Add(__instance.randomButton, "Random Skin Button");
@@ -229,7 +247,9 @@ namespace stardew_access.Patches
                 buttons.Add(__instance.genderButtons[0], "Gender: Male Button");
                 buttons.Add(__instance.genderButtons[1], "Gender: Female Button");
             }
+            #endregion
 
+            #region Farm layout related
             if (__instance.farmTypeButtons.Count > 0)
             {
                 buttons.Add(__instance.farmTypeButtons[0], getFarmHoverText(__instance.farmTypeButtons[0]));
@@ -246,12 +266,40 @@ namespace stardew_access.Patches
 
             if (__instance.farmTypePreviousPageButton != null && __instance.farmTypePreviousPageButton.visible)
                 buttons.Add(__instance.farmTypePreviousPageButton, "Previous Farm Type Page Button");
+            #endregion
 
-            if (__instance.cabinLayoutButtons.Count > 0)
+            #region Co-op related
+            if (__instance.source == Source.HostNewFarm)
             {
-                buttons.Add(__instance.cabinLayoutButtons[0], "Cabin layout: nearby Button");
-                buttons.Add(__instance.cabinLayoutButtons[1], "Cabin layout: separate Button");
+                ClickableComponent cabinLeft = __instance.getComponentWithID(621);
+                if (Game1.startingCabins > 0)
+                    buttons.Add(cabinLeft, "Decrease starting cabins button");
+
+                buttons.Add(___startingCabinsLabel, $"Starting cabins: {Game1.startingCabins}");
+
+                ClickableComponent cabinRight = __instance.getComponentWithID(622);
+                if (Game1.startingCabins < 3)
+                    buttons.Add(cabinRight, "Increase starting cabins button");
+
+                if (Game1.startingCabins > 0)
+                {
+                    buttons.Add(__instance.cabinLayoutButtons[0], "Cabin layout to nearby Button");
+                    buttons.Add(__instance.cabinLayoutButtons[1], "Cabin layout to separate Button");
+                }
+
+                ClickableComponent difficultyLeft = __instance.getComponentWithID(627);
+                buttons.Add(difficultyLeft, "Increase profit margin button");
+                buttons.Add(___difficultyModifierLabel, "Profit Margin: " + (((Game1.player.difficultyModifier * 100) == 100f) ? "normal" : Game1.player.difficultyModifier.ToString()));
+                ClickableComponent difficultyRight = __instance.getComponentWithID(628);
+                buttons.Add(difficultyRight, "Decrease profit margin button");
+
+                ClickableComponent walletLeft = __instance.getComponentWithID(631);
+                buttons.Add(walletLeft, "Money style to " + ((!Game1.player.team.useSeparateWallets.Value) ? "separate wallets" : "shared wallets") + " button");
             }
+            #endregion
+
+            if (__instance.skipIntroButton != null && __instance.skipIntroButton.visible)
+                buttons.Add(__instance.skipIntroButton, (___skipIntro ? "Enabled" : "Disabled") + " Skip Intro Button");
 
             if (__instance.okButton != null && __instance.okButton.visible)
                 buttons.Add(__instance.okButton, "OK Button");
@@ -280,8 +328,31 @@ namespace stardew_access.Patches
 
             if (toSpeak != " ")
             {
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
             }
+        }
+
+        private static string getPetName(int change, bool isModifyingExistingPet)
+        {
+            Game1.player.whichPetBreed += change;
+            if (Game1.player.whichPetBreed >= 3)
+            {
+                Game1.player.whichPetBreed = 0;
+                if (!isModifyingExistingPet)
+                {
+                    Game1.player.catPerson = !Game1.player.catPerson;
+                }
+            }
+            else if (Game1.player.whichPetBreed < 0)
+            {
+                Game1.player.whichPetBreed = 2;
+                if (!isModifyingExistingPet)
+                {
+                    Game1.player.catPerson = !Game1.player.catPerson;
+                }
+            }
+
+            return ((Game1.player.catPerson) ? "Cat" : "Dog") + " Breed: " + Game1.player.whichPetBreed;
         }
 
         private static string getFarmHoverText(ClickableTextureComponent farm)

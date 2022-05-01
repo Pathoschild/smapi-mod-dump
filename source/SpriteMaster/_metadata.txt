@@ -6,9 +6,13 @@ mods:
    SpriteMaster
 
 latest commit:
-   commit 49108ec597d47e187c1342e62d712c881de82182
+   commit eb3c4c2497076c5e1309df7119f4d89be93806ea
    Author: Ameisen <14104310+ameisen@users.noreply.github.com>
-   Date:   Mon Mar 28 05:13:29 2022 -0500
+   Date:   Fri Apr 29 22:38:03 2022 -0500
    
-       Removing unneeded `using`s.
+       Increasing preview height to 400px.
+       Disposing of the first erroneous click.
+       Fixing layer depth issues when SM is disabled in preview.
+       Fixing disabled snow in preview scrolling too quickly.
+       Fixing preview text not rendering correctly.
    

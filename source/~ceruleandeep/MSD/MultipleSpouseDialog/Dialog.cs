@@ -8,11 +8,12 @@
 **
 *************************************************/
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ContentPatcher;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 
 namespace MultipleSpouseDialog
@@ -20,28 +21,25 @@ namespace MultipleSpouseDialog
     public class ConfigDialog
     {
         public string Call;
-        public string Response;
         public string Callers;
+        internal IManagedConditions conditions;
         public string Responders;
+        public string Response;
         public Dictionary<string, string> When;
-        internal ContentPatcher.IManagedConditions conditions;
     }
 
-    class Dialog
+    internal static class Dialog
     {
-        public static List<ConfigDialog> Data;
+        private static List<ConfigDialog> Data;
         private static ConfigDialog NoData;
-        public static bool ready = false;
         private static Random rand;
         private static IMonitor monitor;
-        public static IModHelper helper;
-        public static IManifest manifest;
-        public static ContentPatcher.IContentPatcherAPI cp_api;
+        private static IManifest manifest;
+        public static IContentPatcherAPI cp_api;
 
-        public static void Initialize(IMonitor m, IModHelper h, IManifest mf)
+        public static void Initialize(IMonitor m, IManifest mf)
         {
             monitor = m;
-            helper = h;
             manifest = mf;
             rand = new Random();
 
@@ -55,42 +53,40 @@ namespace MultipleSpouseDialog
             };
 
             Data = new List<ConfigDialog>();
-
         }
+
         public static void Load(string directory)
         {
-            if (cp_api == null)
-            {
-                monitor.Log($"Content patcher API not available; this won't end well", LogLevel.Error);
-            } 
+            if (cp_api == null) monitor.Log("Content patcher API not available; this won't end well", LogLevel.Error);
 
-            foreach (string filename in Directory.GetFiles(directory, "*.json"))
+            foreach (var filename in Directory.GetFiles(directory, "*.json"))
             {
                 if (filename.EndsWith("manifest.json")) continue;
                 LoadFile(filename);
             }
-            ready = true;
         }
 
 
         private static void LoadFile(string filename)
         {
-            List<ConfigDialog> entries;
-            monitor.Log($"Reading dialog from {filename}", LogLevel.Debug);
+            monitor.Log($"Reading dialog from {filename}");
 
             try
             {
-                string filecontents = File.ReadAllText(filename);
-                entries = JsonConvert.DeserializeObject<List<ConfigDialog>>(filecontents);
-                foreach (ConfigDialog dialog in entries)
+                var fileContents = File.ReadAllText(filename);
+                var entries = JsonConvert.DeserializeObject<List<ConfigDialog>>(fileContents);
+                if (entries == null) return;
+                foreach (var dialog in entries)
                 {
-                    if (dialog.Call == null) dialog.Call = "";
-                    if (dialog.Response == null) dialog.Response = "";
-                    if (dialog.Callers == null) dialog.Callers = "";
-                    if (dialog.Responders == null) dialog.Responders = "";
+                    dialog.Call ??= "";
+                    dialog.Response ??= "";
+                    dialog.Callers ??= "";
+                    dialog.Responders ??= "";
                     Data.Add(dialog);
 
-                    if (ModEntry.config.ExtraDebugOutput) monitor.Log($"Dialog loaded: {dialog.Call}: {dialog.Response}. Callers: {dialog.Callers} Responders: {dialog.Responders}", LogLevel.Trace);
+                    if (ModEntry.config.ExtraDebugOutput)
+                        monitor.Log(
+                            $"Dialog loaded: {dialog.Call}: {dialog.Response}. Callers: {dialog.Callers} Responders: {dialog.Responders}");
                 }
             }
             catch (Exception e)
@@ -99,50 +95,45 @@ namespace MultipleSpouseDialog
             }
         }
 
-        public static ConfigDialog RandomDialog(string npc1name, string npc2name, bool to_farmer=false)
+        public static ConfigDialog RandomDialog(string npc1name, string npc2name, bool to_farmer = false)
         {
             List<ConfigDialog> candidates;
 
             if (to_farmer)
-            {
-                 candidates = Data
-                  .Where(dialog => dialog.Callers.Split(' ').Contains(npc1name) || dialog.Callers == "")
-                  .Where(dialog => dialog.Responders.Split(' ').Contains(npc2name) || dialog.Responders.Split(' ').Contains("Farmer") || dialog.Responders == "")
-                  .ToList();
-            }
-            else
-            {
                 candidates = Data
-                  .Where(dialog => dialog.Callers.Split(' ').Contains(npc1name) || dialog.Callers == "")
-                  .Where(dialog => dialog.Responders.Split(' ').Contains(npc2name) || dialog.Responders == "")
-                  .ToList();
-            }
+                    .Where(dialog => dialog.Callers.Split(' ').Contains(npc1name) || dialog.Callers == "")
+                    .Where(dialog =>
+                        dialog.Responders.Split(' ').Contains(npc2name) ||
+                        dialog.Responders.Split(' ').Contains("Farmer") || dialog.Responders == "")
+                    .ToList();
+            else
+                candidates = Data
+                    .Where(dialog => dialog.Callers.Split(' ').Contains(npc1name) || dialog.Callers == "")
+                    .Where(dialog => dialog.Responders.Split(' ').Contains(npc2name) || dialog.Responders == "")
+                    .ToList();
 
-            foreach (ConfigDialog dialog in candidates)
-            {
+            foreach (var dialog in candidates)
                 if (dialog.conditions == null)
-                {
                     dialog.conditions = cp_api.ParseConditions(
-                        manifest: manifest,
-                        rawConditions: dialog.When,
-                        formatVersion: new SemanticVersion("1.20.0")
+                        manifest,
+                        dialog.When,
+                        new SemanticVersion("1.20.0")
                     );
-                }
                 else
-                {
                     dialog.conditions.UpdateContext();
-                }
-            }
 
-            List<ConfigDialog> matched = candidates.Where(Dialog => Dialog.conditions.IsMatch).ToList();
+            var matched = candidates.Where(Dialog => Dialog.conditions.IsMatch).ToList();
 
             if (!matched.Any())
             {
-                if (ModEntry.config.ExtraDebugOutput) monitor.Log($"Could not find any candidate dialog for {npc1name} and {npc2name} ", LogLevel.Error);
+                if (ModEntry.config.ExtraDebugOutput)
+                    monitor.Log($"Could not find any candidate dialog for {npc1name} and {npc2name} ", LogLevel.Error);
                 return NoData;
             }
-            if (ModEntry.config.ExtraDebugOutput) monitor.Log($"{matched.Count} candidate dialogs for {npc1name} and {npc2name}", LogLevel.Debug);
-            int r = rand.Next(matched.Count);
+
+            if (ModEntry.config.ExtraDebugOutput)
+                monitor.Log($"{matched.Count} candidate dialogs for {npc1name} and {npc2name}", LogLevel.Debug);
+            var r = rand.Next(matched.Count);
             return matched[r];
         }
     }

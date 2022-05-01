@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using ContentPatcher.Framework.Tokens.ValueProviders;
 
 namespace ContentPatcher.Framework.Tokens

@@ -26,6 +26,7 @@ namespace CustomCompanions.Framework.Companions
         private int stuckTimer;
         private int pauseTimer;
         private bool canHalt;
+        private bool isEventClone;
         private float motionMultiplier;
         private float behaviorTimer;
         private float overheadTextSelectionTimer;
@@ -88,9 +89,17 @@ namespace CustomCompanions.Framework.Companions
             }
         }
 
+        public MapCompanion Clone(bool isEventClone)
+        {
+            MapCompanion clone = new MapCompanion(this.model, base.getTileLocation(), base.currentLocation);
+            clone.isEventClone = isEventClone;
+
+            return clone;
+        }
+
         public override void update(GameTime time, GameLocation location)
         {
-            if (!Game1.shouldTimePass())
+            if (!Game1.shouldTimePass() && this.isEventClone is false)
             {
                 return;
             }
@@ -330,6 +339,16 @@ namespace CustomCompanions.Framework.Companions
             }
         }
 
+        private IEnumerable<NPC> GetActiveCharacters()
+        {
+            if (this.isEventClone && base.currentLocation.currentEvent is not null && base.currentLocation.currentEvent.actors.Contains(this))
+            {
+                return base.currentLocation.currentEvent.actors;
+            }
+
+            return base.currentLocation.characters;
+        }
+
         private void CheckStuckStatus(GameLocation location, GameTime time)
         {
             var collidingCharacter = location.isCollidingWithCharacter(this.nextPosition(this.FacingDirection));
@@ -374,7 +393,7 @@ namespace CustomCompanions.Framework.Companions
                 return true;
             }
 
-            if (location.isCollidingPosition(position, Game1.viewport, isFarmer: true, 0, glider: false, this, pathfinding: isPathFinding))
+            if (location.currentEvent is null && location.isCollidingPosition(position, Game1.viewport, isFarmer: true, 0, glider: false, this, pathfinding: isPathFinding))
             {
                 return true;
             }
@@ -755,7 +774,7 @@ namespace CustomCompanions.Framework.Companions
             }
 
             string name = base.Name;
-            foreach (NPC c in base.currentLocation.characters)
+            foreach (NPC c in GetActiveCharacters())
             {
                 if (!c.Equals(this) && c.GetBoundingBox().Intersects(bbox) && c.isMoving() && string.Compare(c.Name, name, StringComparison.Ordinal) < 0)
                 {
@@ -1224,7 +1243,7 @@ namespace CustomCompanions.Framework.Companions
 
                     if (followAnyCharacter && followTarget is null)
                     {
-                        foreach (NPC npc in location.characters.Where(c => !c.Equals(this)))
+                        foreach (NPC npc in GetActiveCharacters().Where(c => !c.Equals(this)))
                         {
                             if (Vector2.Distance(npc.getTileLocation(), this.GetTargetTile()) <= detectionTileRadius)
                             {

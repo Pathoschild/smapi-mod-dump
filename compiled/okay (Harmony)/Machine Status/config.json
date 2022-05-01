@@ -17,6 +17,7 @@
   "VisibilityKeybind": "None",
   "FocusedAlpha": 1.0,
   "NormalAlpha": 0.3,
+  "BusyDancing": true,
   "Grouping": "ByMachine",
   "Sorting": [
     "ReadyFirst",

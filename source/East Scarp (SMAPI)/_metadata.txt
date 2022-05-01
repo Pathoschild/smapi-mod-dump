@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/kdau/eastscarp
+   Git: https://gitlab.com/kdau/eastscarp.git
+
+mods:
+   East Scarp (SMAPI)
+
+latest commit:
+   commit f84ec4bf374ec7fbd8afad0eda44a7c07490251e
+   Author: Kevin Daughtridge <kevin@kdau.com>
+   Date:   Sat Aug 28 21:39:02 2021 -0700
+   
+       v2.0.0+2
+   

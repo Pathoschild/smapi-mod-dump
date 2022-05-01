@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
@@ -15,31 +17,32 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Network;
 
-namespace Leclair.Stardew.Common.Inventory {
-	public struct WorkingInventory : IInventory {
+namespace Leclair.Stardew.Common.Inventory;
 
-		public object Object { get; }
-		public IInventoryProvider Provider { get; }
-		public NetMutex Mutex { get; }
-		public GameLocation Location { get; }
-		public Farmer Player { get; }
+public struct WorkingInventory : IInventory {
 
-		public WorkingInventory(object @object, IInventoryProvider provider, NetMutex mutex, GameLocation location, Farmer player) {
-			Object = @object;
-			Provider = provider;
-			Mutex = mutex;
-			Location = location;
-			Player = player;
-		}
+	public object Object { get; }
+	public IInventoryProvider Provider { get; }
+	public NetMutex? Mutex { get; }
+	public GameLocation? Location { get; }
+	public Farmer? Player { get; }
 
-		public bool IsLocked() => Mutex.IsLocked() && Mutex.IsLockHeld();
-		public bool IsValid() => Provider.IsValid(Object, Location, Player);
-		public bool CanInsertItems() => Provider.CanInsertItems(Object, Location, Player);
-		public bool CanExtractItems() => Provider.CanExtractItems(Object, Location, Player);
-		public Rectangle? GetMultiTileRegion() => Provider.GetMultiTileRegion(Object, Location, Player);
-		public Vector2? GetTilePosition() => Provider.GetTilePosition(Object, Location, Player);
-		public IList<Item> GetItems() => Provider.GetItems(Object, Location, Player);
-		public void CleanInventory() => Provider.CleanInventory(Object, Location, Player);
-		public int GetActualCapacity() => Provider.GetActualCapacity(Object, Location, Player);
+	public WorkingInventory(object @object, IInventoryProvider provider, NetMutex? mutex, GameLocation? location, Farmer? player) {
+		Object = @object;
+		Provider = provider;
+		Mutex = mutex;
+		Location = location;
+		Player = player;
 	}
+
+	public bool IsLocked() => Mutex == null ? !Provider.IsMutexRequired(Object, Location, Player) : (Mutex.IsLocked() && Mutex.IsLockHeld());
+	public bool IsValid() => Provider.IsValid(Object, Location, Player);
+	public bool CanInsertItems() => Provider.CanInsertItems(Object, Location, Player);
+	public bool CanExtractItems() => Provider.CanExtractItems(Object, Location, Player);
+	public Rectangle? GetMultiTileRegion() => Provider.GetMultiTileRegion(Object, Location, Player);
+	public Vector2? GetTilePosition() => Provider.GetTilePosition(Object, Location, Player);
+	public IList<Item?>? GetItems() => Provider.GetItems(Object, Location, Player);
+	public bool IsItemValid(Item item) => Provider.IsItemValid(Object, Location, Player, item);
+	public void CleanInventory() => Provider.CleanInventory(Object, Location, Player);
+	public int GetActualCapacity() => Provider.GetActualCapacity(Object, Location, Player);
 }

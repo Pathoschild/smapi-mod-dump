@@ -204,12 +204,19 @@ namespace Leclair.Stardew.Almanac.Overlays {
 			MoveUIElements();
 		}
 
-		bool ClickButton(int x, int y) {
+		bool ClickButton(int x, int y, bool right = false) {
 			if (btnAlmanac.containsPoint(x, y)) {
 				Game1.playSound("bigSelect");
 
-				if (Menu.readyToClose())
+				if (Menu.readyToClose()) {
+#if DEBUG
+					if (right) {
+						ModEntry.Instance.OpenGMCM();
+						return true;
+					}
+#endif
 					Game1.activeClickableMenu = new Menus.AlmanacMenu(ModEntry.Instance, Game1.Date.Year);
+				}
 
 				return true;
 			}
@@ -221,7 +228,7 @@ namespace Leclair.Stardew.Almanac.Overlays {
 			if (!MenuActive)
 				return false;
 
-			if (ClickButton(x, y))
+			if (ClickButton(x, y, true))
 				return true;
 
 			return base.ReceiveRightClick(x, y);

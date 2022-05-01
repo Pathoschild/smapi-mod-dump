@@ -12,7 +12,7 @@
     "Name": "Marnie's Panties",
     "Description": "Soooo comfortable!",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 25,
     "IsColored": false,
     "GiftTastes": {

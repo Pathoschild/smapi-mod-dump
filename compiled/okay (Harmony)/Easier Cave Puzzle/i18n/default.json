@@ -1,0 +1,26 @@
+﻿{
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  // Pause between rounds, much thanks to unlitday!
+  "PauseBetweenRounds_0": "Wonderful. Shall we try another pattern?",
+  "PauseBetweenRounds_1": "Ah, lovely, are you ready for the next pattern?",
+  "PauseBetweenRounds_2": "You have completed the pattern. Are you ready for another challenge?",
+  "PauseBetweenRounds_3": "Your skills are improving. Let's continue.",
+  "PauseBetweenRounds_4": "Have you prepared yourself for the next pattern?",
+  "PauseBetweenRounds_5": "Another pattern has been completed! Let's see... the next one is ready when you are.",
+
+
+  // GMCM
+  "mod-description": "Makes that cave puzzle easier.",
+  "SpeedModifer.title": "Speed Modifier",
+  "SpeedModifer.description": "Modifies the speed the puzzle runs at. Set larger to make the puzzle slower.",
+  "FlashScale.title": "Flash Scale",
+  "FlashScale.description": "Modifies the length of the flashes of light. Set larger to make them last longer.",
+  "MaxNotes.title": "Max Notes",
+  "MaxNotes.description": "Adjusts the maximum number of notes. Note: must be set by host.",
+  "PauseBetweenRounds.title": "Pause Between Rounds",
+  "PauseBetweenRounds.description":  "If true, you must talk to the statue to continue to the next round. Note: must be set by host."
+}

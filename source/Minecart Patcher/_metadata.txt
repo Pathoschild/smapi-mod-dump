@@ -6,9 +6,9 @@ mods:
    Minecart Patcher
 
 latest commit:
-   commit 8a7a8bdbd05ca7d87be38e2edce0b0ea031d7b9a
+   commit c7f1f1b3eb0429082dc013cca088022ef41c5411
    Author: bwdy <47769190+bwdy@users.noreply.github.com>
-   Date:   Wed Mar 23 18:47:06 2022 -0800
+   Date:   Wed Apr 27 12:23:29 2022 -0800
    
-       nexus release 1.0.0
+       fix minecart tile ids
    

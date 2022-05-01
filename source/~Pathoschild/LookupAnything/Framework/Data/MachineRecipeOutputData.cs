@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Data

@@ -11,7 +11,7 @@
 {
   "Name": "Better Beehouses",
   "Author": "Tlitookilakin",
-  "Version": "1.2.3",
+  "Version": "1.2.4",
   "Description": "Improves bee houses",
   "UniqueID": "tlitookilakin.BetterBeehouses",
   "EntryDll": "BetterBeehouses.dll",
@@ -19,7 +19,7 @@
   "UpdateKeys": [ "GitHub:tlitookilakin/BetterBeehouses", "Nexus:10996", "ModDrop:1105633" ],
   "Dependencies": [
     {
-      "UniqueID": "DaLion.AwesomeProfessions",
+      "UniqueID": "DaLion.ImmersiveProfessions",
       "IsRequired": false
     }
   ]

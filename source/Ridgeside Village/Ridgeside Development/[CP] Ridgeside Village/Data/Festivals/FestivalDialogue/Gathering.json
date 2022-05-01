@@ -10,19 +10,19 @@
 
 {
 "Changes": [
-	
+
 //------------------------
-// FESTIVAL DIALOGUE   
+// FESTIVAL DIALOGUE
 //------------------------
 
 	//Ridgeside Gathering----------------------
-	
+
 		{
 			"LogName": "Ridgeside Gathering",
 			"Action": "EditData",
 			"Target": "Data/Festivals/fall20",
 			"Entries": {
-			
+
 			//Non-Dateables
 				"Aguar": "{{i18n:Festivals.Gathering.Aguar}}",
 				"Bert": "{{i18n:Festivals.Gathering.Bert}}",
@@ -55,7 +55,8 @@
 				"Malaya": "{{i18n:Festivals.Gathering.Malaya}}",
 				"Kimpoi": "{{i18n:Festivals.Gathering.Kimpoi}}",
 				"Naomi": "{{i18n:Festivals.Gathering.Naomi}}",
-			
+				"Torts": "{{i18n:Festivals.Gathering.Torts}}",
+
 			//Vanilla Non-Dateables
 			    "Robin": "{{i18n:GatheringDialogue.Robin}}",
 			    "Demetrius": "{{i18n:GatheringDialogue.Demetrius}}",
@@ -131,6 +132,6 @@
 
 			},
 		},
-		
+
 ]
 }

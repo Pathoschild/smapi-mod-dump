@@ -8,18 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewValley;
-using xTile.Tiles;
-using xTile.ObjectModel;
 using xTile.Dimensions;
 using Microsoft.Xna.Framework;
-using Harmony;
-using System.Reflection.Emit;
 
 namespace FarmHouseRedone
 {

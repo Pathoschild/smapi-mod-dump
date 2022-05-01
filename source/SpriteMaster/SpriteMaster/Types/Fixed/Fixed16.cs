@@ -95,6 +95,16 @@ struct Fixed16 : IEquatable<Fixed16>, IEquatable<ushort>, ILongHash {
 	public static bool operator !=(Fixed16 lhs, Fixed16 rhs) => lhs.InternalValue != rhs.InternalValue;
 
 	[MethodImpl(MethodImpl.Hot)]
+	public static bool operator >=(Fixed16 lhs, Fixed16 rhs) => lhs.InternalValue >= rhs.InternalValue;
+	[MethodImpl(MethodImpl.Hot)]
+	public static bool operator <=(Fixed16 lhs, Fixed16 rhs) => lhs.InternalValue <= rhs.InternalValue;
+
+	[MethodImpl(MethodImpl.Hot)]
+	public static bool operator >(Fixed16 lhs, Fixed16 rhs) => lhs.InternalValue > rhs.InternalValue;
+	[MethodImpl(MethodImpl.Hot)]
+	public static bool operator <(Fixed16 lhs, Fixed16 rhs) => lhs.InternalValue < rhs.InternalValue;
+
+	[MethodImpl(MethodImpl.Hot)]
 	public static Fixed16 operator +(Fixed16 lhs, Fixed16 rhs) => (ushort)(lhs.InternalValue + rhs.InternalValue);
 
 	[MethodImpl(MethodImpl.Hot)]

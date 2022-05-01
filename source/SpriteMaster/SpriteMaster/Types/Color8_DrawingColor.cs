@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System;
 
 namespace SpriteMaster.Types;

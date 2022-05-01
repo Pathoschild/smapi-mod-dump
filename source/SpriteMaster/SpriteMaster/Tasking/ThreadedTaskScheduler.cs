@@ -10,6 +10,7 @@
 
 //#define SM_SINGLE_THREAD
 
+using SpriteMaster.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

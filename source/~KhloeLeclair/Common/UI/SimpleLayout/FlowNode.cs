@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 
@@ -18,50 +20,50 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
 
-namespace Leclair.Stardew.Common.UI.SimpleLayout {
-	public class FlowNode : ISimpleNode {
+namespace Leclair.Stardew.Common.UI.SimpleLayout;
 
-		public Alignment Alignment { get; }
-		public IEnumerable<IFlowNode> Nodes { get; }
-		public bool WrapText { get; }
-		public float MinWidth { get; }
+public class FlowNode : ISimpleNode {
 
-		private CachedFlow? Flow;
+	public Alignment Alignment { get; }
+	public IEnumerable<IFlowNode> Nodes { get; }
+	public bool WrapText { get; }
+	public float MinWidth { get; }
 
-		public FlowNode(IEnumerable<IFlowNode> nodes, bool wrapText = true, float minWidth = -1, Alignment alignment = Alignment.None) {
-			Nodes = nodes;
-			WrapText = wrapText;
-			MinWidth = minWidth;
-			Alignment = alignment;
-		}
+	private CachedFlow? Flow;
 
-		public bool DeferSize => WrapText;
+	public FlowNode(IEnumerable<IFlowNode> nodes, bool wrapText = true, float minWidth = -1, Alignment alignment = Alignment.None) {
+		Nodes = nodes;
+		WrapText = wrapText;
+		MinWidth = minWidth;
+		Alignment = alignment;
+	}
 
-		private CachedFlow GetFlow(SpriteFont font, float maxWidth) {
-			if (Flow.HasValue)
-				Flow = FlowHelper.CalculateFlow(Flow.Value, maxWidth, font);
-			else
-				Flow = FlowHelper.CalculateFlow(Nodes, maxWidth, font);
+	public bool DeferSize => WrapText;
 
-			return Flow.Value;
-		}
+	private CachedFlow GetFlow(SpriteFont font, float maxWidth) {
+		if (Flow.HasValue)
+			Flow = FlowHelper.CalculateFlow(Flow.Value, maxWidth, font);
+		else
+			Flow = FlowHelper.CalculateFlow(Nodes, maxWidth, font);
 
-		public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
-			SpriteFont font = defaultFont ?? Game1.smallFont;
-			CachedFlow flow = GetFlow(font, WrapText ? Math.Max(MinWidth, containerSize.X) : -1);
+		return Flow.Value;
+	}
 
-			Vector2 size = new(flow.Width, flow.Height);
-			if (WrapText)
-				size.X = Math.Max(MinWidth, containerSize.X);
+	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
+		SpriteFont font = defaultFont ?? Game1.smallFont;
+		CachedFlow flow = GetFlow(font, WrapText ? Math.Max(MinWidth, containerSize.X) : -1);
 
-			return size;
-		}
+		Vector2 size = new(flow.Width, flow.Height);
+		if (WrapText)
+			size.X = Math.Max(MinWidth, containerSize.X);
 
-		public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
-			SpriteFont font = defaultFont ?? Game1.smallFont;
-			CachedFlow flow = GetFlow(font, WrapText ? size.X : -1);
+		return size;
+	}
 
-			FlowHelper.RenderFlow(batch, flow, position, defaultColor, defaultShadowColor, lineOffset: 0);
-		}
+	public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
+		SpriteFont font = defaultFont ?? Game1.smallFont;
+		CachedFlow flow = GetFlow(font, WrapText ? size.X : -1);
+
+		FlowHelper.RenderFlow(batch, flow, position, defaultColor, defaultShadowColor, lineOffset: 0);
 	}
 }

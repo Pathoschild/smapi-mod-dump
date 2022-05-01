@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;

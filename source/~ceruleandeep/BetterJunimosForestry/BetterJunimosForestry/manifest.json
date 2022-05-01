@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+  "Name": "Better Junimos Forestry",
+  "Author": "ceruleandeep",
+  "Version": "1.0.7",
+  "Description": "Allow your Junimos (from Junimo huts) to automatically plant and harvest trees",
+  "UniqueID": "ceruleandeep.BetterJunimosForestry",
+  "EntryDll": "BetterJunimosForestry.dll",
+  "MinimumApiVersion": "3.2.0",
+  "Dependencies": [
+    {
+      "UniqueID": "hawkfalcon.BetterJunimos",
+      "MinimumVersion": "2.0.6"
+    }
+  ],
+  "UpdateKeys": [
+    "Nexus:8992"
+  ]
+}

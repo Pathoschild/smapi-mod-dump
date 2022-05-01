@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 7d7ca426bff9a9480e3da431e0bd619432257fd1
+   commit 42274e19d7f1b777fd633b3000fc96278fed670f
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Fri Apr 1 09:36:35 2022 +0800
+   Date:   Sat Apr 30 14:23:51 2022 +0800
    
-       moved a table up in Pika's
+       fixed some bugs
    

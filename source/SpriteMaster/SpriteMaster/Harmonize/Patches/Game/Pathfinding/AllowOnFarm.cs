@@ -8,13 +8,13 @@
 **
 *************************************************/
 
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using StardewValley;
 using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -59,7 +59,7 @@ static partial class Pathfinding {
 	)]
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static bool WarpCharacter(NPC? character, GameLocation? targetLocation, XNA.Vector2 position) {
-		if (!Config.Enabled || !Config.Extras.AllowNPCsOnFarm || !Config.Extras.OptimizeWarpPoints) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.AllowNPCsOnFarm || !Config.Extras.OptimizeWarpPoints) {
 			return true;
 		}
 
@@ -85,7 +85,8 @@ static partial class Pathfinding {
 			isFamily = value.IsMarried() || value.IsRoommate();
 		}
 		// Check if the given character is a child.
-		if (!isFamily && (player.getChildren()?.Contains(character) ?? false)) {
+		var characterChild = character as Child;
+		if (!isFamily && (player.getChildren()?.Contains(characterChild) ?? false)) {
 			isFamily = true;
 		}
 

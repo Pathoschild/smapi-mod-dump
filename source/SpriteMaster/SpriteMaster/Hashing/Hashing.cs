@@ -26,6 +26,18 @@ static partial class Hashing {
 	internal const ulong Null = ~Default;
 	internal const int Null32 = unchecked((int)Null);
 
+	// https://stackoverflow.com/a/12996028
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	internal static ulong Rehash(ulong value) {
+		if (value == 0) {
+			value = 0x9e3779b97f4a7c15UL; // ⌊2^64 / Φ⌋
+		}
+		value = (value ^ value >> 30) * 0xbf58476d1ce4e5b9UL;
+		value = (value ^ value >> 27) * 0x94d049bb133111ebUL;
+		value ^= value >> 31;
+		return value;
+	}
+
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ulong Accumulate(ulong hash, ulong hashend) => hash ^ hashend + Default + (hash << 6) + (hash >> 2);
 

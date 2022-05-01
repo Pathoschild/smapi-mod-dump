@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Deluxe Fruit Tree Fertilizer",
+  "Price": "100",
+  "Category": "Junk",
+  "Edibility": -300,
+  "TranslationKey": "deluxe-fruit-tree-fertilizer",
+  "PurchasePrice": 200,
+  "PurchaseFrom": "Sandy",
+  "CanPurchase": true,
+  "PurchaseRequirements": [ "y 2", "n qiCave" ]
+}

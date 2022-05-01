@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/daleao/smapi-mods
+**
+*************************************************/
+
+{
+  "Name": "Aquarism - Immersive Fish Ponds",
+  "Author": "DaLion",
+  "Version": "2.0.8",
+  "Description": "Make your Fish Ponds immersive and actually useful.",
+  "UniqueID": "DaLion.ImmersivePonds",
+  "EntryDll": "ImmersivePonds.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "Nexus:11288" ]
+}

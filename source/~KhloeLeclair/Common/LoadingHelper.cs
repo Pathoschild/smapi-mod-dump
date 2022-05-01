@@ -8,141 +8,158 @@
 **
 *************************************************/
 
+#nullable enable
+
+#define PRE_314
+
 using System;
-using System.IO;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using StardewModdingAPI;
 
 using Leclair.Stardew.Common.Types;
 
-namespace Leclair.Stardew.Common
-{
-    public static class LoadingHelper
-    {
+namespace Leclair.Stardew.Common;
 
-		private static IModHelper Helper;
+public static class LoadingHelper {
 
-		public static void SetHelper(IModHelper helper) {
-			Helper = helper;
+	private static IModHelper? Helper;
+
+	[MemberNotNull(nameof(Helper))]
+	public static void SetHelper(IModHelper helper) {
+		Helper = helper;
+	}
+
+
+	public static void CheckIntegrations(Mod mod, IEnumerable<RecommendedIntegration>? integrations, LogLevel level = LogLevel.Warn) {
+		if (integrations == null)
+			return;
+
+		var registry = mod.Helper.ModRegistry;
+
+		foreach (RecommendedIntegration itg in integrations) {
+			if (registry.IsLoaded(itg.Id) || itg.Mods == null)
+				continue;
+
+			string[] mods = itg.Mods
+				.Where(id => registry.IsLoaded(id))
+				.Select(id => registry.Get(id))
+				.Where(info => info is not null)
+				.Select(info => info!.Manifest.Name)
+				.ToArray();
+
+			if (mods.Length == 0)
+				continue;
+
+			mod.Monitor.Log(
+				$"Please install {itg.Name} ({itg.Url}) to improve support for: {string.Join(", ", mods)}",
+				level
+			);
 		}
+	}
 
 
-		public static void CheckIntegrations(Mod mod, IEnumerable<RecommendedIntegration> integrations, LogLevel level = LogLevel.Warn) {
-			if (integrations == null)
-				return;
+	internal static bool HasLocalizedAsset(this IContentPack pack, string key, string locale) {
+		int idx = string.IsNullOrEmpty(locale) ? -1 : key.LastIndexOf('.');
 
-			var registry = mod.Helper.ModRegistry;
+		// If we have an index, let's try loading various language versions.
+		if (idx != -1) {
+			string prefix = key[..idx];
+			string postfix = key[(idx + 1)..];
 
-			foreach (RecommendedIntegration itg in integrations) {
-				if (registry.IsLoaded(itg.Id) || itg.Mods == null)
-					continue;
+			string path = $"{prefix}.{locale}.{postfix}";
 
-				string[] mods = itg.Mods
-					.Where(id => registry.IsLoaded(id))
-					.Select(id => registry.Get(id))
-					.Select(info => info.Manifest.Name)
-					.ToArray();
+			if (pack.HasFile(path))
+				return true;
 
-				if (mods.Length == 0)
-					continue;
-
-				mod.Monitor.Log(
-					$"Please install {itg.Name} ({itg.Url}) to improve support for: {string.Join(", ", mods)}",
-					level
-				);
-			}
-		}
-
-
-		public static bool HasLocalizedAsset(this IContentPack pack, string key, string locale) {
-			int idx = string.IsNullOrEmpty(locale) ? -1 : key.LastIndexOf('.');
-
-			// If we have an index, let's try loading various language versions.
-			if (idx != -1) {
-				string prefix = key.Substring(0, idx);
-				string postfix = key.Substring(idx + 1);
-
-				string path = $"{prefix}.{locale}.{postfix}";
+			int i = locale.IndexOf('-');
+			if (i != -1) {
+				path = $"{prefix}.{locale[..i]}.{postfix}";
 
 				if (pack.HasFile(path))
 					return true;
-
-				int i = locale.IndexOf('-');
-				if (i != -1) {
-					path = $"{prefix}.{locale.Substring(0, i)}.{postfix}";
-
-					if (pack.HasFile(path))
-						return true;
-				}
 			}
-
-			// Still here? Return the bare resource.
-			return pack.HasFile(key);
 		}
 
-		public static T LoadLocalizedAsset<T>(this IContentPack pack, string key, string locale) {
-			int idx = string.IsNullOrEmpty(locale) ? -1 : key.LastIndexOf('.');
+		// Still here? Return the bare resource.
+		return pack.HasFile(key);
+	}
 
-			// If we have an index, let's try loading various language versions.
-			if (idx != -1) {
-				string prefix = key.Substring(0, idx);
-				string postfix = key.Substring(idx + 1);
+	internal static T LoadLocalizedAsset<T>(this IContentPack pack, string key, string locale) where T : notnull {
+		int idx = string.IsNullOrEmpty(locale) ? -1 : key.LastIndexOf('.');
 
-				string path = $"{prefix}.{locale}.{postfix}";
+		// If we have an index, let's try loading various language versions.
+		if (idx != -1) {
+			string prefix = key[..idx];
+			string postfix = key[(idx + 1)..];
+
+			string path = $"{prefix}.{locale}.{postfix}";
+
+			if (pack.HasFile(path))
+#if PRE_314
+				return pack.LoadAsset<T>(path);
+#else
+				return pack.ModContent.Load<T>(path);
+#endif
+
+
+			int i = locale.IndexOf('-');
+			if (i != -1) {
+				path = $"{prefix}.{locale[..i]}.{postfix}";
 
 				if (pack.HasFile(path))
+#if PRE_314
 					return pack.LoadAsset<T>(path);
-
-				int i = locale.IndexOf('-');
-				if (i != -1) {
-					path = $"{prefix}.{locale.Substring(0, i)}.{postfix}";
-
-					if (pack.HasFile(path))
-						return pack.LoadAsset<T>(path);
-				}
+#else
+					return pack.ModContent.Load<T>(path);
+#endif
 			}
-
-			// Still here? Return the bare resource.
-			return pack.LoadAsset<T>(key);
 		}
 
+		// Still here? Return the bare resource.
+#if PRE_314
+		return pack.LoadAsset<T>(key);
+#else
+		return pack.ModContent.Load<T>(key);
+#endif
+	}
 
-		public static T LoadLocalized<T>(this IContentHelper helper, string key, string locale = null, ContentSource source = ContentSource.ModFolder) {
-			locale ??= helper.CurrentLocale;
-			int idx = string.IsNullOrEmpty(locale) ? -1 : key.LastIndexOf('.');
+#if PRE_314
 
-			// If we have an index, let's try loading various language versions.
-			if (idx != -1) {
-				string prefix = key.Substring(0, idx);
-				string postfix = key.Substring(idx + 1);
+#else
+	internal static T LoadLocalized<T>(this IModContentHelper helper, string key, string? locale = null) where T : notnull {
+		int idx = string.IsNullOrEmpty(locale) ? -1 : key.LastIndexOf('.');
 
-				string path = $"{prefix}.{locale}.{postfix}";
+		// If we have an index, let's try loading various language versions.
+		if (idx != -1) {
+			string prefix = key[..idx];
+			string postfix = key[(idx + 1)..];
+			string path = $"{prefix}.{locale}.{postfix}";
+
+			try {
+				return helper.Load<T>(path);
+			} catch(Exception e) {
+				if (!e.Message.Contains("path doesn't exist"))
+					throw;
+			}
+
+			int i = locale!.IndexOf('-');
+			if (i != -1) {
+				path = $"{prefix}.{locale[..i]}.{postfix}";
 
 				try {
-					return helper.Load<T>(path, source);
+					return helper.Load<T>(path);
 				} catch (Exception e) {
 					if (!e.Message.Contains("path doesn't exist"))
 						throw;
 				}
-
-				int i = locale.IndexOf('-');
-				if (i != -1) {
-					path = $"{prefix}.{locale.Substring(0, i)}.{postfix}";
-
-					try {
-						return helper.Load<T>(path, source);
-					} catch (Exception e) {
-						if (!e.Message.Contains("path doesn't exist"))
-							throw;
-					}
-				}
 			}
-
-			// Still here? Return the bare resource.
-			return helper.Load<T>(key, source);
 		}
+
+		// Still here? Return the bare resource.
+		return helper.Load<T>(key);
 	}
+#endif
 }

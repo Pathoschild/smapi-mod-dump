@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>$(ProjectName)</AssemblyName>
+		<RootNamespace>$(ProjectName)</RootNamespace>
+		<DefaultNamespace>$(ProjectName)</DefaultNamespace>
+		<Version>1.1.0</Version>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+
+	<!-- ModBuildConfig settings. -->
+	<Import Project="..\Build\Latest.targets" />
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<EnableHarmony>true</EnableHarmony>
+		<IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+</Project>

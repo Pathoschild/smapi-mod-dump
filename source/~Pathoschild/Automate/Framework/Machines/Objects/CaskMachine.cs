@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewValley;

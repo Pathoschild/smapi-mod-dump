@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "STN Teleporter",
+  "Description": "Place this in the world alongside a chest containing a teleport key to build a teleport network.",
+  "Price": 1,
+  "ProvidesLight": true,
+  "Recipe":
+  {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 787,
+        "Count": 1,
+      },
+      {
+        "Object": 335,
+        "Count": 5,
+      },
+      {
+        "Object": 415,
+        "Count": 1
+      } ],
+    "CanPurchase": true
+  },
+  "PurchaseFrom": "Robin"
+}

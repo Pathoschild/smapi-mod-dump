@@ -1,0 +1,126 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"antiSocial": {
+		"uniqueID": "SuperAardvark.AntiSocial",
+		"author": "Super Aardvark",
+		"name": "Anti-Social NPCs",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/5371"
+	},
+	/*********
+			** Content Patcher (CP)
+			*********/
+	"CP": {
+		"uniqueID": "Pathoschild.ContentPatcher",
+		"author": "Pathoschild",
+		"name": "Content Patcher",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/1915"
+	},
+	/*********
+			** Custom Companions (CC)
+			*********/
+	"CC": {
+		"uniqueID": "PeacefulEnd.CustomCompanions",
+		"author": "PeacefulEnd",
+		"name": "Custom Companions",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/8626"
+	},
+	/*********
+			** Stardew Audio API and Toolkit (SAAT)
+			*********/
+	"SAAT": {
+		"uniqueID": "ZeroMeters.SAAT.Mod",
+		"author": "ZeroMeters",
+		"name": "SAAT - Audio API and Toolkit",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/10747"
+	},
+	/*********
+			** Custom NPC Exclusions
+			*********/
+	"NPCExclusions": {
+		"uniqueID": "Esca.CustomNPCExclusions",
+		"author": "Esca",
+		"name": "Custom NPC Exclusions",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/7089"
+	},
+	/*********
+			** Custom NPC Fixes
+			*********/
+	"CustomNPCFixes": {
+		"uniqueID": "spacechase0.CustomNPCFixes",
+		"author": "spacechase0",
+		"name": "Custom NPC Fixes",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/3849"
+	},
+	/*********
+			** ExtraMapLayers
+			*********/
+	"EML": {
+		"uniqueID": "aedenthorn.ExtraMapLayers",
+		"author": "aedenthorn",
+		"name": "Extra Map Layers",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/9633"
+	},
+	/*********
+			** Farm Type Manager (FTM)
+			*********/
+	"FarmTypeManager": {
+		"uniqueID": "Esca.FarmTypeManager",
+		"author": "Esca",
+		"name": "Farm Type Manager (FTM)",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/3231"
+	},
+	/*********
+			** JSON Assets (JA)
+			*********/
+	"JA": {
+		"uniqueID": "spacechase0.JsonAssets",
+		"author": "spacechase0",
+		"name": "JsonAssets",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/1720"
+	},
+	/*********
+			** Mail Framework Mod (MFM)
+			*********/
+	"MFM": {
+		"uniqueID": "DIGUS.MailFrameworkMod",
+		"author": "Digus",
+		"name": "Mail Framework Mod",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/1536"
+	},
+	/*********
+			** Quest Framework (QF)
+			*********/
+	"QF": {
+		"uniqueID": "PurrplingCat.QuestFramework",
+		"author": "PurrplingCat",
+		"name": "Quest Framework",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/6414"
+	},
+	/*********
+			** Shop Tile Framework (STF)
+			*********/
+	"STF": {
+		"uniqueID": "Cherry.ShopTileFramework",
+		"author": "Cherry",
+		"name": "Shop Tile Framework",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/5005"
+	},
+	/*********
+			** SpaceCore
+			*********/
+	"SC": {
+		"uniqueID": "spacechase0.SpaceCore",
+		"author": "spacechase0",
+		"name": "SpaceCore",
+		"url": "https://www.nexusmods.com/stardewvalley/mods/1348"
+	},
+}

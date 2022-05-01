@@ -8,36 +8,37 @@
 **
 *************************************************/
 
+#nullable enable
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Leclair.Stardew.Common.UI.SimpleLayout {
-	public class SpaceNode : ISimpleNode {
+namespace Leclair.Stardew.Common.UI.SimpleLayout;
 
-		private readonly LayoutNode Parent;
-		public float Size { get; }
-		public bool Expand { get; }
+public class SpaceNode : ISimpleNode {
 
-		public Alignment Alignment => Alignment.None;
+	private readonly LayoutNode Parent;
+	public float Size { get; }
+	public bool Expand { get; }
 
-		public bool DeferSize => false;
+	public Alignment Alignment => Alignment.None;
 
-		public SpaceNode(LayoutNode parent, bool expand = true, float size = 16) {
-			Parent = parent;
-			Expand = expand;
-			Size = size;
-		}
+	public bool DeferSize => false;
 
-		public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
-			return Parent.Direction switch {
-				LayoutDirection.Horizontal => new Vector2(Size, 0),
-				_ => new Vector2(0, Size)
-			};
-		}
+	public SpaceNode(LayoutNode parent, bool expand = true, float size = 16) {
+		Parent = parent;
+		Expand = expand;
+		Size = size;
+	}
 
-		public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
-			/* spaces don't draw ~ */
-		}
+	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
+		return Parent.Direction switch {
+			LayoutDirection.Horizontal => new Vector2(Size, 0),
+			_ => new Vector2(0, Size)
+		};
+	}
+
+	public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
+		/* spaces don't draw ~ */
 	}
 }

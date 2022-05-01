@@ -32,7 +32,7 @@
    
    "Action": "EditData",
    "Target": "Characters/Dialogue/Daia",
-   "When": { "HasSeenEvent": "75160264" },
+   "When": { "HasSeenEvent: hostPlayer": "75160263" },
    "Entries": {
 
 
@@ -97,7 +97,7 @@
    "Action": "EditData",
    "Target": "Characters/Dialogue/Daia",
    "When": {
-	"HasSeenEvent: |contains=75160264": true,   	
+	"HasSeenEvent: hostPlayer|contains=75160263": true,   	
    	"Relationship:Daia": "Dating",
    },
    "Entries": {

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Pathoschild.Stardew.Common.Utilities;
 
 namespace Pathoschild.Stardew.ChestsAnywhere.Framework

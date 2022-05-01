@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11778
+IDs: ceruleandeep.MarketDay
+update keys: Nexus:11778, GitHub:ChroniclerCherry/stardew-valley-mods

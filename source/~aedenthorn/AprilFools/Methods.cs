@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
@@ -18,6 +19,11 @@ namespace AprilFools
 {
     public partial class ModEntry
     {
+        private static bool IsModEnabled()
+        {
+            return Config.EnableMod && (!Config.RestrictToAprilFirst || (DateTime.Now.Month == 4 && DateTime.Now.Day == 1));
+        }
+
         private string[] _AsciiChars = { "#", "#", "@", "%", "=", "+", "*", ":", "-", ".", " " };
         public static void ShuffleList<T>(List<T> list)
         {
@@ -31,13 +37,13 @@ namespace AprilFools
                 list[n] = value;
             }
         }
-        private Color[] ScaleScreen(int scaleFactor)
+        private Color[] ScaleScreen(int scaleFactor, out int width, out int height)
         {
             var screenWidth = Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferWidth;
             var screenHeight = Game1.graphics.GraphicsDevice.PresentationParameters.BackBufferHeight;
             Color[] screenData = new Color[screenWidth * screenHeight];
             Game1.graphics.GraphicsDevice.GetBackBufferData(screenData);
-            if(screenTexture.Width != screenWidth || screenTexture.Height != screenHeight)
+            if(screenTexture is null || screenTexture.Width != screenWidth || screenTexture.Height != screenHeight)
             {
                 screenTexture = new Texture2D(Game1.graphics.GraphicsDevice, screenWidth, screenHeight);
             }
@@ -53,7 +59,9 @@ namespace AprilFools
             screenBatch.End();
 
             Game1.graphics.GraphicsDevice.SetRenderTarget(null);
-            Color[] data = new Color[screenWidth / scaleFactor * screenHeight / scaleFactor];
+            Color[] data = new Color[renderTarget.Width * renderTarget.Height];
+            width = renderTarget.Width;
+            height = renderTarget.Height;
             renderTarget.GetData(data);
             return data;
         }

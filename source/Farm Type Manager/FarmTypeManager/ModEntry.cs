@@ -18,8 +18,10 @@ namespace FarmTypeManager
         ///<summary>Tasks performed when the mod initially loads.</summary>
         public override void Entry(IModHelper helper)
         {
-            Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
-            Utility.Helper = helper; //pass the helper for use by other areas of this mod's code
+            //pass SMAPI utilities to the Utility class for global use
+            Utility.Monitor.IMonitor = Monitor;
+            Utility.Helper = helper;
+            Utility.Manifest = ModManifest;
 
             Utility.LoadModConfig(); //attempt to load the config.json ModConfig file
 

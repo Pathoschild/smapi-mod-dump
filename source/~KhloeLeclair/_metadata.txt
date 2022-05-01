@@ -7,13 +7,13 @@ mods:
    Almanac → DGA Support
    Better Crafting
    Better Crafting → SpaceCore Support
+   Better Crafting: Buildings
    See Me Rollin'
 
 latest commit:
-   commit a7c2a9ce2df2c519221e4aa021493188bcdd4bb7
+   commit 94e80758b84a92c6c620700e73e510a4bba9ecba
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Thu Mar 24 02:02:08 2022 -0400
+   Date:   Sat Apr 30 16:44:51 2022 -0400
    
-       Almanac 0.16.0
-       Almanac DGA 1.1.0
+       More WIP ThemeManager as a Framework
    

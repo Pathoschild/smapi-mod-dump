@@ -1,0 +1,20 @@
+﻿{
+  "mod-description": "Highlights empty machines.",
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  // GMCM
+  "EmptyColor.title": "Empty Color",
+  "EmptyColor.description": "The color to apply to empty machines",
+
+  "InvalidColor.title": "Invalid Color",
+  "InvalidColor.description": "The color to apply to machines that cannot currently be used.",
+
+  "IndividualMachines.title": "Individual Machines",
+  "IndividualMachines.description": "Toggle individual machines on and off",
+
+  "PFM.section": "Producer Framework Mod machines",
+  "PFM.description": "The following are the currently installed PFM machines.",
+}

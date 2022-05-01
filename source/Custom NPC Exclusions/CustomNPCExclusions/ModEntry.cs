@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace CustomNPCExclusions
 {
-    public partial class ModEntry : Mod, IAssetLoader
+    public partial class ModEntry : Mod
     {
         /// <summary>A reference to this mod's current instance, allowing easier access to SMAPI utilites.</summary>
         internal static Mod Instance { get; set; } = null;
@@ -42,30 +42,6 @@ namespace CustomNPCExclusions
             HarmonyPatch_MovieInvitation.ApplyPatch(harmony);
             HarmonyPatch_Greetings.ApplyPatch(harmony);
             HarmonyPatch_BirthdayCalendar.ApplyPatch(harmony);
-        }
-
-        /// <summary>Get whether this mod can load the initial version of the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals(AssetName)) //if this asset's name matches
-            {
-                return true; //this mod can load this asset
-            }
-
-            return false; //this mod CANNOT load this asset
-        }
-
-        /// <summary>Load a matched asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public T Load<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals(AssetName)) //if this asset's name matches
-            {
-                return (T)(object)new Dictionary<string, string>(); //return an empty string dictionary (i.e. create a new data file)
-            }
-
-            throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
         }
     }
 }

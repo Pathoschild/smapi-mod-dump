@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Colors;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
@@ -18,7 +19,7 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Resample.Passes;
 
 static class Analysis {
-	internal readonly ref struct LegacyResults {
+	internal readonly struct LegacyResults {
 		internal readonly Vector2B Wrapped;
 		internal readonly Vector2B RepeatX;
 		internal readonly Vector2B RepeatY;

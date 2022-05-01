@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Fish Food Fertilizer",
+  "Price": "50",
+  "Category": "Junk",
+  "Edibility": -300,
+  "TranslationKey": "fish-food",
+  "PurchasePrice": 500,
+  "PurchaseFrom": "Willy",
+  "CanPurchase": true,
+  "PurchaseRequirements": [ "Hl jojaMember", "Hn ccFishTank", "d Mon Tue Thur Fri" ]
+}

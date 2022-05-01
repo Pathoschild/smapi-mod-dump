@@ -1,0 +1,10 @@
+﻿{
+  "Name": "NoPovertyByDisconnect",
+  "Author": "Slumber",
+  "Version": "1.0.0",
+  "Description": "Grants disconnected players income for the items in their shipping bin.",
+  "UniqueID": "SlumbR.NoPovertyByDisconnect",
+  "EntryDll": "StardewTestmod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

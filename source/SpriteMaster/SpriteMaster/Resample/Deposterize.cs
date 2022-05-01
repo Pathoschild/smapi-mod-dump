@@ -10,6 +10,7 @@
 
 using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Colors;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
@@ -149,12 +150,12 @@ static class Deposterize {
 			int minX = -1;
 			int maxX = Size.Width + 1;
 
-			foreach (int y in minY.RangeTo(maxY)) {
+			for (int y = minY; y < maxY; ++y) {
 				int modulusY = GetY(y);
 
 				var yIndex = modulusY * Size.X;
 
-				foreach (int x in minX.RangeTo(maxX)) {
+				for (int x = minX; x < maxX; ++x) {
 					int modulusX = GetX(x);
 
 					var index = yIndex + modulusX;
@@ -179,16 +180,16 @@ static class Deposterize {
 			int minXBlock = 0;
 			int maxXBlock = (maxX / BlockSize) + 1;
 
-			foreach (int xb in minXBlock.RangeTo(maxXBlock)) {
+			for (int xb = minXBlock; xb < maxXBlock; ++xb) {
 				var min = (xb + minX) * BlockSize;
 				var max = Math.Min(maxX, min + BlockSize);
 
-				foreach (int y in minY.RangeTo(maxY)) {
+				for (int y = minY; y < maxY; ++y) {
 					var yIndex =			GetY(y)			* Size.X;
 					var yIndexPrev =	GetY(y - 1)	* Size.X;
 					var yIndexNext =	GetY(y + 1)	* Size.X;
 
-					foreach (int x in min.RangeTo(max)) {
+					for (int x = min; x < max; ++x) {
 						var modulusX = GetX(x);
 
 						var index = yIndex + modulusX;

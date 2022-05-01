@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace ContentPatcher.Framework.Lexing.LexTokens
 {
     /// <summary>A lexical token representing a literal string value.</summary>

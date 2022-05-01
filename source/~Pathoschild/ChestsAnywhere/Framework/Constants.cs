@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using StardewModdingAPI;
 using StardewValley;
 

@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/GiantCropFertilizer
+**
+*************************************************/
+
+{
+  "mod-description": "������һ���ܹ���߾޴�������ּ��ʵķ��ϣ�",
+
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "δ����{{APIID}}��������ֹͣ��",
+  "api-too-old": "�����{{apiName}}��{{APIID}}��������{{minversion}}�汾����ǰ�汾Ϊ{{currentversion}}��������ֹͣ��",
+
+  "giant-crop-fertilizer.name": "�޴��������",
+  "giant-crop-fertilizer.description": "������߾޴�����ĳ��ּ��ʣ�",
+
+  //GMCM
+  "GiantCropChance.title": "�޴����Ｘ��",
+  "GiantCropChance.description": "����������������ʱ��һ��3x3�����޴�����İٷֱȼ��ʡ�"
+}

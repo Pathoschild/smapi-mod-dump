@@ -85,10 +85,11 @@ namespace ContentPackCreator
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.manifestTab);
             this.tabControl.Controls.Add(this.contentTab);
+            this.tabControl.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.tabControl.Location = new System.Drawing.Point(12, 12);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1240, 604);
+            this.tabControl.Size = new System.Drawing.Size(1218, 649);
             this.tabControl.TabIndex = 0;
             this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
@@ -97,10 +98,10 @@ namespace ContentPackCreator
             this.manifestTab.AutoScroll = true;
             this.manifestTab.BackColor = System.Drawing.Color.DimGray;
             this.manifestTab.Controls.Add(this.tabControl2);
-            this.manifestTab.Location = new System.Drawing.Point(4, 24);
+            this.manifestTab.Location = new System.Drawing.Point(4, 30);
             this.manifestTab.Name = "manifestTab";
             this.manifestTab.Padding = new System.Windows.Forms.Padding(3);
-            this.manifestTab.Size = new System.Drawing.Size(1232, 576);
+            this.manifestTab.Size = new System.Drawing.Size(1210, 615);
             this.manifestTab.TabIndex = 0;
             this.manifestTab.Text = "manifest.json";
             // 
@@ -116,7 +117,7 @@ namespace ContentPackCreator
             this.tabControl2.Location = new System.Drawing.Point(6, 6);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(1219, 564);
+            this.tabControl2.Size = new System.Drawing.Size(1197, 603);
             this.tabControl2.TabIndex = 0;
             // 
             // mainTab
@@ -134,10 +135,10 @@ namespace ContentPackCreator
             this.mainTab.Controls.Add(this.label3);
             this.mainTab.Controls.Add(this.label2);
             this.mainTab.Controls.Add(this.label1);
-            this.mainTab.Location = new System.Drawing.Point(4, 24);
+            this.mainTab.Location = new System.Drawing.Point(4, 30);
             this.mainTab.Name = "mainTab";
             this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(1211, 536);
+            this.mainTab.Size = new System.Drawing.Size(1189, 569);
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Main";
             // 
@@ -149,7 +150,7 @@ namespace ContentPackCreator
             this.minText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.minText.Location = new System.Drawing.Point(150, 183);
             this.minText.Name = "minText";
-            this.minText.Size = new System.Drawing.Size(1055, 29);
+            this.minText.Size = new System.Drawing.Size(1033, 29);
             this.minText.TabIndex = 28;
             // 
             // label6
@@ -170,7 +171,7 @@ namespace ContentPackCreator
             this.idText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.idText.Location = new System.Drawing.Point(150, 147);
             this.idText.Name = "idText";
-            this.idText.Size = new System.Drawing.Size(1055, 29);
+            this.idText.Size = new System.Drawing.Size(1033, 29);
             this.idText.TabIndex = 26;
             // 
             // descText
@@ -181,7 +182,7 @@ namespace ContentPackCreator
             this.descText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.descText.Location = new System.Drawing.Point(150, 111);
             this.descText.Name = "descText";
-            this.descText.Size = new System.Drawing.Size(1055, 29);
+            this.descText.Size = new System.Drawing.Size(1033, 29);
             this.descText.TabIndex = 25;
             // 
             // versionText
@@ -192,7 +193,7 @@ namespace ContentPackCreator
             this.versionText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.versionText.Location = new System.Drawing.Point(150, 75);
             this.versionText.Name = "versionText";
-            this.versionText.Size = new System.Drawing.Size(1055, 29);
+            this.versionText.Size = new System.Drawing.Size(1033, 29);
             this.versionText.TabIndex = 24;
             // 
             // authorText
@@ -203,7 +204,7 @@ namespace ContentPackCreator
             this.authorText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.authorText.Location = new System.Drawing.Point(150, 39);
             this.authorText.Name = "authorText";
-            this.authorText.Size = new System.Drawing.Size(1055, 29);
+            this.authorText.Size = new System.Drawing.Size(1033, 29);
             this.authorText.TabIndex = 23;
             // 
             // nameText
@@ -214,7 +215,7 @@ namespace ContentPackCreator
             this.nameText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.nameText.Location = new System.Drawing.Point(150, 3);
             this.nameText.Name = "nameText";
-            this.nameText.Size = new System.Drawing.Size(1055, 29);
+            this.nameText.Size = new System.Drawing.Size(1033, 29);
             this.nameText.TabIndex = 14;
             // 
             // label5
@@ -273,10 +274,10 @@ namespace ContentPackCreator
             this.tabPage2.Controls.Add(this.forID);
             this.tabPage2.Controls.Add(this.label8);
             this.tabPage2.Controls.Add(this.label7);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 30);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1211, 536);
+            this.tabPage2.Size = new System.Drawing.Size(1189, 569);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "ContentPackFor";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -289,7 +290,7 @@ namespace ContentPackCreator
             this.forMin.Location = new System.Drawing.Point(130, 39);
             this.forMin.MinimumSize = new System.Drawing.Size(612, 30);
             this.forMin.Name = "forMin";
-            this.forMin.Size = new System.Drawing.Size(1075, 29);
+            this.forMin.Size = new System.Drawing.Size(1053, 29);
             this.forMin.TabIndex = 35;
             this.forMin.Text = "1.25.0";
             // 
@@ -303,7 +304,7 @@ namespace ContentPackCreator
             this.forID.Location = new System.Drawing.Point(130, 6);
             this.forID.MinimumSize = new System.Drawing.Size(612, 30);
             this.forID.Name = "forID";
-            this.forID.Size = new System.Drawing.Size(1075, 29);
+            this.forID.Size = new System.Drawing.Size(1053, 29);
             this.forID.TabIndex = 34;
             this.forID.Text = "Pathoschild.ContentPatcher";
             // 
@@ -330,10 +331,10 @@ namespace ContentPackCreator
             // depTab
             // 
             this.depTab.Controls.Add(this.depTable);
-            this.depTab.Location = new System.Drawing.Point(4, 24);
+            this.depTab.Location = new System.Drawing.Point(4, 30);
             this.depTab.Name = "depTab";
             this.depTab.Padding = new System.Windows.Forms.Padding(3);
-            this.depTab.Size = new System.Drawing.Size(1211, 536);
+            this.depTab.Size = new System.Drawing.Size(1189, 569);
             this.depTab.TabIndex = 2;
             this.depTab.Text = "Dependencies";
             this.depTab.UseVisualStyleBackColor = true;
@@ -351,8 +352,8 @@ namespace ContentPackCreator
             this.depTable.Name = "depTable";
             this.depTable.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.depTable.RowCount = 1;
-            this.depTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 524F));
-            this.depTable.Size = new System.Drawing.Size(1199, 524);
+            this.depTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 569F));
+            this.depTable.Size = new System.Drawing.Size(1177, 569);
             this.depTable.TabIndex = 0;
             // 
             // addDepButton
@@ -362,7 +363,7 @@ namespace ContentPackCreator
             this.addDepButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.addDepButton.Location = new System.Drawing.Point(13, 3);
             this.addDepButton.Name = "addDepButton";
-            this.addDepButton.Size = new System.Drawing.Size(1173, 29);
+            this.addDepButton.Size = new System.Drawing.Size(1151, 29);
             this.addDepButton.TabIndex = 1;
             this.addDepButton.Text = "Add Dependency";
             this.addDepButton.UseVisualStyleBackColor = true;
@@ -370,10 +371,10 @@ namespace ContentPackCreator
             // 
             // tabPage4
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Location = new System.Drawing.Point(4, 30);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1211, 536);
+            this.tabPage4.Size = new System.Drawing.Size(1189, 569);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Extra";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -381,10 +382,10 @@ namespace ContentPackCreator
             // contentTab
             // 
             this.contentTab.BackColor = System.Drawing.Color.Gray;
-            this.contentTab.Location = new System.Drawing.Point(4, 24);
+            this.contentTab.Location = new System.Drawing.Point(4, 30);
             this.contentTab.Name = "contentTab";
             this.contentTab.Padding = new System.Windows.Forms.Padding(3);
-            this.contentTab.Size = new System.Drawing.Size(1232, 576);
+            this.contentTab.Size = new System.Drawing.Size(1210, 615);
             this.contentTab.TabIndex = 1;
             this.contentTab.Text = "content.json";
             // 
@@ -392,7 +393,7 @@ namespace ContentPackCreator
             // 
             this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label9.Location = new System.Drawing.Point(12, 638);
+            this.label9.Location = new System.Drawing.Point(12, 683);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(90, 30);
             this.label9.TabIndex = 19;
@@ -405,16 +406,16 @@ namespace ContentPackCreator
             | System.Windows.Forms.AnchorStyles.Right)));
             this.folderText.BackColor = System.Drawing.SystemColors.ControlDark;
             this.folderText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.folderText.Location = new System.Drawing.Point(108, 638);
+            this.folderText.Location = new System.Drawing.Point(108, 683);
             this.folderText.Name = "folderText";
-            this.folderText.Size = new System.Drawing.Size(978, 29);
+            this.folderText.Size = new System.Drawing.Size(956, 29);
             this.folderText.TabIndex = 17;
             // 
             // buildButton
             // 
             this.buildButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buildButton.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.buildButton.Location = new System.Drawing.Point(1092, 638);
+            this.buildButton.Location = new System.Drawing.Point(1070, 683);
             this.buildButton.Name = "buildButton";
             this.buildButton.Size = new System.Drawing.Size(156, 30);
             this.buildButton.TabIndex = 18;
@@ -455,7 +456,7 @@ namespace ContentPackCreator
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(1242, 726);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.folderText);
             this.Controls.Add(this.buildButton);

@@ -47,6 +47,38 @@ namespace Shockah.CommonModCode.IL
 				return null;
 		}
 
+		public static bool IsLdlocWithIndex(this CodeInstruction instruction, int index)
+		{
+			if (instruction.opcode == OpCodes.Ldloc_0)
+				return index == 0;
+			else if (instruction.opcode == OpCodes.Ldloc_1)
+				return index == 1;
+			else if (instruction.opcode == OpCodes.Ldloc_2)
+				return index == 2;
+			else if (instruction.opcode == OpCodes.Ldloc_3)
+				return index == 3;
+			else if (instruction.opcode == OpCodes.Ldloc)
+				return (instruction.operand is int @int && @int == index) || (instruction.operand is sbyte @byte && @byte == index);
+			else
+				return false;
+		}
+
+		public static bool IsStlocWithIndex(this CodeInstruction instruction, int index)
+		{
+			if (instruction.opcode == OpCodes.Stloc_0)
+				return index == 0;
+			else if (instruction.opcode == OpCodes.Stloc_1)
+				return index == 1;
+			else if (instruction.opcode == OpCodes.Stloc_2)
+				return index == 2;
+			else if (instruction.opcode == OpCodes.Stloc_3)
+				return index == 3;
+			else if (instruction.opcode == OpCodes.Stloc)
+				return (instruction.operand is int @int && @int == index) || (instruction.operand is sbyte @byte && @byte == index);
+			else
+				return false;
+		}
+
 		public static bool IsLdcI4(this CodeInstruction instruction)
 		{
 			return instruction.opcode == OpCodes.Ldc_I4 ||

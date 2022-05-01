@@ -10,19 +10,19 @@
 
 {
 "Changes": [
-	
+
 //------------------------
-// FESTIVAL DIALOGUE   
+// FESTIVAL DIALOGUE
 //------------------------
 
 	//IceFest----------------------
-	
+
 		{
 			"LogName": "IceFest",
 			"Action": "EditData",
 			"Target": "Data/Festivals/winter8",
 			"Entries": {
-			
+
 			//Non-Dateables
 				"Aguar": "{{i18n:Festivals.IceFest.Aguar}}",
 				"Bert": "{{i18n:Festivals.IceFest.Bert}}",
@@ -55,6 +55,7 @@
 				"Malaya": "{{i18n:Festivals.IceFest.Malaya}}",
 				"Kimpoi": "{{i18n:Festivals.IceFest.Kimpoi}}",
 				"Naomi": "{{i18n:Festivals.IceFest.Naomi}}",
+				"Torts": "{{i18n:Festivals.IceFest.Torts}}",
 
 			//Dateables
 				"Alissa": "{{i18n:Festivals.IceFest.Alissa}}",

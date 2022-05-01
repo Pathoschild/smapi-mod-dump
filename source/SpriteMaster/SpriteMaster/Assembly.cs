@@ -16,14 +16,13 @@ global using DrawingPoint = System.Drawing.Point;
 global using DrawingRectangle = System.Drawing.Rectangle;
 global using DrawingSize = System.Drawing.Size;
 global using half = System.Half;
+global using XRectangle = Microsoft.Xna.Framework.Rectangle;
 global using XTilePoint = xTile.Dimensions.Location;
 global using XTileRectangle = xTile.Dimensions.Rectangle;
 global using XTileSize = xTile.Dimensions.Size;
 using System;
 using System.Runtime.CompilerServices;
 using System.Security;
-
-[assembly: CompilationRelaxations(CompilationRelaxations.NoStringInterning)]
 
 // https://stackoverflow.com/questions/24802222/performance-of-expression-trees#comment44537873_24802222
 [assembly: CLSCompliant(false)]
@@ -32,12 +31,11 @@ using System.Security;
 [assembly: InternalsVisibleToAttribute("xBRZ")]
 [assembly: InternalsVisibleToAttribute("Hashing")]
 [assembly: SecurityRules(SecurityRuleSet.Level2, SkipVerificationInFullTrust = true)]
-[assembly: ChangeList("dfda7f4:0.13.0")]
+[assembly: ChangeList("685199c:0.13.1-21-g685199c")]
 [assembly: BuildComputerName("Palatinate")]
-[assembly: FullVersion("0.13.0.300")]
+[assembly: FullVersion("0.14.0.1-alpha.1")]
 // [assembly: SuppressUnmanagedCodeSecurity]
 
-[module: CompilationRelaxations(CompilationRelaxations.NoStringInterning)]
 [module: CLSCompliant(false)]
 [module: SkipLocalsInit]
 

@@ -12,7 +12,7 @@
     "Name": "Robin's Underwear",
     "Description": "They smell faintly of sawdust.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 36,
     "IsColored": false,
     "GiftTastes": {

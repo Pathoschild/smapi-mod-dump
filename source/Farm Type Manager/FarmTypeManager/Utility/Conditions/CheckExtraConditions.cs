@@ -11,6 +11,7 @@
 using StardewModdingAPI;
 using StardewValley;
 using System;
+using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -22,8 +23,9 @@ namespace FarmTypeManager
             /// <summary>Checks whether objects should be spawned in a given SpawnArea based on its ExtraConditions settings.</summary>
             /// <param name="area">The SpawnArea to be checked.</param>
             /// <param name="save">The mod's save data for the current farm and config file.</param>
+            /// <param name="packManifest">The manifest of the content pack providing the spawn area. Null for personal configuration files.</param>
             /// <returns>True if objects are allowed to spawn. False if any extra conditions should prevent spawning.</returns>
-            public static bool CheckExtraConditions(SpawnArea area, InternalSaveData save)
+            public static bool CheckExtraConditions(SpawnArea area, InternalSaveData save, IManifest packManifest)
             {
                 Monitor.Log($"Checking extra conditions for this area...", LogLevel.Trace);
 
@@ -394,6 +396,50 @@ namespace FarmTypeManager
                     {
                         Monitor.Log("Tomorrow's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                         return false; //prevent spawning
+                    }
+                }
+
+                //check CP conditions
+                if (area.ExtraConditions.CPConditions != null && area.ExtraConditions.CPConditions.Count > 0)
+                {
+                    Monitor.Log($"CP conditions found. Checking...", LogLevel.Trace);
+                    if (ContentPatcherAPI == null) //if CP's API is not available
+                    {
+                        Monitor.LogOnce($"FTM cannot currently access the API for Content Patcher (CP), but at least one spawn area has CP conditions. Those areas will be disabled.", LogLevel.Warn);
+                        Monitor.Log($"CP conditions could not be checked. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
+                    }
+                    else //if CP's API is available
+                    {
+                        try
+                        {
+                            string[] modIDs = packManifest?.Dependencies.Select(dep => dep.UniqueID).ToArray(); //get the ID of each mod this content pack requires (null if no manifest was provided)
+
+                            var conditions = ContentPatcherAPI.ParseConditions(Manifest, area.ExtraConditions.CPConditions, ContentPatcherVersion, modIDs);
+
+                            if (conditions.IsMatch) //if this area's CP conditions all match the current game state
+                            {
+                                Monitor.Log("CP conditions all currently match. Spawn allowed.", LogLevel.Trace);
+                            }
+                            else if (!conditions.IsValid) //if the conditions are not formatted correctly
+                            {
+                                Monitor.Log($"Issue: A Content Patcher (CP) condition for area ID \"{area.UniqueAreaID}\" isn't formatted correctly. Spawn disabled. Error message: \n\"{conditions.ValidationError}\"", LogLevel.Info);
+                                return false; //prevent spawning
+                            }
+                            else
+                            {
+                                Monitor.Log($"At least one CP condition does not currently match: \"{conditions.GetReasonNotMatched()}\". Spawn disabled.", LogLevel.Trace);
+                                return false; //prevent spawning
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"An error occurred while FTM was using the API for Content Patcher (CP). Please report this to FTM's developer. Auto-generated error message:", LogLevel.Error);
+                            Monitor.Log($"----------", LogLevel.Error);
+                            Monitor.Log($"{ex.ToString()}", LogLevel.Error);
+                            Monitor.Log($"CP conditions could not be checked. Spawn disabled.", LogLevel.Trace);
+                            return false;
+                        }
                     }
                 }
 

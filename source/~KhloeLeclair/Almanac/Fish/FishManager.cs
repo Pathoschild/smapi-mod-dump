@@ -104,7 +104,7 @@ namespace Leclair.Stardew.Almanac.Fish {
 
 		public void Invalidate() {
 			Loaded = false;
-			Mod.Helper.Content.InvalidateCache(AssetManager.FishOverridesPath);
+			Mod.Helper.GameContent.InvalidateCache(AssetManager.FishOverridesPath);
 		}
 
 		private void RefreshFish() {

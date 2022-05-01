@@ -8,12 +8,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 56624fd0c70bc502dd2e9b7f528f69d1d1b68c97
-   Merge: cb80d7c 7e6c851
-   Author: hawkfalcon <contact@hawkfalcon.com>
-   Date:   Tue Jun 1 11:10:14 2021 -1000
+   commit 7cbb25ac5082aca48f64cd718b678155ffc4056b
+   Author: ceruleandeep <ceruleandeep>
+   Date:   Thu Apr 28 10:23:01 2022 +1000
    
-       Merge pull request #10 from ceruleandeep/master
-       
-       Implement Junimo progression, add Generic Mod Config Menu support
+       Update for 2.0.7 RELEASE
    

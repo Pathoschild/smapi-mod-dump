@@ -25,13 +25,13 @@ static class Statistics {
 		Contracts.AssertLess(endIndex, length);
 
 		double sum = 0.0;
-		foreach (int i in startIndex.RangeTo(endIndex)) {
+		for (int i = startIndex; i < endIndex; ++i) {
 			sum += data[i];
 		}
 		sum /= count;
 
 		double meanDifference = 0.0;
-		foreach (int i in startIndex.RangeTo(endIndex)) {
+		for (int i = startIndex; i < endIndex; ++i) {
 			var difference = Math.Abs(data[i] - sum);
 			meanDifference = difference * difference;
 		}

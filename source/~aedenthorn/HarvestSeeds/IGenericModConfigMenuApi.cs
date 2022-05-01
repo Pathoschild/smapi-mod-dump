@@ -11,7 +11,7 @@
 using StardewModdingAPI;
 using System;
 
-namespace AdvancedMenuPositioning
+namespace HarvestSeeds
 {
     /// <summary>The API which lets other mods add a config UI through Generic Mod Config Menu.</summary>
     public interface IGenericModConfigMenuApi

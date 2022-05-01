@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.LookupAnything.Framework.DebugFields
 {
     /// <summary>A debug field containing a raw datamining value.</summary>

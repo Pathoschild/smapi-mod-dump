@@ -55,7 +55,7 @@
 			"Action": "EditMap",
 			"Target": "Maps/Custom_Ridgeside_RidgesideVillage",
 			"MapProperties": {
-				"Music": "{{Random: FallInRidgeside, fall1, fall2, fall3}}"
+				"Music": "{{Random: {{FallRidgesideMusic}}, fall1, fall2, fall3}}"
 				},
 			"When": {
 				"Weather": "Sun",
@@ -70,7 +70,7 @@
 			"Action": "EditMap",
 			"Target": "Maps/Custom_Ridgeside_RidgesideVillage",
 			"MapProperties": {
-				"Music": "{{Random: winter1, winter2, winter3, WinterMountain}}"
+				"Music": "{{Random: winter1, winter2, winter3, {{WinterRidgesideMusic}}}}"
 				},
 			"When": {
 				"Weather": "Sun",

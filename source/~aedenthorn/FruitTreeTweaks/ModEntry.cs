@@ -124,6 +124,15 @@ namespace FruitTreeTweaks
             );
             configMenu.AddNumberOption(
                 mod: ModManifest,
+                name: () => "Size Variation %",
+                tooltip: () => "0 - 99, applied randomly for each fruit, only applied cosmetically while on tree",
+                getValue: () => Config.SizeVariation,
+                setValue: value => Config.SizeVariation = value,
+                min:0,
+                max:99
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
                 name: () => "Fruit Buffer X",
                 tooltip: () => "Left and right border on the canopy to limit fruit spawn locations",
                 getValue: () => Config.FruitSpawnBufferX,
@@ -135,6 +144,27 @@ namespace FruitTreeTweaks
                 tooltip: () => "Top and bottom border on the canopy to limit fruit spawn locations",
                 getValue: () => Config.FruitSpawnBufferY,
                 setValue: value => Config.FruitSpawnBufferY = value
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Days Until Silver",
+                tooltip: () => "After fully mature",
+                getValue: () => Config.DaysUntilSilverFruit,
+                setValue: value => Config.DaysUntilSilverFruit = value
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Days Until Gold",
+                tooltip: () => "After fully mature",
+                getValue: () => Config.DaysUntilGoldFruit,
+                setValue: value => Config.DaysUntilGoldFruit = value
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Days Until Iridium",
+                tooltip: () => "After fully mature",
+                getValue: () => Config.DaysUntilIridiumFruit,
+                setValue: value => Config.DaysUntilIridiumFruit = value
             );
         }
     }

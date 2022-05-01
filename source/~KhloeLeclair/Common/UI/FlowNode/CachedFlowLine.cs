@@ -8,19 +8,20 @@
 **
 *************************************************/
 
+#nullable enable
 
-namespace Leclair.Stardew.Common.UI.FlowNode {
-	public struct CachedFlowLine {
+namespace Leclair.Stardew.Common.UI.FlowNode;
 
-		public IFlowNodeSlice[] Slices;
+public struct CachedFlowLine {
 
-		public float Width { get; }
-		public float Height { get; }
+	public IFlowNodeSlice[] Slices;
 
-		public CachedFlowLine(IFlowNodeSlice[] slices, float width, float height) {
-			Slices = slices;
-			Width = width;
-			Height = height;
-		}
+	public float Width { get; }
+	public float Height { get; }
+
+	public CachedFlowLine(IFlowNodeSlice[] slices, float width, float height) {
+		Slices = slices;
+		Width = width;
+		Height = height;
 	}
 }

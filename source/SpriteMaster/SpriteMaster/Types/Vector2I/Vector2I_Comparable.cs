@@ -29,8 +29,7 @@ partial struct Vector2I :
 	IComparable<DrawingSize>,
 	IComparable<DrawingSize?>,
 	IComparable<XTileSize>,
-	IComparable<XTileSize?>
-{
+	IComparable<XTileSize?> {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public readonly int CompareTo(Vector2I other) => Packed.CompareTo(other.Packed);
 

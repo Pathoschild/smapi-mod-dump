@@ -9,8 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Harmonize.Patches.Game;
+using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using System;
 using System.Diagnostics.CodeAnalysis;
@@ -22,23 +24,96 @@ namespace SpriteMaster.Harmonize.Patches.PSpriteBatch;
 [SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
 [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
 static class PlatformRenderBatch {
+	private static SamplerState GetSamplerState(TextureAddressMode addressMode, TextureFilter filter) {
+		switch (addressMode) {
+			case TextureAddressMode.Wrap:
+				switch (filter) {
+					case TextureFilter.Point:
+						return SamplerState.PointWrap;
+					case TextureFilter.Linear:
+						return SamplerState.LinearWrap;
+					case TextureFilter.Anisotropic:
+						return SamplerState.AnisotropicWrap;
+					default:
+						throw new NotImplementedException($"TextureFilter {filter} is unimplemented");
+				}
+			case TextureAddressMode.Clamp:
+				switch (filter) {
+					case TextureFilter.Point:
+						return SamplerState.PointClamp;
+					case TextureFilter.Linear:
+						return SamplerState.LinearClamp;
+					case TextureFilter.Anisotropic:
+						return SamplerState.AnisotropicClamp;
+					default:
+						throw new NotImplementedException($"TextureFilter {filter} is unimplemented");
+				}
+			case TextureAddressMode.Border:
+				switch (filter) {
+					case TextureFilter.Point:
+						return DrawState.PointBorder.Value;
+					case TextureFilter.Linear:
+						return DrawState.LinearBorder.Value;
+					case TextureFilter.Anisotropic:
+						return DrawState.AnisotropicBorder.Value;
+					default:
+						throw new NotImplementedException($"TextureFilter {filter} is unimplemented");
+				}
+			case TextureAddressMode.Mirror:
+				switch (filter) {
+					case TextureFilter.Point:
+						return DrawState.PointMirror.Value;
+					case TextureFilter.Linear:
+						return DrawState.LinearMirror.Value;
+					case TextureFilter.Anisotropic:
+						return DrawState.AnisotropicMirror.Value;
+					default:
+						throw new NotImplementedException($"TextureFilter {filter} is unimplemented");
+				}
+			default:
+				throw new NotImplementedException($"TextureAddressMode {addressMode} is unimplemented");
+		}
+	}
+
 	private static SamplerState GetNewSamplerState(Texture texture, SamplerState reference) {
 		if (!Config.DrawState.SetLinear) {
 			return reference;
 		}
 
-		if (texture is InternalTexture2D managedTexture/* && managedTexture.Texture is not null*/ || (texture?.NormalizedName().StartsWith(@"LooseSprites\Lighting\") ?? false)) {
+		bool isInternalTexture = texture is InternalTexture2D internalTexture;
+		bool isLighting = !isInternalTexture && (texture?.NormalizedName().StartsWith(@"LooseSprites\Lighting\") ?? false);
+
+		if (isInternalTexture || isLighting) {
+			IScalerInfo? scalerInfo = null;
+			if (isInternalTexture && texture is ManagedTexture2D managedTexture) {
+				scalerInfo = managedTexture.SpriteInstance.ScalerInfo;
+			}
+
+			TextureFilter preferredFilter = scalerInfo?.Filter ?? TextureFilter.Linear;
+
 			if (reference.AddressU == TextureAddressMode.Wrap && reference.AddressV == TextureAddressMode.Wrap) {
-				return SamplerState.LinearWrap;
+				return GetSamplerState(
+					addressMode: TextureAddressMode.Wrap,
+					filter: preferredFilter
+				);
 			}
 			else if (reference.AddressU == TextureAddressMode.Border && reference.AddressV == TextureAddressMode.Border) {
-				return DrawState.LinearBorder.Value;
+				return GetSamplerState(
+					addressMode: TextureAddressMode.Border,
+					filter: preferredFilter
+				);
 			}
 			else if (reference.AddressU == TextureAddressMode.Mirror && reference.AddressV == TextureAddressMode.Mirror) {
-				return DrawState.LinearMirror.Value;
+				return GetSamplerState(
+					addressMode: TextureAddressMode.Mirror,
+					filter: preferredFilter
+				);
 			}
 			else {
-				return SamplerState.LinearClamp;
+				return GetSamplerState(
+					addressMode: TextureAddressMode.Clamp,
+					filter: preferredFilter
+				);
 			}
 		}
 

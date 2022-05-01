@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AtraShared.Schedules.DataModels;
 using Microsoft.Xna.Framework;
 
 namespace GingerIslandMainlandAdjustments.ScheduleManager.DataModels;
@@ -36,7 +37,7 @@ internal readonly struct PossibleIslandActivity
     /// <param name="animation_required">Whether or not the animation should be required.</param>
     /// <param name="animation">The animation to play. May be not required.</param>
     /// <param name="chanceMap">Function that maps specific NPCs to custom chances.</param>
-    public PossibleIslandActivity(
+    internal PossibleIslandActivity(
         [NotNull] List<Point> possiblepoints,
         [NotNull] string map = "IslandSouth",
         [NotNull] int direction = 2,

@@ -38,11 +38,10 @@ namespace CasualLife
         private static int sunSetTime;
         public static bool UpdateGameClock(GameTime time)
         {
-            if (DoLighting)
+            if (DoLighting)// && Game1.IsMasterGame)
             {
                 if (lightDay != Game1.dayOfMonth)
                 {
-                   // lightDay = Game1.dayOfMonth;
                     int multiplier = 300;
                     if (Game1.currentSeason == "spring")
                     {
@@ -122,12 +121,6 @@ namespace CasualLife
                     B = Game1.eveningColor.B;
                 }
                 Game1.outdoorLight = new Color(R, G, B, 254);
-
-                // if (Game1.bloom != null && Game1.bloom.Visible)
-                // {
-                //     Game1.bloom.Settings.BloomThreshold = Math.Min(1f, Game1.bloom.Settings.BloomThreshold + lightByTime);
-                // }
-
             }
             else
             {
@@ -147,10 +140,6 @@ namespace CasualLife
                     float transparency = Math.Min(0.93f, 0.3f + ((float)(adjustedTime - Game1.getStartingToGetDarkTime()) + (float)Game1.gameTimeInterval / 7000f * 16.6f) * 0.00225f);
                     Game1.outdoorLight = (Game1.IsRainingHere() ? Game1.ambientLight : Game1.eveningColor) * transparency;
                 }
-                // else if (Game1.bloom != null && Game1.timeOfDay >= Game1.getStartingToGetDarkTime() - 100 && Game1.bloom.Visible)
-                // {
-                //     Game1.bloom.Settings.BloomThreshold = Math.Min(1f, Game1.bloom.Settings.BloomThreshold + 0.0004f);
-                // }
                 else if (Game1.IsRainingHere())
                 {
                     Game1.outdoorLight = Game1.ambientLight * 0.3f;
@@ -193,6 +182,10 @@ namespace CasualLife
                 }
                 if (Game1.timeOfDay % 10 != 0)
                 {
+                    if (Game1.IsMasterGame && Game1.farmEvent == null)
+                    {
+                        Game1.netWorldState.Value.UpdateFromGame1();
+                    }
                     return;
                 }
                 if (Game1.timeOfDay % 100 >= 60)
@@ -204,6 +197,7 @@ namespace CasualLife
                 {
                     Utility.performLightningUpdate(Game1.timeOfDay);
                 }
+
                 if (Game1.timeOfDay == trulyDarkTime)
                 {
                     Game1.currentLocation.switchOutNightTiles();
@@ -219,6 +213,7 @@ namespace CasualLife
                         Game1.changeMusicTrack("none", false, Game1.MusicContext.Default);
                     }
                 }
+
                 if (Game1.getMusicTrackName(Game1.MusicContext.Default).StartsWith(Game1.currentSeason) && !Game1.getMusicTrackName(Game1.MusicContext.Default).Contains("ambient") && !Game1.eventUp && Game1.isDarkOut())
                 {
                     Game1.changeMusicTrack("none", true, Game1.MusicContext.Default);
@@ -229,107 +224,124 @@ namespace CasualLife
                 }
                 if (Game1.weatherIcon == 1)
                 {
-                    string festivalAssetName = string.Format("{0}{1}{2}{3}", PathUtilities.NormalizeAssetName("Data/Festivals"), PathUtilities.PreferredAssetSeparator, Game1.currentSeason, Game1.dayOfMonth);
-                    Dictionary<string, string> festival = Game1.temporaryContent.Load<Dictionary<string, string>>(festivalAssetName);
-                    int num = Convert.ToInt32(festival["conditions"].Split(PathUtilities.PreferredAssetSeparator)[1].Split(new char[] { ' ' })[0]);
+                    int num = Convert.ToInt32(Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[1].Split(' ')[0]);
                     if (Game1.whereIsTodaysFest == null)
                     {
-                        Game1.whereIsTodaysFest = festival["conditions"].Split(PathUtilities.PreferredAssetSeparator)[0];
+                        Game1.whereIsTodaysFest = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth)["conditions"].Split('/')[0];
                     }
                     if (Game1.timeOfDay == num)
                     {
-                        string str = festival["conditions"].Split(PathUtilities.PreferredAssetSeparator)[0];
-                        if (str == "Forest")
+                        Dictionary<string, string> dictionary = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth);
+                        string text = dictionary["conditions"].Split('/')[0];
+                        if (dictionary.ContainsKey("locationDisplayName"))
                         {
-                            str = (Game1.currentSeason.Equals("winter") ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2634") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2635"));
+                            text = dictionary["locationDisplayName"];
                         }
-                        else if (str == "Town")
+                        else
                         {
-                            str = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2637");
+                            switch (text)
+                            {
+                                case "Forest":
+                                    text = (Game1.currentSeason.Equals("winter") ? Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2634") : Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2635"));
+                                    break;
+                                case "Town":
+                                    text = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2637");
+                                    break;
+                                case "Beach":
+                                    text = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2639");
+                                    break;
+                            }
                         }
-                        else if (str == "Beach")
-                        {
-                            str = Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2639");
-                        }
-                        Game1.showGlobalMessage(string.Concat(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", festival["name"]), str));
+
+                        Game1.showGlobalMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2640", Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth)["name"]) + text);
                     }
                 }
                 Game1.player.performTenMinuteUpdate();
-                int num1 = Game1.timeOfDay;
-                if (num1 <= 2400)
+                switch (Game1.timeOfDay)
                 {
-                    if (num1 == 1200)
-                    {
-                        if (Game1.currentLocation.IsOutdoors && !Game1.IsRainingHere() && (Game1.currentSong == null || Game1.currentSong.IsStopped || Game1.currentSong.Name.ToLower().Contains("ambient")))
+                    case 1200:
+                        if ((bool)Game1.currentLocation.isOutdoors && !Game1.IsRainingHere() && (Game1.currentSong == null || Game1.currentSong.IsStopped || Game1.currentSong.Name.ToLower().Contains("ambient")))
                         {
                             Game1.playMorningSong();
                         }
-                    }
-                    else if (num1 != 2000)
-                    {
-                        if (num1 == 2400)
-                        {
-                            Game1.dayTimeMoneyBox.timeShakeTimer = 2000;
-                            Game1.player.doEmote(24);
-                            Game1.showGlobalMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2652"));
-                        }
-                    }
-                    else if (!Game1.IsRainingHere() && Game1.currentLocation is Town)
-                    {
-                        Game1.changeMusicTrack("none", false, Game1.MusicContext.Default);
-                    }
-                }
-                else if (num1 == 2500)
-                {
-                    Game1.dayTimeMoneyBox.timeShakeTimer = 2000;
-                    Game1.player.doEmote(24);
-                }
-                else if (num1 == 2600)
-				{
-					Game1.dayTimeMoneyBox.timeShakeTimer = 2000;
-					if (Game1.player.mount != null)
-					{
-                        Game1.player.mount.dismount();
-					}
-					if (Game1.player.IsSitting())
-					{
-                        Game1.player.StopSitting(animate: false);
-					}
-					FishingRod fishingRod;
-					if (Game1.player.UsingTool && (Game1.player.CurrentTool == null || (fishingRod = (Game1.player.CurrentTool as FishingRod)) == null || (!fishingRod.isReeling && !fishingRod.pullingOutOfWater)))
-					{
-                        Game1.player.completelyStopAnimatingOrDoingAction();
-					}
-				}
-                else if (num1 == 2800)
-                {
-                    if (Game1.activeClickableMenu != null)
-                    {
-                        Game1.activeClickableMenu.emergencyShutDown();
-                        Game1.exitActiveMenu();
-                    }
-                    Game1.player.startToPassOut();
-                    if (Game1.player.mount != null)
-                    {
-                        Game1.player.mount.dismount();
-                    }
-                }
-				foreach (GameLocation location in Game1.locations)
-				{
-					GameLocation gameLocation = location;
-					if (gameLocation.NameOrUniqueName == Game1.currentLocation.NameOrUniqueName)
-					{
-						gameLocation = Game1.currentLocation;
-					}
-					gameLocation.performTenMinuteUpdate(Game1.timeOfDay);
-					if (gameLocation is Farm)
-					{
-						((Farm)gameLocation).timeUpdate(10);
-					}
-				}
-                MineShaft.UpdateMines10Minutes(Game1.timeOfDay);
-				VolcanoDungeon.UpdateLevels10Minutes(Game1.timeOfDay);
 
+                        break;
+                    case 2000:
+                        if (!Game1.IsRainingHere() && Game1.currentLocation is Town)
+                        {
+                            Game1.changeMusicTrack("none");
+                        }
+
+                        break;
+                    case 2400:
+                        Game1.dayTimeMoneyBox.timeShakeTimer = 2000;
+                        Game1.player.doEmote(24);
+                        Game1.showGlobalMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Game1.cs.2652"));
+                        break;
+                    case 2500:
+                        Game1.dayTimeMoneyBox.timeShakeTimer = 2000;
+                        Game1.player.doEmote(24);
+                        break;
+                    case 2600:
+                        Game1.dayTimeMoneyBox.timeShakeTimer = 2000;
+                        if (Game1.player.mount != null)
+                        {
+                            Game1.player.mount.dismount();
+                        }
+
+                        if (Game1.player.IsSitting())
+                        {
+                            Game1.player.StopSitting(animate: false);
+                        }
+
+                        if (Game1.player.UsingTool)
+                        {
+                            if (Game1.player.CurrentTool != null)
+                            {
+                                FishingRod fishingRod = Game1.player.CurrentTool as FishingRod;
+                                if (fishingRod != null && (fishingRod.isReeling || fishingRod.pullingOutOfWater))
+                                {
+                                    break;
+                                }
+                            }
+
+                            Game1.player.completelyStopAnimatingOrDoingAction();
+                        }
+
+                        break;
+                    case 2800:
+                        if (Game1.activeClickableMenu != null)
+                        {
+                            Game1.activeClickableMenu.emergencyShutDown();
+                            Game1.exitActiveMenu();
+                        }
+
+                        Game1.player.startToPassOut();
+                        if (Game1.player.mount != null)
+                        {
+                            Game1.player.mount.dismount();
+                        }
+
+                        break;
+                }
+
+                foreach (GameLocation location in Game1.locations)
+                {
+                    GameLocation gameLocation = location;
+                    if (gameLocation.NameOrUniqueName == Game1.currentLocation.NameOrUniqueName)
+                    {
+                        gameLocation = Game1.currentLocation;
+                    }
+
+                    gameLocation.performTenMinuteUpdate(Game1.timeOfDay);
+                    if (gameLocation is Farm)
+                    {
+                        ((Farm)gameLocation).timeUpdate(10);
+                    }
+                }
+
+                MineShaft.UpdateMines10Minutes(Game1.timeOfDay);
+                VolcanoDungeon.UpdateLevels10Minutes(Game1.timeOfDay);
                 if (Game1.IsMasterGame && Game1.farmEvent == null)
                 {
                     Game1.netWorldState.Value.UpdateFromGame1();

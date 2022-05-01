@@ -14,56 +14,50 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Objects;
 using xTile.Dimensions;
+// ReSharper disable InconsistentNaming
 
 namespace SmartBuilding.HarmonyPatches
 {
     public static class Patches
     {
-        private static bool _currentlyInBuildMode;
-        private static bool _currentlyDrawing;
-        private static bool _currentlyErasing;
-        private static bool _currentlyPlacing;
+        private static bool currentlyInBuildMode;
+        private static bool currentlyDrawing;
+        private static bool currentlyErasing;
+        private static bool currentlyPlacing;
 
         public static bool CurrentlyInBuildMode
         {
-            get { return _currentlyInBuildMode; }
-            set { _currentlyInBuildMode = value; }
+            get { return currentlyInBuildMode; }
+            set { currentlyInBuildMode = value; }
         }
 
         public static bool CurrentlyDrawing
         {
-            get { return _currentlyDrawing; }
-            set { _currentlyDrawing = value; }
+            get { return currentlyDrawing; }
+            set { currentlyDrawing = value; }
         }
 
         public static bool CurrentlyErasing
         {
-            get { return _currentlyErasing; }
-            set { _currentlyErasing = value; }
+            get { return currentlyErasing; }
+            set { currentlyErasing = value; }
         }
 
         public static bool CurrentlyPlacing
         {
-            get { return _currentlyPlacing; }
-            set { _currentlyPlacing = value; }
+            get { return currentlyPlacing; }
+            set { currentlyPlacing = value; }
         }
 
         private static bool ShouldCancel()
         {
-            if (_currentlyInBuildMode)
+            if (currentlyInBuildMode)
             {
-                if (_currentlyErasing || _currentlyDrawing || _currentlyPlacing)
+                // Yes, this could be easily simplified, but I prefer the readability.
+                if (currentlyErasing || currentlyDrawing || currentlyPlacing)
                     return false;
                 else
                     return true;
-
-                // if (_currentlyDrawing) return false;
-                // if (_currentlyErasing) return false;
-                // if (_currentlyPlacing) return false;
-                //
-                // if (!_currentlyDrawing) return true;
-                // if (!_currentlyErasing) return true;
-                // if (!_currentlyPlacing) return true;
             }
 
             return true;

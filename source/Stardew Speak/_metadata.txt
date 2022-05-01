@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/evfredericksen/StardewSpeak
+   Git: https://github.com/evfredericksen/StardewSpeak.git
+
+mods:
+   Stardew Speak
+
+latest commit:
+   commit 6d22ed1f251359e947ca02a2b66bf116949f8d3c
+   Author: Evan <evfredericksen@gmail.com>
+   Date:   Thu Apr 7 18:15:47 2022 -0400
+   
+       options menu wip
+   

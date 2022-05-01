@@ -86,6 +86,8 @@ namespace Leclair.Stardew.Almanac {
 		internal Integrations.JsonAssets.JAIntegration intJA;
 		internal Integrations.MoreGiantCrops.MGCIntegration intMGC;
 
+		private bool ShouldCloseGMCM = false;
+
 		public override void Entry(IModHelper helper) {
 			base.Entry(helper);
 			SpriteHelper.SetHelper(helper);
@@ -167,7 +169,7 @@ namespace Leclair.Stardew.Almanac {
 			Dictionary<string, JObject> content = null;
 
 			try {
-				content = Helper.Content.Load<Dictionary<string, JObject>>(NPCMapLocationPath, ContentSource.GameContent);
+				content = Helper.GameContent.Load<Dictionary<string, JObject>>(NPCMapLocationPath);
 
 			} catch (Exception) {
 				/* Nothing~ */
@@ -254,7 +256,7 @@ namespace Leclair.Stardew.Almanac {
 		[Subscriber]
 		[EventPriority(EventPriority.High)]
 		private void OnDayStarted(object sender, DayStartedEventArgs e) {
-			int seed = GetBaseWorldSeed();
+			ulong seed = GetBaseWorldSeed();
 
 			if (Config.EnableDeterministicLuck && Game1.IsMasterGame) {
 				Game1.player.team.sharedDailyLuck.Value = Luck.GetLuckForDate(seed, Game1.Date);
@@ -300,6 +302,26 @@ namespace Leclair.Stardew.Almanac {
 			RegisterConfig();
 
 			// Commands
+			Helper.ConsoleCommands.Add("gsq", "Run a GameStateQuery", (name, args) => {
+				int seed = -1;
+				try {
+					seed = int.Parse(args[0]);
+				} catch { }
+
+				string query;
+				if (seed == -1)
+					query = string.Join(' ', args);
+				else
+					query = string.Join(' ', args[1..]);
+
+				Random rnd = seed == -1 ? Game1.random : new Random(seed);
+
+				Log($" Query: {query}");
+				if (seed != -1)
+					Log($"  Seed: {seed}");
+				Log($"Result: {GameStateQuery.CheckConditions(query, rnd: rnd, item: Game1.player.CurrentItem, monitor: Monitor, trace: true)}");
+			});
+
 			Helper.ConsoleCommands.Add("al_update", "Invalidate cached data.", (name, args) => {
 				Invalidate();
 				if (Game1.activeClickableMenu is Menus.AlmanacMenu almanac)
@@ -326,7 +348,7 @@ namespace Leclair.Stardew.Almanac {
 			});
 
 			Helper.ConsoleCommands.Add("al_forecast", "Get the forecast for the loaded save.", (name, args) => {
-				int seed = GetBaseWorldSeed();
+				ulong seed = GetBaseWorldSeed();
 				WorldDate date = new(Game1.Date);
 				for (int i = 0; i < 4 * 28; i++) {
 					int weather = Weather.GetWeatherForDate(seed, date, GameLocation.LocationContext.Default);
@@ -347,6 +369,30 @@ namespace Leclair.Stardew.Almanac {
 			if (CurrentOverlay.Value != null) {
 				CurrentOverlay.Value.Dispose();
 				CurrentOverlay.Value = null;
+			}
+
+			// Did we close the Almanac menu after opening it?
+			if (ShouldCloseGMCM) {
+				if (menu != null) {
+					string name = menu.GetType().FullName;
+
+					// If we're on the specific page for a mod, then
+					// everything is fine and we can continue.
+					if (name.Equals("GenericModConfigMenu.Framework.SpecificModConfigMenu"))
+						return;
+
+					// If we're on the all mods menu, then we don't
+					// want this. YEET.
+					if (name.Equals("GenericModConfigMenu.Framework.ModConfigMenu")) {
+						CommonHelper.YeetMenu(menu);
+						Game1.activeClickableMenu = null;
+						CurrentMenu.Value = null;
+						ShouldCloseGMCM = false;
+						return;
+					}
+				}
+
+				ShouldCloseGMCM = false;
 			}
 
 			// TODO: Add our pages to shop menus, if we have pages that are
@@ -405,8 +451,10 @@ namespace Leclair.Stardew.Almanac {
 		}
 
 		public void OpenGMCM() {
-			if (HasGMCM())
+			if (HasGMCM()) {
+				ShouldCloseGMCM = true;
 				GMCMIntegration.OpenMenu();
+			}
 		}
 
 		private void RegisterConfig() {
@@ -545,6 +593,24 @@ namespace Leclair.Stardew.Almanac {
 					(c, v) => c.ShowWeather = v
 				)
 
+				.AddLabel("") // Spacer
+
+				.Add(
+					I18n.Settings_ForecastLength,
+					I18n.Settings_ForecastLength_Desc,
+					c => c.WeatherForecastLength,
+					(c, v) => c.WeatherForecastLength = v,
+					min: -1,
+					max: WorldDate.MonthsPerYear * ModEntry.DaysPerMonth,
+					format: val => {
+						if (val == -1)
+							return I18n.Settings_Unlimited();
+						return I18n.Settings_Days(val);
+					}
+				)
+
+				.AddLabel("") // Spacer
+
 				.SetTitleOnly(true)
 				.Add(
 					I18n.Settings_Weather_Deterministic,
@@ -616,6 +682,24 @@ namespace Leclair.Stardew.Almanac {
 					c => c.ShowExactLuck,
 					(c, v) => c.ShowExactLuck = v
 				)
+
+				.AddLabel("") // Spacer
+
+				.Add(
+					I18n.Settings_ForecastLength,
+					I18n.Settings_ForecastLength_Desc,
+					c => c.LuckForecastLength,
+					(c, v) => c.LuckForecastLength = v,
+					min: -1,
+					max: WorldDate.MonthsPerYear * ModEntry.DaysPerMonth,
+					format: val => {
+						if (val == -1)
+							return I18n.Settings_Unlimited();
+						return I18n.Settings_Days(val);
+					}
+				)
+
+				.AddLabel("") // Spacer
 
 				.SetTitleOnly(true)
 				.Add(
@@ -744,9 +828,9 @@ namespace Leclair.Stardew.Almanac {
 
 		#endregion
 
-		public int GetBaseWorldSeed() {
-			// TODO: Check configuration?
-			return (int) Game1.uniqueIDForThisGame;
+		public ulong GetBaseWorldSeed() {
+			// TODO: Save custom seeds on a per-save basis?
+			return Config.CustomSeed ?? Game1.uniqueIDForThisGame;
 		}
 
 		public bool DoesTranslationExist(string key) {

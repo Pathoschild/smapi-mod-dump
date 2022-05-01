@@ -15,6 +15,19 @@
   "Price": 20,
   "Edibility": 15,
   "EdibleIsDrink": true,
+  "EdibleBuffs": {
+    "Duration": 1000,
+    "Luck": 0,
+    "Speed": 2,
+    "MaxStamina": 0,
+    "Farming": 0,
+    "Fishing": 0,
+    "Mining": 0,
+    "Foraging": 0,
+    "MagnetRadius": 0,
+    "Defense": 0,
+    "Attack": 0
+  },
   "IsColored": false,
   "GiftTastes":{
     "Love": ["Caroline", "Olga"],
@@ -26,11 +39,11 @@
         "ResultCount": 1,
         "Ingredients": [
         {
-            "Object": 433,
-            "Count": 2,
+            "Object": 395,
+            "Count": 1,
         },
         {
-            "Object": 815,
+            "Object": 614,
             "Count": 1,
         },
         ],

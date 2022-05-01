@@ -14,6 +14,10 @@ using StardewValley;
 using SObject = StardewValley.Object;
 
 
+/// <summary>
+/// TODO: Machine animation doesn't need PFM in 1.6
+/// </summary>
+
 namespace QualityScrubber
 {
 	/// <summary>The mod entry point.</summary>
@@ -21,9 +25,9 @@ namespace QualityScrubber
 	{
 		private const string qualityScrubberType = "Quality Scrubber";
 
-		private ModConfig config;
+		private ModConfig? config;
 
-		private QualityScrubberController controller;
+		private QualityScrubberController? controller;
 
 
 		/*********
@@ -43,7 +47,7 @@ namespace QualityScrubber
 		
 		public override object GetApi()
 		{
-			return new QualityScrubberApi(controller);
+			return new QualityScrubberApi(controller!);
 		}
 
 
@@ -53,7 +57,7 @@ namespace QualityScrubber
 		/// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.</summary>
 		/// <param name="sender">The event sender.</param>
 		/// <param name="e">The event data.</param>
-		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+		private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
 		{
 			// ignore if player hasn't loaded a save yet
 			if (!Context.IsPlayerFree)
@@ -68,7 +72,7 @@ namespace QualityScrubber
 				if (machine != null && machine.Name == qualityScrubberType)
 				{
 					// See if the machine accepts the item, suppress the input to prevent the eating menu from opening
-					if (controller.CanProcess(Game1.player.ActiveObject, machine))
+					if (controller!.CanProcess(Game1.player.ActiveObject, machine))
 					{
 						controller.StartProcessing(Game1.player.ActiveObject, machine, Game1.player);
 						Helper.Input.Suppress(e.Button);

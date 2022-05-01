@@ -1,0 +1,22 @@
+{
+  "ShopsEnabled": {},
+  "DayOfWeek": 6,
+  "OpeningTime": 8,
+  "ClosingTime": 18,
+  "ShopLayout": 6,
+  "OpenInRain": false,
+  "OpenInSnow": false,
+  "GMMCompat": true,
+  "RestockItemsPerHour": 3,
+  "StallVisitChance": 0.9,
+  "ReceiveMessages": true,
+  "PeekIntoChests": false,
+  "RuinTheFurniture": false,
+  "VerboseLogging": false,
+  "NPCVisitors": true,
+  "DebugKeybinds": false,
+  "OpenConfigKeybind": "V",
+  "WarpKeybind": "Z",
+  "ReloadKeybind": "R",
+  "StatusKeybind": "Q"
+}

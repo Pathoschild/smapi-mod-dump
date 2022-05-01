@@ -12,7 +12,7 @@
     "Name": "Kent's Panties",
     "Description": "They seem well-travelled.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 17,
     "IsColored": false,
     "GiftTastes": {

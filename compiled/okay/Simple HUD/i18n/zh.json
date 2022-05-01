@@ -1,0 +1,10 @@
+﻿{
+  "setting.enable": "启用",
+  "setting.disable": "禁用",
+  "setting.title": "标题",
+  "setting.title.description": "设置HUD的标题",
+  "setting.textColor": "文本颜色",
+  "input.textField.description": "输入",
+  "input.button.done.title": "完成",
+  "input.button.cancel.title": "取消"
+}

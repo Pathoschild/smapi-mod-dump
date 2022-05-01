@@ -5,11 +5,12 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <EnableHarmony>True</EnableHarmony>
-    <DefineConstants>HARMONY; TRANSPILERS; COLLECTIONS</DefineConstants>
+    <DefineConstants>HARMONY; TRANSPILERS; COLLECTIONS; UNSAFE</DefineConstants>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   
   <ItemGroup>

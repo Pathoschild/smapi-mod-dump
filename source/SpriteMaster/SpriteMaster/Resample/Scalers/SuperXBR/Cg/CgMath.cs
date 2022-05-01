@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using System;
 
 namespace SpriteMaster.Resample.Scalers.SuperXBR.Cg;
@@ -132,3 +133,4 @@ static class CgMath {
 		return alphaScalar * yufDiff + alphaDiff;
 	}
 }
+#endif

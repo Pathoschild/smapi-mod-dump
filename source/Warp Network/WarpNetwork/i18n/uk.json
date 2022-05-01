@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/WarpNetwork
+**
+*************************************************/
+
+{
+  "ui-fail": "Нічого не відбувається...",
+  "ui-label": "Виберіть пункт призначення",
+  "ui-cancel": "Скасувати",
+  "cfg-warpsenabled.label": "Стандартні телепорації - увімк",
+  "cfg-warpsenabled.desc": "Якщо стандартні місця телепортації увімкнено.",
+  "cfg-farmenabled.label": "Фермова тедепортація - увімк",
+  "cfg-farmenabled.desc": "Якщо місце телепортації на фермі увімкнуто.",
+  "cfg-accessdisabled.label": "Доступ до вимкнених",
+  "cfg-accessdisabled.desc": "Доступ для мережі до вимкнених пунктів призначення.",
+  "cfg-accesswand.label": "Доступ від посоху повернення.",
+  "cfg-accesswand.desc": "Доступ для мережі, використовуючи посох повернення.",
+  "cfg-obeliskpatch.label": "Залатати стандартні обеліски телепортації.",
+  "cfg-obeliskpatch.desc": "Нехтування місцями телепортації стандартних обелісків для роботи з користувацькими пунктами призначення.",
+  "cfg-menu.label": "Увімкнути меню моду Warp Network",
+  "cfg-menu.desc": "Увімкнення меню моду Warp Network. Якщо воно вимкнено, жоден з обелісків не матиме доступ до телепортаційної мережі.",
+  "dest-farm": "Ферма",
+  "dest-mountain": "Гори",
+  "dest-beach": "Пляж",
+  "dest-island": "Імбирний острів",
+  "dest-desert": "Пустеля"
+}

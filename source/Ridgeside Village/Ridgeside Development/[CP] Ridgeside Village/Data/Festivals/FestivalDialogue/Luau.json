@@ -10,19 +10,19 @@
 
 {
 "Changes": [
-	
+
 //------------------------
-// FESTIVAL DIALOGUE   
+// FESTIVAL DIALOGUE
 //------------------------
 
 	//Luau----------------------
-	
+
 		{
 			"LogName": "Luau",
 			"Action": "EditData",
 			"Target": "Data/Festivals/summer11",
 			"Entries": {
-			
+
 			//Non-Dateables
 				"Aguar": "{{i18n:Festivals.Luau.Aguar}}",
 				"Bert": "{{i18n:Festivals.Luau.Bert}}",
@@ -55,6 +55,7 @@
 				"Malaya": "{{i18n:Festivals.Luau.Malaya}}",
 				"Kimpoi": "{{i18n:Festivals.Luau.Kimpoi}}",
 				"Naomi": "{{i18n:Festivals.Luau.Naomi}}",
+				"Torts": "{{i18n:Festivals.Luau.Torts}}",
 
 			//Dateables
 				"Alissa": "{{i18n:Festivals.Luau.Alissa}}",

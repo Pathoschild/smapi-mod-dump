@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Pathoschild.Stardew.Common.Items.ItemData;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Data

@@ -9,15 +9,16 @@
 *************************************************/
 
 {
-    "Name": "Personal Effects for JsonAssets",
-    "Author": "ceruleandeep",
-    "Description": "A port of bwdy's Personal Effects for JsonAssets.",
-    "Version": "1.0.3",
-    "MinimumApiVersion": "3.7.0",
-    "UniqueID": "ceruleandeep.ja.personaleffects",
-    "ContentPackFor":
-    {
-        "UniqueID": "spacechase0.JsonAssets"
-    },
-    "UpdateKeys": ["Nexus:???"],
+  "Name": "Personal Effects for JsonAssets",
+  "Author": "ceruleandeep",
+  "Description": "A port of bwdy's Personal Effects for JsonAssets.",
+  "Version": "1.6.4",
+  "MinimumApiVersion": "3.7.0",
+  "UniqueID": "ceruleandeep.ja.personaleffects",
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  },
+  "UpdateKeys": [
+    "Nexus:???"
+  ]
 }

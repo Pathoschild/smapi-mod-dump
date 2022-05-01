@@ -1,0 +1,10 @@
+﻿{
+  "Name": "TV Announcements",
+  "Author": "Zyin",
+  "Version": "1.1.0",
+  "Description": "Shows TV messages when the day starts.",
+  "UniqueID": "Zyin.TVAnnouncements",
+  "EntryDll": "TVAnnouncements.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:3649" ]
+}

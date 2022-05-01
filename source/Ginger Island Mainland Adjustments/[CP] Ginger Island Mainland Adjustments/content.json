@@ -9,7 +9,7 @@
 *************************************************/
 
 {
-	"Format": "1.24.0",
+	"Format": "1.25.0",
 	"Changes":[
     {
         "Action": "Include",
@@ -39,7 +39,7 @@
         "Target": "Mods/atravita_Ginger_Island_Adjustments_groups",
         "Entries": {
             "Bookworms": "Penny, Maru",
-            "SistersAndSandy": "Emily, Haley, Sandy" // Groups can only go when all members can go, so thisgroup will only be possible if Sandy is allowed.
+            "SistersAndSandy": "Emily, Haley, Sandy" // Groups can only go when all members can go, so this group will only be possible if Sandy is allowed.
         }
     },
     {

@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 371a2dcb994674763641d8e33baaf7b7aa781114
+   commit f61bb74bf6ffec580bd1ef62b9500292443d3684
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Mon Feb 28 23:33:37 2022 +0100
+   Date:   Thu Apr 7 11:38:26 2022 +0200
    
-       When writing the defautl effects to json, serialize enum values as string (name of the value instead of the ordinal)
+       IncreaseSpeed effect now uses a Buff instead of changing the player's speed value directly
    

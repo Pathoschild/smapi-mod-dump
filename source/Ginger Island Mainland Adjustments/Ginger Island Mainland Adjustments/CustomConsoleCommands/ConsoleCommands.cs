@@ -9,7 +9,7 @@
 *************************************************/
 
 using System.Text;
-using GingerIslandMainlandAdjustments.ScheduleManager;
+using AtraShared.Utils.Extensions;
 using GingerIslandMainlandAdjustments.Utils;
 using StardewModdingAPI.Utilities;
 
@@ -57,14 +57,53 @@ internal static class ConsoleCommands
             name: PrePendCommand + ".get_locations_list",
             documentation: I18n.GetLocations_Documentation(),
             callback: ConsoleGetLocations);
+#if !DEBUG
+        if (Globals.Config.DebugMode)
+#endif
+        {
+            commandHelper.Add(
+                name: PrePendCommand + ".queue_npc",
+                documentation: "Queues an NPC for visit to Ginger Island on next valid day",
+                callback: QueueNPC);
+        }
     }
 
     /// <summary>
     /// Clear the island schedules at the end of the day.
     /// </summary>
-    internal static void ClearCache()
+    internal static void ClearCache() => IslandSchedules.Clear();
+
+    /// <summary>Queues NPCs up for a visit to Ginger Island.</summary>
+    /// <remarks>Note that this will override exclusions! It'll also only be available if the DEBUG config is set.</remarks>
+    private static void QueueNPC(string command, string[] args)
     {
-        IslandSchedules.Clear();
+        if (!Context.IsWorldReady || !Context.IsMainPlayer || Globals.SaveDataModel is null)
+        {
+            Globals.ModMonitor.Log("NPCs can only be queued by the main player, and from within a save.", LogLevel.Info);
+            return;
+        }
+        List<string> npcsFound = new();
+        List<string> npcsNotFound = new();
+        foreach (string npcname in args)
+        {
+            if (Utility.fuzzyCharacterSearch(npcname, must_be_villager: true) is not null)
+            {
+                Globals.SaveDataModel.NPCsForTomorrow.Add(npcname);
+                npcsFound.Add(npcname);
+            }
+            else
+            {
+                npcsNotFound.Add(npcname);
+            }
+        }
+        if (npcsFound.Count > 0)
+        {
+            Globals.ModMonitor.Log($"Queued for Ginger Island: {string.Join(", ", npcsFound)}", LogLevel.Info);
+        }
+        if (npcsNotFound.Count > 0)
+        {
+            Globals.ModMonitor.Log($"Not found for queuing: {string.Join(", ", npcsNotFound)}", LogLevel.Warn);
+        }
     }
 
     /// <summary>
@@ -83,7 +122,7 @@ internal static class ConsoleCommands
         if (!npc.followSchedule)
         {
             Globals.ModMonitor.Log('\t' + I18n.DisplaySchedule_NoSchedule(npc.Name), level);
-            if (npc.Schedule == null || npc.Schedule.Keys.Count == 0)
+            if (npc.Schedule is null || npc.Schedule.Count == 0)
             { // For some reason, sometimes even when followSchedule is not set, the NPC goes through their schedule anyways?
                 return;
             }
@@ -99,8 +138,30 @@ internal static class ConsoleCommands
         }
         else
         {
-            ScheduleUtilities.TryFindGOTOschedule(npc, SDate.Now(), npc.getMasterScheduleEntry(npc.dayScheduleName.Value), out string schedulestring);
-            Globals.ModMonitor.Log($"\t{npc.dayScheduleName.Value}\n\t\t{schedulestring}", level);
+            if (npc.dayScheduleName?.Value is null)
+            {
+                Globals.ModMonitor.Log($"\t{npc.Name} lacks a npc.dayScheduleName.Value yet claims to be following a schedule today.", LogLevel.Error);
+            }
+            else if (npc.hasMasterScheduleEntry(npc.dayScheduleName.Value))
+            {
+                if (Globals.UtilitySchedulingFunctions.TryFindGOTOschedule(npc, SDate.Now(), npc.getMasterScheduleEntry(npc.dayScheduleName.Value), out string schedulestring))
+                {
+                    Globals.ModMonitor.Log($"\t{npc.dayScheduleName.Value}\n\t\t{schedulestring}", level);
+                }
+                else
+                {
+                    Globals.ModMonitor.Log($"Schedule lookup for {npc.Name} failed!", LogLevel.Error);
+                }
+            }
+            else
+            {
+                Globals.ModMonitor.Log($"\t{npc.Name} claims to be using {npc.dayScheduleName.Value} but that was not found!", LogLevel.Error);
+            }
+        }
+        if (npc.Schedule is null)
+        {
+            Globals.ModMonitor.Log($"Something very odd has happened to the schedule of {npc.Name} - it appears to have been nulled since generation", LogLevel.Error);
+            return;
         }
         List<int> keys = new(npc.Schedule.Keys);
         keys.Sort();
@@ -108,6 +169,11 @@ internal static class ConsoleCommands
         foreach (int key in keys)
         {
             SchedulePathDescription schedulePathDescription = npc.Schedule[key];
+            if (schedulePathDescription is null)
+            {
+                Globals.ModMonitor.Log("Found a null schedule description?", LogLevel.Error);
+                continue;
+            }
             int expectedRouteTime = schedulePathDescription.GetExpectedRouteTime();
             sb.Append('\t').Append(key).Append(": ");
             sb.AppendJoin(", ", schedulePathDescription.route).AppendLine();
@@ -126,7 +192,8 @@ internal static class ConsoleCommands
     /// </summary>
     /// <param name="command">Name of command.</param>
     /// <param name="args">Arguments, if any.</param>
-    private static void ConsoleGetIslanders(string command, string[] args) => Globals.ModMonitor.Log($"{I18n.Islanders()}: {string.Join(", ", Islanders.Get())}", LogLevel.Debug);
+    private static void ConsoleGetIslanders(string command, string[] args)
+        => Globals.ModMonitor.Log($"{I18n.Islanders()}: {string.Join(", ", Islanders.Get())}", LogLevel.Debug);
 
     /// <summary>
     /// Yields the schedule for one or more characters.
@@ -137,8 +204,7 @@ internal static class ConsoleCommands
     {
         foreach (string name in args)
         {
-            NPC? npc = Game1.getCharacterFromName(name, true);
-            if (npc is not null)
+            if (Utility.fuzzyCharacterSearch(name, must_be_villager: true) is NPC npc)
             {
                 DisplaySchedule(npc, LogLevel.Debug);
             }
@@ -155,32 +221,22 @@ internal static class ConsoleCommands
         {
             return;
         }
-        List<List<string>>? locations = Globals.ReflectionHelper.GetField<List<List<string>>>(typeof(NPC), "routesFromLocationToLocation").GetValue();
-        if (locations is null)
+        if (Globals.ReflectionHelper.GetField<List<List<string>>>(typeof(NPC), "routesFromLocationToLocation").GetValue() is not List<List<string>> locations)
         {
             Globals.ModMonitor.Log(I18n.GetLocations_NoneFound(), LogLevel.Info);
             return;
         }
-        if (args.Length == 0)
+        HashSet<string> locations_to_find = new(args, StringComparer.OrdinalIgnoreCase);
+        if (args.Length > 0)
         {
-            foreach (List<string>? locList in locations)
-            {
-                if (locList is not null)
-                {
-                    Globals.ModMonitor.Log(string.Join(", ", locList), LogLevel.Info);
-                }
-            }
-        }
-        else
-        {
-            HashSet<string> locations_to_find = new(args);
             Globals.ModMonitor.Log($"Looking for {string.Join(", ", args)} in routesFromLocationToLocation", LogLevel.Info);
-            foreach (List<string>? loclist in locations)
+        }
+        Func<List<string>, bool> filter = args.Length == 0 ? (_) => true : (List<string> loclist) => locations_to_find.Intersect(loclist, StringComparer.OrdinalIgnoreCase).Any();
+        foreach (List<string>? loclist in locations)
+        {
+            if (loclist is not null && filter(loclist))
             {
-                if (loclist is not null && locations_to_find.Intersect(loclist).Any())
-                {
-                    Globals.ModMonitor.Log(string.Join(", ", loclist), LogLevel.Info);
-                }
+                Globals.ModMonitor.Log(string.Join(", ", loclist), LogLevel.Info);
             }
         }
     }

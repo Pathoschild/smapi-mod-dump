@@ -11,8 +11,11 @@
 using System;
 using System.Linq;
 
-using Leclair.Stardew.Common;
+#if IS_BETTER_CRAFTING
 using Leclair.Stardew.Common.Crafting;
+#else
+using Leclair.Stardew.BetterCrafting;
+#endif
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,98 +24,140 @@ using SpaceCore;
 
 using StardewValley;
 
-using Leclair.Stardew.BetterCrafting.Models;
+namespace Leclair.Stardew.BCSpaceCore;
 
+public class SpaceCoreRecipe : IRecipe {
 
-namespace Leclair.Stardew.BCSpaceCore {
-	class SpaceCoreRecipe : IRecipe {
+	public readonly CustomCraftingRecipe Recipe;
+	public readonly bool Cooking;
 
-		public readonly CustomCraftingRecipe Recipe;
+	public SpaceCoreRecipe(string name, CustomCraftingRecipe recipe, bool cooking, ModEntry mod) {
+		Recipe = recipe;
+		Cooking = cooking;
+		Name = name;
 
-		public SpaceCoreRecipe(string name, CustomCraftingRecipe recipe, ModEntry mod) {
-			Recipe = recipe;
-			Name = name;
+		Ingredients = recipe.Ingredients.Select<CustomCraftingRecipe.IngredientMatcher, IIngredient>(val => {
+			Type type = val.GetType();
+			string cls = type.FullName ?? type.Name;
 
-			Ingredients = recipe.Ingredients.Select<CustomCraftingRecipe.IngredientMatcher, IIngredient>(val => {
-				string cls = val.GetType().FullName;
+			// Check for known classes that implement ingredient matchers that
+			// we can use our own logic for.
+			if (cls.Equals("SpaceCore.CustomCraftingRecipe+ObjectIngredientMatcher")) {
+				int? index = mod.Helper.Reflection.GetField<int>(val, "objectIndex", false)?.GetValue();
+				if (index.HasValue)
+					return mod.API!.CreateBaseIngredient(index.Value, val.Quantity);
 
-				if (cls.Equals("SpaceCore.CustomCraftingRecipe+ObjectIngredientMatcher")) {
-					int? index = mod.Helper.Reflection.GetField<int>(val, "objectIndex", false)?.GetValue();
-					if (index.HasValue)
-						return new BaseIngredient(index.Value, val.Quantity);
+			} else if (cls.Equals("DynamicGameAssets.DGACustomCraftingRecipe+DGAIngredientMatcher")) {
+				var matcher = mod.Helper.Reflection.GetMethod(val, "ItemMatches", false);
+				if (matcher != null) {
+					bool Match(Item item) {
+						try {
+							return matcher.Invoke<bool>(item);
+						} catch {
+							return false;
+						}
+					}
 
-				} else if (cls.Equals("DynamicGameAssets.DGACustomCraftingRecipe+DGAIngredientMatcher")) {
-					var matcher = mod.Helper.Reflection.GetMethod(val, "ItemMatches", false);
-					if (matcher != null)
-						return new DGAIngredient(matcher, val);
+					return mod.API!.CreateMatcherIngredient(
+						Match,
+						val.Quantity,
+						val.DispayName,
+						val.IconTexture,
+						val.IconSubrect ?? val.IconTexture.Bounds
+					);
 				}
+			}
 
-				return new SpaceCoreIngredient(val);
+			// If it's not a specific, known class then we can't guarantee our
+			// logic is correct, so fall back to just wrapping SpaceCore's
+			// ingredients.
+			return new SpaceCoreIngredient(val);
+		}).ToArray();
 
-			}).ToArray();
-
-			Item example = CreateItem();
-			SortValue = example?.ParentSheetIndex ?? 0;
-			QuantityPerCraft = example?.Stack ?? 1;
-			Stackable = (example?.maximumStackSize() ?? 1) > 1;
-		}
+		Item? example = CreateItem();
+		SortValue = example?.ParentSheetIndex ?? 0;
+		QuantityPerCraft = example?.Stack ?? 1;
+		Stackable = (example?.maximumStackSize() ?? 1) > 1;
+	}
 
 
-		// Identity
+	// Identity
 
-		public int SortValue { get; }
+	public int SortValue { get; }
 
-		public string Name { get; private set; }
-		public string DisplayName => Recipe.Name;
-		public string Description => Recipe.Description;
+	public string Name { get; }
+	public string DisplayName => Recipe.Name;
+	public string Description => Recipe.Description;
 
-		public virtual int GetTimesCrafted(Farmer who) {
-			// TODO: Cooking?
+	public virtual bool HasRecipe(Farmer who) {
+		if (Cooking)
+			return who.cookingRecipes.ContainsKey(Name);
+		else
+			return who.craftingRecipes.ContainsKey(Name);
+	}
 
-			if (who.craftingRecipes.ContainsKey(Name))
-				return who.craftingRecipes[Name];
-
+	public virtual int GetTimesCrafted(Farmer who) {
+		if (Cooking) {
+			// TODO: This
 			return 0;
+
+		} else if (who.craftingRecipes.ContainsKey(Name))
+			return who.craftingRecipes[Name];
+
+		return 0;
+	}
+
+	public CraftingRecipe? CraftingRecipe => null;
+
+	// Display
+
+	public Texture2D Texture => Recipe.IconTexture;
+	public Rectangle SourceRectangle => Recipe.IconSubrect ?? Texture.Bounds;
+
+	public int GridHeight {
+		get {
+			Rectangle rect = SourceRectangle;
+			if (rect.Height > rect.Width)
+				return 2;
+			return 1;
 		}
-		public CraftingRecipe CraftingRecipe => null;
-
-
-		// Display
-
-		public Texture2D Texture => Recipe.IconTexture;
-		public Rectangle SourceRectangle => Recipe.IconSubrect ?? Texture.Bounds;
-
-		public int GridHeight {
-			get {
-				Rectangle rect = SourceRectangle;
-				if (rect.Height > rect.Width)
-					return 2;
-				return 1;
-			}
+	}
+	public int GridWidth {
+		get {
+			Rectangle rect = SourceRectangle;
+			if (rect.Width > rect.Height)
+				return 2;
+			return 1;
 		}
-		public int GridWidth {
-			get {
-				Rectangle rect = SourceRectangle;
-				if (rect.Width > rect.Height)
-					return 2;
-				return 1;
-			}
-		}
+	}
 
 
-		// Cost
+	// Cost
 
-		public int QuantityPerCraft { get; }
+	public int QuantityPerCraft { get; }
 
-		public IIngredient[] Ingredients { get; }
+	public IIngredient[] Ingredients { get; }
 
-		// Creation
+	// Creation
 
-		public bool Stackable { get; }
+	public bool Stackable { get; }
 
-		public Item CreateItem() {
-			return Recipe.CreateResult();
-		}
+	public bool CanCraft(Farmer who) {
+		return true;
+	}
 
+	public string? GetTooltipExtra(Farmer who) {
+		return null;
+	}
+
+	public Item? CreateItem() {
+		return Recipe.CreateResult();
+	}
+
+	public void PerformCraft(IPerformCraftEvent evt) {
+		if (evt.Item is null)
+			evt.Cancel();
+		else
+			evt.Complete();
 	}
 }

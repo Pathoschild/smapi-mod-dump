@@ -9,7 +9,9 @@
 *************************************************/
 
 using Microsoft.Toolkit.HighPerformance;
+#if !SHIPPING
 using SpriteMaster.Resample.Scalers.SuperXBR.Cg;
+#endif
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
@@ -68,6 +70,8 @@ static class SpanExt {
 	internal static Span<Fixed16> Elements(this Span<Color16> span) => span.Cast<Fixed16>();
 	internal static ReadOnlySpan<Fixed16> Elements(this ReadOnlySpan<Color16> span) => span.Cast<Fixed16>();
 
+#if !SHIPPING
 	internal static Span<float> Elements(this Span<Float4> span) => span.Cast<Float4, float>();
 	internal static ReadOnlySpan<float> Elements(this ReadOnlySpan<Float4> span) => span.Cast<Float4, float>();
+#endif
 }

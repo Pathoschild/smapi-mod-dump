@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using StardewValley;
@@ -97,7 +96,7 @@ static partial class Debug {
 			}
 
 			var invariantMode = mode.ToLowerInvariant();
-			
+
 			switch (invariantMode) {
 				case "off":
 				case "0":
@@ -152,13 +151,16 @@ static partial class Debug {
 			internal readonly XNA.Graphics.Texture2D Texture;
 			internal readonly Vector2F? OriginalPosition = null;
 			internal readonly Bounds? OriginalSource = null;
+			internal readonly Bounds? OriginalDestination = null;
 			internal readonly Bounds Destination;
 			internal readonly Bounds Source;
 			internal readonly XNA.Color Color;
 			internal readonly float Rotation;
+			internal readonly Vector2F? OriginalOrigin = null;
 			internal readonly Vector2F Origin;
 			internal readonly XNA.Graphics.SpriteEffects Effects;
 			internal readonly float LayerDepth;
+			internal readonly float Scale;
 
 			internal DrawInfo(
 				ManagedSpriteInstance? instance,
@@ -170,8 +172,11 @@ static partial class Debug {
 				Vector2F origin,
 				XNA.Graphics.SpriteEffects effects,
 				float layerDepth,
+				float scale,
 				in Vector2F? originalPosition = null,
-				in Bounds? originalSource = null
+				in Bounds? originalSource = null,
+				in Bounds? originalDestination = null,
+				in Vector2F? originalOrigin = null
 			) {
 				Instance = instance;
 				Texture = texture;
@@ -182,8 +187,11 @@ static partial class Debug {
 				Origin = origin;
 				Effects = effects;
 				LayerDepth = layerDepth;
+				Scale = scale;
 				OriginalPosition = originalPosition;
 				OriginalSource = originalSource;
+				OriginalDestination = originalDestination;
+				OriginalOrigin = originalOrigin;
 			}
 		}
 
@@ -199,12 +207,17 @@ static partial class Debug {
 			Vector2F origin,
 			XNA.Graphics.SpriteEffects effects,
 			float layerDepth,
+			Vector2F? scale = null,
+			in Bounds? originalDestination = null,
 			in Vector2F? originalPosition = null,
-			in Bounds? originalSource = null
+			in Bounds? originalSource = null,
+			in Vector2F? originalOrigin = null
 		) {
 			if (!IsModeEnabled(DebugModeFlags.Select)) {
 				return false;
 			}
+
+			scale ??= Vector2F.One;
 
 			var currentCursor = CurrentCursorPosition;
 			if (currentCursor == destination.Offset) {
@@ -225,13 +238,16 @@ static partial class Debug {
 					texture: texture,
 					originalPosition: originalPosition,
 					originalSource: originalSource,
+					originalDestination: originalDestination,
 					destination: destination,
 					source: source,
 					color: color,
 					rotation: rotation,
+					originalOrigin: originalOrigin,
 					origin: origin,
 					effects: effects,
-					layerDepth: layerDepth
+					layerDepth: layerDepth,
+					scale: 1.0f
 				));
 
 				return true;
@@ -252,7 +268,8 @@ static partial class Debug {
 			XNA.Graphics.SpriteEffects effects,
 			float layerDepth,
 			in Vector2F? originalPosition = null,
-			in Bounds? originalSource = null
+			in Bounds? originalSource = null,
+			in Vector2F? originalOrigin = null
 		) {
 			if (!IsModeEnabled(DebugModeFlags.Select)) {
 				return false;
@@ -274,9 +291,11 @@ static partial class Debug {
 				source: source,
 				color: color,
 				rotation: rotation,
+				originalOrigin: originalOrigin,
 				origin: origin * scale,
 				effects: effects,
-				layerDepth: layerDepth
+				layerDepth: layerDepth,
+				scale: scale
 			);
 			// new Bounds(((Vector2F)adjustedPosition).NearestInt(), (sourceRectangle.ExtentF * adjustedScale).NearestInt())
 		}
@@ -300,20 +319,61 @@ static partial class Debug {
 				if (draw.Instance is not null) {
 					sb.AppendLine(draw.Instance.Hash.ToString16());
 				}
-				sb.AppendLine($"  dst: {draw.Destination}");
-				sb.AppendLine($"  src: {draw.Source}");
+
+				List<(string Key, string Value)> properties = new();
+
+				properties.Add(("dst", draw.Destination.ToString()));
+				if (draw.OriginalDestination is not null) {
+					properties.Add(("odst", draw.OriginalDestination.Value.ToString()));
+				}
+
+				properties.Add(("src", draw.Source.ToString()));
+
 
 				if (draw.OriginalPosition.HasValue) {
-					sb.AppendLine($" opos: {draw.OriginalPosition.Value}");
+					properties.Add(("opos", draw.OriginalPosition.Value.ToString()));
 				}
 
 				var originalSource = draw.OriginalSource ?? draw.Instance?.OriginalSourceRectangle;
 
 				if (originalSource.HasValue) {
-					sb.AppendLine($" osrc: {originalSource.Value}");
+					properties.Add(("osrc", originalSource.Value.ToString()));
 				}
 
-				sb.AppendLine($"  org: {draw.Origin}");
+				properties.Add(("org", draw.Origin.ToString()));
+				if (draw.OriginalOrigin is not null) {
+					properties.Add(("oorg", draw.OriginalOrigin.Value.ToString()));
+				}
+				if (draw.Rotation != 0.0f) {
+					properties.Add(("rot", draw.Rotation.ToString("n2")));
+				}
+				properties.Add(("scale", draw.Scale.ToString()));
+				properties.Add(("depth", draw.LayerDepth.ToString()));
+				if (draw.Effects != XNA.Graphics.SpriteEffects.None) {
+					properties.Add(("effects", ""));
+					foreach (var enumName in Enum.GetNames<XNA.Graphics.SpriteEffects>()) {
+						var enumValue = Enum.Parse<XNA.Graphics.SpriteEffects>(enumName);
+						if (enumValue != XNA.Graphics.SpriteEffects.None && draw.Effects.HasFlag(enumValue)) {
+							properties.Add(("", enumName));
+						}
+					}
+				}
+
+				int maxLength = int.MinValue;
+				foreach (var property in properties) {
+					maxLength = Math.Max(maxLength, property.Key.Length);
+				}
+
+				foreach (var property in properties) {
+					if (string.IsNullOrEmpty(property.Key)) {
+						sb.AppendLine($"  {property.Value}");
+					}
+					else {
+						var padding = maxLength - property.Key.Length;
+						sb.AppendLine($"{property.Key.PadLeft(padding)}: {property.Value}");
+					}
+				}
+
 				lines.Add(sb);
 			}
 
@@ -378,7 +438,7 @@ static partial class Debug {
 						font: font,
 						position: TextOffset + (0.0f, lineOffset),
 						color: Game1.textColor,
-						scale: 1
+						scale: 1.0f
 					);
 				}
 			}

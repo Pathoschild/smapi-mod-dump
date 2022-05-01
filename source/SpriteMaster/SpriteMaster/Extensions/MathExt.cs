@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
 using System;
 
@@ -61,5 +62,21 @@ static class MathExt {
 
 	internal static long RoundToLong(this float v) => (long)MathF.Round(v);
 	internal static long RoundToLong(this double v) => (long)Math.Round(v);
+	#endregion
+
+	#region Trig
+	// This is in .NET 6, but not 5
+	internal static (float Sine, float Cosine) SinCos(this float v) {
+		var sine = MathF.Sin(v);
+		var cosine = MathF.Cos(v);
+		return (sine, cosine);
+	}
+
+	// This is in .NET 6, but not 5
+	internal static (double Sine, double Cosine) SinCos(this double v) {
+		var sine = Math.Sin(v);
+		var cosine = Math.Cos(v);
+		return (sine, cosine);
+	}
 	#endregion
 }

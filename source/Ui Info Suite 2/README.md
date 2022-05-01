@@ -11,6 +11,8 @@ for queries and analysis.**
 ![image](https://user-images.githubusercontent.com/10620868/145580465-5dc6cd97-e4da-4830-a639-8f3fb94a1001.png)
 _Do **NOT** download the Source code (zip) or Source code (tar.gz). Also, do **NOT**  use the green Code > Download ZIP button on the main page. These methods will only give you the source code but you will not be able to run the mod and use it with Stardew Valley!_
 
+**If you like the mod, you can help the development by [gifting me a coffee](https://www.buymeacoffee.com/Annosz). Actually, as I'm from a corrupt Eastern European country, this is worth more like a whole dinner for me - any donation is much appreciated.**
+
 # UI Info Suite 2
 _Ongoing maintenance for the original UI Info Suite mod for Stardew Valley._
 
@@ -46,6 +48,7 @@ Compatibility is assured with:
 - NPC Map Locations by Bouhm (gets priority before UI Info Suite 2 and disables this mod's map features)
 - Bigger Backpack by spacechase0
 - Level Extender by DevinLematty (probably?)
+- Better Farm Animal Variety by Paritee
 
 # Translating UI Info Suite 2
 The mod can be translated into any language supported by the game, and SMAPI will automatically

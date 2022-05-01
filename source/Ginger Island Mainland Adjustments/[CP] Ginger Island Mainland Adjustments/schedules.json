@@ -141,7 +141,15 @@
         "Action": "EditData",
         "Target": "Characters/schedules/Pam",
         "Entries": {
-            "GIRemainder": "1800 Saloon 7 18 1/2400 Trailer 15 4 2 pam_sleep"
+            "GIRemainder": "1800 Saloon 7 18 1/2400 bed"
+        }
+    },
+    {
+        "LogName": "Penny schedule",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Penny",
+        "Entries": {
+            "GIRemainder": "1800 Trailer 12 6 0 penny_dishes/2100 Trailer 4 9 1 penny_sleep",
         }
     },
     {
@@ -185,6 +193,18 @@
         "Target": "Characters/schedules/Shane",
         "Entries": {
             "GIRemainder": "1800 Saloon 21 17 2 shane_drink/2300 AnimalShop 27 4 1 shane_sleep"
+        }
+    },
+    {
+        "LogName": "Willy schedule",
+        "Action": "EditData",
+        "Target": "Characters/schedules/Willy",
+        "Entries": {
+            "GIRemainder": "1800 Beach 25 36 2 dick_fish/2200 bed",
+            "GIRemainder_rain": "1800 Saloon 17 22 2 \"Strings\\schedules\\Willy:winter.000\"/2320 bed",
+            "GIRemainder_Fri": "1800 Saloon 17 22 2 \"Strings\\schedules\\Willy:Fri.000\"/2320 bed",
+            "GIRemainder_Sat": "1800 Saloon 17 22 2 \"Strings\\schedules\\Willy:Sat.000\"/2300 bed",
+            "GIRemainder_winter": "1800 Saloon 17 22 2 \"Strings\\schedules\\Willy:winter.000\"/2320 bed"
         }
     }
 ]}

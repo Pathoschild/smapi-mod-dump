@@ -8,36 +8,61 @@
 **
 *************************************************/
 
+#nullable enable
+
+using System;
 using System.Collections.Generic;
 
 using Leclair.Stardew.Common.Crafting;
 using Leclair.Stardew.Common.Inventory;
 
 using StardewValley;
+using StardewModdingAPI;
 
-namespace Leclair.Stardew.Common {
-	public static class CraftingHelper {
+namespace Leclair.Stardew.Common;
 
-		public static bool HasIngredients(IIngredient[] ingredients, Farmer who, IList<Item> items, IList<IInventory> inventories, int max_quality) {
-			foreach (var entry in ingredients)
-				if (entry.GetAvailableQuantity(who, items, inventories, max_quality) < entry.Quantity)
-					return false;
+public static class CraftingHelper {
 
+	public static bool HasIngredients(IIngredient[]? ingredients, Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+		if (ingredients == null || ingredients.Length == 0)
 			return true;
-		}
 
-		public static bool HasIngredients(this IRecipe recipe, Farmer who, IList<Item> items, IList<IInventory> inventories, int max_quality) {
-			return HasIngredients(recipe.Ingredients, who, items, inventories, max_quality);
-		}
+		foreach (var entry in ingredients)
+			if (entry.GetAvailableQuantity(who, items, inventories, maxQuality) < entry.Quantity)
+				return false;
 
-		public static void ConsumeIngredients(IIngredient[] ingredients, Farmer who, IList<IInventory> inventories, int max_quality, bool low_quality_first) {
-			foreach (var entry in ingredients)
-				entry.Consume(who, inventories, max_quality, low_quality_first);
-		}
-
-		public static void Consume(this IRecipe recipe, Farmer who, IList<IInventory> inventories, int max_quality, bool low_quality_first) {
-			ConsumeIngredients(recipe.Ingredients, who, inventories, max_quality, low_quality_first);
-		}
-
+		return true;
 	}
+
+	public static bool HasIngredients(this IRecipe recipe, Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality) {
+		if (recipe.Ingredients == null)
+			return true;
+
+		return HasIngredients(recipe.Ingredients, who, items, inventories, maxQuality);
+	}
+
+	public static void ConsumeIngredients(IIngredient[]? ingredients, Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst) {
+		if (ingredients != null)
+			foreach (var entry in ingredients)
+				entry.Consume(who, inventories, maxQuality, lowQualityFirst);
+	}
+
+	public static void Consume(this IRecipe recipe, Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst) {
+		if (recipe.Ingredients != null)
+			ConsumeIngredients(recipe.Ingredients, who, inventories, maxQuality, lowQualityFirst);
+	}
+
+
+	public delegate void LogMethod(string message, LogLevel level = LogLevel.Debug, Exception? ex = null);
+
+	public static Item? CreateItemSafe(this IRecipe recipe, LogMethod? log = null) {
+		try {
+			return recipe.CreateItem();
+		} catch (Exception ex) {
+			log?.Invoke($"Unable to create item instance for recipe \"{recipe.Name}\".", LogLevel.Warn, ex);
+		}
+
+		return null;
+	}
+
 }

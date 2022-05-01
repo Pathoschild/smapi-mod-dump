@@ -8,24 +8,28 @@
 **
 *************************************************/
 
-using System.Diagnostics.CodeAnalysis;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using StardewValley.Locations;
 
 namespace GingerIslandMainlandAdjustments.ScheduleManager;
 
 /// <summary>
 /// Handles patches on the NPC class to allow beach fishing.
 /// </summary>
-internal class NPCPatches
+[HarmonyPatch(typeof(NPC))]
+internal static class NPCPatches
 {
+    /// <summary>
+    /// Keep a list of fishers to reset their sprites at day end.
+    /// </summary>
     private static readonly List<NPC> Fishers = new();
 
     /// <summary>
     /// resets the sprites of all people who went fishing.
     /// </summary>
     /// <remarks>Call at DayEnding.</remarks>
-    public static void ResetAllFishers()
+    internal static void ResetAllFishers()
     {
         foreach (NPC npc in Fishers)
         {
@@ -46,11 +50,11 @@ internal class NPCPatches
     [HarmonyPostfix]
     [HarmonyPatch("startRouteBehavior")]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Convention set by Harmony")]
-    public static void StartFishBehavior(NPC __instance, string __0)
+    private static void StartFishBehavior(NPC __instance, string __0)
     {
         try
         {
-            if (__0.Equals(__instance.Name.ToLowerInvariant() + "_beach_fish"))
+            if (__instance.currentLocation is IslandLocation && __0.Equals(__instance.Name.ToLowerInvariant() + "_beach_fish", StringComparison.OrdinalIgnoreCase))
             {
                 __instance.extendSourceRect(0, 32);
                 __instance.Sprite.tempSpriteHeight = 64;
@@ -74,10 +78,11 @@ internal class NPCPatches
     /// </summary>
     /// <param name="__instance">NPC.</param>
     /// <param name="__0">animation key.</param>
+    /// <remarks>Force the reset no matter which map the NPC is currently on.</remarks>
     [HarmonyPostfix]
-    [HarmonyPatch("endRouteBehavior")]
+    [HarmonyPatch("finishRouteBehavior")]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Convention set by Harmony")]
-    public static void EndFishBehavior(NPC __instance, string __0)
+    private static void EndFishBehavior(NPC __instance, string __0)
     {
         try
         {

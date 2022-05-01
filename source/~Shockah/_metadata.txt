@@ -9,12 +9,13 @@ mods:
    Machine Status
    Please Gift Me In Person
    Predictable Retaining Soil
+   Safe Lightning Redux
    XP Display
 
 latest commit:
-   commit 6b36f1814349f82ff78c4c7f02b76e3cbc0beb9e
+   commit 1169e47ac9cb6b22f7598a86d8062012be3cfc66
    Author: Shockah <me@shockah.pl>
-   Date:   Wed Mar 23 22:01:14 2022 +0100
+   Date:   Sat Apr 30 21:04:05 2022 +0200
    
-       Hibernation: Version 1.0.0; added Nexus update key
+       StackSizeChanger: New mod, version 1.0.0
    

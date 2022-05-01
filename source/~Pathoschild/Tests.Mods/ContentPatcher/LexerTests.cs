@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 using System.Text;
 using ContentPatcher.Framework.Lexing;

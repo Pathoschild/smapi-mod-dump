@@ -20,16 +20,16 @@ Vanilla NPCs may go to Ginger Island in groups. They're typically family groups,
 
 ```js
 {
-	"Format": "1.24.0",
-	"Changes": [
-		{
-			"Action": "EditData",
-			"Target": "Mods/atravita_Ginger_Island_Adjustments_groups",
-			"Entries": {
-				"GoldenTrio": "Harry, Hermione, Ron"
-			}
-		}
-	]
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/atravita_Ginger_Island_Adjustments_groups",
+            "Entries": {
+                "GoldenTrio": "Harry, Hermione, Ron"
+            }
+        }
+    ]
 }
 ```
 
@@ -42,16 +42,21 @@ Note: the keys are global, so prepending them with your mod's uniqueID may help 
 Some NPCs may want to explore the rest of the island. 
 
 ```js
-    {
-        "LogName": "Explorers",
-        "Action": "EditData",
-        "Target": "Mods/atravita_Ginger_Island_Adjustments_explorers", // Explorers go to IslandNorth and either the tent or the volcano
-        "Entries": {
-            "ScienceGroup": "Maru, Demetrius, Robin",
-            "BandKids": "Abigail, Sebastian, Sam",
-            "ArtsyGroup": "Leah, Elliott"
+{
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "LogName": "Explorers",
+            "Action": "EditData",
+            "Target": "Mods/atravita_Ginger_Island_Adjustments_explorers", // Explorers go to IslandNorth and either the tent or the volcano
+            "Entries": {
+                "ScienceGroup": "Maru, Demetrius, Robin",
+                "BandKids": "Abigail, Sebastian, Sam",
+                "ArtsyGroup": "Leah, Elliott"
+            }
         }
-    }
+    ]
+}
 ```
 
 would add three explorer groups. Explorer groups will make either a stop at the volcano or a stop by Professor Snail's. They'll use the following dialogue keys:
@@ -72,20 +77,20 @@ Gus, whenever he visits, will tend bar. When he does so, other characters (if th
 
 ```js
 {
-	"Format": "1.24.0",
-	"Changes": [
-		{
-			"Action": "EditData",
-			"Target": "Mods/atravita_Ginger_Island_Adjustments_bartenders",
-			"Entries": {
-				"NPCname": null,
-			}
-		}
-	]
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/atravita_Ginger_Island_Adjustments_bartenders",
+            "Entries": {
+                "NPCname": "any value not null",
+            }
+        }
+    ]
 }
 ```
 
-(Note: the Resort shop still requires Gus's presence. You can use Shop Tile Framework if you'd like your bartender to have a shop of their own, I suspect.)
+(Note: the Resort shop still requires Gus's presence. You can use Shop Tile Framework if you'd like your bartender to have a shop of their own, I suspect. Note that you will need to patch your shop tile into `Island_Resort`, not `Island_S`)
 
 #### Musicians
 
@@ -93,23 +98,23 @@ Sam, whenever he visits, has a chance of standing on a towel and playing his gui
 
 ```js
 {
-	"Format": "1.24.0",
-	"Changes": [
-		{
-			"Action": "EditData",
-			"Target": "Mods/atravita_Ginger_Island_Adjustments_musicians",
-			"Entries": {
-				"NPCname": null,
-			}
-		},
-		{
-			"Action": "EditData",
-			"Target": "Data/animationDescriptions",
-			"Entries": {
-				"npcname_beach_towel": //some sort of music-playing animation.
-			}
-		}
-	]
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/atravita_Ginger_Island_Adjustments_musicians",
+            "Entries": {
+                "NPCname": "any value not null",
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/animationDescriptions",
+            "Entries": {
+                "npcname_beach_towel": //some sort of music-playing animation.
+            }
+        }
+    ]
 }
 ```
 
@@ -117,7 +122,7 @@ Sam, whenever he visits, has a chance of standing on a towel and playing his gui
 
 #### Fishers
 
-Fishers do not need to be specified; they just need a `<name>_beach_fish` animation (ie `pam_beach_fish` for Pam.)
+Fishers do not need to be specified; they just need a `<name>_beach_fish` animation (ie `pam_beach_fish` for Pam.) They will fish downwards - like Willy and Pam - and not side-to-side.
 
 See also:
 
@@ -129,21 +134,21 @@ You can also exclude characters from the resort based on various conditions by p
 
 ```js
 {
-	"Format": "1.24.0",
-	"Changes": [
-		{
-			"Action": "EditData",
-			"Target": "Mods/atravita_Ginger_Island_Adjustments_exclusions",
-			"Entries": {
-				"NPCname": "spring,17,mon,spring_mon,spring_17,neveralone",
-			}
-		}
-	]
+    "Format": "1.24.0",
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Mods/atravita_Ginger_Island_Adjustments_exclusions",
+            "Entries": {
+                "NPCname": "spring,17,mon,spring_mon,spring_17,neveralone",
+            }
+        }
+    ]
 }
 ```
 
-Possible values include: `<season>`, `<day>`, `<dayofweek>`, `<season>_<dayofweek>`, `<season>_<day>`, and `neveralone`. The first five should be self-explanatory, but `neveralone` prevents NPCs from attending the resort EXCEPT as [part of a group](#custom-groups). 
+Possible values include: `<season>`, `<day>`, `<dayofweek>`, `<season>_<dayofweek>`, `<season>_<day>`, `freerange` and `neveralone`. The first five should be self-explanatory, but `neveralone` prevents NPCs from attending the resort EXCEPT as [part of a group](#custom-groups), and `freerange` allows a kid to attend the resort when not part of a custom group.
 
-As an aside: NPCs already cannot go to Ginger Island on their hospital visit days, and no one goes to the Resort during the Winter Market. 
+As an aside: NPCs already cannot go to Ginger Island on their hospital visit days, and no one goes to the Resort during the Winter Market, or if there's a festival going on. Restrictions from CustomNPCExclusions and the game itself are also respected.
 
 **Note:** I haven't actually tested this with conditional patching (using Content Patcher's `When` field.) [CustomNPCExclusions](https://www.nexusmods.com/stardewvalley/mods/7089), which does a very similar thing, forces `IslandSouth.SetUpIslandSchedules` to [run after Content Patcher is done updating patches](https://github.com/Esca-MMC/CustomNPCExclusions/blob/master/CustomNPCExclusions/HarmonyPatch_IslandVisit.cs).

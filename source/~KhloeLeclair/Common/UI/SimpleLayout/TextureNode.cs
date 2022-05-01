@@ -8,44 +8,48 @@
 **
 *************************************************/
 
+#nullable enable
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley;
 
-namespace Leclair.Stardew.Common.UI.SimpleLayout {
-	public class TextureNode : ISimpleNode {
+namespace Leclair.Stardew.Common.UI.SimpleLayout;
 
-		public Texture2D Texture { get; }
-		public Rectangle Source { get; }
-		public float Scale { get; }
-		public bool DrawShadow { get; }
+public class TextureNode : ISimpleNode {
 
-		public Alignment Alignment { get; }
+	public Texture2D? Texture { get; }
+	public Rectangle Source { get; }
+	public float Scale { get; }
+	public bool DrawShadow { get; }
 
-		public bool DeferSize => false;
+	public Alignment Alignment { get; }
 
-		public TextureNode(Texture2D texture, Rectangle? source = null, float scale = 1f, bool shadow = false, Alignment alignment = Alignment.None) {
-			Texture = texture;
-			Source = source ?? texture?.Bounds ?? Rectangle.Empty;
-			Scale = scale;
-			DrawShadow = shadow;
-			Alignment = alignment;
-		}
+	public bool DeferSize => false;
 
-		public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
-			return new Vector2(Source.Width * Scale, Source.Height * Scale);
-		}
+	public TextureNode(Texture2D? texture, Rectangle? source = null, float scale = 1f, bool shadow = false, Alignment alignment = Alignment.None) {
+		Texture = texture;
+		Source = source ?? texture?.Bounds ?? Rectangle.Empty;
+		Scale = scale;
+		DrawShadow = shadow;
+		Alignment = alignment;
+	}
 
-		public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
-			if (Texture == null)
-				return;
+	public Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize) {
+		if (Texture == null)
+			return Vector2.Zero;
 
-			if (DrawShadow)
-				Utility.drawWithShadow(batch, Texture, position, Source, Color.White * alpha, 0f, Vector2.Zero, Scale);
-			else
-				batch.Draw(Texture, position, Source, Color.White * alpha, 0f, Vector2.Zero, Scale, SpriteEffects.None, GUIHelper.GetLayerDepth(position.Y));
-		}
+		return new Vector2(Source.Width * Scale, Source.Height * Scale);
+	}
+
+	public void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor) {
+		if (Texture == null)
+			return;
+
+		if (DrawShadow)
+			Utility.drawWithShadow(batch, Texture, position, Source, Color.White * alpha, 0f, Vector2.Zero, Scale);
+		else
+			batch.Draw(Texture, position, Source, Color.White * alpha, 0f, Vector2.Zero, Scale, SpriteEffects.None, GUIHelper.GetLayerDepth(position.Y));
 	}
 }

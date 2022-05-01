@@ -25,7 +25,7 @@ using Leclair.Stardew.Almanac.Menus;
 namespace Leclair.Stardew.Almanac.Pages {
 	public class MinesPage : BasePage<BaseState>, ICalendarPage {
 
-		private readonly int Seed;
+		private readonly ulong Seed;
 
 		private Dictionary<LevelType, SpriteInfo> Sprites;
 		private Dictionary<LevelType, List<int>>[] Levels;
@@ -58,12 +58,12 @@ namespace Leclair.Stardew.Almanac.Pages {
 			);
 
 			Sprites[LevelType.Quarry] = new SpriteInfo(
-				Mod.Helper.Content.Load<Texture2D>("Characters/Monsters/Haunted Skull", StardewModdingAPI.ContentSource.GameContent),
+				Mod.Helper.GameContent.Load<Texture2D>("Characters/Monsters/Haunted Skull"),
 				new Rectangle(0, 0, 16, 16)
 			);
 
 			Sprites[LevelType.InfestedQuarry] = new SpriteInfo(
-				Mod.Helper.Content.Load<Texture2D>("Characters/Monsters/Haunted Skull", StardewModdingAPI.ContentSource.GameContent),
+				Mod.Helper.GameContent.Load<Texture2D>("Characters/Monsters/Haunted Skull"),
 				new Rectangle(0, 0, 16, 16)
 			);
 

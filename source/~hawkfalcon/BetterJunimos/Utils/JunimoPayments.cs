@@ -8,53 +8,72 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using StardewValley;
+using StardewModdingAPI;
 using StardewValley.Buildings;
 using StardewValley.Objects;
 
 namespace BetterJunimos.Utils {
     public class JunimoPayments {
-        internal ModConfig.JunimoPayments Payment;
+        private readonly ModConfig.JunimoPayments _payment;
 
         public bool WereJunimosPaidToday;
-        public Dictionary<int, List<int>> JunimoPaymentsToday = new Dictionary<int, List<int>>();
+        internal readonly Dictionary<int, List<int>> JunimoPaymentsToday = new();
 
-        internal JunimoPayments(ModConfig.JunimoPayments Payment) {
-            this.Payment = Payment;
+        internal JunimoPayments(ModConfig.JunimoPayments payment) {
+            _payment = payment;
         }
 
         public bool ReceivePaymentItems(JunimoHut hut) {
-            Farm farm = Game1.getFarm();
-            Chest chest = hut.output.Value;
-            bool paidForage = ReceiveItems(chest, Payment.DailyWage.ForagedItems, Util.ForageCategory);
-            bool paidFlowers = ReceiveItems(chest, Payment.DailyWage.Flowers, Util.FlowerCategory);
-            bool paidFruit = ReceiveItems(chest, Payment.DailyWage.Fruit, Util.FruitCategory);
-            bool paidWine = ReceiveItems(chest, Payment.DailyWage.Wine, Util.WineCategory);
+            var chest = hut.output.Value;
+            var paidForage = ReceiveItems(chest, _payment.DailyWage.ForagedItems, Util.ForageCategory);
+            var paidFlowers = ReceiveItems(chest, _payment.DailyWage.Flowers, Util.FlowerCategory);
+            var paidFruit = ReceiveItems(chest, _payment.DailyWage.Fruit, Util.FruitCategory);
+            var paidWine = ReceiveItems(chest, _payment.DailyWage.Wine, Util.WineCategory);
 
             return paidForage && paidFlowers && paidFruit && paidWine;
         }
 
-        public bool ReceiveItems(Chest chest, int needed, int type) {
+        internal string PaymentOutstanding() {
+            var needs = new List<string>();
+            var cats = new List<(int, int, string)> {
+                (_payment.DailyWage.ForagedItems, Util.ForageCategory, "Forage"),
+                (_payment.DailyWage.Flowers, Util.FlowerCategory, "Flowers"),
+                (_payment.DailyWage.Fruit, Util.FruitCategory, "Fruit"),
+                (_payment.DailyWage.Wine, Util.WineCategory, "Wine")
+            };
+            foreach (var cat in cats) {
+                var (needed, type, name) = cat;
+                if (needed == 0) continue;
+                if (!JunimoPaymentsToday.TryGetValue(type, out var items)) {
+                    needs.Add($"{needed} {name}");
+                } else if (items.Count < needed) {
+                    needs.Add($"{needed - items.Count} {name}");
+                }
+            }
+
+            return string.Join(", ", needs);
+        }
+
+        private bool ReceiveItems(Chest chest, int needed, int type) {
             if (needed == 0) return true;
-            List<int> items;
-            if (!JunimoPaymentsToday.TryGetValue(type, out items)) {
+            if (!JunimoPaymentsToday.TryGetValue(type, out var items)) {
                 items = new List<int>();
                 JunimoPaymentsToday[type] = items;
             }
-            int paidSoFar = items.Count();
+
+            var paidSoFar = items.Count;
             if (paidSoFar == needed) return true;
 
-            foreach (int i in Enumerable.Range(paidSoFar, needed)) {
-                Item foundItem = chest.items.FirstOrDefault(item => item != null && item.Category == type);
-                if (foundItem != null) {
-                    items.Add(foundItem.ParentSheetIndex);
-                    Util.RemoveItemFromChest(chest, foundItem);
-                }
+            foreach (var unused in Enumerable.Range(paidSoFar, needed)) {
+                var foundItem = chest.items.FirstOrDefault(item => item != null && item.Category == type);
+                if (foundItem == null) continue;
+                items.Add(foundItem.ParentSheetIndex);
+                Util.RemoveItemFromChest(chest, foundItem);
             }
-            return items.Count() == needed;
+
+            return items.Count >= needed;
         }
     }
 }

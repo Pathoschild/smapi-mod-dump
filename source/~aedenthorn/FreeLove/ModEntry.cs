@@ -64,14 +64,13 @@ namespace FreeLove
             helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
             helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
             PathFindControllerPatches.Initialize(Monitor, Config, helper);
-            Integrations.Initialize(Monitor, Config, helper);
             Divorce.Initialize(Monitor, Config, helper);
             NPCPatches.Initialize(Monitor, Config, helper);
+            Game1Patches.Initialize(Monitor);
             LocationPatches.Initialize(Monitor, Config, helper);
             FarmerPatches.Initialize(Monitor, Config, helper);
             UIPatches.Initialize(Monitor, Config, helper);
             EventPatches.Initialize(Monitor, Config, helper);
-            Misc.Initialize(Monitor, Config, helper);
 
             var harmony = new Harmony(ModManifest.UniqueID);
 
@@ -267,6 +266,11 @@ namespace FreeLove
                prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_checkAction_Prefix))
             );
 
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Farmer), nameof(Farmer.getChildren)),
+               prefix: new HarmonyMethod(typeof(FarmerPatches), nameof(FarmerPatches.Farmer_getChildren_Prefix))
+            );
+
 
             // UI patches
 
@@ -297,6 +301,19 @@ namespace FreeLove
             harmony.Patch(
                original: AccessTools.Method(typeof(Event), nameof(Event.answerDialogueQuestion)),
                prefix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_answerDialogueQuestion_Prefix))
+            );
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Event), nameof(Event.command_loadActors)),
+               prefix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_loadActors_Prefix)),
+               postfix: new HarmonyMethod(typeof(EventPatches), nameof(EventPatches.Event_command_loadActors_Postfix))
+            );
+
+
+            // Game1 patches
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(Game1), nameof(Game1.getCharacterFromName), new Type[] { typeof(string), typeof(bool), typeof(bool) }),
+               prefix: new HarmonyMethod(typeof(Game1Patches), nameof(Game1Patches.getCharacterFromName_Prefix))
             );
 
         }
@@ -352,6 +369,7 @@ namespace FreeLove
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
                 data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"] = Regex.Replace(data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{SHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21 true/emote Emily 21 true/emote Penny 21 true/emote Maru 21 true/emote Leah 21 true/emote Abigail 21").Replace("/dump girls 3", "");
+                //data["91740942"] = data["195012/f Haley 2500/f Emily 2500/f Penny 2500/f Abigail 2500/f Leah 2500/f Maru 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 38/e 2123343/e 10/e 901756/e 54/e 15/k 195019"];
                 data["choseToExplain"] = Regex.Replace(data["choseToExplain"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{SHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21 true/emote Emily 21 true/emote Penny 21 true/emote Maru 21 true/emote Leah 21 true/emote Abigail 21").Replace("/dump girls 4", "");
                 data["lifestyleChoice"] = Regex.Replace(data["lifestyleChoice"], "(pause 1000/speak Maru \\\")[^$]+.a\\\"",$"$1{SHelper.Translation.Get("confrontation-female")}$h\"/emote Haley 21 true/emote Emily 21 true/emote Penny 21 true/emote Maru 21 true/emote Leah 21 true/emote Abigail 21").Replace("/dump girls 4", "");
             }
@@ -361,6 +379,7 @@ namespace FreeLove
 
                 string aData = data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"];
                 data["195013/f Shane 2500/f Sebastian 2500/f Sam 2500/f Harvey 2500/f Alex 2500/f Elliott 2500/o Abigail/o Penny/o Leah/o Emily/o Maru/o Haley/o Shane/o Harvey/o Sebastian/o Sam/o Elliott/o Alex/e 911526/e 528052/e 9581348/e 43/e 384882/e 233104/k 195099"] = Regex.Replace(aData, "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{SHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 3", "");
+                //data["19501342"] = Regex.Replace(aData, "(pause 1000/speak Sam \\\")[^$]+.a\\\"",$"$1{SHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 3", "");
                 aData = data["choseToExplain"];
                 data["choseToExplain"] = Regex.Replace(aData, "(pause 1000/speak Sam \\\")[^$]+.a\\\"", $"$1{SHelper.Translation.Get("confrontation-male")}$h\"/emote Shane 21 true/emote Sebastian 21 true/emote Sam 21 true/emote Harvey 21 true/emote Alex 21 true/emote Elliott 21").Replace("/dump guys 4", "");
                 aData = data["crying"];
@@ -421,8 +440,6 @@ namespace FreeLove
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
                 data["Beach_Mariner_PlayerBuyItem_AnswerYes"] = data["Beach_Mariner_PlayerBuyItem_AnswerYes"].Replace("5000", Config.PendantPrice+"");
-
-
             }
         }
     }

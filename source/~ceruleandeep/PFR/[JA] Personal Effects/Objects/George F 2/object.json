@@ -12,7 +12,7 @@
     "Name": "George's Delicates",
     "Description": "It's dangerous to go alone! Take this.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 15,
     "IsColored": false,
     "GiftTastes": {

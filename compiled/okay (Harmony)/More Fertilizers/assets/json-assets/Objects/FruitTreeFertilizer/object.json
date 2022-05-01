@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Fruit Tree Fertilizer",
+  "Price": "50",
+  "Category": "Junk",
+  "Edibility": -300,
+  "TranslationKey": "fruit-tree-fertilizer",
+  "PurchasePrice": 100,
+  "PurchaseFrom": "Sandy",
+  "CanPurchase": true,
+  "PurchaseRequirements": null
+}

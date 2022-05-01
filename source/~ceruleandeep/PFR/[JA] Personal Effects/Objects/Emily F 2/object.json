@@ -12,7 +12,7 @@
     "Name": "Emily's Delicates",
     "Description": "This is a nice material.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 35,
     "IsColored": false,
     "GiftTastes": {

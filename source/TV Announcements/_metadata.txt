@@ -6,9 +6,12 @@ mods:
    TV Announcements
 
 latest commit:
-   commit a0242e85f829facf10ec342126e7694b871f6a58
-   Author: Zyin055 <bomber055@yahoo.com>
-   Date:   Fri Mar 15 15:09:36 2019 -0500
+   commit 7479100eba1e29f65edc8cb226b9a891a5951528
+   Author: Zyin055 <5003647+Zyin055@users.noreply.github.com>
+   Date:   Fri Apr 15 20:44:39 2022 -0500
    
-       Update README.md
+       Updated for 1.5
+       
+       Updated for Stardew Valley 1.5
+       Added config menu support
    

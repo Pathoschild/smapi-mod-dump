@@ -1,0 +1,7 @@
+{
+  "EnableMultiObeliskSupport": false,
+  "CountWarpMenuAsScepterUsage": false,
+  "ReturnToLastPoint": "LeftStick",
+  "OpenObeliskWarpMenuKbm": "OemTilde",
+  "OpenObeliskWarpMenuController": "BigButton"
+}

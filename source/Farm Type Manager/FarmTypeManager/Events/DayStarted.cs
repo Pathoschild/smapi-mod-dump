@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 
@@ -17,6 +18,7 @@ namespace FarmTypeManager
     public partial class ModEntry : Mod
     {
         /// <summary>Tasks performed after the game begins a new day, including when loading a save.</summary>
+        [EventPriority(EventPriority.Low)] //run after most other events to allow Content Patcher token updates, etc
         private void DayStarted(object sender, EventArgs e)
         {
             //attempt to load the config.json ModConfig file and update its settings

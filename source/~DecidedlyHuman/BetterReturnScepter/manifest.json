@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+	"Name": "Better Return Scepter",
+	"Author": "DecidedlyHuman",
+	"Version": "1.1.0",
+	"Description": "Improves the return scepter, allowing you to warp back to where you came from.",
+	"UniqueID": "DecidedlyHuman.BetterReturnScepter",
+	"EntryDll": "BetterReturnScepter.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [
+		"Nexus:11610"
+	],
+	"Dependencies": [
+		{
+			"UniqueID": "PeacefulEnd.MultipleMiniObelisks",
+			"IsRequired": false
+		}
+	]
+}

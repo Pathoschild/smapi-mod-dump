@@ -39,6 +39,8 @@
     "DespawnOnTile": [ 7, 8, 0 ],
     "IdleBehavior": "Simple_Path",
     "IdleArguments": [ 7, 8, 0 ],
+    "DespawnOnTimer": 1500,
+    "Respawn": true,
 
     "FrameSizeWidth": 16, // Width of each frame / tile in pixels | Default is 16
     "FrameSizeHeight": 24, // Height of each frame / tile in pixels | Default is 16

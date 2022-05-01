@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using SpriteMaster.Types;
 using System;
 
@@ -15,6 +16,10 @@ namespace SpriteMaster.Resample.Scalers.SuperXBR;
 
 sealed partial class Scaler {
 	internal sealed class ScalerInterface : IScaler {
+		internal static readonly ScalerInterface Instance = new();
+
+		public IScalerInfo Info => ScalerInfo.Instance;
+
 		public uint MinScale => Scaler.MinScale;
 
 		public uint MaxScale => Scaler.MaxScale;
@@ -31,3 +36,4 @@ sealed partial class Scaler {
 		);
 	}
 }
+#endif

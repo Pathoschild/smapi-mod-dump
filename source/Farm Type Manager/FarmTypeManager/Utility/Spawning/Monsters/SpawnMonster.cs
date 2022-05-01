@@ -286,7 +286,7 @@ namespace FarmTypeManager
                     case "spirit":
                     case "dustspirit":
                     case "dust spirit":
-                        monster = new DustSpirit(tile);
+                        monster = new DustSpiritFTM(tile);
                         break;
                     case "dwarvishsentry":
                     case "dwarvish sentry":
@@ -507,6 +507,13 @@ namespace FarmTypeManager
                         }
                         break;
                     default: //if the name doesn't match any directly known monster types
+                        //check MTF monster types
+                        if (MonstersTheFrameworkAPI.IsKnownMonsterType(monsterType.MonsterName, true)) //if this is a known (and previously validated) monster type from MTF
+                        {
+                            monster = MonstersTheFrameworkAPI.CreateMonster(monsterType.MonsterName); //create it through the MTF interface
+                            break;
+                        }
+                        //handle the name as a custom Type
                         Type externalType = GetTypeFromName(monsterType.MonsterName, typeof(Monster)); //find a monster subclass with a matching name
                         monster = (Monster)Activator.CreateInstance(externalType, tile); //create a monster with the Vector2 constructor
                         break;

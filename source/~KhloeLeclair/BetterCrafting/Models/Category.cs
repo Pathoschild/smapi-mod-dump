@@ -8,21 +8,22 @@
 **
 *************************************************/
 
+#nullable enable
 
 using Leclair.Stardew.Common.Types;
 
-namespace Leclair.Stardew.BetterCrafting.Models {
-	public class Category {
+namespace Leclair.Stardew.BetterCrafting.Models;
 
-		public string Id { get; set; }
+public class Category {
 
-		public string Name { get; set; }
-		public string I18nKey { get; set; }
+	public string? Id { get; set; }
 
-		public CategoryIcon Icon { get; set; }
+	public string? Name { get; set; }
+	public string? I18nKey { get; set; }
 
-		public CaseInsensitiveHashSet Recipes { get; set; }
-		public string[] UnwantedRecipes { get; set; }
+	public CategoryIcon? Icon { get; set; }
 
-	}
+	public CaseInsensitiveHashSet? Recipes { get; set; }
+	public string[]? UnwantedRecipes { get; set; }
+
 }

@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Yariazen/BuildableGreenhouse
+**
+*************************************************/
+
+{
+    "buildable-greenhouse.name": "Greenhouse",
+    "buildable-greenhouse.description": "A place to grow crops from any season, year round!"
+}

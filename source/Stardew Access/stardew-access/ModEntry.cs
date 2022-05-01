@@ -17,44 +17,63 @@ using stardew_access.Patches;
 using stardew_access.ScreenReader;
 using Microsoft.Xna.Framework;
 using StardewValley.Menus;
+using Newtonsoft.Json.Linq;
 
 namespace stardew_access
 {
     public class MainClass : Mod
     {
-        #region Global Vars
-        private static ModConfig config;
+        #region Global Vars & Properties
+        private static ModConfig? config;
         private Harmony? harmony;
-        private static IMonitor monitor;
-        private static Radar radarFeature;
+        private static IMonitor? monitor;
+        private static Radar? radarFeature;
+        private static StaticTiles? sTiles;
         private static IScreenReader? screenReader;
-        private static IModHelper modHelper;
+        private static IModHelper? modHelper;
 
         internal static ModConfig Config { get => config; set => config = value; }
-        public static IModHelper ModHelper { get => modHelper; }
-        public static Radar RadarFeature { get => radarFeature; set => radarFeature = value; }
+        public static IModHelper? ModHelper { get => modHelper; }
+        public static StaticTiles STiles
+        {
+            get
+            {
+                if (sTiles == null)
+                    sTiles = new StaticTiles();
+
+                return sTiles;
+            }
+            set => sTiles = value;
+        }
+        public static Radar RadarFeature
+        {
+            get
+            {
+                if (radarFeature == null)
+                    radarFeature = new Radar();
+
+                return radarFeature;
+            }
+            set => radarFeature = value;
+        }
 
         public static string hudMessageQueryKey = "";
         public static bool isNarratingHudMessage = false;
         public static bool radarDebug = false;
+
+        public static IScreenReader ScreenReader
+        {
+            get
+            {
+                if (screenReader == null)
+                    screenReader = new ScreenReaderController().Initialize();
+
+                return screenReader;
+            }
+
+            set => screenReader = value;
+        }
         #endregion
-
-        public static IScreenReader GetScreenReader()
-        {
-            if (screenReader == null)
-                screenReader = new ScreenReaderController().Initialize();
-            return screenReader;
-        }
-
-        public static void SetScreenReader(IScreenReader value)
-        {
-            screenReader = value;
-        }
-
-        public static void SetMonitor(IMonitor value)
-        {
-            monitor = value;
-        }
 
         /*********
         ** Public methods
@@ -66,18 +85,16 @@ namespace stardew_access
             #region Initializations
             Config = helper.ReadConfig<ModConfig>();
 
-            SetMonitor(base.Monitor); // Inititalize monitor
+            monitor = base.Monitor; // Inititalize monitor
             modHelper = helper;
 
             Game1.options.setGamepadMode("force_on");
 
-            SetScreenReader(new ScreenReaderController().Initialize());
+            ScreenReader = new ScreenReaderController().Initialize();
 
             CustomSoundEffects.Initialize();
 
             CustomCommands.Initialize();
-
-            RadarFeature = new Radar();
 
             harmony = new Harmony(ModManifest.UniqueID);
             HarmonyPatches.Initialize(harmony);
@@ -103,8 +120,8 @@ namespace stardew_access
         public void OnExit(object? sender, EventArgs? e)
         {
             // Don't if this ever gets called or not but, just in case if it does.
-            if (GetScreenReader() != null)
-                GetScreenReader().CloseScreenReader();
+            if (ScreenReader != null)
+                ScreenReader.CloseScreenReader();
         }
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
@@ -118,12 +135,10 @@ namespace stardew_access
             if (!Context.IsPlayerFree)
                 return;
 
-            // Reset variables
-            MenuPatches.resetGlobalVars();
-            QuestPatches.resetGlobalVars();
-
+            // Narrates currently selected inventory slot
             Other.narrateCurrentSlot();
 
+            // Narrate current location's name
             Other.narrateCurrentLocation();
 
             if (Config.SnapMouse)
@@ -176,11 +191,11 @@ namespace stardew_access
                 }
 
                 // Alternate Keybinds
-                if (!isCustomizingChrachter && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingChrachter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.LeftClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
-                if (!isCustomizingChrachter && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
+                if (!isCustomizingChrachter && Game1.activeClickableMenu is not AnimalQueryMenu && Config.RightClickAlternateKey.JustPressed()) // Excluding the character creation menu
                 {
                     Game1.activeClickableMenu.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
                 }
@@ -189,6 +204,14 @@ namespace stardew_access
 
             if (!Context.IsPlayerFree)
                 return;
+
+            // Narrate Current Location
+            if (Config.LocationKey.JustPressed())
+            {
+                string toSpeak = $"{Game1.currentLocation.Name}";
+                MainClass.ScreenReader.Say(toSpeak, true);
+                return;
+            }
 
             // Narrate Position
             if (Config.PositionKey.JustPressed())
@@ -203,7 +226,7 @@ namespace stardew_access
                     toSpeak = $"{CurrentPlayer.getPositionX()}, {CurrentPlayer.getPositionY()}";
                 }
 
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }
 
@@ -211,15 +234,7 @@ namespace stardew_access
             if (Config.HealthNStaminaKey.JustPressed())
             {
                 string toSpeak = $"Health is {CurrentPlayer.getHealth()} and Stamina is {CurrentPlayer.getStamina()}";
-                MainClass.GetScreenReader().Say(toSpeak, true);
-                return;
-            }
-
-            // Narrate Current Location
-            if (Config.LocationKey.JustPressed())
-            {
-                string toSpeak = $"{Game1.currentLocation.Name}";
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }
 
@@ -227,7 +242,7 @@ namespace stardew_access
             if (Config.MoneyKey.JustPressed())
             {
                 string toSpeak = $"You have {CurrentPlayer.getMoney()}g";
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }
 
@@ -235,7 +250,7 @@ namespace stardew_access
             if (Config.TimeNSeasonKey.JustPressed())
             {
                 string toSpeak = $"Time is {CurrentPlayer.getTimeOfDay()} and it is {CurrentPlayer.getDay()} {CurrentPlayer.getDate()} of {CurrentPlayer.getSeason()}";
-                MainClass.GetScreenReader().Say(toSpeak, true);
+                MainClass.ScreenReader.Say(toSpeak, true);
                 return;
             }
 
@@ -256,11 +271,17 @@ namespace stardew_access
 
         public static void ErrorLog(string message)
         {
+            if (monitor == null)
+                return;
+
             monitor.Log(message, LogLevel.Error);
         }
 
         public static void DebugLog(string message)
         {
+            if (monitor == null)
+                return;
+
             monitor.Log(message, LogLevel.Debug);
         }
     }

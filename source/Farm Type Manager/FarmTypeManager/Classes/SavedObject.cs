@@ -66,7 +66,15 @@ namespace FarmTypeManager
                         case ObjectType.Monster:
                             if (!MonsterSizeCache.ContainsKey(MonType.MonsterName)) //if this monster type's size has not been cached yet
                             {
-                                if (MonType.MonsterName.Contains(".")) //if this is an external monster class
+                                if (Utility.MonstersTheFrameworkAPI?.IsKnownMonsterType(MonType.MonsterName, true) == true) //if this is a monster type from MTF
+                                {
+                                    Monster monster = Utility.MonstersTheFrameworkAPI.CreateMonster(MonType.MonsterName); //create the monster with MTF's interface
+                                    int width = Convert.ToInt32(Math.Ceiling(((double)monster.Sprite.SpriteWidth) / 16)); //get the monster's sprite width in tiles, rounded up
+                                    if (width <= 0)
+                                        width = 1; //enforce minimum 1x1 size
+                                    MonsterSizeCache.Add(MonType.MonsterName, new Point(width, width)); //use the width for both dimensions (to avoid problems with "tall" 1x1 monster sprites)
+                                }
+                                else if (MonType.MonsterName.Contains(".")) //if this is an external monster class
                                 {
                                     Type externalType = Utility.GetTypeFromName(MonType.MonsterName, typeof(Monster)); //find a monster subclass with a matching name
                                     Monster monster = (Monster)Activator.CreateInstance(externalType, Vector2.Zero); //create a monster with the Vector2 constructor (the tile should be irrelevant)

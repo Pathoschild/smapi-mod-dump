@@ -12,7 +12,7 @@
     "Name": "Haley's Delicates",
     "Description": "These have been worn.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 29,
     "IsColored": false,
     "GiftTastes": {

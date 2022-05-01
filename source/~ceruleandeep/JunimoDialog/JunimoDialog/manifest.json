@@ -11,7 +11,7 @@
 {
   "Name": "Junimo Dialog",
   "Author": "ceruleandeep",
-  "Version": "1.0.4",
+  "Version": "1.0.7",
   "Description": "Junimo Dialog",
   "UniqueID": "ceruleandeep.junimodialog",
   "EntryDll": "JunimoDialog.dll",
@@ -19,7 +19,7 @@
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",
-      "MinimumVersion": "1.22.0"
+      "MinimumVersion": "1.23.0"
     }
   ],
   "UpdateKeys": [

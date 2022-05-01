@@ -16,6 +16,7 @@ namespace AprilFools
     public class ModConfig
     {
         public bool EnableMod { get; set; } = true;
+        public bool RestrictToAprilFirst { get; set; } = true;
         public bool BeesEnabled { get; set; } = true;
         public bool BackwardsEnabled { get; set; } = true;
         public bool AsciiEnabled { get; set; } = true;
@@ -26,5 +27,6 @@ namespace AprilFools
         public bool SlimeEnabled { get; set; } = true;
         public bool GiantEnabled { get; set; } = true;
         public bool BuildingsEnabled { get; set; } = true;
+        public bool EnableAnimalTalk { get; set; } = true;
     }
 }

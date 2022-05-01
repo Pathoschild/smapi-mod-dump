@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -16,50 +18,54 @@ using StardewModdingAPI;
 
 using StardewValley.Menus;
 
+namespace Leclair.Stardew.Common.Events;
 
-namespace Leclair.Stardew.Common.Events {
-	public abstract class MenuSubscriber<T> : IClickableMenu, IDisposable where T : Mod {
+public abstract class MenuSubscriber<T> : IClickableMenu, IDisposable where T : Mod {
 
-		public readonly T Mod;
+	public readonly T Mod;
 
-		private Dictionary<MethodInfo, RegisteredEvent> Events;
+	private Dictionary<MethodInfo, RegisteredEvent>? Events;
 
-		public MenuSubscriber(T mod, bool registerImmediate = true) : base() {
-			Mod = mod;
+	public MenuSubscriber(T mod, bool registerImmediate = true) : base() {
+		Mod = mod;
 
-			if (registerImmediate)
-				RegisterEvents();
-		}
+		if (registerImmediate)
+			RegisterEvents();
+	}
 
-		public MenuSubscriber(T mod, int x, int y, int width, int height, bool registerImmediate = true) : base(x, y, width, height) {
-			Mod = mod;
+	public MenuSubscriber(T mod, int x, int y, int width, int height, bool registerImmediate = true) : base(x, y, width, height) {
+		Mod = mod;
 
-			if (registerImmediate)
-				RegisterEvents();
-		}
-		public virtual void Dispose() {
-			UnregisterEvents();
-		}
+		if (registerImmediate)
+			RegisterEvents();
+	}
+	public void Dispose() {
+		Dispose(true);
+		GC.SuppressFinalize(this);
+	}
 
-		protected virtual void Log(string message, LogLevel level = LogLevel.Trace, Exception ex = null, string name = null) {
-			if (string.IsNullOrEmpty(name))
-				name = GetType().Name;
+	public virtual void Dispose(bool disposing) {
+		UnregisterEvents();
+	}
 
-			Mod.Monitor.Log($"[{name}] {message}", level: level);
-			if (ex != null)
-				Mod.Monitor.Log($"[{name}] Details:\n{ex}", level: level);
-		}
+	protected virtual void Log(string message, LogLevel level = LogLevel.Trace, Exception? ex = null, LogLevel? exLevel = null, string? name = null) {
+		if (string.IsNullOrEmpty(name))
+			name = GetType().Name;
 
-		public void RegisterEvents() {
-			Events = EventHelper.RegisterEvents(this, Mod.Helper.Events, Events, (msg, level) => Log(msg, level));
-		}
+		Mod.Monitor.Log($"[{name}] {message}", level: level);
+		if (ex != null)
+			Mod.Monitor.Log($"[{name}] Details:\n{ex}", level: exLevel ?? level);
+	}
 
-		public void UnregisterEvents() {
-			if (Events == null)
-				return;
+	public void RegisterEvents() {
+		Events = EventHelper.RegisterEvents(this, Mod.Helper.Events, Events, (msg, level) => Log(msg, level));
+	}
 
-			EventHelper.UnregisterEvents(Events);
-			Events = null;
-		}
+	public void UnregisterEvents() {
+		if (Events == null)
+			return;
+
+		EventHelper.UnregisterEvents(Events);
+		Events = null;
 	}
 }

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 namespace SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 
 ref struct DiffTexel {
@@ -19,3 +20,4 @@ ref struct DiffTexel {
 		Alpha = alpha;
 	}
 }
+#endif

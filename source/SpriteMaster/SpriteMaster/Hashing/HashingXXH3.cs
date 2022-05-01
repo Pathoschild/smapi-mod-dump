@@ -35,7 +35,7 @@ static partial class Hashing {
 	internal static ulong HashXX3(this Span2D<byte> data) {
 		// HasherXX.ComputeHash(new SequenceReader<T>(data)).Hash.HashXXCompute();
 		ulong currentHash = Default;
-		for(int i = 0; i < data.Height; ++i) {
+		for (int i = 0; i < data.Height; ++i) {
 			currentHash = Combine(currentHash, data.GetRowSpan(i).HashXX3());
 		}
 		return currentHash;

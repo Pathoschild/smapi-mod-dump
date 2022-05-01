@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Theme Manager",
+  "Author": "Khloe Leclair",
+  "Version": "1.0.0-Debug",
+  "Description": "Provides a framework for UI theme support in mods, as well as enhanced UI theming for the base game.",
+  "UniqueID": "leclair.thememanager",
+  "EntryDll": "ThemeManager.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": []
+}

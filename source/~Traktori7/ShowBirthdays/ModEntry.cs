@@ -9,8 +9,9 @@
 *************************************************/
 
 using System;
+using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -21,7 +22,7 @@ using StardewValley.Menus;
 
 namespace ShowBirthdays
 {
-	class ModEntry : Mod, IAssetLoader
+	class ModEntry : Mod
 	{
 		private CycleType cycleType;
 		// Flag for if the calendar is open
@@ -33,16 +34,17 @@ namespace ShowBirthdays
 		private int clickedDay = -1;
 		private Vector2 cursorPos = new Vector2();
 
-		private BirthdayHelper bdHelper;
-		private ModConfig config;
+		private BirthdayHelper? bdHelper;
+		private ModConfig? config;
 
-		private Texture2D iconTexture;
+		private Texture2D? iconTexture;
 		private readonly string assetName = PathUtilities.NormalizeAssetName("Traktori.ShowBirthdays/Icon");
-		private readonly string iconPath = "assets/Icon.png";
+		private readonly string iconPath = Path.Combine("assets", "Icon.png");
 
 
 		public override void Entry(IModHelper helper)
 		{
+			helper.Events.Content.AssetRequested += OnAssetRequested;
 			helper.Events.Display.MenuChanged += OnMenuChanged;
 			helper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
 			helper.Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
@@ -52,25 +54,16 @@ namespace ShowBirthdays
 		}
 
 
-		/// <summary>
-		/// Get whether this instance can load the initial version of the given asset.
-		/// </summary>
-		public bool CanLoad<T>(IAssetInfo asset)
+		private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
 		{
-			return asset.AssetNameEquals(assetName);
+			if (e.Name.IsEquivalentTo(assetName))
+			{
+				e.LoadFromModFile<Texture2D>(iconPath, AssetLoadPriority.Low);
+			}
 		}
 
 
-		/// <summary>
-		/// Load a matched asset.
-		/// </summary>
-		public T Load<T>(IAssetInfo asset)
-		{
-			return Helper.Content.Load<T>(iconPath, ContentSource.ModFolder);
-		}
-
-
-		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
 			// Load the config for generic mod config menu
 			config = Helper.ReadConfig<ModConfig>();
@@ -116,7 +109,7 @@ namespace ShowBirthdays
 		}
 
 
-		private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+		private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
 		{
 			// Unsubscribe from the events to reduce unnecessary event checks
 			Helper.Events.Input.ButtonPressed -= OnButtonPressed;
@@ -124,10 +117,10 @@ namespace ShowBirthdays
 		}
 
 
-		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+		private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
 		{
 			// Initialize the helper
-			bdHelper = new BirthdayHelper(Monitor, Helper.ModRegistry);
+			bdHelper = new BirthdayHelper(Monitor, Helper.ModRegistry, Helper.GameContent);
 			// Refresh the config
 			config = Helper.ReadConfig<ModConfig>();
 
@@ -135,7 +128,7 @@ namespace ShowBirthdays
 			ChangeCycleType(config.cycleType);
 
 			// Load the icon from the mod folder
-			iconTexture = Game1.content.Load<Texture2D>(assetName);
+			iconTexture = Helper.GameContent.Load<Texture2D>(assetName);
 
 			// Check if the loading succeeded
 			if (iconTexture == null)
@@ -148,21 +141,21 @@ namespace ShowBirthdays
 		/// <summary>
 		/// Edits the calendar's hover texts to include extra birthdays.
 		/// </summary>
-		private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+		private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
 		{
 			if (!IsCalendarActive(e.NewMenu))
 			{
 				return;
 			}
 
-			bdHelper.RecheckBirthdays();
+			bdHelper!.RecheckBirthdays();
 
 			// List of all the birthday days for the season
 			List<int> list = bdHelper.GetDays(Game1.currentSeason);
 
 			// Get the calendar's days since the menu is quaranteed to be the calendar
-			Billboard billboard = e.NewMenu as Billboard;
-			List<ClickableTextureComponent> days = billboard.calendarDays;
+			Billboard? billboard = e.NewMenu as Billboard;
+			List<ClickableTextureComponent> days = billboard!.calendarDays;
 
 			// NOTE: Remember that i goes from 1 to 28, so substract 1 from it to use as the index!
 			for (int i = 1; i <= days.Count; i++)
@@ -188,7 +181,7 @@ namespace ShowBirthdays
 				}
 
 				// Get the list of all NPCs with the birthday and add them to the hover text
-				List<NPC> listOfNPCs = bdHelper.GetNpcs(Game1.currentSeason, i);
+				List<NPC>? listOfNPCs = bdHelper.GetNpcs(Game1.currentSeason, i);
 
 				if (listOfNPCs != null)
 				{
@@ -201,7 +194,15 @@ namespace ShowBirthdays
 
 						NPC n = listOfNPCs[j];
 						// Build the hover text just like in the base game. I'm not touching that.
-						newHoverText += (n.displayName.Last() != 's' && (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.de || (n.displayName.Last() != 'x' && n.displayName.Last() != 'ß' && n.displayName.Last() != 'z'))) ? Game1.content.LoadString("Strings\\UI:Billboard_Birthday", n.displayName) : Game1.content.LoadString("Strings\\UI:Billboard_SBirthday", n.displayName);
+						// Old line before getting rid of Linq:
+						// newHoverText += (n.displayName.Last() != 's' && (LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.de || (n.displayName.Last() != 'x' && n.displayName.Last() != 'ß' && n.displayName.Last() != 'z'))) ? Game1.content.LoadString("Strings\\UI:Billboard_Birthday", n.displayName) : Game1.content.LoadString("Strings\\UI:Billboard_SBirthday", n.displayName);
+
+						char last = n.displayName[n.displayName.Length - 1];
+
+						newHoverText +=
+							(last == 's'
+							|| (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.de && (last == 'x' || last == 'ß' || last == 'z')))
+							? Game1.content.LoadString("Strings\\UI:Billboard_SBirthday", n.displayName) : Game1.content.LoadString("Strings\\UI:Billboard_Birthday", n.displayName);
 					}
 				}
 				else
@@ -242,23 +243,23 @@ namespace ShowBirthdays
 		/// <summary>
 		/// Changes the NPC sprites according to the selected cycle type
 		/// </summary>
-		private void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
+		private void OnRenderingActiveMenu(object? sender, RenderingActiveMenuEventArgs e)
 		{
 			if (!IsCalendarActive(Game1.activeClickableMenu))
 				return;
 
-			if (currentCycle < config.cycleDuration)
+			if (currentCycle < config!.cycleDuration)
 				currentCycle++;
 
 			// Get birthday days that are shared
-			List<int> listOfDays = bdHelper.GetDays(Game1.currentSeason, true);
+			List<int> listOfDays = bdHelper!.GetDays(Game1.currentSeason, true);
 
 			if (listOfDays.Count == 0)
 				return;
 
 			// Get the calendar's days since the menu is quaranteed to be the calendar
-			Billboard billboard = Game1.activeClickableMenu as Billboard;
-			List<ClickableTextureComponent> days = billboard.calendarDays;
+			Billboard? billboard = Game1.activeClickableMenu as Billboard;
+			List<ClickableTextureComponent> days = billboard!.calendarDays;
 
 			switch (cycleType)
 			{
@@ -314,22 +315,22 @@ namespace ShowBirthdays
 		/// <summary>
 		/// Draws the icon for shared birthdays and redraws the cursor and hover text
 		/// </summary>
-		private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+		private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
 		{
-			if (!config.showIcon || !IsCalendarActive(Game1.activeClickableMenu))
+			if (!config!.showIcon || !IsCalendarActive(Game1.activeClickableMenu))
 				return;
 
 			// Get birthday days that are shared
-			List<int> listOfDays = bdHelper.GetDays(Game1.currentSeason, true);
+			List<int> listOfDays = bdHelper!.GetDays(Game1.currentSeason, true);
 
 			if (listOfDays.Count == 0)
 				return;
 
 			// Get the calendar's days since the menu is quaranteed to be the calendar
-			Billboard billboard = Game1.activeClickableMenu as Billboard;
-			List<ClickableTextureComponent> days = billboard.calendarDays;
+			Billboard? billboard = Game1.activeClickableMenu as Billboard;
+			List<ClickableTextureComponent> days = billboard!.calendarDays;
 
-			int offsetX = iconTexture.Width * Game1.pixelZoom;
+			int offsetX = iconTexture!.Width * Game1.pixelZoom;
 			int offsetY = iconTexture.Height * Game1.pixelZoom;
 
 			for (int i = 0; i < listOfDays.Count; i++)
@@ -357,7 +358,7 @@ namespace ShowBirthdays
 		/// <summary>
 		/// Handles changing the sprite if the day as clicked
 		/// </summary>
-		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+		private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
 		{
 			if (!calendarOpen || cycleType != CycleType.Click)
 				return;
@@ -365,7 +366,7 @@ namespace ShowBirthdays
 			if (e.Button == SButton.MouseLeft)
 			{
 				// Dangerous conversion, but calendarOpen should prevent problems for now
-				List<ClickableTextureComponent> days = (Game1.activeClickableMenu as Billboard).calendarDays;
+				List<ClickableTextureComponent> days = (Game1.activeClickableMenu as Billboard)!.calendarDays;
 
 				if (days == null || days.Count < 28)
 				{
@@ -395,7 +396,7 @@ namespace ShowBirthdays
 		/// Tracks the cursor position to change the sprite if hovered over
 		/// TODO: Broken for 1.5.6 for some reason. Did the ui scaling get fixed/changed or something?
 		/// </summary>
-		private void OnCursorMoved(object sender, CursorMovedEventArgs e)
+		private void OnCursorMoved(object? sender, CursorMovedEventArgs e)
 		{
 			if (cycleType != CycleType.Hover || !calendarOpen)
 				return;
@@ -411,7 +412,7 @@ namespace ShowBirthdays
 		/// <summary>
 		/// Checks if the birthday calendar is active and updates the flag for it
 		/// </summary>
-		private bool IsCalendarActive(IClickableMenu activeMenu)
+		private bool IsCalendarActive([NotNullWhen(true)] IClickableMenu? activeMenu)
 		{
 			// Set to false by default to avoid repeating and switch to true at the end if everything was okay
 			calendarOpen = false;
@@ -451,7 +452,7 @@ namespace ShowBirthdays
 			Helper.Events.Input.CursorMoved -= OnCursorMoved;
 
 			//Change the cycle type and subscribe to the correct events to prevent unnecessary event checks
-			config.cycleType = newType;
+			config!.cycleType = newType;
 
 			switch (newType)
 			{
@@ -478,13 +479,15 @@ namespace ShowBirthdays
 		{
 			// Reference to the monitor to allow error logging
 			private readonly IMonitor monitor;
+			private readonly IGameContentHelper contentHelper;
 			private readonly IModRegistry modRegistry;
 			public List<Birthday>[] birthdays = new List<Birthday>[4];
 
 
-			public BirthdayHelper(IMonitor m, IModRegistry mr)
+			public BirthdayHelper(IMonitor m, IModRegistry mr, IGameContentHelper helper)
 			{
 				monitor = m;
+				contentHelper = helper;
 				modRegistry = mr;
 
 				// Initialize the array of lists
@@ -506,16 +509,16 @@ namespace ShowBirthdays
 
 				if (modRegistry.IsLoaded("Esca.CustomNPCExclusions"))
 				{
-					IModInfo modInfo = modRegistry.Get("Esca.CustomNPCExclusions");
+					IModInfo? modInfo = modRegistry.Get("Esca.CustomNPCExclusions");
 
 					// Is the version new enough to contain the calendar exclusion
-					if (modInfo.Manifest.Version.CompareTo(new SemanticVersion("1.4.0")) >= 0)
+					if (modInfo!.Manifest.Version.CompareTo(new SemanticVersion("1.4.0")) >= 0)
 					{
 						monitor.Log("Custom NPC Exclusions 1.4.0 or newer found.");
 
 						try
 						{
-							exclusionRules = Game1.content.Load<Dictionary<string, string>>("Data/CustomNPCExclusions");
+							exclusionRules = contentHelper.Load<Dictionary<string, string>>("Data/CustomNPCExclusions");
 							exclusionRulesFound = true;
 						}
 						catch (Exception e)
@@ -526,6 +529,7 @@ namespace ShowBirthdays
 				}
 
 				// Loop through all of the NPCs, filter out characters that don't have a proper birthday
+				// TODO: Switch to HarmonyPatch_BirthdayCalendar.IncludeBirthday in custom npc exclusions instead of straight from the exclusions rules?
 				foreach (NPC n in Utility.getAllCharacters())
 				{
 					// Checking for 0 should eliminate a lot of the non-friendable NPCs, needs verification
@@ -537,7 +541,7 @@ namespace ShowBirthdays
 						if (exclusionRulesFound)
 						{
 							// Try if the NPC's name is in the rules
-							if (exclusionRules.TryGetValue(n.Name, out string s1))
+							if (exclusionRules.TryGetValue(n.Name, out string? s1))
 							{
 								// Entry found, split it into the different rules
 								string[] rules = s1.Split(' ', ',', '/');
@@ -589,7 +593,7 @@ namespace ShowBirthdays
 			/// </summary>
 			internal void AddBirthday(string season, int birthday, NPC n)
 			{
-				List<Birthday> list = GetListOfBirthdays(season);
+				List<Birthday>? list = GetListOfBirthdays(season);
 
 				if (list == null)
 				{
@@ -598,12 +602,12 @@ namespace ShowBirthdays
 				}
 
 				// null if birthday hasn't been added
-				Birthday day = list.Find(x => x.day == birthday);
+				Birthday? day = list.Find(x => x.day == birthday);
 
 				if (day == null)
 				{
 					// Add the birthday
-					Birthday newDay = new Birthday(monitor, birthday);
+					Birthday newDay = new Birthday(monitor, birthday, contentHelper);
 					newDay.AddNPC(n);
 					list.Add(newDay);
 				}
@@ -623,7 +627,7 @@ namespace ShowBirthdays
 			/// <returns></returns>
 			public List<int> GetDays(string season, bool onlyShared = false)
 			{
-				List<Birthday> list = GetListOfBirthdays(season);
+				List<Birthday>? list = GetListOfBirthdays(season);
 
 				List<int> days = new List<int>();
 
@@ -643,9 +647,9 @@ namespace ShowBirthdays
 			/// <summary>
 			/// Returns the list of NPCs that have the given birthday. Returns null if no NPC matches the date.
 			/// </summary>
-			internal List<NPC> GetNpcs(string season, int day)
+			internal List<NPC>? GetNpcs(string season, int day)
 			{
-				Birthday birthday = GetBirthday(season, day);
+				Birthday? birthday = GetBirthday(season, day);
 
 				if (birthday == null)
 					return null;
@@ -657,9 +661,9 @@ namespace ShowBirthdays
 			/// <summary>
 			/// Returns the birthday object if it exists
 			/// </summary>
-			private Birthday GetBirthday(string season, int day)
+			private Birthday? GetBirthday(string season, int day)
 			{
-				List<Birthday> list = GetListOfBirthdays(season);
+				List<Birthday>? list = GetListOfBirthdays(season);
 
 				if (list == null)
 					return null;
@@ -671,7 +675,7 @@ namespace ShowBirthdays
 			/// <summary>
 			/// Returns the list of Birthdays for the given season. Returns null if such list was not found.
 			/// </summary>
-			private List<Birthday> GetListOfBirthdays(string season)
+			private List<Birthday>? GetListOfBirthdays(string season)
 			{
 				try
 				{
@@ -693,9 +697,13 @@ namespace ShowBirthdays
 			/// <param name="season">Season</param>
 			/// <param name="day">Day</param>
 			/// <param name="nextInCycle">Get next available sprite</param>
-			internal Texture2D GetSprite(string season, int day, bool nextInCycle)
+			internal Texture2D? GetSprite(string season, int day, bool nextInCycle)
 			{
-				Birthday birthday = GetBirthday(season, day);
+				Birthday? birthday = GetBirthday(season, day);
+
+				if (birthday is null)
+					return null;
+
 				return birthday.GetSprite(nextInCycle);
 			}
 		}
@@ -712,10 +720,12 @@ namespace ShowBirthdays
 			private int currentSpriteIndex = 0;
 			// Reference to the outer class to allow error logging
 			private readonly IMonitor monitor;
+			private readonly IGameContentHelper contentHelper;
 
-			public Birthday(IMonitor m, int day)
+			public Birthday(IMonitor m, int day, IGameContentHelper h)
 			{
 				monitor = m;
+				contentHelper = h;
 				this.day = day;
 			}
 
@@ -736,7 +746,7 @@ namespace ShowBirthdays
 			/// Return the NPC sprite
 			/// </summary>
 			/// <param name="incrementSpriteIndex">Select the next available sprite</param>
-			internal Texture2D GetSprite(bool incrementSpriteIndex)
+			internal Texture2D? GetSprite(bool incrementSpriteIndex)
 			{
 				NPC n;
 
@@ -771,7 +781,7 @@ namespace ShowBirthdays
 				// How the base game handles getting the sprite
 				try
 				{
-					texture = Game1.content.Load<Texture2D>("Characters\\" + n.getTextureName());
+					texture = contentHelper.Load<Texture2D>("Characters\\" + n.getTextureName());
 				}
 				catch (Exception)
 				{

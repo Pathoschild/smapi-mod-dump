@@ -32,6 +32,42 @@ namespace CustomNPCExclusions
         }
 
         /// <summary>Inserts a call to <see cref="IncludeBirthday"/> when the constructor chooses birthdays to display.</summary>
+        /// <remarks>
+        /// Old C#:
+        ///     if (k.isVillager() && k.Birthday_Season != null && k.Birthday_Season.Equals(Game1.currentSeason) && ...
+        ///     
+        /// New C#:
+        ///     if (k.isVillager() && IncludeBirthday(k) && k.Birthday_Season != null && k.Birthday_Season.Equals(Game1.currentSeason) && ...
+        ///     
+        /// Old IL:
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     callvirt System.Boolean StardewValley.NPC::isVillager()
+        ///     brfalse Label5
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     callvirt System.String StardewValley.NPC::get_Birthday_Season()
+        ///     brfalse Label6
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     callvirt System.String StardewValley.NPC::get_Birthday_Season()
+        ///     ldsfld System.String StardewValley.Game1::currentSeason
+        ///     callvirt virtual System.Boolean System.String::Equals(System.String value)
+        ///     brfalse.s Label7
+        ///     
+        /// New IL:
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     callvirt System.Boolean StardewValley.NPC::isVillager()
+        ///     brfalse Label5
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     call static System.Boolean CustomNPCExclusions.HarmonyPatch_BirthdayCalendar::IncludeBirthday(StardewValley.NPC npc)
+        ///     brfalse Label6
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     callvirt System.String StardewValley.NPC::get_Birthday_Season()
+        ///     brfalse Label6
+        ///     ldloc.s 4 (StardewValley.NPC)
+        ///     callvirt System.String StardewValley.NPC::get_Birthday_Season()
+        ///     ldsfld System.String StardewValley.Game1::currentSeason
+        ///     callvirt virtual System.Boolean System.String::Equals(System.String value)
+        ///     brfalse.s Label7
+        /// </remarks>
         public static IEnumerable<CodeInstruction> Billboard_Constructor(IEnumerable<CodeInstruction> instructions)
         {
             try

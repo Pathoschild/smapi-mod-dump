@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11857
+IDs: Shockah.SafeLightning
+update keys: Nexus:11857, GitHub:Shockah/Stardew-Valley-Mods

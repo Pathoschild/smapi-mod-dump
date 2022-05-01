@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;
@@ -27,7 +29,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             new Recipe(
                 input: item => Utility.IsGeode(item, disallow_special_geodes: true),
                 inputCount: 1,
-                output: input => (SObject)Utility.getTreasureFromGeode(input),
+                output: Utility.getTreasureFromGeode,
                 minutes: _ => 60
             )
         };

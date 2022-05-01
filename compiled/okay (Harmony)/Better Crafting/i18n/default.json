@@ -32,6 +32,9 @@
 	"setting.suppress": "Disable Key",
 	"setting.suppress.tip": "When this key is held and you open a crafting menu, Better Crafting will not replace it.",
 
+	"setting.key.modifier": "Modifier Key",
+	"setting.key.modifier.tip": "Hold this key to modify the action performed by another key when available.",
+
 	"setting.key.search": "Search Key",
 	"setting.key.search.tip": "Press this key to open a search for filtering the displayed recipes.",
 
@@ -84,6 +87,28 @@
 	"setting.nearby.floors": "Flooring",
 	"setting.nearby.other": "Other Examples",
 
+	"setting.transfer": "Transfer to Storage",
+	"setting.transfer.about": "This feature allows you to quickly store items from your inventory into chests connected to a Workbench or your kitchen. Matching items get placed in appropriate chests, similar to Add to Existing Stacks.",
+
+	"setting.transfer.enable": "Enable Transfer to Storage",
+
+	"setting.transfer.action": "Action ({{binding}})",
+	"setting.transfer.action-modifier": "Action with Modifier",
+	"setting.transfer.use-tool": "Use Tool ({{binding}})",
+	"setting.transfer.use-tool-modifier": "Use Tool with Modifier",
+
+	"setting.transfer.behavior": "Mode",
+
+	"setting.transfer.behavior.none": "Do Nothing",
+	"setting.transfer.behavior.all": "Transfer All",
+	"setting.transfer.behavior.all-quantity": "Transfer All But Quantity",
+	"setting.transfer.behavior.quantity": "Transfer Quantity",
+	"setting.transfer.behavior.half": "Transfer Half",
+
+	"setting.transfer.quantity": "Quantity",
+	"setting.transfer.quantity.tip": "The quantity to transfer if using \"Transfer Quantity\" or the amount to leave behind if using \"Transfer All But Quantity\".",
+
+
 	// Quality
 
 	"setting.quality": "Quality",
@@ -125,6 +150,17 @@
 	"tooltip.toggle-recipe": "Toggle in Category",
 	"tooltip.use-as-icon": "Use as Icon",
 
+	"tooltip.transfer.to": "Add Items to Storage",
+	"tooltip.transfer.to-item": "Add Held Item to Storage",
+
+	"tooltip.transfer.from": "Fill Items from Storage",
+	"tooltip.transfer.from-item": "Fill Held Item from Storage",
+
+	"tooltip.transfer.all": "Transfer All",
+	"tooltip.transfer.but-quantity": "Transfer All But {{count}}",
+	"tooltip.transfer.half": "Transfer Half",
+	"tooltip.transfer.quantity": "Transfer {{count}}",
+
 	// Buttons
 	"tooltip.edit-mode": "Edit Categories",
 	"tooltip.favorites": "Only Show Favorites",
@@ -148,6 +184,8 @@
 	"tooltip.quality.iridium": "Use any quality items.",
 
 	"tooltip.quality-unsupported": "This recipe does not support quality settings.",
+
+	"ingredient.error": "Invalid Ingredient",
 
 	// Bulk Crafting
 	"bulk.crafting": "Bulk Crafting",

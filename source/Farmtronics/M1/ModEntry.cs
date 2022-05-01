@@ -40,7 +40,7 @@ namespace Farmtronics
 			helper.Events.GameLoop.Saved += this.OnSaved;
 			helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
 			helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-
+			
 			print($"CurrentSavePath: {Constants.CurrentSavePath}");
 		}
 
@@ -155,44 +155,28 @@ namespace Farmtronics
 					break;
 				}
 			}
+
+			// Initialize the home computer and all bots for autostart.
+			// This initialization will also cause all startup scripts to run.
+			InitComputerShell();
+			Bot.InitShellAll();
 		}
 
-		private void PresentComputer() {
+		/// <summary>
+		/// Initializes the home computer shell.
+		/// Effectively boots up the home computer if it is not already running.
+		/// </summary>
+		private void InitComputerShell() {
 			if (shell == null) {
 				shell = new Shell();
 				shell.Init();
 			}
+		}
+
+		private void PresentComputer() {
+			// Initialize the home computer if it is not already running, then present it.
+			InitComputerShell();
 			shell.console.Present();
-
-			/*
-			var farm = (Farm)Game1.getLocationFromName("Farm");
-
-			var layer = farm.map.Layers[0];
-			shell.PrintLine($"Farm size: {layer.LayerWidth} x {layer.LayerHeight}");
-			shell.PrintLine($"Farm animals: {farm.getAllFarmAnimals().Count}");
-			shell.PrintLine($"Buildings: {farm.buildings.Count}");
-
-			int featureCount = 0;
-			int trees=0, bushes=0, grasses=0, hoeDirts=0, paths=0;
-			var hoeLocs = new List<string>();
-			foreach (KeyValuePair<Vector2, TerrainFeature> kvp in farm.terrainFeatures.Pairs) {
-				if (kvp.Value is Tree) trees++;
-				else if (kvp.Value is Bush) bushes++;
-				else if (kvp.Value is Grass) grasses++;
-				else if (kvp.Value is HoeDirt) {
-					hoeDirts++;
-					hoeLocs.Add(kvp.Key.ToString());	// locations are integers, X right and Y down from top-left
-				}
-				else if (kvp.Value is Flooring) paths++;
-				featureCount++;
-			}
-			shell.PrintLine($"Trees: {trees}");
-			shell.PrintLine($"Bushes: {bushes}");
-			shell.PrintLine($"Grass: {grasses}");
-			shell.PrintLine($"Tilled Ground: {hoeDirts}");// at: {string.Join(',', hoeLocs)}");
-			shell.PrintLine($"Paved: {paths}");
-			shell.PrintLine($"Total features: {featureCount}");
-			*/
 		}
 
 		bool IAssetEditor.CanEdit<T>(IAssetInfo asset) {

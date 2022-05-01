@@ -12,5 +12,8 @@
   "ColorVariation": 50,
   "SizeVariation": 20,
   "FruitSpawnBufferX": 5,
-  "FruitSpawnBufferY": 40
+  "FruitSpawnBufferY": 40,
+  "DaysUntilSilverFruit": 112,
+  "DaysUntilGoldFruit": 224,
+  "DaysUntilIridiumFruit": 336
 }

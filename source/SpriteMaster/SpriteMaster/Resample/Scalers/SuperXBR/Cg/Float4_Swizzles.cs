@@ -8,12 +8,13 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 
 partial struct Float4 {
-	internal readonly unsafe ref Float3 XYZ => ref *(Float3 *)Unsafe.AsPointer(ref Unsafe.AsRef(this));
+	internal readonly unsafe ref Float3 XYZ => ref *(Float3*)Unsafe.AsPointer(ref Unsafe.AsRef(this));
 	internal readonly ref Float3 RGB => ref XYZ;
 
 	// 2 component
@@ -37,3 +38,4 @@ partial struct Float4 {
 	internal readonly Float2 WZ => (W, Z);
 	internal readonly Float2 WW => (W, W);
 }
+#endif

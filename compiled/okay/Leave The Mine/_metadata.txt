@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11823
+IDs: Kangzoel.LeaveTheMine
+update keys: Nexus:11823

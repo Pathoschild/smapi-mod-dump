@@ -246,6 +246,7 @@ namespace Shockah.MachineStatus
 			helper.AddKeybindList("config.appearance.visibilityKeybind", () => Config.VisibilityKeybind);
 			helper.AddNumberOption("config.appearance.alpha.focused", () => Config.FocusedAlpha, min: 0f, max: 1f, interval: 0.05f);
 			helper.AddNumberOption("config.appearance.alpha.normal", () => Config.NormalAlpha, min: 0f, max: 1f, interval: 0.05f);
+			helper.AddBoolOption("config.appearance.busyDancing", () => Config.BusyDancing);
 
 			helper.AddSectionTitle("config.groupingSorting.section");
 			helper.AddEnumOption("config.groupingSorting.grouping", () => Config.Grouping);
@@ -422,8 +423,12 @@ namespace Shockah.MachineStatus
 				var machineLocation = panelLocation + machineUnscaledOffset * Config.Scale;
 				var machineState = GetMachineState(machine);
 
-				Vector2 scaleFactor = (SingleMachineSize + machine.getScale() * new Vector2(3f, 1f)) / SingleMachineSize;
-				scaleFactor = new Vector2(scaleFactor.X, 1f / scaleFactor.Y);
+				Vector2 scaleFactor = Vector2.One;
+				if (Config.BusyDancing)
+				{
+					scaleFactor = (SingleMachineSize + machine.getScale() * new Vector2(3f, 1f)) / SingleMachineSize;
+					scaleFactor = new Vector2(scaleFactor.X, 1f / scaleFactor.Y);
+				}
 				ItemRenderer.DrawItem(
 					e.SpriteBatch, machine,
 					machineLocation + new Vector2((SingleMachineSize.X - RealSingleMachineSize.X) / 2, 0) * Config.Scale, RealSingleMachineSize * Config.Scale,
@@ -843,6 +848,9 @@ namespace Shockah.MachineStatus
 			if (machine is CrabPot crabPot)
 				if (crabPot.bait.Value is not null && crabPot.heldObject.Value is null)
 					return MachineState.Busy;
+			if (machine is WoodChipper woodChipper)
+				if (woodChipper.depositedItem.Value is not null && woodChipper.heldObject.Value is null)
+					return MachineState.Busy;
 			return GetMachineState(machine.readyForHarvest.Value, machine.MinutesUntilReady, machine.GetAnyHeldObject());
 		}
 
@@ -867,9 +875,15 @@ namespace Shockah.MachineStatus
 
 		private bool IsMachine(GameLocation location, SObject @object)
 		{
-			if (!@object.bigCraftable.Value && @object.Category != SObject.BigCraftableCategory && @object is not CrabPot)
-				return false;
+			if (@object is CrabPot || @object is WoodChipper)
+				return true;
 			if (@object.IsSprinkler())
+				return false;
+			if (!@object.bigCraftable.Value && @object.Category != SObject.BigCraftableCategory)
+				return false;
+			if (@object.ParentSheetIndex <= 0)
+				return false;
+			if (@object.heldObject.Value is Chest || @object.heldObject.Value?.Name == "Chest")
 				return false;
 			return true;
 		}
@@ -879,7 +893,11 @@ namespace Shockah.MachineStatus
 			var newState = GetMachineState(machine);
 			var locationDescriptor = LocationDescriptor.Create(location);
 			var existingEntry = HostMachines.FirstOrNull(e => e.location == locationDescriptor && e.machine.Name == machine.Name && e.machine.TileLocation == machine.TileLocation);
-			if (existingEntry is not null)
+			if (existingEntry is null)
+			{
+				Monitor.Log($"Added {newState} machine {{Name: {machine.Name}, DisplayName: {machine.DisplayName}, Type: {machine.GetType().GetBestName()}}} in location {locationDescriptor}", LogLevel.Trace);
+			}
+			else
 			{
 				if (existingEntry.Value.state == newState)
 					return false;
@@ -905,6 +923,7 @@ namespace Shockah.MachineStatus
 					() => NetMessage.MachineRemove.Create(location, machine),
 					new[] { ModManifest.UniqueID }
 				);
+				Monitor.Log($"Removed {existingEntry.Value.state} machine {{Name: {machine.Name}, DisplayName: {machine.DisplayName}, Type: {machine.GetType().GetBestName()}}} in location {locationDescriptor}", LogLevel.Trace);
 				AreVisibleMachinesDirty = true;
 			}
 			return existingEntry is not null;

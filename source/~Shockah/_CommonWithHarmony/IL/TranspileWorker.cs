@@ -52,6 +52,25 @@ namespace Shockah.CommonModCode.IL
 			return null;
 		}
 
+		public static TranspileWorker? FindInstructionsBackwards(IList<CodeInstruction> instructions, IList<Func<CodeInstruction, bool>> instructionsToFind, int? endIndex = null, int? startIndex = null, int occurence = 1)
+		{
+			var minIndex = (startIndex ?? 0) + instructionsToFind.Count - 1;
+			var intEndIndex = endIndex ?? instructions.Count - 1;
+			for (int index = intEndIndex; index >= minIndex; index--)
+			{
+				for (int toFindIndex = instructionsToFind.Count - 1; toFindIndex >= 0; toFindIndex--)
+				{
+					if (!instructionsToFind[toFindIndex](instructions[index + toFindIndex]))
+						goto continueOuter;
+				}
+
+				if (--occurence == 0)
+					return new TranspileWorker(instructions, index, instructionsToFind.Count);
+				continueOuter:;
+			}
+			return null;
+		}
+
 		public CodeInstruction this[int index]
 		{
 			get => Instructions[index + this.Index];

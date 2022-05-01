@@ -8,6 +8,51 @@ for queries and analysis.**
 
 # Changelog
 
+## 1.0.0
+Released April 26th, 2022.
+
+### New Features
+
+* Added a button to transfer items from your inventory into all the
+  chests connected to a workbench / kitchen. This is like a chest's
+  "Add to Existing Stacks" button, but for a lot of chests at once.
+
+### Fixes
+
+* Improve error checking for recipes, since a lot of mods unfortunately
+  introduce recipes with data errors.
+* Stop repositioning the mouse cursor when using a gamepad and exiting
+  the menu.
+* Draw better tooltips when a recipe doesn't have ingredients.
+
+### API Changes
+
+* Improve support for custom recipes not based on an existing vanilla
+  `CraftingRecipe`, including support for recipes that don't produce
+  items at all.
+* The API now provides convenience methods for creating simple ingredients
+  so that external mods don't need to reinvent the wheel for basic tasks.
+* The API now provides convenience methods for creating simple recipes that
+  implement existing `CraftingRecipe`s with custom ingredients.
+* The API now lets mods create new default categories and add recipes to them.
+* Consolidate all interfaces used by the API into a single `.cs` file for easy
+  inclusion in other mods once SMAPI 3.14 is available.
+* Basically, a lot of API stuff happened and will be cool once 3.14 is out.
+
+### Optional Add-Ons
+
+* Created a new add-on for Better Crafting that lets you craft buildings via
+  the crafting menu. Buildings constructed this way are finished instantly.
+  Due to the somewhat cheaty nature of the add-on, it is not included by
+  default but available as an optional download.
+
+### Maintenance
+
+* All Better Crafting code, including the API, now uses nullable annotations
+  and file-scoped namespaces.
+* General code cleanup.
+
+
 ## 0.15.0
 Released March 15th, 2022.
 

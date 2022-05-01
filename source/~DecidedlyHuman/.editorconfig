@@ -3,11 +3,14 @@
 # You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
 [*.cs]
 
+# Rulers
+max_line_length = 120
+ruler = 120
 
 #Core editorconfig formatting - indentation
 
 #use soft tabs (spaces) for indentation
-indent_style = tab
+indent_style = space
 
 #Formatting - new line options
 
@@ -123,7 +126,6 @@ csharp_style_deconstructed_variable_declaration = true:suggestion
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 csharp_space_around_binary_operators = before_and_after
 csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:silent
-indent_size = tab
 tab_width = 4
 
 [*.{cs,vb}]
@@ -144,6 +146,7 @@ dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
 dotnet_style_prefer_compound_assignment = true:suggestion
 dotnet_style_prefer_simplified_interpolation = true:suggestion
 dotnet_style_namespace_match_folder = true:suggestion
+
 [*.{cs,vb}]
 #### Naming styles ####
 
@@ -173,7 +176,10 @@ dotnet_naming_symbols.types.required_modifiers =
 
 dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
 dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
-dotnet_naming_symbols.non_field_members.required_modifiers = 
+dotnet_naming_symbols.non_field_members.required_modifiers =
+
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
 
 # Naming styles
 
@@ -187,10 +193,7 @@ dotnet_naming_style.pascal_case.required_suffix =
 dotnet_naming_style.pascal_case.word_separator = 
 dotnet_naming_style.pascal_case.capitalization = pascal_case
 
-dotnet_naming_style.pascal_case.required_prefix = 
-dotnet_naming_style.pascal_case.required_suffix = 
-dotnet_naming_style.pascal_case.word_separator = 
-dotnet_naming_style.pascal_case.capitalization = pascal_case
+dotnet_naming_style.private_fields.capitalization = camel_case
 
 [*]
 
@@ -203,9 +206,8 @@ resharper_allow_comment_after_lbrace = true
 resharper_blank_lines_after_block_statements = 0
 resharper_blank_lines_after_control_transfer_statements = 1
 resharper_blank_lines_before_block_statements = 1
-resharper_csharp_alignment_tab_fill_style = use_tabs_only
 resharper_csharp_align_multiline_parameter = false
-resharper_csharp_indent_style = tab
+resharper_csharp_indent_style = space
 resharper_csharp_max_line_length = 380
 resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_enum_arrangement = false

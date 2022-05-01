@@ -25,7 +25,8 @@
                 // This key will only be called if the **group** PierreFamily goes to the Resort.
                 "Resort_Approach_PierreFamily": "Heya @, I'm going to be headed to Ginger Island with my family today. Not sure I'm looking forward to spending the day with my dad...",
                 "Resort_Approach_bandKids": "@! I'll be going to Ginger Island today with Sam and Sebastian! You wanna join us?",
-                "Resort_Left": "Ahh, nothing like a nice relaxing vacation...$h"
+                "Resort_Left": "Ahh, nothing like a nice relaxing vacation...$h",
+                "summerResort_Left": "Think I definitely got enough sun for today! Spent the entire day at the Resort...$h#$b#Gotta be careful not to get sunburned..."
             }
         },
         {
@@ -89,7 +90,8 @@
                 "Resort_AdventureReturn": "Well, that was fun. I'll see you at home, @?"
             },
             "When": {
-                "Relationship:Maru": "Married"
+                "Relationship:Maru": "Married",
+                "Hearts:Maru": "12,13,14"
             }
         },
         {
@@ -119,7 +121,7 @@
                 "Resort_AdventureReturn": "@! I had a great day today, did you? I'll see you at home!$l#$b#Don't stay out too late!",
                 //Resort_Antisocial temporarily removed until I can figure out what about IslandSoutheast makes NPCs vanish... :(
                 "Resort_Antisocial": "Oh, @, you've found me here. How are you today? The Resort is just a little too busy for me right now.",
-                "Resort_Pier": "This water is such a pretty shade of blue. @, would you be interested in going snorkeling one day?"
+                "Resort_Pier": "This water is such a pretty shade of blue. Say....@, would you be interested in going snorkeling one day?"
             },
             "When": {
                 "Relationship:Leah": "Married",
@@ -142,6 +144,7 @@
             "Target": "Characters/Dialogue/Jodi",
             "Entries": {
                 "Resort_Approach": "I'm definitely looking forward to going to the Resort today!$h",
+                "Resort_Approach_JodiFamily": "Looking forward to a great day at Ginger Island with my family today!#$b#Hopefully everyone will enjoy themselves...",
                 "Resort_Left": "Ahhh...I had a great day at the Resort!$h"
             }
         },
@@ -179,7 +182,9 @@
             "Target": "Characters/Dialogue/Haley",
             "Entries": {
                 "Resort_Pier": "Wish I brought my camera...#$e#Say, do you think Willy will let us go snorkeling?",
-                "Resort_Approach": "I'm going to be going on vacation today! Gonna be spending all day soaking up the sun.$h"
+                "Resort_Approach": "I'm going to be going on vacation today! Gonna be spending all day soaking up the sun.$h",
+                "winterResort_Approach": "@! I'm so excited to be going to Ginger Island today! I need some more sunlight in my life...",
+                "Resort_Approach_SistersAndSandy": "Oh @! I'm headed to Ginger Island today with my sister and Sandy! I'm so excited!"
             }
         },
         {
@@ -196,7 +201,8 @@
             "Action": "EditData",
             "Target": "Characters/Dialogue/Penny",
             "Entries": {
-                "Resort_Approach_PamFamily": "Convinced mom to go to Ginger Island with me today! I'm looking forward to spending some time with her."
+                "Resort_Approach_PamFamily": "Convinced mom to go to Ginger Island with me today! I'm looking forward to spending some time with her.",
+                "Resort_Approach_Bookworms": "Looking forward to spending the day with Maru today! We'll be going to Ginger Island.$h"
             }
         },
         {
@@ -205,9 +211,19 @@
             "Target": "Characters/Dialogue/Emily",
             "Entries": {
                 "Resort_IslandNorth": "Did you see those birds? Aren't they lovely?",
+                "Resort_Approach_SistersAndSandy": "Oh hey, @! I'm headed to Ginger Island today with my sister and Sandy!$h#$b#I don't get to hang out with Sandy often enough, she always has to take care of the store.",
                 "Resort_Left": "Ah, I'm so glad I got to go on vacation today!",
                 "Resort_Left4": "I had a great time today at Ginger Island. @, you should consider relaxing and taking a break more often?",
                 "winterResort_Left": "Brr! Town seems so cold after spending all day on Ginger Island!"
+            }
+        },
+        {
+            "LogName": "Sandy dialogue",
+            "Action": "EditData",
+            "Target": "Characters/Dialogue/Sandy",
+            "Entries":{
+                // Groups defined in content packs will also be used!
+                "Resort_Approach_SistersAndSandy": "@! I'll be headed to Ginger Island with Emily and Haley today. Will you join us there?"
             }
         }
     ]

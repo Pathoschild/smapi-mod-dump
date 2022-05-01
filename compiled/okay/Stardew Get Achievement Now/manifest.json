@@ -1,0 +1,8 @@
+﻿{
+	"Name": "StardewGetAchievementNow",
+	"Author": "Lake1059",
+	"Version": "2.1",
+	"UniqueID": "Lake1059.StardewGetAchievementNow",
+	"EntryDll": "StardewGetAchievementNow.dll",
+	"UpdateKeys": [ "Nexus:11515" ]
+}

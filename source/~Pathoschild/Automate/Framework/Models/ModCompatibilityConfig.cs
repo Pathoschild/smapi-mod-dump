@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.Automate.Framework.Models
 {
     /// <summary>Mod compatibility options.</summary>

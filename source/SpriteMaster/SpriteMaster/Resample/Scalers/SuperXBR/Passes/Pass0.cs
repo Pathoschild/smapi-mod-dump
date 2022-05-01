@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 using SpriteMaster.Types;
 using System;
@@ -53,7 +54,7 @@ sealed class Pass0 : Pass {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal void Pass(ReadOnlySpan<Float4> sourceData, Span<Float4> target) {
 		var source = new Texture(this, sourceData, SourceSize);
-		
+
 		for (int y = 0; y < TargetSize.Height; ++y) {
 			int yOffset = GetY(y, TargetSize) * TargetSize.Width;
 			for (int x = 0; x < TargetSize.Width; ++x) {
@@ -148,3 +149,4 @@ sealed class Pass0 : Pass {
 		}
 	}
 }
+#endif

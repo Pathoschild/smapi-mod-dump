@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11773
+IDs: aedenthorn.HarvestSeeds
+update keys: Nexus:11773, GitHub:aedenthorn/StardewValleyMods

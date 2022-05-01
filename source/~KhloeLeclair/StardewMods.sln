@@ -36,10 +36,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeeMeRollin", "SeeMeRollin\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ledger", "Ledger\Ledger.csproj", "{B255563F-7605-4271-80D2-688C1EE8347A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BCBuildings", "BCBuildings\BCBuildings.csproj", "{2481E747-58E1-4858-A4F1-4D533ABACE8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThemeManager", "ThemeManager\ThemeManager.csproj", "{93D485FD-4438-40D7-9725-C456159A1C72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThemeManagerExample", "ThemeManagerExample\ThemeManagerExample.csproj", "{55AAAC30-053E-44C8-9C86-87A3B90C29C1}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.projitems*{13180c19-64f0-4053-9fff-538b7b0b0855}*SharedItemsImports = 13
+		Common\Common.projitems*{55aaac30-053e-44c8-9c86-87a3b90c29c1}*SharedItemsImports = 5
 		Common\Common.projitems*{63a1eac9-1c94-4e38-8dde-11a03178bdd6}*SharedItemsImports = 5
+		Common\Common.projitems*{93d485fd-4438-40d7-9725-c456159a1c72}*SharedItemsImports = 5
 		Common\Common.projitems*{a06575c4-b53e-418a-8f57-b3d4b984d01c}*SharedItemsImports = 5
 		Common\Common.projitems*{a7b1618b-2a44-438a-b600-771b6048b1fa}*SharedItemsImports = 5
 		Common\Common.projitems*{b107224e-dcfb-437c-86b0-bf63d4b9324b}*SharedItemsImports = 5
@@ -84,6 +92,18 @@ Global
 		{B255563F-7605-4271-80D2-688C1EE8347A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B255563F-7605-4271-80D2-688C1EE8347A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B255563F-7605-4271-80D2-688C1EE8347A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2481E747-58E1-4858-A4F1-4D533ABACE8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2481E747-58E1-4858-A4F1-4D533ABACE8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2481E747-58E1-4858-A4F1-4D533ABACE8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2481E747-58E1-4858-A4F1-4D533ABACE8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93D485FD-4438-40D7-9725-C456159A1C72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93D485FD-4438-40D7-9725-C456159A1C72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93D485FD-4438-40D7-9725-C456159A1C72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93D485FD-4438-40D7-9725-C456159A1C72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55AAAC30-053E-44C8-9C86-87A3B90C29C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55AAAC30-053E-44C8-9C86-87A3B90C29C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55AAAC30-053E-44C8-9C86-87A3B90C29C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55AAAC30-053E-44C8-9C86-87A3B90C29C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Microsoft.Xna.Framework;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework

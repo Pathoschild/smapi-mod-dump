@@ -8,11 +8,10 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Xna.Framework;
 
@@ -21,65 +20,89 @@ using Leclair.Stardew.Common.Inventory;
 using StardewValley;
 using StardewValley.Network;
 
-namespace Leclair.Stardew.BetterCrafting.Models {
-	public class ModInventoryProvider : IInventoryProvider  {
+namespace Leclair.Stardew.BetterCrafting.Models;
 
-		private readonly Func<object, GameLocation, Farmer, bool> canExtractItems;
-		private readonly Func<object, GameLocation, Farmer, bool> canInsertItems;
-		private readonly Action<object, GameLocation, Farmer> cleanInventory;
-		private readonly Func<object, GameLocation, Farmer, int> getActualCapacity;
-		private readonly Func<object, GameLocation, Farmer, IList<Item>> getItems;
-		private readonly Func<object, GameLocation, Farmer, Rectangle?> getMultiTileRegion;
-		private readonly Func<object, GameLocation, Farmer, Vector2?> getTilePosition;
-		private readonly Func<object, GameLocation, Farmer, NetMutex> getMutex;
-		private readonly Func<object, GameLocation, Farmer, bool> isValid;
+public class ModInventoryProvider : IInventoryProvider  {
 
-		public ModInventoryProvider(Func<object, GameLocation, Farmer, bool> canExtractItems, Func<object, GameLocation, Farmer, bool> canInsertItems, Action<object, GameLocation, Farmer> cleanInventory, Func<object, GameLocation, Farmer, int> getActualCapacity, Func<object, GameLocation, Farmer, IList<Item>> getItems, Func<object, GameLocation, Farmer, Rectangle?> getMultiTileRegion, Func<object, GameLocation, Farmer, Vector2?> getTilePosition, Func<object, GameLocation, Farmer, NetMutex> getMutex, Func<object, GameLocation, Farmer, bool> isValid) {
-			this.canExtractItems = canExtractItems;
-			this.canInsertItems = canInsertItems;
-			this.cleanInventory = cleanInventory;
-			this.getActualCapacity = getActualCapacity;
-			this.getItems = getItems;
-			this.getMultiTileRegion = getMultiTileRegion;
-			this.getTilePosition = getTilePosition;
-			this.getMutex = getMutex;
-			this.isValid = isValid;
-		}
+	private readonly Func<object, GameLocation?, Farmer?, bool>? canExtractItems;
+	private readonly Func<object, GameLocation?, Farmer?, bool>? canInsertItems;
+	private readonly Action<object, GameLocation?, Farmer?>? cleanInventory;
+	private readonly Func<object, GameLocation?, Farmer?, int>? getActualCapacity;
+	private readonly Func<object, GameLocation?, Farmer?, IList<Item?>?>? getItems;
+	private readonly Func<object, GameLocation?, Farmer?, Item, bool>? isItemValid;
+	private readonly Func<object, GameLocation?, Farmer?, Rectangle?>? getMultiTileRegion;
+	private readonly Func<object, GameLocation?, Farmer?, Vector2?>? getTilePosition;
+	private readonly Func<object, GameLocation?, Farmer?, NetMutex?>? getMutex;
+	private readonly Func<object, GameLocation?, Farmer?, bool>? isMutexRequired;
+	private readonly Func<object, GameLocation?, Farmer?, bool>? isValid;
 
-		public bool CanExtractItems(object obj, GameLocation location, Farmer who) {
-			return canExtractItems?.Invoke(obj, location, who) ?? false;
-		}
+	public ModInventoryProvider(
+		Func<object, GameLocation?, Farmer?, bool>? isValid,
+		Func<object, GameLocation?, Farmer?, bool>? canExtractItems,
+		Func<object, GameLocation?, Farmer?, bool>? canInsertItems,
+		Func<object, GameLocation?, Farmer?, NetMutex?>? getMutex,
+		Func<object, GameLocation?, Farmer?, bool>? isMutexRequired,
+		Func<object, GameLocation?, Farmer?, int>? getActualCapacity,
+		Func<object, GameLocation?, Farmer?, IList<Item?>?>? getItems,
+		Func<object, GameLocation?, Farmer?, Item, bool>? isItemValid,
+		Action<object, GameLocation?, Farmer?>? cleanInventory,
+		Func<object, GameLocation?, Farmer?, Rectangle?>? getMultiTileRegion,
+		Func<object, GameLocation?, Farmer?, Vector2?>? getTilePosition
+	) {
+		this.isValid = isValid;
+		this.canExtractItems = canExtractItems;
+		this.canInsertItems = canInsertItems;
+		this.getMutex = getMutex;
+		this.isMutexRequired = isMutexRequired;
+		this.getActualCapacity = getActualCapacity;
+		this.getItems = getItems;
+		this.isItemValid = isItemValid;
+		this.cleanInventory = cleanInventory;
+		this.getMultiTileRegion = getMultiTileRegion;
+		this.getTilePosition = getTilePosition;
+	}
 
-		public bool CanInsertItems(object obj, GameLocation location, Farmer who) {
-			return canInsertItems?.Invoke(obj, location, who) ?? false;
-		}
+	public bool CanExtractItems(object obj, GameLocation? location, Farmer? who) {
+		return canExtractItems?.Invoke(obj, location, who) ?? false;
+	}
 
-		public void CleanInventory(object obj, GameLocation location, Farmer who) {
-			cleanInventory?.Invoke(obj, location, who);
-		}
+	public bool CanInsertItems(object obj, GameLocation? location, Farmer? who) {
+		return canInsertItems?.Invoke(obj, location, who) ?? false;
+	}
 
-		public int GetActualCapacity(object obj, GameLocation location, Farmer who) {
-			return getActualCapacity?.Invoke(obj, location, who) ?? 0;
-		}
+	public void CleanInventory(object obj, GameLocation? location, Farmer? who) {
+		cleanInventory?.Invoke(obj, location, who);
+	}
 
-		public IList<Item> GetItems(object obj, GameLocation location, Farmer who) {
-			return getItems?.Invoke(obj, location, who);
-		}
+	public int GetActualCapacity(object obj, GameLocation? location, Farmer? who) {
+		return getActualCapacity?.Invoke(obj, location, who) ?? 0;
+	}
 
-		public Rectangle? GetMultiTileRegion(object obj, GameLocation location, Farmer who) {
-			return getMultiTileRegion?.Invoke(obj, location, who);
-		}
+	public IList<Item?>? GetItems(object obj, GameLocation? location, Farmer? who) {
+		return getItems?.Invoke(obj, location, who);
+	}
 
-		public NetMutex GetMutex(object obj, GameLocation location, Farmer who) {
-			return getMutex?.Invoke(obj, location, who);
-		}
+	public bool IsItemValid(object obj, GameLocation? location, Farmer? who, Item item) {
+		return isItemValid?.Invoke(obj, location, who, item) ?? true;
+	}
 
-		public Vector2? GetTilePosition(object obj, GameLocation location, Farmer who) {
-			return getTilePosition?.Invoke(obj, location, who);
-		}
+	public Rectangle? GetMultiTileRegion(object obj, GameLocation? location, Farmer? who) {
+		return getMultiTileRegion?.Invoke(obj, location, who);
+	}
 
-		public bool IsValid(object obj, GameLocation location, Farmer who) {
-			return isValid?.Invoke(obj, location, who) ?? false;
-		}
+	public NetMutex? GetMutex(object obj, GameLocation? location, Farmer? who) {
+		return getMutex?.Invoke(obj, location, who);
+	}
+
+	public bool IsMutexRequired(object obj, GameLocation? location, Farmer? who) {
+		return isMutexRequired?.Invoke(obj, location, who) ?? true;
+	}
+
+	public Vector2? GetTilePosition(object obj, GameLocation? location, Farmer? who) {
+		return getTilePosition?.Invoke(obj, location, who);
+	}
+
+	public bool IsValid(object obj, GameLocation? location, Farmer? who) {
+		return isValid?.Invoke(obj, location, who) ?? false;
 	}
 }

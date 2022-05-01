@@ -8,11 +8,8 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace UIInfoSuite.Options
 {
@@ -20,5 +17,7 @@ namespace UIInfoSuite.Options
     {
         public bool ShowOptionsTabInMenu { get; set; } = true;
         public string ApplyDefaultSettingsFromThisSave { get; set; } = "JohnDoe_123456789";
+        public KeybindList OpenCalendarKeybind { get; set; } = KeybindList.ForSingle(SButton.B);
+        public KeybindList OpenQuestBoardKeybind { get; set; } = KeybindList.ForSingle(SButton.H);
     }
 }

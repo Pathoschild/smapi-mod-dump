@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Collections.Generic;
 
 namespace Pathoschild.Stardew.Automate.Framework.Models

@@ -61,7 +61,7 @@ static partial class OnDrawImpl {
 		ManagedTexture2D? resampledTexture = null;
 		if (texture is ManagedTexture2D) {
 			resampledTexture = (ManagedTexture2D)texture;
-			spriteInstance = resampledTexture.Texture;
+			spriteInstance = resampledTexture.SpriteInstance;
 			sourceRectangle = resampledTexture.Dimensions;
 		}
 		else {
@@ -98,21 +98,7 @@ static partial class OnDrawImpl {
 
 			if (spriteInstance is null || resampledTexture is null) {
 				@this.Draw(texture, position, source, color, rotation, origin, scale, effects, layerDepth);
-				/*
-				RawDraw(
-					@this,
-					texture,
-					position,
-					source,
-					color,
-					rotation,
-					origin,
-					scale,
-					effects,
-					layerDepth
-				);
-				*/
-				return;
+				continue;
 			}
 
 			if (originalSourceRect.X < 0) {

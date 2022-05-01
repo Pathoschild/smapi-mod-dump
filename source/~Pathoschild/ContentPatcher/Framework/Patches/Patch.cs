@@ -8,8 +8,11 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
@@ -149,14 +152,6 @@ namespace ContentPatcher.Framework.Patches
             if (isReady && this.FromAsset != null)
             {
                 this.FromAssetExistsImpl = this.ContentPack.HasFile(this.FromAsset);
-
-                if (!this.FromAssetExistsImpl && this.ContentPack.HasFile($"{this.FromAsset}.xnb"))
-                {
-                    // for legacy reasons, the file extension can be omitted if it's .xnb
-                    this.FromAsset += ".xnb";
-                    this.FromAssetExistsImpl = true;
-                }
-
                 if (!this.FromAssetExistsImpl && this.Conditions.All(p => p.IsMatch))
                     this.State.AddErrors($"{nameof(PatchConfig.FromFile)} '{this.FromAsset}' does not exist");
             }
@@ -344,9 +339,22 @@ namespace ContentPatcher.Framework.Patches
         {
             try
             {
-                return string.IsNullOrWhiteSpace(path)
-                    ? null
-                    : PathUtilities.NormalizePath(path);
+                // ignore empty paths
+                if (string.IsNullOrWhiteSpace(path))
+                    return null;
+
+                // normalize format
+                string newPath = PathUtilities.NormalizePath(path);
+
+                // add .xnb extension if needed (it's stripped from asset names)
+                string fullPath = this.ContentPack.GetFullPath(newPath);
+                if (!File.Exists(fullPath))
+                {
+                    if (File.Exists($"{fullPath}.xnb"))
+                        newPath += ".xnb";
+                }
+
+                return newPath;
             }
             catch (Exception ex)
             {

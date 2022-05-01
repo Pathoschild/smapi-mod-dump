@@ -1,21 +1,21 @@
 {
-	"Name": "Better Crafting: SpaceCore Support",
-	"Author": "Khloe Leclair",
-	"Version": "1.1.1",
-	"Description": "Adds support for SpaceCore recipes to Better Crafting.",
-	"UniqueID": "leclair.bcspacecore",
-	"EntryDll": "BCSpaceCore.dll",
-	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": [
-		"Nexus:11115@SpaceCore",
-		"ModDrop:1115749@SpaceCore"
-	],
-	"Dependencies": [
-		{
-			"UniqueID": "leclair.bettercrafting"
-		},
-		{
-			"UniqueID": "spacechase0.SpaceCore"
-		}
-	]
+  "Name": "Better Crafting: SpaceCore Support",
+  "Author": "Khloe Leclair",
+  "Version": "1.2.0",
+  "Description": "Adds support for SpaceCore recipes to Better Crafting.",
+  "UniqueID": "leclair.bcspacecore",
+  "EntryDll": "BCSpaceCore.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "Nexus:11115@SpaceCore",
+    "ModDrop:1115749@SpaceCore"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "leclair.bettercrafting"
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
 }

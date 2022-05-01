@@ -8,7 +8,10 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using Leclair.Stardew.BetterCrafting.Models;
 using Leclair.Stardew.Common.Events;
@@ -19,145 +22,148 @@ using StardewModdingAPI.Events;
 
 using StardewValley;
 
-namespace Leclair.Stardew.BetterCrafting.Managers {
-	public class FavoriteManager : BaseManager {
+namespace Leclair.Stardew.BetterCrafting.Managers;
 
-		private Favorites UserFavorites;
-		private bool Modified;
+public class FavoriteManager : BaseManager {
 
-		#region Lifecycle
+	private Favorites? UserFavorites;
+	private bool Modified;
 
-		public FavoriteManager(ModEntry mod) : base(mod) { }
+	#region Lifecycle
 
-		#endregion Lifecycle
+	public FavoriteManager(ModEntry mod) : base(mod) { }
 
-		#region Events
+	#endregion Lifecycle
 
-		[Subscriber]
-		public void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
-			LoadFavorites();
-		}
+	#region Events
 
-		#endregion
-
-		#region Save and Loading
-
-		// TODO: Store favorites in the save data, which would require
-		// multiplayer packets to sync with remote clients.
-
-		public void LoadFavorites() {
-			if (string.IsNullOrEmpty(Constants.SaveFolderName))
-				return;
-
-			Favorites data;
-			string path = $"savedata/favorites/{Constants.SaveFolderName}.json";
-
-			try {
-				data = Mod.Helper.Data.ReadJsonFile<Favorites>(path);
-			} catch (Exception ex) {
-				Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
-				data = new();
-			}
-
-			if (data == null)
-				data = new Favorites();
-			if (data.Cooking == null)
-				data.Cooking = new();
-			if (data.Crafting == null)
-				data.Crafting = new();
-
-			UserFavorites = data;
-			Modified = false;
-		}
-
-		public void SaveFavorites() {
-			if (string.IsNullOrEmpty(Constants.SaveFolderName) || UserFavorites == null || !Modified)
-				return;
-
-			string path = $"savedata/favorites/{Constants.SaveFolderName}.json";
-
-			try {
-				Mod.Helper.Data.WriteJsonFile(path, UserFavorites);
-			} catch (Exception ex) {
-				Log($"There was an error saving favorites to {path}", LogLevel.Error, ex);
-			}
-
-			Modified = false;
-		}
-
-		#endregion
-
-		#region Favorites
-
-		private void AssertLoaded() {
-			if (UserFavorites == null)
-				throw new InvalidOperationException("Favorites have not been loaded yet.");
-		}
-
-		public bool IsLoaded() {
-			return UserFavorites != null;
-		}
-
-		private CaseInsensitiveHashSet GetFavoriteRecipes(Farmer who, bool cooking) {
-			long id = who.UniqueMultiplayerID;
-			CaseInsensitiveHashSet result;
-			if (cooking)
-				UserFavorites.Cooking.TryGetValue(id, out result);
-			else
-				UserFavorites.Crafting.TryGetValue(id, out result);
-
-			if (result == null) {
-				result = new();
-				if (cooking)
-					UserFavorites.Cooking.Add(id, result);
-				else
-					UserFavorites.Crafting.Add(id, result);
-			}
-
-			return result;
-		}
-
-		public bool IsFavoriteRecipe(string name, bool cooking, Farmer who = null) {
-			AssertLoaded();
-			Farmer player = who ?? Game1.player;
-
-			lock (UserFavorites) {
-				CaseInsensitiveHashSet favorites = GetFavoriteRecipes(player, cooking);
-				return favorites.Contains(name);
-			}
-		}
-
-		public void SetFavoriteRecipe(string name, bool cooking, bool favorited, Farmer who = null) {
-			AssertLoaded();
-			Farmer player = who ?? Game1.player;
-
-			lock (UserFavorites) {
-				CaseInsensitiveHashSet favorites = GetFavoriteRecipes(player, cooking);
-				if (favorited)
-					favorites.Add(name);
-				else
-					favorites.Remove(name);
-
-				Modified = true;
-			}
-		}
-
-		public void ToggleFavoriteRecipe(string name, bool cooking, Farmer who = null) {
-			AssertLoaded();
-			Farmer player = who ?? Game1.player;
-
-			lock (UserFavorites) {
-				CaseInsensitiveHashSet favorites = GetFavoriteRecipes(player, cooking);
-				if (favorites.Contains(name))
-					favorites.Remove(name);
-				else
-					favorites.Add(name);
-
-				Modified = true;
-			}
-		}
-
-		#endregion
-
+	[Subscriber]
+	public void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
+		LoadFavorites();
 	}
+
+	#endregion
+
+	#region Save and Loading
+
+	// TODO: Store favorites in the save data, which would require
+	// multiplayer packets to sync with remote clients.
+
+	public void LoadFavorites() {
+		if (string.IsNullOrEmpty(Constants.SaveFolderName))
+			return;
+
+		Favorites? data;
+		string path = $"savedata/favorites/{Constants.SaveFolderName}.json";
+
+		try {
+			data = Mod.Helper.Data.ReadJsonFile<Favorites>(path);
+		} catch (Exception ex) {
+			Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
+			data = new();
+		}
+
+		if (data == null)
+			data = new Favorites();
+
+		if (data.Cooking == null)
+			data.Cooking = new();
+		if (data.Crafting == null)
+			data.Crafting = new();
+
+		UserFavorites = data;
+		Modified = false;
+	}
+
+	public void SaveFavorites() {
+		if (string.IsNullOrEmpty(Constants.SaveFolderName) || UserFavorites == null || !Modified)
+			return;
+
+		string path = $"savedata/favorites/{Constants.SaveFolderName}.json";
+
+		try {
+			Mod.Helper.Data.WriteJsonFile(path, UserFavorites);
+		} catch (Exception ex) {
+			Log($"There was an error saving favorites to {path}", LogLevel.Error, ex);
+		}
+
+		Modified = false;
+	}
+
+	#endregion
+
+	#region Favorites
+
+	[MemberNotNull(nameof(UserFavorites))]
+	private void AssertLoaded() {
+		if (UserFavorites == null)
+			throw new InvalidOperationException("Favorites have not been loaded yet.");
+	}
+
+	[MemberNotNullWhen(true, nameof(UserFavorites))]
+	public bool IsLoaded() {
+		return UserFavorites != null;
+	}
+
+	private CaseInsensitiveHashSet GetFavoriteRecipes(Farmer who, bool cooking) {
+		long id = who.UniqueMultiplayerID;
+		CaseInsensitiveHashSet? result;
+		if (cooking)
+			UserFavorites!.Cooking.TryGetValue(id, out result);
+		else
+			UserFavorites!.Crafting.TryGetValue(id, out result);
+
+		if (result == null) {
+			result = new();
+			if (cooking)
+				UserFavorites!.Cooking.Add(id, result);
+			else
+				UserFavorites!.Crafting.Add(id, result);
+		}
+
+		return result;
+	}
+
+	public bool IsFavoriteRecipe(string name, bool cooking, Farmer? who = null) {
+		AssertLoaded();
+		who ??= Game1.player;
+
+		lock (UserFavorites) {
+			CaseInsensitiveHashSet favorites = GetFavoriteRecipes(who, cooking);
+			return favorites.Contains(name);
+		}
+	}
+
+	public void SetFavoriteRecipe(string name, bool cooking, bool favorited, Farmer? who = null) {
+		AssertLoaded();
+		who ??= Game1.player;
+
+		lock (UserFavorites) {
+			CaseInsensitiveHashSet favorites = GetFavoriteRecipes(who, cooking);
+			if (favorited)
+				favorites.Add(name);
+			else
+				favorites.Remove(name);
+
+			Modified = true;
+		}
+	}
+
+	public void ToggleFavoriteRecipe(string name, bool cooking, Farmer? who = null) {
+		AssertLoaded();
+		who ??= Game1.player;
+
+		lock (UserFavorites) {
+			CaseInsensitiveHashSet favorites = GetFavoriteRecipes(who, cooking);
+			if (favorites.Contains(name))
+				favorites.Remove(name);
+			else
+				favorites.Add(name);
+
+			Modified = true;
+		}
+	}
+
+	#endregion
+
 }

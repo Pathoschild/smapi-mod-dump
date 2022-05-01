@@ -8,17 +8,12 @@
 **
 *************************************************/
 
-using System;
+namespace Leclair.Stardew.Common.Enums;
 
-namespace Leclair.Stardew.Common.Enums
-{
-
-	public enum Season {
-		All = -1,
-		Spring = 0,
-		Summer = 1,
-		Fall = 2,
-		Winter = 3
-	}
-
+public enum Season {
+	All = -1,
+	Spring = 0,
+	Summer = 1,
+	Fall = 2,
+	Winter = 3
 }

@@ -1,0 +1,9 @@
+﻿{
+  "Name": "RainRefillsWateringCan",
+  "Author": "StultusV",
+  "Version": "1.0.0",
+  "Description": "Makes it so rain refills your watering can when you're outside'",
+  "UniqueID": "StultusV.RainRefillsWateringCan",
+  "EntryDll": "RainRefillsWateringCan.dll",
+  "UpdateKeys": ["Nexus:11554"]
+}

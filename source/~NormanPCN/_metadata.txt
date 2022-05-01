@@ -5,12 +5,13 @@ urls:
 mods:
    Better Butterfly Hutch
    Combat Controls Redux
+   Easier Monster Eradication
    Longer Fence Life
 
 latest commit:
-   commit 188456641c9bd1f439b0a83d2b1213e220aab8ab
+   commit e2cbc777d4b9d49ed91d7f9aa49a5d8eb75a0f3c
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Tue Mar 22 14:41:07 2022 -0700
+   Date:   Tue Apr 19 07:46:37 2022 -0700
    
-       Misc minor refactors, comment changes
+       Add simple random number tester. console program.
    

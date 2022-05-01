@@ -41,6 +41,7 @@ namespace EscasModdingPlugins
             Helper = helper;
 
             //enable SMAPI events
+            helper.Events.Content.AssetRequested += AssetRequested_LoadDefaults;
             helper.Events.GameLoop.DayStarted += DayStarted_ClearCache;
             helper.Events.GameLoop.TimeChanged += TimeChanged_ClearCache;
             helper.Events.Player.Warped += Warped_ClearCache;
@@ -62,7 +63,7 @@ namespace EscasModdingPlugins
                 return (T)asset; //return the cached asset as the given type
             else //if this asset does NOT have a cached version
             {
-                T loadedAsset = Helper.Content.Load<T>(assetName, ContentSource.GameContent); //load the asset's most recent version
+                T loadedAsset = Helper.GameContent.Load<T>(assetName); //load the asset's most recent version
                 Cache[assetName] = loadedAsset; //cache it
                 return loadedAsset; //return it
             }
@@ -92,7 +93,7 @@ namespace EscasModdingPlugins
         /// <param name="defaultAsset">The default instance to use for this asset.</param>
         internal static void SetDefault(string assetName, object defaultAsset)
         {
-            Defaults[Helper.Content.NormalizeAssetName(assetName)] = defaultAsset; //normalize the asset name and store the default instance
+            Defaults[Helper.GameContent.ParseAssetName(assetName).Name] = defaultAsset; //normalize the asset name and store the default instance
         }
 
         /// <summary>Checks whether this asset name has a default instance to load.</summary>
@@ -136,19 +137,14 @@ namespace EscasModdingPlugins
         /* IAssetLoader methods */
         /************************/
 
-        /// <summary>Indicates whether this class has a default instance of the specified asset. Intended for use in <see cref="IAssetLoader.CanLoad{T}(IAssetInfo)"/>.</summary>
-        internal static bool CanLoad<T>(IAssetInfo asset)
+        /// <summary>Loads default instances of any new assets created by this mod.</summary>
+        /// <remarks>This is a replacement for the IAssetLoader system, which was deprecated in SMAPI v3.14.</remarks>
+        private static void AssetRequested_LoadDefaults(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
         {
-            return HasDefault(asset.AssetName); //return true if the asset helper has a default instance to load
-        }
-
-        /// <summary>Returns the default instance of the specified asset. Intended for use in <see cref="IAssetLoader.Load{T}(IAssetInfo)"/>.</summary>
-        internal static T Load<T>(IAssetInfo asset)
-        {
-            if (TryGetDefault(asset.AssetName, out object defaultAsset)) //if this asset's default instance exists
-                return (T)defaultAsset; //return it as the given type
-            else
-                throw new InvalidOperationException($"Unexpected asset '{asset.AssetName}'.");
+            if (TryGetDefault(e.Name.Name, out object defaultAsset)) //if a default instance exists for this asset
+            {
+                e.LoadFrom(() => defaultAsset, StardewModdingAPI.Events.AssetLoadPriority.Medium, null);
+            }
         }
     }
 }

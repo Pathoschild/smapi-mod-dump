@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using StardewValley;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Data

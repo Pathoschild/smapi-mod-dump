@@ -11,6 +11,7 @@ mods:
    Farm Rearranger
    Hay Bales as Silos
    Limited Campfire Cooking
+   Market Day
    Multi Yield Crops
    Multiplayer Mod Checker
    Platonic Relationships

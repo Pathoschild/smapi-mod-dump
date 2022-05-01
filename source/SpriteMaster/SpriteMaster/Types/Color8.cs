@@ -62,7 +62,7 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		Packed = rgba;
 	}
 
-	internal Color8(in (byte R, byte G, byte B) color) : this(color.R, color.G, color.B) {}
+	internal Color8(in (byte R, byte G, byte B) color) : this(color.R, color.G, color.B) { }
 
 	internal Color8(byte r, byte g, byte b) : this() {
 		R = r;

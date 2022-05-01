@@ -1,0 +1,7 @@
+{
+	"mod.name": "Better Crafting: Buildings",
+
+	"error.not-buildable": "@C{red}You cannot build in your current location.",
+	"error.cant-upgrade": "@C{red}There is not an existing @B{{other}}@b to upgrade."
+
+}

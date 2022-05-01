@@ -1,0 +1,27 @@
+﻿{
+  "Name": "SimpleHUD",
+  "Author": "Enaium",
+  "Version": "1.0.0",
+  "Description": "Simple HUD",
+  "UniqueID": "Enaium.SimpleHUD",
+  "EntryDll": "SimpleHUD.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [
+    "GitHub:Enaium-StardewValleyMods/SimpleHUD"
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "Enaium.EnaiumToolKit",
+      "MinimumVersion": "1.4.3"
+    }
+  ],
+  "Custom": {
+    "ModMenu": {
+      "Setting": "SimpleHUD.Framework.Gui.SettingGui",
+      "Contact": {
+        "HomePage": "https://github.com/Enaium-StardewValleyMods/SimpleHUD",
+        "Issues": "https://github.com/Enaium-StardewValleyMods/SimpleHUD/issues"
+      }
+    }
+  }
+}

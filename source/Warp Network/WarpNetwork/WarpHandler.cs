@@ -236,6 +236,10 @@ namespace WarpNetwork
             DelayedAction.fadeAfterDelay(new Game1.afterFadeFunction(() =>
             {
                 action();
+                if (!Game1.isStartingToGetDarkOut() && !Game1.isRaining)
+                    Game1.playMorningSong();
+                else
+                    Game1.changeMusicTrack("none");
                 Game1.fadeToBlackAlpha = 0.99f;
                 Game1.screenGlow = false;
                 Game1.player.temporarilyInvincible = false;

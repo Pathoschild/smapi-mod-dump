@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/hawkfalcon/Stardew-Mods
+**
+*************************************************/
+
+{
+  "msg.no-work-until-paid": "A Junimok addig nem fognak dolgozni, amíg nem kapnak fizetést.",
+  "msg.cannot-spawn-here": "Csak a farmon tud Junimokat hívni.",
+  "msg.happy-with-payment": "A Junimok örülnek a fizetésüknek!"
+}

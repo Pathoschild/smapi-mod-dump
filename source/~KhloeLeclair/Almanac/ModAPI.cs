@@ -208,7 +208,7 @@ namespace Leclair.Stardew.Almanac {
 		/// </summary>
 		/// <param name="manifest">The manifest of the mod registering a hook</param>
 		/// <param name="hook">The hook function</param>
-		void SetFortuneHook(IManifest manifest, Func<int, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>> hook);
+		void SetFortuneHook(IManifest manifest, Func<ulong, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>> hook);
 
 		/// <summary>
 		/// Register a new hook. This is similar to the previous function, but
@@ -217,7 +217,7 @@ namespace Leclair.Stardew.Almanac {
 		/// </summary>
 		/// <param name="manifest">The manifest of the mod registering a hook</param>
 		/// <param name="hook">The hook function</param>
-		void SetFortuneHook(IManifest manifest, Func<int, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>> hook);
+		void SetFortuneHook(IManifest manifest, Func<ulong, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>> hook);
 
 		/// <summary>
 		/// Unregister the fortunes hook for the given mod.
@@ -501,11 +501,11 @@ namespace Leclair.Stardew.Almanac {
 
 		#region Fortune Telling
 
-		public void SetFortuneHook(IManifest manifest, Func<int, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>> hook) {
+		public void SetFortuneHook(IManifest manifest, Func<ulong, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>> hook) {
 			Mod.Luck.RegisterHook(manifest, hook);
 		}
 
-		public void SetFortuneHook(IManifest manifest, Func<int, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>> hook) {
+		public void SetFortuneHook(IManifest manifest, Func<ulong, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>> hook) {
 			Mod.Luck.RegisterHook(manifest, hook);
 		}
 

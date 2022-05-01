@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>BCBuildings</AssemblyName>
+		<Version>1.0.0</Version>
+		<RootNamespace>Leclair.Stardew.BCBuildings</RootNamespace>
+
+		<EnableTranslation>true</EnableTranslation>
+	</PropertyGroup>
+	
+	<Import Project="..\_build\common.targets" />
+	<ItemGroup>
+		<ProjectReference Include="..\BetterCrafting\BetterCrafting.csproj">
+			<Private>false</Private>
+		</ProjectReference>
+	</ItemGroup>
+	<PropertyGroup>
+		<DefineConstants>IS_BETTER_CRAFTING</DefineConstants>
+	</PropertyGroup>
+</Project>

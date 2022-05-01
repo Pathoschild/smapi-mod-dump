@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using SpriteMaster;
+using SpriteMaster.Configuration;
 using SpriteMaster.Types;
 using System.Drawing.Imaging;
 
@@ -21,8 +21,8 @@ static class PreviewProgram {
 	internal static bool GammaCorrection = false;
 	internal static bool AlphaPremultiplication = true;
 	internal static uint Scale = 1;
-	internal static double LuminanceWeight = Config.Resample.xBRZ.LuminanceWeight;
-	internal static uint EqualColorTolerance = Config.Resample.xBRZ.EqualColorTolerance;
+	internal static double LuminanceWeight = Config.Resample.Common.LuminanceWeight;
+	internal static uint EqualColorTolerance = (uint)Config.Resample.Common.EqualColorTolerance;
 	internal static double DominantDirectionThreshold = Config.Resample.xBRZ.DominantDirectionThreshold;
 	internal static double SteepDirectionThreshold = Config.Resample.xBRZ.SteepDirectionThreshold;
 	internal static double CenterDirectionBias = Config.Resample.xBRZ.CenterDirectionBias;
@@ -72,7 +72,7 @@ static class PreviewProgram {
 		uint scale = Scale;
 		var spriteSize = SpriteSize;
 		var scaledSize = spriteSize * scale;
-		
+
 		var spriteDataArray = SpriteData!.Clone() as Color16[];
 		var spriteData = spriteDataArray.AsSpan();
 		if (GammaCorrection)

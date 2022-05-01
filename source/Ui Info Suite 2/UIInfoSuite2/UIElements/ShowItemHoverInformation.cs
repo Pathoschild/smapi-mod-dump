@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
@@ -18,8 +19,8 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UIInfoSuite.Infrastructure;
 using UIInfoSuite.Infrastructure.Extensions;
 
@@ -69,19 +70,20 @@ namespace UIInfoSuite.UIElements
         private CommunityCenter _communityCenter;
         private Dictionary<string, string> _bundleData;
         private LibraryMuseum _libraryMuseum;
-        private readonly IModEvents _events;
 
-        public ShowItemHoverInformation(IModEvents events)
+        private readonly IModHelper _helper;
+
+        public ShowItemHoverInformation(IModHelper helper)
         {
-            _events = events;
+            _helper = helper;
         }
 
         public void ToggleOption(bool showItemHoverInformation)
         {
-            _events.Player.InventoryChanged -= OnInventoryChanged;
-            _events.Display.Rendered -= OnRendered;
-            _events.Display.RenderedHud -= OnRenderedHud;
-            _events.Display.Rendering -= OnRendering;
+            _helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+            _helper.Events.Display.Rendered -= OnRendered;
+            _helper.Events.Display.RenderedHud -= OnRenderedHud;
+            _helper.Events.Display.Rendering -= OnRendering;
 
             if (showItemHoverInformation)
             {
@@ -91,10 +93,10 @@ namespace UIInfoSuite.UIElements
 
                 _libraryMuseum = Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum;
 
-                _events.Player.InventoryChanged += OnInventoryChanged;
-                _events.Display.Rendered += OnRendered;
-                _events.Display.RenderedHud += OnRenderedHud;
-                _events.Display.Rendering += OnRendering;
+                _helper.Events.Player.InventoryChanged += OnInventoryChanged;
+                _helper.Events.Display.Rendered += OnRendered;
+                _helper.Events.Display.RenderedHud += OnRenderedHud;
+                _helper.Events.Display.Rendering += OnRendering;
             }
         }
 
@@ -169,7 +171,9 @@ namespace UIInfoSuite.UIElements
                     {
                         int bundleNumber = bundleRoomInfo[1].SafeParseInt32();
                         string[] bundleInfo = bundle.Value.Split('/');
-                        string bundleName = bundleInfo[0];
+                        string bundleName = _helper.Content.CurrentLocaleConstant == LocalizedContentManager.LanguageCode.en || int.TryParse(bundleInfo[^1], out _)
+                            ? bundleInfo[0]
+                            : bundleInfo[^1];
                         string[] bundleValues = bundleInfo[2].Split(' ');
                         List<KeyValuePair<int, int>> source = new List<KeyValuePair<int, int>>();
 

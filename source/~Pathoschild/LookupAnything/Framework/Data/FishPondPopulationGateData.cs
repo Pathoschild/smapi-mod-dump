@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.LookupAnything.Framework.Data
 {
     /// <summary>A fish pond population gate which unlocks new drops.</summary>

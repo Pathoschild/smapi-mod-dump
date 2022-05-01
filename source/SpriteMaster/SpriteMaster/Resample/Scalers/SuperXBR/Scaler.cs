@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System;
@@ -123,3 +124,4 @@ sealed partial class Scaler {
 		Scale(currentSource, currentSourceSize, target, TargetSize);
 	}
 }
+#endif

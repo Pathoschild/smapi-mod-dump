@@ -67,10 +67,9 @@ namespace Omegasis.BillboardAnywhere
             helper.ConsoleCommands.Add("Omegasis.BillboardAnywhere.SetQuestButtonVisibility", "<bool> Sets the visibility for the quest button in the game menu.", this.setQuestButtonVisibility);
             helper.Events.Input.ButtonPressed += this.OnButtonPressed;
             helper.Events.Display.RenderedActiveMenu += this.RenderBillboardMenuButton;
-            helper.Events.Input.ButtonPressed += this.Input_ButtonPressed;
 
             this.calendarTexture = helper.Content.Load<Texture2D>(Path.Combine("Assets", "Billboard.png"));
-            this.questTexture= helper.Content.Load<Texture2D>(Path.Combine("Assets", "Quest.png"));
+            this.questTexture = helper.Content.Load<Texture2D>(Path.Combine("Assets", "Quest.png"));
             this.billboardButton = new ClickableTextureComponent(new Rectangle((int)this.Config.CalendarOffsetFromMenu.X, (int)this.Config.CalendarOffsetFromMenu.Y, this.calendarTexture.Width, this.calendarTexture.Height), this.calendarTexture, new Rectangle(0, 0, this.calendarTexture.Width, this.calendarTexture.Height), 1f, false);
             this.questButton = new ClickableTextureComponent(new Rectangle((int)this.Config.QuestOffsetFromMenu.X, (int)this.Config.QuestOffsetFromMenu.Y, this.questTexture.Width, this.questTexture.Height), this.questTexture, new Rectangle(0, 0, this.questTexture.Width, this.questTexture.Height), 1f, false);
         }
@@ -86,36 +85,22 @@ namespace Omegasis.BillboardAnywhere
             // load menu if key pressed
             if (Context.IsPlayerFree && e.Button == this.Config.CalendarKeyBinding)
                 Game1.activeClickableMenu = new Billboard();
-            if (Context.IsPlayerFree && e.Button == this.Config.QuestBoardKeyBinding)
+            else if (Context.IsPlayerFree && e.Button == this.Config.QuestBoardKeyBinding)
             {
                 Game1.RefreshQuestOfTheDay();
                 Game1.activeClickableMenu = new Billboard(true);
             }
-        }
 
-        /// <summary>
-        /// Checks to see if the billboard button is clicked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
-        {
-            if (Game1.activeClickableMenu == null) return;
-            if (e.Button == SButton.MouseLeft)
+            // check if billboard icon was clicked
+            else if (e.Button == SButton.MouseLeft && this.isInventoryPage())
             {
-                if (this.isInventoryPage())
-                {
-                    if (this.billboardButton.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
-                    {
-                        if (this.Config.EnableInventoryCalendarButton == false) return;
-                        Game1.activeClickableMenu = new Billboard(false);
-                    }
-                    if (this.questButton.containsPoint(Game1.getMousePosition().X, Game1.getMousePosition().Y))
-                    {
-                        if (this.Config.EnableInventoryQuestButton == false) return;
-                        Game1.activeClickableMenu = new Billboard(true);
-                    }
-                }
+                Point mouse = Game1.getMousePosition(ui_scale: true);
+
+                if (this.Config.EnableInventoryCalendarButton && this.billboardButton.containsPoint(mouse.X, mouse.Y))
+                    Game1.activeClickableMenu = new Billboard(false);
+
+                else if (this.Config.EnableInventoryQuestButton && this.questButton.containsPoint(mouse.X, mouse.Y))
+                    Game1.activeClickableMenu = new Billboard(true);
             }
         }
 
@@ -130,7 +115,7 @@ namespace Omegasis.BillboardAnywhere
             {
                 this.billboardButton.bounds = new Rectangle(Game1.activeClickableMenu.xPositionOnScreen + (int)this.Config.CalendarOffsetFromMenu.X, Game1.activeClickableMenu.yPositionOnScreen + (int)this.Config.CalendarOffsetFromMenu.Y, this.calendarTexture.Width, this.calendarTexture.Height);
                 this.questButton.bounds = new Rectangle(Game1.activeClickableMenu.xPositionOnScreen + (int)this.Config.QuestOffsetFromMenu.X, Game1.activeClickableMenu.yPositionOnScreen + (int)this.Config.QuestOffsetFromMenu.Y, this.calendarTexture.Width, this.calendarTexture.Height);
-                if(this.Config.EnableInventoryQuestButton) this.questButton.draw(Game1.spriteBatch);
+                if (this.Config.EnableInventoryQuestButton) this.questButton.draw(Game1.spriteBatch);
                 if (this.Config.EnableInventoryCalendarButton) this.billboardButton.draw(Game1.spriteBatch);
                 GameMenu activeMenu = (Game1.activeClickableMenu as GameMenu);
                 activeMenu.drawMouse(Game1.spriteBatch);
@@ -160,20 +145,11 @@ namespace Omegasis.BillboardAnywhere
         /// <summary>
         /// Checks to see if the current active menu is the game menu and the current page is the inventory page.
         /// </summary>
-        /// <returns></returns>
         private bool isInventoryPage()
         {
-            if (Game1.activeClickableMenu == null) return false;
-            if (Game1.activeClickableMenu is StardewValley.Menus.GameMenu)
-            {
-                GameMenu activeMenu = (Game1.activeClickableMenu as GameMenu);
-                IClickableMenu currentTab = activeMenu.GetCurrentPage();
-                if (currentTab is InventoryPage)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return
+                Game1.activeClickableMenu is GameMenu gameMenu
+                && gameMenu.GetCurrentPage() is InventoryPage;
         }
 
 

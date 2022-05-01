@@ -6,9 +6,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit 7ca39f71abe607ba210923a63fdec253a864139c
+   commit 688d58408dc23c6257cb93aa2cd820cefe1141de
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Feb 6 16:50:11 2022 -0600
+   Date:   Thu Apr 7 16:10:52 2022 -0500
    
-       Trim/sort/format
+       Update to SMAPI 3.14 content system, add transpiler remarks
    

@@ -98,6 +98,22 @@
     },
     {
       "Action": "EditMap",
+      "Target": "Maps/Mine",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 13,
+            "Y": 7
+          },
+          "Layer": "Back",
+          "SetProperties": {
+            "CustomCompanions": "Spawn 1 ExampleAuthor.ExamplePack.ExampleUpdateWhenPlayerNearbyCompanion"
+          }
+        }
+      ]
+    },
+    {
+      "Action": "EditMap",
       "Target": "Maps/FarmHouse",
       "MapTiles": [
         {

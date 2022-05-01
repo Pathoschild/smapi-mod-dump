@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/atravita-mods/AvoidLosingSpecter
+   Git: https://github.com/atravita-mods/AvoidLosingSpecter.git
+
+mods:
+   Avoid Losing Scepter
+
+latest commit:
+   commit b4cf01080ba45ed70839619a3015566c12927cf8
+   Merge: baceed9 c9d6d27
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Fri Apr 29 21:06:23 2022 -0400
+   
+       Merge branch 'main' of https://github.com/atravita-mods/AvoidLosingSpecter
+   

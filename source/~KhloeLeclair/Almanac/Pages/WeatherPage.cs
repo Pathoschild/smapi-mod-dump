@@ -28,7 +28,7 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 		public static readonly Rectangle WEATHER_ICON = new(384, 352, 16, 16);
 
-		private readonly int Seed;
+		private readonly ulong Seed;
 		private IFlowNode[] Nodes;
 		private int[] Forecast;
 		private bool[] Festivals;
@@ -90,15 +90,21 @@ namespace Leclair.Stardew.Almanac.Pages {
 			FlowBuilder builder = new();
 			List<int> pirateDays = IsIsland ? new() : null;
 
+			int today = Game1.Date.TotalDays;
+			int forecastLength = Mod.Config.WeatherForecastLength;
+
 			if (!IsIsland)
 				builder.FormatText(I18n.Festival_About(Utility.getSeasonNameFromNumber(date.SeasonIndex)));
 
 			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
 				date.DayOfMonth = day;
-				int weather = Forecast[day - 1] = Mod.Weather.GetWeatherForDate(Seed, date, IsIsland ? GameLocation.LocationContext.Island : GameLocation.LocationContext.Default);
+				bool shown = forecastLength == -1 || date.TotalDays - today <= forecastLength;
+				int weather = Forecast[day - 1] = shown ?
+					Mod.Weather.GetWeatherForDate(Seed, date, IsIsland ? GameLocation.LocationContext.Island : GameLocation.LocationContext.Default)
+					: -1;
 
 				if (IsIsland) {
-					bool pirates = Pirates[day - 1] = day % 2 == 0 && ! WeatherHelper.IsRainOrSnow(weather);
+					bool pirates = Pirates[day - 1] = shown && day % 2 == 0 && ! WeatherHelper.IsRainOrSnow(weather);
 					if (pirates)
 						pirateDays.Add(day);
 
@@ -214,20 +220,21 @@ namespace Leclair.Stardew.Almanac.Pages {
 
 			int day = date.DayOfMonth - 1;
 
-			Utility.drawWithShadow(
-				b,
-				Menu.background,
-				new Vector2(
-					bounds.X + (bounds.Width - 64) / 2,
-					bounds.Y + (bounds.Height - 64) / 2
-				),
-				WeatherHelper.GetWeatherIcon(Forecast[day], date.Season),
-				Color.White,
-				0f,
-				Vector2.Zero,
-				scale: 4f,
-				horizontalShadowOffset: 0
-			);
+			if (Forecast[day] != -1)
+				Utility.drawWithShadow(
+					b,
+					Menu.background,
+					new Vector2(
+						bounds.X + (bounds.Width - 64) / 2,
+						bounds.Y + (bounds.Height - 64) / 2
+					),
+					WeatherHelper.GetWeatherIcon(Forecast[day], date.Season),
+					Color.White,
+					0f,
+					Vector2.Zero,
+					scale: 4f,
+					horizontalShadowOffset: 0
+				);
 
 			if (Festivals != null && Festivals[day])
 				FestivalFlag?.Draw(
@@ -277,6 +284,9 @@ namespace Leclair.Stardew.Almanac.Pages {
 				return;
 
 			int weather = Forecast[date.DayOfMonth - 1];
+			if (weather == -1)
+				return;
+
 			Menu.HoverText = WeatherHelper.LocalizeWeather(weather);
 		}
 

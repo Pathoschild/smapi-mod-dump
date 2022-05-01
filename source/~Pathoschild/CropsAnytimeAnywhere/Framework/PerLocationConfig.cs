@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Runtime.Serialization;
 
 namespace Pathoschild.Stardew.CropsAnytimeAnywhere.Framework

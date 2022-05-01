@@ -10,12 +10,12 @@ mods:
    Warp Snitch
 
 latest commit:
-   commit 21aa45d4954838b43065182d2059d7e532da3983
-   Merge: 063c0a1 90a2ba3
-   Author: ceruleandeep <83318388+ceruleandeep@users.noreply.github.com>
-   Date:   Fri Mar 18 16:59:06 2022 +1100
+   commit 8eea39092feafc19a81cca85e32e62dd91270fb5
+   Author: ceruleandeep <ceruleandeep>
+   Date:   Sat Apr 30 22:57:56 2022 +1000
    
-       Merge pull request #1 from ellipszist/main
+       1.0.9-beta.1
        
-       Add Thai translations
+       * Wrap another NPC gift tastes call in a try/catch block
+       * Fix some ordering stuff that prevented shop en/dis from being saved
    

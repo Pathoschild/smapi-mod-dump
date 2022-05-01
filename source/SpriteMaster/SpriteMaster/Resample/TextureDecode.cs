@@ -30,7 +30,7 @@ static class TextureDecode {
 
 	private static readonly DecodeDelegate[] PreferredDecoders = new DecodeDelegate[] {
 		Decoder.MonoBlockDecoder.Decode,
-		Decoder.GraphicsBlockDecoder.Decode,
+		//Decoder.GraphicsBlockDecoder.Decode,
 		Decoder.InternalBlockDecoder.Decode
 	};
 
@@ -40,7 +40,7 @@ static class TextureDecode {
 		if (data.IsEmpty) {
 			return Span<byte>.Empty;
 		}
-		
+
 		foreach (var decoder in PreferredDecoders) {
 			try {
 				var result = decoder(data, size, format);

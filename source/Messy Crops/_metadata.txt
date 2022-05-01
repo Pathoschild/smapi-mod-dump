@@ -6,9 +6,12 @@ mods:
    Messy Crops
 
 latest commit:
-   commit d341a7f87c1b7707e1b457c11e7680f6e9569153
-   Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Tue Mar 15 13:44:12 2022 -0400
+   commit 8a107fe2db5c7e880fb02c0b43d677626664e721
+   Merge: c7b6a8b a2eb6e9
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Sun Apr 24 19:05:47 2022 -0400
    
-       add moddrop key
+       Merge pull request #1 from ChulkyBow/patch-1
+       
+       Add Ukrainian translation
    

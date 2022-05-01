@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Pathoschild.Stardew.Common;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Fields.Models

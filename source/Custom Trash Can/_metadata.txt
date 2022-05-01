@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ShivaGuy/StardewMods
+   Git: https://github.com/ShivaGuy/StardewMods.git
+
+mods:
+   Custom Trash Can
+
+latest commit:
+   commit be5de77b5dbc878abfb939caef6d266c8254cec0
+   Author: shivaGuy <kumarchandreshsingh@gmail.com>
+   Date:   Fri Apr 29 11:59:14 2022 +0530
+   
+       Add Common files
+   

@@ -53,7 +53,10 @@
   "cfg.avoid-harvesting-flowers": "Avoid Harvesting Flowers",
   "cfg.avoid-harvesting-giant-crops": "Avoid Harvesting Giant Crops",
   "cfg.avoid-harvesting-giant-crops.tooltip": "Leave cauliflower, melon, pumpkin unharvested, so there's more chance of getting giant crops",
+  "cfg.harvest-everything-on-28th": "Harvest Everything On 28th",
+  "cfg.harvest-everything-on-28th.tooltip": "If avoiding harvest of flowers or giant crops, harvest them on the last day of the month before they die",
   "cfg.avoid-planting-coffee": "Avoid Planting Coffee",
+  "cfg.avoid-planting-out-of-season": "Avoid Planting Out Of Season",
   "cfg.payment": "Payment",
   "cfg.work-for-wages": "Work For Wages",
   "cfg.foraged-items": "Foraged items",
@@ -99,5 +102,7 @@
   "debug.actions-logged": "Available actions logged to the console",
   "debug.in-cooldown": "[cooling down]",
   "debug.required-item-unavailable": "[required item unavailable]",
-  "debug.locked-by-progression": "[progression locked]"
+  "debug.locked-by-progression": "[progression locked]",
+  "wizard.edit-options": "To change options edit config.json in the Better Junimos folder.",
+  "wizard.install-gmcm": "For easy configuration install Generic Mod Config Menu."
 }

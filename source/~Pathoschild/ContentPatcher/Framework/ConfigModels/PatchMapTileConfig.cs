@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Runtime.Serialization;
 using Pathoschild.Stardew.Common.Utilities;
 

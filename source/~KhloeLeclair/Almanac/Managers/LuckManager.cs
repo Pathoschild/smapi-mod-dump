@@ -76,8 +76,8 @@ namespace Leclair.Stardew.Almanac.Managers {
 
 
 		// Mods
-		private readonly Dictionary<IManifest, Func<int, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>>> ModHooks = new();
-		private readonly Dictionary<IManifest, Func<int, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>>> InterfaceHooks = new();
+		private readonly Dictionary<IManifest, Func<ulong, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>>> ModHooks = new();
+		private readonly Dictionary<IManifest, Func<ulong, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>>> InterfaceHooks = new();
 
 		public LuckManager(ModEntry mod) : base(mod) { }
 
@@ -97,7 +97,7 @@ namespace Leclair.Stardew.Almanac.Managers {
 				ModHooks.Remove(mod);
 		}
 
-		public void RegisterHook(IManifest mod, Func<int, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>> hook) {
+		public void RegisterHook(IManifest mod, Func<ulong, WorldDate, IEnumerable<Tuple<bool, string, Texture2D, Rectangle?, Item>>> hook) {
 			if (InterfaceHooks.ContainsKey(mod))
 				InterfaceHooks.Remove(mod);
 
@@ -107,7 +107,7 @@ namespace Leclair.Stardew.Almanac.Managers {
 				ModHooks[mod] = hook;
 		}
 
-		public void RegisterHook(IManifest mod, Func<int, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>> hook) {
+		public void RegisterHook(IManifest mod, Func<ulong, WorldDate, IEnumerable<Tuple<bool, IRichEvent>>> hook) {
 			if (ModHooks.ContainsKey(mod))
 				ModHooks.Remove(mod);
 
@@ -121,13 +121,23 @@ namespace Leclair.Stardew.Almanac.Managers {
 
 		#region Luck Lookup
 
-		public double GetLuckForDate(int seed, WorldDate date) {
-			Random rnd = new(date.TotalDays + (seed / 2));
+		public double GetLuckForDate(ulong seed, WorldDate date) {
+			Random rnd = new(date.TotalDays + (int)seed / 2);
+
+			int prewarm = rnd.Next(0, 100);
+			for (int j = 0; j < prewarm; j++)
+				rnd.NextDouble();
+
+			prewarm = rnd.Next(0, 100);
+			for (int j = 0; j < prewarm; j++)
+				rnd.NextDouble();
+
+			rnd.NextDouble();
 
 			return Math.Min(0.100000001490116, (double) rnd.Next(-100, 101) / 1000.0);
 		}
 
-		public double GetModifiedLuckForDate(int seed, WorldDate date) {
+		public double GetModifiedLuckForDate(ulong seed, WorldDate date) {
 			double result = GetLuckForDate(seed, date);
 
 			// Luck Skill
@@ -139,7 +149,8 @@ namespace Leclair.Stardew.Almanac.Managers {
 
 					// Lucky players have a 20% chance of maximum daily luck.
 					if (Mod.intLS.HasLucky(who)) {
-						Random rnd = new(seed + date.TotalDays * 3);
+						// Don't use the seed, since we don't control that mod's seed.
+						Random rnd = new((int)Game1.uniqueIDForThisGame + date.TotalDays * 3);
 						if (rnd.NextDouble() <= 0.20)
 							result = 0.12;
 					}
@@ -157,7 +168,7 @@ namespace Leclair.Stardew.Almanac.Managers {
 
 		#region Events
 
-		public IEnumerable<IRichEvent> GetEventsForDate(int seed, WorldDate date) {
+		public IEnumerable<IRichEvent> GetEventsForDate(ulong seed, WorldDate date) {
 
 			bool do_vanilla = true;
 
@@ -238,9 +249,9 @@ namespace Leclair.Stardew.Almanac.Managers {
 
 		#region Vanilla Events
 
-		public static IRichEvent GetTrashEvent(int seed, WorldDate date) {
+		public static IRichEvent GetTrashEvent(ulong seed, WorldDate date) {
 			for (int i = 0; i < 8; i++) {
-				Random rnd = new((date.TotalDays + 1) + (seed / 2) + 777 + i * 77);
+				Random rnd = new((date.TotalDays + 1) + ((int)seed / 2) + 777 + i * 77);
 
 				int prewarm = rnd.Next(0, 100);
 				for (int j = 0; j < prewarm; j++)
@@ -268,13 +279,13 @@ namespace Leclair.Stardew.Almanac.Managers {
 			return null;
 		}
 
-		private static IRichEvent GetVanillaEventForDate(int seed, WorldDate date) {
+		private static IRichEvent GetVanillaEventForDate(ulong seed, WorldDate date) {
 			int days = date.TotalDays + 1;
 
 			if (days == 31)
 				return null;
 
-			Random rnd = new(days + (int) (seed / 2));
+			Random rnd = new(days + (int)seed / 2);
 
 			// Don't track any of the Community Center / Joja events because
 			// those all rely on game state and are not random based on the
@@ -329,13 +340,13 @@ namespace Leclair.Stardew.Almanac.Managers {
 			return null;
 		}
 
-		private static IRichEvent GetLuckSkillEventForDate(int seed, WorldDate date) {
+		private static IRichEvent GetLuckSkillEventForDate(ulong seed, WorldDate date) {
 			int days = date.TotalDays + 1 + 999999;
 
 			if (days == 31)
 				return null;
 
-			Random rnd = new(days + (int) (seed / 2));
+			Random rnd = new(days + (int)seed / 2);
 
 			// Don't track any of the Community Center / Joja events because
 			// those all rely on game state and are not random based on the

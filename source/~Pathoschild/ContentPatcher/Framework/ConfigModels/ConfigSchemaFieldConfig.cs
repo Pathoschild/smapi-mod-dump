@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace ContentPatcher.Framework.ConfigModels
 {
     /// <summary>The schema for a field in the <c>config.json</c> file.</summary>

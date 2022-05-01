@@ -6,5 +6,7 @@
   "PreventFruitTreeGrowthInWinter": true,
   "KegsRememberHoneyFlower": true,
   "LargeProducsYieldQuantityOverQuality": true,
-  "HoneyMeadStyle": "ColoredBottles"
+  "HoneyMeadStyle": "ColoredBottles",
+  "ExplosionTriggeredBombs": true,
+  "ExtendedForagingPerks": true
 }

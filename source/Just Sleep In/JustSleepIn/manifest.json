@@ -4,15 +4,15 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://github.com/9Rifleman/Just-Sleep-In
+** Source repository: https://github.com/9Rifleman/JustSleepIn
 **
 *************************************************/
 
 {
   "Name": "Just Sleep In",
   "Author": "Rifleman",
-  "Version": "1.0.1",
-  "Description": "When the evening comes, you get a choice of time to wake up the next day. If you go to sleep before 7:30PM, you wake up at 6AM as usual.",
+  "Version": "1.1.0 Hotfix 1",
+  "Description": "RP friendly alarm clock. Be an early worm or take a beauty nap, your choice",
   "UniqueID": "Rifleman.JustSleepIn",
   "EntryDll": "JustSleepIn.dll",
   "MinimumApiVersion": "3.0.0",

@@ -10,6 +10,106 @@
 
 [
   {
+    "NPC": "Andy",
+    "Location": "BathHouse_MensLocker",
+    "LocationType": "Bath",
+    "LocationGender": "Male",
+    "Description": "",
+    "X": 1,
+    "Y": 18,
+    "Rarity": "normal"
+  },
+  {
+    "NPC": "Susan",
+    "Location": "BathHouse_Pool",
+    "LocationType": "Bath",
+    "LocationGender": "Any",
+    "Description": "",
+    "X": 24,
+    "Y": 19,
+    "Rarity": "rare"
+  },
+  {
+    "NPC": "Susan",
+    "Location": "Custom_SusanHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "house",
+    "X": 22,
+    "Y": 7,
+    "Rarity": "normal"
+  },
+  {
+    "NPC": "Andy",
+    "Location": "Custom_AndyHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "house",
+    "X": 11,
+    "Y": 7,
+    "Rarity": "normal"
+  },
+  {
+    "NPC": "Olivia",
+    "Location": "Custom_JenkinsHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "house",
+    "X": 19,
+    "Y": 8,
+    "Rarity": "normal"
+  },
+  {
+    "NPC": "Victor",
+    "Location": "BathHouse_Pool",
+    "LocationType": "Bath",
+    "LocationGender": "Any",
+    "Description": "bath pool",
+    "X": 3,
+    "Y": 10,
+    "Rarity": "rare"
+  },
+  {
+    "NPC": "Victor",
+    "Location": "Custom_JenkinsHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "house",
+    "X": 30,
+    "Y": 7,
+    "Rarity": "normal"
+  },
+  {
+    "NPC": "Sophia",
+    "Location": "BathHouse_WomensLocker",
+    "LocationType": "Bath",
+    "LocationGender": "Female",
+    "Description": "bath locker",
+    "X": 8,
+    "Y": 8,
+    "Rarity": "normal"
+  },
+  {
+    "NPC": "Sophia",
+    "Location": "Custom_SophiaHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Blue moon vineyard",
+    "X": 19,
+    "Y": 7,
+    "Rarity": "always"
+  },
+  {
+    "NPC": "Sophia",
+    "Location": "BathHouse_Pool",
+    "LocationType": "Bath",
+    "LocationGender": "Any",
+    "Description": "Bath",
+    "X": 3,
+    "Y": 11,
+    "Rarity": "normal"
+  },
+  {
     "NPC": "Abigail",
     "Location": "FarmHouse",
     "LocationType": "Home",
@@ -77,7 +177,19 @@
     "Description": "Bedroom",
     "X": 2,
     "Y": 4,
-    "Rarity": "normal"
+    "Rarity": "normal",
+    "ForSVE": "no"
+  },
+  {
+    "NPC": "Sandy",
+    "Location": "SandyHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Bedroom",
+    "X": 3,
+    "Y": 5,
+    "Rarity": "normal",
+    "ForSVE": "only"
   },
   {
     "NPC": "Sandy",
@@ -87,7 +199,19 @@
     "Description": "Bedroom",
     "X": 18,
     "Y": 4,
-    "Rarity": "normal"
+    "Rarity": "normal",
+    "ForSVE": "no"
+  },
+  {
+    "NPC": "Sandy",
+    "Location": "SandyHouse",
+    "LocationType": "Home",
+    "LocationGender": "Any",
+    "Description": "Bedroom",
+    "X": 16,
+    "Y": 5,
+    "Rarity": "normal",
+    "ForSVE": "only"
   },
   {
     "NPC": "Sandy",
@@ -97,7 +221,8 @@
     "Description": "Bench southeast",
     "X": 41,
     "Y": 54,
-    "Rarity": "normal"
+    "Rarity": "normal",
+    "ForSVE": "no"
   },
   {
     "NPC": "Sandy",
@@ -107,7 +232,30 @@
     "Description": "Bench outside oasis",
     "X": 2,
     "Y": 51,
-    "Rarity": "very_rare"
+    "Rarity": "very_rare",
+    "ForSVE": "no"
+  },
+  {
+    "NPC": "Sandy",
+    "Location": "Desert",
+    "LocationType": "Other",
+    "LocationGender": "Any",
+    "Description": "Near hot springs",
+    "X": 25,
+    "Y": 7,
+    "Rarity": "normal",
+    "ForSVE": "only"
+  },
+  {
+    "NPC": "Sandy",
+    "Location": "Desert",
+    "LocationType": "Other",
+    "LocationGender": "Any",
+    "Description": "Desert trader",
+    "X": 34,
+    "Y": 23,
+    "Rarity": "very_rare",
+    "ForSVE": "only"
   },
   {
     "NPC": "Sandy",

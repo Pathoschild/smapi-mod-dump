@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using SpriteMaster.Resample.Scalers.SuperXBR.Cg;
 using SpriteMaster.Types;
 using System;
@@ -109,3 +110,4 @@ internal abstract class Pass {
 		internal readonly Float4 Sample(in Vector2I xy) => Sample(xy.X, xy.Y);
 	}
 }
+#endif

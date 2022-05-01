@@ -53,6 +53,13 @@ namespace FarmTypeManager
                     {
                         missing++; //increment missing tracker (note: monsters should always be removed overnight)
 
+                        //if this monster's type is no longer valid (NOTE: this may also be necessary to update the MTF monster ID cache; consider refactoring that)
+                        if (ValidateMonsterTypes(new List<MonsterType>() { saved.MonType }, "[No Area ID: Respawning previously saved monster.]")?.Count <= 0)
+                        {
+                            uninstalled++; //increment uninstall tracker
+                            continue; //skip to the next object
+                        }
+
                         //this mod should remove all of its monsters overnight, so respawn this monster without checking for its existence
                         int? newID = SpawnMonster(saved.MonType, location, saved.Tile, "[No Area ID: Respawning previously saved monster.]"); //respawn the monster and get its new ID (null if spawn failed)
                         if (newID.HasValue) //if a monster ID was generated

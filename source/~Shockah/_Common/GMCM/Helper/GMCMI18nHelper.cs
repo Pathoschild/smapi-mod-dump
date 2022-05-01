@@ -272,8 +272,7 @@ namespace Shockah.CommonModCode.GMCM
 
 		public Func<string>? GetOptionalTranslatedStringDelegate(string key, object? tokens = null)
 		{
-			var translation = Translations.Get(key, tokens);
-			return translation.HasValue() ? () => translation : null;
+			return Translations.Get(key, tokens).HasValue() ? () => Translations.Get(key, tokens) : null;
 		}
 
 		public static Expression<Action<T>> CreateSetter<T>(Expression<Func<T>> getter)

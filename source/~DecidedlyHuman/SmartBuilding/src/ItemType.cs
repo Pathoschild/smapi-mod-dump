@@ -83,7 +83,7 @@ namespace SmartBuilding
         /// <summary>
         /// We need to use the constructor for this.
         /// </summary>
-        TVFurniture,
+        TvFurniture,
 
         /// <summary>
         /// A generic placeable object.

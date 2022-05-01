@@ -12,7 +12,7 @@
     "Name": "Abigail's Delicates",
     "Description": "They smell just like her.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 33,
     "IsColored": false,
     "GiftTastes": {

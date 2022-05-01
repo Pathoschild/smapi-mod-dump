@@ -3,5 +3,6 @@
   "SameTackleOnly": true,
   "SameBaitOnly": true,
   "ConsumeChanceNormal": 1.0,
-  "ConsumeChancePreserving": 0.5
+  "ConsumeChancePreserving": 0.5,
+  "CrabPotTrashDoesNotEatBait": true
 }

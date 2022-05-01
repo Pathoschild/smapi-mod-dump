@@ -1,0 +1,10 @@
+{
+  "Name": "Toggle Monsters",
+  "Author": "Me",
+  "Version": "1.0.0",
+  "Description": "Allows monsters to be toggled",
+  "UniqueID": "Me.ToggleMonsters",
+  "EntryDll": "Toggle Monsters.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:11801" ]
+}

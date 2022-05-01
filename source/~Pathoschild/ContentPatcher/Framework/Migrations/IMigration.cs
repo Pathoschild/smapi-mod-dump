@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
 using ContentPatcher.Framework.Lexing.LexTokens;

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Lexing.LexTokens;
 using StardewModdingAPI;

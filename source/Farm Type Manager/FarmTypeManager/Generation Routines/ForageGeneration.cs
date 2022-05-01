@@ -64,7 +64,7 @@ namespace FarmTypeManager
                         }
 
                         //validate extra conditions, if any
-                        if (Utility.CheckExtraConditions(area, data.Save) != true)
+                        if (Utility.CheckExtraConditions(area, data.Save, data.Pack?.Manifest) != true)
                         {
                             Utility.Monitor.Log($"Extra conditions prevent spawning in this area. Next area...", LogLevel.Trace);
                             continue;

@@ -10,4 +10,4 @@
 
 namespace SpriteMaster;
 
-record struct TextureAction(int Size) {}
+record struct TextureAction(int Size) { }

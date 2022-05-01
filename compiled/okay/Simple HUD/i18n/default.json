@@ -1,0 +1,10 @@
+﻿{
+  "setting.enable": "Enable",
+  "setting.disable": "Disable",
+  "setting.title": "Title",
+  "setting.title.description": "Set the title of HUD",
+  "setting.textColor": "Text color",
+  "input.textField.description": "Input",
+  "input.button.done.title": "Done",
+  "input.button.cancel.title": "Cancel"
+}

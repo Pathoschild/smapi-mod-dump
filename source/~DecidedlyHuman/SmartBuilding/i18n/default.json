@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+  // Informational.
+  "smart-building.info.build-cancelled": "User left build mode. Refunding items.",
+  "smart-building.info.refunded-into-player-inventory": "refunded into player's inventory.",
+
+  // Settings menu text.
+  "smart-building.settings.keybinds.title": "Keybinds",
+  "smart-building.settings.keybinds.paragraph.gmcm-warning": "GMCM currently doesn't support adding mouse keybinds in its config menus. In the meantime, refer to the second page for advice on editing the config.json file to add them manually.",
+  "smart-building.settings.keybinds.binds.enter-build-mode": "Engage build mode",
+  "smart-building.settings.keybinds.binds.hold-to-draw": "Hold to draw",
+  "smart-building.settings.keybinds.binds.hold-to-erase": "Hold to erase",
+  "smart-building.settings.keybinds.binds.hold-to-insert": "Hold to insert item",
+  "smart-building.settings.keybinds.binds.confirm-build": "Confirm build",
+  "smart-building.settings.keybinds.binds.pick-up-object": "Pick up object",
+  "smart-building.settings.keybinds.binds.pick-up-floor": "Pick up floor",
+  "smart-building.settings.keybinds.binds.pick-up-furniture": "Pick up furniture",
+
+
+  "smart-building.settings.optional-toggles.title": "Optional Toggles",
+  "smart-building.settings.optional-toggles.show-build-queue": "Show build queue",
+  "smart-building.settings.optional-toggles.can-destroy-chests": "Can pick up chests",
+  "smart-building.settings.optional-toggles.can-destroy-chests.tooltip": "WARNING: This will drop all contained items on the ground.",
+  "smart-building.settings.optional-toggles.more-lax-floor-placement": "More lax floor placement",
+  "smart-building.settings.optional-toggles.more-lax-floor-placement.tooltip": "Allows you to place floors essentially anywhere, including UNREACHABLE AREAS.",
+  "smart-building.settings.optional-toggles.more-lax-furniture-placement": "More lax furniture placement",
+  "smart-building.settings.optional-toggles.more-lax-furniture-placement.tooltip": "Allows you to place furniture essentially anywhere, including UNREACHABLE AREAS.",
+  "smart-building.settings.optional-toggles.more-lax-bed-placement": "More lax bed placement",
+  "smart-building.settings.optional-toggles.more-lax-bed-placement.tooltip": "Allows you to place beds essentially anywhere, allowing you to sleep in places you shouldn't be able to sleep in. BE CAREFUL WITH THIS.",
+  "smart-building.settings.optional-toggles.enable-replacing-floors": "Replaceable floors",
+  "smart-building.settings.optional-toggles.enable-replacing-fences": "Replaceable fences",
+
+  "smart-building.settings.cheaty-options.title": "The Slightly Cheaty Zone",
+  "smart-building.settings.cheaty-options.crab-pots-in-any-water-tile": "Place crab pots in any water tile",
+  "smart-building.settings.cheaty-options.enable-planting-crops": "Allow planting crops",
+  "smart-building.settings.cheaty-options.enable-crop-fertilisers": "Allow fertilising crops",
+  "smart-building.settings.cheaty-options.enable-tree-fertilisers": "Allow fertilising trees",
+  "smart-building.settings.cheaty-options.enable-tree-tappers": "Allow tree tappers",
+  "smart-building.settings.cheaty-options.enable-inserting-items-into-machines": "Enable placing items into machines",
+
+  "smart-building.settings.debug.title": "Debug Settings",
+  "smart-building.settings.debug.enable-debug-command": "Enable debug command",
+  "smart-building.settings.debug.enable-debug-keybinds": "Enable debug keybinds",
+  "smart-building.settings.debug.identify-producer-to-console": "Identify producer to console",
+  "smart-building.settings.debug.identify-held-item-to-console": "Identify held item to console",
+
+  "smart-building.settings.potentially-dangerous.title": "THIS NEXT OPTION IS POTENTIALLY DANGEROUS",
+  "smart-building.settings.potentially-dangerous.paragraph": "You shouldn't, but you might lose items inside your dressers/other storage furniture. If you do, please let me know.",
+  "smart-building.settings.potentially-dangerous.enable-placing-storage-furniture": "Enable placing storage furniture",
+  "smart-building.settings.potentially-dangerous.enable-placing-storage-furniture.tooltip": "WARNING: PLACING STORAGE FURNITURE WITH SMART BUILDING IS RISKY. Your items should transfer over just fine, but it's your risk to take.",
+
+  "smart-building.settings.json-guide.page-link": "(Click me!) A short guide on adding mouse bindings.",
+  "smart-building.settings.json-guide.page-title": "Mouse Key Bindings",
+  "smart-building.settings.json-guide.guide-1": "From: https://stardewvalleywiki.com/Modding:Player_Guide/Key_Bindings#Multi-key_bindings",
+  "smart-building.settings.json-guide.guide-2": "Mods using SMAPI 3.9+ features can support multi-key bindings. That lets you combine multiple button codes into a combo keybind, and list alternate keybinds. For example, \"LeftShoulder, LeftControl + S\" will apply if LeftShoulder is pressed, or if both LeftControl and S are pressed.",
+  "smart-building.settings.json-guide.guide-3": "Some things to keep in mind:",
+  "smart-building.settings.json-guide.guide-4": "The order doesn't matter, so \"LeftControl + S\" and \"S + LeftControl\" are equivalent.",
+  "smart-building.settings.json-guide.guide-5": "SMAPI doesn't prevent mods from using overlapping hotkeys. For example, if one mod uses \"S\" and the other mod uses \"LeftControl + S\", pressing LeftControl and S will activate both.",
+
+  // Errors/warnings.
+  "smart-building.error.object.placement-failed": "There was a problem placing the object in the world. Maybe an object was placed before the build was committed?",
+  "smart-building.error.terrain-feature.flooring.could-not-identify-floor-type": "Couldn't figure out the type of floor. This may be a modded floor/path we don't understand.",
+  "smart-building.error.terrain-feature.generic.already-present": "There was already a TerrainFeature present. Maybe someone hoed the ground or placed a path before committing the build?",
+  "smart-building.error.terrain-feature.generic.unknown-error": "There was something in the way of placing this. Maybe hoed dirt or a path?",
+  "smart-building.error.chest.could-not-identify-chest": "Couldn't recognise this item as a chest. This may be a bug, or a modded chest.",
+  "smart-building.error.seeds.placement-failed": "There was a problem placing the seed.",
+  "smart-building.error.fertiliser.already-fertilised": "The crop or HoeDirt was already fertilised.",
+  "smart-building.error.fertiliser.ineligible-for-fertilisation": "There was either fertiliser already here, or the crop is too grown to accept fertiliser.",
+  "smart-building.error.tree-tapper.placement-failed": "There was a problem placing the tree tapper.",
+  "smart-building.error.storage-furniture.placement-failed": "There was a problem placing the storage furniture. The items contained within should be safe, but please check to confirm.",
+  "smart-building.error.storage-furniture.setting-is-off": "The (potentially dangerous) setting to enable storage furniture placement is disabled.",
+  "smart-building.error.tv-furniture.placement-failed": "There was a problem placing the TV.",
+  "smart-building.error.bed-furniture.placement-failed": "There was a problem placing the bed.",
+  "smart-building.error.furniture.placement-failed": "There was a problem placing the furniture.",
+  "smart-building.error.refunding.generic-refund-message": "Something went wrong.",
+  "smart-building.error.refunding.refunding-item-to-player-inventory": "Refunding item to player inventory: ",
+  "smart-building.warning.gmcm-not-installed": "The user doesn't have GMCM installed. This is not an error.",
+
+  // Messages
+  "smart-building.message.item-name": "Item name",
+  "smart-building.message.item-parent-sheet-index": "ParentSheetIndex",
+  "smart-building.message.item-category": "Stardew Valley category",
+  "smart-building.message.item-type": "Stardew Valley type",
+  "smart-building.message.item-smart-building-type": "Identified item as type",
+  "smart-building.message.producer-being-identified": "Producer being identified",
+  "smart-building.message.identified-producer-type": "Identified producer type",
+  "smart-building.message.storage-furniture.adding-item": "Adding item",
+  "smart-building.message.storage-furniture.retrieval-tip": "You can use the name and (primarily) ParentSheetId to help get the items back if something goes wrong.",
+  "smart-buikding.message.trying-to-grab": "Trying to grab",
+
+  // Commands
+  "smart-building.commands.debug.sb-test": "If you need to read this, it is not for you. Here be dragons.",
+
+  // Mod integrations
+  "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": ""
+}

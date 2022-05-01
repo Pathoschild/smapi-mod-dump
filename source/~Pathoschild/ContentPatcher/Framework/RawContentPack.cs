@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using System.Linq;
 using ContentPatcher.Framework.ConfigModels;

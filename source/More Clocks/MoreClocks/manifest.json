@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/p-holodynski/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Name": "MoreClocks",
+  "Author": "phjoker",
+  "Version": "1.1.5",
+  "Description": "Improves the Gold Clock logic and also adds more Clocks with different effects for the end game.",
+  "UniqueID": "phjoker.MoreClocks",
+  "EntryDll": "MoreClocks.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:11840" ]
+}

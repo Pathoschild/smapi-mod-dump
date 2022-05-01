@@ -132,6 +132,12 @@ class Library
 	def to_s = @path.to_s
 end
 
+puts "Copying licenses..."
+LicensesSource = SolutionDir + "Licenses"
+LicensesDest = OutDir + "Licenses"
+FileUtils.rm_rf(LicensesDest)
+FileUtils.cp_r(LicensesSource, LicensesDest, preserve: true)
+
 puts "Copying prebuilt libraries..."
 PrebuiltPaths.each { |directory|
 	raise "Prebuilt Path '#{directory}' is not a directory" unless directory.directory?

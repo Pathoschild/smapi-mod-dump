@@ -1,0 +1,9 @@
+{
+  "KeyBind_ToggleEnabled": "F10",
+  "Enabled": true,
+  "AutoEatStaminaThreshold": 0,
+  "AutoEatHealthThreshold": 20,
+  "KeyBind_ToggleMaintainBuff": "F11",
+  "MaintainBuff": false,
+  "InstantEat": false
+}

@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/evfredericksen/StardewSpeak
+**
+*************************************************/
+
+aerinite E r V n aI t
+alamite { l V m aI t
+backspace b { k s p e I s
+baryte b V r aI t
+bixite b aI z aI t
+bruschetta b r V s E t V
+chanterelle tS { n t V r V l
+cowgal k aU g { l
+cowpoke k aU p o U k
+crimsonfish k r I m z V n f I S
+crystalarium k r I s t V l { r i V m
+cutscene k V t s i n
+dwarvish d w O r v V S
+elvish E l v V S
+esperite E s V r aI t
+fiddlehead f I d V l h E d
+firewalker f aI 3 w O k 3
+fluorapatite f l u w V r { p V t aI t
+foroguemon f V r A g w V m V n
+geminite dZ E m V n aI t
+geode dZ i o U d
+ghostfish g o U s t f I S
+glacierfish g l e I S 3 f I S
+glowstone g l o U s t o U n
+handaxe h { n d { k s
+hashbrowns h { S b r aU n z
+helvite h E l v aI t
+jack-o-lantern dZ { k o U l { n t 3 n
+jagoite dZ V g OI t
+jamborite dZ { m b V r aI t
+jodi's dZ o U d i z
+joja dZ o U dZ V
+junimo dZ u n V m o U
+kha k h A
+krobus k r o U b V s
+kwee k w i
+kyanite k aI V n aI t
+lamp-post l { m p p o U s t
+largemouth l A r dZ m aU T
+lingcod l I n g k V d
+lunarite l u n V r aI t
+marnie's m A r n i z
+mudstone m V d s t o U n
+nekoite n V k OI t
+neptunite n E p t j V n aI t
+npc 'E n p 'i s 'i
+othe o U D
+poppyseed p A p i s i d
+praire p r { V r
+rarecrow r E r k r o U
+riverland r I v 3 l { n d
+salmonberry s { m V n b E r i
+sandfish s { n d f I S
+smallmouth s m O l m aU T
+soapstone s o U p s t o U n
+souwester s aU w E s t V r
+stardew s t A r d u
+stardrop s t A r d r A p
+starfruit s t A r f r u t
+stonefish s t o U n f I S
+tigerseye t aI g 3 z aI
+trilobite t r I l V b aI t
+tropiclip t r A p I k l I p
+woodskip w U d s k I p
+x-ray E k s r e I
+yoba j o U b V

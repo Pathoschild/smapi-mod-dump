@@ -1,0 +1,82 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"Barn": {
+		"X": 0,
+		"Y": 0,
+		"Width": 112,
+		"Height": 112
+	},
+	"Big Barn": {
+		"X": 0,
+		"Y": 0,
+		"Width": 112,
+		"Height": 112
+	},
+	"Deluxe Barn": {
+		"X": 0,
+		"Y": 0,
+		"Width": 112,
+		"Height": 112
+	},
+
+	"Coop": {
+		"X": 0,
+		"Y": 0,
+		"Width": 96,
+		"Height": 112
+	},
+	"Big Coop": {
+		"X": 0,
+		"Y": 0,
+		"Width": 96,
+		"Height": 112
+	},
+	"Deluxe Coop": {
+		"X": 0,
+		"Y": 0,
+		"Width": 96,
+		"Height": 112
+	},
+
+	"Shed": null,
+	"Big Shed": null,
+
+	"Stone Cabin": {
+		"X": 0,
+		"Y": 0,
+		"Width": 80,
+		"Height": 112
+	},
+	"Plank Cabin": {
+		"X": 0,
+		"Y": 0,
+		"Width": 80,
+		"Height": 112
+	},
+	"Log Cabin": {
+		"X": 0,
+		"Y": 0,
+		"Width": 80,
+		"Height": 112
+	},
+
+	"Fish Pond": {
+		"X": 0,
+		"Y": 0,
+		"Width": 80,
+		"Height": 80
+	},
+
+	"Slime Hutch": null,
+	"Shipping Bin": null,
+	"Well": null
+}

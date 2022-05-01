@@ -27,7 +27,7 @@ static class Arrays {
 	internal static T[] Empty<T>() => EmptyArrayStatic<T>.Value;
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static T[] Singleton<T>(T value) => new []{ value };
+	internal static T[] Singleton<T>(T value) => new[] { value };
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static T[] Of<T>(params T[] values) => values;

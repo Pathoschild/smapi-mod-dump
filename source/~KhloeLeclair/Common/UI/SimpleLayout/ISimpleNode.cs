@@ -8,21 +8,23 @@
 **
 *************************************************/
 
+#nullable enable
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Leclair.Stardew.Common.UI.SimpleLayout {
-	public interface ISimpleNode {
+namespace Leclair.Stardew.Common.UI.SimpleLayout;
 
-		// Alignment
-		Alignment Alignment { get; }
+public interface ISimpleNode {
 
-		// Size
-		bool DeferSize { get; }
-		Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize);
+	// Alignment
+	Alignment Alignment { get; }
 
-		// Rendering
-		void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor);
+	// Size
+	bool DeferSize { get; }
+	Vector2 GetSize(SpriteFont defaultFont, Vector2 containerSize);
 
-	}
+	// Rendering
+	void Draw(SpriteBatch batch, Vector2 position, Vector2 size, Vector2 containerSize, float alpha, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor);
+
 }

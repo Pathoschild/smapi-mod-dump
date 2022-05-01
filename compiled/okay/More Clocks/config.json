@@ -1,0 +1,15 @@
+{
+  "clockNotificationsEnabled": true,
+  "ProfitMarginEnabled": true,
+  "ProfitMarginValue": 0.25,
+  "PlantAnySeasonEnabled": true,
+  "MachineSpeedUpEnabled": true,
+  "MachineSpeedUpChanceValue": 25,
+  "MachineSpeedUpSpeedValue": 25,
+  "CropGrowEnabled": true,
+  "CropGrowMethod": "Completely",
+  "CropGrowArea": "Individual",
+  "CropGrowChanceValue": 25,
+  "CropMutateToGiantEnabled": true,
+  "CropMutateToGiantChanceValue": 25
+}

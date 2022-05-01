@@ -8,7 +8,9 @@
 **
 *************************************************/
 
+using LinqFasterer;
 using Priority_Queue;
+using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using StardewValley;
@@ -16,7 +18,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using static StardewValley.PathFindController;
 
@@ -42,7 +43,7 @@ static partial class Pathfinding {
 		}
 
 		// Warps can never path to "Volcano", and can only path to certain Locations when it's explicitly allowed in the settings.
-		if (warp.TargetName is "Volcano" || (!Config.Extras.AllowNPCsOnFarm && warp.TargetName is "Farm" or "Woods" or "Backwoods" or "Tunnel")) {
+		if (warp.TargetName is "Volcano" || (!Config.Extras.AllowNPCsOnFarm && warp.TargetName is ("Farm" or "Woods" or "Backwoods" or "Tunnel"))) {
 			target = null;
 			return false;
 		}
@@ -58,7 +59,7 @@ static partial class Pathfinding {
 	}
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static bool GetTarget(this in DoorPair door, Dictionary<string, GameLocation?> locations, [NotNullWhen(true)]  out GameLocation? target) {
+	private static bool GetTarget(this in DoorPair door, Dictionary<string, GameLocation?> locations, [NotNullWhen(true)] out GameLocation? target) {
 		if (door.Value is null) {
 			target = null;
 			return false;
@@ -81,7 +82,7 @@ static partial class Pathfinding {
 	private static NPC? GetDummyNPC() {
 		NPC? dummyNPC = null;
 		foreach (var location in Game1.locations) {
-			dummyNPC = location.getCharacters().FirstOrDefault(c => c is NPC);
+			dummyNPC = location.getCharacters().FirstOrDefaultF(c => c is NPC);
 			if (dummyNPC is not null) {
 				break;
 			}

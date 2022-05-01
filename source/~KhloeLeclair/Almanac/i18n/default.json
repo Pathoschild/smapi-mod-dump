@@ -196,6 +196,9 @@
 	"settings.button.TrashRight": "Right of Trash Can",
 	"settings.button.TrashDown": "Below Trash Can",
 
+	"settings.unlimited": "Unlimited",
+	"settings.days": "{{count}} Days",
+
 	"settings.available": "Almanac Always Available",
 	"settings.available-desc": "When enabled, the Almanac will always be available regardless of whether you've received a copy.",
 
@@ -204,6 +207,9 @@
 
 	"settings.magic": "Magic Pages Always Available",
 	"settings.magic-desc": "When enabled, magic pages will always be available and not require the event with the wizard.",
+
+	"settings.forecast-length": "Forecast Length",
+	"settings.forecast-length.desc": "Forecast up to this many days into the future.",
 
 	"settings.weather.deterministic": "Use Deterministic Weather",
 	"settings.weather.deterministic-desc": "In order for the weather forecast of the Almanac to work, we replace the calculation for tomorrow's weather with one that uses a predictable source of randomness. If this is causing problems, you can disable the behavior here. However, doing so will disable the extended weather forecast.",

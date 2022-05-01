@@ -15,6 +15,7 @@ using StardewModdingAPI.Utilities;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -30,14 +31,22 @@ namespace EventLimiter
         void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
     }
 
+    // Data model for CP integration
+    class InternalExceptionModel
+    {
+        public List<int> EventLimiterExceptions;
+    }
+
     public class ModEntry
         : Mod
     {
         private ModConfig config;
+        public List<int> InternalExceptions = new List<int>();
 
         // Counters for event tracking
         public static readonly PerScreen<int> EventCounterDay = new PerScreen<int>();
         public static readonly PerScreen<int> EventCounterRow = new PerScreen<int>();
+
         public override void Entry(IModHelper helper)
         {
             var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -55,12 +64,53 @@ namespace EventLimiter
             }
 
             // Add harmony patches
-            Patches.Hook(harmony, this.Monitor, this.config);
+            Patches.Hook(harmony, this.Monitor, this.config, this.InternalExceptions);
+
+            // Allow EventLimiterapi access to needed values
+            EventLimiterApi.Hook(this.config, this.InternalExceptions);           
+
+            foreach (IModInfo mod in this.Helper.ModRegistry.GetAll())
+            {
+                // Check if it's a Content Patcher pack
+                if (mod.IsContentPack == false || mod.Manifest.ContentPackFor?.UniqueID.Trim().Equals("Pathoschild.ContentPatcher", StringComparison.InvariantCultureIgnoreCase) == false)
+                {
+                    continue;
+                }                    
+
+                // Use reflection on IModInfo to get non-public property
+                string directoryPath = (string)mod.GetType().GetProperty("DirectoryPath")?.GetValue(mod);
+
+                if (directoryPath == null)
+                {
+                    throw new InvalidOperationException($"Couldn't get DirectoryPath property from the mod info for {mod.Manifest.Name}.");
+                }
+
+
+                // read JSON file into data model
+                IContentPack contentPack = this.Helper.ContentPacks.CreateFake(directoryPath);
+                InternalExceptionModel model = contentPack.ReadJsonFile<InternalExceptionModel>("content.json");
+
+                // Get event IDs from model and add to internal exceptions
+                if (model?.EventLimiterExceptions != null)
+                {
+                    foreach (int eventid in model.EventLimiterExceptions)
+                    {
+                        this.InternalExceptions.Add(eventid);
+                        this.Monitor.Log($"Content pack {mod.Manifest.Name} added event {eventid} as event limit exception");
+                    }
+                }               
+            }
 
             // Add event handlers
             helper.Events.GameLoop.GameLaunched += this.GameLaunched;
             helper.Events.GameLoop.DayStarted += this.DayStarted;
             helper.Events.Input.ButtonPressed += this.ButtonPressed;
+        }
+
+        // Get EventLimiterApi
+        public override object GetApi()
+        {
+            return new EventLimiterApi();
         }
 
         private void ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -88,7 +138,7 @@ namespace EventLimiter
             if (configMenu is null)
             {
                 return;
-            }         
+            }
 
             // register mod
             configMenu.Register(
@@ -99,8 +149,8 @@ namespace EventLimiter
 
             // Add EventsPerDay option
             configMenu.AddNumberOption(
-                mod: this.ModManifest, 
-                getValue: () => this.config.EventsPerDay, 
+                mod: this.ModManifest,
+                getValue: () => this.config.EventsPerDay,
                 setValue: value => this.config.EventsPerDay = value,
                 min: 0,
                 tooltip: () => "The maximum number of events shown in a day",

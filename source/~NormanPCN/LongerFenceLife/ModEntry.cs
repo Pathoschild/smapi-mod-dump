@@ -472,6 +472,7 @@ namespace LongerFenceLife
             }
         }
 
+      
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.
         /// This method implements triggers the fence display life mechanism.///
         /// It also implements an instant fence decay for testing purposes.

@@ -52,8 +52,8 @@ namespace Leclair.Stardew.Almanac.Managers {
 
 		public void Invalidate() {
 			Loaded = false;
-			Mod.Helper.Content.InvalidateCache(AssetManager.LocalNoticesPath);
-			Mod.Helper.Content.InvalidateCache(AssetManager.NPCOverridesPath);
+			Mod.Helper.GameContent.InvalidateCache(AssetManager.LocalNoticesPath);
+			Mod.Helper.GameContent.InvalidateCache(AssetManager.NPCOverridesPath);
 		}
 
 		#region Event Handlers

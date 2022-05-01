@@ -76,6 +76,8 @@
     "config.appearance.alpha.focused.tooltip": "Transparency when the display is focused\n(when hovering over with a mouse cursor, or after pressing a hotkey).\n0: fully transparent\n1: fully opaque",
     "config.appearance.alpha.normal.name": "Normal alpha",
     "config.appearance.alpha.normal.tooltip": "Transparency when the display is not focused.\n0: fully transparent\n1: fully opaque",
+    "config.appearance.busyDancing.name": "Busy machine \"dancing\"",
+    "config.appearance.busyDancing.tooltip": "Whether busy machines should use the \"dancing\" animation.",
 
     "config.groupingSorting.grouping.name": "Grouping",
     "config.groupingSorting.grouping.value.None": "None",

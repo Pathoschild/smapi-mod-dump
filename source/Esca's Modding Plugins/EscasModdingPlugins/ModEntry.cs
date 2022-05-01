@@ -13,7 +13,7 @@ using StardewModdingAPI;
 
 namespace EscasModdingPlugins
 {
-    public class ModEntry : Mod, IAssetLoader
+    public class ModEntry : Mod
     {
         /// <summary>The beginning of each each map/tile property name implemented by this mod.</summary>
         public static readonly string PropertyPrefix = "Esca.EMP/";
@@ -64,15 +64,6 @@ namespace EscasModdingPlugins
         {
             ModInteractions.GMCM.Initialize(Helper, Monitor, ModManifest);
         }
-
-
-
-        /************************/
-        /* IAssetLoader methods */
-        /************************/
-
-        public bool CanLoad<T>(IAssetInfo asset) => AssetHelper.CanLoad<T>(asset); //use AssetHelper
-        public T Load<T>(IAssetInfo asset) => AssetHelper.Load<T>(asset); //use AssetHelper
 
         /**************/
         /* API method */

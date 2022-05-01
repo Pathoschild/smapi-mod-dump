@@ -21,8 +21,7 @@ namespace SpriteMaster.Types;
 [StructLayout(LayoutKind.Explicit, Pack = Vector2I.Alignment, Size = Vector2I.ByteSize)]
 unsafe partial struct Vector2I :
 	CompositePrimitive<ulong>,
-	ILongHash,
-	ICloneable {
+	ILongHash {
 	internal const int ByteSize = sizeof(ulong);
 	internal const int Alignment = sizeof(ulong);
 
@@ -103,7 +102,7 @@ unsafe partial struct Vector2I :
 	internal static Vector2I From(int X, int Y) => new(X, Y);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2I(in (int X, int Y) vec) : this(vec.X, vec.Y) {}
+	internal Vector2I(in (int X, int Y) vec) : this(vec.X, vec.Y) { }
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static Vector2I From(in (int X, int Y) vec) => new(vec.X, vec.Y);
@@ -142,10 +141,7 @@ unsafe partial struct Vector2I :
 	internal Vector2I(Microsoft.Xna.Framework.Graphics.Texture2D tex) : this(tex.Width, tex.Height) { }
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2I(System.Drawing.Bitmap bmp) : this(bmp.Width, bmp.Height) { }
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static implicit operator Vector2I(in (int X, int Y) vec) => new (vec.X, vec.Y);
+	public static implicit operator Vector2I(in (int X, int Y) vec) => new(vec.X, vec.Y);
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static implicit operator (int X, int Y)(Vector2I vec) => (vec.X, vec.Y);
@@ -185,12 +181,6 @@ unsafe partial struct Vector2I :
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static implicit operator Bounds(Vector2I vec) => new(vec);
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal readonly Vector2I Clone() => this;
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	readonly object ICloneable.Clone() => this;
 
 	public override readonly string ToString() => $"{{{X}, {Y}}}";
 	public readonly string ToString(IFormatProvider? provider) => $"{{{X.ToString(provider)}, {Y.ToString(provider)}}}";

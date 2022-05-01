@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 
 namespace ContentPatcher.Framework.Lexing.LexTokens

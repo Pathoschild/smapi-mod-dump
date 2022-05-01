@@ -11,8 +11,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
+#if IS_BETTER_CRAFTING
 using Leclair.Stardew.Common.Crafting;
 using Leclair.Stardew.Common.Inventory;
+#else
+using Leclair.Stardew.BetterCrafting;
+#endif
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,59 +26,60 @@ using SpaceCore;
 using StardewValley;
 using StardewValley.Objects;
 
+namespace Leclair.Stardew.BCSpaceCore;
 
-namespace Leclair.Stardew.BCSpaceCore {
-	public class SpaceCoreIngredient : IIngredient {
+public class SpaceCoreIngredient : IIngredient {
 
-		public bool SupportsQuality => false;
+	public bool SupportsQuality => false;
 
-		private static List<Chest> GetChests(IList<IInventory> inventories) {
-			return inventories
-				.Where(val => val.Object is Chest)
-				.Select(val => val.Object as Chest)
-				.ToList();
-		}
+	private static List<Chest> GetChests(IList<IInventory>? inventories) {
+		if (inventories is null)
+			return new List<Chest>();
 
-		private readonly CustomCraftingRecipe.IngredientMatcher Matcher;
+		return inventories
+			.Where(val => val.Object is Chest)
+			.Select(val => (Chest) val.Object)
+			.ToList();
+	}
 
-		public SpaceCoreIngredient(CustomCraftingRecipe.IngredientMatcher matcher) {
-			Matcher = matcher;
-		}
+	private readonly CustomCraftingRecipe.IngredientMatcher Matcher;
 
-		public string DisplayName => Matcher.DispayName;
+	public SpaceCoreIngredient(CustomCraftingRecipe.IngredientMatcher matcher) {
+		Matcher = matcher;
+	}
 
-		public Texture2D Texture => Matcher.IconTexture;
+	public string DisplayName => Matcher.DispayName;
 
-		public Rectangle SourceRectangle => Matcher.IconSubrect ?? Texture.Bounds;
+	public Texture2D Texture => Matcher.IconTexture;
 
-		public int Quantity => Matcher.Quantity;
+	public Rectangle SourceRectangle => Matcher.IconSubrect ?? Texture.Bounds;
 
-		public void Consume(Farmer who, IList<IInventory> inventories, int max_quality, bool lower_quality_first) {
-			// Unfortunately, we're always going to need chests for this
-			// due to how SpaceCore is implemented.
-			if (who == Game1.player)
-				Matcher.Consume(GetChests(inventories));
-		}
+	public int Quantity => Matcher.Quantity;
 
-		public int GetAvailableQuantity(Farmer who, IList<Item> _, IList<IInventory> inventories, int max_quality) {
-			if (who != Game1.player)
-				return 0;
+	public int GetAvailableQuantity(Farmer who, IList<Item?>? _, IList<IInventory>? inventories, int max_quality) {
+		if (who != Game1.player)
+			return 0;
 
-			List<Item> items = new();
-			items.AddRange(who.Items);
+		List<Item> items = new();
+		items.AddRange(who.Items);
 
-			// Rather than using the provided Item list, we need
-			// a list that is only items from chests because
-			// SpaceCore ingredient matchers only understand
-			// how to consume items from chests.
-			if (inventories != null)
-				foreach (var inv in inventories) {
-					if (inv.Object is Chest chest)
-						foreach (var item in chest.items)
-							items.Add(item);
-				}
+		// Rather than using the provided Item list, we need
+		// a list that is only items from chests because
+		// SpaceCore ingredient matchers only understand
+		// how to consume items from chests.
+		if (inventories != null)
+			foreach (var inv in inventories) {
+				if (inv.Object is Chest chest)
+					items.AddRange(chest.items);
+			}
 
-			return Matcher.GetAmountInList(items);
-		}
+		return Matcher.GetAmountInList(items);
+	}
+
+	public void Consume(Farmer who, IList<IInventory>? inventories, int max_quality, bool lower_quality_first) {
+		// Unfortunately, we're always going to need chests for this
+		// due to how SpaceCore is implemented.
+		if (who == Game1.player)
+			Matcher.Consume(GetChests(inventories));
 	}
 }

@@ -9,19 +9,20 @@
 *************************************************/
 
 {
-	"Name": "Personal Effects Redux",
-	"Author": "ceruleandeep",
-	"Version": "1.5.1",
-	"Description": "A Stardew Valley mod for certain individuals. <3",
-	"EntryDll": "PersonalEffects.dll",
-	"MinimumApiVersion": "2.11",
-	"Dependencies": [
-		{
-			"UniqueID": "ceruleandeep.ja.personaleffects",
-			"MinimumVersion": "1.0.0"
-		}
-
-	],
-	"UniqueID": "ceruleandeep.personaleffects",
-	"UpdateKeys": [ "Nexus:8616" ]
+  "Name": "Personal Effects Redux",
+  "Author": "ceruleandeep",
+  "Version": "1.6.4",
+  "Description": "A Stardew Valley mod for certain individuals. <3",
+  "EntryDll": "PersonalEffects.dll",
+  "MinimumApiVersion": "2.11",
+  "Dependencies": [
+    {
+      "UniqueID": "ceruleandeep.ja.personaleffects",
+      "MinimumVersion": "1.6.2"
+    }
+  ],
+  "UniqueID": "ceruleandeep.personaleffects",
+  "UpdateKeys": [
+    "Nexus:8616"
+  ]
 }

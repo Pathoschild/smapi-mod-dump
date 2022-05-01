@@ -8,9 +8,10 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using StardewValley;
-using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.Automate
 {
@@ -27,7 +28,7 @@ namespace Pathoschild.Stardew.Automate
         int InputCount { get; }
 
         /// <summary>The output to generate (given an input).</summary>
-        Func<Item, SObject> Output { get; }
+        Func<Item, Item> Output { get; }
 
         /// <summary>The time needed to prepare an output (given an input).</summary>
         Func<Item, int> Minutes { get; }

@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 namespace Pathoschild.Stardew.SmallBeachFarm.Framework.Config
 {
     /// <summary>The mod configuration.</summary>

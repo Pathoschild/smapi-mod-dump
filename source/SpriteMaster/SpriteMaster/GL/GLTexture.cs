@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FastExpressionCompiler.LightExpression;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
@@ -35,7 +36,7 @@ static class GLTexture {
 	private static readonly Func<Texture, Enum>? GetGLType = TextureType.GetFieldGetter<Texture, Enum>("glType");
 	private static readonly Action<Texture, Enum>? SetGLType = TextureType.GetFieldSetter<Texture, Enum>("glType");
 
-	private static readonly ConstructorInfo? Texture2DConstructor = 
+	private static readonly ConstructorInfo? Texture2DConstructor =
 		Texture2DType.GetConstructor(
 			BindingFlags.NonPublic | BindingFlags.Instance,
 			null,
@@ -57,14 +58,14 @@ static class GLTexture {
 				Texture2DType
 			);
 			var ilGen = dynMethod.GetILGenerator();
-			ilGen.Emit(OpCodes.Ldarg_0); // graphicsDevice
-			ilGen.Emit(OpCodes.Ldarg_1); // width
-			ilGen.Emit(OpCodes.Ldarg_2); // height
-			ilGen.Emit(OpCodes.Ldc_I4_0); // mipmap
-			ilGen.Emit(OpCodes.Ldarg_3); // format
+			ilGen.Emit(OpCodes.Ldarg_0);    // graphicsDevice
+			ilGen.Emit(OpCodes.Ldarg_1);    // width
+			ilGen.Emit(OpCodes.Ldarg_2);    // height
+			ilGen.Emit(OpCodes.Ldc_I4_0);   // mipmap
+			ilGen.Emit(OpCodes.Ldarg_3);    // format
 			ilGen.Emit(OpCodes.Ldarg_S, 4); // type
-			ilGen.Emit(OpCodes.Ldc_I4_0); // shared
-			ilGen.Emit(OpCodes.Ldc_I4_0); // arraySize
+			ilGen.Emit(OpCodes.Ldc_I4_0);   // shared
+			ilGen.Emit(OpCodes.Ldc_I4_0);   // arraySize
 			ilGen.Emit(OpCodes.Newobj, Texture2DConstructor);
 			ilGen.Emit(OpCodes.Ret);
 			CreateInstance = dynMethod.CreateDelegate<Func<GraphicsDevice, int, int, SurfaceFormat, Enum, Texture2D>>();
@@ -74,25 +75,28 @@ static class GLTexture {
 		}
 
 		try {
-			var p0 = System.Linq.Expressions.Expression.Parameter(typeof(GraphicsDevice));
-			var p1 = System.Linq.Expressions.Expression.Parameter(typeof(int));
-			var p2 = System.Linq.Expressions.Expression.Parameter(typeof(int));
-			var p3 = System.Linq.Expressions.Expression.Parameter(typeof(SurfaceFormat));
-			var p4 = System.Linq.Expressions.Expression.Parameter(typeof(Enum));
-			CreateInstance = System.Linq.Expressions.Expression.Lambda<Func<GraphicsDevice, int, int, SurfaceFormat, Enum, Texture2D>>(
-				System.Linq.Expressions.Expression.New(
+			var p0 = Expression.Parameter(typeof(GraphicsDevice));
+			var p1 = Expression.Parameter(typeof(int));
+			var p2 = Expression.Parameter(typeof(int));
+			var p3 = Expression.Constant(false);
+			var p4 = Expression.Parameter(typeof(SurfaceFormat));
+			var p5 = Expression.Parameter(typeof(Enum));
+			var p6 = Expression.Constant(false);
+			var p7 = Expression.Constant(0);
+			CreateInstance = Expression.Lambda<Func<GraphicsDevice, int, int, SurfaceFormat, Enum, Texture2D>>(
+				Expression.New(
 					Texture2DConstructor,
 					p0, // graphicsDevice
 					p1, // width
 					p2, // height
-					System.Linq.Expressions.Expression.Constant(false), // mipmap
-					p3, // format
-					System.Linq.Expressions.Expression.Convert(p4, SurfaceTypeType), // type
-					System.Linq.Expressions.Expression.Constant(false), // shared
-					System.Linq.Expressions.Expression.Constant(0)  // arraySize
+					p3, // mipmap
+					p4, // format
+					Expression.Convert(p5, SurfaceTypeType), // type
+					p6, // shared
+					p7  // arraySize
 				),
-				p0, p1, p2, p3, p4
-			).Compile();
+				p0, p1, p2, p4, p5
+			).CompileFast();
 		}
 		catch (Exception) {
 			throw;

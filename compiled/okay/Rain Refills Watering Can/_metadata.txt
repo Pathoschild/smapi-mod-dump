@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11554
+IDs: StultusV.RainRefillsWateringCan
+update keys: Nexus:11554, GitHub:JudeRV/Stardew-RainRefillsWateringCan

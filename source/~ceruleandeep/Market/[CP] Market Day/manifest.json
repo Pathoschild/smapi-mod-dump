@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceruleandeep/CeruleanStardewMods
+**
+*************************************************/
+
+{
+  "Name": "[CP] Market Day",
+  "Author": "ceruleandeep",
+  "Version": "1.0.8-beta.1",
+  "Description": "Market Day: Sell Your Items",
+  "UniqueID": "ceruleandeep.MarketDay.CP",
+  "UpdateKeys": [
+    "Nexus:???"
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "ceruleandeep.MarketDay",
+      "IsRequired": true
+    }
+  ]
+}

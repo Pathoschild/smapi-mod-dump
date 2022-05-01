@@ -153,7 +153,7 @@
 			"ItemNames": [
 				"Buckwheat Seeds",
 				"Muskmelon Seeds",
-				"Suger Beet Seeds",
+				"Sugar Beet Seeds",
 				"Sweet Canary Melon Seeds",
 				],
 			"Stock": 6,
@@ -502,7 +502,7 @@
 			"ItemType": "Object",
 			"ItemNames": [
 				"Benne Sesame Seeds",
-				"BLue Corn Seeds",
+				"Blue Corn Seeds",
 				"Cardamom Seeds",
 				"Chayote Seeds",
 				"Cowpeas Seeds",
@@ -1019,13 +1019,6 @@
 		},
 		{
 			"ItemType": "Weapon",
-			"ItemNames": [ "Free Lance", ],
-			"StockItemCurrency": "Spiritual Essence",
-			"StockCurrencyStack": 100,
-			"When": [ "f Kiarra 2500" ],
-		},
-		{
-			"ItemType": "Weapon",
 			"ItemNames": [ "Cutlasset", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 100,
@@ -1044,13 +1037,6 @@
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 100,
 			"When": [ "f Paula 2500" ],
-		},
-		{
-			"ItemType": "Weapon",
-			"ItemNames": [ "Bronze Lance", ],
-			"StockItemCurrency": "Spiritual Essence",
-			"StockCurrencyStack": 100,
-			"When": [ "f Sean 2500" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1096,70 +1082,84 @@
 
 	"ItemStocks": [
 		//Weapons
-		{
+		{ //Ysabelle
 			"ItemType": "Weapon",
 			"ItemNames": [ "Battle Dancer's Fan", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160145" ],
 		},
-		{
+		{ //Kenneth
 			"ItemType": "Weapon",
 			"ItemNames": [ "Battery-Powered Battle Hammer", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160161" ],
 		},
-		{
+    { //Sean
+			"ItemType": "Weapon",
+			"ItemNames": [ "Bronze Lance", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 50,
+			"When": [ "e 75160368" ],
+		},
+    { //Kiarra
+			"ItemType": "Weapon",
+			"ItemNames": [ "Free Lance", ],
+			"StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 50,
+			"When": [ "e 75160365" ],
+		},
+		{ //Maddie
 			"ItemType": "Weapon",
 			"ItemNames": [ "Heartbreaker", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160139" ],
 		},
-		{
+		{ //Corine
 			"ItemType": "Weapon",
 			"ItemNames": [ "Icreon", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160127" ],
 		},
-		{
+		{ //Ian
 			"ItemType": "Weapon",
 			"ItemNames": [ "Laborforce", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160150" ],
 		},
-		{
+		{ //Flor
 			"ItemType": "Weapon",
 			"ItemNames": [ "Observer's Hatchet", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160133" ],
 		},
-		{
+		{ //Philip
 			"ItemType": "Weapon",
 			"ItemNames": [ "Sword of Idols", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160167" ],
 		},
-		{
+		{ //Jeric
 			"ItemType": "Weapon",
 			"ItemNames": [ "The Lucky Penny", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160155" ],
 		},
-		{
+		{ //Alissa
 			"ItemType": "Weapon",
 			"ItemNames": [ "The Singing Dagger", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160121" ],
 		},
-		{
+		{ //Shiro
 			"ItemType": "Weapon",
 			"ItemNames": [ "The Unbroken", ],
 			"StockItemCurrency": "Spiritual Essence",
@@ -1195,26 +1195,26 @@
 
 	"ItemStocks": [
 		//Weapons
-		{
+		{ //Kiwi
 			"ItemType": "Weapon",
 			"ItemNames": [ "Cute but Deadly Knife", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
 			"When": [ "e 75160180/f Kiwi 2500" ],
 		},
-		{
+		{ //Jio
 			"ItemType": "Weapon",
 			"ItemNames": [ "Occult Blade", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
-			"When": [ "e 75160081/f Jio 2500" ],
+			"When": [ "e 75160200/f Jio 2500" ],
 		},
-		{
+		{ //Daia
 			"ItemType": "Weapon",
 			"ItemNames": [ "Dusked Kunai", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 50,
-			"When": [ "e 75160205/f Daia 2500" ],
+			"When": [ "e 75160208" ],
 		},
 		{
 			"ItemType": "Weapon",
@@ -1249,7 +1249,8 @@
 			"ItemNames": [ "Old Lucky Foxtail Charm", ],
 			"StockItemCurrency": "Spiritual Essence",
 			"StockCurrencyStack": 1,
-			"When": [ "e 75160333" ],
+      "Stock": 1,
+			"When": [ "e 75160333" ], //Lorenzo 1 heart event
 		},
 	],
 	},
@@ -1630,8 +1631,16 @@
     {
 			"ItemType": "Object",
 			"ItemNames": [
-				"Belinda's Ring",
-        "Raeriyala's Ring"
+				"Warp Totem: Ridgeside"
+				],
+      "StockItemCurrency": "Spiritual Essence",
+			"StockCurrencyStack": 30
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"The Beautiful Serpent's Ring",
+        "The Fairy Doe Fox's Ring"
 				],
       "Stock": 1,
       "StockItemCurrency": "Spiritual Essence",
@@ -1776,9 +1785,9 @@
 	"PortraitPath": "assets/KimpoiShop.png",
 	"Quote": "Seeds from our travels. Come take your pick.",
 	"ShopPrice": -1,
-	"DefaultSellPriceMultiplier": 0.5,
+	"DefaultSellPriceMultiplier": 2.5,
 	"PriceMultiplierWhen": {
-		"0.3": ["f Kimpoi 2000"]
+		"1.25": ["f Kimpoi 2000"]
 		},
 	"When": ["NPCAt Kimpoi 10 5"],
 	"ClosedMessage": "Sorry, we're closed!",
@@ -1968,44 +1977,96 @@
 			"ItemNames":[
 				"Basic Fertilizer",
 			],
-			"StockPrice": 100,
+			"StockPrice": 80,
+      "When": [ "!f Lorenzo 2000" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames":[
+				"Basic Fertilizer",
+			],
+			"StockPrice": 60,
+      "When": [ "f Lorenzo 2000" ]
 		},
 		{
 			"ItemType": "Object",
 			"ItemNames":[
 				"Basic Retaining Soil",
 			],
-			"StockPrice": 100,
+			"StockPrice": 80,
+      "When": [ "!f Lorenzo 2000" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames":[
+				"Basic Retaining Soil",
+			],
+			"StockPrice": 60,
+      "When": [ "f Lorenzo 2000" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames":[
+				"Quality Retaining Soil",
+			],
+			"StockPrice": 160,
+      "When": [ "!f Lorenzo 2000" ]
 		},
 		{
 			"ItemType": "Object",
 			"ItemNames":[
 				"Quality Retaining Soil",
 			],
-			"StockPrice": 150,
+			"StockPrice": 120,
+      "When": [ "f Lorenzo 2000" ]
 		},
 		{
 			"ItemType": "Object",
 			"ItemNames":[
 				"Speed-Gro",
 			],
-			"StockPrice": 100,
+			"StockPrice": 80,
+      "When": [ "!f Lorenzo 2000" ]
 		},
-		{
+    {
+			"ItemType": "Object",
+			"ItemNames":[
+				"Speed-Gro",
+			],
+			"StockPrice": 60,
+      "When": [ "f Lorenzo 2000" ]
+		},
+    {
 			"ItemType": "Object",
 			"ItemNames":[
 				"Deluxe Speed-Gro",
 			],
-			"StockPrice": 150,
+			"StockPrice": 160,
+      "When": [ "!f Lorenzo 2000" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames":[
+				"Deluxe Speed-Gro",
+			],
+			"StockPrice": 120,
+      "When": [ "f Lorenzo 2000" ]
 		},
 		{
 			"ItemType": "Object",
 			"ItemNames": [
 				"Quality Fertilizer"
 			],
-			"StockPrice": 150,
-			//"Stock": 6,
-			"When": [ "y 2" ]
+			"StockPrice": 80,
+			"When": [ "!f Lorenzo 2000" ]
+		},
+    {
+			"ItemType": "Object",
+			"ItemNames": [
+				"Quality Fertilizer"
+			],
+			"StockPrice": 60,
+			"When": [ "f Lorenzo 2000" ]
 		}
 	],
 	},
@@ -2071,70 +2132,6 @@
 			"StockPrice": 5000,
 			"Stock": 1,
       "When": [ "n RSV.FayePastel" ]
-		},
-	],
-	},
-
-  //------------
-	//PikaIslandShop
-	//------------
-	{
-	"ShopName": "RSVPikaIslandShop",
-	"StoreCurrency": "Money",
-	"CategoriesToSellHere": [ -7 ],
-	"PortraitPath": "assets/PikaShop.png",
-	"Quote": "Aloha! How about a nice drink to cool off?",
-	"ShopPrice": -1,
-	"MaxNumItemsSoldInStore": 6,
-	"DefaultSellPriceMultiplier": 0.7,
-	"When": ["NPCAt Pika 14 21"],
-	"LocalizedQuote": {
-    	//remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    	},
-	"LocalizedClosedMessage": {
-    	//remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    	},
-	"ItemStocks": [
-		//Food
-		{
-			"ItemType": "Object",
-			"ItemNames": [
-				"Ridgeside Shaketini",
-				"Autumn Dew Drop Juice",
-				"Cherry Berry Shakey",
-				"Snowball Slurpee",
-        "Summit Iced Tea",
-        "Apricot Juice",
-        "Clementine Juice",
-        "Wild Apple Juice",
-				"Highland Ice Cream",
-				"Snow Bowl Surprise",
-        "Holiday Ice",
-        "Tropic Mango Cake"
-				],
-			"Stock": 1,
 		},
 	],
 	},

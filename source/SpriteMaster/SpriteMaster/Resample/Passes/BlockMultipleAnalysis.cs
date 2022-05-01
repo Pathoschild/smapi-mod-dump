@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Configuration;
 using SpriteMaster.Types;
 using System;
 

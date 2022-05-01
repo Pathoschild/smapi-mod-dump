@@ -25,7 +25,7 @@ sealed class ManagedTexture2D : InternalTexture2D {
 	private const bool UseMips = false;
 
 	internal readonly WeakReference<Texture2D> Reference;
-	internal readonly ManagedSpriteInstance Texture;
+	internal readonly ManagedSpriteInstance SpriteInstance;
 	internal readonly Vector2I Dimensions;
 	private volatile bool Disposed = false;
 
@@ -39,7 +39,7 @@ sealed class ManagedTexture2D : InternalTexture2D {
 
 	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal ManagedTexture2D(
-		ManagedSpriteInstance texture,
+		ManagedSpriteInstance instance,
 		Texture2D reference,
 		Vector2I dimensions,
 		SurfaceFormat format,
@@ -48,8 +48,8 @@ sealed class ManagedTexture2D : InternalTexture2D {
 		this.Name = name ?? $"{reference.NormalizedName()} [internal managed <{format}>]";
 
 		Reference = reference.MakeWeak();
-		Texture = texture;
-		Dimensions = dimensions - texture.BlockPadding;
+		SpriteInstance = instance;
+		Dimensions = dimensions - instance.BlockPadding;
 
 		reference.Disposing += OnParentDispose;
 
@@ -89,9 +89,9 @@ sealed class ManagedTexture2D : InternalTexture2D {
 		}
 		Disposed = true;
 
-		if (Reference.TryGetTarget(out var reference)) {
+		if (Reference.TryGet(out var reference)) {
 			reference.Disposing -= OnParentDispose;
-}
+		}
 
 		Garbage.UnmarkOwned(Format, Width * Height);
 		Interlocked.Add(ref TotalAllocatedSize, (ulong)-this.SizeBytes());

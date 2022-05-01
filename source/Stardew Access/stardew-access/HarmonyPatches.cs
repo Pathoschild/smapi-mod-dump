@@ -108,15 +108,27 @@ namespace stardew_access
             );
 
             harmony.Patch(
+                original: AccessTools.Method(typeof(CollectionsPage), nameof(CollectionsPage.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.CollectionsPagePatch))
+            );
+            #endregion
+
+            #region Bundle Menu Patches
+            harmony.Patch(
                 original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(GameMenuPatches), nameof(GameMenuPatches.JunimoNoteMenuPatch))
+                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JunimoNoteMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(JojaCDMenu), nameof(JojaCDMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(BundleMenuPatches), nameof(BundleMenuPatches.JojaCDMenuPatch))
             );
             #endregion
 
             #region Menu Patches
             harmony.Patch(
                     original: AccessTools.Method(typeof(LetterViewerMenu), nameof(LetterViewerMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                    postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.LetterViewerMenuPatch))
+                    postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(DialoguePatches.LetterViewerMenuPatch))
                 );
 
             harmony.Patch(
@@ -135,7 +147,12 @@ namespace stardew_access
             );
 
             harmony.Patch(
-                original: AccessTools.Constructor(typeof(NamingMenu), new Type[] { typeof(NamingMenu.doneNamingBehavior), typeof(string), typeof(string) }),
+                original: AccessTools.Method(typeof(TitleTextInputMenu), nameof(TitleTextInputMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.TitleTextInputMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(NamingMenu), nameof(NamingMenu.draw), new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.NamingMenuPatch))
             );
 
@@ -151,12 +168,37 @@ namespace stardew_access
 
             harmony.Patch(
                 original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.receiveKeyPress), new Type[] { typeof(Keys) }),
-                prefix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MuseumMenuKeyPressPatch))
+                prefix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.MuseumMenuKeyPressPatch))
             );
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
-                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.MuseumMenuPatch))
+                original: AccessTools.Method(typeof(AnimalQueryMenu), nameof(AnimalQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.AnimalQueryMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ChooseFromListMenu), nameof(ChooseFromListMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ChooseFromListMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(TailoringMenu), nameof(TailoringMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.TailoringMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(PondQueryMenu), nameof(PondQueryMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.PondQueryMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ForgeMenu), nameof(ForgeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ForgeMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(ItemListMenu), nameof(ItemListMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MenuPatches), nameof(MenuPatches.ItemListMenuPatch))
             );
             #endregion
 
@@ -207,6 +249,18 @@ namespace stardew_access
                     prefix: new HarmonyMethod(typeof(BuildingNAnimalMenuPatches), nameof(BuildingNAnimalMenuPatches.PurchaseAnimalsMenuPatch))
                 );
 
+            #endregion
+
+            #region Donation Menus
+            harmony.Patch(
+                original: AccessTools.Method(typeof(MuseumMenu), nameof(MuseumMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.MuseumMenuPatch))
+            );
+
+            harmony.Patch(
+                original: AccessTools.Method(typeof(FieldOfficeMenu), nameof(FieldOfficeMenu.draw), new Type[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(DonationMenuPatches), nameof(DonationMenuPatches.FieldOfficeMenuPatch))
+            );
             #endregion
 
             harmony.Patch(

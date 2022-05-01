@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;

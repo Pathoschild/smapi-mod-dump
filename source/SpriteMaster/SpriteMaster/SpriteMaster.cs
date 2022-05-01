@@ -11,6 +11,8 @@
 using HarmonyLib;
 using LinqFasterer;
 using SpriteMaster.Caching;
+using SpriteMaster.Configuration;
+using SpriteMaster.Configuration.GMCM;
 using SpriteMaster.Experimental;
 using SpriteMaster.Extensions;
 using SpriteMaster.Harmonize;
@@ -28,11 +30,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SpriteMaster;
@@ -40,13 +40,14 @@ namespace SpriteMaster;
 public sealed class SpriteMaster : Mod {
 	internal static SpriteMaster Self { get; private set; } = default!;
 
-	internal MemoryMonitor MemoryMonitor;
-	internal bool IsGameLoaded { get; private set; } = false;
+	internal readonly MemoryMonitor MemoryMonitor;
 	internal static string? AssemblyPath { get; private set; }
 
-	internal static readonly string ChangeList = typeof(SpriteMaster).Assembly.GetCustomAttribute<ChangeListAttribute>()?.Value ?? "local";
-	internal static readonly string BuildComputerName = typeof(SpriteMaster).Assembly.GetCustomAttribute<BuildComputerNameAttribute>()?.Value ?? "unknown";
-	internal static readonly string FullVersion = typeof(SpriteMaster).Assembly.GetCustomAttribute<FullVersionAttribute>()?.Value ?? Config.CurrentVersion;
+	private static T? GetAssemblyAttribute<T>() where T : Attribute => typeof(SpriteMaster).Assembly.GetCustomAttribute<T>();
+
+	internal static readonly string ChangeList = GetAssemblyAttribute<ChangeListAttribute>()?.Value ?? "local";
+	internal static readonly string BuildComputerName = GetAssemblyAttribute<BuildComputerNameAttribute>()?.Value ?? "unknown";
+	internal static readonly string FullVersion = GetAssemblyAttribute<FullVersionAttribute>()?.Value ?? Config.CurrentVersion;
 
 	internal static void DumpAllStats() {
 		var currentProcess = Process.GetCurrentProcess();
@@ -76,8 +77,6 @@ public sealed class SpriteMaster : Mod {
 
 	private const string ConfigName = "config.toml";
 
-	private static volatile string CurrentSeason = "";
-
 	public SpriteMaster() {
 		Contracts.AssertNull(Self);
 		Self = this;
@@ -85,29 +84,38 @@ public sealed class SpriteMaster : Mod {
 		Garbage.EnterNonInteractive();
 
 		MemoryMonitor = new MemoryMonitor();
+
+		var assemblyPath = typeof(SpriteMaster).Assembly.Location;
+		assemblyPath = Path.GetDirectoryName(assemblyPath);
+
+		// Compress our own directory
+		if (assemblyPath is not null) {
+			DirectoryExt.CompressDirectory(assemblyPath, force: true);
+		}
 	}
 
 	private bool IsVersionOutdated(string configVersion) {
 		string referenceVersion = Config.ClearConfigBefore;
 
-		var configStrArray = configVersion.Split('.').BeList();
-		var referenceStrArray = referenceVersion.Split('.').BeList();
+		var configStrArray = configVersion.Split('.');
+		var referenceStrArray = referenceVersion.Split('.');
 
 		try {
-			while (configStrArray.Count > referenceStrArray.Count) {
-				referenceStrArray.Add("0");
-			}
-			while (referenceStrArray.Count > configStrArray.Count) {
-				configStrArray.Add("0");
-			}
-
-			foreach (int i in 0.RangeTo(configStrArray.Count)) {
-				if (configStrArray[i].IsEmpty()) {
+			int maxLen = Math.Max(configStrArray.Length, referenceStrArray.Length);
+			for (int i = 0; i < maxLen; ++i) {
+				if (configStrArray.Length <= i || configStrArray[i].IsEmpty()) {
 					return true;
+				}
+				if (referenceStrArray.Length <= i || referenceStrArray[i].IsEmpty()) {
+					return false;
 				}
 
 				var configElement = int.Parse(configStrArray[i]);
 				var referenceElement = int.Parse(referenceStrArray[i]);
+
+				if (configElement > referenceElement) {
+					return false;
+				}
 
 				if (configElement < referenceElement) {
 					return true;
@@ -131,7 +139,7 @@ public sealed class SpriteMaster : Mod {
 	}
 
 	private static readonly Dictionary<string, (Action<string, Queue<string>> Action, string Description)> ConsoleCommandMap = new() {
-		{ "help", ((_, _) => ConsoleHelp(null), "Prints this command guide") }, 
+		{ "help", ((_, _) => ConsoleHelp(null), "Prints this command guide") },
 		{ "all-stats", ((_, _) => DumpAllStats(), "Dump Statistics") },
 		{ "memory", ((_, _) => Debug.DumpMemory(), "Dump Memory") },
 		{ "gc", ((_, _) => ConsoleTriggerGC(), "Trigger full GC") },
@@ -148,7 +156,7 @@ public sealed class SpriteMaster : Mod {
 		output.AppendLine("Help Command Guide");
 		output.AppendLine();
 
-		int maxKeyLength = ConsoleCommandMap.Keys.Select(k => k.Length).Max();
+		int maxKeyLength = ConsoleCommandMap.Keys.Max(k => k.Length);
 
 		foreach (var kv in ConsoleCommandMap) {
 			output.AppendLine($"{kv.Key.PadRight(maxKeyLength)} : {kv.Value.Description}");
@@ -212,21 +220,21 @@ public sealed class SpriteMaster : Mod {
 
 		ConfigureHarmony();
 
-		var ConfigPath = Path.Combine(help.DirectoryPath, ConfigName);
+		Configuration.Config.SetPath(Path.Combine(help.DirectoryPath, ConfigName));
 
-		using (var tempStream = new MemoryStream()) {
-			SerializeConfig.Save(tempStream);
+		Config.DefaultConfig = new MemoryStream();
+		Serialize.Save(Config.DefaultConfig, leaveOpen: true);
 
-			if (!Config.IgnoreConfig) {
-				SerializeConfig.Load(ConfigPath);
-			}
+		if (!Config.IgnoreConfig) {
+			Serialize.Load(Configuration.Config.Path);
+		}
 
-			if (IsVersionOutdated(Config.ConfigVersion)) {
-				Debug.Info($"config.toml is out of date ({Config.ConfigVersion} < {Config.ClearConfigBefore}), rewriting it.");
+		if (IsVersionOutdated(Config.ConfigVersion)) {
+			Debug.Info($"config.toml is out of date ({Config.ConfigVersion} < {Config.ClearConfigBefore}), rewriting it.");
 
-				SerializeConfig.Load(tempStream, retain: true);
-				Config.ConfigVersion = Config.CurrentVersion;
-			}
+			Serialize.Load(Config.DefaultConfig, retain: true);
+			Config.DefaultConfig.Position = 0;
+			Config.ConfigVersion = Config.CurrentVersion;
 		}
 
 		static Config.TextureRef[] ProcessTextureRefs(List<string> textureRefStrings) {
@@ -281,23 +289,39 @@ public sealed class SpriteMaster : Mod {
 		Config.Resample.BlacklistPatterns = ProcessTexturePatterns(Config.Resample.Blacklist);
 		Config.Resample.GradientBlacklistPatterns = ProcessTexturePatterns(Config.Resample.GradientBlacklist);
 
+		/*
 		if (Config.ShowIntroMessage && !Config.SkipIntro) {
 			help.Events.GameLoop.GameLaunched += (_, _) => {
 				Game1.drawLetterMessage("Welcome to SpriteMaster!\nSpriteMaster must resample sprites as it sees them and thus some lag will likely be apparent at the start of the game, upon entering new areas, and when new sprites are seen.\n\nPlease be patient and do not take this as an indication that your computer is incapable of running SpriteMaster.\n\nEnjoy!".Replace("\n", "^"));
 			};
 			Config.ShowIntroMessage = false;
 		}
+		*/
 
-		SerializeConfig.Save(ConfigPath);
+		if (Config.ShowIntroMessage && !Config.SkipIntro) {
+			help.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+			Config.ShowIntroMessage = false;
+		}
+
+		help.Events.GameLoop.GameLaunched += (_, _) => Setup.Initialize(help);
+
+		Serialize.Save(Configuration.Config.Path);
 
 		help.Events.Input.ButtonPressed += OnButtonPressed;
 
-		help.ConsoleCommands.Add("spritemaster", "SpriteMaster Commands", ConsoleCommand);
+		try {
+			help.ConsoleCommands.Add("spritemaster", "SpriteMaster Commands", ConsoleCommand);
+		}
+		catch (Exception ex) {
+			Debug.Warning("Could not register 'spritemaster' for console commands", ex);
+		}
 		try {
 			// Try to add 'sm' as a shortcut for my own sanity.
 			help.ConsoleCommands.Add("sm", "SpriteMaster Commands", ConsoleCommand);
 		}
-		catch { }
+		catch (Exception ex) {
+			Debug.Warning("Could not register 'sm' for console commands", ex);
+		}
 
 		InitConsoleCommands();
 
@@ -317,7 +341,7 @@ public sealed class SpriteMaster : Mod {
 		help.Events.GameLoop.Saved += (_, _) => OnSaveFinish();
 		help.Events.Display.WindowResized += (_, args) => OnWindowResized(args);
 		help.Events.Player.Warped += (_, _) => {
-			ForceGarbageCollect();
+			ForceGarbageCollectConcurrent();
 		};
 		help.Events.Specialized.LoadStageChanged += (_, args) => {
 			switch (args.NewStage) {
@@ -410,6 +434,20 @@ public sealed class SpriteMaster : Mod {
 		internal const string DynamicGameAssets = "spacechase0.DynamicGameAssets";
 		internal const string ContentPatcher = "Pathoschild.ContentPatcher";
 		internal const string ContentPatcherAnimations = "spacechase0.ContentPatcherAnimations";
+	}
+
+	private void OnUpdateTicked(object? sender, UpdateTickedEventArgs args) {
+		if (!Config.ShowIntroMessage) {
+			return;
+		}
+
+		if (Game1.ticks <= 1) {
+			return;
+		}
+
+		Configuration.GMCM.Setup.ForceOpen();
+
+		Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
 	}
 
 	private void OnWindowResized(WindowResizedEventArgs args) {
@@ -529,8 +567,6 @@ public sealed class SpriteMaster : Mod {
 
 		ForceGarbageCollect();
 		ManagedSpriteInstance.ClearTimers();
-
-		IsGameLoaded = true;
 	}
 
 	// SMAPI/CP won't do this, so we do. Purge the cached textures for the previous season on a season change.
@@ -540,9 +576,9 @@ public sealed class SpriteMaster : Mod {
 		// Do a full GC at the start of each day
 		Garbage.Collect(compact: true, blocking: true, background: false);
 
-		var season = SDate.Now().Season;
-		if (!season.EqualsInvariantInsensitive(CurrentSeason)) {
-			CurrentSeason = season;
+		var season = Game1.currentSeason;
+		if (!season.EqualsInvariantInsensitive(GameState.CurrentSeason)) {
+			GameState.CurrentSeason = season;
 			SpriteMap.SeasonPurge(season.ToLowerInvariant());
 
 			// And again after purge
@@ -555,7 +591,7 @@ public sealed class SpriteMaster : Mod {
 	}
 
 	private static void ForceGarbageCollectConcurrent() {
-		Garbage.Collect(compact: false, blocking: false, background: false);
+		Garbage.Collect(compact: false, blocking: false, background: true);
 	}
 
 	private void ConfigureHarmony() {
@@ -565,7 +601,7 @@ public sealed class SpriteMaster : Mod {
 
 	private static void OnButtonPressed(object? _, ButtonPressedEventArgs args) {
 		if (args.Button == Config.ToggleButton) {
-			Config.Enabled = !Config.Enabled;
+			Config.ToggledEnable = !Config.ToggledEnable;
 		}
 	}
 }

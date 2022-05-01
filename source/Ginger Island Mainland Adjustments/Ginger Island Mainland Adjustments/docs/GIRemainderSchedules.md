@@ -26,9 +26,11 @@ Next, keys are checked in the following order
 6. `<base>_<season>_<short day of week>` (ie `GIRemainder_winter_Fri`)
 7. `<base>_<short day of week><hearts>` (ie `GIRemainder_Fri6`)
 8. `<base>_<short day of week>` (ie `GIRemainder_Fri`)
-9. `<base>` (`GIRemainder`)
+9. `<base><hearts>` (ie `GIRemainder6`)
+10. `<base>_<season>` (ie `GIRemainder_winter`)
+11. `<base>` (`GIRemainder`)
 
-`<hearts>` are limited to even numbers, but unlike the base game, can check arbitrarily high even numbers. `GIRemainder_Fri14` will require 14 hearts for example, and if you have a mod that raises the cap above 14 hearts, that should also be checked.
+`<hearts>` is any valid integer - it'll handle even values above 14.
 
 GI schedules are constructed similarly to normal schedules. You can use `MAIL`/`GOTO`/`NOT` friendship basically the same as vanilla keys; however, if the key is rejected due to error or whatever, GI schedules go to the next valid schedule and not just direct to `spring`. The construction of each element is also the same, `<time> <location> <x> <y> <facing direction> <animation> <dialogue>`.
 

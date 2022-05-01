@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.DataLayers.Framework;
 using StardewModdingAPI.Utilities;

@@ -130,7 +130,7 @@ sealed partial class Scaler {
 		else if (offsetD > 0.5) {
 			offsetD = Math.Pow(offsetD, 1.0 / 5.0);
 		}
-		return (int)Math.Round(offsetD * max);
+		return (offsetD * max).RoundToInt();
 	}
 
 	private static (int R, int G, int B, int A) BlendColor(int offset, int max, Color16 a, Color16 b) {
@@ -358,6 +358,7 @@ sealed partial class Scaler {
 		Span<PreprocessType> preProcBuffer = stackalloc PreprocessType[SourceSize.Width];
 		preProcBuffer.Fill(0);
 
+		[MethodImpl(Runtime.MethodImpl.Hot)]
 		static Color16 GetPixel(ReadOnlySpan<Color16> src, int stride, int offset) {
 			// We can try embedded a distance calculation as well. Perhaps instead of a negative stride/offset, we provide a 
 			// negative distance from the edge and just recalculate the stride/offset in that case.

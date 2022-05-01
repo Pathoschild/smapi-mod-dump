@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 using ContentPatcher.Framework;
 using ContentPatcher.Framework.Conditions;

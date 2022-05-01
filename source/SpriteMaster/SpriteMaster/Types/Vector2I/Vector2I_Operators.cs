@@ -14,6 +14,15 @@ namespace SpriteMaster.Types;
 
 partial struct Vector2I {
 	[MethodImpl(Runtime.MethodImpl.Hot)]
+	public static Vector2I operator -(Vector2I value) => new(
+		-value.X,
+		-value.Y
+	);
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
+	public static Vector2I operator +(Vector2I value) => value;
+
+	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static Vector2I operator >>(Vector2I value, int bits) => new(
 		value.X >> bits,
 		value.Y >> bits

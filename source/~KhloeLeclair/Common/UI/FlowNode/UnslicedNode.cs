@@ -8,46 +8,48 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 
-namespace Leclair.Stardew.Common.UI.FlowNode {
-	public struct UnslicedNode : IFlowNodeSlice {
+namespace Leclair.Stardew.Common.UI.FlowNode;
 
-		public IFlowNode Node { get; }
-		public float Width { get; }
-		public float Height { get; }
-		public WrapMode ForceWrap { get; }
+public struct UnslicedNode : IFlowNodeSlice {
 
-		public UnslicedNode(IFlowNode node, float width, float height, WrapMode forceWrap) {
-			Node = node;
-			Width = width;
-			Height = height;
-			ForceWrap = forceWrap;
-		}
+	public IFlowNode Node { get; }
+	public float Width { get; }
+	public float Height { get; }
+	public WrapMode ForceWrap { get; }
 
-		public bool IsEmpty() {
-			return Node.IsEmpty();
-		}
+	public UnslicedNode(IFlowNode node, float width, float height, WrapMode forceWrap) {
+		Node = node;
+		Width = width;
+		Height = height;
+		ForceWrap = forceWrap;
+	}
 
-		public override bool Equals(object obj) {
-			return obj is UnslicedNode node &&
-				   EqualityComparer<IFlowNode>.Default.Equals(Node, node.Node) &&
-				   Width == node.Width &&
-				   Height == node.Height &&
-				   ForceWrap == node.ForceWrap;
-		}
+	public bool IsEmpty() {
+		return Node.IsEmpty();
+	}
 
-		public override int GetHashCode() {
-			return HashCode.Combine(Node, Width, Height, ForceWrap);
-		}
+	public override bool Equals(object? obj) {
+		return obj is UnslicedNode node &&
+			   EqualityComparer<IFlowNode>.Default.Equals(Node, node.Node) &&
+			   Width == node.Width &&
+			   Height == node.Height &&
+			   ForceWrap == node.ForceWrap;
+	}
 
-		public static bool operator ==(UnslicedNode left, UnslicedNode right) {
-			return left.Equals(right);
-		}
+	public override int GetHashCode() {
+		return HashCode.Combine(Node, Width, Height, ForceWrap);
+	}
 
-		public static bool operator !=(UnslicedNode left, UnslicedNode right) {
-			return !(left == right);
-		}
+	public static bool operator ==(UnslicedNode left, UnslicedNode right) {
+		return left.Equals(right);
+	}
+
+	public static bool operator !=(UnslicedNode left, UnslicedNode right) {
+		return !(left == right);
 	}
 }

@@ -78,6 +78,7 @@ namespace Shockah.FlexibleSprinklers
 				feature.performToolAction(can, 0, tileVector, Location);
 			if (Location.Objects.TryGetValue(tileVector, out SObject @object))
 				@object.performToolAction(can, Location);
+			Location.performToolAction(can, point.X, point.Y);
 
 			// TODO: add animation, if needed
 		}

@@ -12,7 +12,7 @@
     "Name": "Emily's Panties",
     "Description": "I thought they'd be brighter.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 27,
     "IsColored": false,
     "GiftTastes": {

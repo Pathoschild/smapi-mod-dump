@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 
@@ -16,129 +18,128 @@ using Microsoft.Xna.Framework.Graphics;
 
 using StardewValley.Menus;
 
-namespace Leclair.Stardew.Common.UI.FlowNode
-{
-    public struct ComponentNode : IFlowNode {
+namespace Leclair.Stardew.Common.UI.FlowNode;
 
-		public ClickableComponent Component { get; }
+public struct ComponentNode : IFlowNode {
 
-		public Alignment Alignment { get; }
+	public ClickableComponent Component { get; }
 
-		public string UniqueId { get; }
-		public object Extra { get; }
+	public Alignment Alignment { get; }
 
-		public Action<SpriteBatch, Vector2, float, SpriteFont, Color?, Color?> OnDraw;
+	public string? UniqueId { get; }
+	public object? Extra { get; }
 
-		public Func<IFlowNodeSlice, int, int, bool> OnClick { get; }
-		public Func<IFlowNodeSlice, int, int, bool> OnHover { get; }
-		public Func<IFlowNodeSlice, int, int, bool> OnRightClick { get; }
+	public Action<SpriteBatch, Vector2, float, SpriteFont, Color?, Color?>? OnDraw;
 
-		public WrapMode Wrapping { get; }
+	public Func<IFlowNodeSlice, int, int, bool>? OnClick { get; }
+	public Func<IFlowNodeSlice, int, int, bool>? OnHover { get; }
+	public Func<IFlowNodeSlice, int, int, bool>? OnRightClick { get; }
 
-		public ComponentNode(
-			ClickableComponent component,
-			Alignment? alignment = null,
-			WrapMode? wrapping = null,
-			Action<SpriteBatch, Vector2, float, SpriteFont, Color?, Color?> onDraw = null,
-			Func<IFlowNodeSlice, int, int, bool> onClick = null,
-			Func<IFlowNodeSlice, int, int, bool> onHover = null,
-			Func<IFlowNodeSlice, int, int, bool> onRightClick = null,
-			object extra = null,
-			string id = null
-		) {
-			Component = component;
-			Alignment = alignment ?? Alignment.None;
-			Wrapping = wrapping ?? WrapMode.None;
-			OnDraw = onDraw;
-			OnClick = onClick;
-			OnHover = onHover;
-			OnRightClick = onRightClick;
-			Extra = extra;
-			UniqueId = id;
-		}
+	public WrapMode Wrapping { get; }
 
-		public bool? WantComponent(IFlowNodeSlice slice) {
-			return true;
-		}
+	public ComponentNode(
+		ClickableComponent component,
+		Alignment? alignment = null,
+		WrapMode? wrapping = null,
+		Action<SpriteBatch, Vector2, float, SpriteFont, Color?, Color?>? onDraw = null,
+		Func<IFlowNodeSlice, int, int, bool>? onClick = null,
+		Func<IFlowNodeSlice, int, int, bool>? onHover = null,
+		Func<IFlowNodeSlice, int, int, bool>? onRightClick = null,
+		object? extra = null,
+		string? id = null
+	) {
+		Component = component;
+		Alignment = alignment ?? Alignment.None;
+		Wrapping = wrapping ?? WrapMode.None;
+		OnDraw = onDraw;
+		OnClick = onClick;
+		OnHover = onHover;
+		OnRightClick = onRightClick;
+		Extra = extra;
+		UniqueId = id;
+	}
 
-		public ClickableComponent UseComponent(IFlowNodeSlice slice) {
-			return Component;
-		}
+	public bool? WantComponent(IFlowNodeSlice slice) {
+		return true;
+	}
 
-		public bool IsEmpty() {
-			return Component == null;
-		}
+	public ClickableComponent UseComponent(IFlowNodeSlice slice) {
+		return Component;
+	}
 
-		public IFlowNodeSlice Slice(IFlowNodeSlice last, SpriteFont font, float maxWidth, float remaining, IFlowNodeSlice nextSlice) {
-			if (last != null || Component == null)
-				return null;
+	public bool IsEmpty() {
+		return Component == null;
+	}
 
-			return new UnslicedNode(
-				this,
+	public IFlowNodeSlice? Slice(IFlowNodeSlice? last, SpriteFont font, float maxWidth, float remaining, IFlowNodeSlice? nextSlice) {
+		if (last != null || Component == null)
+			return null;
+
+		return new UnslicedNode(
+			this,
+			Component.bounds.Width,
+			Component.bounds.Height,
+			Wrapping
+		);
+	}
+
+	public void Draw(IFlowNodeSlice slice, SpriteBatch batch, Vector2 position, float scale, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor, CachedFlowLine line, CachedFlow flow) {
+		if (IsEmpty())
+			return;
+
+		Component.visible = true;
+
+		int x = (int) position.X;
+		int y = (int) position.Y;
+
+		if (x != Component.bounds.X || y != Component.bounds.Y)
+			Component.bounds = new Rectangle(
+				x, y,
 				Component.bounds.Width,
-				Component.bounds.Height,
-				Wrapping
+				Component.bounds.Height
 			);
-		}
 
-		public void Draw(IFlowNodeSlice slice, SpriteBatch batch, Vector2 position, float scale, SpriteFont defaultFont, Color? defaultColor, Color? defaultShadowColor, CachedFlowLine line, CachedFlow flow) {
-			if (IsEmpty())
-				return;
+		OnDraw?.Invoke(batch, position, scale, defaultFont, defaultColor, defaultShadowColor);
 
-			Component.visible = true;
+		if (Component is ClickableTextureComponent cp)
+			cp.draw(batch);
 
-			int x = (int) position.X;
-			int y = (int) position.Y;
+		else if (Component is ClickableAnimatedComponent can)
+			can.draw(batch);
+	}
 
-			if (x != Component.bounds.X || y != Component.bounds.Y)
-				Component.bounds = new Rectangle(
-					x, y,
-					Component.bounds.Width,
-					Component.bounds.Height
-				);
+	public override bool Equals(object? obj) {
+		return obj is ComponentNode node &&
+			   EqualityComparer<ClickableComponent>.Default.Equals(Component, node.Component) &&
+			   Alignment == node.Alignment &&
+			   UniqueId == node.UniqueId &&
+			   EqualityComparer<object>.Default.Equals(Extra, node.Extra) &&
+			   EqualityComparer<Action<SpriteBatch, Vector2, float, SpriteFont, Color?, Color?>>.Default.Equals(OnDraw, node.OnDraw) &&
+			   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnClick, node.OnClick) &&
+			   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnHover, node.OnHover) &&
+			   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnRightClick, node.OnRightClick) &&
+			   Wrapping == node.Wrapping;
+	}
 
-			OnDraw?.Invoke(batch, position, scale, defaultFont, defaultColor, defaultShadowColor);
+	public override int GetHashCode() {
+		HashCode hash = new();
+		hash.Add(Component);
+		hash.Add(Alignment);
+		hash.Add(UniqueId);
+		hash.Add(Extra);
+		hash.Add(OnDraw);
+		hash.Add(OnClick);
+		hash.Add(OnHover);
+		hash.Add(OnRightClick);
+		hash.Add(Wrapping);
+		return hash.ToHashCode();
+	}
 
-			if (Component is ClickableTextureComponent cp)
-				cp.draw(batch);
+	public static bool operator ==(ComponentNode left, ComponentNode right) {
+		return left.Equals(right);
+	}
 
-			else if (Component is ClickableAnimatedComponent can)
-				can.draw(batch);
-		}
-
-		public override bool Equals(object obj) {
-			return obj is ComponentNode node &&
-				   EqualityComparer<ClickableComponent>.Default.Equals(Component, node.Component) &&
-				   Alignment == node.Alignment &&
-				   UniqueId == node.UniqueId &&
-				   EqualityComparer<object>.Default.Equals(Extra, node.Extra) &&
-				   EqualityComparer<Action<SpriteBatch, Vector2, float, SpriteFont, Color?, Color?>>.Default.Equals(OnDraw, node.OnDraw) &&
-				   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnClick, node.OnClick) &&
-				   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnHover, node.OnHover) &&
-				   EqualityComparer<Func<IFlowNodeSlice, int, int, bool>>.Default.Equals(OnRightClick, node.OnRightClick) &&
-				   Wrapping == node.Wrapping;
-		}
-
-		public override int GetHashCode() {
-			HashCode hash = new HashCode();
-			hash.Add(Component);
-			hash.Add(Alignment);
-			hash.Add(UniqueId);
-			hash.Add(Extra);
-			hash.Add(OnDraw);
-			hash.Add(OnClick);
-			hash.Add(OnHover);
-			hash.Add(OnRightClick);
-			hash.Add(Wrapping);
-			return hash.ToHashCode();
-		}
-
-		public static bool operator ==(ComponentNode left, ComponentNode right) {
-			return left.Equals(right);
-		}
-
-		public static bool operator !=(ComponentNode left, ComponentNode right) {
-			return !(left == right);
-		}
+	public static bool operator !=(ComponentNode left, ComponentNode right) {
+		return !(left == right);
 	}
 }

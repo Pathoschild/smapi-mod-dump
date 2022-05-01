@@ -1,0 +1,59 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/atravita-mods/MoreFertilizers
+**
+*************************************************/
+
+{
+  "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
+
+  "api-not-found": "{{APIID}} not found, integration disabled.",
+  "api-too-old": "Please update {{apiName}}({{APIID}}) to at least version {{minversion}}. Current version {{currentversion}}. Integration disabled.",
+
+  // Appended to the name of organic objects.
+  "organic": "(Organic)",
+
+  // Joja free sample dialogue.
+  "joja.event.0": "Welcome to JojaMart, @! May I interest you in some of our patented fertilizer? Here, have some!",
+  "joja.event.1": "Oh, @! Nice to see you here! We've got some samples of our patented fertilizer. Take some!",
+  "joja.event.2": "Why welcome to JojaMart! I hope you can find what you're looking for!#$b#Say....would you be interested in a free sample of our patented fertilizer?",
+
+  // Item names and descriptions.
+
+  "waterlogged-fertilizer.name": "Waterlogged Fertilizer",
+  "waterlogged-fertilizer.description": "Retains water very well for paddy crops!",
+
+  "fruit-tree-fertilizer.name": "Fruit Tree Fertilizer",
+  "fruit-tree-fertilizer.description": "Makes fruit trees grow faster. Best not ask too many questions.",
+
+  "deluxe-fruit-tree-fertilizer.name": "Deluxe Fruit Tree Fertilizer",
+  "deluxe-fruit-tree-fertilizer.description": "Guarenteed to make your fruit trees grow rapidly!",
+
+  "bountiful-fertilizer.name": "Bountiful Fertilizer",
+  "bountiful-fertilizer.description": "Increases the chances a crop will produce a double harvest.",
+
+  "organic-fertilizer.name": "Organic Fertilizer",
+  "organic-fertilizer.description": "You're not quite sure what it does, but maybe the produce will sell for more?",
+
+  "joja-fertilizer.name": "Joja's Patented Fertilizer.",
+  "joja-fertilizer.description": "Guarenteed to produce better produce!",
+
+  "joja-fertilizer-deluxe.name": "Joja's Deluxe Fertilizer",
+  "joja-fertilizer-deluxe.description": "Significantly more expensive than the Patented Fertilizer.",
+
+  "good-luck-fertilizer.name": "Maeby's Good-Luck Fertilizer.",
+  "good-luck-fertilizer.description": "Been in production for 50 years! Promises to keep your crops safe from crows and lighting.",
+
+  "fish-food.name": "Fish Food",
+  "fish-food.description": "Apparently fish like this? Attracts fish.",
+
+  "deluxe-fish-food.name": "Deluxe Fish Food",
+  "deluxe-fish-food.description": "Quite good at attracting fish. Lasts for a few days.",
+
+  "domesticated-fish-food.name": "Domesticated Fish Food",
+  "domesticated-fish-food.description": "Makes your domesticated fish grow faster!"
+}

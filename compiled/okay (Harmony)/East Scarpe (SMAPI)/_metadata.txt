@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5787
-IDs: LemurKat.EastScarpe.SMAPI
-update keys: Nexus:5787

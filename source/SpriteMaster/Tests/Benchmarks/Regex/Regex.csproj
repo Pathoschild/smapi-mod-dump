@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(ProjectDir)..\Common.props" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>pufferchick_xbrz.ico</ApplicationIcon>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <StartupObject>Regex.Regex</StartupObject>
+  </PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <DefineConstants>TRACE</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
+	  <DefineConstants>TRACE;SHIPPING</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
+	  <DefineConstants>DEBUG;DEVELOPMENT;TRACE</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="pufferchick_xbrz.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.13.1" />
+  </ItemGroup>
+	
+	<ItemGroup>
+		<None Update="dictionary.zip" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+</Project>

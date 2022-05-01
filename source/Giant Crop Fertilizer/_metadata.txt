@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/atravita-mods/GiantCropFertilizer
+   Git: https://github.com/atravita-mods/GiantCropFertilizer.git
+
+mods:
+   Giant Crop Fertilizer
+
+latest commit:
+   commit 1654ec010c80505a364de5b372aaa8319b57cd2a
+   Merge: 85ade36 830281f
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Sun Apr 24 09:44:24 2022 -0400
+   
+       Merge pull request #1 from Becks723/chinese
+       
+       Update Chinese translation for GiantCropFertilizer.
+   

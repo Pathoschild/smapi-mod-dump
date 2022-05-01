@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11115
+IDs: leclair.bcbuildings
+update keys: Nexus:11115@Buildings, ModDrop:1115749@Buildings, Nexus:11115, GitHub:KhloeLeclair/StardewMods

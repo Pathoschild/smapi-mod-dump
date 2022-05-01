@@ -25,6 +25,11 @@
 	   {
 		  "UniqueID": "Cherry.ExpandedPreconditionsUtility",
 		  "IsRequired": false
+	   },
+	   {
+		  "UniqueID": "Pathoschild.ContentPatcher",
+		  "MinimumVersion": "1.22.0",
+		  "IsRequired": true
 	   }
    ]
 }

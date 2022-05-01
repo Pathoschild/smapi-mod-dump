@@ -12,7 +12,7 @@
     "Name": "Caroline's Underwear",
     "Description": "Well how about that.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 32,
     "IsColored": false,
     "GiftTastes": {

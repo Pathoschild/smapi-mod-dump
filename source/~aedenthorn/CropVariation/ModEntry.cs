@@ -63,6 +63,12 @@ namespace CropVariation
                 getValue: () => Config.EnableMod,
                 setValue: value => Config.EnableMod = value
             );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Resize Trellis",
+                getValue: () => Config.EnableTrellisResize,
+                setValue: value => Config.EnableTrellisResize = value
+            );
             configMenu.AddNumberOption(
                 mod: ModManifest,
                 name: () => "Max Size Var %",

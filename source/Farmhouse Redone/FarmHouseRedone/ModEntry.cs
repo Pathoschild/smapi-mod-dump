@@ -9,18 +9,14 @@
 *************************************************/
 
 using System;
-using System.Reflection;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HarmonyLib;
 using xTile;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Characters;
 using Microsoft.Xna.Framework;
-using Harmony;
 using Netcode;
 
 namespace FarmHouseRedone
@@ -34,7 +30,7 @@ namespace FarmHouseRedone
             Logger.monitor = Monitor;
             config = helper.ReadConfig<Config>();
             Logger.debugMode = config.debug;
-            var harmony = HarmonyInstance.Create("mabelsyrup.farmhouse");
+            var harmony = new Harmony("mabelsyrup.farmhouse");
 
             FarmHouseStates.harmony = harmony;
             FarmHouseStates.modPath = helper.DirectoryPath;

@@ -29,6 +29,7 @@ namespace CustomCompanions.Framework.Models.Companion
         public bool EnableShadow { get; set; }
         public ShadowModel Shadow { get; set; }
         public bool EnableBreathing { get; set; }
+        public bool EnableEventAppearance { get; set; }
         public int TravelSpeed { get; set; } = 6;
         public int SpawnDirection { get; set; } = -1;
         public int SpawnOffsetX { get; set; }

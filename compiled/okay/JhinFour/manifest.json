@@ -1,0 +1,10 @@
+{
+  "Name": "JhinFour",
+  "Author": "Keaton Sadoski",
+  "Version": "1.0.0",
+  "Description": "Plays voice lines from League of Legend's Jhin to slingshot attacks in Stardew Valley. Specifically the numbered count as you attack similar to LoL in-game voice lines.",
+  "UniqueID": "Sadoski.JhinFour",
+  "EntryDll": "JhinFour.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

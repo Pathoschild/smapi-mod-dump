@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Theme Manager Example",
+  "Author": "Khloe Leclair",
+  "Version": "1.0.0-Debug",
+  "Description": "This mod is an example of how to set up ThemeManager in a mod.",
+  "UniqueID": "leclair.thememanager.example",
+  "EntryDll": "ThemeManagerExample.dll",
+  "MinimumApiVersion": "3.13.0",
+  "Dependencies": [
+    {
+      "UniqueID": "leclair.thememanager",
+      "IsRequired": false
+    }
+  ]
+}

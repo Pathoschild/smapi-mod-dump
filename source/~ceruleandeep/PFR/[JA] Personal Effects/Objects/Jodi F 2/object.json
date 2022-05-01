@@ -12,7 +12,7 @@
     "Name": "Jodi's Delicates",
     "Description": "Well, how about that.",
     "Category": "-23",
-    "Edibility": -300,
+    "Edibility": 1,
     "Price": 22,
     "IsColored": false,
     "GiftTastes": {

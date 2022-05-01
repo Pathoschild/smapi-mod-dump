@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11610
+IDs: DecidedlyHuman.BetterReturnScepter
+update keys: Nexus:11610, GitHub:DecidedlyHuman/StardewValleyMods

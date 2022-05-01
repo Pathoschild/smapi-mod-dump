@@ -47,9 +47,10 @@ namespace Pathoschild.Stardew.Common.Integrations.PelicanFiber
         }
 
         /// <summary>Get the selected blueprint from the Pelican Fiber build menu, if it's open.</summary>
-        public BluePrint GetBuildMenuBlueprint()
+        public BluePrint? GetBuildMenuBlueprint()
         {
             this.AssertLoaded();
+
             if (!this.IsBuildMenuOpen())
                 return null;
 

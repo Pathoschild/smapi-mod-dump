@@ -16,7 +16,7 @@ namespace Pathoschild.Stardew.Common.Commands
         /*********
         ** Accessors
         *********/
-        /// <summary>The command's subname (e.g. the 'export' in 'patch export').</summary>
+        /// <summary>The command's sub-name (e.g. the 'export' in 'patch export').</summary>
         string Name { get; }
 
         /// <summary>The command description for the 'patch help' command.</summary>
@@ -27,7 +27,7 @@ namespace Pathoschild.Stardew.Common.Commands
         ** Public methods
         *********/
         /// <summary>Handle a command invocation.</summary>
-        /// <param name="args">The command arguments, excluding the name and subcommand.</param>
+        /// <param name="args">The command arguments, excluding the name and sub-command.</param>
         void Handle(string[] args);
     }
 }

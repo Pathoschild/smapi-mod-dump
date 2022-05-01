@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Linq;
 
 namespace Pathoschild.Stardew.Automate.Framework.Commands.Summary

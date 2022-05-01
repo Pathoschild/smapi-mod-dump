@@ -6,9 +6,12 @@ mods:
    Warp Network
 
 latest commit:
-   commit ededb58c0a1fb44f03b679054128986ff17989b2
-   Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Tue Jan 25 13:42:41 2022 -0500
+   commit 40771d563c70bcaf40659ba58f0d7a48c6a2efa1
+   Merge: 481d590 787b3fb
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Sun Apr 24 19:05:31 2022 -0400
    
-       fix ui centering
+       Merge pull request #2 from ChulkyBow/patch-1
+       
+       Add Ukrainian translation
    

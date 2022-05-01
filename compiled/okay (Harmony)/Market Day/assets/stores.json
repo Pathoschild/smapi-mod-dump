@@ -1,0 +1,94 @@
+{
+  "ShopLocations": [
+    "28, 58",
+    "28, 63",
+    "33, 63",
+    "33, 58",
+    "33, 68",
+    "28, 68",
+    "23, 63"
+  ],
+  "ShopOwners": {
+    "Alex": "Alex",
+    "SVColaShop": "Vincent",
+    "EstorialShop": "",
+    "UndareShop": "",
+    "SigoboronteShop": "",
+    "Vincent": "Vincent",
+    "Blackmarket": "",
+    "ClothingStand": "",
+    "CandyShop2": "",
+    "CandyShop": "",
+    "RecipeShop": "",
+    "NevalizShop": "",
+    "SlimeShop": "",
+    "RecipeShopSat": ""
+  },
+
+  "Shops": [
+//    {
+//      "ShopName": "Clint",
+//      "Quote": "",
+//      "SignObject": 336,
+//      "Color": "64, 64, 64, 0",
+//      "ItemStocks": [
+//        {
+//          "ItemIDs": [334, 335, 336],
+//          "Stock": 20
+//        }
+//      ],
+//      "Stock": {
+//        "334": [10,100],
+//        "335": [10, 10],
+//        "336": [10, 20],
+//        "337": [10, 30, 1],
+//        "910": [2, 40, 1],
+//        "378": [10, 50, 1],
+//        "380": [10, 60, 2],
+//        "384": [10, 70, 2],
+//        "386": [10, 80, 3],
+//        "909": [10, 1337, 3]
+//      }
+//    },
+//    {
+//      "ShopName": "Robin",
+//      "Quote": "",
+//      "SignObject": 709,
+//      "Color": "255, 167, 18, 0",
+//      "PurchasePriceMultiplier": 4.0,
+//      "ItemStocks": [
+//        {
+//          "ItemIDs": [709, 388, 405],
+//          "Stock": 20
+//        }
+//      ],
+//      "Stock": {
+//        "709": [10, 10],
+//        "388": [30, 20],
+//        "405": [10, 30],
+//        "328": [10, 40],
+//        "322": [5, -1],
+//        "298": [3, 1337]
+//      }
+//    },
+    
+    {
+      "ShopName": "Vincent",
+      "Quote": "",
+      "SignObject": 869,
+      "Color": "159, 236, 0, 0",
+      "ItemStocks": [
+        {
+          "ItemIDs": [869, 194, 766, 330],
+          "Stock": 20
+        }
+      ],
+      "Stock": {
+        "869": [10, -1],
+        "194": [3, -1],
+        "766": [8, -1],
+        "330": [20, 1337, 2]
+      }
+    }
+  ]
+}

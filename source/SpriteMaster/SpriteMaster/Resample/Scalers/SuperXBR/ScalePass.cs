@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+#if !SHIPPING
 using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Colors;
 using SpriteMaster.Extensions;
@@ -48,3 +49,4 @@ sealed partial class Scaler {
 		}
 	}
 }
+#endif

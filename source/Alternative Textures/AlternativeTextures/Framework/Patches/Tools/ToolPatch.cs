@@ -133,6 +133,11 @@ namespace AlternativeTextures.Framework.Patches.Tools
 
         private static bool BeginUsingPrefix(Tool __instance, ref bool __result, GameLocation location, int x, int y, Farmer who)
         {
+            if (who != Game1.player)
+            {
+                return true;
+            }
+
             if (__instance.modData.ContainsKey(AlternativeTextures.PAINT_BUCKET_FLAG))
             {
                 __result = true;

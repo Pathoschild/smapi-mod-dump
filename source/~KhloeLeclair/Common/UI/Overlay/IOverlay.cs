@@ -8,11 +8,12 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Text;
+#nullable enable
 
-namespace Leclair.Stardew.Common.UI.Overlay {
-	public interface IOverlay : IDisposable {
-	}
+using System;
+
+namespace Leclair.Stardew.Common.UI.Overlay;
+
+public interface IOverlay : IDisposable {
+
 }

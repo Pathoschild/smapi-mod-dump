@@ -110,13 +110,19 @@ namespace FruitTreeTweaks
                         codes.Insert(i + 2, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetTreeBottomOffset))));
                         found1 = true;
                     }
-                    if (i > 0 && i < codes.Count - 15 && codes[i].opcode == OpCodes.Ldsfld && (FieldInfo)codes[i].operand == AccessTools.Field(typeof(Game1), nameof(Game1.objectSpriteSheet)) && codes[i + 15].opcode == OpCodes.Call && (MethodInfo)codes[i + 15].operand == AccessTools.PropertyGetter(typeof(Color), nameof(Color.White)))
+                    else if (i > 0 && i < codes.Count - 18 && codes[i].opcode == OpCodes.Ldsfld && (FieldInfo)codes[i].operand == AccessTools.Field(typeof(Game1), nameof(Game1.objectSpriteSheet)) && codes[i + 15].opcode == OpCodes.Call && (MethodInfo)codes[i + 15].operand == AccessTools.PropertyGetter(typeof(Color), nameof(Color.White)))
                     {
+                        SMonitor.Log("modifying fruit scale");
+                        codes[i + 18].opcode = OpCodes.Ldarg_0;
+                        codes[i + 18].operand = null;
+                        codes.Insert(i + 19, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitScale))));
+                        codes.Insert(i + 19, new CodeInstruction(OpCodes.Ldc_I4, which));
                         SMonitor.Log("modifying fruit color");
-                        codes[i + 15].opcode = OpCodes.Call;
-                        codes[i + 15].operand = AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitColor));
-                        codes.Insert(i + 15, new CodeInstruction(OpCodes.Ldc_I4, which++));
-                        codes.Insert(i + 15, new CodeInstruction(OpCodes.Ldarg_0));
+                        codes[i + 15].opcode = OpCodes.Ldarg_0;
+                        codes[i + 15].operand = null;
+                        codes.Insert(i + 16, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitColor))));
+                        codes.Insert(i + 16, new CodeInstruction(OpCodes.Ldc_I4, which));
+                        which++;
                     }
                     if (found1 && which >= 2)
                         break;
@@ -133,7 +139,7 @@ namespace FruitTreeTweaks
                     Vector2 offset = GetFruitOffset(__instance, i);
                     Color color = fruitColors[Game1.currentLocation][tileLocation][i];
 
-                    spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, tileLocation * 64 - new Vector2(16, 80) * 4 + offset), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, (__instance.struckByLightningCountdown.Value > 0) ? 382 : __instance.indexOfFruit.Value, 16, 16)), color, 0f, Vector2.Zero, 4f, SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.002f - tileLocation.X / 1000000f + i / 100000f);
+                    spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, tileLocation * 64 - new Vector2(16, 80) * 4 + offset), new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, (__instance.struckByLightningCountdown.Value > 0) ? 382 : __instance.indexOfFruit.Value, 16, 16)), color, 0f, Vector2.Zero, GetFruitScale(__instance, i), SpriteEffects.None, (float)__instance.getBoundingBox(tileLocation).Bottom / 10000f + 0.002f - tileLocation.X / 1000000f + i / 100000f);
                 }
             }
         }
@@ -154,7 +160,25 @@ namespace FruitTreeTweaks
                         codes.Insert(i + 4, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitOffsetForShake))));
                         codes.Insert(i + 4, new CodeInstruction(OpCodes.Ldloc_3));
                         codes.Insert(i + 4, new CodeInstruction(OpCodes.Ldarg_0));
-                        break;
+                        i += 8;
+                    }
+                    else if (i < codes.Count - 1 && codes[i].opcode == OpCodes.Ldc_I4_S && (sbyte)codes[i].operand == -112 && codes[i + 1].opcode == OpCodes.Bgt_S)
+                    {
+                        SMonitor.Log("replacing first fruit quality day");
+                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitQualityDays))));
+                        i++;
+                    }
+                    else if (i < codes.Count - 1 && codes[i].opcode == OpCodes.Ldc_I4 && (int)codes[i].operand == -224 && codes[i + 1].opcode == OpCodes.Bgt_S)
+                    {
+                        SMonitor.Log("replacing second fruit quality day");
+                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitQualityDays))));
+                        i++;
+                    }
+                    else if (i < codes.Count - 1 && codes[i].opcode == OpCodes.Ldc_I4 && (int)codes[i].operand == -336 && codes[i + 1].opcode == OpCodes.Bgt_S)
+                    {
+                        SMonitor.Log("replacing third fruit quality day");
+                        codes.Insert(i + 1, new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(ModEntry.GetFruitQualityDays))));
+                        i++;
                     }
                 }
 

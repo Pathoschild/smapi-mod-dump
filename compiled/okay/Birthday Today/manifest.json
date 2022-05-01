@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Birthday Today",
+  "Author": "ChiroxT",
+  "Version": "1.0.0",
+  "Description": "At the beginning of the day, you will be notified, if a villager have its birthday.",
+  "UniqueID": "treinke.birthdaytoday",
+  "EntryDll": "BirthdayToday.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:11578"]
+}

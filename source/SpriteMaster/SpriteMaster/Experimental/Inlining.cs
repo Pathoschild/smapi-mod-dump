@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using SpriteMaster.Configuration;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;

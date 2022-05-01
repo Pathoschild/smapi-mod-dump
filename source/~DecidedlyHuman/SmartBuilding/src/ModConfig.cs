@@ -43,8 +43,9 @@ namespace SmartBuilding
         public bool EnableTreeTappers = false;
         public bool EnableInsertingItemsIntoMachines = false;
 		// Debug zone.
+        public bool EnableDebugCommand = false;
 		public bool EnableDebugControls = false;
-		public KeybindList IdentifyItem = KeybindList.Parse("LeftControl+LeftShift+J");
+        public KeybindList IdentifyItem = KeybindList.Parse("LeftControl+LeftShift+J");
 		public KeybindList IdentifyProducer = KeybindList.Parse("LeftControl+LeftShift+K");
 	}
 }

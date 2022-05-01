@@ -100,7 +100,7 @@
   "RequireModkey": true,
   "Modkey": "LeftShift, LeftShoulder",
   "HideAffectedTiles": false,
-  "StaminaCostMultiplier": 1.0,
+  "StaminaCostMultiplier": 3.0,
   "TicksBetweenWaves": 4,
   "EnableDebug": false
 }

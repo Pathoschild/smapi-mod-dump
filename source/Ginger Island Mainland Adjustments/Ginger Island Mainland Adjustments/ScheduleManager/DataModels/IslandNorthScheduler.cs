@@ -8,8 +8,9 @@
 **
 *************************************************/
 
+using AtraShared.Schedules.DataModels;
+using AtraShared.Utils.Extensions;
 using GingerIslandMainlandAdjustments.CustomConsoleCommands;
-using GingerIslandMainlandAdjustments.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 
@@ -49,7 +50,7 @@ internal static class IslandNorthScheduler
     /// </summary>
     /// <param name="random">Seeded random.</param>
     /// <param name="explorers">Hashset of explorers.</param>
-    public static void Schedule(Random random, HashSet<NPC> explorers)
+    internal static void Schedule(Random random, HashSet<NPC> explorers)
     {
         if (explorers.Any())
         {
@@ -104,10 +105,16 @@ internal static class IslandNorthScheduler
                     isarrivaltime: true,
                     direction: explorerIndex));
 
-                string renderedSchedule = string.Join("/", schedules[explorer]) + '/' + (ScheduleUtilities.FindProperGISchedule(explorer, SDate.Now()) ?? "1800 bed");
-                Globals.ModMonitor.DebugLog($"Calculated island north schedule for {explorer.Name}");
+                string renderedSchedule = string.Join("/", schedules[explorer]) + '/'
+                    + (ScheduleUtilities.FindProperGISchedule(explorer, SDate.Now())
+                    // Child2NPC NPCs don't understand "bed", must send them to the bus stop spouse dropoff.
+                    ?? (Globals.IsChildToNPC?.Invoke(explorer) == true ? "1800 BusStop -1 23 3" : "1800 bed"));
+
+                Globals.ModMonitor.DebugOnlyLog($"Calculated island north schedule for {explorer.Name}");
                 explorer.islandScheduleName.Value = "island";
-                explorer.Schedule = explorer.parseMasterSchedule(renderedSchedule);
+
+                ScheduleUtilities.ParseMasterScheduleAdjustedForChild2NPC(explorer, renderedSchedule);
+
                 Game1.netWorldState.Value.IslandVisitors[explorer.Name] = true;
                 ConsoleCommands.IslandSchedules[explorer.Name] = renderedSchedule;
             }

@@ -63,7 +63,7 @@
       "Name": "penny_lost",
       "Type": "LostItem",
       "Title": "A Pretty Penny",
-      "Description": "Where are Penny's panties? You only have two clues: they're an amazing shade of blue, and you saw her at the playground with Seb. After dark. On the horse.",
+      "Description": "Where are Penny's panties? You only have two clues: they're an amazing shade of blue, and she's really been showing her community spirit lately.",
       "Objective": "Bring Penny her panties",
       "Reward": "Poppy",
       "RewardType": "Object",
@@ -268,6 +268,22 @@
       }
     },
     {
+      "Name": "sandy_lost_sve",
+      "Type": "LostItem",
+      "Title": "Jewel of the Desert",
+      "Description": "Rumor has it that Sandy's panties are made with actual desert rubies.\n\nIf you find out for sure, remember a gentleperson never tells...",
+      "Objective": "Find Sandy's panties",
+      "Reward": "Mango Sticky Rice",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Sandy {{ja:Sandy's Panties}} Desert 25 7",
+      "ReactionText": "You're fabulous, @!$h#$b#Here's a sweet sticky treat for you to savor on the ride back...",
+      "FriendshipGain": {
+        "Sandy": 100
+      }
+    },
+    {
       "Name": "wizard_lost",
       "Type": "LostItem",
       "Title": "Lost in the Ether",
@@ -329,6 +345,86 @@
       "ReactionText": "Hoo boy, @, I'm glad to have these back!$h#$b#Here, get you some of the good stuff.",
       "FriendshipGain": {
         "Gus": 100
+      }
+    },
+    {
+      "Name": "sophia_lost",
+      "Type": "LostItem",
+      "Title": "Her best set",
+      "Description": "Sophia contacted you about a lost item. Better find her panties quick, before someone else does.",
+      "Objective": "Find Sophia's panties",
+      "Reward": "Blue Moon Wine",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Sophia {{ja:Sophia's Panties}} Custom_BlueMoonVineyard 11 26",
+      "ReactionText": "Thank you, @, and please don't tell anyone.",
+      "FriendshipGain": {
+        "Sophia": 100
+      }
+    },
+    {
+      "Name": "andy_lost",
+      "Type": "LostItem",
+      "Title": "Andy's Joja underwear",
+      "Description": "Andy's lost his Joja underwear and asked you to help find it.",
+      "Objective": "Search for Andy's underwear",
+      "Reward": "Joja Cola",
+      "RewardType": "Object",
+      "RewardAmount": 5,
+      "Cancelable": true,
+      "Trigger": "Andy {{ja:Andy's Underpants}} Town 84 59",
+      "ReactionText": "Thanks for finding them for me partner.",
+      "FriendshipGain": {
+        "Andy": 100
+      }
+    },
+    {
+      "Name": "susan_lost",
+      "Type": "LostItem",
+      "Title": "A Drunk Night Out",
+      "Description": "Apparently Susan lost something while drunk and can't remember where, hopefully you can help her find her panties.",
+      "Objective": "Find Susan's underwear",
+      "Reward": "Quality Fertilizer",
+      "RewardType": "Object",
+      "RewardAmount": 10,
+      "Cancelable": true,
+      "Trigger": "Susan {{ja:Susan's Panties}} Town 86 1",
+      "ReactionText": "Thanks for your help! This is probably a sign that I should drink less...",
+      "FriendshipGain": {
+        "Susan": 100
+      }
+    },
+    {
+      "Name": "olivia_lost",
+      "Type": "LostItem",
+      "Title": "A personal item",
+      "Description": "Olivia trusts you to find her panties without telling anyone about it.",
+      "Objective": "Reunite Olivia with her panties",
+      "Reward": "Amethyst",
+      "RewardType": "Object",
+      "RewardAmount": 1,
+      "Cancelable": true,
+      "Trigger": "Olivia {{ja:Olivia's Panties}} Town 67 42",
+      "ReactionText": "Thank you for getting them back to me, and not telling anyone.",
+      "FriendshipGain": {
+        "Olivia": 100
+      }
+    },
+    {
+      "Name": "victor_lost",
+      "Type": "LostItem",
+      "Title": "Mechanical Trouble",
+      "Description": "Victor's been messing around with a new invention, and now he seems to be minus his invention and his briefs. Hmm.",
+      "Objective": "Help Victor find his underpants",
+      "Reward": "Iron Bar",
+      "RewardType": "Object",
+      "RewardAmount": 2,
+      "Cancelable": true,
+      "Trigger": "Victor {{ja:Victor's Underpants}} Town 65 50",
+      "ReactionText": "Cheers, champ. Take these iron rods I had left over from the invention.",
+      "FriendshipGain": {
+        "Victor": 100
       }
     }
   ],
@@ -482,7 +578,7 @@
       "OfferedBy": "Mail",
       "OfferDetails": {
         "Topic": "A request from Caroline",
-        "Text": "@ I've misplaced something very precious to me. I know I can trust you to get it back. Or is it, get them back? I don't even know. Anyway, I'm too embarrassed to do it myself...^^Caroline^^p.s. I'm talking about my p a - - - e s."
+        "Text": "@ I've misplaced something very precious to me. I know I can trust you to get it back. Or is it, get them back? I don't even know. Anyway, I'm too embarrassed to do it myself...^^Caroline^^p.s. I'm taking about my p a - - - e s."
       },
       "When": {
         "FriendshipLevel": "Caroline 2",
@@ -522,7 +618,8 @@
       },
       "When": {
         "FriendshipLevel": "Sandy 2",
-        "QuestNeverAccepted": "yes"
+        "QuestNeverAccepted": "yes",
+        "HasMod |contains=FlashShifter.StardewValleyExpandedCP": false
       }
     },
     {
@@ -571,6 +668,84 @@
       "When": {
         "FriendshipLevel": "Wizard 2",
         "QuestNeverAccepted": "yes"
+      }
+    },
+    {
+      "QuestName": "sophia_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Sophia",
+        "Text": "Hey so i need help with something its too embarassing to even write but i might have lost my Panties.^^And even worse they were my best set. Help.      -Sophia"
+      },
+      "When": {
+        "FriendshipLevel": "Sophia 2",
+        "QuestNeverAccepted": "yes",
+        "HasMod": "FlashShifter.StardewValleyExpandedCP"
+      }
+    },
+    {
+      "QuestName": "andy_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Andy",
+        "Text": "howdy farmer have you seen my joja jocks around i cant find them anywhere.^^    -Andy"
+      },
+      "When": {
+        "FriendshipLevel": "Andy 2",
+        "QuestNeverAccepted": "yes",
+        "HasMod": "FlashShifter.StardewValleyExpandedCP"
+      }
+    },
+    {
+      "QuestName": "susan_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Susan",
+        "Text": "Hi friend mind helping me with something?^^I lost my panties last thing I remember is going home drunk from the saloon.^^  -Susan"
+      },
+      "When": {
+        "FriendshipLevel": "Susan 2",
+        "QuestNeverAccepted": "yes",
+        "HasMod": "FlashShifter.StardewValleyExpandedCP"
+      }
+    },
+    {
+      "QuestName": "olivia_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Olivia",
+        "Text": "Hello i would like to request your help with something personal, I've lost something and would like it returned. ^^   -Olivia"
+      },
+      "When": {
+        "FriendshipLevel": "Olivia 2",
+        "QuestNeverAccepted": "yes",
+        "HasMod": "FlashShifter.StardewValleyExpandedCP"
+      }
+    },
+    {
+      "QuestName": "victor_lost",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Victor",
+        "Text": "Hey so I was working on a new invention and seem to have lost something very personal.^^Please Help me find it.^^ -Victor"
+      },
+      "When": {
+        "FriendshipLevel": "Victor 2",
+        "QuestNeverAccepted": "yes",
+        "HasMod": "FlashShifter.StardewValleyExpandedCP"
+      }
+    },
+    {
+      "QuestName": "sandy_lost_sve",
+      "OfferedBy": "Mail",
+      "OfferDetails": {
+        "Topic": "A request from Sandy",
+        "Text": "I need a visit, and a big favor!^^My, uh, desert rose has gone missing. Come over and I'll explain everything...^^^Sandy"
+      },
+      "When": {
+        "FriendshipLevel": "Sandy 2",
+        "QuestNeverAccepted": "yes",
+        "HasMod": "FlashShifter.StardewValleyExpandedCP"
       }
     }
   ],

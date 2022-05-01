@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterJunimos", "BetterJunimos.csproj", "{0F382ADA-3DBB-4309-A020-8CF5326E8709}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterJunimosForestry", "BetterJunimosForestry\BetterJunimosForestry.csproj", "{754179AA-634E-473C-A40A-B1B59B5ADA2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{0F382ADA-3DBB-4309-A020-8CF5326E8709}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F382ADA-3DBB-4309-A020-8CF5326E8709}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F382ADA-3DBB-4309-A020-8CF5326E8709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{754179AA-634E-473C-A40A-B1B59B5ADA2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{754179AA-634E-473C-A40A-B1B59B5ADA2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{754179AA-634E-473C-A40A-B1B59B5ADA2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{754179AA-634E-473C-A40A-B1B59B5ADA2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

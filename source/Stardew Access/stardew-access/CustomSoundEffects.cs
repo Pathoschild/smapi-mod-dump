@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Audio;
-using StardewModdingAPI;
 using StardewValley;
 
 namespace stardew_access
@@ -26,6 +25,9 @@ namespace stardew_access
         {
             try
             {
+                if (MainClass.ModHelper == null)
+                    return;
+
                 Dictionary<String, TYPE> soundEffects = new Dictionary<String, TYPE>();
 
                 soundEffects.Add("drop_item", TYPE.Sound);

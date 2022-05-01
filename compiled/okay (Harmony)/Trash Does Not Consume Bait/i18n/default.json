@@ -16,10 +16,12 @@
   "SameTackleOnly.title": "Same Tackle Only",
   "SameTackleOnly.description": "Will replace broken tackles with the same tackle only",
   "SameBaitOnly.title": "Same Bait Only",
-  "SameBaitOnly.description":  "Will refill bait with the same bait only",
+  "SameBaitOnly.description": "Will refill bait with the same bait only",
   "CheatyStuffTitle": "Cheatier Options",
   "ConsumeChanceNormal.title": "Consume Chance (Normal)",
   "ConsumeChanceNormal.description": "The probability that bait and tackle will be consumed for a fishing rod without the enchantment Preserving.",
   "ConsumeChancePreserving.title": "Consume Chance (Preserving)",
-  "ConsumeChancePreserving.description":  "The probability that bait and tackle will be consumed for a fishing rod with the enchantment Preserving."
+  "ConsumeChancePreserving.description": "The probability that bait and tackle will be consumed for a fishing rod with the enchantment Preserving.",
+  "CrabPotTrashDoesNotEatBait.title": "Affect Crab Pot Trash",
+  "CrabPotTrashDoesNotEatBait.description":  "If enabled, crab pot trash will also not eat bait."
 }

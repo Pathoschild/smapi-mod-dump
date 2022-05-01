@@ -8,9 +8,9 @@ mods:
    Ship Anything
 
 latest commit:
-   commit c47b615fcccf6487fde2213ad71b14bdb1731fc7
-   Author: Berkay YiÄŸit <berkaytgy@gmail.com>
-   Date:   Fri Jul 9 09:45:20 2021 +0300
+   commit 2021f43e4718b9331a7686a1bda0d9b4a5913be6
+   Author: Berkay <berkaytgy@gmail.com>
+   Date:   Tue Apr 12 14:32:38 2022 +0300
    
-       [ChestEx] Fix NaN HSV space exception
+       Update funding
    

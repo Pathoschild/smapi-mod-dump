@@ -24,7 +24,18 @@ namespace CustomNPCExclusions
         /// <summary>Initializes methods used to retrieve exclusion data.</summary>
         public static void InitializeDataHelper(IModHelper helper)
         {
+            helper.Events.Content.AssetRequested += Content_AssetRequested;
             helper.Events.Player.Warped += Player_Warped_InvalidateCache;
+        }
+
+        /// <summary>Loads the initial version of this mod's data asset.</summary>
+        /// <remarks>This is a replacement for the IAssetLoader system, which was deprecated in SMAPI v3.14.</remarks>
+        private static void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
+        {
+            if (e.Name.IsEquivalentTo(AssetName, false)) //if this is the exclusion data asset
+            {
+                e.LoadFrom(() => new Dictionary<string, string>(), StardewModdingAPI.Events.AssetLoadPriority.Medium, null); //load an empty asset
+            }
         }
 
         private static void Player_Warped_InvalidateCache(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
@@ -43,7 +54,7 @@ namespace CustomNPCExclusions
             {
                 if (exclusionData == null || cacheTime != Game1.timeOfDay || cacheDays != Game1.Date.TotalDays) //if the cached exclusions have not been updated for the current in-game time/location
                 {
-                    exclusionData = Instance.Helper.Content.Load<Dictionary<string, string>>(AssetName, ContentSource.GameContent); //load all NPC exclusion data
+                    exclusionData = Instance.Helper.GameContent.Load<Dictionary<string, string>>(AssetName); //load all NPC exclusion data
 
                     //update cache info
                     cacheTime = Game1.timeOfDay;

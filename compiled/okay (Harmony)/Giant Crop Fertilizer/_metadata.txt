@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11620
+IDs: atravita.GiantCropFertilizer
+update keys: Nexus:11620, GitHub:atravita-mods/GiantCropFertilizer

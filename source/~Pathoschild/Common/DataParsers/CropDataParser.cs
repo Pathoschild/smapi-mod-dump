@@ -23,7 +23,7 @@ namespace Pathoschild.Stardew.Common.DataParsers
         ** Accessors
         *********/
         /// <summary>The crop.</summary>
-        public Crop Crop { get; }
+        public Crop? Crop { get; }
 
         /// <summary>The seasons in which the crop grows.</summary>
         public string[] Seasons { get; }
@@ -50,7 +50,7 @@ namespace Pathoschild.Stardew.Common.DataParsers
         /// <summary>Construct an instance.</summary>
         /// <param name="crop">The crop.</param>
         /// <param name="isPlanted">Whether the crop is planted.</param>
-        public CropDataParser(Crop crop, bool isPlanted)
+        public CropDataParser(Crop? crop, bool isPlanted)
         {
             this.Crop = crop;
             if (crop != null)
@@ -67,13 +67,15 @@ namespace Pathoschild.Stardew.Common.DataParsers
                 if (!isPlanted && Game1.player.professions.Contains(Farmer.agriculturist))
                     this.DaysToFirstHarvest = (int)(this.DaysToFirstHarvest * 0.9);
             }
+            else
+                this.Seasons = Array.Empty<string>();
         }
 
         /// <summary>Get the date when the crop will next be ready to harvest.</summary>
         public SDate GetNextHarvest()
         {
             // get crop
-            Crop crop = this.Crop;
+            Crop? crop = this.Crop;
             if (crop == null)
                 throw new InvalidOperationException("Can't get the harvest date because there's no crop.");
 
@@ -84,7 +86,7 @@ namespace Pathoschild.Stardew.Common.DataParsers
             // growing: days until next harvest
             if (!crop.fullyGrown.Value)
             {
-                int daysUntilLastPhase = this.DaysToFirstHarvest - this.Crop.dayOfCurrentPhase.Value - crop.phaseDays.Take(crop.currentPhase.Value).Sum();
+                int daysUntilLastPhase = this.DaysToFirstHarvest - crop.dayOfCurrentPhase.Value - crop.phaseDays.Take(crop.currentPhase.Value).Sum();
                 return SDate.Now().AddDays(daysUntilLastPhase);
             }
 
@@ -98,6 +100,7 @@ namespace Pathoschild.Stardew.Common.DataParsers
         }
 
         /// <summary>Get a sample item acquired by harvesting the crop.</summary>
+        /// <exception cref="InvalidOperationException">There's no crop instance.</exception>
         public Item GetSampleDrop()
         {
             if (this.Crop == null)

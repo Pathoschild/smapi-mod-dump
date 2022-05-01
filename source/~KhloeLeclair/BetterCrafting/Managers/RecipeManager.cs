@@ -8,9 +8,12 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -25,527 +28,843 @@ using StardewModdingAPI.Utilities;
 
 using StardewValley;
 
-namespace Leclair.Stardew.BetterCrafting.Managers {
+namespace Leclair.Stardew.BetterCrafting.Managers;
 
-	public class RecipeManager : BaseManager {
+public class RecipeManager : BaseManager {
 
-		// Name -> ID Conversion
-		private readonly static Regex NAME_TO_ID = new(@"[^a-z0-9_]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+	// Name -> ID Conversion
+	private readonly static Regex NAME_TO_ID = new(@"[^a-z0-9_]+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-		// Providers
-		private readonly List<IRecipeProvider> Providers = new();
+	// Providers
+	private readonly List<IRecipeProvider> Providers = new();
 
-		// Recipes
-		// These are per-screen in case there is vanilla CraftingRecipe behavior
-		// that does things separately per player. As an example, if a player has
-		// the profession that makes Crab Pots cheaper, they should have the
-		// cheaper recipe while the other player should now.
+	// Recipes
+	// These are per-screen in case there is vanilla CraftingRecipe behavior
+	// that does things separately per player. As an example, if a player has
+	// the profession that makes Crab Pots cheaper, they should have the
+	// cheaper recipe while the other player should now.
 
-		private readonly PerScreen<int> CraftingCount = new(() => 0);
-		private readonly PerScreen<int> CookingCount = new(() =>0);
+	private readonly PerScreen<int> CraftingCount = new(() => 0);
+	private readonly PerScreen<int> CookingCount = new(() =>0);
 
-		private readonly PerScreen<Dictionary<string, IRecipe>> CraftingRecipesByName = new(() => new());
-		private readonly PerScreen<Dictionary<string, IRecipe>> CookingRecipesByName = new(() => new());
+	private readonly PerScreen<Dictionary<string, IRecipe>> CraftingRecipesByName = new(() => new());
+	private readonly PerScreen<Dictionary<string, IRecipe>> CookingRecipesByName = new(() => new());
 
-		//private readonly Dictionary<string, IRecipe> CraftingRecipesByName = new();
-		//private readonly Dictionary<string, IRecipe> CookingRecipesByName = new();
+	private readonly PerScreen<List<IRecipe>> CraftingRecipes = new(() => new());
+	private readonly PerScreen<List<IRecipe>> CookingRecipes = new(() => new());
 
-		private readonly PerScreen<List<IRecipe>> CraftingRecipes = new(() => new());
-		private readonly PerScreen<List<IRecipe>> CookingRecipes = new(() => new());
+	// Categories
+	private Category[]? DefaultCraftingCategories;
+	private Category[]? DefaultCookingCategories;
+	private readonly object DefaultLock = new();
 
-		//private readonly List<IRecipe> CraftingRecipes = new();
-		//private readonly List<IRecipe> CookingRecipes = new();
+	private readonly Dictionary<long, Category[]> CraftingCategories = new();
+	private readonly Dictionary<long, Category[]> CookingCategories = new();
 
-		// Categories
-		private Category[] DefaultCraftingCategories;
-		private Category[] DefaultCookingCategories;
-		private readonly object DefaultLock = new();
+	private readonly Dictionary<long, AppliedDefaults> AppliedDefaults = new();
 
-		private readonly Dictionary<long, Category[]> CraftingCategories = new();
-		private readonly Dictionary<long, Category[]> CookingCategories = new();
+	private readonly AddedAPICategories API_Cooking = new();
+	private readonly AddedAPICategories API_Crafting = new();
 
-		public bool DefaultsLoaded = false;
+	public bool DefaultsLoaded = false;
 
-		public RecipeManager(ModEntry mod) : base(mod) { }
+	public RecipeManager(ModEntry mod) : base(mod) { }
 
-		private static void AssertFarmer(Farmer who) {
-			if (who == null)
-				throw new ArgumentNullException("who cannot be null");
+	private static void AssertFarmer([NotNull] Farmer? who) {
+		if (who == null)
+			throw new ArgumentNullException(nameof(who));
+	}
+
+	#region Events
+
+	[Subscriber]
+	private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) {
+		LoadRecipes();
+		LoadCategories();
+	}
+
+	[Subscriber]
+	private void OnDayStarted(object? sender, DayStartedEventArgs e) {
+		Invalidate();
+	}
+
+	#endregion
+
+	#region Lock Helpers
+
+	private void WithRecipeProviders(Action action) {
+		lock ((Providers as ICollection).SyncRoot) {
+			action();
 		}
+	}
 
-		#region Events
+	private void WithRecipes(Action action) {
+		lock ((CraftingRecipes.Value as ICollection).SyncRoot) {
+			lock ((CookingRecipes.Value as ICollection).SyncRoot) {
+				action();
+			}
+		}
+	}
 
-		[Subscriber]
-		private void OnSaveLoaded(object sender, SaveLoadedEventArgs e) {
+	private void WithRecipesByName(Action action) {
+		lock ((CraftingRecipesByName.Value as ICollection).SyncRoot) {
+			lock ((CookingRecipesByName.Value as ICollection).SyncRoot) {
+				action();
+			}
+		}
+	}
+
+	private void WithCategories(Action action) {
+		lock ((CraftingCategories as ICollection).SyncRoot) {
+			lock ((CookingCategories as ICollection).SyncRoot) {
+				action();
+			}
+		}
+	}
+
+	private void WithDefaultCategories(Action action) {
+		lock (DefaultLock) {
+			action();
+		}
+	}
+
+	#endregion
+
+	#region Recipe Handling
+
+	public List<IRecipe> GetRecipes(bool cooking) {
+		if (CraftingCount.Value != CraftingRecipe.craftingRecipes.Count || CookingCount.Value != CraftingRecipe.cookingRecipes.Count) {
+			if (CraftingCount.Value != 0 || CookingCount.Value != 0)
+				Log("Recipe count changed. Re-caching recipes.", LogLevel.Info);
 			LoadRecipes();
-			LoadCategories();
 		}
 
-		[Subscriber]
-		private void OnDayStarted(object sender, DayStartedEventArgs e) {
+		List<IRecipe> result;
+
+		if (cooking)
+			result = CookingRecipes.Value;
+		else
+			result = CraftingRecipes.Value;
+
+		bool forked = false;
+
+		WithRecipeProviders(() => {
+			foreach (var provider in Providers) {
+				if (provider.CacheAdditionalRecipes)
+					continue;
+
+				var extra = provider.GetAdditionalRecipes(cooking);
+				if (extra != null) {
+					if (!forked) {
+						result = result.ToList();
+						forked = true;
+					}
+
+					result.AddRange(extra);
+				}
+			}
+		});
+
+		return result;
+	}
+
+
+	#endregion
+
+	#region Category Handling
+
+	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
+
+		AddedAPICategories added = cooking ? API_Cooking : API_Crafting;
+
+		if (added.AddedCategories.ContainsKey(categoryId))
+			return;
+
+		var cat = new Category() {
+			Id = categoryId,
+			Name = Name,
+			Icon = new CategoryIcon() {
+				Type = CategoryIcon.IconType.Item,
+				RecipeName = iconRecipe,
+			}
+		};
+
+		if (recipeNames is not null)
+			cat.Recipes = new(recipeNames);
+
+		added.AddedCategories.Add(
+			categoryId,
+			cat
+		);
+
+		Invalidate();
+	}
+
+	public void AddRecipesToDefaultCategory(bool cooking, string categoryId, IEnumerable<string> recipeNames) {
+		AddedAPICategories added = cooking ? API_Cooking : API_Crafting;
+
+		if (!added.AddedRecipes.TryGetValue(categoryId, out var recipes)) {
+			recipes = new(recipeNames);
+			added.AddedRecipes[categoryId] = recipes;
+			if (recipes.Count > 0)
+				Invalidate();
+			return;
+		}
+
+		int size = recipes.Count;
+
+		foreach (string name in recipeNames)
+			recipes.Add(name);
+
+		if (recipes.Count != size)
 			Invalidate();
+	}
+
+	public void RemoveRecipesFromDefaultCategory(bool cooking, string categoryId, IEnumerable<string> recipeNames) {
+		AddedAPICategories added = cooking ? API_Cooking : API_Crafting;
+
+		if (!added.RemovedRecipes.TryGetValue(categoryId, out var recipes)) {
+			recipes = new(recipeNames);
+			added.RemovedRecipes[categoryId] = recipes;
+			if (recipes.Count > 0)
+				Invalidate();
+			return;
 		}
 
-		#endregion
+		int size = recipes.Count;
 
-		#region Lock Helpers
+		foreach (string name in recipeNames)
+			recipes.Add(name);
 
-		private void WithRecipeProviders(Action action) {
-			lock ((Providers as ICollection).SyncRoot) {
-				action();
+		if (recipes.Count != size)
+			Invalidate();
+	}
+
+
+	public Category[] GetCategories(Farmer who, bool cooking) {
+		AssertFarmer(who);
+
+		if (!DefaultsLoaded)
+			LoadDefaults();
+
+		long id = who.UniqueMultiplayerID;
+		Category[]? result = null;
+		AppliedStuff? applied = null;
+
+		WithCategories(() => {
+			if (cooking) {
+				CookingCategories.TryGetValue(id, out result);
+				if (AppliedDefaults.TryGetValue(id, out var defs))
+					applied = defs.Cooking;
+			} else {
+				CraftingCategories.TryGetValue(id, out result);
+				if (AppliedDefaults.TryGetValue(id, out var defs))
+					applied = defs.Crafting;
 			}
+		});
+
+		result ??= (cooking ? DefaultCookingCategories : DefaultCraftingCategories) ?? Array.Empty<Category>();
+
+		if (ApplyCategoryChanges(ref result, ref applied, cooking ? API_Cooking : API_Crafting)) {
+			// If we've made changes, store them.
+			SetCategories(who, result, cooking);
+
+			if (applied is not null)
+				WithCategories(() => {
+					if (AppliedDefaults.TryGetValue(id, out var defs)) {
+						if (cooking)
+							defs.Cooking = applied;
+						else
+							defs.Crafting = applied;
+					} else if (cooking)
+						AppliedDefaults[id] = new() {
+							Cooking = applied,
+						};
+					else
+						AppliedDefaults[id] = new() {
+							Crafting = applied,
+						};
+				});
+
+			// We don't save the changes though. Not unless someone makes
+			// further changes to their categories.
 		}
 
-		private void WithRecipes(Action action) {
-			lock ((CraftingRecipes.Value as ICollection).SyncRoot) {
-				lock ((CookingRecipes.Value as ICollection).SyncRoot) {
-					action();
+		return result;
+	}
+
+	private static bool ApplyCategoryChanges(ref Category[] existing, ref AppliedStuff? applied, AddedAPICategories added) {
+
+		bool changed = false;
+
+		string?[] ids = existing.Select(cat => cat.Id).ToArray();
+
+		if (applied is null)
+			applied = new();
+
+		List<Category> working = new(existing);
+
+		// Add new categories first.
+		foreach(var cat in added.AddedCategories.Values) {
+			if (cat.Id is null || applied.AddedCategories.Contains(cat.Id))
+				continue;
+
+			// Make a clone of the category.
+			var ncat = new Category() {
+				Id = cat.Id,
+				Name = cat.Name,
+				I18nKey = cat.I18nKey,
+				Icon = cat.Icon == null ? null : new CategoryIcon() {
+					Type = cat.Icon.Type,
+					RecipeName = cat.Icon.RecipeName,
+					Source = cat.Icon.Source,
+					Path = cat.Icon.Path,
+					Rect = cat.Icon.Rect,
+					Scale = cat.Icon.Scale,
+				}
+			};
+
+			if (cat.Recipes is not null)
+				ncat.Recipes = new(cat.Recipes);
+
+			if (cat.UnwantedRecipes is not null)
+				ncat.UnwantedRecipes = cat.UnwantedRecipes.ToArray();
+
+			// And add it.
+			applied.AddedCategories.Add(cat.Id);
+			working.Add(ncat);
+			changed = true;
+		}
+
+		// Add and remove recipes.
+		foreach(var cat in working) {
+			if (cat.Id is null)
+				continue;
+
+			if (added.AddedRecipes.TryGetValue(cat.Id, out var newRecipes)) {
+				if (!applied.AddedRecipes.TryGetValue(cat.Id, out var appliedRecipes)) {
+					appliedRecipes = new();
+					applied.AddedRecipes[cat.Id] = appliedRecipes;
+				}
+
+				foreach (string recipe in newRecipes) {
+					if (appliedRecipes.Contains(recipe))
+						continue;
+
+					appliedRecipes.Add(recipe);
+					changed = true;
+
+					if (cat.Recipes is null)
+						cat.Recipes = new();
+					if (!cat.Recipes.Contains(recipe))
+						cat.Recipes.Add(recipe);
+				}
+			}
+
+			if (added.RemovedRecipes.TryGetValue(cat.Id, out var removedRecipes)) {
+				if (!applied.RemovedRecipes.TryGetValue(cat.Id, out var appliedRecipes)) {
+					appliedRecipes = new();
+					applied.RemovedRecipes[cat.Id] = appliedRecipes;
+				}
+
+				foreach (string recipe in removedRecipes) {
+					if (appliedRecipes.Contains(recipe))
+						continue;
+
+					appliedRecipes.Add(recipe);
+					changed = true;
+
+					if (cat.Recipes is not null && cat.Recipes.Contains(recipe))
+						cat.Recipes.Remove(recipe);
 				}
 			}
 		}
 
-		private void WithRecipesByName(Action action) {
-			lock ((CraftingRecipesByName.Value as ICollection).SyncRoot) {
-				lock ((CookingRecipesByName.Value as ICollection).SyncRoot) {
-					action();
-				}
-			}
-		}
+		if (changed)
+			existing = working.ToArray();
 
-		private void WithCategories(Action action) {
-			lock ((CraftingCategories as ICollection).SyncRoot) {
-				lock ((CookingCategories as ICollection).SyncRoot) {
-					action();
-				}
-			}
-		}
+		return changed;
+	}
 
-		private void WithDefaultCategories(Action action) {
-			lock (DefaultLock) {
-				action();
-			}
-		}
+	public void SetCategories(Farmer who, IEnumerable<Category>? categories, bool cooking) {
+		AssertFarmer(who);
 
-		#endregion
+		long id = who.UniqueMultiplayerID;
+		Category[] array;
+		if (categories is Category[] cats)
+			array = cats;
+		else
+			array = categories?.ToArray() ?? Array.Empty<Category>();
 
-		#region Recipe Handling
-
-		public List<IRecipe> GetRecipes(bool cooking) {
-			if (CraftingCount.Value != CraftingRecipe.craftingRecipes.Count || CookingCount.Value != CraftingRecipe.cookingRecipes.Count) {
-				if (CraftingCount.Value != 0 || CookingCount.Value != 0)
-					Log("Recipe count changed. Re-caching recipes.", LogLevel.Info);
-				LoadRecipes();
-			}
-
-			if (cooking)
-				return CookingRecipes.Value;
-
-			return CraftingRecipes.Value;
-		}
-
-
-		#endregion
-
-		#region Category Handling
-
-		public Category[] GetCategories(Farmer who, bool cooking) {
-			AssertFarmer(who);
-
-			if (!DefaultsLoaded)
-				LoadDefaults();
-
-			long id = who.UniqueMultiplayerID;
-			Category[] result = null;
-
-			WithCategories(() => {
-				if (cooking)
-					CookingCategories.TryGetValue(id, out result);
+		WithCategories(() => {
+			if (cooking) {
+				if (array == null)
+					CookingCategories.Remove(id);
 				else
-					CraftingCategories.TryGetValue(id, out result);
-			});
+					CookingCategories[id] = array;
+			} else {
+				if (array == null)
+					CraftingCategories.Remove(id);
+				else
+					CraftingCategories[id] = array;
+			}
+		});
+	}
 
-			return result ?? (cooking ? DefaultCookingCategories : DefaultCraftingCategories) ?? Array.Empty<Category>();
+	#endregion
+
+	#region IRecipeProvider
+
+	public IRecipe? GetBaseRecipe(CraftingRecipe recipe) {
+		IRecipe result = new BaseRecipe(recipe);
+
+		// We don't care if CreateItem returns null, but it
+		// cannot throw an exception.
+		try {
+			result.CreateItem();
+		} catch (Exception ex) {
+			Log($"An error occurred creating an item for the recipe \"{result.Name}\". The recipe will be skipped.", LogLevel.Warn, ex);
+			return null;
 		}
 
-		public void SetCategories(Farmer who, IEnumerable<Category> categories, bool cooking) {
-			AssertFarmer(who);
+		return result;
+	}
 
-			long id = who.UniqueMultiplayerID;
-			Category[] array = categories as Category[] ?? categories?.ToArray();
+	#endregion
 
-			WithCategories(() => {
-				if (cooking) {
-					if (array == null)
-						CookingCategories.Remove(id);
-					else
-						CookingCategories[id] = array;
-				} else {
-					if (array == null)
-						CraftingCategories.Remove(id);
-					else
-						CraftingCategories[id] = array;
-				}
-			});
-		}
+	#region Recipe Providers
 
-		#endregion
+	public void Invalidate() {
+		CraftingCount.ResetAllScreens();
+		CookingCount.ResetAllScreens();
+	}
 
-		#region IRecipeProvider
+	public void AddProvider(IRecipeProvider provider) {
+		if (provider == null)
+			throw new ArgumentNullException(nameof(provider));
 
-		public IRecipe GetRecipe(CraftingRecipe recipe) {
-			return new BaseRecipe(Mod, recipe);
-		}
-
-		#endregion
-
-		#region Recipe Providers
-
-		public void Invalidate() {
-			CraftingCount.ResetAllScreens();
-			CookingCount.ResetAllScreens();
-		}
-
-		public void AddProvider(IRecipeProvider provider) {
-			if (provider == null)
-				throw new ArgumentNullException("provider cannot be null");
-
-			WithRecipeProviders(() => {
-				if (Providers.Contains(provider))
-					return;
-
-				Providers.Add(provider);
-				Providers.Sort((a, b) => a.RecipePriority.CompareTo(b.RecipePriority));
-			});
-
-			Invalidate();
-		}
-
-		public void RemoveProvider(IRecipeProvider provider) {
-			if (provider == null)
+		WithRecipeProviders(() => {
+			if (Providers.Contains(provider))
 				return;
 
-			WithRecipeProviders(() => {
-				if (Providers.Contains(provider))
-					Providers.Remove(provider);
-			});
+			Providers.Add(provider);
+			Providers.Sort((a, b) => a.RecipePriority.CompareTo(b.RecipePriority));
+		});
 
-			Invalidate();
+		Invalidate();
+	}
+
+	public void RemoveProvider(IRecipeProvider provider) {
+		if (provider == null)
+			return;
+
+		WithRecipeProviders(() => {
+			if (Providers.Contains(provider))
+				Providers.Remove(provider);
+		});
+
+		Invalidate();
+	}
+
+	#endregion
+
+	#region Data Loading
+
+	public IRecipe? GetProvidedRecipe(string name, bool cooking) {
+		CraftingRecipe raw;
+		try {
+			raw = new(name, cooking);
+		} catch(Exception ex) {
+			Log($"An error occurred creating a crafting recipe instance for \"{name}\" (cooking:{cooking}). The recipe will be skipped.", LogLevel.Warn, ex);
+			return null;
 		}
 
-		#endregion
-
-		#region Data Loading
-
-		public IRecipe GetProvidedRecipe(string name, bool cooking) {
-			CraftingRecipe raw = new(name, cooking);
-
-			lock ((Providers as ICollection).SyncRoot) {
-				foreach (IRecipeProvider provider in Providers) {
-					IRecipe recipe = provider.GetRecipe(raw);
-					if (recipe != null)
-						return recipe;
+		lock ((Providers as ICollection).SyncRoot) {
+			foreach (IRecipeProvider provider in Providers) {
+				IRecipe? recipe;
+				try {
+					recipe = provider.GetRecipe(raw);
+				} catch (Exception ex) {
+					Log($"An error occurred in a recipe provider getting a recipe for \"{name}\" (cooking:{cooking}).", LogLevel.Warn, ex);
+					continue;
 				}
+
+				if (recipe == null)
+					continue;
+
+				// We don't care if CreateItem returns null, but it
+				// cannot throw an exception.
+				try {
+					recipe.CreateItem();
+
+				} catch (Exception ex) {
+					Log($"An error occurred creating an item for the recipe \"{recipe.Name}\" from {provider.GetType().FullName ?? provider.GetType().Name}. The recipe will be skipped.", LogLevel.Warn, ex);
+					return null;
+				}
+
+				return recipe;
+			}
+		}
+
+		try {
+			return GetBaseRecipe(raw);
+		} catch(Exception ex) {
+			Log($"An error occurred creating a recipe instance for \"{name}\" (cooking:{cooking}). The recipe will be skipped.", LogLevel.Warn, ex);
+			return null;
+		}
+	}
+
+
+	public void LoadRecipes() {
+		WithRecipes(() => WithRecipesByName(() => {
+			CraftingRecipesByName.Value.Clear();
+			CookingRecipesByName.Value.Clear();
+
+			CraftingRecipes.Value.Clear();
+			CookingRecipes.Value.Clear();
+
+			CookingCount.Value = CraftingRecipe.cookingRecipes.Count;
+			CraftingCount.Value = CraftingRecipe.craftingRecipes.Count;
+
+			// Cooking
+			foreach (string key in CraftingRecipe.cookingRecipes.Keys) {
+				IRecipe? recipe = GetProvidedRecipe(key, true);
+				if (recipe == null)
+					continue;
+
+				CookingRecipesByName.Value.Add(key, recipe);
+				CookingRecipes.Value.Add(recipe);
 			}
 
-			return GetRecipe(raw);
+			foreach (IRecipeProvider provider in Providers) {
+				if (!provider.CacheAdditionalRecipes)
+					continue;
+
+				var recipes = provider.GetAdditionalRecipes(true);
+				if (recipes != null)
+					foreach(IRecipe recipe in recipes) {
+						if (recipe == null)
+							continue;
+
+						// We don't care if CreateItem returns null, but it
+						// cannot throw an exception.
+						try {
+							recipe.CreateItem();
+
+						} catch (Exception ex) {
+							Log($"An error occurred creating an item for the recipe \"{recipe.Name}\" from {provider.GetType().FullName ?? provider.GetType().Name}", LogLevel.Warn, ex);
+							continue;
+						}
+
+						CookingRecipesByName.Value.Add(recipe.Name, recipe);
+						CookingRecipes.Value.Add(recipe);
+					}
+			}
+
+			CookingRecipes.Value.Sort((a, b) => a.SortValue.CompareTo(b.SortValue));
+
+			// Crafting
+			foreach (string key in CraftingRecipe.craftingRecipes.Keys) {
+				IRecipe? recipe = GetProvidedRecipe(key, false);
+				if (recipe == null)
+					continue;
+
+				CraftingRecipesByName.Value.Add(key, recipe);
+				CraftingRecipes.Value.Add(recipe);
+			}
+
+			foreach (IRecipeProvider provider in Providers) {
+				if (!provider.CacheAdditionalRecipes)
+					continue;
+
+				var recipes = provider.GetAdditionalRecipes(false);
+				if (recipes != null)
+					foreach (IRecipe recipe in recipes) {
+						if (recipe == null)
+							continue;
+
+						// We don't care if CreateItem returns null, but it
+						// cannot throw an exception.
+						try {
+							recipe.CreateItem();
+
+						} catch (Exception ex) {
+							Log($"An error occurred creating an item for the recipe \"{recipe.Name}\" from {provider.GetType().FullName ?? provider.GetType().Name}", LogLevel.Warn, ex);
+							continue;
+						}
+
+						CraftingRecipesByName.Value.Add(recipe.Name, recipe);
+						CraftingRecipes.Value.Add(recipe);
+					}
+			}
+
+			Log($"Loaded {CookingRecipes.Value.Count} cooking recipes and {CraftingRecipes.Value.Count} crafting recipes.", LogLevel.Debug);
+		}));
+	}
+
+	private Dictionary<string, Category> HydrateCategories(IEnumerable<Category> categories, string source, Dictionary<string, Category>? byID = null) {
+		byID ??= new();
+
+		foreach (Category cat in categories) {
+			try {
+				MergeCategory(cat, byID);
+			} catch (Exception ex) {
+				Log($"Skipping bad category in {source}.", LogLevel.Warn, ex);
+			}
 		}
 
+		return byID;
+	}
 
-		public void LoadRecipes() {
-			WithRecipes(() => WithRecipesByName(() => {
-				CraftingRecipesByName.Value.Clear();
-				CookingRecipesByName.Value.Clear();
+	public void SaveCategories() {
+		WithCategories(() => {
+			Dictionary<long, Categories> data = new();
 
-				CraftingRecipes.Value.Clear();
-				CookingRecipes.Value.Clear();
+			string newName = I18n.Category_New();
 
-				CookingCount.Value = CraftingRecipe.cookingRecipes.Count;
-				CraftingCount.Value = CraftingRecipe.craftingRecipes.Count;
+			foreach (var entry in CraftingCategories) {
+				long id = entry.Key;
+				if (entry.Value == null || entry.Value.Length == 0)
+					continue;
+
+				Category[] valid = entry.Value.Where(cat => {
+					return
+						!((cat.Recipes == null || cat.Recipes.Count == 0) &&
+						cat.Name.Equals(newName) &&
+						(cat.Icon == null ||
+							(cat.Icon.Type == CategoryIcon.IconType.Item
+							&& string.IsNullOrEmpty(cat.Icon.RecipeName))));
+				}).ToArray();
+
+				if (valid.Length == 0)
+					continue;
+
+				data[id] = new() {
+					Crafting = valid
+				};
+			}
+
+			foreach (var entry in CookingCategories) {
+				long id = entry.Key;
+				if (entry.Value == null || entry.Value.Length == 0)
+					continue;
+
+				Category[] valid = entry.Value.Where(cat => {
+					return
+						!((cat.Recipes == null || cat.Recipes.Count == 0) &&
+						cat.Name.Equals(newName) &&
+						(cat.Icon == null ||
+							(cat.Icon.Type == CategoryIcon.IconType.Item
+							&& !string.IsNullOrEmpty(cat.Icon.RecipeName))));
+				}).ToArray();
+
+				if (valid.Length == 0)
+					continue;
+
+				if (data.ContainsKey(id))
+					data[id].Cooking = valid;
+				else
+					data[id] = new() {
+						Cooking = valid
+					};
+			}
+
+			foreach (var entry in AppliedDefaults) {
+				long id = entry.Key;
+				if (entry.Value == null)
+					continue;
+
+				if (data.ContainsKey(id))
+					data[id].Applied = entry.Value;
+				else
+					data[id] = new() {
+						Applied = entry.Value
+					};
+			}
+
+			// We have the data. Save it.
+			string path = $"savedata/categories/{Constants.SaveFolderName}.json";
+
+			try {
+				Mod.Helper.Data.WriteJsonFile(path, data);
+			} catch (Exception ex) {
+				Log($"The {path} file could not be saved.", LogLevel.Error, ex);
+			}
+		});
+	}
+
+	public void LoadCategories() {
+		WithCategories(() => {
+			CookingCategories.Clear();
+			CraftingCategories.Clear();
+			AppliedDefaults.Clear();
+
+			string path = $"savedata/categories/{Constants.SaveFolderName}.json";
+			Dictionary<long, Categories>? data;
+
+			try {
+				data = Mod.Helper.Data.ReadJsonFile<Dictionary<long, Categories>>(path);
+			} catch (Exception ex) {
+				Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
+				data = null;
+			}
+
+			if (data == null)
+				return;
+
+			foreach (KeyValuePair<long, Categories> entry in data) {
+				if (entry.Value == null)
+					continue;
 
 				// Cooking
-				foreach (string key in CraftingRecipe.cookingRecipes.Keys) {
-					IRecipe recipe = GetProvidedRecipe(key, true);
-
-					CookingRecipesByName.Value.Add(key, recipe);
-					CookingRecipes.Value.Add(recipe);
-				}
-
-				foreach (IRecipeProvider provider in Providers) {
-					var recipes = provider.GetAdditionalRecipes(true);
-					if (recipes != null)
-						foreach(IRecipe recipe in recipes) {
-							CookingRecipesByName.Value.Add(recipe.Name, recipe);
-							CookingRecipes.Value.Add(recipe);
-						}
-				}
-
-				CookingRecipes.Value.Sort((a, b) => a.SortValue.CompareTo(b.SortValue));
+				if (entry.Value.Cooking != null)
+					CookingCategories.Add(
+						entry.Key,
+						HydrateCategories(
+							entry.Value.Cooking,
+							$"{path} for user {entry.Key}"
+						).Values.ToArray()
+					);
 
 				// Crafting
-				foreach (string key in CraftingRecipe.craftingRecipes.Keys) {
-					IRecipe recipe = GetProvidedRecipe(key, false);
-					CraftingRecipesByName.Value.Add(key, recipe);
-					CraftingRecipes.Value.Add(recipe);
-				}
+				if (entry.Value.Crafting != null)
+					CraftingCategories.Add(
+						entry.Key,
+						HydrateCategories(
+							entry.Value.Crafting,
+							$"{path} for user {entry.Key}"
+						).Values.ToArray()
+					);
 
-				foreach (IRecipeProvider provider in Providers) {
-					var recipes = provider.GetAdditionalRecipes(false);
-					if (recipes != null)
-						foreach (IRecipe recipe in recipes) {
-							CraftingRecipesByName.Value.Add(recipe.Name, recipe);
-							CraftingRecipes.Value.Add(recipe);
-						}
-				}
+				// Applied Stuff
+				if (entry.Value.Applied != null)
+					AppliedDefaults.Add(
+						entry.Key,
+						entry.Value.Applied
+					);
+			}
+		});
+	}
 
-				Log($"Loaded {CookingRecipes.Value.Count} cooking recipes and {CraftingRecipes.Value.Count} crafting recipes.", LogLevel.Debug);
-			}));
-		}
+	public void LoadDefaults() {
+		WithDefaultCategories(() => {
+			DefaultsLoaded = true;
+			Dictionary<string, Category> CraftingByID = new();
+			Dictionary<string, Category> CookingByID = new();
 
-		private Dictionary<string, Category> HydrateCategories(IEnumerable<Category> categories, string source, Dictionary<string, Category> byID = null) {
-			byID ??= new();
+			// Read the primary categories data file.
+			const string path = "assets/categories.json";
+			Categories? cats = null;
 
-			foreach (Category cat in categories) {
-				try {
-					MergeCategory(cat, byID);
-				} catch (Exception ex) {
-					Log($"Skipping bad category in {source}.", LogLevel.Warn, ex);
-				}
+			try {
+				cats = Mod.Helper.Data.ReadJsonFile<Categories>(path);
+				if (cats == null)
+					Log($"The {path} file is missing or invalid.", LogLevel.Error);
+			} catch (Exception ex) {
+				Log($"The {path} file is invalid.", LogLevel.Error, ex);
 			}
 
-			return byID;
-		}
+			if (cats != null) {
+				if (cats.Cooking != null)
+					HydrateCategories(cats.Cooking, path, CookingByID);
 
-		public void SaveCategories() {
-			WithCategories(() => {
-				Dictionary<long, Categories> data = new();
+				if (cats.Crafting != null)
+					HydrateCategories(cats.Crafting, path, CraftingByID);
+			}
 
-				string newName = I18n.Category_New();
+			// Now read categories from content packs.
+			foreach (var cp in Mod.Helper.ContentPacks.GetOwned()) {
+				if (!cp.HasFile("categories.json"))
+					continue;
 
-				foreach (var entry in CraftingCategories) {
-					long id = entry.Key;
-					if (entry.Value == null || entry.Value.Length == 0)
-						continue;
-
-					Category[] valid = entry.Value.Where(cat => {
-						return
-							!((cat.Recipes == null || cat.Recipes.Count == 0) &&
-							cat.Name.Equals(newName) &&
-							(cat.Icon == null ||
-								(cat.Icon.Type == CategoryIcon.IconType.Item
-								&& string.IsNullOrEmpty(cat.Icon.RecipeName))));
-					}).ToArray();
-
-					if (valid.Length == 0)
-						continue;
-
-					data[id] = new() {
-						Crafting = valid
-					};
-				}
-
-				foreach (var entry in CookingCategories) {
-					long id = entry.Key;
-					if (entry.Value == null || entry.Value.Length == 0)
-						continue;
-
-					Category[] valid = entry.Value.Where(cat => {
-						return
-							!((cat.Recipes == null || cat.Recipes.Count == 0) &&
-							cat.Name.Equals(newName) &&
-							(cat.Icon == null ||
-								(cat.Icon.Type == CategoryIcon.IconType.Item
-								&& !string.IsNullOrEmpty(cat.Icon.RecipeName))));
-					}).ToArray();
-
-					if (valid.Length == 0)
-						continue;
-
-					if (data.ContainsKey(id))
-						data[id].Cooking = valid;
-					else
-						data[id] = new() {
-							Cooking = valid
-						};
-				}
-
-				// We have the data. Save it.
-				string path = $"savedata/categories/{Constants.SaveFolderName}.json";
-
+				cats = null;
 				try {
-					Mod.Helper.Data.WriteJsonFile(path, data);
+					cats = cp.ReadJsonFile<Categories>("categories.json");
 				} catch (Exception ex) {
-					Log($"The {path} file could not be saved.", LogLevel.Error, ex);
-				}
-			});
-		}
-
-		public void LoadCategories() {
-			WithCategories(() => {
-				CookingCategories.Clear();
-				CraftingCategories.Clear();
-
-				string path = $"savedata/categories/{Constants.SaveFolderName}.json";
-				Dictionary<long, Categories> data;
-
-				try {
-					data = Mod.Helper.Data.ReadJsonFile<Dictionary<long, Categories>>(path);
-				} catch (Exception ex) {
-					Log($"The {path} file is invalid or corrupt.", LogLevel.Error, ex);
-					data = null;
-				}
-
-				if (data == null)
-					return;
-
-				foreach (KeyValuePair<long, Categories> entry in data) {
-					if (entry.Value == null)
-						continue;
-
-					// Cooking
-					if (entry.Value.Cooking != null)
-						CookingCategories.Add(
-							entry.Key,
-							HydrateCategories(
-								entry.Value.Cooking,
-								$"{path} for user {entry.Key}"
-							).Values.ToArray()
-						);
-
-					// Crafting
-					if (entry.Value.Crafting != null)
-						CraftingCategories.Add(
-							entry.Key,
-							HydrateCategories(
-								entry.Value.Crafting,
-								$"{path} for user {entry.Key}"
-							).Values.ToArray()
-						);
-				}
-			});
-		}
-
-		public void LoadDefaults() {
-			WithDefaultCategories(() => {
-				DefaultsLoaded = true;
-				Dictionary<string, Category> CraftingByID = new();
-				Dictionary<string, Category> CookingByID = new();
-
-				// Read the primary categories data file.
-				const string path = "assets/categories.json";
-				Categories cats = null;
-
-				try {
-					cats = Mod.Helper.Data.ReadJsonFile<Categories>(path);
-					if (cats == null)
-						Log($"The {path} file is missing or invalid.", LogLevel.Error);
-				} catch (Exception ex) {
-					Log($"The {path} file is invalid.", LogLevel.Error, ex);
+					Log($"The categories.json file of {cp.Manifest.Name} is invalid.", LogLevel.Error, ex);
 				}
 
 				if (cats != null) {
 					if (cats.Cooking != null)
-						HydrateCategories(cats.Cooking, path, CookingByID);
-
+						HydrateCategories(cats.Cooking, cp.Manifest.Name, CookingByID);
 					if (cats.Crafting != null)
-						HydrateCategories(cats.Crafting, path, CraftingByID);
+						HydrateCategories(cats.Crafting, cp.Manifest.Name, CraftingByID);
 				}
-
-				// Now read categories from content packs.
-				foreach (var cp in Mod.Helper.ContentPacks.GetOwned()) {
-					if (!cp.HasFile("categories.json"))
-						continue;
-
-					cats = null;
-					try {
-						cats = cp.ReadJsonFile<Categories>("categories.json");
-					} catch (Exception ex) {
-						Log($"The categories.json file of {cp.Manifest.Name} is invalid.", LogLevel.Error, ex);
-					}
-
-					if (cats != null) {
-						if (cats.Cooking != null)
-							HydrateCategories(cats.Cooking, cp.Manifest.Name, CookingByID);
-						if (cats.Crafting != null)
-							HydrateCategories(cats.Crafting, cp.Manifest.Name, CraftingByID);
-					}
-				}
-
-				DefaultCraftingCategories = CraftingByID.Values.ToArray();
-				DefaultCookingCategories = CookingByID.Values.ToArray();
-
-				bool too_many = DefaultCraftingCategories.Length > 7 || DefaultCookingCategories.Length > 7;
-
-				Log($"Loaded {DefaultCookingCategories.Length} cooking categories and {DefaultCraftingCategories.Length} crafting categories.", too_many ? LogLevel.Warn : LogLevel.Debug);
-				if (too_many)
-					Log($"Further categories after seven will be ignored.", LogLevel.Warn);
-			});
-		}
-
-		private void MergeCategory(Category cat, Dictionary<string, Category> categories) {
-			if (string.IsNullOrEmpty(cat.Id)) {
-				// Generate the ID from the name.
-				if (string.IsNullOrEmpty(cat.Name))
-					throw new InvalidOperationException("Category with no ID or name.");
-
-				cat.Id = NAME_TO_ID.Replace(cat.Id.ToLower(), "_");
 			}
 
-			// Is there an existing entry?
-			if (categories.TryGetValue(cat.Id, out Category existing)) {
-				// Overwrite names.
-				if (!string.IsNullOrEmpty(cat.Name))
-					existing.Name = cat.Name;
+			DefaultCraftingCategories = CraftingByID.Values.ToArray();
+			DefaultCookingCategories = CookingByID.Values.ToArray();
 
-				// Overwrite I18n keys.
-				if (cat.I18nKey != null)
-					existing.I18nKey = string.IsNullOrEmpty(cat.I18nKey) ? null : cat.I18nKey;
-
-				// Overwrite icons.
-				if (cat.Icon != null)
-					existing.Icon = cat.Icon;
-
-				// Merge Recipes
-
-				// Unwanted Recipes -- Old Style
-				if ((cat.UnwantedRecipes?.Length ?? 0) > 0) {
-					foreach(string recipe in cat.UnwantedRecipes)
-						existing.Recipes.Remove(recipe);
-				}
-
-				// New Recipes
-				if ((cat.Recipes?.Count ?? 0) > 0) {
-					foreach (string recipe in cat.Recipes) {
-						if (string.IsNullOrEmpty(recipe))
-							continue;
-						else if (recipe.StartsWith("--"))
-							existing.Recipes.Remove(recipe[2..]);
-						else if (recipe.StartsWith(" --"))
-							existing.Recipes.Add(recipe[1..]);
-						else
-							existing.Recipes.Add(recipe);
-					}
-				}
-
-				return;
-			}
-
-			if (string.IsNullOrEmpty(cat.Id))
-				cat.Name = cat.Id;
-
-			if (cat.I18nKey == null) {
-				string possible = $"category.{cat.Id}";
-				if (Mod.DoesTranslationExist(possible))
-					cat.I18nKey = possible;
-			}
-
-			if (cat.Recipes == null)
-				cat.Recipes = new CaseInsensitiveHashSet();
-
-			cat.UnwantedRecipes = null;
-			categories.Add(cat.Id, cat);
-		}
-
-		#endregion
-
+			Log($"Loaded {DefaultCookingCategories.Length} cooking categories and {DefaultCraftingCategories.Length} crafting categories.", LogLevel.Debug);
+		});
 	}
+
+	private void MergeCategory(Category cat, Dictionary<string, Category> categories) {
+		if (string.IsNullOrEmpty(cat.Id)) {
+			// Generate the ID from the name.
+			if (string.IsNullOrEmpty(cat.Name))
+				throw new InvalidOperationException("Category with no ID or name.");
+
+			cat.Id = NAME_TO_ID.Replace(cat.Name.ToLower(), "_");
+		}
+
+		// Is there an existing entry?
+		if (categories.TryGetValue(cat.Id, out Category? existing)) {
+			// Overwrite names.
+			if (!string.IsNullOrEmpty(cat.Name))
+				existing.Name = cat.Name;
+
+			// Overwrite I18n keys.
+			if (cat.I18nKey != null)
+				existing.I18nKey = string.IsNullOrEmpty(cat.I18nKey) ? null : cat.I18nKey;
+
+			// Overwrite icons.
+			if (cat.Icon != null)
+				existing.Icon = cat.Icon;
+
+			// Merge Recipes
+			if (existing.Recipes is null)
+				existing.Recipes = new();
+
+			// Unwanted Recipes -- Old Style
+			if (cat.UnwantedRecipes != null && cat.UnwantedRecipes.Length > 0) { 
+				foreach(string recipe in cat.UnwantedRecipes)
+					existing.Recipes.Remove(recipe);
+			}
+
+			// New Recipes
+			if (cat.Recipes != null && cat.Recipes.Count > 0) { 
+				foreach (string recipe in cat.Recipes) {
+					if (string.IsNullOrEmpty(recipe))
+						continue;
+					else if (recipe.StartsWith("--"))
+						existing.Recipes.Remove(recipe[2..]);
+					else if (recipe.StartsWith(" --"))
+						existing.Recipes.Add(recipe[1..]);
+					else
+						existing.Recipes.Add(recipe);
+				}
+			}
+
+			return;
+		}
+
+		if (string.IsNullOrEmpty(cat.Id))
+			cat.Name = cat.Id;
+
+		if (cat.I18nKey == null) {
+			string possible = $"category.{cat.Id}";
+			if (Mod.DoesTranslationExist(possible))
+				cat.I18nKey = possible;
+		}
+
+		if (cat.Recipes == null)
+			cat.Recipes = new();
+
+		cat.UnwantedRecipes = null;
+		categories.Add(cat.Id, cat);
+	}
+
+	#endregion
+
 }

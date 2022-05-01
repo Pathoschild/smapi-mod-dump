@@ -8,16 +8,35 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using BetterJunimos.Abilities;
 using BetterJunimos.Utils;
-using StardewValley.Buildings;
 
 namespace BetterJunimos {
-    public class BetterJunimosApi {
+    public interface IBetterJunimosApi {
+        public int GetJunimoHutMaxRadius();
 
+        public int GetJunimoHutMaxJunimos();
+
+        public Dictionary<string, bool> GetJunimoAbilities();
+
+        public void RegisterJunimoAbility(IJunimoAbility junimoAbility);
+
+        public bool GetWereJunimosPaidToday();
+
+        public void ShowPerfectionTracker();
+        public void ShowConfigurationMenu();
+
+        public void ListAvailableActions(Guid hutGuid);
+        public CropMap GetCropMapForHut(Guid hutGuid);
+        public void SetCropMapForHut(Guid hutGuid, CropMap map);
+        public void ClearCropMapForHut(Guid hutGuid);
+    }
+
+    public class BetterJunimosApi : IBetterJunimosApi {
         public int GetJunimoHutMaxRadius() {
-            return Util.Config.JunimoHuts.MaxRadius;
+            return Util.CurrentWorkingRadius;
         }
 
         public int GetJunimoHutMaxJunimos() {
@@ -25,7 +44,7 @@ namespace BetterJunimos {
         }
 
         public Dictionary<string, bool> GetJunimoAbilities() {
-            return Util.Config.JunimoAbilites;
+            return BetterJunimos.Config.JunimoAbilities;
         }
 
         public void RegisterJunimoAbility(IJunimoAbility junimoAbility) {
@@ -34,6 +53,30 @@ namespace BetterJunimos {
 
         public bool GetWereJunimosPaidToday() {
             return Util.Payments.WereJunimosPaidToday;
+        }
+
+        public void ShowPerfectionTracker() {
+            Util.Progression.ShowPerfectionTracker();
+        }
+        
+        public void ShowConfigurationMenu() {
+            Util.Progression.ShowConfigurationMenu();
+        }
+
+        public void ListAvailableActions(Guid hutGuid) {
+            Util.Progression.ListAvailableActions(hutGuid);
+        }
+
+        public CropMap GetCropMapForHut(Guid hutGuid) {
+            return BetterJunimos.CropMaps.GetCropMapForHut(Util.GetHutFromId(hutGuid));
+        }
+
+        public void SetCropMapForHut(Guid hutGuid, CropMap map) {
+            BetterJunimos.CropMaps.SetCropMapForHut(Util.GetHutFromId(hutGuid), map);
+        }
+
+        public void ClearCropMapForHut(Guid hutGuid) {
+            BetterJunimos.CropMaps.ClearCropMapForHut(Util.GetHutFromId(hutGuid));
         }
     }
 }

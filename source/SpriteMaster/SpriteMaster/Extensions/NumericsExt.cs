@@ -193,7 +193,7 @@ static class NumericsExt {
 
 		string result = "";
 		char[] reversedString = valueString.ToCharArray().Reverse();
-		foreach (int i in 0.RangeTo(reversedString.Length)) {
+		for (int i = 0; i < reversedString.Length; ++i) {
 			if (i != 0 && Char.IsNumber(reversedString[i]) && (i % delimitCount) == 0) {
 				result += delimiter;
 			}

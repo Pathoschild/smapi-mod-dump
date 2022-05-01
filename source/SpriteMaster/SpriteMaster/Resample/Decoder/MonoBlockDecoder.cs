@@ -17,7 +17,7 @@ using System.Reflection;
 namespace SpriteMaster.Resample.Decoder;
 
 static class MonoBlockDecoder {
-	private static readonly Type? DxtUtil = typeof(Microsoft.Xna.Framework.Graphics.Texture2D).Assembly.GetType("DxtUtil");
+	private static readonly Type? DxtUtil = typeof(Microsoft.Xna.Framework.Graphics.Texture2D).Assembly.GetType("Microsoft.Xna.Framework.Graphics.DxtUtil");
 
 	internal delegate byte[] DecompressDelegateArray(byte[] data, int width, int height);
 	internal delegate byte[] DecompressDelegateStream(Stream data, int width, int height);
@@ -26,7 +26,7 @@ static class MonoBlockDecoder {
 	internal static readonly DecompressDelegateStream? DecompressDXT1Stream = GetDelegate<DecompressDelegateStream>("DecompressDxt1");
 
 	internal static readonly DecompressDelegateArray? DecompressDXT3Array = GetDelegate<DecompressDelegateArray>("DecompressDxt3");
-	internal static readonly DecompressDelegateStream ?DecompressDXT3Stream = GetDelegate<DecompressDelegateStream>("DecompressDxt3");
+	internal static readonly DecompressDelegateStream? DecompressDXT3Stream = GetDelegate<DecompressDelegateStream>("DecompressDxt3");
 
 	internal static readonly DecompressDelegateArray? DecompressDXT5Array = GetDelegate<DecompressDelegateArray>("DecompressDxt5");
 	internal static readonly DecompressDelegateStream? DecompressDXT5Stream = GetDelegate<DecompressDelegateStream>("DecompressDxt5");

@@ -283,14 +283,11 @@ namespace Shockah.FlexibleSprinklers
 			if (Game1.player.team.SpecialOrderRuleActive("NO_SPRINKLER"))
 				return;
 
-			var sprinklers = location.Objects.Values.Where(o => o.IsSprinkler()).ToList();
-			if (sprinklers.Count == 0)
-				return;
-			var anySprinkler = sprinklers.First();
-			var sprinklerTiles = SprinklerBehavior.GetSprinklerTiles(new GameLocationMap(location, CustomWaterableTileProviders));
+			IMap map = new GameLocationMap(location, CustomWaterableTileProviders);
+			var sprinklerTiles = SprinklerBehavior.GetSprinklerTiles(map);
 			foreach (var sprinklerTile in sprinklerTiles)
-				anySprinkler.ApplySprinkler(location, new Vector2(sprinklerTile.X, sprinklerTile.Y));
-			foreach (var sprinkler in sprinklers)
+				map.WaterTile(sprinklerTile);
+			foreach (var sprinkler in location.Objects.Values.Where(o => o.IsSprinkler()))
 				sprinkler.ApplySprinklerAnimation(location);
 		}
 

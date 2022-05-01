@@ -71,7 +71,7 @@ namespace Leclair.Stardew.Almanac.Crops {
 
 		public void Invalidate() {
 			Loaded = false;
-			Mod.Helper.Content.InvalidateCache(AssetManager.CropOverridesPath);
+			Mod.Helper.GameContent.InvalidateCache(AssetManager.CropOverridesPath);
 		}
 
 		public void AddProvider(ICropProvider provider) {

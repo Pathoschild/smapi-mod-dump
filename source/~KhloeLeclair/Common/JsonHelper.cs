@@ -8,9 +8,11 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
-using System.Text;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,77 +20,84 @@ using Newtonsoft.Json.Converters;
 
 using StardewModdingAPI;
 
-namespace Leclair.Stardew.Common
-{
-    public static class JsonHelper {
+namespace Leclair.Stardew.Common;
 
-		public static JsonSerializerSettings Settings { get; } = new JsonSerializerSettings {
-			Formatting = Formatting.Indented,
-			ObjectCreationHandling = ObjectCreationHandling.Replace,
-			Converters = new List<JsonConverter> {
-				new StringEnumConverter(),
-				new Serialization.Converters.ItemConverter(),
-			}
-		};
+public static class JsonHelper {
 
-		public static bool TryParseJson<T>(string input, out T result, IMonitor monitor = null) {
-			if (!string.IsNullOrEmpty(input))
-				throw new ArgumentException("The input is empty or null.", nameof(input));
+	public static JsonSerializerSettings Settings { get; } = new JsonSerializerSettings {
+		Formatting = Formatting.Indented,
+		ObjectCreationHandling = ObjectCreationHandling.Replace,
+		Converters = new List<JsonConverter> {
+			new StringEnumConverter()
+		}
+	};
 
-			try {
-				result = JsonConvert.DeserializeObject<T>(input, Settings);
-				return true;
-			} catch (Exception ex) {
-				if (monitor != null) {
-					monitor.Log("There was an error serializing an object.", LogLevel.Warn);
-					monitor.Log(ex.ToString(), LogLevel.Warn);
-				}
+	public static bool TryParseJson<T>(string input, [NotNullWhen(true)] out T? result, IMonitor? monitor = null) {
+		if (TryParseJson<T>(input, out result, out Exception? exc))
+			return true;
 
-				result = default;
-				return false;
-			}
+		if (monitor != null && exc != null)
+			monitor.Log($"There was an error deserializing an object. Details:\n{exc}", LogLevel.Warn);
+
+		result = default;
+		return false;
+	}
+
+	public static bool TryParseJson<T>(string input, [NotNullWhen(true)] out T? result, out Exception? exc) {
+		try {
+			if (string.IsNullOrEmpty(input))
+				throw new ArgumentNullException(nameof(input));
+
+			result = JsonConvert.DeserializeObject<T>(input, Settings);
+			exc = null;
+			return result is not null;
+
+		} catch (Exception ex) {
+			exc = ex;
+			result = default;
 		}
 
-		public static bool TrySerializeJson(object input, out string result, IMonitor monitor = null) {
-			try {
-				result = JsonConvert.SerializeObject(input, Settings);
-				return true;
-			} catch (Exception ex) {
-				if (monitor != null) {
-					monitor.Log("There was an error serializing an object.", LogLevel.Warn);
-					monitor.Log(ex.ToString(), LogLevel.Warn);
-				}
+		return false;
+	}
 
-				result = null;
-				return false;
-			}
+	public static bool TrySerializeJson(object input, [NotNullWhen(true)] out string? result, IMonitor? monitor = null) {
+		try {
+			result = JsonConvert.SerializeObject(input, Settings);
+			return result is not null;
+
+		} catch (Exception ex) {
+			if (monitor != null)
+				monitor.Log($"There was an error serializing an object. Details:\n{ex}", LogLevel.Warn);
 		}
 
-		public static string SerializeJson(object input) {
-			return JsonConvert.SerializeObject(input, Settings);
-		}
+		result = null;
+		return false;
+	}
 
-		public static T ParseJson<T>(string input) {
-			return JsonConvert.DeserializeObject<T>(input, Settings);
-		}
-    }
+	public static string SerializeJson(object input) {
+		return JsonConvert.SerializeObject(input, Settings);
+	}
 
-	internal static class JsonExtensions {
-		public static T ValueIgnoreCase<T>(this JObject obj, string field) {
-			JToken token = obj.GetValue(field, StringComparison.OrdinalIgnoreCase);
-			return token != null
-				? token.Value<T>()
-				: default;
-		}
+	public static T? ParseJson<T>(string input) {
+		return JsonConvert.DeserializeObject<T>(input, Settings);
+	}
+}
 
-		public static bool TryGetValueIgnoreCase<T>(this JObject obj, string field, out T result) {
-			if (obj.TryGetValue(field, StringComparison.OrdinalIgnoreCase, out var token)) {
-				result = token.Value<T>();
-				return true;
-			} else {
-				result = default;
-				return false;
-			}
+internal static class JsonExtensions {
+	public static T? ValueIgnoreCase<T>(this JObject obj, string field) {
+		JToken? token = obj.GetValue(field, StringComparison.OrdinalIgnoreCase);
+		return token != null
+			? token.Value<T>()
+			: default;
+	}
+
+	public static bool TryGetValueIgnoreCase<T>(this JObject obj, string field, [NotNullWhen(true)] out T? result) {
+		if (obj.TryGetValue(field, StringComparison.OrdinalIgnoreCase, out var token)) {
+			result = token.Value<T>();
+			return result is not null;
+		} else {
+			result = default;
+			return false;
 		}
 	}
 }

@@ -9,10 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework.Graphics;
-using SpriteMaster.Extensions;
-using SpriteMaster.Metadata;
-using SpriteMaster.Types;
-using SpriteMaster.Types.Fixed;
+using SpriteMaster.Configuration;
 using StardewModdingAPI;
 using System;
 using System.Reflection;

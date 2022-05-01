@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using ContentPatcher.Framework.Patches;
 using StardewModdingAPI;
 

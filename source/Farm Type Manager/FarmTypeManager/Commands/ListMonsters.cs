@@ -24,35 +24,53 @@ namespace FarmTypeManager
         {
             if (!Context.IsGameLaunched) { return; } //if the game hasn't fully launched yet, ignore this command
 
-            Utility.Monitor.Log($"Standard monster names:", LogLevel.Info);
+            Utility.Monitor.Log($"-----", LogLevel.Info);
+            Utility.Monitor.Log($"Standard monster names", LogLevel.Info);
+            Utility.Monitor.Log($"-----", LogLevel.Info);
             Utility.Monitor.Log($"", LogLevel.Info);
             foreach (string monster in GetFTMMonsterNames()) //for each monster name from FTM's basic list
             {
                 Utility.Monitor.Log($"{monster}", LogLevel.Info);
             }
-            Utility.Monitor.Log($"", LogLevel.Info);
-            Utility.Monitor.Log($"Custom monster names:", LogLevel.Info);
-            Utility.Monitor.Log($"", LogLevel.Info);
             string previousAssembly = null; //the most recently displayed assembly name
             List<Type> monsters = GetAllSubclassTypes(typeof(Monster)); //a list of every available monster type (including those from SDV and this mod)
             foreach (Type monster in monsters) //for each available monster type
             {
                 string currentAssembly = monster.Assembly.GetName().Name; //get this monster's simple assembly name
                 if (currentAssembly == "Stardew Valley" || currentAssembly == "StardewValley" || //if this monster is from SDV
-                    currentAssembly == "FarmTypeManager") //...or from this mod
+                    currentAssembly == "FarmTypeManager" || //or from this mod
+                    currentAssembly == "MonstersTheFramework") //or from MTF
                 {
                     continue; //skip to the next monster
                 }
 
                 if (previousAssembly != currentAssembly) //if this monster is from a different assembly than the previously displayed one
                 {
+                    Utility.Monitor.Log($"", LogLevel.Info);
                     Utility.Monitor.Log($"-----", LogLevel.Info);
                     Utility.Monitor.Log($"Mod: {currentAssembly}", LogLevel.Info); //display the assembly name
                     Utility.Monitor.Log($"-----", LogLevel.Info);
+                    Utility.Monitor.Log($"", LogLevel.Info);
                     previousAssembly = currentAssembly;
                 }
 
                 Utility.Monitor.Log($"{monster.FullName}", LogLevel.Info); //display this monster's name (i.e. the name compatible with this mod's MonsterName setting)
+            }
+
+            IEnumerable<string> monstersFromMTF = Utility.MonstersTheFrameworkAPI?.GetAllMonsterTypes(); //try to get MTF's available monster IDs
+
+            if (monstersFromMTF != null) //if MTF's monster IDs are accessible
+            {
+                Utility.Monitor.Log($"", LogLevel.Info);
+                Utility.Monitor.Log($"-----", LogLevel.Info);
+                Utility.Monitor.Log($"Mod: MonstersTheFramework", LogLevel.Info);
+                Utility.Monitor.Log($"-----", LogLevel.Info);
+                Utility.Monitor.Log($"", LogLevel.Info);
+
+                foreach (string id in monstersFromMTF)
+                {
+                    Utility.Monitor.Log($"{id}", LogLevel.Info); //display this ID
+                }
             }
         }
 

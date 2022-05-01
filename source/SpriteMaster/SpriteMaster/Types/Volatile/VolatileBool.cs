@@ -23,7 +23,7 @@ partial struct VolatileBool : ILongHash {
 
 	public VolatileBool() { }
 	internal VolatileBool(bool value) => _Value = value;
-	internal VolatileBool(in VolatileBool value) : this(value._Value) {}
+	internal VolatileBool(in VolatileBool value) : this(value._Value) { }
 
 	public static implicit operator bool(in VolatileBool value) => value._Value;
 	public static implicit operator VolatileBool(bool value) => new(value);

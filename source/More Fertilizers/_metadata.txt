@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/atravita-mods/MoreFertilizers
+   Git: https://github.com/atravita-mods/MoreFertilizers.git
+
+mods:
+   More Fertilizers
+
+latest commit:
+   commit 5bae5434d12e7fff846186cb7cae65e0f3c6b9eb
+   Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
+   Date:   Thu Apr 28 15:33:22 2022 -0400
+   
+       Move level-based random fertilizer selection to its own method.
+   

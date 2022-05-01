@@ -8,70 +8,18 @@
 **
 *************************************************/
 
+#nullable enable
+
 using StardewValley;
 
-namespace Leclair.Stardew.Common {
-	public static class TimeHelper {
+namespace Leclair.Stardew.Common;
 
-		/*private static LocalizedContentManager.LanguageCode? Code = null;
-		private static string AMString;
-		private static string PMString;
+public static class TimeHelper {
 
-		private static void CacheAMPM() {
-			if (Code.HasValue && Code.Value == LocalizedContentManager.CurrentLanguageCode)
-				return;
+	public static string FormatTime(int time) {
+		// Limit it to one day.
+		time %= 2400;
 
-			Code = LocalizedContentManager.CurrentLanguageCode;
-			AMString = Game1.content.LoadString("Strings\\StringsFromCSFiles:DayTimeMoneyBox.cs.10370");
-			PMString = Game1.content.LoadString("Strings\\StringsFromCSFiles:DayTimeMoneyBox.cs.10371");
-		}
-
-		public static bool IsTwelveHour() {
-			switch (LocalizedContentManager.CurrentLanguageCode) {
-				case LocalizedContentManager.LanguageCode.ru:
-				case LocalizedContentManager.LanguageCode.pt:
-				case LocalizedContentManager.LanguageCode.es:
-				case LocalizedContentManager.LanguageCode.de:
-				case LocalizedContentManager.LanguageCode.th:
-				case LocalizedContentManager.LanguageCode.fr:
-				case LocalizedContentManager.LanguageCode.tr:
-				case LocalizedContentManager.LanguageCode.hu:
-					return false;
-				default:
-					return true;
-			}
-		}*/
-
-		public static string FormatTime(int time) {
-			// Limit it to one day.
-			time %= 2400;
-
-			return Game1.getTimeOfDayString(time);
-
-			/*int hours = time / 100;
-			int minutes = time % 100;
-
-			bool twelve = IsTwelveHour();
-			bool is_pm = twelve && hours >= 12;
-
-			if (is_pm)
-				hours -= 12;
-
-			if (twelve && hours == 0 && LocalizedContentManager.CurrentLanguageCode != LocalizedContentManager.LanguageCode.zh)
-				hours = 12;
-
-			string hourPad = ""; // hours < 10 ? "0" : "";
-			string minutePad = minutes < 10 ? "0" : "";
-			string ampm;
-
-			if (twelve) {
-				CacheAMPM();
-				ampm = is_pm ? PMString : AMString;
-
-			} else
-				ampm = "";
-
-			return $"{hourPad}{hours}:{minutePad}{minutes}{ampm}";*/
-		}
+		return Game1.getTimeOfDayString(time);
 	}
 }

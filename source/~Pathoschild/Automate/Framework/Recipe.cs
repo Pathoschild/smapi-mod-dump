@@ -8,9 +8,10 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using StardewValley;
-using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.Automate.Framework
 {
@@ -30,7 +31,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         public int InputCount { get; }
 
         /// <summary>The output to generate (given an input).</summary>
-        public Func<Item, SObject> Output { get; }
+        public Func<Item, Item> Output { get; }
 
         /// <summary>The time needed to prepare an output (given an input).</summary>
         public Func<Item, int> Minutes { get; }
@@ -44,7 +45,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="inputCount">The number of inputs needed.</param>
         /// <param name="output">The output to generate (given an input).</param>
         /// <param name="minutes">The time needed to prepare an output.</param>
-        public Recipe(int input, int inputCount, Func<Item, SObject> output, int minutes)
+        public Recipe(int input, int inputCount, Func<Item, Item> output, int minutes)
             : this(input, inputCount, output, _ => minutes) { }
 
         /// <summary>Construct an instance.</summary>
@@ -52,7 +53,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="inputCount">The number of inputs needed.</param>
         /// <param name="output">The output to generate (given an input).</param>
         /// <param name="minutes">The time needed to prepare an output (given an input).</param>
-        public Recipe(int input, int inputCount, Func<Item, SObject> output, Func<Item, int> minutes)
+        public Recipe(int input, int inputCount, Func<Item, Item> output, Func<Item, int> minutes)
             : this(item => Recipe.MatchesInputId(item, input), inputCount, output, minutes) { }
 
         /// <summary>Construct an instance.</summary>
@@ -60,7 +61,7 @@ namespace Pathoschild.Stardew.Automate.Framework
         /// <param name="inputCount">The number of inputs needed.</param>
         /// <param name="output">The output to generate (given an input).</param>
         /// <param name="minutes">The time needed to prepare an output (given an input).</param>
-        public Recipe(Func<Item, bool> input, int inputCount, Func<Item, SObject> output, Func<Item, int> minutes)
+        public Recipe(Func<Item, bool> input, int inputCount, Func<Item, Item> output, Func<Item, int> minutes)
         {
             this.Input = input;
             this.InputCount = inputCount;

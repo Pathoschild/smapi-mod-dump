@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -87,9 +89,9 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
                 return season;
 
             int id = Utility.getSeasonNumber(season);
-            if (id == -1)
-                throw new InvalidOperationException($"Can't translate unknown season '{season}'.");
-            return Utility.getSeasonNameFromNumber(id);
+            return id != -1
+                ? Utility.getSeasonNameFromNumber(id)
+                : season;
         }
 
         /// <summary>Get translated season names from the game.</summary>

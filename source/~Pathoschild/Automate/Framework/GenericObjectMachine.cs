@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable disable
+
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -98,7 +100,7 @@ namespace Pathoschild.Stardew.Automate.Framework
             if (storage.TryGetIngredient(recipes, out IConsumable consumable, out IRecipe recipe))
             {
                 input = consumable.Take();
-                this.Machine.heldObject.Value = recipe.Output(input);
+                this.Machine.heldObject.Value = (SObject)recipe.Output(input);
                 this.Machine.MinutesUntilReady = recipe.Minutes(input);
                 return true;
             }

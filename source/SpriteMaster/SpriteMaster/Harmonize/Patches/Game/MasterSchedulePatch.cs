@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using SpriteMaster.Configuration;
 using StardewValley;
 using System.Collections.Generic;
 using System.Threading;
@@ -21,16 +22,16 @@ class MasterSchedulePatch {
 	private static readonly ThreadLocal<int> MasterScheduleDepth = new();
 
 	[Harmonize(
-	typeof(StardewValley.NPC),
-	"parseMasterSchedule",
-	Harmonize.Fixation.Prefix,
-	Harmonize.PriorityLevel.Last,
-	critical: false
-)]
+		typeof(StardewValley.NPC),
+		"parseMasterSchedule",
+		Harmonize.Fixation.Prefix,
+		Harmonize.PriorityLevel.Last,
+		critical: false
+	)]
 	public static bool ParseMasterSchedulePre(StardewValley.NPC __instance, ref MasterSchedule? __result, string? rawData, ref bool __state) {
 		__state = false;
 
-		if (!Config.Enabled || !Config.Extras.FixMasterSchedule) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.FixMasterSchedule) {
 			return true;
 		}
 
@@ -67,7 +68,7 @@ class MasterSchedulePatch {
 		critical: false
 	)]
 	public static void ParseMasterSchedulePost(StardewValley.NPC __instance, string rawData, bool __state) {
-		if (!Config.Enabled || !Config.Extras.FixMasterSchedule) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.FixMasterSchedule) {
 			return;
 		}
 
@@ -95,7 +96,7 @@ class MasterSchedulePatch {
 		critical: false
 	)]
 	public static bool getSchedulePre(StardewValley.NPC __instance, ref MasterSchedule? __result, int dayOfMonth) {
-		if (!Config.Enabled || !Config.Extras.FixMasterSchedule) {
+		if (!Config.IsUnconditionallyEnabled || !Config.Extras.FixMasterSchedule) {
 			return true;
 		}
 
