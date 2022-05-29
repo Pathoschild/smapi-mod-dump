@@ -8,25 +8,27 @@
 **
 *************************************************/
 
+#nullable enable
+
 using Leclair.Stardew.Common.UI.SimpleLayout;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Leclair.Stardew.Almanac.Pages {
-	public interface ITab {
+namespace Leclair.Stardew.Almanac.Pages;
 
-		int SortKey { get; }
+public interface ITab {
 
-		bool TabVisible { get; }
-		string TabSimpleTooltip { get; }
-		ISimpleNode TabAdvancedTooltip { get; }
+	int SortKey { get; }
 
-		bool TabMagic { get; }
+	bool TabVisible { get; }
+	string? TabSimpleTooltip { get; }
+	ISimpleNode? TabAdvancedTooltip { get; }
 
-		Texture2D TabTexture { get; }
-		Rectangle? TabSource { get; }
-		float? TabScale { get; }
+	bool TabMagic { get; }
 
-	}
+	Texture2D? TabTexture { get; }
+	Rectangle? TabSource { get; }
+	float? TabScale { get; }
+
 }

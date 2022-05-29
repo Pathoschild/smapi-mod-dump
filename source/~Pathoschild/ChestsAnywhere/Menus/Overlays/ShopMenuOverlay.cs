@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Pathoschild.Stardew.ChestsAnywhere.Framework;
 using StardewModdingAPI;

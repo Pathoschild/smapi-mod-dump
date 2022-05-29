@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.LookupAnything.Framework.Constants;

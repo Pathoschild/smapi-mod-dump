@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using StardewValley;
 
 namespace Pathoschild.Stardew.Automate
@@ -40,7 +38,7 @@ namespace Pathoschild.Stardew.Automate
 
         /// <summary>Remove the specified number of this item from the stack and return a new stack matching the count.</summary>
         /// <param name="count">The number to get.</param>
-        Item Take(int count);
+        Item? Take(int count);
 
         /// <summary>Ignore one item in each stack, to ensure that no stack can be fully consumed.</summary>
         void PreventEmptyStacks();

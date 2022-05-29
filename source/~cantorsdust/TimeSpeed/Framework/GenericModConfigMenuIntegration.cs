@@ -39,6 +39,8 @@ namespace TimeSpeed.Framework
             api.Register(manifest, reset, save);
 
             // general options
+            const float minSecondsPerMinute = 0.1f;
+            const float maxSecondsPerMinute = 15f;
             api.AddSectionTitle(manifest, I18n.Config_GeneralOptions);
             api.AddBoolOption(
                 manifest,
@@ -63,8 +65,8 @@ namespace TimeSpeed.Framework
                 tooltip: I18n.Config_IndoorsSpeed_Desc,
                 getValue: () => (float)getConfig().SecondsPerMinute.Indoors,
                 setValue: value => getConfig().SecondsPerMinute.Indoors = Math.Round(value, 2),
-                min: 0.1f,
-                max: 60f,
+                min: minSecondsPerMinute,
+                max: maxSecondsPerMinute,
                 interval: 0.1f
             );
             api.AddNumberOption(
@@ -73,8 +75,8 @@ namespace TimeSpeed.Framework
                 tooltip: I18n.Config_OutdoorsSpeed_Desc,
                 getValue: () => (float)getConfig().SecondsPerMinute.Outdoors,
                 setValue: value => getConfig().SecondsPerMinute.Outdoors = Math.Round(value, 2),
-                min: 0.1f,
-                max: 60f,
+                min: minSecondsPerMinute,
+                max: maxSecondsPerMinute,
                 interval: 0.1f
             );
             api.AddNumberOption(
@@ -83,8 +85,8 @@ namespace TimeSpeed.Framework
                 tooltip: I18n.Config_MineSpeed_Desc,
                 getValue: () => (float)getConfig().SecondsPerMinute.Mines,
                 setValue: value => getConfig().SecondsPerMinute.Mines = Math.Round(value, 2),
-                min: 0.1f,
-                max: 60f,
+                min: minSecondsPerMinute,
+                max: maxSecondsPerMinute,
                 interval: 0.1f
             );
             api.AddNumberOption(
@@ -93,8 +95,8 @@ namespace TimeSpeed.Framework
                 tooltip: I18n.Config_SkullCavernSpeed_Desc,
                 getValue: () => (float)getConfig().SecondsPerMinute.SkullCavern,
                 setValue: value => getConfig().SecondsPerMinute.SkullCavern = Math.Round(value, 2),
-                min: 0.1f,
-                max: 60f,
+                min: minSecondsPerMinute,
+                max: maxSecondsPerMinute,
                 interval: 0.1f
             );
             api.AddNumberOption(
@@ -103,8 +105,8 @@ namespace TimeSpeed.Framework
                 tooltip: I18n.Config_VolcanoDungeonSpeed_Desc,
                 getValue: () => (float)getConfig().SecondsPerMinute.VolcanoDungeon,
                 setValue: value => getConfig().SecondsPerMinute.VolcanoDungeon = Math.Round(value, 2),
-                min: 0.1f,
-                max: 60f,
+                min: minSecondsPerMinute,
+                max: maxSecondsPerMinute,
                 interval: 0.1f
             );
 

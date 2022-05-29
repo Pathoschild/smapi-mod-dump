@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,15 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IGameLoopEvents.SaveLoaded"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class SaveLoadedEvent : BaseEvent
 {
-    /// <summary>
-    ///     Raised after loading a save (including the first day after creating a new save), or connecting to a
-    ///     multiplayer world.
-    /// </summary>
+    /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
-    public void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+    internal void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
     {
-        if (enabled.Value) OnSaveLoadedImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnSaveLoadedImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnSaveLoaded" />

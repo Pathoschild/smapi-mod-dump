@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -40,13 +40,13 @@ using Microsoft.Xna.Framework.Graphics;
 namespace ChestEx.Types.BaseTypes {
   public class ColouringMenuSwitcher : CustomClickableMenu {
     // Private:
-  #region Private
+    #region Private
 
     private readonly Action<String> onSwitchRequested;
 
     private readonly Dictionary<Int32, CustomButton> switcherButtons = new();
-    private readonly Point                           switcherButtonSize;
-    private readonly Int32                           switcherButtonsMaxAmount;
+    private readonly Point switcherButtonSize;
+    private readonly Int32 switcherButtonsMaxAmount;
 
     private readonly Colours activeSwitcherButtonColours;
     private readonly Colours inactiveSwitcherButtonColours;
@@ -78,24 +78,24 @@ namespace ChestEx.Types.BaseTypes {
       }
     }
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     public void AddSwitcher(String name, Colours colours, String text, String hoverText = "",
-                            Int32  idx = -1) {
+                            Int32 idx = -1) {
       if (idx == -1)
-        idx                                             = this.findNextId();
+        idx = this.findNextId();
       else if (idx > this.switcherButtonsMaxAmount) idx = this.switcherButtonsMaxAmount;
 
       this.switcherButtons[idx] = new CustomButton(this.getButtonBoundsFromId(idx), colours, text, hoverText, () => this.ForceSwitch(idx, name));
       this.refreshComponents();
     }
     public void AddSwitcher(String name, Colours colours, Texture2D texture, String hoverText = "",
-                            Int32  idx = -1) {
+                            Int32 idx = -1) {
       if (idx == -1)
-        idx                                             = this.findNextId();
+        idx = this.findNextId();
       else if (idx > this.switcherButtonsMaxAmount) idx = this.switcherButtonsMaxAmount;
 
       this.switcherButtons[idx] = new CustomTextureButton(this.getButtonBoundsFromId(idx), colours, texture, hoverText, () => this.ForceSwitch(idx, name));
@@ -108,26 +108,26 @@ namespace ChestEx.Types.BaseTypes {
       this.onSwitchRequested(requestedSwitcher);
     }
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public ColouringMenuSwitcher(Rectangle bounds, Colours colours, Action<String> onSwitchRequested)
       : base(bounds, colours) {
       this.onSwitchRequested = onSwitchRequested;
 
-      this.switcherButtonSize       = new Point(bounds.Width - 8, bounds.Width);
+      this.switcherButtonSize = new Point(bounds.Width - 8, bounds.Width);
       this.switcherButtonsMaxAmount = (bounds.Height - 6) / (bounds.Width + 6);
 
-      this.activeSwitcherButtonColours   = Colours.GenerateFrom(Color.White);
+      this.activeSwitcherButtonColours = Colours.GenerateFrom(Color.White);
       this.inactiveSwitcherButtonColours = Colours.GenerateFrom(colours.mActiveColour.MultAlpha(0.5f));
     }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     public override void Dispose() {
       base.Dispose();
@@ -136,6 +136,6 @@ namespace ChestEx.Types.BaseTypes {
       this.switcherButtons.Clear();
     }
 
-  #endregion
+    #endregion
   }
 }

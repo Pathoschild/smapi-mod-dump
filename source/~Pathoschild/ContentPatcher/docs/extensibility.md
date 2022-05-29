@@ -122,7 +122,7 @@ argument   | type | purpose
 That's it! Now any content pack which lists your mod as a dependency can use the token in its fields:
 ```js
 {
-   "Format": "1.25.0",
+   "Format": "1.26.0",
    "Changes": [
       {
          "Action": "EditData",
@@ -306,7 +306,7 @@ internal class InitialsToken
             yield break;
 
         // get initials
-        yield return string.Join("", name.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries).Select(p => p[0]));
+        yield return string.Join("", name.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(p => p[0]));
     }
 }
 ```
@@ -327,7 +327,7 @@ api.RegisterToken(this.ModManifest, "Initials", new InitialsToken());
 That's it! Now any content pack which lists your mod as a dependency can use the token in its fields:
 ```js
 {
-   "Format": "1.25.0",
+   "Format": "1.26.0",
    "Changes": [
       {
          "Action": "EditData",

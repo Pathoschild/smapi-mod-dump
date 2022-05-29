@@ -9,12 +9,9 @@ mods:
    Smart Building
 
 latest commit:
-   commit 74846134d96a731f3347423bfcdb10f4ff10b1df
-   Merge: f975464 058c148
-   Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Fri Apr 29 10:09:14 2022 +0100
+   commit 73db6255ef6cdc6c4703bbf7404d183cae7fb71e
+   Author: DecidedlyHuman <contact@decidedlyhuman.co.uk>
+   Date:   Mon May 2 12:00:30 2022 +0100
    
-       Merge pull request #9 from Becks723/chinese2
-       
-       Update Chinese translation for SmartBuilding.
+       Versiom bump for new features.
    

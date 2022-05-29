@@ -16,14 +16,14 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
-static class ThreadRun {
-	private static readonly Func<List<Action>> ThreadingActionsGet = typeof(XNA.Color).Assembly.
+internal static class ThreadRun {
+	private static readonly Func<List<Action>> ThreadingActionsGet = typeof(XColor).Assembly.
 	GetType("Microsoft.Xna.Framework.Threading")?.
 	GetFieldGetter<List<Action>>("actions") ??
 	throw new NullReferenceException("ThreadingActionsGet");
 
 	[Harmonize(
-		typeof(XNA.Color),
+		typeof(XColor),
 		"Microsoft.Xna.Framework.Threading",
 		"Run",
 		Harmonize.Fixation.Prefix,
@@ -31,7 +31,6 @@ static class ThreadRun {
 		instance: false,
 		critical: false
 	)]
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	public static bool Run() {
 		if (!Config.IsUnconditionallyEnabled || !Config.Extras.OptimizeEngineTaskRunner) {
 			return true;

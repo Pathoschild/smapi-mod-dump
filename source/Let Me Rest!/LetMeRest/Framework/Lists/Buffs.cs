@@ -52,6 +52,17 @@ namespace LetMeRest.Framework.Lists
                     decoration_buff.millisecondsDuration = 0;
                     break;
 
+                case "Afraid":
+                    Buff afraid_buff = Game1.buffsDisplay.otherBuffs.Find(i => i.source == "LMR_Afraid");
+                    if (afraid_buff == null)
+                    {
+                        afraid_buff = new Buff(ModEntry.instance.Helper.Translation.Get("buff.afraid.description"), 0, "LMR_Afraid", 18);
+                        afraid_buff.displaySource = ModEntry.instance.Helper.Translation.Get("buff.afraid.source");
+                        Game1.buffsDisplay.addOtherBuff(afraid_buff);
+                    }
+                    afraid_buff.millisecondsDuration = 0;
+                    break;
+
                 case "Decoration2":
                     Buff decoration2_buff = Game1.buffsDisplay.otherBuffs.Find(i => i.source == "LMR_Decoration2");
                     if (decoration2_buff == null)

@@ -1,4 +1,4 @@
-<# Deploys al content pack folders to the mods directory. #>
+<# Deploys all content pack folders to the mods directory. #>
 param(
     # The mods directory
     [Parameter(Mandatory=$true)]

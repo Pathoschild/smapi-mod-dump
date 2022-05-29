@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Ophaneom/Survivalistic
+   Git: https://github.com/Ophaneom/Survivalistic.git
+
+mods:
+   Survivalistic
+
+latest commit:
+   commit e1adeb39544e627d98e1ecb1de2107d3ee540732
+   Author: Gustavo Hinkel <gustavopradahinkel@gmail.com>
+   Date:   Sun May 29 01:44:50 2022 -0300
+   
+       Updated compatibility system
+   

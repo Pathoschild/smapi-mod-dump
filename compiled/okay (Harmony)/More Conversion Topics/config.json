@@ -4,7 +4,7 @@
   "DivorceDuration": 7,
   "LuauDuration": 7,
   "JojaGreenhouseDuration": 3,
-  "JojaCompletionDuration": 4,
+  "JojaCompletionDuration": 3,
   "JojaLightningDuration": 7,
   "WillyBoatRepairDuration": 7,
   "LeoArrivalDuration": 7,
@@ -13,5 +13,6 @@
   "OwlStatueDuration": 7,
   "RailroadEarthquakeDuration": 7,
   "WitchVisitDuration": 7,
-  "FairyVisitDuration": 7
+  "FairyVisitDuration": 7,
+  "IslandResortDuration": 7
 }

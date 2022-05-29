@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -52,16 +50,16 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 this.Values.Clear();
                 if (this.MarkReady(this.SaveReader.IsReady))
                 {
-                    foreach (KeyValuePair<string, Friendship> pair in this.SaveReader.GetFriendships())
-                        this.Values[pair.Key] = pair.Value?.Status.ToString() ?? "Unmet";
+                    foreach ((string npc, Friendship? friendship) in this.SaveReader.GetFriendships())
+                        this.Values[npc] = friendship?.Status.ToString() ?? "Unmet";
                 }
             });
         }
 
         /// <inheritdoc />
-        public override InvariantHashSet GetValidPositionalArgs()
+        public override IInvariantSet GetValidPositionalArgs()
         {
-            return new(this.Values.Keys);
+            return InvariantSets.From(this.Values.Keys);
         }
 
         /// <inheritdoc />
@@ -71,9 +69,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
 
             if (input.HasPositionalArgs)
             {
-                return this.Values.TryGetValue(input.GetFirstPositionalArg(), out string value)
-                    ? new[] { value }
-                    : Enumerable.Empty<string>();
+                return this.Values.TryGetValue(input.GetFirstPositionalArg()!, out string? value)
+                    ? InvariantSets.FromValue(value)
+                    : InvariantSets.Empty;
             }
             else
                 return this.Values.Select(pair => $"{pair.Key}:{pair.Value}");

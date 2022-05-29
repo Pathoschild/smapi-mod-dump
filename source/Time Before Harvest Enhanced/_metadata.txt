@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/enom/time-before-harvest-enhanced
+   Git: https://gitlab.com/enom/time-before-harvest-enhanced.git
+
+mods:
+   Time Before Harvest Enhanced
+
+latest commit:
+   commit e2c802d1b98972b7dd90979100674ec57d3e781d
+   Author: Jonathan Ginn <enom@enom.ws>
+   Date:   Wed May 25 23:37:16 2022 -0400
+   
+       Renamed project to TimeBeforeHarvestEnhanced
+   

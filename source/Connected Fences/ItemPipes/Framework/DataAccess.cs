@@ -31,50 +31,33 @@ namespace ItemPipes.Framework
         private static DataAccess myDataAccess;
         public Dictionary<GameLocation, List<Network>> LocationNetworks { get; set; }
         public Dictionary<GameLocation, List<Node>> LocationNodes { get; set; }
-        public List<string> ModItems { get; set; }
-        public List<string> NetworkItems { get; set; }
-        public List<string> PipeNames { get; set; }
-        public List<string> IOPipeNames { get; set; }
-        public List<string> ExtraNames { get; set; }
+        public List<int> ModItems { get; set; }
+        public List<int> NetworkItems { get; set; }
         public List<string> Buildings { get; set; }
-        public List<string> Locations { get; set; }
 
-        public List<int> UsedNetworkIDs { get; set; }
+        public Dictionary<GameLocation, List<int>>  UsedNetworkIDs { get; set; }
         public List<Thread> Threads { get; set; }
 
         public Dictionary<string, Texture2D> Sprites { get; set; }
         public Dictionary<string, string> Recipes { get; set; }
         public List<string> ItemIDNames { get; set; }
         public Dictionary<string, string> ItemNames { get; set; }
-        public Dictionary<string, string> ItemIDNamesFromNames { get; set; }
         public Dictionary<string, int> ItemIDs { get; set; }
         public Dictionary<string, string> ItemDescriptions { get; set; }
         public DataAccess()
         {
             LocationNetworks = new Dictionary<GameLocation, List<Network>>();
             LocationNodes = new Dictionary<GameLocation, List<Node>>();
-            ModItems = new List<string>();
-            NetworkItems = new List<string>();
-            PipeNames = new List<string>();
-            IOPipeNames = new List<string>();
-            ExtraNames = new List<string>();
+            ModItems = new List<int>();
+            NetworkItems = new List<int>();
             Buildings = new List<string>();
-            Locations = new List<string>();
             Threads = new List<Thread>();
 
-            /*ValidLocations = new List<string>
-                { 
-                "FarmHouse", "Farm", "FarmCave", "Beach", "Mountain", 
-                "Forest", "RailRoad", "Greenhouse", "Tunnel", "Cellar", "Cellar2", "Cellar3", "Cellar4"
-                };
-            */
-
-            UsedNetworkIDs = new List<int>();
+            UsedNetworkIDs = new Dictionary<GameLocation, List<int>>();
             Sprites = new Dictionary<string, Texture2D>();
             Recipes = new Dictionary<string, string>();
             ItemIDNames = new List<string>();
             ItemNames = new Dictionary<string, string>();
-            ItemIDNamesFromNames = new Dictionary<string, string>();
             ItemIDs = new Dictionary<string, int>();
             ItemDescriptions = new Dictionary<string, string>();
 
@@ -107,17 +90,18 @@ namespace ItemPipes.Framework
                 return true;
             }
         }
-        public int GetNewNetworkID()
+        public int GetNewNetworkID(GameLocation location)
         {
-            if(UsedNetworkIDs.Count == 0)
+            List<int> IDs = UsedNetworkIDs[location];
+            if(IDs.Count == 0)
             {
-                UsedNetworkIDs.Add(1);
+                IDs.Add(1);
                 return 1;
             }
             else
             {
-                int newID = UsedNetworkIDs[UsedNetworkIDs.Count - 1] + 1;
-                UsedNetworkIDs.Add(newID);
+                int newID = IDs[IDs.Count - 1] + 1;
+                IDs.Add(newID);
                 return newID;
             }
         }
@@ -137,7 +121,7 @@ namespace ItemPipes.Framework
 
         public void LoadRecipes()
         {
-            string dataPath = "assets/Data/recipes.json";
+            string dataPath = "assets/Data/RecipeInfo.json";
             RecipeData recipes = null;
             try
             {
@@ -156,7 +140,7 @@ namespace ItemPipes.Framework
 
         public void LoadItems()
         {
-            string dataPath = "assets/Data/items.json";
+            string dataPath = "assets/Data/ItemInfo.json";
             ItemsData items = null;
             try
             {
@@ -172,16 +156,39 @@ namespace ItemPipes.Framework
             }
             ItemIDNames.Clear();
             ItemNames.Clear();
-            ItemIDNamesFromNames.Clear();
             ItemIDs.Clear();
             ItemDescriptions.Clear();
+            var currLang = LocalizedContentManager.CurrentLanguageCode;
             for (int i=0;i< items.itemsData.Count; i++)
             {
                 ItemIDNames.Add(items.itemsData[i].IDName);
-                ItemNames.Add(items.itemsData[i].IDName, items.itemsData[i].Name);
-                ItemIDNamesFromNames.Add(items.itemsData[i].Name, items.itemsData[i].IDName);
+                if(currLang != LocalizedContentManager.LanguageCode.en)
+                {
+                    if (items.itemsData[i].NameLocalization.ContainsKey(currLang.ToString())
+                        && items.itemsData[i].NameLocalization[currLang.ToString()].Length > 0)
+                    {
+                        ItemNames.Add(items.itemsData[i].IDName, items.itemsData[i].NameLocalization[currLang.ToString()]);
+                    }
+                    else
+                    {
+                        ItemNames.Add(items.itemsData[i].IDName, items.itemsData[i].Name);
+                    }
+                    if (items.itemsData[i].DescriptionLocalization.ContainsKey(currLang.ToString())
+                        && items.itemsData[i].DescriptionLocalization[currLang.ToString()].Length > 0)
+                    {
+                        ItemDescriptions.Add(items.itemsData[i].IDName, items.itemsData[i].DescriptionLocalization[currLang.ToString()]);
+                    }
+                    else
+                    {
+                        ItemDescriptions.Add(items.itemsData[i].IDName, items.itemsData[i].Description);
+                    }
+                }
+                else
+                {
+                    ItemNames.Add(items.itemsData[i].IDName, items.itemsData[i].Name);
+                    ItemDescriptions.Add(items.itemsData[i].IDName, items.itemsData[i].Description);
+                }
                 ItemIDs.Add(items.itemsData[i].IDName, items.itemsData[i].ID);
-                ItemDescriptions.Add(items.itemsData[i].IDName, items.itemsData[i].Description);
             }
         }
 
@@ -231,6 +238,11 @@ namespace ItemPipes.Framework
                 Sprites.Add("PPM_on", ModEntry.helper.Content.Load<Texture2D>($"assets/Objects/PPM/PPM_on.png"));
                 Sprites.Add("PPM_off", ModEntry.helper.Content.Load<Texture2D>($"assets/Objects/PPM/PPM_off.png"));
                 Sprites.Add("Wrench_Item", ModEntry.helper.Content.Load<Texture2D>($"assets/Objects/Wrench/Wrench_Item.png"));
+
+                Sprites.Add("nochest_state", ModEntry.helper.Content.Load<Texture2D>($"assets/Misc/nochest_state.png"));
+                Sprites.Add("nochest1_state", ModEntry.helper.Content.Load<Texture2D>($"assets/Misc/nochest1_state.png"));
+                //Sprites.Add("unconnected_state", ModEntry.helper.Content.Load<Texture2D>($"assets/Misc/unconnected_state.png"));
+                Sprites.Add("unconnected1_state", ModEntry.helper.Content.Load<Texture2D>($"assets/Misc/unconnected1_state.png"));
             }
             catch (Exception e)
             {

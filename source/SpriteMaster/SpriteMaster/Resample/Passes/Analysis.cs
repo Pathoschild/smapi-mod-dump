@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Colors;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
@@ -18,7 +17,7 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Passes;
 
-static class Analysis {
+internal static class Analysis {
 	internal readonly struct LegacyResults {
 		internal readonly Vector2B Wrapped;
 		internal readonly Vector2B RepeatX;
@@ -29,7 +28,7 @@ static class Analysis {
 		internal readonly Vector2B GradientDiagonal;
 		internal readonly int MaxChannelShades;
 
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal LegacyResults(
 			Vector2B wrapped,
 			Vector2B repeatX,
@@ -51,14 +50,8 @@ static class Analysis {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static byte GetAlpha(uint sample) {
-		return (byte)(((uint)sample >> 24) & 0xFF);
-	}
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static unsafe LegacyResults AnalyzeLegacy(ReadOnlySpan<Color8> data, Bounds bounds, Vector2B wrapped, bool strict = true) {
-		Vector2B boundsInverted = bounds.Invert;
+		var boundsInverted = bounds.Invert;
 
 		if (bounds.Width < 0 || bounds.Height < 0) {
 			Debug.Error($"Inverted Sprite Bounds Value leaked to AnalyzeLegacy: {bounds}");
@@ -70,43 +63,35 @@ static class Analysis {
 			bounds.Height = Math.Abs(bounds.Height);
 		}
 
-		float edgeThreshold = Config.WrapDetection.edgeThreshold;
+		float edgeThreshold = Config.WrapDetection.EdgeThreshold;
 
 		if (strict) {
 			var ratio = (float)bounds.Extent.MaxOf / (float)bounds.Extent.MinOf;
-			if (ratio >= 4.0f) {
-				edgeThreshold = 2.0f;
-			}
-			else {
-				edgeThreshold = 0.8f;
-			}
+			edgeThreshold = ratio >= 4.0f ? 2.0f : 0.8f;
 		}
 
-		var WrappedXY = wrapped;
-		Vector2B RepeatX = Vector2B.False;
-		Vector2B RepeatY = Vector2B.False;
+		var wrappedXY = wrapped;
+		var repeatX = Vector2B.False;
+		var repeatY = Vector2B.False;
 
 		if (Config.WrapDetection.Enabled) {
 			long numSamples = 0;
-			double meanAlphaF = 0.0f;
-			if (!WrappedXY.All) {
+			if (!wrappedXY.All) {
 				for (int y = 0; y < bounds.Height; ++y) {
 					int offset = (y + bounds.Top) * bounds.Width + bounds.Left;
 					for (int x = 0; x < bounds.Width; ++x) {
 						int address = offset + x;
 						var sample = data[address];
-						meanAlphaF += sample.A.Value;
 						++numSamples;
 					}
 				}
 			}
-			//meanAlphaF /= numSamples;
-			//meanAlphaF *= (double)Config.WrapDetection.alphaThreshold / ColorConstant.ScalarFactor;
-			byte alphaThreshold = Config.WrapDetection.alphaThreshold; //(byte)Math.Min(meanAlphaF.RoundToInt(), byte.MaxValue);
+
+			byte alphaThreshold = Config.WrapDetection.AlphaThreshold;
 
 			// Count the fragments that are not alphad out completely on the edges.
 			// Both edges must meet the threshold.
-			if (!WrappedXY.X) {
+			if (!wrappedXY.X) {
 				var samples = stackalloc int[] { 0, 0 };
 				for (int y = 0; y < bounds.Height; ++y) {
 					int offset = (y + bounds.Top) * bounds.Width + bounds.Left;
@@ -120,16 +105,16 @@ static class Analysis {
 						samples[1]++;
 					}
 				}
-				int threshold = ((float)bounds.Height * edgeThreshold).NearestInt();
+				int threshold = (bounds.Height * edgeThreshold).NearestInt();
 				var aboveThreshold = Vector2B.From(samples[0] >= threshold, samples[1] >= threshold);
 				if (aboveThreshold.All) {
-					WrappedXY.X = true;
+					wrappedXY.X = true;
 				}
 				else {
-					RepeatX = aboveThreshold;
+					repeatX = aboveThreshold;
 				}
 			}
-			if (!WrappedXY.Y) {
+			if (!wrappedXY.Y) {
 				var samples = stackalloc int[] { 0, 0 };
 				var offsets = stackalloc int[] { bounds.Top * bounds.Width, (bounds.Bottom - 1) * bounds.Width };
 				int sampler = 0;
@@ -144,31 +129,31 @@ static class Analysis {
 					}
 					sampler++;
 				}
-				int threshold = ((float)bounds.Width * edgeThreshold).NearestInt();
+				int threshold = (bounds.Width * edgeThreshold).NearestInt();
 				var aboveThreshold = Vector2B.From(samples[0] >= threshold, samples[1] >= threshold);
 				if (aboveThreshold.All) {
-					WrappedXY.Y = true;
+					wrappedXY.Y = true;
 				}
 				else {
-					RepeatY = aboveThreshold;
+					repeatY = aboveThreshold;
 				}
 			}
 		}
 
-		if (WrappedXY.Any) {
+		if (wrappedXY.Any) {
 			// Perform tests against both sides of an edge to see if they match up. If they do not, convert
 			// a wrapped edge into a repeat edge
-			if (WrappedXY.X) {
+			if (wrappedXY.X) {
 
 			}
-			if (WrappedXY.Y) {
+			if (wrappedXY.Y) {
 
 			}
 		}
 
 		// Gradient analysis
-		Vector2B gradientAxial = Vector2B.True;
-		Vector2B gradientDiagonal = Vector2B.False;
+		var gradientAxial = Vector2B.True;
+		var gradientDiagonal = Vector2B.False;
 		// Horizontal
 		{
 			for (int y = bounds.Top; gradientAxial.X && y < bounds.Bottom; ++y) {
@@ -177,9 +162,8 @@ static class Analysis {
 				for (int x = 1; x < bounds.Width; ++x) {
 					var currColor = data[offset + x];
 
-					uint difference;
 					//if (Config.Resample.Analysis.UseRedmean)
-					difference = ColorHelpers.RedmeanDifference(prevColor, currColor, false, true);
+					var difference = prevColor.RedmeanDifference(currColor, linear: false, alpha: true);
 
 					if (difference >= Config.Resample.Analysis.MaxGradientColorDifference) {
 						gradientAxial.X = false;
@@ -197,9 +181,8 @@ static class Analysis {
 			for (int y = 1; gradientAxial.Y && y < bounds.Height; ++y) {
 				for (int x = 0; x < bounds.Width; ++x) {
 					var currColor = data[offset + (y * bounds.Width) + x];
-					uint difference;
 					//if (Config.Resample.Analysis.UseRedmean)
-					difference = ColorHelpers.RedmeanDifference(prevColor, currColor, false, true);
+					var difference = prevColor.RedmeanDifference(currColor, linear: false, alpha: true);
 
 					if (difference >= Config.Resample.Analysis.MaxGradientColorDifference) {
 						gradientAxial.Y = false;
@@ -222,10 +205,10 @@ static class Analysis {
 		Span<int> shadesA = stackalloc int[byte.MaxValue + 1];
 		shadesA.Fill(0);
 		foreach (var color in data) {
-			shadesR[color.R.Value]++;
-			shadesG[color.G.Value]++;
-			shadesB[color.B.Value]++;
-			shadesA[color.A.Value]++;
+			++shadesR[color.R.Value];
+			++shadesG[color.G.Value];
+			++shadesB[color.B.Value];
+			++shadesA[color.A.Value];
 		}
 
 		static int NumShades(Span<int> shades) {
@@ -253,9 +236,9 @@ static class Analysis {
 
 		// TODO : Should we flip these values based upon boundsInverted?
 		return new(
-			wrapped: WrappedXY,
-			repeatX: RepeatX,
-			repeatY: RepeatY,
+			wrapped: wrappedXY,
+			repeatX: repeatX,
+			repeatY: repeatY,
 			edgeX: Vector2B.False,
 			edgeY: Vector2B.False,
 			gradientAxial: gradientAxial,
@@ -264,13 +247,13 @@ static class Analysis {
 		);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static unsafe LegacyResults AnalyzeLegacy(Texture2D? reference, ReadOnlySpan<Color8> data, in Bounds bounds, Vector2B wrapped) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static LegacyResults AnalyzeLegacy(XTexture2D? reference, ReadOnlySpan<Color8> data, Bounds bounds, Vector2B wrapped) {
 		return AnalyzeLegacy(
 			data: data,
 			bounds: bounds,
 			wrapped: wrapped,
-			strict: (reference is not null && (!reference.Anonymous() && Config.Resample.Padding.StrictList.Contains(reference.NormalizedName())))
+			strict: reference is not null && !reference.Anonymous() && Config.Resample.Padding.StrictList.Contains(reference.NormalizedName())
 		);
 	}
 }

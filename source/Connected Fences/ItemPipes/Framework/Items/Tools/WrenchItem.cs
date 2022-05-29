@@ -31,12 +31,7 @@ namespace ItemPipes.Framework.Items.Tools
     {
         public WrenchItem() : base()
         {
-            Name = "Wrench";
-            IDName = "Wrench";
-            Description = "Teh tool for enabling/disabling IOPipes";
-            ItemTexturePath = $"assets/{IDName}_Item.png";
             DataAccess DataAccess = DataAccess.GetDataAccess();
-            ItemTexture = DataAccess.Sprites[IDName+"_Item"];
             this.BaseName = Name;
         }
 

@@ -1,25 +1,21 @@
 ﻿[*.{cs,vb}]
+dotnet_style_prefer_is_null_check_over_reference_equality_method=true:warning
+dotnet_style_null_propagation=true:warning
+dotnet_style_qualification_for_field=true:error
+dotnet_style_qualification_for_property=true:error
+dotnet_style_qualification_for_method=true:error
+dotnet_style_qualification_for_event=true:error
 
-#constants
-dotnet_naming_symbols.all_constants.applicable_kinds  = field
-dotnet_naming_symbols.all_constants.applicable_accessibilities  = *
-dotnet_naming_symbols.all_constants.required_modifiers  = const, readonly
+# IDE0047: Remove unnecessary parentheses
+dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity
 
-dotnet_naming_style.all_upper_underscore.capitalization = all_upper
-dotnet_naming_style.all_upper_underscore.word_separator = _
+# IDE0047: Remove unnecessary parentheses
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity
 
-dotnet_naming_rule.constants_must_be_all_uppercase.symbols = all_constants
-dotnet_naming_rule.constants_must_be_all_uppercase.style = all_upper_underscore
-dotnet_naming_rule.constants_must_be_all_uppercase.severity = suggestion
-
-# IDE0003: Remove qualification
-dotnet_style_qualification_for_event =true:suggestion
-dotnet_style_qualification_for_field=true:suggestion
-dotnet_style_qualification_for_property=true:suggestion
-dotnet_style_qualification_for_method=true:suggestion
-dotnet_diagnostic.CA1304.severity=suggestion
+# IDE0048: Add parentheses for clarity
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity
 
 [*.cs]
-csharp_style_pattern_matching_over_is_with_cast_check=true:warning
-csharp_style_pattern_matching_over_as_with_null_check=true:warning
-insert_final_newline=true
+csharp_style_var_for_built_in_types=false:suggestion
+csharp_style_var_when_type_is_apparent=false:suggestion
+csharp_style_var_elsewhere=false:suggestion

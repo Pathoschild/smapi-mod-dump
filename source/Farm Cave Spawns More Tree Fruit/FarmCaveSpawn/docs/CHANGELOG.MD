@@ -17,6 +17,12 @@ Changelog
 * Figure out DGA fruit trees.
 <!-- bat eyes for custom locations? -->
 
+#### Version 1.0.10
+
+* Updates for SMAPI 3.14.0.
+* Internal optimizations.
+* Fixes the no-bananas-before-shrine option.
+
 #### Version 1.0.9
 
 * Fixes error items spawning in whenever no tree fruits are possible.

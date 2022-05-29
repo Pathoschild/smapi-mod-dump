@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -53,9 +51,11 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            string path = this.GetAbsolutePath(input.GetPositionalSegment());
-            if (path != null)
-                yield return path;
+            string? path = this.GetAbsolutePath(input.GetPositionalSegment());
+
+            return path != null
+                ? InvariantSets.FromValue(path)
+                : InvariantSets.Empty;
         }
 
 
@@ -65,7 +65,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>Get the absolute path for a file in the content pack with validation.</summary>
         /// <param name="path">The relative file path.</param>
         /// <exception cref="InvalidOperationException">The path is not relative or contains directory climbing (../).</exception>
-        private string GetAbsolutePath(string path)
+        private string? GetAbsolutePath(string? path)
         {
             // get normalized path
             path = PathUtilities.NormalizePath(path);

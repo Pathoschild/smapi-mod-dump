@@ -13,37 +13,40 @@ using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Core;
 
 [SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
 [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
-static partial class OnDrawImpl {
+internal static partial class OnDrawImpl {
 	private const bool Continue = true;
 	private const bool Stop = false;
 
 	// Takes the arguments, and checks to see if the texture is padded. If it is, it is forwarded to the correct draw call, avoiding
 	// intervening mods altering the arguments first.
 	internal static bool OnDrawFirst(
-		this SpriteBatch @this,
-		ref Texture2D texture,
-		ref XNA.Rectangle destination,
-		ref XNA.Rectangle? source,
-		XNA.Color color,
+		this XSpriteBatch @this,
+		ref XTexture2D? texture,
+		ref XRectangle destination,
+		ref XRectangle? source,
+		XColor color,
 		float rotation,
-		ref XNA.Vector2 origin,
+		ref XVector2 origin,
 		ref SpriteEffects effects,
 		float layerDepth,
-		ref ManagedTexture2D __state
+		ref ManagedTexture2D? __state
 	) {
+		if (texture is null) {
+			return false;
+		}
+
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
 		/*
 		if (destination.Width < 0 || destination.Height < 0) {
 			Debug.Trace("destination invert");
 		}
-		if (source is XNA.Rectangle sourceRect && (sourceRect.Width < 0 || sourceRect.Height < 0)) {
+		if (source is XRectangle sourceRect && (sourceRect.Width < 0 || sourceRect.Height < 0)) {
 			Debug.Trace("source invert");
 		}
 		*/
@@ -120,19 +123,22 @@ static partial class OnDrawImpl {
 		return Continue;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool OnDraw(
-		this SpriteBatch @this,
-		ref Texture2D texture,
-		ref XNA.Rectangle destination,
-		ref XNA.Rectangle? source,
-		ref XNA.Color color,
+		this XSpriteBatch @this,
+		ref XTexture2D? texture,
+		ref XRectangle destination,
+		ref XRectangle? source,
+		ref XColor color,
 		float rotation,
-		ref XNA.Vector2 origin,
+		ref XVector2 origin,
 		ref SpriteEffects effects,
 		ref float layerDepth,
-		ref ManagedTexture2D __state
+		ref ManagedTexture2D? __state
 	) {
+		if (texture is null) {
+			return false;
+		}
+
 		Bounds sourceRectangle;
 		ManagedSpriteInstance? spriteInstance;
 		ManagedTexture2D resampledTexture;
@@ -212,7 +218,7 @@ static partial class OnDrawImpl {
 			effects: effects,
 			layerDepth: layerDepth
 		)) {
-			color = XNA.Color.Red;
+			color = XColor.Red;
 		}
 
 		source = sourceRectangle;
@@ -224,23 +230,28 @@ static partial class OnDrawImpl {
 
 	internal static uint EstimateScale(Vector2F scale, float scaleFactor) {
 		float factoredScale = scale.MaxOf * scaleFactor;
+		factoredScale += 0.5f;
 		factoredScale = factoredScale.Clamp(2.0f, Config.Resample.MaxScale);
 		uint factoredScaleN = (uint)factoredScale.NextInt();
-		return Resample.Scalers.IScaler.Current.ClampScale(factoredScaleN);
+		return Resample.Scalers.IScaler.Current?.ClampScale(factoredScaleN) ?? 1u;
 	}
 
 	internal static bool OnDraw(
-		this SpriteBatch @this,
-		ref Texture2D texture,
-		ref XNA.Vector2 position,
-		ref XNA.Rectangle? source,
-		ref XNA.Color color,
+		this XSpriteBatch @this,
+		ref XTexture2D? texture,
+		ref XVector2 position,
+		ref XRectangle? source,
+		ref XColor color,
 		float rotation,
-		ref XNA.Vector2 origin,
-		ref XNA.Vector2 scale,
+		ref XVector2 origin,
+		ref XVector2 scale,
 		SpriteEffects effects,
 		ref float layerDepth
 	) {
+		if (texture is null) {
+			return false;
+		}
+
 		GetDrawParameters(
 			texture: texture,
 			source: source,
@@ -252,8 +263,8 @@ static partial class OnDrawImpl {
 
 		ManagedSpriteInstance? spriteInstance;
 		ManagedTexture2D? resampledTexture;
-		if (texture is ManagedTexture2D) {
-			resampledTexture = (ManagedTexture2D)texture;
+		if (texture is ManagedTexture2D texture2D) {
+			resampledTexture = texture2D;
 			spriteInstance = resampledTexture.SpriteInstance;
 			sourceRectangle = resampledTexture.Dimensions;
 		}
@@ -348,7 +359,7 @@ static partial class OnDrawImpl {
 			effects: effects,
 			layerDepth: layerDepth
 		)) {
-			color = XNA.Color.Red;
+			color = XColor.Red;
 		}
 
 		texture = resampledTexture;

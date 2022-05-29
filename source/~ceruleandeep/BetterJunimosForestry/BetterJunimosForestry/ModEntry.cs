@@ -257,11 +257,7 @@ namespace BetterJunimosForestry {
 
         private void SetupGMCM()
         {
-            if (GMCMAPI is null)
-            {
-                Monitor.Log($"Could not load GMCM API", LogLevel.Error);
-                return;
-            }
+            if (GMCMAPI is null) return;
             GMCMAPI.RegisterModConfig(ModManifest, () => Config = new ModConfig(), () => Helper.WriteConfig(Config));
             GMCMAPI.SetDefaultIngameOptinValue(ModManifest, true);
 

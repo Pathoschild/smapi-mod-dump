@@ -412,6 +412,49 @@ namespace CustomCompanions.Framework.Companions
             }
         }
 
+        internal List<FarmerSprite.AnimationFrame> GetUniformAnimation(bool isIdle)
+        {
+            if (isIdle)
+            {
+                return (this.model.UniformAnimation.IdleAnimation.ManualFrames != null) ? GetManualFrames(this.model.UniformAnimation.IdleAnimation.ManualFrames) : GetManualFrames(model.UniformAnimation.IdleAnimation.StartingFrame, model.UniformAnimation.IdleAnimation.NumberOfFrames, model.UniformAnimation.IdleAnimation.Duration);
+            }
+
+            return (this.model.UniformAnimation.ManualFrames != null) ? GetManualFrames(this.model.UniformAnimation.ManualFrames) : GetManualFrames(model.UniformAnimation.StartingFrame, model.UniformAnimation.NumberOfFrames, model.UniformAnimation.Duration);
+        }
+
+        internal List<FarmerSprite.AnimationFrame> GetDirectionalAnimation(int direction, bool isIdle)
+        {
+            switch (direction)
+            {
+                case 0:
+                    if (isIdle)
+                    {
+                        return (this.model.UpAnimation.IdleAnimation.ManualFrames != null) ? GetManualFrames(this.model.UpAnimation.IdleAnimation.ManualFrames) : GetManualFrames(model.UpAnimation.IdleAnimation.StartingFrame, model.UpAnimation.IdleAnimation.NumberOfFrames, model.UpAnimation.IdleAnimation.Duration);
+                    }
+                    return (this.model.UpAnimation.ManualFrames != null) ? GetManualFrames(this.model.UpAnimation.ManualFrames) : GetManualFrames(model.UpAnimation.StartingFrame, model.UpAnimation.NumberOfFrames, model.UpAnimation.Duration);
+                case 1:
+                    if (isIdle)
+                    {
+                        return (this.model.RightAnimation.IdleAnimation.ManualFrames != null) ? GetManualFrames(this.model.RightAnimation.IdleAnimation.ManualFrames) : GetManualFrames(model.RightAnimation.IdleAnimation.StartingFrame, model.RightAnimation.IdleAnimation.NumberOfFrames, model.RightAnimation.IdleAnimation.Duration);
+                    }
+                    return (this.model.RightAnimation.ManualFrames != null) ? GetManualFrames(this.model.RightAnimation.ManualFrames) : GetManualFrames(model.RightAnimation.StartingFrame, model.RightAnimation.NumberOfFrames, model.RightAnimation.Duration);
+                case 2:
+                    if (isIdle)
+                    {
+                        return (this.model.DownAnimation.IdleAnimation.ManualFrames != null) ? GetManualFrames(this.model.DownAnimation.IdleAnimation.ManualFrames) : GetManualFrames(model.DownAnimation.IdleAnimation.StartingFrame, model.DownAnimation.IdleAnimation.NumberOfFrames, model.DownAnimation.IdleAnimation.Duration);
+                    }
+                    return (this.model.DownAnimation.ManualFrames != null) ? GetManualFrames(this.model.DownAnimation.ManualFrames) : GetManualFrames(model.DownAnimation.StartingFrame, model.DownAnimation.NumberOfFrames, model.DownAnimation.Duration); ;
+                case 3:
+                    if (isIdle)
+                    {
+                        return (this.model.LeftAnimation.IdleAnimation.ManualFrames != null) ? GetManualFrames(this.model.LeftAnimation.IdleAnimation.ManualFrames) : GetManualFrames(model.LeftAnimation.IdleAnimation.StartingFrame, model.LeftAnimation.IdleAnimation.NumberOfFrames, model.LeftAnimation.IdleAnimation.Duration);
+                    }
+                    return (this.model.LeftAnimation.ManualFrames != null) ? GetManualFrames(this.model.LeftAnimation.ManualFrames) : GetManualFrames(model.LeftAnimation.StartingFrame, model.LeftAnimation.NumberOfFrames, model.LeftAnimation.Duration);
+            }
+
+            return null;
+        }
+
         internal bool HasIdleFrames(int direction = -1)
         {
 
@@ -568,6 +611,7 @@ namespace CustomCompanions.Framework.Companions
 
             if (this.Sprite.CurrentAnimation != null && (!hasIdleFrames || (hasIdleFrames && this.wasIdle == isIdle)) && (this.previousDirection == this.FacingDirection || this.activeUniformFrames != null))
             {
+                this.Sprite.loop = false;
                 if (!this.Sprite.animateOnce(time))
                 {
                     return;
@@ -578,23 +622,23 @@ namespace CustomCompanions.Framework.Companions
             {
                 if (this.idleUniformFrames != null)
                 {
-                    this.Sprite.setCurrentAnimation(this.idleUniformFrames);
+                    this.Sprite.setCurrentAnimation(GetUniformAnimation(true));
                 }
                 else
                 {
                     switch (this.FacingDirection)
                     {
                         case 0:
-                            this.Sprite.setCurrentAnimation(this.idleUpFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(0, true));
                             break;
                         case 1:
-                            this.Sprite.setCurrentAnimation(this.idleRightFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(1, true));
                             break;
                         case 2:
-                            this.Sprite.setCurrentAnimation(this.idleDownFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(2, true));
                             break;
                         case 3:
-                            this.Sprite.setCurrentAnimation(this.idleLeftFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(3, true));
                             break;
                     }
                 }
@@ -603,23 +647,23 @@ namespace CustomCompanions.Framework.Companions
             {
                 if (this.activeUniformFrames != null)
                 {
-                    this.Sprite.setCurrentAnimation(this.activeUniformFrames);
+                    this.Sprite.setCurrentAnimation(GetUniformAnimation(false));
                 }
                 else
                 {
                     switch (this.FacingDirection)
                     {
                         case 0:
-                            this.Sprite.setCurrentAnimation(this.activeUpFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(0, false));
                             break;
                         case 1:
-                            this.Sprite.setCurrentAnimation(this.activeRightFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(1, false));
                             break;
                         case 2:
-                            this.Sprite.setCurrentAnimation(this.activeDownFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(2, false));
                             break;
                         case 3:
-                            this.Sprite.setCurrentAnimation(this.activeLeftFrames);
+                            this.Sprite.setCurrentAnimation(GetDirectionalAnimation(3, false));
                             break;
                     }
                 }
@@ -631,7 +675,7 @@ namespace CustomCompanions.Framework.Companions
         private List<FarmerSprite.AnimationFrame> GetManualFrames(List<ManualFrameModel> manualFrames)
         {
             var frames = new List<FarmerSprite.AnimationFrame>();
-            foreach (var frame in manualFrames)
+            foreach (var frame in manualFrames.Where(f => f.ShouldBePlayed()))
             {
                 frames.Add(new FarmerSprite.AnimationFrame(frame.Frame, frame.Duration, false, flip: frame.Flip));
             }
@@ -1048,8 +1092,30 @@ namespace CustomCompanions.Framework.Companions
                 activeLeftFrames = (updatedModel.LeftAnimation.ManualFrames != null) ? GetManualFrames(updatedModel.LeftAnimation.ManualFrames) : GetManualFrames(updatedModel.LeftAnimation.StartingFrame, updatedModel.LeftAnimation.NumberOfFrames, updatedModel.LeftAnimation.Duration);
             }
 
+            // Reset any manual frames
+            updatedModel.ResetFrames();
+
             // Preserve the translations
             updatedModel.Translations = this.model.Translations;
+
+            // Preserve the sprite if needed
+            if (Game1.IsMasterGame)
+            {
+                this.hasShadow.Value = updatedModel.EnableShadow;
+                base.collidesWithOtherCharacters.Value = (updatedModel.Type.ToUpper() == "FLYING" || !updatedModel.EnableCharacterCollision ? false : true);
+                if (base.Sprite.loadedTexture != updatedModel.TileSheetPath || base.Sprite.SpriteWidth != updatedModel.FrameSizeWidth || base.Sprite.SpriteHeight != updatedModel.FrameSizeHeight)
+                {
+                    string targetSheetPath = updatedModel.TileSheetPath;
+                    if (String.IsNullOrEmpty(targetSheetPath))
+                    {
+                        targetSheetPath = model.TileSheetPath;
+                    }
+
+                    base.Sprite = new AnimatedSprite(targetSheetPath, 0, updatedModel.FrameSizeWidth, updatedModel.FrameSizeHeight);
+                }
+
+                this.Sprite.CurrentAnimation = null;
+            }
 
             // Update the model itself
             this.model = updatedModel;
@@ -1059,16 +1125,6 @@ namespace CustomCompanions.Framework.Companions
             base.Breather = model.EnableBreathing;
             base.speed = model.TravelSpeed;
             base.Scale = model.Scale;
-
-            if (Game1.IsMasterGame)
-            {
-                this.hasShadow.Value = model.EnableShadow;
-                base.collidesWithOtherCharacters.Value = (model.Type.ToUpper() == "FLYING" || !model.EnableCharacterCollision ? false : true);
-                if (base.Sprite.loadedTexture != model.TileSheetPath || base.Sprite.SpriteWidth != model.FrameSizeWidth || base.Sprite.SpriteHeight != model.FrameSizeHeight)
-                {
-                    base.Sprite = new AnimatedSprite(model.TileSheetPath, 0, model.FrameSizeWidth, model.FrameSizeHeight);
-                }
-            }
 
             // Avoid issue where MaxHaltTime may be higher than MinHaltTime
             if (this.model.MinHaltTime > this.model.MaxHaltTime)

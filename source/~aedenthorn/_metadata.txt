@@ -20,6 +20,7 @@ mods:
    Connected Garden Pots
    Craftable Butterfly Hutches
    Craftable Terrarium
+   Crop Growth Info
    Crop Hat
    Crop Variation
    Custom Achievements
@@ -43,6 +44,7 @@ mods:
    Custom Tree Tweaks
    Custom Warp Points
    Dialogue Display Framework
+   Dialogue New Line
    Dialogue Trees
    Dreamscape
    Email App
@@ -138,9 +140,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit b5ebda8481d3a8e0de499baf4e1788d9c2509007
+   commit 91cd0634afabeea2aed5f8c61ba457ef171e0c4d
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Wed Apr 27 23:34:12 2022 -0400
+   Date:   Sun May 29 01:05:14 2022 -0400
    
        etc
    

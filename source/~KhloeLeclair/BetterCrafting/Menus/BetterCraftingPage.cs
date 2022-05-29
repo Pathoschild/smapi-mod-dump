@@ -566,8 +566,27 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry> {
 			snapToDefaultClickableComponent();
 	}
 
+	protected void ReleaseLocks() {
+		if (UnsafeInventories == null)
+			return;
+
+		int stuck = 0;
+
+		foreach(var inv in UnsafeInventories) {
+			if (inv.Mutex is not null && inv.Mutex.IsLockHeld()) {
+				stuck++;
+				inv.Mutex.ReleaseLock();
+			}
+		}
+
+		if (stuck > 0)
+			Log($"Released {stuck} mutexes when closing.", LogLevel.Debug);
+	}
+
 	public override void emergencyShutDown() {
 		base.emergencyShutDown();
+
+		ReleaseLocks();
 
 		if (HeldItem != null) {
 			Utility.CollectOrDrop(HeldItem);
@@ -577,6 +596,9 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry> {
 
 	protected override void cleanupBeforeExit() {
 		base.cleanupBeforeExit();
+
+		ReleaseLocks();
+
 		if (Editing)
 			SaveCategories();
 	}
@@ -726,8 +748,8 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry> {
 
 				if (!string.IsNullOrEmpty(icon.Path))
 					try {
-						texture = Mod.Helper.Content.Load<Texture2D>(icon.Path, ContentSource.GameContent) ?? texture;
-						//texture = Mod.Helper.GameContent.Load<Texture2D>(icon.Path) ?? texture;
+						//texture = Mod.Helper.Content.Load<Texture2D>(icon.Path, ContentSource.GameContent) ?? texture;
+						texture = Mod.Helper.GameContent.Load<Texture2D>(icon.Path) ?? texture;
 					} catch (Exception ex) {
 						Log($"Unable to load texture \"{icon.Path}\" for category icon", LogLevel.Warn, ex);
 					}
@@ -963,7 +985,7 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry> {
 			ClickableComponent tab = new(
 				bounds: Rectangle.Empty,
 				name: entry.Key.Id,
-				label: string.IsNullOrEmpty(entry.Key.I18nKey) ? entry.Key.Name : Mod.Helper.Translation.Get(entry.Key.I18nKey)
+				label: Mod.Recipes.GetCategoryDisplayName(entry.Key, cooking)
 			) {
 				myID = 1000 + idx,
 				upNeighborID = (idx == 0) ? ClickableComponent.ID_ignore : 1000 + (idx - 1),
@@ -1278,7 +1300,10 @@ public class BetterCraftingPage : MenuSubscriber<ModEntry> {
 				continue;
 
 			var mutex = provider.GetMutex(loc.Source, loc.Location, Game1.player);
-			if (mutex == null || (mutex.IsLocked() && !mutex.IsLockHeld()))
+			if (
+				(mutex == null && provider.IsMutexRequired(loc.Source, loc.Location, Game1.player)) ||
+				(mutex != null && mutex.IsLocked() && !mutex.IsLockHeld())
+			)
 				continue;
 
 			var oitems = provider.GetItems(loc.Source, loc.Location, Game1.player);

@@ -21,9 +21,11 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit da8f8912442c162d051fb4143422907bc317bbf3
+   commit adccf93f0c5039c73509252702c69320d6992647
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Wed Apr 27 01:54:04 2022 -0400
+   Date:   Sun May 29 01:21:32 2022 -0400
    
-       show invalid crop seasons as-is instead of printing error
+       update Russian translations for Tractor Mod
+       
+       Thanks to mukers on Nexus!
    

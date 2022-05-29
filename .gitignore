@@ -4,3 +4,6 @@ __MACOSX
 *.xwb
 *.xcf
 *.zip
+
+# 640MB file
+compiled/**/Stardew and Chill/StardewAndChill.dll

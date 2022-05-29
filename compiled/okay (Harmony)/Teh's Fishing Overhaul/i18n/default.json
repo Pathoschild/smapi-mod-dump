@@ -26,6 +26,8 @@
   "text.config.hud.topLeftY.desc": "The Y coordinate of the top left corner of the fishing HUD.",
   "text.config.hud.maxFishTypes.name": "Max fish types",
   "text.config.hud.maxFishTypes.desc": "The number of fish to show on the fishing HUD.",
+  "text.config.hud.showTrash.name": "Show trash",
+  "text.config.hud.showTrash.desc": "Whether to show trash in the fishing HUD.",
   // Fish config
   "text.config.fish.name": "Fish",
   "text.config.fish.desc": "Configure how fishing works",

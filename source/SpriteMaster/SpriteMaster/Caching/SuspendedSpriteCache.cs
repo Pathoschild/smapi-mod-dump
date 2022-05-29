@@ -20,14 +20,14 @@ using System.Threading;
 namespace SpriteMaster.Caching;
 
 [SMAPIConsole.Stats("suspended-sprite-cache")]
-static class SuspendedSpriteCache {
+internal static class SuspendedSpriteCache {
 	private static long TotalCachedSize = 0L;
 	private static readonly TypedMemoryCache<ManagedSpriteInstance> Cache = new("SuspendedSpriteCache", OnEntryRemoved);
 	private static readonly Condition TrimEvent = new();
 	private static readonly Thread CacheTrimThread = ThreadExt.Run(CacheTrimLoop, background: true, name: "Cache Trim Thread");
 
 	private static void TrimSize() {
-		if (Config.SuspendedCache.MaxCacheSize <= 0 || Config.SuspendedCache.MaxCacheSize == long.MaxValue) {
+		if (Config.SuspendedCache.MaxCacheSize is <= 0 or long.MaxValue) {
 			return;
 		}
 
@@ -58,7 +58,7 @@ static class SuspendedSpriteCache {
 	}
 
 	private static void TrimCount() {
-		if (Config.SuspendedCache.MaxCacheCount <= 0 || Config.SuspendedCache.MaxCacheCount == int.MaxValue) {
+		if (Config.SuspendedCache.MaxCacheCount is <= 0 or int.MaxValue) {
 			return;
 		}
 
@@ -86,6 +86,7 @@ static class SuspendedSpriteCache {
 		}
 	}
 
+	[DoesNotReturn]
 	private static void CacheTrimLoop() {
 		while (true) {
 			TrimEvent.Wait();
@@ -93,6 +94,7 @@ static class SuspendedSpriteCache {
 			TrimSize();
 			TrimCount();
 		}
+		// ReSharper disable once FunctionNeverReturns
 	}
 
 	private static void OnEntryRemoved(CacheEntryRemovedReason reason, ManagedSpriteInstance element) {
@@ -109,7 +111,7 @@ static class SuspendedSpriteCache {
 		var key = instance.Hash.ToString64();
 		Cache.Set(key, instance);
 		Interlocked.Add(ref TotalCachedSize, instance.MemorySize);
-		Debug.Trace($"SuspendedSpriteCache Size: {Cache.Count.ToString(System.Drawing.Color.LightCoral)}");
+		Debug.Trace($"SuspendedSpriteCache Size: {Cache.Count.ToString(DrawingColor.LightCoral)}");
 
 		if (Interlocked.Read(ref TotalCachedSize) > Config.SuspendedCache.MaxCacheSize) {
 			TrimEvent.Set();
@@ -132,10 +134,7 @@ static class SuspendedSpriteCache {
 
 	internal static bool Remove(ulong hash) {
 		var element = Cache.Remove(hash.ToString64());
-		if (element is not null) {
-			return true;
-		}
-		return false;
+		return element is not null;
 	}
 
 	internal static bool Remove(ManagedSpriteInstance instance) => Remove(instance.Hash);
@@ -147,9 +146,10 @@ static class SuspendedSpriteCache {
 
 	[SMAPIConsole.StatsMethod]
 	internal static string[] DumpStats() {
-		var statsLines = new List<string>();
-		statsLines.Add($"\tTotal Suspended Elements: {Cache.Count}");
-		statsLines.Add($"\tTotal Memory Size       : {Interlocked.Read(ref TotalCachedSize).AsDataSize()}");
+		var statsLines = new List<string> {
+			$"\tTotal Suspended Elements: {Cache.Count}",
+			$"\tTotal Memory Size       : {Interlocked.Read(ref TotalCachedSize).AsDataSize()}"
+		};
 		return statsLines.ToArray();
 	}
 }

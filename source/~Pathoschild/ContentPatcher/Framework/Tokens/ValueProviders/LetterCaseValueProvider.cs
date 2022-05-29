@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
@@ -51,9 +49,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public override bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public override bool HasBoundedValues(IInputArguments input, out IInvariantSet allowedValues)
         {
-            allowedValues = new InvariantHashSet(this.GetValues(input));
+            allowedValues = InvariantSets.From(this.GetValues(input));
             return true;
         }
 
@@ -62,12 +60,14 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            yield return this.Type switch
+            string? output = this.Type switch
             {
-                ConditionType.Lowercase => input.TokenString.Value.ToLowerInvariant(),
-                ConditionType.Uppercase => input.TokenString.Value.ToUpperInvariant(),
+                ConditionType.Lowercase => input.TokenString?.Value?.ToLowerInvariant(),
+                ConditionType.Uppercase => input.TokenString?.Value?.ToUpperInvariant(),
                 _ => throw new NotSupportedException($"Unimplemented letter case type '{this.Type}'.") // should never happen
             };
+
+            return InvariantSets.FromValue(output ?? string.Empty);
         }
     }
 }

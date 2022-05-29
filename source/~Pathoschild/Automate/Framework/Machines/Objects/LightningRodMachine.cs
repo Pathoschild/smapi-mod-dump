@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;
@@ -30,9 +28,9 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             : base(machine, location, tile) { }
 
         /// <summary>Get the output item.</summary>
-        public override ITrackedStack GetOutput()
+        public override ITrackedStack? GetOutput()
         {
-            return new TrackedItem(this.Machine.heldObject.Value, onEmpty: this.GenericReset);
+            return this.GetTracked(this.Machine.heldObject.Value, onEmpty: this.GenericReset);
         }
 
         /// <summary>Provide input to the machine.</summary>

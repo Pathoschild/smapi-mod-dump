@@ -25,4 +25,6 @@ public class ModConfig
     public int CropGrowChanceValue { get; set; } = 25;
     public bool CropMutateToGiantEnabled { get; set; } = true;
     public int CropMutateToGiantChanceValue { get; set; } = 25;
+    public string IridiumClockCustomTexture { get; set; } = "IridiumClock";
+    public string RadioactiveClockCustomTexture { get; set; } = "RadioactiveClock";
 }

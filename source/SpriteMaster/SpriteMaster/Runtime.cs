@@ -10,21 +10,15 @@
 
 // #define SUPPORT_DIFFERENT_FRAMEWORKS
 
-using LinqFasterer;
-using SpriteMaster.Types;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 
 namespace SpriteMaster;
 
-static class Runtime {
+internal static class Runtime {
 	internal static class MethodImpl {
-		internal const MethodImplOptions Hot = MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization;
-		internal const MethodImplOptions Cold = MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization;
+		internal const MethodImplOptions Inline = MethodImplOptions.AggressiveInlining;
+		internal const MethodImplOptions Cold = MethodImplOptions.NoInlining;
 		internal const MethodImplOptions ErrorPath = MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization;
 		internal const MethodImplOptions RunOnce = MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization;
 		internal const MethodImplOptions IgnoreOptimization = MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization;
@@ -124,6 +118,7 @@ static class Runtime {
 		// Any Linux Distro. Should probably determine if it's Debian because Debian is dumb
 		Linux,
 		// The BSDs, probably FreeBSD
+		// ReSharper disable once InconsistentNaming
 		BSD,
 		// Mac OS X, Darwin Kernel
 		Macintosh
@@ -131,19 +126,23 @@ static class Runtime {
 
 	internal enum FrameworkType {
 		// Windows uses .NET
+		// ReSharper disable once InconsistentNaming
 		DotNETFramework,
 		// Newer SDV uses .NET 5
+		// ReSharper disable once InconsistentNaming
 		DotNET,
 		// Everything else uses Mono
 		Mono
 	}
 
 	internal enum GameFrameworkType {
+		// ReSharper disable once InconsistentNaming
 		XNA,
 		MonoGame
 	}
 
 	internal enum RendererType {
+		// ReSharper disable once InconsistentNaming
 		OpenGL,
 		D3D9,
 		D3D11

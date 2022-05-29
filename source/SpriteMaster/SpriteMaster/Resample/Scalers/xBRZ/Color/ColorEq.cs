@@ -13,10 +13,10 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ.Color;
 
-sealed class ColorEq : ColorDist {
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+internal sealed class ColorEq : ColorDist {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal ColorEq(Config configuration) : base(configuration) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal bool IsColorEqual(Color16 color1, Color16 color2) => ColorDistance(color1, color2) < Configuration.EqualColorTolerance;
 }

@@ -31,42 +31,29 @@ namespace LoveOfCooking
 		{
 			// HOUSE RULES
 			return !Context.IsWorldReady || !Context.CanPlayerMove
-					|| Game1.game1 == null || Game1.currentLocation == null || Game1.player == null // No unplayable games
+					|| Game1.game1 is null || Game1.currentLocation is null || Game1.player is null // No unplayable games
 					|| !Game1.game1.IsActive // No alt-tabbed game state
-					|| (Game1.eventUp && Game1.currentLocation.currentEvent != null && !Game1.currentLocation.currentEvent.playerControlSequence) // No event cutscenes
+					|| (Game1.eventUp && Game1.currentLocation.currentEvent is not null && !Game1.currentLocation.currentEvent.playerControlSequence) // No event cutscenes
 					|| Game1.nameSelectUp || Game1.IsChatting || Game1.dialogueTyping || Game1.dialogueUp
-					|| (Game1.keyboardDispatcher != null && Game1.keyboardDispatcher.Subscriber != null) // No text inputs
+					|| (Game1.keyboardDispatcher is not null && Game1.keyboardDispatcher.Subscriber is not null) // No text inputs
 					|| Game1.player.UsingTool || Game1.pickingTool || Game1.numberOfSelectedItems != -1 // No tools in use
 					|| Game1.fadeToBlack; // None of that
 		}
 
-		public static void CheckTileAction(Vector2 position, GameLocation location)
+		public static void CleanUpSaveFiles()
 		{
-			string property = location.doesTileHaveProperty(
-				(int)position.X, (int)position.Y, "Action", "Buildings");
-			if (property == null)
-				return;
-			string[] action = property.Split(' ');
-			switch (action[0])
-			{
-				case ModEntry.ActionDockCrate:
-					// Interact with the new crates at the secret beach pier to loot items for quests
-					if (Interface.Interfaces.JsonAssets != null)
-					{
-						Game1.currentLocation.playSoundAt("ship", position);
-						double roll = Game1.random.NextDouble();
-						StardewValley.Object o = null;
-						if (roll < 0.2f && Game1.player.eventsSeen.Contains(0))
-						{
-							o = new StardewValley.Object(832, 1); // Pineapple
-							if (roll < 0.05f && Game1.player.eventsSeen.Contains(1))
-								o = new StardewValley.Object(Interface.Interfaces.JsonAssets.GetObjectId(ModEntry.Instance.ChocolateName), 1);
-						}
-						if (o != null)
-							Game1.player.addItemByMenuIfNecessary(o.getOne());
-					}
-					break;
-			}
+			Utils.CleanUpMail();
+			Utils.PopulateMissingRecipes();
+		}
+
+		internal static void CleanUpMail()
+		{
+			Game1.player.mailReceived.Remove(ModEntry.MailFryingPanWhoops);
+		}
+
+		internal static bool IsCookingMenu(IClickableMenu menu)
+		{
+			return menu is not null && ModEntry.Instance.Helper.Reflection.GetField<bool>(obj: menu, name: "cooking", required: false)?.GetValue() is true;
 		}
 
 		internal static void PopulateMissingRecipes()
@@ -124,7 +111,7 @@ namespace LoveOfCooking
 				bool isDefined = Enum.TryParse(name, out ModEntry.SkillIndex skillIndex);
 				int level = isDefined
 					? Game1.player.GetSkillLevel((int)Enum.Parse(typeof(ModEntry.SkillIndex), name))
-					: SpaceCore.Skills.GetSkill(name) != null
+					: SpaceCore.Skills.GetSkill(name) is not null
 						? Game1.player.GetCustomSkillLevel(name)
 						: -1;
 				float value = float.Parse(split[1]);
@@ -161,11 +148,11 @@ namespace LoveOfCooking
 			}));
 		}
 
-		internal static void OpenNewCookingMenu(IClickableMenu lastMenu = null)
+		internal static void OpenNewCookingMenu(IClickableMenu lastMenu = null, bool forceOpen = false)
 		{
-			if (ModEntry.Config.AddCookingMenu)
+			if (ModEntry.Config.AddCookingMenu || forceOpen)
 			{
-				Game1.activeClickableMenu = lastMenu != null && lastMenu is CraftingPage craftingPage
+				Game1.activeClickableMenu = lastMenu is not null && lastMenu is CraftingPage craftingPage
 					? new CookingMenu(craftingPage: craftingPage)
 					: new CookingMenu();
 			}
@@ -207,9 +194,8 @@ namespace LoveOfCooking
 				.GetField<string>(menu, "currentSkill")
 				.GetValue();
 			if (skill != CookingSkill.InternalName)
-			{
 				return;
-			}
+			
 			int level = ModEntry.Instance.Helper.Reflection
 				.GetField<int>(menu, "currentLevel")
 				.GetValue();
@@ -218,7 +204,7 @@ namespace LoveOfCooking
 				.ConvertAll(name => new CraftingRecipe(ModEntry.ObjectPrefix + name, true))
 				.Where(recipe => !Game1.player.knowsRecipe(recipe.name))
 				.ToList();
-			if (cookingRecipes != null && cookingRecipes.Count > 0)
+			if (cookingRecipes is not null && cookingRecipes.Count > 0)
 			{
 				UpdateEnglishRecipeDisplayNames(ref cookingRecipes);
 				foreach (CraftingRecipe recipe in cookingRecipes.Where(r => !Game1.player.cookingRecipes.ContainsKey(r.name)))
@@ -238,7 +224,7 @@ namespace LoveOfCooking
 			ModEntry.Instance.Helper.Reflection
 				.GetField<List<CraftingRecipe>>(menu, "newCraftingRecipes")
 				.SetValue(combinedRecipes);
-			Log.D(combinedRecipes.Aggregate($"New recipes for level {level}:", (total, cur) => $"{total}\n{cur.name} ({cur.createItem().ParentSheetIndex})"),
+			Log.D(combinedRecipes.Aggregate($"New recipes for level {level}:", (total, cur) => $"{total}{Environment.NewLine}{cur.name} ({cur.createItem().ParentSheetIndex})"),
 				ModEntry.Config.DebugMode);
 
 			// Adjust menu to fit if necessary
@@ -246,16 +232,13 @@ namespace LoveOfCooking
 			int menuHeightInRecipes = combinedRecipes.Count + combinedRecipes.Count(recipe => recipe.bigCraftable);
 			if (menuHeightInRecipes >= defaultMenuHeightInRecipes)
 			{
-				menu.height += (menuHeightInRecipes - defaultMenuHeightInRecipes) * 64;
+				menu.height += (menuHeightInRecipes - defaultMenuHeightInRecipes) * StardewValley.Object.spriteSheetTileSize * Game1.pixelZoom;
 			}
 		}
 
 		public static List<CraftingRecipe> TakeRecipesFromCraftingPage(CraftingPage cm, bool cookingOnly = true)
 		{
-			bool cooking = ModEntry.Instance.Helper.Reflection
-				.GetField<bool>(cm, "cooking")
-				.GetValue();
-			if (cooking || !cookingOnly)
+			if (Utils.IsCookingMenu(cm) || !cookingOnly)
 			{
 				cm.exitThisMenuNoSound();
 				return cm.pagesOfCraftingRecipes
@@ -267,7 +250,7 @@ namespace LoveOfCooking
 
 		public static bool IsFridgeOrMinifridge(StardewValley.Object o)
 		{
-			return o != null && o.bigCraftable.Value && o is Chest c && c.fridge.Value;
+			return o is not null && o.bigCraftable.Value && o is Chest c && c.fridge.Value;
 		}
 
 		public static bool IsMinifridge(StardewValley.Object o)
@@ -277,7 +260,7 @@ namespace LoveOfCooking
 
 		public static bool IsItemFoodAndNotYetEaten(StardewValley.Item item)
 		{
-			return item is StardewValley.Object o && o != null
+			return item is StardewValley.Object o && o is not null
 				&& !o.bigCraftable.Value && o.Category == ModEntry.CookingCategory
 				&& !ModEntry.Instance.States.Value.FoodsEaten.Contains(o.Name);
 		}
@@ -289,7 +272,7 @@ namespace LoveOfCooking
 
 		public static bool AreNettlesActive()
 		{
-			return ModEntry.NettlesEnabled && !Interface.Interfaces.UsingNettlesCrops;
+			return !Interface.Interfaces.UsingNettlesCrops;
 		}
 
 		public static void TrySpawnNettles()
@@ -301,7 +284,7 @@ namespace LoveOfCooking
 			// Attempt to place a wild nettle as forage around other weeds
 			bool spawnNettlesToday = (Game1.dayOfMonth % 3 == 1 && (Game1.currentSeason == "spring" || Game1.currentSeason == "fall"))
 				|| Game1.currentSeason == "summer";
-			if (ModEntry.NettlesEnabled && spawnNettlesToday)
+			if (Utils.AreNettlesActive() && spawnNettlesToday)
 			{
 				Utils.SpawnNettles();
 			}
@@ -376,7 +359,7 @@ namespace LoveOfCooking
 					Game1.player.health = 1;
 				Buff existingBuff = Game1.buffsDisplay.otherBuffs
 					.FirstOrDefault(b => b.source == variety);
-				if (existingBuff == null)
+				if (existingBuff is null)
 				{
 					Game1.buffsDisplay.addOtherBuff(new Buff(
 						0, 0, 0, 0, 0, 0, 0,
@@ -399,80 +382,6 @@ namespace LoveOfCooking
 		public static bool CanUseKitchens()
 		{
 			return !ModEntry.Config.AddCookingMenu || Game1.player.hasOrWillReceiveMail(ModEntry.MailCookbookUnlocked);
-		}
-
-		/// <summary>
-		/// Identifies the level of the best cooking station within the player's use range.
-		/// A cooking station's level influences the number of ingredients slots available to the player.
-		/// </summary>
-		/// <returns>Level of the best cooking station in range, defaults to 0.</returns>
-		public static int GetNearbyCookingStationLevel()
-		{
-			int radius = int.Parse(ModEntry.ItemDefinitions["CookingUseRange"][0]);
-			int cookingStationLevel = 0;
-
-			if (Game1.currentLocation.IsOutdoors)
-			{
-				// If outdoors, use the player's tool level for ingredients slots
-				cookingStationLevel = Utils.GetFarmersMaxUsableIngredients();
-				Log.D($"Cooking station: {Game1.currentLocation.Name}: Outdoors (level {cookingStationLevel})",
-					ModEntry.Config.DebugMode);
-			}
-			else
-			{
-				// If indoors, use the farmhouse or cabin level as a base for ingredients slots
-				xTile.Layers.Layer layer = Game1.currentLocation.Map.GetLayer("Buildings");
-				int xLimit = Game1.player.getTileX() + radius;
-				int yLimit = Game1.player.getTileY() + radius;
-				for (int x = Game1.player.getTileX() - radius; x < xLimit && cookingStationLevel == 0; ++x)
-					for (int y = Game1.player.getTileY() - radius; y < yLimit && cookingStationLevel == 0; ++y)
-					{
-						xTile.Tiles.Tile tile = layer.Tiles[x, y];
-						if (tile == null
-							|| (Game1.currentLocation.doesTileHaveProperty(x, y, "Action", "Buildings") != "kitchen"
-								&& !ModEntry.IndoorsTileIndexesThatActAsCookingStations.Contains(tile.TileIndex)))
-							continue;
-
-						switch (Game1.currentLocation)
-						{
-							case FarmHouse farmHouse:
-								// FarmHouses use their upgrade level as a baseline after Robin installs a kitchen
-								cookingStationLevel = Utils.GetFarmhouseKitchenLevel(farmHouse);
-								break;
-							default:
-								// NPC kitchens (other than the Saloon) use the Farmer's ingredients limits only
-								cookingStationLevel = Utils.GetFarmersMaxUsableIngredients();
-								break;
-						}
-
-						Log.D($"Cooking station: {Game1.currentLocation.Name}: Kitchen (level {cookingStationLevel})",
-							ModEntry.Config.DebugMode);
-					}
-			}
-			return cookingStationLevel;
-		}
-
-		/// <summary>
-		/// Fetches the cooking station level for the farmhouse based on its upgrade/kitchen level,
-		/// accounting for mods that would provide the kitchen at level 0.
-		/// </summary>
-		public static int GetFarmhouseKitchenLevel(FarmHouse farmHouse)
-		{
-			// A basic (modded) farmhouse has a maximum of 1 slot,
-			// and a farmhouse with a kitchen has a minimum of 2+ slots
-			int level = Math.Max(farmHouse.upgradeLevel, Utils.GetFarmersMaxUsableIngredients());
-			if (farmHouse.upgradeLevel == 0 && Interface.Interfaces.UsingFarmhouseKitchenStart)
-			{
-				level = 1;
-			}
-			return level;
-		}
-
-		public static int GetFarmersMaxUsableIngredients()
-		{
-			return (ModEntry.Config.AddCookingToolProgression && ModEntry.Instance.States.Value.CookingToolLevel < 4)
-				? 1 + ModEntry.Instance.States.Value.CookingToolLevel
-				: 6;
 		}
 
 		public static void AddToShopAtItemIndex(ShopMenu menu, StardewValley.Object o, string targetItemName = "", int price = -1, int stock = -1)
@@ -510,7 +419,7 @@ namespace LoveOfCooking
 				// Ignore items without one of our group suffixes
 				string suffix = suffixes.Keys
 					.FirstOrDefault(s => itemList[i].Name.ToLower().EndsWith(s));
-				if (suffix == null)
+				if (suffix is null)
 					continue;
 				// Set the move-to-this-item name to be the first-found item in the group
 				suffixes[suffix] ??= itemList[i].Name;
@@ -533,7 +442,7 @@ namespace LoveOfCooking
 		/// </summary>
 		internal static void UpdateEnglishRecipeDisplayNames(ref List<CraftingRecipe> recipes)
 		{
-			if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en)
+			if (ModEntry.IsEnglishLocale)
 			{
 				foreach (CraftingRecipe recipe in recipes.Where(r => r.DisplayName.StartsWith(ModEntry.ObjectPrefix)))
 				{
@@ -554,8 +463,8 @@ namespace LoveOfCooking
 			if (replace)
 				fields = newEntry;
 			else for (int i = 0; i < newEntry.Length; ++i)
-					if (newEntry[i] != null)
-						fields[startIndex + i] = append ? $"{fields[startIndex + i]} {newEntry[i]}" : newEntry[i];
+				if (newEntry[i] is not null)
+					fields[startIndex + i] = append ? $"{fields[startIndex + i]} {newEntry[i]}" : newEntry[i];
 			return string.Join(delimiter.ToString(), fields);
 		}
 	}

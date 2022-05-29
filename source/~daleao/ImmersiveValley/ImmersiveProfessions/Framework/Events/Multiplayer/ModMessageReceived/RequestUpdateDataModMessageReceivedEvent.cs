@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.Multiplayer;
 #region using directives
 
 using System;
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
@@ -20,6 +21,7 @@ using Extensions;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class RequestUpdateDataModMessageReceivedEvent : ModMessageReceivedEvent
 {
     /// <inheritdoc />

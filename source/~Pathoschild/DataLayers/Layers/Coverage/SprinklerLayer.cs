@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -140,7 +138,7 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
         /// <summary>Get whether an object is a sprinkler.</summary>
         /// <param name="sprinkler">The object to check.</param>
         /// <param name="customCoverageBySprinklerId">The current relative sprinkler coverage, including any dynamic mod changes.</param>
-        private bool IsSprinkler(SObject sprinkler, IDictionary<int, Vector2[]> customCoverageBySprinklerId)
+        private bool IsSprinkler(SObject? sprinkler, IDictionary<int, Vector2[]> customCoverageBySprinklerId)
         {
             return
                 sprinkler != null
@@ -158,22 +156,22 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
             // Better Sprinklers
             if (this.Mods.BetterSprinklers.IsLoaded)
             {
-                foreach (var pair in this.Mods.BetterSprinklers.GetSprinklerTiles())
-                    tilesBySprinklerID[pair.Key] = pair.Value;
+                foreach ((int id, Vector2[] range) in this.Mods.BetterSprinklers.GetSprinklerTiles())
+                    tilesBySprinklerID[id] = range;
             }
 
             // Line Sprinklers
             if (this.Mods.LineSprinklers.IsLoaded)
             {
-                foreach (var pair in this.Mods.LineSprinklers.GetSprinklerTiles())
-                    tilesBySprinklerID[pair.Key] = pair.Value;
+                foreach ((int id, Vector2[] range) in this.Mods.LineSprinklers.GetSprinklerTiles())
+                    tilesBySprinklerID[id] = range;
             }
 
             // Simple Sprinkler
             if (this.Mods.SimpleSprinkler.IsLoaded)
             {
-                foreach (var pair in this.Mods.SimpleSprinkler.GetNewSprinklerTiles())
-                    tilesBySprinklerID[pair.Key] = pair.Value;
+                foreach ((int id, Vector2[] range) in this.Mods.SimpleSprinkler.GetNewSprinklerTiles())
+                    tilesBySprinklerID[id] = range;
             }
 
             return tilesBySprinklerID;
@@ -193,7 +191,7 @@ namespace Pathoschild.Stardew.DataLayers.Layers.Coverage
                 tiles = tiles.Select(tile => tile + origin); // when the sprinkler is held, the vanilla coverage is relative to (0, 0)
 
             // add custom tiles
-            if (customSprinklerRanges.TryGetValue(sprinkler.ParentSheetIndex, out Vector2[] customTiles))
+            if (customSprinklerRanges.TryGetValue(sprinkler.ParentSheetIndex, out Vector2[]? customTiles))
                 tiles = new HashSet<Vector2>(tiles.Concat(customTiles.Select(tile => tile + origin)));
 
             return tiles;

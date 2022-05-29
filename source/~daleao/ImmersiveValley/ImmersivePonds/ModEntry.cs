@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -17,7 +17,6 @@ using System.Reflection;
 using HarmonyLib;
 using StardewModdingAPI;
 
-using Framework;
 using Framework.Events;
 using Framework.Patches.Integrations;
 
@@ -26,26 +25,21 @@ using Framework.Patches.Integrations;
 /// <summary>The mod entry point.</summary>
 public class ModEntry : Mod
 {
+    internal static ModEntry Instance { get; private set; }
     internal static ModConfig Config { get; set; }
 
-    internal static IModHelper ModHelper { get; private set; }
-    internal static IManifest Manifest { get; private set; }
-    internal static Action<string, LogLevel> Log { get; private set; }
+    internal static IModHelper ModHelper => Instance.Helper;
+    internal static IManifest Manifest => Instance.ModManifest;
+    internal static Action<string, LogLevel> Log => Instance.Monitor.Log;
 
     /// <summary>The mod entry point, called after the mod is first loaded.</summary>
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
     public override void Entry(IModHelper helper)
     {
-        // store references to helper, mod manifest and logger
-        ModHelper = helper;
-        Manifest = ModManifest;
-        Log = Monitor.Log;
+        Instance = this;
 
         // get configs
         Config = helper.ReadConfig<ModConfig>();
-
-        // register asset editors
-        helper.Content.AssetEditors.Add(new FishPondDataEditor());
 
         // hook events
         IEvent.HookAll();
@@ -53,6 +47,10 @@ public class ModEntry : Mod
         // apply harmony patches
         var harmony = new Harmony(ModManifest.UniqueID);
         harmony.PatchAll(Assembly.GetExecutingAssembly());
+        
+        if (helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
+            AutomatePatches.Apply(harmony);
+
         if (helper.ModRegistry.IsLoaded("TehPers.FishingOverhaul"))
             TehsFishingOverhaulPatches.Apply(harmony);
 

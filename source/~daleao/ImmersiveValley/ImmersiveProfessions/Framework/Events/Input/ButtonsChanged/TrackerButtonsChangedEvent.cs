@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,6 +12,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.Input;
 
 #region using directives
 
+using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
@@ -20,6 +21,7 @@ using GameLoop;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class TrackerButtonsChangedEvent : ButtonsChangedEvent
 {
     /// <inheritdoc />

@@ -23,7 +23,7 @@ namespace SpriteMaster.Tasking;
 
 [DebuggerTypeProxy(typeof(ThreadedTaskSchedulerDebugView))]
 [DebuggerDisplay("Id={Id}, ScheduledTasks = {DebugTaskCount}")]
-sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
+internal sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 	internal static readonly ThreadedTaskScheduler Instance = new(useBackgroundThreads: true);
 	internal static readonly TaskFactory TaskFactory = new(Instance);
 
@@ -38,7 +38,7 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 	}
 
 	private readonly CancellationTokenSource DisposeCancellation = new();
-	public int ConcurrencyLevel { get; private init; }
+	public int ConcurrencyLevel { get; }
 
 	[ThreadStatic]
 	private static bool IsTaskProcessingThread = false;
@@ -98,7 +98,6 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private void DispatchLoop(int index, Action<Thread, int>? onInit, Action<Thread, int>? onFinally) {
 		try {
 			IsTaskProcessingThread = true;
@@ -109,11 +108,9 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 					while (!Config.ForcedDisable) {
 						try {
 							foreach (var task in PendingTasks.GetConsumingEnumerable(DisposeCancellation.Token)) {
-								if (task is not null) {
-									using var workingState = WatchDog.WatchDog.ScopedWorkingState;
-									if (TryExecuteTask(task) || task.IsCompleted) {
-										task.Dispose();
-									}
+								using var workingState = WatchDog.WatchDog.ScopedWorkingState;
+								if (TryExecuteTask(task) || task.IsCompleted) {
+									task.Dispose();
 								}
 							}
 						}
@@ -139,7 +136,7 @@ sealed class ThreadedTaskScheduler : TaskScheduler, IDisposable {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	protected override void QueueTask(Task task) {
 		if (!Config.IsEnabled) {
 			return;

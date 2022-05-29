@@ -9,136 +9,199 @@
 *************************************************/
 
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Diagnostics.Windows.Configs;
-using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Order;
+using SpriteMaster.Hashing.Algorithms;
+using System.Data.HashFunction.xxHash;
 
 namespace Hashing;
 
 [MemoryDiagnoser]
 [Orderer(SummaryOrderPolicy.Declared, MethodOrderPolicy.Declared)]
+[CsvExporter]
 //[InliningDiagnoser(true, true)]
 //[TailCallDiagnoser]
 //[EtwProfiler]
 //[SimpleJob(RuntimeMoniker.CoreRt50)]
 public class Algorithms {
 	private const int RandSeed = 0x13377113;
-	private const int MinSize = 1;
-	private const int MaxSize = 0x100_0000;
+	private const int MinSize = 0;
+	private const int MaxSize = 2048;
 
 	public readonly struct DataSet<T> where T : unmanaged {
 		public readonly T[] Data;
 
+		public readonly uint Index => (Data.Length == 0) ? 0u : (uint)Math.Round(Math.Log2(Data.Length)) + 1u;
+
 		public DataSet(T[] data) => Data = data;
 
-		public override string ToString() => Data.Length.ToString();
+		public override string ToString() => $"({Index:D2}) {Data.Length}";
 	}
 
-	public List<DataSet<byte>> DataSets { get; init; } = new();
+	public static List<DataSet<byte>> DataSets { get; }
 
-	public int currentDataSet;
+	private readonly record struct ValidationSettings(bool UseAVX2, bool UseSSE2, bool UsePrefetch, uint UnrollCount) {
+		internal readonly void Apply() {
+			XxHash3.UseAVX2 = UseAVX2;
+			XxHash3.UseSSE2 = UseSSE2;
+			XxHash3.UsePrefetch = UsePrefetch;
+			XxHash3.UnrollCount = UnrollCount;
 
-	public Algorithms() {
+			XxHash3Test.UseAVX2 = UseAVX2;
+			XxHash3Test.UseSSE2 = UseSSE2;
+			XxHash3Test.UsePrefetch = UsePrefetch;
+			XxHash3Test.UnrollCount = UnrollCount;
+		}
+
+		public override readonly string ToString() {
+			var options = new List<string>(4);
+			if (UseAVX2) {
+				options.Add("AVX2");
+			}
+			if (UseSSE2) {
+				options.Add("SSE2");
+			}
+			if (UsePrefetch) {
+				options.Add("Prefetch");
+			}
+			if (UnrollCount != 0u) {
+				options.Add($"U{UnrollCount}");
+			}
+
+			if (options.Count == 0) {
+				return "Baseline";
+			}
+
+			return string.Join(' ', options);
+		}
+	}
+
+	private static void Validate(byte[] data) {
+		return;
+
+		ValidationSettings baselineSettings = new(false, false, false, 0u);
+
+		baselineSettings.Apply();
+		var baselineHash = XxHash3.Hash64(data);
+
+		var configs = new ValidationSettings[] {
+			new(false, false, false, 0U),
+
+			new(true, false, false, 0U),
+			new(false, true, false, 0U),
+			new(false, false, true, 0U),
+
+			new(true, false, false, 2U),
+			new(false, true, false, 2U),
+
+			new(true, false, false, 4U),
+			new(false, true, false, 4U),
+		};
+
+		foreach (var config in configs) {
+			config.Apply();
+			var hash = XxHash3.Hash64(data);
+			if (baselineHash != hash) {
+				throw new Exception($"Hash Mismatch: {config} {data.Length}");
+			}
+			//Console.Out.WriteLine($"Validated: {config} {data.Length}");
+		}
+
+		foreach (var config in configs) {
+			config.Apply();
+			var hash = XxHash3Test.Hash64(data);
+			if (baselineHash != hash) {
+				throw new Exception($"Hash Mismatch: Test {config} {data.Length}");
+			}
+			//Console.Out.WriteLine($"Validated: Test {config} {data.Length}");
+		}
+
+		XxHash3.UseAVX2 = true;
+		XxHash3.UseSSE2 = true;
+		XxHash3.UsePrefetch = true;
+		XxHash3.UnrollCount = 4u;
+
+		XxHash3Test.UseAVX2 = true;
+		XxHash3Test.UseSSE2 = true;
+		XxHash3Test.UsePrefetch = true;
+		XxHash3Test.UnrollCount = 4u;
+	}
+
+	static Algorithms() {
+		DataSets = new();
+
 		var random = new Random(RandSeed);
-		for (int i = MinSize; i <= MaxSize; i *= 2) {
-			var data = GC.AllocateUninitializedArray<byte>(i);
+
+		int start = MinSize;
+
+		DataSet<byte> MakeDataSet(int length) {
+			var data = GC.AllocateUninitializedArray<byte>(length);
 			random.NextBytes(data);
 
-			DataSets.Add(new(data));
+			Validate(data);
+
+			return new(data);
+		}
+
+		if (start == 0) {
+			var dataSet = MakeDataSet(start);
+
+			DataSets.Add(dataSet);
+
+			start = 1;
+		}
+
+		for (int i = start; i <= MaxSize; i *= 2) {
+			var dataSet = MakeDataSet(i);
+
+			DataSets.Add(dataSet);
 		}
 	}
 
-	/*
+	[GlobalSetup(Target = nameof(xxHash3))]
+	public void xxHash3() {
+		XxHash3.UseAVX2 = true;
+		XxHash3.UseSSE2 = true;
+		XxHash3.UsePrefetch = true;
+		XxHash3.UnrollCount = 4;
+	}
+
 	[Benchmark(Description = "xxHash3", Baseline = true)]
-	[ArgumentsSource(nameof(DataSets))]
-	public ulong xxHash3(in DataSet<byte> dataSet) {
-		return SpriteMaster.Hashing.XXHash3.Hash64(dataSet.Data);
-	}
-	*/
-
-	[Benchmark(Description = "xxHash3")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong xxHash3Ptr(DataSet<byte> dataSet) {
-		return SpriteMaster.Hashing.XXHash3.Hash64(dataSet.Data);
+	public ulong xxHash3(DataSet<byte> dataSet) {
+		return XxHash3.Hash64(dataSet.Data);
 	}
 
-	static readonly System.Data.HashFunction.xxHash.xxHashConfig xxHashConfig = new() { HashSizeInBits = 64 };
-	[Benchmark(Description = "xxHash")]
+	[GlobalSetup(Target = nameof(xxHash3Test))]
+	public void xxHash3Test() {
+		XxHash3Test.UseAVX2 = true;
+		XxHash3Test.UseSSE2 = true;
+		XxHash3Test.UsePrefetch = true;
+		XxHash3Test.UnrollCount = 4;
+	}
+
+	[Benchmark(Description = "xxHash3 (New Test)")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong xxHash(in DataSet<byte> dataSet) {
-		return BitConverter.ToUInt64(System.Data.HashFunction.xxHash.xxHashFactory.Instance.Create(xxHashConfig).ComputeHash(dataSet.Data).Hash);
+	public ulong xxHash3Test(DataSet<byte> dataSet) {
+		return XxHash3Test.Hash64(dataSet.Data);
 	}
 
-	static readonly System.Data.HashFunction.CityHash.CityHashConfig cityHashConfig = new() { HashSizeInBits = 64 };
-	[Benchmark(Description = "CityHash")]
+	[Benchmark(Description = "xxHash3 (Old)")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong CityHash(in DataSet<byte> dataSet) {
-		return BitConverter.ToUInt64(System.Data.HashFunction.CityHash.CityHashFactory.Instance.Create(cityHashConfig).ComputeHash(dataSet.Data).Hash);
+	public ulong xxHash3Old(DataSet<byte> dataSet) {
+		return XxHash3Old.Hash64(dataSet.Data);
 	}
 
-	[Benchmark(Description = "SHA1")]
+	[Benchmark(Description = "FNV1a")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong SHA1(in DataSet<byte> dataSet) {
-		using (var sha1 = new System.Security.Cryptography.SHA1CryptoServiceProvider()) {
-			return BitConverter.ToUInt64(sha1.ComputeHash(dataSet.Data));
-		}
-	}
-
-	[Benchmark(Description = "MD5")]
-	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong MD5(in DataSet<byte> dataSet) {
-		using (var md5 = new System.Security.Cryptography.HMACMD5()) {
-			return BitConverter.ToUInt64(md5.ComputeHash(dataSet.Data));
-		}
-	}
-
-	private static ulong FNV1a(byte[] data) {
-		ulong hash = 0xcbf29ce484222325UL;
-		foreach (var octet in data) {
-			hash ^= octet;
-			hash *= 0x00000100000001B3UL;
-		}
-		return hash;
-	}
-
-	private static ulong FNV1aSpan(ReadOnlySpan<byte> data) {
-		ulong hash = 0xcbf29ce484222325UL;
-		foreach (var octet in data) {
-			hash ^= octet;
-			hash *= 0x00000100000001B3UL;
-		}
-		return hash;
-	}
-
-	private static unsafe ulong FNV1aPtr(byte* data, int length) {
-		ulong hash = 0xcbf29ce484222325UL;
-		for (int i = 0; i < length; ++i) {
-			var octet = data[i];
-			hash ^= octet;
-			hash *= 0x00000100000001B3UL;
-		}
-		return hash;
-	}
-
-	[Benchmark(Description = "FNV1a Array")]
-	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong FNV1aArray(in DataSet<byte> dataSet) {
-		return FNV1a(dataSet.Data);
+	public ulong FNV1a(in DataSet<byte> dataSet) {
+		return Functions.FNV1a(dataSet.Data);
 	}
 
 	/*
-	[Benchmark(Description = "FNV1a Span")]
+	[Benchmark(Description = "CombHash")]
 	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public ulong FNV1aSpan(DataSet<byte> dataSet) {
-		return FNV1aSpan(dataSet.Data);
-	}
-
-	[Benchmark(Description = "FNV1a Pointer")]
-	[ArgumentsSource(nameof(DataSets), Priority = 0)]
-	public unsafe ulong FNV1aPtr(DataSet<byte> dataSet) {
-		fixed (byte* ptr = dataSet.Data) {
-			return FNV1aPtr(ptr, dataSet.Data.Length);
-		}
+	public ulong CombHash(in DataSet<byte> dataSet) {
+		return Functions.CombHash(dataSet.Data);
 	}
 	*/
 }

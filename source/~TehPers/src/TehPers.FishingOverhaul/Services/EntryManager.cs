@@ -18,9 +18,9 @@ namespace TehPers.FishingOverhaul.Services
         where TAvailability : AvailabilityInfo
     {
         public TEntry Entry { get; }
-        public ChanceCalculator<TAvailability> ChanceCalculator { get; }
+        public ChanceCalculator ChanceCalculator { get; }
 
-        public EntryManager(ChanceCalculator<TAvailability> chanceCalculator, TEntry entry)
+        public EntryManager(ChanceCalculator chanceCalculator, TEntry entry)
         {
             this.ChanceCalculator = chanceCalculator
                 ?? throw new ArgumentNullException(nameof(chanceCalculator));

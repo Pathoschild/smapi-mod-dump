@@ -8,29 +8,35 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
 using BetterJunimos.Utils;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 
 namespace BetterJunimos {
-    public class BlueprintEditor : IAssetEditor {
-        
-        public bool CanEdit<T>(IAssetInfo asset) {
-            if (Util.Progression.ReducedCostToConstruct || BetterJunimos.Config.JunimoHuts.FreeToConstruct) {
-                return asset.AssetNameEquals(@"Data/Blueprints");
-            }
-            return false;
-        }
+    public static class BlueprintEditor {
+        private const string hutKey = "Junimo Hut";
 
-        public void Edit<T>(IAssetData asset) {
-            IDictionary<string, string> blueprints = asset.AsDictionary<string, string>().Data;
+        internal static void OnAssetRequested(object sender, AssetRequestedEventArgs e) {
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Blueprints")) {
+                e.Edit(asset => {
+                    var data = asset.AsDictionary<string, string>().Data;
 
-            if (BetterJunimos.Config.JunimoHuts.FreeToConstruct) {
-                blueprints["Junimo Hut"] = "/3/2/-1/-1/-2/-1/null/Junimo Hut/Junimos will harvest crops around the hut for you./Buildings/none/48/64/-1/null/Farm/0/true";
+                    if (BetterJunimos.Config.JunimoHuts.FreeToConstruct) {
+                        var fields = data[hutKey].Split('/');
+                        fields[0] = "";
+                        fields[17] = "0";
+                        data[hutKey] = string.Join("/", fields);
+                        BetterJunimos.SMonitor.Log(data[hutKey], LogLevel.Debug);
+                    }
+                    else if (Util.Progression.ReducedCostToConstruct) {
+                        var fields = data[hutKey].Split('/');
+                        fields[0] = "390 100 268 3 771 100";
+                        fields[17] = "10000";
+                        data[hutKey] = string.Join("/", fields);
+                        BetterJunimos.SMonitor.Log(data[hutKey], LogLevel.Debug);
+                    }
+                });
             }
-            else if (Util.Progression.ReducedCostToConstruct) {
-                blueprints["Junimo Hut"] = "390 100 268 3 771 100/3/2/-1/-1/-2/-1/null/Junimo Hut/Junimos will harvest crops around the hut for you./Buildings/none/48/64/-1/null/Farm/10000/true";
-            } 
         }
     }
 }

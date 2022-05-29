@@ -182,6 +182,11 @@ public class ModAPI : IBetterCrafting {
 	#region Categories
 
 	/// <inheritdoc />
+	public void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
+		Mod.Recipes.CreateDefaultCategory(cooking, categoryId, Name, recipeNames, iconRecipe);
+	}
+
+	/// <inheritdoc />
 	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
 		Mod.Recipes.CreateDefaultCategory(cooking, categoryId, Name, recipeNames, iconRecipe);
 	}

@@ -17,29 +17,27 @@ using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
 using StardewValley;
 using System;
-using System.Diagnostics;
-using System.Drawing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace SpriteMaster;
 
-static partial class DrawState {
-	private static readonly SamplerState DefaultSamplerState = SamplerState.LinearClamp;
+internal static partial class DrawState {
+	private static class UpdateState {
+		internal static readonly InterlockedULong LastUpdated = 0UL;
 
-	internal static readonly InterlockedULong LastPushedUpdateFrame = 0UL;
+		// ReSharper disable once MemberHidesStaticFromOuterClass
+		internal static volatile bool IsUpdatedThisFrame = false;
+	}
 
-	private static volatile bool _PushedUpdateThisFrame = false;
-	internal static bool PushedUpdateThisFrame {
-		get {
-			return _PushedUpdateThisFrame;
-		}
+	internal static bool IsUpdatedThisFrame {
+		get => UpdateState.IsUpdatedThisFrame;
 		set {
 			if (value) {
-				LastPushedUpdateFrame.Set(CurrentFrame);
+				UpdateState.LastUpdated.Set(CurrentFrame);
 			}
-			_PushedUpdateThisFrame = value;
+			UpdateState.IsUpdatedThisFrame = value;
 		}
 	}
 
@@ -53,7 +51,7 @@ static partial class DrawState {
 	}
 
 	private static SamplerState MakeSamplerState(SamplerState reference, TextureAddressMode addressMode) {
-		var state = SamplerStateClone!(reference);
+		var state = SamplerStateClone(reference);
 		state.AddressU = state.AddressV = addressMode;
 		return state;
 	}
@@ -70,18 +68,18 @@ static partial class DrawState {
 	internal static RasterizerState CurrentRasterizerState = Defaults.RasterizerState;
 	internal static SpriteSortMode CurrentSortMode = Defaults.SortMode;
 
-	internal static readonly Condition TriggerGC = new(false);
+	internal static readonly Condition TriggerCollection = new(initialState: false);
 
-	private static TimeSpan ExpectedFrameTime = new(166_667); // default 60hz
+	private static TimeSpan ExpectedFrameTime = GameConstants.FrameTime.TimeSpan;
 	internal static bool ForceSynchronous = false;
 
-	private static System.Diagnostics.Stopwatch FrameStopwatch = System.Diagnostics.Stopwatch.StartNew();
+	private static readonly System.Diagnostics.Stopwatch FrameStopwatch = System.Diagnostics.Stopwatch.StartNew();
 
 	private const int BaselineFrameTimeRunningCount = 20;
 	private static TimeSpan BaselineFrameTime = TimeSpan.Zero;
 
 	internal static void UpdateDeviceManager(GraphicsDeviceManager manager) {
-		var rate = (TimeSpan?)manager?.GetField("game")?.GetProperty("TargetElapsedTime");
+		var rate = manager.GetField("game")?.GetProperty<TimeSpan>("TargetElapsedTime");
 		ExpectedFrameTime = rate.GetValueOrDefault(ExpectedFrameTime);
 	}
 
@@ -95,24 +93,23 @@ static partial class DrawState {
 	internal static void UpdateDevice() {
 		var currentDevice = Game1.graphics.GraphicsDevice;
 		if (currentDevice != PreviousDevice) {
-			//Harmonize.Patches.Game.HoeDirt.OnNewGraphicsDevice(currentDevice);
 			PreviousDevice = currentDevice;
+			Harmonize.Patches.Game.HoeDirt.OnNewGraphicsDevice(currentDevice);
 		}
 	}
 
-	internal static bool PushedUpdateWithin(int frames) => (long)(CurrentFrame - LastPushedUpdateFrame) <= frames;
+	internal static bool PushedUpdateWithin(int frames) => (long)(CurrentFrame - UpdateState.LastUpdated) <= frames;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static TimeSpan RemainingFrameTime(float multiplier = 1.0f, in TimeSpan? offset = null) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static TimeSpan RemainingFrameTime(float multiplier = 1.0f, TimeSpan? offset = null) {
 		var actualRemainingTime = ActualRemainingFrameTime();
 		return (actualRemainingTime - (BaselineFrameTime + (offset ?? TimeSpan.Zero))).Multiply(multiplier);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static TimeSpan ActualRemainingFrameTime() => ExpectedFrameTime - FrameStopwatch.Elapsed;
 
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void OnPresent() {
 		Thread.CurrentThread.Priority = ThreadPriority.Highest;
 
@@ -124,17 +121,17 @@ static partial class DrawState {
 			return;
 		}
 
-		if (TriggerGC.GetAndClear()) {
+		if (TriggerCollection.GetAndClear()) {
 			ManagedSpriteInstance.PurgeTextures((Config.Garbage.RequiredFreeMemory * Config.Garbage.RequiredFreeMemoryHysterisis).NearestLong() * 1024 * 1024);
 			Garbage.Collect(compact: true, blocking: true, background: false);
 		}
 
-		if (Config.AsyncScaling.CanFetchAndLoadSameFrame || !PushedUpdateThisFrame) {
+		if (Config.AsyncScaling.CanFetchAndLoadSameFrame || !IsUpdatedThisFrame) {
 			var remaining = ActualRemainingFrameTime();
 			SynchronizedTaskScheduler.Instance.Dispatch(remaining);
 		}
 
-		if (!PushedUpdateThisFrame) {
+		if (!IsUpdatedThisFrame) {
 			var duration = FrameStopwatch.Elapsed;
 			// Throw out garbage values.
 			if (duration <= ExpectedFrameTime + ExpectedFrameTime) {
@@ -148,16 +145,16 @@ static partial class DrawState {
 			}
 		}
 		else {
-			PushedUpdateThisFrame = false;
+			IsUpdatedThisFrame = false;
 		}
 
-		TransientGC(++CurrentFrame);
+		TransientCollection(++CurrentFrame);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void TransientGC(ulong currentFrame) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static void TransientCollection(ulong currentFrame) {
 		var tickCount = Config.Performance.TransientGCTickCount;
-		if (tickCount > 0 && (currentFrame % 150) == 0) {
+		if (tickCount > 0 && (currentFrame % (ulong)tickCount) == 0) {
 			// No trace message as that would be _incredibly_ annoying.
 			GC.Collect(
 				generation: 1,
@@ -168,47 +165,48 @@ static partial class DrawState {
 		}
 	}
 
-	private static WeakReference<xTile.Display.IDisplayDevice> LastMitigatedDevice = new(null!);
-	private static void ApplyPyTKMitigation() {
+	private static readonly WeakReference<xTile.Display.IDisplayDevice> LastMitigatedDevice = new(null!);
+	// ReSharper disable once InconsistentNaming
+	private static void DisablePyTKMitigation() {
 		if (!Config.Extras.ModPatches.DisablePyTKMitigation) {
 			return;
 		}
 		if (LastMitigatedDevice.TryGetTarget(out var lastDevice) && lastDevice == Game1.mapDisplayDevice) {
 			return;
 		}
-		if (Game1.mapDisplayDevice is not null && Game1.mapDisplayDevice.GetType().Name.Contains("PyDisplayDevice")) {
-			var adjustOriginField = Game1.mapDisplayDevice.GetType().GetField("adjustOrigin", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
-			if (adjustOriginField is not null) {
-				adjustOriginField.SetValue(Game1.mapDisplayDevice, false);
-			}
 
-			LastMitigatedDevice.SetTarget(Game1.mapDisplayDevice);
+		if (Game1.mapDisplayDevice is null || !Game1.mapDisplayDevice.GetType().Name.Contains("PyDisplayDevice")) {
+			return;
 		}
+
+		var adjustOriginField = Game1.mapDisplayDevice.GetType().GetField("adjustOrigin", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
+		adjustOriginField?.SetValue(Game1.mapDisplayDevice, false);
+
+		LastMitigatedDevice.SetTarget(Game1.mapDisplayDevice);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void OnPresentPost() {
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;
 
 		Core.OnDrawImpl.ResetLastDrawCache();
 
 		// Apply the PyTK mediation here because we do not know when it might be set up
-		ApplyPyTKMitigation();
+		DisablePyTKMitigation();
 
 		FrameStopwatch.Restart();
 	}
 
 	private static bool FirstDraw = true;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void OnBegin(
-		SpriteBatch @this,
+		XSpriteBatch @this,
 		SpriteSortMode sortMode,
-		BlendState blendState,
-		SamplerState samplerState,
-		DepthStencilState depthStencilState,
-		RasterizerState rasterizerState,
-		Effect effect,
+		BlendState? blendState,
+		SamplerState? samplerState,
+		DepthStencilState? depthStencilState,
+		RasterizerState? rasterizerState,
+		Effect? effect,
 		in Matrix transformMatrix
 	) {
 		using var watchdogScoped = WatchDog.WatchDog.ScopedWorkingState;

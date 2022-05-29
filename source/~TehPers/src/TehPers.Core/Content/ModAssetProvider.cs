@@ -16,16 +16,17 @@ namespace TehPers.Core.Content
 {
     public class ModAssetProvider : IAssetProvider
     {
-        private readonly IContentHelper contentHelper;
+        private readonly IModContentHelper contentHelper;
         private readonly string modPath;
 
         public ModAssetProvider(IModHelper helper)
         {
-            this.contentHelper = helper.Content;
+            this.contentHelper = helper.ModContent;
             this.modPath = helper.DirectoryPath;
         }
 
         public T Load<T>(string path)
+            where T : notnull
         {
             return this.contentHelper.Load<T>(path);
         }
@@ -33,9 +34,8 @@ namespace TehPers.Core.Content
         public Stream Open(string path, FileMode mode)
         {
             var fullPath = Path.Combine(this.modPath, path);
-            var createMode =
-                mode is FileMode.Create or FileMode.CreateNew or FileMode.OpenOrCreate or FileMode
-                    .Append;
+            var createMode = mode is FileMode.Create or FileMode.CreateNew or FileMode.OpenOrCreate
+                or FileMode.Append;
             if (createMode && Path.GetDirectoryName(fullPath) is { } dir)
             {
                 Directory.CreateDirectory(dir);

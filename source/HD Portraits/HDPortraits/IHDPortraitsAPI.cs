@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using System;
 
 namespace HDPortraits
 {
@@ -49,9 +50,7 @@ namespace HDPortraits
         /// <param name="reset">Whether or not to reset animations this tick</param>
         /// <returns>The source region &amp; the texture to use</returns>
         public (Rectangle, Texture2D) GetTextureAndRegion(NPC npc, int index, int elapsed = -1, bool reset = false);
-        /// <summary>
-        /// Forces HD Portraits to reload its metadata.
-        /// </summary>
+        [Obsolete("Directly invalidate the necessary asset instead. It will be automatically reloaded.")]
         public void ReloadData();
         /// <summary>
         /// Draw NPC or custom portrait over region

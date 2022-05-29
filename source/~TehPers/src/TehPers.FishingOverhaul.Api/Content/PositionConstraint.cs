@@ -10,14 +10,12 @@
 
 using System.ComponentModel;
 using Microsoft.Xna.Framework;
-using TehPers.Core.Api.Json;
 
 namespace TehPers.FishingOverhaul.Api.Content
 {
     /// <summary>
     /// A set of constraints for positions.
     /// </summary>
-    [JsonDescribe]
     public record PositionConstraint
     {
         /// <summary>

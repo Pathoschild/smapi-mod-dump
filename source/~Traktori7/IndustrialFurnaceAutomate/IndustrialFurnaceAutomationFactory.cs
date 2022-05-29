@@ -29,12 +29,12 @@ namespace IndustrialFurnaceAutomate
 {
 	public class IndustrialFurnaceAutomationFactory : IAutomationFactory
 	{
-		private IIndustrialFurnaceAPI industrialFurnaceAPI;
+		private readonly IIndustrialFurnaceAPI industrialFurnaceAPI;
 
 
 		public IndustrialFurnaceAutomationFactory(IIndustrialFurnaceAPI api)
 		{
-			this.industrialFurnaceAPI = api;
+			industrialFurnaceAPI = api;
 		}
 
 
@@ -43,7 +43,7 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="location">The location to check.</param>
 		/// <param name="tile">The tile position to check.</param>
 		/// <returns>Returns an instance or <c>null</c>.</returns>
-		public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile)
+		public IAutomatable? GetFor(SObject obj, GameLocation location, in Vector2 tile)
 		{
 			return null;
 		}
@@ -54,7 +54,7 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="location">The location to check.</param>
 		/// <param name="tile">The tile position to check.</param>
 		/// <returns>Returns an instance or <c>null</c>.</returns>
-		public IAutomatable GetFor(TerrainFeature feature, GameLocation location, in Vector2 tile)
+		public IAutomatable? GetFor(TerrainFeature feature, GameLocation location, in Vector2 tile)
 		{
 			return null;
 		}
@@ -65,16 +65,15 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="location">The location to check.</param>
 		/// <param name="tile">The tile position to check.</param>
 		/// <returns>Returns an instance or <c>null</c>.</returns>
-		public IAutomatable GetFor(Building building, BuildableGameLocation location, in Vector2 tile)
+		public IAutomatable? GetFor(Building building, BuildableGameLocation location, in Vector2 tile)
 		{
 			if (industrialFurnaceAPI.IsBuildingIndustrialFurnace(building))
 			{
-				IndustrialFurnaceController controller = industrialFurnaceAPI.GetController(building.maxOccupants.Value);
+				IndustrialFurnaceController? controller = industrialFurnaceAPI.GetController(building.maxOccupants.Value);
 
-				if (controller != null)
+				if (controller is not null)
 					return new IndustrialFurnaceMachine(controller, location, new Vector2(building.tileX.Value, building.tileY.Value));
 			}
-				
 
 			return null;
 		}
@@ -85,7 +84,7 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="tile">The tile position to check.</param>
 		/// <returns>Returns an instance or <c>null</c>.</returns>
 		/// <remarks>Shipping bin logic from <see cref="Farm.leftClick"/>, garbage can logic from <see cref="Town.checkAction"/>.</remarks>
-		public IAutomatable GetForTile(GameLocation location, in Vector2 tile)
+		public IAutomatable? GetForTile(GameLocation location, in Vector2 tile)
 		{
 			return null;
 		}

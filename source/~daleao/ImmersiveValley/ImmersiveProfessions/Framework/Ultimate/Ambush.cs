@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -20,7 +20,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 
-using AssetLoaders;
+using Sounds;
 
 #endregion using directives
 
@@ -29,26 +29,34 @@ internal sealed class Ambush : Ultimate
 {
     /// <summary>Construct an instance.</summary>
     internal Ambush()
+    : base(Color.MediumPurple, Color.MidnightBlue)
     {
-        Meter = new(this, Color.MediumPurple);
-        Overlay = new(Color.MidnightBlue);
-        EnableEvents();
     }
 
     #region public properties
 
-    public static int BuffId { get; } = ModEntry.Manifest.UniqueID.GetHashCode() + (int) UltimateIndex.Poacher + 4;
+    /// <summary>The ID of the buff that displays while Ambush is active.</summary>
+    public static int BuffId { get; } = ModEntry.Manifest.UniqueID.GetHashCode() + (int) UltimateIndex.Ambush + 4;
 
-    public override UltimateIndex Index => UltimateIndex.Poacher;
-    public override SFX ActivationSfx => SFX.PoacherAmbush;
-    public override Color GlowColor => Color.MediumPurple;
+    /// <inheritdoc />
+    public override UltimateIndex Index => UltimateIndex.Ambush;
 
     #endregion public properties
 
-    #region public methods
+    #region internal properties
 
     /// <inheritdoc />
-    public override void Activate()
+    internal override SFX ActivationSfx => SFX.PoacherAmbush;
+
+    /// <inheritdoc />
+    internal override Color GlowColor => Color.MediumPurple;
+
+    #endregion internal properties
+
+    #region internal methods
+
+    /// <inheritdoc />
+    internal override void Activate()
     {
         base.Activate();
 
@@ -102,7 +110,7 @@ internal sealed class Ambush : Ultimate
     }
 
     /// <inheritdoc />
-    public override void Deactivate()
+    internal override void Deactivate()
     {
         base.Deactivate();
 
@@ -136,16 +144,16 @@ internal sealed class Ambush : Ultimate
     }
 
     /// <inheritdoc />
-    public override void Countdown(double elapsed)
+    internal override void Countdown(double elapsed)
     {
         ChargeValue -= elapsed * 0.06 / 18.0;
     }
 
     /// <summary>Whether the double crit. power buff is active.</summary>
-    public bool ShouldBuffCritPower()
+    internal bool ShouldBuffCritPower()
     {
         return IsActive || Game1.buffsDisplay.otherBuffs.Any(b => b.which == BuffId - 4);
     }
 
-    #endregion public methods
+    #endregion internal methods
 }

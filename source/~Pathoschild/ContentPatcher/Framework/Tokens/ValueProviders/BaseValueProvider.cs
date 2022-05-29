@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using Pathoschild.Stardew.Common.Utilities;
@@ -30,11 +29,14 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>Whether multiple values may exist when input arguments are provided.</summary>
         protected bool MayReturnMultipleValuesForInput { get; set; }
 
-        /// <summary>The named input arguments recognised by this value provider.</summary>
-        protected ISet<string> ValidNamedArguments = new InvariantHashSet();
+        /// <summary>The named input arguments recognized by this value provider.</summary>
+        protected IInvariantSet ValidNamedArguments { get; set; } = InvariantSets.Empty;
+
+        /// <summary>Whether to allow any named arguments, instead of validating <see cref="ValidNamedArguments"/>.</summary>
+        protected bool AllowAnyNamedArguments { get; set; }
 
         /// <summary>Diagnostic info about the contextual instance.</summary>
-        private readonly ContextualState State = new ContextualState();
+        private readonly ContextualState State = new();
 
         /// <summary>The maximum number of positional arguments allowed, if limited.</summary>
         private int? MaxPositionalArgs;
@@ -61,6 +63,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <inheritdoc />
         public bool BypassesContextValidation { get; protected set; } = false;
 
+        /// <inheritdoc />
+        public Func<string, string>? NormalizeValue { get; protected set; }
+
 
         /*********
         ** Public methods
@@ -72,9 +77,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<string> GetTokensUsed()
+        public virtual IInvariantSet GetTokensUsed()
         {
-            return Enumerable.Empty<string>();
+            return InvariantSets.Empty;
         }
 
         /// <inheritdoc />
@@ -92,7 +97,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public virtual bool TryValidateInput(IInputArguments input, out string error)
+        public virtual bool TryValidateInput(IInputArguments input, [NotNullWhen(false)] out string? error)
         {
             if (input.IsReady)
             {
@@ -116,13 +121,13 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                     // check values
                     if (input.TokenString.Value != InternalConstants.TokenPlaceholder)
                     {
-                        InvariantHashSet validInputs = this.GetValidPositionalArgs();
+                        IInvariantSet? validInputs = this.GetValidPositionalArgs();
                         if (validInputs?.Any() == true)
                         {
                             if (input.PositionalArgs.Any(arg => !validInputs.Contains(arg)))
                             {
-                                string raw = input.TokenString.Raw;
-                                string parsed = input.TokenString.Value;
+                                string raw = input.TokenString.Raw ?? string.Empty;
+                                string parsed = input.TokenString.Value ?? string.Empty;
                                 error = $"invalid input arguments ({(raw != parsed ? $"{raw} => {parsed}" : parsed)}) for {this.Name} token, expected any of '{string.Join("', '", validInputs.OrderByHuman())}'";
                                 return false;
                             }
@@ -131,22 +136,19 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 }
 
                 // validate named arguments
-                if (input.HasNamedArgs)
+                if (!this.AllowAnyNamedArguments && input.HasNamedArgs)
                 {
-                    if (this.ValidNamedArguments != null)
+                    if (!this.ValidNamedArguments.Any())
                     {
-                        if (!this.ValidNamedArguments.Any())
-                        {
-                            error = $"invalid named argument '{input.NamedArgs.First().Key}' for {this.Name} token, which does not accept any named arguments.";
-                            return false;
-                        }
+                        error = $"invalid named argument '{input.NamedArgs.First().Key}' for {this.Name} token, which does not accept any named arguments.";
+                        return false;
+                    }
 
-                        string invalidKey = (from arg in input.NamedArgs where !this.ValidNamedArguments.Contains(arg.Key) select arg.Key).FirstOrDefault();
-                        if (invalidKey != null)
-                        {
-                            error = $"invalid named argument '{invalidKey}' for {this.Name} token, expected any of '{string.Join("', '", this.ValidNamedArguments.OrderByHuman())}'";
-                            return false;
-                        }
+                    string? invalidKey = (from arg in input.NamedArgs where !this.ValidNamedArguments.Contains(arg.Key) select arg.Key).FirstOrDefault();
+                    if (invalidKey != null)
+                    {
+                        error = $"invalid named argument '{invalidKey}' for {this.Name} token, expected any of '{string.Join("', '", this.ValidNamedArguments.OrderByHuman())}'";
+                        return false;
                     }
                 }
             }
@@ -157,7 +159,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public virtual bool TryValidateValues(IInputArguments input, InvariantHashSet values, out string error)
+        public virtual bool TryValidateValues(IInputArguments input, IInvariantSet values, [NotNullWhen(false)] out string? error)
         {
             if (!this.TryValidateInput(input, out error))
                 return false;
@@ -176,7 +178,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                     return false;
                 }
             }
-            else if (this.HasBoundedValues(input, out InvariantHashSet validValues))
+            else if (this.HasBoundedValues(input, out IInvariantSet? validValues))
             {
                 string[] invalidValues = values
                     .Where(p => !validValues.Contains(p))
@@ -196,13 +198,13 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public virtual InvariantHashSet GetValidPositionalArgs()
+        public virtual IInvariantSet? GetValidPositionalArgs()
         {
-            return new InvariantHashSet();
+            return null;
         }
 
         /// <inheritdoc />
-        public virtual bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public virtual bool HasBoundedValues(IInputArguments input, [NotNullWhen(true)] out IInvariantSet? allowedValues)
         {
             allowedValues = null;
             return false;
@@ -220,13 +222,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         public virtual IEnumerable<string> GetValues(IInputArguments input)
         {
             this.AssertInput(input);
-            yield break;
-        }
-
-        /// <inheritdoc />
-        public virtual string NormalizeValue(string value)
-        {
-            return value;
+            return InvariantSets.Empty;
         }
 
 
@@ -278,7 +274,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <param name="raw">The raw string to parse.</param>
         /// <param name="result">The resulting enum value.</param>
         /// <param name="mustBeNamed">When parsing a numeric value, whether it must match one of the named enum values.</param>
-        protected bool TryParseEnum<TEnum>(string raw, out TEnum result, bool mustBeNamed = true) where TEnum : struct
+        protected bool TryParseEnum<TEnum>(string? raw, out TEnum result, bool mustBeNamed = true) where TEnum : struct
         {
             if (!Enum.TryParse(raw, true, out result))
                 return false;
@@ -303,6 +299,14 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <summary>Get whether the value provider's <see cref="IsReady"/> or values change when an action is invoked.</summary>
+        /// <param name="values">The underlying values to check.</param>
+        /// <param name="action">The action to perform.</param>
+        protected bool IsChanged(IInvariantSet values, Func<IInvariantSet> action)
+        {
+            return this.IsChanged(() => this.IsChanged(values, action()));
+        }
+
+        /// <summary>Get whether the value provider's <see cref="IsReady"/> or values change when an action is invoked.</summary>
         /// <typeparam name="T">The value type.</typeparam>
         /// <param name="values">The underlying values to check.</param>
         /// <param name="action">The action to perform.</param>
@@ -310,7 +314,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             return this.IsChanged(() =>
             {
-                HashSet<T> oldValues = new HashSet<T>(values);
+                ISet<T> oldValues = new HashSet<T>(values);
                 action();
                 return this.IsChanged(oldValues, values);
             });
@@ -327,7 +331,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 action();
                 return
                     values.Count != oldValues.Count
-                    || oldValues.Any(entry => !values.TryGetValue(entry.Key, out string newValue) || entry.Value?.EqualsIgnoreCase(newValue) != true);
+                    || oldValues.Any(entry => !values.TryGetValue(entry.Key, out string? newValue) || entry.Value?.EqualsIgnoreCase(newValue) != true);
             });
         }
 
@@ -340,12 +344,39 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <summary>Get whether the values in a collection changed.</summary>
+        /// <param name="oldValues">The old values to check.</param>
+        /// <param name="newValues">The new values to check.</param>
+        protected bool IsChanged(IInvariantSet oldValues, IInvariantSet newValues)
+        {
+            return
+                !object.ReferenceEquals(oldValues, newValues)
+                && (
+                    newValues.Count != oldValues.Count
+                    || newValues.Any(p => !oldValues.Contains(p))
+                );
+        }
+
+        /// <summary>Get whether the values in a collection changed.</summary>
         /// <typeparam name="T">The value type.</typeparam>
         /// <param name="oldValues">The old values to check.</param>
         /// <param name="newValues">The new values to check.</param>
         protected bool IsChanged<T>(ISet<T> oldValues, ISet<T> newValues)
         {
-            return newValues.Count != oldValues.Count || newValues.Any(p => !oldValues.Contains(p));
+            return
+                !object.ReferenceEquals(oldValues, newValues)
+                && (
+                    newValues.Count != oldValues.Count
+                    || newValues.Any(p => !oldValues.Contains(p))
+                );
+        }
+
+        /// <summary>Format an optional value to return from <see cref="GetValues"/>.</summary>
+        /// <param name="value">The value to format.</param>
+        protected static IInvariantSet WrapOptionalValue(string? value)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? InvariantSets.Empty
+                : InvariantSets.FromValue(value);
         }
     }
 }

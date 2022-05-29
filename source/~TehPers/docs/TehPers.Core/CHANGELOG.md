@@ -10,11 +10,31 @@ for queries and analysis.**
 
 Changelog for [TehCore].
 
-## 1.0.2 - Unreleased
+## 1.0.2 - 2022-05-20
 
 ### Added
 
-- Add ModDrop update keys
+- Add ModDrop update keys.
+- Add special handling for creating Caroline's necklace.
+- Add `Patcher` base class for services that apply Harmony patches.
+
+### Changed
+
+- Update to new SMAPI content API.
+- Change `BindingExtensions.BindForeignModApi<TApi>` to give a nullable binding because the mod
+  could not have an API.
+- Descriptive JSON serialization now checks doc comments on members if no `[Description]` attribute
+  is present. A `[Description("")]` attribute opts out of this behavior.
+
+### Removed
+
+- Remove asset tracking because SMAPI supports asset loading events now. This also cleans up the
+  console output quite a bit.
+
+### Fixed
+
+- The descriptive JSON serialization now uses Harmony to patch Newtonsoft.Json. This fixes any
+  issues with comments in nested objects.
 
 ## 1.0.1 - 2021-12-23
 

@@ -69,7 +69,7 @@ namespace MultipleSpouseDialog
         {
             relationships.Clear();
             var NPCDispositions =
-                Helper.Content.Load<Dictionary<string, string>>("Data\\NPCDispositions", ContentSource.GameContent);
+                Helper.GameContent.Load<Dictionary<string, string>>("Data\\NPCDispositions");
             foreach (var (key, value) in NPCDispositions)
             {
                 var relations = value.Split('/')[9].Split(' ');

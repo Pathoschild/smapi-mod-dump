@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,16 +12,18 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class ScavengerHuntDayStartedEvent : DayStartedEvent
 {
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object sender, DayStartedEventArgs e)
     {
         if (ModEntry.PlayerState.ScavengerHunt is not null)
-            ModEntry.PlayerState.ScavengerHunt.ResetAccumulatedBonus();
+            ModEntry.PlayerState.ScavengerHunt.ResetChanceAccumulator();
     }
 }

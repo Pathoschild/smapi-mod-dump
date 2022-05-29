@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -38,7 +38,7 @@ using System.Reflection.Emit;
 using ChestEx.LanguageExtensions;
 using ChestEx.Types.BaseTypes;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -53,7 +53,7 @@ using Object = System.Object;
 
 namespace ChestEx.CompatibilityPatches {
   internal class ConvenientChests : CompatibilityPatch {
-  #region Patches
+    #region Patches
 
     [HarmonyPatch]
     private static class CategoryMenu {
@@ -78,7 +78,7 @@ namespace ChestEx.CompatibilityPatches {
         if (Game1.activeClickableMenu is not CustomItemGrabMenu menu) return;
 
         Int32 height = menu.mPlayerInventoryOptions.mDialogueBoxBounds.Bottom - menu.mSourceInventoryOptions.mDialogueBoxBounds.Y;
-        Traverse.Create(__instance).Property<Int32>("Height").Value                        = height;
+        Traverse.Create(__instance).Property<Int32>("Height").Value = height;
         Traverse.Create(__instance).Property("Background").Property<Int32>("Height").Value = height;
         Traverse.Create(__instance).Property("ScrollBar").Property<Int32>("Height").Value =
           height - Traverse.Create(__instance).Property("CloseButton").Property<Int32>("Height").Value - 16;
@@ -104,18 +104,18 @@ namespace ChestEx.CompatibilityPatches {
       private static void postfixPositionButtons(Object __instance) {
         if (Game1.activeClickableMenu is not CustomItemGrabMenu menu) return;
 
-        var openbtn_pos       = Traverse.Create(__instance).Property("OpenButton").Property<Point>("Position");
-        var openbtn_width     = Traverse.Create(__instance).Property("OpenButton").Property<Int32>("Width");
-        var openbtn_height    = Traverse.Create(__instance).Property("OpenButton").Property<Int32>("Height");
-        var openbtn_lpadding  = Traverse.Create(__instance).Property("OpenButton").Property<Int32>("LeftPadding");
-        var stashbtn_pos      = Traverse.Create(__instance).Property("StashButton").Property<Point>("Position");
-        var stashbtn_width    = Traverse.Create(__instance).Property("StashButton").Property<Int32>("Width");
-        var stashbtn_height   = Traverse.Create(__instance).Property("StashButton").Property<Int32>("Height");
+        var openbtn_pos = Traverse.Create(__instance).Property("OpenButton").Property<Point>("Position");
+        var openbtn_width = Traverse.Create(__instance).Property("OpenButton").Property<Int32>("Width");
+        var openbtn_height = Traverse.Create(__instance).Property("OpenButton").Property<Int32>("Height");
+        var openbtn_lpadding = Traverse.Create(__instance).Property("OpenButton").Property<Int32>("LeftPadding");
+        var stashbtn_pos = Traverse.Create(__instance).Property("StashButton").Property<Point>("Position");
+        var stashbtn_width = Traverse.Create(__instance).Property("StashButton").Property<Int32>("Width");
+        var stashbtn_height = Traverse.Create(__instance).Property("StashButton").Property<Int32>("Height");
         var stashbtn_lpadding = Traverse.Create(__instance).Property("StashButton").Property<Int32>("LeftPadding");
 
         Rectangle menu_rect = menu.mSourceInventoryOptions.mDialogueBoxBounds;
         stashbtn_pos.Value = new Point(menu_rect.X - 16 - stashbtn_width.Value + stashbtn_lpadding.Value - 4, menu_rect.Bottom - stashbtn_height.Value - 32);
-        openbtn_pos.Value  = new Point(menu_rect.X - 16 - openbtn_width.Value + openbtn_lpadding.Value - 4, stashbtn_pos.Value.Y - openbtn_height.Value);
+        openbtn_pos.Value = new Point(menu_rect.X - 16 - openbtn_width.Value + openbtn_lpadding.Value - 4, stashbtn_pos.Value.Y - openbtn_height.Value);
       }
 
       [HarmonyPostfix]
@@ -162,7 +162,7 @@ namespace ChestEx.CompatibilityPatches {
         foreach (CodeInstruction instruction in instructions) {
           if (instruction.opcode == OpCodes.Ldsflda && (FieldInfo)instruction.operand == AccessTools.Field(typeof(Game1), "viewport")) {
             instruction.operand = AccessTools.Field(typeof(Game1), "uiViewport");
-            patched             = true;
+            patched = true;
           }
 
           yield return instruction;
@@ -180,10 +180,10 @@ namespace ChestEx.CompatibilityPatches {
       }
     }
 
-  #endregion
+    #endregion
 
     // Protected:
-  #region Protected
+    #region Protected
 
     protected override void InstallPatches() {
       CategoryMenu.Install();
@@ -197,14 +197,14 @@ namespace ChestEx.CompatibilityPatches {
       base.OnLoaded();
     }
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     internal ConvenientChests()
       : base("aEnigma.ConvenientChests", new SemanticVersion("1.5.2-unofficial.2-borthain")) { }
 
-  #endregion
+    #endregion
   }
 }

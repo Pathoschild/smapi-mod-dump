@@ -16,12 +16,12 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ.Structures;
 
-abstract class IScaler {
+internal abstract class AbstractScaler {
 	internal readonly int Scale;
 	internal readonly Config Configuration;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	protected IScaler(int scale, Config configuration) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	protected AbstractScaler(int scale, Config configuration) {
 		Scale = scale;
 		Configuration = configuration;
 	}
@@ -32,7 +32,7 @@ abstract class IScaler {
 	internal abstract void BlendLineDiagonal(Color16 color, ref OutputMatrix matrix);
 	internal abstract void BlendCorner(Color16 color, ref OutputMatrix matrix);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	protected void AlphaBlend(int n, int m, ref Color16 dstRef, Color16 color) {
 		//assert n < 256 : "possible overflow of (color & redMask) * N";
 		//assert m < 256 : "possible overflow of (color & redMask) * N + (dst & redMask) * (M - N)";
@@ -47,7 +47,7 @@ abstract class IScaler {
 		dstRef = new(r, g, b, a);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static Fixed16 BlendComponent(int n, int m, Fixed16 inComponent, Fixed16 setComponent) {
 #if XBRZ_WIDE_BLEND
 		var blend = setComponent.Value.asSigned() * n + inComponent.Value.asSigned() * (m - n);
@@ -72,50 +72,44 @@ abstract class IScaler {
 	}
 }
 
-sealed class Scaler2X : IScaler {
+internal sealed class Scaler2X : AbstractScaler {
 	internal new const int Scale = 2;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Scaler2X(in Config config) : base(Scale, config) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[Scale - 1, 0], color);
 		AlphaBlend(3, 4, ref matrix[Scale - 1, 1], color);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteep(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(3, 4, ref matrix[1, Scale - 1], color);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteepAndShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[1, 0], color);
 		AlphaBlend(1, 4, ref matrix[0, 1], color);
 		AlphaBlend(5, 6, ref matrix[1, 1], color); //[!] fixes 7/8 used in xBR
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineDiagonal(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 2, ref matrix[1, 1], color);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendCorner(Color16 color, ref OutputMatrix matrix) {
 		//model a round corner
 		AlphaBlend(43, 200, ref matrix[1, 1], color); //exact: 1 - pi/4 = 0.2146018366
 	}
 }
 
-sealed class Scaler3X : IScaler {
+internal sealed class Scaler3X : AbstractScaler {
 	internal new const int Scale = 3;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Scaler3X(in Config config) : base(Scale, config) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[Scale - 1, 0], color);
 		AlphaBlend(1, 4, ref matrix[Scale - 2, 2], color);
@@ -123,7 +117,6 @@ sealed class Scaler3X : IScaler {
 		matrix[Scale - 1, 2] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteep(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(1, 4, ref matrix[2, Scale - 2], color);
@@ -131,7 +124,6 @@ sealed class Scaler3X : IScaler {
 		matrix[2, Scale - 1] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteepAndShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[2, 0], color);
 		AlphaBlend(1, 4, ref matrix[0, 2], color);
@@ -140,14 +132,12 @@ sealed class Scaler3X : IScaler {
 		matrix[2, 2] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineDiagonal(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 8, ref matrix[1, 2], color);
 		AlphaBlend(1, 8, ref matrix[2, 1], color);
 		AlphaBlend(7, 8, ref matrix[2, 2], color);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendCorner(Color16 color, ref OutputMatrix matrix) {
 		//model a round corner
 		AlphaBlend(91, 200, ref matrix[2, 2], color); //exact: 0.4545939598
@@ -158,13 +148,12 @@ sealed class Scaler3X : IScaler {
 	}
 }
 
-sealed class Scaler4X : IScaler {
+internal sealed class Scaler4X : AbstractScaler {
 	internal new const int Scale = 4;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Scaler4X(in Config config) : base(Scale, config) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[Scale - 1, 0], color);
 		AlphaBlend(1, 4, ref matrix[Scale - 2, 2], color);
@@ -174,7 +163,6 @@ sealed class Scaler4X : IScaler {
 		matrix[Scale - 1, 3] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteep(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(1, 4, ref matrix[2, Scale - 2], color);
@@ -184,7 +172,6 @@ sealed class Scaler4X : IScaler {
 		matrix[3, Scale - 1] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteepAndShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(3, 4, ref matrix[3, 1], color);
 		AlphaBlend(3, 4, ref matrix[1, 3], color);
@@ -196,14 +183,12 @@ sealed class Scaler4X : IScaler {
 		matrix[2, 3] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineDiagonal(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 2, ref matrix[Scale - 1, Scale / 2], color);
 		AlphaBlend(1, 2, ref matrix[Scale - 2, Scale / 2 + 1], color);
 		matrix[Scale - 1, Scale - 1] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendCorner(Color16 color, ref OutputMatrix matrix) {
 		//model a round corner
 		AlphaBlend(137, 200, ref matrix[3, 3], color); //exact: 0.6848532563
@@ -212,13 +197,12 @@ sealed class Scaler4X : IScaler {
 	}
 }
 
-sealed class Scaler5X : IScaler {
+internal sealed class Scaler5X : AbstractScaler {
 	internal new const int Scale = 5;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Scaler5X(in Config config) : base(Scale, config) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[Scale - 1, 0], color);
 		AlphaBlend(1, 4, ref matrix[Scale - 2, 2], color);
@@ -231,7 +215,6 @@ sealed class Scaler5X : IScaler {
 		matrix[Scale - 2, 4] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteep(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(1, 4, ref matrix[2, Scale - 2], color);
@@ -244,7 +227,6 @@ sealed class Scaler5X : IScaler {
 		matrix[4, Scale - 2] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteepAndShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(1, 4, ref matrix[2, Scale - 2], color);
@@ -260,7 +242,6 @@ sealed class Scaler5X : IScaler {
 		matrix[Scale - 1, 3] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineDiagonal(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 8, ref matrix[Scale - 1, Scale / 2], color); //conflict with other rotations for this odd scale
 		AlphaBlend(1, 8, ref matrix[Scale - 2, Scale / 2 + 1], color);
@@ -270,7 +251,6 @@ sealed class Scaler5X : IScaler {
 		matrix[4, 4] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendCorner(Color16 color, ref OutputMatrix matrix) {
 		//model a round corner
 		AlphaBlend(173, 200, ref matrix[4, 4], color); //exact: 0.8631434088
@@ -283,13 +263,12 @@ sealed class Scaler5X : IScaler {
 	}
 }
 
-sealed class Scaler6X : IScaler {
+internal sealed class Scaler6X : AbstractScaler {
 	internal new const int Scale = 6;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Scaler6X(in Config config) : base(Scale, config) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[Scale - 1, 0], color);
 		AlphaBlend(1, 4, ref matrix[Scale - 2, 2], color);
@@ -306,7 +285,6 @@ sealed class Scaler6X : IScaler {
 		matrix[Scale - 2, 5] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteep(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(1, 4, ref matrix[2, Scale - 2], color);
@@ -323,7 +301,6 @@ sealed class Scaler6X : IScaler {
 		matrix[5, Scale - 2] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineSteepAndShallow(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 4, ref matrix[0, Scale - 1], color);
 		AlphaBlend(1, 4, ref matrix[2, Scale - 2], color);
@@ -344,7 +321,6 @@ sealed class Scaler6X : IScaler {
 		matrix[Scale - 1, 3] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendLineDiagonal(Color16 color, ref OutputMatrix matrix) {
 		AlphaBlend(1, 2, ref matrix[Scale - 1, Scale / 2], color);
 		AlphaBlend(1, 2, ref matrix[Scale - 2, Scale / 2 + 1], color);
@@ -355,7 +331,6 @@ sealed class Scaler6X : IScaler {
 		matrix[Scale - 1, Scale - 2] = color;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal override void BlendCorner(Color16 color, ref OutputMatrix matrix) {
 		//model a round corner
 		AlphaBlend(194, 200, ref matrix[5, 5], color); //exact: 0.9711013910

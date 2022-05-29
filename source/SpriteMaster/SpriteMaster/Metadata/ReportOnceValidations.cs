@@ -11,13 +11,12 @@
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Metadata;
 
-static class ReportOnceValidations {
-	[Conditional("DEBUG"), MethodImpl(Runtime.MethodImpl.Hot)]
-	private static void DebugValidate(in Bounds sourceBounds, XTexture2D referenceTexture) {
+internal static class ReportOnceValidations {
+	[Conditional("DEBUG")]
+	private static void DebugValidate(Bounds sourceBounds, XTexture2D referenceTexture) {
 		Bounds referenceBounds = referenceTexture.Bounds;
 
 		if (!referenceBounds.Contains(sourceBounds)) {
@@ -42,27 +41,27 @@ static class ReportOnceValidations {
 #endif
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void Validate(in Bounds sourceBounds, XTexture2D referenceTexture) {
+	[Conditional("DEBUG")]
+	internal static void Validate(Bounds sourceBounds, XTexture2D referenceTexture) {
 		DebugValidate(sourceBounds, referenceTexture);
 	}
 
 	[Conditional("DEBUG")]
-	private static void EmitOverlappingWarning(in Bounds sourceBounds, XTexture2D referenceTexture) {
+	private static void EmitOverlappingWarning(Bounds sourceBounds, XTexture2D referenceTexture) {
 		if (referenceTexture is not InternalTexture2D && referenceTexture.Meta().ShouldReportError(ReportOnceErrors.OverlappingSource)) {
 			Debug.Warning($"Overlapping sprite source '{sourceBounds}' for texture '{referenceTexture.NormalizedName()}' ({referenceTexture.Extent()})");
 		}
 	}
 
 	[Conditional("DEBUG")]
-	private static void EmitInvertedWarning(in Bounds sourceBounds, XTexture2D referenceTexture) {
+	private static void EmitInvertedWarning(Bounds sourceBounds, XTexture2D referenceTexture) {
 		if (referenceTexture is not InternalTexture2D && referenceTexture.Meta().ShouldReportError(ReportOnceErrors.InvertedSource)) {
 			Debug.Warning($"Inverted sprite source '{sourceBounds}' for texture '{referenceTexture.NormalizedName()}' ({referenceTexture.Extent()})");
 		}
 	}
 
 	[Conditional("DEBUG")]
-	private static void EmitDegenerateWarning(in Bounds sourceBounds, XTexture2D referenceTexture) {
+	private static void EmitDegenerateWarning(Bounds sourceBounds, XTexture2D referenceTexture) {
 		if (referenceTexture is not InternalTexture2D && referenceTexture.Meta().ShouldReportError(ReportOnceErrors.DegenerateSource)) {
 			Debug.Warning($"Degenerate sprite source '{sourceBounds}' for texture '{referenceTexture.NormalizedName()}' ({referenceTexture.Extent()})");
 		}

@@ -1,7 +1,7 @@
 {
   "Name": "Leave The Mine",
   "Author": "Kangzoel",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Leave The Mine's floor by pressing keyboard shortcut. Don't need to walk up to the ladder any more.",
   "UniqueID": "Kangzoel.LeaveTheMine",
   "EntryDll": "LeaveTheMine.dll",

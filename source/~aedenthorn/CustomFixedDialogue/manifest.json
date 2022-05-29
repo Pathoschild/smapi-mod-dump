@@ -11,7 +11,7 @@
 {
   "Name": "Custom Fixed Dialogue",
   "Author": "aedenthorn",
-  "Version": "2.1.6",
+  "Version": "2.1.9",
   "Description": "Custom fixed dialogue.",
   "UniqueID": "aedenthorn.CustomFixedDialogue",
   "EntryDll": "CustomFixedDialogue.dll",

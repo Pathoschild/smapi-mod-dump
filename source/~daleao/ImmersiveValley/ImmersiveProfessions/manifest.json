@@ -4,18 +4,18 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
 {
   "Name": "Walk Of Life - Immersive Professions",
   "Author": "DaLion",
-  "Version": "3.1.15",
+  "Version": "3.1.16",
   "Description": "An immersive overhaul of Stardew professions.",
   "UniqueID": "DaLion.ImmersiveProfessions",
   "EntryDll": "ImmersiveProfessions.dll",
-  "MinimumApiVersion": "3.13.0",
+  "MinimumApiVersion": "3.14.0",
   "UpdateKeys": ["Nexus:8111"],
   "Dependencies": [
     {

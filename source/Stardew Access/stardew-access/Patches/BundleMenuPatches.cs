@@ -17,6 +17,7 @@ namespace stardew_access.Patches
     internal class BundleMenuPatches
     {
         internal static string junimoNoteMenuQuery = "";
+        internal static string currentJunimoArea = "";
         internal static string jojaCDMenuQuery = "";
         internal static bool isUsingCustomButtons = false;
         internal static int currentIngredientListItem = -1, currentIngredientInputSlot = -1, currentInventorySlot = -1;
@@ -90,6 +91,8 @@ namespace stardew_access.Patches
                     isUsingCustomButtons = false;
 
                     string areaName = __instance.scrambledText ? CommunityCenter.getAreaEnglishDisplayNameFromNumber(___whichArea) : CommunityCenter.getAreaDisplayNameFromNumber(___whichArea);
+                    string reward = __instance.getRewardNameForArea(___whichArea);
+
                     if (__instance.scrambledText)
                     {
                         string toSpeak = "Scrambled Text";
@@ -100,6 +103,15 @@ namespace stardew_access.Patches
                         }
                         return;
                     }
+
+                    if (currentJunimoArea != areaName)
+                    {
+                        currentJunimoArea = areaName;
+                        MainClass.DebugLog(areaName);
+                        MainClass.ScreenReader.Say($"Area {areaName}, {reward}", true);
+                        return;
+                    }
+
                     for (int i = 0; i < __instance.bundles.Count; i++)
                     {
                         if (__instance.bundles[i].containsPoint(x, y))
@@ -149,11 +161,11 @@ namespace stardew_access.Patches
                 }
                 else
                 {
-                    bool isIPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.I); // For the ingredients
-                    bool isCPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.C); // For the items in inventory
-                    bool isPPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.P); // For the Purchase Button
-                    bool isVPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.V); // For the ingredient input slots
-                    bool isBackPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Back); // For the back button
+                    bool isIPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredients
+                    bool isCPressed = MainClass.Config.BundleMenuInventoryItemsKey.JustPressed(); // For the items in inventory
+                    bool isPPressed = MainClass.Config.BundleMenuPurchaseButtonKey.JustPressed(); // For the Purchase Button
+                    bool isVPressed = MainClass.Config.BundleMenuIngredientsInputSlotKey.JustPressed(); // For the ingredient input slots
+                    bool isBackPressed = MainClass.Config.BundleMenuBackButtonKey.JustPressed(); // For the back button
                     bool isLeftShiftPressed = Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift);
 
                     if (isIPressed && !isUsingCustomButtons)
@@ -185,7 +197,6 @@ namespace stardew_access.Patches
                         MainClass.ScreenReader.Say("Purchase Button", true);
                     }
                 }
-                string reward = __instance.getRewardNameForArea(___whichArea);
             }
             catch (Exception e)
             {

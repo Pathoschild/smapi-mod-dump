@@ -71,12 +71,39 @@ namespace SmartBuilding
             // Wipe the player's inventory with the vanilla "debug clear" command.
             Game1.game1.parseDebugInput("clear");
 
+            // Max out the player's inventory size. It's over 9000.
+            Game1.game1.parseDebugInput("backpack 9001");
+
             // Our item list
             Item[] items;
 
             // And figure out which subcommand we want.
             switch (subCommand)
             {
+                case "morefertilizers":
+                case "morefertilisers":
+                    items = new[]
+                    {
+                        Utility.fuzzyItemSearch("Joja Fertilizer", 10),
+                        Utility.fuzzyItemSearch("Fish Food Fertilizer", 10),
+                        Utility.fuzzyItemSearch("Fruit Tree Fertilizer", 10),
+                        Utility.fuzzyItemSearch("Domesticated Fish Food Fertilizer", 10),
+                        Utility.fuzzyItemSearch("Apple Sapling", 2),
+                        Utility.fuzzyItemSearch("Banana Sapling", 2),
+                        Utility.fuzzyItemSearch("Mango Sapling", 2),
+                        Utility.fuzzyItemSearch("Peach Sapling", 2),
+                        Utility.fuzzyItemSearch("Orange Sapling", 2)
+                    };
+
+                    foreach (Item item in items)
+                    {
+                        if (item != null)
+                            player.addItemToInventory(item);
+                    }
+
+                    Game1.game1.parseDebugInput("build Fish9Pond");
+
+                    break;
                 case "regression":
                     items = new[]
                     {

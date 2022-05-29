@@ -9,14 +9,12 @@
 *************************************************/
 
 using TehPers.Core.Api.Items;
-using TehPers.Core.Api.Json;
 
 namespace TehPers.FishingOverhaul.Api.Content
 {
     /// <summary>
     /// Fish entry filter.
     /// </summary>
-    [JsonDescribe]
     public record FishEntryFilter
     {
         /// <summary>

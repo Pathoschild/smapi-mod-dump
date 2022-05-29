@@ -23,9 +23,35 @@ using StardewModdingAPI;
 
 namespace Leclair.Stardew.Common;
 
+public interface IStringTokenizerApi {
+
+	delegate bool HandleTokenDelegate(string input, IGameState state, out string result);
+
+	/// <summary>
+	/// Register a new token for use in tokenizable strings.
+	/// </summary>
+	/// <param name="key">The name of the token.</param>
+	/// <param name="handler">A method for handling the token when
+	/// it's encountered.</param>
+	void RegisterToken(string key, HandleTokenDelegate handler);
+
+	#region Parse Token Strings
+
+	/// <summary>
+	/// Scan a string and process every known token.
+	/// </summary>
+	/// <param name="input">The string to process.</param>
+	/// <param name="state">The game state to use when executing token handlers.</param>
+	/// <returns></returns>
+	string ProcessString(string input, IGameState state);
+
+	#endregion
+
+}
+
 public static class StringTokenizer {
 
-	public delegate bool HandleTokenDelegate(string input, GameStateQuery.GameState state, out string result);
+	public delegate bool HandleTokenDelegate(string input, IGameState state, out string result);
 
 	#region Storage
 
@@ -50,18 +76,18 @@ public static class StringTokenizer {
 	[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Standardized API with Reflection for Discovery")]
 	public static class Builtins {
 
-		public static bool Handle_ArticleFor(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_ArticleFor(string input, IGameState state, out string result) {
 			result = Lexicon.getProperArticleForWord(input);
 			return true;
 		}
 
-		public static bool Handle_CharacterName(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_CharacterName(string input, IGameState state, out string result) {
 			NPC who = Game1.getCharacterFromName(input);
 			result = who?.displayName ?? string.Empty;
 			return who != null;
 		}
 
-		public static bool Handle_DataString(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_DataString(string input, IGameState state, out string result) {
 			try {
 				string[] args = input.Split(' ');
 				if (args.Length < 3) {
@@ -86,58 +112,58 @@ public static class StringTokenizer {
 			return false;
 		}
 
-		public static bool Handle_DayOfMonth(string input, GameStateQuery.GameState state, out string result) {
-			result = state.date.DayOfMonth.ToString();
+		public static bool Handle_DayOfMonth(string input, IGameState state, out string result) {
+			result = state.Date.DayOfMonth.ToString();
 			return true;
 		}
 
-		public static bool Handle_EscapedText(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_EscapedText(string input, IGameState state, out string result) {
 			result = input.Replace(' ', '\u00a0');
 			return true;
 		}
 
-		public static bool Handle_FarmerUniqueID(string input, GameStateQuery.GameState state, out string result) {
-			if (state.farmer == null) {
+		public static bool Handle_FarmerUniqueID(string input, IGameState state, out string result) {
+			if (state.Farmer == null) {
 				result = string.Empty;
 				return false;
 			}
 
-			result = state.farmer.UniqueMultiplayerID.ToString();
+			result = state.Farmer.UniqueMultiplayerID.ToString();
 			return true;
 		}
 
-		public static bool Handle_FarmName(string input, GameStateQuery.GameState state, out string result) {
-			if (state.farmer == null) {
+		public static bool Handle_FarmName(string input, IGameState state, out string result) {
+			if (state.Farmer == null) {
 				result = string.Empty;
 				return false;
 			}
 
-			result = state.farmer.farmName.Value;
+			result = state.Farmer.farmName.Value;
 			return true;
 		}
 
-		public static bool Handle_GenderedText(string input, GameStateQuery.GameState state, out string result) {
-			if (state.farmer == null) {
+		public static bool Handle_GenderedText(string input, IGameState state, out string result) {
+			if (state.Farmer == null) {
 				result = string.Empty;
 				return false;
 			}
 
 			string[] args = input.Split(' ');
-			result = state.farmer.IsMale || args.Length < 2 ? args[0] : args[1];
+			result = state.Farmer.IsMale || args.Length < 2 ? args[0] : args[1];
 			return true;
 		}
 
-		public static bool Handle_ItemCount(string input, GameStateQuery.GameState state, out string result) {
-			if (state.item == null) {
+		public static bool Handle_ItemCount(string input, IGameState state, out string result) {
+			if (state.Item == null) {
 				result = string.Empty;
 				return false;
 			}
 
-			result = state.item.Stack.ToString();
+			result = state.Item.Stack.ToString();
 			return true;
 		}
 
-		public static bool Handle_LocalizedText(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_LocalizedText(string input, IGameState state, out string result) {
 			string[] args = input.Split(' ');
 			if (args.Length > 1)
 				result = Game1.content.LoadString(args[0], args[1..]);
@@ -147,7 +173,7 @@ public static class StringTokenizer {
 			return true;
 		}
 
-		public static bool Handle_LocationName(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_LocationName(string input, IGameState state, out string result) {
 			GameLocation loc = Game1.getLocationFromName(input);
 			if (loc == null) {
 				result = string.Empty;
@@ -159,25 +185,25 @@ public static class StringTokenizer {
 			return true;
 		}
 
-		public static bool Handle_PositiveAdjective(string input, GameStateQuery.GameState state, out string result) {
+		public static bool Handle_PositiveAdjective(string input, IGameState state, out string result) {
 			result = Lexicon.getRandomPositiveAdjectiveForEventOrPerson();
 			return true;
 		}
 
-		public static bool Handle_Season(string input, GameStateQuery.GameState state, out string result) {
-			result = state.date.Season;
+		public static bool Handle_Season(string input, IGameState state, out string result) {
+			result = state.Date.Season;
 			return true;
 		}
 
-		public static bool Handle_SpouseFarmerText(string input, GameStateQuery.GameState state, out string result) {
-			if (state.farmer != null) {
+		public static bool Handle_SpouseFarmerText(string input, IGameState state, out string result) {
+			if (state.Farmer != null) {
 				string[] args = input.Split(' ');
-				if (state.farmer.team.GetSpouse(state.farmer.UniqueMultiplayerID).HasValue) {
+				if (state.Farmer.team.GetSpouse(state.Farmer.UniqueMultiplayerID).HasValue) {
 					result = args[0];
 					return true;
 				}
 
-				if (state.farmer.getSpouse() != null) {
+				if (state.Farmer.getSpouse() != null) {
 					result = args[1];
 					return true;
 				}
@@ -187,18 +213,18 @@ public static class StringTokenizer {
 			return false;
 		}
 
-		public static bool Handle_SpouseGenderedText(string input, GameStateQuery.GameState state, out string result) {
-			if (state.farmer != null) {
+		public static bool Handle_SpouseGenderedText(string input, IGameState state, out string result) {
+			if (state.Farmer != null) {
 				string[] args = input.Split(' ');
 
-				long? spouse = state.farmer.team.GetSpouse(state.farmer.UniqueMultiplayerID);
+				long? spouse = state.Farmer.team.GetSpouse(state.Farmer.UniqueMultiplayerID);
 				if (spouse.HasValue && Game1.getFarmerMaybeOffline(spouse.Value) is Farmer who) {
 					result = who.IsMale ?
 						args[0] : args[1];
 					return true;
 				}
 
-				if (state.farmer.getSpouse() is NPC npc) {
+				if (state.Farmer.getSpouse() is NPC npc) {
 					result = npc.Gender == 0 ?
 						args[0] : args[1];
 					return true;
@@ -209,13 +235,13 @@ public static class StringTokenizer {
 			return false;
 		}
 
-		public static bool Handle_SuggestedItem(string input, GameStateQuery.GameState state, out string result) {
-			if (state.item == null) {
+		public static bool Handle_SuggestedItem(string input, IGameState state, out string result) {
+			if (state.Item == null) {
 				result = string.Empty;
 				return false;
 			}
 
-			result = state.item.DisplayName;
+			result = state.Item.DisplayName;
 			return true;
 		}
 	}
@@ -250,20 +276,20 @@ public static class StringTokenizer {
 		rnd ??= Game1.random;
 
 		return ParseString(input, new GameStateQuery.GameState(
-			rnd: rnd,
-			date: date ?? Game1.Date,
-			timeOfDay: time ?? Game1.timeOfDay,
-			ticks: tick ?? Game1.ticks,
-			pickedValue: picked ?? rnd.NextDouble(),
-			farmer: who ?? Game1.player,
-			location: location,
-			item: item,
-			monitor: monitor,
-			trace: trace
+			Random: rnd,
+			Date: date ?? Game1.Date,
+			TimeOfDay: time ?? Game1.timeOfDay,
+			Ticks: tick ?? Game1.ticks,
+			PickedValue: picked ?? rnd.NextDouble(),
+			Farmer: who ?? Game1.player,
+			Location: location,
+			Item: item,
+			Monitor: monitor,
+			DoTrace: trace
 		));
 	}
 
-	public static string ParseString(string input, GameStateQuery.GameState state) {
+	public static string ParseString(string input, IGameState state) {
 
 		Initialize();
 
@@ -278,7 +304,7 @@ public static class StringTokenizer {
 		return input.Replace('\u00a0', ' ');
 	}
 
-	private static int HandleToken(int start, ref string input, GameStateQuery.GameState state) {
+	private static int HandleToken(int start, ref string input, IGameState state) {
 
 		int next = input.IndexOfAny(new[] { '[', ']' }, start + 1);
 
@@ -289,8 +315,8 @@ public static class StringTokenizer {
 
 			else if (c == ']') {
 				string token = input.Substring(start + 1, next - start - 1);
-				if (state.trace)
-					state.monitor?.Log($"[StringTokenizer] Token: {token}");
+				if (state.DoTrace)
+					state.Monitor?.Log($"[StringTokenizer] Token: {token}");
 				int space = token.IndexOfWhitespace();
 
 				string name;
@@ -306,8 +332,8 @@ public static class StringTokenizer {
 
 				if (Tokens.TryGetValue(name, out var handler)) {
 					if (handler(trail, state, out string result)) {
-						if (state.trace)
-							state.monitor?.Log($"[StringTokenizer]   -> {result}", LogLevel.Trace);
+						if (state.DoTrace)
+							state.Monitor?.Log($"[StringTokenizer]   -> {result}", LogLevel.Trace);
 
 						input = input.Remove(start, next - start + 1);
 						input = input.Insert(start, result);
@@ -315,7 +341,7 @@ public static class StringTokenizer {
 					}
 
 				} else {
-					state.monitor?.Log($"[StringTokenizer] No Such Token: {name}", LogLevel.Warn);
+					state.Monitor?.Log($"[StringTokenizer] No Such Token: {name}", LogLevel.Warn);
 				}
 
 				return next;

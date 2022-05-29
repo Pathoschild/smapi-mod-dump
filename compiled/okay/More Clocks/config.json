@@ -11,5 +11,7 @@
   "CropGrowArea": "Individual",
   "CropGrowChanceValue": 25,
   "CropMutateToGiantEnabled": true,
-  "CropMutateToGiantChanceValue": 25
+  "CropMutateToGiantChanceValue": 25,
+  "IridiumClockCustomTexture": "IridiumClock",
+  "RadioactiveClockCustomTexture": "RadioactiveClock"
 }

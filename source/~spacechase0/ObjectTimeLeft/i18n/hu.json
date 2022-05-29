@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.show-on-start.name": "Megjelenítés indításkor",
+    "config.show-on-start.tooltip": "A játék úgy indul, hogy a hátralévő idő már látható.",
+
+    "config.toggle-key.name": "Kijelző aktiváló billentyű",
+    "config.toggle-key.tooltip": "Billentyű az objektumok felett elhelyezett szöveg aktiválására.",
+
+    "config.text-scale.name": "Szöveg méret",
+    "config.text-scale.tooltip": "Az objektumok felett elhelyezett szöveg mérete."
+}

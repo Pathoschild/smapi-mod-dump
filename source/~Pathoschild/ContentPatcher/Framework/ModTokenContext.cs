@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +48,7 @@ namespace ContentPatcher.Framework
         private readonly InvariantDictionary<string> AliasTokenNames = new();
 
         /// <summary>Maps tokens to those affected by changes to their value in the mod context.</summary>
-        private InvariantDictionary<InvariantHashSet> TokenDependents { get; } = new();
+        private InvariantDictionary<MutableInvariantSet> TokenDependents { get; } = new();
 
         /// <summary>Whether any tokens haven't received a context update yet.</summary>
         private bool HasNewTokens;
@@ -76,8 +74,8 @@ namespace ContentPatcher.Framework
         {
             this.Scope = scope;
             this.ParentContext = parentContext;
-            this.LocalContext = new GenericTokenContext(this.IsModInstalled, () => this.UpdateTick);
-            this.DynamicContext = new GenericTokenContext(this.IsModInstalled, () => this.UpdateTick);
+            this.LocalContext = new(this.IsModInstalled, () => this.UpdateTick);
+            this.DynamicContext = new(this.IsModInstalled, () => this.UpdateTick);
         }
 
         /// <summary>Add a standard token to the context.</summary>
@@ -109,7 +107,7 @@ namespace ContentPatcher.Framework
         /// <param name="name">The token name.</param>
         /// <param name="rawValue">The token value to set.</param>
         /// <param name="conditions">The conditions that must match to set this value.</param>
-        public void AddDynamicToken(string name, IManagedTokenString rawValue, IEnumerable<Condition> conditions)
+        public void AddDynamicToken(string name, IManagedTokenString rawValue, Condition[] conditions)
         {
             // validate
             if (this.ParentContext.Contains(name, enforceContext: false))
@@ -118,16 +116,16 @@ namespace ContentPatcher.Framework
                 throw new InvalidOperationException($"Can't register a '{name}' dynamic token because there's a config token or alias with that name.");
 
             // get (or create) token
-            if (!this.DynamicTokens.TryGetValue(name, out ManagedManualToken managed))
+            if (!this.DynamicTokens.TryGetValue(name, out ManagedManualToken? managed))
             {
-                managed = new ManagedManualToken(name, isBounded: true, this.Scope);
+                managed = new(name, isBounded: true, this.Scope);
                 this.DynamicTokens[name] = managed;
                 this.DynamicContext.Save(managed.Token);
             }
 
             // create token value handler
             var tokenValue = new DynamicTokenValue(managed, rawValue, conditions);
-            string[] tokensUsed = tokenValue.GetTokensUsed().ToArray();
+            IInvariantSet tokensUsed = tokenValue.GetTokensUsed();
 
             // save value info
             managed.ValueProvider.AddTokensUsed(tokensUsed);
@@ -135,8 +133,8 @@ namespace ContentPatcher.Framework
             this.DynamicTokenValues.Add(tokenValue);
 
             // track tokens which should trigger an update to this token
-            Queue<string> tokenQueue = new Queue<string>(tokensUsed);
-            InvariantHashSet visited = new InvariantHashSet();
+            Queue<string> tokenQueue = new(tokensUsed);
+            MutableInvariantSet visited = new();
             while (tokenQueue.Any())
             {
                 // get token name
@@ -145,14 +143,18 @@ namespace ContentPatcher.Framework
                     continue;
 
                 // if the used token uses other tokens, they may affect the one being added too
-                IToken usedToken = this.GetToken(usedTokenName, enforceContext: false);
-                foreach (string nextTokenName in usedToken.GetTokensUsed())
-                    tokenQueue.Enqueue(nextTokenName);
+                IToken? usedToken = this.GetToken(usedTokenName, enforceContext: false);
+                if (usedToken != null)
+                {
+                    foreach (string nextTokenName in usedToken.GetTokensUsed())
+                        tokenQueue.Enqueue(nextTokenName);
 
-                // add new token as a dependent of the used token
-                if (!this.TokenDependents.TryGetValue(usedToken.Name, out InvariantHashSet used))
-                    this.TokenDependents.Add(usedToken.Name, used = new InvariantHashSet());
-                used.Add(name);
+                    // add new token as a dependent of the used token
+                    if (!this.TokenDependents.TryGetValue(usedToken.Name, out MutableInvariantSet? used))
+                        this.TokenDependents.Add(usedToken.Name, used = new());
+
+                    used.Add(name);
+                }
             }
 
             // track new token
@@ -173,14 +175,14 @@ namespace ContentPatcher.Framework
         /// <returns>Returns the resolved token name, or the input token name if it's not an alias.</returns>
         public string ResolveAlias(string tokenName)
         {
-            return this.AliasTokenNames.TryGetValue(tokenName, out string targetName)
+            return this.AliasTokenNames.TryGetValue(tokenName, out string? targetName)
                 ? targetName
                 : tokenName;
         }
 
         /// <summary>Update the current context.</summary>
         /// <param name="globalChangedTokens">The global token values which changed.</param>
-        public void UpdateContext(InvariantHashSet globalChangedTokens)
+        public void UpdateContext(IInvariantSet globalChangedTokens)
         {
             // update local standard tokens
             //
@@ -229,9 +231,9 @@ namespace ContentPatcher.Framework
         /// <param name="token">The token name to check.</param>
         public IEnumerable<string> GetTokensAffectedBy(string token)
         {
-            return this.TokenDependents.TryGetValue(token, out InvariantHashSet affectedTokens)
-                ? affectedTokens
-                : Enumerable.Empty<string>();
+            return this.TokenDependents.TryGetValue(token, out MutableInvariantSet? affectedTokens)
+                ? affectedTokens.GetImmutable()
+                : InvariantSets.Empty;
         }
 
         /****
@@ -250,13 +252,13 @@ namespace ContentPatcher.Framework
         }
 
         /// <inheritdoc />
-        public IToken GetToken(string name, bool enforceContext)
+        public IToken? GetToken(string name, bool enforceContext)
         {
             string targetName = this.ResolveAlias(name);
 
             foreach (IContext context in this.GetContexts())
             {
-                IToken token = context.GetToken(targetName, enforceContext);
+                IToken? token = context.GetToken(targetName, enforceContext);
                 if (token != null)
                     return token;
             }
@@ -275,10 +277,10 @@ namespace ContentPatcher.Framework
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetValues(string name, IInputArguments input, bool enforceContext)
+        public IInvariantSet GetValues(string name, IInputArguments input, bool enforceContext)
         {
-            IToken token = this.GetToken(name, enforceContext);
-            return token?.GetValues(input) ?? Enumerable.Empty<string>();
+            IToken? token = this.GetToken(name, enforceContext);
+            return token?.GetValues(input) ?? InvariantSets.Empty;
         }
 
 
@@ -288,9 +290,7 @@ namespace ContentPatcher.Framework
         /// <summary>Get the underlying contexts in priority order.</summary>
         private IEnumerable<IContext> GetContexts()
         {
-            yield return this.ParentContext;
-            yield return this.LocalContext;
-            yield return this.DynamicContext;
+            return new[] { this.ParentContext, this.LocalContext, this.DynamicContext };
         }
     }
 }

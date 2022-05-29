@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -44,7 +44,7 @@ using StardewValley.Objects;
 
 namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
   public class ChestSettings : CustomClickableMenu {
-  #region Private
+    #region Private
 
     [SuppressMessage("ReSharper", "PrivateFieldCanBeConvertedToLocalVariable")]
     private readonly CustomTextBox nameTextBox;
@@ -52,12 +52,12 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
     private readonly CustomTextBox descriptionTextBox;
     private readonly CustomNumericUpDownBox rowsNumericUpDown;
     private readonly CustomNumericUpDownBox columnsNumericUpDown;
-    private readonly CustomButton           applyButton;
+    private readonly CustomButton applyButton;
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     public override void SetEnabled(Boolean isEnabled) {
       this.mData.SetEnabled(isEnabled);
@@ -66,10 +66,10 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
       });
     }
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public ChestSettings(Rectangle bounds, Colours colours, Chest targetChest)
       : base(bounds, colours) {
@@ -113,7 +113,7 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
                                             "Apply",
                                             String.Empty,
                                             () => {
-                                              Config.Get().mRows    = this.rowsNumericUpDown.mValue;
+                                              Config.Get().mRows = this.rowsNumericUpDown.mValue;
                                               Config.Get().mColumns = this.columnsNumericUpDown.mValue;
                                               Config.Save();
                                               targetChest.ShowMenu();
@@ -125,6 +125,6 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
                                   .Where(c => c is not null));
     }
 
-  #endregion
+    #endregion
   }
 }

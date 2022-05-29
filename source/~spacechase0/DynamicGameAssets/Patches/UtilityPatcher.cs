@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using DynamicGameAssets.Game;
+using DynamicGameAssets.PackData;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Spacechase.Shared.Patching;
@@ -34,6 +36,11 @@ namespace DynamicGameAssets.Patches
             harmony.Patch(
                 original: this.RequireMethod<Utility>(nameof(Utility.isViableSeedSpot)),
                 prefix: this.GetHarmonyMethod(nameof(Before_IsViableSeedSpot))
+            );
+
+            harmony.Patch(
+                original: this.RequireMethod<Utility>(nameof(Utility.getAllFurnituresForFree)),
+                postfix: this.GetHarmonyMethod(nameof(After_GetAllFurnituresForFree))
             );
         }
 
@@ -64,6 +71,25 @@ namespace DynamicGameAssets.Patches
                 return false;
             }
             return true;
+        }
+
+        /// <summary>The method to call after <see cref="Utility.getAllFurnituresForFree"/>.</summary>
+        private static void After_GetAllFurnituresForFree(Dictionary<ISalable, int[]> __result)
+        {
+            foreach (var pack in Mod.contentPacks)
+            {
+                foreach (var data in pack.Value.items.Values)
+                {
+                    if (!data.Enabled)
+                        continue;
+
+                    var item = data.ToItem();
+                    if (item != null && item is Furniture && data is FurniturePackData furnData && furnData.ShowInCatalogue)
+                    {
+                        __result.Add(item, new int[2] { 0, 2147483647 });
+                    } 
+                }
+            }
         }
     }
 }

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -43,7 +41,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             this.LastLocale = translationHelper.LocaleEnum;
 
             this.EnableInputArguments(required: true, mayReturnMultipleValues: false, maxPositionalArgs: 1);
-            this.ValidNamedArguments = null; // allow any named argument
+            this.AllowAnyNamedArguments = true;
             this.MarkReady(true);
         }
 
@@ -63,7 +61,10 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             this.AssertInput(input);
 
             // get translation
-            Translation translation = this.TranslationHelper.Get(input.GetFirstPositionalArg());
+            string? key = input.GetFirstPositionalArg();
+            if (string.IsNullOrWhiteSpace(key))
+                return InvariantSets.Empty;
+            Translation translation = this.TranslationHelper.Get(key);
 
             // add tokens
             if (input.HasNamedArgs)
@@ -75,14 +76,14 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             }
 
             // add default value
-            if (input.NamedArgs.TryGetValue("default", out IInputArgumentValue defaultValue))
+            if (input.NamedArgs.TryGetValue("default", out IInputArgumentValue? defaultValue))
             {
                 translation = translation
                     .Default(this.Stringify(defaultValue))
                     .UsePlaceholder(false); // allow setting a blank default
             }
 
-            yield return translation;
+            return InvariantSets.FromValue(translation);
         }
 
 

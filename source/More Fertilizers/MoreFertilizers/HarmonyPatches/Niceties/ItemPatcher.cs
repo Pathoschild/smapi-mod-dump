@@ -29,7 +29,7 @@ internal static class ItemPatcher
             if (__instance.modData?.GetBool(CanPlaceHandler.Organic) == true)
             {
                 // Re-add in the usual name-based key, since I've adjusted the name.
-                tags.Add("item_" + __instance.SanitizeContextTag(__instance.Name[..^10]));
+                tags.Add("item_" + __instance.SanitizeContextTag(__instance.Name.Replace(" (Organic)", string.Empty)));
                 tags.Add("atravita_morefertilizers_organic");
             }
             else if (__instance.modData?.GetBool(CanPlaceHandler.Joja) == true)

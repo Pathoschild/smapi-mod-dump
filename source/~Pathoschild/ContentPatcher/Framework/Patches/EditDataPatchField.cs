@@ -8,11 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
-using System.Collections.Generic;
 using ContentPatcher.Framework.Tokens;
 using ContentPatcher.Framework.Tokens.Json;
+using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher.Framework.Patches
 {
@@ -36,7 +34,7 @@ namespace ContentPatcher.Framework.Patches
         public ITokenString FieldKey { get; }
 
         /// <summary>The entry value to set.</summary>
-        public TokenizableJToken Value { get; }
+        public TokenizableJToken? Value { get; }
 
         /// <inheritdoc />
         public bool IsMutable => this.Contextuals.IsMutable;
@@ -52,7 +50,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="entryKey">The unique key for the entry in the data file.</param>
         /// <param name="fieldKey">The field number to change.</param>
         /// <param name="value">The entry value to set.</param>
-        public EditDataPatchField(IManagedTokenString entryKey, IManagedTokenString fieldKey, TokenizableJToken value)
+        public EditDataPatchField(IManagedTokenString entryKey, IManagedTokenString fieldKey, TokenizableJToken? value)
         {
             this.EntryKey = entryKey;
             this.FieldKey = fieldKey;
@@ -71,7 +69,7 @@ namespace ContentPatcher.Framework.Patches
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
             return this.Contextuals.GetTokensUsed();
         }

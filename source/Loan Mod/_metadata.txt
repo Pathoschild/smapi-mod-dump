@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/legovader09/SDVLoanMod
+   Git: https://github.com/legovader09/SDVLoanMod.git
+
+mods:
+   Loan Mod
+
+latest commit:
+   commit 7d8a8e06da45d969942972f27ed3e817283a6d2d
+   Author: Dominik H <dcdominoes@gmail.com>
+   Date:   Mon May 16 14:06:35 2022 +0100
+   
+       Updated versioning again
+   

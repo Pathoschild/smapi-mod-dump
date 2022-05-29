@@ -31,6 +31,7 @@ namespace LoveOfCooking.Objects
 		bool IsEnabled();
 		CookingSkill GetSkill();
 		int GetLevel();
+		int GetMaximumLevel();
 		Dictionary<ICookingSkillAPI.Profession, bool> GetCurrentProfessions(long playerID = -1L);
 		bool HasProfession(ICookingSkillAPI.Profession profession, long playerID = -1L);
 		bool AddExperienceDirectly(int experience);
@@ -66,10 +67,16 @@ namespace LoveOfCooking.Objects
 			return SpaceCore.Skills.GetSkill(CookingSkill.InternalName) as CookingSkill;
 		}
 
-		/// <returns>Current base level.</returns>
+		/// <returns>Current base skill level.</returns>
 		public int GetLevel()
 		{
 			return SpaceCore.Skills.GetSkillLevel(Game1.player, CookingSkill.InternalName);
+		}
+
+		/// <returns>Maximum possible skill level.</returns>
+		public int GetMaximumLevel()
+		{
+			return this.GetSkill().ExperienceCurve.Length;
 		}
 
 		/// <returns>A dictionary of all possible Cooking professions and whether each is active.</returns>
@@ -248,10 +255,10 @@ namespace LoveOfCooking.Objects
 				}
 				else if (apply)
 				{
-					Log.D($"\nExperience until level {nextLevel}:"
+					Log.D($"{Environment.NewLine}Experience until level {nextLevel}:"
 						+ $" ({requiredExperience - remainingExperience}/{requiredExperience})"
-						+ $"\nTotal experience: ({this.GetTotalCurrentExperience()}/{this.GetTotalExperienceRequiredForLevel(nextLevel)})"
-						+ $"\n+{finalExperience} experience!",
+						+ $"{Environment.NewLine}Total experience: ({this.GetTotalCurrentExperience()}/{this.GetTotalExperienceRequiredForLevel(nextLevel)})"
+						+ $"{Environment.NewLine}+{finalExperience} experience!",
 						ModEntry.Config.DebugMode);
 					this.AddExperienceDirectly(finalExperience);
 				}

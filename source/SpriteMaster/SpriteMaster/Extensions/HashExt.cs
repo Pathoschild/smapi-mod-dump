@@ -8,12 +8,13 @@
 **
 *************************************************/
 
+using SpriteMaster.Hashing;
 using System.Text;
 
 namespace SpriteMaster.Extensions;
 
-static class HashExt {
-	internal static int GetSafeHash(this string value) => (int)Hashing.Hash(Encoding.Unicode.GetBytes(value ?? ""));
+internal static class HashExt {
+	internal static int GetSafeHash(this string? value) => (int)Encoding.Unicode.GetBytes(value ?? "").Hash();
 	//internal static int GetSafeHash(this char[] value) => (int)Hashing.Hash(Encoding.Unicode.GetBytes(value ?? Array.Empty<char>()));
 	internal static int GetSafeHash(this StringBuilder value) => value.ToString().GetSafeHash();
 
@@ -27,7 +28,7 @@ static class HashExt {
 	internal static int GetSafeHash(this long value) => value.GetHashCode();
 
 	internal static int GetSafeHash<T>(this T? value) => value switch {
-		null => Hashing.Null32,
+		null => HashUtility.Null32,
 		string s => s.GetSafeHash(),
 		StringBuilder s => s.ToString().GetSafeHash(),
 		_ => value.GetHashCode()

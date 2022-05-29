@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.position-x.name": "Позиція X",
+    "config.position-x.tooltip": "Піксельна позиція X, на якій треба відображати шкалу досвіду, відносно до лівого верхнього кута екрану.",
+    "config.position-y.name": "Позиція Y",
+    "config.position-y.tooltip": "Піксельна позиція Y, на якій треба відображати шкалу досвіду, відносно до лівого верхнього кута екрану.",
+    "config.toggle-key.name": "Кнопка перемикання",
+    "config.toggle-key.tooltip": "Кнопка, яка показує або приховує шкали досвіду. Натисніть Shift та цю кнопку, щоб перемістити відображення шкал."
+}

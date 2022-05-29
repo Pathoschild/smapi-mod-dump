@@ -33,8 +33,20 @@
         <member name="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedFishChance">
             <inheritdoc/>
         </member>
+        <member name="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMinFishChance">
+            <inheritdoc />
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMaxFishChance">
+            <inheritdoc />
+        </member>
         <member name="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedTreasureChance">
             <inheritdoc/>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMinTreasureChance">
+            <inheritdoc />
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMaxTreasureChance">
+            <inheritdoc />
         </member>
         <member name="M:TehPers.FishingOverhaul.Api.BaseFishingApi.GetStreak(StardewValley.Farmer)">
             <inheritdoc/>
@@ -162,21 +174,57 @@
             </summary>
             <param name="e">The event args.</param>
         </member>
+        <member name="M:TehPers.FishingOverhaul.Api.BaseFishingApi.OnCalculatedMinFishChance(TehPers.FishingOverhaul.Api.Events.CalculatedFishChanceEventArgs)">
+            <summary>
+            Invokes the <see cref="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMinFishChance"/> event.
+            </summary>
+            <param name="e">The event args.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.BaseFishingApi.OnCalculatedMaxFishChance(TehPers.FishingOverhaul.Api.Events.CalculatedFishChanceEventArgs)">
+            <summary>
+            Invokes the <see cref="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMaxFishChance"/> event.
+            </summary>
+            <param name="e">The event args.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.BaseFishingApi.OnCalculatedMinTreasureChance(TehPers.FishingOverhaul.Api.Events.CalculatedTreasureChanceEventArgs)">
+            <summary>
+            Invokes the <see cref="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMinTreasureChance"/> event.
+            </summary>
+            <param name="e">The event args.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.BaseFishingApi.OnCalculatedMaxTreasureChance(TehPers.FishingOverhaul.Api.Events.CalculatedTreasureChanceEventArgs)">
+            <summary>
+            Invokes the <see cref="E:TehPers.FishingOverhaul.Api.BaseFishingApi.CalculatedMaxTreasureChance"/> event.
+            </summary>
+            <param name="e">The event args.</param>
+        </member>
         <member name="T:TehPers.FishingOverhaul.Api.CatchInfo">
             <summary>
             Information about a caught item.
             </summary>
-            <param name="FishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that caught this.</param>
-            <param name="Item">The item that was caught.</param>
-            <param name="FromFishPond">Whether this was caught from a fish pond.</param>
         </member>
-        <member name="M:TehPers.FishingOverhaul.Api.CatchInfo.#ctor(TehPers.FishingOverhaul.Api.FishingInfo,StardewValley.Item,System.Boolean)">
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FishingInfo">
             <summary>
-            Information about a caught item.
+            Information about the <see cref="T:StardewValley.Farmer"/> that caught this.
             </summary>
-            <param name="FishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that caught this.</param>
-            <param name="Item">The item that was caught.</param>
-            <param name="FromFishPond">Whether this was caught from a fish pond.</param>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.Item">
+            <summary>
+            The item that was caught.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.CatchInfo.FromFishPond">
+            <summary>
+            Whether this was caught from a fish pond.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.CatchInfo.Deconstruct(TehPers.FishingOverhaul.Api.FishingInfo@,StardewValley.Item@,System.Boolean@)">
+            <summary>
+            Deconstructs this <see cref="T:TehPers.FishingOverhaul.Api.CatchInfo"/> into its components.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that caught this.</param>
+            <param name="item">The item that was caught.</param>
+            <param name="fromFishPond">Whether this was caught from a fish pond.</param>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.CatchInfo.FishCatch">
             <summary>
@@ -228,6 +276,122 @@
             <param name="TrashItem">The trash item that was caught.</param>
             <param name="FromFishPond">Whether this was caught from a fish pond.</param>
         </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions">
+            <summary>
+            Conditions for availability.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.ObsoletionWarnings">
+            <summary>
+            Obsoletion warnings from initializing this <see cref="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.StartTime">
+            <summary>
+            Time this becomes available (inclusive).
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.EndTime">
+            <summary>
+            Time this is no longer available (exclusive).
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.SeasonsSplit">
+            <summary>
+            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.Seasons"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.Seasons">
+            <summary>
+            Seasons this can be caught in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.WeathersSplit">
+            <summary>
+            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.Weathers"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.Weathers">
+            <summary>
+            Weathers this can be caught in.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.WaterTypesSplit">
+            <summary>
+            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.WaterTypes"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.WaterTypes">
+            <summary>
+            The type of water this can be caught in. Each location handles this differently.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.MinFishingLevel">
+            <summary>
+            Required fishing level to catch this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.MaxFishingLevel">
+            <summary>
+            Maximum fishing level required to catch this, or null for no max.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.IncludeLocations">
+            <summary>
+            List of locations this should be available in. Leaving this empty will make this
+            available everywhere. Some locations have special handling. For example, the mines use
+            the location names "UndergroundMine" and "UndergroundMine/N", where N is the floor
+            number (both location names are valid for the floor).
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.ExcludeLocations">
+            <summary>
+            List of locations this should not be available in. This takes priority over
+            <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.IncludeLocations"/>.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.Position">
+            <summary>
+            Constraints on the bobber's position on the map when fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.FarmerPosition">
+            <summary>
+            Constraints on the farmer's position on the map when fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.MinDepth">
+            <summary>
+            Minimum bobber depth required to catch this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.MinBobberDepth">
+            <summary>
+            Minimum bobber depth required to catch this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.MaxDepth">
+            <summary>
+            Maximum bobber depth required to catch this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.MaxBobberDepth">
+            <summary>
+            Maximum bobber depth required to catch this.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.When">
+            <summary>
+            Content Patcher conditions for when this is available.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.IsAvailable(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Check whether these conditions are met.
+            </summary>
+            <param name="fishingInfo">Information about the farmer that is fishing.</param>
+            <returns>Whether these conditions are met.</returns>
+        </member>
         <member name="T:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo">
             <summary>
             Information about the availability of a catchable item.
@@ -246,102 +410,32 @@
             relative to all available entries.
             </param>
         </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.StartTime">
+        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.PriorityTier">
             <summary>
-            Time this becomes available (inclusive).
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.EndTime">
-            <summary>
-            Time this is no longer available (exclusive).
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.SeasonsSplit">
-            <summary>
-            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Seasons"/>.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Seasons">
-            <summary>
-            Seasons this can be caught in.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WeathersSplit">
-            <summary>
-            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Weathers"/>.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Weathers">
-            <summary>
-            Weathers this can be caught in.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WaterTypesSplit">
-            <summary>
-            Used for JSON serialization. Prefer <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WaterTypes"/>.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.WaterTypes">
-            <summary>
-            The type of water this can be caught in. Each location handles this differently.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.MinFishingLevel">
-            <summary>
-            Required fishing level to catch this.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.MaxFishingLevel">
-            <summary>
-            Maximum fishing level required to catch this, or null for no max.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.IncludeLocations">
-            <summary>
-            List of locations this should be available in. Leaving this empty will make this
-            available everywhere. Some locations have special handling. For example, the mines use
-            the location names "UndergroundMine" and "UndergroundMine/N", where N is the floor
-            number (both location names are valid for the floor).
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.ExcludeLocations">
-            <summary>
-            List of locations this should not be available in. This takes priority over
-            <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.IncludeLocations"/>.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.Position">
-            <summary>
-            Constraints on the bobber's position on the map when fishing.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.FarmerPosition">
-            <summary>
-            Constraints on the farmer's position on the map when fishing.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.MinDepth">
-            <summary>
-            Minimum bobber depth required to catch this.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.MaxDepth">
-            <summary>
-            Maximum bobber depth required to catch this.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.When">
-            <summary>
-            Content Patcher conditions for when this is available.
+            The priority tier for this entry. For all available entries, only the entries that
+            share the highest priority tier can be caught. For example, if all trash entries have a
+            tier of 0 except for a single entry that has a tier of 1, then that single entry is
+            guaranteed to be caught, regardless of its calculated weighted chance. If that entry
+            becomes unavailable, then entries from tier 0 are selected from instead. This can be
+            useful when creating special items that should always be caught first but which can only
+            be caught once, for example.
             </summary>
         </member>
         <member name="M:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.GetWeightedChance(TehPers.FishingOverhaul.Api.FishingInfo)">
             <summary>
             Gets the weighted chance of this being caught, if any. This does not test the
-            conditions in <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.When"/>.
+            conditions in <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.When"/>.
             </summary>
             <param name="fishingInfo">Information about the farmer that is fishing.</param>
             <returns>The weighted chance of this being caught, or <see langword="null"/> if not available.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.AvailabilityInfo.GetChance(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Gets the weighted chance of this being caught. This does not test the conditions in
+            <see cref="P:TehPers.FishingOverhaul.Api.Content.AvailabilityConditions.When"/>.
+            </summary>
+            <param name="fishingInfo">Information about the farmer that is fishing.</param>
+            <returns>The weighted chance of this being caught.</returns>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.Content.CatchActions">
             <summary>
@@ -469,12 +563,18 @@
             value should be no more than 1.
             </summary>
         </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.MaxDepth">
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.MaxChanceDepth">
             <summary>
             The required fishing depth to maximize the chances of catching the fish.
             </summary>
         </member>
-        <member name="M:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.GetWeightedChance(TehPers.FishingOverhaul.Api.FishingInfo)">
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.MaxDepth">
+            <summary>
+            Obsolete - use <see cref="P:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.MaxChanceDepth"/> instead.<br/>
+            The required fishing depth to maximize the chances of catching the fish.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo.GetChance(TehPers.FishingOverhaul.Api.FishingInfo)">
             <inheritdoc/>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.Content.FishEntry">
@@ -562,6 +662,28 @@
             <summary>
             Gets the treasure entries this content wants to remove.
             </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingContent.AddEffects">
+            <summary>
+            Fishing effects entries to add.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry">
+            <summary>
+            An entry for an effect that may be applied while fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry.Conditions">
+            <summary>
+            Conditions for when this effect should be applied.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry.CreateEffect(TehPers.Core.Api.DI.IGlobalKernel)">
+            <summary>
+            Creates the fishing effect associated with this entry.
+            </summary>
+            <param name="kernel">The global kernel.</param>
+            <returns>The fishing effect associated with this entry.</returns>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.Content.FishTraits">
             <summary>
@@ -742,14 +864,53 @@
             Maps to "floater" vanilla behavior.
             </summary>
         </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Effects.FishingEffectRegistration">
+            <summary>
+            A registered fishing effect.
+            </summary>
+            <param name="Name">The name of the effect.</param>
+            <param name="EntryType">The entry type (which must extend <see cref="T:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry"/>).</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Effects.FishingEffectRegistration.#ctor(System.String,System.Type)">
+            <summary>
+            A registered fishing effect.
+            </summary>
+            <param name="Name">The name of the effect.</param>
+            <param name="EntryType">The entry type (which must extend <see cref="T:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry"/>).</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Effects.FishingEffectRegistration.Of``1(System.String)">
+            <summary>
+            Creates a fishing effect registration.
+            </summary>
+            <typeparam name="T">The entry type.</typeparam>
+            <param name="name">The name of the effect.</param>
+            <returns>The registration.</returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Effects.IFishingEffect">
+            <summary>
+            An effect that can be applied while fishing.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Effects.IFishingEffect.Apply(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Applies this effect.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Effects.IFishingEffect.Unapply(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Unapplies this effect.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Effects.IFishingEffect.UnapplyAll">
+            <summary>
+            Unapplies this effect from all players.
+            </summary>
+        </member>
         <member name="T:TehPers.FishingOverhaul.Api.Events.CalculatedFishChanceEventArgs">
             <summary>
             Event data for after the chance for a fish is calculated.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Events.CalculatedFishChanceEventArgs.FishingInfo">
-            <summary>
-            Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.
             </summary>
         </member>
         <member name="P:TehPers.FishingOverhaul.Api.Events.CalculatedFishChanceEventArgs.ChanceForFish">
@@ -768,11 +929,6 @@
         <member name="T:TehPers.FishingOverhaul.Api.Events.CalculatedTreasureChanceEventArgs">
             <summary>
             Event data for after the chance for a treasure chest is calculated.
-            </summary>
-        </member>
-        <member name="P:TehPers.FishingOverhaul.Api.Events.CalculatedTreasureChanceEventArgs.FishingInfo">
-            <summary>
-            Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.
             </summary>
         </member>
         <member name="P:TehPers.FishingOverhaul.Api.Events.CalculatedTreasureChanceEventArgs.ChanceForTreasure">
@@ -803,6 +959,29 @@
             Initializes a new instance of the <see cref="T:TehPers.FishingOverhaul.Api.Events.CaughtItemEventArgs"/> class.
             </summary>
             <param name="catch">The catch info.</param>
+            <exception cref="T:System.ArgumentNullException">An argument was null.</exception>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Api.Events.ChanceCalculatedEventArgs">
+            <summary>
+            Event data for when a chance is calculated.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Events.ChanceCalculatedEventArgs.FishingInfo">
+            <summary>
+            Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Api.Events.ChanceCalculatedEventArgs.Chance">
+            <summary>
+            The chance that was calculated.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Api.Events.ChanceCalculatedEventArgs.#ctor(TehPers.FishingOverhaul.Api.FishingInfo,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:TehPers.FishingOverhaul.Api.Events.ChanceCalculatedEventArgs"/> class.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <param name="chance">The calculated chance.</param>
             <exception cref="T:System.ArgumentNullException">An argument was null.</exception>
         </member>
         <member name="T:TehPers.FishingOverhaul.Api.Events.CreatedDefaultFishingInfoEventArgs">
@@ -1214,10 +1393,30 @@
             invoked at the end of <see cref="M:TehPers.FishingOverhaul.Api.IFishingApi.GetChanceForFish(TehPers.FishingOverhaul.Api.FishingInfo)"/>.
             </summary>
         </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CalculatedMinFishChance">
+            <summary>
+            Invoked after the minimum chance of catching a fish (instead of trash) is calculated.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CalculatedMaxFishChance">
+            <summary>
+            Invoked after the maximum chance of catching a fish (instead of trash) is calculated.
+            </summary>
+        </member>
         <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CalculatedTreasureChance">
             <summary>
             Invoked after the chance of finding a treasure chest is calculated. This is invoked at
             the end of <see cref="M:TehPers.FishingOverhaul.Api.IFishingApi.GetChanceForTreasure(TehPers.FishingOverhaul.Api.FishingInfo)"/>.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CalculatedMinTreasureChance">
+            <summary>
+            Invoked after the minimum chance of finding a treasure chest is calculated.
+            </summary>
+        </member>
+        <member name="E:TehPers.FishingOverhaul.Api.IFishingApi.CalculatedMaxTreasureChance">
+            <summary>
+            Invoked after the maximum chance of finding a treasure chest is calculated.
             </summary>
         </member>
         <member name="M:TehPers.FishingOverhaul.Api.IFishingApi.CreateDefaultFishingInfo(StardewValley.Farmer)">

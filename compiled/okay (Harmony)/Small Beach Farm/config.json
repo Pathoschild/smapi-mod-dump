@@ -1,5 +1,7 @@
 {
   "AddCampfire": true,
   "EnableIslands": false,
-  "UseBeachMusic": false
+  "UseBeachMusic": false,
+  "ShippingBinPath": true,
+  "DefaultSpawnMonstersAtNight": false
 }

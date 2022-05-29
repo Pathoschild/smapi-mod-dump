@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 namespace ContentPatcher.Framework.Tokens
 {
     /// <summary>A parsed input argument for a token.</summary>

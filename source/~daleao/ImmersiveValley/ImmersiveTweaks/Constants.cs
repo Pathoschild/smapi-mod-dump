@@ -4,13 +4,13 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
 namespace DaLion.Stardew.Tweaks;
 
-public class Constants
+internal class Constants
 {
-    public const int GLOW_RING_INDEX_I = 517, MAGNET_RING_INDEX_I = 519;
+    public const int COCONUT_INDEX_I = 88, GOLDEN_COCONUT_INDEX_I = 791;
 }

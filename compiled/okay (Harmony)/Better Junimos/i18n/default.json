@@ -1,6 +1,6 @@
 {
   "msg.no-work-until-paid": "Junimos will not work until they are paid",
-  "msg.cannot-spawn-here": "Can only spawn Junimos on Farm",
+  "msg.cannot-spawn-here": "Can only spawn Junimos on Farm or Greenhouse",
   "msg.cannot-spawn-without-hut": "Build a Junimo hut before you spawn a Junimo",
   "msg.happy-with-payment": "Junimos are happy with their payment!",
   "msg.need-more-payment": "Junimos need more payment",
@@ -56,6 +56,8 @@
   "cfg.harvest-everything-on-28th": "Harvest Everything On 28th",
   "cfg.harvest-everything-on-28th.tooltip": "If avoiding harvest of flowers or giant crops, harvest them on the last day of the month before they die",
   "cfg.avoid-planting-coffee": "Avoid Planting Coffee",
+  "cfg.avoid-replanting-seeds": "Avoid Replanting Seeds",
+  "cfg.avoid-replanting-seeds.msg": "Avoid re-planting seeds we've harvested (coffee, ancient coffee, whatever other crazy self-replicating crops you add...)",
   "cfg.avoid-planting-out-of-season": "Avoid Planting Out Of Season",
   "cfg.payment": "Payment",
   "cfg.work-for-wages": "Work For Wages",

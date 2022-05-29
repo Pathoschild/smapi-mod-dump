@@ -34,7 +34,8 @@ namespace MessyCrops
             var offset = offsets.GetOrAdd(__instance, GetOffset);
             if (ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
             {
-                layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + offset.Y * pixelDepth + tileLocation.X % 5 * .00001f);
+                layerdepth.SetValue(__instance, ((tileLocation.Y * 64f + 32f + offset.Y) * pixelDepth + (tileLocation.X % 5) * .00001f) / 
+                    ((__instance.currentPhase.Value == 0 && __instance.shouldDrawDarkWhenWatered()) ? 2f : 1f));
                 drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset);
             }
         }

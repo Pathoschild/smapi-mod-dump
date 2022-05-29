@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Flamingo Breeding",
+  "Author": "BlaDe",
+  "Version": "1.0.0",
+  "Description": "Feed shrimp to flamingos.  Breed more",
+  "UniqueID": "BlaDe.FlamingoBreeding",
+  "EntryDll": "FlamingoBreeding.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:12015"]
+}

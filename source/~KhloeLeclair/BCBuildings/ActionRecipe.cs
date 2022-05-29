@@ -12,11 +12,7 @@
 
 using System.Collections.Generic;
 
-#if IS_BETTER_CRAFTING
-using Leclair.Stardew.Common.Crafting;
-#else
 using Leclair.Stardew.BetterCrafting;
-#endif
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

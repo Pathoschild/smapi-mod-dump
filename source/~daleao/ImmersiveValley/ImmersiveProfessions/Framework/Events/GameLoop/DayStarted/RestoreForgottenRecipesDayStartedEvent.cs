@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,6 +13,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 #region using directives
 
 using System.Linq;
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
@@ -22,6 +23,7 @@ using Extensions;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
 {
     /// <inheritdoc />
@@ -30,7 +32,7 @@ internal class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
         var forgottenRecipes = Game1.player.ReadData(DataField.ForgottenRecipesDict).ParseDictionary<string, int>();
         if (!forgottenRecipes.Any())
         {
-            Disable();
+            this.Disable();
             return;
         }
 
@@ -52,6 +54,6 @@ internal class RestoreForgottenRecipesDayStartedEvent : DayStartedEvent
         Game1.player.WriteData(DataField.ForgottenRecipesDict, forgottenRecipes.Any()
             ? forgottenRecipes.Stringify()
             : null);
-        Disable();
+        this.Disable();
     }
 }

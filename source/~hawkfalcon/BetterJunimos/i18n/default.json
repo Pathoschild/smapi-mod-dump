@@ -10,7 +10,7 @@
 
 {
   "msg.no-work-until-paid": "Junimos will not work until they are paid",
-  "msg.cannot-spawn-here": "Can only spawn Junimos on Farm",
+  "msg.cannot-spawn-here": "Can only spawn Junimos on Farm or Greenhouse",
   "msg.cannot-spawn-without-hut": "Build a Junimo hut before you spawn a Junimo",
   "msg.happy-with-payment": "Junimos are happy with their payment!",
   "msg.need-more-payment": "Junimos need more payment",

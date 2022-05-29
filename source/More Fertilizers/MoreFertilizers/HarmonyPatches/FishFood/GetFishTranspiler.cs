@@ -18,14 +18,23 @@ using MoreFertilizers.Framework;
 
 namespace MoreFertilizers.HarmonyPatches.FishFood;
 
+/// <summary>
+/// Transpiles GetFish. Also has the relevant helper function.
+/// </summary>
 [HarmonyPatch(typeof(GameLocation))]
 internal static class GetFishTranspiler
 {
+    /// <summary>
+    /// Given a location and a chance, alters the chance to adjust for fish food.
+    /// </summary>
+    /// <param name="prevChance">Previous chance.</param>
+    /// <param name="loc">Gamelocation.</param>
+    /// <returns>chance.</returns>
     internal static double AlterFishChance(double prevChance, GameLocation loc)
     {
         try
         {
-            if (loc.modData?.GetInt(CanPlaceHandler.FishFood) is > 0 && prevChance < 0.25)
+            if (loc.modData?.GetBool(CanPlaceHandler.FishFood) == true && prevChance < 0.3)
             {
                 double newChance = Math.Sqrt(Math.Clamp(prevChance, 0, 1));
                 ModEntry.ModMonitor.DebugOnlyLog($"Adjusting fish chance at {loc.NameOrUniqueName}: {prevChance} => {newChance}", LogLevel.Debug);

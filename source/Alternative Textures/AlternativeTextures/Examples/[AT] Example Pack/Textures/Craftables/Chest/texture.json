@@ -13,5 +13,26 @@
   "Type": "Craftable",
   "TextureWidth": 16,
   "TextureHeight": 32,
-  "Variations": 1
+  "ManualVariations": [
+    {
+      "Id": 0
+    },
+    {
+      "Id": 1,
+      "Animation": [
+        {
+          "Frame": 0,
+          "Duration": 500
+        },
+        {
+          "Frame": 1,
+          "Duration": 500
+        },
+        {
+          "Frame": 2,
+          "Duration": 500
+        }
+      ]
+    }
+  ]
 }

@@ -8,12 +8,12 @@
 **
 *************************************************/
 
-using System;
+#nullable enable
 
-namespace Leclair.Stardew.Almanac.Models {
-	public class FishOverride {
+namespace Leclair.Stardew.Almanac.Models;
 
-		public bool Visible { get; set; }
+public class FishOverride {
 
-	}
+	public bool Visible { get; set; }
+
 }

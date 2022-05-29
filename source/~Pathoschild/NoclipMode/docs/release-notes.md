@@ -9,8 +9,17 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.3.1
+Released 22 May 2022 for SMAPI 3.14.0 or later.
+
+* Improved translations. Thanks to ChulkyBow (updated Ukrainian)!
+
+## 1.3.0
+Released 09 May 2022 for SMAPI 3.14.0 or later.
+
+* Updated for SMAPI 3.14.0.
 * Added in-game config UI through [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+* Improved translations. Thanks to Becks723 (updated Chinese)!
 
 ## 1.2.12
 Released 27 February 2022 for SMAPI 3.13.0 or later.

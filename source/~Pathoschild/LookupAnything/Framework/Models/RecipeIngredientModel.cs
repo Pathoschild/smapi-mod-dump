@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using Pathoschild.Stardew.LookupAnything.Framework.Data;
 using StardewValley;
@@ -78,7 +76,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Models
 
         /// <summary>Get whether the ingredient matches a given item.</summary>
         /// <param name="item">The item to check.</param>
-        public bool Matches(Item item)
+        public bool Matches(Item? item)
         {
             // ignore if null
             if (item == null)

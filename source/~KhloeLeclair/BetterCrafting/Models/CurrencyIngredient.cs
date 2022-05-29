@@ -44,13 +44,13 @@ public class CurrencyIngredient : IIngredient {
 		get {
 			switch (Type) {
 				case CurrencyType.Money:
-					return "Gold";
+					return I18n.Currency_Gold();
 				case CurrencyType.FestivalPoints:
-					return "Points";
+					return I18n.Currency_FestivalPoints();
 				case CurrencyType.ClubCoins:
-					return "Club Coins";
+					return I18n.Currency_ClubCoins();
 				case CurrencyType.QiGems:
-					return "Qi Gems";
+					return I18n.Currency_QiGems();
 				default:
 					return "???";
 			}

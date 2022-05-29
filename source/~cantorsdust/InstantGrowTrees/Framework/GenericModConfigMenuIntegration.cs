@@ -74,22 +74,22 @@ namespace InstantGrowTrees.Framework
                 manifest,
                 name: I18n.Config_Trees_InstantlyGrow_Name,
                 tooltip: I18n.Config_Trees_InstantlyGrow_Desc,
-                getValue: () => getConfig().FruitTrees.InstantlyGrow,
-                setValue: value => getConfig().FruitTrees.InstantlyGrow = value
+                getValue: () => getConfig().NonFruitTrees.InstantlyGrow,
+                setValue: value => getConfig().NonFruitTrees.InstantlyGrow = value
             );
             api.AddBoolOption(
                 manifest,
                 name: I18n.Config_Trees_InstantlyGrowInWinter_Name,
                 tooltip: I18n.Config_Trees_InstantlyGrowInWinter_Desc,
-                getValue: () => getConfig().FruitTrees.InstantlyGrowInWinter,
-                setValue: value => getConfig().FruitTrees.InstantlyGrowInWinter = value
+                getValue: () => getConfig().NonFruitTrees.InstantlyGrowInWinter,
+                setValue: value => getConfig().NonFruitTrees.InstantlyGrowInWinter = value
             );
             api.AddBoolOption(
                 manifest,
                 name: I18n.Config_Trees_InstantlyGrowWhenInvalid_Name,
                 tooltip: I18n.Config_Trees_InstantlyGrowWhenInvalid_Desc,
-                getValue: () => getConfig().FruitTrees.InstantlyGrowWhenInvalid,
-                setValue: value => getConfig().FruitTrees.InstantlyGrowWhenInvalid = value
+                getValue: () => getConfig().NonFruitTrees.InstantlyGrowWhenInvalid,
+                setValue: value => getConfig().NonFruitTrees.InstantlyGrowWhenInvalid = value
             );
         }
     }

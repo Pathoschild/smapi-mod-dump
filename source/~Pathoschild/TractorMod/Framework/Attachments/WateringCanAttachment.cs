@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.TractorMod.Framework.Config;
 using StardewModdingAPI;
@@ -57,9 +55,11 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool IsEnabled(Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool IsEnabled(Farmer player, Tool? tool, Item? item, GameLocation location)
         {
-            return this.Config.Enable && tool is WateringCan;
+            return
+                this.Config.Enable
+                && tool is WateringCan;
         }
 
         /// <summary>Apply the tool to the given tile.</summary>
@@ -71,10 +71,10 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
         /// <remarks>Volcano logic derived from <see cref="VolcanoDungeon.performToolAction"/>.</remarks>
-        public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool Apply(Vector2 tile, SObject? tileObj, TerrainFeature? tileFeature, Farmer player, Tool? tool, Item? item, GameLocation location)
         {
             // water dirt
-            if (this.TryGetHoeDirt(tileFeature, tileObj, out HoeDirt dirt, out _, out _) && dirt.state.Value != HoeDirt.watered)
+            if (this.TryGetHoeDirt(tileFeature, tileObj, out HoeDirt? dirt, out _, out _) && dirt.state.Value != HoeDirt.watered)
                 return this.UseWateringCanOnTile(tile, player, location);
 
             // cool lava

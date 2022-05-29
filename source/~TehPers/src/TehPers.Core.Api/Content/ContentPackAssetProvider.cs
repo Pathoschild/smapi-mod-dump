@@ -32,8 +32,9 @@ namespace TehPers.Core.Api.Content
 
         /// <inheritdoc/>
         public T Load<T>(string path)
+            where T : notnull
         {
-            return this.contentPack.LoadAsset<T>(path);
+            return this.contentPack.ModContent.Load<T>(path);
         }
 
         /// <inheritdoc/>

@@ -11,7 +11,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using TehPers.Core.Api.Items;
-using TehPers.Core.Api.Json;
 
 namespace TehPers.FishingOverhaul.Api.Content
 {
@@ -20,7 +19,6 @@ namespace TehPers.FishingOverhaul.Api.Content
     /// </summary>
     /// <param name="FishKey">The item key.</param>
     /// <param name="AvailabilityInfo">The availability information.</param>
-    [JsonDescribe]
     public record FishEntry(
         [property: JsonRequired] NamespacedKey FishKey,
         FishAvailabilityInfo AvailabilityInfo

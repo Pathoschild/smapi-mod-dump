@@ -8,17 +8,19 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace SpriteMaster;
 
-static partial class Debug {
-	static internal class Mode {
+internal static partial class Debug {
+	internal static class Mode {
 		[Flags]
 		internal enum DebugModeFlags {
 			None = 0,
@@ -37,22 +39,23 @@ static partial class Debug {
 
 		private static Vector2I CurrentCursorPosition {
 			get {
-				var mouseRaw = (Vector2I)StardewValley.Game1.getMousePositionRaw();
+				var mouseRaw = (Vector2I)Game1.getMousePositionRaw();
 
 				if (Game1.uiMode) {
-					var screenRatio = (Vector2F)(Vector2I)StardewValley.Game1.uiViewport.Size / (Vector2F)(Vector2I)StardewValley.Game1.viewport.Size;
+					var screenRatio = (Vector2F)(Vector2I)Game1.uiViewport.Size / (Vector2F)(Vector2I)Game1.viewport.Size;
 					return ((Vector2F)mouseRaw * screenRatio).NearestInt();
 				}
 				else {
-					return StardewValley.Game1.getMousePositionRaw();
+					return Game1.getMousePositionRaw();
 				}
 			}
 		}
 
-		[CommandAttribute("debug", "Debug Commands")]
+		[Command("debug", "Debug Commands")]
+		[UsedImplicitly]
 		public static void OnConsoleCommand(string command, Queue<string> arguments) {
 			if (arguments.Count == 0) {
-				Debug.Error("No arguments passed for 'debug' command");
+				Error("No arguments passed for 'debug' command");
 				return;
 			}
 
@@ -62,7 +65,7 @@ static partial class Debug {
 					ProcessModeCommand(arguments);
 					break;
 				default:
-					Debug.Error($"Unknown 'debug' command: '{subCommand}'");
+					Error($"Unknown 'debug' command: '{subCommand}'");
 					break;
 			}
 		}
@@ -70,7 +73,7 @@ static partial class Debug {
 		private static void ProcessModeCommand(Queue<string> arguments) {
 			if (arguments.Count == 0) {
 				if (CurrentMode == DebugModeFlags.None) {
-					Debug.Info("No Debug Modes are set");
+					Info("No Debug Modes are set");
 					return;
 				}
 
@@ -83,7 +86,7 @@ static partial class Debug {
 					}
 				}
 
-				Debug.Info($"Current Debug Modes: {string.Join(", ", modes)}");
+				Info($"Current Debug Modes: {string.Join(", ", modes)}");
 				return;
 			}
 
@@ -105,13 +108,13 @@ static partial class Debug {
 				case "none":
 					if (enable) {
 						CurrentMode = DebugModeFlags.None;
-						Debug.Info($"Debug Mode set to '{DebugModeFlags.None}'");
+						Info($"Debug Mode set to '{DebugModeFlags.None}'");
 					}
 					else {
 						foreach (var value in Enum.GetValues<DebugModeFlags>()) {
 							CurrentMode |= value;
 						}
-						Debug.Info($"All Debug Mode flags enabled");
+						Info("All Debug Mode flags enabled");
 					}
 					break;
 				default:
@@ -121,62 +124,62 @@ static partial class Debug {
 
 							if (enable) {
 								if (CurrentMode.HasFlag(value)) {
-									Debug.Warning($"Debug Mode flag is already set: '{flag}'");
+									Warning($"Debug Mode flag is already set: '{flag}'");
 								}
 								else {
 									CurrentMode |= value;
-									Debug.Info($"Debug Mode flag set: '{flag}'");
+									Info($"Debug Mode flag set: '{flag}'");
 								}
 							}
 							else {
 								if (!CurrentMode.HasFlag(value)) {
-									Debug.Warning($"Debug Mode flag is not set: '{flag}'");
+									Warning($"Debug Mode flag is not set: '{flag}'");
 								}
 								else {
 									CurrentMode &= ~value;
-									Debug.Info($"Debug Mode flag unset: '{flag}'");
+									Info($"Debug Mode flag unset: '{flag}'");
 								}
 							}
 
 							return;
 						}
 					}
-					Debug.Error($"Unknown debug mode: '{mode}'");
+					Error($"Unknown debug mode: '{mode}'");
 					break;
 			}
 		}
 
 		private readonly struct DrawInfo {
 			internal readonly ManagedSpriteInstance? Instance;
-			internal readonly XNA.Graphics.Texture2D Texture;
+			internal readonly XTexture2D Texture;
 			internal readonly Vector2F? OriginalPosition = null;
 			internal readonly Bounds? OriginalSource = null;
 			internal readonly Bounds? OriginalDestination = null;
 			internal readonly Bounds Destination;
 			internal readonly Bounds Source;
-			internal readonly XNA.Color Color;
+			internal readonly XColor Color;
 			internal readonly float Rotation;
 			internal readonly Vector2F? OriginalOrigin = null;
 			internal readonly Vector2F Origin;
-			internal readonly XNA.Graphics.SpriteEffects Effects;
+			internal readonly XGraphics.SpriteEffects Effects;
 			internal readonly float LayerDepth;
 			internal readonly float Scale;
 
 			internal DrawInfo(
 				ManagedSpriteInstance? instance,
-				XNA.Graphics.Texture2D texture,
-				in Bounds destination,
-				in Bounds source,
-				in XNA.Color color,
+				XTexture2D texture,
+				Bounds destination,
+				Bounds source,
+				in XColor color,
 				float rotation,
 				Vector2F origin,
-				XNA.Graphics.SpriteEffects effects,
+				XGraphics.SpriteEffects effects,
 				float layerDepth,
 				float scale,
-				in Vector2F? originalPosition = null,
-				in Bounds? originalSource = null,
-				in Bounds? originalDestination = null,
-				in Vector2F? originalOrigin = null
+				Vector2F? originalPosition = null,
+				Bounds? originalSource = null,
+				Bounds? originalDestination = null,
+				Vector2F? originalOrigin = null
 			) {
 				Instance = instance;
 				Texture = texture;
@@ -199,19 +202,19 @@ static partial class Debug {
 
 		internal static bool RegisterDrawForSelect(
 			ManagedSpriteInstance? instance,
-			XNA.Graphics.Texture2D texture,
-			in Bounds destination,
-			in Bounds source,
-			in XNA.Color color,
+			XTexture2D texture,
+			Bounds destination,
+			Bounds source,
+			in XColor color,
 			float rotation,
 			Vector2F origin,
-			XNA.Graphics.SpriteEffects effects,
+			XGraphics.SpriteEffects effects,
 			float layerDepth,
 			Vector2F? scale = null,
-			in Bounds? originalDestination = null,
-			in Vector2F? originalPosition = null,
-			in Bounds? originalSource = null,
-			in Vector2F? originalOrigin = null
+			Bounds? originalDestination = null,
+			Vector2F? originalPosition = null,
+			Bounds? originalSource = null,
+			Vector2F? originalOrigin = null
 		) {
 			if (!IsModeEnabled(DebugModeFlags.Select)) {
 				return false;
@@ -258,18 +261,18 @@ static partial class Debug {
 
 		internal static bool RegisterDrawForSelect(
 			ManagedSpriteInstance? instance,
-			XNA.Graphics.Texture2D texture,
+			XTexture2D texture,
 			Vector2F position,
-			in Bounds source,
-			in XNA.Color color,
+			Bounds source,
+			in XColor color,
 			float rotation,
 			Vector2F origin,
 			Vector2F scale,
-			XNA.Graphics.SpriteEffects effects,
+			XGraphics.SpriteEffects effects,
 			float layerDepth,
-			in Vector2F? originalPosition = null,
-			in Bounds? originalSource = null,
-			in Vector2F? originalOrigin = null
+			Vector2F? originalPosition = null,
+			Bounds? originalSource = null,
+			Vector2F? originalOrigin = null
 		) {
 			if (!IsModeEnabled(DebugModeFlags.Select)) {
 				return false;
@@ -347,13 +350,13 @@ static partial class Debug {
 				if (draw.Rotation != 0.0f) {
 					properties.Add(("rot", draw.Rotation.ToString("n2")));
 				}
-				properties.Add(("scale", draw.Scale.ToString()));
-				properties.Add(("depth", draw.LayerDepth.ToString()));
-				if (draw.Effects != XNA.Graphics.SpriteEffects.None) {
+				properties.Add(("scale", draw.Scale.ToString(CultureInfo.CurrentCulture)));
+				properties.Add(("depth", draw.LayerDepth.ToString(CultureInfo.CurrentCulture)));
+				if (draw.Effects != XGraphics.SpriteEffects.None) {
 					properties.Add(("effects", ""));
-					foreach (var enumName in Enum.GetNames<XNA.Graphics.SpriteEffects>()) {
-						var enumValue = Enum.Parse<XNA.Graphics.SpriteEffects>(enumName);
-						if (enumValue != XNA.Graphics.SpriteEffects.None && draw.Effects.HasFlag(enumValue)) {
+					foreach (var enumName in Enum.GetNames<XGraphics.SpriteEffects>()) {
+						var enumValue = Enum.Parse<XGraphics.SpriteEffects>(enumName);
+						if (enumValue != XGraphics.SpriteEffects.None && draw.Effects.HasFlag(enumValue)) {
 							properties.Add(("", enumName));
 						}
 					}

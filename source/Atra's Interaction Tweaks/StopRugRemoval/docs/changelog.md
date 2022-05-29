@@ -10,8 +10,29 @@ Changelog
 ==============
 
 #### ToDo
-[] Catch input to place rug under things.
+1. Catch input to place rug under things.
 <!-- Figure out how to replace the reference to coffee in the night market dialogue?-->
+<!-- Make it so notifications do not go away until dismissed? -->
+
+#### Version 1.0.10
+* Bugfixes
+* Add code that prevents broken special orders from crashing the quest menu.
+
+#### Version 1.0.9
+* Splitscreen fixes.
+* Reorder confirmation dialogue to more match eating dialogue
+* Break Return Scepter into individual settings.
+* Bugfixes.
+* Volcano chests will now avoid giving you the same thing twice in a row.
+* Russian translation, thanks to [Angel4Killer](https://github.com/angel4killer)!
+
+#### Version 1.0.8
+Compiled for SMAPI 3.14.0
+* Removes damage to fruit trees from hoes and scythes.
+* Option to save bombed forage.
+* Hides crab pots during festivals and events.
+* Add bet 1k and bet 10k to the casino
+* Adds confirmation to warps.
 
 #### Version 1.0.7
 

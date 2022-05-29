@@ -6,9 +6,11 @@ mods:
    GMCM Options
 
 latest commit:
-   commit e6efd3a638ad90073bc529c6ae8ea349208ef91e
+   commit 976f1e83bea1632d37827c78b2fbcf87e684ca83
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Thu Jan 27 20:29:56 2022 -0500
+   Date:   Sun May 1 20:27:09 2022 -0400
    
-       v1.1.0
+       Color picker now uses dynamic height with GMCM 1.8.2 or later; v1.2.0
+       
+       Compile against SMAPI 3.14
    

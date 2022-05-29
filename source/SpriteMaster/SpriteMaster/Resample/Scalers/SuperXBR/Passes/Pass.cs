@@ -30,7 +30,7 @@ internal abstract class Pass {
 
 	protected abstract float[] PixelWeights { get; }
 
-	protected float WeightedDifferenceDiagonal(in DiffTexel b0, in DiffTexel b1, in DiffTexel c0, in DiffTexel c1, in DiffTexel c2, in DiffTexel d0, in DiffTexel d1, in DiffTexel d2, in DiffTexel d3, in DiffTexel e1, in DiffTexel e2, in DiffTexel e3, in DiffTexel f2, in DiffTexel f3) {
+	protected float WeightedDifferenceDiagonal(DiffTexel b0, DiffTexel b1, DiffTexel c0, DiffTexel c1, DiffTexel c2, DiffTexel d0, DiffTexel d1, DiffTexel d2, DiffTexel d3, DiffTexel e1, DiffTexel e2, DiffTexel e3, DiffTexel f2, DiffTexel f3) {
 		return (
 			PixelWeights[0] * (Difference(c1, c2) + Difference(c1, c0) + Difference(e2, e1) + Difference(e2, e3)) +
 			PixelWeights[1] * (Difference(d2, d3) + Difference(d0, d1)) +
@@ -41,14 +41,14 @@ internal abstract class Pass {
 		);
 	}
 
-	protected float WeightedDifferenceHorizontalVertical(in DiffTexel i1, in DiffTexel i2, in DiffTexel i3, in DiffTexel i4, in DiffTexel e1, in DiffTexel e2, in DiffTexel e3, in DiffTexel e4) {
+	protected float WeightedDifferenceHorizontalVertical(DiffTexel i1, DiffTexel i2, DiffTexel i3, DiffTexel i4, DiffTexel e1, DiffTexel e2, DiffTexel e3, DiffTexel e4) {
 		return (
 			PixelWeights[3] * (Difference(i1, i2) + Difference(i3, i4)) +
 			PixelWeights[0] * (Difference(i1, e1) + Difference(i2, e2) + Difference(i3, e3) + Difference(i4, e4))
 		);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	protected int GetX(int x, Vector2I size) {
 		if (Configuration.Wrapped.X) {
 			x = (x + size.Width) % size.Width;
@@ -59,7 +59,7 @@ internal abstract class Pass {
 		return x;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	protected int GetY(int y, Vector2I size) {
 		if (Configuration.Wrapped.Y) {
 			y = (y + size.Height) % size.Height;
@@ -105,9 +105,9 @@ internal abstract class Pass {
 			return Data[GetOffset(x, y)];
 		}
 
-		internal readonly Float4 Sample(in Float2 xy) => Sample((int)xy.X, (int)xy.Y);
+		internal readonly Float4 Sample(Float2 xy) => Sample((int)xy.X, (int)xy.Y);
 
-		internal readonly Float4 Sample(in Vector2I xy) => Sample(xy.X, xy.Y);
+		internal readonly Float4 Sample(Vector2I xy) => Sample(xy.X, xy.Y);
 	}
 }
 #endif

@@ -9,7 +9,9 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
+using SpriteMaster.Hashing;
 using SpriteMaster.Types.Fixed;
+using SpriteMaster.Types.Spans;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -17,23 +19,41 @@ using System.Runtime.InteropServices;
 namespace SpriteMaster.Types;
 
 [DebuggerDisplay("[{R.Value}, {G.Value}, {B.Value}, {A.Value}]")]
-[StructLayout(LayoutKind.Explicit, Pack = sizeof(ulong), Size = sizeof(ulong))]
-struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
+[StructLayout(LayoutKind.Sequential, Pack = sizeof(ulong), Size = sizeof(ulong))]
+internal struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 	internal static readonly Color16 Zero = new(0UL);
 
-	[FieldOffset(0)]
 	internal ulong Packed = 0;
 
 	internal readonly ulong AsPacked => Packed;
 
-	[FieldOffset(0)]
-	internal Fixed16 R = 0;
-	[FieldOffset(2)]
-	internal Fixed16 G = 0;
-	[FieldOffset(4)]
-	internal Fixed16 B = 0;
-	[FieldOffset(6)]
-	internal Fixed16 A = 0;
+	[StructLayout(LayoutKind.Sequential, Pack = sizeof(ulong), Size = sizeof(ulong))]
+	private struct PackedWrapper {
+		internal Fixed16 R;
+		internal Fixed16 G;
+		internal Fixed16 B;
+		internal Fixed16 A;
+	}
+
+	internal Fixed16 R {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().R;
+		set => Reinterpret.ReinterpretAsRefUnsafe<ulong, PackedWrapper>(Packed).R = value;
+	}
+
+	internal Fixed16 G {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().G;
+		set => Reinterpret.ReinterpretAsRefUnsafe<ulong, PackedWrapper>(Packed).G = value;
+	}
+
+	internal Fixed16 B {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().B;
+		set => Reinterpret.ReinterpretAsRefUnsafe<ulong, PackedWrapper>(Packed).B = value;
+	}
+
+	internal Fixed16 A {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().A;
+		set => Reinterpret.ReinterpretAsRefUnsafe<ulong, PackedWrapper>(Packed).A = value;
+	}
 
 	internal readonly Color16 NoAlpha => this with { A = 0 };
 
@@ -58,7 +78,7 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 		Packed = rgba;
 	}
 
-	internal Color16(in (ushort R, ushort G, ushort B) color) : this(color.R, color.G, color.B) { }
+	internal Color16((ushort R, ushort G, ushort B) color) : this(color.R, color.G, color.B) { }
 
 	internal Color16(ushort r, ushort g, ushort b) : this() {
 		R = r;
@@ -66,7 +86,7 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 		B = b;
 	}
 
-	internal Color16(in (Fixed16 R, Fixed16 G, Fixed16 B) color) : this(color.R, color.G, color.B) { }
+	internal Color16((Fixed16 R, Fixed16 G, Fixed16 B) color) : this(color.R, color.G, color.B) { }
 
 	internal Color16(Fixed16 r, Fixed16 g, Fixed16 b) : this() {
 		R = r;
@@ -74,7 +94,7 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 		B = b;
 	}
 
-	internal Color16(in (ushort R, ushort G, ushort B, ushort A) color) : this(color.R, color.G, color.B, color.A) { }
+	internal Color16((ushort R, ushort G, ushort B, ushort A) color) : this(color.R, color.G, color.B, color.A) { }
 
 	internal Color16(ushort r, ushort g, ushort b, ushort a) : this() {
 		R = r;
@@ -83,7 +103,7 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 		A = a;
 	}
 
-	internal Color16(in (Fixed16 R, Fixed16 G, Fixed16 B, Fixed16 A) color) : this(color.R, color.G, color.B, color.A) { }
+	internal Color16((Fixed16 R, Fixed16 G, Fixed16 B, Fixed16 A) color) : this(color.R, color.G, color.B, color.A) { }
 
 	internal Color16(Fixed16 r, Fixed16 g, Fixed16 b, Fixed16 a) : this() {
 		R = r;
@@ -108,9 +128,9 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 	internal readonly bool Equals(Color16 other) => this == other;
 	internal readonly bool Equals(ulong other) => this == (Color16)other;
 
-	readonly bool IEquatable<Color16>.Equals(Color16 other) => this.Equals(other);
+	readonly bool IEquatable<Color16>.Equals(Color16 other) => Equals(other);
 
-	readonly bool IEquatable<ulong>.Equals(ulong other) => this.Equals(other);
+	readonly bool IEquatable<ulong>.Equals(ulong other) => Equals(other);
 
 	public static bool operator ==(Color16 lhs, Color16 rhs) => lhs.Packed == rhs.Packed;
 	public static bool operator !=(Color16 lhs, Color16 rhs) => lhs.Packed != rhs.Packed;
@@ -127,8 +147,16 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 		}
 	}
 
-	internal static Span<Color16> Convert(ReadOnlySpan<Color8> source, bool pinned = true) {
-		var destination = SpanExt.MakeUninitialized<Color16>(source.Length, pinned: pinned);
+	internal static Span<Color16> Convert(ReadOnlySpan<Color8> source) {
+		var destination = SpanExt.Make<Color16>(source.Length);
+		for (int i = 0; i < source.Length; ++i) {
+			destination[i] = From(source[i]);
+		}
+		return destination;
+	}
+
+	internal static PinnedSpan<Color16> ConvertPinned(ReadOnlySpan<Color8> source) {
+		var destination = SpanExt.MakePinned<Color16>(source.Length);
 		for (int i = 0; i < source.Length; ++i) {
 			destination[i] = From(source[i]);
 		}
@@ -137,7 +165,7 @@ struct Color16 : IEquatable<Color16>, IEquatable<ulong>, ILongHash {
 
 	public override readonly int GetHashCode() => Packed.GetHashCode();
 
-	readonly ulong ILongHash.GetLongHashCode() => Hashing.Combine(Packed);
+	readonly ulong ILongHash.GetLongHashCode() => HashUtility.Combine(Packed);
 
 	static Color16() {
 #if SM_INTERNAL_TESTING

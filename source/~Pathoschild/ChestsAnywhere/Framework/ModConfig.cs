@@ -8,9 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
-using Pathoschild.Stardew.Common.Utilities;
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Pathoschild.Stardew.ChestsAnywhere.Framework
 {
@@ -36,6 +36,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
         public ModConfigKeys Controls { get; set; } = new();
 
         /// <summary>The locations in which to disable remote chest lookups.</summary>
-        public InvariantHashSet DisabledInLocations { get; set; } = new();
+        [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
+        public HashSet<string> DisabledInLocations { get; } = new(StringComparer.OrdinalIgnoreCase);
     }
 }

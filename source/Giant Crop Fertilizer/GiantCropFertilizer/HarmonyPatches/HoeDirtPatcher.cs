@@ -54,7 +54,6 @@ internal static class HoeDirtPatcher
     {
         if (isFertilizer && ModEntry.GiantCropFertilizerID != -1 && ModEntry.GiantCropFertilizerID == index && __instance.fertilizer.Value == index)
         {
-            ModEntry.ModMonitor.Log("Blocked placement");
             Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:HoeDirt.cs.13916-2"));
             __result = false;
             return false;

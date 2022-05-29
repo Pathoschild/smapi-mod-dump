@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 
 namespace ContentPatcherAnimations.Framework
@@ -23,7 +24,7 @@ namespace ContentPatcherAnimations.Framework
         *********/
         /// <summary>The asset name.</summary>
         /// <remarks>This field is only tracked to simplify troubleshooting.</remarks>
-        private readonly string AssetName;
+        private readonly IAssetName AssetName;
 
         /// <summary>When the texture was last fully drawn without a source rectangle.</summary>
         private int LastFullyDrawnTick;
@@ -44,7 +45,7 @@ namespace ContentPatcherAnimations.Framework
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="assetName">The asset name.</param>
-        public AssetDrawData(string assetName)
+        public AssetDrawData(IAssetName assetName)
         {
             this.AssetName = assetName;
         }

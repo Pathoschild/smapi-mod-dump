@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/daleao/smapi-mods
+   Git: https://gitlab.com/daleao/smapi-mods.git
+
+mods:
+   Aquarism - Immersive Fish Ponds → Automate
+
+latest commit:
+   commit 2501904ace546f1344f42a99b73318c5f6d98f1e
+   Author: Mat L <daleao.matheus@gmail.com>
+   Date:   Fri May 6 21:44:02 2022 -0300
+   
+       Better Rings compatibility for Fellowship.
+   

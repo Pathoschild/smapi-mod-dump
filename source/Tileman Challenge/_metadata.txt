@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/spicykai/StardewValley-Mods
+   Git: https://github.com/spicykai/StardewValley-Mods.git
+
+mods:
+   Tileman Challenge
+
+latest commit:
+   commit 9dea68a55932bbaff08e0774478e52b43258f0e3
+   Author: spicykai <65915663+spicykai@users.noreply.github.com>
+   Date:   Sun May 15 06:04:38 2022 -0600
+   
+       removed forcing time
+   

@@ -1,12 +1,15 @@
 {
-  "AgeTapperTrees": true,
-  "TappersRewardExp": true,
   "AgeBeeHouses": true,
+  "AgeMushroomBoxes": true,
+  "AgeSapTrees": true,
+  "AgeImproveQualityFactor": 1.0,
+  "DeterministicAgeQuality": true,
   "BerryBushesRewardExp": true,
+  "MushroomBoxesRewardExp": true,
+  "TappersRewardExp": true,
   "PreventFruitTreeGrowthInWinter": true,
   "KegsRememberHoneyFlower": true,
   "LargeProducsYieldQuantityOverQuality": true,
-  "HoneyMeadStyle": "ColoredBottles",
-  "ExplosionTriggeredBombs": true,
-  "ExtendedForagingPerks": true
+  "ProfessionalForagingInGingerIsland": true,
+  "ExplosionTriggeredBombs": true
 }

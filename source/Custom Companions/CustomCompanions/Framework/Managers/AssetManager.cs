@@ -18,31 +18,8 @@ using System.Linq;
 
 namespace CustomCompanions.Framework.Assets
 {
-    internal class AssetManager : IAssetLoader
+    internal class AssetManager
     {
         internal static Dictionary<string, string> idToAssetToken;
-
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            return idToAssetToken.Keys.Any(i => asset.AssetNameEquals($"{CustomCompanions.TOKEN_HEADER}{i}"));
-        }
-
-        public T Load<T>(IAssetInfo asset)
-        {
-            var model = CompanionManager.companionModels.First(c => asset.AssetNameEquals($"{CustomCompanions.TOKEN_HEADER}{c.GetId()}"));
-
-            //CustomCompanions.monitor.Log($"TEST: {JsonParser.Serialize<object>(model).ToString()}", LogLevel.Warn);
-            return (T)(object)new Dictionary<string, object>() { { CustomCompanions.COMPANION_KEY, JsonParser.Serialize<object>(model) } };
-        }
-
-        internal static object GetCompanionModelObject(Dictionary<string, object> companionModelAsset)
-        {
-            if (!companionModelAsset.ContainsKey(CustomCompanions.COMPANION_KEY))
-            {
-                return null;
-            }
-
-            return companionModelAsset[CustomCompanions.COMPANION_KEY];
-        }
     }
 }

@@ -42,7 +42,7 @@ namespace ContentPatcherAnimations.Framework
 
             foreach (PatchData patch in animatedPatches.Values)
             {
-                if (patch.TargetName != null && asset.AssetNameEquals(patch.TargetName))
+                if (patch.TargetName != null && asset.Name.IsEquivalentTo(patch.TargetName))
                     return true;
             }
             return false;
@@ -55,7 +55,7 @@ namespace ContentPatcherAnimations.Framework
 
             foreach (PatchData patch in animatedPatches.Values)
             {
-                if (patch.TargetName != null && asset.AssetNameEquals(patch.TargetName))
+                if (patch.TargetName != null && asset.Name.IsEquivalentTo(patch.TargetName))
                     patch.ForceNextRefresh = true;
             }
         }

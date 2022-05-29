@@ -11,10 +11,10 @@
 {
 	"Name": "ShipAnything",
 	"Author": "berkayylmao",
-	"Version": "1.1.1",
+	"Version": "1.2.0",
 	"Description": "Allows you to put anything into the shipping bin.",
 	"UniqueID": "berkayylmao.ShipAnything",
 	"EntryDll": "ShipAnything.dll",
 	"MinimumApiVersion": "3.0.0",
-	"UpdateKeys": ["Nexus:3782"]
+	"UpdateKeys": [ "Nexus:3782" ]
 }

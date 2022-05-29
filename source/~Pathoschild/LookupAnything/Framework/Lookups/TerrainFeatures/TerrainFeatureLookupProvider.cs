@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common.Integrations.JsonAssets;
@@ -94,7 +92,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
         }
 
         /// <inheritdoc />
-        public override ISubject GetSubjectFor(object entity, GameLocation location)
+        public override ISubject? GetSubjectFor(object entity, GameLocation? location)
         {
             return entity switch
             {
@@ -110,7 +108,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
         /// <summary>Build a subject.</summary>
         /// <param name="bush">The entity to look up.</param>
         /// <param name="location">The location containing the entity, if applicable.</param>
-        private ISubject BuildSubject(Bush bush, GameLocation location)
+        private ISubject BuildSubject(Bush bush, GameLocation? location)
         {
             return new BushSubject(this.GameHelper, bush, location ?? bush.currentLocation, this.Reflection);
         }

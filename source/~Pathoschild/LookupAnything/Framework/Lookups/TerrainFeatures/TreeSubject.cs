@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +56,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.TerrainFeatures
         }
 
         /// <summary>Get the data to display for this subject.</summary>
-        /// <remarks>Tree growth algorithm reverse engineered from <see cref="StardewValley.TerrainFeatures.Tree.dayUpdate"/>.</remarks>
+        /// <remarks>Tree growth algorithm reverse engineered from <see cref="Tree.dayUpdate"/>.</remarks>
         public override IEnumerable<ICustomField> GetData()
         {
             Tree tree = this.Target;

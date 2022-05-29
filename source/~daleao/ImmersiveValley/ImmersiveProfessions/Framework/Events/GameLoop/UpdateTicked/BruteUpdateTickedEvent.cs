@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,14 +12,16 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
 using Extensions;
-using Ultimate;
+using Framework.Ultimate;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class BruteUpdateTickedEvent : UpdateTickedEvent
 {
     private const int SHEET_INDEX_I = 36;

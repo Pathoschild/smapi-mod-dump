@@ -9,12 +9,9 @@
 *************************************************/
 
 using System;
-using Microsoft.Xna.Framework;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
 using MoreConversationTopics.Integrations;
 using System.Reflection;
 
@@ -26,7 +23,8 @@ namespace MoreConversationTopics
 
         // Properties
         private ModConfig Config;
-        private int countdown;
+
+        public const string modContentPath = "Mods/vl.mct/RepeatableTopics";
 
         /*********
         ** Public methods
@@ -47,7 +45,7 @@ namespace MoreConversationTopics
             }
 
             // Initialize the error logger and config in all the other files via a helper function
-            MCTHelperFunctions.Initialize(this.Monitor, this.Config);
+            MCTHelperFunctions.Initialize(this.Monitor, this.Config, helper);
 
             // Do the Harmony things
             var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -67,17 +65,28 @@ namespace MoreConversationTopics
             helper.ConsoleCommands.Add("vl.mct.has_flag", "Checks if the player has a mail flag.\n\nUsage: vl.mct_hasflag <flagName>\n- flagName: the possible mail flag name.", MCTHelperFunctions.console_HasMailFlag);
 
             // Adds a command to add a conversation topic
-            helper.ConsoleCommands.Add("vl.mct.add_CT", "Adds the specified conversation topic with duration of 1 day.\n\nUsage: vl.mct_add_CT <flagName> <duration>\n- flagName: the conversation topic to add.\n- duration: duration of conversation topic to add.", MCTHelperFunctions.console_AddConversationTopic);
+            helper.ConsoleCommands.Add("vl.mct.add_CT", "Adds the specified conversation topic with duration of 1 day.\n\nUsage: vl.mct_add_CT <topicName> <duration>\n- topicName: the conversation topic to add.\n- duration: duration of conversation topic to add.", MCTHelperFunctions.console_AddConversationTopic);
 
             // Adds a command to remove a conversation topic
-            helper.ConsoleCommands.Add("vl.mct.remove_CT", "Removes the specified conversation topic.\n\nUsage: vl.mct_remove_CT <flagName>\n- flagName: the conversation topic to remove.", MCTHelperFunctions.console_RemoveConversationTopic);
+            helper.ConsoleCommands.Add("vl.mct.remove_CT", "Removes the specified conversation topic.\n\nUsage: vl.mct_remove_CT <topicName>\n- topicName: the conversation topic to remove.", MCTHelperFunctions.console_RemoveConversationTopic);
+
+            // Adds a command to check if a conversation topic is repeatable
+            helper.ConsoleCommands.Add("vl.mct.is_repeatable_CT", "Checks whether the specified conversation topic is repeatable.\n\nUsage: vl.mct_remove_CT <topicName>\n- topicName: the conversation topic to check.", MCTHelperFunctions.console_IsRepeatableCT);
+
+            // Adds a command to print all repeatable conversation topics
+            helper.ConsoleCommands.Add("vl.mct.repeatable_CTs", "Returns a list of all repeatable conversation topics.", MCTHelperFunctions.console_AllRepeatableCTs);
 
             // Add GMCM
             helper.Events.GameLoop.GameLaunched += this.RegisterGMCM;
 
             // Add asset editor
-            countdown = 5;
-            helper.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
+            helper.Events.Content.AssetRequested += this.OnAssetRequested;
+        }
+
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            JojaEventAssetEditor.Edit(e);
+            MCTHelperFunctions.LoadRepeatTopics(e);
         }
 
         /// <summary>
@@ -88,8 +97,7 @@ namespace MoreConversationTopics
         /// <remarks>To add a new setting, add the details to the i18n file. Currently handles: bool.</remarks>
         private void RegisterGMCM(object sender, GameLaunchedEventArgs e)
         {
-            IModInfo gmcm = this.Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu");
-            if (gmcm is null)
+            if (this.Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu") is not IModInfo gmcm)
             {
                 this.Monitor.Log(this.Helper.Translation.Get("GmcmNotFound"), LogLevel.Debug);
                 return;
@@ -99,6 +107,7 @@ namespace MoreConversationTopics
                 this.Monitor.Log(this.Helper.Translation.Get("GmcmVersionMessage", new { version = "1.6.0", currentversion = gmcm.Manifest.Version.ToString() }), LogLevel.Info);
                 return;
             }
+
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
             if (configMenu is null)
             {
@@ -141,18 +150,6 @@ namespace MoreConversationTopics
                 {
                     this.Monitor.Log($"{property.Name} unaccounted for.", LogLevel.Warn);
                 }
-            }
-        }
-
-        // Adds asset editors when needed
-        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
-        {
-            // If the countdown has expired, then add the Joja event asset editor 5 ticks into the game
-            if (--countdown <= 0)
-            {
-                this.Helper.Content.AssetEditors.Add(new JojaEventAssetEditor());
-                this.Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
-                Monitor.Log("Registered Joja completion event asset editor", LogLevel.Trace);
             }
         }
     }

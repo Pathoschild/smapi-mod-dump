@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -27,7 +27,6 @@ using StardewValley.TerrainFeatures;
 using Common.Classes;
 using Common.Extensions;
 using Common.Extensions.Reflection;
-using Common.Extensions.Stardew;
 using Common.Harmony;
 using Extensions;
 
@@ -99,22 +98,10 @@ internal static class Patches
 
         private static SObject AddGingerQuality(SObject ginger)
         {
-            if (!ModEntry.Config.ExtendedForagingPerks || !Game1.player.professions.Contains(Farmer.botanist)) return ginger;
+            if (!ModEntry.Config.ProfessionalForagingInGingerIsland || !Game1.player.professions.Contains(Farmer.botanist)) return ginger;
 
-            if (ModEntry.ProfessionsConfig is null)
-            {
-                ginger.Quality = SObject.bestQuality;
-                return ginger;
-            }
-
-            var itemsForaged =
-                Game1.MasterPlayer.modData.ReadAs<int>(
-                    $"DaLion.ImmersiveProfessions/{Game1.player.UniqueMultiplayerID}/EcologistItemsForaged");
-            var bestQualityThreshold = (int)ModEntry.ProfessionsConfig.Property("ForagesNeededForBestQuality")!.Value;
-            ginger.Quality = itemsForaged < bestQualityThreshold
-                ? itemsForaged < bestQualityThreshold / 2
-                    ? SObject.medQuality
-                    : SObject.highQuality
+            ginger.Quality = ModEntry.HasProfessionsMod
+                ? ModEntry.ProfessionsAPI.GetForageQuality(Game1.player)
                 : SObject.bestQuality;
             return ginger;
         }
@@ -144,48 +131,36 @@ internal static class Patches
             
             var helper = new ILHelper(original, instructions);
 
+            /// From: int fruitQuality = 0;
+            /// To: int fruitQuality = this.GetQualityFromAge();
+            /// Removed all remaining age checks for quality
+            
             try
             {
                 helper
                     .FindFirst(
-                        new CodeInstruction(OpCodes.Ldc_I4_S, -112)
+                        new CodeInstruction(OpCodes.Ldc_I4_0),
+                        new CodeInstruction(OpCodes.Stloc_0)
                     )
-                    .ReplaceWith(new(OpCodes.Ldc_R4, -112f))
-                    .Advance()
-                    .Insert(
-                        new CodeInstruction(OpCodes.Call,
-                            typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
-                        new CodeInstruction(OpCodes.Call,
-                            typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.AgeImproveQualityFactor))),
-                        new CodeInstruction(OpCodes.Div),
-                        new CodeInstruction(OpCodes.Conv_I4)
+                    .StripLabels(out var labels)
+                    .ReplaceWith(new(OpCodes.Call, typeof(FruitTreeExtensions).RequireMethod(nameof(FruitTreeExtensions.GetQualityFromAge))))
+                    .InsertWithLabels(
+                        labels,
+                        new CodeInstruction(OpCodes.Ldarg_0)
                     )
                     .FindNext(
-                        new CodeInstruction(OpCodes.Ldc_I4, -224)
+                        new CodeInstruction(OpCodes.Ldarg_0)
                     )
-                    .ReplaceWith(new(OpCodes.Ldc_R4, -224f))
-                    .Advance()
-                    .Insert(
-                        new CodeInstruction(OpCodes.Call,
-                            typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
-                        new CodeInstruction(OpCodes.Call,
-                            typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.AgeImproveQualityFactor))),
-                        new CodeInstruction(OpCodes.Div),
-                        new CodeInstruction(OpCodes.Conv_I4)
+                    .RemoveUntil(
+                        new CodeInstruction(OpCodes.Stloc_0)
                     )
-                    .FindNext(
-                        new CodeInstruction(OpCodes.Ldc_I4, -336)
+                    .RemoveUntil(
+                        new CodeInstruction(OpCodes.Stloc_0)
                     )
-                    .ReplaceWith(new(OpCodes.Ldc_R4, -336f))
-                    .Advance()
-                    .Insert(
-                        new CodeInstruction(OpCodes.Call,
-                            typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
-                        new CodeInstruction(OpCodes.Call,
-                            typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.AgeImproveQualityFactor))),
-                        new CodeInstruction(OpCodes.Div),
-                        new CodeInstruction(OpCodes.Conv_I4)
-                    );
+                    .RemoveUntil(
+                        new CodeInstruction(OpCodes.Stloc_0)
+                    )
+                    .RemoveLabels();
             }
             catch (Exception ex)
             {
@@ -215,22 +190,26 @@ internal static class Patches
     [HarmonyPatch(typeof(SObject), nameof(SObject.checkForAction))]
     internal class ObjectCheckForActionPatch
     {
-        /// <summary>Detects if a tapper is ready for harvest.</summary>
+        /// <summary>Detects if an object is ready for harvest.</summary>
         [HarmonyPrefix]
         // ReSharper disable once RedundantAssignment
         private static bool Prefix(SObject __instance, ref bool __state)
         {
-            __state = __instance.name.Contains("Tapper") && __instance.heldObject.Value is not null &&
-                      __instance.readyForHarvest.Value && ModEntry.Config.TappersRewardExp;
+            __state = __instance.heldObject.Value is not null &&
+                      __instance.readyForHarvest.Value;
             return true; // run original logic
         }
 
-        /// <summary>Adds foraging experience if a tapper was harvested.</summary>
+        /// <summary>Adds foraging experience if a tapper or mushroom box was harvested.</summary>
         [HarmonyPostfix]
         private static void Postfix(SObject __instance, bool __state)
         {
-            if (__state && !__instance.readyForHarvest.Value)
-                Game1.player.gainExperience((int)SkillType.Foraging, 5);
+            if (!__state || __instance.readyForHarvest.Value) return;
+            
+            if (__instance.name.Contains("Tapper") && ModEntry.Config.TappersRewardExp)
+                Game1.player.gainExperience((int) SkillType.Foraging, 5);
+            else if (__instance.name.Contains("Mushroom Box") && ModEntry.Config.MushroomBoxesRewardExp)
+                Game1.player.gainExperience((int) SkillType.Foraging, 1);
         }
 
         /// <summary>Applies quality to aged bee house.</summary>
@@ -292,11 +271,26 @@ internal static class Patches
     [HarmonyPatch(typeof(SObject), nameof(SObject.DayUpdate))]
     internal class ObjectDayUpdatePatch
     {
-        /// <summary>Age bee houses.</summary>
+        /// <summary>Age bee houses and mushroom boxes.</summary>
         [HarmonyPostfix]
+        [HarmonyPriority(Priority.LowerThanNormal)]
         private static void Postfix(SObject __instance)
         {
-            if (__instance.IsBeeHouse() && ModEntry.Config.AgeBeeHouses) __instance.IncrementData<int>("Age");
+            if (__instance.IsBeeHouse() && ModEntry.Config.AgeBeeHouses)
+            {
+                __instance.IncrementData<int>("Age");
+            }
+            else if (__instance.IsMushroomBox())
+            {
+                if (ModEntry.Config.AgeMushroomBoxes) __instance.IncrementData<int>("Age");
+
+                if (__instance.heldObject.Value is null) return;
+
+                __instance.heldObject.Value.Quality = __instance.GetQualityFromAge();
+                if (ModEntry.HasProfessionsMod)
+                    __instance.heldObject.Value.Quality = Math.Max(ModEntry.ProfessionsAPI.GetForageQuality(Game1.player),
+                        __instance.heldObject.Value.Quality);
+            }
         }
     }
 
@@ -341,6 +335,7 @@ internal static class Patches
                 dropIn.preservedParentSheetIndex.Value > 0 && ModEntry.Config.KegsRememberHoneyFlower)
             {
                 __instance.heldObject.Value.name = dropIn.name.Split(" Honey")[0] + " Mead";
+                __instance.heldObject.Value.honeyType.Value = (SObject.HoneyType) dropIn.preservedParentSheetIndex.Value;
                 __instance.heldObject.Value.preservedParentSheetIndex.Value =
                     dropIn.preservedParentSheetIndex.Value;
                 __instance.heldObject.Value.Price = dropIn.Price * 2;
@@ -452,20 +447,13 @@ internal static class Patches
 
         private static int GetCoconutQuality(int seedIndex)
         {
-            if (seedIndex is not (88 or 791) || !ModEntry.Config.ExtendedForagingPerks || !Game1.player.professions.Contains(Farmer.botanist))
+            if (seedIndex is not (Constants.COCONUT_INDEX_I or Constants.GOLDEN_COCONUT_INDEX_I) ||
+                !ModEntry.Config.ProfessionalForagingInGingerIsland ||
+                !Game1.player.professions.Contains(Farmer.botanist))
                 return SObject.lowQuality;
 
-            if (ModEntry.ProfessionsConfig is null)
-                return SObject.bestQuality;
-
-            var itemsForaged =
-                Game1.MasterPlayer.modData.ReadAs<int>(
-                    $"DaLion.ImmersiveProfessions/{Game1.player.UniqueMultiplayerID}/EcologistItemsForaged");
-            var bestQualityThreshold = (int) ModEntry.ProfessionsConfig.Property("ForagesNeededForBestQuality")!.Value;
-            return itemsForaged < bestQualityThreshold
-                ? itemsForaged < bestQualityThreshold / 2
-                    ? SObject.medQuality
-                    : SObject.highQuality
+            return ModEntry.HasProfessionsMod
+                ? ModEntry.ProfessionsAPI.GetForageQuality(Game1.player)
                 : SObject.bestQuality;
         }
     }

@@ -1,0 +1,65 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://raw.githubusercontent.com/TehPers/StardewValleyMods/master/docs/TehPers.FishingOverhaul/schemas/contentPacks/content.schema.json",
+  "AddTrash": [
+    {
+      // Village hero sculpture
+      "ItemKey": "JA:Object/Village Hero Sculpture",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideVillage"],
+        "PriorityTier": 20,
+        "FarmerPosition": {
+          "X": {
+            "GreaterThanEq": 145,
+            "LessThan": 146
+          },
+          "Y": {
+            "GreaterThanEq": 69,
+            "LessThan": 70
+          }
+        },
+        "When": {
+          "HasFlag |contains=RSV.HeroStatue": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["RSV.HeroStatue"]
+      }
+    },
+    {
+      // Sapphire pearl
+      "ItemKey": "JA:Object/Sapphire Pearl",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideVillage"],
+        "PriorityTier": 20,
+        "Position": {
+          "X": {
+            "GreaterThanEq": 60,
+            "LessThan": 61
+          },
+          "Y": {
+            "GreaterThanEq": 55,
+            "LessThan": 56
+          }
+        },
+        "When": {
+          "HasFlag |contains=RSV.Sapphire": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["RSV.Sapphire"]
+      }
+    }
+  ]
+}

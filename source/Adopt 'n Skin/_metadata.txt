@@ -6,11 +6,13 @@ mods:
    Adopt 'n Skin
 
 latest commit:
-   commit ba599e7842ac2dccf6003bc1fddbca9914516761
-   Author: Gathouria <katey.huddleston@gmail.com>
-   Date:   Thu May 20 16:33:38 2021 -0700
+   commit af8fcf3df57e5bacdc597d59dd28f1f79cf7227f
+   Author: yomisimie <yomisimie@gmail.com>
+   Date:   Thu May 19 03:09:25 2022 +0300
    
-       (Unofficial) SDV 1.5 Update
+       Fix an absolute path error not loading skins (#5)
        
-       Modifications for SDV 1.5. Not thourghly tested, procede with caution.
+       Fix by Pathoschild
+       * Fix an absolute path error not loading skins
+       * Update AdoptSkin/Framework/SaveLoadHandler.cs
    

@@ -12,7 +12,7 @@
     /*********
     ** Generic Mod Config Menu UI
     *********/
-    "config.intro": "Choose which professions are added when you reach the required level. If you already have a profession, this won't retroactively remove it (you can use CJB Cheats Menu to remove learned professions).", // TODO
+    "config.intro": "Válaszd ki, hogy mely szakmák kerüljenek hozzáadásra, amikor eléred a szükséges szintet. Ha már megvan a szakma, akkor ez nem fogja visszamenőlegesen eltávolítani (a CJB Cheats menü segítségével eltávolíthatod a tanult szakmákat).",
     "config.skill-level": "{{skillName}} {{level}} szint",
-    "config.toggle-skill.desc": "A {{professionName}} jártasság hozzáadása, ha eléri a {{skillName}} képesség {{level}} szintjét."
+    "config.toggle-skill.desc": "A {{professionName}} jártasság hozzáadása, ha eléred a {{skillName}} képesség {{level}} szintjét."
 }

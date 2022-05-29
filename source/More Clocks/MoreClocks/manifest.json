@@ -9,9 +9,9 @@
 *************************************************/
 
 {
-  "Name": "MoreClocks",
+  "Name": "More Clocks",
   "Author": "phjoker",
-  "Version": "1.1.5",
+  "Version": "1.2.7",
   "Description": "Improves the Gold Clock logic and also adds more Clocks with different effects for the end game.",
   "UniqueID": "phjoker.MoreClocks",
   "EntryDll": "MoreClocks.dll",

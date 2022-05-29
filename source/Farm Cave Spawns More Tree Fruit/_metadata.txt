@@ -6,9 +6,9 @@ mods:
    Farm Cave Spawns More Tree Fruit
 
 latest commit:
-   commit 32628d45dafaef8f61fb9f961c9783050823bc85
+   commit 1d2643f6c86c968755fbcba8bd64e24bce3e5004
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Sun Mar 27 17:22:38 2022 -0400
+   Date:   Sun May 1 19:15:33 2022 -0400
    
-       Update README.md
+       Update CHANGELOG.MD
    

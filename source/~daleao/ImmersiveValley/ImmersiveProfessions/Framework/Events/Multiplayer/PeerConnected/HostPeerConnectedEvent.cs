@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -16,6 +16,7 @@ using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
+using Content;
 using GameLoop;
 using Extensions;
 
@@ -30,6 +31,9 @@ internal class HostPeerConnectedEvent : PeerConnectedEvent
         EventManager.Enable(typeof(ToggledUltimateModMessageReceivedEvent),
             typeof(RequestGlobalEventModMessageReceivedEvent), typeof(RequestUpdateDataModMessageReceivedEvent),
             typeof(RequestUpdateHostStateModMessageReceivedEvent));
+
+        if (Game1.getFarmer(e.Peer.PlayerID).HasProfession(Profession.Aquarist))
+            EventManager.Enable(typeof(HostFishPondDataRequestedEvent));
 
         if (Game1.getFarmer(e.Peer.PlayerID).HasProfession(Profession.Conservationist))
             EventManager.Enable(typeof(HostConservationismDayEndingEvent));

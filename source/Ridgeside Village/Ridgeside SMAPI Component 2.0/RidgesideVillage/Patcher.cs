@@ -53,7 +53,6 @@ namespace RidgesideVillage
             Projectiles.ApplyPatch(harmony, Helper);
             TortsGifts.ApplyPatch(harmony, Helper);
             ClothingDonation.ApplyPatch(harmony, Helper);
-
         }
     }        
 }

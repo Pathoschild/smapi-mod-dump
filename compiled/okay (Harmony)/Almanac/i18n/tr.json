@@ -1,0 +1,343 @@
+{
+	"mod-name": "Kitap",
+
+	"almanac.open": "Kitabı Aç",
+
+	"almanac.cover": "Ferngill\nÇiftçisinin\nKitabı",
+	"almanac.cover-island": "Ferngill\nve\nEğreltitotu Adaları\nÇiftçisi'nin\nKitabı",
+
+	"calendar.when": "{{season}}, Yıl {{year}}",
+
+	"calendar.day.1": "Pzt",
+	"calendar.day.2": "Salı",
+	"calendar.day.3": "Çrş",
+	"calendar.day.4": "Prş",
+	"calendar.day.5": "Cum",
+	"calendar.day.6": "Cts",
+	"calendar.day.7": "Pzr",
+
+	"page.crops": "Ekim Tarihleri",
+
+	"crop.last-day": "Şunun için son gün:",
+
+	"crop.toggle": "{{mode}} aç/kapa",
+	"crop.paddy": "Çeltik Bonusu",
+
+	"page.crop.none": "Mevcut filtrelerinizle eşleşen herhangi bir ekin yok.",
+
+	"page.crop.seed-filter": "Tohuma göre filtrele",
+	"page.crop.seed-filter.disabled": "Kapalı",
+	"page.crop.seed-filter.inventory": "Envanterde",
+	"page.crop.seed-filter.owned": "Sahip olunan",
+
+	"crop.seed-filter": "Sadece Sahip Olunan Tohumları Göster",
+
+	"crop.using-none": "Şu yetişme saatleri ve tarihleri gübrenizin veya becerinizin olmadığını farz etmektedir.",
+	"crop.using-agri": "Şu yetişme saatleri ve tarihleri {{agriculturist}} olduğunuzu farz etmektedir.",
+	"crop.using-speed": "Şu yetişme saatleri ve tarihleri {{fertilizer}} kullandığınızı farz etmektedir.",
+	"crop.using-both": "Şu yetişme saatleri ve tarihleri {{agriculturist}} olduğunuzu ve {{fertilizer}} kullandığınızı farz etmektedir.",
+	"crop.using-paddy": "Aynı zamanda bundan faydalanan ekinlerin @Bsu kenarında yetiştiğini@b de farz etmektedir.",
+
+	"crop.grow-time": "{{count}} günde büyür.",
+	"crop.harvests": "Bu sene için {{count}} hasat bekle.",
+	"crop.harvests-date": "{{date}} vaktinde ekilirsr bu sene için {{count}} hasat bekle.",
+	"crop.last-date": "{{date}} tarihinden sonra ekme.",
+	"crop.regrow-time": "{{count}} gün içinde tekrar büyür.",
+	"crop.paddy-note": "Su kenarında daha hızlı yetişir.",
+	"crop.giant-note": "Yetişerek {{link}} olabilir.",
+	"crop.giant-hover": "@BDev@b",
+	"crop.trellis-note": "Sırık gerektirir.",
+
+	"page.weather": "Hava Durumu",
+	"page.weather-island": "Zencefil Adası Durumu",
+
+	"page.weather.pirates": "Maceraperestler Loncası şu tarihlerde Zencefil Adası içinde veya etrafında korsan hareketliliği bekledikleri konuusnda uyardı:",
+
+	"festival.about": "Şu şölenler Yıldızçiyi Vadisi konumunda {{season}} mevsiminde olması planlanmıştır:",
+
+	"festival.when": "Saat:",
+	"festival.when-times": "{{start}} ile {{end}} arası",
+	"festival.where": "Yer:",
+	"festival.date": "Tarih:",
+
+	"weather.sunny": "Güneşli",
+	"weather.rain": "Yağmurlu",
+	"weather.debris": "Rüzgarlı",
+	"weather.lightning": "Gök Gürültülü Fırtınalı",
+	"weather.festival": "Güneşli",
+	"weather.snow": "Karlı",
+
+	"page.train": "Tren Programı",
+	"page.train.about": "@BUyarı:@b Trenler şu zamanlarda Yıldızçiyi Vadisi İstasyonu'ndan geçiyor olacak. Güvenliğiniz için, tren geldiğinde her zaman raylardan uzak durun.",
+
+	"page.train.notice": "Ray denetimi yapılması nedeniyle bahar boyunca Yıldızçiyi Vadisi İstasyonu'na tren servisleri askıya alınmıştır.",
+
+	"page.fortune": "Şans",
+
+	"page.fortune.luck-awful": "Mutsuz ruhlar hayatı zorlaştıracak.",
+	"page.fortune.luck-bad": "Kızgın ruhlar kimseye şans vermeyecek.",
+	"page.fortune.luck-neutral": "Ruhlar mükemmel bir dengede olacak. Gün, sizin ellerinizde.",
+	"page.fortune.luck-good": "İyi mizaçlı ruhlar biraz fazladan şans verecek.",
+	"page.fortune.luck-great": "Mutlu ruhlar herkese şans yağdıracak.",
+
+	"page.fortune.event.none": "Huzurlu bir mevsim bekleyin. Günlük hayatınızda heyecan bulup neşeyi gözetmelisiniz.",
+
+	"page.fortune.about": "{{Season}} içinde ne olabileceği veya olmayabileceği işte burada.",
+
+	"page.fortune.garbage-hat": "Birinin çöpü başkasının hazinesidir.",
+
+	"page.fortune.event.fairy": "İyi bir peri gece buradan geçecek. Şansı yaver gidenler kendilerini bekleyen dolu dolu bir hasat bulabilir.",
+	"page.fortune.event.witch": "Bu gece burada cadı hareketliliği bekleniyor.",
+	"page.fortune.event.meteorite": "Ferngill çevresinde meteor yağmurları bekleniyor.",
+	"page.fortune.event.owl": "Gizemle kaplı, taş muhafızlar vadi üzerine inecek.",
+	"page.fortune.event.ufo": "Gökyüzünün ötesindeki garip varlıklar Ferngill üzerinde gezecek.",
+
+	"page.mines": "Yeraltı",
+	"page.mines.about": "{{Season}} içinde özetle şu canavar hareketlilikleri bekleniyor:",
+
+	"page.mines.type.Mushroom": "Mantarlar",
+	"page.mines.type.InfestedMonster": "İstila",
+	"page.mines.type.InfestedSlime": "Balçık İstilası",
+	"page.mines.type.Quarry": "Taş Ocağı",
+	"page.mines.type.InfestedQuarry": "Taş Ocağı İstilası",
+	"page.mines.type.Dino": "Mağara Dinozorları",
+
+	"page.notices": "Yerel Bildiriler",
+
+	"page.notices.season": "{{item}} season goes from {{start}} through {{end}}.",
+	"page.notices.summer": "The summer ocean currents are expected to hit Pelican Beach with extra debris from the 12th to the 14th.",
+	"page.notices.market": "The Night Market is open late from the 15th to the 17th.",
+
+	"page.notices.anniversary.no-s": "Bugün {{name}} ile {{spouse}} çifttinin yıldönümü!",
+	"page.notices.anniversary.s": "Bugün {{name}} ile {{spouse}} çifttinin yıldönümü!",
+
+	"page.notices.wedding.no-s": "Bugün {{name}} ile {{spouse}} çifttinin düğün günü!",
+	"page.notices.wedding.s": "Bugün {{name}} ile {{spouse}} çifttinin düğün günü!",
+
+	"page.notices.festival": "{{name}} için vakit geldi çattı! {{start}} ile {{end}} arası {{where}} içinde bize katılın.",
+
+	"page.notices.birthday.no-s": "Bugün {{name}} kişisinin doğum günü!",
+	"page.notices.birthday.s": "Bugün {{name}} kişisinin doğum günü!",
+
+	"page.notices.merchant": "Gezgin Tüccar kasabada olacak.",
+	"page.notices.merchant.stock": "Gezgin Tüccar şunları satacak:",
+
+	"page.notices.train": "{{time}} saatinde bir trenin istasyondan geçmesi bekleniyor.",
+
+	// Fishing Page
+
+	"page.fish": "Balıkçılık",
+	"page.fish.aquarium.none": "Bu bir akvaryuma yerleştirilemez.",
+	"page.fish.caught": "Bundan @B{{count}}@b tane yakaladın.",
+	"page.fish.caught.not": "Bunu daha önce yakalamadın.",
+
+	// TL Note: You can use {{big_cm}}, {{min_cm}}, and {{max_cm}} instead of _inch.
+	"page.fish.size": "En büyük avın @B{{big_cm}}\"@b.",
+	"page.fish.size.range": "@B{{min_cm}}\"@b ile @B{{max_cm}}\"@b arasında değişiyor.",
+
+	"page.fish.weather.Sunny": "{{fish}} sadece @Bgüneşli@b havada etrafta.",
+	"page.fish.weather.Rainy": "{{fish}} sadece @yağmurlu@b havada etrafta.",
+	"page.fish.weather.Any": "{{fish}} her zaman etrafta, yağmur veya güneş.",
+	"page.fish.level": "Bu balığı yakalamak için {{skill}} becerisinde @B{{level}}@b seviyesinde olman lazım.",
+	"page.fish.legendary": "{{fish}} efsanevi bir balık.",
+	"page.fish.time.all": "Günün tüm saatlerinde etrafta.",
+	"page.fish.time": "@B{{start}}@b ile @B{{end}}@b arasında etrafta",
+	"page.fish.time.many": "Şu zaman dilimlerinde etrafta oluyor: {{spans}}.",
+	"page.fish.time.range": "@B{{start}}@b ile @B{{end}}@b arası",
+	"page.fish.locations": "Konumlar",
+	"page.fish.seasons.all": "Tüm Mevsimler",
+	"page.fish.locations.none": "Bu balık konum verisine sahip değil.",
+	"page.fish.pond": "Balık Çiftçiliği",
+	"page.fish.pond.none": "{{fish}} balık havuzuna yerleştirilemez.",
+	"page.fish.pond.start": "",
+	"page.fish.filter.weather": "Havaya göre filtrele",
+	"page.fish.filter.none": "Filtresiz",
+	"page.fish.none": "Mevcut filtrelerinizle eşleşen herhangi bir balık yok.",
+	"page.fish.nothing": "Burada bakılacak bir şey yok...",
+	"fish.weather.Any": "Herhangi",
+	"fish.weather.Rainy": "Yağmurlu",
+	"fish.weather.Sunny": "Güneşli",
+	"page.fish.filter.type": "Türe göre Filtrele",
+	"page.fish.filter.type.trap": "Tuzak Kurma (Yengeç Çömlepi)",
+	"page.fish.filter.type.caught": "Balık Tutma (Olta)",
+	"page.fish.filter.caught": "Yakalanmaya göre Filtrele",
+	"page.fish.filter.true": "Evet",
+	"page.fish.filter.false": "Hayır",
+	"page.fish.filter.location": "Mevcut Konuma göre Filtrele",
+	"page.fish.filter.now": "Evet, bu mevsim",
+	"page.fish.location.fresh": "{{fish}} tatlı suda yaşar.",
+	"page.fish.location.ocean": "{{fish}} tuzlu suda yaşar.",
+
+	// Settings
+
+	"settings.theme": "UI Teması",
+	"settings.theme-desc": "Bu UI teması Kitap'ın menüsü için kullanılacak.",
+
+	"theme.automatic": "Otomatik",
+	"theme.default": "Varsayılan",
+
+	"settings.button": "Kitap Düğme Konumu Button Position",
+	"settings.button-desc": "Kapatılmadığında, bu noktaya envanter menüsüne Kitap'ı açmak için bir düğme eklenecek.",
+
+	"settings.button.Disabled": "Kapalı",
+	"settings.button.LeftTop": "Menünün Sol Üstü",
+	"settings.button.LeftBottom": "Menünün Sol Altı",
+	"settings.button.OrganizeRight": "Düzenle'nin Sağı",
+	"settings.button.TrashRight": "Çöp Kutusu'nun Sağı",
+	"settings.button.TrashDown": "Çöp Kutusu'nun Altı",
+
+	"settings.available": "Kitap Her Zaman Mevcut",
+	"settings.available-desc": "Açıkken Kitap, bir kopyasına sahip olup olmadığın farketmeksizin her zaman mevcut olacak.",
+
+	"settings.island": "Ada Her Zaman Mevcut",
+	"settings.island-desc": "Açıkken Kitap her zaman Zencefil Adası içeriğini göstermek için genişletilecek.",
+
+	"settings.magic": "Büyü Sayfaları Her Zaman Mevcut",
+	"settings.magic-desc": "Açıkken, büyü sayfaları her zaman mevcut olacak ve büyücüyle geçen o olayı gerektirmeyecek.",
+
+	"settings.weather.deterministic": "Belirleyici Tahmin Kullan",
+	"settings.weather.deterministic-desc": "Kitap'ın hava durumunun çalışması için, yarının hesaplamasını rastlantısallığın tahmin edilebilir bir kaynağıyla değiştiriyoruz. Eğer bu sorunlara neden oluyorsa, burada bunu kapatabilirsin. Yine de, bunu yapmak genişletilmiş hava tahminini de kapatacak.",
+
+	"settings.weather.rules": "Hava Kurallarını Aktifleştir",
+	"settings.weather.rules-desc": "Hava Kuralları rastgele havaya fazladan değişken ekler. Varsayılan kurallar baharın sonunda sulama kaplarını geliştirmeyi kolaylaştırmak için üç gün yağmur, ve her haftada en az birer yağmurlu ve güneşli gün olmasını garantileyecek.",
+
+	"settings.controls": "Kontroller",
+
+	"settings.controls.almanac": "Kitap'ı Aç",
+	"settings.controls.almanac-desc": "Bu tuşa basmak Kitap arayüzünü açacak.",
+
+	"settings.enable": "Sayfayı Aktifleştir",
+	"settings.enable-desc": "Bu sayfanın Kitap'a eklenip eklenmemesi gerektiği.",
+
+	"settings.crops": "Sayfa: Ekim tarihleri",
+
+	"settings.crops.preview": "Ekin Önizlenimleri",
+	"settings.crops.preview-desc": "Ekin Önizlenimleri açıldığında, Ekim Tarihleri sekmesinde bir ekinin üzerine imleci getirmek mevcut günde o ekinin hangi büyüme aşamasında olduğunu gösterecek.",
+
+	"settings.crops.preview.enable": "Önizlenimleri Aktifleştir",
+
+	"settings.crops.preview.plantonfirst": "Herzaman İlk Gün Ek",
+	"settings.crops.preview.plantonfirst-desc": "Açıldığında, mevcut tarih ayın ilk gününden sonra olsa bile ay önizlemesi bir ekin seçildiğinde her zaman ilk günde ekildiğini gösterecek.",
+
+	"settings.crops.preview.sprite": "Hasat Spritelarını Kullan",
+	"settings.crops.preview.sprite-desc": "Açıldığında, hasat ürününün bir resmi son büyüme aşamasının yerine kullanılacak, ekinin hasat edilebilr olduğunun görülmesini kolaylaştıracak.",
+
+	"settings.fortune": "Sayfa: Şans",
+
+	"settings.fortune.deterministic": "Belirleyici Şans Kullan",
+	"settings.fortune.deterministic-desc": "Kitap'ın günlük şans tahmininin çalışması için, yarının hesaplamasını rastlantısallığın tahmin edilebilir bir kaynağıyla değiştiriyoruz. Eğer bu sorunlara neden oluyorsa, burada bunu kapatabilirsin. Yine de, bunu yapmak genişletilmiş günlük şans tahminini de kapatacak..",
+
+	"settings.fortune.exact": "Şans Yüzdelerini Göster",
+	"settings.fortune.exact-desc": "Açıldığında, Şans takvim ipuçlarında kesin günlük şans yüzdesi gösterilecek.",
+
+	"settings.train": "Sayfa: Tren Programı",
+
+	"settings.weather": "Sayfa: Hava Durumu",
+
+	"settings.mines": "Sayfa: Yeraltı",
+
+	"settings.fish": "Sayfa: Balıkçılık",
+	"settings.fish.show-tank": "Akvaryum Önizlemesini Göster",
+	"settings.fish.show-tank-desc": "Açıldığında, Balıkçılık Sayfası her bir balığın akvaryumdaki görünümünün önizlenimini gösterecek.",
+
+	"settings.fish.decorate-tank": "Akvaryumu Süsle",
+	"settings.fish.decorate-tank-desc": "Açıldığında, akvaryum önizlemesi balığın yanında birkaç süs nesnesine sahip olacak.",
+
+	"settings.fish.legendary": "Efsanevi Balıkları Dahil Et",
+	"settings.fish.legendary-desc": "Açıldığında, Kitap'ta efsanevi balıklar da listelenecek.",
+
+	"settings.notices": "Sayfa: Yerel Bildiriler",
+
+	"settings.notices.trains": "Trenleri Göster",
+	"settings.notices.trains-desc": "Açıldığında, tren programı Yerel Bildiriler'de olacak. Bu Tren Programı sayfasına bir alternatif olarak kullanılabilir.",
+
+	"settings.notices.anniversaries": "Yıldönümlerini Göster",
+	"settings.notices.anniversaries-desc": "Açıldığında, Yerel Bildiriler sayfasında bütün çiftçiler için düğün ve yıldönümleri listelenecek.",
+
+	"settings.notices.festivals": "Şölenleri Göster",
+	"settings.notices.festivals-desc": "Açıldığında, şölenler Yerel Bildiriler sayfasında listelenecek.",
+	
+	"settings.notices.gathering": "Toplayıcılık Fırsatlarını Göster",
+	"settings.notices.gathering-desc": "Açıldığında, toplayıcılık fırsatları Yerel Bildiriler sayfasında gösterilecek.",
+
+	"settings.notices.merchant": "Gezgin Tüccar'ı Göster",
+	"settings.notices.merchant-desc": "Açıldığında, Gezgin Tüccar'ın ziyaretleri Yerel Bildiriler'de gösterilecek. Eğer dilerseniz, ne satacağını da gösterebiliriz.",
+	"settings.notices.merchant.Disabled": "Kapalı",
+	"settings.notices.merchant.Visit": "Sadece Ziyaretleri Göster",
+	"settings.notices.merchant.Stock": "Ziyaretleri ve Stoğu Göster",
+
+	"settings.restore-state": "Önceki Yeri Hatırla",
+	"settings.restore-state.desc": "Açıldığında, Kitap kapatıp açtığında hangi kısımda kaldığını hatırlayacak.",
+
+	"settings.cycle-time": "Devir Resmi",
+	"settings.cycle-time.desc": "Belirli bir gün için birden fazla resim aynı anda gösterielcekse, o kadar çok saniye için birer tane resim gösterilir.",
+
+	"settings.debug": "Debug Modu",
+	"settings.debug.desc": "Açıldığında, bug çözme için kullanışlı olacak fazladan bazı bilgiler Kitap'ta gösterilebilir. Debug Modu aynı zamanda verileri tazelemek için F5'e basılabilmesini de sağlar.",
+
+	// Events
+
+	// Pierre at Farm
+	"event.11022000.0": "Merhaba, @. Görünüşe göre iyice yerleşiyorsun!",
+	"event.11022000.1": "Bu senenin Çiftçi'nin Kitabı siparişim yeni geldi. Yeni başladığından, sana bir kopyasını vereyim dedim.",
+	"event.11022000.2": "Bu 'Çiftçi'nin Kitabı' kopyası aldın.",
+	"event.11022000.3": "Birsürü kullanışlı bilgiyle dolular. Hava durumları. Ekin dönüşümleri. Bölgesel tren programı. Bir sürü şey.",
+	"event.11022000.4": "Ne yetiştirebileceğini buradan oku derim. Ekmeye hazır olduğunda, dükkanımdan tohum alabilirsin.#$b#Pierre'in tohumları bulabileceğin *en iyi* tohumlardır.",
+
+	// Wizard at Farm
+	"event.11022002.0": "Tekrar merhaba... @. Seni bekliyordum.#$b#İşte, sana bir şey vermek istiyorum.",
+	"event.11022002.1": "Bir 'Büyü Kitabı' kopyası aldın.",
+	"event.11022002.2": "Bir çiftçi olarak, havayla haşır neşirsin.#$b#Bu kitap Welwick'in kendisi tarafından hazırlanmış bir ruhlar durumu içeriyor.#$b#Güvende kalmana ve gelişmene yardım edecek.",
+	"event.11022002.3": "Şimdi, izin verirsen... Yapacak çok işim var.",
+
+	// Willy at FishShop
+	"event.11022001.0": "Selam!",
+	"event.11022001.1": "Adaya mı gidiyorsun, evlat?",
+	"event.11022001.2": "O halde isteyebileceğin bir şeyim var. İşte.",
+	"event.11022001.3": "Bir 'Eğreltiotu Adaları Kitabı' kopyası aldın.",
+	"event.11022001.4": "Pek fazla bir şey değil, fakat havanın nasıl olacağını bilmek harika olacak. Bazı balıklar sadece yağmurda gelir, biliyorsun?",
+	"event.11022001.5": "Şey, en iyisi seni tutmayayım. Günün iyi geçsin, @.",
+
+	// Locations
+
+	"location.WitchSwamp": "Cadı'nın Bataklığı",
+	"location.BugLand": "Türeşik Böcek Yuvası",
+
+	"location.Caldera": "Zencefil Adası (Volkan Kaldera)",
+	"location.IslandWest": "Batı Zencefil Adası",
+	"location.IslandNorth": "Kuzey Zencefil Adası",
+	"location.IslandSouth": "Güney Zencefil Adası",
+	"location.IslandSouthEast": "Güneydoğu Zencefil Adası",
+	"location.IslandSouthEastCave": "Güneydoğu Zencefil Adası (Mağara)",
+	"location.IslandEast": "Doğu Zencefil Adası",
+
+	"location.sub-any": "Herhangi",
+	"location.sub-floor": "{{floor}}. Kat",
+
+	"location.Forest.River": "Nehir",
+	"location.Forest.Pond": "Gölet",
+
+	"location.Island.Ocean": "Okyanus",
+	"location.Island.Freshwater": "Tatlısu",
+
+	// Maps: Stardew Aquarium
+	"location.Custom_ExteriorMuseum": "Yıldızçiyi Akvaryumu",
+	"location.ExteriorMuseum": "Yıldızçiyi Akvaryumu",
+
+	// Maps: Stardew Valley Expanded
+	"location.Custom_AdventurerSummit": "Maceracı Zirvesi",
+	"location.Custom_BlueMoonVineyard": "Mavi Ay Bağı",
+	"location.Custom_BlueMoonVineyard.0": "Okyanus",
+	"location.Custom_BlueMoonVineyard.1": "Nehir",
+	"location.Custom_CrimsonBadlands": "Kızıl Çoraklık",
+	"location.Custom_FableReef": "Masal Resifi",
+	"location.Custom_ForestWest": "Batı Kömürözü Ormanı",
+	"location.Custom_Highlands": "Tepelik Arazi",
+	"location.Custom_Highlands.0": "Yıkıntılar",
+	"location.Custom_Highlands.1": "Nehir",
+	"location.Custom_HighlandsCavern": "Tepelik Arazi (Mağara)",
+	"location.Custom_JunimoWoods": "Junimo Ormanları",
+	//"location.Custom_MorrisProperty": "",
+	"location.Custom_ShearwaterBridge": "Shearwater Köprüsü",
+	"location.Custom_SpriteSpring2": "Peri Pınarı"
+}

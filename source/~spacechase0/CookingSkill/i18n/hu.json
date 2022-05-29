@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spacechase0/StardewValleyMods
+**
+*************************************************/
+
+{
+    // skill
+    "skill.name": "Főzés",
+    "skill.level-up-perk": "+{{bonus}}%-kal nőtt a házi készítésű ételek fogyaszthatósága.",
+
+    // professions
+    "efficient.name": "Hatékony",
+    "efficient.desc": "15% esély arra, hogy kevesebb összetevőt használsz el.",
+    "gourmet.name": "Ínyenc",
+    "gourmet.desc": "+20% eladási ár.",
+    "intense-flavors.name": "Intenzív ízek",
+    "intense-flavors.desc": "Az élelmiszer bónuszok egy szinttel magasabbak.\n(+20% maximális energia vagy mágnesesség.)",
+    "professional-chef.name": "Profi szakács",
+    "professional-chef.desc": "A házi készítésű ételek mindig minimum ezüst minőségűek.",
+    "satisfying.name": "Kielégítő",
+    "satisfying.desc": "+25% bónusz étel időtartam.",
+    "secret-spices.name": "Titkos fűszerek",
+    "secret-spices.desc": "Véletlenszerű bónuszt ad a nem bónuszos ételekhez."
+}

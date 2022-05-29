@@ -37,10 +37,10 @@ namespace IndustrialFurnaceAutomate
 		*********/
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
-			automate = this.Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
-			industrialFurnaceAPI = this.Helper.ModRegistry.GetApi<IIndustrialFurnaceAPI>("Traktori.IndustrialFurnace");
+			automate = Helper.ModRegistry.GetApi<IAutomateAPI>("Pathoschild.Automate");
+			industrialFurnaceAPI = Helper.ModRegistry.GetApi<IIndustrialFurnaceAPI>("Traktori.IndustrialFurnace");
 
-			if (automate != null && industrialFurnaceAPI != null)
+			if (automate is not null && industrialFurnaceAPI is not null)
 			{
 				automate.AddFactory(new IndustrialFurnaceAutomationFactory(industrialFurnaceAPI));
 			}

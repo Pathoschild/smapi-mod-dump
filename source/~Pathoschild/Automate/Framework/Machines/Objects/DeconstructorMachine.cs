@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;
@@ -37,7 +35,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
         {
             foreach (var trackedStack in input.GetItems())
             {
-                SObject output = this.Machine.GetDeconstructorOutput(trackedStack.Sample.getOne());
+                SObject? output = this.Machine.GetDeconstructorOutput(trackedStack.Sample.getOne());
                 if (output != null)
                 {
                     trackedStack.Reduce(1);

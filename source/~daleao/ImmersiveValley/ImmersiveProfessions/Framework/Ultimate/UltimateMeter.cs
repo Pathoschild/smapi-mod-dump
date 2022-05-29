@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -41,21 +41,21 @@ internal class UltimateMeter
     private bool _shake;
     private readonly Color _color;
 
-    private Ultimate Ultimate { get; }
+    private IUltimate Parent { get; }
 
-    public UltimateMeter(Ultimate ultimate, Color color)
+    public UltimateMeter(IUltimate ultimate, Color color)
     {
-        Ultimate = ultimate;
+        Parent = ultimate;
         _color = color;
     }
 
     #region properties
 
     /// <summary>The texture that will be used to draw the gauge.</summary>
-    public static Texture2D Texture => Textures.UltimateMeterTx;
+    internal static Texture2D Texture => Textures.UltimateMeterTx;
 
     /// <summary>Whether the gauge is being drawn.</summary>
-    public bool IsVisible => EventManager.IsEnabled<UltimateMeterRenderingHudEvent>();
+    internal bool IsVisible => EventManager.IsEnabled<UltimateMeterRenderingHudEvent>();
 
     #endregion properties
 
@@ -64,12 +64,12 @@ internal class UltimateMeter
     /// <summary>Draw the gauge and all it's components to the HUD.</summary>
     /// <param name="b">A <see cref="SpriteBatch" /> to draw to.</param>
     /// <remarks>This should be called from a <see cref="RenderingHudEvent" />.</remarks>
-    public void Draw(SpriteBatch b)
+    internal void Draw(SpriteBatch b)
     {
         if (_opacity <= 0f) return;
 
         var isUltimateActive = ModEntry.PlayerState.RegisteredUltimate.IsActive;
-        var bonusLevelHeight = (Ultimate.MaxValue - Ultimate.BASE_MAX_VALUE_I) * 0.2;
+        var bonusLevelHeight = (Parent.MaxValue - Ultimate.BASE_MAX_VALUE_I) * 0.2;
         
         // get bar position
         var topOfBar = new Vector2(
@@ -150,7 +150,7 @@ internal class UltimateMeter
         );
 
         // draw fill
-        var fillPct = Ultimate.ChargeValue / Ultimate.MaxValue;
+        var fillPct = Parent.ChargeValue / Parent.MaxValue;
         var fullBarHeight = INITIAL_BAR_HEIGHT_I + bonusLevelHeight;
         var srcHeight = (int) (42 * fillPct);
         var destHeight = (int) (fullBarHeight * fillPct);
@@ -188,29 +188,13 @@ internal class UltimateMeter
         // draw hover text
         if (Game1.getOldMouseX() >= topOfBar.X && Game1.getOldMouseY() >= topOfBar.Y &&
             Game1.getOldMouseX() < topOfBar.X + 36f)
-            Game1.drawWithBorder( Math.Max(0, (int) Ultimate.ChargeValue) + "/" + Ultimate.MaxValue, Color.Black * 0f,
+            Game1.drawWithBorder( Math.Max(0, (int) Parent.ChargeValue) + "/" + Parent.MaxValue, Color.Black * 0f,
                 Color.White,
                 topOfBar + new Vector2(0f - Game1.dialogueFont.MeasureString("999/999").X - 32f, 64f));
     }
 
-    /// <summary>Gradually reduce the gauge's opacity value.</summary>
-    public void FadeOut()
-    {
-        --_fadeOutTimer;
-        if (_fadeOutTimer >= FADE_OUT_DURATION_I) return;
-
-        var ratio = (float)_fadeOutTimer / FADE_OUT_DURATION_I;
-        _opacity = (float)(-1.0 / (1.0 + Math.Exp(12.0 * ratio - 6.0)) + 1.0);
-        if (_fadeOutTimer > 0) return;
-
-        EventManager.Disable(typeof(UltimateGaugeFadeOutUpdateTickedEvent),
-            typeof(UltimateMeterRenderingHudEvent));
-        _fadeOutTimer = FADE_OUT_DELAY_I + FADE_OUT_DURATION_I;
-        _opacity = 1f;
-    }
-
     /// <summary>Countdown the gauge shake timer .</summary>
-    public void UpdateShake()
+    internal void UpdateShake()
     {
         if (!Game1.game1.IsActive || !Game1.shouldTimePass()) return;
 
@@ -231,9 +215,25 @@ internal class UltimateMeter
     }
 
     /// <summary>Forcefully set shaking state to <c>False</c>.</summary>
-    public void ForceStopShake()
+    internal void ForceStopShake()
     {
         _shake = false;
+    }
+
+    /// <summary>Gradually reduce the gauge's opacity value.</summary>
+    internal void FadeOut()
+    {
+        --_fadeOutTimer;
+        if (_fadeOutTimer >= FADE_OUT_DURATION_I) return;
+
+        var ratio = (float)_fadeOutTimer / FADE_OUT_DURATION_I;
+        _opacity = (float)(-1.0 / (1.0 + Math.Exp(12.0 * ratio - 6.0)) + 1.0);
+        if (_fadeOutTimer > 0) return;
+
+        EventManager.Disable(typeof(UltimateGaugeFadeOutUpdateTickedEvent),
+            typeof(UltimateMeterRenderingHudEvent));
+        _fadeOutTimer = FADE_OUT_DELAY_I + FADE_OUT_DURATION_I;
+        _opacity = 1f;
     }
 
     #endregion public methods

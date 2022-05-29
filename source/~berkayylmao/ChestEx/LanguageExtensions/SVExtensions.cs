@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -36,7 +36,7 @@ using System.Text;
 using ChestEx.Types.BaseTypes;
 using ChestEx.Types.CustomTypes.ExtendedSVObjects;
 
-using Harmony;
+using HarmonyLib;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -67,9 +67,9 @@ namespace ChestEx.LanguageExtensions {
     public static Rectangle GetTextureBoxRectangle(this InventoryMenu menu, Int32 contentPadding = 8, Single borderScale = 1.0f) {
       Int32 border_diff = Convert.ToInt32(16.0f * borderScale);
 
-      var   slots      = menu.GetSlotDrawPositions();
+      var slots = menu.GetSlotDrawPositions();
       Point first_slot = slots.First().AsXNAPoint();
-      Point last_slot  = slots.Last().AsXNAPoint();
+      Point last_slot = slots.Last().AsXNAPoint();
 
       return new Rectangle(first_slot.X - contentPadding - border_diff,
                            first_slot.Y - contentPadding - border_diff,
@@ -89,19 +89,19 @@ namespace ChestEx.LanguageExtensions {
     public static void SetBounds(this IClickableMenu menu, Rectangle bounds) {
       menu.xPositionOnScreen = bounds.X;
       menu.yPositionOnScreen = bounds.Y;
-      menu.width             = bounds.Width;
-      menu.height            = bounds.Height;
+      menu.width = bounds.Width;
+      menu.height = bounds.Height;
     }
 
     /// <summary>
     /// Sets the menu's bounds.
     /// </summary>
     public static void SetBounds(this IClickableMenu menu, Int32 x, Int32 y, Int32 width,
-                                 Int32               height) {
+                                 Int32 height) {
       menu.xPositionOnScreen = x;
       menu.yPositionOnScreen = y;
-      menu.width             = width;
-      menu.height            = height;
+      menu.width = width;
+      menu.height = height;
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ namespace ChestEx.LanguageExtensions {
     public static void SetVisibleEx(this InventoryMenu menu, Boolean isVisible) { menu.inventory?.ForEach(cc => cc.visible = isVisible); }
 
     public static ExtendedChest.ChestType GetChestType(this Chest chest) {
-      return chest.fridge.Value       ? ExtendedChest.ChestType.Fridge :
+      return chest.fridge.Value ? ExtendedChest.ChestType.Fridge :
         chest.ParentSheetIndex == 130 ? ExtendedChest.ChestType.WoodenChest :
         chest.ParentSheetIndex == 232 ? ExtendedChest.ChestType.StoneChest : ExtendedChest.ChestType.None;
     }
@@ -125,19 +125,19 @@ namespace ChestEx.LanguageExtensions {
       return col;
     }
 
-    public static void DrawTextureBox(this SpriteBatch spriteBatch,       Rectangle bounds, Colours colours, Boolean drawGradient = false,
-                                      Boolean          drawShadow = true, Single    borderScale = 1.0f) {
+    public static void DrawTextureBox(this SpriteBatch spriteBatch, Rectangle bounds, Colours colours, Boolean drawGradient = false,
+                                      Boolean drawShadow = true, Single borderScale = 1.0f) {
       if (colours == null) return;
 
-      Texture2D texture                        = Game1.uncoloredMenuTexture;
+      Texture2D texture = Game1.uncoloredMenuTexture;
       if (colours == Colours.gDefault) texture = Game1.menuTexture;
 
       void draw(Colours boxColours, Int32 padding = 0) {
-        Single  centre_scale         = 64.0f * borderScale;
-        Single  centre_scale_half    = centre_scale / 2.0f;
-        Single  centre_scale_quarter = centre_scale / 4.0f;
-        Single  bounds_diff          = centre_scale + centre_scale_half;
-        Vector2 calc_pos             = new(bounds.X + centre_scale_quarter - padding, bounds.Y + centre_scale_quarter + padding);
+        Single centre_scale = 64.0f * borderScale;
+        Single centre_scale_half = centre_scale / 2.0f;
+        Single centre_scale_quarter = centre_scale / 4.0f;
+        Single bounds_diff = centre_scale + centre_scale_half;
+        Vector2 calc_pos = new(bounds.X + centre_scale_quarter - padding, bounds.Y + centre_scale_quarter + padding);
         // TL corner
         spriteBatch.Draw(texture,
                          calc_pos,
@@ -250,17 +250,17 @@ namespace ChestEx.LanguageExtensions {
       menu.draw(spriteBatch, slotBorderColour.R, slotBorderColour.G, slotBorderColour.B);
     }
 
-    public static void DrawHoverText(this SpriteBatch spriteBatch,           SpriteFont font,           String  text,              String title = "",
-                                     Point            textPadding = default, Colours    colours = null, Boolean drawShadow = true, Single alpha = 1.0f,
-                                     Single           borderScale = 1.0f) {
+    public static void DrawHoverText(this SpriteBatch spriteBatch, SpriteFont font, String text, String title = "",
+                                     Point textPadding = default, Colours colours = null, Boolean drawShadow = true, Single alpha = 1.0f,
+                                     Single borderScale = 1.0f) {
       if (String.IsNullOrWhiteSpace(text)) return;
       if (textPadding == default) textPadding = new Point(4, 2);
       colours ??= Colours.GenerateFromMenuTiles();
-      colours =   colours.MultAlpha(alpha);
+      colours = colours.MultAlpha(alpha);
 
-      Point  mouse_pos   = Game1.getMousePosition();
-      Point  text_size   = font.MeasureString(text).AsXNAPoint();
-      Point  title_size  = String.IsNullOrWhiteSpace(title) ? Point.Zero : Game1.dialogueFont.MeasureString(title).AsXNAPoint();
+      Point mouse_pos = Game1.getMousePosition();
+      Point text_size = font.MeasureString(text).AsXNAPoint();
+      Point title_size = String.IsNullOrWhiteSpace(title) ? Point.Zero : Game1.dialogueFont.MeasureString(title).AsXNAPoint();
       Single border_diff = 16.0f * borderScale;
       // calc box target
       Rectangle box_rect = new((Int32)(mouse_pos.X + font.GetSize().X * (1.25f + borderScale)),
@@ -268,8 +268,8 @@ namespace ChestEx.LanguageExtensions {
                                Math.Max(text_size.X, title_size.X) + textPadding.X * 2 + (Int32)(border_diff * 2.0f),
                                title_size.Y + text_size.Y + textPadding.Y + (Int32)(border_diff * 2.0f));
       // clamp box to game viewport
-      Rectangle safe_area                                = Utility.getSafeArea();
-      if (box_rect.Right > safe_area.Right) box_rect.X   = safe_area.Right - box_rect.Width;
+      Rectangle safe_area = Utility.getSafeArea();
+      if (box_rect.Right > safe_area.Right) box_rect.X = safe_area.Right - box_rect.Width;
       if (box_rect.Bottom > safe_area.Bottom) box_rect.Y = safe_area.Bottom - box_rect.Height;
       // calc text target
       Vector2 text_pos = new(box_rect.X + textPadding.X + border_diff, box_rect.Y + textPadding.Y + border_diff);
@@ -306,37 +306,37 @@ namespace ChestEx.LanguageExtensions {
       // Calculate negative colour (of the bg colour) to display coloured text
       Color negative_bg_colour;
       {
-        colours.mBackgroundColour.AsDotNetColor().ToHSV(out Double hue, out Double sat, out Double val);
-        hue = (hue + 180.0d) % 360.0d;
+        colours.mBackgroundColour.AsSKColor().ToHsv(out Single hue, out Single sat, out Single val);
+        hue = (hue + 180.0f) % 360.0f;
         if (colours.mForegroundColour == Color.Black) {
-          sat = Math.Min(1.0d,
+          sat = Math.Min(1.0f,
                          sat
-                         * (sat < 0.01d ? 150.0d :
-                           sat < 0.1d   ? 50.0d : 5.0d));
-          if (val > 0.0d) val /= 2.375d * val;
+                         * (sat < 0.01f ? 150.0f :
+                           sat < 0.1f ? 50.0f : 5.0f));
+          if (val > 0.0f) val /= 2.375f * val;
         }
         else {
-          val = Math.Min(1.0d,
+          val = Math.Min(1.0f,
                          val
-                         * (val < 0.01d ? 150.0d :
-                           val < 0.1d   ? 50.0d : 5.0d));
-          if (sat > 0.0d) sat /= 2.5d * sat;
+                         * (val < 0.01f ? 150.0f :
+                           val < 0.1f ? 50.0f : 5.0f));
+          if (sat > 0.0d) sat /= 2.5f * sat;
         }
 
-        negative_bg_colour = DotNetExtensions.ColourFromHSV(hue, sat, val).AsXNAColor();
+        negative_bg_colour = SkiaSharp.SKColor.FromHsv(hue, sat, val).AsXNAColor();
       }
       // Calculate shadow colour (from the bg colour)
       Color text_shadow_colour = colours.mBackgroundColour.MultRGB(colours.mForegroundColour == Color.White ? 0.3f : 0.7f);
       // Calc padding zones
       Single border_diff = 16.0f * borderScale;
-      Int32  font_y_diff = Math.Max(font.GetSize().Y, 52);
-      Int32  buffer      = contentPadding + (Int32)border_diff;
+      Int32 font_y_diff = Math.Max(font.GetSize().Y, 52);
+      Int32 buffer = contentPadding + (Int32)border_diff;
 
-      String category_name                                   = null;
-      String bold_title_subtext                              = null;
+      String category_name = null;
+      String bold_title_subtext = null;
       if (String.IsNullOrEmpty(boldTitleText)) boldTitleText = null;
-      String  money_text                                     = Convert.ToString(moneyAmountToDisplayAtBottom);
-      Vector2 money_text_size                                = font.MeasureString(money_text);
+      String money_text = Convert.ToString(moneyAmountToDisplayAtBottom);
+      Vector2 money_text_size = font.MeasureString(money_text);
 
       Int32 width = Math.Max(healAmountToDisplay != -1 ? (Int32)font.MeasureString(healAmountToDisplay + "+ Energy" + 32).X : 0,
                              Math.Max((Int32)font.MeasureString(text).X, boldTitleText != null ? (Int32)Game1.dialogueFont.MeasureString(boldTitleText).X : 0));
@@ -350,7 +350,7 @@ namespace ChestEx.LanguageExtensions {
         // Category
         category_name = hoveredItem.getCategoryName();
         if (category_name.Length > 0) {
-          width  =  Math.Max(width, (Int32)font.MeasureString(category_name).X + 32);
+          width = Math.Max(width, (Int32)font.MeasureString(category_name).X + 32);
           height += font.GetSize().Y;
         }
         // Buffs
@@ -362,138 +362,138 @@ namespace ChestEx.LanguageExtensions {
         // Specific
         switch (hoveredItem) {
           case Boots boots: {
-            // Description
-            Int32  desc_width = Traverse.Create(boots).Method("getDescriptionWidth").GetValue<Int32>();
-            String desc_text  = Game1.parseText(boots.description, Game1.smallFont, desc_width);
-            height += (Int32)font.MeasureString(desc_text).Y;
-            // Stat effects
-            {
-              // Categories
-              height += boots.getNumberOfDescriptionCategories() * font_y_diff + contentPadding;
-              // Defense
-              if (boots.defenseBonus > 0) width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 9999, 9999)).X + buffer);
-              // Immunity
-              if (boots.immunityBonus > 0)
-                width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", 9999, 9999)).X + buffer);
-            }
-
-            break;
-          }
-          case Ring ring: {
-            // Description
-            Int32  desc_width = Traverse.Create(ring).Method("getDescriptionWidth").GetValue<Int32>();
-            String desc_text  = Game1.parseText(ring.description, Game1.smallFont, desc_width);
-            height += (Int32)font.MeasureString(desc_text).Y;
-            // Stat effects
-            {
-              Int32 num_effects = 0;
-              // Defense
-              if (ring.GetsEffectOfRing(810)) {
-                width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 9999)).X + buffer);
-                num_effects++;
-              }
-              // Immunity
-              if (ring.GetsEffectOfRing(887)) num_effects++;
-              // Luck
-              if (ring.GetsEffectOfRing(859)) num_effects++;
-
-              height += num_effects * font_y_diff;
-            }
-
-            break;
-          }
-          case MeleeWeapon weapon: {
-            // Description
-            Int32  desc_width = Traverse.Create(weapon).Method("getDescriptionWidth").GetValue<Int32>();
-            String desc_text  = Game1.parseText(weapon.description, Game1.smallFont, desc_width);
-            height += (Int32)font.MeasureString(desc_text).Y;
-            // Stat effects
-            {
-              if (!weapon.isScythe(weapon.IndexOfMenuItemView)) {
-                height += weapon.getNumberOfDescriptionCategories() * font_y_diff + contentPadding;
-                // Damage
-                width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Damage", 9999, 9999)).X + buffer);
-                // Speed
-                if (weapon.speed.Value != (weapon.type.Value == MeleeWeapon.club ? -8 : 0))
-                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Speed", 9999)).X + buffer);
+              // Description
+              Int32 desc_width = Traverse.Create(boots).Method("getDescriptionWidth").GetValue<Int32>();
+              String desc_text = Game1.parseText(boots.description, Game1.smallFont, desc_width);
+              height += (Int32)font.MeasureString(desc_text).Y;
+              // Stat effects
+              {
+                // Categories
+                height += boots.getNumberOfDescriptionCategories() * font_y_diff + contentPadding;
                 // Defense
-                if (weapon.addedDefense.Value > 0)
-                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 9999)).X + buffer);
-                // Crit chance
-                {
-                  Single effective_crit_chance = weapon.critChance.Value;
-                  if (weapon.type.Value == MeleeWeapon.dagger) {
-                    effective_crit_chance += 0.005f;
-                    effective_crit_chance *= 1.12f;
-                  }
-
-                  if (effective_crit_chance / 0.02f >= 1.1f)
-                    width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", 9999)).X + buffer);
-                }
-                // Crit multiplier
-                if ((weapon.critMultiplier.Value - 3f) / 0.02f >= 1.0)
-                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", 9999)).X + buffer);
-                // Knockback
-                if (!weapon.knockback.Value.NearlyEquals(weapon.defaultKnockBackForThisType(weapon.type.Value)))
-                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Weight", 9999)).X + buffer);
+                if (boots.defenseBonus > 0) width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 9999, 9999)).X + buffer);
+                // Immunity
+                if (boots.immunityBonus > 0)
+                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", 9999, 9999)).X + buffer);
               }
+
+              break;
             }
-            // Forges
-            if (weapon.GetTotalForgeLevels() > 0) height += font.GetSize().Y + 4;
-            // Enchantments
-            height += weapon.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed()).Sum(_ => font_y_diff);
-            // Diamond enchantment (randoms)
-            if (weapon.enchantments.LastOrDefault() is DiamondEnchantment)
-              width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Plural", weapon.GetMaxForges())).X);
-            // Galaxy enchantment
-            if (weapon.GetEnchantmentLevel<GalaxySoulEnchantment>() > 0) height += 52;
+          case Ring ring: {
+              // Description
+              Int32 desc_width = Traverse.Create(ring).Method("getDescriptionWidth").GetValue<Int32>();
+              String desc_text = Game1.parseText(ring.description, Game1.smallFont, desc_width);
+              height += (Int32)font.MeasureString(desc_text).Y;
+              // Stat effects
+              {
+                Int32 num_effects = 0;
+                // Defense
+                if (ring.GetsEffectOfRing(810)) {
+                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 9999)).X + buffer);
+                  num_effects++;
+                }
+                // Immunity
+                if (ring.GetsEffectOfRing(887)) num_effects++;
+                // Luck
+                if (ring.GetsEffectOfRing(859)) num_effects++;
 
-            break;
-          }
+                height += num_effects * font_y_diff;
+              }
+
+              break;
+            }
+          case MeleeWeapon weapon: {
+              // Description
+              Int32 desc_width = Traverse.Create(weapon).Method("getDescriptionWidth").GetValue<Int32>();
+              String desc_text = Game1.parseText(weapon.description, Game1.smallFont, desc_width);
+              height += (Int32)font.MeasureString(desc_text).Y;
+              // Stat effects
+              {
+                if (!weapon.isScythe(weapon.IndexOfMenuItemView)) {
+                  height += weapon.getNumberOfDescriptionCategories() * font_y_diff + contentPadding;
+                  // Damage
+                  width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Damage", 9999, 9999)).X + buffer);
+                  // Speed
+                  if (weapon.speed.Value != (weapon.type.Value == MeleeWeapon.club ? -8 : 0))
+                    width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Speed", 9999)).X + buffer);
+                  // Defense
+                  if (weapon.addedDefense.Value > 0)
+                    width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 9999)).X + buffer);
+                  // Crit chance
+                  {
+                    Single effective_crit_chance = weapon.critChance.Value;
+                    if (weapon.type.Value == MeleeWeapon.dagger) {
+                      effective_crit_chance += 0.005f;
+                      effective_crit_chance *= 1.12f;
+                    }
+
+                    if (effective_crit_chance / 0.02f >= 1.1f)
+                      width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", 9999)).X + buffer);
+                  }
+                  // Crit multiplier
+                  if ((weapon.critMultiplier.Value - 3f) / 0.02f >= 1.0)
+                    width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", 9999)).X + buffer);
+                  // Knockback
+                  if (!weapon.knockback.Value.NearlyEquals(weapon.defaultKnockBackForThisType(weapon.type.Value)))
+                    width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Weight", 9999)).X + buffer);
+                }
+              }
+              // Forges
+              if (weapon.GetTotalForgeLevels() > 0) height += font.GetSize().Y + 4;
+              // Enchantments
+              height += weapon.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed()).Sum(_ => font_y_diff);
+              // Diamond enchantment (randoms)
+              if (weapon.enchantments.LastOrDefault() is DiamondEnchantment)
+                width = Math.Max(width, (Int32)font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Plural", weapon.GetMaxForges())).X);
+              // Galaxy enchantment
+              if (weapon.GetEnchantmentLevel<GalaxySoulEnchantment>() > 0) height += 52;
+
+              break;
+            }
           case Tool tool: {
-            // Description
-            Int32  desc_width = Traverse.Create(tool).Method("getDescriptionWidth").GetValue<Int32>();
-            String desc_text  = Game1.parseText(tool.description, Game1.smallFont, desc_width);
-            height += (Int32)font.MeasureString(desc_text).Y;
-            // Enchantments
-            height += tool.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed()).Sum(_ => font_y_diff);
+              // Description
+              Int32 desc_width = Traverse.Create(tool).Method("getDescriptionWidth").GetValue<Int32>();
+              String desc_text = Game1.parseText(tool.description, Game1.smallFont, desc_width);
+              height += (Int32)font.MeasureString(desc_text).Y;
+              // Enchantments
+              height += tool.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed()).Sum(_ => font_y_diff);
 
-            break;
-          }
+              break;
+            }
           case StardewValley.Object obj when obj.edibility != -300: {
-            healAmountToDisplay =  obj.staminaRecoveredOnConsumption();
-            height              += (Int32)font.MeasureString(text).Y;
-            height              += healAmountToDisplay != -1 ? font_y_diff * (healAmountToDisplay > 0 ? 2 : 1) : 52;
-            width = (Int32)Math.Max(width,
-                                    Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Energy", 9999)).X + buffer,
-                                             font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Health", 9999)).X + buffer));
+              healAmountToDisplay = obj.staminaRecoveredOnConsumption();
+              height += (Int32)font.MeasureString(text).Y;
+              height += healAmountToDisplay != -1 ? font_y_diff * (healAmountToDisplay > 0 ? 2 : 1) : 52;
+              width = (Int32)Math.Max(width,
+                                      Math.Max(font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Energy", 9999)).X + buffer,
+                                               font.MeasureString(Game1.content.LoadString("Strings\\UI:ItemHover_Health", 9999)).X + buffer));
 
-            break;
-          }
+              break;
+            }
           default: {
-            height += (Int32)font.MeasureString(text).Y;
-            break;
-          }
+              height += (Int32)font.MeasureString(text).Y;
+              break;
+            }
         }
       }
 
       Vector2 small_text_size = Vector2.Zero;
       if (bold_title_subtext is not null && boldTitleText is not null) {
         small_text_size = Game1.smallFont.MeasureString(bold_title_subtext);
-        width           = (Int32)Math.Max(width, Game1.dialogueFont.MeasureString(boldTitleText).X + small_text_size.X + 12.0f);
+        width = (Int32)Math.Max(width, Game1.dialogueFont.MeasureString(boldTitleText).X + small_text_size.X + 12.0f);
       }
 
-      Point     mouse_pos = Game1.getMousePosition();
+      Point mouse_pos = Game1.getMousePosition();
       Rectangle safe_area = Utility.getSafeArea();
       // Get pos
       Int32 x = mouse_pos.X + 48 + xOffset;
       Int32 y = mouse_pos.Y + 48 + yOffset;
       // Pad width/height
-      width  += contentPadding * 2;
+      width += contentPadding * 2;
       height += contentPadding * 2;
       Rectangle box_rect = new Rectangle(x, y, width, height).GetTextureBoxRectangle(0);
       // Clamp
-      if (box_rect.Right > safe_area.Right) x   = safe_area.Right - width;
+      if (box_rect.Right > safe_area.Right) x = safe_area.Right - width;
       if (box_rect.Bottom > safe_area.Bottom) y = safe_area.Bottom - height;
       box_rect = new Rectangle(x, y, width, height).GetTextureBoxRectangle(0);
       // Draw background
@@ -539,7 +539,7 @@ namespace ChestEx.LanguageExtensions {
           }
 
           if (hoveredItem is MeleeWeapon weapon && weapon.GetEnchantmentLevel<GalaxySoulEnchantment>() > 0) {
-            var    enchantment   = weapon.GetEnchantmentOfType<GalaxySoulEnchantment>();
+            var enchantment = weapon.GetEnchantmentOfType<GalaxySoulEnchantment>();
             String forged_string = $"> {Game1.content.LoadString("Strings\\UI:Item_Tooltip_GalaxyForged")}";
             spriteBatch.DrawStringEx(font, forged_string, new Vector2(x + 2, y), negative_bg_colour, drawShadow: true, textShadowColour: text_shadow_colour);
             Int32 level = enchantment.GetLevel();
@@ -573,202 +573,15 @@ namespace ChestEx.LanguageExtensions {
       if (!String.IsNullOrWhiteSpace(text.ToString())) {
         switch (hoveredItem) {
           case Boots boots: {
-            Int32  desc_width = Traverse.Create(boots).Method("getDescriptionWidth").GetValue<Int32>();
-            String desc_text  = Game1.parseText(boots.description, Game1.smallFont, desc_width);
+              Int32 desc_width = Traverse.Create(boots).Method("getDescriptionWidth").GetValue<Int32>();
+              String desc_text = Game1.parseText(boots.description, Game1.smallFont, desc_width);
 
-            spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
-            y += (Int32)font.MeasureString(desc_text).Y + 4;
-
-            // Defense
-            {
-              if (boots.defenseBonus > 0) {
-                Utility.drawWithShadow(spriteBatch,
-                                       Game1.mouseCursors,
-                                       new Vector2(x, y),
-                                       new Rectangle(110, 428, 10, 10),
-                                       Color.White,
-                                       0.0f,
-                                       Vector2.Zero,
-                                       4.0f,
-                                       false,
-                                       1.0f,
-                                       shadowIntensity: 0.2f);
-                spriteBatch.DrawStringEx(font,
-                                         Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", boots.defenseBonus),
-                                         new Vector2(x + 48, y + 8),
-                                         colours.mForegroundColour,
-                                         drawShadow: true,
-                                         textShadowColour: text_shadow_colour);
-                y += font_y_diff;
-              }
-            }
-
-            // Immunity
-            {
-              if (boots.immunityBonus > 0) {
-                Utility.drawWithShadow(spriteBatch,
-                                       Game1.mouseCursors,
-                                       new Vector2(x, y),
-                                       new Rectangle(150, 428, 10, 10),
-                                       Color.White,
-                                       0.0f,
-                                       Vector2.Zero,
-                                       4.0f,
-                                       false,
-                                       1.0f,
-                                       shadowIntensity: 0.2f);
-                spriteBatch.DrawStringEx(font,
-                                         Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", boots.immunityBonus),
-                                         new Vector2(x + 48, y + 8),
-                                         colours.mForegroundColour,
-                                         drawShadow: true,
-                                         textShadowColour: text_shadow_colour);
-                y += font_y_diff;
-              }
-            }
-
-            break;
-          }
-          case Ring ring: {
-            Int32  desc_width = Traverse.Create(ring).Method("getDescriptionWidth").GetValue<Int32>();
-            String desc_text  = Game1.parseText(ring.description, Game1.smallFont, desc_width);
-
-            spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
-            y += (Int32)font.MeasureString(desc_text).Y + 4;
-
-            // Defense
-            if (ring.GetsEffectOfRing(810)) {
-              Utility.drawWithShadow(spriteBatch,
-                                     Game1.mouseCursors,
-                                     new Vector2(x, y),
-                                     new Rectangle(110, 428, 10, 10),
-                                     Color.White,
-                                     0.0f,
-                                     Vector2.Zero,
-                                     4.0f,
-                                     false,
-                                     1.0f,
-                                     shadowIntensity: 0.2f);
-              spriteBatch.DrawStringEx(font,
-                                       Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 5 * ring.GetEffectsOfRingMultiplier(810)),
-                                       new Vector2(x + 48, y + 8),
-                                       colours.mForegroundColour,
-                                       drawShadow: true,
-                                       textShadowColour: text_shadow_colour);
-              y += font_y_diff;
-            }
-
-            // Immunity
-            if (ring.GetsEffectOfRing(887)) {
-              Utility.drawWithShadow(spriteBatch,
-                                     Game1.mouseCursors,
-                                     new Vector2(x, y),
-                                     new Rectangle(150, 428, 10, 10),
-                                     Color.White,
-                                     0.0f,
-                                     Vector2.Zero,
-                                     4.0f,
-                                     false,
-                                     1.0f,
-                                     shadowIntensity: 0.2f);
-              spriteBatch.DrawStringEx(font,
-                                       Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", 4 * ring.GetEffectsOfRingMultiplier(887)),
-                                       new Vector2(x + 48, y + 8),
-                                       colours.mForegroundColour,
-                                       drawShadow: true,
-                                       textShadowColour: text_shadow_colour);
-              y += font_y_diff;
-            }
-
-            // Luck
-            if (ring.GetsEffectOfRing(859)) {
-              Utility.drawWithShadow(spriteBatch,
-                                     Game1.mouseCursors,
-                                     new Vector2(x, y),
-                                     new Rectangle(50, 428, 10, 10),
-                                     Color.White,
-                                     0.0f,
-                                     Vector2.Zero,
-                                     4.0f,
-                                     false,
-                                     1.0f,
-                                     shadowIntensity: 0.2f);
-              spriteBatch.DrawStringEx(font,
-                                       $"+{Game1.content.LoadString("Strings\\UI:ItemHover_Buff4", ring.GetEffectsOfRingMultiplier(859))}",
-                                       new Vector2(x + 48, y + 8),
-                                       colours.mForegroundColour,
-                                       drawShadow: true,
-                                       textShadowColour: text_shadow_colour);
-              y += font_y_diff;
-            }
-
-            break;
-          }
-          case MeleeWeapon weapon: {
-            // Description
-            {
-              Int32  desc_width = Traverse.Create(weapon).Method("getDescriptionWidth").GetValue<Int32>();
-              String desc_text  = Game1.parseText(weapon.description, Game1.smallFont, desc_width);
               spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
               y += (Int32)font.MeasureString(desc_text).Y + 4;
-            }
-            if (!weapon.isScythe(weapon.IndexOfMenuItemView)) {
-              // Damage
-              {
-                String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_Damage", weapon.minDamage.Value, weapon.maxDamage.Value);
-
-                Utility.drawWithShadow(spriteBatch,
-                                       Game1.mouseCursors,
-                                       new Vector2(x, y),
-                                       new Rectangle(120, 428, 10, 10),
-                                       Color.White,
-                                       0.0f,
-                                       Vector2.Zero,
-                                       4.0f,
-                                       false,
-                                       1.0f,
-                                       shadowIntensity: 0.2f);
-                spriteBatch.DrawStringEx(font,
-                                         desc_text,
-                                         new Vector2(x + 48, y + 8),
-                                         weapon.hasEnchantmentOfType<RubyEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
-                                         drawShadow: true,
-                                         textShadowColour: text_shadow_colour);
-                y += font_y_diff;
-              }
-
-              // Speed
-              {
-                if (weapon.speed.Value != (weapon.type.Value == MeleeWeapon.club ? -8 : 0)) {
-                  Int32  weapon_real_speed = weapon.speed.Value + (weapon.type.Value == MeleeWeapon.club ? 8 : 0);
-                  String desc_text         = Game1.content.LoadString("Strings\\UI:ItemHover_Speed", $"{(weapon_real_speed > 0 ? "+" : "")}{weapon_real_speed / 2}");
-
-                  Utility.drawWithShadow(spriteBatch,
-                                         Game1.mouseCursors,
-                                         new Vector2(x, y),
-                                         new Rectangle(130, 428, 10, 10),
-                                         Color.White,
-                                         0.0f,
-                                         Vector2.Zero,
-                                         4.0f,
-                                         false,
-                                         1.0f,
-                                         shadowIntensity: 0.2f);
-                  spriteBatch.DrawStringEx(font,
-                                           desc_text,
-                                           new Vector2(x + 48, y + 8),
-                                           weapon.hasEnchantmentOfType<EmeraldEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
-                                           drawShadow: true,
-                                           textShadowColour: text_shadow_colour);
-                  y += font_y_diff;
-                }
-              }
 
               // Defense
               {
-                if (weapon.addedDefense.Value > 0) {
-                  String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", weapon.addedDefense.Value);
-
+                if (boots.defenseBonus > 0) {
                   Utility.drawWithShadow(spriteBatch,
                                          Game1.mouseCursors,
                                          new Vector2(x, y),
@@ -781,31 +594,133 @@ namespace ChestEx.LanguageExtensions {
                                          1.0f,
                                          shadowIntensity: 0.2f);
                   spriteBatch.DrawStringEx(font,
-                                           desc_text,
+                                           Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", boots.defenseBonus),
                                            new Vector2(x + 48, y + 8),
-                                           weapon.hasEnchantmentOfType<TopazEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                           colours.mForegroundColour,
                                            drawShadow: true,
                                            textShadowColour: text_shadow_colour);
                   y += font_y_diff;
                 }
               }
 
-              // Crit chance
+              // Immunity
               {
-                Single effective_crit_chance = weapon.critChance.Value;
-
-                if (weapon.type.Value == MeleeWeapon.dagger) {
-                  effective_crit_chance += 0.005f;
-                  effective_crit_chance *= 1.12f;
+                if (boots.immunityBonus > 0) {
+                  Utility.drawWithShadow(spriteBatch,
+                                         Game1.mouseCursors,
+                                         new Vector2(x, y),
+                                         new Rectangle(150, 428, 10, 10),
+                                         Color.White,
+                                         0.0f,
+                                         Vector2.Zero,
+                                         4.0f,
+                                         false,
+                                         1.0f,
+                                         shadowIntensity: 0.2f);
+                  spriteBatch.DrawStringEx(font,
+                                           Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", boots.immunityBonus),
+                                           new Vector2(x + 48, y + 8),
+                                           colours.mForegroundColour,
+                                           drawShadow: true,
+                                           textShadowColour: text_shadow_colour);
+                  y += font_y_diff;
                 }
+              }
 
-                if (effective_crit_chance / 0.02f >= 1.1f) {
-                  String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", (Int32)Math.Round((effective_crit_chance - 0.001f) / 0.02f));
+              break;
+            }
+          case Ring ring: {
+              Int32 desc_width = Traverse.Create(ring).Method("getDescriptionWidth").GetValue<Int32>();
+              String desc_text = Game1.parseText(ring.description, Game1.smallFont, desc_width);
+
+              spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
+              y += (Int32)font.MeasureString(desc_text).Y + 4;
+
+              // Defense
+              if (ring.GetsEffectOfRing(810)) {
+                Utility.drawWithShadow(spriteBatch,
+                                       Game1.mouseCursors,
+                                       new Vector2(x, y),
+                                       new Rectangle(110, 428, 10, 10),
+                                       Color.White,
+                                       0.0f,
+                                       Vector2.Zero,
+                                       4.0f,
+                                       false,
+                                       1.0f,
+                                       shadowIntensity: 0.2f);
+                spriteBatch.DrawStringEx(font,
+                                         Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", 5 * ring.GetEffectsOfRingMultiplier(810)),
+                                         new Vector2(x + 48, y + 8),
+                                         colours.mForegroundColour,
+                                         drawShadow: true,
+                                         textShadowColour: text_shadow_colour);
+                y += font_y_diff;
+              }
+
+              // Immunity
+              if (ring.GetsEffectOfRing(887)) {
+                Utility.drawWithShadow(spriteBatch,
+                                       Game1.mouseCursors,
+                                       new Vector2(x, y),
+                                       new Rectangle(150, 428, 10, 10),
+                                       Color.White,
+                                       0.0f,
+                                       Vector2.Zero,
+                                       4.0f,
+                                       false,
+                                       1.0f,
+                                       shadowIntensity: 0.2f);
+                spriteBatch.DrawStringEx(font,
+                                         Game1.content.LoadString("Strings\\UI:ItemHover_ImmunityBonus", 4 * ring.GetEffectsOfRingMultiplier(887)),
+                                         new Vector2(x + 48, y + 8),
+                                         colours.mForegroundColour,
+                                         drawShadow: true,
+                                         textShadowColour: text_shadow_colour);
+                y += font_y_diff;
+              }
+
+              // Luck
+              if (ring.GetsEffectOfRing(859)) {
+                Utility.drawWithShadow(spriteBatch,
+                                       Game1.mouseCursors,
+                                       new Vector2(x, y),
+                                       new Rectangle(50, 428, 10, 10),
+                                       Color.White,
+                                       0.0f,
+                                       Vector2.Zero,
+                                       4.0f,
+                                       false,
+                                       1.0f,
+                                       shadowIntensity: 0.2f);
+                spriteBatch.DrawStringEx(font,
+                                         $"+{Game1.content.LoadString("Strings\\UI:ItemHover_Buff4", ring.GetEffectsOfRingMultiplier(859))}",
+                                         new Vector2(x + 48, y + 8),
+                                         colours.mForegroundColour,
+                                         drawShadow: true,
+                                         textShadowColour: text_shadow_colour);
+                y += font_y_diff;
+              }
+
+              break;
+            }
+          case MeleeWeapon weapon: {
+              // Description
+              {
+                Int32 desc_width = Traverse.Create(weapon).Method("getDescriptionWidth").GetValue<Int32>();
+                String desc_text = Game1.parseText(weapon.description, Game1.smallFont, desc_width);
+                spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
+                y += (Int32)font.MeasureString(desc_text).Y + 4;
+              }
+              if (!weapon.isScythe(weapon.IndexOfMenuItemView)) {
+                // Damage
+                {
+                  String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_Damage", weapon.minDamage.Value, weapon.maxDamage.Value);
 
                   Utility.drawWithShadow(spriteBatch,
                                          Game1.mouseCursors,
                                          new Vector2(x, y),
-                                         new Rectangle(40, 428, 10, 10),
+                                         new Rectangle(120, 428, 10, 10),
                                          Color.White,
                                          0.0f,
                                          Vector2.Zero,
@@ -816,24 +731,170 @@ namespace ChestEx.LanguageExtensions {
                   spriteBatch.DrawStringEx(font,
                                            desc_text,
                                            new Vector2(x + 48, y + 8),
-                                           weapon.hasEnchantmentOfType<AquamarineEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                           weapon.hasEnchantmentOfType<RubyEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
                                            drawShadow: true,
                                            textShadowColour: text_shadow_colour);
                   y += font_y_diff;
                 }
-              }
 
-              // Crit multiplier
-              {
-                Single crit_multiplier = (weapon.critMultiplier.Value - 3f) / 0.02f;
+                // Speed
+                {
+                  if (weapon.speed.Value != (weapon.type.Value == MeleeWeapon.club ? -8 : 0)) {
+                    Int32 weapon_real_speed = weapon.speed.Value + (weapon.type.Value == MeleeWeapon.club ? 8 : 0);
+                    String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_Speed", $"{(weapon_real_speed > 0 ? "+" : "")}{weapon_real_speed / 2}");
 
-                if (crit_multiplier >= 1.0f) {
-                  String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", (Int32)crit_multiplier);
+                    Utility.drawWithShadow(spriteBatch,
+                                           Game1.mouseCursors,
+                                           new Vector2(x, y),
+                                           new Rectangle(130, 428, 10, 10),
+                                           Color.White,
+                                           0.0f,
+                                           Vector2.Zero,
+                                           4.0f,
+                                           false,
+                                           1.0f,
+                                           shadowIntensity: 0.2f);
+                    spriteBatch.DrawStringEx(font,
+                                             desc_text,
+                                             new Vector2(x + 48, y + 8),
+                                             weapon.hasEnchantmentOfType<EmeraldEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                             drawShadow: true,
+                                             textShadowColour: text_shadow_colour);
+                    y += font_y_diff;
+                  }
+                }
 
+                // Defense
+                {
+                  if (weapon.addedDefense.Value > 0) {
+                    String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", weapon.addedDefense.Value);
+
+                    Utility.drawWithShadow(spriteBatch,
+                                           Game1.mouseCursors,
+                                           new Vector2(x, y),
+                                           new Rectangle(110, 428, 10, 10),
+                                           Color.White,
+                                           0.0f,
+                                           Vector2.Zero,
+                                           4.0f,
+                                           false,
+                                           1.0f,
+                                           shadowIntensity: 0.2f);
+                    spriteBatch.DrawStringEx(font,
+                                             desc_text,
+                                             new Vector2(x + 48, y + 8),
+                                             weapon.hasEnchantmentOfType<TopazEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                             drawShadow: true,
+                                             textShadowColour: text_shadow_colour);
+                    y += font_y_diff;
+                  }
+                }
+
+                // Crit chance
+                {
+                  Single effective_crit_chance = weapon.critChance.Value;
+
+                  if (weapon.type.Value == MeleeWeapon.dagger) {
+                    effective_crit_chance += 0.005f;
+                    effective_crit_chance *= 1.12f;
+                  }
+
+                  if (effective_crit_chance / 0.02f >= 1.1f) {
+                    String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_CritChanceBonus", (Int32)Math.Round((effective_crit_chance - 0.001f) / 0.02f));
+
+                    Utility.drawWithShadow(spriteBatch,
+                                           Game1.mouseCursors,
+                                           new Vector2(x, y),
+                                           new Rectangle(40, 428, 10, 10),
+                                           Color.White,
+                                           0.0f,
+                                           Vector2.Zero,
+                                           4.0f,
+                                           false,
+                                           1.0f,
+                                           shadowIntensity: 0.2f);
+                    spriteBatch.DrawStringEx(font,
+                                             desc_text,
+                                             new Vector2(x + 48, y + 8),
+                                             weapon.hasEnchantmentOfType<AquamarineEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                             drawShadow: true,
+                                             textShadowColour: text_shadow_colour);
+                    y += font_y_diff;
+                  }
+                }
+
+                // Crit multiplier
+                {
+                  Single crit_multiplier = (weapon.critMultiplier.Value - 3f) / 0.02f;
+
+                  if (crit_multiplier >= 1.0f) {
+                    String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_CritPowerBonus", (Int32)crit_multiplier);
+
+                    Utility.drawWithShadow(spriteBatch,
+                                           Game1.mouseCursors,
+                                           new Vector2(x - 2, y),
+                                           new Rectangle(160, 428, 10, 10),
+                                           Color.White,
+                                           0.0f,
+                                           Vector2.Zero,
+                                           4.0f,
+                                           false,
+                                           1.0f,
+                                           shadowIntensity: 0.2f);
+                    spriteBatch.DrawStringEx(font,
+                                             desc_text,
+                                             new Vector2(x + 48, y + 8),
+                                             weapon.hasEnchantmentOfType<JadeEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                             drawShadow: true,
+                                             textShadowColour: text_shadow_colour);
+                    y += font_y_diff;
+                  }
+                }
+
+                // Knockback
+                {
+                  if (!weapon.knockback.Value.NearlyEquals(weapon.defaultKnockBackForThisType(weapon.type.Value))) {
+                    Double knockback_diff = Math.Ceiling(Math.Abs(weapon.knockback.Value - weapon.defaultKnockBackForThisType(weapon.type.Value)) * 10f);
+                    String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_Weight",
+                                                                $"{(knockback_diff > weapon.defaultKnockBackForThisType(weapon.type.Value) ? "+" : "")}{knockback_diff}");
+
+                    Utility.drawWithShadow(spriteBatch,
+                                           Game1.mouseCursors,
+                                           new Vector2(x, y - 1),
+                                           new Rectangle(70, 428, 10, 10),
+                                           Color.White,
+                                           0.0f,
+                                           Vector2.Zero,
+                                           4.0f,
+                                           false,
+                                           1.0f,
+                                           shadowIntensity: 0.2f);
+                    spriteBatch.DrawStringEx(font,
+                                             desc_text,
+                                             new Vector2(x + 48, y + 8),
+                                             weapon.hasEnchantmentOfType<AmethystEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                             drawShadow: true,
+                                             textShadowColour: text_shadow_colour);
+                    y += font_y_diff;
+                  }
+                }
+
+                // Diamond enchantment (randoms)
+                {
+                  if (weapon.enchantments.LastOrDefault() is DiamondEnchantment) {
+                    Int32 random_forges = weapon.GetMaxForges() - weapon.GetTotalForgeLevels();
+                    String desc_text = Game1.content.LoadString(random_forges == 1 ? "Strings\\UI:ItemHover_DiamondForge_Singular" : "Strings\\UI:ItemHover_DiamondForge_Plural",
+                                                                random_forges);
+                    spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), negative_bg_colour, drawShadow: true, textShadowColour: text_shadow_colour);
+                    y += font_y_diff;
+                  }
+                }
+
+                foreach (BaseEnchantment enchantment in weapon.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed())) {
                   Utility.drawWithShadow(spriteBatch,
-                                         Game1.mouseCursors,
-                                         new Vector2(x - 2, y),
-                                         new Rectangle(160, 428, 10, 10),
+                                         Game1.mouseCursors2,
+                                         new Vector2(x, y),
+                                         new Rectangle(127, 35, 10, 10),
                                          Color.White,
                                          0.0f,
                                          Vector2.Zero,
@@ -842,107 +903,46 @@ namespace ChestEx.LanguageExtensions {
                                          1.0f,
                                          shadowIntensity: 0.2f);
                   spriteBatch.DrawStringEx(font,
-                                           desc_text,
+                                           BaseEnchantment.hideEnchantmentName ? "???" : $"{enchantment.GetDisplayName()}",
                                            new Vector2(x + 48, y + 8),
-                                           weapon.hasEnchantmentOfType<JadeEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
+                                           negative_bg_colour,
                                            drawShadow: true,
                                            textShadowColour: text_shadow_colour);
                   y += font_y_diff;
                 }
               }
 
-              // Knockback
-              {
-                if (!weapon.knockback.Value.NearlyEquals(weapon.defaultKnockBackForThisType(weapon.type.Value))) {
-                  Double knockback_diff = Math.Ceiling(Math.Abs(weapon.knockback.Value - weapon.defaultKnockBackForThisType(weapon.type.Value)) * 10f);
-                  String desc_text = Game1.content.LoadString("Strings\\UI:ItemHover_Weight",
-                                                              $"{(knockback_diff > weapon.defaultKnockBackForThisType(weapon.type.Value) ? "+" : "")}{knockback_diff}");
-
-                  Utility.drawWithShadow(spriteBatch,
-                                         Game1.mouseCursors,
-                                         new Vector2(x, y - 1),
-                                         new Rectangle(70, 428, 10, 10),
-                                         Color.White,
-                                         0.0f,
-                                         Vector2.Zero,
-                                         4.0f,
-                                         false,
-                                         1.0f,
-                                         shadowIntensity: 0.2f);
-                  spriteBatch.DrawStringEx(font,
-                                           desc_text,
-                                           new Vector2(x + 48, y + 8),
-                                           weapon.hasEnchantmentOfType<AmethystEnchantment>() ? negative_bg_colour : colours.mForegroundColour,
-                                           drawShadow: true,
-                                           textShadowColour: text_shadow_colour);
-                  y += font_y_diff;
-                }
-              }
-
-              // Diamond enchantment (randoms)
-              {
-                if (weapon.enchantments.LastOrDefault() is DiamondEnchantment) {
-                  Int32 random_forges = weapon.GetMaxForges() - weapon.GetTotalForgeLevels();
-                  String desc_text = Game1.content.LoadString(random_forges == 1 ? "Strings\\UI:ItemHover_DiamondForge_Singular" : "Strings\\UI:ItemHover_DiamondForge_Plural",
-                                                              random_forges);
-                  spriteBatch.DrawStringEx(font, desc_text, new Vector2(x, y), negative_bg_colour, drawShadow: true, textShadowColour: text_shadow_colour);
-                  y += font_y_diff;
-                }
-              }
-
-              foreach (BaseEnchantment enchantment in weapon.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed())) {
-                Utility.drawWithShadow(spriteBatch,
-                                       Game1.mouseCursors2,
-                                       new Vector2(x, y),
-                                       new Rectangle(127, 35, 10, 10),
-                                       Color.White,
-                                       0.0f,
-                                       Vector2.Zero,
-                                       4.0f,
-                                       false,
-                                       1.0f,
-                                       shadowIntensity: 0.2f);
-                spriteBatch.DrawStringEx(font,
-                                         BaseEnchantment.hideEnchantmentName ? "???" : $"{enchantment.GetDisplayName()}",
-                                         new Vector2(x + 48, y + 8),
-                                         negative_bg_colour,
-                                         drawShadow: true,
-                                         textShadowColour: text_shadow_colour);
-                y += font_y_diff;
-              }
+              break;
             }
-
-            break;
-          }
           default: {
-            spriteBatch.DrawStringEx(font, text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
-            y += (Int32)font.MeasureString(text).Y + 4;
+              spriteBatch.DrawStringEx(font, text, new Vector2(x, y), colours.mForegroundColour, drawShadow: true, textShadowColour: text_shadow_colour);
+              y += (Int32)font.MeasureString(text).Y + 4;
 
-            if (hoveredItem is Tool tool) {
-              foreach (BaseEnchantment enchantment in tool.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed())) {
-                Utility.drawWithShadow(spriteBatch,
-                                       Game1.mouseCursors2,
-                                       new Vector2(x, y),
-                                       new Rectangle(127, 35, 10, 10),
-                                       Color.White,
-                                       0.0f,
-                                       Vector2.Zero,
-                                       4.0f,
-                                       false,
-                                       1.0f,
-                                       shadowIntensity: 0.2f);
-                spriteBatch.DrawStringEx(font,
-                                         BaseEnchantment.hideEnchantmentName ? "???" : $"{enchantment.GetDisplayName()}",
-                                         new Vector2(x + 48, y + 8),
-                                         negative_bg_colour,
-                                         drawShadow: true,
-                                         textShadowColour: text_shadow_colour);
-                y += font_y_diff;
+              if (hoveredItem is Tool tool) {
+                foreach (BaseEnchantment enchantment in tool.enchantments.Where(enchantment => enchantment.ShouldBeDisplayed())) {
+                  Utility.drawWithShadow(spriteBatch,
+                                         Game1.mouseCursors2,
+                                         new Vector2(x, y),
+                                         new Rectangle(127, 35, 10, 10),
+                                         Color.White,
+                                         0.0f,
+                                         Vector2.Zero,
+                                         4.0f,
+                                         false,
+                                         1.0f,
+                                         shadowIntensity: 0.2f);
+                  spriteBatch.DrawStringEx(font,
+                                           BaseEnchantment.hideEnchantmentName ? "???" : $"{enchantment.GetDisplayName()}",
+                                           new Vector2(x + 48, y + 8),
+                                           negative_bg_colour,
+                                           drawShadow: true,
+                                           textShadowColour: text_shadow_colour);
+                  y += font_y_diff;
+                }
               }
-            }
 
-            break;
-          }
+              break;
+            }
         }
       }
       // Restoration
@@ -1020,7 +1020,7 @@ namespace ChestEx.LanguageExtensions {
         for (Int32 j = 0; j < buffIconsToDisplay.Length; j++) {
           if (buffIconsToDisplay[j].Equals("0")) continue;
 
-          String buff_name       = $"{(Convert.ToInt32(buffIconsToDisplay[j]) > 0 ? "+" : "")}{buffIconsToDisplay[j]}";
+          String buff_name = $"{(Convert.ToInt32(buffIconsToDisplay[j]) > 0 ? "+" : "")}{buffIconsToDisplay[j]}";
           if (j <= 11) buff_name = Game1.content.LoadString($"Strings\\UI:ItemHover_Buff{j}", buff_name);
 
           Utility.drawWithShadow(spriteBatch,
@@ -1042,64 +1042,64 @@ namespace ChestEx.LanguageExtensions {
       if (hoveredItem is Tool && hoveredItem.attachmentSlots() > 0) {
         switch (hoveredItem) {
           case FishingRod fishing_rod: {
-            Int32 y_offset = fishing_rod.enchantments.Any() ? 8 : 4;
+              Int32 y_offset = fishing_rod.enchantments.Any() ? 8 : 4;
 
-            if (fishing_rod.upgradeLevel > 1) {
-              if (fishing_rod.attachments[0] is null) {
-                spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
-                                 new Vector2(x, y + y_offset),
-                                 Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 36),
-                                 colours.mForegroundColour,
-                                 0.0f,
-                                 Vector2.Zero,
-                                 1.0f,
-                                 SpriteEffects.None,
-                                 0.86f);
-              }
-              else {
-                spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
-                                 new Vector2(x, y + y_offset),
-                                 Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 10),
-                                 colours.mForegroundColour,
-                                 0.0f,
-                                 Vector2.Zero,
-                                 1.0f,
-                                 SpriteEffects.None,
-                                 0.86f);
-                fishing_rod.attachments[0].drawInMenu(spriteBatch, new Vector2(x, y + y_offset), 1.0f);
+              if (fishing_rod.upgradeLevel > 1) {
+                if (fishing_rod.attachments[0] is null) {
+                  spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
+                                   new Vector2(x, y + y_offset),
+                                   Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 36),
+                                   colours.mForegroundColour,
+                                   0.0f,
+                                   Vector2.Zero,
+                                   1.0f,
+                                   SpriteEffects.None,
+                                   0.86f);
+                }
+                else {
+                  spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
+                                   new Vector2(x, y + y_offset),
+                                   Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 10),
+                                   colours.mForegroundColour,
+                                   0.0f,
+                                   Vector2.Zero,
+                                   1.0f,
+                                   SpriteEffects.None,
+                                   0.86f);
+                  fishing_rod.attachments[0].drawInMenu(spriteBatch, new Vector2(x, y + y_offset), 1.0f);
+                }
+
+                y += 68;
               }
 
-              y += 68;
+              if (fishing_rod.upgradeLevel > 2) {
+                if (fishing_rod.attachments[1] is null) {
+                  spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
+                                   new Vector2(x, y + y_offset),
+                                   Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 37),
+                                   colours.mForegroundColour,
+                                   0.0f,
+                                   Vector2.Zero,
+                                   1.0f,
+                                   SpriteEffects.None,
+                                   0.86f);
+                }
+                else {
+                  spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
+                                   new Vector2(x, y + y_offset),
+                                   Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 10),
+                                   colours.mForegroundColour,
+                                   0.0f,
+                                   Vector2.Zero,
+                                   1.0f,
+                                   SpriteEffects.None,
+                                   0.86f);
+                  fishing_rod.attachments[1].drawInMenu(spriteBatch, new Vector2(x, y + y_offset), 1.0f);
+                }
+              }
+
+              break;
             }
-
-            if (fishing_rod.upgradeLevel > 2) {
-              if (fishing_rod.attachments[1] is null) {
-                spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
-                                 new Vector2(x, y + y_offset),
-                                 Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 37),
-                                 colours.mForegroundColour,
-                                 0.0f,
-                                 Vector2.Zero,
-                                 1.0f,
-                                 SpriteEffects.None,
-                                 0.86f);
-              }
-              else {
-                spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
-                                 new Vector2(x, y + y_offset),
-                                 Game1.getSourceRectForStandardTileSheet(TexturePresets.gMenuTextureGrayScale, 10),
-                                 colours.mForegroundColour,
-                                 0.0f,
-                                 Vector2.Zero,
-                                 1.0f,
-                                 SpriteEffects.None,
-                                 0.86f);
-                fishing_rod.attachments[1].drawInMenu(spriteBatch, new Vector2(x, y + y_offset), 1.0f);
-              }
-            }
-
-            break;
-          }
           case Slingshot slingshot:
             if (slingshot.attachments[0] is null) {
               spriteBatch.Draw(TexturePresets.gMenuTextureGrayScale,
@@ -1190,12 +1190,12 @@ namespace ChestEx.LanguageExtensions {
     }
 
     public static void DrawToolTip(this SpriteBatch spriteBatch, SpriteFont font, String text, String title,
-                                   Item             hoveredItem, Boolean heldItem = false, Int32 currencySymbol = IClickableMenu.currency_g, Int32 moneyAmountToShowAtBottom = -1,
-                                   Int32            contentPadding = 4, Colours colours = null, Single alpha = 1.0f, Single borderScale = 1.0f) {
-      var      hovered_object = hoveredItem as StardewValley.Object;
-      Boolean  edible_item    = hovered_object != null && hovered_object.edibility != -300;
-      Int32    heal_amount    = edible_item ? hovered_object.edibility : -1;
-      String[] buff_icons     = null;
+                                   Item hoveredItem, Boolean heldItem = false, Int32 currencySymbol = IClickableMenu.currency_g, Int32 moneyAmountToShowAtBottom = -1,
+                                   Int32 contentPadding = 4, Colours colours = null, Single alpha = 1.0f, Single borderScale = 1.0f) {
+      var hovered_object = hoveredItem as StardewValley.Object;
+      Boolean edible_item = hovered_object != null && hovered_object.edibility != -300;
+      Int32 heal_amount = edible_item ? hovered_object.edibility : -1;
+      String[] buff_icons = null;
 
       if (edible_item && Game1.objectInformation[hovered_object.parentSheetIndex].Split('/') is var obj_info && obj_info.Length > 7)
         buff_icons = hoveredItem.ModifyItemBuffs(obj_info[7].Split(' '));

@@ -11,7 +11,7 @@
 {
   "ItemName": "Horse",
   "Type": "Character",
-  "TextureWidth": 324,
+  "TextureWidth": 224,
   "TextureHeight": 128,
   "Variations": 2
 }

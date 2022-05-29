@@ -189,6 +189,7 @@ namespace CustomCompanions.Framework.Managers
             }
 
             // Update our cached model
+            model.Translations = cachedModel.Translations;
             companionModels[companionModels.IndexOf(cachedModel)] = model;
 
             // Update any existing companions using this model

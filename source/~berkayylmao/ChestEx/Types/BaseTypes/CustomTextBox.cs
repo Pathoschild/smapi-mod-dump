@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -35,7 +35,7 @@ using System.Linq;
 
 using ChestEx.LanguageExtensions;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -53,23 +53,23 @@ namespace ChestEx.Types.BaseTypes {
                                        ICustomComponent,
                                        IKeyboardSubscriber {
     // Private:
-  #region Private:
+    #region Private:
 
     private Boolean showKeyboard {
       get => Traverse.Create(this).Field<Boolean>("_showKeyboard").Value;
       set => Traverse.Create(this).Field<Boolean>("_showKeyboard").Value = value;
     }
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     public const Single CONST_BORDER_SCALE = 0.2f;
 
-    public static readonly Func<Char, Boolean> gAcceptNumbersOnly           = Char.IsDigit;
+    public static readonly Func<Char, Boolean> gAcceptNumbersOnly = Char.IsDigit;
     public static readonly Func<Char, Boolean> gAcceptLettersAndNumbersOnly = Char.IsLetterOrDigit;
-    public static readonly Func<Char, Boolean> gSVAcceptedInput             = c => c != '|';
+    public static readonly Func<Char, Boolean> gSVAcceptedInput = c => c != '|';
 
     public static readonly Func<Char, Boolean> gAcceptHexOnly = c => c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F';
 
@@ -100,7 +100,7 @@ namespace ChestEx.Types.BaseTypes {
     public Data GetData() { return (Data)this.mData; }
 
     // Virtuals
-  #region Virtuals
+    #region Virtuals
 
     /// <inheritdoc/>
     public virtual void SetEnabled(Boolean isEnabled) { this.mData.SetEnabled(isEnabled); }
@@ -165,25 +165,25 @@ namespace ChestEx.Types.BaseTypes {
       }
     }
 
-    public virtual void OnButtonReleased(InputStateEx inputState)                         { }
-    public virtual void OnCursorMoved(Vector2         cursorPos)                          { }
-    public virtual void OnMouseClick(InputStateEx     inputState)                         { }
-    public virtual void OnGameTick()                                                      { }
+    public virtual void OnButtonReleased(InputStateEx inputState) { }
+    public virtual void OnCursorMoved(Vector2 cursorPos) { }
+    public virtual void OnMouseClick(InputStateEx inputState) { }
+    public virtual void OnGameTick() { }
     public virtual void OnGameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) { }
 
-  #endregion
+    #endregion
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     /// <summary>Calls <see cref="Draw(SpriteBatch)"/>.</summary>
     [UsedImplicitly]
     [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "Game code")]
     public override void Draw(SpriteBatch spriteBatch, Boolean drawShadow = true) { this.Draw(spriteBatch); }
 
-  #endregion
+    #endregion
 
-  #region Stardew Valley Keyboard Subscriber Events
+    #region Stardew Valley Keyboard Subscriber Events
 
     [UsedImplicitly]
     public new void RecieveTextInput(Char inputChar) {
@@ -210,48 +210,48 @@ namespace ChestEx.Types.BaseTypes {
       if (this.Text != old_string) this.GetData().mHandlers.mOnTextChangedHandler?.Invoke(this.Text);
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
-    public CustomTextBox(Rectangle bounds,    Colours colours,        String              label               = "",   String         preText              = "",
-                         String    text = "", Int32   maxLength = -1, Func<Char, Boolean> inputFilterFunction = null, Action<String> onTextChangedHandler = null)
+    public CustomTextBox(Rectangle bounds, Colours colours, String label = "", String preText = "",
+                         String text = "", Int32 maxLength = -1, Func<Char, Boolean> inputFilterFunction = null, Action<String> onTextChangedHandler = null)
       : base(null, null, Game1.smallFont, colours.mForegroundColour) {
       // adjust null/empty parameters
       {
         inputFilterFunction ??= _ => true;
-        if (maxLength == -1) maxLength         = 256;
-        if (bounds.Width == -1) bounds.Width   = Convert.ToInt32(Game1.smallFont.MeasureString(label).X + 8.0f + Game1.smallFont.MeasureString(new String('T', maxLength + 1)).X);
+        if (maxLength == -1) maxLength = 256;
+        if (bounds.Width == -1) bounds.Width = Convert.ToInt32(Game1.smallFont.MeasureString(label).X + 8.0f + Game1.smallFont.MeasureString(new String('T', maxLength + 1)).X);
         if (bounds.Height == -1) bounds.Height = Game1.smallFont.GetSize().Y + 8;
       }
 
       this.mBounds = bounds;
-      this.mData   = new Data(colours, this.mBounds, Game1.smallFont, maxLength, new Data.ExtraText(label, preText), new Data.Handlers(inputFilterFunction, onTextChangedHandler));
+      this.mData = new Data(colours, this.mBounds, Game1.smallFont, maxLength, new Data.ExtraText(label, preText), new Data.Handlers(inputFilterFunction, onTextChangedHandler));
 
       // edit some base class properties
       {
-        this.X          = this.GetData().mDetailedBounds.mTextBoxContentBounds.X;
-        this.Y          = this.GetData().mDetailedBounds.mTextBoxContentBounds.Y;
-        this.Width      = this.GetData().mDetailedBounds.mTextBoxContentBounds.Width;
-        this.Height     = this.GetData().mDetailedBounds.mTextBoxContentBounds.Height;
+        this.X = this.GetData().mDetailedBounds.mTextBoxContentBounds.X;
+        this.Y = this.GetData().mDetailedBounds.mTextBoxContentBounds.Y;
+        this.Width = this.GetData().mDetailedBounds.mTextBoxContentBounds.Width;
+        this.Height = this.GetData().mDetailedBounds.mTextBoxContentBounds.Height;
         this.limitWidth = false;
-        this.textLimit  = maxLength;
-        this.Text       = text;
+        this.textLimit = maxLength;
+        this.Text = text;
       }
     }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks><see cref="CustomTextBox"/> implementation calls <see cref="SetVisible(Boolean)"/> with 'false'.</remarks>
     public virtual void Dispose() { this.SetVisible(false); }
 
-  #endregion
+    #endregion
   }
 }

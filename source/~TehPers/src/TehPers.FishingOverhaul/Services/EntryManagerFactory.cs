@@ -18,17 +18,17 @@ namespace TehPers.FishingOverhaul.Services
         where TEntry : Entry<TAvailability>
         where TAvailability : AvailabilityInfo
     {
-        private readonly ChanceCalculatorFactory<TAvailability> chanceCalculatorFactory;
+        private readonly CalculatorFactory calculatorFactory;
 
-        public EntryManagerFactory(ChanceCalculatorFactory<TAvailability> chanceCalculatorFactory)
+        public EntryManagerFactory(CalculatorFactory calculatorFactory)
         {
-            this.chanceCalculatorFactory = chanceCalculatorFactory
-                ?? throw new ArgumentNullException(nameof(chanceCalculatorFactory));
+            this.calculatorFactory = calculatorFactory
+                ?? throw new ArgumentNullException(nameof(calculatorFactory));
         }
 
         public EntryManager<TEntry, TAvailability> Create(IManifest owner, TEntry entry)
         {
-            return new(this.chanceCalculatorFactory.Create(owner, entry.AvailabilityInfo), entry);
+            return new(this.calculatorFactory.Chances(owner, entry.AvailabilityInfo), entry);
         }
     }
 }

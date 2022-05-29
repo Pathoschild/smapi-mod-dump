@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/legovader09/SDVLoanMod
+**
+*************************************************/
+
+{
+  "menu.cancel": "ยกเลิก",
+  "menu.days": "วัน",
+  "menu.leave": "ออก",
+  "menu.no": "ไม่",
+  "menu.repaycustom": "ชำระเงินคืนในจำนวนที่คุณกำหนดเอง",
+  "menu.repayfull": "ชำระคืนเต็มจำนวน",
+  "menu.showbalance": "แสดงยอดหนี้คงเหลือ",
+  "menu.yes": "ใช่",
+  "msg.create": "สร้างแฟ้มเอกสารเงินกู้แล้ว!",
+  "msg.hostonly": "มีเพียงโฮสต์เท่านั้นที่สามารถดำเนินการนี้ได้",
+  "msg.menu-1": "คุณต้องการดำเนินการใด?",
+  "msg.menu-2": "การชำระคืนเต็มจำนวนจะทำให้คุณเสียเงิน {{Balance}}g ต้องการดำเนินการต่อใช่หรือไม่",
+  "msg.payment.complete": "ขอบคุณสำหรับการชำระเงินจำนวน {{DailyAmount}}g",
+  "msg.payment.credited": "เงินจำนวน {{creditAmount}}g เข้าบัญชีของคุณแล้ว",
+  "msg.payment.error": "มีข้อผิดพลาดบางอย่างเกิดขึ้น เราจึงรีเซ็ตหนี้ของคุณแล้ว",
+  "msg.payment.failed": "คุณไม่มีเงิน {{DailyAmount}}g สำหรับดำเนินการชำระ",
+  "msg.payment.full": "ขอบคุณสำหรับการชำระเงิน! คุณชำระยอดสินเชื่อคงค้างอย่างเต็มจำนวนเรียบร้อยแล้ว",
+  "msg.payment.missed-1": "คำเตือน: การขาดชำระอีกครั้ง จะทำให้คุณต้องชำระค่าธรรมเนียมการชำระเงินล่าช้า เป็นจำนวน {{LateChargeAmount}}g",
+  "msg.payment.missed-2": "คำเตือน: ขณะนี้ เราจะเพิ่มค่าธรรมเนียมการชำระเงินล่าช้า จำนวน {{LateChargeAmount}}g ลงในยอดหนี้คงเหลือของคุณ",
+  "msg.payment.remaining": "ยอดหนี้คงเหลือของคุณคือ {{Balance}}g โดยเหลือเวลาอีก {{Duration}} วัน และจะต้องชำระ {{DailyAmount}}g ต่อวัน",
+  "msg.startborrow-1": "คุณต้องการกู้เงินเป็นจำนวนเท่าใด?",
+  "msg.startborrow-2": "คุณต้องการกู้เป็นระยะเวลานานเพียงใด?",
+  "msg.startrepay": "คุณต้องการชำระเงินคืนเป็นจำนวนเท่าใด?"
+}

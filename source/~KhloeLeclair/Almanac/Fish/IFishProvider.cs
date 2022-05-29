@@ -8,18 +8,18 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System.Collections.Generic;
 
-using Leclair.Stardew.Almanac.Fish;
+namespace Leclair.Stardew.Almanac.Fish;
 
-namespace Leclair.Stardew.Almanac.Fish {
-	public interface IFishProvider {
+public interface IFishProvider {
 
-		string Name { get; }
+	string Name { get; }
 
-		int Priority { get; }
+	int Priority { get; }
 
-		IEnumerable<FishInfo> GetFish();
+	IEnumerable<FishInfo>? GetFish();
 
-	}
 }

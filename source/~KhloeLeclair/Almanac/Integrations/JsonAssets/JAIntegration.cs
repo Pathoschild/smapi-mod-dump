@@ -8,116 +8,115 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 using Microsoft.Xna.Framework.Graphics;
 
-using Netcode;
 using StardewModdingAPI;
 
 using Leclair.Stardew.Common.Integrations;
 
 using JsonAssets;
 
-namespace Leclair.Stardew.Almanac.Integrations.JsonAssets {
-	public class JAIntegration : BaseAPIIntegration<IJSONAssetsAPI, ModEntry> {
+namespace Leclair.Stardew.Almanac.Integrations.JsonAssets;
 
-		private readonly Type JAEntry;
-		private readonly Type CropPatcher;
+public class JAIntegration : BaseAPIIntegration<IJSONAssetsAPI, ModEntry> {
 
-		private readonly object JAMod;
+	private readonly Type? JAEntry;
+	private readonly Type? CropPatcher;
 
-		private readonly IReflectedMethod _ResolveObjectId;
-		//private readonly IReflectedMethod _CheckCanBeGiant;
+	private readonly object? JAMod;
 
-		public JAIntegration(ModEntry mod)
-		: base(mod, "spacechase0.JsonAssets", "1.10.0") {
+	private readonly IReflectedMethod? _ResolveObjectId;
+	//private readonly IReflectedMethod _CheckCanBeGiant;
 
-			if (!IsLoaded)
-				return;
+	public JAIntegration(ModEntry mod)
+	: base(mod, "spacechase0.JsonAssets", "1.10.0") {
 
-			try {
-				JAEntry = Type.GetType("JsonAssets.Mod, JsonAssets");
-				if (JAEntry == null)
-					throw new ArgumentNullException("JAEntry");
+		if (!IsLoaded)
+			return;
 
-				JAMod = Self.Helper.Reflection.GetField<object>(JAEntry, "instance", false)?.GetValue();
-				if (JAMod == null)
-					throw new ArgumentNullException("JAMod");
+		try {
+			JAEntry = Type.GetType("JsonAssets.Mod, JsonAssets");
+			if (JAEntry == null)
+				throw new ArgumentNullException("JAEntry");
 
-				_ResolveObjectId = Self.Helper.Reflection.GetMethod(JAMod, "ResolveObjectId", false);
+			JAMod = Self.Helper.Reflection.GetField<object>(JAEntry, "instance", false)?.GetValue();
+			if (JAMod == null)
+				throw new ArgumentNullException("JAMod");
 
-			} catch(Exception) {
-				Log($"Unable to find JsonAssets. Will not be able to fetch giant crop sprites.");
-			}
+			_ResolveObjectId = Self.Helper.Reflection.GetMethod(JAMod, "ResolveObjectId", false);
 
-			try { 
-				CropPatcher = Type.GetType("JsonAssets.Patches.CropPatcher, JsonAssets");
-				if (CropPatcher == null)
-					throw new ArgumentNullException("CropPatcher");
-
-				//_CheckCanBeGiant = Self.Helper.Reflection.GetMethod(CropPatcher, "CheckCanBeGiant", false);
-
-			} catch(Exception) {
-				Log($"Unable to find CropPatcher. Will not be able to determine if JsonAssets crops are giant.", LogLevel.Debug);
-			}
+		} catch(Exception) {
+			Log($"Unable to find JsonAssets. Will not be able to fetch giant crop sprites.");
 		}
 
-		public bool IsGiantCrop(int id) {
-			// Boxing is fun~
-			return GetGiantCropTexture(id) != null;
+		try { 
+			CropPatcher = Type.GetType("JsonAssets.Patches.CropPatcher, JsonAssets");
+			if (CropPatcher == null)
+				throw new ArgumentNullException("CropPatcher");
+
+			//_CheckCanBeGiant = Self.Helper.Reflection.GetMethod(CropPatcher, "CheckCanBeGiant", false);
+
+		} catch(Exception) {
+			Log($"Unable to find CropPatcher. Will not be able to determine if JsonAssets crops are giant.", LogLevel.Debug);
 		}
-
-		private int ResolveObjectId(object obj) {
-			if (!IsLoaded || _ResolveObjectId == null)
-				return 0;
-
-			try {
-				return _ResolveObjectId.Invoke<int>(obj);
-			} catch(Exception ex) {
-				Log($"Error calling ResolveObjectId.", LogLevel.Trace, ex);
-			}
-
-			return 0;
-		}
-
-		private IList GetCrops() {
-			if (!IsLoaded || JAMod == null)
-				return null;
-
-			return Self.Helper.Reflection.GetField<IList>(
-				JAMod, "Crops", false)?.GetValue();
-		}
-
-		public Texture2D GetGiantCropTexture(int id) {
-			IList crops = GetCrops();
-			if (crops == null || crops.Count == 0)
-				return null;
-
-			foreach(object crop in crops) {
-				if (crop == null)
-					continue;
-
-				object product = Self.Helper.Reflection.GetProperty<object>(crop, "Product", false)?.GetValue();
-				if (product == null)
-					continue;
-
-				int crop_id = ResolveObjectId(product);
-				if (id == crop_id)
-					try {
-						return Self.Helper.Reflection.GetProperty<Texture2D>(
-							crop, "GiantTexture", false)?.GetValue();
-					} catch (Exception ex) {
-						Log($"Unable to get giant texture for crop {id}", LogLevel.Warn, ex);
-						return null;
-					}
-			}
-
-			return null;
-		}
-
 	}
+
+	public bool IsGiantCrop(int id) {
+		// Boxing is fun~
+		return GetGiantCropTexture(id) != null;
+	}
+
+	private int ResolveObjectId(object obj) {
+		if (!IsLoaded || _ResolveObjectId == null)
+			return 0;
+
+		try {
+			return _ResolveObjectId.Invoke<int>(obj);
+		} catch(Exception ex) {
+			Log($"Error calling ResolveObjectId.", LogLevel.Trace, ex);
+		}
+
+		return 0;
+	}
+
+	private IList? GetCrops() {
+		if (!IsLoaded || JAMod == null)
+			return null;
+
+		return Self.Helper.Reflection.GetField<IList>(
+			JAMod, "Crops", false)?.GetValue();
+	}
+
+	public Texture2D? GetGiantCropTexture(int id) {
+		IList? crops = GetCrops();
+		if (crops == null || crops.Count == 0)
+			return null;
+
+		foreach(object crop in crops) {
+			if (crop == null)
+				continue;
+
+			object? product = Self.Helper.Reflection.GetProperty<object>(crop, "Product", false)?.GetValue();
+			if (product == null)
+				continue;
+
+			int crop_id = ResolveObjectId(product);
+			if (id == crop_id)
+				try {
+					return Self.Helper.Reflection.GetProperty<Texture2D>(
+						crop, "GiantTexture", false)?.GetValue();
+				} catch (Exception ex) {
+					Log($"Unable to get giant texture for crop {id}", LogLevel.Warn, ex);
+					return null;
+				}
+		}
+
+		return null;
+	}
+
 }

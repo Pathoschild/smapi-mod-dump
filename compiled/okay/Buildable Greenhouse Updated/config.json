@@ -1,0 +1,12 @@
+{
+  "_StartWithGreenhouse": "True to start with the buildable greenhouse; False to unlock the buildable greenhouse when you unlock the greenhouse",
+  "StartWithGreenhouse": false,
+  "_BuildPriceDescription": "This is the price to build a greenhouse",
+  "BuildPrice": 100000,
+  "_BuildMaterialsDescription": "These are the materials and amounts needed to build a greenhouse",
+  "BuildMaterals": {
+    "390": 500,
+    "709": 100,
+    "337": 5
+  }
+}

@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 <PropertyGroup>
+	<AssemblyName>CategoriesInRecipes</AssemblyName>
+	<RootNamespace>CategoriesInRecipes</RootNamespace>
 	<TargetFramework>net5.0</TargetFramework>
 	<EnableHarmony>true</EnableHarmony>
 	<Nullable>enable</Nullable>

@@ -35,6 +35,8 @@ using FashionSense.Framework.Patches.Entities;
 using FashionSense.Framework.Models.Sleeves;
 using FashionSense.Framework.UI;
 using FashionSense.Framework.Models.Shoes;
+using FashionSense.Framework.Interfaces.API;
+using StardewModdingAPI.Utilities;
 
 namespace FashionSense
 {
@@ -103,25 +105,16 @@ namespace FashionSense
 
             // Add in our debug commands
             helper.ConsoleCommands.Add("fs_display_movement", "Displays debug info related to player movement. Use again to disable. \n\nUsage: fs_display_movement", delegate { _displayMovementData = !_displayMovementData; });
-            helper.ConsoleCommands.Add("fs_reload", "Reloads all Fashion Sense content packs.\n\nUsage: fs_reload", delegate { this.LoadContentPacks(); });
+            helper.ConsoleCommands.Add("fs_reload", "Reloads all Fashion Sense content packs. Can specify a manifest unique ID to only reload that pack.\n\nUsage: fs_reload [manifest_unique_id]", ReloadFashionSense);
             helper.ConsoleCommands.Add("fs_reload_continuous", "Debug usage only: reloads all Fashion Sense content packs every 2 seconds. Use the command again to stop the continuous reloading.\n\nUsage: fs_reload_continuous", delegate { _continuousReloading = !_continuousReloading; });
             helper.ConsoleCommands.Add("fs_add_mirror", "Gives you a Hand Mirror tool.\n\nUsage: fs_add_mirror", delegate { Game1.player.addItemToInventory(SeedShopPatch.GetHandMirrorTool()); });
 
             modHelper.Events.GameLoop.GameLaunched += OnGameLaunched;
-            modHelper.Events.GameLoop.SaveCreated += OnSaveCreated;
             modHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             modHelper.Events.GameLoop.DayStarted += OnDayStarted;
             modHelper.Events.Player.Warped += OnWarped;
             modHelper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             modHelper.Events.Display.Rendered += OnRendered;
-        }
-
-        private void OnSaveCreated(object sender, SaveCreatedEventArgs e)
-        {
-            if (Game1.player.modData.ContainsKey(ModDataKeys.STARTS_WITH_HAND_MIRROR) && bool.Parse(Game1.player.modData[ModDataKeys.STARTS_WITH_HAND_MIRROR]))
-            {
-                Game1.player.addItemByMenuIfNecessary(SeedShopPatch.GetHandMirrorTool());
-            }
         }
 
         private void OnRendered(object sender, StardewModdingAPI.Events.RenderedEventArgs e)
@@ -248,6 +241,24 @@ namespace FashionSense
 
             // Set sprite to dirty in order to refresh sleeves and other tied-in appearances
             SetSpriteDirty();
+
+            // Check if we need to give a Hand Mirror at the start of the game
+            if (SDate.Now().DaysSinceStart == 1 && Game1.player.modData.ContainsKey(ModDataKeys.STARTS_WITH_HAND_MIRROR) && bool.Parse(Game1.player.modData[ModDataKeys.STARTS_WITH_HAND_MIRROR]))
+            {
+                Monitor.Log($"Giving the Hand Mirror to player {Game1.player.Name} as they enabled STARTS_WITH_HAND_MIRROR");
+                Game1.player.addItemByMenuIfNecessary(SeedShopPatch.GetHandMirrorTool());
+            }
+        }
+
+        public override object GetApi()
+        {
+            return new Api(Monitor, textureManager);
+        }
+
+        private void ReloadFashionSense(string command, string[] args)
+        {
+            var packFilter = args.Length > 0 ? args[0] : null;
+            this.LoadContentPacks(packId: packFilter);
         }
 
         private void UpdateElapsedDuration(Farmer who)
@@ -291,13 +302,13 @@ namespace FashionSense
             }
         }
 
-        private void LoadContentPacks(bool silent = false)
+        private void LoadContentPacks(bool silent = false, string packId = null)
         {
             // Clear the existing cache of AppearanceModels
-            textureManager.Reset();
+            textureManager.Reset(packId);
 
             // Load owned content packs
-            foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned())
+            foreach (IContentPack contentPack in Helper.ContentPacks.GetOwned().Where(c => String.IsNullOrEmpty(packId) is true || c.Manifest.UniqueID.Equals(packId, StringComparison.OrdinalIgnoreCase)))
             {
                 Monitor.Log($"Loading data from pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} by {contentPack.Manifest.Author}", silent ? LogLevel.Trace : LogLevel.Debug);
 
@@ -448,7 +459,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "hair.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "hair.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -560,7 +571,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "accessory.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "accessory.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -672,7 +683,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "hat.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "hat.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -784,7 +795,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "shirt.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "shirt.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -897,7 +908,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "pants.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "pants.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -1010,7 +1021,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "sleeves.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "sleeves.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -1123,7 +1134,7 @@ namespace FashionSense
                     }
 
                     // Load in the texture
-                    appearanceModel.Texture = contentPack.LoadAsset<Texture2D>(contentPack.GetActualAssetKey(Path.Combine(parentFolderName, textureFolder.Name, "shoes.png")));
+                    appearanceModel.Texture = contentPack.ModContent.Load<Texture2D>(contentPack.ModContent.GetInternalAssetName(Path.Combine(parentFolderName, textureFolder.Name, "shoes.png")).Name);
 
                     // Track the model
                     textureManager.AddAppearanceModel(appearanceModel);
@@ -1231,7 +1242,10 @@ namespace FashionSense
                 who.modData[ModDataKeys.ANIMATION_SHOES_FARMER_FRAME] = who.FarmerSprite.CurrentFrame.ToString();
             }
 
-            who.modData[ModDataKeys.ANIMATION_FACING_DIRECTION] = facingDirection.ToString();
+            if (model is null)
+            {
+                who.modData[ModDataKeys.ANIMATION_FACING_DIRECTION] = facingDirection.ToString();
+            }
 
             if (!ignoreAnimationType)
             {

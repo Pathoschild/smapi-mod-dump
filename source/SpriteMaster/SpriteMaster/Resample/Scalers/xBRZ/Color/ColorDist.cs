@@ -8,21 +8,17 @@
 **
 *************************************************/
 
-using SpriteMaster.Colors;
 using SpriteMaster.Types;
 using System.Runtime.CompilerServices;
 using static SpriteMaster.Colors.ColorHelpers;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ.Color;
 
-class ColorDist {
+internal class ColorDist {
 	protected readonly Config Configuration;
 	private readonly YccConfig YccConfiguration;
 
-	// TODO : Only sRGB presently has the linearizer/delinearizer implemented.
-	private static readonly ColorSpace CurrentColorSpace = ColorSpace.sRGB_Precise;
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal ColorDist(Config cfg) {
 		Configuration = cfg;
 		YccConfiguration = new() {
@@ -31,8 +27,8 @@ class ColorDist {
 		};
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal uint ColorDistance(in Color16 pix1, in Color16 pix2) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal uint ColorDistance(Color16 pix1, Color16 pix2) {
 		return Resample.Scalers.Common.ColorDistance(
 			useRedmean: Configuration.UseRedmean,
 			gammaCorrected: Configuration.GammaCorrected,

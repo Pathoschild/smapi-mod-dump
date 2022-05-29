@@ -16,9 +16,9 @@ namespace Leclair.Stardew.BetterCrafting.Models;
 
 public class Categories {
 
-	public Category[] Cooking { get; set; } = Array.Empty<Category>();
+	public Category[]? Cooking { get; set; }
 
-	public Category[] Crafting { get; set; } = Array.Empty<Category>();
+	public Category[]? Crafting { get; set; }
 
 	public AppliedDefaults? Applied { get; set; }
 

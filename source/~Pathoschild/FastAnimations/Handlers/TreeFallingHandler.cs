@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -33,7 +31,7 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         private readonly IReflectionHelper Reflection;
 
         /// <summary>The trees in the current location.</summary>
-        private IDictionary<Vector2, TerrainFeature> Trees = new Dictionary<Vector2, TerrainFeature>();
+        private Dictionary<Vector2, TerrainFeature> Trees = new();
 
 
         /*********
@@ -89,8 +87,8 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             GameTime gameTime = Game1.currentGameTime;
 
             int skips = this.GetSkipsThisTick();
-            foreach (var pair in this.GetFallingTrees())
-                this.ApplySkips(skips, () => pair.Value.tickUpdate(gameTime, pair.Key, Game1.currentLocation));
+            foreach ((Vector2 tile, TerrainFeature tree) in this.GetFallingTrees())
+                this.ApplySkips(skips, () => tree.tickUpdate(gameTime, tile, Game1.currentLocation));
         }
 
 

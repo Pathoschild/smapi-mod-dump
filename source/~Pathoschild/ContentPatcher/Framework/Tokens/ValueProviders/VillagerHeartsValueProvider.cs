@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -53,19 +51,19 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 this.Values.Clear();
                 if (this.MarkReady(this.SaveReader.IsReady))
                 {
-                    foreach (KeyValuePair<string, Friendship> pair in this.SaveReader.GetFriendships())
+                    foreach ((string npc, Friendship? friendship) in this.SaveReader.GetFriendships())
                     {
-                        int points = pair.Value?.Points ?? 0;
-                        this.Values[pair.Key] = (points / NPC.friendshipPointsPerHeartLevel).ToString(CultureInfo.InvariantCulture);
+                        int points = friendship?.Points ?? 0;
+                        this.Values[npc] = (points / NPC.friendshipPointsPerHeartLevel).ToString(CultureInfo.InvariantCulture);
                     }
                 }
             });
         }
 
         /// <inheritdoc />
-        public override InvariantHashSet GetValidPositionalArgs()
+        public override IInvariantSet GetValidPositionalArgs()
         {
-            return new InvariantHashSet(this.Values.Keys);
+            return InvariantSets.From(this.Values.Keys);
         }
 
         /// <inheritdoc />
@@ -75,9 +73,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
 
             if (input.HasPositionalArgs)
             {
-                return this.Values.TryGetValue(input.GetFirstPositionalArg(), out string value)
-                    ? new[] { value }
-                    : Enumerable.Empty<string>();
+                return this.Values.TryGetValue(input.GetFirstPositionalArg()!, out string? value)
+                    ? InvariantSets.FromValue(value)
+                    : InvariantSets.Empty;
             }
             else
                 return this.Values.Select(pair => $"{pair.Key}:{pair.Value}");

@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>net5</TargetFramework>
+	<EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
   
   <PropertyGroup>
     <Authors>Chawol</Authors>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
-    <Version>1.0.1-beta</Version>
-    <Copyright>Copyright (c) 2021 Chawol</Copyright>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
+    <Version>1.0.2-beta</Version>
+    <Copyright>Copyright (c) 2022 Chawol</Copyright>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -19,8 +20,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="1.2.0.1" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.3.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
   </ItemGroup>
   
   <ItemGroup>

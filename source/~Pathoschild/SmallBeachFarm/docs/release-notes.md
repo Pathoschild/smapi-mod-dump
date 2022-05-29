@@ -9,8 +9,21 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
-* Updated for the upcoming SMAPI 4.0.0.
+## 2.3.0
+Released 22 May 2022 for SMAPI 3.14.0 or later.
+
+* Added 'spawn monsters by default' config option (default false).  
+  _This sets the default value for the 'spawn monsters at night' option when creating a new save. This has no effect on existing saves (see [how to toggle it for an existing save](https://stardewvalleywiki.com/Monsters#Monsters_on_The_Farm))._
+* Added sections in config UI.
+* Improved translations. Thanks to ChulkyBow (updated Ukrainian)!
+
+## 2.2.0
+Released 09 May 2022 for SMAPI 3.14.0 or later.
+
+* Updated for SMAPI 3.14.0.
+* Added option to remove stone path tiles in front of shipping bin.
+* Fixed some missing tile metadata (e.g. some tiles not marked diggable).
+* Internal refactoring.
 
 ## 2.1.1
 Released 27 February 2022 for SMAPI 3.13.0 or later.

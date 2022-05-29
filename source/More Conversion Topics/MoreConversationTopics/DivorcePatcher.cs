@@ -21,6 +21,14 @@ namespace MoreConversationTopics
         private static IMonitor Monitor;
         private static ModConfig Config;
 
+        private enum DivorceState
+        {
+            UnAssigned,
+            UnMarriedNoDivorce,
+            NPCDivorce,
+            MultiplayerDivorce
+        }
+
         // call this method from your Entry class
         public static void Initialize(IMonitor monitor, ModConfig config)
         {
@@ -59,24 +67,24 @@ namespace MoreConversationTopics
         }
 
         // Method that is used to prefix
-        private static void Farmer_doDivorce_Prefix(Farmer __instance, out string __state)
+        private static void Farmer_doDivorce_Prefix(Farmer __instance, out DivorceState __state)
         {
             // Create a state variable to check the state in the prefix, used for logic in the postfix
-            __state = "unassigned";
+            __state = DivorceState.UnAssigned;
             try
             {
                 // Use the same logic as doDivorce() to decide which kind of divorce is happening and log for use in postfix
                 if(!__instance.isMarried())
                 {
-                    __state = "unmarried_no_divorce";
+                    __state = DivorceState.UnMarriedNoDivorce;
                 }
                 else if(__instance.spouse != null)
                 {
-                    __state = "NPC_divorce";
+                    __state = DivorceState.NPCDivorce;
                 }
                 else if (__instance.team.GetSpouse(__instance.UniqueMultiplayerID).HasValue)
                 {
-                    __state = "multiplayer_divorce";
+                    __state = DivorceState.MultiplayerDivorce;
                 }
             }
             catch (Exception ex)
@@ -86,41 +94,21 @@ namespace MoreConversationTopics
         }
 
         // Method that is used to postfix
-        private static void Farmer_doDivorce_Postfix(Farmer __instance, string __state)
+        private static void Farmer_doDivorce_Postfix(Farmer __instance, DivorceState __state)
         {
             switch (__state)
             {
                 // If the prefix failed, don't do the postfix
-                case "unassigned":
+                case DivorceState.UnAssigned:
                     Monitor.Log($"Failed to log divorce state in prefix, skipping divorce conversation topic postfix", LogLevel.Error);
                     break;
                 // If the prefix logged that the player is not married, obviously they can't get divorced
-                case "unmarried_no_divorce":
+                case DivorceState.UnMarriedNoDivorce:
                     Monitor.Log($"Player tried to get divorced when they were not married", LogLevel.Warn);
                     break;
-                // If the prefix logged that the player is married to an NPC, only add divorce conversation topic to player
-                case "NPC_divorce":
-                    try
-                    {
-                        MCTHelperFunctions.AddMaybePreExistingCT(__instance, "divorce", Config.DivorceDuration);
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log($"Failed to add player's divorce conversation topic with exception: {ex}", LogLevel.Error);
-                    }
-                    break;
                 // If the prefix logged that the player is married to another player, add divorce conversation topics to both players
-                case "multiplayer_divorce":
-                    // Add divorce conversation topic to current player
-                    try
-                    {
-                        MCTHelperFunctions.AddMaybePreExistingCT(__instance, "divorce", Config.DivorceDuration);
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log($"Failed to add player's divorce conversation topic with exception: {ex}", LogLevel.Error);
-                    }
-
+                case DivorceState.MultiplayerDivorce:
+                    
                     // Add divorce conversation topic to current player's player spouse
                     try
                     {
@@ -129,21 +117,35 @@ namespace MoreConversationTopics
                         Farmer spouse = Game1.getFarmerMaybeOffline(spouseID.Value);
 
                         // Check if spouse is offline or nonexistent, otherwise add divorce conversation topic to spouse
-                        if (!Game1.getOnlineFarmers().Contains(spouse))
+                        if (spouse is null)
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT(spouse, "divorce", Config.DivorceDuration);
-                            Monitor.Log($"Added divorce conversation topic to offline multiplayer spouse, unknown behavior may result", LogLevel.Warn);
-                        }
-                        else if (spouse == null)
                             Monitor.Log($"Player was married to multiplayer spouse in prefix but multiplayer spouse not found in postfix", LogLevel.Error);
+                        }
                         else
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT(spouse, "divorce", Config.DivorceDuration);
+                            MCTHelperFunctions.AddOrExtendCT(spouse, "divorce", Config.DivorceDuration);
+                            if (!Game1.getOnlineFarmers().Contains(spouse))
+                            {
+                                Monitor.Log($"Added divorce conversation topic to offline multiplayer spouse, unknown behavior may result", LogLevel.Warn);
+                            }
                         }
                     }
                     catch (Exception ex)
                     {
                         Monitor.Log($"Failed to add player's spouse divorce conversation topic with exception: {ex}", LogLevel.Error);
+                    }
+
+                    // Add divorce conversation topic to current player
+                    goto case DivorceState.NPCDivorce;
+                // If the prefix logged that the player is married to an NPC, only add divorce conversation topic to player
+                case DivorceState.NPCDivorce:
+                    try
+                    {
+                        MCTHelperFunctions.AddOrExtendCT(__instance, "divorce", Config.DivorceDuration);
+                    }
+                    catch (Exception ex)
+                    {
+                        Monitor.Log($"Failed to add player's divorce conversation topic with exception: {ex}", LogLevel.Error);
                     }
                     break;
             }

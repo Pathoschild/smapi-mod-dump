@@ -10,7 +10,6 @@
 
 {
   "$schema": "https://raw.githubusercontent.com/TehPers/StardewValleyMods/master/docs/TehPers.FishingOverhaul/schemas/contentPacks/content.schema.json",
-
   // Include legendary and legendary II content
   "Include": ["legendary.json", "legendaryII.json"]
 }

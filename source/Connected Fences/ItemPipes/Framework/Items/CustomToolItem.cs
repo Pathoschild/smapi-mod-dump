@@ -34,10 +34,22 @@ namespace ItemPipes.Framework.Items
 
         public CustomToolItem() : base()
         {
+            Init();
             this.Stackable = false;
             this.numAttachmentSlots.Value = 0;
             this.InstantUse = true;
         }
+        public void Init()
+        {
+            IDName = GetType().Name.Substring(0, GetType().Name.Length - 4);
+            DataAccess DataAccess = DataAccess.GetDataAccess();
+            ItemTexture = DataAccess.Sprites[IDName + "_Item"];
+            Name = DataAccess.ItemNames[IDName];
+            DisplayName = DataAccess.ItemNames[IDName];
+            Description = DataAccess.ItemDescriptions[IDName];
+            parentSheetIndex.Value = DataAccess.ItemIDs[IDName];
+        }
+
         public virtual Tool Save()
         {
             if (!modData.ContainsKey("ItemPipes"))

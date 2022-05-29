@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/daleao/sdv-mods
+**
+*************************************************/
+
+{
+	"Name": "Better Artisan Good Icons For Meads",
+	"Author": "DaLion",
+	"Version": "1.0.1",
+	"Description": "Addon for Better Artisan Good Icons to allow support for custom mead sprites.",
+	"UniqueID": "DaLion.Meads",
+	"EntryDll": "BetterArtisanGoodIconsForMeads.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:11911" ],
+  "Dependencies": [
+    {
+      "UniqueID": "cat.betterartisangoodicons"
+    }
+  ]
+}

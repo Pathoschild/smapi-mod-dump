@@ -7,10 +7,10 @@ mods:
    NPC Map Locations
 
 latest commit:
-   commit 82f1a4030a57ce91b18969d25f5549a760a30012
-   Merge: b03b827 fa62277
+   commit ad39f1c4a727f1605c3ebd987b875ccb38b748a2
+   Merge: 82f1a40 f3da44b
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Feb 26 23:02:49 2022 -0500
+   Date:   Fri May 13 23:34:59 2022 -0400
    
        Merge branch 'develop'
    

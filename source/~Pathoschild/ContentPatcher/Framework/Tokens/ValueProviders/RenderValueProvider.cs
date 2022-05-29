@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
 
@@ -41,7 +39,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            yield return input.TokenString.Value;
+            return InvariantSets.FromValue(input.TokenString?.Value ?? string.Empty);
         }
     }
 }

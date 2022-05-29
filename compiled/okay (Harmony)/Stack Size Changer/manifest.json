@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Stack Size Changer",
+    "Author": "Shockah",
+    "Version": "1.0.0",
+    "Description": "Stack Size Changer",
+    "UniqueID": "Shockah.StackSizeChanger",
+    "EntryDll": "StackSizeChanger.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:11866" ]
+}

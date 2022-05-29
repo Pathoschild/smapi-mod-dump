@@ -14,9 +14,9 @@ using System.Threading;
 
 namespace SpriteMaster.Types;
 
-sealed class Condition : IDisposable {
+internal sealed class Condition : IDisposable {
 	private volatile int State = 0;
-	private AutoResetEvent Event = new(false);
+	private AutoResetEvent? Event = new(false);
 
 	internal Condition(bool initialState = false) => State = initialState.ToInt();
 
@@ -24,13 +24,13 @@ sealed class Condition : IDisposable {
 
 	// This isn't quite thread-safe, but the granularity of this in our codebase is really loose to begin with. It doesn't need to be entirely thread-safe.
 	internal bool Wait() {
-		Event.WaitOne();
+		Event!.WaitOne();
 		return State.ToBool();
 	}
 
 	internal void Set(bool state = true) {
 		State = state.ToInt();
-		Event.Set();
+		Event!.Set();
 	}
 
 	// This clears the state without triggering the event.
@@ -42,7 +42,7 @@ sealed class Condition : IDisposable {
 
 	public void Dispose() {
 		Event?.Dispose();
-		Event = null!;
+		Event = null;
 
 		GC.SuppressFinalize(this);
 	}

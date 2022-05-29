@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "recipesData": 
+  {
+    "IronPipe": "335 2 92 1/Field/222560 5/false/Mining 3",
+    "GoldPipe": "336 2 92 1/Field/222561 5/false/Mining 6",
+    "IridiumPipe": "337 2 92 1/Field/222562 5/false/Mining 9",
+    "ExtractorPipe": "222560 1 64 1/Field/222563/false/Mining 3",
+    "GoldExtractorPipe": "222561 1 64 1/Field/222564/false/Mining 6",
+    "IridiumExtractorPipe": "222562 1 64 1/Field/222565/false/Mining 9",
+    "InserterPipe": "222560 1 62 1/Field/222566/false/Mining 3",
+    "PolymorphicPipe": "222560 1 68 1/Field/222567/false/Mining 3",
+    "FilterPipe": "222560 1 60 1/Field/222568/false/Mining 3",
+    "PPM": "335 5 787 1/Field/222660/true/Mining 6"
+  }
+}

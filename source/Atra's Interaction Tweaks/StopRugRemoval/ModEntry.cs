@@ -9,15 +9,21 @@
 *************************************************/
 
 using System.Reflection;
+using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
 using AtraShared.MigrationManager;
+using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using HarmonyLib;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
+using StardewValley.Objects;
 using StopRugRemoval.Configuration;
 using StopRugRemoval.HarmonyPatches;
-using StopRugRemoval.HarmonyPatches.BombHandling;
+using StopRugRemoval.HarmonyPatches.Confirmations;
+using StopRugRemoval.HarmonyPatches.Niceties;
+using StopRugRemoval.HarmonyPatches.Volcano;
+using AtraUtils = AtraShared.Utils.Utils;
 
 namespace StopRugRemoval;
 
@@ -26,20 +32,15 @@ namespace StopRugRemoval;
 /// </summary>
 public class ModEntry : Mod
 {
-    private static readonly Lazy<IReflectedField<Multiplayer>> MultiplayerLazy = new(() => ReflectionHelper!.GetField<Multiplayer>(typeof(Game1), "multiplayer"));
-
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1306:Field names should begin with lower-case letter", Justification = "Reviewed.")]
     private static GMCMHelper? GMCM = null;
 
     private MigrationManager? migrator;
 
-    
-
     /// <summary>
-    /// Gets Game1.multiplayer.
+    /// Gets a function that gets Game1.multiplayer.
     /// </summary>
-    /// <remarks>This still requires reflection and is likely slow.</remarks>
-    internal static Multiplayer Multiplayer => MultiplayerLazy.Value.GetValue();
+    internal static Func<Multiplayer> Multiplayer => MultiplayerHelpers.GetMultiplayer;
 
     // the following three properties are set in the entry method, which is approximately as close as I can get to the constructor anyways.
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -54,9 +55,24 @@ public class ModEntry : Mod
     internal static ModConfig Config { get; private set; }
 
     /// <summary>
-    /// Gets the reflection helper for this mod.
+    /// Gets the game content helper for this mod.
     /// </summary>
-    internal static IReflectionHelper ReflectionHelper { get; private set; }
+    internal static IGameContentHelper GameContentHelper { get; private set; }
+
+    /// <summary>
+    /// Gets the multiplayer helper for this mod.
+    /// </summary>
+    internal static IMultiplayerHelper MultiplayerHelper { get; private set; }
+
+    /// <summary>
+    /// Gets the input helper for this mod.
+    /// </summary>
+    internal static IInputHelper InputHelper { get; private set; }
+
+    /// <summary>
+    /// Gets the unique id for this mod.
+    /// </summary>
+    internal static string UNIQUEID { get; private set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
     /// <inheritdoc/>
@@ -64,26 +80,50 @@ public class ModEntry : Mod
     {
         I18n.Init(helper.Translation);
         ModMonitor = this.Monitor;
-        ReflectionHelper = this.Helper.Reflection;
-        try
-        {
-            Config = this.Helper.ReadConfig<ModConfig>();
-        }
-        catch
-        {
-            this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
-            Config = new();
-        }
+        GameContentHelper = this.Helper.GameContent;
+        MultiplayerHelper = this.Helper.Multiplayer;
+        InputHelper = this.Helper.Input;
+        UNIQUEID = this.ModManifest.UniqueID;
+        Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunch;
         helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
+        helper.Events.GameLoop.Saving += this.BeforeSaving;
         helper.Events.Player.Warped += this.Player_Warped;
+        helper.Events.GameLoop.ReturnedToTitle += this.ReturnedToTitle;
+
+        helper.Events.Content.AssetRequested += this.OnAssetRequested;
+        helper.Events.Content.AssetsInvalidated += this.OnAssetInvalidated;
+        helper.Events.Content.LocaleChanged += this.OnLocaleChange;
+
+        helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageRecieved;
+        helper.Events.Multiplayer.PeerConnected += this.OnPlayerConnected;
 
         this.ApplyPatches(new Harmony(this.ModManifest.UniqueID));
     }
 
+    /*************
+     * REGION ASSET MANAGEMENT
+     * **********/
+
+    private void OnLocaleChange(object? sender, LocaleChangedEventArgs e)
+        => AssetEditor.Refresh();
+
+    private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e)
+        => AssetEditor.Refresh(e.NamesWithoutLocale);
+
+    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
+        => AssetEditor.Edit(e, this.Helper.ModRegistry, this.Helper.DirectoryPath);
+
     private void Player_Warped(object? sender, WarpedEventArgs e)
-        => ConfirmBomb.HaveConfirmed.Value = false;
+    {
+        SObjectPatches.HaveConfirmedBomb.Value = false;
+        ConfirmWarp.HaveConfirmed.Value = false;
+    }
+
+    /***************
+     * REGION HARMONY
+     * *************/
 
     /// <summary>
     /// Applies and logs this mod's harmony patches.
@@ -98,20 +138,52 @@ public class ModEntry : Mod
         }
         catch (Exception ex)
         {
-            ModMonitor.Log($"Mod crashed while applying harmony patches\n\n{ex}", LogLevel.Error);
+            ModMonitor.Log(string.Format(ErrorMessageConsts.HARMONYCRASH, ex), LogLevel.Error);
         }
-        harmony.Snitch(this.Monitor, this.ModManifest.UniqueID);
+        harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
+    }
+
+    /// <summary>
+    /// Applies the patches that must be applied after all mods are initialized.
+    /// IE - patches on other mods.
+    /// </summary>
+    /// <param name="harmony">A harmony instance.</param>
+    private void ApplyLatePatches(Harmony harmony)
+    {
+        try
+        {
+            FruitTreesAvoidHoe.ApplyPatches(harmony, this.Helper.ModRegistry);
+            if (!this.Helper.ModRegistry.IsLoaded("DecidedlyHuman.BetterReturnScepter"))
+            {
+                ConfirmWarp.ApplyWandPatches(harmony);
+            }
+        }
+        catch (Exception ex)
+        {
+            ModMonitor.Log(string.Format(ErrorMessageConsts.HARMONYCRASH, ex), LogLevel.Error);
+        }
+        harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
     }
 
     private void OnGameLaunch(object? sender, GameLaunchedEventArgs e)
     {
         PlantGrassUnder.GetSmartBuildingBuildMode(this.Helper.ModRegistry);
+        this.ApplyLatePatches(new Harmony(this.ModManifest.UniqueID + "+latepatches"));
+
         GMCM = new(this.Monitor, this.Helper.Translation, this.Helper.ModRegistry, this.ModManifest);
-        if (!GMCM.TryGetAPI())
+        if (GMCM.TryGetAPI())
         {
-            return;
+            this.SetUpBasicConfig();
         }
-        this.SetUpBasicConfig();
+    }
+
+    private void ReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
+    {
+        if (GMCM?.HasGottenAPI == true)
+        {
+            GMCM.Unregister();
+            this.SetUpBasicConfig();
+        }
     }
 
     /// <summary>
@@ -121,6 +193,9 @@ public class ModEntry : Mod
     /// <param name="e">Parameters.</param>
     private void SaveLoaded(object? sender, SaveLoadedEventArgs e)
     {
+        // This allows NPCs to say hi to the player. Yes, I'm that petty.
+        Game1.player.displayName = Game1.player.Name;
+
         if (Context.IsSplitScreen && Context.ScreenId != 0)
         {
             return;
@@ -137,8 +212,6 @@ public class ModEntry : Mod
 
         if (GMCM?.HasGottenAPI == true)
         {
-            GMCM.Unregister();
-            this.SetUpBasicConfig();
             GMCM.AddPageHere("Bombs", I18n.BombLocationDetailed)
                 .AddParagraph(I18n.BombLocationDetailed_Description);
 
@@ -149,6 +222,30 @@ public class ModEntry : Mod
                     getValue: () => Config.SafeLocationMap.TryGetValue(loc.NameOrUniqueName, out IsSafeLocationEnum val) ? val : IsSafeLocationEnum.Dynamic,
                     setValue: (value) => Config.SafeLocationMap[loc.NameOrUniqueName] = value);
             }
+        }
+        if (Context.IsMainPlayer)
+        {
+            VolcanoChestAdjuster.LoadData(this.Helper.Data, this.Helper.Multiplayer);
+
+            // Make an attempt to clear all nulls from chests.
+            Utility.ForAllLocations(action: (GameLocation loc) =>
+            {
+                foreach (SObject obj in loc.Objects.Values)
+                {
+                    if (obj is Chest chest)
+                    {
+                        chest.clearNulls();
+                    }
+                }
+            });
+        }
+    }
+
+    private void BeforeSaving(object? sender, SavingEventArgs e)
+    {
+        if (Context.IsMainPlayer)
+        {
+            VolcanoChestAdjuster.SaveData(this.Helper.Data, this.Helper.Multiplayer);
         }
     }
 
@@ -167,10 +264,14 @@ public class ModEntry : Mod
         this.Helper.Events.GameLoop.Saved -= this.WriteMigrationData;
     }
 
+    // Favor a single defined function that gets the config, instead of defining the lambda over and over again.
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Reviewed.")]
+    private static ModConfig GetConfig() => Config;
+
     private void SetUpBasicConfig()
     {
         GMCM!.Register(
-                reset: () =>
+                reset: static () =>
                 {
                     Config = new ModConfig();
                     Config.PrePopulateLocations();
@@ -182,24 +283,84 @@ public class ModEntry : Mod
         {
             if (property.PropertyType == typeof(bool))
             {
-                GMCM.AddBoolOption(property, () => Config);
+                GMCM.AddBoolOption(property, GetConfig);
             }
             else if (property.PropertyType == typeof(KeybindList))
             {
-                GMCM.AddKeybindList(property, () => Config);
+                GMCM.AddKeybindList(property, GetConfig);
             }
         }
+
+        GMCM!.AddSectionTitle(I18n.ConfirmWarps_Title)
+            .AddParagraph(I18n.ConfirmWarps_Description)
+            .AddEnumOption(
+                name: I18n.WarpsInSafeAreas_Title,
+                getValue: static () => Config.WarpsInSafeAreas,
+                setValue: static (value) => Config.WarpsInSafeAreas = value,
+                tooltip: I18n.WarpsInSafeAreas_Description)
+            .AddEnumOption(
+                name: I18n.WarpsInDangerousAreas_Title,
+                getValue: static () => Config.WarpsInDangerousAreas,
+                setValue: static (value) => Config.WarpsInDangerousAreas = value,
+                tooltip: I18n.WarpsInDangerousAreas_Description);
+
+        GMCM!.AddSectionTitle(I18n.ConfirmScepter_Title);
+        if (this.Helper.ModRegistry.IsLoaded("DecidedlyHuman.BetterReturnScepter"))
+        {
+            GMCM!.AddParagraph(I18n.BetterReturnScepter);
+        }
+        else
+        {
+            GMCM!.AddParagraph(I18n.ConfirmScepter_Description)
+                .AddEnumOption(
+                    name: I18n.ReturnScepterInSafeAreas_Title,
+                    getValue: static () => Config.ReturnScepterInSafeAreas,
+                    setValue: static (value) => Config.ReturnScepterInSafeAreas = value,
+                    tooltip: I18n.ReturnScepterInSafeAreas_Description)
+                .AddEnumOption(
+                    name: I18n.ReturnScepterInDangerousAreas_Title,
+                    getValue: static () => Config.ReturnScepterInDangerousAreas,
+                    setValue: static (value) => Config.ReturnScepterInDangerousAreas = value,
+                    tooltip: I18n.ReturnScepterInDangerousAreas_Description);
+        }
+
         GMCM!.AddSectionTitle(I18n.ConfirmBomb_Title)
             .AddParagraph(I18n.ConfirmBomb_Description)
             .AddEnumOption(
-                name: I18n.InSafeAreas_Title,
-                getValue: () => Config.InSafeAreas,
-                setValue: (value) => Config.InSafeAreas = value,
-                tooltip: I18n.InSafeAreas_Description)
+                name: I18n.BombsInSafeAreas_Title,
+                getValue: static () => Config.BombsInSafeAreas,
+                setValue: static (value) => Config.BombsInSafeAreas = value,
+                tooltip: I18n.BombsInSafeAreas_Description)
             .AddEnumOption(
-                name: I18n.InDangerousAreas_Title,
-                getValue: () => Config.InDangerousAreas,
-                setValue: (value) => Config.InDangerousAreas = value,
-                tooltip: I18n.InDangerousAreas_Description);
+                name: I18n.BombsInDangerousAreas_Title,
+                getValue: static () => Config.BombsInDangerousAreas,
+                setValue: static (value) => Config.BombsInDangerousAreas = value,
+                tooltip: I18n.BombsInDangerousAreas_Description);
+    }
+
+    /**************
+     * REGION MULTIPLAYER
+     * ***********/
+
+    private void OnModMessageRecieved(object? sender, ModMessageReceivedEventArgs e)
+    {
+        if (e.FromModID != ModEntry.UNIQUEID)
+        {
+            return;
+        }
+        VolcanoChestAdjuster.RecieveData(e);
+    }
+
+    /// <summary>
+    /// Sends out the volcano data manager whenever a new player connects.
+    /// </summary>
+    /// <param name="sender">SMAPI.</param>
+    /// <param name="e">Event args.</param>
+    private void OnPlayerConnected(object? sender, PeerConnectedEventArgs e)
+    {
+        if(e.Peer.ScreenID == 0 && Context.IsWorldReady && Context.IsMainPlayer)
+        {
+            VolcanoChestAdjuster.BroadcastData(this.Helper.Multiplayer, new[] { e.Peer.PlayerID });
+        }
     }
 }

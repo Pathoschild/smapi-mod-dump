@@ -101,7 +101,7 @@ namespace GMCMOptions {
         /// </param>
         /// <param name="maxImageHeight">
         ///   A function that returns the maximum image height.  Used to report the option's height to GMCM (which
-        ///   will not recompute how much space to reserve for the option until the page is re-opened) and to center
+        ///   before version 1.8.2 will not recompute how much space to reserve for the option until the page is re-opened) and to center
         ///   arrows vertically in the <c cref="ImageOptionArrowLocation.Sides">Sides</c> arrow placement option.
         /// </param>
         /// <param name="maxImageWidth">

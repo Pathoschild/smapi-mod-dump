@@ -10,12 +10,11 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace SpriteMaster.Types;
 
-sealed class ConcurrentConsumer<T> {
+internal sealed class ConcurrentConsumer<T> {
 	internal delegate void CallbackDelegate(in T item);
 
 	private readonly Thread ConsumerThread;
@@ -42,8 +41,6 @@ sealed class ConcurrentConsumer<T> {
 	}
 
 	private void Loop() {
-		var dequeued = new List<T>();
-
 		while (true) {
 			try {
 				Event.WaitOne();
@@ -63,7 +60,6 @@ sealed class ConcurrentConsumer<T> {
 				break;
 			}
 			catch (AbandonedMutexException) {
-				continue;
 			}
 		}
 	}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11790
+IDs: blueberry.WaterFlow
+update keys: Nexus:11790, GitHub:b-b-blueberry/WaterFlow

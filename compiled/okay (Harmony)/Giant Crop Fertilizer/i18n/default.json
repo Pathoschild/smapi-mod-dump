@@ -12,4 +12,9 @@
   //GMCM
   "GiantCropChance.title": "Giant Crop Chance",
   "GiantCropChance.description": "The probability a fertilized square will produce a giant crop, if all other conditions are met.",
+
+  "AllowGiantCropsOffFarm.title": "Allow Giant Crops Off Farm",
+  "AllowGiantCropsOffFarm.description": "By default, giant crops can only grow on the farm. This allows them off-farm.",
+
+  "AllowGiantCropsParagraph":  "More Giant Crops, which you have installed, allows giant crops off farm, so that setting in this mod has been disabled."
 }

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using StardewValley;
 using StardewValley.Buildings;
 using SObject = StardewValley.Object;
@@ -41,9 +39,9 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Buildings
         }
 
         /// <summary>Get the machine output.</summary>
-        public override ITrackedStack GetOutput()
+        public override ITrackedStack? GetOutput()
         {
-            return new TrackedItem(this.Machine.output.Value, onEmpty: this.OnOutputTaken);
+            return this.GetTracked(this.Machine.output.Value, onEmpty: this.OnOutputTaken);
         }
 
         /// <summary>Provide input to the machine.</summary>

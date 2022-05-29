@@ -6,9 +6,11 @@ mods:
    Custom Reminders
 
 latest commit:
-   commit 2d33bcceedb2ec804c1e57d1fa4d04a44a609b84
+   commit 43a59b0f5b5e2a97f2d004c996c0dfa2e2b2f250
    Author: Nithish Kumar <nithssh@protonmail.com>
-   Date:   Tue Mar 8 21:09:16 2022 +0530
+   Date:   Tue May 17 21:02:46 2022 +0530
    
-       Change minor formatting
+       Allow wider time range for reminders (#18)
+       Also:
+       - Remove depreciated calls for SMAPI 4.0
    

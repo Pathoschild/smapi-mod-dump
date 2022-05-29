@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Conditions;
@@ -30,14 +28,14 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_11()
             : base(new SemanticVersion(1, 11, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.Lowercase.ToString(),
-                ConditionType.Uppercase.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.Lowercase),
+                nameof(ConditionType.Uppercase)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;

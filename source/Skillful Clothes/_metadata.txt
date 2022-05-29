@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit f61bb74bf6ffec580bd1ef62b9500292443d3684
+   commit 21ba7c6c421638fa86f55fe66e031f699508ef85
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Thu Apr 7 11:38:26 2022 +0200
+   Date:   Mon May 2 13:51:39 2022 +0200
    
-       IncreaseSpeed effect now uses a Buff instead of changing the player's speed value directly
+       Added SkillfulClothes.Editor
    

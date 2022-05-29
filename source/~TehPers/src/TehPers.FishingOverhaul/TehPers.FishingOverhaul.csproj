@@ -1,26 +1,55 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
-		<EnableHarmony>true</EnableHarmony>
-		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
-		<IgnoreModFilePatterns>^ContentPatcher\.(dll|pdb)$, ^TehPers\.Core\.Api\.(dll|pdb|xml)$, ^Ninject\.dll$</IgnoreModFilePatterns>
-		<Nullable>Enable</Nullable>
-		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\TehPers.FishingOverhaul.xml</DocumentationFile>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <EnableHarmony>true</EnableHarmony>
+        <BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
+        <IgnoreModFilePatterns>^ContentPatcher\.(dll|pdb)$, ^TehPers\.Core\.Api\.(dll|pdb|xml)$, ^Ninject\.dll$</IgnoreModFilePatterns>
+        <Nullable>Enable</Nullable>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\TehPers.FishingOverhaul.xml</DocumentationFile>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+        <PackageReference Include="Superpower" Version="3.0.0" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\TehPers.FishingOverhaul.Api\TehPers.FishingOverhaul.Api.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\TehPers.FishingOverhaul.Api\TehPers.FishingOverhaul.Api.csproj" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="$(GameModsPath)/ContentPatcher/ContentPatcher.dll" />
-		<Reference Include="$(GameModsPath)/TehPers.Core/TehPers.Core.Api.dll" />
-		<Reference Include="$(GameModsPath)/TehPers.Core/Ninject.dll" />
-	</ItemGroup>
+    <ItemGroup>
+        <Reference Include="$(GameModsPath)/ContentPatcher/ContentPatcher.dll" />
+        <Reference Include="$(GameModsPath)/TehPers.Core/TehPers.Core.Api.dll" />
+        <Reference Include="$(GameModsPath)/TehPers.Core/Ninject.dll" />
+        <Reference Include="$(GamePath)/smapi-internal/Newtonsoft.Json.dll" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Parsing\Expr.Compile.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Expr.Compile.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="Parsing\Expr.Compile.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Expr.Compile.tt</DependentUpon>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Parsing\Expr.Compile.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Expr.Compile.tt</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
 </Project>

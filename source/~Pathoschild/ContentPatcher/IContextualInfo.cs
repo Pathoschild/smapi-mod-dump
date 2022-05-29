@@ -8,14 +8,12 @@
 **
 *************************************************/
 
-#nullable disable
-
-using System.Collections.Generic;
+using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher
 {
     /// <summary>Basic metadata about an instance which can receive token context updates.</summary>
-    public interface IContextualInfo
+    internal interface IContextualInfo
     {
         /*********
         ** Accessors
@@ -30,7 +28,7 @@ namespace ContentPatcher
         /*********
         ** Methods
         *********/
-        /// <summary>Get the token names used by this patch in its fields.</summary>
-        IEnumerable<string> GetTokensUsed();
+        /// <summary>Get the token names used by this entity.</summary>
+        IInvariantSet GetTokensUsed();
     }
 }

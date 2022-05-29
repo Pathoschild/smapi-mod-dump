@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,22 +12,22 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 #region using directives
 
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
 using Common.Extensions;
-using Common.Extensions.Collections;
-using AssetEditors;
+using Content;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class AchievementUnlockedDayStartedEvent : DayStartedEvent
 {
     /// <inheritdoc />
     protected override void OnDayStartedImpl(object sender, DayStartedEventArgs e)
     {
-        if (!ModEntry.ModHelper.Content.AssetEditors.ContainsType(typeof(AchivementsEditor)))
-            ModEntry.ModHelper.Content.AssetEditors.Add(new AchivementsEditor());
+        EventManager.Enable(typeof(AchievementsRequestedEvent));
 
         string name =
             ModEntry.ModHelper.Translation.Get("prestige.achievement.name." +
@@ -36,6 +36,6 @@ internal class AchievementUnlockedDayStartedEvent : DayStartedEvent
         Game1.playSound("achievement");
         Game1.addHUDMessage(new(name, true));
 
-        Disable();
+        this.Disable();
     }
 }

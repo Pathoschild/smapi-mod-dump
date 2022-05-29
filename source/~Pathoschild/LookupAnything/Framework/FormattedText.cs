@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework
@@ -21,7 +19,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         ** Accessors
         *********/
         /// <summary>The text to format.</summary>
-        public string Text { get; }
+        public string? Text { get; }
 
         /// <summary>The font color (or <c>null</c> for the default color).</summary>
         public Color? Color { get; }
@@ -37,7 +35,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework
         /// <param name="text">The text to format.</param>
         /// <param name="color">The font color (or <c>null</c> for the default color).</param>
         /// <param name="bold">Whether to draw bold text.</param>
-        public FormattedText(string text, Color? color = null, bool bold = false)
+        public FormattedText(string? text, Color? color = null, bool bold = false)
         {
             this.Text = text;
             this.Color = color;

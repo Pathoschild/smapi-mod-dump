@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -37,31 +37,31 @@ namespace ChestEx.Types.BaseTypes {
   public partial class CustomItemGrabMenu {
     public class MenuWithInventoryCtorParams {
       // Public:
-    #region Public
+      #region Public
 
       public InventoryMenu.highlightThisItem mHighlighterMethod;
-      public Boolean                         mOKButton;
-      public Boolean                         mTrashCan;
-      public Int32                           mInventoryXOffset;
-      public Int32                           mInventoryYOffset;
-      public Int32                           mMenuOffsetHack;
+      public Boolean mOKButton;
+      public Boolean mTrashCan;
+      public Int32 mInventoryXOffset;
+      public Int32 mInventoryYOffset;
+      public Int32 mMenuOffsetHack;
 
-    #endregion
+      #endregion
 
       // Constructors:
-    #region Constructors
+      #region Constructors
 
       public MenuWithInventoryCtorParams(InventoryMenu.highlightThisItem highlighterMethod = null, Boolean okButton = false, Boolean trashCan = false, Int32 inventoryXOffset = 0,
-                                         Int32                           inventoryYOffset  = 0,    Int32   menuOffsetHack = 0) {
+                                         Int32 inventoryYOffset = 0, Int32 menuOffsetHack = 0) {
         this.mHighlighterMethod = highlighterMethod;
-        this.mOKButton          = okButton;
-        this.mTrashCan          = trashCan;
-        this.mInventoryXOffset  = inventoryXOffset;
-        this.mInventoryYOffset  = inventoryYOffset;
-        this.mMenuOffsetHack    = menuOffsetHack;
+        this.mOKButton = okButton;
+        this.mTrashCan = trashCan;
+        this.mInventoryXOffset = inventoryXOffset;
+        this.mInventoryYOffset = inventoryYOffset;
+        this.mMenuOffsetHack = menuOffsetHack;
       }
 
-    #endregion
+      #endregion
     }
   }
 }

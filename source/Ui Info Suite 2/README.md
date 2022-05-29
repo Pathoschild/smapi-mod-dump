@@ -62,7 +62,7 @@ on the wiki for help contributing translations.
 locale      | status
 ----------- | :----------------
 default     | [✓](UIInfoSuite2/i18n/default.json)
-Chinese     | [✓](UIInfoSuite2/i18n/zh.json)
+Chinese     | [↻](UIInfoSuite2/i18n/zh.json)
 French      | [✓](UIInfoSuite2/i18n/fr.json)
 German      | [✓](UIInfoSuite2/i18n/de.json)
 Hungarian   | [✓](UIInfoSuite2/i18n/hu.json)
@@ -73,7 +73,7 @@ Korean      | [✓](UIInfoSuite2/i18n/ko.json)
 Portuguese  | [✓](UIInfoSuite2/i18n/pt.json)
 Russian     | [✓](UIInfoSuite2/i18n/ru.json)
 Spanish     | [✓](UIInfoSuite2/i18n/es.json)
-[Thai]      | [✓](UIInfoSuite2/i18n/th.json)
+[Thai]      | [↻](UIInfoSuite2/i18n/th.json)
 Turkish     | [✓](UIInfoSuite2/i18n/tr.json)
 [Ukrainian] | [✓](UIInfoSuite2/i18n/uk.json)
 

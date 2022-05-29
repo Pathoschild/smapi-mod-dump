@@ -54,7 +54,7 @@ namespace CJBCheatsMenu.Framework.Cheats.FarmAndFishing
             if (!e.IsOneSecond || !Context.IsWorldReady)
                 return;
 
-            Farm farm = Game1.getFarm();
+            Farm? farm = Game1.getFarm();
             if (farm != null)
                 farm.piecesOfHay.Value = Utility.numSilos() * 240;
         }

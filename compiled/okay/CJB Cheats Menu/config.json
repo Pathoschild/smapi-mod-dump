@@ -61,6 +61,7 @@
   "InstantBuild": false,
   "AutoFeed": false,
   "AutoPetAnimals": false,
+  "AutoPetPets": false,
   "AutoWater": false,
   "InfiniteHay": false
 }

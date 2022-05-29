@@ -63,7 +63,7 @@ namespace MoreConversationTopics
         {
             try
             {
-                MCTHelperFunctions.AddMaybePreExistingCT(farmer, "wedding", Config.WeddingDuration);
+                MCTHelperFunctions.AddOrExtendCT(farmer, "wedding", Config.WeddingDuration);
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace MoreConversationTopics
         {
             try
             {
-                MCTHelperFunctions.AddMaybePreExistingCT(farmer, "wedding", Config.WeddingDuration);
+                MCTHelperFunctions.AddOrExtendCT(farmer, "wedding", Config.WeddingDuration);
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace MoreConversationTopics
 
             try
             {
-                MCTHelperFunctions.AddMaybePreExistingCT(spouse, "wedding", Config.WeddingDuration);
+                MCTHelperFunctions.AddOrExtendCT(spouse, "wedding", Config.WeddingDuration);
             }
             catch (Exception ex)
             {

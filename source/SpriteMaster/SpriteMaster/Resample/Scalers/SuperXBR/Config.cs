@@ -25,7 +25,7 @@ sealed class Config : Scalers.Config {
 	internal readonly float TextureShape;
 	internal readonly float AntiRinging;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal Config(
 		Vector2B wrapped,
 		bool hasAlpha = true,

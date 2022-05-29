@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Quick Glance",
+  "Author": "adverserath",
+  "Version": "1.0.4",
+  "Description": "Press button for zoom out and release to zoom back in",
+  "UniqueID": "Adverserath.QuickGlance",
+  "EntryDll": "QuickGlance.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": [ "Nexus:12058" ]
+}

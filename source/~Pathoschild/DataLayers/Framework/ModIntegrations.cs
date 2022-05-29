@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Pathoschild.Stardew.Common.Integrations.Automate;
 using Pathoschild.Stardew.Common.Integrations.BetterJunimos;
 using Pathoschild.Stardew.Common.Integrations.BetterSprinklers;

@@ -48,18 +48,9 @@ namespace BetterBeehouses.integration
             return true;
         }
 
-        public static IEnumerable<CodeInstruction> PatchState(IEnumerable<CodeInstruction> instructions)
-        {
-            return getStatePatch.Value.Run(instructions);
-        }
-        public static IEnumerable<CodeInstruction> PatchOutput(IEnumerable<CodeInstruction> instructions)
-        {
-            return getOutputPatch.Value.Run(instructions);
-        }
-        public static IEnumerable<CodeInstruction> PatchReset(IEnumerable<CodeInstruction> instructions)
-        {
-            return resetPatch.Value.Run(instructions);
-        }
+        public static IEnumerable<CodeInstruction> PatchState(IEnumerable<CodeInstruction> instructions) => getStatePatch.Value.Run(instructions);
+        public static IEnumerable<CodeInstruction> PatchOutput(IEnumerable<CodeInstruction> instructions) => getOutputPatch.Value.Run(instructions);
+        public static IEnumerable<CodeInstruction> PatchReset(IEnumerable<CodeInstruction> instructions) => resetPatch.Value.Run(instructions);
 
         private static ILHelper statePatch()
         {
@@ -111,9 +102,6 @@ namespace BetterBeehouses.integration
                 }, ObjectPatch.ChangeDays)
                 .Finish();
         }
-        public static bool CantWorkHere(GameLocation loc)
-        {
-            return ObjectPatch.CantProduceToday(loc.GetSeasonForLocation() == "winter", loc);
-        }
+        public static bool CantWorkHere(GameLocation loc) => ObjectPatch.CantProduceToday(loc.GetSeasonForLocation() == "winter", loc);
     }
 }

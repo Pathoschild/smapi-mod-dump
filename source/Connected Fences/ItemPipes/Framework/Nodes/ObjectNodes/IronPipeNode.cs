@@ -22,7 +22,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         public IronPipeNode() { }
         public IronPipeNode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
-            ItemTimer = 500;
+            ItemTimer = 1000;
         }
     }
 }

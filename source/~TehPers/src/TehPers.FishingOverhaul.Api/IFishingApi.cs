@@ -71,10 +71,30 @@ namespace TehPers.FishingOverhaul.Api
         event EventHandler<CalculatedFishChanceEventArgs>? CalculatedFishChance;
 
         /// <summary>
+        /// Invoked after the minimum chance of catching a fish (instead of trash) is calculated.
+        /// </summary>
+        event EventHandler<CalculatedFishChanceEventArgs>? CalculatedMinFishChance;
+
+        /// <summary>
+        /// Invoked after the maximum chance of catching a fish (instead of trash) is calculated.
+        /// </summary>
+        event EventHandler<CalculatedFishChanceEventArgs>? CalculatedMaxFishChance;
+
+        /// <summary>
         /// Invoked after the chance of finding a treasure chest is calculated. This is invoked at
         /// the end of <see cref="IFishingApi.GetChanceForTreasure(FishingInfo)"/>.
         /// </summary>
         event EventHandler<CalculatedTreasureChanceEventArgs>? CalculatedTreasureChance;
+
+        /// <summary>
+        /// Invoked after the minimum chance of finding a treasure chest is calculated.
+        /// </summary>
+        event EventHandler<CalculatedTreasureChanceEventArgs>? CalculatedMinTreasureChance;
+
+        /// <summary>
+        /// Invoked after the maximum chance of finding a treasure chest is calculated.
+        /// </summary>
+        event EventHandler<CalculatedTreasureChanceEventArgs>? CalculatedMaxTreasureChance;
 
         /// <summary>
         /// Creates a default <see cref="FishingInfo"/> for a farmer.

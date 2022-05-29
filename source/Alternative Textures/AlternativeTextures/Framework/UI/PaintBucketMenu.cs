@@ -187,9 +187,16 @@ namespace AlternativeTextures.Framework.UI
 
             var drawingScale = 4f;
             var widthOffsetScale = 2;
+            var xOffset = 0;
             var sourceRect = GetSourceRectangle(availableModels.First(), target, availableModels.First().TextureWidth, availableModels.First().TextureHeight, -1);
             switch (_textureType)
             {
+                case TextureType.Craftable:
+                    if (sourceRect.Height <= 16)
+                    {
+                        _maxRows = 8;
+                    }
+                    break;
                 case TextureType.Flooring:
                     sourceRect = new Rectangle(0, 0, 16, 32);
                     break;
@@ -207,6 +214,20 @@ namespace AlternativeTextures.Framework.UI
                     _texturesPerRow = 3;
                     widthOffsetScale = 4;
                     sourceRect = new Rectangle(0, 0, 48, 80);
+                    break;
+                case TextureType.Crop:
+                    _maxRows = 4;
+                    _texturesPerRow = 1;
+                    widthOffsetScale = 4;
+                    xOffset = 96;
+                    sourceRect = new Rectangle(0, 0, 128, 32);
+                    break;
+                case TextureType.Grass:
+                    _maxRows = 6;
+                    _texturesPerRow = 4;
+                    widthOffsetScale = 3;
+                    xOffset = 32;
+                    sourceRect = new Rectangle(0, 0, 15, 20);
                     break;
                 case TextureType.Furniture:
                     if (sourceRect.Height >= 64)
@@ -254,7 +275,7 @@ namespace AlternativeTextures.Framework.UI
                 for (int c = 0; c < _texturesPerRow; c++)
                 {
                     var componentId = c + r * _texturesPerRow;
-                    this.availableTextures.Add(new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth + componentId % _texturesPerRow * 64 * widthOffsetScale, base.yPositionOnScreen + sourceRect.Height + componentId / _texturesPerRow * (4 * sourceRect.Height), 4 * sourceRect.Width, 4 * sourceRect.Height), availableModels.First().GetTexture(0), new Rectangle(), drawingScale, false)
+                    this.availableTextures.Add(new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth + componentId % _texturesPerRow * 64 * widthOffsetScale + xOffset, base.yPositionOnScreen + sourceRect.Height + componentId / _texturesPerRow * (4 * sourceRect.Height), 4 * sourceRect.Width, 4 * sourceRect.Height), availableModels.First().GetTexture(0), new Rectangle(), drawingScale, false)
                     {
                         myID = componentId,
                         downNeighborID = componentId + _texturesPerRow,
@@ -608,6 +629,18 @@ namespace AlternativeTextures.Framework.UI
                                 this.availableTextures[i].sourceRect = this.GetFlooringSourceRect(textureModel, flooring, this.availableTextures[i].sourceRect.Height, -1);
                                 this.availableTextures[i].draw(b, Color.White, 0.87f);
                             }
+                            else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is HoeDirt hoeDirt)
+                            {
+                                this.availableTextures[i].texture = Game1.cropSpriteSheet;
+                                this.availableTextures[i].sourceRect = this.GetCropSourceRect(textureModel, hoeDirt.crop, 0, -1);
+                                this.availableTextures[i].draw(b, Color.White, 0.87f);
+                            }
+                            else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Grass grass)
+                            {
+                                this.availableTextures[i].texture = grass.texture.Value;
+                                this.availableTextures[i].sourceRect = this.GetGrassSourceRect(textureModel, grass, 0, -1);
+                                this.availableTextures[i].draw(b, Color.White, 0.87f);
+                            }
                             else if (Game1.currentLocation is DecoratableLocation decoratableLocation && (decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y)) != -1 || decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y)) != -1))
                             {
                                 var which = variation;
@@ -678,6 +711,18 @@ namespace AlternativeTextures.Framework.UI
                         {
                             this.availableTextures[i].texture = textureModel.GetTexture(variation);
                             this.availableTextures[i].sourceRect = GetFlooringSourceRect(textureModel, flooring, textureModel.TextureHeight, variation);
+                            this.availableTextures[i].draw(b, Color.White, 0.87f);
+                        }
+                        else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is HoeDirt hoeDirt)
+                        {
+                            this.availableTextures[i].texture = textureModel.GetTexture(variation);
+                            this.availableTextures[i].sourceRect = this.GetCropSourceRect(textureModel, hoeDirt.crop, textureModel.TextureHeight, variation);
+                            this.availableTextures[i].draw(b, Color.White, 0.87f);
+                        }
+                        else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Grass grass)
+                        {
+                            this.availableTextures[i].texture = textureModel.GetTexture(variation);
+                            this.availableTextures[i].sourceRect = this.GetGrassSourceRect(textureModel, grass, textureModel.TextureHeight, variation);
                             this.availableTextures[i].draw(b, Color.White, 0.87f);
                         }
                         else if (Game1.currentLocation is DecoratableLocation decoratableLocation && (decoratableLocation.getFloorAt(new Point((int)_position.X, (int)_position.Y)) != -1 || decoratableLocation.getWallForRoomAt(new Point((int)_position.X, (int)_position.Y)) != -1))
@@ -862,6 +907,29 @@ namespace AlternativeTextures.Framework.UI
             Rectangle source_rect = new Rectangle((12 + (fruitTree.greenHouseTree ? 1 : Utility.getSeasonNumber(Game1.GetSeasonForLocation(Game1.currentLocation))) * 3) * 16, 0, 48, 80);
 
             source_rect.Y += sourceRectOffset;
+            return source_rect;
+        }
+
+        private Rectangle GetCropSourceRect(AlternativeTextureModel textureModel, Crop crop, int textureHeight, int variation)
+        {
+            if (variation == -1)
+            {
+                var vanillaRectangle = AlternativeTextures.modHelper.Reflection.GetField<Rectangle>(crop, "sourceRect").GetValue();
+                return new Rectangle(vanillaRectangle.X >= 128 ? 128 : 0, vanillaRectangle.Y, 128, 32);
+            }
+
+            Rectangle source_rect = new Rectangle(0, 0, 128, 32);
+            return source_rect;
+        }
+
+        private Rectangle GetGrassSourceRect(AlternativeTextureModel textureModel, Grass grass, int textureHeight, int variation)
+        {
+            if (variation == -1)
+            {
+                return new Rectangle(0, grass.grassSourceOffset.Value, 15, 20);
+            }
+
+            Rectangle source_rect = new Rectangle(0, 0, 15, 20);
             return source_rect;
         }
 

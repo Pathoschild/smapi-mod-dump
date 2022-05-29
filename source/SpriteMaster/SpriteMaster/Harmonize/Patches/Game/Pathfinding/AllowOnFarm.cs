@@ -20,11 +20,11 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Harmonize.Patches.Game.Pathfinding;
 
-static partial class Pathfinding {
+internal static partial class Pathfinding {
 	private static readonly Func<NPC, int>? GetDefaultFacingDirection = typeof(NPC).GetFieldGetter<NPC, int>("defaultFacingDirection");
-	private static readonly Func<NPC?, string?, int, int, string?, int, int, int, string?, string?, SchedulePathDescription>? PathfindToNextScheduleLocation =
+	private static readonly Func<NPC?, string?, int, int, string?, int, int, int, string?, string?, SchedulePathDescription?>? PathfindToNextScheduleLocation =
 		typeof(NPC).GetMethod("pathfindToNextScheduleLocation", BindingFlags.Instance | BindingFlags.NonPublic)?.
-		CreateDelegate<Func<NPC?, string?, int, int, string?, int, int, int, string?, string?, SchedulePathDescription>>();
+		CreateDelegate<Func<NPC?, string?, int, int, string?, int, int, int, string?, string?, SchedulePathDescription?>>();
 
 	/*
 	[Harmonize(
@@ -34,7 +34,7 @@ static partial class Pathfinding {
 		Harmonize.PriorityLevel.Last,
 		critical: false
 	)]
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static bool PrepareToDisembarkOnNewSchedulePath(NPC __instance) {
 		if (!Config.Enabled || !Config.Extras.AllowNPCsOnFarm || !Config.Extras.OptimizeWarpPoints) {
 			return true;
@@ -57,8 +57,7 @@ static partial class Pathfinding {
 		instance: false,
 		critical: false
 	)]
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static bool WarpCharacter(NPC? character, GameLocation? targetLocation, XNA.Vector2 position) {
+	public static bool WarpCharacter(NPC? character, GameLocation? targetLocation, XVector2 position) {
 		if (!Config.IsUnconditionallyEnabled || !Config.Extras.AllowNPCsOnFarm || !Config.Extras.OptimizeWarpPoints) {
 			return true;
 		}
@@ -67,7 +66,7 @@ static partial class Pathfinding {
 			return true;
 		}
 
-		if (character is null || Game1.player is not Farmer player) {
+		if (character is null || Game1.player is not { } player) {
 			return true;
 		}
 
@@ -99,7 +98,7 @@ static partial class Pathfinding {
 			}
 
 			// If it's a pet, it appears that 'behavior 1' indicates sleeping.
-			if (character is Pet pet && pet.CurrentBehavior is Pet.behavior_Sleep or Pet.behavior_SitDown or Cat.behavior_Flop or Dog.behavior_SitSide) {
+			if (character is Pet {CurrentBehavior: Pet.behavior_Sleep or Pet.behavior_SitDown or Cat.behavior_Flop or Dog.behavior_SitSide}) {
 				return true;
 			}
 
@@ -117,7 +116,7 @@ static partial class Pathfinding {
 			// Do _not_ execute this logic for Events.
 			var trace = new StackTrace();
 			foreach (var frame in trace.GetFrames()) {
-				if (frame.GetMethod() is MethodBase method) {
+				if (frame.GetMethod() is { } method) {
 					if (method.DeclaringType == typeof(Event) || method.Name.Contains("parseDebugInput")) {
 						return true;
 					}
@@ -125,9 +124,9 @@ static partial class Pathfinding {
 			}
 
 			// Try to path. If we fail, revert to default logic.
-			int direction = (GetDefaultFacingDirection is null) ? -1 : GetDefaultFacingDirection(character);
+			int direction = GetDefaultFacingDirection?.Invoke(character) ?? -1;
 
-			if (character.currentLocation == targetLocation) {
+			if (ReferenceEquals(character.currentLocation, targetLocation)) {
 				character.temporaryController = new PathFindController(c: character, location: targetLocation, endPoint: Utility.Vector2ToPoint(position), finalFacingDirection: direction); // TODO: we often do know the expected final facing direction.
 				if (character.temporaryController.pathToEndPoint is null || character.temporaryController.pathToEndPoint.Count <= 0) {
 					character.temporaryController = null;
@@ -163,8 +162,8 @@ static partial class Pathfinding {
 					break;
 				case "Trailer" when Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade"):
 					targetLocation = Game1.getLocationFromName("Trailer_Big");
-					if (position == new XNA.Vector2(12f, 9f)) {
-						position = new XNA.Vector2(13f, 24f);
+					if (position == new XVector2(12f, 9f)) {
+						position = new XVector2(13f, 24f);
 					}
 					break;
 			}
@@ -221,8 +220,7 @@ static partial class Pathfinding {
 		Harmonize.PriorityLevel.Last,
 		critical: false
 	)]
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static bool CharacterDestroyObjectWithinRectangle(GameLocation __instance, ref bool __result, XNA.Rectangle rect, bool showDestroyedObject) {
+	public static bool CharacterDestroyObjectWithinRectangle(GameLocation __instance, ref bool __result, XRectangle rect, bool showDestroyedObject) {
 		if (__instance.IsFarm || __instance.IsGreenhouse) {
 			__result = false;
 			return false;

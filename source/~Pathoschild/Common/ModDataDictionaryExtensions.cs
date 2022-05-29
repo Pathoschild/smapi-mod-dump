@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using StardewValley;
 
 namespace Pathoschild.Stardew.Common
@@ -25,6 +26,7 @@ namespace Pathoschild.Stardew.Common
         /// <param name="key">The dictionary key to read.</param>
         /// <param name="parse">Convert the raw string value into the expected type.</param>
         /// <param name="defaultValue">The default value to return if the data field isn't set.</param>
+        [return: NotNullIfNotNull("defaultValue")]
         public static T? ReadField<T>(this ModDataDictionary data, string key, Func<string, T> parse, T? defaultValue = default)
         {
             return data.TryGetValue(key, out string rawValue)
@@ -36,6 +38,7 @@ namespace Pathoschild.Stardew.Common
         /// <param name="data">The mod data dictionary to read.</param>
         /// <param name="key">The dictionary key to read.</param>
         /// <param name="defaultValue">The default value to return if the data field isn't set.</param>
+        [return: NotNullIfNotNull("defaultValue")]
         public static string? ReadField(this ModDataDictionary data, string key, string? defaultValue = null)
         {
             return data.TryGetValue(key, out string rawValue)

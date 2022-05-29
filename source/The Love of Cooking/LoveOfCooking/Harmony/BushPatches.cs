@@ -13,25 +13,23 @@ using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 
-namespace LoveOfCooking.Core.HarmonyPatches
+namespace LoveOfCooking.HarmonyPatches
 {
 	public static class BushPatches
 	{
 		public static void Patch(Harmony harmony)
 		{
 			System.Type type = typeof(Bush);
-			var prefixes = new List<KeyValuePair<string, string>>
+			var prefixes = new List<(string prefix, string original)>
 			{
-				new KeyValuePair<string, string>(nameof(InBloom_Prefix), nameof(Bush.inBloom)),
-				new KeyValuePair<string, string>(nameof(IsDestroyable_Prefix), nameof(Bush.isDestroyable)),
-				new KeyValuePair<string, string>(nameof(EffectiveSize_Prefix), "getEffectiveSize"),
-				new KeyValuePair<string, string>(nameof(Shake_Prefix), "shake"),
+				(prefix: nameof(InBloom_Prefix), original: nameof(Bush.inBloom)),
+				(prefix: nameof(IsDestroyable_Prefix), original: nameof(Bush.isDestroyable)),
+				(prefix: nameof(EffectiveSize_Prefix), original: "getEffectiveSize"),
+				(prefix: nameof(Shake_Prefix), original: "shake"),
 			};
 
-			foreach (KeyValuePair<string, string> pair in prefixes)
+			foreach ((string prefix, string original) in prefixes)
 			{
-				string prefix = pair.Key;
-				string original = pair.Value;
 				Log.D($"Applying prefix: {type.Name}.{original}",
 					ModEntry.Config.DebugMode);
 				harmony.Patch(
@@ -42,7 +40,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 		
 		public static bool InBloom_Prefix(Bush __instance, ref bool __result)
 		{
-			if (!(__instance is CustomBush bush))
+			if (__instance is not CustomBush bush)
 				return true;
 			__result = CustomBush.InBloomBehaviour(bush);
 			return false;
@@ -50,7 +48,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 
 		public static bool IsDestroyable_Prefix(Bush __instance, ref bool __result)
 		{
-			if (!(__instance is CustomBush bush))
+			if (__instance is not CustomBush bush)
 				return true;
 			__result = CustomBush.IsDestroyableBehaviour(bush);
 			return false;
@@ -58,7 +56,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 
 		public static bool EffectiveSize_Prefix(Bush __instance, ref int __result)
 		{
-			if (!(__instance is CustomBush bush))
+			if (__instance is not CustomBush bush)
 				return true;
 			__result = CustomBush.GetEffectiveSizeBehaviour(bush);
 			return false;
@@ -66,7 +64,7 @@ namespace LoveOfCooking.Core.HarmonyPatches
 
 		public static bool Shake_Prefix(Bush __instance, Vector2 tileLocation)
 		{
-			if (!(__instance is CustomBush bush))
+			if (__instance is not CustomBush bush)
 				return true;
 			CustomBush.ShakeBehaviour(bush, tileLocation);
 			return true;

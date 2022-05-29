@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using StardewValley;
 using System;
@@ -17,8 +16,8 @@ using System.Linq;
 
 namespace SpriteMaster.Configuration.Preview;
 
-sealed class Scene1 : Scene {
-	//private static readonly Lazy<Texture2D> FishTexture = new(() => StardewValley.Game1.content.Load<Texture2D>(@"Maps\springobjects"));
+internal sealed class Scene1 : Scene {
+	//private static readonly Lazy<XTexture2D> FishTexture = new(() => StardewValley.Game1.content.Load<XTexture2D>(@"Maps\springobjects"));
 	private readonly AnimatedTexture CenterCharacterTexture;
 
 	private readonly SpriteSheet OutdoorTiles;
@@ -35,8 +34,7 @@ sealed class Scene1 : Scene {
 
 	private Vector2I TileCount = default;
 
-	internal override PrecipitationType Precipitation => ScenePrecipitation;
-	private readonly PrecipitationType ScenePrecipitation;
+	internal override PrecipitationType Precipitation { get; }
 
 	private static int RandomSeed => Guid.NewGuid().GetHashCode();
 
@@ -193,19 +191,14 @@ sealed class Scene1 : Scene {
 		"winter"
 	};
 
-	internal Scene1(in Bounds scissor) : base(in scissor) {
+	internal Scene1(Bounds scissor) : base(scissor) {
 		CenterCharacterTexture = GetCenterCharacter();
 
 		var rand = new Random(RandomSeed);
 
 		Season = Seasons[rand.Next(Seasons.Length)];
 
-		if (Season == "winter") {
-			ScenePrecipitation = PrecipitationType.Snow;
-		}
-		else {
-			ScenePrecipitation = PrecipitationType.Rain;
-		}
+		Precipitation = Season == "winter" ? PrecipitationType.Snow : PrecipitationType.Rain;
 
 		string outdoorsTileSheet = $@"Maps\{Season}_outdoorsTileSheet";
 
@@ -262,23 +255,23 @@ sealed class Scene1 : Scene {
 	}
 
 	public override void Dispose() {
-		CenterCharacterTexture?.Dispose();
+		CenterCharacterTexture.Dispose();
 	}
 
 	private const string ReferenceBasicText = "Llanfairpwllgwyngyllgogerychwyrndrobwllllantysiliogogogoch";
-	private XNA.Graphics.SpriteFont BasicTextFont => StardewValley.Game1.dialogueFont;
+	private XGraphics.SpriteFont BasicTextFont => Game1.dialogueFont;
 	private const string ReferenceUtilityText = "It was the best of times, it was the blurst of times.";
-	private XNA.Graphics.SpriteFont UtilityTextFont => StardewValley.Game1.smallFont;
+	private XGraphics.SpriteFont UtilityTextFont => Game1.smallFont;
 
 	private static readonly Vector2I[] ShadowedStringOffsets = { (-1, -1), (1, -1), (-1, 1), (1, 1) };
-	private void DrawStringShadowed(
-		XNA.Graphics.SpriteBatch batch,
-		XNA.Graphics.SpriteFont font,
+	private void DrawStringStroked(
+		XSpriteBatch batch,
+		XGraphics.SpriteFont font,
 		string text,
 		Vector2I position,
-		XNA.Color color
+		XColor color
 	) {
-		var shadowColor = new XNA.Color(
+		var shadowColor = new XColor(
 			~color.R,
 			~color.G,
 			~color.B,
@@ -302,7 +295,7 @@ sealed class Scene1 : Scene {
 		);
 	}
 
-	protected override void OnDraw(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState) {
+	protected override void OnDraw(XSpriteBatch batch, in Override overrideState) {
 		float lastLayerDepth = float.NaN;
 		int index = 0;
 		foreach (var drawable in Drawables) {
@@ -318,15 +311,15 @@ sealed class Scene1 : Scene {
 		}
 	}
 
-	protected override void OnDrawOverlay(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState) {
+	protected override void OnDrawOverlay(XSpriteBatch batch, in Override overrideState) {
 		{
 			// Draw basic text
-			DrawStringShadowed(
+			DrawStringStroked(
 				batch,
 				BasicTextFont,
 				ReferenceBasicText,
 				Vector2I.Zero,
-				XNA.Color.White
+				XColor.White
 			);
 		}
 
@@ -342,7 +335,7 @@ sealed class Scene1 : Scene {
 				text: ReferenceUtilityText,
 				font: UtilityTextFont,
 				position: offset,
-				color: XNA.Color.White, //Game1.textColor,
+				color: XColor.White, //Game1.textColor,
 				scale: 1.0f
 			);
 		}
@@ -354,17 +347,17 @@ sealed class Scene1 : Scene {
 		var rand = new Random(RandomSeed);
 
 		var plainGrass = winter ?
-			new Drawable[] {
+			new[] {
 				OutdoorTiles[1, 14],
 				OutdoorTiles[1, 14],
 				OutdoorTiles[1, 14]
-			} : new Drawable[] {
+			} : new[] {
 				OutdoorTiles[0, 7],
 				OutdoorTiles[0, 11],
 				OutdoorTiles[2, 16]
 			};
 		var grassArray = winter ?
-			new Drawable[] {
+			new[] {
 				OutdoorTilesWeed,
 				OutdoorTilesFlower,
 				plainGrass[0],
@@ -381,7 +374,7 @@ sealed class Scene1 : Scene {
 				OutdoorTiles[5, 12],
 				OutdoorTiles[4, 13],
 			} :
-			new Drawable[] {
+			new[] {
 				OutdoorTilesWeed,
 				OutdoorTilesFlower,
 				plainGrass[0],
@@ -398,7 +391,7 @@ sealed class Scene1 : Scene {
 				OutdoorTiles[4, 10],
 				OutdoorTiles[5, 10],
 			};
-		var debrisArray = new Drawable[] {
+		var debrisArray = new[] {
 			OutdoorTiles[7, 9],
 			OutdoorTiles[7, 10],
 			OutdoorTiles[7, 11],
@@ -450,49 +443,49 @@ sealed class Scene1 : Scene {
 		}
 
 		if (winter) {
-			tileArray[mid.X - 2, mid.Y - 2][0] = OutdoorTiles[3, 14];
-			tileArray[mid.X - 1, mid.Y - 2][0] = OutdoorTiles[1, 15];
-			tileArray[mid.X + 0, mid.Y - 2][0] = OutdoorTiles[1, 15];
-			tileArray[mid.X + 1, mid.Y - 2][0] = OutdoorTiles[1, 15];
-			tileArray[mid.X + 2, mid.Y - 2][0] = OutdoorTiles[3, 16];
+			try { tileArray[mid.X - 2, mid.Y - 2][0] = OutdoorTiles[3, 14]; } catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X - 1, mid.Y - 2][0] = OutdoorTiles[1, 15];	} catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X + 0, mid.Y - 2][0] = OutdoorTiles[1, 15];	} catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X + 1, mid.Y - 2][0] = OutdoorTiles[1, 15];	} catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X + 2, mid.Y - 2][0] = OutdoorTiles[3, 16]; } catch (IndexOutOfRangeException) { }
 		}
 
-		if (winter) tileArray[mid.X - 2, mid.Y - 1][0] = OutdoorTiles[2, 14];
-		tileArray[mid.X - 1, mid.Y - 1][0] = OutdoorTiles[0, 8];
-		tileArray[mid.X + 0, mid.Y - 1][0] = OutdoorTiles[1, 8];
-		tileArray[mid.X + 1, mid.Y - 1][0] = OutdoorTiles[3, 8];
-		if (winter) tileArray[mid.X + 2, mid.Y - 1][0] = OutdoorTiles[0, 14];
+		try { if (winter) tileArray[mid.X - 2, mid.Y - 1][0] = OutdoorTiles[2, 14]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X - 1, mid.Y - 1][0] = OutdoorTiles[0, 8]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X + 0, mid.Y - 1][0] = OutdoorTiles[1, 8]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X + 1, mid.Y - 1][0] = OutdoorTiles[3, 8]; } catch (IndexOutOfRangeException) { }
+		try { if (winter) tileArray[mid.X + 2, mid.Y - 1][0] = OutdoorTiles[0, 14]; } catch (IndexOutOfRangeException) { }
 
-		if (winter) tileArray[mid.X - 2, mid.Y + 0][0] = OutdoorTiles[2, 14];
-		tileArray[mid.X - 1, mid.Y + 0][0] = OutdoorTiles[0, 9];
-		tileArray[mid.X + 0, mid.Y + 0][0] = OutdoorTiles[6, 8];
-		tileArray[mid.X + 1, mid.Y + 0][0] = OutdoorTiles[3, 9];
-		if (winter) tileArray[mid.X + 2, mid.Y + 0][0] = OutdoorTiles[0, 14];
+		try { if (winter) tileArray[mid.X - 2, mid.Y + 0][0] = OutdoorTiles[2, 14]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X - 1, mid.Y + 0][0] = OutdoorTiles[0, 9]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X + 0, mid.Y + 0][0] = OutdoorTiles[6, 8]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X + 1, mid.Y + 0][0] = OutdoorTiles[3, 9]; } catch (IndexOutOfRangeException) { }
+		try { if (winter) tileArray[mid.X + 2, mid.Y + 0][0] = OutdoorTiles[0, 14]; } catch (IndexOutOfRangeException) { }
 
-		if (winter) tileArray[mid.X - 2, mid.Y + 1][0] = OutdoorTiles[2, 14];
-		tileArray[mid.X - 1, mid.Y + 1][0] = OutdoorTiles[0, 10];
-		tileArray[mid.X + 0, mid.Y + 1][0] = OutdoorTiles[1, 10];
-		tileArray[mid.X + 1, mid.Y + 1][0] = OutdoorTiles[3, 10];
-		if (winter) tileArray[mid.X + 2, mid.Y + 1][0] = OutdoorTiles[0, 14];
+		try { if (winter) tileArray[mid.X - 2, mid.Y + 1][0] = OutdoorTiles[2, 14]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X - 1, mid.Y + 1][0] = OutdoorTiles[0, 10]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X + 0, mid.Y + 1][0] = OutdoorTiles[1, 10]; } catch (IndexOutOfRangeException) { }
+		try { tileArray[mid.X + 1, mid.Y + 1][0] = OutdoorTiles[3, 10]; } catch (IndexOutOfRangeException) { }
+		try { if (winter) tileArray[mid.X + 2, mid.Y + 1][0] = OutdoorTiles[0, 14]; } catch (IndexOutOfRangeException) { }
 
 		if (winter) {
-			tileArray[mid.X - 2, mid.Y + 2][0] = OutdoorTiles[3, 15];
-			tileArray[mid.X - 1, mid.Y + 2][0] = OutdoorTiles[1, 13];
-			tileArray[mid.X + 0, mid.Y + 2][0] = OutdoorTiles[1, 13];
-			tileArray[mid.X + 1, mid.Y + 2][0] = OutdoorTiles[1, 13];
-			tileArray[mid.X + 2, mid.Y + 2][0] = OutdoorTiles[3, 13];
+			try { tileArray[mid.X - 2, mid.Y + 2][0] = OutdoorTiles[3, 15]; } catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X - 1, mid.Y + 2][0] = OutdoorTiles[1, 13]; } catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X + 0, mid.Y + 2][0] = OutdoorTiles[1, 13]; } catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X + 1, mid.Y + 2][0] = OutdoorTiles[1, 13]; } catch (IndexOutOfRangeException) { }
+			try { tileArray[mid.X + 2, mid.Y + 2][0] = OutdoorTiles[3, 13]; } catch (IndexOutOfRangeException) { }
 		}
 
 		var shadowTexture = Game1.shadowTexture;
 
 		// insert Character's shadow
-		tileArray[mid.X, mid.Y].Add(new(shadowTexture));
+		try { tileArray[mid.X, mid.Y].Add(new(shadowTexture)); } catch (IndexOutOfRangeException) { }
 
 		// insert Character
-		tileArray[mid.X, mid.Y].Add(new(CenterCharacterTexture, offset: -32));
+		try { tileArray[mid.X, mid.Y].Add(new(CenterCharacterTexture, offset: -(TileSizeRendered / 2))); } catch (IndexOutOfRangeException) { }
 
 		// insert Tree
-		tileArray[mid.X - 4, mid.Y + 2].Add(TreeTexture[1, 0]);
+		try { tileArray[mid.X - 4, mid.Y + 2].Add(TreeTexture[1, 0]); } catch (IndexOutOfRangeException) { }
 
 		var drawableInstances = new List<DrawableInstance>();
 
@@ -516,7 +509,7 @@ sealed class Scene1 : Scene {
 		return drawableInstances.ToArray();
 	}
 
-	protected override void OnResize(Vector2I Size, Vector2I OldSize) {
+	protected override void OnResize(Vector2I size, Vector2I oldSize) {
 		Drawables = SetupScene(Season == "winter");
 	}
 

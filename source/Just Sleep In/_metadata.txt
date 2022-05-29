@@ -6,9 +6,9 @@ mods:
    Just Sleep In
 
 latest commit:
-   commit 4a6fdd3a5d86251c67361d77ddb1b89808a59639
+   commit 58e98183fa5811d3e54b9b760fac34767f489c5f
    Author: Jakub Prchal <Rifleman88@hotmail.com>
-   Date:   Wed Apr 13 18:58:27 2022 +0200
+   Date:   Wed May 11 08:12:32 2022 +0200
    
-       1.1.0 Hotfix 1 - added another if condition for the late evening pop-up, it was supposed to be there
+       Commented out the testing stuff
    

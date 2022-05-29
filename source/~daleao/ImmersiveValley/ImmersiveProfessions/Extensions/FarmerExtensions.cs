@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -114,6 +114,17 @@ public static class FarmerExtensions
         return excludeTierOneProfessions
             ? farmer.professions.Count(p => p >= 0 && p / 6 == which && p % 6 > 1)
             : farmer.professions.Count(p => p >= 0 && p / 6 == which);
+    }
+
+    /// <summary>Get the professions which the player is missing in the specified skill.</summary>
+    /// <param name="which">The skill index.</param>
+    /// <param name="excludeTierOneProfessions">Whether to exclude level 5 professions from the count.</param>
+    public static int[] GetMissingProfessionsInSkill(this Farmer farmer, int which,
+        bool excludeTierOneProfessions = false)
+    {
+        return excludeTierOneProfessions
+            ? farmer.professions.Where(p => p >= 0 && p / 6 == which && p % 6 > 1).ToArray()
+            : farmer.professions.Where(p => p >= 0 && p / 6 == which).ToArray();
     }
 
     /// <summary>Whether the farmer can reset the specified skill for prestige.</summary>

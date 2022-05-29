@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/smapi-mods**
+**Source repository: https://gitlab.com/daleao/sdv-mods**
 
 ----
 
@@ -35,7 +35,7 @@ This mod brings the following immersive changes to ring effects and recipes:
 - Rebalances the Jade and Topaz rings.
     - **Jade:** *+10% -> +30 crit. power.* Vanilla 10% crit. power grants a 10% damage bonus that only applies to crits. This makes it significantly worse than the Ruby ring, which grants the same 10% bonus, but all the time. At 30% crit. power, the Jade ring becomes a better choice than the Ruby ring when crit. chance is at least 33%.
     - **Topaz:** *literally nothing -> +3 defense.* This makes it consistent with the Topaz enchantment, which also grants defense.
-    - **Crabshell:** *+5 defense -> +10 defense.* Because the Topaz rings now also grants defense, the Crabshell ring is buffed so that it remains unique.
+    - **Crabshell:** *+5 defense -> +12 defense.* Because the Topaz rings now also grants defense, the Crabshell ring is buffed so that it remains unique.
 - Adds progressive crafting recipes for gemstone rings, with corresponding visuals.
     - **Amethyst and Topaz:** *combat level 2, uses copper bars.*
     - **Aquamarine and Jade:** *combat level 4, uses iron bars.*
@@ -56,7 +56,7 @@ If you are a fan of planning character builds and making tough meaningful choice
 This mod makes use of Harmony to patch vanilla crafting behavior. As such there may be unexpected behavior with mods that change the crafting menu. If you encounter any problems, please report an issue so I can add compatibility.
 This a mod is my own take on a "balanced combine many rings". Obviously it is not compatible with other mods with similar scope, including [Combine Many Rings](https://www.nexusmods.com/stardewvalley/mods/8801), [Balanced Combine Many Rings](https://www.nexusmods.com/stardewvalley/mods/8981) and [Ring Overhaul](https://www.nexusmods.com/stardewvalley/mods/10669). However, Ring Overhaul in particular has config settings for each of its features. As such, you can cherry-pick and combine features from both mods if you know what you are doing. Keep in mind, however, that Ring Overhaul's changes to precision are not compatible with Walk Of Life.
 
-The Forgeable Iridium Band features are not compatible with ring visual changes, such as [Better Rings](https://www.nexusmods.com/stardewvalley/mods/8642), and therefore this mod also does not supply matching gemstone ring textures for in that mod's style. If you don't like the changes to the Iridium Band and would like to use Better Rings with this mod, you can find matching textures in Ring Overhaul. You will have to do a bit of manual image editing in this approach.
+[Better Rings](https://www.nexusmods.com/stardewvalley/mods/8642) is now supported! I'm not aware of any other ring retexture but they will not be compatible.
 
 This is a companion mod for [Walk Of Life](https://www.nexusmods.com/stardewvalley/mods/8111), but can be used independently.
 
@@ -73,6 +73,7 @@ To uninstall simply delete the mod from your mods folder. This mod is safe to un
 ## Special Thanks
 
 - [Goldenrevolver](https://www.nexusmods.com/stardewvalley/users/5347339) for the idea of progressive gemstone rings.
+- [compare123](https://www.nexusmods.com/stardewvalley/users/13917800) for Better Rings-compatible textures.
 - **ConcernedApe** for StardewValley.
 - [JetBrains](https://jb.gg/OpenSource) for providing a free license to their tools.
 
@@ -85,4 +86,4 @@ To uninstall simply delete the mod from your mods folder. This mod is safe to un
 
 ## License
 
-See [LICENSE](../LICENSE) for more information.
+See [LICENSE](../../LICENSE) for more information.

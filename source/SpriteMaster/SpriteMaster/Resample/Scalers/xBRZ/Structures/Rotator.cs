@@ -15,7 +15,7 @@ using static SpriteMaster.Extensions.Collections;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ.Structures;
 
-static class Rotator {
+internal static class Rotator {
 	internal const int MaxRotations = 4; // Number of 90 degree rotations
 	internal const int MaxPositions = 9;
 
@@ -25,7 +25,7 @@ static class Rotator {
 	// g = 6, h = 7, i = 8;
 	private static readonly int[] RotationsArray = new int[MaxRotations * MaxPositions];
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int Get(int index) => RotationsArray[index];
 
 	static Rotator() {

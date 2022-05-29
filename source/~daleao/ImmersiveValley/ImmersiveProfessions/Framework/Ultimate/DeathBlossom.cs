@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -15,7 +15,7 @@ namespace DaLion.Stardew.Professions.Framework.Ultimate;
 using Microsoft.Xna.Framework;
 using StardewValley;
 
-using AssetLoaders;
+using Sounds;
 
 #endregion using directives
 
@@ -24,26 +24,34 @@ internal sealed class DeathBlossom : Ultimate
 {
     /// <summary>Construct an instance.</summary>
     internal DeathBlossom()
+    : base(Color.DarkGoldenrod, Color.SandyBrown)
     {
-        Meter = new(this, Color.DarkGoldenrod);
-        Overlay = new(Color.SandyBrown);
-        EnableEvents();
     }
 
     #region public properties
 
-    public static int BuffId { get; } = ModEntry.Manifest.UniqueID.GetHashCode() + (int) UltimateIndex.Desperado + 4;
+    /// <summary>The ID of the buff that displays while Death Blossom is active.</summary>
+    public static int BuffId { get; } = ModEntry.Manifest.UniqueID.GetHashCode() + (int) UltimateIndex.Blossom + 4;
 
-    public override SFX ActivationSfx => SFX.DesperadoBlossom;
-    public override Color GlowColor => Color.DarkGoldenrod;
-    public override UltimateIndex Index => UltimateIndex.Desperado;
+    /// <inheritdoc />
+    public override UltimateIndex Index => UltimateIndex.Blossom;
 
     #endregion public properties
 
-    #region public methods
+    #region internal properties
 
     /// <inheritdoc />
-    public override void Activate()
+    internal override SFX ActivationSfx => SFX.DesperadoBlossom;
+
+    /// <inheritdoc />
+    internal override Color GlowColor => Color.DarkGoldenrod;
+
+    #endregion internal properties
+
+    #region internal methods
+
+    /// <inheritdoc />
+    internal override void Activate()
     {
         base.Activate();
 
@@ -64,10 +72,10 @@ internal sealed class DeathBlossom : Ultimate
     }
 
     /// <inheritdoc />
-    public override void Countdown(double elapsed)
+    internal override void Countdown(double elapsed)
     {
         ChargeValue -= elapsed * 0.12 / 18.0;
     }
 
-    #endregion public methods
+    #endregion internal methods
 }

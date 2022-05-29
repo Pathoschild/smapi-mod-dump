@@ -42,30 +42,36 @@ namespace RidgesideVillage
         {
             Helper = ModInstance.Helper;
             Monitor = ModInstance.Monitor;
+            Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             Helper.Events.Input.ButtonPressed += OnButtonPressed;
 
+        }
+
+        private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            Totem = ExternalAPIs.JA.GetObjectId("Warp Totem: Ridgeside");
         }
 
         private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             if (!Context.IsWorldReady)
+            {  
                 return;
-            if (e.Button == SButton.MouseRight)
-        {
-            if (Totem == -1)
-            {
-                Totem = ExternalAPIs.JA.GetObjectId("Warp Totem: Ridgeside");
             }
-            try
+            if (e.Button.IsActionButton())
             {
-                if (Game1.player.CurrentItem?.ParentSheetIndex == Totem)
+                try
                 {
-                    DoTotemWarpEffects(Game1.player, (f) => DirectWarp());
+                    if (Game1.player.CurrentItem?.ParentSheetIndex == Totem)
+                    {
+                        Log.Debug($"RSV: using warp totem");
+                        Game1.player.reduceActiveItemByOne();
+                        DoTotemWarpEffects(Game1.player, (f) => DirectWarp());
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Log.Debug($"Could not find warp totem ID. Error: {ex}");
+                catch (Exception ex)
+                {
+                    Log.Debug($"Could not find warp totem ID. Error: {ex}");
                 }
             }
         }
@@ -82,14 +88,14 @@ namespace RidgesideVillage
                 }
                 else
                 {
-                    Monitor.Log("Failed to warp to '" + Destination + "': Ember of Resolutions festival not ready.", LogLevel.Debug);
+                    Log.Trace("Failed to warp to '" + Destination + "': Ember of Resolutions festival not ready.");
                     Game1.drawObjectDialogue(Game1.parseText(Helper.Translation.Get("RSV.WarpFestival")));
                     return false;
                 }
             }
             else
             {
-                Monitor.Log("Failed to warp to '" + Destination + "': Location not found or player is at festival.", LogLevel.Error);
+                Log.Trace("Failed to warp to '" + Destination + "': Location not found or player is at festival.");
                 Game1.drawObjectDialogue(Game1.parseText(Helper.Translation.Get("RSV.WarpFail")));
                 return false;
             }
@@ -110,7 +116,6 @@ namespace RidgesideVillage
                 new FarmerSprite.AnimationFrame( (short) who.FarmerSprite.CurrentFrame, 0, false, false, new AnimatedSprite.endOfAnimationBehavior((f) => {
                     if (action(f))
                     {
-                        who.reduceActiveItemByOne();
                     } else
                     {
                         who.temporarilyInvincible = false;

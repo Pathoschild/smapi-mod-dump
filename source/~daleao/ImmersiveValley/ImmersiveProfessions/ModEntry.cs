@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -20,32 +20,33 @@ using StardewValley;
 
 using Common.Extensions.Stardew;
 using Framework;
-using Framework.AssetEditors;
-using Framework.AssetLoaders;
+using Framework.Sounds;
 
 #endregion using directives
 
 /// <summary>The mod entry point.</summary>
 public class ModEntry : Mod
 {
-    private static readonly PerScreen<PlayerState> _playerState = new(() => new());
+    internal static PerScreen<PlayerState> PerScreenState { get; } = new(() => new());
 
-    internal static HostState HostState { get; private set; }
+    internal static ModEntry Instance { get; private set; }
     internal static ModConfig Config { get; set; }
+
     internal static JObject ArsenalConfig { get; private set; }
     internal static JObject PondsConfig { get; private set; }
     internal static JObject RingsConfig { get; private set; }
     internal static JObject TweaksConfig { get; private set; }
 
+    internal static IModHelper ModHelper => Instance.Helper;
+    internal static IManifest Manifest => Instance.ModManifest;
+    internal static Action<string, LogLevel> Log => Instance.Monitor.Log;
+
+    internal static HostState HostState { get; private set; }
     internal static PlayerState PlayerState
     {
-        get => _playerState.Value;
-        set => _playerState.Value = value;
+        get => PerScreenState.Value;
+        set => PerScreenState.Value = value;
     }
-
-    internal static IModHelper ModHelper { get; private set; }
-    internal static IManifest Manifest { get; private set; }
-    internal static Action<string, LogLevel> Log { get; private set; }
 
     internal static FrameRateCounter FpsCounter { get; private set; }
     internal static ICursorPosition DebugCursorPosition { get; set; }
@@ -54,10 +55,7 @@ public class ModEntry : Mod
     /// <param name="helper">Provides simplified APIs for writing mods.</param>
     public override void Entry(IModHelper helper)
     {
-        // store references to helper, mod manifest and logger
-        ModHelper = helper;
-        Manifest = ModManifest;
-        Log = Monitor.Log;
+        Instance = this;
 
         // get configs
         Config = helper.ReadConfig<ModConfig>();
@@ -69,11 +67,6 @@ public class ModEntry : Mod
 
         // initialize mod state
         if (Context.IsMainPlayer) HostState = new();
-
-        // register asset editors / loaders
-        helper.Content.AssetLoaders.Add(new TextureLoader());
-        helper.Content.AssetEditors.Add(new FishPondDataEditor());
-        helper.Content.AssetEditors.Add(new SpriteEditor());
 
         // load sound effects
         SoundBank.LoadCollection(helper.DirectoryPath);
@@ -110,6 +103,6 @@ public class ModEntry : Mod
     /// <inheritdoc />
     public override object GetApi()
     {
-        return new ModApi();
+        return new ModAPI();
     }
 }

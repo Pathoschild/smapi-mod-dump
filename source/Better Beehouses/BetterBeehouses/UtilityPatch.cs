@@ -107,10 +107,8 @@ namespace BetterBeehouses
             return null;
         }
         public static bool IsGrown(Crop crop, Func<Crop, bool> extraCheck)
-        {
-            return crop != null &&
+            =>  crop != null &&
                 crop.currentPhase.Value >= crop.phaseDays.Count - 1 &&
                 !crop.dead.Value && (extraCheck == null || extraCheck(crop));
-        }
     }
 }

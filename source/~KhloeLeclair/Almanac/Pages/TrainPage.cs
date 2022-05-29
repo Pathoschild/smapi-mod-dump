@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System.Collections.Generic;
 
 using Leclair.Stardew.Almanac.Menus;
@@ -22,125 +24,125 @@ using StardewModdingAPI.Utilities;
 
 using StardewValley;
 
-namespace Leclair.Stardew.Almanac.Pages {
-	public class TrainPage : BasePage<BaseState>, ICalendarPage {
+namespace Leclair.Stardew.Almanac.Pages;
 
-		private int[] Schedule;
+public class TrainPage : BasePage<BaseState>, ICalendarPage {
 
-		#region Lifecycle
+	private int[]? Schedule;
 
-		public static TrainPage GetPage(AlmanacMenu menu, ModEntry mod) {
-			if (!mod.Config.ShowTrains)
-				return null;
+	#region Lifecycle
 
-			return new(menu, mod);
-		}
+	public static TrainPage? GetPage(AlmanacMenu menu, ModEntry mod) {
+		if (!mod.Config.ShowTrains)
+			return null;
 
-		public TrainPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
-			Update();
-		}
+		return new(menu, mod);
+	}
 
-		#endregion
+	public TrainPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
+		Update();
+	}
 
-		#region Logic
+	#endregion
 
-		public override void Update() {
-			base.Update();
+	#region Logic
 
-			Schedule = new int[ModEntry.DaysPerMonth];
-			WorldDate date = new(Menu.Date);
+	public override void Update() {
+		base.Update();
 
-			FlowBuilder builder = new();
+		Schedule = new int[ModEntry.DaysPerMonth];
+		WorldDate date = new(Menu.Date);
 
-			builder.FormatText(I18n.Page_Train_About());
+		FlowBuilder builder = new();
 
-			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
-				date.DayOfMonth = day;
-				int time = Schedule[day - 1] = TrainHelper.GetTrainTime(date);
+		builder.FormatText(I18n.Page_Train_About());
 
-				if (time >= 0) {
-					SDate sdate = new(day, date.Season);
+		for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
+			date.DayOfMonth = day;
+			int time = Schedule[day - 1] = TrainHelper.GetTrainTime(date);
 
-					builder.Text("\n\n");
-					builder.Text($"{sdate.ToLocaleString(withYear: false)}\n", font: Game1.dialogueFont);
-					builder.Text($"  {TimeHelper.FormatTime(time)}");
-				}
+			if (time >= 0) {
+				SDate sdate = new(day, date.Season);
+
+				builder.Text("\n\n");
+				builder.Text($"{sdate.ToLocaleString(withYear: false)}\n", font: Game1.dialogueFont);
+				builder.Text($"  {TimeHelper.FormatTime(time)}");
 			}
-
-			if (date.SeasonIndex == 0 && date.Year == 1)
-				builder.FormatText($"\n\n{I18n.Page_Train_Notice()}", color: Color.Red);
-
-			SetRightFlow(builder, 2);
 		}
 
-		#endregion
+		if (date.SeasonIndex == 0 && date.Year == 1)
+			builder.FormatText($"\n\n{I18n.Page_Train_Notice()}", color: Color.Red);
 
-		#region ITab
+		SetRightFlow(builder, 2);
+	}
 
-		public override int SortKey => 5;
-		public override string TabSimpleTooltip => I18n.Page_Train();
-		public override Texture2D TabTexture => Game1.mouseCursors;
-		public override Rectangle? TabSource => TrainHelper.TRAIN;
-		public override float? TabScale => 0.4f;
+	#endregion
 
-		#endregion
+	#region ITab
 
-		#region IAlmanacPage
+	public override int SortKey => 5;
+	public override string TabSimpleTooltip => I18n.Page_Train();
+	public override Texture2D TabTexture => Game1.mouseCursors;
+	public override Rectangle? TabSource => TrainHelper.TRAIN;
+	public override float? TabScale => 0.4f;
 
-		#endregion
+	#endregion
 
-		#region ICalendarPage
+	#region IAlmanacPage
 
-		public bool ShouldDimPastCells => true;
-		public bool ShouldHighlightToday => true;
+	#endregion
 
-		public void DrawUnderCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
-			if (Schedule == null)
-				return;
+	#region ICalendarPage
 
-			int time = Schedule[date.DayOfMonth - 1];
-			if (time < 0)
-				return;
+	public bool ShouldDimPastCells => true;
+	public bool ShouldHighlightToday => true;
 
-			Utility.drawWithShadow(
-				b,
-				Game1.mouseCursors,
-				new Vector2(
-					bounds.X + (bounds.Width - (TrainHelper.TRAIN.Width / 2)) / 2,
-					bounds.Y + (bounds.Height - (TrainHelper.TRAIN.Height / 2)) / 2
-				),
-				TrainHelper.TRAIN,
-				Color.White,
-				0f,
-				Vector2.Zero,
-				scale: 0.5f
-			);
-		}
+	public void DrawUnderCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
+		if (Schedule == null)
+			return;
 
-		public void DrawOverCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
+		int time = Schedule[date.DayOfMonth - 1];
+		if (time < 0)
+			return;
 
-		}
+		Utility.drawWithShadow(
+			b,
+			Game1.mouseCursors,
+			new Vector2(
+				bounds.X + (bounds.Width - (TrainHelper.TRAIN.Width / 2)) / 2,
+				bounds.Y + (bounds.Height - (TrainHelper.TRAIN.Height / 2)) / 2
+			),
+			TrainHelper.TRAIN,
+			Color.White,
+			0f,
+			Vector2.Zero,
+			scale: 0.5f
+		);
+	}
 
-		public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
-			return false;
-		}
-
-		public bool ReceiveCellRightClick(int x, int y, WorldDate date, Rectangle bounds) {
-			return false;
-		}
-
-		public void PerformCellHover(int x, int y, WorldDate date, Rectangle bounds) {
-			if (Schedule == null)
-				return;
-
-			int time = Schedule[date.DayOfMonth - 1];
-			if (time < 0)
-				return;
-
-			Menu.HoverText = TimeHelper.FormatTime(time);
-		}
-
-		#endregion
+	public void DrawOverCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
 
 	}
+
+	public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
+		return false;
+	}
+
+	public bool ReceiveCellRightClick(int x, int y, WorldDate date, Rectangle bounds) {
+		return false;
+	}
+
+	public void PerformCellHover(int x, int y, WorldDate date, Rectangle bounds) {
+		if (Schedule == null)
+			return;
+
+		int time = Schedule[date.DayOfMonth - 1];
+		if (time < 0)
+			return;
+
+		Menu.HoverText = TimeHelper.FormatTime(time);
+	}
+
+	#endregion
+
 }

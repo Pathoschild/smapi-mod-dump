@@ -75,9 +75,10 @@ internal static class ForgeMenuPatches
             if (__0 is Tool tool && Utility.IsNormalObjectAtParentSheetIndex(__1, 74))
             {
                 PossibleEnchantments.Clear();
+                HashSet<Type> enchants = tool.enchantments.Select((a) => a.GetType()).ToHashSet();
                 foreach (BaseEnchantment enchantment in BaseEnchantment.GetAvailableEnchantments())
                 {
-                    if (enchantment.CanApplyTo(tool) && !tool.enchantments.Any((enchantOnTool) => enchantOnTool.GetType() == enchantment.GetType()))
+                    if (enchantment.CanApplyTo(tool) && !enchants.Contains(enchantment.GetType()))
                     {
                         PossibleEnchantments.Add(enchantment);
                     }

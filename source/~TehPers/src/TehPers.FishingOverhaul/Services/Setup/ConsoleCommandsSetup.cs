@@ -8,13 +8,20 @@
 **
 *************************************************/
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using StardewModdingAPI;
+using System.IO;
+using TehPers.Core.Api.Content;
+using TehPers.Core.Api.DI;
+using TehPers.Core.Api.Json;
 using TehPers.Core.Api.Setup;
 using TehPers.FishingOverhaul.Api.Content;
+using TehPers.FishingOverhaul.Config.ContentPacks;
+using TehPers.FishingOverhaul.Parsing;
 
 namespace TehPers.FishingOverhaul.Services.Setup
 {
@@ -23,12 +30,24 @@ namespace TehPers.FishingOverhaul.Services.Setup
         private readonly IModHelper helper;
         private readonly IMonitor monitor;
         private readonly FishingApi fishingApi;
+        private readonly IJsonProvider jsonProvider;
+        private readonly IAssetProvider assetProvider;
 
-        public ConsoleCommandsSetup(IModHelper helper, IMonitor monitor, FishingApi fishingApi)
+        public ConsoleCommandsSetup(
+            IModHelper helper,
+            IMonitor monitor,
+            FishingApi fishingApi,
+            IJsonProvider jsonProvider,
+            [ContentSource(ContentSource.ModFolder)] IAssetProvider assetProvider
+        )
         {
             this.helper = helper ?? throw new ArgumentNullException(nameof(helper));
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
             this.fishingApi = fishingApi ?? throw new ArgumentNullException(nameof(fishingApi));
+            this.jsonProvider =
+                jsonProvider ?? throw new ArgumentNullException(nameof(jsonProvider));
+            this.assetProvider =
+                assetProvider ?? throw new ArgumentNullException(nameof(assetProvider));
         }
 
         public void Setup()
@@ -42,6 +61,26 @@ namespace TehPers.FishingOverhaul.Services.Setup
                 "tfo_entries",
                 "Lists the registered fishing information. Usage: 'tfo_list <fish|trash|treasure>'.",
                 this.Entries
+            );
+            this.helper.ConsoleCommands.Add(
+                "tfo_export",
+                "Exports registered entries as JSON to a file. This is the final result of adding/removing entries and setting fish traits. Usage: 'tfo_export'.",
+                this.Export
+            );
+            this.helper.ConsoleCommands.Add(
+                "tfo_parse",
+                "Parses an expression. Usage: 'tfo_parse expr'",
+                (cmd, args) =>
+                {
+                    var raw = string.Join(" ", args);
+                    if (!ExpressionParser.TryParse(raw, out var result, out var error))
+                    {
+                        this.monitor.Log(error, LogLevel.Error);
+                        return;
+                    }
+
+                    this.monitor.Log(result.ToString(), LogLevel.Info);
+                }
             );
         }
 
@@ -63,19 +102,19 @@ namespace TehPers.FishingOverhaul.Services.Setup
             var table = entryType switch
             {
                 "fish" => GetEntriesTable(
-                    this.fishingApi.fishEntries,
+                    this.fishingApi.fishManagers,
                     "Item key",
                     entry => new(entry.Entry.FishKey.ToString()),
                     entry => entry.Entry.AvailabilityInfo
                 ),
                 "trash" => GetEntriesTable(
-                    this.fishingApi.trashEntries,
+                    this.fishingApi.trashManagers,
                     "Item key",
                     entry => new(entry.Entry.ItemKey.ToString()),
                     entry => entry.Entry.AvailabilityInfo
                 ),
                 "treasure" => GetEntriesTable(
-                    this.fishingApi.treasureEntries,
+                    this.fishingApi.treasureManagers,
                     "Item keys",
                     entry => new(entry.Entry.ItemKeys.Select(k => k.ToString())),
                     entry => entry.Entry.AvailabilityInfo
@@ -87,7 +126,7 @@ namespace TehPers.FishingOverhaul.Services.Setup
             {
                 return;
             }
-            
+
             // Print out table
             table.Log(this.monitor, LogLevel.Info);
 
@@ -102,6 +141,7 @@ namespace TehPers.FishingOverhaul.Services.Setup
                     ImmutableArray.Create(
                         new Cell(itemKeyHeader),
                         new Cell("Base chance"),
+                        new Cell("Priority tier"),
                         new Cell("Time available"),
                         new Cell("Seasons"),
                         new Cell("Weathers"),
@@ -116,7 +156,8 @@ namespace TehPers.FishingOverhaul.Services.Setup
                         return new Row(
                             ImmutableArray.Create(
                                 getItemKey(entry),
-                                new Cell(availabilityInfo.BaseChance.ToString("F4")),
+                                new Cell($"{availabilityInfo.BaseChance:F4}"),
+                                new Cell($"{availabilityInfo.PriorityTier:F2}"),
                                 new Cell(
                                     $"{availabilityInfo.StartTime:0000}-{availabilityInfo.EndTime:0000}"
                                 ),
@@ -140,6 +181,42 @@ namespace TehPers.FishingOverhaul.Services.Setup
 
                 return new(data.Prepend(header).ToImmutableArray());
             }
+        }
+
+        private void Export(string command, string[] args)
+        {
+            var contentPack = new FishingContentPack
+            {
+                AddFish =
+                    this.fishingApi.fishManagers.Select(manager => manager.Entry)
+                        .ToImmutableArray(),
+                SetFishTraits = this.fishingApi.fishTraits.ToImmutableDictionary(),
+                AddTrash =
+                    this.fishingApi.trashManagers.Select(manager => manager.Entry)
+                        .ToImmutableArray(),
+                AddTreasure =
+                    this.fishingApi.treasureManagers.Select(manager => manager.Entry)
+                        .ToImmutableArray(),
+                AddEffects = this.fishingApi.fishingEffectManagers
+                    .Select(manager => manager.Entry)
+                    .ToImmutableArray(),
+            };
+            var path = Path.Combine(
+                Constants.DataPath,
+                ".tehpers.fishingoverhaul",
+                "entries.exported.json"
+            );
+            this.monitor.Log($"Writing entries to: {path}", LogLevel.Info);
+            this.monitor.Log(
+                "This file is for informational purposes only. Some entries may have special handling and cannot be created in a content pack.",
+                LogLevel.Info
+            );
+            this.jsonProvider.WriteJson(
+                contentPack,
+                path,
+                this.assetProvider,
+                settings => settings.DefaultValueHandling = DefaultValueHandling.Ignore
+            );
         }
 
         private record Cell(string Contents)
@@ -168,12 +245,11 @@ namespace TehPers.FishingOverhaul.Services.Setup
 
             public void Log(IMonitor monitor, LogLevel level)
             {
-                var lines = this.Rows
-                    .Select(
-                        row => row.Cells.Select(
-                            (cell, colI) => cell.Contents.PadRight(this.ColWidths[colI])
-                        )
-                    );
+                var lines = this.Rows.Select(
+                    row => row.Cells.Select(
+                        (cell, colI) => cell.Contents.PadRight(this.ColWidths[colI])
+                    )
+                );
                 foreach (var line in lines)
                 {
                     monitor.Log(string.Join(" | ", line), level);

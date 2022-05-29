@@ -8,14 +8,13 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.Constants;
 using Pathoschild.Stardew.Common.Utilities;
+using StardewValley;
 
 namespace ContentPatcher.Framework.Tokens.ValueProviders
 {
@@ -29,7 +28,10 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         private readonly TokenSaveReader SaveReader;
 
         /// <summary>The player's current skill levels.</summary>
-        private readonly IDictionary<Skill, int> SkillLevels = new Dictionary<Skill, int>();
+        private readonly Dictionary<Skill, int> SkillLevels = new();
+
+        /// <summary>The valid skill values.</summary>
+        private readonly IInvariantSet ValidValues = InvariantSets.From(Enum.GetNames(typeof(Skill)));
 
 
         /*********
@@ -54,14 +56,14 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                 this.SkillLevels.Clear();
                 if (this.MarkReady(this.SaveReader.IsReady))
                 {
-                    var player = this.SaveReader.GetCurrentPlayer();
+                    Farmer? player = this.SaveReader.GetCurrentPlayer();
 
-                    this.SkillLevels[Skill.Combat] = player.CombatLevel;
-                    this.SkillLevels[Skill.Farming] = player.FarmingLevel;
-                    this.SkillLevels[Skill.Fishing] = player.FishingLevel;
-                    this.SkillLevels[Skill.Foraging] = player.ForagingLevel;
-                    this.SkillLevels[Skill.Luck] = player.LuckLevel;
-                    this.SkillLevels[Skill.Mining] = player.MiningLevel;
+                    this.SkillLevels[Skill.Combat] = player?.CombatLevel ?? 0;
+                    this.SkillLevels[Skill.Farming] = player?.FarmingLevel ?? 0;
+                    this.SkillLevels[Skill.Fishing] = player?.FishingLevel ?? 0;
+                    this.SkillLevels[Skill.Foraging] = player?.ForagingLevel ?? 0;
+                    this.SkillLevels[Skill.Luck] = player?.LuckLevel ?? 0;
+                    this.SkillLevels[Skill.Mining] = player?.MiningLevel ?? 0;
 
                     return
                         this.SkillLevels.Count != oldSkillLevels.Count
@@ -74,9 +76,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public override InvariantHashSet GetValidPositionalArgs()
+        public override IInvariantSet GetValidPositionalArgs()
         {
-            return new InvariantHashSet(Enum.GetNames(typeof(Skill)));
+            return this.ValidValues;
         }
 
         /// <inheritdoc />
@@ -87,8 +89,8 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             if (input.HasPositionalArgs)
             {
                 return this.TryParseEnum(input.GetFirstPositionalArg(), out Skill skill) && this.SkillLevels.TryGetValue(skill, out int level)
-                    ? new[] { level.ToString() }
-                    : Enumerable.Empty<string>();
+                    ? InvariantSets.FromValue(level)
+                    : InvariantSets.Empty;
             }
             else
             {

@@ -1,0 +1,21 @@
+{
+  // Tools
+  "tools.name.paint_bucket": "Відро з фарбою",
+  "tools.name.paint_brush": "Пензлик",
+  "tools.name.scissors": "Ножиці",
+
+  "tools.description.paint_bucket": "Дозволяє застосовувати різні текстури до об'єктів, що підтримують таку можливість.",
+  "tools.description.paint_brush": "Дозволяє копіювати текстуру та застосувати її до інших об'єктів того ж типу.",
+  "tools.description.scissors": "Дозволяє застосовувати різні текстури до об'єктів",
+
+  // Messages
+  "messages.warning.no_textures_for_season": "{{itemName}} не має альтернативної текстури для поточного сезону!",
+  "messages.warning.paint_not_placeable": "Ви не можете розфарбувати це!",
+  "messages.warning.brush_is_empty": "Пензлик не має скопійованої текстури! Правий клац по об'єкту скопіює її.",
+  "messages.warning.brush_not_supported": "Пензлик не підтримує копіювання текстур з поточного об'єкта.",
+  "messages.warning.invalid_copied_texture": "Скопійована текстура {{textureName}} не підходить до даного об'єкта!",
+  "messages.warning.custom_building_not_supported": "Будівля  ({{itemName}}) не підтримує змінні текстури.",
+
+  "messages.info.texture_copied": "Текстуру скопійовано!",
+  "messages.info.cleared_brush": "Пензлик очищено!"
+}

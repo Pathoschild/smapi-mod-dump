@@ -70,6 +70,7 @@ namespace GMCMOptions.Framework {
         }
 
         // saved values from the constructor
+        readonly bool FixedHeight;
         readonly Func<Color> GetValue;
         readonly Action<Color> SetValue;
         readonly bool ShowAlpha;
@@ -100,11 +101,16 @@ namespace GMCMOptions.Framework {
         /// <summary>
         /// Create a new color picker Option.
         /// </summary>
+        /// <param name="fixedHeight">
+        ///   Whether <c cref="Height">Height</c> should return the maximum possible height given the style, or the current height.
+        ///   Older versions of GMCM do not support options dynamically updating height.
+        /// </param>
         /// <param name="getValue">A function that returns the current value in the underlying configuration object</param>
         /// <param name="setValue">A function that should save the given value to the underlying configuration object</param>
         /// <param name="showAlpha">Whether a slider should be shown for setting the Alpha channel or not</param>
         /// <param name="style">Specify which types of color picker to show</param>
-        public ColorPickerOption(Func<Color> getValue, Action<Color> setValue, bool showAlpha = true, ColorPickerStyle style = 0) {
+        public ColorPickerOption(bool fixedHeight, Func<Color> getValue, Action<Color> setValue, bool showAlpha = true, ColorPickerStyle style = 0) {
+            FixedHeight = fixedHeight;
             GetValue = getValue;
             SetValue = setValue;
             ShowAlpha = showAlpha;
@@ -233,17 +239,26 @@ namespace GMCMOptions.Framework {
                 top += height + sliderSpacing;
             }
             if (ShowAlpha) top += (ColorSlider.height + sliderSpacing);
-            if (EffectiveStyle.HasFlag(ColorPickerStyle.RadioChooser)) {
-                // showing at most one of these anyway.
-                int height = 0;
-                if (EffectiveStyle.HasFlag(ColorPickerStyle.RGBSliders)) height = Math.Max(height, 3 * (ColorSlider.height + sliderSpacing));
-                if (EffectiveStyle.HasFlag(ColorPickerStyle.HSVColorWheel)) height = Math.Max(height, hsvWheel.Height);
-                if (EffectiveStyle.HasFlag(ColorPickerStyle.HSLColorWheel)) height = Math.Max(height, hslWheel.Height);
-                top += height;
+            if (FixedHeight) {
+                if (EffectiveStyle.HasFlag(ColorPickerStyle.RadioChooser)) {
+                    // showing at most one of these anyway.
+                    int height = 0;
+                    if (EffectiveStyle.HasFlag(ColorPickerStyle.RGBSliders)) height = Math.Max(height, 3 * (ColorSlider.height + sliderSpacing));
+                    if (EffectiveStyle.HasFlag(ColorPickerStyle.HSVColorWheel)) height = Math.Max(height, hsvWheel.Height);
+                    if (EffectiveStyle.HasFlag(ColorPickerStyle.HSLColorWheel)) height = Math.Max(height, hslWheel.Height);
+                    top += height;
+                } else {
+                    if (EffectiveStyle.HasFlag(ColorPickerStyle.RGBSliders)) top += 3 * (ColorSlider.height + sliderSpacing);
+                    if (EffectiveStyle.HasFlag(ColorPickerStyle.HSVColorWheel) && EffectiveStyle.HasFlag(ColorPickerStyle.HSLColorWheel)) top = Math.Max(top, colorBoxOuterSize + sliderSpacing);
+                    if (EffectiveStyle.HasFlag(ColorPickerStyle.HSVColorWheel) || EffectiveStyle.HasFlag(ColorPickerStyle.HSLColorWheel)) top += Math.Max(hsvWheel.Height, hslWheel.Height);
+                }
             } else {
-                if (EffectiveStyle.HasFlag(ColorPickerStyle.RGBSliders)) top += 3 * (ColorSlider.height + sliderSpacing);
-                if (EffectiveStyle.HasFlag(ColorPickerStyle.HSVColorWheel) && EffectiveStyle.HasFlag(ColorPickerStyle.HSLColorWheel)) top = Math.Max(top, colorBoxOuterSize + sliderSpacing);
-                if (EffectiveStyle.HasFlag(ColorPickerStyle.HSVColorWheel) || EffectiveStyle.HasFlag(ColorPickerStyle.HSLColorWheel)) top += Math.Max(hsvWheel.Height, hslWheel.Height);
+                if (RGBStyleButton.Selected) {
+                    top += 3 * (ColorSlider.height + sliderSpacing);
+                }
+                if (HSVStyleButton.Selected && HSLStyleButton.Selected) top = Math.Max(top, colorBoxOuterSize + sliderSpacing);
+                if (HSVStyleButton.Selected || HSLStyleButton.Selected) top += Math.Max(hsvWheel.Height, hslWheel.Height);
+                top = Math.Max(top, colorBoxOuterSize + sliderSpacing);
             }
 
             return top;

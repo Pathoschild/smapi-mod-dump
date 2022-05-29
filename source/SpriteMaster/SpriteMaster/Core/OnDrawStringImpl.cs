@@ -11,15 +11,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
 
 namespace SpriteMaster.Core;
 
-static partial class OnDrawStringImpl {
+internal static class OnDrawStringImpl {
 	private const bool Continue = true;
 	private const bool Stop = false;
 
@@ -31,7 +29,6 @@ static partial class OnDrawStringImpl {
 
 	private static readonly Dictionary<SpriteFont, Dictionary<char, int?>> GlyphIndexCache = new();
 	private static bool TryGetGlyphIndex(this SpriteFont font, char c, out int index) {
-		/*
 		if (!GlyphIndexCache.TryGetValue(font, out var indexCache)) {
 			GlyphIndexCache.Add(font, indexCache = new());
 		}
@@ -41,26 +38,24 @@ static partial class OnDrawStringImpl {
 				return indexOpt.HasValue;
 			}
 		}
-		*/
 		if (TryGetGlyphIndexFunc!(font, c, out index)) {
-			//indexCache.Add(c, index);
+			indexCache.Add(c, index);
 			return true;
 		}
-		else {
-			//indexCache.Add(c, null);
-			return false;
-		}
+
+		indexCache.Add(c, null);
+		return false;
 	}
 
 	internal static bool DrawString(
-		SpriteBatch __instance,
+		XSpriteBatch __instance,
 		SpriteFont spriteFont,
 		string text,
-		XNA.Vector2 position,
-		XNA.Color color,
+		XVector2 position,
+		XColor color,
 		float rotation,
-		XNA.Vector2 origin,
-		XNA.Vector2 scale,
+		XVector2 origin,
+		XVector2 scale,
 		SpriteEffects effects,
 		float layerDepth
 	) {
@@ -76,14 +71,14 @@ static partial class OnDrawStringImpl {
 	}
 
 	internal static bool DrawString(
-		SpriteBatch __instance,
+		XSpriteBatch __instance,
 		SpriteFont spriteFont,
 		StringBuilder text,
-		XNA.Vector2 position,
-		XNA.Color color,
+		XVector2 position,
+		XColor color,
 		float rotation,
-		XNA.Vector2 origin,
-		XNA.Vector2 scale,
+		XVector2 origin,
+		XVector2 scale,
 		SpriteEffects effects,
 		float layerDepth
 	) {
@@ -99,7 +94,7 @@ static partial class OnDrawStringImpl {
 	}
 
 	// Ripped from MonoGame SpriteFont.cs
-	internal ref struct CharSource {
+	internal readonly ref struct CharSource {
 		private readonly string? String = null;
 		private readonly StringBuilder? Builder = null;
 		internal readonly int Length;
@@ -114,35 +109,23 @@ static partial class OnDrawStringImpl {
 			Builder = builder;
 		}
 
-		internal char this[int index] {
-			get {
-				if (String is not null) {
-					return String[index];
-				}
-				return Builder![index];
-			}
-		}
+		internal char this[int index] => String is not null ? String[index] : Builder![index];
 
-		public override string ToString() {
-			if (String is not null) {
-				return String.ToString();
-}
-			return Builder!.ToString();
-		}
+		public override string ToString() => String ?? Builder!.ToString();
 	}
 
 	// internal float TexelWidth { get; private set; }
 	// internal float TexelHeight { get; private set; }
 
 	internal static bool DrawString(
-		SpriteBatch __instance,
+		XSpriteBatch __instance,
 		SpriteFont spriteFont,
 		in CharSource text,
-		XNA.Vector2 position,
-		XNA.Color color,
+		XVector2 position,
+		XColor color,
 		float rotation,
-		XNA.Vector2 origin,
-		XNA.Vector2 scale,
+		XVector2 origin,
+		XVector2 scale,
 		SpriteEffects effects,
 		float layerDepth
 	) {
@@ -184,7 +167,7 @@ static partial class OnDrawStringImpl {
 				tempTransform.M42 = (flippedOrigin.Y * tempTransform.M22) + position.Y;
 			}
 			else {
-				(float sin, float cos) = MathExt.SinCos(rotation);
+				(float sin, float cos) = rotation.SinCos();
 
 				tempTransform.M11 = flippedScale.X * cos;
 				tempTransform.M12 = flippedScale.X * sin;
@@ -238,8 +221,8 @@ static partial class OnDrawStringImpl {
 
 			if (transform.HasValue) {
 				var matrixTemp = transform.Value;
-				XNA.Vector2 posTemp = pos;
-				XNA.Vector2.Transform(ref posTemp, ref matrixTemp, out posTemp);
+				XVector2 posTemp = pos;
+				XVector2.Transform(ref posTemp, ref matrixTemp, out posTemp);
 				pos = posTemp;
 			}
 			else {

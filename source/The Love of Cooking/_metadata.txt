@@ -6,13 +6,9 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit c5cf6a9ee1a3654c57733734f0561071f1c5317d
+   commit 751ad608fc586377fe88a67c7939459f559ce902
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Mon Nov 22 14:47:39 2021 +1100
+   Date:   Fri May 13 20:28:21 2022 +1000
    
-       RELEASE 1.0.24:
-       Remove hardcoded level limit from CookingSkillAPI in CalculateExperienceGainedFromCookingItem.
-       Remove debug logging for menu closed mutexes freed and Custom Community Centre interface calls.
-       Replace Community Kitchen Baker's Bundle requirement substitute for Apple Pie with Cake.
-       Allow opening cooking menu from cooking tile indexes in CommunityCenter locations.
+       Update manifest to version 1.0.27.
    

@@ -42,7 +42,7 @@ namespace MinecartPatcher
 			if (Game1.MasterPlayer.mailReceived.Contains("ccBoilerRoom")) {
 				if (!Game1.player.isRidingHorse() || Game1.player.mount == null)
 				{
-					drawMinecartDialogue(mc, l, 0);
+					drawMinecartDialogue(mc, l, 0, false);
 					return true;
 				}
 				Game1.player.mount.checkAction(Game1.player, l);
@@ -55,7 +55,7 @@ namespace MinecartPatcher
 			return Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
         }
 
-		public void drawMinecartDialogue(MinecartInstance src, GameLocation l, int page)
+		public void drawMinecartDialogue(MinecartInstance src, GameLocation l, int page, bool finalPage)
 		{
 			LoadData();
 			List<Response> responses = new List<Response>();
@@ -64,6 +64,7 @@ namespace MinecartPatcher
 			int startCount = (page * 4) + 2;
 			if (page == 0) startCount -= 2;
 			int endCount = ((page + 1) * 4) + 1;
+			if (finalPage) endCount++;
 			foreach(var mc in Minecarts.OrderBy(x => x.Value.DisplayName))
             {
 				if (mc.Value.NetworkId != src.NetworkId) continue;
@@ -71,10 +72,10 @@ namespace MinecartPatcher
 				{
 					if (RawDistance(mc.Value.LandingPointX, mc.Value.LandingPointY, Game1.player.getTileX(), Game1.player.getTileY()) < 6) continue;
 				}
+				if (Game1.getLocationFromName(mc.Value.LocationName) == null) continue;
 				if (mc.Value.MailCondition != null && !Game1.MasterPlayer.mailReceived.Contains(mc.Value.MailCondition)) continue;
 				counter += 1;
 				if(counter >= startCount && counter <= endCount) responses.Add(new Response(mc.Key, mc.Value.DisplayName));
-
 			}
 			PageCount = counter / 5;
 			if (counter % 5 > 0) PageCount += 1;
@@ -91,12 +92,18 @@ namespace MinecartPatcher
 			if (key == "Cancel") return true;
 			if (key == "MCP.PaginationMinus")
             {
-				drawMinecartDialogue(src, Game1.player.currentLocation, Math.Max(0, LastPage - 1));
+				bool fp = false;
+				int pageNum = Math.Max(0, LastPage - 1);
+				if (pageNum == PageCount - 1) fp = true;
+				drawMinecartDialogue(src, Game1.player.currentLocation, pageNum, fp);
 				return true;
             }
 			if (key == "MCP.PaginationPlus")
 			{
-				drawMinecartDialogue(src, Game1.player.currentLocation, Math.Min(PageCount - 1, LastPage + 1));
+				bool fp = false;
+				int pageNum = Math.Min(PageCount - 1, LastPage + 1);
+				if (pageNum == PageCount - 1) fp = true;
+				drawMinecartDialogue(src, Game1.player.currentLocation, pageNum, fp);
 				return true;
 			}
 			if (!Minecarts.ContainsKey(key)) return true;

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -38,7 +36,7 @@ namespace ContentPatcher.Framework
         private readonly InvariantDictionary<CachedContext> LocalTokens = new();
 
         /// <summary>The installed mod IDs.</summary>
-        private readonly InvariantHashSet InstalledMods;
+        private readonly IInvariantSet InstalledMods;
 
         /// <summary>Whether the next context update is the first one.</summary>
         private bool IsFirstUpdate = true;
@@ -62,9 +60,9 @@ namespace ContentPatcher.Framework
         public bool IsSaveBasicInfoLoaded { get; set; }
 
         /// <summary>The tokens which should always be used with a specific update rate.</summary>
-        public Tuple<UpdateRate, string, InvariantHashSet>[] TokensWithSpecialUpdateRates { get; } = {
-            Tuple.Create(UpdateRate.OnLocationChange, "location tokens", new InvariantHashSet { ConditionType.LocationContext.ToString(), ConditionType.LocationName.ToString(), ConditionType.LocationUniqueName.ToString(), ConditionType.IsOutdoors.ToString() }),
-            Tuple.Create(UpdateRate.OnTimeChange, "time tokens", new InvariantHashSet { ConditionType.Time.ToString() })
+        public Tuple<UpdateRate, string, IInvariantSet>[] TokensWithSpecialUpdateRates { get; } = {
+            Tuple.Create(UpdateRate.OnLocationChange, "location tokens", InvariantSets.From(new[] { nameof(ConditionType.LocationContext), nameof(ConditionType.LocationName), nameof(ConditionType.LocationUniqueName), nameof(ConditionType.IsOutdoors) })),
+            Tuple.Create(UpdateRate.OnTimeChange, "time tokens", InvariantSets.FromValue(nameof(ConditionType.Time)))
         };
 
 
@@ -75,7 +73,7 @@ namespace ContentPatcher.Framework
         /// <param name="contentHelper">The content helper from which to load data assets.</param>
         /// <param name="installedMods">The installed mod IDs.</param>
         /// <param name="modTokens">The custom tokens provided by mods.</param>
-        public TokenManager(IGameContentHelper contentHelper, InvariantHashSet installedMods, IEnumerable<IToken> modTokens)
+        public TokenManager(IGameContentHelper contentHelper, IInvariantSet installedMods, IEnumerable<IToken> modTokens)
         {
             this.InstalledMods = installedMods;
             this.GlobalContext = new GenericTokenContext(this.IsModInstalled, () => this.UpdateTick);
@@ -92,7 +90,7 @@ namespace ContentPatcher.Framework
         {
             string scope = pack.Manifest.UniqueID.Trim();
 
-            if (!this.LocalTokens.TryGetValue(scope, out CachedContext cached))
+            if (!this.LocalTokens.TryGetValue(scope, out CachedContext? cached))
             {
                 ModTokenContext context = new ModTokenContext(scope, this);
                 this.LocalTokens[scope] = cached = new CachedContext(pack, context);
@@ -110,7 +108,7 @@ namespace ContentPatcher.Framework
         /// <returns>Returns the resolved token name, or the input token name if it's not an alias.</returns>
         public string ResolveAlias(string contentPackID, string tokenName)
         {
-            return this.LocalTokens.TryGetValue(contentPackID, out CachedContext cached)
+            return this.LocalTokens.TryGetValue(contentPackID, out CachedContext? cached)
                 ? cached.Context.ResolveAlias(tokenName)
                 : tokenName;
         }
@@ -122,31 +120,37 @@ namespace ContentPatcher.Framework
         {
             contentPackID = contentPackID.Trim();
 
-            return this.LocalTokens.TryGetValue(contentPackID, out CachedContext cached)
+            return this.LocalTokens.TryGetValue(contentPackID, out CachedContext? cached)
                 ? cached.Context
                 : throw new KeyNotFoundException($"There's no content pack registered for ID '{contentPackID}'.");
         }
 
         /// <summary>Update the current context.</summary>
         /// <param name="changedGlobalTokens">The global tokens which changed value.</param>
-        public void UpdateContext(out InvariantHashSet changedGlobalTokens)
+        public void UpdateContext(out IInvariantSet changedGlobalTokens)
         {
             this.UpdateTick++;
 
-            // update global tokens
-            changedGlobalTokens = new InvariantHashSet();
-            foreach (IToken token in this.GlobalContext.Tokens.Values)
+            // update tokens
             {
-                bool changed =
-                    (token.IsMutable && token.UpdateContext(this)) // token changed state/value
-                    || (this.IsFirstUpdate && token.IsReady); // tokens implicitly change to ready on their first update, even if they were ready from creation
-                if (changed)
-                    changedGlobalTokens.Add(token.Name);
-            }
+                MutableInvariantSet changedTokens = new();
 
-            // special case: language change implies i18n change
-            if (changedGlobalTokens.Contains(ConditionType.Language.ToString()))
-                changedGlobalTokens.Add(ConditionType.I18n.ToString());
+                // update global tokens
+                foreach (IToken token in this.GlobalContext.Tokens.Values)
+                {
+                    bool changed =
+                        (token.IsMutable && token.UpdateContext(this)) // token changed state/value
+                        || (this.IsFirstUpdate && token.IsReady); // tokens implicitly change to ready on their first update, even if they were ready from creation
+                    if (changed)
+                        changedTokens.Add(token.Name);
+                }
+
+                // special case: language change implies i18n change
+                if (changedTokens.Contains(nameof(ConditionType.Language)))
+                    changedTokens.Add(ConditionType.I18n.ToString());
+
+                changedGlobalTokens = changedTokens.Lock();
+            }
 
             // update mod contexts
             foreach (CachedContext cached in this.LocalTokens.Values)
@@ -171,7 +175,7 @@ namespace ContentPatcher.Framework
         }
 
         /// <inheritdoc />
-        public IToken GetToken(string name, bool enforceContext)
+        public IToken? GetToken(string name, bool enforceContext)
         {
             return this.GlobalContext.GetToken(name, enforceContext);
         }
@@ -183,7 +187,7 @@ namespace ContentPatcher.Framework
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetValues(string name, IInputArguments input, bool enforceContext)
+        public IInvariantSet GetValues(string name, IInputArguments input, bool enforceContext)
         {
             return this.GlobalContext.GetValues(name, input, enforceContext);
         }
@@ -195,7 +199,7 @@ namespace ContentPatcher.Framework
         /// <summary>Get the global value providers with which to initialize the token manager.</summary>
         /// <param name="contentHelper">The content helper from which to load data assets.</param>
         /// <param name="installedMods">The installed mod IDs.</param>
-        private IEnumerable<IValueProvider> GetGlobalValueProviders(IGameContentHelper contentHelper, InvariantHashSet installedMods)
+        private IEnumerable<IValueProvider> GetGlobalValueProviders(IGameContentHelper contentHelper, IInvariantSet installedMods)
         {
             bool NeedsSave() => this.IsSaveParsed;
             var save = new TokenSaveReader(updateTick: () => this.UpdateTick, isSaveParsed: NeedsSave, isSaveBasicInfoLoaded: () => this.IsSaveBasicInfoLoaded);
@@ -234,7 +238,7 @@ namespace ContentPatcher.Framework
                 new PerPlayerValueProvider(ConditionType.LocationUniqueName, player => save.GetCurrentLocation(player)?.NameOrUniqueName, save),
                 new PerPlayerValueProvider(ConditionType.PlayerGender, player => (player.IsMale ? Gender.Male : Gender.Female).ToString(), save),
                 new PerPlayerValueProvider(ConditionType.PlayerName, player => player.Name, save),
-                new ConditionTypeValueProvider(ConditionType.PreferredPet, () => (save.GetCurrentPlayer().catPerson ? PetType.Cat : PetType.Dog).ToString(), NeedsSave),
+                new ConditionTypeValueProvider(ConditionType.PreferredPet, () => (save.GetCurrentPlayer()?.catPerson == true ? PetType.Cat : PetType.Dog).ToString(), NeedsSave),
                 new SkillLevelValueProvider(save),
 
                 // relationships
@@ -269,7 +273,7 @@ namespace ContentPatcher.Framework
                 new RenderValueProvider(),
 
                 // metadata
-                new ImmutableValueProvider(ConditionType.HasMod.ToString(), installedMods, canHaveMultipleValues: true),
+                new ImmutableValueProvider(nameof(ConditionType.HasMod), installedMods, canHaveMultipleValues: true),
                 new HasValueValueProvider(),
                 new ConditionTypeValueProvider(ConditionType.Language, () => this.GetLanguage(contentHelper)),
 
@@ -304,7 +308,7 @@ namespace ContentPatcher.Framework
             if (language == LocalizedContentManager.LanguageCode.mod)
                 code = contentHelper.CurrentLocale ?? code;
 
-            yield return code;
+            return new[] { code };
         }
     }
 }

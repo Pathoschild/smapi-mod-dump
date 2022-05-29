@@ -79,7 +79,7 @@ internal static class PFMMachineHandler
         ModEntry.ModMonitor.Log("PFM Machine Recipes", LogLevel.Info);
         foreach ((int id, HashSet<PFMMachineData> v) in Recipes)
         {
-            ModEntry.ModMonitor.Log($"Looking at machine {id.GetName()}", LogLevel.Info);
+            ModEntry.ModMonitor.Log($"Looking at machine {id.GetBigCraftableName()}", LogLevel.Info);
             foreach (PFMMachineData recipe in v)
             {
                 ModEntry.ModMonitor.Log('\t' + recipe.ToString(), LogLevel.Info);
@@ -154,68 +154,31 @@ internal static class PFMMachineHandler
         bool isOutDoors = location.IsOutdoors;
         foreach (int machine in PFMMachines)
         {
-            if (ModEntry.Config.ProducerFrameworkModMachines.TryGetValue(machine.GetName(), out bool setting) && setting)
+            if (ModEntry.Config.ProducerFrameworkModMachines.TryGetValue(machine.GetBigCraftableName(), out bool setting) && setting)
             {
                 foreach (PFMMachineData recipe in Recipes[machine])
                 {
-                    if ((!isOutDoors && recipe.OutdoorsOnly)
-                        || !recipe.AllowedSeasons.HasFlag(season)
-                        || !recipe.AllowedWeathers.HasFlag(weather)
-                        || (recipe.ValidLocations is not null && !recipe.ValidLocations.Contains(location.Name)))
+                    if ((isOutDoors || !recipe.OutdoorsOnly)
+                        && recipe.AllowedSeasons.HasFlag(season)
+                        && recipe.AllowedWeathers.HasFlag(weather)
+                        && (recipe.ValidLocations is null || recipe.ValidLocations.Contains(location.Name)))
                     {
-                        continue;
+                        ValidMachines[machine] = PFMMachineStatus.Enabled;
+                        ModEntry.ModMonitor.DebugOnlyLog($"{machine.GetBigCraftableName()} is enabled");
+                        goto Continue;
                     }
-                    ValidMachines[machine] = PFMMachineStatus.Enabled;
-                    ModEntry.ModMonitor.DebugOnlyLog($"{machine.GetName()} is enabled");
-                    goto ProcessNextMachine;
                 }
-                ModEntry.ModMonitor.DebugOnlyLog($"{machine.GetName()} is invalid");
+                ModEntry.ModMonitor.DebugOnlyLog($"{machine.GetBigCraftableName()} is invalid");
                 ValidMachines[machine] = PFMMachineStatus.Invalid;
             }
             else
             {
-                ModEntry.ModMonitor.DebugOnlyLog($"{machine.GetName()} is disabled in config.");
+                ModEntry.ModMonitor.DebugOnlyLog($"{machine.GetBigCraftableName()} is disabled in config.");
                 ValidMachines[machine] = PFMMachineStatus.Disabled;
             }
-ProcessNextMachine:
+Continue:
             ;
         }
-    }
-
-    /// <summary>
-    /// Gets the translated name of a bigcraftable.
-    /// </summary>
-    /// <param name="bigCraftableIndex">Index of the bigcraftable.</param>
-    /// <returns>Name of the bigcraftable.</returns>
-    internal static string GetTranslatedName(this int bigCraftableIndex)
-    {
-        if (Game1.bigCraftablesInformation.TryGetValue(bigCraftableIndex, out string? value))
-        {
-            int index = value.LastIndexOf('/');
-            if (index >= 0)
-            {
-                return value[(index + 1)..];
-            }
-        }
-        return "ERROR - PFM big craftable not found!";
-    }
-
-    /// <summary>
-    /// Gets the internal name of a bigcraftable.
-    /// </summary>
-    /// <param name="bigCraftableIndex">Bigcraftable.</param>
-    /// <returns>Internal name if found.</returns>
-    internal static string GetName(this int bigCraftableIndex)
-    {
-        if (Game1.bigCraftablesInformation.TryGetValue(bigCraftableIndex, out string? value))
-        {
-            int index = value.IndexOf('/');
-            if (index >= 0)
-            {
-                return value[..index];
-            }
-        }
-        return "ERROR - PFM big craftable not found!";
     }
 
     /// <summary>

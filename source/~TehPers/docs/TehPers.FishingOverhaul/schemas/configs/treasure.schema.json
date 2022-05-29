@@ -14,7 +14,7 @@
       "$ref": "#/definitions/TehPers.FishingOverhaul.Config.TreasureConfig"
     }
   ],
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
   "title": "TreasureConfig",
   "definitions": {
     "TehPers.FishingOverhaul.Config.TreasureConfig": {
@@ -64,7 +64,8 @@
           ],
           "description": "The chances of getting additional loot when finding treasure. This is rolled until it fails or the max number of items have been added to the loot."
         }
-      }
+      },
+      "description": "Configuration for treasure."
     },
     "TehPers.FishingOverhaul.Config.TreasureChances": {
       "type": "object",
@@ -127,7 +128,8 @@
           },
           "description": "The effects that specific locations have on this chance. Keys are location names and values are their factors."
         }
-      }
+      },
+      "description": "Configuration for the chances of catching treasure while fishing."
     },
     "TehPers.FishingOverhaul.Config.FishingChances": {
       "type": "object",
@@ -175,7 +177,8 @@
           },
           "description": "The effects that specific locations have on this chance. Keys are location names and values are their factors."
         }
-      }
+      },
+      "description": "Configuration for the chances of catching something while fishing."
     }
   }
 }

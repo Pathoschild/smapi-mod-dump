@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,11 +16,7 @@ using System.Security;
 
 namespace SpriteMaster.Types;
 
-sealed class WeakSet<T> :
-	IEnumerable<T>,
-	IEnumerable,
-	ICollection<T>,
-	IReadOnlyCollection<T>,
+internal sealed class WeakSet<T> :
 	ISet<T>,
 	IReadOnlySet<T>
 	where T : class {
@@ -33,7 +28,7 @@ sealed class WeakSet<T> :
 	private IEnumerable<T> Items => InternalTable.Select(kv => kv.Key);
 
 	public int Count {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		get {
 			using (Lock.Read) {
 				return InternalTable.Count();
@@ -43,7 +38,7 @@ sealed class WeakSet<T> :
 
 	public bool IsReadOnly => false;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	[SecuritySafeCritical]
 	internal bool Contains(T item) {
 		using (Lock.Read) {
@@ -51,13 +46,13 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	bool ICollection<T>.Contains(T item) => Contains(item);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	bool IReadOnlySet<T>.Contains(T item) => Contains(item);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	[SecuritySafeCritical]
 	internal bool Remove(T item) {
 		using (Lock.Write) {
@@ -65,10 +60,10 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	bool ICollection<T>.Remove(T item) => Remove(item);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	[SecuritySafeCritical]
 	internal bool Add(T item) {
 		try {
@@ -87,7 +82,7 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	[SecuritySafeCritical]
 	internal void AddOrIgnore(T item) {
 		using (Lock.Write) {
@@ -95,7 +90,7 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void AddRange(IEnumerable<T> collection) {
 		// TODO : This can be improved upon using reflection/delegates.
 
@@ -106,7 +101,7 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void RemoveRange(IEnumerable<T> collection) {
 		// TODO : This can be improved upon using reflection/delegates.
 
@@ -117,13 +112,14 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public void Clear() {
 		using (Lock.Write) {
 			InternalTable.Clear();
 		}
 	}
 
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public void CopyTo(T[] array, int arrayIndex) {
 		// TODO : this can be implemented better
 		using (Lock.Read) {
@@ -131,15 +127,16 @@ sealed class WeakSet<T> :
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	void ICollection<T>.Add(T item) => AddOrIgnore(item);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public IEnumerator<T> GetEnumerator() => Items.GetEnumerator();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.GetEnumerator();
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	bool ISet<T>.Add(T item) => Add(item);
 
 	public bool IsProperSubsetOf(IEnumerable<T> other) => Items.ToHashSet().IsProperSubsetOf(other);
@@ -154,7 +151,7 @@ sealed class WeakSet<T> :
 
 	public bool SetEquals(IEnumerable<T> other) => Items.ToHashSet().SetEquals(other);
 
-	public void SymmetricExceptWith(IEnumerable<T> other) => Items.ToHashSet().SetEquals(other);
+	public void SymmetricExceptWith(IEnumerable<T> other) => Items.ToHashSet().SymmetricExceptWith(other);
 
 	public void UnionWith(IEnumerable<T> other) => AddRange(other);
 
@@ -162,18 +159,20 @@ sealed class WeakSet<T> :
 
 	public void IntersectWith(IEnumerable<T> other) {
 		var otherSet = other as ISet<T> ?? other.ToHashSet();
-		AddRange(other);
+		AddRange(otherSet);
 		var current = Items;
-		var currentCount = current.Count();
+		var enumerable = current as T[] ?? current.ToArray();
 
-		if (currentCount > otherSet.Count) {
-			var removeList = new List<T>(currentCount - otherSet.Count);
-			foreach (var item in current) {
-				if (!otherSet.Contains(item)) {
-					removeList.Add(item);
-				}
-			}
-			RemoveRange(removeList);
+		if (enumerable.Length <= otherSet.Count) {
+			return;
 		}
+
+		var removeList = new List<T>(enumerable.Length - otherSet.Count);
+		foreach (var item in enumerable) {
+			if (!otherSet.Contains(item)) {
+				removeList.Add(item);
+			}
+		}
+		RemoveRange(removeList);
 	}
 }

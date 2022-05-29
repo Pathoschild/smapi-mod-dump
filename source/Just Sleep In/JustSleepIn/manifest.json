@@ -11,7 +11,7 @@
 {
   "Name": "Just Sleep In",
   "Author": "Rifleman",
-  "Version": "1.1.0 Hotfix 1",
+  "Version": "1.1.0-hotfix",
   "Description": "RP friendly alarm clock. Be an early worm or take a beauty nap, your choice",
   "UniqueID": "Rifleman.JustSleepIn",
   "EntryDll": "JustSleepIn.dll",

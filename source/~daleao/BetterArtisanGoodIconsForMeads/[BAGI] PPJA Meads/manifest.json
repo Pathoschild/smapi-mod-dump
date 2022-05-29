@@ -1,0 +1,41 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/daleao/sdv-mods
+**
+*************************************************/
+
+{
+  "Name": "[BAGI] PPJA Meads",
+  "Author": "DaLion & Tithrandel",
+  "Version": "1.0.0",
+  "Description": "Provides BAGI mead icons for all PPJA mod flowers.",
+  "UniqueID": "DaLion.Meads.PPJA",
+  "MinimumApiVersion": "2.2.0",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+    "UniqueID": "cat.betterartisangoodicons",
+    "MinimumVersion": "1.5.0"
+  },
+  "Dependencies": [
+    {
+	  "UniqueID": "ppja.fruitsandveggies",
+	  "IsRequired": false
+    },
+	{
+	  "UniqueID": "ppja.moretrees",
+	  "IsRequired": false
+    },
+	{
+	  "UniqueID": "mizu.flowers",
+	  "IsRequired": false
+    },
+	{
+	  "UniqueID": "kildarien.farmertoflorist.DGA",
+	  "IsRequired": false
+    }
+  ]
+}

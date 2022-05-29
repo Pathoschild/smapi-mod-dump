@@ -6,13 +6,9 @@ mods:
    Casual Life
 
 latest commit:
-   commit 31768fb6ec88b97a6f8091d1ca6a801abbae7095
+   commit 85c024f2863f987c0b3a9a3d69a50860437b92ec
    Author: David Rath <adverserath@gmail.com>
-   Date:   Tue Apr 19 01:12:17 2022 +0100
+   Date:   Mon May 16 16:18:28 2022 +0100
    
-       Update decompiled code
-       Remove Comments
-       Default to 24 hour
-       Fix Control for moving back a day
-       Update season graphics when skipping between them
+       Update manifest
    

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,7 +35,7 @@ namespace ContentPatcher.Framework
         private readonly GenericModConfigMenuIntegration<InvariantDictionary<ConfigField>> ConfigMenu;
 
         /// <summary>Parse a comma-delimited set of case-insensitive condition values.</summary>
-        private readonly Func<string, InvariantHashSet> ParseCommaDelimitedField;
+        private readonly Func<string, IInvariantSet> ParseCommaDelimitedField;
 
 
         /*********
@@ -58,7 +56,7 @@ namespace ContentPatcher.Framework
         /// <param name="parseCommaDelimitedField">The Generic Mod Config Menu integration.</param>
         /// <param name="config">The config model.</param>
         /// <param name="saveAndApply">Save and apply the current config model.</param>
-        public GenericModConfigMenuIntegrationForContentPack(IContentPack contentPack, IModRegistry modRegistry, IMonitor monitor, IManifest manifest, Func<string, InvariantHashSet> parseCommaDelimitedField, InvariantDictionary<ConfigField> config, Action saveAndApply)
+        public GenericModConfigMenuIntegrationForContentPack(IContentPack contentPack, IModRegistry modRegistry, IMonitor monitor, IManifest manifest, Func<string, IInvariantSet> parseCommaDelimitedField, InvariantDictionary<ConfigField> config, Action saveAndApply)
         {
             this.ContentPack = contentPack;
             this.Config = config;
@@ -91,7 +89,7 @@ namespace ContentPatcher.Framework
             {
                 string sectionId = config.Section?.Trim() ?? "";
 
-                if (!fieldsBySection.TryGetValue(sectionId, out InvariantDictionary<ConfigField> section))
+                if (!fieldsBySection.TryGetValue(sectionId, out InvariantDictionary<ConfigField>? section))
                     fieldsBySection[sectionId] = section = new();
 
                 section[name] = config;
@@ -134,13 +132,15 @@ namespace ContentPatcher.Framework
                 this.ConfigMenu.AddTextbox(
                     name: GetName,
                     tooltip: GetDescription,
-                    get: _ => string.Join(", ", field.Value.ToArray()),
+                    get: _ => string.Join(", ", field.Value),
                     set: (_, newValue) =>
                     {
-                        field.Value = this.ParseCommaDelimitedField(newValue);
+                        IInvariantSet values = this.ParseCommaDelimitedField(newValue);
 
-                        if (!field.AllowMultiple && field.Value.Count > 1)
-                            field.Value = new InvariantHashSet(field.Value.Take(1));
+                        field.SetValue(field.AllowMultiple || values.Count <= 1
+                            ? values
+                            : InvariantSets.FromValue(values.First())
+                        );
                     }
                 );
             }
@@ -157,14 +157,14 @@ namespace ContentPatcher.Framework
                         set: (_, selected) =>
                         {
                             // toggle value
-                            if (selected)
-                                field.Value.Add(value);
-                            else
-                                field.Value.Remove(value);
+                            field.SetValue(selected
+                                ? field.Value.GetWith(value)
+                                : field.Value.GetWithout(value)
+                            );
 
                             // set default if blank
                             if (!field.AllowBlank && !field.Value.Any())
-                                field.Value = new InvariantHashSet(field.DefaultValues);
+                                field.SetValue(field.DefaultValues);
                         }
                     );
                 }
@@ -177,11 +177,9 @@ namespace ContentPatcher.Framework
                     name: GetName,
                     tooltip: GetDescription,
                     get: _ => field.Value.Contains(true.ToString()),
-                    set: (_, selected) =>
-                    {
-                        field.Value.Clear();
-                        field.Value.Add(selected.ToString().ToLower());
-                    }
+                    set: (_, selected) => field.SetValue(
+                        InvariantSets.FromValue(selected)
+                    )
                 );
             }
 
@@ -196,7 +194,11 @@ namespace ContentPatcher.Framework
                     name: GetName,
                     tooltip: GetDescription,
                     get: _ => int.TryParse(field.Value.FirstOrDefault(), out int val) ? val : defaultValue,
-                    set: (_, val) => field.Value = new InvariantHashSet(val.ToString(CultureInfo.InvariantCulture)),
+                    set: (_, val) => field.SetValue(
+                        InvariantSets.FromValue(
+                            val.ToString(CultureInfo.InvariantCulture)
+                        )
+                    ),
                     min: min,
                     max: max
                 );
@@ -213,7 +215,9 @@ namespace ContentPatcher.Framework
                     name: GetName,
                     tooltip: GetDescription,
                     get: _ => field.Value.FirstOrDefault() ?? "",
-                    set: (_, newValue) => field.Value = new InvariantHashSet(newValue),
+                    set: (_, newValue) => field.SetValue(
+                        InvariantSets.FromValue(newValue)
+                    ),
                     allowedValues: choices.ToArray(),
                     formatAllowedValue: GetValueText
                 );
@@ -234,13 +238,13 @@ namespace ContentPatcher.Framework
         private void Reset()
         {
             foreach (ConfigField configField in this.Config.Values)
-                configField.Value = new InvariantHashSet(configField.DefaultValues);
+                configField.SetValue(configField.DefaultValues);
         }
 
         /// <summary>Get a translation if it exists, else get the fallback text.</summary>
         /// <param name="key">The translation key to find.</param>
         /// <param name="fallback">The fallback text.</param>
-        private string TryTranslate(string key, string fallback)
+        private string TryTranslate(string key, string? fallback)
         {
             string translation = this.ContentPack.Translation.Get(key).UsePlaceholder(false);
 

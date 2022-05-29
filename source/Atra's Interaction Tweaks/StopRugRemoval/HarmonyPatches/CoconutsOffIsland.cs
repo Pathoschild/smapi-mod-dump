@@ -31,7 +31,7 @@ internal static class CoconutsOffIsland
     /// <returns>whether the jukebox should be playable.</returns>
     public static bool AllowCoconutShakingHere(GameLocation location)
         => location is IslandLocation
-            || (ModEntry.Config.GoldenCoconutsOffIsland && Game1.netWorldState.Value.GoldenCoconutCracked.Value);
+            || (ModEntry.Config.Enabled && ModEntry.Config.GoldenCoconutsOffIsland && Game1.netWorldState.Value.GoldenCoconutCracked.Value);
 
     [HarmonyPatch("shake")]
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)

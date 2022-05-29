@@ -1,3 +1,5 @@
 {
-  "KeyBind_LeaveShaft": "Q"
+  "KeyBind_LeaveShaft": "Q",
+  "Toggle_Confirmation": false,
+  "Toggle_TimeCost": false
 }

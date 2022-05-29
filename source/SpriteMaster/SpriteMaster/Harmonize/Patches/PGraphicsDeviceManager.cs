@@ -25,11 +25,11 @@ namespace SpriteMaster.Harmonize.Patches;
 
 [SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
 [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
-static class PGraphicsDeviceManager {
+internal static class PGraphicsDeviceManager {
 	private struct DeviceState {
-		internal Vector2I Size = new(int.MinValue);
-		internal bool Initialized = false;
-		internal bool IsFullscreen = false;
+		private Vector2I Size = new(int.MinValue);
+		private bool Initialized = false;
+		private bool IsFullscreen = false;
 
 		public DeviceState() { }
 
@@ -53,9 +53,9 @@ static class PGraphicsDeviceManager {
 	private static DeviceState LastState = new();
 
 	[Harmonize(
-		typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D),
-		Harmonize.Constructor,
-		Harmonize.Fixation.Prefix,
+		typeof(RenderTarget2D),
+		Constructor,
+		Fixation.Prefix,
 		PriorityLevel.Last
 	)]
 	public static void OnRenderTarget2DConstruct(
@@ -84,15 +84,10 @@ static class PGraphicsDeviceManager {
 				continue;
 			}
 
-			switch (method?.Name) {
+			switch (method.Name) {
 				case "SetWindowSize": {
 						__state = true;
-						GraphicsDevice? device = null;
-						if (!LastGraphicsDevice?.TryGetTarget(out device) ?? true) {
-							return;
-						}
-
-						if (device is null) {
+						if (LastGraphicsDevice is null || !LastGraphicsDevice.TryGetTarget(out var device)) {
 							return;
 						}
 
@@ -112,13 +107,12 @@ static class PGraphicsDeviceManager {
 		}
 
 		__state = false;
-		return;
 	}
 
 	[Harmonize(
-		typeof(Microsoft.Xna.Framework.Graphics.RenderTarget2D),
-		Harmonize.Constructor,
-		Harmonize.Fixation.Postfix,
+		typeof(RenderTarget2D),
+		Constructor,
+		Fixation.Postfix,
 		PriorityLevel.Last
 	)]
 	public static void OnRenderTarget2DConstructPost(
@@ -143,7 +137,7 @@ static class PGraphicsDeviceManager {
 
 	[Harmonize(
 		"ApplyChanges",
-		Harmonize.Fixation.Prefix,
+		Fixation.Prefix,
 		PriorityLevel.First
 	)]
 	public static bool OnApplyChanges(GraphicsDeviceManager __instance) {
@@ -172,7 +166,7 @@ static class PGraphicsDeviceManager {
 
 	[Harmonize(
 		"ApplyChanges",
-		Harmonize.Fixation.Postfix,
+		Fixation.Postfix,
 		PriorityLevel.Last
 	)]
 	public static void OnApplyChangesPost(GraphicsDeviceManager __instance) {
@@ -196,20 +190,23 @@ static class PGraphicsDeviceManager {
 			try {
 				SystemInfo.Dump(__instance, device);
 			}
-			catch { }
+			catch {
+				// ignored
+			}
+
 			DumpedSystemInfo = true;
 		}
 
 		try {
-			static FieldInfo? getPrivateField(object obj, string name, bool instance = true) {
+			static FieldInfo? GetPrivateField(object obj, string name, bool instance = true) {
 				return obj.GetType().GetField(name, BindingFlags.NonPublic | BindingFlags.Public | (instance ? BindingFlags.Instance : BindingFlags.Static));
 			}
 
-			var capabilitiesProperty = getPrivateField(device, "_profileCapabilities");
+			var capabilitiesProperty = GetPrivateField(device, "_profileCapabilities");
 
 			if (capabilitiesProperty is null) {
 				// Probably monogame?
-				var maxTextureSizeProperty = getPrivateField(device, "_maxTextureSize");
+				var maxTextureSizeProperty = GetPrivateField(device, "_maxTextureSize");
 				int? maxTextureSize = maxTextureSizeProperty?.GetValue<int>(device);
 				if (maxTextureSize.HasValue) {
 					Config.ClampDimension = maxTextureSize.Value;
@@ -223,7 +220,7 @@ static class PGraphicsDeviceManager {
 				}
 
 				var capabilitiesList = new[] {
-					getPrivateField(capabilitiesMember, "HiDef", instance: false)?.GetValue(capabilitiesMember),
+					GetPrivateField(capabilitiesMember, "HiDef", instance: false)?.GetValue(capabilitiesMember),
 					capabilitiesMember
 				};
 
@@ -231,7 +228,7 @@ static class PGraphicsDeviceManager {
 					if (capabilities is null) {
 						continue;
 					}
-					var maxTextureSizeProperty = getPrivateField(capabilities, "MaxTextureSize");
+					var maxTextureSizeProperty = GetPrivateField(capabilities, "MaxTextureSize");
 
 					if (maxTextureSizeProperty is null) {
 						throw new NullReferenceException(nameof(maxTextureSizeProperty));
@@ -239,7 +236,7 @@ static class PGraphicsDeviceManager {
 
 					for (var currentDimension = Config.AbsoluteMaxTextureDimension; currentDimension >= Config.BaseMaxTextureDimension; currentDimension >>= 1) {
 						maxTextureSizeProperty.SetValue(capabilities, currentDimension);
-						var maxTextureAspectRatioField = getPrivateField(capabilities, "MaxTextureAspectRatio");
+						var maxTextureAspectRatioField = GetPrivateField(capabilities, "MaxTextureAspectRatio");
 						if (maxTextureAspectRatioField is null) {
 							throw new NullReferenceException(nameof(maxTextureAspectRatioField));
 						}
@@ -247,7 +244,8 @@ static class PGraphicsDeviceManager {
 						try {
 							Config.ClampDimension = currentDimension;
 							//Math.Min(i, Config.PreferredMaxTextureDimension);
-							using (var testTexture = new DumpTexture2D(@this.GraphicsDevice, currentDimension, currentDimension) { Name = "Resolution Test Texture" }) {
+							using (new DumpTexture2D(@this.GraphicsDevice, currentDimension, currentDimension) { Name = "Resolution Test Texture" })
+							{
 								/* do nothing. We want to dispose of it immediately. */
 							}
 							Garbage.Collect(compact: true, blocking: true, background: false);

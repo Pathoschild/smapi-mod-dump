@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Zenchman",
+  "Author": "BlaDe",
+  "Version": "1.0.0",
+  "Description": "Replaces the Henchman with UnsurpassableZ's ingame character",
+  "UniqueID": "BlaDe.Zenchman",
+  "EntryDll": "Zenchman.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:12024" ]
+}

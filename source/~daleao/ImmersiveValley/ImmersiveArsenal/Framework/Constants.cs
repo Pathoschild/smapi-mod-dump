@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,5 +13,6 @@ namespace DaLion.Stardew.Arsenal.Framework;
 public class Constants
 {
     public const int GALAXY_SWORD_INDEX_I = 4;
+    public const int WOODEN_BLADE_INDEX_I = 12;
     public const int GALAXY_SOUL_INDEX_I = 986;
 }

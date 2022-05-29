@@ -13,7 +13,9 @@ using System.Reflection;
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using TehPers.Core.Api.DI;
+using TehPers.Core.Api.Setup;
 using TehPers.Core.Json;
+using TehPers.Core.Setup;
 
 namespace TehPers.Core.Modules
 {
@@ -36,11 +38,11 @@ namespace TehPers.Core.Modules
                 this.GlobalProxyRoot.Bind<JsonConverter>().ToConstant(converter).InSingletonScope();
             }
 
+            // Patches
+            this.Bind<ISetup>().ToMethod(NewtonsoftPatcher.Create).InSingletonScope();
+
             // Custom converters
             this.GlobalProxyRoot.Bind<JsonConverter>().To<NetConverter>().InSingletonScope();
-            this.GlobalProxyRoot.Bind<JsonConverter>()
-                .To<DescriptiveJsonConverter>()
-                .InSingletonScope();
             this.GlobalProxyRoot.Bind<JsonConverter>()
                 .To<NamespacedKeyJsonConverter>()
                 .InSingletonScope();
@@ -57,7 +59,7 @@ namespace TehPers.Core.Modules
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
                 )
                 ?.GetValue(smapiJsonHelper);
-            if (smapiJsonSettings is JsonSerializerSettings { Converters: { } smapiConverters })
+            if (smapiJsonSettings is JsonSerializerSettings {Converters: { } smapiConverters})
             {
                 // Add all the converters SMAPI uses to this API's serializer settings
                 foreach (var converter in smapiConverters)

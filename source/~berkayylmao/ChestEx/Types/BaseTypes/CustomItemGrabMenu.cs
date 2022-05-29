@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -37,7 +37,7 @@ using System.Linq;
 using ChestEx.LanguageExtensions;
 using ChestEx.Types.CustomTypes.ExtendedSVObjects;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -61,10 +61,10 @@ namespace ChestEx.Types.BaseTypes {
   [UsedImplicitly]
   public partial class CustomItemGrabMenu : ItemGrabMenu {
     // Private:
-  #region Private
+    #region Private
 
     // Input events:
-  #region Input events
+    #region Input events
 
     private readonly Dictionary<SButton, InputStateEx> inputStates = new();
 
@@ -132,34 +132,34 @@ namespace ChestEx.Types.BaseTypes {
       }));
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Protected:
-  #region Protected
+    #region Protected
 
     // Input event handlers:
-  #region Input event handlers
+    #region Input event handlers
 
     protected void RegisterInputEvents() {
       // init input states
       foreach (SButton btn in (SButton[])Enum.GetValues(typeof(SButton))) { this.inputStates[btn] = new InputStateEx(btn); }
 
-      GlobalVars.gSMAPIHelper.Events.Input.CursorMoved    += this._eventCursorMoved;
-      GlobalVars.gSMAPIHelper.Events.Input.ButtonPressed  += this._eventButtonPressed;
+      GlobalVars.gSMAPIHelper.Events.Input.CursorMoved += this._eventCursorMoved;
+      GlobalVars.gSMAPIHelper.Events.Input.ButtonPressed += this._eventButtonPressed;
       GlobalVars.gSMAPIHelper.Events.Input.ButtonReleased += this._eventButtonReleased;
     }
     protected void UnregisterInputEvents() {
-      GlobalVars.gSMAPIHelper.Events.Input.CursorMoved    -= this._eventCursorMoved;
-      GlobalVars.gSMAPIHelper.Events.Input.ButtonPressed  -= this._eventButtonPressed;
+      GlobalVars.gSMAPIHelper.Events.Input.CursorMoved -= this._eventCursorMoved;
+      GlobalVars.gSMAPIHelper.Events.Input.ButtonPressed -= this._eventButtonPressed;
       GlobalVars.gSMAPIHelper.Events.Input.ButtonReleased -= this._eventButtonReleased;
     }
 
-  #endregion
+    #endregion
 
     // ItemGrabMenu related events
-  #region ItemGrabMenu related events
+    #region ItemGrabMenu related events
 
     /// <summary>
     /// Base implementation creates <see cref="ItemGrabMenu.region_organizationButtons"/> using game's own code.
@@ -171,7 +171,7 @@ namespace ChestEx.Types.BaseTypes {
       Rectangle source_menu_bounds = this.mSourceInventoryOptions.mDialogueBoxBounds;
 
       if (createChestColorPicker) {
-        this.chestColorPicker                = new DiscreteColorPicker(source_menu_bounds.X + 16, source_menu_bounds.Y - 16, 0, new Chest(true));
+        this.chestColorPicker = new DiscreteColorPicker(source_menu_bounds.X + 16, source_menu_bounds.Y - 16, 0, new Chest(true));
         this.chestColorPicker.colorSelection = this.chestColorPicker.getSelectionFromColor(this.GetSourceAs<Chest>().playerChoiceColor);
         // TODO: this crashes?
         ((Chest)this.chestColorPicker.itemToDrawColored).playerChoiceColor.Value = this.chestColorPicker.getColorFromSelection(this.chestColorPicker.colorSelection);
@@ -184,7 +184,10 @@ namespace ChestEx.Types.BaseTypes {
                                         Game1.mouseCursors,
                                         new Rectangle(119, 469, 16, 16),
                                         4f) {
-            myID = region_colorPickToggle, downNeighborID = region_fillStacksButton, leftNeighborID = ClickableComponent.SNAP_AUTOMATIC, region = region_organizationButtons
+            myID = region_colorPickToggle,
+            downNeighborID = region_fillStacksButton,
+            leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
+            region = region_organizationButtons
           };
 
         this.discreteColorPickerCC = new List<ClickableComponent>();
@@ -195,19 +198,19 @@ namespace ChestEx.Types.BaseTypes {
                                                                               36,
                                                                               28),
                                                                 "") {
-            myID            = j + 4343,
+            myID = j + 4343,
             rightNeighborID = j < this.chestColorPicker.totalColors - 1 ? j + 4343 + 1 : -1,
-            leftNeighborID  = j > 0 ? j + 4343 - 1 : -1,
-            downNeighborID  = this.ItemsToGrabMenu != null && this.ItemsToGrabMenu.inventory.Count > 0 ? 53910 : 0
+            leftNeighborID = j > 0 ? j + 4343 - 1 : -1,
+            downNeighborID = this.ItemsToGrabMenu != null && this.ItemsToGrabMenu.inventory.Count > 0 ? 53910 : 0
           });
       }
       else {
         this.chestColorPicker?.exitThisMenu(false);
         this.discreteColorPickerCC?.Clear();
 
-        this.chestColorPicker        = null;
+        this.chestColorPicker = null;
         this.colorPickerToggleButton = null;
-        this.discreteColorPickerCC   = null;
+        this.discreteColorPickerCC = null;
       }
 
       this.fillStacksButton = createFillStacksButton ?
@@ -218,11 +221,11 @@ namespace ChestEx.Types.BaseTypes {
                                       Game1.mouseCursors,
                                       new Rectangle(103, 469, 16, 16),
                                       4f) {
-          myID           = region_fillStacksButton,
-          upNeighborID   = this.colorPickerToggleButton?.myID ?? -500,
+          myID = region_fillStacksButton,
+          upNeighborID = this.colorPickerToggleButton?.myID ?? -500,
           downNeighborID = region_organizeButton,
           leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-          region         = region_organizationButtons
+          region = region_organizationButtons
         } :
         null;
 
@@ -234,27 +237,27 @@ namespace ChestEx.Types.BaseTypes {
                                       Game1.mouseCursors,
                                       new Rectangle(162, 440, 16, 16),
                                       4f) {
-          myID           = region_organizeButton,
-          upNeighborID   = region_fillStacksButton,
+          myID = region_organizeButton,
+          upNeighborID = region_fillStacksButton,
           downNeighborID = region_trashCan,
           leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-          region         = region_organizationButtons
+          region = region_organizationButtons
         } :
         null;
 
       this.ItemsToGrabMenu?.GetBorder(InventoryMenu.BorderSide.Right).ForEach(cc => {
         cc.rightNeighborID = createChestColorPicker ? this.colorPickerToggleButton.myID :
-          createOrganizeButton                      ? this.organizeButton.myID :
-          createFillStacksButton                    ? this.fillStacksButton.myID : ClickableComponent.SNAP_TO_DEFAULT;
+          createOrganizeButton ? this.organizeButton.myID :
+          createFillStacksButton ? this.fillStacksButton.myID : ClickableComponent.SNAP_TO_DEFAULT;
       });
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     /// <summary>
     /// The <see cref="ItemGrabMenu"/>'s bound calculated by custom properties.
@@ -277,7 +280,7 @@ namespace ChestEx.Types.BaseTypes {
     }
 
     // Virtuals:
-  #region Virtuals
+    #region Virtuals
 
     /// <summary>
     /// Sets '<see cref="mIsVisible"/>' and this menu's components' visibility to '<paramref name="isVisible"/>'.
@@ -307,10 +310,10 @@ namespace ChestEx.Types.BaseTypes {
       this.UnregisterInputEvents();
     }
 
-  #endregion
+    #endregion
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     /// <summary>
     /// Override function to return new column count.
@@ -324,9 +327,9 @@ namespace ChestEx.Types.BaseTypes {
     public override void draw(SpriteBatch b) {
       if (!this.mIsVisible) return;
 
-      var   chest_colours    = Colours.GenerateFrom(this.mSourceInventoryOptions.mBackgroundColour);
-      var   backpack_colours = Colours.GenerateFrom(this.mPlayerInventoryOptions.mBackgroundColour);
-      Point mouse_pos        = InputStateEx.gCursorPos.AsXNAPoint();
+      var chest_colours = Colours.GenerateFrom(this.mSourceInventoryOptions.mBackgroundColour);
+      var backpack_colours = Colours.GenerateFrom(this.mPlayerInventoryOptions.mBackgroundColour);
+      Point mouse_pos = InputStateEx.gCursorPos.AsXNAPoint();
 
       if (this.mSourceInventoryOptions.mIsVisible) {
         b.DrawTextureBox(this.mSourceInventoryOptions.mDialogueBoxBounds, chest_colours);
@@ -412,8 +415,8 @@ namespace ChestEx.Types.BaseTypes {
     /// Base implementation calls '<see cref="MenuWithInventory.draw(SpriteBatch, Boolean, Boolean, Int32, Int32, Int32)"/>' if '<see cref="mIsVisible"/>' is true.
     /// </summary>
     [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "Game code")]
-    public override void draw(SpriteBatch b,          Boolean drawUpperPortion = true, Boolean drawDescriptionArea = true, Int32 red = -1,
-                              Int32       green = -1, Int32   blue             = -1) {
+    public override void draw(SpriteBatch b, Boolean drawUpperPortion = true, Boolean drawDescriptionArea = true, Int32 red = -1,
+                              Int32 green = -1, Int32 blue = -1) {
       if (this.mIsVisible) base.draw(b, drawUpperPortion, drawDescriptionArea, red, green, blue);
     }
 
@@ -454,7 +457,7 @@ namespace ChestEx.Types.BaseTypes {
 
     public override void performHoverAction(Int32 x, Int32 y) {
       this.hoveredItem = this.inventory.hover(x, y, this.heldItem);
-      this.hoverText   = this.inventory.hoverText;
+      this.hoverText = this.inventory.hoverText;
       this.hoverAmount = 0;
 
       if (this.trashCan is not null && this.trashCan.containsPoint(x, y)) {
@@ -462,7 +465,7 @@ namespace ChestEx.Types.BaseTypes {
 
         this.trashCanLidRotation = Convert.ToSingle(Math.Min(this.trashCanLidRotation + Math.PI / 48.0f, Math.PI / 2.0f));
         if (this.heldItem is not null && Utility.getTrashReclamationPrice(this.heldItem, Game1.player) > 0) {
-          this.hoverText   = Game1.content.LoadString("Strings\\UI:TrashCanSale");
+          this.hoverText = Game1.content.LoadString("Strings\\UI:TrashCanSale");
           this.hoverAmount = Utility.getTrashReclamationPrice(this.heldItem, Game1.player);
         }
       }
@@ -583,18 +586,18 @@ namespace ChestEx.Types.BaseTypes {
       }
     }
 
-  #endregion
+    #endregion
 
     // ItemGrabMenu submenu options:
-  #region ItemGrabMenu submenu options
+    #region ItemGrabMenu submenu options
 
     public struct InventoryMenuOptions {
       private readonly Action<Boolean> fnSetVisibleExtra;
 
-      public Color     mBackgroundColour;
+      public Color mBackgroundColour;
       public Rectangle mDialogueBoxBounds;
-      public Boolean   mIsVisible;
-      public Single    mBorderScale;
+      public Boolean mIsVisible;
+      public Single mBorderScale;
 
       public void SetVisible(Boolean isVisible) {
         this.mIsVisible = isVisible;
@@ -602,13 +605,13 @@ namespace ChestEx.Types.BaseTypes {
       }
 
       public InventoryMenuOptions(Rectangle dialogueBoxBounds, Color backgroundColour, Boolean isVisible = true, Action<Boolean> setVisibleExtraFunctionality = null,
-                                  Single    borderScale = 1.0f) {
+                                  Single borderScale = 1.0f) {
         this.fnSetVisibleExtra = setVisibleExtraFunctionality;
 
-        this.mBackgroundColour  = backgroundColour;
+        this.mBackgroundColour = backgroundColour;
         this.mDialogueBoxBounds = dialogueBoxBounds;
-        this.mIsVisible         = !isVisible;
-        this.mBorderScale       = borderScale;
+        this.mIsVisible = !isVisible;
+        this.mBorderScale = borderScale;
 
         this.SetVisible(isVisible);
       }
@@ -617,10 +620,10 @@ namespace ChestEx.Types.BaseTypes {
     public InventoryMenuOptions mPlayerInventoryOptions;
     public InventoryMenuOptions mSourceInventoryOptions;
 
-  #endregion
+    #endregion
 
     // Shadowed ItemGrabMenu functions (to redirect to CustomItemGrabMenu):
-  #region Shadowed ItemGrabMenu functions (to redirect to CustomItemGrabMenu)
+    #region Shadowed ItemGrabMenu functions (to redirect to CustomItemGrabMenu)
 
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public new CustomItemGrabMenu setEssential(Boolean essential) {
@@ -634,10 +637,10 @@ namespace ChestEx.Types.BaseTypes {
       this.CreateOrganizationButtons(this.chestColorPicker is not null, this.organizeButton is not null, this.fillStacksButton is not null);
     }
 
-  #endregion
+    #endregion
 
     // Inaccessible 'ItemGrabMenu + bases' fields exposed through reflection properties:
-  #region Inaccessible 'ItemGrabMenu + bases' fields exposed through reflection properties
+    #region Inaccessible 'ItemGrabMenu + bases' fields exposed through reflection properties
 
     public behaviorOnItemSelect mSVBehaviorFunction {
       get => Traverse.Create(this).Field<behaviorOnItemSelect>("behaviorFunction").Value;
@@ -674,12 +677,12 @@ namespace ChestEx.Types.BaseTypes {
       set => Traverse.Create(this).Field<Item>("sourceItem").Value = value;
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     /// <summary>
     /// Called by patched code in the game. Parameters are 1:1 with the original constructor.
@@ -706,20 +709,20 @@ namespace ChestEx.Types.BaseTypes {
 
       // construct ItemGrabMenu, mostly game code albeit slightly modified
       {
-        this.source                       = source;
-        this.mSVMessage                   = message;
-        this.reverseGrab                  = reverseGrab;
-        this.showReceivingMenu            = showReceivingMenu;
-        this.playRightClickSound          = playRightClickSound;
-        this.allowRightClick              = allowRightClick;
+        this.source = source;
+        this.mSVMessage = message;
+        this.reverseGrab = reverseGrab;
+        this.showReceivingMenu = showReceivingMenu;
+        this.playRightClickSound = playRightClickSound;
+        this.allowRightClick = allowRightClick;
         this.inventory.showGrayedOutSlots = true;
-        this.whichSpecialButton           = whichSpecialButton;
-        this.context                      = context;
-        this.mSVBehaviorFunction          = behaviorOnItemSelectFunction;
-        this.behaviorOnItemGrab           = behaviorOnItemGrab;
-        this.canExitOnKey                 = canBeExitedWithKey;
+        this.whichSpecialButton = whichSpecialButton;
+        this.context = context;
+        this.mSVBehaviorFunction = behaviorOnItemSelectFunction;
+        this.behaviorOnItemGrab = behaviorOnItemGrab;
+        this.canExitOnKey = canBeExitedWithKey;
 
-        this.mSVSourceItem                = sourceItem;
+        this.mSVSourceItem = sourceItem;
         this._sourceItemInCurrentLocation = sourceItem != null && Game1.currentLocation.objects.Values.Contains(sourceItem);
 
         // create chest menu
@@ -737,12 +740,12 @@ namespace ChestEx.Types.BaseTypes {
           this.ItemsToGrabMenu.populateClickableComponentList();
 
           foreach (ClickableComponent cc in this.ItemsToGrabMenu.inventory.Where(cc => cc != null)) {
-            cc.myID            += region_itemsToGrabMenuModifier;
-            cc.upNeighborID    += region_itemsToGrabMenuModifier;
+            cc.myID += region_itemsToGrabMenuModifier;
+            cc.upNeighborID += region_itemsToGrabMenuModifier;
             cc.rightNeighborID += region_itemsToGrabMenuModifier;
-            cc.downNeighborID  =  ClickableComponent.CUSTOM_SNAP_BEHAVIOR;
-            cc.leftNeighborID  += region_itemsToGrabMenuModifier;
-            cc.fullyImmutable  =  true;
+            cc.downNeighborID = ClickableComponent.CUSTOM_SNAP_BEHAVIOR;
+            cc.leftNeighborID += region_itemsToGrabMenuModifier;
+            cc.fullyImmutable = true;
           }
         }
 
@@ -770,7 +773,7 @@ namespace ChestEx.Types.BaseTypes {
 
       // construct options
       {
-        Color bg_col                                                                                                                  = Color.White;
+        Color bg_col = Color.White;
         if (this.mSourceType == ExtendedChest.ChestType.WoodenChest || this.mSourceType == ExtendedChest.ChestType.StoneChest) bg_col = this.GetSourceAs<Chest>().GetActualColour();
 
         this.mPlayerInventoryOptions = new InventoryMenuOptions(this.inventory.GetTextureBoxRectangle(), Color.White, true, isVisible => this.inventory.SetVisibleEx(isVisible));
@@ -786,6 +789,6 @@ namespace ChestEx.Types.BaseTypes {
       };
     }
 
-  #endregion
+    #endregion
   }
 }

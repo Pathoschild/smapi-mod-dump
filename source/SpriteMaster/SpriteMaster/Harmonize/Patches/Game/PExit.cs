@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
-static class PExit {
+internal static class PExit {
 	[Harmonize(
 		typeof(StardewValley.InstanceGame),
 		"Exit",

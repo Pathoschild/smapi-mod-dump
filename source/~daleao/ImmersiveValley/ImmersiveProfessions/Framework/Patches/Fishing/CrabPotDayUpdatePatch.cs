@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -24,7 +24,6 @@ using StardewValley.Objects;
 using DaLion.Common.Extensions;
 using Extensions;
 
-using SObject = StardewValley.Object;
 using SUtility = StardewValley.Utility;
 
 #endregion using directives

@@ -22,22 +22,17 @@ namespace Leclair.Stardew.BetterCrafting.Integrations.StackSplitRedux {
 	public class SSRIntegration : BaseAPIIntegration<IStackSplitAPI, ModEntry> {
 
 		public SSRIntegration(ModEntry mod)
-		: base(mod, "pepoluan.StackSplitRedux", "0.15.0") {
+		: base(mod, "pepoluan.StackSplitRedux", "0.14.0") {
 			if (!IsLoaded)
 				return;
 
-			API.RegisterBasicMenu(
-				typeof(BetterCraftingPage),
-				page => (page as BetterCraftingPage)?.inventory,
+			API.RegisterBasicMenu<BetterCraftingPage>(
+				page => page.inventory,
 				page => {
-					if (page is not BetterCraftingPage bcp)
-						return null;
-					return Self.Helper.Reflection.GetField<Item>(bcp, "hoverItem");
+					return Self.Helper.Reflection.GetField<Item>(page, "hoverItem");
 				},
 				page => {
-					if (page is not BetterCraftingPage bcp)
-						return null;
-					return Self.Helper.Reflection.GetField<Item>(bcp, "HeldItem");
+					return Self.Helper.Reflection.GetField<Item>(page, "HeldItem");
 				},
 				null
 			);

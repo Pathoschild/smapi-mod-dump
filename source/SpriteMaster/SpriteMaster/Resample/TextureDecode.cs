@@ -15,17 +15,17 @@ using System;
 
 namespace SpriteMaster.Resample;
 
-static class TextureDecode {
+internal static class TextureDecode {
 	private static class Internal {
-		internal static Span<byte> Decode(Texture2D texture, ReadOnlySpan<byte> data) => Decoder.InternalBlockDecoder.Decode(data, texture.Extent(), texture.Format);
+		internal static Span<byte> Decode(XTexture2D texture, ReadOnlySpan<byte> data) => Decoder.InternalBlockDecoder.Decode(data, texture.Extent(), texture.Format);
 	}
 
 	private static class Graphics {
-		internal static Span<byte> Decode(Texture2D texture, ReadOnlySpan<byte> data) => Decoder.GraphicsBlockDecoder.Decode(data, texture.Extent(), texture.Format);
+		internal static Span<byte> Decode(XTexture2D texture, ReadOnlySpan<byte> data) => Decoder.GraphicsBlockDecoder.Decode(data, texture.Extent(), texture.Format);
 	}
 
 	private static class MonoXNA {
-		internal static Span<byte> Decode(Texture2D texture, ReadOnlySpan<byte> data) => Decoder.MonoBlockDecoder.Decode(data, texture.Extent(), texture.Format);
+		internal static Span<byte> Decode(XTexture2D texture, ReadOnlySpan<byte> data) => Decoder.MonoBlockDecoder.Decode(data, texture.Extent(), texture.Format);
 	}
 
 	private static readonly DecodeDelegate[] PreferredDecoders = new DecodeDelegate[] {
@@ -49,10 +49,10 @@ static class TextureDecode {
 				}
 			}
 			catch {
-				continue;
+				// ignored
 			}
 		}
 
-		throw new InvalidOperationException($"Failed to decode compressed texture data");
+		throw new InvalidOperationException("Failed to decode compressed texture data");
 	}
 }

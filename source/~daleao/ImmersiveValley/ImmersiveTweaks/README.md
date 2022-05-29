@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/smapi-mods**
+**Source repository: https://gitlab.com/daleao/sdv-mods**
 
 ----
 
@@ -37,9 +37,9 @@ Most of these features were originally a part of [Walk Of Life](https://www.nexu
 Features currently included:
 
 (Foraging and Farming-related)
-- Makes Bee House and Tapper produce improve quality with age, following the example of Fruit Trees.
-- Makes Tappers and Berry Bushes reward foraging experience when harvested.
-- Makes Meads take after the flower type of the input Honey item (with support for Better Artisan Good Icons).
+- Makes Bee House, Mushroom Box and Tapper produce improve quality with age, following the example of Fruit Trees. NEW: Quality also considers skill levels.
+- Makes Mushroom Box, Tappers and Berry Bushes reward foraging experience when harvested.
+- Makes Meads take after the flower type of the input Honey item.
 - Makes large Eggs and Milk double the output stack instead of increasing the quality.
 - Prevents Fruit Trees from growing in winter.
 - Allow Botanist/Ecologist perk to apply to hoed Ginger and Coconuts obtained from shaking palm trees.
@@ -52,7 +52,7 @@ All features can be toggled on or off.
 This mod makes use of Harmony to patch several vanilla behaviors. Any SMAPI mods with similar features are obviously **not** compatible.
 
 - [Forage Fantasy](https://www.nexusmods.com/stardewvalley/mods/7554) has several conflicting features﻿, but can be used together with this mod if you pay attention to the configs of both mods.
-
+- Recommended to pair with [Better Artisan Good Icons](https://www.nexusmods.com/stardewvalley/mods/2080) and [Better Artisan Good Icons - Mead Addon](https://www.nexusmods.com/stardewvalley/mods/11911)
 Should be fully compatible with multiplayer.
 
 ## Installation
@@ -65,9 +65,6 @@ To uninstall simply delete the mod from your mods folder. This mod is safe to un
 
 ## Special Thanks
 
-- [SilentOak](https://www.nexusmods.com/stardewvalley/users/66352491) for BAGI mead integration.
-- [cometkins](https://www.nexusmods.com/stardewvalley/users/38715215) for [Better Artisan Goods](https://www.nexusmods.com/stardewvalley/mods/5394).
-- ﻿[eleseaHonu](https://www.nexusmods.com/stardewvalley/users/64516916) for cometkins-style BAGI mead icons.﻿
 - **ConcernedApe** for StardewValley.
 - [JetBrains](https://jb.gg/OpenSource) for providing a free license to their tools.
 

@@ -13,6 +13,9 @@ using StardewValley.Locations;
 
 namespace MoreFertilizers.HarmonyPatches.Acquisition;
 
+/// <summary>
+/// Patches against IslandNorth to put the fertilizer into the shop.
+/// </summary>
 [HarmonyPatch(typeof(IslandNorth))]
 internal static class IslandNorthPatches
 {

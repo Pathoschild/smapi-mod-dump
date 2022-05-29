@@ -1332,7 +1332,7 @@
 
          //Faye Clothes pastel
          "RSV.SpecialOrder.FayeClothes-pastel": {
-            "Name": "[RSV.SpecialOrder.FayeClothes_Name]",
+            "Name": "[RSV.SpecialOrder.FayeClothes_Name-pastel]",
             "Requester": "Faye",
             "Duration": "Week",
             "Repeatable": "true",
@@ -1363,7 +1363,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective1_Text-pastel]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_pink_striped_shirt",
+                    "AcceptedContextTags": "id_c_1027",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1374,7 +1374,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective2_Text-pastel]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_blue_hoodie",
+                    "AcceptedContextTags": "id_c_1161",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1385,7 +1385,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective3_Text-pastel]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_retro_rainbow_shirt",
+                    "AcceptedContextTags": "id_c_1039",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1411,7 +1411,7 @@
 
          //Faye Clothes jackets
          "RSV.SpecialOrder.FayeClothes-jackets": {
-            "Name": "[RSV.SpecialOrder.FayeClothes_Name]",
+            "Name": "[RSV.SpecialOrder.FayeClothes_Name-jackets]",
             "Requester": "Faye",
             "Duration": "Week",
             "Repeatable": "true",
@@ -1442,7 +1442,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective1_Text-jackets]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_letterman_jacket",
+                    "AcceptedContextTags": "id_c_1137",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1453,7 +1453,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective2_Text-jackets]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_black_leather_jacket",
+                    "AcceptedContextTags": "id_c_1138",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1464,7 +1464,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective3_Text-jackets]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_denim_jacket",
+                    "AcceptedContextTags": "id_c_1163",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1490,7 +1490,7 @@
 
          //Faye Clothes misc
          "RSV.SpecialOrder.FayeClothes-misc": {
-            "Name": "[RSV.SpecialOrder.FayeClothes_Name]",
+            "Name": "[RSV.SpecialOrder.FayeClothes_Name-misc]",
             "Requester": "Faye",
             "Duration": "Week",
             "Repeatable": "true",
@@ -1521,7 +1521,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective1_Text-misc]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_orange_gi",
+                    "AcceptedContextTags": "id_c_1166",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1532,7 +1532,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective2_Text-misc]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_darkness_suit",
+                    "AcceptedContextTags": "id_c_1289",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -1543,7 +1543,7 @@
                  "Text": "[RSV.SpecialOrder.FayeClothes_Objective3_Text-misc]",
                  "RequiredCount": "1",
                  "Data": {
-                    "AcceptedContextTags": "item_arcane_shirt",
+                    "AcceptedContextTags": "id_c_1215",
                     "DropBox": "RSVFayeHouse",
                     "DropBoxGameLocation": "Custom_Ridgeside_FayeHouse",
                     "DropBoxIndicatorLocation": "10 13.4",
@@ -2477,7 +2477,7 @@
             "Duration": "Month",
             "Repeatable": "true",
             "RequiredTags": "",
-            "OrderType": "RSVNonexistent",
+            "OrderType": "QF:RSVNonexistent",
             "SpecialRule": "",
             "Text": "[RSV.SpecialOrder.SpiritRealmFlames_Text]",
             "ItemToRemoveOnEnd": null,

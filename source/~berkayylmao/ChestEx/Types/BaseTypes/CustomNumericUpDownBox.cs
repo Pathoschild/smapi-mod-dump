@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -41,7 +41,7 @@ using StardewModdingAPI;
 namespace ChestEx.Types.BaseTypes {
   public sealed class CustomNumericUpDownBox : CustomTextBox {
     // Private:
-  #region Private
+    #region Private
 
     private Int32 minValue { get; }
     private Int32 maxValue { get; }
@@ -49,7 +49,7 @@ namespace ChestEx.Types.BaseTypes {
 
     private Action<Int32> onValueChangedHandler { get; }
 
-    private CustomButton upButton   { get; }
+    private CustomButton upButton { get; }
     private CustomButton downButton { get; }
 
     /// <summary>Executes <paramref name="action"/> if the button is visible and enabled.</summary>
@@ -58,10 +58,10 @@ namespace ChestEx.Types.BaseTypes {
       if (this.downButton.mIsVisible && this.downButton.mData.mIsEnabled) action(this.downButton);
     }
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     /// <summary>Current value</summary>
     public Int32 mValue {
@@ -69,13 +69,13 @@ namespace ChestEx.Types.BaseTypes {
       private set {
         if (this.curValue == value) return;
         this.curValue = Math.Min(this.maxValue, Math.Max(this.minValue, value));
-        this.mText    = this.curValue.ToString();
+        this.mText = this.curValue.ToString();
         this.onValueChangedHandler?.Invoke(this.curValue);
       }
     }
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -142,15 +142,15 @@ namespace ChestEx.Types.BaseTypes {
       });
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
-    public CustomNumericUpDownBox(Rectangle bounds,   Colours colours,      String        label, Int32 minValue,
-                                  Int32     maxValue, Int32   initialValue, Action<Int32> onValueChangedHandler = null)
+    public CustomNumericUpDownBox(Rectangle bounds, Colours colours, String label, Int32 minValue,
+                                  Int32 maxValue, Int32 initialValue, Action<Int32> onValueChangedHandler = null)
       : base(bounds,
              colours,
              label,
@@ -182,16 +182,16 @@ namespace ChestEx.Types.BaseTypes {
                                            this.SelectMe();
                                          });
 
-      this.minValue              = minValue;
-      this.maxValue              = maxValue;
-      this.mValue                = initialValue;
+      this.minValue = minValue;
+      this.maxValue = maxValue;
+      this.mValue = initialValue;
       this.onValueChangedHandler = onValueChangedHandler;
     }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -205,6 +205,6 @@ namespace ChestEx.Types.BaseTypes {
       this.downButton?.Dispose();
     }
 
-  #endregion
+    #endregion
   }
 }

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,6 +14,7 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using StardewModdingAPI.Enums;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -23,6 +24,7 @@ using Extensions;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class PrestigeDayEndingEvent : DayEndingEvent
 {
     public PerScreen<Queue<SkillType>> SkillsToReset { get; } = new(() => new());
@@ -31,6 +33,6 @@ internal class PrestigeDayEndingEvent : DayEndingEvent
     protected override void OnDayEndingImpl(object sender, DayEndingEventArgs e)
     {
         while (SkillsToReset.Value.Any()) Game1.player.ResetSkill(SkillsToReset.Value.Dequeue());
-        Disable();
+        this.Disable();
     }
 }

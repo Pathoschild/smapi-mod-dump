@@ -36,10 +36,16 @@ namespace TehPers.FishingOverhaul.Services
             this.reloadRequested = false;
 
             // Reset fishing data
+            foreach (var manager in this.fishingEffectManagers)
+            {
+                manager.Effect.UnapplyAll();
+            }
+
             this.fishTraits.Clear();
-            this.fishEntries.Clear();
-            this.trashEntries.Clear();
-            this.treasureEntries.Clear();
+            this.fishManagers.Clear();
+            this.trashManagers.Clear();
+            this.treasureManagers.Clear();
+            this.fishingEffectManagers.Clear();
 
             // Create new fishing data
             var newFishTraits =
@@ -259,31 +265,46 @@ namespace TehPers.FishingOverhaul.Services
                 newTreasureEntries.AddRange(
                     content.AddTreasure.Select(entry => (content.ModManifest, entry))
                 );
+
+                // Add fishing effects
+                this.fishingEffectManagers.AddRange(
+                    content.AddEffects.Select(
+                        entry => this.fishingEffectManagerFactory.Create(content.ModManifest, entry)
+                    )
+                );
             }
 
             // Update fishing data
-            this.fishTraits = newFishTraits.ToDictionary(
-                item => item.Key,
-                entry => entry.Value.traits
-            );
-            this.fishEntries = newFishEntries.Select(
+            foreach (var (k, v) in newFishTraits)
+            {
+                this.fishTraits.Add(k, v.traits);
+            }
+
+            this.fishManagers.AddRange(
+                newFishEntries.Select(
                     item => this.fishEntryManagerFactory.Create(item.sourceMod, item.fish)
                 )
-                .ToList();
-            this.trashEntries = newTrashEntries.Select(
+            );
+            this.trashManagers.AddRange(
+                newTrashEntries.Select(
                     item => this.trashEntryManagerFactory.Create(item.sourceMod, item.trash)
                 )
-                .ToList();
-            this.treasureEntries = newTreasureEntries.Select(
+            );
+            this.treasureManagers.AddRange(
+                newTreasureEntries.Select(
                     item => this.treasureEntryManagerFactory.Create(item.sourceMod, item.treasure)
                 )
-                .ToList();
+            );
 
             // Log the loaded content
             this.monitor.Log($"Loaded {this.fishTraits.Count} fish traits.", LogLevel.Info);
-            this.monitor.Log($"Loaded {this.fishEntries.Count} fish.", LogLevel.Info);
-            this.monitor.Log($"Loaded {this.trashEntries.Count} trash.", LogLevel.Info);
-            this.monitor.Log($"Loaded {this.treasureEntries.Count} treasure.", LogLevel.Info);
+            this.monitor.Log($"Loaded {this.fishManagers.Count} fish.", LogLevel.Info);
+            this.monitor.Log($"Loaded {this.trashManagers.Count} trash.", LogLevel.Info);
+            this.monitor.Log($"Loaded {this.treasureManagers.Count} treasure.", LogLevel.Info);
+            this.monitor.Log(
+                $"Loaded {this.fishingEffectManagers.Count} fishing effects.",
+                LogLevel.Info
+            );
         }
     }
 }

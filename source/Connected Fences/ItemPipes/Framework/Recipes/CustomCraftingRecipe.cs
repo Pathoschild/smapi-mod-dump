@@ -32,11 +32,14 @@ namespace ItemPipes.Framework.Recipes
         public string Product { get; set; }
         public CustomCraftingRecipe(string name) : base(name)
         {
+
         }
+
         public CustomCraftingRecipe(string name, bool isCookingRecipe) : base(name, isCookingRecipe)
         {
 			DataAccess DataAccess = DataAccess.GetDataAccess();
-			IDName = DataAccess.ItemIDNamesFromNames[name];
+			IDName = Utilities.GetIDName(name);
+			this.DisplayName = DataAccess.ItemNames[IDName];
 			ItemTexture = DataAccess.Sprites[IDName+"_Item"];
 			description = DataAccess.ItemDescriptions[IDName];
 			this.isCookingRecipe = isCookingRecipe;
@@ -73,16 +76,8 @@ namespace ItemPipes.Framework.Recipes
 					this.itemType = infoSplit[3];
 				}
 			}
-			try
-			{
-				//Get from db
-				this.description = "TEST DESCRIPTION";
-			}
-			catch (Exception)
-			{
-				this.description = "";
-			}
 			this.timesCrafted = (Game1.player.craftingRecipes.ContainsKey(name) ? Game1.player.craftingRecipes[name] : 0);
+			/*
 			if (LocalizedContentManager.CurrentLanguageCode != 0)
 			{
 				this.DisplayName = infoSplit[infoSplit.Length - 1];
@@ -91,6 +86,7 @@ namespace ItemPipes.Framework.Recipes
 			{
 				this.DisplayName = name;
 			}
+			*/
 		}
 
 
@@ -138,19 +134,23 @@ namespace ItemPipes.Framework.Recipes
 				}
 				string ingredient_name_text = this.getNameFromIndex(this.recipeList.Keys.ElementAt(i));
 				Color drawColor = ((required_count <= 0) ? Game1.textColor : Color.Red);
-				if (dataAccess.ItemIDNames.Contains(ingredient_name_text))
+				Vector2 text_draw_position = new Vector2(position.X + 32f + 8f, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4) + 4f);
+				if (dataAccess.ItemIDNames.Contains(Utilities.GetIDName(ingredient_name_text)))
                 {
 					Rectangle srcRect = new Rectangle(0, 0, 16, 16);
 					Texture2D IngredientTexture = dataAccess.Sprites[ingredient_name_text + "_Item"];
 					b.Draw(IngredientTexture, new Vector2(position.X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4)), srcRect, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.86f);
+					Utility.drawTinyDigits(this.recipeList.Values.ElementAt(i), b, new Vector2(position.X + 32f - Game1.tinyFont.MeasureString(string.Concat(this.recipeList.Values.ElementAt(i))).X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4) + 21f), 2f, 0.87f, Color.AntiqueWhite);
+					string customName = dataAccess.ItemNames[ingredient_name_text];
+					Utility.drawTextWithShadow(b, customName, Game1.smallFont, text_draw_position, drawColor);
 				}
 				else
                 {
 					b.Draw(Game1.objectSpriteSheet, new Vector2(position.X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, this.getSpriteIndexFromRawIndex(this.recipeList.Keys.ElementAt(i)), 16, 16), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0.86f);
+					Utility.drawTinyDigits(this.recipeList.Values.ElementAt(i), b, new Vector2(position.X + 32f - Game1.tinyFont.MeasureString(string.Concat(this.recipeList.Values.ElementAt(i))).X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4) + 21f), 2f, 0.87f, Color.AntiqueWhite);
+					Utility.drawTextWithShadow(b, ingredient_name_text, Game1.smallFont, text_draw_position, drawColor);
 				}
-				Utility.drawTinyDigits(this.recipeList.Values.ElementAt(i), b, new Vector2(position.X + 32f - Game1.tinyFont.MeasureString(string.Concat(this.recipeList.Values.ElementAt(i))).X, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4) + 21f), 2f, 0.87f, Color.AntiqueWhite);
-				Vector2 text_draw_position = new Vector2(position.X + 32f + 8f, position.Y + 64f + (float)(i * 64 / 2) + (float)(i * 4) + 4f);
-				Utility.drawTextWithShadow(b, ingredient_name_text, Game1.smallFont, text_draw_position, drawColor);
+
 				if (Game1.options.showAdvancedCraftingInformation)
 				{
 					text_draw_position.X = position.X + (float)width - 40f;
@@ -185,8 +185,9 @@ namespace ItemPipes.Framework.Recipes
 			}
 			if(index >= DataAccess.GetDataAccess().ItemIDs["IronPipe"])
             {
-				string IDName = DataAccess.GetDataAccess().ItemIDs.FirstOrDefault(x => x.Value == index).Key;
-				retString = DataAccess.GetDataAccess().ItemNames[IDName];
+				/*string IDName = DataAccess.GetDataAccess().ItemIDs.FirstOrDefault(x => x.Value == index).Key;
+				retString = DataAccess.GetDataAccess().ItemNames[IDName];*/
+				retString = DataAccess.GetDataAccess().ItemIDs.FirstOrDefault(x => x.Value == index).Key;
 			}
 			return retString;
 		}

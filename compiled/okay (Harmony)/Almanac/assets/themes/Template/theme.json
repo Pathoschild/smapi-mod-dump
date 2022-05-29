@@ -1,0 +1,101 @@
+{
+	"$schema": "https://raw.githubusercontent.com/KhloeLeclair/StardewMods/main/Almanac/theme-schema.json",
+	"Name": "Theme Template",
+	"For": [
+		"Some.Mod.Id.Here",
+		"You.Can.Have.More.Than.One"
+	],
+
+	// Colors can be entered with color names (from the System.Drawing.Colors
+	// enum names list), hex values, or objects with R, G, B, and A keys.
+	"CoverTextColor": null,
+	"CoverYearColor": "red",
+
+	// If set to true, the mouse will be drawn with sprites from the
+	// Menu.png file. Otherwise, the default mouse will be used.
+	"CustomMouse": false,
+
+	// Standard applies to pages with the standard Almanac theme.
+	"Standard": {
+		// If CustomScroll is enabled, the scrollbar will be drawn using
+		// sprites from the Menu.png file. Otherwise, it'll use the
+		// game's main texture.
+		"CustomScroll": false,
+
+		// If CustomTooltip is enabled, tooltips will be drawn using
+		// sprites from the Menu.png file. Otherwise, it'll use the
+		// game's main texture.
+		"CustomTooltip": false,
+
+		// The scroll offset top and bottom numbers let you add margins
+		// around the right page's scrollbar so that it doesn't overlap
+		// with decorative background elements. You should avoid making
+		// these too large to maintain a healthy scrollbar size.
+		"ScrollOffsetTop": 16,
+		"ScrollOffsetBottom": 0,
+
+		"SeasonTextColor": null,
+
+		// The rest of the colors can be entered with color names (from
+		// the System.Drawing.Color enum names list), hex values, or
+		// objects with R, G, B, and A keys.
+
+		// The Calendar Label color is for the day of the week labels
+		// (M,T,W,etc.) at the top of the calendar.
+		"CalendarLabelColor": "#221122",
+
+		// And the Calendar Day color is for individual day numbers.
+		"CalendarDayColor": "#221122",
+
+		// Calendar Dim Color is used to color a rectangle that's drawn
+		// over calendar days that are in the past to dim them out.
+		// We use a separate opacity field here because transparent
+		// rendering is a bit odd.
+		"CalendarDimColor": {
+			"R": 128,
+			"G": 128,
+			"B": 128
+		},
+		"CalendarDimOpacity": 0.35,
+
+		// Calendar Highlight Color is used to color the rectangle that's
+		// drawn over the current day to highlight it.
+		"CalendarHighlightColor": "blue",
+
+		// Text Color is the primary color of all text that hasn't been
+		// given a different color using rich formatting.
+		"TextColor": "#221122",
+
+		// And Text Shadow Color is the shadow color of all text that
+		// hasn't been given a different shadow color using rich formatting.
+		"TextShadowColor": "#CE9C5F"
+	},
+
+	// Magic applies to pages with the magic Almanac theme.
+	"Magic": {
+		// As a note, there are two sets of scroll widgets in the Menu
+		// texture sheet. Magic always uses one, and Standard always
+		// uses the other.
+		"CustomScroll": true,
+		"CustomTooltip": true,
+
+		"ScrollOffsetTop": 32,
+		"ScrollOffsetBottom": -32,
+
+		"SeasonTextColor": "white",
+
+		"CalendarLabelColor": "skyblue",
+		"CalendarDayColor": "lightskyblue",
+
+		"CalendarDimColor": {
+			"R": 0,
+			"G": 0,
+			"B": 0
+		},
+		"CalendarDimOpacity": 0.4,
+		"CalendarHighlightColor": "blue",
+
+		"TextColor": "white",
+		"TextShadowColor": "#131039"
+	}
+}

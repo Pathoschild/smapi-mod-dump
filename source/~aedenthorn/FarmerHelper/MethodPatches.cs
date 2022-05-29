@@ -80,7 +80,7 @@ namespace FarmerHelper
 
             foreach (var terrainFeature in Game1.getFarm().terrainFeatures.Values)
             {
-                if (terrainFeature is HoeDirt && Config.WarnAboutPlantsUnwateredBeforeSleep && (terrainFeature as HoeDirt).crop != null && !(terrainFeature as HoeDirt).hasPaddyCrop() && (terrainFeature as HoeDirt).state.Value == 0 && (terrainFeature as HoeDirt).crop.currentPhase.Value >= (terrainFeature as HoeDirt).crop.phaseDays.Count - 1)
+                if (terrainFeature is HoeDirt && Config.WarnAboutPlantsUnwateredBeforeSleep && (terrainFeature as HoeDirt).crop != null && !(terrainFeature as HoeDirt).hasPaddyCrop() && (terrainFeature as HoeDirt).state.Value == 0 && (terrainFeature as HoeDirt).crop.currentPhase.Value < (terrainFeature as HoeDirt).crop.phaseDays.Count - 1)
                 {
                     question = string.Format(SHelper.Translation.Get("plants-need-watering"), question);
                     break;
@@ -107,7 +107,7 @@ namespace FarmerHelper
                 bool found = false;
                 foreach (FarmAnimal animal in Game1.getFarm().Animals.Values)
                 {
-                    if (animal.currentProduce.Value > 0)
+                    if (animal.currentProduce.Value > 0 && !animal.type.Value.Contains("Pig"))
                     {
                         question = string.Format(SHelper.Translation.Get("animals-need-harvesting"), question);
                         found = true;
@@ -124,7 +124,7 @@ namespace FarmerHelper
                             continue;
                         foreach(FarmAnimal animal in (building.indoors.Value as AnimalHouse).animals.Values)
                         {
-                            if (animal.currentProduce.Value > 0)
+                            if (animal.currentProduce.Value > 0 && !animal.type.Value.Contains("Pig"))
                             {
                                 question = string.Format(SHelper.Translation.Get("animals-need-harvesting"), question);
                                 found = true;

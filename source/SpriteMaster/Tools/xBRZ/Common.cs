@@ -14,7 +14,7 @@ using System.Drawing.Imaging;
 
 namespace xBRZ;
 
-static class Common {
+internal static class Common {
 	internal static readonly SpriteMaster.Colors.ColorSpace ColorSpace = SpriteMaster.Colors.ColorSpace.sRGB_Precise;
 
 	internal static unsafe Span<Color8> ReadFile(Uri path, out Vector2I size) {
@@ -32,7 +32,7 @@ static class Common {
 
 		var imageData = image.LockBits(new Rectangle(Point.Empty, image.Size), ImageLockMode.ReadOnly, image.PixelFormat);
 
-		var imageSpan = SpanExt.MakeUninitialized<Color8>(image.Width * image.Height);
+		var imageSpan = SpanExt.Make<Color8>(image.Width * image.Height);
 		var sourceSize = imageData.Height * imageData.Stride;
 		var sourceData = new ReadOnlySpan<byte>(imageData.Scan0.ToPointer(), sourceSize).Cast<Color8>();
 		int destOffset = 0;

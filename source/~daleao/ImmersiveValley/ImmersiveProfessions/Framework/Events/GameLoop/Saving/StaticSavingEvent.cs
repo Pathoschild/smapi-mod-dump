@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -30,7 +30,7 @@ internal class StaticSavingEvent : SavingEvent
     /// <summary>Construct an instance.</summary>
     internal StaticSavingEvent()
     {
-        Enable();
+        this.Enable();
     }
 
     /// <inheritdoc />

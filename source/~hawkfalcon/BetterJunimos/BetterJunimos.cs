@@ -49,9 +49,9 @@ namespace BetterJunimos {
             Util.Payments = new JunimoPayments(Config.JunimoPayment);
             Util.Progression = new JunimoProgression(ModManifest, Monitor, Helper);
             Util.Greenhouse = new JunimoGreenhouse(ModManifest, Monitor, Helper);
-
-            helper.Content.AssetEditors.Add(new JunimoEditor(helper.Content));
-            helper.Content.AssetEditors.Add(new BlueprintEditor());
+            
+            helper.Events.Content.AssetRequested += BlueprintEditor.OnAssetRequested;
+            helper.Events.Content.AssetRequested += JunimoEditor.OnAssetRequested;
 
             helper.Events.GameLoop.OneSecondUpdateTicked += Util.Progression.ConfigureFromWizard;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
@@ -630,8 +630,10 @@ namespace BetterJunimos {
         // save config.json and invalidate caches
         internal static void SaveConfig() {
             SHelper.WriteConfig(Config);
-            SHelper.Content.InvalidateCache(@"Characters\Junimo");
-            SHelper.Content.InvalidateCache(@"Data/Blueprints");
+            SHelper.GameContent.InvalidateCache("Characters/Junimo");
+            SHelper.GameContent.InvalidateCache($"Characters/Junimo.{SHelper.Translation.Locale}");
+            SHelper.GameContent.InvalidateCache("Data/Blueprints");
+            SHelper.GameContent.InvalidateCache($"Data/Blueprints.{SHelper.Translation.Locale}");
         }
 
         private static void AllowJunimoHutPurchasing() {

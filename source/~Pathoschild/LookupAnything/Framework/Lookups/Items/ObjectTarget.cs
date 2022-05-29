@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,7 +29,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Items
         private readonly IReflectionHelper Reflection;
 
         /// <summary>The item sprite.</summary>
-        private readonly SpriteInfo CustomSprite;
+        private readonly SpriteInfo? CustomSprite;
 
 
         /*********

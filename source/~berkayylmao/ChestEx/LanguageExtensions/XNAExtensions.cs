@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -36,6 +36,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using SkiaSharp;
+
 namespace ChestEx.LanguageExtensions {
   public static class XNAExtensions {
     public static Boolean NearlyEquals(this Vector2 lhs, Vector2 rhs) { return lhs.X.NearlyEquals(rhs.X) && lhs.Y.NearlyEquals(rhs.Y); }
@@ -43,7 +45,7 @@ namespace ChestEx.LanguageExtensions {
     public static Boolean Contains(this Rectangle rect, Vector2 vector2) { return rect.Contains(vector2.AsXNAPoint()); }
 
     public static Rectangle Scale(this Rectangle rect, Single scale) {
-      Int32 width_diff  = (Int32)(rect.Width * (scale - 1.0f));
+      Int32 width_diff = (Int32)(rect.Width * (scale - 1.0f));
       Int32 height_diff = (Int32)(rect.Height * (scale - 1.0f));
       return new Rectangle(rect.X - width_diff / 2, rect.Y - height_diff / 2, rect.Width + width_diff, rect.Height + height_diff);
     }
@@ -73,8 +75,9 @@ namespace ChestEx.LanguageExtensions {
       sFontSizeCache[font] = font.MeasureString("T").AsXNAPoint();
       return sFontSizeCache[font];
     }
-
-    public static System.Drawing.Color AsDotNetColor(this Color colour) { return System.Drawing.Color.FromArgb(colour.A, colour.R, colour.G, colour.B); }
+    public static SKColor AsSKColor(this Color colour) {
+      return new SKColor(colour.R, colour.G, colour.B, colour.A);
+    }
 
     public static String AsHexCode(this Color colour) { return $"{colour.R:X2}{colour.G:X2}{colour.B:X2}"; }
 
@@ -104,12 +107,12 @@ namespace ChestEx.LanguageExtensions {
       var orig_colours = new Color[texture.Width * texture.Height];
       texture.GetData(orig_colours);
       // prep grayscale texture
-      var new_colors  = new Color[texture.Width * texture.Height];
+      var new_colors = new Color[texture.Width * texture.Height];
       var new_texture = new Texture2D(device, texture.Width, texture.Height);
 
       for (Int32 i = 0; i < texture.Width; i++) {
         for (Int32 j = 0; j < texture.Height; j++) {
-          Int32 index          = i + j * texture.Width;
+          Int32 index = i + j * texture.Width;
           Color original_color = orig_colours[index];
           Single gray_scale = (original_color.R / 255.0f * 0.30f + original_color.G / 255.0f * 0.59f + original_color.B / 255.0f * 0.11f + original_color.A / 255.0f * 0.79f)
                               / 1.79f;
@@ -121,16 +124,16 @@ namespace ChestEx.LanguageExtensions {
       return new_texture;
     }
 
-    public static void DrawStringEx(this SpriteBatch spriteBatch,           SpriteFont font,                       String text,                    Vector2 position,
-                                    Color            textColour,            Single     textAlpha        = 1.0f,    Single layerDepth      = -1.0f, Boolean drawShadow = false,
-                                    Single           shadowDistance = 2.0f, Color      textShadowColour = default, Single textShadowAlpha = 0.45f, Single  scale      = 1.0f) {
+    public static void DrawStringEx(this SpriteBatch spriteBatch, SpriteFont font, String text, Vector2 position,
+                                    Color textColour, Single textAlpha = 1.0f, Single layerDepth = -1.0f, Boolean drawShadow = false,
+                                    Single shadowDistance = 2.0f, Color textShadowColour = default, Single textShadowAlpha = 0.45f, Single scale = 1.0f) {
       if (layerDepth.Equals(-1.0f)) layerDepth = position.Y / 20000.0f;
-      Vector2 origin                           = font.MeasureString(text) * 0.5f;
+      Vector2 origin = font.MeasureString(text) * 0.5f;
       position += origin;
 
       if (drawShadow) {
         if (textShadowColour == default) textShadowColour = textColour.MultRGB(0.5f);
-        Color shadow_colour                               = textShadowColour.MultAlpha(textShadowAlpha);
+        Color shadow_colour = textShadowColour.MultAlpha(textShadowAlpha);
 
         spriteBatch.DrawString(font,
                                text,
@@ -172,9 +175,9 @@ namespace ChestEx.LanguageExtensions {
                              layerDepth);
     }
 
-    public static void DrawStringEx(this SpriteBatch spriteBatch,           SpriteFont font,                       StringBuilder text, Vector2 position,
-                                    Color            textColour,            Single     textAlpha        = 1.0f,    Single        layerDepth = -1.0f, Boolean drawShadow = false,
-                                    Single           shadowDistance = 2.0f, Color      textShadowColour = default, Single        textShadowAlpha = 0.45f, Single scale = 1.0f) {
+    public static void DrawStringEx(this SpriteBatch spriteBatch, SpriteFont font, StringBuilder text, Vector2 position,
+                                    Color textColour, Single textAlpha = 1.0f, Single layerDepth = -1.0f, Boolean drawShadow = false,
+                                    Single shadowDistance = 2.0f, Color textShadowColour = default, Single textShadowAlpha = 0.45f, Single scale = 1.0f) {
       DrawStringEx(spriteBatch,
                    font,
                    text.ToString(),

@@ -24,6 +24,7 @@ This mod prevents trash from consuming bait. Additionally, it adds automatic rep
 3. `SameBaitOnly`: Replacement bait have to be the same type as the one used up.
 4. `ConsumeChanceNormal`: The probability that a fishing rod without the Preserving enchantment consumes bait/tackle. (Default: 1 = 100%)
 5. `ConsumeChancePreserving`: The probability that a fishing rod with the Preserving enchantment consumes bait/tackle. (Default: 0.5 = 50%)
+6. `CrabPotTrashDoesNotEatBait`: Whether crab pot trash should eat bait.
 
 ## Compatibility
 

@@ -10,6 +10,47 @@ for queries and analysis.**
 
 Changelog for [Teh's Fishing Overhaul].
 
+## 3.3.1 - 2022-05-22
+
+### Fixed
+
+- Fix NullReferenceException in FishingEffectApplier
+
+## 3.3.0 - 2022-05-20
+
+### Added
+
+- Add two new Content Patcher tokens: `ActiveBait` and `ActiveBobber`. They get the current bait and
+  bobber used by the main player.
+- Add priority tiers to `AvailabilityInfo`. When selecting a fish/trash/treasure, only the entries
+  that have the highest priority tier from the set of available entries will be considered.
+- Add a `tfo_export` console command to export all registered fish/trash/treasure entries to a file.
+- Add an option to show trash entries in the fishing HUD.
+
+### Changed
+
+- **(Breaking)** `MinDepth` and `MaxDepth` in `AvailabilityInfo` are renamed to `MinBobberDepth` and
+  `MaxBobberDepth`. Using the old names will still work but will give a deprecation warning in the
+  logs.
+- **(Breaking)** `MaxDepth` in `FishAvailabilityInfo` is renamed to `MaxChanceDepth`. Using the
+  old names will still work but will give a deprecation warning in the logs.
+- The above two changes mean fish entries in content packs can now use both `MaxBobberDepth` and
+  `MaxChanceDepth` at the same time rather than only `MaxChanceDepth`.
+- Some records in the fishing API now have private constructors to ensure subtypes of them cannot be
+  created aside from the ones built into the API.
+- Updated schema URL in the content pack docs to point to the raw schema.
+- **(Breaking)** `AvailabilityInfo.GetWeightedChance` is deprecated in favor of a new method named
+  `Availability.GetChance`. The new method no longer returns a `double?`. Instead,
+  `AvailabilityConditions.IsAvailable` should be used to check if conditions are available
+  (ignoring CP conditions).
+
+### Fixed
+
+- Fix several items not being guaranteed catches (now that priority tiers are added).
+- Fix fossilized spine not being catchable.
+- Fix legendary fish being catchable during Qi's Extended Family.
+- Fix legendary II fish having the same season and weather requirements as their counterparts.
+
 ## 3.2.7 - 2021-12-31
 
 ### Changed

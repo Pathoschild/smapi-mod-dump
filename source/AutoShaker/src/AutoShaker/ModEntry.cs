@@ -63,17 +63,17 @@ namespace AutoShaker
 
 			if (_config.ShakeRegularTrees || _config.ShakeFruitTrees)
 			{
-				var trees = Game1.player.currentLocation.terrainFeatures.Pairs
+				var terrainFeatures = Game1.player.currentLocation.terrainFeatures.Pairs
 					.Select(p => p.Value)
-					.Where(v => v is Tree || v is FruitTree);
+					.Where(v => v is Tree || v is FruitTree || v is Bush);
 
-				foreach (var tree in trees)
+				foreach (var feature in terrainFeatures)
 				{
-					var featureTileLocation = tree.currentTileLocation;
+					var featureTileLocation = feature.currentTileLocation;
 
 					if (!IsInShakeRange(playerTileLocationPoint, featureTileLocation, playerMagnetism)) continue;
 
-					switch (tree)
+					switch (feature)
 					{
 						// Tree cases
 						case Tree _ when !_config.ShakeRegularTrees:
@@ -105,6 +105,19 @@ namespace AutoShaker
 							_fruitTressShaken += 1;
 							break;
 
+						case Bush _ when !_config.ShakeTeaBushes:
+							continue;
+						case Bush bushFeature when bushFeature.townBush.Value:
+							continue;
+						case Bush bushFeature when !bushFeature.isActionable():
+							continue;
+						case Bush bushFeature when !bushFeature.inBloom(Game1.currentSeason, Game1.dayOfMonth):
+							continue;
+						case Bush bushFeature:
+							bushFeature.performUseAction(featureTileLocation, Game1.player.currentLocation);
+							_shakenBushes.Add(bushFeature);
+							break;
+
 						// This should never happen
 						default:
 							Monitor.Log("I am an unknown terrain feature, ignore me I guess...", LogLevel.Debug);
@@ -115,9 +128,9 @@ namespace AutoShaker
 
 			if (_config.ShakeBushes)
 			{
-				var bushes = Game1.player.currentLocation.largeTerrainFeatures.Where(feature => feature is Bush);
+				var largeBushes = Game1.player.currentLocation.largeTerrainFeatures.Where(feature => feature is Bush);
 
-				foreach (var bush in bushes)
+				foreach (var bush in largeBushes)
 				{
 					var location = bush.tilePosition;
 
@@ -126,7 +139,7 @@ namespace AutoShaker
 
 					switch (bush)
 					{
-						// Bush cases
+						// Large Bush cases
 						case Bush bushFeature when bushFeature.townBush.Value:
 							continue;
 						case Bush bushFeature when !bushFeature.isActionable():

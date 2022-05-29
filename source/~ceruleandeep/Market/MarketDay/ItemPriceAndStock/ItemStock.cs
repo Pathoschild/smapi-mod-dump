@@ -49,7 +49,7 @@ namespace MarketDay.ItemPriceAndStock
             DefaultSellPriceMultiplier = defaultSellPriceMultiplier;
             PriceMultiplierWhen = priceMultiplierWhen;
 
-            if (Quality < 0 || Quality == 3 || Quality > 4)
+            if (Quality is < 0 or 3 or > 4)
             {
                 Quality = 0;
                 MarketDay.Log("Item quality can only be 0,1,2, or 4. Defaulting to 0", LogLevel.Warn);
@@ -62,7 +62,7 @@ namespace MarketDay.ItemPriceAndStock
             {
                 StockPrice = price;
             }
-            this._priceMultiplierWhen = priceMultiplierWhen;
+            _priceMultiplierWhen = priceMultiplierWhen;
 
             if (IsRecipe)
                 Stock = 1;
@@ -89,14 +89,14 @@ namespace MarketDay.ItemPriceAndStock
             _itemPriceAndStock = new Dictionary<ISalable, int[]>();
             _builder.SetItemPriceAndStock(_itemPriceAndStock);
 
-            double pricemultiplier = 1;
+            double priceMultiplier = 1;
             if (_priceMultiplierWhen != null)
             {
                 foreach (KeyValuePair<double,string[]> kvp in _priceMultiplierWhen)
                 {
                     if (APIs.Conditions.CheckConditions(kvp.Value))
                     {
-                        pricemultiplier = kvp.Key;
+                        priceMultiplier = kvp.Key;
                         break;
                     }
                 }
@@ -104,8 +104,8 @@ namespace MarketDay.ItemPriceAndStock
 
             if (ItemType != "Seed")
             {
-                AddById(pricemultiplier);
-                AddByName(pricemultiplier);
+                AddById(priceMultiplier);
+                AddByName(priceMultiplier);
             }
             else
             {
@@ -117,7 +117,7 @@ namespace MarketDay.ItemPriceAndStock
                         "ItemType of \"Seed\" is a special itemtype used for parsing Seeds from JA Pack crops and trees and does not support input via Name. If adding seeds via Name, please use the ItemType \"Object\" instead to directly sell the seeds/saplings", LogLevel.Trace);
             }
 
-            AddByJAPack(pricemultiplier);
+            AddByJAPack(priceMultiplier);
 
             ItemsUtil.RandomizeStock(_itemPriceAndStock, MaxNumItemsSoldInItemStock);
             return _itemPriceAndStock;
@@ -126,28 +126,28 @@ namespace MarketDay.ItemPriceAndStock
         /// <summary>
         /// Add all items listed in the ItemIDs section
         /// </summary>
-        private void AddById(double pricemultiplier)
+        private void AddById(double priceMultiplier)
         {
             if (ItemIDs == null)
                 return;
 
             foreach (var itemId in ItemIDs)
             {
-                _builder.AddItemToStock(itemId, pricemultiplier);
+                _builder.AddItemToStock(itemId, priceMultiplier);
             }
         }
 
         /// <summary>
         /// Add all items listed in the ItemNames section
         /// </summary>
-        private void AddByName(double pricemultiplier)
+        private void AddByName(double priceMultiplier)
         {
             if (ItemNames == null)
                 return;
 
             foreach (var itemName in ItemNames)
             {
-                _builder.AddItemToStock(itemName, pricemultiplier);
+                _builder.AddItemToStock(itemName, priceMultiplier);
             }
 
         }
@@ -155,7 +155,7 @@ namespace MarketDay.ItemPriceAndStock
         /// <summary>
         /// Add all items from the JA Packs listed in the JAPacks section
         /// </summary>
-        private void AddByJAPack(double pricemultiplier)
+        private void AddByJAPack(double priceMultiplier)
         {
             if (JAPacks == null)
                 return;
@@ -181,7 +181,7 @@ namespace MarketDay.ItemPriceAndStock
                             if (ExcludeFromJAPacks != null && ExcludeFromJAPacks.Contains(crop)) continue;
                             int id = ItemsUtil.GetSeedId(crop);
                             if (id >0)
-                                _builder.AddItemToStock(id, pricemultiplier);
+                                _builder.AddItemToStock(id, priceMultiplier);
                         }
                     }
 
@@ -193,7 +193,7 @@ namespace MarketDay.ItemPriceAndStock
                             if (ExcludeFromJAPacks != null && ExcludeFromJAPacks.Contains(tree)) continue;
                             int id = ItemsUtil.GetSaplingId(tree);
                             if (id > 0)
-                                _builder.AddItemToStock(id, pricemultiplier);
+                                _builder.AddItemToStock(id, priceMultiplier);
                         }
                     }
 
@@ -210,7 +210,7 @@ namespace MarketDay.ItemPriceAndStock
                 foreach (string itemName in packs)
                 {
                     if (ExcludeFromJAPacks != null && ExcludeFromJAPacks.Contains(itemName)) continue;
-                    _builder.AddItemToStock(itemName, pricemultiplier);
+                    _builder.AddItemToStock(itemName, priceMultiplier);
                 }
             }
         }

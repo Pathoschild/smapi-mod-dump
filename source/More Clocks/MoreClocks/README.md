@@ -23,7 +23,9 @@ A mod that adds 2 additional Clock buildings (Iridium and Radioactive) to the Wi
 
 ## How To Use:
 1. Run the game using SMAPI.
-2. Gold Clock gives you additional 25% more gold for selling items through the Shipping Bin.
-4. Iridium Clock allows you to plant any seeds any season on your farm. It also gives a 25% chance to at the end of each day of Speeding Up all of the machines currently running, meaning their time to finish producing an item is reduced by 25%.
-5. Radioactive Clock gives a 25% chance to any crop on your farm (not Greenhouse and Ginger Island) to become Fully Grown overnight. It also increases the chance of getting Giant Crops (Vanilla Crops only) to 25%.
-6. Enjoy!
+2. This mod adds 2 new Clock Buildings to the game as well as giving the Gold Clock one new effect.
+3. All Clock options can be changed either by editing the config.json file or using Generic Mod Config Menu﻿
+4. Gold Clock - ﻿Gives you additional % more gold for selling items through the Shipping Bin. This works the same as the Profit Margin﻿ modifier when you start a new Multiplayer game.
+﻿5. Iridium Clock - Allows you to plant any seeds any season on your farm. It also gives a %﻿ chance at the end of each day of Speeding Up all of the machines currently running, meaning their time to finish producing an item is reduced by %﻿. Currently it costs 10 million gold and 100 Iridium Bars.
+﻿6. Radioactive Clock - Gives a %﻿ chance to any crop on your farm (not Greenhouse and Ginger Island) to "mutate" and become Fully Grown overnight :) or to grow by one "growth phase". It also increases the chance of getting Giant Crops (Vanilla Crops only) to set %﻿. ﻿Currently it costs 10 million gold and 100 Radioactive Bars.
+7. Enjoy!

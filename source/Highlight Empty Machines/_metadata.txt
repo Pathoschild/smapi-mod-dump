@@ -6,9 +6,9 @@ mods:
    Highlight Empty Machines
 
 latest commit:
-   commit 559c9cfa62ac349a4dad2f0c9ee5fbbca5e01174
+   commit a16a44d4624239f5553a223ce346025800f273ae
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Thu Apr 21 11:20:42 2022 -0400
+   Date:   Sat May 7 07:42:40 2022 -0400
    
-       cleanup?
+       update changelog
    

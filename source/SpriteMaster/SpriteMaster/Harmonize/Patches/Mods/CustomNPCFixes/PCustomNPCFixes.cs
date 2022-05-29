@@ -18,22 +18,22 @@ using System.Threading.Tasks;
 
 namespace SpriteMaster.Harmonize.Patches.Mods.CustomNPCFixes;
 
-static class PCustomNPCFixes {
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+internal static class PCustomNPCFixes {
 	[Harmonize(
 		"CustomNPCFixes",
 		"CustomNPCFixes.Mod",
 		"FixSchedules",
 		fixation: Harmonize.Fixation.Prefix,
 		priority: Harmonize.PriorityLevel.Last,
-		critical: false
+		critical: false,
+		forMod: "spacechase0.CustomNPCFixes"
 	)]
 	public static bool FixSchedules(StardewModdingAPI.Mod __instance) {
 		if (!Config.IsEnabled || !Config.Extras.ModPatches.PatchCustomNPCFixes) {
 			return true;
 		}
 
-		List<NPC> allCharacters = Utility.getAllCharacters(new())!;
+		List<NPC?> allCharacters = Utility.getAllCharacters(new())!;
 		var processedSet = new ConcurrentDictionary<NPC, byte>();
 
 		Parallel.ForEach(allCharacters, npc => {

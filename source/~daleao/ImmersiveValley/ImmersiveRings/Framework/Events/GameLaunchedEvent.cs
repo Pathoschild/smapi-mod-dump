@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -37,7 +37,7 @@ internal class GameLaunchedEvent : IEvent
         Log.D("[Rings] Unhooked GameLaunched event.");
     }
 
-    /// <summary>The event called after the first game update, once all mods are loaded.</summary>
+    /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
     public void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -55,5 +55,9 @@ internal class GameLaunchedEvent : IEvent
             modRegistry: ModEntry.ModHelper.ModRegistry,
             manifest: ModEntry.Manifest
         ).Register();
+
+        // add Better Crafting integration
+        if (ModEntry.ModHelper.ModRegistry.IsLoaded("leclair.bettercrafting"))
+            new BetterCraftingIntegration(ModEntry.ModHelper.ModRegistry, ModEntry.Log).Register();
     }
 }

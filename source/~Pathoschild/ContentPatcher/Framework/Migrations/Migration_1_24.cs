@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -33,18 +31,18 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_24()
             : base(new SemanticVersion(1, 24, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.HasCookingRecipe.ToString(),
-                ConditionType.HasCraftingRecipe.ToString(),
-                ConditionType.LocationOwnerId.ToString(),
-                ConditionType.Merge.ToString(),
-                ConditionType.Roommate.ToString(),
-                ConditionType.PathPart.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.HasCookingRecipe),
+                nameof(ConditionType.HasCraftingRecipe),
+                nameof(ConditionType.LocationOwnerId),
+                nameof(ConditionType.Merge),
+                nameof(ConditionType.Roommate),
+                nameof(ConditionType.PathPart)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;
@@ -83,12 +81,12 @@ namespace ContentPatcher.Framework.Migrations
             if (type == ConditionType.Spouse)
             {
                 lexToken = new LexTokenToken(
-                    name: ConditionType.Merge.ToString(),
+                    name: nameof(ConditionType.Merge),
                     inputArgs: new LexTokenInput(new ILexToken[]
                     {
-                        new LexTokenToken(ConditionType.Roommate.ToString(), null, impliedBraces: false),
+                        new LexTokenToken(nameof(ConditionType.Roommate), null, impliedBraces: false),
                         new LexTokenLiteral(","),
-                        new LexTokenToken(ConditionType.Spouse.ToString(), token.InputArgs, impliedBraces: false)
+                        new LexTokenToken(nameof(ConditionType.Spouse), token.InputArgs, impliedBraces: false)
                     }),
                     impliedBraces: token.ImpliedBraces
                 );

@@ -12,6 +12,8 @@ using System;
 using System.Collections.Immutable;
 using System.IO;
 using StardewModdingAPI;
+using System.Collections.Generic;
+using System.Linq;
 using TehPers.Core.Api.Content;
 using TehPers.Core.Api.Items;
 using TehPers.Core.Api.Json;
@@ -24,16 +26,22 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
     /// </summary>
     public record FishingContentPack : JsonConfigRoot
     {
+        /// <inheritdoc cref="JsonConfigRoot.Schema"/>
+        protected override string Schema =>
+            $"{JsonConfigRoot.jsonSchemaRootUrl}contentPacks/content.schema.json";
+
         /// <summary>
         /// Fish traits to set.
         /// </summary>
-        public ImmutableDictionary<NamespacedKey, FishTraits> SetFishTraits { get; init; } = ImmutableDictionary<NamespacedKey, FishTraits>.Empty;
+        public ImmutableDictionary<NamespacedKey, FishTraits> SetFishTraits { get; init; } =
+            ImmutableDictionary<NamespacedKey, FishTraits>.Empty;
 
         /// <summary>
         /// Fish traits to remove. Only entries from your mod's dependencies (including Teh's
         /// Fishing Overhaul) will be removed.
         /// </summary>
-        public ImmutableArray<NamespacedKey> RemoveFishTraits { get; init; } = ImmutableArray<NamespacedKey>.Empty;
+        public ImmutableArray<NamespacedKey> RemoveFishTraits { get; init; } =
+            ImmutableArray<NamespacedKey>.Empty;
 
         /// <summary>
         /// Fish entries to add.
@@ -44,29 +52,40 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
         /// Fish entries to remove. Only entries from your mod's dependencies (including Teh's
         /// Fishing Overhaul) will be removed.
         /// </summary>
-        public ImmutableArray<FishEntryFilter> RemoveFish { get; init; } = ImmutableArray<FishEntryFilter>.Empty;
+        public ImmutableArray<FishEntryFilter> RemoveFish { get; init; } =
+            ImmutableArray<FishEntryFilter>.Empty;
 
         /// <summary>
         /// Trash entries to add.
         /// </summary>
-        public ImmutableArray<TrashEntry> AddTrash { get; init; } = ImmutableArray<TrashEntry>.Empty;
+        public ImmutableArray<TrashEntry> AddTrash { get; init; } =
+            ImmutableArray<TrashEntry>.Empty;
 
         /// <summary>
         /// Trash entries to remove. Only entries from your mod's dependencies (including Teh's
         /// Fishing Overhaul) will be removed.
         /// </summary>
-        public ImmutableArray<TrashEntryFilter> RemoveTrash { get; init; } = ImmutableArray<TrashEntryFilter>.Empty;
+        public ImmutableArray<TrashEntryFilter> RemoveTrash { get; init; } =
+            ImmutableArray<TrashEntryFilter>.Empty;
 
         /// <summary>
         /// Treasure entries to add.
         /// </summary>
-        public ImmutableArray<TreasureEntry> AddTreasure { get; init; } = ImmutableArray<TreasureEntry>.Empty;
+        public ImmutableArray<TreasureEntry> AddTreasure { get; init; } =
+            ImmutableArray<TreasureEntry>.Empty;
 
         /// <summary>
         /// Treasure entries to remove. Only entries from your mod's dependencies (including Teh's
         /// Fishing Overhaul) will be removed.
         /// </summary>
-        public ImmutableArray<TreasureEntryFilter> RemoveTreasure { get; init; } = ImmutableArray<TreasureEntryFilter>.Empty;
+        public ImmutableArray<TreasureEntryFilter> RemoveTreasure { get; init; } =
+            ImmutableArray<TreasureEntryFilter>.Empty;
+
+        /// <summary>
+        /// Fishing effects entries to add.
+        /// </summary>
+        public ImmutableArray<FishingEffectEntry> AddEffects { get; init; } =
+            ImmutableArray<FishingEffectEntry>.Empty;
 
         /// <summary>
         /// The additional content files to include. These are treated the same as your mod's
@@ -83,7 +102,15 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
         /// <param name="contentPack">The content pack.</param>
         /// <param name="jsonProvider">The JSON provider.</param>
         /// <param name="monitor">The monitor to log errors to.</param>
-        public FishingContent AddTo(FishingContent content, string baseDir, IContentPack contentPack, IJsonProvider jsonProvider, IMonitor monitor)
+        /// <param name="warnings">The warnings generated when adding this content pack.</param>
+        public FishingContent AddTo(
+            FishingContent content,
+            string baseDir,
+            IContentPack contentPack,
+            IJsonProvider jsonProvider,
+            IMonitor monitor,
+            List<string> warnings
+        )
         {
             // Add base content
             content = content with
@@ -96,7 +123,32 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
                 RemoveTrash = content.RemoveTrash.AddRange(this.RemoveTrash),
                 AddTreasure = content.AddTreasure.AddRange(this.AddTreasure),
                 RemoveTreasure = content.RemoveTreasure.AddRange(this.RemoveTreasure),
+                AddEffects = content.AddEffects.AddRange(this.AddEffects),
             };
+
+            // Add warnings
+            warnings.AddRange(
+                this.AddFish.SelectMany(
+                    entry => entry.AvailabilityInfo.ObsoletionWarnings.Select(
+                        warning => $"For fish entry {entry.FishKey}: {warning}"
+                    )
+                )
+            );
+            warnings.AddRange(
+                this.AddTrash.SelectMany(
+                    entry => entry.AvailabilityInfo.ObsoletionWarnings.Select(
+                        warning => $"For trash entry {entry.ItemKey}: {warning}"
+                    )
+                )
+            );
+            warnings.AddRange(
+                this.AddTreasure.SelectMany(
+                    entry => entry.AvailabilityInfo.ObsoletionWarnings.Select(
+                        warning =>
+                            $"For treasure entry {string.Join(", ", entry.ItemKeys)}: {warning}"
+                    )
+                )
+            );
 
             // Add included content
             foreach (var relativePath in this.Include)
@@ -108,11 +160,18 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
                 FishingContentPack? included;
                 try
                 {
-                    included = jsonProvider.ReadJson<FishingContentPack>(path, new ContentPackAssetProvider(contentPack), null);
+                    included = jsonProvider.ReadJson<FishingContentPack>(
+                        path,
+                        new ContentPackAssetProvider(contentPack),
+                        null
+                    );
                 }
                 catch (Exception ex)
                 {
-                    monitor.Log($"Failed to load included content pack '{path}'", LogLevel.Error);
+                    monitor.Log(
+                        $"Failed to load included content file for '{content.ModManifest.UniqueID}': '{path}'",
+                        LogLevel.Error
+                    );
                     monitor.Log(ex.ToString(), LogLevel.Error);
                     continue;
                 }
@@ -121,7 +180,14 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
                 if (included is not null)
                 {
                     var contentBaseDir = Path.GetDirectoryName(path) ?? string.Empty;
-                    content = included.AddTo(content, contentBaseDir, contentPack, jsonProvider, monitor);
+                    content = included.AddTo(
+                        content,
+                        contentBaseDir,
+                        contentPack,
+                        jsonProvider,
+                        monitor,
+                        warnings
+                    );
                 }
                 else
                 {

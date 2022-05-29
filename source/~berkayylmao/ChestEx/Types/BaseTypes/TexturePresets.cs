@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -30,9 +30,7 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using SkiaSharp;
 using System.IO;
 
 using ChestEx.LanguageExtensions;
@@ -44,7 +42,7 @@ using StardewValley;
 namespace ChestEx.Types.BaseTypes {
   public static class TexturePresets {
     // Private:
-  #region Private
+    #region Private
 
     private static Byte[] sButtonBackgroundTextureBytes,
                           sConfigTextureBytes,
@@ -60,10 +58,10 @@ namespace ChestEx.Types.BaseTypes {
                              sMenuTextureGrayScale,
                              sVerticalGradient;
 
-  #endregion
+    #endregion
 
     // Public:  
-  #region Public
+    #region Public
 
     /// <summary>
     /// <para>Size: 16x16</para>
@@ -264,13 +262,19 @@ namespace ChestEx.Types.BaseTypes {
       get {
         if (Game1.graphics.GraphicsDevice is null && sVerticalGradient is null) return null;
         if (sVerticalGradient is null) {
-          using var      bitmap         = new Bitmap(1, 128);
-          using var      ms             = new MemoryStream();
-          using Graphics g              = Graphics.FromImage(bitmap);
-          using var      black_gradient = new LinearGradientBrush(new Rectangle(0, 0, 1, 128), Color.White, Color.FromArgb(200, 200, 200), LinearGradientMode.Vertical);
-          g.FillRectangle(black_gradient, 0, 0, 1, 128);
-          bitmap.Save(ms, ImageFormat.Png);
-          ms.Seek(0, SeekOrigin.Begin);
+
+          using var bitmap = new SKBitmap(1, 128);
+          using var ms = new MemoryStream();
+          using var canvas = new SKCanvas(bitmap);
+          using var paint = new SKPaint() {
+            Shader = SKShader.CreateLinearGradient(new SKPoint(0.0f, 0.0f), new SKPoint(1, 128),
+            new SKColor[] { SKColors.White, new SKColor(200, 200, 200) }, SKShaderTileMode.Decal)
+          };
+
+          canvas.DrawPaint(paint);
+          canvas.RotateDegrees(90.0f);
+
+          bitmap.Encode(ms, SKEncodedImageFormat.Png, 95);
           sVerticalGradient = Texture2D.FromStream(Game1.graphics.GraphicsDevice, ms);
         }
 
@@ -278,6 +282,6 @@ namespace ChestEx.Types.BaseTypes {
       }
     }
 
-  #endregion
+    #endregion
   }
 }

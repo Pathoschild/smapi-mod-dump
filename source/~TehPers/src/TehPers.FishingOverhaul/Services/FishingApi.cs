@@ -48,12 +48,15 @@ namespace TehPers.FishingOverhaul.Services
         private readonly EntryManagerFactory<TreasureEntry, AvailabilityInfo>
             treasureEntryManagerFactory;
 
+        private readonly FishingEffectManagerFactory fishingEffectManagerFactory;
+
         private readonly Lazy<IOptional<IEmpApi>> empApi;
 
-        internal Dictionary<NamespacedKey, FishTraits> fishTraits;
-        internal List<EntryManager<FishEntry, FishAvailabilityInfo>> fishEntries;
-        internal List<EntryManager<TrashEntry, AvailabilityInfo>> trashEntries;
-        internal List<EntryManager<TreasureEntry, AvailabilityInfo>> treasureEntries;
+        internal readonly Dictionary<NamespacedKey, FishTraits> fishTraits;
+        internal readonly List<EntryManager<FishEntry, FishAvailabilityInfo>> fishManagers;
+        internal readonly List<EntryManager<TrashEntry, AvailabilityInfo>> trashManagers;
+        internal readonly List<EntryManager<TreasureEntry, AvailabilityInfo>> treasureManagers;
+        internal readonly List<FishingEffectManager> fishingEffectManagers;
         private readonly string stateKey;
 
         private bool reloadRequested;
@@ -68,6 +71,7 @@ namespace TehPers.FishingOverhaul.Services
             EntryManagerFactory<FishEntry, FishAvailabilityInfo> fishEntryManagerFactory,
             EntryManagerFactory<TrashEntry, AvailabilityInfo> trashEntryManagerFactory,
             EntryManagerFactory<TreasureEntry, AvailabilityInfo> treasureEntryManagerFactory,
+            FishingEffectManagerFactory fishingEffectManagerFactory,
             Lazy<IOptional<IEmpApi>> empApi
         )
         {
@@ -85,12 +89,15 @@ namespace TehPers.FishingOverhaul.Services
                 ?? throw new ArgumentNullException(nameof(trashEntryManagerFactory));
             this.treasureEntryManagerFactory = treasureEntryManagerFactory
                 ?? throw new ArgumentNullException(nameof(treasureEntryManagerFactory));
+            this.fishingEffectManagerFactory = fishingEffectManagerFactory
+                ?? throw new ArgumentNullException(nameof(fishingEffectManagerFactory));
             this.empApi = empApi ?? throw new ArgumentNullException(nameof(empApi));
 
             this.fishTraits = new();
-            this.fishEntries = new();
-            this.trashEntries = new();
-            this.treasureEntries = new();
+            this.fishManagers = new();
+            this.trashManagers = new();
+            this.treasureManagers = new();
+            this.fishingEffectManagers = new();
             this.stateKey = $"{manifest.UniqueID}/fishing-state";
 
             this.CreatedDefaultFishingInfo += this.ApplyMapOverrides;
@@ -250,6 +257,26 @@ namespace TehPers.FishingOverhaul.Services
             return eventArgs.FishingInfo;
         }
 
+        private static IEnumerable<IWeightedValue<TEntry>>
+            GetWeightedEntries<TEntry, TAvailability>(
+                IEnumerable<EntryManager<TEntry, TAvailability>> managers,
+                FishingInfo fishingInfo
+            )
+            where TEntry : Entry<TAvailability>
+            where TAvailability : AvailabilityInfo
+        {
+            var chances = managers.SelectMany(
+                manager => manager.ChanceCalculator.GetWeightedChance(fishingInfo)
+                    .AsEnumerable()
+                    .ToWeighted(weight => weight, _ => manager.Entry)
+            );
+            var highestTier = chances.GroupBy(entry => entry.Value.AvailabilityInfo.PriorityTier)
+                .OrderByDescending(group => group.Key)
+                .FirstOrDefault();
+
+            return highestTier ?? Enumerable.Empty<IWeightedValue<TEntry>>();
+        }
+
         /// <inheritdoc/>
         public override IEnumerable<IWeightedValue<FishEntry>> GetFishChances(
             FishingInfo fishingInfo
@@ -259,11 +286,7 @@ namespace TehPers.FishingOverhaul.Services
             this.ReloadIfRequested();
 
             // Get fish chances
-            var chances = this.fishEntries.SelectMany(
-                manager => manager.ChanceCalculator.GetWeightedChance(fishingInfo)
-                    .AsEnumerable()
-                    .ToWeighted(weight => weight, _ => manager.Entry)
-            );
+            var chances = FishingApi.GetWeightedEntries(this.fishManagers, fishingInfo);
 
             // Invoke prepared chances event (some baits/bobbers may have effects applied here)
             var preparedChancesArgs = new PreparedFishEventArgs(fishingInfo, chances.ToList());
@@ -288,7 +311,7 @@ namespace TehPers.FishingOverhaul.Services
 
             var dartFrequency =
                 (int)(this.fishConfig.GlobalDartFrequencyFactor * traits.DartFrequency);
-            traits = traits with { DartFrequency = dartFrequency };
+            traits = traits with {DartFrequency = dartFrequency};
             return true;
         }
 
@@ -301,11 +324,7 @@ namespace TehPers.FishingOverhaul.Services
             this.ReloadIfRequested();
 
             // Get trash chances
-            var chances = this.trashEntries.SelectMany(
-                manager => manager.ChanceCalculator.GetWeightedChance(fishingInfo)
-                    .AsEnumerable()
-                    .ToWeighted(weight => weight, _ => manager.Entry)
-            );
+            var chances = FishingApi.GetWeightedEntries(this.trashManagers, fishingInfo);
 
             // Invoke prepared chances event (some baits/bobbers may have effects applied here)
             var preparedChancesArgs = new PreparedTrashEventArgs(fishingInfo, chances.ToList());
@@ -323,11 +342,7 @@ namespace TehPers.FishingOverhaul.Services
             this.ReloadIfRequested();
 
             // Get treasure chances
-            var chances = this.treasureEntries.SelectMany(
-                manager => manager.ChanceCalculator.GetWeightedChance(fishingInfo)
-                    .AsEnumerable()
-                    .ToWeighted(weight => weight, _ => manager.Entry)
-            );
+            var chances = FishingApi.GetWeightedEntries(this.treasureManagers, fishingInfo);
 
             // Invoke prepared chances event (some baits/bobbers may have effects applied here)
             var preparedChancesArgs = new PreparedTreasureEventArgs(fishingInfo, chances.ToList());
@@ -348,7 +363,7 @@ namespace TehPers.FishingOverhaul.Services
             var eventArgs = new CalculatedFishChanceEventArgs(fishingInfo, chanceForFish);
             this.OnCalculatedFishChance(eventArgs);
 
-            return this.fishConfig.FishChances.ClampChance(eventArgs.ChanceForFish);
+            return this.ClampFishChance(fishingInfo, eventArgs.Chance);
         }
 
         /// <inheritdoc/>
@@ -363,7 +378,57 @@ namespace TehPers.FishingOverhaul.Services
             var eventArgs = new CalculatedTreasureChanceEventArgs(fishingInfo, chanceForTreasure);
             this.OnCalculatedTreasureChance(eventArgs);
 
-            return this.treasureConfig.TreasureChances.ClampChance(eventArgs.ChanceForTreasure);
+            return this.ClampTreasureChance(fishingInfo, eventArgs.Chance);
+        }
+
+        /// <summary>
+        /// Clamps the chance of finding a fish.
+        /// </summary>
+        /// <param name="fishingInfo">Information about the <see cref="Farmer"/> that is fishing.</param>
+        /// <param name="chance">The unclamped chance.</param>
+        /// <returns>The minimum and maximum chance of catching a fish.</returns>
+        private double ClampFishChance(FishingInfo fishingInfo, double chance)
+        {
+            var minArgs = new CalculatedFishChanceEventArgs(
+                fishingInfo,
+                this.fishConfig.FishChances.MinChance
+            );
+            this.OnCalculatedMinFishChance(minArgs);
+
+            var maxArgs = new CalculatedFishChanceEventArgs(
+                fishingInfo,
+                this.fishConfig.FishChances.MaxChance
+            );
+            this.OnCalculatedMaxFishChance(maxArgs);
+
+            return minArgs.Chance > maxArgs.Chance
+                ? maxArgs.Chance
+                : Math.Clamp(chance, minArgs.Chance, maxArgs.Chance);
+        }
+
+        /// <summary>
+        /// Clamps the chance of finding treasure while fishing.
+        /// </summary>
+        /// <param name="fishingInfo">Information about the <see cref="Farmer"/> that is fishing.</param>
+        /// <param name="chance">The unclamped chance.</param>
+        /// <returns>The minimum and maximum chance of finding a treasure chest.</returns>
+        private double ClampTreasureChance(FishingInfo fishingInfo, double chance)
+        {
+            var minArgs = new CalculatedTreasureChanceEventArgs(
+                fishingInfo,
+                this.treasureConfig.TreasureChances.MinChance
+            );
+            this.OnCalculatedMinTreasureChance(minArgs);
+
+            var maxArgs = new CalculatedTreasureChanceEventArgs(
+                fishingInfo,
+                this.treasureConfig.TreasureChances.MaxChance
+            );
+            this.OnCalculatedMaxTreasureChance(maxArgs);
+
+            return minArgs.Chance > maxArgs.Chance
+                ? maxArgs.Chance
+                : Math.Clamp(chance, minArgs.Chance, maxArgs.Chance);
         }
 
         /// <inheritdoc/>

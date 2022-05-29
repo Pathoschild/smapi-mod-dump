@@ -21,15 +21,22 @@ internal class Override {
 	internal bool ResampleText = false;
 	internal bool ResampleBasicText = false;
 
+	// draw state
+	internal bool SetLinearUnresampled = false;
+	internal bool SetLinear = true;
+
+#pragma warning disable CS0618 // Type or member is obsolete
 	internal static Override FromConfig => new() {
 		Enabled = Config.IsUnconditionallyEnabled,
-#pragma warning disable CS0618 // Type or member is obsolete
 		ResampleEnabled = Config.Resample.Enabled,
-#pragma warning restore CS0618 // Type or member is obsolete
 		Scaler = Config.Resample.Scaler,
 		ScalerGradient = Config.Resample.ScalerGradient,
 		ResampleSprites = Config.Resample.EnabledSprites,
 		ResampleText = Config.Resample.EnabledText,
-		ResampleBasicText = Config.Resample.EnabledBasicText
+		ResampleBasicText = Config.Resample.EnabledBasicText,
+
+		SetLinearUnresampled = Config.DrawState.SetLinearUnresampled,
+		SetLinear = Config.DrawState.SetLinear
 	};
+#pragma warning restore CS0618 // Type or member is obsolete
 }

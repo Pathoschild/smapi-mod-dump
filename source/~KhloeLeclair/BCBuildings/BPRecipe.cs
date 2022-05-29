@@ -12,12 +12,8 @@
 
 using System.Collections.Generic;
 
-#if IS_BETTER_CRAFTING
-using Leclair.Stardew.Common.Crafting;
-using Leclair.Stardew.BetterCrafting.Models;
-#else
+using Leclair.Stardew.Common;
 using Leclair.Stardew.BetterCrafting;
-#endif
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,24 +28,33 @@ public class BPRecipe : IRecipe {
 	public readonly ModEntry Mod;
 	public readonly BluePrint Blueprint;
 
+	public readonly string? RawQuery;
+	public readonly GameStateQuery.ParsedQuery? Query;
+
 	public BPRecipe(BluePrint blueprint, ModEntry mod) {
 		Mod = mod;
 		Name = $"blueprint:{blueprint.name}";
 		Blueprint = blueprint;
 
+		if (mod.ApiBlueprints.TryGetValue(blueprint.name, out var data))
+			RawQuery = data.Item3;
+
+		if (!string.IsNullOrEmpty(RawQuery))
+			Query = GameStateQuery.ParseConditions(RawQuery);
+
 		List<IIngredient> ingredients = new();
 
 		if (blueprint.itemsRequired != null)
 			foreach (var entry in blueprint.itemsRequired)
-				ingredients.Add(mod.API!.CreateBaseIngredient(entry.Key, entry.Value));
+				ingredients.Add(mod.BCAPI!.CreateBaseIngredient(entry.Key, entry.Value));
 
 		if (blueprint.moneyRequired > 0)
-			ingredients.Add(mod.API!.CreateCurrencyIngredient(CurrencyType.Money, blueprint.moneyRequired));
+			ingredients.Add(mod.BCAPI!.CreateCurrencyIngredient(CurrencyType.Money, blueprint.moneyRequired));
 
 		Ingredients = ingredients.ToArray();
 
 		if (mod.BuildingSources.TryGetValue(blueprint.name, out Rectangle? source)) {
-			SourceRectangle = source ?? Blueprint.texture.Bounds;
+			SourceRectangle = (source.HasValue && !source.Value.IsEmpty) ? source.Value : Blueprint.texture.Bounds;
 		} else
 			SourceRectangle = Blueprint.sourceRectForMenuView;
 	}
@@ -115,6 +120,9 @@ public class BPRecipe : IRecipe {
 			return bgl.isBuildingConstructed(Blueprint.nameOfBuildingToUpgrade);
 		}
 
+		if (Query.HasValue && !Query.Value.Evaluate())
+			return false;
+
 		return true;
 	}
 
@@ -126,6 +134,9 @@ public class BPRecipe : IRecipe {
 			string other = new BluePrint(Blueprint.nameOfBuildingToUpgrade).displayName;
 			return I18n.Error_CantUpgrade(other);
 		}
+
+		if (Query.HasValue && !Query.Value.Evaluate())
+			return I18n.Error_UnmetCondition();
 
 		return null;
 	}

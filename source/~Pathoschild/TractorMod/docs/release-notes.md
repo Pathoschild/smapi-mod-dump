@@ -10,7 +10,20 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
-* Updated for the upcoming SMAPI 4.0.0.
+* Fixed hoe not digging artifact spots if you disable all the other hoe features.
+* Improved translations. Thanks to mukers (updated Russian)!
+
+## 4.15.2
+Released 22 May 2022 for SMAPI 3.14.0 or later.
+
+* Internal changes to support Content Patcher.
+
+## 4.15.1
+Released 09 May 2022 for SMAPI 3.14.0 or later.
+
+* Updated for SMAPI 3.14.0.
+* Fixed pickaxe breaking objects that are placed on dirt, even if breaking objects is disabled.
+* Improved translations. Thanks to Becks723 (updated Chinese)!
 
 ## 4.15.0
 Released 27 February 2022 for SMAPI 3.13.0 or later.

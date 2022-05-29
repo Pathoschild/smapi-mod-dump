@@ -6,9 +6,11 @@ mods:
    Range Highlight
 
 latest commit:
-   commit ff4099dc4a67701fca9c5bd419c0676d9a0e7f38
+   commit 6fc36c62687558762f7efbd9e2bfca16e8ac884b
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Tue Feb 22 22:20:57 2022 -0500
+   Date:   Sun May 1 19:53:53 2022 -0400
    
-       Integration with Better Beehouses; v3.2.0
+       Fix bug where holding the Blue Armchair would show the mega-bomb range; v3.2.0
+       
+       Also update for SMAPI 3.14
    

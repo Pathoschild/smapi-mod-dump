@@ -6,11 +6,14 @@ require 'pathname'
 require 'open3'
 require 'socket'
 
+module FileNames
+	Manifest = 'manifest.json'
+	AssemblySource = 'Assembly.cs'
+end
+
 module Paths
-	Manifest = Pathname.new(File.join(__dir__, 'SpriteMaster', 'manifest.json'))
-	Props = Pathname.new(File.join(__dir__, 'SpriteMasterCommon.props'))
-	Assembly = Pathname.new(File.join(__dir__, 'SpriteMaster', "Assembly.cs"))
-	Version = Pathname.new(File.join(__dir__, 'version'))
+	Props = Pathname.getwd + 'SpriteMasterCommon.props'
+	Version = Pathname.getwd + 'version'
 end
 
 def eputs(*msg)
@@ -23,9 +26,37 @@ def fail(*msg, code: -1)
 	exit code
 end
 
-fail "Manifest file '#{Paths::Manifest}' could not be found" unless Paths::Manifest.file?
+class Project
+	@Path = nil
+	def initialize(path)
+		@Path = Pathname.new(path).freeze
+		self.freeze
+	end
+	
+	def path = @Path
+	alias_method :to_s, :path
+	alias_method :to_str, :path
+	def manifest = @Path + 'manifest.json'
+	def assembly = @Path + 'Assembly.cs'
+end
+
+def search_projects_recursive(current, &block)
+	if (current + FileNames::Manifest).file? && (current + FileNames::AssemblySource).file?
+		yield Project.new(current)
+		return
+	end
+	
+	current.children.select(&:directory?).each { |child|
+		next if child.basename.to_s[0] == '.'
+		
+		search_projects_recursive(child, &block)
+	}
+end
+
+Projects = to_enum(:search_projects_recursive, Pathname.getwd).to_a
+
+fail "No projects could be found" if Projects.empty?
 fail "Props file '#{Paths::Props}' could not be found" unless Paths::Props.file?
-fail "Assembly file '#{Paths::Assembly}' could not be found" unless Paths::Assembly.file?
 
 TAB = '  '
 
@@ -289,25 +320,6 @@ unless Options::quiet
 	puts
 end
 
-def update_manifest
-	manifest = nil
-	File.open(Paths::Manifest.to_s, "r:bom|utf-8") { |file|
-		manifest = JSON.parse(file.read)
-	}
-	if !Options::force && manifest["Version"] == $version.to_manifest
-		puts "Manifest Unchanged (#{manifest["Version"]})" unless Options::quiet
-		return
-	end
-	manifest["Version"] = $version.to_manifest
-	pretty = JSON.pretty_generate(manifest);
-	puts "New Manifest: ", pretty unless Options::quiet
-	unless Options::dry_run
-		File.open(Paths::Manifest.to_s, "w:bom|utf-8") { |file|
-			file.write(Options::pretty_manifest ? pretty : JSON.dump(manifest))
-		}
-	end
-end
-
 def update_props
 	project = nil
 	File.open(Paths::Props.to_s, "r:bom|utf-8") { |file|
@@ -356,7 +368,26 @@ def update_props
 	end
 end
 
-def update_assembly
+def update_manifest(project)
+	manifest = nil
+	File.open(project.manifest.to_s, "r:bom|utf-8") { |file|
+		manifest = JSON.parse(file.read)
+	}
+	if !Options::force && manifest["Version"] == $version.to_manifest
+		puts "Manifest Unchanged (#{manifest["Version"]})" unless Options::quiet
+		return
+	end
+	manifest["Version"] = $version.to_manifest
+	pretty = JSON.pretty_generate(manifest);
+	puts "New Manifest: ", pretty unless Options::quiet
+	unless Options::dry_run
+		File.open(project.manifest.to_s, "w:bom|utf-8") { |file|
+			file.write(Options::pretty_manifest ? pretty : JSON.dump(manifest))
+		}
+	end
+end
+
+def update_assembly(project)
 	tags, status = Open3.capture2('git', '-C', __dir__, 'describe', '--tags')
 	unless status.success?
 		eputs "Could not extract git tags info"
@@ -368,7 +399,7 @@ def update_assembly
 	hostname = Socket.gethostname&.strip || "unknown"
 
 	assembly = nil
-	File.open(Paths::Assembly.to_s, "r:bom|utf-8") { |file|
+	File.open(project.assembly.to_s, "r:bom|utf-8") { |file|
 		assembly = file.read
 	}
 
@@ -404,12 +435,17 @@ def update_assembly
 	puts "New Assembly: ", lines unless Options::quiet
 
 	unless Options::dry_run
-		File.open(Paths::Assembly.to_s, "w:bom|utf-8") { |file|
+		File.open(project.assembly.to_s, "w:bom|utf-8") { |file|
 			file.write(lines.join("\n"))
 		}
 	end
 end
 
-update_manifest
-update_props
-update_assembly
+update_props 
+
+Projects.each { |project|
+	puts "Updating Project: #{project.to_s}" unless Options::quiet
+
+	update_manifest(project)
+	update_assembly(project)
+}

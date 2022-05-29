@@ -8,52 +8,67 @@
 **
 *************************************************/
 
+#nullable enable
+
+using Newtonsoft.Json;
+
 using Microsoft.Xna.Framework;
 
 using Leclair.Stardew.Common.Enums;
 
+using StardewModdingAPI;
 
-namespace Leclair.Stardew.Almanac.Models {
+namespace Leclair.Stardew.Almanac.Models;
 
-	public enum NoticeIconType {
-		Item,
-		Texture
-	}
+public enum NoticeIconType {
+	Item,
+	Texture,
+	ModTexture
+}
 
-	public record struct DateRange(int Start, int End, int[] Valid = null);
+public record struct DateRange(int Start, int End, int[]? Valid = null);
 
-	public class LocalNotice {
+public class LocalNotice {
 
-		// When
-		public TimeScale Period { get; set; }
-		public DateRange[] Ranges { get; set; }
+	// When
+	public TimeScale Period { get; set; }
+	public DateRange[]? Ranges { get; set; }
 
-		public int FirstYear { get; set; } = 1;
-		public int LastYear { get; set; } = int.MaxValue;
-		public int[] ValidYears { get; set; } = null;
+	public int FirstYear { get; set; } = 1;
+	public int LastYear { get; set; } = int.MaxValue;
+	public int[]? ValidYears { get; set; } = null;
 
-		public Season[] ValidSeasons { get; set; } = new[] {
-			Season.Spring,
-			Season.Summer,
-			Season.Fall,
-			Season.Winter
-		};
+	public Season[] ValidSeasons { get; set; } = new[] {
+		Season.Spring,
+		Season.Summer,
+		Season.Fall,
+		Season.Winter
+	};
 
+	public string? Condition { get; set; }
 
-		// Text
-		public bool ShowEveryDay { get; set; } = false;
+	// Text
+	public bool ShowEveryDay { get; set; } = false;
 
-		public string Description { get; set; }
+	public string? Description { get; set; }
+	public string? I18nKey { get; set; }
 
-		// Icon
-		public NoticeIconType IconType { get; set; }
+	// Icon
+	public NoticeIconType IconType { get; set; }
 
-		// Item
-		public string Item { get; set; }
+	// Item
+	public string? Item { get; set; }
 
-		// Texture
-		public GameTexture? IconSource { get; set; } = null;
-		public string IconPath { get; set; }
-		public Rectangle? IconSourceRect { get; set; }
-	}
+	// Texture
+	public GameTexture? IconSource { get; set; } = null;
+	public string? IconPath { get; set; }
+	public Rectangle? IconSourceRect { get; set; }
+
+	// Translation
+	[JsonIgnore]
+	public ITranslationHelper? Translation { get; set; }
+
+	[JsonIgnore]
+	public IModContentHelper? ModContent { get; set; }
+
 }

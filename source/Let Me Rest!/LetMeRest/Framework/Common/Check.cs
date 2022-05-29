@@ -109,6 +109,11 @@ namespace LetMeRest.Framework.Common
             {
                 IsStaying();
             }
+
+            if (Game1.player.isMoving() || Game1.player.usingTool)
+            {
+                Status.canUpdateQuantity = true;
+            }
         }
 
         public static void IsUsingTool()

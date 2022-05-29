@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
 
@@ -30,18 +29,18 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_13()
             : base(new SemanticVersion(1, 13, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.Query.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.Query)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ContentConfig content, out string error)
+        public override bool TryMigrate(ContentConfig content, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
-            foreach (PatchConfig patch in content.Changes)
+            foreach (PatchConfig patch in content.Changes.WhereNotNull())
             {
                 // 1.13 adds map tile patches
                 if (patch.MapTiles.Any())

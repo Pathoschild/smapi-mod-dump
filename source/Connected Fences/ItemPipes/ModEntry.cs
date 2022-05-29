@@ -52,15 +52,15 @@ namespace ItemPipes
             LogisticItemIds = new Dictionary<string, int>();
             DataAccess = DataAccess.GetDataAccess();
 
-            string dataPath = "assets/data.json";
+            string ItemIDs = "assets/Data/ItemIDs.json";
             DataModel data = null;
             ModConfig config = null;
             try
             {
-                data = this.Helper.Data.ReadJsonFile<DataModel>(dataPath);
+                data = this.Helper.Data.ReadJsonFile<DataModel>(ItemIDs);
                 if (data == null)
                 {
-                    this.Monitor.Log($"The {dataPath} file seems to be missing or invalid.", LogLevel.Error);
+                    this.Monitor.Log($"The {ItemIDs} file seems to be missing or invalid.", LogLevel.Error);
                 }
                 config = this.Helper.ReadConfig<ModConfig>();
                 if (config == null)
@@ -70,16 +70,12 @@ namespace ItemPipes
             }
             catch (Exception ex)
             {
-                this.Monitor.Log($"The {dataPath} file seems to be invalid.\n{ex}", LogLevel.Error);
+                this.Monitor.Log($"The {ItemIDs} file seems to be invalid.\n{ex}", LogLevel.Error);
             }
 
             DataAccess.ModItems = data.ModItems;
             DataAccess.NetworkItems = data.NetworkItems;
-            DataAccess.PipeNames = data.PipeNames;
-            DataAccess.IOPipeNames = data.IOPipeNames;
-            DataAccess.ExtraNames = data.ExtraNames;
             DataAccess.Buildings = data.Buildings;
-            DataAccess.Locations = data.Locations;
 
             //Normal debug = only errors
             if(config.DebugMode)
@@ -103,15 +99,25 @@ namespace ItemPipes
                 Globals.UltraDebug = false;
                 if (Globals.Debug) { Printer.Info("UltraDebug mode DISABLED"); }
             }
-            if (!config.DisableItemSending)
+            if (config.ItemSending)
             {
-                Globals.DisableItemSending = true;
+                Globals.ItemSending = true;
                 if (Globals.Debug) { Printer.Info("Item sending ENABLED"); }
             }
             else
             {
-                Globals.DisableItemSending = false;
+                Globals.ItemSending = false;
                 if (Globals.Debug) { Printer.Info("Item sending DISABLED"); }
+            }
+            if (config.IOPipeStatePopup)
+            {
+                Globals.IOPipeStatePopup = true;
+                if (Globals.Debug) { Printer.Info("IOPipe state bubble popup ENABLED"); }
+            }
+            else
+            {
+                Globals.IOPipeStatePopup = false;
+                if (Globals.Debug) { Printer.Info("IOPipe state bubble popup DISABLED"); }
             }
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
@@ -134,25 +140,16 @@ namespace ItemPipes
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {
-            DataAccess.LoadItems();
-            DataAccess.LoadSprites();
-            DataAccess.LoadRecipes();
             Helper.Content.AssetEditors.Add(this);
-        }
-
-        public bool CanLoad<T>(IAssetInfo asset)
-        {
-            if (asset.AssetNameEquals("Data/ObjectInformation"))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public bool CanEdit<T>(IAssetInfo asset)
         {
             if (asset.AssetNameEquals("Data/CraftingRecipes"))
+            {
+                return true;
+            }
+            if (asset.AssetNameEquals("Data\\mail"))
             {
                 return true;
             }
@@ -162,53 +159,43 @@ namespace ItemPipes
 
         public void Edit<T>(IAssetData asset)
         {
-            if (asset.AssetNameEquals("Data/ObjectInformation"))
-            {
-                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                string daffodil = "Daffodil/30/0/Basic -81/Daffodil/A traditional spring flower that makes a nice gift.";
-                string ironPipe = "Iron Pipe/0/-300/Basic -2/Iron Pipe/test.";
-                string fakeRecipe = "0 1//0 1/false//Test Recipe";
-                if (!data.ContainsKey("Iron Pipe"))
-                {
-                    data.Add("12340", ironPipe);
-                }
-                else
-                {
-                    data["12340"] = ironPipe;
-                }
-            }
             if (asset.AssetNameEquals("Data/CraftingRecipes"))
             {
                 IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-                string hardwoodFenceTest = "709 1/Field/298/false/Mining 3";
-                string ironPipe = "388 20 709 1/Home/12340/false/Mining 3";
-                string fakeRecipe = "0 1//0 1/false/null/Fake Recipe";
-                if (!data.ContainsKey("Iron Pipe"))
+                if (!data.ContainsKey("IronPipe"))
                 {
-                    data.Add("Iron Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
-                    data.Add("Gold Pipe", "0 1//0 1/false/Mining 6/Fake Recipe");
-                    data.Add("Iridium Pipe", "0 1//0 1/false/Mining 9/Fake Recipe");
-                    data.Add("Extractor Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
-                    data.Add("Gold Extractor Pipe", "0 1//0 1/false/Mining 6/Fake Recipe");
-                    data.Add("Iridium Extractor Pipe", "0 1//0 1/false/Mining 9/Fake Recipe");
-                    data.Add("Inserter Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
-                    data.Add("Polymorphic Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
-                    data.Add("Filter Pipe", "0 1//0 1/false/Mining 3/Fake Recipe");
-                    data.Add("P.P.M.", "0 1//0 1/false/Mining 6/Fake Recipe");
+                    data.Add("IronPipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("GoldPipe", "0 1//0 1/false/Mining 6/Fake Recipe");
+                    data.Add("IridiumPipe", "0 1//0 1/false/Mining 9/Fake Recipe");
+                    data.Add("ExtractorPipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("GoldExtractorPipe", "0 1//0 1/false/Mining 6/Fake Recipe");
+                    data.Add("IridiumExtractorPipe", "0 1//0 1/false/Mining 9/Fake Recipe");
+                    data.Add("InserterPipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("PolymorphicPipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("FilterPipe", "0 1//0 1/false/Mining 3/Fake Recipe");
+                    data.Add("PPM", "0 1//0 1/false/Mining 6/Fake Recipe");
                 }
                 else
                 {
-                    data["Iron Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
-                    data["Gold Pipe"] = "0 1//0 1/false/Mining 6/Fake Recipe";
-                    data["Iridium Pipe"] = "0 1//0 1/false/Mining 9/Fake Recipe";
-                    data["Extractor Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
-                    data["Gold Extractor Pipe"] = "0 1//0 1/false/Mining 6/Fake Recipe";
-                    data["Iridium Extractor Pipe"] = "0 1//0 1/false/Mining 9/Fake Recipe";
-                    data["Inserter Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
-                    data["Polymorphic Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
-                    data["Filter Pipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
-                    data["P.P.M."] = "0 1//0 1/false/Mining 6/Fake Recipe";
+                    data["IronPipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["GoldPipe"] = "0 1//0 1/false/Mining 6/Fake Recipe";
+                    data["IridiumPipe"] = "0 1//0 1/false/Mining 9/Fake Recipe";
+                    data["ExtractorPipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["GoldExtractorPipe"] = "0 1//0 1/false/Mining 6/Fake Recipe";
+                    data["IridiumExtractorPipe"] = "0 1//0 1/false/Mining 9/Fake Recipe";
+                    data["InserterPipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["PolymorphicPipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["FilterPipe"] = "0 1//0 1/false/Mining 3/Fake Recipe";
+                    data["PPM"] = "0 1//0 1/false/Mining 6/Fake Recipe";
                 }
+            }
+            if (asset.AssetNameEquals("Data\\mail"))
+            {
+                var data = asset.AsDictionary<string, string>().Data;
+                data["ItemPipes_SendWrench"] = "Hello @! It has come to Madd Industries knowledge that you have started to use our products!" +
+                    "^As a welcome gift, we are pleased to give you a tool to configure item pipes. For now it can only turn on and off IOPipes, but the " +
+                    "engineering team is working hard on implementing further manipulations.^Thanks for putting your trust in Madd Industries, " +
+                    "the best logistics provider of the Ferngill Republic!";
             }
 
         }
@@ -219,63 +206,77 @@ namespace ItemPipes
             {
                 if (Globals.Debug) { Printer.Info("Waiting for all items to arrive at input..."); }
                 //Quick end all threads
+                /*
                 while (DataAccess.Threads.Count > 0)
                 {
                     foreach (Thread thread in DataAccess.Threads.ToList())
                     {
                         if (thread != null && thread.IsAlive)
                         {
-                            Printer.Info("INTERRUPTION "+ thread.ManagedThreadId.ToString());
                             
                             thread.Interrupt();
                         }
                     }
                 }
-                Printer.Info("Threads cleaned");
+                */
+                foreach (Thread thread in DataAccess.Threads.ToList())
+                {
+                    if (thread != null && thread.IsAlive)
+                    {
+
+                        thread.Interrupt();
+                    }
+                }
                 ConvertToVanillaMap();
                 ConvertToVanillaPlayer();
+                if (Globals.Debug) { Printer.Info("All modded items saved!"); }
+
             }
         }
 
         public void OnSaved(object sender, SavedEventArgs args)
         {
+            Reset();
             if (Context.IsMainPlayer) 
             {
-                Reset();
-                ConvertFromVanillaMap();
-                ConvertFromVanillaPlayer();
-                
+
                 foreach (GameLocation location in Game1.locations)
                 {
                     DataAccess.LocationNetworks.Add(location, new List<Network>());
                     DataAccess.LocationNodes.Add(location, new List<Node>());
-                    NetworkBuilder.BuildLocationNetworks(location);
+                    DataAccess.UsedNetworkIDs.Add(location, new List<int>());
+                    NetworkBuilder.BuildLocationNetworksTEMP(location);
                     NetworkManager.UpdateLocationNetworks(location);
                 }
+
+                ConvertFromVanillaMap();
+                ConvertFromVanillaPlayer(); 
                 
                 if (Globals.UltraDebug) { Printer.Info("Location networks loaded!"); }
             }
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
-        {    
+        {
+            DataAccess.LoadItems();
+            DataAccess.LoadSprites();
+            DataAccess.LoadRecipes();
             Reset();
             if (Context.IsMainPlayer)
             {
+                foreach (GameLocation location in Game1.locations)
+                {
+                    DataAccess.LocationNetworks.Add(location, new List<Network>());
+                    DataAccess.LocationNodes.Add(location, new List<Node>());
+                    DataAccess.UsedNetworkIDs.Add(location, new List<int>());
+                    NetworkBuilder.BuildLocationNetworksTEMP(location);
+                    NetworkManager.UpdateLocationNetworks(location);
+                }
+
                 ConvertFromVanillaMap();
                 ConvertFromVanillaPlayer();
             }
-
-            foreach (GameLocation location in Game1.locations)
-            {
-                DataAccess.LocationNetworks.Add(location, new List<Network>());
-                DataAccess.LocationNodes.Add(location, new List<Node>());
-                NetworkBuilder.BuildLocationNetworks(location);
-                NetworkManager.UpdateLocationNetworks(location);
-            }
             if (Globals.UltraDebug) { Printer.Info("Location networks loaded!"); }
-
-
         }
 
 
@@ -299,7 +300,6 @@ namespace ItemPipes
                         SObject tempObj = customObj.Save();
                         location.objects.Remove(obj.Key);
                         location.objects.Add(obj.Key, tempObj);
-
                     }
                     if (obj.Value is Chest && (obj.Value as Chest).items.Any(i => i is CustomObjectItem || i is CustomToolItem))
                     {
@@ -372,7 +372,6 @@ namespace ItemPipes
                             {
                                 Fence tempObj = (Fence)(obj.Value as Chest).items[i];
                                 CustomObjectItem customObj = ItemFactory.CreateItem(tempObj.modData["Type"]);
-                                customObj.stack.Value = Int32.Parse(tempObj.modData["Stack"]);
                                 (obj.Value as Chest).items.RemoveAt(i);
                                 (obj.Value as Chest).items.Insert(i, customObj);
                             }
@@ -384,6 +383,10 @@ namespace ItemPipes
                                 (obj.Value as Chest).items.Insert(i, customObj);
                             }
                         }
+                    }
+                    if(obj.Value is Chest)
+                    {
+                        NetworkManager.AddObject(obj, location);
                     }
                 }
             }
@@ -417,7 +420,7 @@ namespace ItemPipes
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (Globals.DisableItemSending)
+            if (Globals.ItemSending)
             {
                 if (Context.IsWorldReady)
                 {
@@ -429,12 +432,13 @@ namespace ItemPipes
                             List<Network> networks = DataAccess.LocationNetworks[location];
                             if (networks.Count > 0)
                             {
-                                //if (Globals.UltraDebug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
+                                if (Globals.UltraDebug) { Printer.Info("Network amount: " + networks.Count.ToString()); }
                                 foreach (Network network in networks)
                                 {
                                     //Printer.Info(network.Print());
                                     if (network != null && network.Outputs.Count > 0)
                                     {
+                                        //Printer.Info(network.Print());
                                         network.ProcessExchanges(1);
                                     }
                                 }
@@ -489,9 +493,9 @@ namespace ItemPipes
             List<KeyValuePair<Vector2, StardewValley.Object>> addedObjects = e.Added.ToList();
             foreach (KeyValuePair<Vector2, StardewValley.Object> obj in addedObjects)
             {
-                if(DataAccess.ModItems.Contains(obj.Value.Name))
+                if(obj.Value is CustomObjectItem || obj.Value is Chest)
                 {
-                    NetworkManager.AddObject(obj);
+                    NetworkManager.AddObject(obj, e.Location);
                     NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
                 }
             }
@@ -499,9 +503,10 @@ namespace ItemPipes
             List<KeyValuePair<Vector2, StardewValley.Object>> removedObjects = e.Removed.ToList();
             foreach (KeyValuePair<Vector2, StardewValley.Object> obj in removedObjects)
             {
-                if (DataAccess.ModItems.Contains(obj.Value.Name))
+
+                if (obj.Value is CustomObjectItem || obj.Value is Chest)
                 {
-                    NetworkManager.RemoveObject(obj);
+                    NetworkManager.RemoveObject(obj, e.Location);
                     NetworkManager.UpdateLocationNetworks(Game1.currentLocation);
                 }
             }
@@ -509,22 +514,9 @@ namespace ItemPipes
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            for(int i=0;i<15;i++)
+            if (Game1.player.craftingRecipes.ContainsKey("Iron Pipe") && Game1.player.craftingRecipes["Iron Pipe"] > 0 && !Game1.player.mailReceived.Contains("ItemPipes_SendWrench"))
             {
-                Game1.player.addItemToInventory(new IronPipeItem());
-                Game1.player.addItemToInventory(new GoldPipeItem());
-                Game1.player.addItemToInventory(new IridiumPipeItem());
-                Game1.player.addItemToInventory(new ExtractorPipeItem());
-                Game1.player.addItemToInventory(new GoldExtractorPipeItem());
-                Game1.player.addItemToInventory(new IridiumExtractorPipeItem());
-                Game1.player.addItemToInventory(new InserterPipeItem());
-                Game1.player.addItemToInventory(new PolymorphicPipeItem());
-                Game1.player.addItemToInventory(new FilterPipeItem());
-                Game1.player.addItemToInventory(new PPMItem());
-            }
-            if (!Game1.player.hasItemInInventoryNamed("Wrench"))
-            {
-                Game1.player.addItemToInventory(new WrenchItem());
+                Game1.player.mailbox.Add("ItemPipes_SendWrench");
             }
         }
     }

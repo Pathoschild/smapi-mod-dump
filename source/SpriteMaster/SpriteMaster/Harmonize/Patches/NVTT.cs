@@ -21,7 +21,7 @@ namespace SpriteMaster.Harmonize.Patches;
 [SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "Harmony")]
 [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Harmony")]
 [SuppressUnmanagedCodeSecurity]
-static class NVTT {
+internal static class NVTT {
 
 	//[DllImport("__Internal")]
 	//private static extern IntPtr dlerror (String fileName, int flags);
@@ -31,30 +31,30 @@ static class NVTT {
 			// This needs to be done because Debian-based systems don't always have a libdl.so, and instead have libdl.so.2.
 			// We need to determine which libdl we actually need to talk to.
 			var dlTypes = Arrays.Of(
-				typeof(LibDL),
-				typeof(LibDL2),
-				typeof(LibDL3),
-				typeof(LibDL1)
+				typeof(LibDl),
+				typeof(LibDl2),
+				typeof(LibDl3),
+				typeof(LibDl1)
 			);
 
 			foreach (var dlType in dlTypes) {
-				var newDL = (LibDL?)Activator.CreateInstance(dlType);
+				var newDl = (LibDl?)Activator.CreateInstance(dlType);
 				try {
-					if (newDL is null) {
-						throw new NullReferenceException(nameof(newDL));
+					if (newDl is null) {
+						throw new NullReferenceException(nameof(newDl));
 					}
-					newDL.error();
+					newDl.error();
 				}
 				catch {
 					Debug.Trace($"Failed DL: {dlType}");
 					continue;
 				}
-				dl = newDL;
+				Dl = newDl;
 				Debug.Trace($"New DL: {dlType}");
 				break;
 			}
 
-			if (dl is null) {
+			if (Dl is null) {
 				Debug.Error("A valid libdl could not be found.");
 				throw new NotSupportedException("A valid libdl could not be found.");
 			}
@@ -69,7 +69,7 @@ private static extern void mono_dllmap_insert(IntPtr assembly, string dll, strin
 mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null);
 	*/
 
-	private static readonly LibDL? dl = null;
+	private static readonly LibDl? Dl = null;
 
 	// NVTT's CUDA compressor for block compression is _not_ threadsafe. I have a version locally from a while back that I made threadsafe,
 	// but I never validated it and am not comfortable jamming it in here.
@@ -120,19 +120,19 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 		platform: Harmonize.Platform.Linux
 	)]
 	public static bool NativeLoadLibrary(UnmanagedLibrary __instance, ref IntPtr __result, String path) {
-		if (dl is null) {
-			throw new NullReferenceException(nameof(dl));
+		if (Dl is null) {
+			throw new NullReferenceException(nameof(Dl));
 		}
 
-		var libraryHandle = dl.open(path, RTLD_NOW);
+		var libraryHandle = Dl.open(path, RTLD_NOW);
 
 		if (libraryHandle == IntPtr.Zero && __instance.ThrowOnLoadFailure) {
-			var errPtr = dl.error();
+			var errPtr = Dl.error();
 			var msg = Marshal.PtrToStringAnsi(errPtr);
 			if (!String.IsNullOrEmpty(msg))
-				throw new TeximpException(String.Format("Error loading unmanaged library from path: {0}\n\n{1}", path, msg));
+				throw new TeximpException($"Error loading unmanaged library from path: {path}\n\n{msg}");
 			else
-				throw new TeximpException(String.Format("Error loading unmanaged library from path: {0}", path));
+				throw new TeximpException($"Error loading unmanaged library from path: {path}");
 		}
 
 		__result = libraryHandle;
@@ -149,11 +149,11 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 		platform: Harmonize.Platform.Linux
 	)]
 	public static bool NativeGetProcAddress(ref IntPtr __result, IntPtr handle, String functionName) {
-		if (dl is null) {
-			throw new NullReferenceException(nameof(dl));
+		if (Dl is null) {
+			throw new NullReferenceException(nameof(Dl));
 		}
 
-		__result = dl.sym(handle, functionName);
+		__result = Dl.sym(handle, functionName);
 
 		return false;
 	}
@@ -167,13 +167,13 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 		platform: Harmonize.Platform.Linux
 	)]
 	public static bool NativeFreeLibrary(IntPtr handle) {
-		dl?.close(handle);
+		Dl?.close(handle);
 		return false;
 	}
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
-	private class LibDL {
-		private const string lib = "libdl.so";
+	private class LibDl {
+		private const string Lib = "libdl.so";
 
 		internal virtual IntPtr open(string fileName, int flags) {
 			return dlopen(fileName, flags);
@@ -191,22 +191,22 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			return dlerror();
 		}
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlopen(String fileName, int flags);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlsym(IntPtr handle, String functionName);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern int dlclose(IntPtr handle);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlerror();
 	}
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
-	private sealed class LibDL2 : LibDL {
-		private const string lib = "libdl.so.2";
+	private sealed class LibDl2 : LibDl {
+		private const string Lib = "libdl.so.2";
 
 		internal override IntPtr open(string fileName, int flags) {
 			return dlopen(fileName, flags);
@@ -224,22 +224,22 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			return dlerror();
 		}
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlopen(String fileName, int flags);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlsym(IntPtr handle, String functionName);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern int dlclose(IntPtr handle);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlerror();
 	}
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
-	private sealed class LibDL3 : LibDL {
-		private const string lib = "libdl.so.3";
+	private sealed class LibDl3 : LibDl {
+		private const string Lib = "libdl.so.3";
 
 		internal override IntPtr open(string fileName, int flags) {
 			return dlopen(fileName, flags);
@@ -257,22 +257,22 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			return dlerror();
 		}
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlopen(String fileName, int flags);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlsym(IntPtr handle, String functionName);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern int dlclose(IntPtr handle);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlerror();
 	}
 
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Native Code")]
-	private sealed class LibDL1 : LibDL {
-		private const string lib = "libdl.so.1";
+	private sealed class LibDl1 : LibDl {
+		private const string Lib = "libdl.so.1";
 
 		internal override IntPtr open(string fileName, int flags) {
 			return dlopen(fileName, flags);
@@ -290,16 +290,16 @@ mono_dllmap_insert(IntPtr.Zero, "somelib", null, "/path/to/libsomelib.so", null)
 			return dlerror();
 		}
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlopen(String fileName, int flags);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlsym(IntPtr handle, String functionName);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern int dlclose(IntPtr handle);
 
-		[DllImport(lib)]
+		[DllImport(Lib)]
 		private static extern IntPtr dlerror();
 	}
 }

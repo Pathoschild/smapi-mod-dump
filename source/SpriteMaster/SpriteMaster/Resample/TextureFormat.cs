@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Hashing;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -19,31 +20,31 @@ using TeximpNet.Compression;
 namespace SpriteMaster.Resample;
 
 [StructLayout(LayoutKind.Sequential)]
-readonly struct TextureFormat {
+internal readonly struct TextureFormat {
 
 	[MarshalAs(UnmanagedType.I4)]
 	private readonly SurfaceFormat SurfaceFormat;
 	[MarshalAs(UnmanagedType.I4)]
 	private readonly CompressionFormat CompressionFormat;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal TextureFormat(SurfaceFormat surfaceFormat, CompressionFormat compressionFormat) {
-		this.SurfaceFormat = surfaceFormat;
-		this.CompressionFormat = compressionFormat;
+		SurfaceFormat = surfaceFormat;
+		CompressionFormat = compressionFormat;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static implicit operator SurfaceFormat(TextureFormat format) => format.SurfaceFormat;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static implicit operator CompressionFormat(TextureFormat format) => format.CompressionFormat;
 
-	internal readonly bool IsSupported => Config.Resample.SupportedFormats.Contains(this);
+	internal bool IsSupported => Config.Resample.SupportedFormats.Contains(this);
 
-	internal readonly TextureFormat? SupportedOr => IsSupported ? this : null;
+	internal TextureFormat? SupportedOr => IsSupported ? this : null;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal readonly long SizeBytes(int area) => SurfaceFormat.SizeBytes(area);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal long SizeBytes(int area) => SurfaceFormat.SizeBytes(area);
 
 	internal static readonly TextureFormat None = new((SurfaceFormat)(-1), (CompressionFormat)(-1));
 
@@ -69,7 +70,7 @@ readonly struct TextureFormat {
 	internal static readonly TextureFormat WithPunchthroughAlpha =	BC1a.SupportedOr ?? WithHardAlpha;
 	internal static readonly TextureFormat WithNoAlpha =						BC1.SupportedOr ?? WithPunchthroughAlpha;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static TextureFormat? Get(CompressionFormat format) {
 		var fields = typeof(TextureFormat).GetFields(BindingFlags.Static | BindingFlags.NonPublic);
 		foreach (var field in fields) {
@@ -82,9 +83,9 @@ readonly struct TextureFormat {
 		return null;
 	}
 
-	public static bool operator ==(in TextureFormat left, in TextureFormat right) => left.SurfaceFormat == right.SurfaceFormat && left.CompressionFormat == right.CompressionFormat;
+	public static bool operator ==(TextureFormat left, TextureFormat right) => left.SurfaceFormat == right.SurfaceFormat && left.CompressionFormat == right.CompressionFormat;
 
-	public static bool operator !=(in TextureFormat left, in TextureFormat right) => left.SurfaceFormat != right.SurfaceFormat || left.CompressionFormat != right.CompressionFormat;
+	public static bool operator !=(TextureFormat left, TextureFormat right) => left.SurfaceFormat != right.SurfaceFormat || left.CompressionFormat != right.CompressionFormat;
 
 	public override bool Equals(object? obj) {
 		if (obj is TextureFormat format) {
@@ -93,5 +94,5 @@ readonly struct TextureFormat {
 		return false;
 	}
 
-	public override int GetHashCode() => Hashing.Combine32(SurfaceFormat, CompressionFormat);
+	public override int GetHashCode() => HashUtility.Combine32(SurfaceFormat, CompressionFormat);
 }

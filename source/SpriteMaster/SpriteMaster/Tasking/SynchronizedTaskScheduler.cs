@@ -23,11 +23,11 @@ namespace SpriteMaster.Tasking;
 
 [DebuggerTypeProxy(typeof(SynchronizedTaskSchedulerDebugView))]
 [DebuggerDisplay("Id={Id}, ScheduledTasks = {DebugTaskCount}")]
-sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
+internal sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 	internal static readonly SynchronizedTaskScheduler Instance = new();
 	internal static readonly TaskFactory TaskFactory = new(Instance);
 
-	internal static readonly Func<bool>? IsUIThread = typeof(XNA.Graphics.Texture2D).Assembly.GetType(
+	internal static readonly Func<bool>? IsUiThread = typeof(XTexture2D).Assembly.GetType(
 		"Microsoft.Xna.Framework.Threading"
 	)?.GetMethod(
 		"IsOnUIThread",
@@ -73,10 +73,7 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		}
 	}
 
-	internal SynchronizedTaskScheduler() {}
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal void Dispatch(in TimeSpan remainingTime) {
+	internal void Dispatch(TimeSpan remainingTime) {
 		if (!Config.IsEnabled) {
 			return;
 		}
@@ -92,16 +89,15 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		catch (OperationCanceledException) { /* do nothing */ }
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private void InvokeTask(Task task) {
 		if (TryExecuteTask(task) || task.IsCompleted) {
 			task.Dispose();
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private void DispatchInternal(in TimeSpan remainingTime) {
-		var watch = System.Diagnostics.Stopwatch.StartNew();
+	private void DispatchInternal(TimeSpan remainingTime) {
+		var watch = Stopwatch.StartNew();
 		{
 			var pendingActions = PendingImmediate.Current;
 			bool invoke;
@@ -113,9 +109,7 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 				PendingImmediate.Swap();
 				lock (pendingActions) {
 					foreach (var task in pendingActions) {
-						if (task is not null) {
-							InvokeTask(task);
-						}
+						InvokeTask(task);
 					}
 					pendingActions.Clear();
 				}
@@ -135,17 +129,12 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 					if (Config.AsyncScaling.ThrottledSynchronousLoads && !GameState.IsLoading) {
 						int processed = 0;
 						foreach (var task in pendingLoads) {
-							if (task is null) {
-								++processed;
-								continue;
-							}
-
 							var estimate = TexelAverage.Estimate(task.ActionData);
 							if (DrawState.PushedUpdateWithin(0) && watch.Elapsed + estimate > remainingTime) {
 								break;
 							}
 
-							DrawState.PushedUpdateThisFrame = true;
+							DrawState.IsUpdatedThisFrame = true;
 							var start = watch.Elapsed;
 							InvokeTask(task);
 							var duration = watch.Elapsed - start;
@@ -165,9 +154,7 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 					}
 					else {
 						foreach (var task in pendingLoads) {
-							if (task is not null) {
-								InvokeTask(task);
-							}
+							InvokeTask(task);
 						}
 					}
 					pendingLoads.Clear();
@@ -176,7 +163,6 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	protected override void QueueTask(Task task) {
 		if (!Config.IsEnabled) {
 			return;
@@ -200,7 +186,7 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal void QueueImmediate(Action action) {
 		if (!Config.IsEnabled) {
 			return;
@@ -210,8 +196,8 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		task.Start(this);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal void QueueDeferred(Action action, in TextureAction actionData) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal void QueueDeferred(Action action, TextureAction actionData) {
 		if (!Config.IsEnabled) {
 			return;
 		}
@@ -220,7 +206,7 @@ sealed class SynchronizedTaskScheduler : TaskScheduler, IDisposable {
 		task.Start(this);
 	}
 
-	protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued) => (IsUIThread?.Invoke() ?? false) && TryExecuteTask(task);
+	protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued) => (IsUiThread?.Invoke() ?? false) && TryExecuteTask(task);
 
 	protected override IEnumerable<Task> GetScheduledTasks() {
 		var immediate = PendingImmediate.Both;

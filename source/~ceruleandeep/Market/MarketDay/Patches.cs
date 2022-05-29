@@ -38,7 +38,7 @@ namespace MarketDay
                 LogLevel.Debug, true);
 
             if (owner is null) return true;
-            if (owner == "Player" || MarketDay.Config.PeekIntoChests) return true;
+            if (owner == $"Farmer:{who.Name}" || MarketDay.Config.PeekIntoChests) return true;
 
             MarketDay.Log(
                 $"Prefix_Chest_checkForAction preventing action on object at {__instance.TileLocation} owned by {owner}",
@@ -64,7 +64,7 @@ namespace MarketDay
                 $"Prefix_Sign_checkForAction checking {__instance} {__instance.DisplayName} owner {owner} at {__instance.TileLocation}",
                 LogLevel.Debug, true);
 
-            if (owner is null or "Player") return true;
+            if (owner is null || owner == $"Farmer:{who.Name}") return true;
 
             MarketDay.Log(
                 $"Prefix_Sign_checkForAction preventing action on object at {__instance.TileLocation} owned by {owner}",
@@ -91,7 +91,7 @@ namespace MarketDay
                 LogLevel.Debug, true);
 
             if (owner is null) return true;
-            if (owner == "Player" || MarketDay.Config.PeekIntoChests) return true;
+            if (owner == $"Farmer:{Game1.player.Name}" || MarketDay.Config.PeekIntoChests) return true;
 
             MarketDay.Log(
                 $"Prefix_Object_performUseAction preventing use of object at {__instance.TileLocation} owned by {owner}",
@@ -151,6 +151,8 @@ namespace MarketDay
             }
 
             var tileLocation = grangeShop.Origin;
+            if (tileLocation == Vector2.Zero) return;
+            
             var drawLayer = Math.Max(0f, (tileLocation.Y * Game1.tileSize - 24) / 10000f) + tileLocation.X * 1E-05f;
             grangeShop.drawGrangeItems(tileLocation, spriteBatch, drawLayer);
             
@@ -161,47 +163,62 @@ namespace MarketDay
 
     [HarmonyPatch(typeof(PathFindController))]
     [HarmonyPatch("findPathForNPCSchedules")]
+    //  alter paths through Town to travel via market shops 
     public class Postfix_findPathForNPCSchedules
     {
         public static void Postfix(Point startPoint, Point endPoint, GameLocation location, int limit, ref Stack<Point> __result)
         {
             if (location is not Town) return;
-            if (!MarketDay.IsMarketDay()) return;
+            if (!MarketDay.IsMarketDay) return;
             if (!MarketDay.Config.NPCVisitors) return;
             if (MapUtility.ShopTiles.Count == 0) return;
+            
+            // if we're doing rescheduling we'll bend the pathfinding in pathfindToNextScheduleLocation
+            if (MarketDay.Config.NPCRescheduling) return; 
 
-            MarketDay.Log($"findPathForNPCSchedules {location.Name} {startPoint} -> {endPoint}", LogLevel.Trace, true);
+            __result = Schedule.pathFindViaGrangeShops(startPoint, endPoint, location, limit, 3*60);
+        }
+    }
 
-            var placesToVisit = new List<Point>();
-            foreach (var (shopX, shopY) in MapUtility.ShopTiles)
-            {
-                var visitPoint = new Point((int) shopX + Game1.random.Next(3), (int) shopY + 4);
-                if (Game1.random.NextDouble() < MarketDay.Config.StallVisitChance) placesToVisit.Add(visitPoint);
-            }
+    [HarmonyPatch(typeof(NPC))]
+    [HarmonyPatch("parseMasterSchedule")]
+    //  public Dictionary<int, SchedulePathDescription> parseMasterSchedule(string rawData)
+    //  rewrite NPC schedules to travel through town via market shops and visit them
+    //  or if they have a shop to stand next to, do that if time allows
+    public class Postfix_parseMasterSchedule
+    {
+        public static void Postfix(
+            NPC __instance, 
+            String rawData,
+            ref Dictionary<int, SchedulePathDescription> __result)
+        {
+            if (!MarketDay.Config.NPCRescheduling) return;
+            if (!MarketDay.IsMarketDay) return;
+            
+            if (MapUtility.ShopTiles.Count == 0) return;
+            
+            __result = Schedule.parseMasterSchedule(__instance, rawData);
+        }
+    }
+    
+    [HarmonyPatch(typeof(NPC))]
+    [HarmonyPatch("getSchedule")]
+    //  public Dictionary<int, SchedulePathDescription> getSchedule(int dayOfMonth)
+    //  if NPC has no schedule for today, and they have a shop to stand next to,
+    //  schedule them to stand there all day
+    public class Postfix_getSchedule
+    {
+        public static void Postfix(
+            NPC __instance, 
+            int dayOfMonth,
+            ref Dictionary<int, SchedulePathDescription> __result)
+        {
+            if (!MarketDay.Config.NPCRescheduling) return;
+            if (!MarketDay.IsMarketDay) return;
 
-            StardewValley.Utility.Shuffle(Game1.random, placesToVisit);
-            placesToVisit.Add(startPoint);
-            if (placesToVisit.Count < 2) return;
-
-            var waypoints = string.Join(", ", placesToVisit);
-            MarketDay.Log($"    Waypoints: {waypoints}", LogLevel.Trace, true);
-
-            // work backwards through the waypoints
-            __result = new Stack<Point>();
-
-            var thisEndPoint = endPoint;
-            foreach (var (wptX, wptY) in placesToVisit)
-            {
-                var thisStartPoint = new Point(wptX, wptY);
-
-                var originalPath = Schedule.findPathForNPCSchedules(thisStartPoint, thisEndPoint, location, limit);
-                if (originalPath is null || originalPath.Count == 0) continue;
-
-                var legPath = originalPath.ToList();
-                legPath.Reverse();
-                foreach (var pt in legPath) __result.Push(pt);
-                thisEndPoint = thisStartPoint;
-            }
+            if (__result is not null && __result.Count > 0) return;
+            
+            __result = Schedule.getScheduleWhenNoDefault(__instance, dayOfMonth);
         }
     }
 }

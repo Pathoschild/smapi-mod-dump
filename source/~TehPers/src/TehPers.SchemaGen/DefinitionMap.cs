@@ -8,24 +8,25 @@
 **
 *************************************************/
 
+using Namotion.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Namotion.Reflection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using TehPers.FishingOverhaul.Api.Content;
 
-namespace TehPers.FishingOverhaul.SchemaGen
+namespace TehPers.SchemaGen
 {
     public class DefinitionMap
     {
         private static readonly Dictionary<Type, JObject> predefinedSchemas = new()
         {
-            [typeof(bool)] = new() { ["type"] = "boolean" },
-            [typeof(string)] = new() { ["type"] = "string" },
+            [typeof(bool)] = new() {["type"] = "boolean"},
+            [typeof(string)] = new() {["type"] = "string"},
             [typeof(byte)] = new()
             {
                 ["type"] = "integer",
@@ -74,9 +75,9 @@ namespace TehPers.FishingOverhaul.SchemaGen
                 ["minimum"] = long.MinValue,
                 ["maximum"] = long.MaxValue,
             },
-            [typeof(float)] = new() { ["type"] = "number" },
-            [typeof(double)] = new() { ["type"] = "number" },
-            [typeof(decimal)] = new() { ["type"] = "number" },
+            [typeof(float)] = new() {["type"] = "number"},
+            [typeof(double)] = new() {["type"] = "number"},
+            [typeof(decimal)] = new() {["type"] = "number"},
             [typeof(DateTime)] = new()
             {
                 ["type"] = "string",
@@ -87,14 +88,43 @@ namespace TehPers.FishingOverhaul.SchemaGen
                 ["type"] = "string",
                 ["format"] = "date-time",
             },
-            [typeof(byte[])] = new() { ["type"] = "string" },
-            [typeof(Type)] = new() { ["type"] = "string" },
+            [typeof(byte[])] = new() {["type"] = "string"},
+            [typeof(Type)] = new() {["type"] = "string"},
             [typeof(Guid)] = new()
             {
                 ["type"] = "string",
                 ["format"] = "uuid",
             },
         };
+
+        private static readonly Dictionary<Type, Func<DefinitionMap, JObject>>
+            predefinedSchemaFactories = new()
+            {
+                [typeof(FishingEffectEntry)] = map => new()
+                {
+                    ["type"] = "object",
+                    ["additionalProperties"] = true,
+                    ["required"] = new JArray {"$Effect"},
+                    ["properties"] = new JObject
+                    {
+                        ["$Effect"] = new JObject
+                        {
+                            ["type"] = "string",
+                            ["description"] = "The type of effect to apply."
+                        },
+                        ["Conditions"] = new JObject
+                        {
+                            ["description"] = "Conditions for when this effect should be applied.",
+                            ["oneOf"] = new JArray
+                            {
+                                map.CreateRef(
+                                    typeof(AvailabilityConditions).ToContextualType()
+                                ),
+                            },
+                        },
+                    },
+                },
+            };
 
         private static readonly HashSet<Type> arrayTypes = new()
         {
@@ -131,7 +161,7 @@ namespace TehPers.FishingOverhaul.SchemaGen
                 knownDefinitions.Definitions.ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
-        private string GetDefinitionName(Type type)
+        private static string GetDefinitionName(Type type)
         {
             return type.FullName
                 ?? throw new ArgumentException("Type not supported for definitions", nameof(type));
@@ -139,7 +169,7 @@ namespace TehPers.FishingOverhaul.SchemaGen
 
         public bool Assign(Type type, JObject schema)
         {
-            return this.Definitions.TryAdd(this.GetDefinitionName(type), schema);
+            return this.Definitions.TryAdd(DefinitionMap.GetDefinitionName(type), schema);
         }
 
         public JObject Register(ContextualType contextualType, bool forceNotNull = false)
@@ -169,7 +199,7 @@ namespace TehPers.FishingOverhaul.SchemaGen
             // Nullable types
             if (!forceNotNull && contextualType.Nullability is not Nullability.NotNullable)
             {
-                yield return new() { ["type"] = "null" };
+                yield return new() {["type"] = "null"};
             }
 
             // Get inner type
@@ -180,6 +210,15 @@ namespace TehPers.FishingOverhaul.SchemaGen
             {
                 // Predefined type
                 yield return (JObject)predefinedDef.DeepClone();
+                yield break;
+            }
+
+            if (DefinitionMap.predefinedSchemaFactories.TryGetValue(
+                    type,
+                    out var predefinedDefFactory
+                ))
+            {
+                yield return (JObject)predefinedDefFactory(this).DeepClone();
                 yield break;
             }
 
@@ -223,7 +262,7 @@ namespace TehPers.FishingOverhaul.SchemaGen
                 if (DefinitionMap.dictionaryTypes.Contains(genericDef))
                 {
                     // Check if key can be converted to string
-                    if (!this.IsStringish(contextualType.GenericArguments[0]))
+                    if (!DefinitionMap.IsStringish(contextualType.GenericArguments[0]))
                     {
                         throw new InvalidOperationException(
                             "Schema generation doesn't work with dictionaries with non-string keys."
@@ -245,7 +284,7 @@ namespace TehPers.FishingOverhaul.SchemaGen
             yield return this.CreateRef(contextualType);
         }
 
-        private bool IsStringish(ContextualType contextualType)
+        private static bool IsStringish(ContextualType contextualType)
         {
             // Check type
             var innerType = contextualType.Type;
@@ -262,30 +301,30 @@ namespace TehPers.FishingOverhaul.SchemaGen
 
         private JObject CreateRef(ContextualType contextualType)
         {
-            var definitionName = this.GetDefinitionName(contextualType.Type);
+            var definitionName = DefinitionMap.GetDefinitionName(contextualType.Type);
 
             // Check if already defined
             if (this.Definitions.ContainsKey(definitionName))
             {
-                return this.CreateRefObject(definitionName);
+                return DefinitionMap.CreateRefObject(definitionName);
             }
 
             // Check if known definition
             if (this.knownDefinitions.Remove(definitionName, out var knownDefinition))
             {
                 this.Definitions[definitionName] = knownDefinition;
-                return this.CreateRefObject(definitionName);
+                return DefinitionMap.CreateRefObject(definitionName);
             }
 
             // Set the definition for now to handle recursion
             this.Definitions[definitionName] = new();
             this.Definitions[definitionName] = this.CreateCustomTypeSchema(contextualType);
-            return this.CreateRefObject(definitionName);
+            return DefinitionMap.CreateRefObject(definitionName);
         }
 
-        private JObject CreateRefObject(string definitionName)
+        private static JObject CreateRefObject(string definitionName)
         {
-            return new() { ["$ref"] = $"#/definitions/{definitionName}" };
+            return new() {["$ref"] = $"#/definitions/{definitionName}"};
         }
 
         private JObject CreateCustomTypeSchema(ContextualType contextualType)
@@ -295,22 +334,44 @@ namespace TehPers.FishingOverhaul.SchemaGen
                 .Select(attr => attr.Description)
                 .FirstOrDefault();
             typeDescription ??= type.GetXmlDocsSummary().Replace("\n", " ");
+            var obsoleteAttr = type.GetCustomAttribute<ObsoleteAttribute>();
 
-            return type switch
+            // Generate schema
+            var typeSchema = type switch
             {
-                { IsEnum: true } => GenerateForEnum(),
-                { IsClass: true } or { IsValueType: true } => GenerateForClassOrStruct(),
+                {IsEnum: true} => GenerateForEnum(),
+                {IsClass: true} or {IsValueType: true} => GenerateForClassOrStruct(),
                 _ => throw new InvalidOperationException(),
             };
+
+            // Generate description
+            var description = (string.IsNullOrWhiteSpace(typeDescription), obsoleteAttr) switch
+            {
+                (true, {Message: { } obsoleteMessage}) => $"Obsolete: {obsoleteMessage}",
+                (false, {Message: { } obsoleteMessage}) =>
+                    $"Obsolete: {obsoleteMessage}\n{typeDescription.Trim()}",
+                (true, not null) => "Obsolete.",
+                (false, not null) => $"Obsolete.\n{typeDescription.Trim()}",
+                (true, null) => null,
+                (false, null) => typeDescription.Trim(),
+            };
+            if (description is not null)
+            {
+                typeSchema["description"] = description;
+            }
+
+            // Mark as deprecated if obsolete
+            if (obsoleteAttr is not null)
+            {
+                typeSchema["deprecated"] = true;
+            }
+
+            return typeSchema;
 
             JObject GenerateForEnum()
             {
                 // Basic information
-                var result = new JObject { ["type"] = "string" };
-                if (!string.IsNullOrWhiteSpace(typeDescription))
-                {
-                    result["description"] = typeDescription;
-                }
+                var result = new JObject {["type"] = "string"};
 
                 // Enum variants
                 var variants = new JArray();
@@ -331,10 +392,6 @@ namespace TehPers.FishingOverhaul.SchemaGen
                     ["type"] = "object",
                     ["additionalProperties"] = false,
                 };
-                if (!string.IsNullOrWhiteSpace(typeDescription))
-                {
-                    result["description"] = typeDescription;
-                }
 
                 var required = new HashSet<string>();
                 var properties = new JObject();
@@ -400,7 +457,7 @@ namespace TehPers.FishingOverhaul.SchemaGen
         private static IEnumerable<ContextualType> GetHierarchy(ContextualType contextualType)
         {
             yield return contextualType;
-            while (contextualType is { BaseType: { } baseType })
+            while (contextualType is {BaseType: { } baseType})
             {
                 yield return baseType;
                 contextualType = baseType;
@@ -417,17 +474,30 @@ namespace TehPers.FishingOverhaul.SchemaGen
                 .GetCustomAttributes<DescriptionAttribute>(true)
                 .Select(attr => attr.Description)
                 .FirstOrDefault();
+            var obsoleteAttr = member.Accessor.MemberInfo.GetCustomAttribute<ObsoleteAttribute>();
             description ??= member.Accessor.GetXmlDocsSummary().Replace("\n", " ");
+            description = obsoleteAttr switch
+            {
+                {Message: { } obsoleteMessage} => $"Obsolete: {obsoleteMessage}\n\n{description}",
+                not null => $"Obsolete.\n\n{description}",
+                null => description,
+            };
             if (!string.IsNullOrWhiteSpace(description))
             {
-                schema["description"] = description;
+                schema["description"] = description.Trim();
+            }
+
+            // Mark as deprecated if obsolete
+            if (obsoleteAttr is not null)
+            {
+                schema["deprecated"] = true;
             }
 
             // Add default value
             var defaultValue = member.Accessor.MemberInfo
                 .GetCustomAttributes<DefaultValueAttribute>(true)
                 .FirstOrDefault();
-            if (defaultValue is { Value: var val })
+            if (defaultValue is {Value: var val})
             {
                 schema["default"] = val is not null ? JToken.FromObject(val) : JValue.CreateNull();
             }

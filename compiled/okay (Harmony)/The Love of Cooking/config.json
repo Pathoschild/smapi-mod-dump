@@ -13,6 +13,5 @@
   "RememberLastSearchFilter": true,
   "DefaultSearchFilter": "None",
   "DebugMode": false,
-  "ResizeKoreanFonts": true,
-  "ConsoleCommandPrefix": "cac"
+  "ResizeKoreanFonts": true
 }

@@ -72,7 +72,39 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                     Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("TileSheets\\animations", new Rectangle(0, 0, 64, 64), 150f, 8, 0, __instance.directionOffset + new Vector2(x * 64 + 4, y * 64 + 32), flicker: false, Game1.random.NextDouble() < 0.5, 0.001f, 0.01f, Color.White, 0.75f, 0.003f, 0f, 0f));
                 }
 
-                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, __instance.directionOffset + new Vector2(x * 64, y * 64 + (int)___yBob)) + ___shake, new Rectangle((__instance.tileIndexToShow - 710) * textureModel.TextureWidth, textureOffset, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64) + __instance.directionOffset.Y + (float)(x % 4)) / 10000f);
+                // Set xTileOffset if AlternativeTextureModel has an animation
+                var xTileOffset = 0;
+                if (textureModel.HasAnimation(textureVariation))
+                {
+                    if (!__instance.modData.ContainsKey("AlternativeTextureCurrentFrame") || !__instance.modData.ContainsKey("AlternativeTextureFrameDuration") || !__instance.modData.ContainsKey("AlternativeTextureElapsedDuration"))
+                    {
+                        __instance.modData["AlternativeTextureCurrentFrame"] = "0";
+                        __instance.modData["AlternativeTextureFrameDuration"] = textureModel.GetAnimationDataAtIndex(textureVariation, 0).Duration.ToString();// Animation.ElementAt(0).Duration.ToString();
+                        __instance.modData["AlternativeTextureElapsedDuration"] = "0";
+                    }
+
+                    var currentFrame = Int32.Parse(__instance.modData["AlternativeTextureCurrentFrame"]);
+                    var frameDuration = Int32.Parse(__instance.modData["AlternativeTextureFrameDuration"]);
+                    var elapsedDuration = Int32.Parse(__instance.modData["AlternativeTextureElapsedDuration"]);
+
+                    if (elapsedDuration >= frameDuration)
+                    {
+                        currentFrame = currentFrame + 1 >= textureModel.GetAnimationData(textureVariation).Count() ? 0 : currentFrame + 1;
+
+                        __instance.modData["AlternativeTextureCurrentFrame"] = currentFrame.ToString();
+                        __instance.modData["AlternativeTextureFrameDuration"] = textureModel.GetAnimationDataAtIndex(textureVariation, currentFrame).Duration.ToString();
+                        __instance.modData["AlternativeTextureElapsedDuration"] = "0";
+                    }
+                    else
+                    {
+                        __instance.modData["AlternativeTextureElapsedDuration"] = (elapsedDuration + Game1.currentGameTime.ElapsedGameTime.Milliseconds).ToString();
+                    }
+
+                    xTileOffset = currentFrame;
+                }
+                xTileOffset *= textureModel.TextureWidth;
+
+                spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, __instance.directionOffset + new Vector2(x * 64, y * 64 + (int)___yBob)) + ___shake, new Rectangle(((__instance.tileIndexToShow - 710) * textureModel.TextureWidth) + xTileOffset, textureOffset, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64) + __instance.directionOffset.Y + (float)(x % 4)) / 10000f);
                 spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, __instance.directionOffset + new Vector2(x * 64 + 4, y * 64 + 48)) + ___shake, new Rectangle(Game1.currentLocation.waterAnimationIndex * 64, 2112 + (((x + y) % 2 != 0) ? ((!Game1.currentLocation.waterTileFlip) ? 128 : 0) : (Game1.currentLocation.waterTileFlip ? 128 : 0)), 56, 16 + (int)___yBob), Game1.currentLocation.waterColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, ((float)(y * 64) + __instance.directionOffset.Y + (float)(x % 4)) / 9999f);
 
                 if ((bool)__instance.readyForHarvest && __instance.heldObject.Value != null)

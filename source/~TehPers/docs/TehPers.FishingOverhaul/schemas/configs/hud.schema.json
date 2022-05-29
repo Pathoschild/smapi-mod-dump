@@ -14,7 +14,7 @@
       "$ref": "#/definitions/TehPers.FishingOverhaul.Config.HudConfig"
     }
   ],
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
   "title": "HudConfig",
   "definitions": {
     "TehPers.FishingOverhaul.Config.HudConfig": {
@@ -46,8 +46,14 @@
           "maximum": 2147483647,
           "description": "The number of fish to show on the fishing HUD.",
           "default": 5
+        },
+        "ShowTrash": {
+          "type": "boolean",
+          "description": "Whether to show trash in the fishing HUD.",
+          "default": false
         }
-      }
+      },
+      "description": "Configuration for the fishing HUD."
     }
   }
 }

@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Monsters;
@@ -25,15 +26,16 @@ using StardewValley.Tools;
 
 using DaLion.Common.Extensions.Reflection;
 using DaLion.Common.Harmony;
-using AssetLoaders;
 using Events.GameLoop.DayEnding;
 using Extensions;
+using Sounds;
 using Ultimate;
 
 using SObject = StardewValley.Object;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class GameLocationDamageMonsterPatch : BasePatch
 {
     /// <summary>Construct an instance.</summary>

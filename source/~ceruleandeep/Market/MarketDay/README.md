@@ -71,13 +71,6 @@ Requirements
 * Generic Mod Config Menu (optional)
 * JSON Assets (optional)
 
-Future shop ideas
----
-* Haley sells photography
-* Robin sells furniture
-* More art for Leah
-* Sandy
-
 Adding your own shops
 ---
 
@@ -97,37 +90,7 @@ What I think I know about grange shop design:
 Future
 ---
 
-* two markets a day
-* villagers come to sides of shops
-* track villager's intended arrival tile and only pause them there
-* restart market on GMCM change
-* flx flash of content when chest is/isn't displayed
-  
-* if NPC buys a clothing item, put it on
-  
-* Option for random number of shops every market day
-* Make a shop with your spouse/roommate
-* Leo's island shop
-* letter after market to summarize sales
-  
-* write tutorial here
-* sell animals
-* shut the market down properly at closing time, empty the granges
-* in-game tutorial
-* send a mail on the day before the first fair?
-* tint the sign
-* boost price if item is in season
-* custom sell prices for player store with prob of purchase
-
-* samples sell product
-* interactions with buyers
-* Variable pricing, supply/demand response
-* Reviews
-* Critics
-* Gain friendship if items bought while you're there
-* Samples
-* https://github.com/StardewModders/mod-ideas/issues/650
-* Conversation topic after market day e.g. Pierre is pissed
+See: [TODO.md](TODO.md)
 
 
 License
@@ -249,8 +212,8 @@ Game1::_newDayAfterFade()
 // newDaySync.barrier("buildingUpgrades");
 
 -> NPC::resetForNewDay()
--> NPC::getSchedule()
--> NPC::parseMasterSchedule()
+-> Dictionary<int, SchedulePathDescription> NPC::getSchedule(int dayOfMonth)
+-> Dictionary<int, SchedulePathDescription> NPC::parseMasterSchedule(string rawdata)
 -> NPC::pathfindToNextScheduleLocation()
 -> PathFindController::findPathForNPCSchedules()
 ```
@@ -261,6 +224,28 @@ etc
 patch reload ceruleandeep.MarketDay.CP
 patch summary ceruleandeep.MarketDay.CP
 patch summary ceruleandeep.MarketDay
+
+patch reload ceruleandeep.MarketDay.Wizard
+
+eventforget 117780001
+responseforget 117789010
+responseforget 117789011
+responseforget 117789012
+responseforget 117789020
+responseforget 117789021
+responseforget 117789022
+responseforget 117789023
+responseforget 117789024
+responseforget 117789030
+responseforget 117789031
+responseforget 117789032
+responseforget 117789040
+responseforget 117789041
+responseforget 117789050
+responseforget 117789051
+
+patch reload ceruleandeep.MarketDay.Wizard
+debug ebi 117780001
 
   "37": "Wood Sign/5/-300/Crafting -9/Use an item on this to change what's displayed. The item won't be consumed./true/true/0/Wood Sign",
   "130": "Chest/0/-300/Crafting -9/A place to store your items./true/true/0/Chest",

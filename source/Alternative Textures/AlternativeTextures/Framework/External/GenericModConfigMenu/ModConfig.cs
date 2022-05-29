@@ -19,6 +19,17 @@ namespace AlternativeTextures.Framework.External.GenericModConfigMenu
 {
     public class ModConfig
     {
+        public bool OutputTextureDataToLog { get; set; }
+        public bool UseRandomTexturesWhenPlacingFlooring { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingFruitTree { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingTree { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingHoeDirt { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingGrass { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingFurniture { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingObject { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingFarmAnimal { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingMonster { get; set; } = true;
+        public bool UseRandomTexturesWhenPlacingBuilding { get; set; } = true;
         public List<DisabledTextureModel> DisabledTextures { get; set; } = new List<DisabledTextureModel>();
 
         internal bool IsTextureVariationDisabled(string textureId, int variation)

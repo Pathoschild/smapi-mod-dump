@@ -9,21 +9,23 @@
 *************************************************/
 
 using Microsoft.Toolkit.HighPerformance;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
 using StardewValley;
 using System;
 
+using SMDrawState = SpriteMaster.DrawState;
+
 namespace SpriteMaster.Configuration.Preview;
 
-abstract class Scene : IDisposable {
+internal abstract class Scene : IDisposable {
 	internal static Scene? Current = null;
 	protected const int TileSize = 16;
 	protected const int TileSizeRendered = TileSize * 4;
+	protected const int RegionVerticalOffset = -20;
 
-	private struct CurrentScope : IDisposable {
+	private readonly struct CurrentScope : IDisposable {
 		private readonly Scene? PreviousScene;
 
 		internal CurrentScope(Scene scene) {
@@ -36,7 +38,7 @@ abstract class Scene : IDisposable {
 		}
 	}
 
-	internal static readonly Lazy<StardewValley.GameLocation> SceneLocation = new(() => new StardewValley.Locations.Beach(@"Maps\Beach", "SMSettingsLocation"));
+	internal static readonly Lazy<GameLocation> SceneLocation = new(() => new StardewValley.Locations.Beach(@"Maps\Beach", "SMSettingsLocation"));
 
 	internal abstract PrecipitationType Precipitation { get; }
 
@@ -70,12 +72,26 @@ abstract class Scene : IDisposable {
 		}
 	}
 
-	internal Bounds Region { get; private set; }
+	internal Bounds ReferenceRegion { get; private set; }
+	internal Bounds Region {
+		get {
+			var offsetRegion = ReferenceRegion.OffsetBy((0, RegionVerticalOffset));
+
+			if (GMCM.Setup.LockPreview) {
+				var baseScissor = SMDrawState.Device.ScissorRectangle;
+				if (offsetRegion.Y < baseScissor.Y) {
+					offsetRegion.Y = baseScissor.Y;
+				}
+			}
+
+			return offsetRegion;
+		}
+	}
 	private RasterizerState? State = null;
 	protected Vector2I Size => Region.Extent;
 
-	protected Scene(in Bounds region) {
-		Region = region;
+	protected Scene(Bounds region) {
+		ReferenceRegion = region;
 	}
 
 	protected static Vector2I GetSizeInTiles(Vector2I size) => size / TileSize;
@@ -83,10 +99,10 @@ abstract class Scene : IDisposable {
 	protected static Vector2I GetSizeInRenderedTiles(Vector2I size) => size / TileSizeRendered;
 
 	internal void DrawAt(
-		XNA.Graphics.SpriteBatch batch,
+		XSpriteBatch batch,
 		XTexture2D texture,
-		in Bounds destination,
-		in Bounds? source = null,
+		Bounds destination,
+		Bounds? source = null,
 		Color8? color = null,
 		float rotation = 0.0f,
 		SpriteEffects effects = SpriteEffects.None,
@@ -95,7 +111,7 @@ abstract class Scene : IDisposable {
 		Vector2I shift = Vector2I.Zero;
 		if (destination.Extent.MaxOf > TileSizeRendered) {
 			var centroid = destination.Center;
-			var end = destination.Offset + destination.Extent;
+			var end = destination.End;
 			var difference = end - centroid;
 			difference /= TileSizeRendered;
 			difference *= TileSizeRendered;
@@ -116,7 +132,7 @@ abstract class Scene : IDisposable {
 			texture: texture,
 			destinationRectangle: destination.OffsetBy(shift),
 			sourceRectangle: source,
-			color: color ?? XNA.Color.White,
+			color: color ?? XColor.White,
 			rotation: rotation,
 			origin: offset,
 			effects: effects,
@@ -125,10 +141,10 @@ abstract class Scene : IDisposable {
 	}
 
 	internal void DrawAt(
-		XNA.Graphics.SpriteBatch batch,
+		XSpriteBatch batch,
 		XTexture2D texture,
 		Vector2I destination,
-		in Bounds? source = null,
+		Bounds? source = null,
 		Color8? color = null,
 		float rotation = 0.0f,
 		Vector2F? origin = null,
@@ -163,7 +179,7 @@ abstract class Scene : IDisposable {
 			texture: texture,
 			destinationRectangle: bounds.OffsetBy(shift),
 			sourceRectangle: source,
-			color: color ?? XNA.Color.White,
+			color: color ?? XColor.White,
 			rotation: 0.0f,
 			origin: offset,
 			effects: effects,
@@ -172,7 +188,7 @@ abstract class Scene : IDisposable {
 	}
 
 	internal void DrawAt(
-		XNA.Graphics.SpriteBatch batch,
+		XSpriteBatch batch,
 		AnimatedTexture texture,
 		Vector2I destination,
 		Color8? color = null,
@@ -192,23 +208,34 @@ abstract class Scene : IDisposable {
 		);
 	}
 
-	protected abstract void OnDraw(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState);
-	protected abstract void OnDrawOverlay(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState);
+	protected abstract void OnDraw(XSpriteBatch batch, in Override overrideState);
+	protected abstract void OnDrawOverlay(XSpriteBatch batch, in Override overrideState);
 	
 	private readonly ref struct DrawState {
-		internal readonly Viewport Viewport { get; init; }
-		internal readonly SamplerState? SamplerState { get; init; }
-		internal readonly DepthStencilState? DepthStencilState { get; init; }
-		internal readonly XRectangle ScissorRectangle { get; init; }
-		internal readonly RasterizerState? RasterizerState { get; init; }
+		internal Viewport Viewport { get; init; }
+		internal SamplerState? SamplerState { get; init; }
+		internal DepthStencilState? DepthStencilState { get; init; }
+		internal XRectangle ScissorRectangle { get; init; }
+		internal RasterizerState? RasterizerState { get; init; }
 	}
 
-	private void DrawBox(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState) {
-		using var tempBatch = new TempValue<XNA.Graphics.SpriteBatch>(ref StardewValley.Game1.spriteBatch, batch);
-		StardewValley.Game1.DrawBox(Region.X, Region.Y, Region.Width, Region.Height);
+	private void DrawBox(XSpriteBatch batch, in Override overrideState, in DrawState drawState) {
+		batch.Begin(
+			sortMode: SpriteSortMode.Deferred,
+			rasterizerState: State,
+			samplerState: drawState.SamplerState,
+			depthStencilState: drawState.DepthStencilState
+		);
+		try {
+			using var tempBatch = new TempValue<XSpriteBatch>(ref Game1.spriteBatch, batch);
+			Game1.DrawBox(Region.X, Region.Y, Region.Width, Region.Height);
+		}
+		finally {
+			batch.End();
+		}
 	}
 
-	private void DrawFirst(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState, in DrawState drawState) {
+	private void DrawFirst(XSpriteBatch batch, in Override overrideState, in DrawState drawState) {
 		batch.Begin(
 			sortMode: SpriteSortMode.FrontToBack,
 			rasterizerState: State,
@@ -223,7 +250,7 @@ abstract class Scene : IDisposable {
 		}
 	}
 
-	private void DrawPrecipitation(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState, in DrawState drawState) {
+	private void DrawPrecipitation(XSpriteBatch batch, in Override overrideState, in DrawState drawState) {
 		batch.Begin(
 			sortMode: SpriteSortMode.FrontToBack,
 			rasterizerState: State,
@@ -231,15 +258,15 @@ abstract class Scene : IDisposable {
 			depthStencilState: drawState.DepthStencilState
 		);
 		try {
-			Game1.snowPos = Vector2.Zero;
-			StardewValley.Game1.game1.drawWeather(Game1.currentGameTime, null);
+			Game1.snowPos = XVector2.Zero;
+			Game1.game1.drawWeather(Game1.currentGameTime, null);
 		}
 		finally {
 			batch.End();
 		}
 	}
 
-	private void DrawOverlay(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState, in DrawState drawState) {
+	private void DrawOverlay(XSpriteBatch batch, in Override overrideState, in DrawState drawState) {
 		batch.Begin(
 			sortMode: SpriteSortMode.Deferred,
 			rasterizerState: State,
@@ -254,20 +281,18 @@ abstract class Scene : IDisposable {
 		}
 	}
 
-	internal void Draw(XNA.Graphics.SpriteBatch batch, in Preview.Override overrideState) {
+	internal void Draw(XSpriteBatch batch, in Override overrideState) {
 		using var savedWeatherState = WeatherState.Backup();
 		CurrentWeatherState.Restore();
 		using var currentScope = new CurrentScope(this);
 
-		var originalSpriteBatch = StardewValley.Game1.spriteBatch;
-		StardewValley.Game1.spriteBatch = batch;
+		var originalSpriteBatch = Game1.spriteBatch;
+		Game1.spriteBatch = batch;
 
-		var originalLocation = StardewValley.Game1.currentLocation;
-		StardewValley.Game1.currentLocation = SceneLocation.Value;
+		var originalLocation = Game1.currentLocation;
+		Game1.currentLocation = SceneLocation.Value;
 
 		try {
-			DrawBox(batch, overrideState);
-
 			var originalDrawState = new DrawState {
 				Viewport = batch.GraphicsDevice.Viewport,
 				SamplerState = batch.GraphicsDevice.SamplerStates[0],
@@ -289,9 +314,12 @@ abstract class Scene : IDisposable {
 
 			batch.End();
 			try {
-				using var tempOverrideState = new TempValue<Preview.Override>(ref Preview.Override.Instance, overrideState);
+				DrawBox(batch, overrideState, originalDrawState);
 
-				batch.GraphicsDevice.ScissorRectangle = Region;
+				using var tempOverrideState = new TempValue<Override>(ref Override.Instance, overrideState);
+
+				batch.GraphicsDevice.ScissorRectangle = Region.ClampTo(batch.GraphicsDevice.ScissorRectangle);
+
 				batch.GraphicsDevice.Viewport = new(Region);
 
 				DrawFirst(batch, overrideState, originalDrawState);
@@ -309,8 +337,8 @@ abstract class Scene : IDisposable {
 			}
 		}
 		finally {
-			StardewValley.Game1.spriteBatch = originalSpriteBatch;
-			StardewValley.Game1.currentLocation = originalLocation;
+			Game1.spriteBatch = originalSpriteBatch;
+			Game1.currentLocation = originalLocation;
 		}
 
 		CurrentWeatherState = WeatherState.Backup();
@@ -326,7 +354,7 @@ abstract class Scene : IDisposable {
 			Game1.graphics.GraphicsDevice.Viewport = new(Region);
 			Game1.viewport = Region;
 			Game1.fadeToBlackAlpha = 0.0f;
-			StardewValley.Game1.updateWeather(StardewValley.Game1.currentGameTime);
+			Game1.updateWeather(Game1.currentGameTime);
 		}
 		finally {
 			Game1.graphics.GraphicsDevice.Viewport = originalDeviceViewport;
@@ -340,31 +368,35 @@ abstract class Scene : IDisposable {
 		CurrentWeatherState.Restore();
 		using var currentScope = new CurrentScope(this);
 
-		var originalLocation = StardewValley.Game1.currentLocation;
-		StardewValley.Game1.currentLocation = SceneLocation.Value;
+		var originalLocation = Game1.currentLocation;
+		Game1.currentLocation = SceneLocation.Value;
 		try {
 			TickPrecipitation();
 			OnTick();
 		}
 		finally {
-			StardewValley.Game1.currentLocation = originalLocation;
+			Game1.currentLocation = originalLocation;
 		}
 
 		CurrentWeatherState = WeatherState.Backup();
 	}
-	protected abstract void OnResize(Vector2I Size, Vector2I OldSize);
+	protected abstract void OnResize(Vector2I size, Vector2I oldSize);
 
-	internal void Resize(in Bounds newRegion) {
+	internal void Resize(Bounds newRegion) {
 		using var savedWeatherState = WeatherState.Backup();
 		CurrentWeatherState.Restore();
 		using var currentScope = new CurrentScope(this);
 
 		var oldSize = Size;
-		Region = newRegion;
+		ReferenceRegion = newRegion;
 
 		OnResize(Size, oldSize);
 
 		CurrentWeatherState = WeatherState.Backup();
+	}
+
+	internal void ChangeOffset(Vector2I offset) {
+		ReferenceRegion = new(offset, ReferenceRegion.Extent);
 	}
 
 	public abstract void Dispose();

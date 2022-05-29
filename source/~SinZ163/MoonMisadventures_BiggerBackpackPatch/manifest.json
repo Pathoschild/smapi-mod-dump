@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SinZ163/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "MoonMisadventures_BiggerBackpackPatch",
+  "Author": "SinZ",
+  "Version": "1.0.0",
+  "Description": "Moves the necklace item slot to be compatible with Bigger Backpacks",
+  "UniqueID": "SinZ.MoonMisadventures_BiggerBackpackPatch",
+  "EntryDll": "MoonMisadventures_BiggerBackpackPatch.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:12096" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.MoonMisadventures",
+      "MinimumVersion": "0.1.7"
+    },
+    {
+      "UniqueID": "spacechase0.BiggerBackpack",
+      "MinimumVersion": "5.0"
+    }
+  ]
+}

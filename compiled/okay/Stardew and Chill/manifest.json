@@ -1,0 +1,10 @@
+{
+  "Name": "Stardew & Chill",
+  "Author": "mod.kitchen",
+  "Version": "1.0.0",
+  "Description": "Lo-fi music by Coffee Date & Dj Cutman",
+  "UniqueID": "mod.kitchen.stardewandchill",
+  "EntryDll": "StardewAndChill.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:12147" ]
+}

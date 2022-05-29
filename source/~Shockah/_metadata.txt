@@ -10,6 +10,7 @@ mods:
    Please Gift Me In Person
    Predictable Retaining Soil
    Safe Lightning Redux
+   Stack Size Changer
    XP Display
 
 latest commit:

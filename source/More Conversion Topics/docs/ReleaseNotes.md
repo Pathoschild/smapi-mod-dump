@@ -8,6 +8,13 @@ for queries and analysis.**
 
 # Release Notes
 
+## v1.1.1
+- Adds ``islandResortUnlocked`` conversation topic
+- Updates for SMAPI 3.14 (rewriting asset editors) thanks to atravita
+- Better console command for checking current CTs thanks to sophie
+- Moves repeatable conversation topics to be stored in a json in Content so that other mods can use this functionality as well
+- New console commands to help with repeatable conversation topic debugging
+
 ## v.1.1.0
 - Adds ``joja_Greenhouse``, ``joja_Complete``, ``jojaMartStruckByLightning``, ``willyBoatRepaired``, ``leoValleyArrival``, ``UFOLandedOnFarm``, ``meteoriteLandedOnFarm``, ``owlStatueLandedOnFarm``, ``railroadEarthquake``, ``witchSlimeHutVisit``, ``witchCoopVisit``, ``goldenWitchCoopVisit``, and ``fairyFarmVisit`` conversation topics
 - Changes the console commands to use ``vl.mct`` as a prefix for uniqueness, and shortens them for ease of typing

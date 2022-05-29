@@ -1,33 +1,39 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- common build settings -->
 	<PropertyGroup>
+		<!-- metadata -->
 		<Authors>Khloe Leclair</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/KhloeLeclair/StardewMods</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 
+		<!-- build settings -->
 		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-
-		<!--GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - 1.5.6 with 3.13.4</GamePath-->
-		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - 1.5.6 with 3.14.0</GamePath>
-		<GameModsPath>$(GamePath)\DevMods</GameModsPath>
-
-		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
-		<ModZipPath>$(SolutionDir)\_releases</ModZipPath>
-
-		<DefineConstants Condition="$(EnableHarmony) == 'True'">HARMONY</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<Nullable>enable</Nullable>
+
+		<CodeAnalysisRuleSet>$(SolutionDir)\_build\Rules.ruleset</CodeAnalysisRuleSet>
+		<DefineConstants Condition="$(EnableHarmony) == 'True'">$(DefineConstants);HARMONY</DefineConstants>
+
+		<!-- game version -->
+		<GameVersion>1.5.6</GameVersion>
+		<SmapiVersion>3.14</SmapiVersion>
 	</PropertyGroup>
-	
+
+	<!-- paths -->
+	<PropertyGroup>
+		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley - $(GameVersion) with $(SmapiVersion)</GamePath>
+		<GamePath Condition="!Exists('$(GamePath)')">C:\</GamePath>
+		<GameModsPath>$(GamePath)\DevMods</GameModsPath>
+		<ModZipPath>$(SolutionDir)\_releases</ModZipPath>
+	</PropertyGroup>
+
+	<!-- non-release settings -->
 	<PropertyGroup Condition="$(Configuration) != 'Release'">
+		<EnableModZip>False</EnableModZip>
 		<DebugType>Portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
-		<CodeAnalysisRuleSet>$(SolutionDir)\_build\Rules.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
 	<!-- mod build package -->
@@ -41,7 +47,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="$(EnableTranslation) == 'True'">
-		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
 	</ItemGroup>
 	
 </Project>

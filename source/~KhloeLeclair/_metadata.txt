@@ -11,9 +11,11 @@ mods:
    See Me Rollin'
 
 latest commit:
-   commit 94e80758b84a92c6c620700e73e510a4bba9ecba
+   commit 776db8c67508dbd5d1760e6d1f79e99aecc30297
    Author: Khloe Leclair <xivkhloeleclair@gmail.com>
-   Date:   Sat Apr 30 16:44:51 2022 -0400
+   Date:   Thu May 26 17:55:33 2022 -0400
    
-       More WIP ThemeManager as a Framework
+       Better Crafting v1.1.1
+       
+       * Fix mutexes staying open when the Better Crafting menu closes.
    

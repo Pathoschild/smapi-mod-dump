@@ -9,8 +9,8 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using HarmonyLib;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -47,10 +47,10 @@ namespace MoreConversationTopics
             }
         }
 
-        private static void ParrotUpgradePerch_PerformCompleteAnimation_Postfix(string __upgradeName)
+        private static void ParrotUpgradePerch_PerformCompleteAnimation_Postfix(NetString ___upgradeName)
         {
             // Check if the upgrade name is null and then whether it's the right upgrade, and don't do anything if it's not
-            if (__upgradeName is null || __upgradeName != "Resort")
+            if (___upgradeName.Value is not "Resort")
             {
                 return;
             }
@@ -60,30 +60,21 @@ namespace MoreConversationTopics
             {
                 foreach (Farmer f in Game1.getAllFarmers())
                 {
-                    // Check to see if the farmer in question is online, and return different exception messages depending
-                    if (!Game1.getOnlineFarmers().Contains(f))
+                    try
                     {
-                        try
-                        {
-                            MCTHelperFunctions.AddMaybePreExistingCT(f, "islandResortUnlocked", Config.IslandResortDuration);
-                        }
-                        catch (Exception ex)
+                        MCTHelperFunctions.AddOrExtendCT(f, "islandResortUnlocked", Config.IslandResortDuration);
+                    }
+                    catch (Exception ex)
+                    {// Check to see if the farmer in question is online, and return different exception messages depending
+                        if (!Game1.getOnlineFarmers().Contains(f))
                         {
                             Monitor.Log($"Failed to add resort built conversation topic to an offline farmer with exception: {ex}", LogLevel.Error);
                         }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            MCTHelperFunctions.AddMaybePreExistingCT(f, "islandResortUnlocked", Config.IslandResortDuration);
-                        }
-                        catch (Exception ex)
+                        else
                         {
                             Monitor.Log($"Failed to add resort built conversation topic to an online farmer with exception: {ex}", LogLevel.Error);
                         }
                     }
-                    
                 }
             }
             catch (Exception ex)

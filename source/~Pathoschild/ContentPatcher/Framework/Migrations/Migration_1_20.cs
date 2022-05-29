@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -32,19 +30,19 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_20()
             : base(new SemanticVersion(1, 20, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.LocationContext.ToString(),
-                ConditionType.LocationUniqueName.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.LocationContext),
+                nameof(ConditionType.LocationUniqueName)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;
 
-            string weatherName = ConditionType.Weather.ToString();
+            string weatherName = nameof(ConditionType.Weather);
 
             // 1.20 adds input arguments for Weather token, and changes default from valley to current context
             if (lexToken is LexTokenToken token && token.Name.EqualsIgnoreCase(weatherName))
@@ -61,11 +59,14 @@ namespace ContentPatcher.Framework.Migrations
                 }
 
                 // default to valley
-                var valleyArg = new[] { new LexTokenLiteral(LocationContext.Valley.ToString()) };
+                ILexToken[] valleyArg = new ILexToken[] { new LexTokenLiteral(LocationContext.Valley.ToString()) };
+                ILexToken[]? inputParts = token.InputArgs?.Parts;
                 lexToken = new LexTokenToken(
                     name: token.Name,
                     inputArgs: new LexTokenInput(
-                        valleyArg.Concat(token.InputArgs?.Parts ?? new ILexToken[0]).ToArray()
+                        inputParts?.Any() == true
+                            ? valleyArg.Concat(inputParts).ToArray()
+                            : valleyArg
                     ),
                     impliedBraces: true
                 );

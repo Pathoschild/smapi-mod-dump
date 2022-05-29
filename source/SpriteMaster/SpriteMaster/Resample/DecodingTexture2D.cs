@@ -15,7 +15,7 @@ namespace SpriteMaster.Types;
 /// <summary>
 /// A Texture2D that represents a texture being used to decode block-compressed data
 /// </summary>
-sealed class DecodingTexture2D : InternalTexture2D {
+internal sealed class DecodingTexture2D : InternalTexture2D {
 	private const string DefaultName = "Decoding Texture (Internal)";
 
 	internal DecodingTexture2D(GraphicsDevice graphicsDevice, int width, int height) : base(graphicsDevice, width, height) {

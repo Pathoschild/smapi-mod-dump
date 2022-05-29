@@ -118,25 +118,25 @@ namespace IndustrialFurnace
 	/// </summary>
 	public class BlueprintData
 	{
-		public string Name { get; set; }
-		public string Description { get; set; }
-		public string BlueprintType { get; set; }
-		public string NameOfBuildingToUpgrade { get; set; }
-		public string MaxOccupants { get; set; }
-		public string Width { get; set; }
-		public string Height { get; set; }
-		public string HumanDoorX { get; set; }
-		public string HumanDoorY { get; set; }
-		public string AnimalDoorX { get; set; }
-		public string AnimalDoorY { get; set; }
-		public string MapToWarpTo { get; set; }
-		public string SourceRectForMenuViewX { get; set; }
-		public string SourceRectForMenuViewY { get; set; }
-		public string ActionBehaviour { get; set; }
-		public string NamesOfBuildingLocations { get; set; }
-		public string Magical { get; set; }
-		public string DaysToBuild { get; set; }
-		public string MoneyRequired { get; set; }
+		public string? Name { get; set; }
+		public string? Description { get; set; }
+		public string? BlueprintType { get; set; }
+		public string? NameOfBuildingToUpgrade { get; set; }
+		public string? MaxOccupants { get; set; }
+		public string? Width { get; set; }
+		public string? Height { get; set; }
+		public string? HumanDoorX { get; set; }
+		public string? HumanDoorY { get; set; }
+		public string? AnimalDoorX { get; set; }
+		public string? AnimalDoorY { get; set; }
+		public string? MapToWarpTo { get; set; }
+		public string? SourceRectForMenuViewX { get; set; }
+		public string? SourceRectForMenuViewY { get; set; }
+		public string? ActionBehaviour { get; set; }
+		public string? NamesOfBuildingLocations { get; set; }
+		public string? Magical { get; set; }
+		public string? DaysToBuild { get; set; }
+		public string? MoneyRequired { get; set; }
 		public List<RequiredItem> ItemsRequired { get; set; }
 
 
@@ -153,10 +153,12 @@ namespace IndustrialFurnace
 		{
 			string s;
 
-			string items = String.Join(" ", ItemsRequired);
+			string items = string.Join(" ", ItemsRequired);
 
-			s = String.Join("/", new string[] {items, Width, Height, HumanDoorX, HumanDoorY, AnimalDoorX, AnimalDoorY, MapToWarpTo, i18n.Get("industrial-furnace.name"), i18n.Get("industrial-furnace.description"),
+#pragma warning disable CS8601 // Possible null reference assignment.
+			s = string.Join("/", new string[] {items, Width, Height, HumanDoorX, HumanDoorY, AnimalDoorX, AnimalDoorY, MapToWarpTo, i18n.Get("industrial-furnace.name"), i18n.Get("industrial-furnace.description"),
 				BlueprintType, NameOfBuildingToUpgrade, SourceRectForMenuViewX, SourceRectForMenuViewY, MaxOccupants, ActionBehaviour, NamesOfBuildingLocations, MoneyRequired, Magical, DaysToBuild});
+#pragma warning restore CS8601 // Possible null reference assignment.
 
 			return s;
 		}
@@ -168,7 +170,7 @@ namespace IndustrialFurnace
 	/// </summary>
 	public class RequiredItem
 	{
-		public string ItemName { get; set; }
+		public string? ItemName { get; set; }
 		public int ItemAmount { get; set; }
 		public int ItemID { get; set; }
 
@@ -182,22 +184,57 @@ namespace IndustrialFurnace
 
 	/// <summary>
 	/// The data class for the smelting rules.
+	/// 
+	/// NOTE: Relying on RequiredModID doesn't work if the item is provided by Json Assets.
+	/// The token evaluation {{ItemId: Item name}} returns an error for unknown names and blocks
+	/// the Content Patcher edit.
 	/// </summary>
 	public class SmeltingRulesContainer
 	{
 		public List<SmeltingRule> SmeltingRules { get; set; }
 
 
-		public SmeltingRulesContainer()
+		public SmeltingRulesContainer(Dictionary<string, string> dict, IMonitor monitor)
 		{
 			SmeltingRules = new List<SmeltingRule>();
+
+			foreach (var kvp in dict)
+			{
+				SmeltingRule smeltingRule = new();
+
+				// Try to parse the smelting rule. If it fails, print error and skip.
+				try
+				{
+					string[] s = kvp.Value.Split('/');
+					
+					smeltingRule.InputItemID = int.Parse(kvp.Key);
+					smeltingRule.InputItemAmount = int.Parse(s[0]);
+					smeltingRule.OutputItemID = int.Parse(s[1]);
+					smeltingRule.OutputItemAmount = int.Parse(s[2]);
+
+					// The fourth entry is space delimited list of required mod IDs
+					if (s[3].Length > 0)
+					{
+						string[] modIDs = s[3].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+						smeltingRule.RequiredModID = modIDs.Length > 0 ? modIDs : null;
+					}
+				}
+				catch (Exception ex)
+				{
+					monitor.Log("Mod failed while parsing smelting rules. Ignoring the faulty rule.", LogLevel.Error);
+					monitor.Log(ex.ToString(), LogLevel.Error);
+					continue;
+				}
+				
+				SmeltingRules.Add(smeltingRule);
+			}
 		}
 
 
 		/// <summary>Returns the smelting rule that matches the input item's ID or null if no matches were found.</summary>
 		/// <param name="inputItemID"></param>
 		/// <returns></returns>
-		public SmeltingRule GetSmeltingRuleFromInputID(int inputItemID)
+		public SmeltingRule? GetSmeltingRuleFromInputID(int inputItemID)
 		{
 			foreach (SmeltingRule rule in SmeltingRules)
 			{
@@ -215,45 +252,43 @@ namespace IndustrialFurnace
 	/// </summary>
 	public class SmeltingRule
 	{
-		public string InputItemName { get; set; }
 		public int InputItemID { get; set; }
 		public int InputItemAmount { get; set; }
-		public string OutputItemName { get; set; }
 		public int OutputItemID { get; set; }
 		public int OutputItemAmount { get; set; }
-		public string RequiredModID { get; set; }
+		public string[]? RequiredModID { get; set; }
 	}
 
 
 	public class SmokeAnimationData
 	{
-		public bool Enabled { get; set; }
-		public uint SpawnFrequency { get; set; }
-		public int SpawnXOffset { get; set; }
-		public int SpawnYOffset { get; set; }
-		public int SpriteSizeX { get; set; }
-		public int SpriteSizeY { get; set; }
-		public float SmokeScale { get; set; }
-		public float SmokeScaleChange { get; set; }
+		public bool UseCustomSprite { get; set; } = false;
+		public uint SpawnFrequency { get; set; } = 500;
+		public int SpawnXOffset { get; set; } = 68;
+		public int SpawnYOffset { get; set; } = -64;
+		public int SpriteSizeX { get; set; } = 10;
+		public int SpriteSizeY { get; set; } = 10;
+		public float SmokeScale { get; set; } = 2;
+		public float SmokeScaleChange { get; set; } = 0.02f;
 	}
 
 
 	public class FireAnimationData
 	{
-		public bool Enabled { get; set; }
-		public uint SpawnFrequency { get; set; }
-		public float SpawnChance { get; set; }
-		public int SpawnXOffset { get; set; }
-		public int SpawnYOffset { get; set; }
-		public int SpawnXRandomOffset { get; set; }
-		public int SpawnYRandomOffset { get; set; }
-		public int SpriteSizeX { get; set; }
-		public int SpriteSizeY { get; set; }
-		public int AnimationSpeed { get; set; }
-		public int AnimationLength { get; set; }
-		public float SoundEffectChance { get; set; }
-		public int LightSourceXOffset { get; set; }
-		public int LightSourceYOffset { get; set; }
-		public float LightSourceScaleMultiplier { get; set; }
+		public bool UseCustomSprite { get; set; } = false;
+		public uint SpawnFrequency { get; set; } = 500;
+		public float SpawnChance { get; set; } = 0.2f;
+		public int SpawnXOffset { get; set; } = 64;
+		public int SpawnYOffset { get; set; } = 18;
+		public int SpawnXRandomOffset { get; set; } = 16;
+		public int SpawnYRandomOffset { get; set; } = 4;
+		public int SpriteSizeX { get; set; } = 64;
+		public int SpriteSizeY { get; set; } = 64;
+		public int AnimationSpeed { get; set; } = 100;
+		public int AnimationLength { get; set; } = 4;
+		public float SoundEffectChance { get; set; } = 0.05f;
+		public int LightSourceXOffset { get; set; } = 96;
+		public int LightSourceYOffset { get; set; } = 96;
+		public float LightSourceScaleMultiplier { get; set; } = 1.5f;
 	}
 }

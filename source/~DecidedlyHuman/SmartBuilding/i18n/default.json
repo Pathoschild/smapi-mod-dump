@@ -36,6 +36,8 @@
   "smart-building.settings.optional-toggles.more-lax-furniture-placement.tooltip": "Allows you to place furniture essentially anywhere, including UNREACHABLE AREAS.",
   "smart-building.settings.optional-toggles.more-lax-bed-placement": "More lax bed placement",
   "smart-building.settings.optional-toggles.more-lax-bed-placement.tooltip": "Allows you to place beds essentially anywhere, allowing you to sleep in places you shouldn't be able to sleep in. BE CAREFUL WITH THIS.",
+  "smart-building.settings.optional-toggles-more-lax-object-placement": "More lax object placement",
+  "smart-building.settings.optional-toggles-more-lax-object-placement.tooltip": "Allows you to place objects (sprinklers, chests, etc.) where you shouldn't normally be able to. Functionality is not guaranteed!",
   "smart-building.settings.optional-toggles.enable-replacing-floors": "Replaceable floors",
   "smart-building.settings.optional-toggles.enable-replacing-fences": "Replaceable fences",
 
@@ -101,5 +103,5 @@
   "smart-building.commands.debug.sb-test": "If you need to read this, it is not for you. Here be dragons.",
 
   // Mod integrations
-  "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": ""
+  "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": "This fertiliser position may have been invalid"
 }

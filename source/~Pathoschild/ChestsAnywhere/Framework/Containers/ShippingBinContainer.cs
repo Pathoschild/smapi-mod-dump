@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +35,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
         private readonly Farm Farm;
 
         /// <summary>The underlying shipping bin.</summary>
-        private readonly NetCollection<Item> ShippingBin;
+        private readonly NetCollection<Item?> ShippingBin;
 
         /// <summary>The callback to invoke when an item is selected in the player inventory.</summary>
         private ItemGrabMenu.behaviorOnItemSelect GrabItemFromInventory => this.GrabItemFromInventoryImpl;
@@ -50,7 +48,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
         ** Accessors
         *********/
         /// <summary>The underlying inventory.</summary>
-        public IList<Item> Inventory => this.ShippingBin;
+        public IList<Item?> Inventory => this.ShippingBin;
 
         /// <summary>The persisted container data.</summary>
         public ContainerData Data { get; }
@@ -86,16 +84,20 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
 
         /// <summary>Get whether another instance wraps the same underlying container.</summary>
         /// <param name="container">The other container.</param>
-        public bool IsSameAs(IContainer container)
+        public bool IsSameAs(IContainer? container)
         {
-            return container != null && this.IsSameAs(container.Inventory);
+            return
+                container is not null
+                && this.IsSameAs(container.Inventory);
         }
 
         /// <summary>Get whether another instance wraps the same underlying container.</summary>
         /// <param name="inventory">The other container's inventory.</param>
-        public bool IsSameAs(IList<Item> inventory)
+        public bool IsSameAs(IList<Item?>? inventory)
         {
-            return object.ReferenceEquals(this.Inventory, inventory);
+            return
+                inventory is not null
+                && object.ReferenceEquals(this.Inventory, inventory);
         }
 
         /// <summary>Open a menu to transfer items between the player's inventory and this chest.</summary>
@@ -186,9 +188,9 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework.Containers
 
             // add to shipping bin
             this.ShippingBin.Filter(p => p != null);
-            foreach (Item slot in this.Inventory)
+            foreach (Item? slot in this.Inventory)
             {
-                if (!slot.canStackWith(item))
+                if (!slot!.canStackWith(item))
                     continue;
 
                 item.Stack = slot.addToStack(item);

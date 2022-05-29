@@ -16,14 +16,14 @@ namespace IndustrialFurnace
 	public interface IIndustrialFurnaceAPI
 	{
 		bool IsBuildingIndustrialFurnace(Building building);
-		IndustrialFurnaceController GetController(int ID);
+		IndustrialFurnaceController? GetController(int ID);
 	}
 
 
 	public class IndustrialFurnaceAPI : IIndustrialFurnaceAPI
 	{
 		// TODO: Tyr not to give the entire ModEntry...
-		private ModEntry mod;
+		private readonly ModEntry mod;
 
 
 		public IndustrialFurnaceAPI(ModEntry mod)
@@ -35,12 +35,12 @@ namespace IndustrialFurnace
 		/// <summary>Checks if the provided building is an Industrial Furnace.</summary>
 		public bool IsBuildingIndustrialFurnace(Building building)
 		{
-			return mod.IsBuildingIndustrialFurnace(building);
+			return ModEntry.MainIsBuildingIndustrialFurnace(building);
 		}
 
 
 		/// <summary>Returns the controller that matches the provided ID.</summary>
-		public IndustrialFurnaceController GetController(int ID)
+		public IndustrialFurnaceController? GetController(int ID)
 		{
 			return mod.GetController(ID);
 		}

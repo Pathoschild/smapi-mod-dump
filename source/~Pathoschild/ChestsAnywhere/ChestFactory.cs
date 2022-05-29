@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.ChestsAnywhere.Framework;
@@ -65,7 +64,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
         /// <param name="range">Determines whether given locations are in range of the player for remote chest access.</param>
         /// <param name="excludeHidden">Whether to exclude chests marked as hidden.</param>
         /// <param name="alwaysInclude">A chest to include even if it would normally be hidden.</param>
-        public IEnumerable<ManagedChest> GetChests(RangeHandler range, bool excludeHidden = false, ManagedChest alwaysInclude = null)
+        public IEnumerable<ManagedChest> GetChests(RangeHandler range, bool excludeHidden = false, ManagedChest? alwaysInclude = null)
         {
             IEnumerable<ManagedChest> Search()
             {
@@ -131,7 +130,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
                     // farmhouse fridge
                     {
-                        Chest fridge = this.GetStaticFridge(location);
+                        Chest? fridge = this.GetStaticFridge(location);
                         if (fridge != null)
                         {
                             yield return new ManagedChest(
@@ -236,7 +235,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
         /// <summary>Get the player chest on the specified tile (if any).</summary>
         /// <param name="tile">The tile to check.</param>
-        public ManagedChest GetChestFromTile(Vector2 tile)
+        public ManagedChest? GetChestFromTile(Vector2 tile)
         {
             if (!Game1.currentLocation.Objects.TryGetValue(tile, out SObject obj) || obj is not Chest chest)
                 return null;
@@ -252,13 +251,13 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
         /// <summary>Get the player chest from the given menu, if any.</summary>
         /// <param name="menu">The menu to check.</param>
-        public ManagedChest GetChestFromMenu(IClickableMenu menu)
+        public ManagedChest? GetChestFromMenu(IClickableMenu menu)
         {
             // get inventory from menu
-            IList<Item> inventory = null;
-            GameLocation forLocation = null;
+            IList<Item?>? inventory = null;
+            GameLocation? forLocation = null;
             Vector2? tile = null;
-            SObject chest = null;
+            SObject? chest = null;
             switch (menu)
             {
                 case ItemGrabMenu itemGrabMenu:
@@ -294,7 +293,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
         /// <param name="location">The chest location, if known.</param>
         /// <param name="tile">The chest tile, if known.</param>
         /// <param name="mapEntity">The map entity equivalent to the container (e.g. the object or furniture instance), if applicable.</param>
-        public static ManagedChest GetBestMatch(IEnumerable<ManagedChest> chests, IList<Item> inventory, GameLocation location, Vector2? tile, object mapEntity)
+        public static ManagedChest? GetBestMatch(IEnumerable<ManagedChest> chests, IList<Item?> inventory, GameLocation? location, Vector2? tile, object? mapEntity)
         {
             if (inventory == null)
                 throw new ArgumentNullException(nameof(inventory));
@@ -312,10 +311,10 @@ namespace Pathoschild.Stardew.ChestsAnywhere
                 .FirstOrDefault();
         }
 
-        /// <summary>Get the chest which contains the given inventory, prioritising the closest match for chests with shared inventory like Junimo chests.</summary>
+        /// <summary>Get the chest which contains the given inventory, prioritizing the closest match for chests with shared inventory like Junimo chests.</summary>
         /// <param name="chests">The available chests to filter.</param>
         /// <param name="search">The chest to match.</param>
-        public static ManagedChest GetBestMatch(IEnumerable<ManagedChest> chests, ManagedChest search)
+        public static ManagedChest? GetBestMatch(IEnumerable<ManagedChest> chests, ManagedChest? search)
         {
             // We can't just return the search chest here, since it may be a previously created
             // instance that's not in the list being searched.
@@ -338,14 +337,15 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
         /// <summary>Get the inventory for a chest.</summary>
         /// <param name="chest">The chest instance.</param>
-        private IList<Item> GetChestInventory(Chest chest)
+        [return: NotNullIfNotNull("chest")]
+        private IList<Item?>? GetChestInventory(Chest? chest)
         {
             return chest?.GetItemsForPlayer(Game1.player.UniqueMultiplayerID);
         }
 
         /// <summary>Get the container location from an <see cref="ItemGrabMenu.context"/>, if applicable.</summary>
         /// <param name="context">The menu context.</param>
-        private GameLocation GetLocationFromContext(object context)
+        private GameLocation? GetLocationFromContext(object context)
         {
             return context switch
             {
@@ -369,7 +369,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
         /// <summary>Get the underlying inventory for an <see cref="ItemGrabMenu.context"/> value.</summary>
         /// <param name="context">The menu context.</param>
-        private IList<Item> GetInventoryFromContext(object context)
+        private IList<Item?>? GetInventoryFromContext(object context)
         {
             switch (context)
             {
@@ -410,7 +410,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
             if (location is Cabin cabin)
             {
                 return !string.IsNullOrWhiteSpace(cabin.owner?.Name)
-                    ? I18n.DefaultCategory_OwnedCabin(owner: cabin.owner?.Name)
+                    ? I18n.DefaultCategory_OwnedCabin(owner: cabin.owner?.Name ?? string.Empty)
                     : I18n.DefaultCategory_UnownedCabin();
             }
 
@@ -434,7 +434,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere
 
         /// <summary>Get the static fridge for a location, if any.</summary>
         /// <param name="location">The location to check.</param>
-        private Chest GetStaticFridge(GameLocation location)
+        private Chest? GetStaticFridge(GameLocation location)
         {
             // main farmhouse or cabin
             if (location is FarmHouse house && house.fridgePosition != Point.Zero)

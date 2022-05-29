@@ -25,17 +25,16 @@ namespace SpriteMaster.Harmonize.Patches.Game.Pathfinding;
 
 using DoorPair = KeyValuePair<XNA.Point, string>;
 
-static partial class Pathfinding {
+internal static partial class Pathfinding {
 	private static readonly Action<List<List<string>>>? RoutesFromLocationToLocationSet = typeof(NPC).GetFieldSetter<List<List<string>>>("routesFromLocationToLocation");
 	private static readonly Dictionary<string, Dictionary<string, List<string>>> FasterRouteMap = new();
 
 	static Pathfinding() {
 		if (RoutesFromLocationToLocationSet is null) {
-			Debug.Warning($"Could not find 'NPC.routesFromLocationToLocation'");
+			Debug.Warning("Could not find 'NPC.routesFromLocationToLocation'");
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private static bool GetTarget(this Warp? warp, Dictionary<string, GameLocation?> locations, [NotNullWhen(true)] out GameLocation? target) {
 		if (warp is null) {
 			target = null;
@@ -58,13 +57,8 @@ static partial class Pathfinding {
 		return target is not null;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static bool GetTarget(this in DoorPair door, Dictionary<string, GameLocation?> locations, [NotNullWhen(true)] out GameLocation? target) {
-		if (door.Value is null) {
-			target = null;
-			return false;
-		}
-
 		target = locations.GetValueOrDefault(
 			key: door.Value switch {
 				"BoatTunnel" => "IslandSouth",
@@ -78,11 +72,11 @@ static partial class Pathfinding {
 	private readonly record struct PointPair(Vector2I Start, Vector2I End);
 	private static readonly ConcurrentDictionary<GameLocation, ConcurrentDictionary<PointPair, int?>> CachedPathfindPoints = new();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static NPC? GetDummyNPC() {
 		NPC? dummyNPC = null;
 		foreach (var location in Game1.locations) {
-			dummyNPC = location.getCharacters().FirstOrDefaultF(c => c is NPC);
+			dummyNPC = location.getCharacters().FirstOrDefaultF(c => c is not null);
 			if (dummyNPC is not null) {
 				break;
 			}
@@ -100,14 +94,13 @@ static partial class Pathfinding {
 		internal QueueLocation(GameLocation location) => Location = location;
 
 		internal struct Comparer : IEqualityComparer<QueueLocation> {
-			[MethodImpl(Runtime.MethodImpl.Hot)]
-			public bool Equals(QueueLocation? x, QueueLocation? y) => x?.Location == y?.Location;
-			[MethodImpl(Runtime.MethodImpl.Hot)]
-			public int GetHashCode([DisallowNull] QueueLocation obj) => obj.Location.GetHashCode();
+			[MethodImpl(Runtime.MethodImpl.Inline)]
+			public bool Equals(QueueLocation? x, QueueLocation? y) => ReferenceEquals(x?.Location, y?.Location);
+			[MethodImpl(Runtime.MethodImpl.Inline)]
+			public int GetHashCode(QueueLocation obj) => obj.Location.GetHashCode();
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private static List<string>? Dijkstra(GameLocation start, GameLocation end, Dictionary<string, GameLocation?> locations) {
 		try {
 			// Get a dummy NPC to pass to the sub-pathfinders to validate routes to warps/doors.
@@ -142,12 +135,12 @@ static partial class Pathfinding {
 				var qLocation = queue.Dequeue();
 
 				// Once we've reached the end node, traverse in reverse over the previous instances, to build a route
-				if (qLocation.Location == end) {
+				if (ReferenceEquals(qLocation.Location, end)) {
 					var result = new string[qLocation.ListDistance + 1];
 
 					QueueLocation? current = qLocation;
 					int insertionIndex = qLocation.ListDistance;
-					while (current is QueueLocation qCurrent) {
+					while (current is { } qCurrent) {
 						result[insertionIndex--] = qCurrent.Location.Name;
 						current = qCurrent.Previous;
 					}
@@ -166,7 +159,7 @@ static partial class Pathfinding {
 					int nodeDistance;
 
 					// Calculate the distance
-					if (Config.Extras.TrueShortestPath && qLocation.StartPosition is Vector2I currentPos) {
+					if (Config.Extras.TrueShortestPath && qLocation.StartPosition is not null) {
 						// If we are (and can) calculate the true distance, we do that based upon egress position
 						//var straightDistance = (egress - currentPos).LengthSquared;
 						nodeDistance = distance + 1 + length;
@@ -280,7 +273,6 @@ static partial class Pathfinding {
 		return null; // Also no path
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private static bool ExploreWarpPointsImpl(GameLocation startLocation, List<string> route, ConcurrentBag<List<string>> routeList, Dictionary<string, GameLocation?> locations) {
 		var foundTargetsSet = new HashSet<string>(locations.Count) { startLocation.Name };
 

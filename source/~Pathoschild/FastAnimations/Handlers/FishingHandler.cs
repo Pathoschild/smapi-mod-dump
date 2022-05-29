@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Pathoschild.Stardew.FastAnimations.Framework;
 using StardewModdingAPI;
 using StardewValley;

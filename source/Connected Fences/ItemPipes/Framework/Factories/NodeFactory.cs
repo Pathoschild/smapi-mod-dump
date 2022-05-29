@@ -26,42 +26,74 @@ namespace ItemPipes.Framework.Factories
 {
     public static class NodeFactory
     {
-
         public static Node CreateElement(Vector2 position, GameLocation location, StardewValley.Object obj)
         {
-            if (obj.name.Equals("Extractor Pipe"))
+            switch(obj.ParentSheetIndex)
+            {
+                case 222560:
+                    return new IronPipeNode(position, location, obj);
+                case 222561:
+                    return new GoldPipeNode(position, location, obj);
+                case 222562:
+                    return new IridiumPipeNode(position, location, obj);
+                case 222563:
+                    return new ExtractorPipeNode(position, location, obj);
+                case 222564:
+                    return new GoldExtractorPipeNode(position, location, obj);
+                case 222565:
+                    return new IridiumExtractorPipeNode(position, location, obj);
+                case 222566:
+                    return new InserterPipeNode(position, location, obj);
+                case 222567:
+                    return new PolymorphicPipeNode(position, location, obj);
+                case 222568:
+                    return new FilterPipeNode(position, location, obj);
+                case 130:
+                    return new ChestContainerNode(position, location, obj);
+                case 216:
+                    return new ChestContainerNode(position, location, obj);
+                case 222660:
+                    return new PPMNode(position, location, obj);
+                default:
+                    throw new Exception($"Node creation for {obj.Name} failed.");
+            }
+        }
+        /*
+        public static Node CreateElement(Vector2 position, GameLocation location, StardewValley.Object obj)
+        {
+            if (obj.name.Equals("ExtractorPipe"))
             {
                 return new ExtractorPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Gold Extractor Pipe"))
+            else if (obj.name.Equals("GoldExtractorPipe"))
             {
                 return new GoldExtractorPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Iridium Extractor Pipe"))
+            else if (obj.name.Equals("IridiumExtractorPipe"))
             {
                 return new IridiumExtractorPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Inserter Pipe"))
+            else if (obj.name.Equals("InserterPipe"))
             {
                 return new InserterPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Polymorphic Pipe"))
+            else if (obj.name.Equals("PolymorphicPipe"))
             {
                 return new PolymorphicPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Filter Pipe"))
+            else if (obj.name.Equals("FilterPipe"))
             {
                 return new FilterPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Iron Pipe"))
+            else if (obj.name.Equals("IronPipe"))
             {
                 return new IronPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Gold Pipe"))
+            else if (obj.name.Equals("GoldPipe"))
             {
                 return new GoldPipeNode(position, location, obj);
             }
-            else if (obj.name.Equals("Iridium Pipe"))
+            else if (obj.name.Equals("IridiumPipe"))
             {
                 return new IridiumPipeNode(position, location, obj);
             }
@@ -73,16 +105,17 @@ namespace ItemPipes.Framework.Factories
             {
                 return new ChestContainerNode(position, location, obj);
             }
-            else if (obj.name.Equals("P.P.M."))
+            else if (obj.name.Equals("PPM"))
             {
                 return new PPMNode(position, location, obj);
             }
             else
             {
-                Printer.Info($"Node creation for {obj.Name} failed.");
-                return null;
+                throw new Exception($"Node creation for {obj.Name} failed.");
             }
         }
+        */
+
         public static Node CreateElement(Vector2 position, GameLocation location, StardewValley.Buildings.Building building)
         {
             if (building.GetType().Equals(typeof(ShippingBin)))
@@ -91,7 +124,7 @@ namespace ItemPipes.Framework.Factories
             }
             else
             {
-                return null;
+                throw new Exception($"Node creation for {building.nameOfIndoors} failed.");
             }
         }
     }

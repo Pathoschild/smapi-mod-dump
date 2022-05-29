@@ -18,9 +18,6 @@ using Leclair.Stardew.Common;
 using Leclair.Stardew.Common.Events;
 using Leclair.Stardew.Common.Types;
 
-#if IS_BETTER_CRAFTING
-using Leclair.Stardew.Common.Crafting;
-#endif
 using Leclair.Stardew.BetterCrafting;
 
 using StardewModdingAPI.Events;
@@ -28,6 +25,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 using StardewModdingAPI;
+using StardewValley.Network;
 
 namespace Leclair.Stardew.BCBuildings;
 
@@ -35,35 +33,41 @@ public class ModEntry : ModSubscriber, IRecipeProvider {
 
 	public static readonly string CategoryID = "leclair.bcbuildings/buildings";
 
-	internal IBetterCrafting? API;
+	internal ModApi? API;
 
-	public CaseInsensitiveDictionary<Rectangle?> BuildingSources = new();
+	internal IBetterCrafting? BCAPI;
+
+	internal CaseInsensitiveDictionary<Rectangle?> BuildingSources = new();
+
+	internal CaseInsensitiveDictionary<(BluePrint, string?, string?)> ApiBlueprints = new();
 
 	public override void Entry(IModHelper helper) {
 		base.Entry(helper);
 
-#if IS_BETTER_CRAFTING
-#else
-		SpriteHelper.SetHelper(Helper);
-#endif
+		API = new ModApi(this);
 
+		SpriteHelper.SetHelper(Helper);
 		I18n.Init(Helper.Translation);
+	}
+
+	public override object? GetApi() {
+		return API;
 	}
 
 	[Subscriber]
 	private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
-		API = Helper.ModRegistry.GetApi<IBetterCrafting>("leclair.bettercrafting");
-		if (API is null)
+		BCAPI = Helper.ModRegistry.GetApi<IBetterCrafting>("leclair.bettercrafting");
+		if (BCAPI is null)
 			return;
 
-		API.AddRecipeProvider(this);
-		API.CreateDefaultCategory(false, CategoryID, "Building");
+		BCAPI.AddRecipeProvider(this);
+		BCAPI.CreateDefaultCategory(false, CategoryID, I18n.Category_Name);
 
 		CaseInsensitiveDictionary<Rectangle?>? buildings;
 		try {
 			buildings = Helper.Data.ReadJsonFile<CaseInsensitiveDictionary<Rectangle?>>(@"assets/source_overrides.json");
 			if (buildings is null)
-				throw new ArgumentNullException(nameof(buildings));
+				throw new Exception("source_overrides.json is invalid or empty");
 
 		} catch (Exception ex) {
 			Log($"source_overrides.json is missing or invalid.", LogLevel.Warn, ex);
@@ -74,7 +78,7 @@ public class ModEntry : ModSubscriber, IRecipeProvider {
 			BuildingSources = buildings;
 	}
 
-#region IRecipeProvider
+	#region IRecipeProvider
 
 	public int RecipePriority => 0;
 
@@ -85,66 +89,74 @@ public class ModEntry : ModSubscriber, IRecipeProvider {
 	public bool CacheAdditionalRecipes => false;
 
 	public IEnumerable<IRecipe>? GetAdditionalRecipes(bool cooking) {
-		Log("Called GetAdditionalRecipes");
-
 		if (cooking)
 			return null;
 
+		CaseInsensitiveDictionary<BluePrint> blueprints = new();
+
+		GetBluePrintsFromMenu(blueprints, false);
+		if (Game1.player.mailReceived.Contains("hasPickedUpMagicInk") || Game1.player.hasMagicInk)
+			GetBluePrintsFromMenu(blueprints, true);
+
+		foreach(var bp in ApiBlueprints) {
+			if (blueprints.ContainsKey(bp.Key))
+				continue;
+
+			if (!string.IsNullOrEmpty(bp.Value.Item2) && !GameStateQuery.CheckConditions(bp.Value.Item2))
+				continue;
+
+			blueprints.Add(bp.Key, bp.Value.Item1);
+		}
+
+		API?.EmitBlueprintPopulation(blueprints);
+
 		List<IRecipe> recipes = new();
 
-		recipes.AddRange(GetRecipesFromMenu(false));
-
-		if (Game1.player.mailReceived.Contains("hasPickedUpMagicInk") || Game1.player.hasMagicInk)
-			recipes.AddRange(GetRecipesFromMenu(true));
+		foreach (var bp in blueprints.Values)
+			recipes.Add(new BPRecipe(bp, this));
 
 		recipes.Add(new ActionRecipe(ActionType.Move, this));
 		recipes.Add(new ActionRecipe(ActionType.Paint, this));
 		recipes.Add(new ActionRecipe(ActionType.Demolish, this));
 
-		API!.AddRecipesToDefaultCategory(false, CategoryID, recipes.Select(x => x.Name));
+		BCAPI!.AddRecipesToDefaultCategory(false, CategoryID, recipes.Select(x => x.Name));
 
 		return recipes;
 	}
 
-	public IEnumerable<IRecipe> GetRecipesFromMenu(bool magical) {
-		List<IRecipe> result = new();
-
+	public void GetBluePrintsFromMenu(CaseInsensitiveDictionary<BluePrint> store, bool magical) {
 		CarpenterMenu menu = new(magical);
 		List<BluePrint>? blueprints = Helper.Reflection.GetField<List<BluePrint>>(menu, "blueprints", false)?.GetValue();
 
 		if (blueprints == null) {
 			CommonHelper.YeetMenu(menu);
-			return result;
+			return;
 		}
-
-		List<string> seen = new();
 
 		foreach (var bp in blueprints) {
-			result.Add(new BPRecipe(bp, this));
-			seen.Add(bp.name);
+			if (! store.ContainsKey(bp.name))
+				store.Add(bp.name, bp);
 		}
 
-		if (seen.Contains("Coop") && !seen.Contains("Big Coop"))
-			result.Add(new BPRecipe(new BluePrint("Big Coop"), this));
+		if (store.ContainsKey("Coop") && !store.ContainsKey("Big Coop"))
+			store["Big Coop"] = new BluePrint("Big Coop");
 
-		if (seen.Contains("Coop") && !seen.Contains("Deluxe Coop"))
-			result.Add(new BPRecipe(new BluePrint("Deluxe Coop"), this));
+		if (store.ContainsKey("Coop") && !store.ContainsKey("Deluxe Coop"))
+			store["Deluxe Coop"] = new BluePrint("Deluxe Coop");
 
-		if (seen.Contains("Barn") && !seen.Contains("Big Barn"))
-			result.Add(new BPRecipe(new BluePrint("Big Barn"), this));
+		if (store.ContainsKey("Barn") && !store.ContainsKey("Big Barn"))
+			store["Big Barn"] = new BluePrint("Big Barn");
 
-		if (seen.Contains("Barn") && !seen.Contains("Deluxe Barn"))
-			result.Add(new BPRecipe(new BluePrint("Deluxe Barn"), this));
+		if (store.ContainsKey("Barn") && !store.ContainsKey("Deluxe Barn"))
+			store["Deluxe Barn"] = new BluePrint("Deluxe Barn");
 
-		if (seen.Contains("Shed") && !seen.Contains("Big Shed"))
-			result.Add(new BPRecipe(new BluePrint("Big Shed"), this));
+		if (store.ContainsKey("Shed") && !store.ContainsKey("Big Shed"))
+			store["Big Shed"] = new BluePrint("Big Shed");
 
 		CommonHelper.YeetMenu(menu);
-
-		return result;
 	}
 
 
-#endregion
+	#endregion
 
 }

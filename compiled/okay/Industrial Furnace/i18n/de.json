@@ -14,4 +14,8 @@
 	"gmcm.coal-amount-description": "Die Menge an Kohle, welche benötigt wird, um den Schmelzvorgang zu starten",
 	"gmcm.instant-smelting-label": "Sofortiges Schmelzen",
 	"gmcm.instant-smelting-description": "Wenn aktiviert, ist der Schmelzvorgang immer sofort fertig (Keine Wartezeit)",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

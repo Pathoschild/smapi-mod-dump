@@ -19,6 +19,7 @@ using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Characters;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
@@ -291,7 +292,7 @@ namespace AlternativeTextures.Framework.Patches
                 case 9:
                     return "Stepping Stone Path";
                 case 10:
-                    return "Straw Brick Floor";
+                    return "Brick Floor";
                 case 11:
                     return "Rustic Plank Floor";
                 case 12:
@@ -347,6 +348,10 @@ namespace AlternativeTextures.Framework.Patches
                     return TextureType.Tree;
                 case FruitTree fruitTree:
                     return TextureType.FruitTree;
+                case Grass grass:
+                    return TextureType.Grass;
+                case TerrainFeature hoeDirt:
+                    return TextureType.Crop;
                 case Building building:
                     return TextureType.Building;
                 case Furniture furniture:
@@ -395,6 +400,35 @@ namespace AlternativeTextures.Framework.Patches
             return false;
         }
 
+        internal static bool IsTextureRandomnessEnabled<T>(T type)
+        {
+            switch (type)
+            {
+                case Flooring:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingFlooring;
+                case FruitTree:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingFruitTree;
+                case Tree:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingTree;
+                case HoeDirt:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingHoeDirt;
+                case Grass:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingGrass;
+                case Furniture:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingFurniture;
+                case Object:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingObject;
+                case FarmAnimal:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingFarmAnimal;
+                case Monster:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingMonster;
+                case Building:
+                    return AlternativeTextures.modConfig.UseRandomTexturesWhenPlacingBuilding;
+            }
+
+            return true;
+        }
+
         internal static bool AssignDefaultModData<T>(T type, string modelName, bool trackSeason = false, bool trackSheetId = false)
         {
             if (HasCachedTextureName(type))
@@ -430,7 +464,7 @@ namespace AlternativeTextures.Framework.Patches
 
         internal static bool AssignModData<T>(T type, string modelName, bool trackSeason = false, bool trackSheetId = false)
         {
-            if (HasCachedTextureName(type))
+            if (HasCachedTextureName(type) || IsTextureRandomnessEnabled(type) is false)
             {
                 return false;
             }

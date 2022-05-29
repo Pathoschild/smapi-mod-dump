@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -39,13 +37,13 @@ namespace ContentPatcher
         ** Fields
         *********/
         /// <summary>Manages state for each screen.</summary>
-        private PerScreen<ScreenManager> ScreenManager;
+        private PerScreen<ScreenManager> ScreenManager = null!; // set in Entry
 
         /// <summary>The raw data for loaded content packs.</summary>
-        private LoadedContentPack[] ContentPacks;
+        private LoadedContentPack[]? ContentPacks;
 
         /// <summary>The recognized format versions and their migrations.</summary>
-        private readonly Func<ContentConfig, IMigration[]> GetFormatVersions = content => new IMigration[]
+        private readonly Func<ContentConfig?, IMigration[]> GetFormatVersions = content => new IMigration[]
         {
             new Migration_1_0(),
             new Migration_1_3(),
@@ -81,16 +79,16 @@ namespace ContentPatcher
         };
 
         /// <summary>Handles the 'patch' console command.</summary>
-        private CommandHandler CommandHandler;
+        private CommandHandler CommandHandler = null!; // set in Entry
 
         /// <summary>The mod configuration.</summary>
-        private ModConfig Config;
+        private ModConfig Config = null!; // set in Entry
 
         /// <summary>The configured key bindings.</summary>
         private ModConfigKeys Keys => this.Config.Controls;
 
         /// <summary>The debug overlay (if enabled).</summary>
-        private readonly PerScreen<DebugOverlay> DebugOverlay = new();
+        private readonly PerScreen<DebugOverlay?> DebugOverlay = new();
 
         /// <summary>The mod tokens queued for addition. This is null after the first update tick, when new tokens can no longer be added.</summary>
         private readonly List<ModProvidedToken> QueuedModTokens = new();
@@ -115,6 +113,9 @@ namespace ContentPatcher
 
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Content.LocaleChanged += this.OnLocaleChanged;
+
+            if (!this.Config.GroupEditsByMod)
+                this.Monitor.Log("Grouping edits by mod is disabled in config.json. This will reduce the usefulness of log info.");
         }
 
         /// <summary>Get an API that other mods can access. This is always called after <see cref="Entry"/>.</summary>
@@ -140,7 +141,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
             if (this.Config.EnableDebugFeatures)
             {
@@ -170,7 +171,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IContentEvents.AssetRequested"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
         {
             this.ScreenManager.Value.OnAssetRequested(e);
         }
@@ -178,7 +179,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="ISpecializedEvents.LoadStageChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnLoadStageChanged(object sender, LoadStageChangedEventArgs e)
+        private void OnLoadStageChanged(object? sender, LoadStageChangedEventArgs e)
         {
             this.ScreenManager.Value.OnLoadStageChanged(e.OldStage, e.NewStage);
         }
@@ -186,7 +187,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IGameLoopEvents.DayStarted"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
             this.ScreenManager.Value.OnDayStarted();
         }
@@ -194,7 +195,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IGameLoopEvents.TimeChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnTimeChanged(object sender, TimeChangedEventArgs e)
+        private void OnTimeChanged(object? sender, TimeChangedEventArgs e)
         {
             this.ScreenManager.Value.OnTimeChanged();
         }
@@ -202,7 +203,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IPlayerEvents.Warped"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnWarped(object sender, WarpedEventArgs e)
+        private void OnWarped(object? sender, WarpedEventArgs e)
         {
             this.ScreenManager.Value.OnWarped();
         }
@@ -210,7 +211,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IGameLoopEvents.ReturnedToTitle"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
         {
             this.ScreenManager.Value.OnReturnedToTitle();
         }
@@ -218,7 +219,7 @@ namespace ContentPatcher
         /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             // initialize after first tick on main screen so other mods can register their tokens in SMAPI's GameLoop.GameLaunched event
             if (this.IsFirstTick)
@@ -229,14 +230,15 @@ namespace ContentPatcher
             }
 
             // run update logic
-            this.InitializeScreenManagerIfNeeded();
+            LoadedContentPack[] contentPacks = this.ContentPacks!; // set in Initialize() above
+            this.InitializeScreenManagerIfNeeded(contentPacks);
             this.ScreenManager.Value.OnUpdateTicked();
         }
 
         /// <inheritdoc cref="IContentEvents.LocaleChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnLocaleChanged(object sender, LocaleChangedEventArgs e)
+        private void OnLocaleChanged(object? sender, LocaleChangedEventArgs e)
         {
             if (!this.IsFirstTick)
                 this.ScreenManager.Value.OnLocaleChanged();
@@ -275,7 +277,7 @@ namespace ContentPatcher
             helper.Events.Specialized.LoadStageChanged += this.OnLoadStageChanged;
 
             // load screen manager
-            this.InitializeScreenManagerIfNeeded();
+            this.InitializeScreenManagerIfNeeded(this.ContentPacks);
 
             // set up commands
             this.CommandHandler = new CommandHandler(
@@ -310,28 +312,30 @@ namespace ContentPatcher
         /// <summary>Create a raw uninitialized screen manager instance.</summary>
         private ScreenManager CreateScreenManager()
         {
-            var modTokens = this.QueuedModTokens.ToArray();
+            ModProvidedToken[] modTokens = this.QueuedModTokens.ToArray();
             return new ScreenManager(
                 helper: this.Helper,
                 monitor: this.Monitor,
                 installedMods: this.GetInstalledMods(),
                 modTokens: modTokens,
-                assetValidators: this.AssetValidators()
+                assetValidators: this.AssetValidators(),
+                groupEditsByMod: this.Config.GroupEditsByMod
             );
         }
 
         /// <summary>Initialize the screen manager if needed.</summary>
-        private void InitializeScreenManagerIfNeeded()
+        /// <param name="contentPacks">The raw data for loaded content packs.</param>
+        private void InitializeScreenManagerIfNeeded(LoadedContentPack[] contentPacks)
         {
             var manager = this.ScreenManager.Value;
             if (!manager.IsInitialized)
-                manager.Initialize(this.ContentPacks, this.GetInstalledMods());
+                manager.Initialize(contentPacks, this.GetInstalledMods());
         }
 
         /// <summary>Get the unique IDs for all installed mods and content packs.</summary>
-        private InvariantHashSet GetInstalledMods()
+        private IInvariantSet GetInstalledMods()
         {
-            return new InvariantHashSet(
+            return InvariantSets.From(
                 this.Helper.ModRegistry
                     .GetAll()
                     .Select(p => p.Manifest.UniqueID)
@@ -343,7 +347,7 @@ namespace ContentPatcher
         /// <param name="contentPack">The content pack instance.</param>
         private void OnContentPackConfigChanged(LoadedContentPack contentPack)
         {
-            // resave config.json
+            // re-save config.json
             contentPack.ConfigFileHandler.Save(contentPack.ContentPack, contentPack.Config, this.Helper);
 
             // update tokens
@@ -369,9 +373,11 @@ namespace ContentPatcher
         /// <param name="rawConditions">The raw conditions to parse.</param>
         /// <param name="formatVersion">The format version for which to parse conditions.</param>
         /// <param name="assumeModIds">The unique IDs of mods whose custom tokens to allow in the <paramref name="rawConditions"/>.</param>
-        private IManagedConditions ParseConditionsForApi(IManifest manifest, IDictionary<string, string> rawConditions, ISemanticVersion formatVersion, string[] assumeModIds = null)
+        private IManagedConditions ParseConditionsForApi(IManifest manifest, InvariantDictionary<string?>? rawConditions, ISemanticVersion formatVersion, string[]? assumeModIds = null)
         {
-            InvariantHashSet assumeModIdsLookup = new(assumeModIds ?? Enumerable.Empty<string>()) { manifest.UniqueID };
+            IInvariantSet assumeModIdsLookup = assumeModIds is not null
+                ? InvariantSets.From(assumeModIds)
+                : InvariantSets.FromValue(manifest.UniqueID);
             IMigration migrator = new AggregateMigration(formatVersion, this.GetFormatVersions(null));
 
             return new ApiManagedConditions(
@@ -381,8 +387,8 @@ namespace ContentPatcher
                     IContext context = screen.TokenManager;
                     TokenParser tokenParser = new(context, manifest, migrator, assumeModIdsLookup);
 
-                    bool isValid = screen.PatchLoader.TryParseConditions(rawConditions, tokenParser, new LogPathBuilder(), out IList<Condition> conditions, out _, out string error);
-                    var managed = new ApiManagedConditionsForSingleScreen(conditions?.ToArray() ?? Array.Empty<Condition>(), context, isValid: isValid, validationError: error);
+                    bool isValid = screen.PatchLoader.TryParseConditions(rawConditions, tokenParser, new LogPathBuilder(), out Condition[] conditions, out _, out string? error);
+                    var managed = new ApiManagedConditionsForSingleScreen(conditions, context, isValid: isValid, validationError: error);
                     managed.UpdateContext();
 
                     return managed;
@@ -406,7 +412,7 @@ namespace ContentPatcher
                 {
                     rawContentPack = new RawContentPack(contentPack, ++index, this.GetFormatVersions);
 
-                    if (!rawContentPack.TryReloadContent(out string error))
+                    if (!rawContentPack.TryReloadContent(out string? error))
                     {
                         this.Monitor.Log($"Could not load content pack '{contentPack.Manifest.Name}': {error}.", LogLevel.Error);
                         continue;
@@ -424,7 +430,7 @@ namespace ContentPatcher
                 try
                 {
                     configFileHandler = new ConfigFileHandler("config.json", this.ParseCommaDelimitedField, (pack, label, reason) => this.Monitor.Log($"Ignored {pack.Manifest.Name} > {label}: {reason}", LogLevel.Warn));
-                    config = configFileHandler.Read(contentPack, rawContentPack.Content.ConfigSchema, rawContentPack.Content.Format);
+                    config = configFileHandler.Read(contentPack, rawContentPack.Content.ConfigSchema, rawContentPack.Content.Format!);
                     configFileHandler.Save(contentPack, config, this.Helper);
                 }
                 catch (Exception ex)
@@ -440,17 +446,14 @@ namespace ContentPatcher
 
         /// <summary>Parse a comma-delimited set of case-insensitive condition values.</summary>
         /// <param name="field">The field value to parse.</param>
-        private InvariantHashSet ParseCommaDelimitedField(string field)
+        private IInvariantSet ParseCommaDelimitedField(string? field)
         {
             if (string.IsNullOrWhiteSpace(field))
-                return new InvariantHashSet();
+                return InvariantSets.Empty;
 
-            IEnumerable<string> values = (
-                from value in field.Split(',')
-                where !string.IsNullOrWhiteSpace(value)
-                select value.Trim()
+            return InvariantSets.From(
+                field.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             );
-            return new InvariantHashSet(values);
         }
     }
 }

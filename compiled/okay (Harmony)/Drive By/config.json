@@ -1,0 +1,8 @@
+{
+  "Countdown": 3000,
+  "GameTimer": 0,
+  "GameTarget": 5,
+  "uiX": 8,
+  "uiY": 8,
+  "StartKey": "F6"
+}

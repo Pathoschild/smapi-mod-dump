@@ -23,13 +23,13 @@ namespace SpriteMaster.Resample.Scalers.xBRZ;
 
 using PreprocessType = Byte;
 
-sealed partial class Scaler {
+internal sealed partial class Scaler {
 	private const uint MinScale = 2;
 	private const uint MaxScale = Config.MaxScale;
 
 	private static uint ClampScale(uint scale) => Math.Clamp(scale, MinScale, MaxScale);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static Span<Color16> Apply(
 		Config? config,
 		uint scaleMultiplier,
@@ -51,8 +51,8 @@ sealed partial class Scaler {
 			throw new ArgumentOutOfRangeException(nameof(targetSize));
 		}
 
-		if (targetData == Span<Color16>.Empty) {
-			targetData = SpanExt.MakeUninitialized<Color16>(targetSize.Area);
+		if (targetData.IsEmpty) {
+			targetData = SpanExt.Make<Color16>(targetSize.Area);
 		}
 		else {
 			if (targetSize.Area > targetData.Length) {
@@ -71,7 +71,7 @@ sealed partial class Scaler {
 		return targetData;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private Scaler(
 		in Config configuration,
 		uint scaleMultiplier,
@@ -102,7 +102,7 @@ sealed partial class Scaler {
 	}
 
 	private readonly Config Configuration;
-	private readonly Structures.IScaler Scalerer;
+	private readonly AbstractScaler Scalerer;
 
 	private readonly ColorDist ColorDistance;
 	private readonly ColorEq ColorEqualizer;
@@ -111,7 +111,7 @@ sealed partial class Scaler {
 	private readonly Vector2I TargetSize;
 
 	//fill block with the given color
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static void FillBlock(Span<Color16> target, int targetOffset, int pitch, Color16 color, int blockSize) {
 		for (
 			var y = 0;
@@ -122,20 +122,21 @@ sealed partial class Scaler {
 		}
 	}
 
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static int SharpenOffset(int offset, int max) {
-		double offsetD = (double)offset / (double)max;
-		if (offsetD < 0.5) {
-			offsetD = Math.Pow(offsetD, 5.0);
-		}
-		else if (offsetD > 0.5) {
-			offsetD = Math.Pow(offsetD, 1.0 / 5.0);
-		}
+		var offsetD = (double)offset / (double)max;
+		offsetD = offsetD switch {
+			< 0.5 => Math.Pow(offsetD, 5.0),
+			> 0.5 => Math.Pow(offsetD, 1.0 / 5.0),
+			_ => offsetD
+		};
 		return (offsetD * max).RoundToInt();
 	}
 
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static (int R, int G, int B, int A) BlendColor(int offset, int max, Color16 a, Color16 b) {
 		offset = SharpenOffset(offset, max);
-		int aCount = max - offset;
+		var aCount = max - offset;
 		(int r, int g, int b, int a) color32 = (
 			(a.R.Value * aCount + b.R.Value * offset),
 			(a.G.Value * aCount + b.G.Value * offset),
@@ -145,7 +146,8 @@ sealed partial class Scaler {
 		return color32;
 	}
 
-	private static (int R, int G, int B, int A) BlendColor(int offset, int max, in (int R, int G, int B, int A) a, in (int R, int G, int B, int A) b) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static (int R, int G, int B, int A) BlendColor(int offset, int max, (int R, int G, int B, int A) a, (int R, int G, int B, int A) b) {
 		offset = SharpenOffset(offset, max);
 		int aCount = max - offset;
 		(int r, int g, int b, int a) color32 = (
@@ -157,7 +159,7 @@ sealed partial class Scaler {
 		return color32;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static void BlendBlock(Span<Color16> target, int targetOffset, int pitch, Color16 topLeft, Color16 topRight, Color16 bottomLeft, Color16 bottomRight, int blockSize) {
 		if (topLeft == topRight && topLeft == bottomLeft && topLeft == bottomRight) {
 			FillBlock(target, targetOffset, pitch, topLeft, blockSize);
@@ -187,8 +189,7 @@ sealed partial class Scaler {
 
 	//detect blend direction
 	[Pure]
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private BlendResult PreProcessCorners(in Kernel4x4 ker) {
+	private BlendResult PreProcessCorners(in Kernel4X4 ker) {
 		var result = new BlendResult();
 
 		if (ker.F == ker.G && ker.J == ker.K || ker.F == ker.J && ker.G == ker.K) {
@@ -202,16 +203,16 @@ sealed partial class Scaler {
 			dist.ColorDistance(ker.F, ker.C) +
 			dist.ColorDistance(ker.N, ker.K) +
 			dist.ColorDistance(ker.K, ker.H) +
-			MathExt.RoundToInt(Configuration.CenterDirectionBias * dist.ColorDistance(ker.J, ker.G));
+			(Configuration.CenterDirectionBias * dist.ColorDistance(ker.J, ker.G)).RoundToInt();
 		var fk =
 			dist.ColorDistance(ker.E, ker.J) +
 			dist.ColorDistance(ker.J, ker.O) +
 			dist.ColorDistance(ker.B, ker.G) +
 			dist.ColorDistance(ker.G, ker.L) +
-			MathExt.RoundToInt(Configuration.CenterDirectionBias * dist.ColorDistance(ker.F, ker.K));
+			(Configuration.CenterDirectionBias * dist.ColorDistance(ker.F, ker.K)).RoundToInt();
 
 		if (jg < fk) {
-			var dominantGradient = MathExt.RoundToInt(Configuration.DominantDirectionThreshold * jg) < fk ? BlendType.Dominant : BlendType.Normal;
+			var dominantGradient = (Configuration.DominantDirectionThreshold * jg).RoundToInt() < fk ? BlendType.Dominant : BlendType.Normal;
 			if (ker.F != ker.G && ker.F != ker.J) {
 				result.F = dominantGradient;
 			}
@@ -220,7 +221,7 @@ sealed partial class Scaler {
 			}
 		}
 		else if (fk < jg) {
-			var dominantGradient = MathExt.RoundToInt(Configuration.DominantDirectionThreshold * fk) < jg ? BlendType.Dominant : BlendType.Normal;
+			var dominantGradient = (Configuration.DominantDirectionThreshold * fk).RoundToInt() < jg ? BlendType.Dominant : BlendType.Normal;
 			if (ker.J != ker.F && ker.J != ker.K) {
 				result.J = dominantGradient;
 			}
@@ -243,8 +244,7 @@ sealed partial class Scaler {
 			-------------
 			blendInfo: result of preprocessing all four corners of pixel "e"
 	*/
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private void ScalePixel(Structures.IScaler scaler, RotationDegree rotDeg, in Kernel3x3 ker, ref OutputMatrix outputMatrix, int targetIndex, PreprocessType blendInfo) {
+	private void ScalePixel(AbstractScaler abstractScaler, RotationDegree rotDeg, in Kernel3X3 ker, ref OutputMatrix outputMatrix, int targetIndex, PreprocessType blendInfo) {
 		var blend = blendInfo.Rotate(rotDeg);
 
 		if (blend.GetBottomR() == BlendType.None) {
@@ -292,7 +292,7 @@ sealed partial class Scaler {
 		outputMatrix.Move(rotDeg, targetIndex);
 
 		if (!doLineBlend) {
-			scaler.BlendCorner(px, ref outputMatrix);
+			abstractScaler.BlendCorner(px, ref outputMatrix);
 			return;
 		}
 
@@ -301,28 +301,28 @@ sealed partial class Scaler {
 		var fg = dist.ColorDistance(f, g);
 		var hc = dist.ColorDistance(h, c);
 
-		var haveShallowLine = MathExt.RoundToInt(Configuration.SteepDirectionThreshold * fg) <= hc && e != g && d != g;
-		var haveSteepLine = MathExt.RoundToInt(Configuration.SteepDirectionThreshold * hc) <= fg && e != c && b != c;
+		var haveShallowLine = (Configuration.SteepDirectionThreshold * fg).RoundToInt() <= hc && e != g && d != g;
+		var haveSteepLine = (Configuration.SteepDirectionThreshold * hc).RoundToInt() <= fg && e != c && b != c;
 
 		if (haveShallowLine) {
 			if (haveSteepLine) {
-				scaler.BlendLineSteepAndShallow(px, ref outputMatrix);
+				abstractScaler.BlendLineSteepAndShallow(px, ref outputMatrix);
 			}
 			else {
-				scaler.BlendLineShallow(px, ref outputMatrix);
+				abstractScaler.BlendLineShallow(px, ref outputMatrix);
 			}
 		}
 		else {
 			if (haveSteepLine) {
-				scaler.BlendLineSteep(px, ref outputMatrix);
+				abstractScaler.BlendLineSteep(px, ref outputMatrix);
 			}
 			else {
-				scaler.BlendLineDiagonal(px, ref outputMatrix);
+				abstractScaler.BlendLineDiagonal(px, ref outputMatrix);
 			}
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private int GetX(int x) {
 		if (Configuration.Wrapped.X) {
 			x = (x + SourceSize.Width) % SourceSize.Width;
@@ -333,7 +333,7 @@ sealed partial class Scaler {
 		return x;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private int GetY(int y) {
 		if (Configuration.Wrapped.Y) {
 			y = (y + SourceSize.Height) % SourceSize.Height;
@@ -345,7 +345,6 @@ sealed partial class Scaler {
 	}
 
 	//scaler policy: see "Scaler2x" reference implementation
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private void Scale(ReadOnlySpan<Color16> source, Span<Color16> destination) {
 		int targetStride = TargetSize.Width * Scalerer.Scale;
 		int yLast = SourceSize.Height;
@@ -358,7 +357,7 @@ sealed partial class Scaler {
 		Span<PreprocessType> preProcBuffer = stackalloc PreprocessType[SourceSize.Width];
 		preProcBuffer.Fill(0);
 
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		static Color16 GetPixel(ReadOnlySpan<Color16> src, int stride, int offset) {
 			// We can try embedded a distance calculation as well. Perhaps instead of a negative stride/offset, we provide a 
 			// negative distance from the edge and just recalculate the stride/offset in that case.
@@ -401,7 +400,7 @@ sealed partial class Scaler {
 				var xP2 = GetX(x + 2);
 
 				//read sequentially from memory as far as possible
-				var ker4 = new Kernel4x4(
+				var ker4 = new Kernel4X4(
 					GetPixel(source, sM1, xM1),
 					GetPixel(source, sM1, x),
 					GetPixel(source, sM1, xP1),
@@ -471,7 +470,7 @@ sealed partial class Scaler {
 				//blend_xy for current (x, y) position
 
 				//read sequentially from memory as far as possible
-				var ker4 = new Kernel4x4(
+				var ker4 = new Kernel4X4(
 					GetPixel(source, sM1, xM1),
 					GetPixel(source, sM1, x),
 					GetPixel(source, sM1, xP1),
@@ -560,7 +559,7 @@ sealed partial class Scaler {
 				}
 
 				//read sequentially from memory as far as possible
-				var ker3 = new Kernel3x3(
+				var ker3 = new Kernel3X3(
 					ker4.A,
 					ker4.B,
 					ker4.C,

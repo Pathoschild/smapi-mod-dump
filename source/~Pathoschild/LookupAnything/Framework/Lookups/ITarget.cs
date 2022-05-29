@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Microsoft.Xna.Framework;
 
@@ -28,7 +26,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups
         Vector2 Tile { get; }
 
         /// <summary>Get the subject info about the target.</summary>
-        Func<ISubject> GetSubject { get; }
+        Func<ISubject?> GetSubject { get; }
 
 
         /*********

@@ -83,7 +83,7 @@ namespace GenericModConfigMenu.Framework.ModOption
         /// <inheritdoc />
         public override void BeforeSave()
         {
-            this.BeforeSaveImpl();
+            this.BeforeSaveImpl?.Invoke();
         }
 
         /// <inheritdoc />

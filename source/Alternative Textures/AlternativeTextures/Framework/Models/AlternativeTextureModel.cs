@@ -26,6 +26,7 @@ namespace AlternativeTextures.Framework.Models
         public string ItemName { get; set; }
         internal int ItemId { get; set; } = -1;
         public string Type { get; set; }
+        [Obsolete("No longer used due SMAPI 3.14.0 allowing for passive invalidation checks.")]
         public bool EnableContentPatcherCheck { get; set; }
         public List<string> Keywords { get; set; } = new List<string>();
         public List<string> Seasons { get; set; } = new List<string>(); // For use by mod user to determine which seasons the texture is valid for
@@ -37,7 +38,7 @@ namespace AlternativeTextures.Framework.Models
         public int Variations { get; set; } = 1;
         internal int MaxVariationsPerTextures { get; set; } = -1;
         internal string TileSheetPath { get; set; }
-        internal List<Texture2D> Textures { get; set; } = new List<Texture2D>();
+        internal Dictionary<int, Texture2D> Textures { get; set; } = new Dictionary<int, Texture2D>();
         public List<VariationModel> ManualVariations { get; set; } = new List<VariationModel>();
         public List<AnimationModel> Animation { get; set; } = new List<AnimationModel>();
 
@@ -80,10 +81,11 @@ namespace AlternativeTextures.Framework.Models
             return TextureId;
         }
 
-        public string GetTokenId()
+        public string GetTokenId(int? variation = null)
         {
             string seasonSuffix = String.IsNullOrEmpty(Season) ? String.Empty : String.Concat("_", Season);
-            return String.Concat(Owner, ".", ItemName, seasonSuffix);
+            string variationSuffix = variation is null ? String.Empty : String.Concat("_", variation);
+            return String.Concat(Owner, ".", ItemName, seasonSuffix, variationSuffix);
         }
 
         public string GetNameWithSeason()
@@ -114,34 +116,17 @@ namespace AlternativeTextures.Framework.Models
 
         public Texture2D GetTexture(int variation)
         {
-            int textureOffset = TextureHeight * variation;
-            if (textureOffset >= MAX_TEXTURE_HEIGHT)
+            if (Textures.ContainsKey(variation))
             {
-                return Textures[textureOffset / MAX_TEXTURE_HEIGHT];
+                return Textures[variation];
             }
 
             return Textures[0];
         }
 
-        public int GetMaxVariationsPerTexture()
-        {
-            if (MaxVariationsPerTextures == -1)
-            {
-                MaxVariationsPerTextures = MAX_TEXTURE_HEIGHT / TextureHeight;
-            }
-
-            return MaxVariationsPerTextures;
-        }
-
-
         public int GetTextureOffset(int variation)
         {
-            int maxVariationsPerTexture = GetMaxVariationsPerTexture();
-            if (variation >= maxVariationsPerTexture)
-            {
-                return (variation - maxVariationsPerTexture) * TextureHeight;
-            }
-            return variation * TextureHeight;
+            return 0;
         }
 
         public Color GetRandomTint(int variation)

@@ -22,8 +22,15 @@ namespace GMCMOptions.Framework {
     /// </summary>
     public class API : IGMCMOptionsAPI {
         private readonly IModRegistry modRegistry;
+        private bool fixedHeight;
         public API(IModRegistry modRegistry) {
             this.modRegistry = modRegistry;
+            IModInfo gmcm = modRegistry.Get("spacechase0.GenericModConfigMenu");
+            if (gmcm is null) {
+                this.fixedHeight = false;
+            } else {
+                this.fixedHeight = gmcm.Manifest.Version.IsOlderThan(new SemanticVersion(1, 8, 2));
+            }
         }
 
         /// <inheritdoc/>
@@ -32,7 +39,7 @@ namespace GMCMOptions.Framework {
             uint colorPickerStyle = 0, string fieldId = null) {
             var gmcm = modRegistry.GetApi<GMCMAPI>("spacechase0.GenericModConfigMenu");
             if (gmcm == null) return;
-            ColorPickerOption option = new ColorPickerOption(getValue, setValue, showAlpha, (ColorPickerStyle)colorPickerStyle);
+            ColorPickerOption option = new ColorPickerOption(fixedHeight, getValue, setValue, showAlpha, (ColorPickerStyle)colorPickerStyle);
             gmcm.AddComplexOption(
                 mod: mod,
                 name: name,

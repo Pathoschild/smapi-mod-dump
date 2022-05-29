@@ -24,4 +24,8 @@
 	"gmcm.coal-amount-description": "La cantidad mínima de carbón para encender el horno",
 	"gmcm.instant-smelting-label": "Fundición instantánea",
 	"gmcm.instant-smelting-description": "Cuando está activo, el horno funde al instante",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

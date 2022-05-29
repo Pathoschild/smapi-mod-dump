@@ -6,15 +6,13 @@ mods:
    Connected Fences
 
 latest commit:
-   commit 777504bd84e04156c68b5c1a5085559b47be1df7
+   commit f812d4f68ae8a6bc5a37a9606d43f3c20427a185
    Author: sergiomadd <sergiocortmon@gmail.com>
-   Date:   Sun Mar 13 18:50:15 2022 +0100
+   Date:   Sun May 22 00:12:42 2022 +0200
    
        [IP] beta:
-       - Added flux values to container extracting
-       - Added shippingbin implementation of new container methods
-       - Fixed item conversions when saving
-       - Fixed chest item stacking
-       - Fixed thread deletion when in loop
-       - Added edge case. For when items get clogged in pipes on saving.
+       - Lots of bug fixing with item sending
+       - Added edge case treatments for pipe clogging
+       - Reworked data file
+       - Added localization logic
    

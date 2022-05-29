@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,12 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IGameLoopEvents.ReturnedToTitle"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class ReturnedToTitleEvent : BaseEvent
 {
-    /// <summary>Raised after the game returns to the title screen.</summary>
+    /// <inheritdoc cref="IGameLoopEvents.ReturnedToTitle"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
-    public void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+    internal void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
     {
-        if (enabled.Value) OnReturnedToTitleImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnReturnedToTitleImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnReturnedToTitle" />

@@ -1,0 +1,358 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"mod-name": "ปฏิทินประจำปี",
+
+	"almanac.open": "เปิดปฏิทินประจำปี",
+
+	"almanac.cover": "\nปฏิทินประจำปี\nของชาวไร่\nในเฟิร์นกิลล์",
+	"almanac.cover-island": "\nปฏิทินประจำปี\nของชาวไร่\nในเฟิร์นกิลล์\nและ\nหมู่เกาะใบเฟิร์น",
+
+	"calendar.when": "{{season}} ปีที่ {{year}}",
+
+	"calendar.day.1": "จ.",
+	"calendar.day.2": "อ.",
+	"calendar.day.3": "พ.",
+	"calendar.day.4": "พฤ.",
+	"calendar.day.5": "ศ.",
+	"calendar.day.6": "ส.",
+	"calendar.day.7": "อา.",
+
+	"page.crops": "วันสำหรับการปลูก",
+
+	"crop.last-day": "ปลูกได้เป็นวันสุดท้ายสำหรับ:",
+
+	"crop.toggle": "สลับเป็นโหมด {{mode}}",
+	"crop.paddy": "โบนัสพื้นที่ใกล้แหล่งน้ำ",
+
+	"page.crop.none": "ไม่มีพืชผล ที่ตรงกับตัวกรองล่าสุด",
+
+	"page.crop.seed-filter": "กรองตามเมล็ดพันธุ์",
+	"page.crop.seed-filter.disabled": "ปิดการใช้งาน",
+	"page.crop.seed-filter.inventory": "ในกระเป๋า",
+	"page.crop.seed-filter.owned": "ที่คุณเป็นเจ้าของ",
+
+	"crop.seed-filter": "แสดงเฉพาะเมล็ดพันธุ์ ที่คุณเป็นเจ้าของเท่านั้น",
+
+	"crop.using-none": "วันและเวลา ของการเจริญเติบโตต่อไปนี้ เมื่อคุณไม่มีปุ๋ยหรือทักษะ",
+	"crop.using-agri": "วันและเวลา ของการเจริญเติบโตต่อไปนี้ เมื่อคุณเป็น {{agriculturist}}",
+	"crop.using-speed": "วันและเวลา ของการเจริญเติบโตต่อไปนี้ เมื่อคุณใช้ {{fertilizer}}",
+	"crop.using-both": "วันและเวลา ของการเจริญเติบโตต่อไปนี้ เมื่อคุณเป็น {{agriculturist}} และใช้ {{fertilizer}}",
+	"crop.using-paddy": "นอกจากนี้ พืชผลจะได้รับประโยชน์เมื่อ @Bปลูกใกล้แหล่งน้ำ@b",
+
+	"crop.grow-time": "เจริญเติบโตภายใน {{count}} วัน",
+	"crop.harvests": "คาดว่าจะได้เก็บเกี่ยว {{count}} ครั้งในปีนี้",
+	"crop.harvests-date": "คาดว่าจะได้เก็บเกี่ยว {{count}} ครั้งในปีนี้ หากปลูกตอน {{date}}",
+	"crop.last-date": "ปลูกได้ไม่เกิน {{date}}",
+	"crop.regrow-time": "ออกผลทุกๆ {{count}} วัน",
+	"crop.paddy-note": "หากอยู่ใกล้แหล่งน้ำ จะเจริญเติบโตไวขึ้น",
+	"crop.giant-note": "สามารถเจริญเติบโตเป็นผล {{link}} ได้",
+	"crop.giant-hover": "@Bขนาดยักษ์@b",
+	"crop.trellis-note": "ต้องใช้โครงไม้เลื่อย",
+
+	"page.weather": "การพยากรณ์อากาศ",
+	"page.weather-island": "การพยากรณ์ในเกาะขิง",
+
+	"page.weather.pirates": "กิลด์ของนักผจญภัย ได้บอกให้รู้ล่วงหน้าว่า คาดว่าจะมีกิจกรรมโจรสลัด ภายในหรือรอบๆ เกาะขิง ในวันที่ต่อไปนี้",
+
+	"festival.about": "เทศกาลต่อไปนี้ มีกำหนดจะจัดขึ้น ภายในพื้นที่สตาร์ดิวแวลลี่ใน {{season}}:",
+
+	"festival.when": "เวลา:",
+	"festival.when-times": "{{start}} ถึง {{end}}",
+	"festival.where": "สถานที่:",
+	"festival.date": "วัน:",
+
+	"weather.sunny": "แดดจัด",
+	"weather.rain": "ฝนตก",
+	"weather.debris": "ลมแรง",
+	"weather.lightning": "พายุฝนฟ้าคะนอง",
+	"weather.festival": "แดดจัด",
+	"weather.snow": "หิมะตก",
+
+	"page.train": "ตารางเดินรถไฟ",
+	"page.train.about": "@Bคำเตือน:@b รถไฟ จะวิ่งผ่านสถานีสตาร์ดิวแวลลี่ ในเวลาต่อไปนี้ เพื่อความปลอดภัยของคุณ โปรดอยู่ห่างจากราง เมื่อมีรถไฟวิ่งผ่านเสมอ",
+
+	"page.train.notice": "ตลอดทั้งฤดูใบไม้ผลิ เราจะปิดให้บริการรถไฟ ที่วิ่งสู่สถานีสตาร์ดิวแวลลี่ ชั่วคราว เนื่องจากมีการซ่อมบำรุงราง ตามกำหนดการ",
+
+	"page.fortune": "โชคชะตา",
+
+	"page.fortune.luck-awful": "เหล่าวิญญาณที่ไม่พอใจ จะบันดาลให้ใช้ชีวิต อย่างทุกข์ยาก",
+	"page.fortune.luck-bad": "เหล่าวิญญาณที่มีจิตขุ่นมอง จะไม่นำโชคมาให้ผู้ใดทั้งสิ้น",
+	"page.fortune.luck-neutral": "เหล่าวิญญาณ จะอยู่ในภาวะสมดุล โดยสมบูรณ์ วันนี้อยู่ในกำมือคุณ",
+	"page.fortune.luck-good": "เหล่าวิญญาณที่อารมณ์ดี จะเสริมโชคให้",
+	"page.fortune.luck-great": "เหล่าวิญญาณที่เปรมปรีดิ์ จะชโลมทุกคนด้วยความโชคดี",
+
+	"page.fortune.event.none": "คาดว่า จะเป็นฤดูกาลอันแสนสงบ คุณต้องค้นหาความตื่นเต้น และแสวงหาความสุข ในชีวิตประจำวันของตน",
+
+	"page.fortune.about": "เหตุการณ์ดังนี้ อาจจะเกิดขึ้นหรือไม่ก็ได้ใน {{Season}}",
+
+	"page.fortune.garbage-hat": "ขยะของผู้หนึ่ง เป็นสมบัติล้ำค่าสำหรับผู้อื่น",
+
+	"page.fortune.event.fairy": "นางฟ้าน้ำใจงาม จะผ่านมาในตอนกลางคืน ผู้ที่มีโชคอันประเสริฐ อาจพบพืชผล ที่รอผู้นั้นอยู่มากมาย",
+	"page.fortune.event.witch": "คืนนี้คาดว่า จะมีแม่มดมาปรากฏตัวที่นี่",
+	"page.fortune.event.meteorite": "คาดว่า จะมีฝนดาวตกทั่วทั้งเฟิร์นกิลล์",
+	"page.fortune.event.owl": "ปกคลุมไปด้วยความลึกลับ ผู้พิทักษ์ร่างศิลา ลงมายังหุบเขาแห่งนี้",
+	"page.fortune.event.ufo": "สิ่งมีชีวิตประหลาด ปรากฏตัวอยู่บนท้องฟ้า เหนือเฟิร์นกิลล์",
+
+	"page.mines": "ชั้นใต้ดิน",
+	"page.mines.about": "ข้อมูลดังนี้ เป็นบทสรุปเกี่ยวกับ กิจกรรมล่าสัตว์ประหลาด ที่คาดการณ์ไว้ใน {{Season}}",
+
+	"page.mines.type.Mushroom": "เห็ด",
+	"page.mines.type.InfestedMonster": "ชั้นที่มีมอนสเตอร์ชุกชุม",
+	"page.mines.type.InfestedSlime": "ชั้นที่มีสไลม์ชุกชุม",
+	"page.mines.type.Quarry": "เหมืองหิน",
+	"page.mines.type.InfestedQuarry": "ชั้นที่มีมอนสเตอร์ ในเหมืองหินชุกชุม",
+	"page.mines.type.Dino": "ไดโนเสาร์ถ้ำ",
+
+	"page.notices": "ข่าวสารภายในเมือง",
+
+	"page.notices.season": "หน้า {{item}} เริ่มตั้งแต่ {{start}} ถึง {{end}}",
+	"page.notices.summer": "คาดว่า กระแสน้ำมหาสมุทรในฤดูร้อน จะกระทบหาดเมืองเพลิแกน พร้อมกับเศษซากพิเศษ ตั้งแต่วันที่ 12 ถึง 14",
+	"page.notices.market": "ตลาดนัดราตรีเปิดเวลาดึก ตั้งแต่วันที่ 15 ถึง 17",
+
+	"page.notices.anniversary.no-s": "วันครบรอบของ {{name}} กับ {{spouse}}!",
+	"page.notices.anniversary.s": "วันครบรอบของ {{name}} กับ {{spouse}}!",
+
+	"page.notices.wedding.no-s": "วันแต่งงานของ {{name}} กับ {{spouse}}!",
+	"page.notices.wedding.s": "วันแต่งงานของ {{name}} กับ {{spouse}}!",
+
+	"page.notices.festival": "{{name}} มาถึงแล้ว! เข้าร่วมงานกับเราที่ {{where}} ตั้งแต่ {{start}} ถึง {{end}}",
+
+	"page.notices.birthday.no-s": "วันนี้เป็นวันเกิด {{name}}!",
+	"page.notices.birthday.s": "วันนี้เป็นวันเกิด {{name}}!",
+
+	"page.notices.merchant": "แม่ค้ารถขายของหมู จะเดินทางเข้าเมือง",
+	"page.notices.merchant.stock": "แม่ค้ารถขายของหมูจะขาย:",
+
+	"page.notices.train": "รถไฟมีกำหนดจะผ่านสถานี เวลา {{time}}",
+
+	// Fishing Page
+
+	"page.fish": "การตกปลา",
+	"page.fish.aquarium.none": "ไม่สามารถใส่ตัวนี้ ไว้ในตู้ปลาได้",
+	"page.fish.caught": "คุณจับได้ @B{{count}}@b ตัว",
+	"page.fish.caught.not": "คุณไม่เคยตกตัวนี้มาก่อน",
+
+	// TL Note: You can use {{big_cm}}, {{min_cm}}, and {{max_cm}} instead of _inch.
+	"page.fish.size": "ตัวที่คุณจับได้ มีขนาดใหญ่สุดอยู่ที่ @B{{big_inch}}\"@b",
+	"page.fish.size.range": "มีขนาดตั้งแต่ @B{{min_inch}}\"@b ถึง @B{{max_inch}}\"@b",
+
+	"page.fish.weather.Sunny": "{{fish}} จับได้ในช่วง @Bแดดจัด@b เท่านั้น",
+	"page.fish.weather.Rainy": "{{fish}} จับได้ในช่วง @Bฝนตก@b เท่านั้น",
+	"page.fish.weather.Any": "{{fish}} จับได้ตลอดเวลา ไม่ว่าจะมีฝนตกหรือแดดออก",
+	"page.fish.level": "คุณจำเป็นต้องมีทักษะ {{skill}} ระดับ @B{{level}}@b ถึงจะจับตัวนี้ได้",
+	"page.fish.legendary": "{{fish}} เป็นปลาในตำนาน",
+	"page.fish.time.all": "จับได้ตลอดทั้งวัน",
+	"page.fish.time": "จับได้ตั้งแต่ @B{{start}}@b ถึง @B{{end}}@b",
+	"page.fish.time.many": "ยังจับได้ในช่วงเวลาต่อไปนี้: {{spans}}",
+	"page.fish.time.range": "@B{{start}}@b ถึง @B{{end}}@b",
+	"page.fish.locations": "สถานที่",
+	"page.fish.seasons.all": "ทุกฤดูกาล",
+	"page.fish.locations.none": "ปลาตัวนี้ ไม่มีข้อมูลด้านตำแหน่ง",
+	"page.fish.pond": "การทำฟาร์มสัตว์น้ำ",
+	"page.fish.pond.none": "ไม่สามารถใส่ {{fish}} ไว้ในบ่อเลี้ยงปลาได้",
+	"page.fish.pond.start": "",
+	"page.fish.filter.weather": "กรองตามสภาพอากาศ",
+	"page.fish.filter.none": "ไม่ใช้ตัวกรอง",
+	"page.fish.none": "ไม่มีปลา ที่ตรงกับตัวกรองล่าสุด",
+	"page.fish.nothing": "หน้านี้ไม่มีอะไรให้ดู...",
+	"fish.weather.Any": "ทุกสภาพอากาศ",
+	"fish.weather.Rainy": "ฝนตก",
+	"fish.weather.Sunny": "แดดจัด",
+	"page.fish.filter.type": "กรองตามประเภท",
+	"page.fish.filter.type.trap": "การวางกับดัก (กับดักปู)",
+	"page.fish.filter.type.caught": "การตกปลา (คันเบ็ด)",
+	"page.fish.filter.caught": "กรองตามการจับ",
+	"page.fish.filter.true": "ใช่",
+	"page.fish.filter.false": "ไม่ใช่",
+	"page.fish.filter.location": "กรองตามตำแหน่งล่าสุด",
+	"page.fish.filter.now": "ใช่ ในฤดูกาลนี้",
+	"page.fish.location.fresh": "{{fish}} อาศัยอยู่ในน้ำจืด",
+	"page.fish.location.ocean": "{{fish}} อาศัยอยู่ในน้ำเค็ม",
+
+	// Settings
+
+	"settings.theme": "ธีม UI",
+	"settings.theme-desc": "ธีม UI นี้จะใช้ในเมนูของ ปฏิทินประจำปี",
+
+	"theme.automatic": "อัตโนมัติ",
+	"theme.default": "ค่าเริ่มต้น",
+
+	"settings.button": "ตำแหน่งของปุ่ม ปฏิทินประจำปี",
+	"settings.button-desc": "เมื่อเปิดการใช้งาน ระบบจะเพิ่มปุ่มสำหรับเปิด ปฏิทินประจำปี ไปยังเมนูกระเป๋า ในตำแหน่งนี้",
+
+	"settings.button.Disabled": "ปิดการใช้งาน",
+	"settings.button.LeftTop": "ด้านบนซ้ายของเมนู",
+	"settings.button.LeftBottom": "ด้านล่างซ้ายของเมนู",
+	"settings.button.OrganizeRight": "ด้านขวาของ 'จัดระเบียบ'",
+	"settings.button.TrashRight": "ด้านขวาของถังขยะ",
+	"settings.button.TrashDown": "ใต้ถังขยะ",
+
+	"settings.unlimited": "ไม่จำกัด",
+	"settings.days": "{{count}} วัน",
+
+	"settings.available": "ใช้งาน ปฏิทินประจำปี ได้เสมอ",
+	"settings.available-desc": "เมื่อเปิดใช้งานแล้ว ปฏิทินประจำปี จะพร้อมใช้งานเสมอ ไม่ว่าคุณ จะได้รับเล่มสำเนาหรือไม่",
+
+	"settings.island": "ใช้งานเกาะได้เสมอ",
+	"settings.island-desc": "เมื่อเปิดใช้งานแล้ว จะมีการขยายเนื้อหาภายใน ปฏิทินประจำปี เพื่อแสดงเนื้อหาของเกาะขิง",
+
+	"settings.magic": "ใช้งานหน้าเวทมนตร์ได้เสมอ",
+	"settings.magic-desc": "เมื่อเปิดใช้งานแล้ว หน้าเวทมนตร์ จะพร้อมใช้งานเสมอ และไม่จำเป็นต้อง เกิดเหตุการณ์กับพ่อมด",
+
+	"settings.forecast-length": "ความยาวของการพยากรณ์",
+	"settings.forecast-length.desc": "พยากรณ์ ได้ถึงหลายวันข้างหน้า",
+
+	"settings.weather.deterministic": "ใช้สภาพอากาศเชิงกำหนด",
+	"settings.weather.deterministic-desc": "เพื่อให้การพยากรณ์อากาศ ของปฏิทินประจำปีทำงาน เราจึงแทนที่ การคำนวณสภาพอากาศ ของวันพรุ่งนี้ ด้วยการคำนวณ ที่ใช้แหล่งข้อมูลการสุ่ม แบบคาดการณ์ได้ หากกระบวนการดังกล่าว ทำให้เกิดปัญหา คุณสามารถ ปิดอาการที่ว่าได้ที่นี่ แต่การทำเช่นนี้ จะเป็นการปิดการใช้งาน การพยากรณ์อากาศ",
+
+	"settings.weather.rules": "เปิดใช้งานกฎสภาพอากาศ",
+	"settings.weather.rules-desc": "กฎสภาพอากาศ ใช้ข้อจำกัดพิเศษ กับสภาพอากาศที่สุ่มเกิด กฎนี้ช่วยให้แน่ใจว่า เมื่อใกล้ปลายฤดูใบไม้ผลิ จะเกิดฝนตกสามวัน เพื่อให้อัปเกรดบัวรดน้ำ ง่ายขึ้น นอกจากนี้ในแต่ละสัปดาห์ จะมีวันฝนตกอย่างน้อยหนึ่งวัน และมีวันแดดจัด อย่างน้อยหนึ่งวัน",
+
+	"settings.controls": "การควบคุม",
+
+	"settings.controls.almanac": "เปิดปฏิทินประจำปี",
+	"settings.controls.almanac-desc": "การกดคีย์นี้ จะทำให้เปิดหน้าจอ ปฏิทินประจำปีขึ้นมา",
+
+	"settings.enable": "เปิดใช้งานหน้า",
+	"settings.enable-desc": "ไม่ว่าจะเป็นอย่างไร ควรเพิ่มหน้านี้ลงใน ปฏิทินประจำปี",
+
+	"settings.crops": "หน้า: วันสำหรับการปลูก",
+
+	"settings.crops.preview": "ตัวอย่างพืชผล",
+	"settings.crops.preview-desc": "เมื่อเปิดใช้งาน ตัวอย่างพืชผลแล้ว การเอาเมาส์วางเหนือพืชผล ในแท็บวันสำหรับการปลูก จะทำให้ปฏิทินแสดงว่า พืชผลจะอยู่ในระยะใด ในวันที่กำหนดไว้",
+
+	"settings.crops.preview.enable": "เปิดใช้งานการแสดงตัวอย่าง",
+
+	"settings.crops.preview.plantonfirst": "ปลูกในวันแรกของเดือนเสมอ",
+	"settings.crops.preview.plantonfirst-desc": "เมื่อเปิดใช้งานแล้ว ภาพรวมของเดือน ที่คุณเห็นตอนเลือกพืชผล จะเริ่มปลูกในวันแรกเสมอ แม้ว่าวันที่ปัจจุบัน จะอยู่หลัง วันแรกของเดือนก็ตาม",
+
+	"settings.crops.preview.sprite": "ใช้ภาพสไปรต์ผลผลิต",
+	"settings.crops.preview.sprite-desc": "เมื่อเปิดใช้งานแล้ว ภาพผลผลิตจากการเก็บเกี่ยว จะใช้แทน ระยะเจริญเติบโตขั้นสุดท้าย เพื่อให้ดูชัดเจนยิ่งขึ้นว่า จะสามารถเก็บเกี่ยวพืชผล ได้วันไหน",
+
+	"settings.fortune": "หน้า: โชคชะตา",
+
+	"settings.fortune.deterministic": "ใช้โชคเชิงกำหนด",
+	"settings.fortune.deterministic-desc": "เพื่อให้ การทำนายโชคประจำวัน ของปฏิทินประจำปีทำงาน เราจึงแทนที่การคำนวณ โชคชะตาประจำวัน ด้วยการคำนวณ ที่ใช้แหล่งข้อมูล แบบคาดการณ์ได้ หากกระบวนการดังกล่าว ทำให้เกิดปัญหา คุณสามารถ ปิดอาการที่ว่าได้ที่นี่ แต่การทำเช่นนี้ จะเป็นการปิดการใช้งาน การพยากรณ์โชคประจำวัน",
+
+	"settings.fortune.exact": "แสดงเปอร์เซ็นต์โชค",
+	"settings.fortune.exact-desc": "เมื่อเปิดใช้งานแล้ว เปอร์เซ็นต์โชครายวัน ซึ่งเป็นค่าแน่นอน จะแสดงในหน้าข้อมูลปฏิทิน ที่แท็บโชคชะตา",
+
+	"settings.train": "หน้า: ตารางเดินรถไฟ",
+
+	"settings.weather": "หน้า: การพยากรณ์อากาศ",
+
+	"settings.mines": "หน้า: ชั้นใต้ดิน",
+
+	"settings.fish": "หน้า: การตกปลา",
+	"settings.fish.show-tank": "แสดงตัวอย่างตู้ปลา",
+	"settings.fish.show-tank-desc": "เมื่อเปิดใช้งานแล้ว หน้าการตกปลา จะแสดงตัวอย่าง ลักษณะของปลาแต่ละชนิด ในตู้ปลา",
+
+	"settings.fish.decorate-tank": "ตกแต่งตู้ปลา",
+	"settings.fish.decorate-tank-desc": "เมื่อเปิดใช้งานแล้ว ตัวอย่างตู้ปลาจะมี ไอเทมของตกแต่งสองสามชิ้น เพิ่มขึ้นมานอกเหนือจากปลา",
+
+	"settings.fish.legendary": "มีปลาในตำนาน",
+	"settings.fish.legendary-desc": "เมื่อเปิดใช้งานแล้ว ปลาในตำนานจะแสดงอยู่ใน ปฏิทินประจำปีเช่นกัน",
+
+	"settings.notices": "หน้า: ข่าวสารภายในเมือง",
+
+	"settings.notices.trains": "แสดงรถไฟ",
+	"settings.notices.trains-desc": "เมื่อเปิดใช้งานแล้ว จะแจ้งตารางเดินรถไฟไว้ใน ข่าวสารภายในเมือง โดยสามารถใช้แทน หน้าตารางเดินรถไฟได้",
+
+	"settings.notices.anniversaries": "แสดงวันครบรอบ",
+	"settings.notices.anniversaries-desc": "เมื่อเปิดใช้งานแล้ว งานแต่งงานและวันครบรอบ ของชาวไร่ทุกคน จะแสดงอยู่ใน หน้าข่าวสารภายในเมือง",
+
+	"settings.notices.festivals": "แสดงเทศกาล",
+	"settings.notices.festivals-desc": "เมื่อเปิดใช้งานแล้ว เทศกาลจะแสดงอยู่ใน หน้าข่าวสารภายในเมือง",
+	"settings.notices.gathering": "แสดงการเก็บเกี่ยว",
+	"settings.notices.gathering-desc": "เมื่อเปิดใช้งานแล้ว โอกาสในการเก็บเกี่ยว จะแสดงอยู่ใน หน้าข่าวสารภายในเมือง",
+
+	"settings.notices.merchant": "แสดงแม่ค้ารถขายของหมู",
+	"settings.notices.merchant-desc": "เมื่อเปิดใช้งานแล้ว การแวะมา ของแม่ค้ารถขายของหมู จะแสดงอยู่ใน หน้าข่าวสารภายในเมือง นอกจากนี้เราสามารถแสดง ไอเทมที่เธอมีขายได้เช่นกัน หากคุณต้องการ",
+	"settings.notices.merchant.Disabled": "ปิดใช้งาน",
+	"settings.notices.merchant.Visit": "แสดงการแวะมาเท่านั้น",
+	"settings.notices.merchant.Stock": "แสดงการแวะมา และสินค้าในร้าน",
+
+	"settings.restore-state": "กลับคืนสู่ภาพก่อนหน้า",
+	"settings.restore-state.desc": "เมื่อเปิดใช้งานแล้ว ปฏิทินประจำปีจะจำไว้ว่า เคยอยู่ในสภาพไหน เมื่อคุณปิดและเปิด ปฏิทินประจำปีขึ้นมาอีกครั้ง",
+
+	"settings.cycle-time": "รอบเวลา",
+	"settings.cycle-time.desc": "เมื่อปฏิทิน จำเป็นต้องแสดงหลายๆ รูปในวันที่กำหนดไว้ แต่ละรูป จะแสดงอยู่หลายวินาที",
+
+	"settings.debug": "โหมดแก้จุดบกพร่อง",
+	"settings.debug.desc": "เมื่อเปิดใช้งานแล้ว ข้อมูลเพิ่มเติมบางอย่าง อาจแสดงในปฏิทินประจำปี ซึ่งมีประโยชน์ ต่อการแก้จุดบกพร่อง นอกจากนี้ สามารถเปิดใช้งาน โหมดแก้จุดบกพร่อง ได้โดยการกด F5 เพื่อรีเฟรชข้อมูล",
+
+	// Events
+
+	// Pierre at Farm
+	"event.11022000.0": "สวัสดี @ ดูเหมือนว่า คุณกำลังเข้าที่เข้าทางแล้วนะ!",
+	"event.11022000.1": "ปฏิทินประจำปี สำหรับชาวไร่ของปีนี้ เพิ่งส่งมาถึงเลย เนื่องจากที่คุณเป็นมือใหม่ ผมเลยคิดว่า จะทำสำเนาให้คุณสักเล่ม",
+	"event.11022000.2": "ได้รับสำเนา 'ปฏิทินประจำปี สำหรับชาวไร่'",
+	"event.11022000.3": "ในนี้มีข้อมูลที่เป็นประโยชน์ เต็มไปหมดเลยนะ ทั้งการพยากรณ์อากาศ การปลูกพืชหมุนเวียน ตารางเดินรถไฟ ประจำภูมิภาค แล้วก็มีอย่างอื่นอีกเพียบ",
+	"event.11022000.4": "อย่าลืมอ่านดูล่ะว่า มีอะไรที่คุณปลูกได้บ้าง พอพร้อมที่จะปลูกแล้ว ก็ไปซื้อเมล็ดจากร้านผมได้นะ#$b#เพราะเมล็ดของปิแอร์ เป็นเมล็ดที่ *ดีที่สุด* ที่คุณสามารถหาได้ยังไงล่ะ",
+
+	// Wizard at Farm
+	"event.11022002.0": "สวัสดีอีกครั้ง... @ ข้ากำลังรอเจ้าอยู่เลย#$b#ข้าอยากมอบบางสิ่งให้เจ้า รับไปสิ",
+	"event.11022002.1": "ได้รับสำเนา 'ปฏิทินเวทมนตร์ประจำปี'",
+	"event.11022002.2": "ในฐานะชาวไร่ เจ้าก็คุ้นเคย กับการพยากรณ์อยู่แล้ว#$b#ปฏิทินประจำปีเล่มนี้ มีการพยากรณ์ทางจิตวิญญาณ โดยที่เวลวิค เป็นคนเขียนเองเลยนะ#$b#มันจะช่วยให้เจ้า ปลอดภัยและเติบใหญ่",
+	"event.11022002.3": "บัดนี้ ข้าขอตัวก่อนล่ะ... ข้าต้องไปทำภารกิจ อีกมากมาย",
+
+	// Willy at FishShop
+	"event.11022001.0": "ไง!",
+	"event.11022001.1": "กำลังจะไปเกาะขิงเหรอ ไอ้หนู^กำลังจะไปเกาะขิงเหรอ แม่หนู",
+	"event.11022001.2": "ฉันมีอะไรจะให้ด้วย อาจเป็นของที่ เธอต้องการก็ได้นะ อะนี่",
+	"event.11022001.3": "ได้รับสำเนา 'ปฏิทินประจำปี ของหมู่เกาะใบเฟิร์น'",
+	"event.11022001.4": "ถึงจะ ไม่ใช่ของสำคัญอะไรมากมาย แต่การรู้ว่าอากาศ จะมีสภาพเป็นยังไงบ้าง มันก็แจ่มดีนะ เพราะปลาบางชนิด ออกมาหาอาหาร เฉพาะเวลาฝนตกเท่านั้น รู้รึเปล่า",
+	"event.11022001.5": "ฉันไม่กวนละ ขอให้โชคดี @",
+
+	// Locations
+
+	"location.WitchSwamp": "บึงน้ำของแม่มด",
+	"location.BugLand": "รังแมลงกลายพันธุ์",
+
+	"location.Caldera": "เกาะขิง (หลุมแอ่งภูเขาไฟ)",
+	"location.IslandWest": "เกาะขิงฝั่งตะวันตก",
+	"location.IslandNorth": "เกาะขิงทางตอนเหนือ",
+	"location.IslandSouth": "เกาะขิงทางตอนใต้",
+	"location.IslandSouthEast": "เกาะขิงฝั่งตะวันออกเฉียงใต้",
+	"location.IslandSouthEastCave": "เกาะขิงฝั่งตะวันออกเฉียงใต้ (ถ้ำ)",
+	"location.IslandEast": "เกาะขิงฝั่งตะวันออก",
+
+	"location.sub-any": "ทั้งหมด",
+	"location.sub-floor": "ชั้น {{floor}}",
+
+	"location.Forest.River": "แม่น้ำ",
+	"location.Forest.Pond": "หนองน้ำ",
+
+	"location.Island.Ocean": "มหาสมุทร",
+	"location.Island.Freshwater": "น้ำจืด",
+
+	// Maps: Stardew Aquarium
+	"location.Custom_ExteriorMuseum": "สตาร์ดิวอควาเรียม",
+	"location.ExteriorMuseum": "สตาร์ดิวอควาเรียม",
+
+	// Maps: Stardew Valley Expanded
+	"location.Custom_AdventurerSummit": "ยอดเขาของนักผจญภัย",
+	"location.Custom_BlueMoonVineyard": "ไร่องุ่นบลูมูน",
+	"location.Custom_BlueMoonVineyard.0": "มหาสมุทร",
+	"location.Custom_BlueMoonVineyard.1": "แม่น้ำ",
+	"location.Custom_CrimsonBadlands": "ทุ่งร้างคริมสัน",
+	"location.Custom_FableReef": "ปะการังเล่าขาน",
+	"location.Custom_ForestWest": "ป่าซินเดอร์แซปฝั่งตะวันตก",
+	"location.Custom_Highlands": "เขตที่ราบสูง",
+	"location.Custom_Highlands.0": "สถานที่ปรักหักพัง",
+	"location.Custom_Highlands.1": "แม่น้ำ",
+	"location.Custom_HighlandsCavern": "เขตที่ราบสูง (ถ้ำ)",
+	"location.Custom_JunimoWoods": "ป่าจูนิโม่",
+	//"location.Custom_MorrisProperty": "",
+	"location.Custom_ShearwaterBridge": "สะพานเชียร์วอเทอร์",
+	"location.Custom_SpriteSpring2": "น้ำพุแห่งภูต"
+}

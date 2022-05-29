@@ -8,17 +8,17 @@
 **
 *************************************************/
 
-using System;
-using System.IO;
-using System.Text;
 using Namotion.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
+using System.IO;
+using System.Text;
 using TehPers.Core.Api.Items;
 using TehPers.FishingOverhaul.Config;
 using TehPers.FishingOverhaul.Config.ContentPacks;
 
-namespace TehPers.FishingOverhaul.SchemaGen
+namespace TehPers.SchemaGen
 {
     internal class Program
     {
@@ -103,16 +103,16 @@ namespace TehPers.FishingOverhaul.SchemaGen
             var schema = definitionMap.Register(typeof(T).ToContextualType(), true);
 
             // Add standard properties
-            schema["$schema"] = "http://json-schema.org/draft-04/schema#";
+            schema["$schema"] = "http://json-schema.org/draft/2020-12/schema";
             schema["title"] = typeof(T).Name;
 
             // Add definitions
             var definitions = new JObject();
-            schema["definitions"] = definitions;
             foreach (var (name, defSchema) in definitionMap.Definitions)
             {
                 definitions[name] = defSchema;
             }
+            schema["definitions"] = definitions;
 
             // Write schema
             writer.Write(schema.ToString(Formatting.Indented));

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
 using Pathoschild.Stardew.Common.Utilities;
@@ -36,9 +34,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public override bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public override bool HasBoundedValues(IInputArguments input, out IInvariantSet allowedValues)
         {
-            allowedValues = InvariantHashSet.Boolean();
+            allowedValues = InvariantSets.Boolean;
             return true;
         }
 
@@ -47,7 +45,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            yield return input.HasPositionalArgs.ToString();
+            return InvariantSets.FromValue(input.HasPositionalArgs);
         }
     }
 }

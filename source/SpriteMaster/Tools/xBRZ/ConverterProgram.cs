@@ -15,7 +15,7 @@ using System.IO;
 
 namespace xBRZ;
 
-static class ConverterProgram {
+internal static class ConverterProgram {
 	private record struct Job(Uri Path, int Scale);
 
 	internal static int SubMain(Options options, List<Argument> args) {

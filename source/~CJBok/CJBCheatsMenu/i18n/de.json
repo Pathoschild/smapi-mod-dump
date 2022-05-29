@@ -66,6 +66,7 @@
     "farm.instant-build": "Sofortiger Bau",
     "farm.auto-feed-animals": "Immer automatisch füttern",
     "farm.auto-pet-animals": "Tiere automatisch füttern",
+    "farm.auto-pet-pets": "Auto-Pet Pets", // TODO
     "farm.infinite-hay": "Unendlich Heu",
 
     // fishing
@@ -182,6 +183,7 @@
     "warp.bathhouse": "Spa",
     "warp.mutant-bug-lair": "Mutantenkäferhöhle",
     "warp.quarry": "Steinbruch",
+    "warp.witch-swamp": "Hexensumpf",
 
     // beach
     "warp-section.beach": "Strand",

@@ -1,4 +1,6 @@
 {
   "CoalAmount": 5,
-  "InstantSmelting": false
+  "InstantSmelting": false,
+  "EnableSmokeAnimation": true,
+  "EnableFireAnimation": true
 }

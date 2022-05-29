@@ -1,0 +1,116 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://raw.githubusercontent.com/TehPers/StardewValleyMods/master/docs/TehPers.FishingOverhaul/schemas/contentPacks/content.schema.json",
+  // Add fish entries
+  "AddFish": [
+    {
+      // Bladetail Sturgeon
+      "FishKey": "JA:Object/Bladetail Sturgeon",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Caped Tree Frog
+      "FishKey": "JA:Object/Caped Tree Frog",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Cardia Septal Jellyfish
+      "FishKey": "JA:Object/Cardia Septal Jellyfish",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Crimson Spiked Clam
+      "FishKey": "JA:Object/Crimson Spiked Clam",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Fairytale Lionfish
+      "FishKey": "JA:Object/Fairytale Lionfish",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Fixer Eel
+      "FishKey": "JA:Object/Fixer Eel",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Golden Rose Fin
+      "FishKey": "JA:Object/Golden Rose Fin",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Harvester Trout
+      "FishKey": "JA:Object/Harvester Trout",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Lullaby Carp
+      "FishKey": "JA:Object/Lullaby Carp",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    },
+    {
+      // Pebble Back Crab
+      "FishKey": "JA:Object/Pebble Back Crab",
+      "AvailabilityInfo": {
+        "BaseChance": 1,
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"],
+        "PriorityTier": 10
+      }
+    }
+  ],
+  "AddEffects": [
+    {
+      "$Effect": "ModifyFishChance",
+      "Type": "MinFish",
+      "Expression": "1",
+      "Conditions": {
+        "IncludeLocations": ["Custom_Ridgeside_RidgePond"]
+      }
+    }
+  ]
+}

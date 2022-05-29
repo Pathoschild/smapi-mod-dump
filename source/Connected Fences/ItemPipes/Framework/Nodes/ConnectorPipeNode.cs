@@ -35,15 +35,34 @@ namespace ItemPipes.Framework
 
         public override bool AddAdjacent(Side side, Node node)
         {
+            //Printer.Info($"ADDING ADJ: {node.Print()} to {Print()}");
+            //Printer.Info($"IS SIDE NULL?" + (Adjacents[side] == null).ToString());
+            if(Adjacents[side] != null)
+            {
+                //Printer.Info($"SIDE: {side.Name} is {Adjacents[side].Print()}");
+            }
             bool added = false;
             if (Adjacents[side] == null)
             {
-                if(!(node is ConnectorPipeNode) || (node is ConnectorPipeNode && node.GetType().Equals(this.GetType())))
+                if (!(node is ConnectorPipeNode) || (node is ConnectorPipeNode && node.GetType().Equals(this.GetType())))
                 {
                     added = true;
                     Adjacents[side] = node;
                     node.AddAdjacent(Sides.GetInverse(side), this);
                 }
+            }
+            else if (Adjacents[side]  != null &&
+                Adjacents[side].Adjacents[Sides.GetInverse(side)] != null &&
+                Adjacents[side].Adjacents[Sides.GetInverse(side)].ParentNetwork != null &&
+                Adjacents[side].ParentNetwork != null &&
+                Adjacents[side].Adjacents[Sides.GetInverse(side)].ParentNetwork != Adjacents[side].ParentNetwork)
+            {
+                //Printer.Info($"ADDING ADJ adj: {Adjacents[side].Adjacents[Sides.GetInverse(side)].Print()} of {Adjacents[side].Print()}");
+                //Printer.Info($"in wrong network of {Adjacents[side].Print()}");
+
+                added = true;
+                Adjacents[side].Adjacents[Sides.GetInverse(side)] = this;
+                //Printer.Info($"ADDING ADJ adj: {Adjacents[side].Adjacents[Sides.GetInverse(side)].Print()} of {Adjacents[side].Print()}");
             }
             return added;
         }

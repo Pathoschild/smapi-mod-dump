@@ -9,7 +9,20 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
-## Upcoming release
+## 1.22.2
+Released 27 May 2022 for SMAPI 3.14.0 or later.
+
+* Fixed world area data and some config values not loaded correctly in Chests Anywhere 1.22.0+.
+
+## 1.22.1
+Released 22 May 2022 for SMAPI 3.14.0 or later.
+
+* Internal changes to support Content Patcher.
+
+## 1.22.0
+Released 09 May 2022 for SMAPI 3.14.0 or later.
+
+* Updated for SMAPI 3.14.0.
 * Added [mod-provided API to get overlay info](README.md#mod-integrations).
 
 ## 1.21.3

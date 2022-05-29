@@ -18,7 +18,6 @@ using Common.Helpers;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewMods.EasyAccess.Interfaces.Config;
 using StardewMods.EasyAccess.Models.Config;
 using StardewMods.EasyAccess.Models.ManagedObjects;
@@ -27,7 +26,7 @@ using StardewMods.FuryCore.Interfaces;
 using StardewValley;
 
 /// <inheritdoc cref="StardewMods.FuryCore.Interfaces.IModService" />
-internal class AssetHandler : IModService, IAssetLoader
+internal class AssetHandler : IModService
 {
     private const string CraftablesData = "Data/BigCraftablesInformation";
     private IReadOnlyDictionary<int, string[]> _cachedCraftables;
@@ -43,10 +42,10 @@ internal class AssetHandler : IModService, IAssetLoader
     {
         this.Config = config;
         this.Helper = helper;
-        this.Helper.Content.AssetLoaders.Add(this);
 
         this.InitProducerData();
 
+        this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
         this.Helper.Events.GameLoop.DayEnding += this.OnDayEnding;
         this.Helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
         if (Context.IsMainPlayer)
@@ -61,7 +60,7 @@ internal class AssetHandler : IModService, IAssetLoader
     public IReadOnlyDictionary<string, IProducerData> ProducerData
     {
         get => this._cachedProducerData ??= (
-                from data in this.Helper.Content.Load<IDictionary<string, IDictionary<string, string>>>($"{EasyAccess.ModUniqueId}/Producers", ContentSource.GameContent)
+                from data in this.Helper.GameContent.Load<IDictionary<string, IDictionary<string, string>>>($"{EasyAccess.ModUniqueId}/Producers")
                 select (data.Key, Value: new SerializedProducerData(data.Value)))
             .ToDictionary(data => data.Key, data => (IProducerData)data.Value);
     }
@@ -70,7 +69,7 @@ internal class AssetHandler : IModService, IAssetLoader
 
     private IReadOnlyDictionary<int, string[]> Craftables
     {
-        get => this._cachedCraftables ??= this.Helper.Content.Load<IDictionary<int, string>>(AssetHandler.CraftablesData, ContentSource.GameContent)
+        get => this._cachedCraftables ??= this.Helper.GameContent.Load<IDictionary<int, string>>(AssetHandler.CraftablesData)
                                               .ToDictionary(
                                                   info => info.Key,
                                                   info => info.Value.Split('/'));
@@ -109,13 +108,6 @@ internal class AssetHandler : IModService, IAssetLoader
         return true;
     }
 
-    /// <inheritdoc />
-    public bool CanLoad<T>(IAssetInfo asset)
-    {
-        return asset.AssetNameEquals($"{EasyAccess.ModUniqueId}/Producers")
-               || asset.AssetNameEquals($"{EasyAccess.ModUniqueId}/Icons");
-    }
-
     /// <summary>
     ///     Gets the producer name from an Item.
     /// </summary>
@@ -132,20 +124,6 @@ internal class AssetHandler : IModService, IAssetLoader
         }
 
         return this.Craftables.SingleOrDefault(info => info.Key == item.ParentSheetIndex).Value?[0];
-    }
-
-    /// <inheritdoc />
-    public T Load<T>(IAssetInfo asset)
-    {
-        var segment = PathUtilities.GetSegments(asset.AssetName);
-        return segment[1] switch
-        {
-            "Producers" when segment.Length == 2
-                => (T)this.LocalProducerData,
-            "Icons" when segment.Length == 2
-                => (T)(object)this.Helper.Content.Load<Texture2D>("assets/icons.png"),
-            _ => default,
-        };
     }
 
     /// <summary>
@@ -244,6 +222,18 @@ internal class AssetHandler : IModService, IAssetLoader
             {
                 this.LocalProducerData.Add(key, value);
             }
+        }
+    }
+
+    private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+    {
+        if (e.Name.IsEquivalentTo($"{EasyAccess.ModUniqueId}/Producers"))
+        {
+            e.LoadFrom(() => this.LocalProducerData,  AssetLoadPriority.Exclusive);
+        }
+        else if (e.Name.IsEquivalentTo($"{EasyAccess.ModUniqueId}/Icons"))
+        {
+            e.LoadFromModFile<Texture2D>("assets/icons.png", AssetLoadPriority.Exclusive);
         }
     }
 

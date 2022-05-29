@@ -4,23 +4,22 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
-
-using System;
-using StardewValley.Tools;
 
 #nullable enable
 namespace DaLion.Stardew.Professions.Framework.Patches.Integrations.Automate;
 
 #region using directives
 
+using System;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewValley;
 using StardewValley.Objects;
+using StardewValley.Tools;
 
 using DaLion.Common.Extensions;
 using DaLion.Common.Extensions.Reflection;

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -17,6 +15,7 @@ using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
 using ContentPatcher.Framework.Lexing;
 using ContentPatcher.Framework.Lexing.LexTokens;
+using Pathoschild.Stardew.Common;
 using StardewModdingAPI;
 
 namespace ContentPatcher.Framework.Migrations
@@ -43,7 +42,7 @@ namespace ContentPatcher.Framework.Migrations
             : base(new SemanticVersion(1, 21, 0)) { }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ContentConfig content, out string error)
+        public override bool TryMigrate(ContentConfig content, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
@@ -56,7 +55,7 @@ namespace ContentPatcher.Framework.Migrations
             }
 
             // validate patch changes
-            foreach (PatchConfig patch in content.Changes)
+            foreach (PatchConfig patch in content.Changes.WhereNotNull())
             {
                 // 1.21 adds AddWarps
                 if (patch.AddWarps.Any())
@@ -69,7 +68,7 @@ namespace ContentPatcher.Framework.Migrations
                 // This converts them to 'When' conditions for backwards compatibility.
                 if (!string.IsNullOrWhiteSpace(patch.Enabled))
                 {
-                    ILexToken[] bits = this.Lexer.ParseBits(patch.Enabled, impliedBraces: false, trim: true).ToArray();
+                    ILexToken[] bits = this.Lexer.ParseBits(patch.Enabled, impliedBraces: false, trim: true).Take(2).ToArray();
                     if (bits.Length == 1 && bits[0].Type == LexTokenType.Token)
                     {
                         string renderStr = this.NormalizeLexicalString($"{ConditionType.Render}:{bits[0].ToString()}", impliedBraces: true);
@@ -85,7 +84,7 @@ namespace ContentPatcher.Framework.Migrations
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;
@@ -110,7 +109,7 @@ namespace ContentPatcher.Framework.Migrations
         {
             return
                 lexToken is LexTokenToken token
-                && token.Name.EqualsIgnoreCase(ConditionType.Render.ToString())
+                && token.Name.EqualsIgnoreCase(nameof(ConditionType.Render))
                 && !this.IgnoreRenderStrings.Contains(lexToken.ToString());
         }
 

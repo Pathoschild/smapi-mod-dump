@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterFlow", "WaterFlow\WaterFlow.csproj", "{90EA2BB3-62E7-45E9-B5EA-890D3194B741}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "[CP]WaterFlow", "[CP]WaterFlow\[CP]WaterFlow.csproj", "{7F88A9C4-35D1-45C3-892E-28E0EC40B7BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90EA2BB3-62E7-45E9-B5EA-890D3194B741}.Debug|AnyCPU.ActiveCfg = Debug|AnyCPU
+		{90EA2BB3-62E7-45E9-B5EA-890D3194B741}.Debug|AnyCPU.Build.0 = Debug|AnyCPU
+		{90EA2BB3-62E7-45E9-B5EA-890D3194B741}.Release|AnyCPU.ActiveCfg = Release|AnyCPU
+		{90EA2BB3-62E7-45E9-B5EA-890D3194B741}.Release|AnyCPU.Build.0 = Release|AnyCPU
+		{7F88A9C4-35D1-45C3-892E-28E0EC40B7BC}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{7F88A9C4-35D1-45C3-892E-28E0EC40B7BC}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{7F88A9C4-35D1-45C3-892E-28E0EC40B7BC}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{7F88A9C4-35D1-45C3-892E-28E0EC40B7BC}.Release|AnyCPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {886B410C-72E1-4324-9867-D9D3EF8B43F0}
+	EndGlobalSection
+EndGlobal

@@ -38,6 +38,9 @@ namespace DynamicGameAssets.PackData
             [DefaultValue(null)]
             public string FrontTexture { get; set; } // for seats, beds, fish tanks
 
+            [DefaultValue(null)]
+            public string NightTexture { get; set; } // for lamps, windows, sconces
+
             public Vector2 DisplaySize { get; set; }
             public int CollisionHeight { get; set; }
 
@@ -77,6 +80,9 @@ namespace DynamicGameAssets.PackData
         [JsonConverter(typeof(StringEnumConverter))]
         public FurnitureType Type { get; set; }
 
+        [DefaultValue(true)]
+        public bool ShowInCatalogue { get; set; } = true;
+
         // Bed specific
         [JsonConverter(typeof(StringEnumConverter))]
         public BedFurniture.BedType BedType { get; set; } = BedFurniture.BedType.Single;
@@ -85,7 +91,7 @@ namespace DynamicGameAssets.PackData
 
         // TV specific
         public Vector2 ScreenPosition { get; set; }
-        public int ScreenSize { get; set; }
+        public float ScreenSize { get; set; }
 
         public bool ShouldSerializeScreenPositione() { return this.Type == FurnitureType.TV; }
         public bool ShouldSerializeScreenSize() { return this.Type == FurnitureType.TV; }

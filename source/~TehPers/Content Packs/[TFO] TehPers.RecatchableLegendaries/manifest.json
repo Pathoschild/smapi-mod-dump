@@ -12,12 +12,13 @@
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "Recatchable Legendary Fish",
   "Author": "TehPers",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Allows legendary fish to be caught multiple times",
   "UniqueID": "TehPers.RecatchableLegendaries",
   "UpdateKeys": ["Nexus:866@TehPers.RecatchableLegendaries"],
   "ContentPackFor": {
-    "UniqueID": "TehPers.FishingOverhaul"
+    "UniqueID": "TehPers.FishingOverhaul",
+    "MinimumVersion": "3.3.0"
   },
   "Dependencies": [
     {

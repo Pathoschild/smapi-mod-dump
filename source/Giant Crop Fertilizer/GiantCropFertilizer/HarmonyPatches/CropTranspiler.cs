@@ -25,21 +25,34 @@ namespace GiantCropFertilizer.HarmonyPatches;
 internal static class CropTranspiler
 {
     /// <summary>
+    /// Applies the patch against DGA to affect DGA giant crops.
+    /// </summary>
+    /// <param name="harmony">Harmony instance.</param>
+    /// <exception cref="MethodNotFoundException">Could not find DGA's methods.</exception>
+    internal static void ApplyDGAPatches(Harmony harmony)
+    {
+        Type dgaCrop = AccessTools.TypeByName("DynamicGameAssets.Game.CustomCrop") ?? throw new MethodNotFoundException("DGA's custom crops not found!");
+        harmony.Patch(
+            original: dgaCrop.InstanceMethodNamed("NewDay"),
+            transpiler: new HarmonyMethod(typeof(CropTranspiler).StaticMethodNamed(nameof(TranspileDGA))));
+    }
+
+    /// <summary>
     /// Gets the chance for a big crop based on the fertilizer.
     /// </summary>
     /// <param name="fertilizer">Fertilizer index.</param>
     /// <returns>chance.</returns>
-    public static double GetChanceForFertilizer(int fertilizer)
+    private static double GetChanceForFertilizer(double chance, int fertilizer)
     {
         ModEntry.ModMonitor.DebugOnlyLog($"Testing fertilizer {fertilizer} with {ModEntry.GiantCropFertilizerID}", LogLevel.Info);
-        return ModEntry.GiantCropFertilizerID != -1 && ModEntry.GiantCropFertilizerID == fertilizer ? ModEntry.Config.GiantCropChance : 0.01;
+        return ModEntry.GiantCropFertilizerID != -1 && ModEntry.GiantCropFertilizerID == fertilizer ? ModEntry.Config.GiantCropChance : chance;
     }
 
     /// <summary>
     /// Removes the big crop fertilizer after a big crop was made.
     /// </summary>
     /// <param name="dirt">Hoedirt instance.</param>
-    public static void RemoveFertilizer(HoeDirt? dirt)
+    private static void RemoveFertilizer(HoeDirt? dirt)
     {
         if (dirt is not null && dirt.fertilizer.Value != -1 && dirt.fertilizer.Value == ModEntry.GiantCropFertilizerID)
         {
@@ -56,36 +69,88 @@ internal static class CropTranspiler
             ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
             Type random = AccessTools.TypeByName("StardewValley.OneTimeRandom") ?? throw new MethodNotFoundException("StardewValley.OneTimeRandom not found");
             helper.FindNext(new CodeInstructionWrapper[]
-            {
-                new (OpCodes.Call, random.StaticMethodNamed("GetDouble")),
-                new (OpCodes.Ldc_R8, 0.01d),
+            { // Locate the randomness check for a giant crop.
+                new(OpCodes.Call, random.StaticMethodNamed("GetDouble")),
+                new(OpCodes.Ldc_R8, 0.01d),
             })
-            .Advance(1)
-            .GetLabels(out IList<Label>? labels, clear: true)
-            .ReplaceInstruction(OpCodes.Call, typeof(CropTranspiler).StaticMethodNamed(nameof(CropTranspiler.GetChanceForFertilizer)))
-            .Insert(new CodeInstruction[] { new (OpCodes.Ldarg_2) }, withLabels: labels)
+            .Advance(2)
+            .Insert(new CodeInstruction[]
+            { // And replace the hardcoded number if necessary.
+                new(OpCodes.Ldarg_2),
+                new(OpCodes.Call, typeof(CropTranspiler).StaticMethodNamed(nameof(GetChanceForFertilizer))),
+            })
+            .FindNext(new CodeInstructionWrapper[]
+            { // Locate the code that deletes the crop after a giant crop is created.
+                new(OpCodes.Ldfld, typeof(GameLocation).InstanceFieldNamed(nameof(GameLocation.terrainFeatures))),
+                new(SpecialCodeInstructionCases.Wildcard),
+                new(OpCodes.Callvirt),
+                new(OpCodes.Isinst, typeof(HoeDirt)),
+                new(OpCodes.Ldnull),
+            })
             .FindNext(new CodeInstructionWrapper[]
             {
-                new (OpCodes.Ldfld, typeof(GameLocation).InstanceFieldNamed(nameof(GameLocation.terrainFeatures))),
-                new (SpecialCodeInstructionCases.Wildcard),
-                new (OpCodes.Callvirt),
-                new (OpCodes.Isinst, typeof(HoeDirt)),
-                new (OpCodes.Ldnull),
+                new(OpCodes.Ldnull),
+            })
+            .Insert(new CodeInstruction[]
+            { // Insert a call that removes the fertilizer as well.
+                new(OpCodes.Dup),
+                new(OpCodes.Call, typeof(CropTranspiler).StaticMethodNamed(nameof(RemoveFertilizer))),
+            });
+
+            // helper.Print();
+            return helper.Render();
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Hoedirt.Draw:\n\n{ex}", LogLevel.Error);
+        }
+        return null;
+    }
+
+    private static IEnumerable<CodeInstruction>? TranspileDGA(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
+    {
+        try
+        {
+            Type dgaCrop = AccessTools.TypeByName("DynamicGameAssets.Game.CustomCrop") ?? throw new MethodNotFoundException("DGA's custom crops not found!");
+            Type dgaCropPack = AccessTools.TypeByName("DynamicGameAssets.PackData.CropPackData") ?? throw new MethodNotFoundException("DGA's custom crops data not found!");
+
+            ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
+            helper.FindNext(new CodeInstructionWrapper[]
+            { // Find where DGA gets the giant crop chance.
+                new(OpCodes.Call, dgaCrop.InstancePropertyNamed("Data").GetGetMethod()),
+                new(OpCodes.Callvirt, dgaCropPack.InstancePropertyNamed("GiantChance").GetGetMethod()),
+                new(OpCodes.Conv_R8),
+            })
+            .Advance(3)
+            .Insert(new CodeInstruction[]
+            { // And replace the number if necessary.
+                new(OpCodes.Ldarg_2),
+                new(OpCodes.Call, typeof(CropTranspiler).StaticMethodNamed(nameof(GetChanceForFertilizer))),
+            }).FindNext(new CodeInstructionWrapper[]
+            { // Locate the code that deletes the crop after a giant crop is created.
+                new(OpCodes.Ldfld, typeof(GameLocation).InstanceFieldNamed(nameof(GameLocation.terrainFeatures))),
+                new(SpecialCodeInstructionCases.Wildcard),
+                new(OpCodes.Callvirt),
+                new(OpCodes.Isinst, typeof(HoeDirt)),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Callvirt, typeof(HoeDirt).InstancePropertyNamed(nameof(HoeDirt.crop)).GetSetMethod()),
             })
             .FindNext(new CodeInstructionWrapper[]
             {
                 new (OpCodes.Ldnull),
             })
             .Insert(new CodeInstruction[]
-            {
+            { // Insert a call that removes the fertilizer as well.
                 new (OpCodes.Dup),
-                new (OpCodes.Call, typeof(CropTranspiler).StaticMethodNamed(nameof(CropTranspiler.RemoveFertilizer))),
+                new (OpCodes.Call, typeof(CropTranspiler).StaticMethodNamed(nameof(RemoveFertilizer))),
             });
+
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Hoedirt.Draw:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Failed while trying to transpile DGA's CustomCrop.NewDay.\n\n{ex}", LogLevel.Error);
         }
         return null;
     }

@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -36,26 +36,26 @@ using StardewModdingAPI.Events;
 
 namespace ChestEx {
   public class Config {
-  #region Private
+    #region Private
 
     private struct ConfigMP {
-      public Int32 mRows    { get; set; }
+      public Int32 mRows { get; set; }
       public Int32 mColumns { get; set; }
     }
 
     private ConfigMP mpInstance;
-    private Int32    rows;
-    private Int32    columns;
+    private Int32 rows;
+    private Int32 columns;
 
-  #region Statics
+    #region Statics
 
     private static Config sInstance;
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
-  #region Public
+    #region Public
 
     public Int32 mRows {
       get => Context.IsMainPlayer ? this.rows : this.mpInstance.mRows;
@@ -73,13 +73,13 @@ namespace ChestEx {
       }
     }
 
-    public Boolean mShowChestHoverTooltip        { get; set; }
+    public Boolean mShowChestHoverTooltip { get; set; }
 
     public Boolean CanEdit() { return Context.IsMainPlayer; }
 
     public Int32 GetCapacity() { return Context.IsMainPlayer ? this.mRows * this.mColumns : this.mpInstance.mRows * this.mpInstance.mColumns; }
 
-  #region Statics
+    #region Statics
 
     public static Config Get() { return sInstance; }
 
@@ -97,7 +97,7 @@ namespace ChestEx {
       }
     }
 
-  #region SMAPI Events
+    #region SMAPI Events
 
     public static void PlayerConnecting(Object sender, PeerContextReceivedEventArgs e) {
       if (e.Peer.IsHost) return;
@@ -116,25 +116,25 @@ namespace ChestEx {
       if (e.Type != "ConfigMP") return;
 
       var config = e.ReadAs<ConfigMP>();
-      Get().mRows    = config.mRows;
+      Get().mRows = config.mRows;
       Get().mColumns = config.mColumns;
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
-  #region Constructors
+    #region Constructors
 
     public Config() {
-      this.mpInstance                    = new ConfigMP();
-      this.mRows                         = 6;
-      this.mColumns                      = 14;
-      this.mShowChestHoverTooltip        = true;
+      this.mpInstance = new ConfigMP();
+      this.mRows = 6;
+      this.mColumns = 14;
+      this.mShowChestHoverTooltip = true;
     }
 
-  #endregion
+    #endregion
   }
 }

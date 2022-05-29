@@ -11,6 +11,12 @@ for queries and analysis.**
 
 ## Version 3.2.0
 
+* Fix bug where holding the Blue Armchair would show the mega-bomb range
+
+* Update for SMAPI 3.14
+
+## Version 3.2.0
+
 ### User-visible Changes
 
 * Show beehouse range from Better Beehouses (if installed)

@@ -60,7 +60,7 @@ internal static class PaddyWaterUpdateTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Hoedirt.Draw:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Hoedirt.plant:\n\n{ex}", LogLevel.Error);
         }
         return null;
     }

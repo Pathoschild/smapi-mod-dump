@@ -10,10 +10,24 @@
 
 namespace FarmCaveSpawn;
 
+/// <summary>
+/// How the mod should handle out-of-season fruit.
+/// </summary>
 public enum SeasonalBehavior
 {
+    /// <summary>
+    /// Fruit from all seasons should be dropped. (default).
+    /// </summary>
     AllSeasons,
+
+    /// <summary>
+    /// Only seasonal fruit should be dropped.
+    /// </summary>
     SeasonalOnly,
+
+    /// <summary>
+    /// Only seasonal fruit should be dropped, except in winter, when all fruit can be dropped.
+    /// </summary>
     SeasonalExceptWinter,
 }
 

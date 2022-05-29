@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,12 +14,14 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 using System;
 using System.Linq;
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class SpelunkerUpdateTickedEvent : UpdateTickedEvent
 {
     private const int SHEET_INDEX_I = 40;

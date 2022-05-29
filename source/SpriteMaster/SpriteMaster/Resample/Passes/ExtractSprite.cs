@@ -14,8 +14,8 @@ using System;
 
 namespace SpriteMaster.Resample.Passes;
 
-static class ExtractSprite {
-	internal static Span<Color8> Extract(ReadOnlySpan<Color8> data, in Bounds textureBounds, in Bounds spriteBounds, int stride, int block, out Vector2I newExtent) {
+internal static class ExtractSprite {
+	internal static Span<Color8> Extract(ReadOnlySpan<Color8> data, Bounds textureBounds, Bounds spriteBounds, int stride, int block, out Vector2I newExtent) {
 		//if ((bounds.Width % block) != 0 || (bounds.Height % block) != 0) {
 		//	throw new ArgumentOutOfRangeException($"Bounds {bounds} are not multiples of block {block}");
 		//}
@@ -24,14 +24,12 @@ static class ExtractSprite {
 			return Extract(data, textureBounds, spriteBounds, stride, out newExtent);
 		}
 
-		Span<Color8> result;
-
-		Bounds bounds = new Bounds(
+		var bounds = new Bounds(
 			spriteBounds.Offset,
 			(spriteBounds.Extent / block).Max((1, 1))
 		);
 
-		result = SpanExt.MakeUninitialized<Color8>(bounds.Area);
+		var result = SpanExt.Make<Color8>(bounds.Area);
 
 		int startOffset = (bounds.Offset.Y * stride) + bounds.Offset.X;
 		int outOffset = 0;
@@ -48,13 +46,13 @@ static class ExtractSprite {
 		return result;
 	}
 
-	internal static Span<Color8> Extract(ReadOnlySpan<Color8> data, in Bounds textureBounds, in Bounds inBounds, int stride, out Vector2I newExtent) {
+	internal static Span<Color8> Extract(ReadOnlySpan<Color8> data, Bounds textureBounds, Bounds inBounds, int stride, out Vector2I newExtent) {
 		if (inBounds == textureBounds) {
 			newExtent = inBounds.Extent;
 			return data.ToSpanUnsafe();
 		}
 		else {
-			var resultData = SpanExt.MakeUninitialized<Color8>(inBounds.Area);
+			var resultData = SpanExt.Make<Color8>(inBounds.Area);
 			int sourceOffset = (textureBounds.Width * inBounds.Top) + inBounds.Left;
 			int destOffset = 0;
 			for (int y = 0; y < inBounds.Height; ++y) {

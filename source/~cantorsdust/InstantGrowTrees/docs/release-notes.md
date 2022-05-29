@@ -9,6 +9,12 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 1.6.2
+Released 25 May 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Fixed in-game config UI not saving non-fruit tree options correctly.
+* Improved translations. Thanks to Dracoeris (added Spanish)!
+
 ## 1.6.1
 Released 27 February 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AtraBase.Toolkit.Reflection;
 using AtraShared.Utils.Extensions;
 using HarmonyLib;
 using MoreFertilizers.Framework;
@@ -20,6 +21,25 @@ namespace MoreFertilizers.HarmonyPatches;
 [HarmonyPatch(typeof(SObject))]
 internal static class SObjectPatches
 {
+    /// <summary>
+    /// Applies patches for objects against DGA as well.
+    /// </summary>
+    /// <param name="harmony">Harmony instance.</param>
+    internal static void ApplyDGAPatch(Harmony harmony)
+    {
+        try
+        {
+            Type dgaObject = AccessTools.TypeByName("DynamicGameAssets.Game.CustomObject") ?? throw new("DGA SObject");
+            harmony.Patch(
+                original: dgaObject.InstanceMethodNamed("loadDisplayName"),
+                postfix: new HarmonyMethod(typeof(SObjectPatches), nameof(PostfixLoadDisplayName)));
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling DGA. Integration may not work correctly.\n\n{ex}", LogLevel.Error);
+        }
+    }
+
     [HarmonyPostfix]
     [HarmonyPatch(nameof(SObject.performObjectDropInAction))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
@@ -29,16 +49,19 @@ internal static class SObjectPatches
         {
             try
             {
-                if (dropInItem.modData?.GetBool(CanPlaceHandler.Organic) == true)
+                if (__instance.heldObject?.Value is not null && dropInItem.modData?.GetBool(CanPlaceHandler.Organic) == true)
                 {
                     __instance.heldObject.Value.modData?.SetBool(CanPlaceHandler.Organic, true);
-                    __instance.heldObject.Value.Name += " (Organic)";
+                    if (!__instance.heldObject.Value.Name.Contains(" (Organic)"))
+                    {
+                        __instance.heldObject.Value.Name += " (Organic)";
+                    }
                     __instance.heldObject.Value.MarkContextTagsDirty();
                 }
             }
             catch (Exception ex)
             {
-                ModEntry.ModMonitor.Log($"Failed in setting organic for {dropInItem.Name}\n\n{ex}", LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Failed in setting organic for {dropInItem.Name} for machine {__instance.Name}\n\n{ex}", LogLevel.Error);
             }
         }
     }

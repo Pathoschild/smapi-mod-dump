@@ -53,8 +53,20 @@ namespace TehPers.FishingOverhaul.Api
         /// <inheritdoc/>
         public event EventHandler<CalculatedFishChanceEventArgs>? CalculatedFishChance;
 
+        /// <inheritdoc />
+        public event EventHandler<CalculatedFishChanceEventArgs>? CalculatedMinFishChance;
+
+        /// <inheritdoc />
+        public event EventHandler<CalculatedFishChanceEventArgs>? CalculatedMaxFishChance;
+
         /// <inheritdoc/>
         public event EventHandler<CalculatedTreasureChanceEventArgs>? CalculatedTreasureChance;
+
+        /// <inheritdoc />
+        public event EventHandler<CalculatedTreasureChanceEventArgs>? CalculatedMinTreasureChance;
+
+        /// <inheritdoc />
+        public event EventHandler<CalculatedTreasureChanceEventArgs>? CalculatedMaxTreasureChance;
 
         /// <inheritdoc/>
         public abstract int GetStreak(Farmer farmer);
@@ -74,7 +86,7 @@ namespace TehPers.FishingOverhaul.Api
         public IEnumerable<string> GetCatchableFish(Farmer farmer, int depth)
         {
             return this
-                .GetFishChances(this.CreateDefaultFishingInfo(farmer) with { BobberDepth = depth })
+                .GetFishChances(this.CreateDefaultFishingInfo(farmer) with {BobberDepth = depth})
                 .Select(weightedValue => weightedValue.Value.FishKey.ToString());
         }
 
@@ -99,7 +111,7 @@ namespace TehPers.FishingOverhaul.Api
                     {
                         int? parentSheetIndex = takeFish switch
                         {
-                            true when pond.CatchFish() is { ParentSheetIndex: var id } => id,
+                            true when pond.CatchFish() is {ParentSheetIndex: var id} => id,
                             false when pond.currentOccupants.Value > 0 => pond.fishType.Value,
                             _ => null,
                         };
@@ -161,7 +173,7 @@ namespace TehPers.FishingOverhaul.Api
             _ = chanceModifier ?? throw new ArgumentNullException(nameof(chanceModifier));
 
             this.CalculatedFishChance += (_, e) =>
-                e.ChanceForFish = chanceModifier(e.FishingInfo.User, e.ChanceForFish);
+                e.Chance = chanceModifier(e.FishingInfo.User, e.Chance);
         }
 
         /// <inheritdoc />
@@ -170,7 +182,7 @@ namespace TehPers.FishingOverhaul.Api
             _ = chanceModifier ?? throw new ArgumentNullException(nameof(chanceModifier));
 
             this.CalculatedTreasureChance += (_, e) =>
-                e.ChanceForTreasure = chanceModifier(e.FishingInfo.User, e.ChanceForTreasure);
+                e.Chance = chanceModifier(e.FishingInfo.User, e.Chance);
         }
 
         /// <inheritdoc/>
@@ -195,7 +207,7 @@ namespace TehPers.FishingOverhaul.Api
         public string GetPossibleCatch(Farmer farmer, int bobberDepth, out bool isFish)
         {
             var possibleCatch = this.GetPossibleCatch(
-                this.CreateDefaultFishingInfo(farmer) with { BobberDepth = bobberDepth }
+                this.CreateDefaultFishingInfo(farmer) with {BobberDepth = bobberDepth}
             );
             switch (possibleCatch)
             {
@@ -339,6 +351,42 @@ namespace TehPers.FishingOverhaul.Api
         protected void OnCalculatedTreasureChance(CalculatedTreasureChanceEventArgs e)
         {
             this.CalculatedTreasureChance?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="CalculatedMinFishChance"/> event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnCalculatedMinFishChance(CalculatedFishChanceEventArgs e)
+        {
+            this.CalculatedMinFishChance?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="CalculatedMaxFishChance"/> event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnCalculatedMaxFishChance(CalculatedFishChanceEventArgs e)
+        {
+            this.CalculatedMaxFishChance?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="CalculatedMinTreasureChance"/> event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnCalculatedMinTreasureChance(CalculatedTreasureChanceEventArgs e)
+        {
+            this.CalculatedMinTreasureChance?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes the <see cref="CalculatedMaxTreasureChance"/> event.
+        /// </summary>
+        /// <param name="e">The event args.</param>
+        protected virtual void OnCalculatedMaxTreasureChance(CalculatedTreasureChanceEventArgs e)
+        {
+            this.CalculatedMaxTreasureChance?.Invoke(this, e);
         }
     }
 }

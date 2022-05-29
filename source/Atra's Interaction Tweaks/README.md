@@ -40,12 +40,22 @@ Prevents gates from popping off if you hold right click near them (again, unless
 
 `GoldenCoconutsOffIsland` allows golden coconuts to spawn from any palm tree as long as you've found one. (off by default).
 
+`SaveBombedForage` saves any forage that gets hit by a bomb - it just gets dropped next to your character instead. (off by default)
+
+`HideCrabPots` causes crab pots to be hidden during events and festivals.
+
 Right click any butterfly hutch to spawn another butterfly! (Not tested yet with Norman's Better Butterfly Hutch, but I read through their code and I cannot see where they'd possibly conflict. We don't touch the same methods at all...)
 
 Bomb confirmation: By default safe areas require confirmation, and dangerous areas do not. (You can confirm for a single bomb or the map, in which case you will not be asked again until you go to a different map.) Safe areas include the farmhouses, the farm, the town, and the Ginger Island farm. Dangerous areas include the mines and volcano, Everywhere else is considered dangerous if there's a single monster on the map and safe otherwise; this is meant to cover mod-added areas. This is fully configurable (including whether or not to confirm in multiplayer separate from singleplayer). (You will need to load into a save first to configure these options though, since the locations list is not populated otherwise.) 
+
+Warp confirmation: works similarly to bomb confirmation. Note: the return specter confirm is disabled if you have [Better Return Specter](https://www.nexusmods.com/stardewvalley/mods/11610) to avoid mod conflicts - you can just use that mod to return if you accidentally warp anyways.
+
+Additional features: baby fruit trees will no longer be killed by the hoe. The volcano chests will not give out the same item twice in a row. Slot machine has bet1k and bet10k buttons. Badly formatted special orders are less likely to crash the quest menu. You can ask Elliott for a non-alcoholic drink, a feature I think only I care about.
 
 #### Additionally
 
 Translations would be very welcome! DM me or submit a pull request.
 
-* Much thanks to Vigor for the Portuguese translation! 
+* Much thanks to
+    - Vigor for the Portuguese translation! 
+    - [Angel4Killer](https://github.com/angel4killer) for the Russian translation!

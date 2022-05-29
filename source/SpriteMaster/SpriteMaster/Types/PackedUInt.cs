@@ -8,29 +8,29 @@
 **
 *************************************************/
 
+using SpriteMaster.Extensions;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace SpriteMaster.Types;
 
-[DebuggerDisplay("[{bytes[0]}, {bytes[1]}, {bytes[2]}, {bytes[3]}]")]
-[DebuggerDisplay("[{shorts[0]}, {shorts[1]}]")]
-[DebuggerDisplay("{packed}")]
-[StructLayout(LayoutKind.Explicit, Pack = sizeof(uint), Size = sizeof(uint))]
-unsafe struct PackedUInt {
-	[FieldOffset(0)]
-	internal fixed byte Bytes[4];
-
-	[FieldOffset(0)]
-	internal fixed ushort Shorts[2];
-
-	[FieldOffset(0)]
+[DebuggerDisplay("[{Bytes[0]}, {Bytes[1]}, {Bytes[2]}, {Bytes[3]}]")]
+[DebuggerDisplay("[{Shorts[0]}, {Shorts[1]}]")]
+[DebuggerDisplay("{Packed}")]
+[StructLayout(LayoutKind.Sequential, Pack = sizeof(uint), Size = sizeof(uint))]
+internal struct PackedUInt {
 	internal uint Packed;
 
+	internal readonly Span<byte> Bytes => Reinterpret.ReinterpretAsSpanUnsafe<uint, byte>(Packed);
+
+	internal readonly Span<ushort> Shorts => Reinterpret.ReinterpretAsSpanUnsafe<uint, ushort>(Packed);
+
+	// TODO : this isn't ideal as it will initialize 'Packed' before setting its values
 	internal PackedUInt(byte b0, byte b1, byte b2, byte b3) : this() {
 		Bytes[0] = b0;
-		Bytes[1] = b2;
-		Bytes[2] = b3;
+		Bytes[1] = b1;
+		Bytes[2] = b2;
 		Bytes[3] = b3;
 	}
 
@@ -39,7 +39,7 @@ unsafe struct PackedUInt {
 		Shorts[1] = s1;
 	}
 
-	internal PackedUInt(uint packed) : this() {
+	internal PackedUInt(uint packed) {
 		Packed = packed;
 	}
 

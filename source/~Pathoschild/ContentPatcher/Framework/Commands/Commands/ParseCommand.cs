@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,7 +27,7 @@ namespace ContentPatcher.Framework.Commands.Commands
         ** Fields
         *********/
         /// <summary>Get the current token context for a given mod ID, or the global context if given a null mod ID.</summary>
-        private readonly Func<string, IContext> GetContext;
+        private readonly Func<string?, IContext> GetContext;
 
 
         /*********
@@ -38,7 +36,7 @@ namespace ContentPatcher.Framework.Commands.Commands
         /// <summary>Construct an instance.</summary>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="getContext">Get the current token context.</param>
-        public ParseCommand(IMonitor monitor, Func<string, IContext> getContext)
+        public ParseCommand(IMonitor monitor, Func<string?, IContext> getContext)
             : base(monitor, "parse")
         {
             this.GetContext = getContext;
@@ -67,7 +65,7 @@ namespace ContentPatcher.Framework.Commands.Commands
                 return;
             }
             string raw = args[0];
-            string modID = args.Length >= 2 && args[1] != "compact" ? args[1] : null;
+            string? modID = args.Length >= 2 && args[1] != "compact" ? args[1] : null;
             bool compact = args.Skip(1).Contains("compact");
 
             // get context
@@ -111,7 +109,7 @@ namespace ContentPatcher.Framework.Commands.Commands
             IContextualState state = tokenStr.GetDiagnosticState();
 
             // show result
-            StringBuilder output = new StringBuilder();
+            StringBuilder output = new();
             output.AppendLine();
             if (!compact)
             {

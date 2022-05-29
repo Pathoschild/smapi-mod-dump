@@ -18,6 +18,8 @@ namespace TehPers.FishingOverhaul.Api
     /// </summary>
     public abstract record FishingState
     {
+        private FishingState() { }
+
         /// <summary>
         /// A fishing state that represents when a <see cref="Farmer"/> is not fishing.
         /// </summary>

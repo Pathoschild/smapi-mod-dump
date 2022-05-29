@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 namespace SpriteMaster.Resample;
 
-static class ResampleTask {
-	private static readonly TaskFactory<ManagedSpriteInstance?> Factory = new(ThreadedTaskScheduler.Instance);
+internal static class ResampleTask {
+	private static readonly TaskFactory<ManagedSpriteInstance> Factory = new(ThreadedTaskScheduler.Instance);
 
-	private static ManagedSpriteInstance? Resample(object? parametersObj) => ResampleFunction((TaskParameters)parametersObj!);
+	private static ManagedSpriteInstance Resample(object? parametersObj) => ResampleFunction((TaskParameters)parametersObj!);
 
-	private static ManagedSpriteInstance? ResampleFunction(in TaskParameters parameters) {
+	private static ManagedSpriteInstance ResampleFunction(in TaskParameters parameters) {
 		try {
 			if (ManagedSpriteInstance.TryResurrect(parameters.SpriteInfo, out var resurrectedInstance)) {
 				return resurrectedInstance;
@@ -46,7 +46,7 @@ static class ResampleTask {
 		ManagedSpriteInstance? PreviousInstance = null
 	);
 
-	internal static Task<ManagedSpriteInstance?> Dispatch(
+	internal static Task<ManagedSpriteInstance> Dispatch(
 		SpriteInfo spriteInfo,
 		bool async,
 		ManagedSpriteInstance? previousInstance = null
@@ -57,12 +57,9 @@ static class ResampleTask {
 			PreviousInstance: previousInstance
 		);
 
-		if (async) {
-			return Factory.StartNew(Resample, parameters);
-		}
-		else {
-			return Task<ManagedSpriteInstance?>.FromResult(ResampleFunction(parameters));
-		}
+		return async ?
+			Factory.StartNew(Resample, parameters) :
+			Task.FromResult(ResampleFunction(parameters));
 	}
 
 }

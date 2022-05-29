@@ -1,0 +1,8 @@
+﻿{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.intro": "Elige qué profesiones se añaden cuando alcanzas el nivel requerido. Si ya tienes una profesión, esto no la eliminará retroactivamente (puedes usar el menú de trucos de CJB para eliminar las profesiones aprendidas).",
+    "config.skill-level": "{{skillName}} nivel {{level}}",
+    "config.toggle-skill.desc": "Si se añade {{professionName}} cuando se alcanza {{skillName}} nivel {{level}}."
+}

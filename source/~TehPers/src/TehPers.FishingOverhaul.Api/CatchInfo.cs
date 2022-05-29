@@ -16,11 +16,41 @@ namespace TehPers.FishingOverhaul.Api
     /// <summary>
     /// Information about a caught item.
     /// </summary>
-    /// <param name="FishingInfo">Information about the <see cref="Farmer"/> that caught this.</param>
-    /// <param name="Item">The item that was caught.</param>
-    /// <param name="FromFishPond">Whether this was caught from a fish pond.</param>
-    public abstract record CatchInfo(FishingInfo FishingInfo, Item Item, bool FromFishPond)
+    public abstract record CatchInfo
     {
+        /// <summary>
+        /// Information about the <see cref="Farmer"/> that caught this.
+        /// </summary>
+        public FishingInfo FishingInfo { get; init; }
+
+        /// <summary>
+        /// The item that was caught.
+        /// </summary>
+        public Item Item { get; init; }
+
+        /// <summary>
+        /// Whether this was caught from a fish pond.
+        /// </summary>
+        public bool FromFishPond { get; init; }
+
+        private CatchInfo(FishingInfo fishingInfo, Item item, bool fromFishPond)
+        {
+            this.FishingInfo = fishingInfo;
+            this.Item = item;
+            this.FromFishPond = fromFishPond;
+        }
+
+        /// <summary>
+        /// Deconstructs this <see cref="CatchInfo"/> into its components.
+        /// </summary>
+        /// <param name="fishingInfo">Information about the <see cref="Farmer"/> that caught this.</param>
+        /// <param name="item">The item that was caught.</param>
+        /// <param name="fromFishPond">Whether this was caught from a fish pond.</param>
+        public void Deconstruct(out FishingInfo fishingInfo, out Item item, out bool fromFishPond)
+        {
+            (fishingInfo, item, fromFishPond) = (this.FishingInfo, this.Item, this.FromFishPond);
+        }
+
         /// <summary>
         /// Information about a caught fish.
         /// </summary>

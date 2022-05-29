@@ -26,13 +26,27 @@ internal static class FairShopTranspiler
     {
         try
         {
-            if (ModEntry.BountifulFertilizerID != -1)
+            if (Utility.hasFinishedJojaRoute())
             {
-                shopStock.TryAdd(new SObject(ModEntry.BountifulFertilizerID, 1), new[] { 200, 20 });
+                if (ModEntry.JojaFertilizerID != -1)
+                {
+                    shopStock.TryAdd(new SObject(ModEntry.JojaFertilizerID, 1), new[] { 200, 20 });
+                }
+                if (ModEntry.DeluxeJojaFertilizerID != -1)
+                {
+                    shopStock.TryAdd(new SObject(ModEntry.DeluxeJojaFertilizerID, 1), new[] { 400, 20 });
+                }
             }
-            if (ModEntry.OrganicFertilizerID != -1)
+            else
             {
-                shopStock.TryAdd(new SObject(ModEntry.OrganicFertilizerID, 1), new[] { 200, 20 });
+                if (ModEntry.BountifulFertilizerID != -1)
+                {
+                    shopStock.TryAdd(new SObject(ModEntry.BountifulFertilizerID, 1), new[] { 200, 20 });
+                }
+                if (ModEntry.OrganicFertilizerID != -1)
+                {
+                    shopStock.TryAdd(new SObject(ModEntry.OrganicFertilizerID, 1), new[] { 200, 20 });
+                }
             }
         }
         catch (Exception ex)
@@ -57,7 +71,7 @@ internal static class FairShopTranspiler
             })
             .FindNext(new CodeInstructionWrapper[]
             {
-                new(OpCodes.Newobj, typeof(Dictionary<ISalable, int[]>).GetConstructor(Array.Empty<Type>())),
+                new(OpCodes.Newobj, typeof(Dictionary<ISalable, int[]>).Constructor(Array.Empty<Type>())),
                 new(SpecialCodeInstructionCases.StLoc),
             })
             .Advance(1);
@@ -83,7 +97,7 @@ internal static class FairShopTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling FishPond.dayUpdate:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Event.checkaction:\n\n{ex}", LogLevel.Error);
         }
         return null;
     }

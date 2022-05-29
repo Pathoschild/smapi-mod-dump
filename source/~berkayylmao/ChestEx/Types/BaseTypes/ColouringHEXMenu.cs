@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -42,7 +42,7 @@ using StardewValley;
 namespace ChestEx.Types.BaseTypes {
   public class ColouringHEXMenu : CustomClickableMenu {
     // Private:
-  #region Private
+    #region Private
 
     private static Tuple<String, String> sCopiedColors;
 
@@ -52,23 +52,23 @@ namespace ChestEx.Types.BaseTypes {
     private readonly CustomButton copyColoursButton;
     private readonly CustomButton pasteColoursButton;
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     public void SetColours(Color chestColour, Color hingesColour) {
-      this.chestTextBox.Text  = chestColour.AsHexCode();
+      this.chestTextBox.Text = chestColour.AsHexCode();
       this.hingesTextBox.Text = hingesColour.AsHexCode();
     }
 
     public void SetColours(String chestColour, String hingesColour) {
-      this.chestTextBox.Text  = chestColour;
+      this.chestTextBox.Text = chestColour;
       this.hingesTextBox.Text = hingesColour;
     }
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     public override void Draw(SpriteBatch spriteBatch) {
       base.Draw(spriteBatch);
@@ -77,12 +77,12 @@ namespace ChestEx.Types.BaseTypes {
       spriteBatch.DrawString(Game1.smallFont, "Hinges colour:", new Vector2(this.mBounds.X + 8, this.chestTextBox.mBounds.Bottom + 8), this.mData.mFGColour);
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public ColouringHEXMenu(Rectangle bounds, Colours colours, Action<Color, Color> onFinalColourAction)
       : base(bounds, colours) {
@@ -135,6 +135,6 @@ namespace ChestEx.Types.BaseTypes {
       this.mComponents.AddRange(new ICustomComponent[] { this.pasteColoursButton, this.copyColoursButton, this.hingesTextBox, this.chestTextBox });
     }
 
-  #endregion
+    #endregion
   }
 }

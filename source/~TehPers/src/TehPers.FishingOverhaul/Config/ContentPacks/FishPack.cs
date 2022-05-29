@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Collections.Immutable;
-using TehPers.Core.Api.Json;
 using TehPers.FishingOverhaul.Api.Content;
 
 namespace TehPers.FishingOverhaul.Config.ContentPacks
@@ -17,9 +16,12 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
     /// <summary>
     /// Content which controls what fish are available to catch.
     /// </summary>
-    [JsonDescribe]
     public record FishPack : JsonConfigRoot
     {
+        /// <inheritdoc cref="JsonConfigRoot.Schema" />
+        protected override string Schema =>
+            $"{JsonConfigRoot.jsonSchemaRootUrl}contentPacks/fish.schema.json";
+
         /// <summary>
         /// The fish entries to add.
         /// </summary>
@@ -31,7 +33,7 @@ namespace TehPers.FishingOverhaul.Config.ContentPacks
         /// <param name="content">The content to merge into.</param>
         public FishingContent AddTo(FishingContent content)
         {
-            return content with { AddFish = content.AddFish.AddRange(this.Add) };
+            return content with {AddFish = content.AddFish.AddRange(this.Add)};
         }
     }
 }

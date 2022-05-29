@@ -1,0 +1,121 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://raw.githubusercontent.com/TehPers/StardewValleyMods/master/docs/TehPers.FishingOverhaul/schemas/contentPacks/content.schema.json",
+  // This is only needed to mark the fish as legendary. Otherwise it would be loaded from Data/Fish
+  "SetFishTraits": {
+    "JA:Object/Sockeye Salmon": {
+      "DartBehavior": "Mixed",
+      "DartFrequency": 100,
+      "MinSize": 11,
+      "MaxSize": 30,
+      "IsLegendary": true
+    },
+    "JA:Object/Waterfall Snakehead": {
+      "DartBehavior": "Mixed",
+      "DartFrequency": 100,
+      "MinSize": 11,
+      "MaxSize": 30,
+      "IsLegendary": true
+    },
+    "JA:Object/Deep Ridge Angler": {
+      "DartBehavior": "Mixed",
+      "DartFrequency": 100,
+      "MinSize": 11,
+      "MaxSize": 30,
+      "IsLegendary": true
+    }
+  },
+  // Add fish entries
+  "AddFish": [
+    {
+      // Sockeye salmon
+      "FishKey": "JA:Object/Sockeye Salmon",
+      "AvailabilityInfo": {
+        "BaseChance": 0.3,
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideVillage"],
+        "Seasons": ["Fall"],
+        "Weathers": ["Rainy"],
+        "MinFishingLevel": 7,
+        "Position": {
+          "X": {
+            "GreaterThanEq": 71,
+            "LessThan": 74
+          },
+          "Y": {
+            "GreaterThanEq": 93,
+            "LessThan": 96
+          }
+        },
+        "When": {
+          "HasFlag |contains=TehPers.RSVTFO/SockeyeSalmon": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.RSVTFO/SockeyeSalmon"]
+      }
+    },
+    {
+      // Waterfall snakehead
+      "FishKey": "JA:Object/Waterfall Snakehead",
+      "AvailabilityInfo": {
+        "BaseChance": 0.3,
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideFalls"],
+        "Seasons": ["Spring", "Summer"],
+        "StartTime": 2000,
+        "MinFishingLevel": 7,
+        "Position": {
+          "X": {
+            "GreaterThanEq": 53,
+            "LessThan": 57
+          },
+          "Y": {
+            "GreaterThanEq": 11,
+            "LessThan": 15
+          }
+        },
+        "When": {
+          "HasFlag |contains=TehPers.RSVTFO/WaterfallSnakehead": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.RSVTFO/WaterfallSnakehead"]
+      }
+    },
+    {
+      // Deep ridge angler
+      "FishKey": "JA:Object/Deep Ridge Angler",
+      "AvailabilityInfo": {
+        "BaseChance": 0.3,
+        "IncludeLocations": ["Custom_Ridgeside_RidgesideForest"],
+        "Seasons": ["Winter"],
+        "StartTime": 1200,
+        "MinFishingLevel": 7,
+        "Position": {
+          "X": {
+            "GreaterThanEq": 67,
+            "LessThan": 72
+          },
+          "Y": {
+            "GreaterThanEq": 30,
+            "LessThan": 36
+          }
+        },
+        "When": {
+          "HasFlag |contains=TehPers.RSVTFO/DeepRidgeAngler": "false"
+        }
+      },
+      "OnCatch": {
+        "SetFlags": ["TehPers.RSVTFO/DeepRidgeAngler"]
+      }
+    }
+  ]
+}

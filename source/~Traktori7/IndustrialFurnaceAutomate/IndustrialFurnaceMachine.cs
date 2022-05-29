@@ -62,10 +62,10 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="tile">The tile covered by the machine.</param>
 		public IndustrialFurnaceMachine(IndustrialFurnaceController entity, GameLocation location, in Vector2 tile)
 		{
-			this.controller = entity;
-			this.MachineTypeID = "Industrial Furnace";
-			this.Location = location;
-			this.TileArea = new Rectangle((int)tile.X, (int)tile.Y, controller.furnace.tilesWide.Value, controller.furnace.tilesHigh.Value);
+			controller = entity;
+			MachineTypeID = "Industrial Furnace";
+			Location = location;
+			TileArea = new Rectangle((int)tile.X, (int)tile.Y, controller.furnace!.tilesWide.Value, controller.furnace.tilesHigh.Value);
 		}
 
 
@@ -77,7 +77,7 @@ namespace IndustrialFurnaceAutomate
 
 			//this.Entity.output.clearNulls();
 
-			if (this.controller.output.items.Any(item => item != null))
+			if (controller.output.items.Any(item => item is not null))
 			{
 				return MachineState.Done;
 			}
@@ -88,11 +88,18 @@ namespace IndustrialFurnaceAutomate
 
 
 		/// <summary>Get the output item.</summary>
-		public ITrackedStack GetOutput()
+		public ITrackedStack? GetOutput()
 		{
 			IList<Item> inventory = controller.output.items;
 
-			return new TrackedItem(inventory.FirstOrDefault(item => item != null), onEmpty: this.OnOutputTaken);
+			Item? item = inventory.FirstOrDefault(item => item is not null);
+
+			if (item is not null)
+			{
+				return new TrackedItem(item, onEmpty: OnOutputTaken);
+			}
+
+			return null;
 		}
 
 
@@ -113,7 +120,7 @@ namespace IndustrialFurnaceAutomate
 		/// <param name="item">The removed item.</param>
 		private void OnOutputTaken(Item item)
 		{
-			this.controller.TakeFromOutput(item, null);
+			controller.TakeFromOutput(item, null);
 		}
 	}
 }

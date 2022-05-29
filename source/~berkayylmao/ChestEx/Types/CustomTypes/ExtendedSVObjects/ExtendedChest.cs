@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -35,7 +35,7 @@ using System.Diagnostics.CodeAnalysis;
 using ChestEx.LanguageExtensions;
 using ChestEx.Types.BaseTypes;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -52,17 +52,17 @@ using Object = System.Object;
 namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
   public class ExtendedChest : Chest {
     // Public:
-  #region Public
+    #region Public
 
     // Consts:
-  #region Consts
+    #region Consts
 
     public const Int32 CONST_CHEST_SPRITE_SIZE = 16;
 
-  #endregion
+    #endregion
 
     // Enums:
-  #region Enums
+    #region Enums
 
     public enum ChestType {
       None,
@@ -71,7 +71,7 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
       Fridge
     }
 
-  #endregion
+    #endregion
 
     public Color mChestColour {
       get => this.playerChoiceColor.Value;
@@ -89,14 +89,14 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
     public Vector2 mChestSize => new(CONST_CHEST_SPRITE_SIZE * this.mChestScale, CONST_CHEST_SPRITE_SIZE * this.mChestScale * 12);
 
     // Inaccessible 'Chest + bases' fields exposed through reflection properties:
-  #region Inaccessible 'Chest + bases' fields exposed through reflection properties
+    #region Inaccessible 'Chest + bases' fields exposed through reflection properties
 
     public Int32 mSVCurrentLidFrame {
       get => Traverse.Create(this).Field<Int32>("currentLidFrame").Value;
       set => Traverse.Create(this).Field<Int32>("currentLidFrame").Value = value;
     }
 
-  #endregion
+    #endregion
 
     public void Draw(SpriteBatch b, Vector2 position, Single alpha = 1.0f) {
       if (this.playerChoiceColor.Value == Color.Black) {
@@ -146,7 +146,7 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
       }
 
       Texture2D hinges_texture = this.mHingesColour == Color.Black ? Game1.bigCraftableSpriteSheet : TexturePresets.gBigCraftableSpriteSheetGrayScale;
-      Color     hinges_colour  = this.mHingesColour == Color.Black ? Color.White : this.mHingesColour.MultAlpha(alpha);
+      Color hinges_colour = this.mHingesColour == Color.Black ? Color.White : this.mHingesColour.MultAlpha(alpha);
 
       // bottom 'metal hinge'
       b.Draw(hinges_texture,
@@ -173,13 +173,13 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
 
     public void Draw(SpriteBatch b, Rectangle bounds, Single alpha = 1.0f) { this.Draw(b, bounds.ExtractXYAsXNAVector2(), alpha); }
 
-  #region Statics
+    #region Statics
 
     [UsedImplicitly]
     [EventPriority(EventPriority.High + 1000)]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public static Boolean BeforeDraw(SpriteBatch spriteBatch, Int32 x, Int32 y, Single alpha,
-                                     Chest       __instance,  Int32 ___currentLidFrame) {
+                                     Chest __instance, Int32 ___currentLidFrame) {
       if (__instance.SpecialChestType != SpecialChestTypes.None || __instance.fridge.Value) return true;
       if (!__instance.playerChest.Value && (__instance.ParentSheetIndex != 130 || __instance.ParentSheetIndex != 232)) return true;
 
@@ -301,8 +301,8 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
       if (!Game1.currentLocation.Objects.TryGetValue(Game1.currentCursorTile, out StardewValley.Object obj) || obj is not Chest chest) return;
       if (chest.SpecialChestType != SpecialChestTypes.None || chest.fridge.Value) return;
 
-      Color  chest_colour = chest.GetActualColour();
-      String info_text    = String.IsNullOrWhiteSpace(chest.GetCustomConfigDescription()) ? "" : $"{chest.GetCustomConfigDescription()}{Environment.NewLine}{Environment.NewLine}";
+      Color chest_colour = chest.GetActualColour();
+      String info_text = String.IsNullOrWhiteSpace(chest.GetCustomConfigDescription()) ? "" : $"{chest.GetCustomConfigDescription()}{Environment.NewLine}{Environment.NewLine}";
       info_text += $"{chest.GetItemsForPlayer(Game1.player.UniqueMultiplayerID).Count} / {chest.GetActualCapacity()} items";
 
       e.SpriteBatch.DrawHoverText(Game1.smallFont,
@@ -314,18 +314,18 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
                                   borderScale: 0.75f);
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public ExtendedChest(Single chestScale, Color hingesColour, ChestType chestType)
       : base(false) {
-      this.mChestScale      = chestScale;
-      this.mChestType       = chestType;
-      this.mHingesColour    = hingesColour == default ? Color.Black : hingesColour;
+      this.mChestScale = chestScale;
+      this.mChestType = chestType;
+      this.mHingesColour = hingesColour == default ? Color.Black : hingesColour;
       this.ParentSheetIndex = this.mChestType == ChestType.WoodenChest ? 130 : 232;
 
       this.startingLidFrame.Value = this.ParentSheetIndex + 1;
@@ -335,6 +335,6 @@ namespace ChestEx.Types.CustomTypes.ExtendedSVObjects {
     public ExtendedChest(Rectangle bounds, Color hingesColour = default, ChestType chestType = ChestType.WoodenChest)
       : this((Single)bounds.Width / CONST_CHEST_SPRITE_SIZE, hingesColour, chestType) { }
 
-  #endregion
+    #endregion
   }
 }

@@ -8,12 +8,15 @@
 **
 *************************************************/
 
+using AtraShared.Menuing;
+using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI.Utilities;
 using StardewValley.Objects;
 using StopRugRemoval.Configuration;
-using StopRugRemoval.HarmonyPatches.BombHandling;
 
 namespace StopRugRemoval.HarmonyPatches;
 
@@ -23,6 +26,11 @@ namespace StopRugRemoval.HarmonyPatches;
 [HarmonyPatch(typeof(SObject))]
 internal static class SObjectPatches
 {
+    /// <summary>
+    /// Whether or not bombs have been confirmed.
+    /// </summary>
+    internal static readonly PerScreen<bool> HaveConfirmedBomb = new(createNewState: () => false);
+
     /// <summary>
     /// Prefix to prevent planting of wild trees on rugs.
     /// </summary>
@@ -58,6 +66,26 @@ internal static class SObjectPatches
         return true;
     }
 
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(SObject.onExplosion))]
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "HarmonyConvention")]
+    private static void PrefixOnExplosion(SObject __instance, Farmer who, GameLocation location)
+    {
+        try
+        {
+            if (__instance.IsSpawnedObject && ModEntry.Config.SaveBombedForage && ModEntry.Config.Enabled)
+            {
+                // The SObject does not have its location anymore. Just spawn near the farmer, I guess?
+                location.debris.Add(new Debris(__instance, who.Position + new Vector2(Game1.random.Next(-128, 128), Game1.random.Next(-128, 128))));
+                ModEntry.ModMonitor.DebugOnlyLog(__instance.DisplayName + ' ' + __instance.TileLocation.ToString(), LogLevel.Warn);
+            }
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Error while creating debris.{ex}", LogLevel.Error);
+        }
+    }
+
     /// <summary>
     /// Prefix on placement to prevent planting of fruit trees and tea saplings on rugs, hopefully.
     /// </summary>
@@ -86,11 +114,11 @@ internal static class SObjectPatches
                     }
                 }
             }
-            if (!ConfirmBomb.HaveConfirmed.Value
+            if (!HaveConfirmedBomb.Value && ModEntry.Config.Enabled
                 && !__instance.bigCraftable.Value && __instance is not Furniture
                 && __instance.ParentSheetIndex is 286 or 287 or 288
-                && (IsLocationConsideredDangerous(location) ? ModEntry.Config.InDangerousAreas : ModEntry.Config.InSafeAreas)
-                    .HasFlag(Context.IsMultiplayer ? ConfirmBombEnum.InMultiplayerOnly : ConfirmBombEnum.NotInMultiplayer))
+                && (IsLocationConsideredDangerous(location) ? ModEntry.Config.BombsInDangerousAreas : ModEntry.Config.BombsInSafeAreas)
+                    .HasFlag(Context.IsMultiplayer ? ConfirmationEnum.InMultiplayerOnly : ConfirmationEnum.NotInMultiplayer))
             {
                 // handle the case where a bomb has already been placed?
                 Vector2 loc = new(x, y);
@@ -103,17 +131,31 @@ internal static class SObjectPatches
                     }
                 }
 
-                Response[] responses = new Response[]
+                List<Response> responses = new()
                 {
-                    new Response("BombsNo", I18n.No()),
-                    new Response("BombsYes", I18n.Yes()),
+                    new Response("BombsYes", I18n.YesOne()).SetHotKey(Keys.Y),
                     new Response("BombsArea", I18n.YesArea()),
+                    new Response("BombsNo", I18n.No()).SetHotKey(Keys.Escape),
                 };
 
-                location.createQuestionDialogue(I18n.ConfirmBombs(), responses, "atravitaInteractionTweaksBombs");
-                ConfirmBomb.BombLocation.Value = loc;
-                ConfirmBomb.WhichBomb.Value = __instance.ParentSheetIndex;
+                List<Action?> actions = new()
+                {
+                    () =>
+                    {
+                        Game1.player.reduceActiveItemByOne();
+                        GameLocationUtils.ExplodeBomb(Game1.player.currentLocation, __instance.ParentSheetIndex, loc, ModEntry.Multiplayer());
+                    },
+                    () =>
+                    {
+                        HaveConfirmedBomb.Value = true;
+                        Game1.player.reduceActiveItemByOne();
+                        GameLocationUtils.ExplodeBomb(Game1.player.currentLocation, __instance.ParentSheetIndex, loc, ModEntry.Multiplayer());
+                    },
+                };
+
                 __result = false;
+
+                Game1.activeClickableMenu = new DialogueAndAction(I18n.ConfirmBombs(), responses, actions);
                 return false;
             }
         }
@@ -125,9 +167,7 @@ internal static class SObjectPatches
     }
 
     private static bool IsLocationConsideredDangerous(GameLocation location)
-    {
-        return ModEntry.Config.SafeLocationMap.TryGetValue(location.NameOrUniqueName, out IsSafeLocationEnum val)
+        => ModEntry.Config.SafeLocationMap.TryGetValue(location.NameOrUniqueName, out IsSafeLocationEnum val)
             ? (val == IsSafeLocationEnum.Dangerous) || (val == IsSafeLocationEnum.Dynamic && location.IsDangerousLocation())
             : location.IsDangerousLocation();
-    }
 }

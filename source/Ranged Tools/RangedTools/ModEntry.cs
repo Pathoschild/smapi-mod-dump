@@ -37,9 +37,11 @@ namespace RangedTools
         public static List<SButton> knownToolButtons = new List<SButton>();
         
         public static bool disableToolLocationOverride = false;
-        public static bool eventUpReset = false;
-        public static bool eventUpOld = false;
         public static int tileRadiusOverride = 0;
+        
+        public static bool preventDraw = false;
+        public static Texture2D preventDrawTexture;
+        public static Rectangle? preventDrawSourceRect;
         
         /***************************
          ** Mod Injection Methods **
@@ -79,12 +81,17 @@ namespace RangedTools
                             typeof(ModEntry), nameof(ModEntry.Prefix_pressUseToolButton));
                 
                 patchPrefix(harmonyInstance, typeof(Farmer), nameof(Farmer.draw),
-                            typeof(ModEntry), nameof(ModEntry.Prefix_draw),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_Farmer_draw),
                             new Type[] { typeof(SpriteBatch) });
                 
                 patchPostfix(harmonyInstance, typeof(Farmer), nameof(Farmer.draw),
-                             typeof(ModEntry), nameof(ModEntry.Postfix_draw),
+                             typeof(ModEntry), nameof(ModEntry.Postfix_Farmer_draw),
                              new Type[] { typeof(SpriteBatch) });
+                
+                patchPrefix(harmonyInstance, typeof(SpriteBatch), nameof(SpriteBatch.Draw),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_SpriteBatch_Draw),
+                            new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color),
+                                typeof(float), typeof(Vector2), typeof(Vector2), typeof(SpriteEffects), typeof(float) });
                 
                 patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
                             typeof(ModEntry), nameof(ModEntry.Prefix_playerCanPlaceItemHere));
@@ -648,10 +655,10 @@ namespace RangedTools
             }
         }
         
-        /// <summary>Prefix to Farmer.draw that draws tool hit location at extended ranges.</summary>
+        /// <summary>Prefix to Farmer.draw that takes over drawing of Tool Hit Location indicator.</summary>
         /// <param name="__instance">The instance of the Farmer.</param>
         /// <param name="b">The sprite batch.</param>
-        public static bool Prefix_draw(Farmer __instance, SpriteBatch b)
+        public static bool Prefix_Farmer_draw(Farmer __instance, SpriteBatch b)
         {
             try
             {
@@ -690,29 +697,30 @@ namespace RangedTools
                     bool drawnExtended = false;
                     if (Config.ToolHitLocationDisplay == 1 || Config.ToolHitLocationDisplay == 2) // New Logic or Combined
                     {
-                        if (positionValidForExtendedRange(__instance, mousePosition))
+                        if (positionValidForExtendedRange(__instance, mousePosition)) // Only draw at this range if it's valid
                         {
                             drawnExtended = true;
                             b.Draw(Game1.mouseCursors, extendedLocal,
-                                    new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
-                                    Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, extendedLocal.Y / 10000f);
+                                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
+                                   Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, extendedLocal.Y / 10000f);
                         }
                     }
                     
                     if (!drawnExtended || !extendedLocal.Equals(limitedLocal)) // Don't draw in same position twice
                     {
                         if (!drawnExtended // Always draw original if extended position wasn't valid
-                            || Config.ToolHitLocationDisplay == 0 || Config.ToolHitLocationDisplay == 2) // Old Logic or Combined
+                         || Config.ToolHitLocationDisplay == 0 || Config.ToolHitLocationDisplay == 2) // Old Logic or Combined
                         {
                             b.Draw(Game1.mouseCursors, limitedLocal,
-                                    new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
-                                    Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, limitedLocal.Y / 10000f);
+                                   new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29)),
+                                   Color.White, 0.0f, Vector2.Zero, 1f, SpriteEffects.None, limitedLocal.Y / 10000f);
                         }
                     }
                     
-                    eventUpOld = Game1.eventUp;
-                    Game1.eventUp = true; // Temporarily set this to disable original drawing of indicator
-                    eventUpReset = true; // Make sure it's set back to original value in the postfix
+                    // Specifically prevent drawing of original indicator by SpriteBatch.Draw().
+                    preventDraw = true;
+                    preventDrawTexture = Game1.mouseCursors;
+                    preventDrawSourceRect = new Rectangle?(Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, 29));
                 }
                 return true; // Go to original function
             }
@@ -723,13 +731,37 @@ namespace RangedTools
             }
         }
         
-        /// <summary>Postfix to Farmer.draw that resets eventUp to what it was.</summary>
-        public static void Postfix_draw()
+        /// <summary>Postfix to Farmer.draw that resets preventDraw override.</summary>
+        public static void Postfix_Farmer_draw()
         {
-            if (eventUpReset)
+            preventDraw = false;
+        }
+        
+        /// <summary>Prefix to SpriteBatch.Draw that cancels it (when enabled) if arguments match the established parameters.</summary>
+        /// <param name="__instance">The instance of the SpriteBatch.</param>
+        /// <param name="texture">The base texture.</param>
+        /// <param name="position">The position to draw at.</param>
+        /// <param name="sourceRectangle">The area of the texture to use.</param>
+        /// <param name="color">The color to draw with.</param>
+        /// <param name="rotation">The rotation to draw with.</param>
+        /// <param name="origin">The origin point.</param>
+        /// <param name="scale">The scale to draw at.</param>
+        /// <param name="effects">Effects to draw with.</param>
+        /// <param name="layerDepth">Depth to draw at.</param>
+        public static bool Prefix_SpriteBatch_Draw(SpriteBatch __instance, Texture2D texture, Vector2 position, Rectangle? sourceRectangle,
+            Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+        {
+            try
             {
-                Game1.eventUp = eventUpOld;
-                eventUpReset = false;
+                if (preventDraw && preventDrawTexture.Equals(texture) && preventDrawSourceRect.Equals(sourceRectangle))
+                    return false; // Don't do original function anymore
+                
+                return true; // Go to original function
+            }
+            catch (Exception e)
+            {
+                Log("Error in SpriteBatch Draw: " + e.Message + Environment.NewLine + e.StackTrace);
+                return true; // Go to original function
             }
         }
         

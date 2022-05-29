@@ -6,9 +6,9 @@ mods:
    Raincoat When Raining
 
 latest commit:
-   commit 805f15d603c7dc9a6f238eca07b84de2c3fae2b6
-   Author: bikinavisho <bikinavisho@yahoo.com>
-   Date:   Mon Mar 21 23:32:48 2022 -0500
+   commit 4ac9b5e32d16b577ee78522b9d97e762a16cff85
+   Author: Bianca <bikinavisho@users.noreply.github.com>
+   Date:   Thu May 5 15:14:38 2022 -0500
    
-       optimize 1.5 version to use Lists
+       update LICENSE
    

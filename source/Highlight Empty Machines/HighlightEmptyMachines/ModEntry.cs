@@ -117,7 +117,7 @@ internal class ModEntry : Mod
             if (this.Helper.ModRegistry.IsLoaded("Digus.ProducerFrameworkMod"))
             {
                 this.gmcmHelper.Register(
-                    reset: () =>
+                    reset: static () =>
                     {
                         Config = new();
                         PFMMachineHandler.RefreshValidityList(Game1.currentLocation);
@@ -131,22 +131,22 @@ internal class ModEntry : Mod
             else
             {
                 this.gmcmHelper.Register(
-                reset: () => Config = new(),
+                reset: static () => Config = new(),
                 save: () => this.Helper.WriteConfig(Config));
             }
             this.gmcmHelper.AddParagraph(I18n.ModDescription)
             .AddColorPicker(
                 name: I18n.EmptyColor_Title,
-                getValue: () => Config.EmptyColor,
-                setValue: (val) => Config.EmptyColor = val,
+                getValue: static () => Config.EmptyColor,
+                setValue: static (val) => Config.EmptyColor = val,
                 tooltip: I18n.EmptyColor_Description,
                 showAlpha: true,
                 colorPickerStyle: (uint)IGMCMOptionsAPI.ColorPickerStyle.Default,
                 defaultColor: Color.Red)
             .AddColorPicker(
                 name: I18n.InvalidColor_Title,
-                getValue: () => Config.InvalidColor,
-                setValue: (val) => Config.InvalidColor = val,
+                getValue: static () => Config.InvalidColor,
+                setValue: static (val) => Config.InvalidColor = val,
                 tooltip: I18n.InvalidColor_Description,
                 showAlpha: true,
                 colorPickerStyle: (uint)IGMCMOptionsAPI.ColorPickerStyle.Default,
@@ -187,7 +187,7 @@ internal class ModEntry : Mod
             foreach (int machineID in PFMMachineHandler.PFMMachines)
             {
                 // Prepopulate the machine list.
-                _ = Config.ProducerFrameworkModMachines.TryAdd(machineID.GetName(), true);
+                _ = Config.ProducerFrameworkModMachines.TryAdd(machineID.GetBigCraftableName(), true);
             }
 
             if (this.gmcmHelper?.HasGottenAPI == true)
@@ -202,9 +202,9 @@ internal class ModEntry : Mod
                 {
                     // Add an option for it.
                     this.gmcmHelper.AddBoolOption(
-                        name: () => machineID.GetTranslatedName(),
-                        getValue: () => !Config.ProducerFrameworkModMachines.TryGetValue(machineID.GetName(), out bool val) || val,
-                        setValue: (val) => Config.ProducerFrameworkModMachines[machineID.GetName()] = val);
+                        name: () => machineID.GetBigCraftableTranslatedName(),
+                        getValue: () => !Config.ProducerFrameworkModMachines.TryGetValue(machineID.GetBigCraftableName(), out bool val) || val,
+                        setValue: (val) => Config.ProducerFrameworkModMachines[machineID.GetBigCraftableName()] = val);
                 }
             }
 

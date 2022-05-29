@@ -38,15 +38,18 @@ namespace NormanPCN.Utils
             // LCG->XorShift->MLCG->XorShift
 
             // 32-bit using numerical recipes rec values for sub functions
-            uint v = (seed * 1372383749) + 1289706101; // I1
-            v ^= v << 13; // G1
-            v ^= v >> 17;
-            v ^= v << 5;
-            v *= 1597334677; //J1
-            v ^= v >> 9; //G3
-            v ^= v << 17;
-            v ^= v >> 6;
-            return v;
+            unchecked
+            {
+                uint v = (seed * 1372383749) + 1289706101; // I1
+                v ^= v << 13; // G1
+                v ^= v >> 17;
+                v ^= v << 5;
+                v *= 1597334677; //J1
+                v ^= v >> 9; //G3
+                v ^= v << 17;
+                v ^= v >> 6;
+                return v;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -56,15 +59,18 @@ namespace NormanPCN.Utils
             // LCG->XorShift->MLCG->XorShift
 
             // verbatum from Numerical recipes Ranhash.
-            ulong v = (seed * 3935559000370003845) + 2691343689449507681; //C1
-            v ^= v >> 21; //A7
-            v ^= v << 37;
-            v ^= v >> 4;
-            v *= 4768777513237032717; //D3
-            v ^= v << 20; //A2
-            v ^= v >> 41;
-            v ^= v << 5;
-            return v;
+            unchecked
+            {
+                ulong v = (seed * 3935559000370003845) + 2691343689449507681; //C1
+                v ^= v >> 21; //A7
+                v ^= v << 37;
+                v ^= v >> 4;
+                v *= 4768777513237032717; //D3
+                v ^= v << 20; //A2
+                v ^= v >> 41;
+                v ^= v << 5;
+                return v;
+            }
         }
 
         /// <summary>
@@ -189,10 +195,9 @@ namespace NormanPCN.Utils
                 if (range <= (long)Int32.MaxValue)
                 {
                     // double only has 52 explicit bits in mantissa. thus low bits of a long are unused.
-                    // decent compiler should do (ulong)uint * (ulong)uint, and shift efficiently.
                     // it would be faster to take a 32-bit subrange of a ulong result and do the int mul range thing.
                     //     just possibly more bias with very large ranges relative to 32-bit.
-                    // no 128-bit int, we do the float thing with ulong results.
+                    // no 128-bit int, so we do the float thing with ulong results.
                     //     otherwise (int128)ulong * (int128)ulong >> 64. decent compiler still needed.
                     //     also, would only expect an int128 to be avail in a 64-bit specific target. p-code is agnostic
                     return (int)((double)RanHash64(seed) * ulongToDouble * (double)range) + minValue;

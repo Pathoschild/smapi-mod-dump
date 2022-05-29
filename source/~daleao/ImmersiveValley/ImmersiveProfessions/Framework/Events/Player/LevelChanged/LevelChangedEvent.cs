@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,10 +19,10 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IPlayerEvents.LevelChanged"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class LevelChangedEvent : BaseEvent
 {
-    /// <summary>Raised after a player's skill level changes.</summary>
+    /// <inheritdoc cref="IPlayerEvents.LevelChanged"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnLevelChanged(object sender, LevelChangedEventArgs e)
+    internal void OnLevelChanged(object sender, LevelChangedEventArgs e)
     {
         if (enabled.Value) OnLevelChangedImpl(sender, e);
     }

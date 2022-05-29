@@ -72,16 +72,49 @@ namespace AlternativeTextures.Framework.Patches.SpecialObjects
                     spriteBatch.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2((draw_x + 0.5f) * 64f, (draw_y + 0.5f) * 64f)), Game1.shadowTexture.Bounds, Color.Black * 0.5f, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, 0.0001f);
                     draw_y -= (float)Math.Sin((double)__instance.kickProgress * Math.PI) * 0.5f;
                 }
+
+                // Set xTileOffset if AlternativeTextureModel has an animation
+                var xTileOffset = 0;
+                if (textureModel.HasAnimation(textureVariation))
+                {
+                    if (!__instance.modData.ContainsKey("AlternativeTextureCurrentFrame") || !__instance.modData.ContainsKey("AlternativeTextureFrameDuration") || !__instance.modData.ContainsKey("AlternativeTextureElapsedDuration"))
+                    {
+                        __instance.modData["AlternativeTextureCurrentFrame"] = "0";
+                        __instance.modData["AlternativeTextureFrameDuration"] = textureModel.GetAnimationDataAtIndex(textureVariation, 0).Duration.ToString();// Animation.ElementAt(0).Duration.ToString();
+                        __instance.modData["AlternativeTextureElapsedDuration"] = "0";
+                    }
+
+                    var currentFrame = Int32.Parse(__instance.modData["AlternativeTextureCurrentFrame"]);
+                    var frameDuration = Int32.Parse(__instance.modData["AlternativeTextureFrameDuration"]);
+                    var elapsedDuration = Int32.Parse(__instance.modData["AlternativeTextureElapsedDuration"]);
+
+                    if (elapsedDuration >= frameDuration)
+                    {
+                        currentFrame = currentFrame + 1 >= textureModel.GetAnimationData(textureVariation).Count() ? 0 : currentFrame + 1;
+
+                        __instance.modData["AlternativeTextureCurrentFrame"] = currentFrame.ToString();
+                        __instance.modData["AlternativeTextureFrameDuration"] = textureModel.GetAnimationDataAtIndex(textureVariation, currentFrame).Duration.ToString();
+                        __instance.modData["AlternativeTextureElapsedDuration"] = "0";
+                    }
+                    else
+                    {
+                        __instance.modData["AlternativeTextureElapsedDuration"] = (elapsedDuration + Game1.currentGameTime.ElapsedGameTime.Milliseconds).ToString();
+                    }
+
+                    xTileOffset = currentFrame;
+                }
+                xTileOffset *= textureModel.TextureWidth * 6;
+
                 if ((bool)__instance.playerChest && (__instance.ParentSheetIndex == 130 || __instance.ParentSheetIndex == 232))
                 {
                     spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), new Rectangle(0, textureOffset, 16, 32), __instance.tint.Value * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order);
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), new Rectangle((___currentLidFrame - __instance.parentSheetIndex) * textureModel.TextureWidth, textureOffset, 16, 32), __instance.tint.Value * alpha * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order + 1E-05f);
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), new Rectangle(((___currentLidFrame - __instance.parentSheetIndex) * textureModel.TextureWidth) + xTileOffset, textureOffset, 16, 32), __instance.tint.Value * alpha * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order + 1E-05f);
                     return false;
                 }
                 if ((bool)__instance.playerChest)
                 {
                     spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), new Rectangle(0, textureOffset, 16, 32), __instance.tint.Value * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order);
-                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), new Rectangle((___currentLidFrame - __instance.parentSheetIndex) * textureModel.TextureWidth, textureOffset, 16, 32), __instance.tint.Value * alpha * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order + 1E-05f);
+                    spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_x * 64f + (float)((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (draw_y - 1f) * 64f)), new Rectangle(((___currentLidFrame - __instance.parentSheetIndex) * textureModel.TextureWidth) + xTileOffset, textureOffset, 16, 32), __instance.tint.Value * alpha * alpha, 0f, Vector2.Zero, 4f, SpriteEffects.None, base_sort_order + 1E-05f);
                     return false;
                 }
                 if ((bool)__instance.giftbox)

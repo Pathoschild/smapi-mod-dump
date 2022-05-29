@@ -25,7 +25,7 @@ internal static class KrobusShopStockPostfix
     {
         if (ModEntry.PaddyCropFertilizerID != -1)
         {
-            __result.TryAdd(new SObject(ModEntry.PaddyCropFertilizerID, 1), new[] { 20, int.MaxValue });
+            __result.TryAdd(new SObject(ModEntry.PaddyCropFertilizerID, 1), new[] { 40, int.MaxValue });
         }
     }
 }

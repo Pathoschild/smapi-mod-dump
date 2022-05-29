@@ -48,7 +48,7 @@ namespace MultipleSpouseDialog
             Dialog.Initialize(Monitor, ModManifest);
             Dialog.cp_api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
 
-            Dialog.Load(Path.Combine(Helper.DirectoryPath, "Assets"));
+            Dialog.Load(Path.Combine(Helper.DirectoryPath, "assets"));
 
             foreach (var contentPack in Helper.ContentPacks.GetOwned())
                 // this.Monitor.Log($"Reading content pack: {contentPack.Manifest.Name} {contentPack.Manifest.Version} from {contentPack.DirectoryPath}", LogLevel.Debug);

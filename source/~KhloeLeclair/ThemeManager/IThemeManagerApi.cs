@@ -12,11 +12,33 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 using StardewModdingAPI;
 
 namespace Leclair.Stardew.ThemeManager;
+
+/// <summary>
+/// This theme data represents basic colors being used by the game.
+/// </summary>
+public interface IBaseTheme {
+
+	Color? TextColor { get; }
+
+	Color? TextShadowColor { get; }
+
+	Color? TextShadowAltColor { get; }
+
+	Color? ErrorTextColor { get; }
+
+	Color? HoverColor { get; }
+
+	Color? ButtonHoverColor { get; }
+
+	Dictionary<int, Color> SpriteTextColors { get; }
+}
 
 /// <summary>
 /// This event is emitted by <see cref="ITypedThemeManager{DataT}"/> whenever the
@@ -239,6 +261,31 @@ public interface IThemeManager {
 
 	#endregion
 
+	#region Theme Discovery
+
+	/// <summary>
+	/// Perform theme discovery, reloading all themes and updating the active
+	/// theme. If the <see cref="SelectedThemeId"/> is <c>automatic</c>, this
+	/// may result in the <see cref="ActiveThemeId"/> changing.
+	///
+	/// This method will always result in a <see cref="ThemeChanged"/> event
+	/// being emitted.
+	/// </summary>
+	/// <param name="checkEmbedded">Whether or not to load embedded themes from
+	/// your mod's own directory. If <see cref="EmbeddedThemesPath"/> is
+	/// <c>null</c>, this will do nothing.</param>
+	/// <param name="checkOwned">Whether or not to load themes from content
+	/// packs belonging to your mod.</param>
+	/// <param name="checkExternal">Whether or not to load themes from other,
+	/// unrelated mods that declare a theme for your mod in their manifest.</param>
+	void Discover(
+		bool checkEmbedded = true,
+		bool checkOwned = true,
+		bool checkExternal = true
+	);
+
+	#endregion
+
 	#region Theme Selection
 
 	/// <summary>
@@ -323,32 +370,6 @@ public interface IThemeManager {
 /// <typeparam name="DataT">Your mod's theme data type</typeparam>
 public interface ITypedThemeManager<DataT> : IThemeManager where DataT : new() {
 
-	#region Theme Discovery
-
-	/// <summary>
-	/// Perform theme discovery, reloading all themes and updating the active
-	/// theme. If the <see cref="SelectedThemeId"/> is <c>automatic</c>, this
-	/// may result in the <see cref="ActiveThemeId"/> changing.
-	///
-	/// This method will always result in a <see cref="ThemeChanged"/> event
-	/// being emitted.
-	/// </summary>
-	/// <param name="checkEmbedded">Whether or not to load embedded themes from
-	/// your mod's own directory. If <see cref="EmbeddedThemesPath"/> is
-	/// <c>null</c>, this will do nothing.</param>
-	/// <param name="checkOwned">Whether or not to load themes from content
-	/// packs belonging to your mod.</param>
-	/// <param name="checkExternal">Whether or not to load themes from other,
-	/// unrelated mods that declare a theme for your mod in their manifest.</param>
-	/// <returns>The same <see cref="ITypedThemeManager{DataT}"/> instance.</returns>
-	ITypedThemeManager<DataT> Discover(
-		bool checkEmbedded = true,
-		bool checkOwned = true,
-		bool checkExternal = true
-	);
-
-	#endregion
-
 	#region Theme Enumeration
 
 	/// <summary>
@@ -402,6 +423,16 @@ public interface ITypedThemeManager<DataT> : IThemeManager where DataT : new() {
 }
 
 public interface IThemeManagerApi {
+
+	#region Game Themes
+
+	IBaseTheme BaseTheme { get; }
+
+	event EventHandler<IThemeChangedEvent<IBaseTheme>>? BaseThemeChanged;
+
+	#endregion
+
+	#region Custom Themes
 
 	/// <summary>
 	/// Try to get an existing <see cref="ITypedThemeManager{DataT}"/> instance
@@ -475,4 +506,36 @@ public interface IThemeManagerApi {
 		EventHandler<IThemeChangedEvent<DataT>>? onThemeChanged = null
 	) where DataT : class, new();
 
+	#endregion
+
+	#region Color Parsing
+
+	/// <summary>
+	/// Parse a color from a string. This supports CSS hex format, CSS rgb()
+	/// format, a selection of color names, and basic "[r], [g], [b], [a]"
+	/// values separated by commas.
+	/// </summary>
+	/// <param name="value">The input string to parse</param>
+	/// <param name="color">The resulting color, or null</param>
+	/// <returns>Whether or not a color was successfully read.</returns>
+	bool TryParseColor(string value, [NotNullWhen(true)] out Color? color);
+
+	#endregion
+
+	#region Colored SpriteText
+
+	/// <summary>
+	/// Draw arbitrarily-colored strings of
+	/// <see cref="StardewValley.BellsAndWhistles.SpriteText"/>.
+	/// </summary>
+	/// <param name="batch">The SpriteBatch to draw with</param>
+	/// <param name="text">The text to draw</param>
+	/// <param name="x">the x coordinate</param>
+	/// <param name="y">the y coordinate</param>
+	/// <param name="color">the color to draw with, or <c>null</c> for the
+	/// default color</param>
+	/// <param name="alpha">The transparency to draw with</param>
+	void DrawSpriteText(SpriteBatch batch, string text, int x, int y, Color? color, float alpha = 1f);
+
+	#endregion
 }

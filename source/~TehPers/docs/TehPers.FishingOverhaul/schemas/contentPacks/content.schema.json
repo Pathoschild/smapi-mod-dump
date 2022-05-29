@@ -14,14 +14,24 @@
       "$ref": "#/definitions/TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack"
     }
   ],
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft/2020-12/schema",
   "title": "FishingContentPack",
   "definitions": {
     "TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Fishing content pack.",
       "properties": {
+        "$schema": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "Optional '$schema' URL. This is ignored and exists entirely for convenience."
+        },
         "SetFishTraits": {
           "type": "object",
           "additionalProperties": {
@@ -110,30 +120,44 @@
           },
           "description": "Treasure entries to remove. Only entries from your mod's dependencies (including Teh's Fishing Overhaul) will be removed."
         },
+        "AddEffects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": [
+              "$Effect"
+            ],
+            "properties": {
+              "$Effect": {
+                "type": "string",
+                "description": "The type of effect to apply."
+              },
+              "Conditions": {
+                "description": "Conditions for when this effect should be applied.",
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.AvailabilityConditions"
+                  }
+                ]
+              }
+            }
+          },
+          "description": "Fishing effects entries to add."
+        },
         "Include": {
           "type": "array",
           "items": {
             "type": "string"
           },
           "description": "The additional content files to include. These are treated the same as your mod's content.json. The paths are relative to this file's content.json (this is different than Content Patcher!)."
-        },
-        "$schema": {
-          "oneOf": [
-            {
-              "type": "null"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "description": "Optional '$schema' URL. This is ignored and exists entirely for convenience."
         }
-      }
+      },
+      "description": "Fishing content pack."
     },
     "TehPers.FishingOverhaul.Api.Content.FishTraits": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Definition for a fish's traits.",
       "required": [
         "DartFrequency",
         "DartBehavior",
@@ -172,18 +196,19 @@
           "description": "Whether the fish is legendary.",
           "default": false
         }
-      }
+      },
+      "description": "Definition for a fish's traits."
     },
     "TehPers.FishingOverhaul.Api.DartBehavior": {
       "type": "string",
-      "description": "The movement behavior of the fish in the minigame.",
       "enum": [
         "Mixed",
         "Dart",
         "Smooth",
         "Sink",
         "Floater"
-      ]
+      ],
+      "description": "The movement behavior of the fish in the minigame."
     },
     "TehPers.Core.Api.Items.NamespacedKey": {
       "type": "string",
@@ -192,7 +217,6 @@
     "TehPers.FishingOverhaul.Api.Content.FishEntry": {
       "type": "object",
       "additionalProperties": false,
-      "description": "A fish availability entry.",
       "required": [
         "FishKey",
         "AvailabilityInfo"
@@ -225,12 +249,12 @@
           ],
           "description": "Actions to perform when this is caught."
         }
-      }
+      },
+      "description": "A fish availability entry."
     },
     "TehPers.FishingOverhaul.Api.Content.FishAvailabilityInfo": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Information about the availability of a catchable fish.",
       "required": [
         "BaseChance"
       ],
@@ -239,6 +263,13 @@
           "type": "number",
           "description": "Effect that sending the bobber by less than the max distance has on the chance. This value should be no more than 1.",
           "default": 0.1
+        },
+        "MaxChanceDepth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "The required fishing depth to maximize the chances of catching the fish.",
+          "default": null
         },
         "MaxDepth": {
           "oneOf": [
@@ -251,12 +282,18 @@
               "maximum": 2147483647
             }
           ],
-          "description": "Maximum bobber depth required to catch this.",
+          "description": "Obsolete: Use MaxBobberDepth instead\n\nMaximum bobber depth required to catch this.",
+          "deprecated": true,
           "default": null
         },
         "BaseChance": {
           "type": "number",
           "description": "The base chance this will be caught. This is not a percentage chance, but rather a weight relative to all available entries."
+        },
+        "PriorityTier": {
+          "type": "number",
+          "description": "The priority tier for this entry. For all available entries, only the entries that share the highest priority tier can be caught. For example, if all trash entries have a tier of 0 except for a single entry that has a tier of 1, then that single entry is guaranteed to be caught, regardless of its calculated weighted chance. If that entry becomes unavailable, then entries from tier 0 are selected from instead. This can be useful when creating special items that should always be caught first but which can only be caught once, for example.",
+          "default": 0.0
         },
         "StartTime": {
           "type": "integer",
@@ -360,21 +397,50 @@
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647,
+          "description": "Obsolete: Use MinBobberDepth instead\n\nMinimum bobber depth required to catch this.",
+          "deprecated": true,
+          "default": 0
+        },
+        "MinBobberDepth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
           "description": "Minimum bobber depth required to catch this.",
           "default": 0
+        },
+        "MaxBobberDepth": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Maximum bobber depth required to catch this.",
+          "default": null
         },
         "When": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
           "description": "Content Patcher conditions for when this is available."
         }
-      }
+      },
+      "description": "Information about the availability of a catchable fish."
     },
     "TehPers.Core.Api.Gameplay.Seasons": {
       "type": "string",
-      "description": "Seasons within the game. Because this is a flags-style enum, multiple seasons can be combined.",
       "enum": [
         "None",
         "Spring",
@@ -382,33 +448,33 @@
         "Fall",
         "Winter",
         "All"
-      ]
+      ],
+      "description": "Seasons within the game. Because this is a flags-style enum, multiple seasons can be combined."
     },
     "TehPers.Core.Api.Gameplay.Weathers": {
       "type": "string",
-      "description": "Weathers within the game. Because this is a flags-style enum, multiple weathers can be combined.",
       "enum": [
         "None",
         "Sunny",
         "Rainy",
         "All"
-      ]
+      ],
+      "description": "Weathers within the game. Because this is a flags-style enum, multiple weathers can be combined."
     },
     "TehPers.FishingOverhaul.Api.WaterTypes": {
       "type": "string",
-      "description": "Type of water that fish can be caught in. Each location handles these values differently.",
       "enum": [
         "None",
         "River",
         "PondOrOcean",
         "Freshwater",
         "All"
-      ]
+      ],
+      "description": "Type of water that fish can be caught in. Each location handles these values differently."
     },
     "TehPers.FishingOverhaul.Api.Content.PositionConstraint": {
       "type": "object",
       "additionalProperties": false,
-      "description": "A set of constraints for positions.",
       "properties": {
         "X": {
           "oneOf": [
@@ -434,12 +500,12 @@
           "description": "Constraints for the Y-coordinate.",
           "default": null
         }
-      }
+      },
+      "description": "A set of constraints for positions."
     },
     "TehPers.FishingOverhaul.Api.Content.CoordinateConstraint": {
       "type": "object",
       "additionalProperties": false,
-      "description": "A set of constraints for coordinates.",
       "properties": {
         "GreaterThan": {
           "oneOf": [
@@ -489,12 +555,12 @@
           "description": "Coordinate value must be less than or equal to this.",
           "default": null
         }
-      }
+      },
+      "description": "A set of constraints for coordinates."
     },
     "TehPers.FishingOverhaul.Api.Content.CatchActions": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Actions to be executed on catch.",
       "properties": {
         "CustomEvents": {
           "type": "array",
@@ -539,12 +605,12 @@
           },
           "description": "Starts conversations. The key is the conversation ID and the value is the number of days."
         }
-      }
+      },
+      "description": "Actions to be executed on catch."
     },
     "TehPers.FishingOverhaul.Api.Content.FishEntryFilter": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Fish entry filter.",
       "properties": {
         "FishKey": {
           "oneOf": [
@@ -557,12 +623,12 @@
           ],
           "description": "The namespaced key of the fish."
         }
-      }
+      },
+      "description": "Fish entry filter."
     },
     "TehPers.FishingOverhaul.Api.Content.TrashEntry": {
       "type": "object",
       "additionalProperties": false,
-      "description": "A trash availability entry.",
       "required": [
         "ItemKey",
         "AvailabilityInfo"
@@ -595,12 +661,12 @@
           ],
           "description": "Actions to perform when this is caught."
         }
-      }
+      },
+      "description": "A trash availability entry."
     },
     "TehPers.FishingOverhaul.Api.Content.AvailabilityInfo": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Information about the availability of a catchable item.",
       "required": [
         "BaseChance"
       ],
@@ -608,6 +674,11 @@
         "BaseChance": {
           "type": "number",
           "description": "The base chance this will be caught. This is not a percentage chance, but rather a weight relative to all available entries."
+        },
+        "PriorityTier": {
+          "type": "number",
+          "description": "The priority tier for this entry. For all available entries, only the entries that share the highest priority tier can be caught. For example, if all trash entries have a tier of 0 except for a single entry that has a tier of 1, then that single entry is guaranteed to be caught, regardless of its calculated weighted chance. If that entry becomes unavailable, then entries from tier 0 are selected from instead. This can be useful when creating special items that should always be caught first but which can only be caught once, for example.",
+          "default": 0.0
         },
         "StartTime": {
           "type": "integer",
@@ -711,10 +782,33 @@
           "type": "integer",
           "minimum": -2147483648,
           "maximum": 2147483647,
+          "description": "Obsolete: Use MinBobberDepth instead\n\nMinimum bobber depth required to catch this.",
+          "deprecated": true,
+          "default": 0
+        },
+        "MinBobberDepth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
           "description": "Minimum bobber depth required to catch this.",
           "default": 0
         },
         "MaxDepth": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Obsolete: Use MaxBobberDepth instead\n\nMaximum bobber depth required to catch this.",
+          "deprecated": true,
+          "default": null
+        },
+        "MaxBobberDepth": {
           "oneOf": [
             {
               "type": "null"
@@ -731,16 +825,23 @@
         "When": {
           "type": "object",
           "additionalProperties": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
           "description": "Content Patcher conditions for when this is available."
         }
-      }
+      },
+      "description": "Information about the availability of a catchable item."
     },
     "TehPers.FishingOverhaul.Api.Content.TrashEntryFilter": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Trash entry filter.",
       "properties": {
         "ItemKey": {
           "oneOf": [
@@ -753,12 +854,12 @@
           ],
           "description": "The namespaced key of the trash."
         }
-      }
+      },
+      "description": "Trash entry filter."
     },
     "TehPers.FishingOverhaul.Api.Content.TreasureEntry": {
       "type": "object",
       "additionalProperties": false,
-      "description": "An entry for treasure loot.",
       "required": [
         "ItemKeys",
         "AvailabilityInfo"
@@ -813,12 +914,12 @@
           ],
           "description": "Actions to perform when this is caught."
         }
-      }
+      },
+      "description": "An entry for treasure loot."
     },
     "TehPers.FishingOverhaul.Api.Content.TreasureEntryFilter": {
       "type": "object",
       "additionalProperties": false,
-      "description": "Treasure entry filter.",
       "properties": {
         "ItemKeys": {
           "oneOf": [
@@ -849,7 +950,171 @@
           ],
           "description": "A namespaced key in the treasure entry. Any entry that can produce this item will be removed. This takes precedence over ItemKeys (if both are listed and this condition is matched, then ItemKeys is ignored)."
         }
-      }
+      },
+      "description": "Treasure entry filter."
+    },
+    "TehPers.FishingOverhaul.Api.Content.AvailabilityConditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "StartTime": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Time this becomes available (inclusive).",
+          "default": 600
+        },
+        "EndTime": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Time this is no longer available (exclusive).",
+          "default": 2600
+        },
+        "Seasons": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.Core.Api.Gameplay.Seasons"
+              }
+            ]
+          },
+          "description": "Seasons this can be caught in."
+        },
+        "Weathers": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.Core.Api.Gameplay.Weathers"
+              }
+            ]
+          },
+          "description": "Weathers this can be caught in."
+        },
+        "WaterTypes": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/definitions/TehPers.FishingOverhaul.Api.WaterTypes"
+              }
+            ]
+          },
+          "description": "The type of water this can be caught in. Each location handles this differently."
+        },
+        "MinFishingLevel": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Required fishing level to catch this.",
+          "default": 0
+        },
+        "MaxFishingLevel": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Maximum fishing level required to catch this, or null for no max.",
+          "default": null
+        },
+        "IncludeLocations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of locations this should be available in. Leaving this empty will make this available everywhere. Some locations have special handling. For example, the mines use the location names \"UndergroundMine\" and \"UndergroundMine/N\", where N is the floor number (both location names are valid for the floor)."
+        },
+        "ExcludeLocations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of locations this should not be available in. This takes priority over IncludeLocations."
+        },
+        "Position": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.PositionConstraint"
+            }
+          ],
+          "description": "Constraints on the bobber's position on the map when fishing."
+        },
+        "FarmerPosition": {
+          "oneOf": [
+            {
+              "$ref": "#/definitions/TehPers.FishingOverhaul.Api.Content.PositionConstraint"
+            }
+          ],
+          "description": "Constraints on the farmer's position on the map when fishing."
+        },
+        "MinDepth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Obsolete: Use MinBobberDepth instead\n\nMinimum bobber depth required to catch this.",
+          "deprecated": true,
+          "default": 0
+        },
+        "MinBobberDepth": {
+          "type": "integer",
+          "minimum": -2147483648,
+          "maximum": 2147483647,
+          "description": "Minimum bobber depth required to catch this.",
+          "default": 0
+        },
+        "MaxDepth": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Obsolete: Use MaxBobberDepth instead\n\nMaximum bobber depth required to catch this.",
+          "deprecated": true,
+          "default": null
+        },
+        "MaxBobberDepth": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": -2147483648,
+              "maximum": 2147483647
+            }
+          ],
+          "description": "Maximum bobber depth required to catch this.",
+          "default": null
+        },
+        "When": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "description": "Content Patcher conditions for when this is available."
+        }
+      },
+      "description": "Conditions for availability."
     }
   }
 }

@@ -21,7 +21,7 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
     {
         public GoldPipeNode(Vector2 position, GameLocation location, StardewValley.Object obj) : base(position, location, obj)
         {
-            ItemTimer = 300;
+            ItemTimer = 500;
         }
     }
 }

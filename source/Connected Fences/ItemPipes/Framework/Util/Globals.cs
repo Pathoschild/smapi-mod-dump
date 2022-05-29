@@ -20,6 +20,8 @@ namespace ItemPipes.Framework.Util
     {
         public static bool Debug { get; set; }
         public static bool UltraDebug { get; set; }
-        public static bool DisableItemSending { get; set; }
+        public static bool ItemSending { get; set; }
+        public static bool IOPipeStatePopup { get; set; }
+
     }
 }

@@ -47,6 +47,7 @@ mods:
    Profit Calculator
    Pyromancer's Journey
    Realtime Minimap
+   Responsive Knockback
    Rush Orders
    Sleepy Eye
    SpaceCore
@@ -59,9 +60,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 5b80730bb3f9b830bb8912ff9ae386da63af61c6
+   commit b8ab4c5d523e81aee9fef47038f6d85e15c7701e
    Author: Chase Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Tue Mar 29 22:47:38 2022 -0400
+   Date:   Sun May 15 19:38:12 2022 -0400
    
-       Dyeable hats prototype and fix for Mac custom location context saving
+       1.9.1 GMCM
    

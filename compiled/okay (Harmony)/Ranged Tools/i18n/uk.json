@@ -1,0 +1,60 @@
+{
+	// Option Headers	
+	"headerRanges": "Діапазони дії",
+	"headerUseOnTile": "Придатність",
+	"headerFaceClick": "Повернення в бік натискання",
+	"headerMisc": "Різне",
+	
+	// Ranges
+	"optionRangeName": "Діапазон {{subject}}",
+	"optionRangeTooltip": "Максимальний діапазон {{subject}} в клітинках для гравця.",
+	
+	"axeForRangeName": "дії сокири",
+	"axeForRangeTooltip": "дії сокири",
+	"pickaxeForRangeName": "дії кайла",
+	"pickaxeForRangeTooltip": "дії кайла",
+	"hoeForRangeName": "дії мотики",
+	"hoeForRangeTooltip": "дії мотики",
+	"wateringCanForRangeName": "дії лійки",
+	"wateringCanForRangeTooltip": "дії лійки",
+	"seedsForRangeName": "саджання насіння",
+	"seedsForRangeTooltip": "саджання насіння/добрива",
+	"objectsForRangeName": "розміщення об'єктів",
+	"objectsForRangeTooltip": "розміщення об'єктів",
+	
+	"rangeUnlimited": "необмежений",
+	"rangeDefault": "1 клітинка (стандарт.)",
+	"rangeExtended": "{{tiles}} кл.",
+	
+	// Usability
+	"optionSelfUsabilityName": "Викор. {{tool}} на кл. гравця",
+	"optionSelfUsabilityTooltip": "Дозволяє використовувати {{tool}} на тій самій клітинці, на якій знаходиться гравець.",
+	
+	"axeForUsabilityName": "сокиру",
+	"axeForUsabilityTooltip": "сокиру",
+	"pickaxeForUsabilityName": "кайло",
+	"pickaxeForUsabilityTooltip": "кайло",
+	"hoeForUsabilityName": "мотику",
+	"hoeForUsabilityTooltip": "мотику",
+	
+	// Turn To Click
+	"optionToolFaceClickName": "Завжди викор. інстр. в бік натискання",
+	"optionToolFaceClickTooltip": "Автоматично повертає гравця в бік курсору під час використання інструментів.",
+	
+	"optionWeaponFaceClickName": "Завжди викор. зброю в бік натискання",
+	"optionWeaponFaceClickTooltip": "Автоматично повертає гравця в бік курсору під час використання зброї.",
+	
+	// Miscellaneous
+	"optionToolHitLocationName": "Показувати місцезнаход. індик. інстр.",
+	"optionToolHitLocationTooltip": "Впливає на роботу індикатора розташування інструмента (якщо ввімкнено).\nОригінальна логіка: дотримування діапазонів звичайної гри.\nНова логіка: враховування розширених діапазонів.\nКомбінація: вказування кількох типів одночасно.",
+	
+	"locationLogicOriginal": "Оригінальна логіка",
+	"locationLogicNew": "Нова логіка (за замовч.)",
+	"locationLogicCombined": "Комбінація",
+	
+	"optionAllowRangedChargeName": "Дозволити розширення діапазонів",
+	"optionAllowRangedChargeTooltip": "Дозволяє розширювати діапазони дії інструмента, які виникатимуть із позиції курсора, а не від гравця.",
+	
+	"optionOnClickOnlyName": "Користувацький діапазон при натисканні",
+	"optionOnClickOnlyTooltip": "Якщо ввімкнено, розширені діапазони застосовуються лише під час використання інструментів за допомогою натискання. Якщо вимкнено, вони застосовуватимуться для всіх типів використання інструментів.",
+}

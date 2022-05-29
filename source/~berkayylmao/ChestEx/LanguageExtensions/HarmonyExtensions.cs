@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -32,20 +32,20 @@
 using System;
 using System.Reflection;
 
-using Harmony;
+using HarmonyLib;
 
 using StardewModdingAPI;
 
 namespace ChestEx.LanguageExtensions {
   public static class HarmonyExtensions {
-    public static void PatchEx(this HarmonyInstance harmony,           MethodBase original, HarmonyMethod prefix = null, HarmonyMethod postfix = null,
-                               HarmonyMethod        transpiler = null, String     reason = "") {
+    public static void PatchEx(this Harmony harmony, MethodBase original, HarmonyMethod prefix = null, HarmonyMethod postfix = null,
+                               HarmonyMethod transpiler = null, String reason = "") {
       GlobalVars.gSMAPIMonitor.Log($"Trying to patch '{original}'...", LogLevel.Debug);
       String details = String.IsNullOrWhiteSpace(reason) ? String.Empty : $" to {reason}";
 
-      Harmony.Patches prev = harmony.GetPatchInfo(original);
+      var prev = Harmony.GetPatchInfo(original);
       if (harmony.Patch(original, prefix, postfix, transpiler) is null) GlobalVars.gSMAPIMonitor.Log($"Could NOT patch '{original}'{details}!", LogLevel.Error);
-      Harmony.Patches after = harmony.GetPatchInfo(original);
+      var after = Harmony.GetPatchInfo(original);
 
       GlobalVars.gSMAPIMonitor.Log($"Patched '{original}'{details}.", LogLevel.Info);
       if (prefix is not null && (after is null || prev is not null && after.Prefixes.Count < prev.Prefixes.Count))

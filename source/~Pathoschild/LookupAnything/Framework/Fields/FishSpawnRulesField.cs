@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,8 +51,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         private IEnumerable<KeyValuePair<IFormattedText[], bool>> GetConditions(GameHelper gameHelper, int fishID)
         {
             // get spawn data
-            FishSpawnData spawnRules = gameHelper.GetFishSpawnRules(fishID);
-            if (spawnRules == null || !spawnRules.Locations.Any())
+            FishSpawnData? spawnRules = gameHelper.GetFishSpawnRules(fishID);
+            if (spawnRules?.Locations?.Any() != true)
                 yield break;
 
             // not caught uet
@@ -72,7 +70,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 yield return this.GetCondition(I18n.Item_FishSpawnRules_WeatherRainy(), Game1.isRaining);
 
             // time of day
-            if (spawnRules.TimesOfDay.Any())
+            if (spawnRules.TimesOfDay?.Any() == true)
             {
                 yield return this.GetCondition(
                     label: I18n.Item_FishSpawnRules_Time(
@@ -122,7 +120,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
                 var summary = new List<IFormattedText> { new FormattedText(I18n.Item_FishSpawnRules_LocationsBySeason_Label()) };
                 foreach (string season in this.Seasons)
                 {
-                    if (locationsBySeason.TryGetValue(season, out string[] locationNames))
+                    if (locationsBySeason.TryGetValue(season, out string[]? locationNames))
                     {
                         summary.Add(new FormattedText(
                             text: Environment.NewLine + I18n.Item_FishSpawnRules_LocationsBySeason_SeasonLocations(season: gameHelper.TranslateSeason(season), locations: string.Join(", ", locationNames)),
@@ -156,8 +154,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <param name="locations">The locations to check.</param>
         private bool HaveSameSeasons(IEnumerable<FishSpawnLocationData> locations)
         {
-            ISet<string> seasons = null;
-            foreach (var location in locations)
+            ISet<string>? seasons = null;
+            foreach (FishSpawnLocationData location in locations)
             {
                 if (seasons == null)
                     seasons = location.Seasons;

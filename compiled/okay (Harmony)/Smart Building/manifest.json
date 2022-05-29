@@ -1,7 +1,7 @@
 {
 	"Name": "Smart Building",
 	"Author": "DecidedlyHuman",
-	"Version": "1.4.0",
+	"Version": "1.5.1",
 	"Description": "Allows you to build fences/walls/paths, etc. in a much more streamlined way.",
 	"UniqueID": "DecidedlyHuman.SmartBuilding",
 	"EntryDll": "SmartBuilding.dll",

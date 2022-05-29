@@ -69,12 +69,13 @@ namespace ItemPipes.Framework
                     output.ProcessExchanges();
                 }
             }
+
         }
 
         public bool AddNode(Node node)
         {
             bool added = false;
-            if (!Nodes.Contains(node))
+            if (node.ParentNetwork == this && !Nodes.Contains(node))
             {
                 added = true;
                 Nodes.Add(node);
@@ -94,6 +95,10 @@ namespace ItemPipes.Framework
                 {
                     Invis = (PPMNode)node;
                 }
+            }
+            else if(node.ParentNetwork != this)
+            {
+                //Printer.Info($"Tried to add {node.Print()} to N{ID}, but they dont match.");
             }
             return added;
         }
@@ -178,6 +183,17 @@ namespace ItemPipes.Framework
                         else
                         {
                             if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} already connected"); }
+                            if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Updating path from {output.Print()} to {input.Print()} connected"); }
+                            List<PipeNode> path = output.GetPath(input);
+                            if (path.Count > 0 && path.Last().Equals(input))
+                            {
+                                output.ConnectedInputs[input] = path;
+                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Path succesfully updated!"); }
+                            }
+                            else
+                            {
+                                if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Error updating path"); }
+                            }
                         }
                         input.UpdateSignal();
                     }
@@ -198,7 +214,7 @@ namespace ItemPipes.Framework
                     if (output.IsInputConnected(input))
                     {
                         if (Globals.UltraDebug) { Printer.Info($"[N{ID}] {input.Print()} already connected"); }
-                        if (!output.CanConnectedWith(input))
+                        if (!output.CanConnectedWith(input) || input.ConnectedContainer == null)
                         {
                             canDisconnect = output.RemoveConnectedInput(input);
                             if (Globals.UltraDebug) { Printer.Info($"[N{ID}] Can disconnect with {input.Print()}? -> {canDisconnect}"); }
@@ -252,37 +268,48 @@ namespace ItemPipes.Framework
             }
         }
 
+        public void RemoveAllAdjacents()
+        {
+            foreach (Node node in Nodes)
+            {
+                node.RemoveAllAdjacents();
+            }
+        }
         public string Print()
         {
             StringBuilder graph = new StringBuilder();
             if (!Nodes.All(n=>n is ContainerNode))
             {
                 graph.Append($"\n----------------------------");
-                graph.Append($"\nPriting Network [{ID}]: \n");
+                graph.Append($"\nPriting Network [{ID}] {this.GetHashCode().ToString()}: \n");
                 graph.Append("Networks: \n");
                 graph.Append("Inputs: \n");
                 foreach (InputPipeNode input in Inputs)
                 {
-                    graph.Append(input.Obj.Name + input.Position.ToString() + input.GetHashCode().ToString() + ", ");
+                    graph.Append(input.Print() + ", ");
                 }
                 graph.Append("\n");
                 graph.Append("Outputs: \n");
                 foreach (OutputPipeNode output in Outputs)
                 {
-                    graph.Append(output.Obj.Name + output.Position.ToString() + output.GetHashCode().ToString() + ", \n");
+                    graph.Append(output.Print() + ", \n");
                     foreach (InputPipeNode input in output.ConnectedInputs.Keys)
                     {
                         graph.Append("Output Connected Inputs: \n");
-                        graph.Append(input.Obj.Name + input.Position.ToString() + input.GetHashCode().ToString() + " | ");
+                        graph.Append(input.Print() + " | ");
                     }
                     graph.Append("\n");
                 }
                 graph.Append("Connectors: \n");
                 foreach (ConnectorPipeNode conn in Connectors)
                 {
-                    graph.Append(conn.Obj.Name + conn.Position.ToString() + conn.GetHashCode().ToString() + ", ");
+                    graph.Append(conn.Print() + ", ");
                 }
                 graph.Append("\n");
+            }
+            else
+            {
+                graph.Append($"Network {ID} is only chests.");
             }
             return graph.ToString();
         }

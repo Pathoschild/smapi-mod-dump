@@ -33,6 +33,7 @@
 
 	"Magic": {
 		"CustomScroll": true,
+		"CustomTooltip": true,
 		"SeasonTextColor": "white",
 
 		"CalendarLabelColor": "#8073D1",

@@ -32,7 +32,7 @@ namespace MarketDay.Utility
         /// <param name="tile">the coordinates of the tile</param>
         /// <returns>The tile property if there is one, null if there isn't</returns>
         /// 
-        public  static IPropertyCollection GetTileProperty(GameLocation map, string layer, Vector2 tile)
+        public static IPropertyCollection GetTileProperty(GameLocation map, string layer, Vector2 tile)
         {
             var checkTile = map?.Map.GetLayer(layer).Tiles[(int)tile.X, (int)tile.Y];
             return checkTile?.Properties;

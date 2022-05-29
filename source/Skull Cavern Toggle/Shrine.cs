@@ -22,7 +22,7 @@ namespace SkullCavernToggle
         public void ApplyTiles(IModHelper helper, bool multiplayerpatch = false)
         {
             // Get tilesheet pathway
-            string tilesheetPath = helper.Content.GetActualAssetKey("assets\\snake_shrine.png", ContentSource.ModFolder);
+            string tilesheetPath = helper.ModContent.GetInternalAssetName("assets\\snake_shrine.png").Name;
 
             // Get skullcave location
             GameLocation location = Game1.getLocationFromName("SkullCave");

@@ -11,7 +11,7 @@
 {
   "Name": "Farmer Portraits",
   "Author": "aedenthorn",
-  "Version": "0.2.1",
+  "Version": "0.3.0",
   "Description": "Farmer Portraits.",
   "UniqueID": "aedenthorn.FarmerPortraits",
   "EntryDll": "FarmerPortraits.dll",

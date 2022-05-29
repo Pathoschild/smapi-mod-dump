@@ -12,7 +12,7 @@ using System;
 
 namespace SpriteMaster.Configuration;
 
-static class Attributes {
+internal static class Attributes {
 	internal abstract class ConfigAttribute : Attribute { };
 
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = true)]
@@ -49,6 +49,7 @@ static class Attributes {
 			FlushAllCaches = FlushTextureCache | FlushAllInternalCaches,
 			GarbageCollect = 1 << 5,
 			ResetDisplay = 1 << 6,
+			RequireRestart = 1 << 7
 		}
 
 		internal readonly Flag Flags = Flag.None;
@@ -175,5 +176,14 @@ static class Attributes {
 
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
 	internal sealed class GMCMHiddenAttribute : ConfigAttribute {
+	}
+
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true)]
+	internal sealed class MenuNameAttribute : ConfigAttribute {
+		internal readonly string Name;
+
+		internal MenuNameAttribute(string name) {
+			Name = name;
+		}
 	}
 }

@@ -41,7 +41,7 @@ namespace Dem1se.CustomReminders.MobilePhoneModAPI
             IMobilePhoneApi api = Globals.Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
             if (api != null)
             {
-                Texture2D appIcon = Globals.Helper.Content.Load<Texture2D>(System.IO.Path.Combine("assets", "mpmIcon.png"));
+                Texture2D appIcon = Globals.Helper.ModContent.Load<Texture2D>(System.IO.Path.Combine("assets", "mpmIcon.png"));
                 bool success = api.AddApp(Globals.Helper.ModRegistry.ModID, "Custom Reminders", ModEntry.ShowReminderMenu, appIcon);
                 Globals.Monitor.Log($"Loaded phone app successfully: {success}", LogLevel.Debug);
             }

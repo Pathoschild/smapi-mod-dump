@@ -1,0 +1,10 @@
+{
+  "Name": "Silent Alarm Clock",
+  "Author": "Invatorzen",
+  "Version": "1.0",
+  "Description": "This mod allows you to change the time you wake up",
+  "UniqueID": "invatorzen.AC",
+  "EntryDll": "AlarmClock.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:12164"]
+}

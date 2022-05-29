@@ -11,39 +11,29 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace BetterJunimos {
-    public class JunimoEditor : IAssetEditor {
-        private readonly IContentHelper _content;
-
-        public JunimoEditor(IContentHelper content) {
-            _content = content;
-        }
-
-        public bool CanEdit<T>(IAssetInfo asset) {
-            if (BetterJunimos.Config.FunChanges.JunimosAlwaysHaveLeafUmbrellas || Game1.isRaining) {
-                return asset.AssetNameEquals(@"Characters\Junimo");
-            }
-            if (Game1.IsWinter) {
-                return asset.AssetNameEquals(@"Characters\Junimo");
-            }
-            return false;
-        }
-
-        public void Edit<T>(IAssetData asset) {
-            if (BetterJunimos.Config.FunChanges.JunimosAlwaysHaveLeafUmbrellas || Game1.isRaining) {
-                Rectangle rectangle = new Rectangle(0, 0, 128, 128);
-                string umbrella = BetterJunimos.Config.FunChanges.MoreColorfulLeafUmbrellas ? "JunimoUmbrellaOnly_Grayscale" : "JunimoUmbrellaOnly";
-                Texture2D customTexture = _content.Load<Texture2D>("assets/" + umbrella + ".png");
-                asset.AsImage().PatchImage(customTexture, rectangle, rectangle, PatchMode.Overlay);
-                return;
-            }
-            if (Game1.IsWinter) {
-                Rectangle rectangle = new Rectangle(0, 0, 128, 128);
-                string beanie = "JunimoBeanie";
-                Texture2D customTexture = _content.Load<Texture2D>("assets/" + beanie + ".png");
-                asset.AsImage().PatchImage(customTexture, rectangle, rectangle, PatchMode.Overlay);
+    public static class JunimoEditor {
+        internal static void OnAssetRequested(object sender, AssetRequestedEventArgs e) { 
+            if (e.NameWithoutLocale.IsEquivalentTo("Characters/Junimo")) {
+                e.Edit(asset => {
+                    var editor = asset.AsImage();
+                    
+                    if (BetterJunimos.Config.FunChanges.JunimosAlwaysHaveLeafUmbrellas || Game1.isRaining) {
+                        var rectangle = new Rectangle(0, 0, 128, 128);
+                        var umbrella = BetterJunimos.Config.FunChanges.MoreColorfulLeafUmbrellas ? "JunimoUmbrellaOnly_Grayscale" : "JunimoUmbrellaOnly";
+                        var customTexture = BetterJunimos.SHelper.ModContent.Load<Texture2D>($"assets/{umbrella}.png");
+                        editor.PatchImage(customTexture, rectangle, rectangle, PatchMode.Overlay);
+                        return;
+                    }
+                    if (Game1.IsWinter) {
+                        var rectangle = new Rectangle(0, 0, 128, 128);
+                        var customTexture = BetterJunimos.SHelper.ModContent.Load<Texture2D>($"assets/JunimoBeanie.png");
+                        editor.PatchImage(customTexture, rectangle, rectangle, PatchMode.Overlay);
+                    }
+                });
             }
         }
     }

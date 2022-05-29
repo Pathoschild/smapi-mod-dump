@@ -1,0 +1,21 @@
+{
+  // Tools
+  "tools.name.paint_bucket": "Ведро с краской",
+  "tools.name.paint_brush": "Кисть для рисования",
+  "tools.name.scissors": "Ножницы",
+
+  "tools.description.paint_bucket": "Позволяет применять различные текстуры к поддерживаемым объектам.",
+  "tools.description.paint_brush": "Позволяет копировать текстуру и применять её к другим объектам того же типа.",
+  "tools.description.scissors": "Позволяет применять различные текстуры к существам.",
+
+  // Messages
+  "messages.warning.no_textures_for_season": "{{itemName}} не имеет альтернативных текстур для текущего сезона!",
+  "messages.warning.paint_not_placeable": "На это нельзя наносить краску!",
+  "messages.warning.brush_is_empty": "Кисть не имеет скопируемой текстуры! Щелкните правой кнопкой мыши на объекте, чтобы скопировать текстуру.",
+  "messages.warning.brush_not_supported": "Кисть не поддерживает копирование текстур с этого объекта.",
+  "messages.warning.invalid_copied_texture": "Скопированная текстура {{textureName}} не работает на этом объекте!",
+  "messages.warning.custom_building_not_supported": "Данное здание ({{itemName}}) не поддерживает вариации текстур.",
+
+  "messages.info.texture_copied": "Текстура скопирована!",
+  "messages.info.cleared_brush": "Кисть очищена!"
+}

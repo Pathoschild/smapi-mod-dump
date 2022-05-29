@@ -17,7 +17,7 @@ sealed class ScalerInfo : IScalerInfo {
 	public Resample.Scaler Scaler => Resample.Scaler.SuperXBR;
 	public int MinScale => 1;
 	public int MaxScale => Config.MaxScale;
-	public XNA.Graphics.TextureFilter Filter => XNA.Graphics.TextureFilter.Linear;
+	public XGraphics.TextureFilter Filter => XGraphics.TextureFilter.Linear;
 	public bool PremultiplyAlpha => true;
 	public bool GammaCorrect => true;
 	public bool BlockCompress => true;

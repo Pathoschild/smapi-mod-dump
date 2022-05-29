@@ -42,22 +42,29 @@ internal static class ToolbarPatches
                 if (button.containsPoint(x, y) && int.TryParse(button.name, out int val) && Game1.player.Items[val] is FishingRod fishingRod)
                 {
                     SObject activeObj = Game1.player.ActiveObject;
-                    Game1.player.ActiveObject = null; // setting ActiveObject to null removes the active object from inventory.
                     switch (activeObj.Category)
                     {
                         case SObject.baitCategory:
-                            if (fishingRod.attachments[0] is SObject bait)
+                            if (fishingRod.UpgradeLevel >= 2)
                             {
-                                Game1.player.ActiveObject = bait; // settting the ActiveObject to an item adds it to inventory.
+                                Game1.player.ActiveObject = null; // setting ActiveObject to null removes the active object from inventory.
+                                if (fishingRod.attachments[0] is SObject bait)
+                                {
+                                    Game1.player.ActiveObject = bait; // settting the ActiveObject to an item adds it to inventory.
+                                }
+                                fishingRod.attachments[0] = activeObj;
                             }
-                            fishingRod.attachments[0] = activeObj;
                             return;
                         case SObject.tackleCategory:
-                            if (fishingRod.attachments[1] is SObject tackle)
+                            if (fishingRod.UpgradeLevel > 2)
                             {
-                                Game1.player.ActiveObject = tackle;
+                                Game1.player.ActiveObject = null; // setting ActiveObject to null removes the active object from inventory.
+                                if (fishingRod.attachments[1] is SObject tackle)
+                                {
+                                    Game1.player.ActiveObject = tackle;
+                                }
+                                fishingRod.attachments[1] = activeObj;
                             }
-                            fishingRod.attachments[1] = activeObj;
                             return;
                         default:
                             return;

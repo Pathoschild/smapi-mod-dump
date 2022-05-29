@@ -16,22 +16,16 @@ namespace TehPers.FishingOverhaul.Api.Events
     /// <summary>
     /// Event data for after the chance for a fish is calculated.
     /// </summary>
-    public class CalculatedFishChanceEventArgs : EventArgs
+    public class CalculatedFishChanceEventArgs : ChanceCalculatedEventArgs
     {
-        private double chanceForFish;
-
-        /// <summary>
-        /// Information about the <see cref="Farmer"/> that is fishing.
-        /// </summary>
-        public FishingInfo FishingInfo { get; }
-
         /// <summary>
         /// The chance of hitting a fish (instead of trash).
         /// </summary>
+        [Obsolete("Use " + nameof(ChanceCalculatedEventArgs.Chance) + " instead.")]
         public double ChanceForFish
         {
-            get => this.chanceForFish;
-            set => this.chanceForFish = Math.Clamp(value, 0.0, 1.0);
+            get => this.Chance;
+            set => this.Chance = value;
         }
 
 
@@ -42,9 +36,8 @@ namespace TehPers.FishingOverhaul.Api.Events
         /// <param name="chanceForFish">The chance of hitting a fish (instead of trash).</param>
         /// <exception cref="ArgumentNullException">An argument was null.</exception>
         public CalculatedFishChanceEventArgs(FishingInfo fishingInfo, double chanceForFish)
+            : base(fishingInfo, chanceForFish)
         {
-            this.FishingInfo = fishingInfo ?? throw new ArgumentNullException(nameof(fishingInfo));
-            this.ChanceForFish = chanceForFish;
         }
     }
 }

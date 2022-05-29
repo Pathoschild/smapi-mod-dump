@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using StardewModdingAPI;
 
 namespace ContentPatcher.Framework.Patches
@@ -27,10 +25,10 @@ namespace ContentPatcher.Framework.Patches
         public bool WasReady { get; }
 
         /// <summary>The value of <see cref="IPatch.FromAsset"/> before the update.</summary>
-        public string WasFromAsset { get; }
+        public string? WasFromAsset { get; }
 
         /// <summary>The value of <see cref="IPatch.TargetAsset"/> before the update.</summary>
-        public IAssetName WasTargetAsset { get; }
+        public IAssetName? WasTargetAsset { get; }
 
         /// <summary>Whether the asset will be invalidated from the cache as a result of the change.</summary>
         public bool WillInvalidate { get; }
@@ -45,7 +43,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="wasFromAsset">The value of <see cref="IPatch.FromAsset"/> before the update.</param>
         /// <param name="wasTargetAsset">The value of <see cref="IPatch.TargetAsset"/> before the update.</param>
         /// <param name="willInvalidate">Whether the asset will be invalidated from the cache as a result of the change.</param>
-        public PatchAuditChange(IPatch patch, bool wasReady, string wasFromAsset, IAssetName wasTargetAsset, bool willInvalidate)
+        public PatchAuditChange(IPatch patch, bool wasReady, string? wasFromAsset, IAssetName? wasTargetAsset, bool willInvalidate)
         {
             this.Patch = patch;
             this.WasReady = wasReady;

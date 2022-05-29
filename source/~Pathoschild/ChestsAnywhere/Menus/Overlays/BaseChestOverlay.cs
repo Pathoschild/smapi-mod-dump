@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -72,6 +71,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         private readonly KeybindList EscapeKeybind = KeybindList.Parse($"{SButton.Escape}, {SButton.ControllerB}");
 
         /// <summary>Whether to show the category dropdown.</summary>
+        [MemberNotNullWhen(true, nameof(BaseChestOverlay.ChestDropdown))]
         protected bool ShowCategoryDropdown => this.Categories.Length > 1;
 
         /****
@@ -93,7 +93,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         protected Dropdown<ManagedChest> ChestDropdown;
 
         /// <summary>The category dropdown.</summary>
-        protected Dropdown<string> CategoryDropdown;
+        protected Dropdown<string>? CategoryDropdown;
 
         /// <summary>The edit button.</summary>
         protected ClickableTextureComponent EditButton;
@@ -135,7 +135,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         private ClickableTextureComponent EditExitButton;
 
         /// <summary>The textboxes managed by Chests Anywhere.</summary>
-        private IEnumerable<ValidatedTextBox> ManagedTextboxes => new[] { this.EditNameField, this.EditOrderField, this.EditCategoryField }.Where(p => p != null);
+        private IEnumerable<ValidatedTextBox> ManagedTextboxes => new[] { this.EditNameField, this.EditOrderField, this.EditCategoryField };
 
 
         /*********
@@ -153,10 +153,10 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         }
 
         /// <inheritdoc />
-        public event Action<ManagedChest> OnChestSelected;
+        public event Action<ManagedChest>? OnChestSelected;
 
         /// <inheritdoc />
-        public event Action<ManagedChest> OnAutomateOptionsChanged;
+        public event Action<ManagedChest>? OnAutomateOptionsChanged;
 
 
         /*********
@@ -179,6 +179,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         /// <summary>Release all resources.</summary>
         public override void Dispose()
         {
+            this.OnAutomateOptionsChanged = null;
             this.OnChestSelected = null;
             base.Dispose();
         }
@@ -215,6 +216,8 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
             this.Categories = chests.Select(p => p.DisplayCategory).Distinct().OrderBy(p => p, HumanSortComparer.DefaultIgnoreCase).ToArray();
             this.Config = config;
             this.Keys = keys;
+
+            this.ReinitializeBaseComponents();
         }
 
         /// <summary>Draw the overlay to the screen over the UI.</summary>
@@ -271,7 +274,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
                 }
 
                 // editable text fields
-                var fields = new[] { Tuple.Create(nameLabel, this.EditNameField), Tuple.Create(categoryLabel, this.EditCategoryField), Tuple.Create(orderLabel, this.EditOrderField) }.Where(p => p != null);
+                var fields = new[] { Tuple.Create(nameLabel, this.EditNameField), Tuple.Create(categoryLabel, this.EditCategoryField), Tuple.Create(orderLabel, this.EditOrderField) };
                 foreach (var field in fields)
                 {
                     // get data
@@ -340,7 +343,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        protected override void ReceiveButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        protected override void ReceiveButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
             if (!this.IsInitialized)
                 return;
@@ -520,7 +523,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
                 case Element.CategoryList:
                     {
                         // select category
-                        if (this.CategoryDropdown.TryClick(x, y, out bool itemClicked, out bool dropdownToggled))
+                        if (this.CategoryDropdown!.TryClick(x, y, out bool itemClicked, out bool dropdownToggled))
                         {
                             if (itemClicked)
                             {
@@ -597,8 +600,22 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         /*********
         ** Private methods
         *********/
-        /// <summary>Initialize the edit-chest overlay for rendering.</summary>
-        protected virtual void ReinitializeComponents()
+        /// <summary>Initialize the base edit-chest overlay for rendering.</summary>
+        [MemberNotNull(
+            nameof(BaseChestOverlay.ChestDropdown),
+            nameof(BaseChestOverlay.EditButton),
+            nameof(BaseChestOverlay.EditNameField),
+            nameof(BaseChestOverlay.EditCategoryField),
+            nameof(BaseChestOverlay.EditOrderField),
+            nameof(BaseChestOverlay.EditHideChestField),
+            nameof(BaseChestOverlay.EditAutomatePreventRemovingStacks),
+            nameof(BaseChestOverlay.EditAutomateStorage),
+            nameof(BaseChestOverlay.EditAutomateFetch),
+            nameof(BaseChestOverlay.EditSaveButtonArea),
+            nameof(BaseChestOverlay.EditResetButtonArea),
+            nameof(BaseChestOverlay.EditExitButton)
+        )]
+        private void ReinitializeBaseComponents()
         {
             Rectangle bounds = new Rectangle(this.Menu.xPositionOnScreen, this.Menu.yPositionOnScreen, this.Menu.width, this.Menu.height);
 
@@ -616,7 +633,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
             // chest dropdown
             {
                 ManagedChest[] chests = this.Chests.Where(chest => !this.ShowCategoryDropdown || chest.DisplayCategory == this.SelectedCategory).ToArray();
-                ManagedChest selected = ChestFactory.GetBestMatch(chests, this.Chest);
+                ManagedChest? selected = ChestFactory.GetBestMatch(chests, this.Chest);
                 this.ChestDropdown = new Dropdown<ManagedChest>(bounds.X, bounds.Y, this.Font, selected, chests, chest => chest.DisplayName);
 
                 if (Constants.TargetPlatform != GamePlatform.Android)
@@ -666,12 +683,18 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
             this.EditExitButton = new ClickableTextureComponent(new Rectangle(bounds.Right - 9 * Game1.pixelZoom, bounds.Y - Game1.pixelZoom * 2, CommonSprites.Icons.ExitButton.Width * Game1.pixelZoom, CommonSprites.Icons.ExitButton.Height * Game1.pixelZoom), CommonSprites.Icons.Sheet, CommonSprites.Icons.ExitButton, Game1.pixelZoom);
         }
 
+        /// <summary>Initialize the edit-chest overlay for rendering.</summary>
+        protected virtual void ReinitializeComponents()
+        {
+            this.ReinitializeBaseComponents();
+        }
+
         /// <summary>Set the form values to match the underlying chest.</summary>
         private void FillForm()
         {
             this.EditNameField.Text = this.Chest.DisplayName;
             this.EditCategoryField.Text = this.Chest.DisplayCategory;
-            this.EditOrderField.Text = this.Chest.Order?.ToString();
+            this.EditOrderField.Text = this.Chest.Order?.ToString() ?? string.Empty;
             this.EditHideChestField.Value = this.Chest.IsIgnored;
             this.EditAutomatePreventRemovingStacks.Value = this.Chest.PreventRemovingStacks;
             this.EditAutomateStorage.TrySelect(this.Chest.AutomateStoreItems);
@@ -775,7 +798,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         /// <param name="chests">The chests to search.</param>
         private int GetChestIndex(ManagedChest chest, ManagedChest[] chests)
         {
-            ManagedChest match = ChestFactory.GetBestMatch(chests, chest);
+            ManagedChest? match = ChestFactory.GetBestMatch(chests, chest);
             return match != null
                 ? Array.IndexOf(chests, match)
                 : -1;
@@ -818,7 +841,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         {
             this.EditNameField.Text = this.Chest.DisplayName;
             this.EditCategoryField.Text = this.Chest.DisplayCategory;
-            this.EditOrderField.Text = this.Chest.Order?.ToString();
+            this.EditOrderField.Text = this.Chest.Order?.ToString() ?? string.Empty;
             this.EditHideChestField.Value = this.Chest.IsIgnored;
             this.EditAutomatePreventRemovingStacks.Value = this.Chest.PreventRemovingStacks;
             this.EditAutomateStorage.TrySelect(this.Chest.AutomateStoreItems);

@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/TehPers/StardewValleyMods
+**
+*************************************************/
+
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "Ridgeside Village Teh's Fishing Overhaul",
+  "UniqueID": "TehPers.RSVTFO",
+  "Author": "TehPers",
+  "Description": "Adds special fishing content from Ridgeside Village to TFO.",
+  "Version": "1.1.0",
+  "ContentPackFor": {
+    "UniqueID": "TehPers.FishingOverhaul",
+    "MinimumVersion": "3.3.0"
+  },
+  "UpdateKeys": ["Nexus:866@TehPers.RSVTFO"],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.24.5"
+    }
+  ]
+}

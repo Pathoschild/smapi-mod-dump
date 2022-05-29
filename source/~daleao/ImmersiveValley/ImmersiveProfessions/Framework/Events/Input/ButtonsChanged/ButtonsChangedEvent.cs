@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,10 +19,10 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IInputEvents.ButtonsChanged"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class ButtonsChangedEvent : BaseEvent
 {
-    /// <summary>Raised after the player pressed/released any buttons on the keyboard, mouse, or controller.</summary>
+    /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+    internal void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
     {
         if (enabled.Value) OnButtonsChangedImpl(sender, e);
     }

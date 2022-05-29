@@ -1,0 +1,46 @@
+{
+  "EnableMod": true,
+  "RequireToggle": true,
+  "TextScale": 1.0,
+  "CropTransparency": 0.5,
+  "ToggleButton": "LeftAlt",
+  "ShowCropName": true,
+  "ShowReadyText": false,
+  "ShowCurrentPhase": true,
+  "ShowDaysInCurrentPhase": true,
+  "ShowTotalGrowth": true,
+  "ReadyText": "Ready!",
+  "PhaseText": "Phase {0}/{1}",
+  "CurrentText": "Day {0}/{1}",
+  "TotalText": "Growth {0}/{1}",
+  "CurrentPhaseColor": {
+    "B": 255,
+    "G": 0,
+    "R": 0,
+    "A": 255
+  },
+  "CurrentGrowthColor": {
+    "B": 0,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "TotalGrowthColor": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  },
+  "ReadyColor": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  },
+  "NameColor": {
+    "B": 0,
+    "G": 255,
+    "R": 0,
+    "A": 255
+  }
+}

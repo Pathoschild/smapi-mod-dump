@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -37,16 +37,16 @@ using Microsoft.Xna.Framework;
 
 namespace ChestEx.Types.BaseTypes {
   public class CustomComponentData : ICustomComponent.IData {
-    public Boolean mIsActive         { get; protected set; }
+    public Boolean mIsActive { get; protected set; }
     public Boolean mIsCursorHovering { get; private set; }
-    public Boolean mIsEnabled        { get; private set; } = true;
-    public Colours mColours          { get; set; }
-    public String  mHoverText        { get; set; }
-    public Single  mLayerDepth       { get; }
+    public Boolean mIsEnabled { get; private set; } = true;
+    public Colours mColours { get; set; }
+    public String mHoverText { get; set; }
+    public Single mLayerDepth { get; }
 
     public Color mBGColour =>
       this.mIsEnabled ?
-        this.mIsActive         ? this.mColours.mActiveColour :
+        this.mIsActive ? this.mColours.mActiveColour :
         this.mIsCursorHovering ? this.mColours.mHoverColour : this.mColours.mBackgroundColour :
         this.mColours.mBackgroundColour.MultRGB(0.5f);
 
@@ -57,8 +57,8 @@ namespace ChestEx.Types.BaseTypes {
     public virtual void UpdateCursorStatus(Boolean isCursorInBounds, InputStateEx inputState = null) { this.mIsCursorHovering = isCursorInBounds; }
 
     public CustomComponentData(Colours colours, Single layerDepth, String hoverText) {
-      this.mColours    = colours;
-      this.mHoverText  = hoverText;
+      this.mColours = colours;
+      this.mHoverText = hoverText;
       this.mLayerDepth = layerDepth;
     }
   }

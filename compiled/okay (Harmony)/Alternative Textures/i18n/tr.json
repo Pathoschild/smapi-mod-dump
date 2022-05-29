@@ -1,0 +1,21 @@
+{
+	// Tools
+	"tools.name.paint_bucket": "Boya Kovası",
+	"tools.name.paint_brush": "Boya Fırçası",
+	"tools.name.scissors": "Makas",
+
+	"tools.description.paint_bucket": "Desteklenen nesnelere farklı desenler uygulamanı sağlar.",
+	"tools.description.paint_brush": "Bir nesneden bir deseni kopyalayıp aynı türde olan başka nesnelere de uygulayabilmeni sağlar.",
+	"tools.description.scissors": "Varlıklarına farklı desenler uygulamanı sağlar.",
+
+	// Messages
+	"messages.warning.no_textures_for_season": "{{itemName}} bu mevsim için alternatif desenlere sahip değil!",
+	"messages.warning.paint_not_placeable": "Bunu boyayamazsın!",
+	"messages.warning.brush_is_empty": "Fırça kopyalanmış bir desene sahip değil! Bir deseni kopyalamak için bir nesnenin üzerine sağ tıkla.",
+	"messages.warning.brush_not_supported": "Fırça bu nesneden desen kopyalayamaz.",
+	"messages.warning.invalid_copied_texture": "Kopyalanmış {{textureName}} deseni bu nesne için uygun değil!",
+	"messages.warning.custom_building_not_supported": "Bu özel bina ({{itemName}}) desen çeşitlerini desteklemiyor.",
+
+	"messages.info.texture_copied": "Desen kopyalandı!",
+	"messages.info.cleared_brush": "Fırça temizlendi!"
+}

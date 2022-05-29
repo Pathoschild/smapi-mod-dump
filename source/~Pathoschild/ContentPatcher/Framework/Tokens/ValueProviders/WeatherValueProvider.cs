@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +32,11 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             .GetEnumValues<LocationContext>()
             .ToDictionary(p => p, _ => Weather.Sun);
 
+        /// <summary>The weather values that can be returned by this token.</summary>
+        private readonly IInvariantSet ValidWeathers = InvariantSets.From(Enum.GetNames(typeof(Weather)));
+
         /// <summary>The input arguments recognized by this token.</summary>
-        private readonly InvariantHashSet ValidInputKeys = new(Enum.GetNames(typeof(LocationContext)).Concat(new[] { "Current" }));
+        private readonly IInvariantSet ValidInputKeys = InvariantSets.From(Enum.GetNames(typeof(LocationContext)).Concat(new[] { "Current" }));
 
         /// <summary>The context for the current location.</summary>
         private LocationContext CurrentLocation;
@@ -82,15 +83,15 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public override InvariantHashSet GetValidPositionalArgs()
+        public override IInvariantSet GetValidPositionalArgs()
         {
             return this.ValidInputKeys;
         }
 
         /// <inheritdoc />
-        public override bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public override bool HasBoundedValues(IInputArguments input, out IInvariantSet allowedValues)
         {
-            allowedValues = new InvariantHashSet(Enum.GetNames(typeof(Weather)));
+            allowedValues = this.ValidWeathers;
             return true;
         }
 
@@ -106,7 +107,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
                     : Weather.Sun.ToString() // the game treats an invalid context (e.g. MAX) as always sunny
                 );
 
-            return new InvariantHashSet(values);
+            return InvariantSets.From(values);
         }
 
 

@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using TehPers.Core.Api.Content;
 using TehPers.Core.Api.Setup;
@@ -22,40 +23,41 @@ namespace TehPers.FishingOverhaul.Services.Tokens
     {
         private const string secretNotesAsset = @"Data\SecretNotes";
 
-        private readonly IAssetTracker assetTracker;
-
+        private readonly IModHelper helper;
+        private readonly IAssetProvider gameAssets;
         private bool updated;
         protected IDictionary<int, string> SecretNotes { get; private set; }
 
-        protected MissingNotesToken(IAssetTracker assetTracker, IAssetProvider gameAssets)
+        protected MissingNotesToken(IModHelper helper, IAssetProvider gameAssets)
         {
-            this.assetTracker =
-                assetTracker ?? throw new ArgumentNullException(nameof(assetTracker));
+            this.helper = helper ?? throw new ArgumentNullException(nameof(helper));
+            this.gameAssets = gameAssets ?? throw new ArgumentNullException(nameof(gameAssets));
 
             this.updated = true;
             this.SecretNotes =
-                gameAssets.Load<Dictionary<int, string>>(MissingNotesToken.secretNotesAsset);
+                this.gameAssets.Load<Dictionary<int, string>>(MissingNotesToken.secretNotesAsset);
         }
 
         void ISetup.Setup()
         {
-            this.assetTracker.AssetLoading += this.OnAssetLoading;
+            this.helper.Events.Content.AssetReady += this.OnAssetLoading;
         }
 
         void IDisposable.Dispose()
         {
-            this.assetTracker.AssetLoading -= this.OnAssetLoading;
+            this.helper.Events.Content.AssetReady -= this.OnAssetLoading;
         }
 
-        private void OnAssetLoading(object? sender, IAssetData e)
+        private void OnAssetLoading(object? sender, AssetReadyEventArgs e)
         {
-            if (!e.AssetNameEquals(MissingNotesToken.secretNotesAsset))
+            if (!e.NameWithoutLocale.IsEquivalentTo(MissingNotesToken.secretNotesAsset))
             {
                 return;
             }
 
             this.updated = true;
-            this.SecretNotes = e.AsDictionary<int, string>().Data;
+            this.SecretNotes =
+                this.gameAssets.Load<Dictionary<int, string>>(MissingNotesToken.secretNotesAsset);
         }
 
         public virtual bool IsReady()

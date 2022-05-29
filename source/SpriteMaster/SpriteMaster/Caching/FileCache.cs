@@ -11,9 +11,11 @@
 using Microsoft.Toolkit.HighPerformance;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Hashing;
 using SpriteMaster.Resample;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
+using SpriteMaster.Types.Spans;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -26,7 +28,7 @@ using System.Threading.Tasks;
 namespace SpriteMaster.Caching;
 
 [SuppressUnmanagedCodeSecurity]
-static class FileCache {
+internal static class FileCache {
 	private const string TextureCacheName = "TextureCache";
 	private const string JunctionCacheName = $"{TextureCacheName}_Current";
 	private static readonly Version AssemblyVersion = typeof(Resampler).Assembly.GetName().Version!;
@@ -43,16 +45,16 @@ static class FileCache {
 	internal static readonly ManualCondition Initialized = new(false);
 	internal static readonly ReaderWriterLockSlim CurrentTaskLock = new(LockRecursionPolicy.SupportsRecursion);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string GetPath(params string[] path) => Path.Combine(LocalDataPath, Path.Combine(path));
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string GetDumpPath(params string[] path) => Path.Combine(DumpPath, Path.Combine(path)).Replace('=', '_');
 
 	[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Unicode)]
 	private struct CacheHeader {
-		internal ulong Assembly = AssemblyHash;
-		internal ulong ConfigHash = Serialize.ConfigHash;
+		private readonly ulong Assembly = AssemblyHash;
+		private readonly ulong ConfigHash = Serialize.ConfigHash;
 		internal ulong DataHash = default;
 		internal Vector2I Size = default;
 		internal PaddingQuad Padding = default;
@@ -63,29 +65,32 @@ static class FileCache {
 		internal uint Scale = default;
 		internal uint UncompressedDataLength = default;
 		internal uint DataLength = default;
-		internal Resample.Scaler Scaler = Resample.Scaler.None;
+		internal Scaler Scaler = Scaler.None;
 		internal Vector2B Wrapped = default;
 		internal bool Gradient = false;
 
 		public CacheHeader() { }
 
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal static CacheHeader Read(BinaryReader reader) {
 			CacheHeader newHeader = new();
 			var newHeaderSpan = MemoryMarshal.CreateSpan(ref newHeader, 1).Cast<CacheHeader, byte>();
-			reader.Read(newHeaderSpan);
+			var readBytes = reader.Read(newHeaderSpan);
+			if (readBytes != newHeaderSpan.Length) {
+				throw new IOException("Cache File is corrupted");
+			}
 
 			return newHeader;
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal void Write(BinaryWriter writer) {
 			var headerSpan = MemoryMarshal.CreateSpan(ref this, 1).Cast<CacheHeader, byte>();
 
 			writer.Write(headerSpan);
 		}
 
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		internal void Validate(string path) {
 			if (Assembly != AssemblyHash) {
 				throw new IOException($"Texture Cache File out of date '{path}'");
@@ -97,7 +102,7 @@ static class FileCache {
 		}
 	}
 
-	enum SaveState {
+	private enum SaveState {
 		Saving = 0,
 		Saved = 1
 	}
@@ -125,8 +130,6 @@ static class FileCache {
 			}
 		}
 
-		internal Profiler() { }
-
 		internal ulong AddFetchTime(ulong time) {
 			lock (Lock) {
 				++FetchCount;
@@ -147,7 +150,6 @@ static class FileCache {
 
 	private static readonly ConcurrentDictionary<string, SaveState> SavingMap = Config.FileCache.Enabled ? new() : null!;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool Fetch(
 		string path,
 		out uint scale,
@@ -158,7 +160,7 @@ static class FileCache {
 		out Vector2I blockPadding,
 		out IScalerInfo? scalerInfo,
 		out bool gradient,
-		out Span<byte> data
+		out ReadOnlySpan<byte> data
 	) {
 		scale = 0;
 		size = Vector2I.Zero;
@@ -173,74 +175,77 @@ static class FileCache {
 		try {
 			CurrentTaskLock.EnterReadLock();
 
-			if (Config.FileCache.Enabled && File.Exists(path)) {
-				int retries = Config.FileCache.LockRetries;
+			if (!Config.FileCache.Enabled || !File.Exists(path)) {
+				return false;
+			}
 
-				while (retries-- > 0) {
-					if (SavingMap.TryGetValue(path, out var state) && state != SaveState.Saved) {
-						Thread.Sleep(Config.FileCache.LockSleepMS);
-						continue;
+			int retries = Config.FileCache.LockRetries;
+
+			while (retries-- > 0) {
+				if (SavingMap.TryGetValue(path, out var state) && state != SaveState.Saved) {
+					Thread.Sleep(Config.FileCache.LockSleepMS);
+					continue;
+				}
+
+				// https://stackoverflow.com/questions/1304/how-to-check-for-file-lock
+				static bool WasLocked(IOException ex) {
+					var errorCode = Marshal.GetHRForException(ex) & (1 << 16) - 1;
+					return errorCode is (32 or 33);
+				}
+
+				try {
+					long startTime = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
+
+					Scaler scaler;
+					using (var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))) {
+						var header = CacheHeader.Read(reader);
+						header.Validate(path);
+
+						scale = header.Scale;
+						size = header.Size;
+						format = header.Format;
+						wrapped = header.Wrapped;
+						padding = header.Padding;
+						blockPadding = header.BlockPadding;
+						scaler = header.Scaler;
+						gradient = header.Gradient;
+						var uncompressedDataLength = header.UncompressedDataLength;
+						var dataLength = header.DataLength;
+						var dataHash = header.DataHash;
+
+						var rawData = reader.ReadBytes((int)dataLength);
+
+						if (rawData.Hash() != dataHash) {
+							throw new IOException($"Cache File '{path}' is corrupted");
+						}
+
+						data = rawData.Decompress((int)uncompressedDataLength, header.Algorithm);
 					}
 
-					// https://stackoverflow.com/questions/1304/how-to-check-for-file-lock
-					static bool WasLocked(IOException ex) {
-						var errorCode = Marshal.GetHRForException(ex) & (1 << 16) - 1;
-						return errorCode is (32 or 33);
+					if (Config.FileCache.Profile) {
+						var meanTicks = CacheProfiler.AddFetchTime((ulong)(DateTime.Now.Ticks - startTime));
+						Debug.Info($"Mean Time Per Fetch: {(double)meanTicks / TimeSpan.TicksPerMillisecond} ms");
 					}
 
-					Resample.Scaler scaler;
+					scalerInfo = Resample.Scalers.IScaler.GetScalerInfo(scaler);
 
-					try {
-						long start_time = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
-
-						using (var reader = new BinaryReader(new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))) {
-							var header = CacheHeader.Read(reader);
-							header.Validate(path);
-
-							scale = header.Scale;
-							size = header.Size;
-							format = header.Format;
-							wrapped = header.Wrapped;
-							padding = header.Padding;
-							blockPadding = header.BlockPadding;
-							scaler = header.Scaler;
-							gradient = header.Gradient;
-							var uncompressedDataLength = header.UncompressedDataLength;
-							var dataLength = header.DataLength;
-							var dataHash = header.DataHash;
-
-							var rawData = reader.ReadBytes((int)dataLength);
-
-							if (rawData.Hash() != dataHash) {
-								throw new IOException($"Cache File '{path}' is corrupted");
+					return true;
+				}
+				catch (Exception ex) {
+					switch (ex) {
+						case IOException iox when !WasLocked(iox):
+						default:
+							ex.PrintWarning();
+							try { File.Delete(path); }
+							catch {
+								// ignored
 							}
 
-							data = rawData.Decompress((int)uncompressedDataLength, header.Algorithm);
-						}
-
-						if (Config.FileCache.Profile) {
-							var mean_ticks = CacheProfiler.AddFetchTime((ulong)(DateTime.Now.Ticks - start_time));
-							Debug.Info($"Mean Time Per Fetch: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
-						}
-
-						scalerInfo = Resample.Scalers.IScaler.GetScalerInfo(scaler);
-
-						return true;
-					}
-					catch (Exception ex) {
-						switch (ex) {
-							case FileNotFoundException _:
-							case EndOfStreamException _:
-							case IOException iox when !WasLocked(iox):
-							default:
-								ex.PrintWarning();
-								try { File.Delete(path); } catch { }
-								return false;
-							case IOException iox when WasLocked(iox):
-								Debug.Trace($"File was locked when trying to load cache file '{path}': {ex} - {ex.Message} [{retries} retries]");
-								Thread.Sleep(Config.FileCache.LockSleepMS);
-								break;
-						}
+							return false;
+						case IOException iox when WasLocked(iox):
+							Debug.Trace($"File was locked when trying to load cache file '{path}': {ex} - {ex.Message} [{retries} retries]");
+							Thread.Sleep(Config.FileCache.LockSleepMS);
+							break;
 					}
 				}
 			}
@@ -251,7 +256,6 @@ static class FileCache {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static bool Save(
 		string path,
 		uint scale,
@@ -262,7 +266,7 @@ static class FileCache {
 		Vector2I blockPadding,
 		IScalerInfo? scalerInfo,
 		bool gradient,
-		ReadOnlySpan<byte> data
+		ReadOnlyPinnedSpan<byte> data
 	) {
 		if (!Config.FileCache.Enabled) {
 			return true;
@@ -276,19 +280,18 @@ static class FileCache {
 			TaskFactory.StartNew(obj => {
 				CurrentTaskLock.EnterReadLock();
 				try {
-					var data = (byte[])obj!;
+					var data = ((ReadOnlyPinnedSpan<byte>.FixedSpan)obj!).AsSpan;
 					bool failure = false;
 					try {
-						long start_time = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
+						long startTime = Config.FileCache.Profile ? DateTime.Now.Ticks : 0L;
 
 						using (var writer = new BinaryWriter(new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None))) {
 							if (!writer.BaseStream.CanWrite) {
-								failure = true;
 								return;
 							}
 							var algorithm = SystemCompression && !Config.FileCache.ForceCompress ? Compression.Algorithm.None : Config.FileCache.Compress;
 
-							var compressedData = data.Compress(algorithm);
+							ReadOnlySpan<byte> compressedData = data.Compress(algorithm);
 
 							if (compressedData.Length >= data.Length) {
 								compressedData = data;
@@ -306,7 +309,7 @@ static class FileCache {
 								UncompressedDataLength = (uint)data.Length,
 								DataLength = (uint)compressedData.Length,
 								DataHash = compressedData.Hash(),
-								Scaler = scalerInfo?.Scaler ?? Resample.Scaler.None,
+								Scaler = scalerInfo?.Scaler ?? Scaler.None,
 								Gradient = gradient
 							}.Write(writer);
 
@@ -319,8 +322,8 @@ static class FileCache {
 						SavingMap.TryUpdate(path, SaveState.Saved, SaveState.Saving);
 
 						if (Config.FileCache.Profile) {
-							var mean_ticks = CacheProfiler.AddStoreTime((ulong)(DateTime.Now.Ticks - start_time));
-							Debug.Info($"Mean Time Per Store: {(double)mean_ticks / TimeSpan.TicksPerMillisecond} ms");
+							var meanTicks = CacheProfiler.AddStoreTime((ulong)(DateTime.Now.Ticks - startTime));
+							Debug.Info($"Mean Time Per Store: {(double)meanTicks / TimeSpan.TicksPerMillisecond} ms");
 						}
 					}
 					catch (IOException ex) {
@@ -332,14 +335,18 @@ static class FileCache {
 						failure = true;
 					}
 					if (failure) {
-						try { File.Delete(path); } catch { }
-						SavingMap.TryRemove(path, out var _);
+						try { File.Delete(path); }
+						catch {
+							// ignored
+						}
+
+						SavingMap.TryRemove(path, out _);
 					}
 				}
 				finally {
 					CurrentTaskLock.ExitReadLock();
 				}
-			}, data.ToArray()); // TODO : eliminate this copy
+			}, data.Fixed);
 			return true;
 		}
 		finally {
@@ -365,15 +372,15 @@ static class FileCache {
 		}
 	}
 
-	enum LinkType : int {
+	private enum LinkType {
 		File = 0,
 		Directory = 1
 	}
 
 	[DllImport("kernel32.dll")]
-	static extern bool CreateSymbolicLink(string Link, string Target, LinkType Type);
+	private static extern bool CreateSymbolicLink(string link, string target, LinkType type);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static bool IsSymbolic(string path) => new FileInfo(path).Attributes.HasFlag(FileAttributes.ReparsePoint);
 
 	private static void DeleteCaches(string? retain) {
@@ -441,9 +448,9 @@ static class FileCache {
 		catch { /* Ignore failure */ }
 		try {
 			CreateSymbolicLink(
-				Link: Path.Combine(Config.LocalRoot, JunctionCacheName),
-				Target: Path.Combine(LocalDataPath),
-				Type: LinkType.Directory
+				link: Path.Combine(Config.LocalRoot, JunctionCacheName),
+				target: Path.Combine(LocalDataPath),
+				type: LinkType.Directory
 			);
 		}
 		catch { /* Ignore failure */ }

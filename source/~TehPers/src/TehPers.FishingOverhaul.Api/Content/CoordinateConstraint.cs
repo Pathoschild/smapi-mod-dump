@@ -9,14 +9,12 @@
 *************************************************/
 
 using System.ComponentModel;
-using TehPers.Core.Api.Json;
 
 namespace TehPers.FishingOverhaul.Api.Content
 {
     /// <summary>
     /// A set of constraints for coordinates.
     /// </summary>
-    [JsonDescribe]
     public record CoordinateConstraint
     {
         /// <summary>

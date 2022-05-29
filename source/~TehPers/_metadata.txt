@@ -10,9 +10,9 @@ mods:
    TehCore
 
 latest commit:
-   commit c4291c0f0db65dff866d0d59ab5d1bbe5f3ded10
+   commit 8e1581877eafc5e6a9a32963b274b4509d50119d
    Author: TehPers <tehperz@gmail.com>
-   Date:   Sun Jan 2 15:40:02 2022 -0800
+   Date:   Mon May 23 08:54:51 2022 -0700
    
-       Fix the links in the TFO README
+       Update FishingEffectApplier.cs
    

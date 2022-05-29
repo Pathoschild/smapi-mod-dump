@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -279,7 +279,7 @@ internal static class Patches
                 case Constants.JADE_RING_INDEX_I: // jade ring to give +30% crit. power
                     who.critPowerModifier += 0.3f;
                     return false; // don't run original logic
-                case Constants.CRAB_RING_INDEX_I: // crab ring to give +8 defense
+                case Constants.CRAB_RING_INDEX_I: // crab ring to give +12 defense
                     who.resilience += 12;
                     return false; // don't run original logic
                 default:
@@ -309,7 +309,7 @@ internal static class Patches
                 case Constants.JADE_RING_INDEX_I: // jade ring to give +30% crit. power
                     who.critPowerModifier -= 0.3f;
                     return false; // don't run original logic
-                case Constants.CRAB_RING_INDEX_I: // crab ring to give +8 defense
+                case Constants.CRAB_RING_INDEX_I: // crab ring to give +12 defense
                     who.resilience -= 12;
                     return false; // don't run original logic
                 default:
@@ -584,10 +584,11 @@ internal static class Patches
                 if (count is < 1 or > 4)
                     throw new InvalidOperationException("Unexpected number of combined rings.");
 
-                // draw left half
                 var oldScaleSize = scaleSize;
                 scaleSize = 1f;
                 location.Y -= (oldScaleSize - 1f) * 32f;
+                
+                // draw left half
                 var src = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, __instance.indexInTileSheet.Value, 16, 16);
                 src.X += 5;
                 src.Y += 7;
@@ -615,37 +616,40 @@ internal static class Patches
                 RingDrawInMenuPatch.Reverse(__instance, spriteBatch, location + new Vector2(-5f, -1f), scaleSize, transparency,
                     layerDepth, drawStackNumber, color, drawShadow);
 
+                Vector2 offset;
+
                 // draw top gem
-                color = Constants.ColorByGemstone[__instance.combinedRings[0].ParentSheetIndex] * transparency;
-                spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(31f, 17f) * scaleSize,
-                    new Rectangle(263, 579, 4, 2), color, 0f, new Vector2(2f, 1.5f) * scaleSize, scaleSize * 4f,
-                    SpriteEffects.None, layerDepth);
+                color = Utils.ColorByGemstone[__instance.combinedRings[0].ParentSheetIndex] * transparency;
+                offset = ModEntry.HasBetterRings ? new Vector2(19f, 3f) : new(23f, 11f);
+                spriteBatch.Draw(Textures.GemstonesTx, location + offset * scaleSize,
+                    new Rectangle(0, 0, 4, 4), color, 0f, Vector2.Zero, scaleSize * 4f, SpriteEffects.None, layerDepth);
 
                 if (count > 1)
                 {
-                    // draw bottom gem
-                    color = Constants.ColorByGemstone[__instance.combinedRings[1].ParentSheetIndex] * transparency;
-                    spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(31f, 53f) * scaleSize,
-                        new Rectangle(263, 579, 4, 2), color, (float)Math.PI, new Vector2(2f, 1.5f) * scaleSize,
-                        scaleSize * 4f, SpriteEffects.None, layerDepth);
+                    // draw bottom gem (or left, in case of better rings)
+                    color = Utils.ColorByGemstone[__instance.combinedRings[1].ParentSheetIndex] * transparency;
+                    offset = ModEntry.HasBetterRings ? new Vector2(23f, 19f) : new(23f, 43f);
+                    spriteBatch.Draw(Textures.GemstonesTx, location + offset * scaleSize,
+                        new Rectangle(4, 0, 4, 4), color, 0, Vector2.Zero, scaleSize * 4f, SpriteEffects.None,
+                        layerDepth);
                 }
 
                 if (count > 2)
                 {
-                    // draw left gem
-                    color = Constants.ColorByGemstone[__instance.combinedRings[2].ParentSheetIndex] * transparency;
-                    spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(13f, 35f) * scaleSize,
-                        new Rectangle(263, 579, 4, 2), color, -(float)Math.PI / 2f, new Vector2(2f, 1.5f) * scaleSize,
-                        scaleSize * 4f, SpriteEffects.None, layerDepth);
+                    // draw left gem (or right, in case of better rings)
+                    color = Utils.ColorByGemstone[__instance.combinedRings[2].ParentSheetIndex] * transparency;
+                    offset = ModEntry.HasBetterRings ? new Vector2(35f, 7f) : new(7f, 27f);
+                    spriteBatch.Draw(Textures.GemstonesTx, location + offset * scaleSize,
+                        new Rectangle(8, 0, 4, 4), color, 0f, Vector2.Zero, scaleSize * 4f, SpriteEffects.None, layerDepth);
                 }
 
                 if (count > 3)
                 {
-                    // draw right gem
-                    color = Constants.ColorByGemstone[__instance.combinedRings[3].ParentSheetIndex] * transparency;
-                    spriteBatch.Draw(Game1.objectSpriteSheet, location + new Vector2(49f, 35f) * scaleSize,
-                        new Rectangle(263, 579, 4, 2), color, (float)Math.PI / 2f, new Vector2(2f, 1.5f) * scaleSize,
-                        scaleSize * 4f, SpriteEffects.None, layerDepth);
+                    // draw right gem (or bottom, in case of better rings)
+                    color = Utils.ColorByGemstone[__instance.combinedRings[3].ParentSheetIndex] * transparency;
+                    offset = ModEntry.HasBetterRings ? new Vector2(39f, 23f) : new(39f, 27f);
+                    spriteBatch.Draw(Textures.GemstonesTx, location + offset * scaleSize,
+                        new Rectangle(12, 0, 4, 4), color, 0f, Vector2.Zero, scaleSize * 4f, SpriteEffects.None, layerDepth);
                 }
 
                 return false; // don't run original logic

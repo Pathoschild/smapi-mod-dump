@@ -13,7 +13,7 @@
 // clang-format off
 // 
 //    ShipAnything (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -35,7 +35,7 @@
 using System;
 using System.Collections.Generic;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -76,25 +76,25 @@ namespace ShipAnything {
 
       public static class SVShippingMenu {
         private sealed class SVObjectEx : StardewValley.Object {
-          private delegate void DrawInMenuDelegate(SpriteBatch spriteBatch, Vector2       location,        Single scaleSize, Single  transparency,
-                                                   Single      layerDepth,  StackDrawType drawStackNumber, Color  color,     Boolean drawShadow);
+          private delegate void DrawInMenuDelegate(SpriteBatch spriteBatch, Vector2 location, Single scaleSize, Single transparency,
+                                                   Single layerDepth, StackDrawType drawStackNumber, Color color, Boolean drawShadow);
 
           private readonly DrawInMenuDelegate orgCall;
           public SVObjectEx(Item item) {
             this.orgCall = item.drawInMenu;
 
-            this.Category           = item.Category;
-            this.DisplayName        = item.DisplayName;
+            this.Category = item.Category;
+            this.DisplayName = item.DisplayName;
             this.HasBeenInInventory = item.HasBeenInInventory;
-            this.Name               = item.Name;
-            this.ParentSheetIndex   = item.ParentSheetIndex;
-            this.Price              = Math.Max(1, item.salePrice());
-            this.specialItem        = item.specialItem;
-            this.SpecialVariable    = item.SpecialVariable;
+            this.Name = item.Name;
+            this.ParentSheetIndex = item.ParentSheetIndex;
+            this.Price = Math.Max(1, item.salePrice());
+            this.specialItem = item.specialItem;
+            this.SpecialVariable = item.SpecialVariable;
           }
 
-          public override void drawInMenu(SpriteBatch spriteBatch, Vector2       location,        Single scaleSize, Single  transparency,
-                                          Single      layerDepth,  StackDrawType drawStackNumber, Color  color,     Boolean drawShadow) {
+          public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, Single scaleSize, Single transparency,
+                                          Single layerDepth, StackDrawType drawStackNumber, Color color, Boolean drawShadow) {
             this.orgCall(spriteBatch,
                          location,
                          scaleSize,
@@ -110,7 +110,7 @@ namespace ShipAnything {
         [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
         public static void postfix_parseItems(IList<Item> items, ref List<List<Item>> ___categoryItems, ref List<Int32> ___categoryTotals, ref List<MoneyDial> ___categoryDials,
-                                              ref Dictionary<Item, Int32> ___itemValues) {
+                                              ref Dictionary<Item, Int32> ___itemValues, ref Dictionary<Item, Int32> ___singleItemValues) {
           Int32 gained_money = 0;
           foreach (Item item in items) {
             if (item is StardewValley.Object) continue;
@@ -118,12 +118,14 @@ namespace ShipAnything {
 
             ___categoryItems[4].Add(obj_ex); // Add item to misc.
             ___categoryItems[5].Add(obj_ex); // Add item to total
-            ___categoryTotals[4]                    += obj_ex.Price;
-            ___categoryTotals[5]                    += obj_ex.Price;
-            ___itemValues[obj_ex]                   =  obj_ex.Price;
-            ___categoryDials[4].previousTargetValue =  ___categoryDials[4].currentValue = ___categoryTotals[4];
-            gained_money                            += obj_ex.Price;
-            Game1.stats.itemsShipped                += 1;
+            ___categoryTotals[4] += obj_ex.Price;
+            ___categoryTotals[5] += obj_ex.Price;
+            ___itemValues[obj_ex] = obj_ex.Price;
+            ___singleItemValues[obj_ex] = obj_ex.sellToStorePrice(-1L);
+            ___categoryDials[4].previousTargetValue = ___categoryDials[4].currentValue = ___categoryTotals[4];
+            gained_money += obj_ex.Price;
+            var stack = Convert.ToUInt32(obj_ex.Stack);
+            Game1.stats.itemsShipped += stack > 0 ? stack : 1;
           }
           ___categoryDials[5].currentValue = ___categoryTotals[5];
           if (Game1.IsMasterGame) Game1.player.Money += gained_money;
@@ -133,7 +135,7 @@ namespace ShipAnything {
     }
 
     public override void Entry(IModHelper helper) {
-      var harmony = HarmonyInstance.Create("mod.berkayylmao.ShipAnything");
+      var harmony = new Harmony("mod.berkayylmao.ShipAnything");
       harmony.Patch(AccessTools.Method(typeof(StardewValley.Object), "canBeShipped"), new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVObject), "prefix_canBeShipped")));
       harmony.Patch(AccessTools.Method(typeof(Utility), "highlightShippableObjects"),
                     new HarmonyMethod(AccessTools.Method(typeof(Extensions.SVUtility), "prefix_highlightShippableObjects")));

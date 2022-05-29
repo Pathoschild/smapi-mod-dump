@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,12 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IDisplayEvents.RenderedWorld"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class RenderedWorldEvent : BaseEvent
 {
-    /// <summary>Raised after the game world is drawn to the sprite patch, before it's rendered to the screen.</summary>
+    /// <inheritdoc cref="IDisplayEvents.RenderedWorld"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
+    internal void OnRenderedWorld(object sender, RenderedWorldEventArgs e)
     {
-        if (enabled.Value) OnRenderedWorldImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnRenderedWorldImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnRenderedWorld" />

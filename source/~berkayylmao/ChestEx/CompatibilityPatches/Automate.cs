@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -34,7 +34,7 @@ using StardewModdingAPI;
 namespace ChestEx.CompatibilityPatches {
   internal class Automate : CompatibilityPatch {
     // Protected:
-  #region Protected
+    #region Protected
 
     protected override void OnLoaded() {
       GlobalVars.gIsAutomateLoaded = true;
@@ -42,14 +42,14 @@ namespace ChestEx.CompatibilityPatches {
       base.OnLoaded();
     }
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     internal Automate()
-      : base("Pathoschild.Automate", new SemanticVersion("1.23.0")) { }
+      : base("Pathoschild.Automate", new SemanticVersion("1.26.0")) { }
 
-  #endregion
+    #endregion
   }
 }

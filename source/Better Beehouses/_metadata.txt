@@ -6,10 +6,10 @@ mods:
    Better Beehouses
 
 latest commit:
-   commit b7bf70c2c5c323c778196a431e00fd825ebfa9ac
-   Merge: b6cba86 f357542
+   commit 6ee4eb0b3c7964621d596ba37883fd6a74b99ff1
    Author: tlitookilakin <swyrlyy@gmail.com>
-   Date:   Mon Apr 11 16:10:23 2022 -0400
+   Date:   Wed May 4 12:31:40 2022 -0400
    
-       Merge branch 'master' of https://github.com/tlitookilakin/BetterBeehouses
+       fix quality price stacking
+       cleanup
    

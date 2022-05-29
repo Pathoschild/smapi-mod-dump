@@ -8,6 +8,41 @@ for queries and analysis.**
 
 # Changelog
 
+## 0.17.0
+Unreleased.
+
+### General
+
+* Added an option to limit the displayed future forecast for luck and/or
+  weather to a certain number of days.
+
+### Fixes
+
+* Pre-warm RNG for weather and daily luck to generate better results.
+* Fix detection of fish available in the forest farm map.
+
+### Translation
+
+* Added Turkish and Thai translations! Thank you!
+
+### Maintenance
+
+* Update to the new content APIs made available in SMAPI 3.14+
+* Update code to use file-scoped namespaces and nullable references.
+* Update color parsing code to be more efficient and support all named
+  CSS4 colors.
+* Internal changes to better support the eventual migration to 1.6.
+
+### API / Content Packs
+
+* Added mouse cursors, standard scroll elements, and standard tooltips to themes.
+* Added API endpoints for accessing weather data.
+* Added better handling for `Local Notices` via content packs, including support
+  for Game State Query and token strings.
+* Added support for custom `Fortune` events via content packs, using the same format
+  as Local Notices.
+
+
 ## 0.16.0
 Released March 24th, 2022.
 

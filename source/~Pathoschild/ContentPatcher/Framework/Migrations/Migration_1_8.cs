@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
 
@@ -30,24 +29,24 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_8()
             : base(new SemanticVersion(1, 8, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.IsOutdoors.ToString(),
-                ConditionType.LocationName.ToString(),
-                ConditionType.Target.ToString(),
-                ConditionType.TargetWithoutPath.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.IsOutdoors),
+                nameof(ConditionType.LocationName),
+                nameof(ConditionType.Target),
+                nameof(ConditionType.TargetWithoutPath)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ContentConfig content, out string error)
+        public override bool TryMigrate(ContentConfig content, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
-            foreach (PatchConfig patch in content.Changes)
+            foreach (PatchConfig patch in content.Changes.WhereNotNull())
             {
                 // 1.8 adds EditMap
-                if (this.GetAction(patch) == PatchType.EditMap)
+                if (this.HasAction(patch, PatchType.EditMap))
                 {
                     error = this.GetNounPhraseError($"using action {nameof(PatchType.EditMap)}");
                     return false;

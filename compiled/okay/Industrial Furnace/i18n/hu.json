@@ -14,4 +14,8 @@
 	"gmcm.coal-amount-description": "A kemence beindításához szükséges szénmennyiség.",
 	"gmcm.instant-smelting-label": "Azonnali olvasztás",
 	"gmcm.instant-smelting-description": "Ha engedélyezve van, akkor a kemence azonnal olvaszt.",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

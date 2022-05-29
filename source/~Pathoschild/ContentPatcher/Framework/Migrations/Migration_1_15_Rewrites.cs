@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -78,7 +76,7 @@ namespace ContentPatcher.Framework.Migrations
         };
 
         /// <summary>The dynamic and config token names defined by the content pack.</summary>
-        private readonly Lazy<ISet<string>> LocalTokenNames;
+        private readonly Lazy<IInvariantSet> LocalTokenNames;
 
 
         /*********
@@ -86,14 +84,14 @@ namespace ContentPatcher.Framework.Migrations
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="content">The content pack being validated, if any.</param>
-        public Migration_1_15_Rewrites(ContentConfig content)
+        public Migration_1_15_Rewrites(ContentConfig? content)
             : base(new SemanticVersion(1, 15, 0))
         {
-            this.LocalTokenNames = new Lazy<ISet<string>>(() => this.GetLocalTokenNames(content));
+            this.LocalTokenNames = new Lazy<IInvariantSet>(() => this.GetLocalTokenNames(content));
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;
@@ -119,7 +117,7 @@ namespace ContentPatcher.Framework.Migrations
                 // 1.15 changes {{Random: choices | pinned-key}} to {{Random: choices |key=pinned-key}}
                 if (conditionType == ConditionType.Random)
                 {
-                    LexTokenLiteral lexSeparator = token.InputArgs.Parts.OfType<LexTokenLiteral>().FirstOrDefault(p => p.ToString().Contains("|"));
+                    LexTokenLiteral? lexSeparator = token.InputArgs.Parts.OfType<LexTokenLiteral>().FirstOrDefault(p => p.ToString().Contains("|"));
                     if (lexSeparator != null && !IgnoreRandomArgumentPattern.IsMatch(lexSeparator.Text))
                     {
                         int sepIndex = lexSeparator.Text.IndexOf("|", StringComparison.Ordinal);
@@ -139,31 +137,41 @@ namespace ContentPatcher.Framework.Migrations
         *********/
         /// <summary>Get the dynamic and config token names defined by a content pack.</summary>
         /// <param name="content">The content pack to read.</param>
-        private ISet<string> GetLocalTokenNames(ContentConfig content)
+        private IInvariantSet GetLocalTokenNames(ContentConfig? content)
         {
-            InvariantHashSet names = new();
+            if (content is null)
+                return InvariantSet.Empty;
 
-            if (content != null)
+            MutableInvariantSet? names = null;
+
+            // dynamic tokens
+            foreach (string? name in content.DynamicTokens.Select(p => p?.Name))
             {
-                // dynamic tokens
-                foreach (string name in content.DynamicTokens.Select(p => p.Name))
+                if (!string.IsNullOrWhiteSpace(name))
                 {
-                    if (!string.IsNullOrWhiteSpace(name))
-                        names.Add(name);
+                    names ??= new();
+                    names.Add(name);
                 }
-
-                // config schema
-                foreach (string name in content.ConfigSchema.Select(p => p.Key))
-                {
-                    if (!string.IsNullOrWhiteSpace(name))
-                        names.Add(name);
-                }
-
-                // exclude tokens that conflict with a built-in condition, which will be ignored
-                names.RemoveWhere(p => this.GetEnum<ConditionType>(p) != null);
             }
 
-            return names;
+            // config schema
+            foreach (string? name in content.ConfigSchema.Select(p => p.Key))
+            {
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    names ??= new();
+                    names.Add(name);
+                }
+            }
+
+            // exclude tokens that conflict with a built-in condition, which will be ignored
+            if (names != null)
+            {
+                foreach (string name in names.Where(p => this.GetEnum<ConditionType>(p) != null).ToArray())
+                    names.Remove(name);
+            }
+
+            return names?.Lock() ?? InvariantSets.Empty;
         }
     }
 }

@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/smapi-mods**
+**Source repository: https://gitlab.com/daleao/sdv-mods**
 
 ----
 
@@ -40,6 +40,7 @@ for queries and analysis.**
     <li><a href="#installation">Installation</a></li>
     <li><a href="#configs">Configs</a></li>
     <li><a href="#console-commands">Console Commands</a></li>
+    <li><a href="#api">API</a></li>
     <li><a href="#recommended-mods">Recommended Mods</a></li>
     <li><a href="#special-thanks">Special Thanks</a></li>
     <li><a href="#license">License</a></li>
@@ -329,6 +330,21 @@ The mod provides the following console commands, which you can enter in the SMAP
 - **wol_events** - List currently subscribed mod events (for debugging).
 - **wol_resetthehunt** - Forcefully reset the currently active Treasure Hunt and choose a new target treasure tile.
 
+## API
+
+The mod exposes an API to facilitate integration with other mods. Currently exposed endpoints include:
+
+- Checking the current quality of Ecologist forage or Gemologist minerals.
+- Checking the current tax deduction bracket for Conservationist.
+- Forcing new Treasure Hunt events, or interrupting active Treasure Hunts.
+- Subscribing callbacks to Treasure Hunt started or ended events.
+- Checking a player's registered Ultimate ability.
+- Subscribeing callbacks to Ultimate charging, activation and deactivation events.
+- Checking whether the Ultimate meter is currently being displayed (useful for UI mods to decide whether to reposition their own HUD elements).
+- Checking the player's config settings for this mod.
+
+To consume the API, copy both interfaces from the [Common.Integrations](../Common/Integrations/ImmersiveProfessions) namespace to your project and [ask SMAPI for a proxy](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Integrations).
+
 ## Recommended Mods
 
 - NEW: [Quality Of Life](https://www.nexusmods.com/stardewvalley/mods/11296), which now hosts all balancing features previously from this mod, plus new ones.
@@ -363,4 +379,4 @@ The mod provides the following console commands, which you can enter in the SMAP
 
 ## License
 
-See [LICENSE](../LICENSE) for more information.
+See [LICENSE](../../LICENSE) for more information.

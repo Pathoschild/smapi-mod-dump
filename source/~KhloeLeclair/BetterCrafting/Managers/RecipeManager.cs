@@ -66,6 +66,9 @@ public class RecipeManager : BaseManager {
 	private readonly AddedAPICategories API_Cooking = new();
 	private readonly AddedAPICategories API_Crafting = new();
 
+	private readonly Dictionary<string, Func<string>> API_DisplayName_Cooking = new();
+	private readonly Dictionary<string, Func<string>> API_DisplayName_Crafting = new();
+
 	public bool DefaultsLoaded = false;
 
 	public RecipeManager(ModEntry mod) : base(mod) { }
@@ -172,6 +175,57 @@ public class RecipeManager : BaseManager {
 	#endregion
 
 	#region Category Handling
+
+	public string? GetCategoryDisplayName(Category category, bool cooking) {
+		if (category is null)
+			return null;
+
+		if (string.IsNullOrEmpty(category.I18nKey))
+			return category.Name;
+
+		if (!string.IsNullOrEmpty(category.Id) && category.I18nKey == "api-access") {
+			Dictionary<string, Func<string>> names = cooking ? API_DisplayName_Cooking : API_DisplayName_Crafting;
+
+			if (names.ContainsKey(category.Id))
+				return names[category.Id]();
+
+			return category.Name;
+		}
+
+		return Mod.Helper.Translation.Get(category.I18nKey);
+	}
+
+	public void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
+
+		AddedAPICategories added = cooking ? API_Cooking : API_Crafting;
+		Dictionary<string, Func<string>> names = cooking ? API_DisplayName_Cooking : API_DisplayName_Crafting;
+
+		if (!names.ContainsKey(categoryId))
+			names.Add(categoryId, Name);
+
+		if (added.AddedCategories.ContainsKey(categoryId))
+			return;
+
+		var cat = new Category() {
+			Id = categoryId,
+			Name = Name(),
+			I18nKey = $"api-access",
+			Icon = new CategoryIcon() {
+				Type = CategoryIcon.IconType.Item,
+				RecipeName = iconRecipe,
+			}
+		};
+
+		if (recipeNames is not null)
+			cat.Recipes = new(recipeNames);
+
+		added.AddedCategories.Add(
+			categoryId,
+			cat
+		);
+
+		Invalidate();
+	}
 
 	public void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null) {
 

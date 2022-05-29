@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
@@ -27,7 +25,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         ** Fields
         *********/
         /// <summary>The enabled custom tool or item names.</summary>
-        private readonly InvariantHashSet CustomNames;
+        private readonly InvariantSet CustomNames;
 
 
         /*********
@@ -40,7 +38,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         public CustomAttachment(string[] customAttachments, IModRegistry modRegistry, IReflectionHelper reflection)
             : base(modRegistry, reflection)
         {
-            this.CustomNames = new InvariantHashSet(customAttachments);
+            this.CustomNames = new InvariantSet(customAttachments);
         }
 
         /// <summary>Get whether the tool is currently enabled.</summary>
@@ -48,7 +46,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool IsEnabled(Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool IsEnabled(Farmer player, Tool? tool, Item? item, GameLocation location)
         {
             return
                 (tool != null && this.CustomNames.Contains(tool.Name))
@@ -63,7 +61,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool Apply(Vector2 tile, SObject? tileObj, TerrainFeature? tileFeature, Farmer player, Tool? tool, Item? item, GameLocation location)
         {
             // apply melee weapon
             if (tool is MeleeWeapon weapon)

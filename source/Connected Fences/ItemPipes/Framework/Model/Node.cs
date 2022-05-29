@@ -28,6 +28,7 @@ namespace ItemPipes.Framework.Model
     public abstract class Node
     {
         public string Name { get; set; }
+        public int ID { get; set; }
         public Vector2 Position { get; set; }
         public GameLocation Location { get; set; }
         public StardewValley.Object Obj { get; set; }
@@ -51,7 +52,11 @@ namespace ItemPipes.Framework.Model
 
         public Node(Vector2 position, GameLocation location, StardewValley.Object obj)
         {
-            if (obj != null) { Name = obj.name; }
+            if (obj != null) 
+            { 
+                Name = obj.name; 
+                ID = obj.ParentSheetIndex; 
+            }
             Position = position;
             Location = location;
             Obj = obj;
@@ -134,6 +139,7 @@ namespace ItemPipes.Framework.Model
 
         public virtual bool AddAdjacent(Side side, Node node)
         {
+            //Printer.Info($"ADDING ADJ: {node.Print()} to {Print()}");
             bool added = false;
             if (Adjacents[side] == null)
             {
@@ -141,11 +147,25 @@ namespace ItemPipes.Framework.Model
                 Adjacents[side] = node;
                 node.AddAdjacent(Sides.GetInverse(side), this);
             }
+            else if (Adjacents[side] != null &&
+                Adjacents[side].Adjacents[Sides.GetInverse(side)] != null &&
+                Adjacents[side].Adjacents[Sides.GetInverse(side)].ParentNetwork != null &&
+                Adjacents[side].ParentNetwork != null &&
+                Adjacents[side].Adjacents[Sides.GetInverse(side)].ParentNetwork != Adjacents[side].ParentNetwork)
+            {
+                //Printer.Info($"ADDING ADJ adj: {Adjacents[side].Adjacents[Sides.GetInverse(side)].Print()} of {Adjacents[side].Print()}");
+                //Printer.Info($"in wrong network of {Adjacents[side].Print()}");
+
+                added = true;
+                Adjacents[side].Adjacents[Sides.GetInverse(side)] = this;
+                //Printer.Info($"ADDING ADJ adj: {Adjacents[side].Adjacents[Sides.GetInverse(side)].Print()} of {Adjacents[side].Print()}");
+            }
             return added;
         }
 
         public virtual bool RemoveAdjacent(Side side, Node node)
         {
+            //Printer.Info($"removing ADJ: {node.Print()} from {Print()}");
             bool removed = false;
             if (Adjacents[side] != null)
             {

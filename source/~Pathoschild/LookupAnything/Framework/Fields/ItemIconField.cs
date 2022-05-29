@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.Common;
@@ -25,10 +23,10 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         ** Fields
         *********/
         /// <summary>The item icon to draw.</summary>
-        private readonly SpriteInfo Sprite;
+        private readonly SpriteInfo? Sprite;
 
         /// <summary>Gets the subject the link points to, if applicable.</summary>
-        private readonly ISubject LinkSubject;
+        private readonly ISubject? LinkSubject;
 
 
         /*********
@@ -40,7 +38,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         /// <param name="item">The item for which to display an icon.</param>
         /// <param name="codex">Provides subject entries to create a link, if applicable.</param>
         /// <param name="text">The text to display (if not the item name).</param>
-        public ItemIconField(GameHelper gameHelper, string label, Item item, ISubjectRegistry codex, string text = null)
+        public ItemIconField(GameHelper gameHelper, string label, Item? item, ISubjectRegistry? codex, string? text = null)
             : base(label, hasValue: item != null)
         {
             this.Sprite = gameHelper.GetSprite(item);
@@ -71,7 +69,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         }
 
         /// <inheritdoc />
-        public ISubject GetLinkSubject()
+        public ISubject? GetLinkSubject()
         {
             return this.LinkSubject;
         }

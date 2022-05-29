@@ -17,15 +17,15 @@ namespace SpriteMaster.Extensions;
 
 using ManagementObject = IDisposable;
 
-static class DirectoryExt {
-	private static MethodInfo? ManagementInvokeMethod = null;
-	private static Type? ManagementObjectType = null;
+internal static class DirectoryExt {
+	private static readonly MethodInfo? ManagementInvokeMethod = null;
+	private static readonly Type? ManagementObjectType = null;
 
 	static DirectoryExt() {
 		try {
 			if (Runtime.IsWindows) {
 				var managementAssembly = Assembly.Load("System.Management");
-				ManagementObjectType = managementAssembly?.GetType("System.Management.ManagementObject");
+				ManagementObjectType = managementAssembly.GetType("System.Management.ManagementObject");
 
 				if (ManagementObjectType is null) {
 					return;
@@ -37,7 +37,9 @@ static class DirectoryExt {
 				}
 			}
 		}
-		catch { }
+		catch {
+			// ignored
+		}
 	}
 
 	internal static bool CompressDirectory(string path, bool force = false) {
@@ -66,7 +68,7 @@ static class DirectoryExt {
 
 			// I am switching this to use reflection does it doesn't try to search for these assemblies on Unix.
 
-			using var obj = (ManagementObject?)Activator.CreateInstance(ManagementObjectType!, new object[] { objectPath });
+			using var obj = (ManagementObject?)Activator.CreateInstance(ManagementObjectType, objectPath);
 			if (obj is null) {
 				return false;
 			}
@@ -106,11 +108,8 @@ static class DirectoryExt {
 			return false;
 		}
 		try {
-			if (info is not null) {
-				info.Refresh();
-				return info.Attributes.HasFlag(FileAttributes.Compressed);
-			}
-			return false;
+			info.Refresh();
+			return info.Attributes.HasFlag(FileAttributes.Compressed);
 		}
 		catch {
 			return false;

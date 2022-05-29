@@ -36,7 +36,7 @@ namespace JustSleepIn
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.GameLoop.TimeChanged += this.DebugTimeSkipper;          // Just for testing
+            //helper.Events.GameLoop.TimeChanged += this.DebugTimeSkipper;          // Just for testing
             helper.Events.GameLoop.DayStarted += this.DayStarted;
             helper.Events.GameLoop.TimeChanged += this.AlarmClockSelection;
         }
@@ -157,10 +157,10 @@ namespace JustSleepIn
             Game1.currentLocation.createQuestionDialogue(AlarmClockMessage, choices.ToArray(), new GameLocation.afterQuestionBehavior(DialogueSet));
         }
 
-        private void DebugTimeSkipper(object sender, TimeChangedEventArgs e)
+        /*private void DebugTimeSkipper(object sender, TimeChangedEventArgs e)
         {
             if (Game1.timeOfDay == 0610)
                 Game1.timeOfDay = 1730;
-        }
+        }*/
     }
 }

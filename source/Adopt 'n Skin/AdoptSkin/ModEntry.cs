@@ -43,7 +43,7 @@ namespace AdoptSkin
     // - Strays/WildHorses are controller interactable
     // - Skins can be named non-continuously
     // - Randomize_skins >> Work as list_creatures does, use variables
-
+    //IAssetEditor >>>> Helper.Events.Content
     public class ModEntry : Mod, IAssetEditor, IAssetLoader
     {
         /************************
@@ -707,7 +707,7 @@ namespace AdoptSkin
                 foreach (NPC npc in e.Added)
                     if (npc is Horse horse)
                     {
-                        if (ModApi.IsNotATractor(horse))
+                        if (ModApi.IsNotATractorOrCart(horse))
                         {
                             // The first horse is given to the host player
                             AddCreature(horse, 0, Game1.MasterPlayer);

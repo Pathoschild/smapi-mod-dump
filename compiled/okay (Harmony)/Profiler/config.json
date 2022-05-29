@@ -1,0 +1,4 @@
+{
+  "BigLoopThreshold": 100,
+  "EventThreshold": 10
+}

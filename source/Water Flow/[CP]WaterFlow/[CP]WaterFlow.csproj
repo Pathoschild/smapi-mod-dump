@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>_CP_WaterFlow</AssemblyName>
+    <RootNamespace>_CP_WaterFlow</RootNamespace>
+    <Version>1.0.0</Version>
+    <TargetFramework>net5</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <EnableHarmony>true</EnableHarmony>
+    <IgnoreModFilePatterns>\.dll$, \.pdb$</IgnoreModFilePatterns>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="content.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

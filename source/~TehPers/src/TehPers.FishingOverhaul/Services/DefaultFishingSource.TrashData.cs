@@ -21,49 +21,49 @@ namespace TehPers.FishingOverhaul.Services
     {
         private FishingContent GetDefaultTrashData()
         {
-            return new(this.manifest) { AddTrash = GenerateTrashData().ToImmutableArray() };
+            return new(this.manifest) {AddTrash = GenerateTrashData().ToImmutableArray()};
 
             IEnumerable<TrashEntry> GenerateTrashData()
             {
                 // Joja cola
                 yield return new(
                     NamespacedKey.SdvObject(167),
-                    new(1.0D) { ExcludeLocations = ImmutableArray.Create("Submarine") }
+                    new(1.0D) {ExcludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Trash
                 yield return new(
                     NamespacedKey.SdvObject(168),
-                    new(1.0D) { ExcludeLocations = ImmutableArray.Create("Submarine") }
+                    new(1.0D) {ExcludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Driftwood
                 yield return new(
                     NamespacedKey.SdvObject(169),
-                    new(1.0D) { ExcludeLocations = ImmutableArray.Create("Submarine") }
+                    new(1.0D) {ExcludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Broken Glasses
                 yield return new(
                     NamespacedKey.SdvObject(170),
-                    new(1.0D) { ExcludeLocations = ImmutableArray.Create("Submarine") }
+                    new(1.0D) {ExcludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Broken CD
                 yield return new(
                     NamespacedKey.SdvObject(171),
-                    new(1.0D) { ExcludeLocations = ImmutableArray.Create("Submarine") }
+                    new(1.0D) {ExcludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Soggy newspaper
                 yield return new(
                     NamespacedKey.SdvObject(172),
-                    new(1.0D) { ExcludeLocations = ImmutableArray.Create("Submarine") }
+                    new(1.0D) {ExcludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Pearl
                 yield return new(
                     NamespacedKey.SdvObject(797),
-                    new(0.01D) { IncludeLocations = ImmutableArray.Create("Submarine") }
+                    new(0.01D) {IncludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Seaweed
                 yield return new(
                     NamespacedKey.SdvObject(152),
-                    new(0.99D) { IncludeLocations = ImmutableArray.Create("Submarine") }
+                    new(0.99D) {IncludeLocations = ImmutableArray.Create("Submarine")}
                 );
                 // Void mayonnaise
                 yield return new(
@@ -71,12 +71,10 @@ namespace TehPers.FishingOverhaul.Services
                     new(0.25)
                     {
                         IncludeLocations = ImmutableArray.Create("WitchSwamp"),
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=henchmanGone"] = "false",
                             ["TehPers.FishingOverhaul/HasItem: 308, 1"] = "false",
-                            // TODO:  remove this once CP updates
-                            ["HasMod"] = "TehPers.FishingOverhaul",
                         }.ToImmutableDictionary(),
                     }
                 );
@@ -84,14 +82,12 @@ namespace TehPers.FishingOverhaul.Services
                 yield return new SecretNoteEntry(
                     new(0.08)
                     {
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasWalletItem"] = "MagnifyingGlass",
                             ["LocationContext"] = "Valley",
                             ["query: {{Count: {{TehPers.FishingOverhaul/MissingSecretNotes}}}} > 0"] =
                                 "true",
-                            // TODO: remove this once CP updates
-                            ["HasMod"] = "TehPers.FishingOverhaul",
                         }.ToImmutableDictionary(),
                     }
                 );
@@ -99,13 +95,11 @@ namespace TehPers.FishingOverhaul.Services
                 yield return new JournalScrapEntry(
                     new(0.08)
                     {
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["LocationContext"] = "Island",
                             ["query: {{Count: {{TehPers.FishingOverhaul/MissingJournalScraps}}}} > 0"] =
                                 "true",
-                            // TODO: remove this once CP updates
-                            ["HasMod"] = "TehPers.FishingOverhaul",
                         }.ToImmutableDictionary()
                     }
                 );
@@ -113,12 +107,10 @@ namespace TehPers.FishingOverhaul.Services
                 yield return new GoldenWalnutEntry(
                     new(0.5)
                     {
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["LocationContext"] = "Island",
                             ["TehPers.FishingOverhaul/RandomGoldenWalnuts"] = "{{Range: 0, 4}}",
-                            // TODO: remove once CP fixes mods not being able to use their own tokens
-                            ["HasMod"] = "TehPers.FishingOverhaul",
                         }.ToImmutableDictionary(),
                     }
                 )
@@ -135,6 +127,7 @@ namespace TehPers.FishingOverhaul.Services
                     new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("IslandSouthEast"),
+                        PriorityTier = DefaultFishingSource.specialItemTier,
                         Position = new()
                         {
                             X = new()
@@ -148,11 +141,9 @@ namespace TehPers.FishingOverhaul.Services
                                 LessThan = 22,
                             },
                         },
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["TehPers.FishingOverhaul/TidePoolGoldenWalnut"] = "false",
-                            // TODO: remove once CP fixes mods not being able to use their own tokens
-                            ["HasMod"] = "TehPers.FishingOverhaul",
                         }.ToImmutableDictionary(),
                     }
                 )
@@ -170,6 +161,7 @@ namespace TehPers.FishingOverhaul.Services
                     new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("Forest"),
+                        PriorityTier = DefaultFishingSource.specialItemTier,
                         Position = new()
                         {
                             Y = new()
@@ -177,7 +169,7 @@ namespace TehPers.FishingOverhaul.Services
                                 GreaterThan = 108,
                             },
                         },
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=caughtIridiumKrobus"] = "false",
                         }.ToImmutableDictionary(),
@@ -195,38 +187,38 @@ namespace TehPers.FishingOverhaul.Services
                     new(0.05)
                     {
                         IncludeLocations = ImmutableArray.Create("Caldera"),
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=CalderaPainting"] = "false",
                         }.ToImmutableDictionary(),
                     }
-                ) { OnCatch = new() { SetFlags = ImmutableArray.Create("CalderaPainting") } };
+                ) {OnCatch = new() {SetFlags = ImmutableArray.Create("CalderaPainting")}};
                 // Pyramid decal
                 yield return new(
                     NamespacedKey.SdvFurniture(2334),
                     new(0.1)
                     {
                         IncludeLocations = ImmutableArray.Create("Desert"),
-                        Position = new() { Y = new() { GreaterThan = 55 } },
+                        Position = new() {Y = new() {GreaterThan = 55}},
                     }
                 );
                 // 'Lifesaver'
                 yield return new(
                     NamespacedKey.SdvFurniture(2418),
-                    new(0.2) { IncludeLocations = ImmutableArray.Create("Willys Ship") }
+                    new(0.2) {IncludeLocations = ImmutableArray.Create("Willys Ship")}
                 );
                 // Caroline's necklace
-                yield return new CarolineNecklaceEntry(
-                    new(0.25)
+                yield return new(
+                    NamespacedKey.SdvObject(GameLocation.CAROLINES_NECKLACE_ITEM),
+                    new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("Railroad"),
-                        When = new Dictionary<string, string>
+                        PriorityTier = DefaultFishingSource.questItemTier,
+                        When = new Dictionary<string, string?>
                         {
                             [$"HasFlag |contains={GameLocation.CAROLINES_NECKLACE_MAIL}"] = "false",
                             [$"TehPers.FishingOverhaul/MissingSecretNotes |contains={GameLocation.NECKLACE_SECRET_NOTE_INDEX}"] =
                                 "false",
-                            // TODO: remove this when CP updates
-                            ["HasMod"] = "TehPers.FishingOverhaul",
                         }.ToImmutableDictionary(),
                     }
                 )
@@ -242,21 +234,22 @@ namespace TehPers.FishingOverhaul.Services
                 // 'Vista'
                 yield return new(
                     NamespacedKey.SdvFurniture(2423),
-                    new(0.25)
+                    new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("Railroad"),
-                        When = new Dictionary<string, string>
+                        PriorityTier = DefaultFishingSource.specialItemTier,
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=gotSpaFishing"] = "false",
                         }.ToImmutableDictionary(),
                     }
-                ) { OnCatch = new() { SetFlags = ImmutableArray.Create("gotSpaFishing") } };
+                ) {OnCatch = new() {SetFlags = ImmutableArray.Create("gotSpaFishing")}};
                 yield return new(
                     NamespacedKey.SdvFurniture(2423),
                     new(0.08)
                     {
                         IncludeLocations = ImmutableArray.Create("Railroad"),
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag"] = "gotSpaFishing",
                         }.ToImmutableDictionary(),
@@ -270,8 +263,8 @@ namespace TehPers.FishingOverhaul.Services
                         IncludeLocations = ImmutableArray.Create("Town"),
                         Position = new()
                         {
-                            X = new() { LessThan = 30 },
-                            Y = new() { LessThan = 30 },
+                            X = new() {LessThan = 30},
+                            Y = new() {LessThan = 30},
                         }
                     }
                 );
@@ -281,10 +274,11 @@ namespace TehPers.FishingOverhaul.Services
                     new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("Town"),
+                        PriorityTier = DefaultFishingSource.prioritizedTier,
                         Position = new()
                         {
-                            X = new() { LessThan = 30 },
-                            Y = new() { LessThan = 30 },
+                            X = new() {LessThan = 30},
+                            Y = new() {LessThan = 30},
                         }
                     }
                 );
@@ -293,22 +287,35 @@ namespace TehPers.FishingOverhaul.Services
                     new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("Town"),
+                        PriorityTier = DefaultFishingSource.prioritizedTier,
                         Position = new()
                         {
-                            X = new() { LessThan = 30 },
-                            Y = new() { LessThan = 30 },
+                            X = new() {LessThan = 30},
+                            Y = new() {LessThan = 30},
                         }
                     }
                 );
                 // Wall basket
                 yield return new(
                     NamespacedKey.SdvFurniture(2425),
-                    new(0.08) { IncludeLocations = ImmutableArray.Create("Woods") }
+                    new(0.08) {IncludeLocations = ImmutableArray.Create("Woods")}
                 );
                 // Frog hat
                 yield return new(
                     NamespacedKey.SdvHat(78),
-                    new(0.1) { IncludeLocations = ImmutableArray.Create("IslandFarmCave") }
+                    new(0.1) {IncludeLocations = ImmutableArray.Create("IslandFarmCave")}
+                );
+                // Fossilized Spine
+                yield return new(
+                    NamespacedKey.SdvObject(821),
+                    new(0.1)
+                    {
+                        IncludeLocations = ImmutableArray.Create("IslandNorth"),
+                        When = new Dictionary<string, string?>
+                        {
+                            ["HasFlag"] = "Island_UpgradeBridge",
+                        }.ToImmutableDictionary()
+                    }
                 );
                 // Foliage print
                 yield return new(
@@ -316,23 +323,21 @@ namespace TehPers.FishingOverhaul.Services
                     new(0.25)
                     {
                         IncludeLocations = ImmutableArray.Create("IslandNorth"),
-                        Position = new() { Y = new() { GreaterThan = 72 } },
-                        When = new Dictionary<string, string>
+                        PriorityTier = DefaultFishingSource.specialItemTier,
+                        Position = new() {Y = new() {GreaterThan = 72}},
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=gotSecretIslandNPainting"] = "false",
                         }.ToImmutableDictionary(),
                     }
-                )
-                {
-                    OnCatch = new() { SetFlags = ImmutableArray.Create("gotSecretIslandNPainting") }
-                };
+                ) {OnCatch = new() {SetFlags = ImmutableArray.Create("gotSecretIslandNPainting")}};
                 yield return new(
                     NamespacedKey.SdvFurniture(2419),
                     new(0.1)
                     {
                         IncludeLocations = ImmutableArray.Create("IslandNorth"),
-                        Position = new() { Y = new() { GreaterThan = 72 } },
-                        When = new Dictionary<string, string>
+                        Position = new() {Y = new() {GreaterThan = 72}},
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag"] = "gotSecretIslandNPainting",
                         }.ToImmutableDictionary(),
@@ -344,20 +349,18 @@ namespace TehPers.FishingOverhaul.Services
                     new(0.25)
                     {
                         IncludeLocations = ImmutableArray.Create("IslandNorth"),
+                        PriorityTier = DefaultFishingSource.specialItemTier,
                         Position = new()
                         {
-                            X = new() { LessThan = 4 },
-                            Y = new() { LessThan = 35 },
+                            X = new() {LessThan = 4},
+                            Y = new() {LessThan = 35},
                         },
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=gotSecretIslandNSquirrel"] = "false",
                         }.ToImmutableDictionary(),
                     }
-                )
-                {
-                    OnCatch = new() { SetFlags = ImmutableArray.Create("gotSecretIslandNSquirrel") }
-                };
+                ) {OnCatch = new() {SetFlags = ImmutableArray.Create("gotSecretIslandNSquirrel")}};
                 yield return new(
                     NamespacedKey.SdvFurniture(2814),
                     new(0.1)
@@ -365,10 +368,10 @@ namespace TehPers.FishingOverhaul.Services
                         IncludeLocations = ImmutableArray.Create("IslandNorth"),
                         Position = new()
                         {
-                            X = new() { LessThan = 4 },
-                            Y = new() { LessThan = 35 },
+                            X = new() {LessThan = 4},
+                            Y = new() {LessThan = 35},
                         },
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag"] = "gotSecretIslandNSquirrel",
                         }.ToImmutableDictionary(),
@@ -377,15 +380,15 @@ namespace TehPers.FishingOverhaul.Services
                 // Gourmand's statue
                 yield return new(
                     NamespacedKey.SdvFurniture(2332),
-                    new(0.05) { IncludeLocations = ImmutableArray.Create("IslandSouthEastCave") }
+                    new(0.05) {IncludeLocations = ImmutableArray.Create("IslandSouthEastCave")}
                 );
                 // Snake skull
                 yield return new(
                     NamespacedKey.SdvObject(825),
-                    new(1.0)
+                    new(0.1)
                     {
                         IncludeLocations = ImmutableArray.Create("IslandWest"),
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag"] = "islandNorthCaveOpened",
                         }.ToImmutableDictionary(),
@@ -394,8 +397,8 @@ namespace TehPers.FishingOverhaul.Services
                 // Beach farm
                 var beachPositions = new PositionConstraint[]
                 {
-                    new() { X = new() { LessThan = 26 } },
-                    new() { X = new() { GreaterThan = 26 + 31 } },
+                    new() {X = new() {LessThan = 26}},
+                    new() {X = new() {GreaterThan = 26 + 31}},
                     new()
                     {
                         X = new()
@@ -403,7 +406,7 @@ namespace TehPers.FishingOverhaul.Services
                             GreaterThanEq = 26,
                             LessThan = 26 + 31,
                         },
-                        Y = new() { LessThan = 45 },
+                        Y = new() {LessThan = 45},
                     },
                     new()
                     {
@@ -412,7 +415,7 @@ namespace TehPers.FishingOverhaul.Services
                             GreaterThanEq = 26,
                             LessThan = 26 + 31,
                         },
-                        Y = new() { GreaterThanEq = 45 + 39 },
+                        Y = new() {GreaterThanEq = 45 + 39},
                     },
                 };
                 foreach (var position in beachPositions)
@@ -467,9 +470,10 @@ namespace TehPers.FishingOverhaul.Services
                 // 'Boat'
                 yield return new(
                     NamespacedKey.SdvFurniture(2421),
-                    new(10)
+                    new(1)
                     {
                         IncludeLocations = ImmutableArray.Create("Farm/Beach"),
+                        PriorityTier = DefaultFishingSource.specialItemTier,
                         FarmerPosition = new()
                         {
                             X = new()
@@ -483,12 +487,12 @@ namespace TehPers.FishingOverhaul.Services
                                 LessThan = 99,
                             },
                         },
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag |contains=gotBoatPainting"] = "false"
                         }.ToImmutableDictionary(),
                     }
-                ) { OnCatch = new() { SetFlags = ImmutableArray.Create("gotBoatPainting") } };
+                ) {OnCatch = new() {SetFlags = ImmutableArray.Create("gotBoatPainting")}};
                 // Dove children (https://stardewvalleywiki.com/Secrets#Dove_Children)
                 yield return new(
                     NamespacedKey.SdvObject(103),
@@ -497,16 +501,16 @@ namespace TehPers.FishingOverhaul.Services
                         IncludeLocations = ImmutableArray.Create("Farm/FourCorners"),
                         FarmerPosition = new()
                         {
-                            X = new() { LessThan = 40 },
-                            Y = new() { GreaterThan = 54 },
+                            X = new() {LessThan = 40},
+                            Y = new() {GreaterThan = 54},
                         },
-                        When = new Dictionary<string, string>
+                        When = new Dictionary<string, string?>
                         {
                             ["HasFlag"] = "cursed_doll",
                             ["HasFlag |contains=eric's_prank_1"] = "false",
                         }.ToImmutableDictionary(),
                     }
-                ) { OnCatch = new() { SetFlags = ImmutableArray.Create("eric's_prank_1") } };
+                ) {OnCatch = new() {SetFlags = ImmutableArray.Create("eric's_prank_1")}};
             }
         }
     }

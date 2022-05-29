@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/smapi-mods**
+**Source repository: https://gitlab.com/daleao/sdv-mods**
 
 ----
 
@@ -73,4 +73,4 @@ Before uninstall, **fish out and clear all ponds** to remove rogue data. Then de
 
 ## License
 
-See [LICENSE](../LICENSE) for more information.
+See [LICENSE](../../LICENSE) for more information.

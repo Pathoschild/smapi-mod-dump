@@ -6,9 +6,12 @@ mods:
    Raised Garden Beds
 
 latest commit:
-   commit 2f2322d4804de1b365eb2da322bff32a903324f2
+   commit 57d6736226cf9420e5753f3bccfb6844c919bf67
    Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Thu Nov 4 11:12:31 2021 +1100
+   Date:   Sun Jan 9 19:43:24 2022 +1100
    
-       Fix object crafting recipes not being added to game data dictionaries when no other loaded mods are invalidating the data assets.
+       1.0.4:
+       Fix FarmHouse location always valid for placement regardless of config preferences.
+       Fix draw offset for held objects (eg. forage) acting as if for craftables.
+       Fix GenericModConfigMenu entries with omitted translation strings appearing as keys rather than null.
    

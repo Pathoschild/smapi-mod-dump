@@ -16,13 +16,13 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers.SuperXBR;
 
-sealed partial class Scaler {
+internal sealed partial class Scaler {
 	private const uint MinScale = 2;
 	private const uint MaxScale = Config.MaxScale;
 
 	private static uint ClampScale(uint scale) => 2;// Math.Clamp((uint)MathExt.RoundToInt(Math.Pow(Math.Ceiling(Math.Log2(scale)), 2)), MinScale, MaxScale);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static Span<Color16> Apply(
 		Config? config,
 		uint scaleMultiplier,
@@ -48,8 +48,8 @@ sealed partial class Scaler {
 			throw new ArgumentOutOfRangeException(nameof(targetSize));
 		}
 
-		if (targetData == Span<Color16>.Empty) {
-			targetData = SpanExt.MakeUninitialized<Color16>(targetSize.Area);
+		if (targetData.IsEmpty) {
+			targetData = SpanExt.MakePinned<Color16>(targetSize.Area);
 		}
 		else {
 			if (targetSize.Area > targetData.Length) {
@@ -68,7 +68,7 @@ sealed partial class Scaler {
 		return targetData;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private Scaler(
 		in Config configuration,
 		uint scaleMultiplier,
@@ -99,7 +99,6 @@ sealed partial class Scaler {
 	private readonly Vector2I SourceSize;
 	private readonly Vector2I TargetSize;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private void Scale(ReadOnlySpan<Color16> source, Span<Color16> target) {
 		if (ScaleMultiplier == 1) {
 			source.CopyTo(target);
@@ -112,7 +111,7 @@ sealed partial class Scaler {
 		// Run the scaling algorithm into a temporary buffer for each scaling up until the final one
 		for (uint currentScale = ScaleMultiplier; currentScale > 2U; currentScale >>= 1) {
 			currentTargetSize <<= 1;
-			var currentTarget = SpanExt.MakeUninitialized<Color16>(currentTargetSize.Area);
+			var currentTarget = SpanExt.Make<Color16>(currentTargetSize.Area);
 
 			Scale(currentSource, currentSourceSize, currentTarget, currentTargetSize);
 

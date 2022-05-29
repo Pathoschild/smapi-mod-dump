@@ -17,11 +17,7 @@ using StardewValley;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using HaltEventTime.Patches;
-#if HARMONY_2
 using HarmonyLib;
-#else
-using Harmony;
-#endif
 
 namespace HaltEventTime
 {
@@ -50,14 +46,8 @@ namespace HaltEventTime
             helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
             helper.Events.Multiplayer.PeerContextReceived += OnPeerContextReceived;
             helper.Events.GameLoop.DayStarted += (sender, e) => { if (!Context.IsMainPlayer) Active = true; }; //会在每天和进入服务器时触发
-#if HARMONY_2
             var harmony = new Harmony(nameof(BuffUpdatePatch));
             harmony.PatchAll();
-#else
-            HarmonyInstance harmony = HarmonyInstance.Create("StardewValley");
-            harmony.Patch(typeof(Buff).GetMethod("update"), new HarmonyMethod(typeof(BuffUpdatePatch).GetMethod(nameof(BuffUpdatePatch.Prefix))));
-#endif
-
         }
 
         public void ConsoleCommand(string command, string[] args)

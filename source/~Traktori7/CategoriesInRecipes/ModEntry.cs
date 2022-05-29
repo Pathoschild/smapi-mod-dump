@@ -48,8 +48,8 @@ namespace CategoriesInRecipes
 
 	public class RecipePatches
 	{
-		private static IMonitor? Monitor;
-		private static ITranslationHelper? Translator;
+		private static IMonitor Monitor = null!;
+		private static ITranslationHelper Translator = null!;
 
 
 		public static void Initialize(IMonitor monitor, ITranslationHelper translation)
@@ -69,7 +69,7 @@ namespace CategoriesInRecipes
 						index = -3;
 						return true;
 					case SObject.FruitsCategory:
-						__result = Translator!.Get("category.fruit");
+						__result = Translator.Get("category.fruit");
 						return false;
 					case SObject.GreensCategory:
 						index = -1;
@@ -80,7 +80,7 @@ namespace CategoriesInRecipes
 			}
 			catch (Exception e)
 			{
-				Monitor!.Log("Mod failed at prefixing CraftingRecipe.getNameFromIndex", LogLevel.Error);
+				Monitor.Log("Mod failed at prefixing CraftingRecipe.getNameFromIndex", LogLevel.Error);
 				Monitor.Log(e.ToString(), LogLevel.Error);
 				return true;
 			}
@@ -109,7 +109,7 @@ namespace CategoriesInRecipes
 			}
 			catch (Exception e)
 			{
-				Monitor!.Log("Mod failed at prefixing CraftingRecipe.getSpriteIndexFromRawIndex", LogLevel.Error);
+				Monitor.Log("Mod failed at prefixing CraftingRecipe.getSpriteIndexFromRawIndex", LogLevel.Error);
 				Monitor.Log(e.ToString(), LogLevel.Error);
 				return true;
 			}

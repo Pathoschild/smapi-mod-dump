@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Tokens.ValueProviders;
 using Pathoschild.Stardew.Common.Utilities;
@@ -32,10 +31,10 @@ namespace ContentPatcher.Framework.Tokens
         ** Accessors
         *********/
         /// <inheritdoc />
-        public string Scope { get; }
+        public string? Scope { get; }
 
         /// <inheritdoc />
-        public virtual string Name { get; }
+        public string Name { get; }
 
         /// <inheritdoc />
         public bool IsMutable => this.Values.IsMutable;
@@ -49,6 +48,9 @@ namespace ContentPatcher.Framework.Tokens
         /// <inheritdoc />
         public bool BypassesContextValidation => this.Values.BypassesContextValidation;
 
+        /// <inheritdoc />
+        public Func<string, string>? NormalizeValue => this.Values.NormalizeValue;
+
 
         /*********
         ** Public methods
@@ -56,7 +58,7 @@ namespace ContentPatcher.Framework.Tokens
         /// <summary>Construct an instance.</summary>
         /// <param name="provider">The underlying value provider.</param>
         /// <param name="scope">The mod namespace in which the token is accessible, or <c>null</c> for any namespace.</param>
-        public Token(IValueProvider provider, string scope = null)
+        public Token(IValueProvider provider, string? scope = null)
         {
             this.Values = provider;
             this.Scope = scope;
@@ -70,7 +72,7 @@ namespace ContentPatcher.Framework.Tokens
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<string> GetTokensUsed()
+        public virtual IInvariantSet GetTokensUsed()
         {
             return this.Values.GetTokensUsed();
         }
@@ -93,14 +95,14 @@ namespace ContentPatcher.Framework.Tokens
         }
 
         /// <inheritdoc />
-        public virtual bool TryValidateInput(IInputArguments input, out string error)
+        public virtual bool TryValidateInput(IInputArguments input, [NotNullWhen(false)] out string? error)
         {
             // validate 'valueAt'
-            foreach (var arg in input.ReservedArgsList)
+            foreach ((string name, IInputArgumentValue value) in input.ReservedArgsList)
             {
-                if (InputArguments.ValueAtKey.EqualsIgnoreCase(arg.Key) && !int.TryParse(arg.Value.Raw, out _))
+                if (InputArguments.ValueAtKey.EqualsIgnoreCase(name) && !int.TryParse(value.Raw, out _))
                 {
-                    error = $"invalid '{InputArguments.ValueAtKey}' index '{arg.Value.Raw}', must be a numeric value.";
+                    error = $"invalid '{InputArguments.ValueAtKey}' index '{value.Raw}', must be a numeric value.";
                     return false;
                 }
             }
@@ -110,7 +112,7 @@ namespace ContentPatcher.Framework.Tokens
         }
 
         /// <inheritdoc />
-        public virtual bool TryValidateValues(IInputArguments input, InvariantHashSet values, IContext context, out string error)
+        public virtual bool TryValidateValues(IInputArguments input, IInvariantSet values, IContext context, [NotNullWhen(false)] out string? error)
         {
             // 'contains' limited to true/false
             if (input.ReservedArgs.ContainsKey(InputArguments.ContainsKey))
@@ -138,18 +140,18 @@ namespace ContentPatcher.Framework.Tokens
         }
 
         /// <inheritdoc />
-        public virtual InvariantHashSet GetAllowedInputArguments()
+        public virtual IInvariantSet? GetAllowedInputArguments()
         {
             return this.Values.GetValidPositionalArgs();
         }
 
         /// <inheritdoc />
-        public virtual bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public virtual bool HasBoundedValues(IInputArguments input, [NotNullWhen(true)] out IInvariantSet? allowedValues)
         {
             // 'contains' limited to true/false
             if (input.ReservedArgs.ContainsKey(InputArguments.ContainsKey))
             {
-                allowedValues = InvariantHashSet.Boolean();
+                allowedValues = InvariantSets.Boolean;
                 return true;
             }
 
@@ -173,34 +175,24 @@ namespace ContentPatcher.Framework.Tokens
         }
 
         /// <inheritdoc />
-        public virtual string NormalizeValue(string value)
-        {
-            return this.Values.NormalizeValue(value);
-        }
-
-        /// <inheritdoc />
-        public virtual IEnumerable<string> GetValues(IInputArguments input)
+        public virtual IInvariantSet GetValues(IInputArguments input)
         {
             // default logic
-            IEnumerable<string> rawValues = this.Values.GetValues(input);
+            IEnumerable<string> values = this.Values.GetValues(input);
 
             // apply global input arguments
             if (input.ReservedArgs.Any())
             {
-                string[] values = rawValues.ToArray();
-
-                foreach (KeyValuePair<string, IInputArgumentValue> arg in input.ReservedArgsList)
+                foreach ((string name, IInputArgumentValue value) in input.ReservedArgsList)
                 {
-                    if (InputArguments.ContainsKey.EqualsIgnoreCase(arg.Key))
-                        values = this.ApplyContains(values, arg.Value);
-                    else if (InputArguments.ValueAtKey.EqualsIgnoreCase(arg.Key))
-                        values = this.ApplyValueAt(values, arg.Value);
+                    if (InputArguments.ContainsKey.EqualsIgnoreCase(name))
+                        values = this.ApplyContains(values, value);
+                    else if (InputArguments.ValueAtKey.EqualsIgnoreCase(name))
+                        values = this.ApplyValueAt(values, value);
                 }
-
-                rawValues = values;
             }
 
-            return rawValues;
+            return InvariantSets.From(values);
         }
 
 
@@ -211,7 +203,7 @@ namespace ContentPatcher.Framework.Tokens
         /// <param name="name">The token name.</param>
         /// <param name="provider">The underlying value provider.</param>
         /// <param name="scope">The mod namespace in which the token is accessible, or <c>null</c> for any namespace.</param>
-        protected Token(string name, IValueProvider provider, string scope = null)
+        protected Token(string name, IValueProvider provider, string? scope = null)
             : this(provider, scope)
         {
             this.Name = name;
@@ -220,28 +212,48 @@ namespace ContentPatcher.Framework.Tokens
         /// <summary>Apply the <see cref="InputArguments.ContainsKey"/> argument.</summary>
         /// <param name="values">The underlying values to modify.</param>
         /// <param name="argValue">The argument value.</param>
-        private string[] ApplyContains(string[] values, IInputArgumentValue argValue)
+        private IInvariantSet ApplyContains(IEnumerable<string> values, IInputArgumentValue argValue)
         {
-            InvariantHashSet search = new(argValue.Parsed.Select(this.NormalizeValue));
-            bool match = search.Any() && values.Any(value => search.Contains(value));
-            return new[] { match.ToString() };
+            // skip empty search
+            if (string.IsNullOrWhiteSpace(argValue.Raw))
+                return InvariantSets.False;
+
+            // get search values
+            string[] search = argValue.Parsed;
+            if (this.NormalizeValue != null)
+            {
+                for (int i = 0; i < search.Length; i++)
+                    search[i] = this.NormalizeValue(search[i]);
+            }
+
+            // get result
+            bool found = values is IInvariantSet set
+                ? set.Overlaps(search)
+                : InvariantSets.From(search).Overlaps(values);
+
+            return InvariantSets.FromValue(found);
         }
 
         /// <summary>Apply the <see cref="InputArguments.ValueAtKey"/> argument.</summary>
         /// <param name="values">The underlying values to modify.</param>
         /// <param name="argValue">The argument value.</param>
-        private string[] ApplyValueAt(string[] values, IInputArgumentValue argValue)
+        private IInvariantSet ApplyValueAt(IEnumerable<string> values, IInputArgumentValue argValue)
         {
             // parse index
             if (!int.TryParse(argValue.Raw, out int index))
                 throw new FormatException($"Invalid '{InputArguments.ValueAtKey}' index '{argValue.Raw}', must be a numeric index."); // should never happen since it's validated before this point
-            if (Math.Abs(index) >= values.Length)
-                return Array.Empty<string>();
+
+            // get list
+            if (values is not IList<string> list)
+                list = values.ToArray();
 
             // get value at index (negative index = from end)
-            return index >= 0
-                ? new[] { values[index] }
-                : new[] { values[values.Length + index] };
+            if (Math.Abs(index) >= list.Count)
+                return InvariantSets.Empty;
+            return InvariantSets.FromValue(index >= 0
+                ? list[index]
+                : list[list.Count + index]
+            );
         }
     }
 }

@@ -216,6 +216,7 @@ namespace RangeHighlight {
                 if (config.showHeldBombRange) {
                     api.AddItemRangeHighlighter("jltaylor-us.RangeHighlight/bomb", new KeybindList(), true,
                         (item, itemID, itemName) => {
+                            if (!Utility.IsNormalObjectAtParentSheetIndex(item, item.ParentSheetIndex)) return null;
                             DefaultShapes.BombRange range;
                             switch (itemID) {
                                 case 286:

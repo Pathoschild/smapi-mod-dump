@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -32,46 +30,54 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         ** Metadata
         ****/
         /// <summary>Get whether the values may change depending on the context.</summary>
-        private ConventionDelegates.IsMutable IsMutableImpl;
+        private ConventionDelegates.IsMutable? IsMutableImpl;
 
         /// <summary>The implementation for <see cref="AllowsInput"/>, if any.</summary>
-        private ConventionDelegates.AllowsInput AllowsInputImpl;
+        private ConventionDelegates.AllowsInput? AllowsInputImpl;
 
         /// <summary>The implementation for <see cref="RequiresInput"/>, if any.</summary>
-        private ConventionDelegates.RequiresInput RequiresInputImpl;
+        private ConventionDelegates.RequiresInput? RequiresInputImpl;
 
         /// <summary>The implementation for <see cref="CanHaveMultipleValues"/>, if any.</summary>
-        private ConventionDelegates.CanHaveMultipleValues CanHaveMultipleValuesImpl;
+        private ConventionDelegates.CanHaveMultipleValues? CanHaveMultipleValuesImpl;
 
         /// <summary>The implementation for <see cref="GetValidInputs"/>, if any.</summary>
-        private ConventionDelegates.GetValidInputs GetValidInputsImpl;
+        private ConventionDelegates.GetValidInputs? GetValidInputsImpl;
 
         /// <summary>The implementation for <see cref="HasBoundedValues"/>, if any.</summary>
-        private ConventionDelegates.HasBoundedValues HasBoundedValuesImpl;
+        private ConventionDelegates.HasBoundedValues? HasBoundedValuesImpl;
 
         /// <summary>The implementation for <see cref="HasBoundedRangeValues"/>, if any.</summary>
-        private ConventionDelegates.HasBoundedRangeValues HasBoundedRangeValuesImpl;
+        private ConventionDelegates.HasBoundedRangeValues? HasBoundedRangeValuesImpl;
 
         /// <summary>The implementation for <see cref="TryValidateInput"/>, if any.</summary>
-        private ConventionDelegates.TryValidateInput TryValidateInputImpl;
+        private ConventionDelegates.TryValidateInput? TryValidateInputImpl;
 
         /// <summary>The implementation for <see cref="TryValidateValues"/>, if any.</summary>
-        private ConventionDelegates.TryValidateValues TryValidateValuesImpl;
+        private ConventionDelegates.TryValidateValues? TryValidateValuesImpl;
 
         /// <summary>The implementation for <see cref="NormalizeValue"/>, if any.</summary>
-        private ConventionDelegates.NormalizeValue NormalizeValueImpl;
+        private ConventionDelegates.NormalizeValue? NormalizeValueImpl;
 
         /****
         ** State
         ****/
         /// <summary>The implementation for <see cref="IsReady"/>, if any.</summary>
-        private ConventionDelegates.IsReady IsReadyImpl;
+        private ConventionDelegates.IsReady? IsReadyImpl;
 
         /// <summary>The implementation for <see cref="GetValues"/>, if any.</summary>
-        private ConventionDelegates.GetValues GetValuesImpl;
+        private ConventionDelegates.GetValues? GetValuesImpl;
 
         /// <summary>The implementation for <see cref="UpdateContext"/>, if any.</summary>
-        private ConventionDelegates.UpdateContext UpdateContextImpl;
+        private ConventionDelegates.UpdateContext? UpdateContextImpl;
+
+
+        /*********
+        ** Accessors
+        *********/
+        /// <summary>Normalize a raw value so it can be compared with the token values.</summary>
+        /// <param name="value">The raw value.</param>
+        public Func<string, string>? NormalizeValue { get; protected set; }
 
 
         /*********
@@ -82,7 +88,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="reflection">Simplifies access to private code.</param>
         /// <param name="wrapper">The wrapper, if created successfully.</param>
         /// <param name="error">The error indicating why creating the wrapper failed, if applicable.</param>
-        public static bool TryCreate(object instance, IReflectionHelper reflection, out ConventionWrapper wrapper, out string error)
+        public static bool TryCreate(object instance, IReflectionHelper reflection, [NotNullWhen(true)] out ConventionWrapper? wrapper, [NotNullWhen(false)] out string? error)
         {
             error = null;
             var result = new ConventionWrapper();
@@ -90,12 +96,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
             // Map a delegate type to a token method and wrapper field by convention.
             // This assumes the delegate type name matches the method name, and the wrapper has a
             // field of the delegate type in the form {name}Impl.
-            bool TryMap<TDelegate>(out string mapError) where TDelegate : Delegate
+            bool TryMap<TDelegate>([NotNullWhen(false)] out string? mapError) where TDelegate : Delegate
             {
                 string methodName = typeof(TDelegate).Name;
                 string fieldName = $"{methodName}Impl";
 
-                if (ConventionWrapper.TryWrapMethod(instance, methodName, out TDelegate mapped, out mapError))
+                if (ConventionWrapper.TryWrapMethod(instance, methodName, out TDelegate? mapped, out mapError))
                     reflection.GetField<TDelegate>(result, fieldName).SetValue(mapped);
 
                 return mapError == null;
@@ -141,6 +147,8 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
                     && TryMap<ConventionDelegates.GetValues>(out error)
                     && TryMap<ConventionDelegates.UpdateContext>(out error);
             }
+            if (succeeded && result.NormalizeValueImpl is not null)
+                result.NormalizeValue = value => result.NormalizeValueImpl(value);
 
             wrapper = succeeded ? result : null;
             return succeeded;
@@ -172,7 +180,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <summary>Whether the value provider may return multiple values for the given input.</summary>
         /// <param name="input">The input arguments, if any.</param>
         /// <remarks>Default true.</remarks>
-        public bool CanHaveMultipleValues(string input = null)
+        public bool CanHaveMultipleValues(string? input = null)
         {
             return this.CanHaveMultipleValuesImpl?.Invoke() ?? true;
         }
@@ -190,7 +198,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="input">The input arguments, if any.</param>
         /// <param name="allowedValues">The possible values for the input.</param>
         /// <remarks>Default unrestricted.</remarks>
-        public bool HasBoundedValues(string input, out IEnumerable<string> allowedValues)
+        public bool HasBoundedValues(string? input, [NotNullWhen(true)] out IEnumerable<string>? allowedValues)
         {
             allowedValues = null;
 
@@ -202,7 +210,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="min">The minimum value this token may return.</param>
         /// <param name="max">The maximum value this token may return.</param>
         /// <remarks>Default false.</remarks>
-        public bool HasBoundedRangeValues(string input, out int min, out int max)
+        public bool HasBoundedRangeValues(string? input, out int min, out int max)
         {
             min = 0;
             max = 0;
@@ -215,7 +223,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="error">The validation error, if any.</param>
         /// <returns>Returns whether validation succeeded.</returns>
         /// <remarks>Default true.</remarks>
-        public bool TryValidateInput(string input, out string error)
+        public bool TryValidateInput(string? input, [NotNullWhen(false)] out string? error)
         {
             error = null;
 
@@ -228,20 +236,11 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="error">The validation error, if any.</param>
         /// <returns>Returns whether validation succeeded.</returns>
         /// <remarks>Default true.</remarks>
-        public bool TryValidateValues(string input, IEnumerable<string> values, out string error)
+        public bool TryValidateValues(string? input, IEnumerable<string> values, [NotNullWhen(false)] out string? error)
         {
             error = null;
 
             return this.TryValidateValuesImpl?.Invoke(input, values, out error) ?? true;
-        }
-
-        /// <summary>Normalize a raw value so it can be compared with the token values.</summary>
-        /// <param name="value">The raw value.</param>
-        public string NormalizeValue(string value)
-        {
-            return this.NormalizeValueImpl != null
-                ? this.NormalizeValueImpl(value)
-                : value;
         }
 
 
@@ -256,7 +255,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
 
         /// <summary>Get the current values. This method is required.</summary>
         /// <param name="input">The input arguments, if any.</param>
-        public IEnumerable<string> GetValues(string input)
+        public IEnumerable<string> GetValues(string? input)
         {
             return this.GetValuesImpl != null
                 ? this.GetValuesImpl(input)
@@ -279,7 +278,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <param name="name">The method name on <see cref="ConventionWrapper"/> being mapped.</param>
         /// <param name="methodDelegate">The created method delegate, if any.</param>
         /// <param name="error">The error indicating why creating the wrapper failed, if applicable.</param>
-        private static bool TryWrapMethod<TDelegate>(object instance, string name, out TDelegate methodDelegate, out string error)
+        private static bool TryWrapMethod<TDelegate>(object instance, string name, [NotNullWhen(true)] out TDelegate? methodDelegate, out string? error)
             where TDelegate : Delegate
         {
             methodDelegate = null;
@@ -324,17 +323,17 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
                     return "string";
                 if (type.IsPrimitive)
                     return type.Name;
-                return type.FullName;
+                return type.FullName!;
             }
 
 
             // get interface method
-            MethodInfo source = typeof(ConventionWrapper).GetMethod(name);
+            MethodInfo? source = typeof(ConventionWrapper).GetMethod(name);
             if (source == null)
                 throw new InvalidOperationException($"The {nameof(ConventionWrapper)} class has no '{name}' method."); // should never happen
 
             // get target method
-            MethodInfo target = instance.GetType().GetMethod(name);
+            MethodInfo? target = instance.GetType().GetMethod(name);
             if (target == null)
                 throw new InvalidOperationException($"The token has no '{name}' method."); // should never happen, we check if the target method exists before we get here
 
@@ -347,8 +346,8 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
                 return $"method {name} is a generic method, which isn't supported.";
 
             // check arguments
-            ParameterInfo[] sourceParams = source.GetParameters().ToArray();
-            ParameterInfo[] targetParams = target.GetParameters().ToArray();
+            ParameterInfo[] sourceParams = source.GetParameters();
+            ParameterInfo[] targetParams = target.GetParameters();
             if (sourceParams.Length != targetParams.Length)
                 return $"method {name} has {targetParams.Length} arguments, but expected {sourceParams.Length}.";
 
@@ -357,11 +356,10 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
                 ParameterInfo sourceParam = sourceParams[i];
                 ParameterInfo targetParam = targetParams[i];
 
-                string paramErrorPrefix = $"method {name} > parameter {i + 1} ({targetParam.Name}) ";
                 if (sourceParam.ParameterType != targetParam.ParameterType)
-                    return $"{paramErrorPrefix} has type {GetTypeName(targetParam.ParameterType)}, but expected {GetTypeName(sourceParam.ParameterType)}.";
+                    return $"method {name} > parameter {i + 1} ({targetParam.Name}) has type {GetTypeName(targetParam.ParameterType)}, but expected {GetTypeName(sourceParam.ParameterType)}.";
                 if (sourceParam.Attributes != targetParam.Attributes)
-                    return $"{paramErrorPrefix} has attributes {targetParam.Attributes}, but expected {sourceParam.Attributes}.";
+                    return $"method {name} > parameter {i + 1} ({targetParam.Name}) has attributes {targetParam.Attributes}, but expected {sourceParam.Attributes}.";
             }
 
             // unknown reason

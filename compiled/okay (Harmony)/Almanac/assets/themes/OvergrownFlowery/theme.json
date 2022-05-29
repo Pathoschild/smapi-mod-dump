@@ -1,0 +1,57 @@
+{
+	"$schema": "https://raw.githubusercontent.com/KhloeLeclair/StardewMods/main/Almanac/theme-schema.json",
+	"Name": "Overgrown Flowery",
+	"For": [
+		"Amaryn.OvergrownFloweryInterface"
+	],
+
+	"CoverTextColor": "#6D5955",
+	"CoverYearColor": "#593d40",
+
+	"CustomMouse": true,
+
+	"Standard": {
+		"CustomScroll": true,
+		"CustomTooltip": true,
+
+		"ScrollOffsetTop": 96,
+		"ScrollOffsetBottom": 0,
+
+		"SeasonTextColor": "#593D40",
+
+		"CalendarLabelColor": "#221122",
+		"CalendarDayColor": "#221122",
+
+		"CalendarDimColor": "#846171",
+		"CalendarDimOpacity": 0.35,
+
+		"CalendarHighlightColor": "#DB6B77",
+
+		"TextColor": "#27110d",
+		"TextShadowColor": "#E3C6C8"
+	},
+
+	"Magic": {
+		"CustomScroll": true,
+		"CustomTooltip": true,
+
+		"ScrollOffsetTop": 32,
+		"ScrollOffsetBottom": -32,
+
+		"SeasonTextColor": "white",
+
+		"CalendarLabelColor": "skyblue",
+		"CalendarDayColor": "lightskyblue",
+
+		"CalendarDimColor": {
+			"R": 0,
+			"G": 0,
+			"B": 0
+		},
+		"CalendarDimOpacity": 0.4,
+		"CalendarHighlightColor": "blue",
+
+		"TextColor": "white",
+		"TextShadowColor": "#292948"
+	}
+}

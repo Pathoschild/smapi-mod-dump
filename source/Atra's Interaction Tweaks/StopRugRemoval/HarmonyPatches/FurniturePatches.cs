@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AtraShared.Utils.Extensions;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.BellsAndWhistles;
@@ -43,9 +44,8 @@ internal class FurniturePatches
             Rectangle bounds = __instance.boundingBox.Value;
             int tileX = bounds.X / 64;
             int tileY = bounds.Y / 64;
-#if DEBUG
-            ModEntry.ModMonitor.Log($"Checking rug: {bounds.X / 64f}, {bounds.Y / 64f}, W/H {bounds.Width / 64f}/{bounds.Height / 64f}", LogLevel.Debug);
-#endif
+            ModEntry.ModMonitor.DebugOnlyLog($"Checking rug: {bounds.X / 64f}, {bounds.Y / 64f}, W/H {bounds.Width / 64f}/{bounds.Height / 64f}", LogLevel.Debug);
+
             for (int x = 0; x < bounds.Width / 64; x++)
             {
                 for (int y = 0; y < bounds.Height / 64; y++)
@@ -115,6 +115,7 @@ internal class FurniturePatches
     /// <param name="__result">The result of the original function.</param>
     /// <returns>Return true to continue to the original function, false otherwise.</returns>
     [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
     [HarmonyPatch(nameof(Furniture.clicked))]
     [SuppressMessage("StyleCop", "SA1313", Justification = "Style prefered by Harmony")]
     private static bool PrefixClicked(Furniture __instance, Farmer who, ref bool __result)
@@ -125,7 +126,7 @@ internal class FurniturePatches
             {
                 return true;
             }
-            if (__instance.furniture_type.Value == Furniture.table
+            if ((__instance.furniture_type.Value == Furniture.table || __instance is StorageFurniture)
                 && ModEntry.Config.PreventRemovalFromTable
                 && !ModEntry.Config.FurniturePlacementKey.IsDown())
             {

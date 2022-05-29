@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Newtonsoft.Json.Linq;
 
@@ -41,10 +39,10 @@ namespace ContentPatcher.Framework.Patches.EditData
         }
 
         /// <inheritdoc />
-        public abstract object GetEntry(object key);
+        public abstract object? GetEntry(object key);
 
         /// <inheritdoc />
-        public abstract Type GetEntryType(object key);
+        public abstract Type? GetEntryType(object key);
 
         /// <inheritdoc />
         public abstract void RemoveEntry(object key);

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,7 +44,7 @@ namespace ContentPatcher.Framework.Patches
         ** Accessors
         *********/
         /// <summary>The patches that were loaded by the latest update, if any. This is cleared on the next update if no new patches were loaded.</summary>
-        public IEnumerable<IPatch> PatchesJustLoaded { get; private set; }
+        public IEnumerable<IPatch>? PatchesJustLoaded { get; private set; }
 
 
         /*********
@@ -64,7 +62,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="parseAssetName">Parse an asset name.</param>
         /// <param name="monitor">Encapsulates monitoring and logging.</param>
         /// <param name="patchLoader">Handles loading and unloading patches for content packs.</param>
-        public IncludePatch(int[] indexPath, LogPathBuilder path, IManagedTokenString assetName, IEnumerable<Condition> conditions, IManagedTokenString fromFile, UpdateRate updateRate, RawContentPack contentPack, IPatch parentPatch, Func<string, IAssetName> parseAssetName, IMonitor monitor, PatchLoader patchLoader)
+        public IncludePatch(int[] indexPath, LogPathBuilder path, IManagedTokenString? assetName, IEnumerable<Condition> conditions, IManagedTokenString fromFile, UpdateRate updateRate, RawContentPack contentPack, IPatch? parentPatch, Func<string, IAssetName> parseAssetName, IMonitor monitor, PatchLoader patchLoader)
             : base(
                 indexPath: indexPath,
                 path: path,
@@ -89,7 +87,7 @@ namespace ContentPatcher.Framework.Patches
             this.PatchesJustLoaded = null;
 
             // update context
-            if (!this.UpdateContext(context, out string previousFilePath))
+            if (!this.UpdateContext(context, out string? previousFilePath))
                 return false;
 
             // unload previous patches
@@ -101,31 +99,30 @@ namespace ContentPatcher.Framework.Patches
             this.IsApplied = false;
             if (this.AttemptedDataLoad)
             {
-                string errorPrefix = $"Error loading patch '{this.Path}'";
                 try
                 {
                     // validate file existence
                     if (!this.FromAssetExists())
                     {
                         if (this.IsReady)
-                            this.Monitor.Log($"{errorPrefix}: file '{this.FromAsset}' doesn't exist.", LogLevel.Warn);
+                            this.WarnForPatch($"file '{this.FromAsset}' doesn't exist.");
                         return this.MarkUpdated();
                     }
 
                     // prevent circular reference
                     {
                         List<string> loopPaths = new List<string>();
-                        for (IPatch parent = this.ParentPatch; parent != null; parent = parent.ParentPatch)
+                        for (IPatch? parent = this.ParentPatch; parent != null; parent = parent.ParentPatch)
                         {
                             if (parent.Type == PatchType.Include)
                             {
-                                loopPaths.Add(parent.FromAsset);
-                                if (this.IsSameFilePath(parent.FromAsset, this.FromAsset))
+                                loopPaths.Add(parent.FromAsset!);
+                                if (this.IsSameFilePath(parent.FromAsset!, this.FromAsset))
                                 {
                                     loopPaths.Reverse();
                                     loopPaths.Add(this.FromAsset);
 
-                                    this.Monitor.Log($"{errorPrefix}: patch skipped because it would cause an infinite loop ({string.Join(" > ", loopPaths)}).", LogLevel.Warn);
+                                    this.WarnForPatch($"patch skipped because it would cause an infinite loop ({string.Join(" > ", loopPaths)}).");
                                     return this.MarkUpdated();
                                 }
                             }
@@ -136,7 +133,7 @@ namespace ContentPatcher.Framework.Patches
                     var content = this.ContentPack.ModContent.Load<ContentConfig>(this.FromAsset);
                     if (!content.Changes.Any())
                     {
-                        this.Monitor.Log($"{errorPrefix}: file '{this.FromAsset}' doesn't have anything in the {nameof(content.Changes)} field. Is the file formatted correctly?", LogLevel.Warn);
+                        this.WarnForPatch($"file '{this.FromAsset}' doesn't have anything in the {nameof(content.Changes)} field. Is the file formatted correctly?");
                         return this.MarkUpdated();
                     }
 
@@ -144,7 +141,7 @@ namespace ContentPatcher.Framework.Patches
                     string[] invalidFields = this.GetInvalidFields(content).ToArray();
                     if (invalidFields.Any())
                     {
-                        this.Monitor.Log($"{errorPrefix}: file contains fields which aren't allowed for a secondary file ({string.Join(", ", invalidFields.OrderByHuman())}).", LogLevel.Warn);
+                        this.WarnForPatch($"file contains fields which aren't allowed for a secondary file ({string.Join(", ", invalidFields.OrderByHuman())}).");
                         return this.MarkUpdated();
                     }
 
@@ -161,7 +158,7 @@ namespace ContentPatcher.Framework.Patches
                 }
                 catch (Exception ex)
                 {
-                    this.Monitor.Log($"{errorPrefix}. Technical details:\n{ex}", LogLevel.Error);
+                    this.WarnForPatch($"an error occurred.\n{ex}", LogLevel.Error);
                     return this.MarkUpdated();
                 }
             }
@@ -172,7 +169,7 @@ namespace ContentPatcher.Framework.Patches
         /// <inheritdoc />
         public override IEnumerable<string> GetChangeLabels()
         {
-            yield break;
+            return Array.Empty<string>();
         }
 
 
@@ -183,7 +180,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="context">Provides access to contextual tokens.</param>
         /// <param name="previousFilePath">The file path that was previously loaded, if any.</param>
         /// <returns>Returns whether the patch data changed.</returns>
-        private bool UpdateContext(IContext context, out string previousFilePath)
+        private bool UpdateContext(IContext context, out string? previousFilePath)
         {
             previousFilePath = this.AttemptedDataLoad && this.IsReady && this.FromAssetExists() ? this.FromAsset : null;
             return base.UpdateContext(context);
@@ -192,7 +189,7 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Get whether two include paths are equivalent.</summary>
         /// <param name="left">The first path to compare.</param>
         /// <param name="right">The second path to compare.</param>
-        private bool IsSameFilePath(string left, string right)
+        private bool IsSameFilePath(string? left, string? right)
         {
             if (left == right)
                 return true;
@@ -214,7 +211,7 @@ namespace ContentPatcher.Framework.Patches
                 if (property.Name == nameof(ContentConfig.Changes))
                     continue;
 
-                object value = property.GetValue(content);
+                object? value = property.GetValue(content);
                 bool hasValue = value is IEnumerable list
                     ? list.Cast<object>().Any()
                     : value != null;
@@ -234,6 +231,14 @@ namespace ContentPatcher.Framework.Patches
             return logName.ContainsIgnoreCase(filePath)
                 ? this.Path // no need to add file to path if it's already in the name
                 : this.Path.With(filePath);
+        }
+
+        /// <summary>Log a warning for an issue when applying the patch.</summary>
+        /// <param name="message">The message to log.</param>
+        /// <param name="level">The message log level.</param>
+        private void WarnForPatch(string message, LogLevel level = LogLevel.Warn)
+        {
+            this.Monitor.Log($"Error loading patch '{this.Path}': {message}.", level);
         }
     }
 }

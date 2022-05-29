@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using LinqFasterer;
 using System;
 using System.Reflection;
@@ -15,8 +16,9 @@ using static SpriteMaster.Harmonize.Harmonize;
 
 namespace SpriteMaster.Harmonize;
 
+[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-class HarmonizeAttribute : Attribute {
+internal class HarmonizeAttribute : Attribute {
 	internal readonly Type? Type;
 	internal readonly string? Name;
 	internal readonly int PatchPriority;
@@ -25,6 +27,8 @@ class HarmonizeAttribute : Attribute {
 	internal readonly bool Instance;
 	internal readonly Platform ForPlatform;
 	internal readonly bool Critical;
+	internal readonly string? ForMod;
+	internal readonly Type[]? ArgumentTypes;
 
 	internal static bool CheckPlatform(Platform platform) => platform switch {
 		Platform.All => true,
@@ -39,7 +43,12 @@ class HarmonizeAttribute : Attribute {
 
 	internal bool CheckPlatform() => CheckPlatform(ForPlatform);
 
-	private static Assembly? GetAssembly(string name, bool critical) {
+	private static Assembly? GetAssembly(string name, bool critical, string? forMod) {
+		// If it's a mod patch, and the mod doesn't exist, don't bother searching for the assembly
+		if (forMod is not null && SpriteMaster.Self.Helper.ModRegistry.Get(forMod) is null) {
+			return null;
+		}
+		
 		if (Runtime.IsMonoGame && name.StartsWith("Microsoft.Xna.Framework")) {
 			name = "MonoGame.Framework";
 		}
@@ -56,23 +65,27 @@ class HarmonizeAttribute : Attribute {
 		return null;
 	}
 
-	private static Type? ResolveType(Assembly assembly, Type? parent, string[] type, int offset = 0) {
-		if (parent is null) {
-			return null;
-		}
+	private static Type? ResolveType(Type? parent, string[] type, int offset = 0) {
+		while (true) {
+			if (parent is null) {
+				return null;
+			}
 
-		var foundType = parent.GetNestedType(type[offset], BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-		if (foundType is null) {
-			return parent;
+			var foundType = parent.GetNestedType(type[offset], BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+			if (foundType is null) {
+				return parent;
+			}
+
+			offset += 1;
+			if (offset >= type.Length) {
+				return foundType;
+			}
+			parent = foundType;
 		}
-		offset += 1;
-		if (offset >= type.Length)
-			return foundType;
-		else
-			return ResolveType(assembly, foundType, type, offset);
 	}
 
-	private static Type? ResolveType(Assembly? assembly, string[] type, int offset = 0) => assembly is null ? null : ResolveType(assembly, assembly.GetType(type[0], true), type, offset + 1);
+	private static Type? ResolveType(Assembly? assembly, string[] type, int offset = 0) =>
+		assembly is null ? null : ResolveType(assembly.GetType(type[0], true), type, offset + 1);
 
 	internal HarmonizeAttribute(
 		Type? type,
@@ -82,7 +95,9 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) {
 		Type = type;
 		Name = method;
@@ -92,6 +107,8 @@ class HarmonizeAttribute : Attribute {
 		Instance = instance;
 		ForPlatform = platform;
 		Critical = critical;
+		ForMod = forMod;
+		ArgumentTypes = argumentTypes;
 	}
 
 	internal HarmonizeAttribute(
@@ -103,17 +120,21 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) :
 		this(
-			type: CheckPlatform(platform) ? GetAssembly(assembly, critical: critical)?.GetType(type, true) : null,
+			type: CheckPlatform(platform) ? GetAssembly(assembly, critical: critical, forMod: forMod)?.GetType(type, true) : null,
 			method: method,
 			fixation: fixation,
 			priority: priority,
 			generic: generic,
 			instance: instance,
 			critical: critical,
-			platform: platform
+			platform: platform,
+			forMod: forMod,
+			argumentTypes: argumentTypes
 		) { }
 
 	internal HarmonizeAttribute(
@@ -125,7 +146,9 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) :
 		this(
 			type: CheckPlatform(platform) ? parent.Assembly.GetType(type, true) : null,
@@ -135,7 +158,9 @@ class HarmonizeAttribute : Attribute {
 			generic: generic,
 			instance: instance,
 			critical: critical,
-			platform: platform
+			platform: platform,
+			forMod: forMod,
+			argumentTypes: argumentTypes
 		) { }
 
 	internal HarmonizeAttribute(
@@ -147,7 +172,9 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) :
 		this(
 			type: CheckPlatform(platform) ? ResolveType(parent.Assembly, type) : null,
@@ -157,7 +184,9 @@ class HarmonizeAttribute : Attribute {
 			generic: generic,
 			instance: instance,
 			critical: critical,
-			platform: platform
+			platform: platform,
+			forMod: forMod,
+			argumentTypes: argumentTypes
 		) { }
 
 	internal HarmonizeAttribute(
@@ -169,17 +198,21 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) :
 		this(
-			type: CheckPlatform(platform) ? ResolveType(GetAssembly(assembly, critical: critical), type) : null,
+			type: CheckPlatform(platform) ? ResolveType(GetAssembly(assembly, critical: critical, forMod: forMod), type) : null,
 			method: method,
 			fixation: fixation,
 			priority: priority,
 			generic: generic,
 			instance: instance,
 			critical: critical,
-			platform: platform
+			platform: platform,
+			forMod: forMod,
+			argumentTypes: argumentTypes
 		) { }
 
 	internal HarmonizeAttribute(
@@ -189,7 +222,9 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) :
 		this(
 			type: null,
@@ -199,7 +234,9 @@ class HarmonizeAttribute : Attribute {
 			generic: generic,
 			instance: instance,
 			critical: critical,
-			platform: platform
+			platform: platform,
+			forMod: forMod,
+			argumentTypes: argumentTypes
 		) { }
 
 	internal HarmonizeAttribute(
@@ -208,7 +245,9 @@ class HarmonizeAttribute : Attribute {
 		Generic generic = Generic.None,
 		bool instance = true,
 		bool critical = true,
-		Platform platform = Platform.All
+		Platform platform = Platform.All,
+		string? forMod = null,
+		Type[]? argumentTypes = null
 	) :
 		this(
 			type: null,
@@ -218,6 +257,8 @@ class HarmonizeAttribute : Attribute {
 			generic: generic,
 			instance: instance,
 			critical: critical,
-			platform: platform
+			platform: platform,
+			forMod: forMod,
+			argumentTypes: argumentTypes
 		) { }
 }

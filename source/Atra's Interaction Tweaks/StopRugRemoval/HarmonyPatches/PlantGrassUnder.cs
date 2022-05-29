@@ -23,7 +23,7 @@ namespace StopRugRemoval.HarmonyPatches;
 [HarmonyPatch]
 internal static class PlantGrassUnder
 {
-    private static Func<bool>? IsSmartBuildingInBuildMode = null;
+    private static Func<bool>? isSmartBuildingInBuildMode = null;
 
     /// <summary>
     /// Gets the methods to patch.
@@ -65,7 +65,7 @@ internal static class PlantGrassUnder
         try
         {
             // Grass starter = 297
-            if (Utility.IsNormalObjectAtParentSheetIndex(__0, 297) && !(IsSmartBuildingInBuildMode?.Invoke() == true))
+            if (Utility.IsNormalObjectAtParentSheetIndex(__0, 297) && !(isSmartBuildingInBuildMode?.Invoke() == true))
             {
                 GameLocation location = __2.currentLocation;
                 Vector2 placementTile = __instance.TileLocation;
@@ -98,7 +98,7 @@ internal static class PlantGrassUnder
             && AccessTools.DeclaredPropertyGetter(type, "CurrentlyInBuildMode") is MethodInfo method)
         {
             ModEntry.ModMonitor.Log("SmartBuilding found! " + method.FullDescription(), LogLevel.Trace);
-            IsSmartBuildingInBuildMode = method.CreateDelegate<Func<bool>>();
+            isSmartBuildingInBuildMode = method.CreateDelegate<Func<bool>>();
         }
         else
         {

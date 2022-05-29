@@ -8,30 +8,31 @@
 **
 *************************************************/
 
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 
 namespace GiantCropFertilizer;
 
-/// <inheritdoc />
-internal class AssetEditor : IAssetEditor
+/// <summary>
+/// Handles asset editing for this mod.
+/// </summary>
+internal static class AssetEditor
 {
     private static readonly string OBJECTDATA = PathUtilities.NormalizeAssetName("Data/ObjectInformation");
 
-    private AssetEditor()
+    /// <summary>
+    /// Called when assets are requested.
+    /// </summary>
+    /// <param name="e">Event args.</param>
+    internal static void HandleAssetRequested(AssetRequestedEventArgs e)
     {
+        if (e.NameWithoutLocale.IsEquivalentTo(OBJECTDATA))
+        {
+            e.Edit(EditAsset, AssetEditPriority.Late);
+        }
     }
 
-    /// <summary>
-    /// Gets the isntance of this asseteditor.
-    /// </summary>
-    internal static AssetEditor Instance { get; } = new();
-
-    /// <inheritdoc />
-    public bool CanEdit<T>(IAssetInfo asset)
-        => asset.AssetNameEquals(OBJECTDATA);
-
-    /// <inheritdoc />
-    public void Edit<T>(IAssetData asset)
+    private static void EditAsset(IAssetData asset)
     {
         if (ModEntry.GiantCropFertilizerID != -1)
         {

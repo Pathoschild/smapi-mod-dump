@@ -15,5 +15,17 @@
   "MoneyKey": "R",
   "TimeNSeasonKey": "Q",
   "ReadTileKey": "J",
-  "ReadStandingTileKey": "LeftAlt + J"
+  "ReadStandingTileKey": "LeftAlt + J",
+  "LimitTileCursorToScreen": false,
+  "TileCursorPreciseMovementDistance": 8,
+  "TileCursorUpKey": "Up",
+  "TileCursorRightKey": "Right",
+  "TileCursorDownKey": "Down",
+  "TileCursorLeftKey": "Left",
+  "TileCursorPreciseUpKey": "LeftShift + Up",
+  "TileCursorPreciseRightKey": "LeftShift + Right",
+  "TileCursorPreciseDownKey": "LeftShift + Down",
+  "TileCursorPreciseLeftKey": "LeftShift + Left",
+  "ToggleRelativeCursorLockKey": "L",
+  "AutoWalkToTile": "LeftControl + Enter"
 }

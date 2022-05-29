@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Tokens;
+using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher.Framework
 {
@@ -48,7 +47,7 @@ namespace ContentPatcher.Framework
         *********/
         /// <summary>Add contextual values to the tracker.</summary>
         /// <param name="value">The context value to track. Null values are ignored.</param>
-        public AggregateContextual Add(IContextual value)
+        public AggregateContextual Add(IContextual? value)
         {
             if (value != null)
             {
@@ -62,11 +61,11 @@ namespace ContentPatcher.Framework
 
         /// <summary>Add contextual values to the tracker.</summary>
         /// <param name="values">The context values to track. Null values are ignored.</param>
-        public AggregateContextual Add(IEnumerable<IContextual> values)
+        public AggregateContextual Add(IEnumerable<IContextual?>? values)
         {
             if (values != null)
             {
-                foreach (IContextual value in values)
+                foreach (IContextual? value in values)
                     this.Add(value);
             }
 
@@ -75,7 +74,7 @@ namespace ContentPatcher.Framework
 
         /// <summary>Remove contextual values from the tracker.</summary>
         /// <param name="value">The context value to stop tracking. Null values are ignored.</param>
-        public AggregateContextual Remove(IContextual value)
+        public AggregateContextual Remove(IContextual? value)
         {
             if (value != null && this.ValuesImpl.Remove(value))
             {
@@ -88,11 +87,11 @@ namespace ContentPatcher.Framework
 
         /// <summary>Remove contextual values from the tracker.</summary>
         /// <param name="values">The context values to stop tracking. Null values are ignored.</param>
-        public AggregateContextual Remove(IEnumerable<IContextual> values)
+        public AggregateContextual Remove(IEnumerable<IContextual?>? values)
         {
             if (values != null)
             {
-                foreach (IContextual value in values)
+                foreach (IContextual? value in values)
                     this.Remove(value);
             }
 
@@ -110,7 +109,7 @@ namespace ContentPatcher.Framework
         /// <param name="update">Matches contextuals to update, or <c>null</c> for all contextuals.</param>
         /// <param name="countChange">Matches contextuals which should be counted as a change for the return value if their state changed, or <c>null</c> for all contextuals.</param>
         /// <returns>Returns whether the instance changed.</returns>
-        public bool UpdateContext(IContext context, Func<IContextual, bool> update = null, Func<IContextual, bool> countChange = null)
+        public bool UpdateContext(IContext context, Func<IContextual, bool>? update = null, Func<IContextual, bool>? countChange = null)
         {
             bool wasReady = this.IsReady;
             this.IsReady = true;
@@ -125,7 +124,10 @@ namespace ContentPatcher.Framework
                     changed = true;
 
                 if (!contextual.IsReady)
+                {
                     this.IsReady = false;
+                    break;
+                }
             }
 
             this.WasEverUpdated = true;
@@ -133,9 +135,11 @@ namespace ContentPatcher.Framework
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
-            return this.ValuesImpl.SelectMany(p => p.GetTokensUsed());
+            return InvariantSets.From(
+                this.ValuesImpl.SelectMany(p => p.GetTokensUsed())
+            );
         }
 
         /// <inheritdoc />

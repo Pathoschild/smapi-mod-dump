@@ -9,7 +9,6 @@
 *************************************************/
 
 using LinqFasterer;
-using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
 using SpriteMaster.Metadata;
 using System;
@@ -21,14 +20,14 @@ using static SpriteMaster.Runtime;
 
 namespace SpriteMaster;
 
-static partial class Debug {
+internal static partial class Debug {
 	[MethodImpl(MethodImpl.IgnoreOptimization)]
 	internal static void DumpMemory() {
 		static string DisposedString(bool disposed) => disposed ? "[DISPOSED]" : string.Empty;
 
 		var dumpBuilder = new StringBuilder();
 
-		var duplicates = new Dictionary<string, List<Texture2D>>();
+		var duplicates = new Dictionary<string, List<XTexture2D>>();
 		bool haveDuplicates = false;
 
 		var textureDump = SpriteMap.GetDump();
@@ -53,9 +52,10 @@ static partial class Debug {
 			}
 
 			void PrintSpritesheetProperties(IEnumerable<KeyValuePair<string, string>> properties) {
-				int maxKeyLen = properties.Max(prop => prop.Key.Length);
-				foreach (var kvp in properties) {
-					dumpBuilder!.AppendLine($"│ ├ {kvp.Key.PadRight(maxKeyLen)}: {kvp.Value}");
+				var keyValuePairs = properties as KeyValuePair<string, string>[] ?? properties.ToArray();
+				int maxKeyLen = keyValuePairs.Max(prop => prop.Key.Length);
+				foreach (var kvp in keyValuePairs) {
+					dumpBuilder.AppendLine($"│ ├ {kvp.Key.PadRight(maxKeyLen)}: {kvp.Value}");
 				}
 			}
 
@@ -79,7 +79,7 @@ static partial class Debug {
 
 			if (!referenceTexture.Anonymous() && !referenceTexture.IsDisposed) {
 				if (!duplicates.TryGetValue(referenceTexture.NormalizedName(), out var duplicateList)) {
-					duplicateList = new List<Texture2D>();
+					duplicateList = new List<XTexture2D>();
 					duplicates.Add(referenceTexture.NormalizedName(), duplicateList);
 				}
 				duplicateList.Add(referenceTexture);
@@ -88,8 +88,7 @@ static partial class Debug {
 
 			var sortedSprites = new List<ManagedSpriteInstance>(list.Value);
 			sortedSprites.Sort((a, b) => {
-				int cmp;
-				cmp = a.OriginalSourceRectangle.Left - b.OriginalSourceRectangle.Left;
+				var cmp = a.OriginalSourceRectangle.Left - b.OriginalSourceRectangle.Left;
 				if (cmp != 0) {
 					return cmp;
 				}
@@ -110,12 +109,14 @@ static partial class Debug {
 			});
 
 			foreach (var sprite in sortedSprites) {
-				if (sprite.IsReady && sprite.Texture is not null) {
-					bool last = object.ReferenceEquals(list.Value.LastF(), sprite);
-					var spriteDisposed = sprite.Texture.IsDisposed;
-					dumpBuilder.AppendLine($"│ {(last ? '└' : '├')} sprite: {sprite.OriginalSourceRectangle} :: {sprite.MemorySize.AsDataSize()} {DisposedString(spriteDisposed)}");
-					totalSize += spriteDisposed ? 0 : sprite.MemorySize;
+				if (!sprite.IsReady || sprite.Texture is null) {
+					continue;
 				}
+
+				bool last = ReferenceEquals(list.Value.LastF(), sprite);
+				var spriteDisposed = sprite.Texture.IsDisposed;
+				dumpBuilder.AppendLine($"│ {(last ? '└' : '├')} sprite: {sprite.OriginalSourceRectangle} :: {sprite.MemorySize.AsDataSize()} {DisposedString(spriteDisposed)}");
+				totalSize += spriteDisposed ? 0 : sprite.MemorySize;
 			}
 		}
 		dumpBuilder.AppendLine( "│");

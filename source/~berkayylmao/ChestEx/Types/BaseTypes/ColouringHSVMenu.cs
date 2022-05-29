@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -42,7 +42,7 @@ namespace ChestEx.Types.BaseTypes {
   public partial class ColouringHSVMenu : CustomClickableMenu {
     private readonly Rectangle separatorBounds;
 
-    private readonly HueSlider    hueSlider;
+    private readonly HueSlider hueSlider;
     private readonly ColourPicker colourPicker;
 
     public void SetColour(Color newColour, Boolean fireEvents = true) {
@@ -52,10 +52,10 @@ namespace ChestEx.Types.BaseTypes {
         return;
       }
 
-      newColour.AsDotNetColor().ToHSV(out Double hue, out Double sat, out Double val);
-      hue /= 360.0d;
-      sat =  1.0d - sat;
-      val =  1.0d - val;
+      newColour.AsSKColor().ToHsv(out Single hue, out Single sat, out Single val);
+      hue /= 360.0f;
+      sat = 1.0f - sat;
+      val = 1.0f - val;
 
       this.hueSlider.SetSelectorActiveY((Int32)(this.hueSlider.mBounds.Height * hue));
       this.colourPicker.SetSelectorActivePos(new Point((Int32)(this.colourPicker.mBounds.Width * sat), (Int32)(this.colourPicker.mBounds.Height * val)), fireEvents);
@@ -67,13 +67,13 @@ namespace ChestEx.Types.BaseTypes {
       spriteBatch.Draw(Game1.uncoloredMenuTexture, this.separatorBounds, new Rectangle(88, 36, 16, 1), this.mData.mColours.mBorderColour);
     }
 
-    public ColouringHSVMenu(Rectangle     bounds, Colours colours, Color activeColour = default, Action<Color> onTryColourAction = null,
+    public ColouringHSVMenu(Rectangle bounds, Colours colours, Color activeColour = default, Action<Color> onTryColourAction = null,
                             Action<Color> onFinalColourAction = null)
       : base(bounds, colours) {
       if (activeColour == default) activeColour = Color.Black;
 
       Int32 hue_slider_width = Convert.ToInt32(this.mBounds.Width * 0.15f);
-      Int32 separator_width  = Convert.ToInt32(this.mBounds.Width * 0.075f);
+      Int32 separator_width = Convert.ToInt32(this.mBounds.Width * 0.075f);
 
       this.colourPicker = new ColourPicker(new Rectangle(this.mBounds.X + hue_slider_width + separator_width,
                                                          this.mBounds.Y,

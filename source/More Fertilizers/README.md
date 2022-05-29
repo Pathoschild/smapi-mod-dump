@@ -29,7 +29,7 @@ This mod adds eleven fertilizers that do the following things:
 
 fertilizer                      | effect                                         | purchase from
 :------------------------------ | :------------------------------------          | :---------------------- 
-Bountiful Fertilizer            | 10% chance of a double harvest.                | Pierre on Wednesdays and Sundays, year 2 or later, after completing Pierre's special order. (Also at the Stardew Valley Fair.)
+Bountiful Fertilizer            | 10% chance of a double harvest.                | Pierre on Wednesdays and Sundays, year 2 or later, after completing Pierre's special order. (Also at the Stardew Valley Fair, unless you've finished the JojaMart.)
 Fish Food                       | Increases the chances of rare fish spawning    | Willy on Wednesdays, Saturdays and Sundays, after completing the CC fish tank. Not available to Joja members. 
 Deluxe Fish Food                | Same as the fish food, but lasts three times as long| Traded for five magma caps from the Island Traders after at least 50% of unique available fish are caught. Not available to joja members. 
 Domesticated Fish Food          | Chance to make fish in fish ponds reproduce faster| Willy on Saturdays and Sundays, after finishing his special order. Year 2 or later. 
@@ -38,7 +38,7 @@ Deluxe Fruit Tree Fertilizer    | 20% increase in fruit tree growth speed       
 Joja's Patented Fertilizer      | Crops are silver quality.                      | JojaMart, after earning 10k g.
 Joja's Deluxe Fertilizer        | Crops have a 20% chance to be gold; the remaining are silver. | JojaMart, on Wednesdays, Saturdays, and Sundays only. Only available to Joja members, and only after earning 1,000,000g.
 Maeby's Good-Luck Fertilizer     | Protects crops from crows and lightning strikes| Pierre's, after spring year 1, on lucky days only.
-Organic Fertilizer              | Increases the value of crops by 10% (carries over to Artisan products made with those crops.) | Pierre on Wednesdays and Sundays, year 2 or later, after completing Pierre's special order. (Also at the Stardew Valley Fair.)
+Organic Fertilizer              | Increases the value of crops by 10% (carries over to Artisan products made with those crops.) Joja crops, however, cannot become organic.| Pierre on Wednesdays and Sundays, year 2 or later, after completing Pierre's special order. (Also at the Stardew Valley Fair, unless you've finished the JojaMart.)
 Waterlogged Fertilizer.         | Paddy crops planted with this fertilizer will always be considered irrigated. **Does nothing for non-paddy crops**. | Krobus (no other requirements)
 
 Additionally, fertilizers may be found by breaking barrels in the mines, while panning, while killing monsters on the farm, and in fishing treasure chests. Some may rarely be found in big slimes. 
@@ -53,8 +53,11 @@ Additionally, fertilizers may be found by breaking barrels in the mines, while p
 
 * [Walk of Life](https://www.nexusmods.com/stardewvalley/mods/8111). 
 * [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720) and any crops/fruit trees added through JA.
+* [Multi Yield Crops](https://www.nexusmods.com/stardewvalley/mods/6069) - fully supported.
+* [Automate](https://www.nexusmods.com/stardewvalley/mods/1063) and [PFMAutomate](https://www.nexusmods.com/stardewvalley/mods/5038).
 * [Teh's Fishing Overhaul](https://www.nexusmods.com/stardewvalley/mods/866).
 * [More Rings](https://www.nexusmods.com/stardewvalley/mods/2054?tab=description). The Quality+ ring will increase the quality of joja-crops.
+* [Smart Building](https://www.nexusmods.com/stardewvalley/mods/11158?tab=description) supports these fertilizers. Thank you so much, DecidedlyHuman!
 * The large framework mods (CP/BFAV/PFM/FTM/MFM, etc.) work with this mod.
 * Any of my other mods - I try not to cause **myself** compat issues.
 * Honestly most other mods should work fine, not many actually use transpilers.
@@ -67,12 +70,10 @@ Additionally, fertilizers may be found by breaking barrels in the mines, while p
 
 **Minor incompatibilities**:
 
-* [Automate](https://www.nexusmods.com/stardewvalley/mods/1063) - organic crops may lose their "organic-ness" if they go through a machine handled by automate. Something on my list to fix, but it will probably take some time as I don't want to screw up other mods that also need to patch Automate. The remaining fertilizers work fine.
-* [Dynamic Game Assets](https://www.nexusmods.com/stardewvalley/mods/9365) - fertilizers from this mod are not likely to affect DGA crops or fruit trees. May fix in the future, but not before the next release of DGA.
-* [Multi Yield Crops](https://www.nexusmods.com/stardewvalley/mods/6069) - fertilizers from this mod will not affect crops produced by Multi Yield Crops. Otherwise compatible.
+
+* [Dynamic Game Assets](https://www.nexusmods.com/stardewvalley/mods/9365) - fertilizers from this mod may or may not affect DGA crops. Still trying to figure out why. (DGA fruit trees are supported.)
 * [Lookup Anything](https://www.nexusmods.com/stardewvalley/mods/541) will only show these fertilizers as a possible output of the Bone Mill if PFM is installed. The bone mill will produce these fertilizers anyways. Otherwise fine.
 * [Fish Wells](https://www.nexusmods.com/stardewvalley/mods/7651) do not work with Domesticated Fish Food, as they do not preserve mod data. The remaining fertilizers should work, and that mod has settings that let you adjust the fish spawn time.
-* [Smart Building](https://www.nexusmods.com/stardewvalley/mods/11158?tab=description) as of 1.4.0 will place the fertilizers that go into hoedirt fine, but the fruit tree fertilizers and the fish foods it won't handle yet. Should be in the next version!
 * No mod will include the Fruit Tree Fertilizers while calculating the age of fruit trees. You'll just see the days required decrement by two occasionally.
 
 **Reporting an incompatibility**
@@ -88,7 +89,7 @@ A `harmony_summary` would be greatly appreciated! If you go to the console and t
 
 ## Acknowledgements
 
-Many thanks to [Violetlizabet](https://www.nexusmods.com/stardewvalley/users/120958053) for helping me with the fertilizer sprites!
+Many thanks to [Violetlizabet](https://www.nexusmods.com/stardewvalley/users/120958053) for helping me with the fertilizer sprites, Schneitizel for the French translation, and [CopperSun](https://www.nexusmods.com/stardewvalley/users/114762643) for helping me with the text!
 
 ## See also
 

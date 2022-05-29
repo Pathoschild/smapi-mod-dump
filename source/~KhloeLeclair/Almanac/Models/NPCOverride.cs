@@ -8,14 +8,14 @@
 **
 *************************************************/
 
-using System;
+#nullable enable
 
-namespace Leclair.Stardew.Almanac.Models {
-	public class NPCOverride {
+namespace Leclair.Stardew.Almanac.Models;
 
-		public bool Visible { get; set; } = true;
+public class NPCOverride {
 
-		public HeadSize Head { get; set; }
+	public bool Visible { get; set; } = true;
 
-	}
+	public HeadSize? Head { get; set; }
+
 }

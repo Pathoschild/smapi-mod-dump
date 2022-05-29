@@ -29,13 +29,13 @@ namespace TehPers.FishingOverhaul.Api.Content
         /// <summary>
         /// Gets the fish traits this content is trying to remove.
         /// </summary>
-        public ImmutableArray<NamespacedKey> RemoveFishTraits { get; init; } = ImmutableArray<NamespacedKey>.Empty;
+        public ImmutableArray<NamespacedKey> RemoveFishTraits { get; init; } =
+            ImmutableArray<NamespacedKey>.Empty;
 
         /// <summary>
         /// Gets the new fish entries this content wants to create.
         /// </summary>
-        public ImmutableArray<FishEntry> AddFish { get; init; } =
-            ImmutableArray<FishEntry>.Empty;
+        public ImmutableArray<FishEntry> AddFish { get; init; } = ImmutableArray<FishEntry>.Empty;
 
         /// <summary>
         /// Gets the fish entries this content wants to remove.
@@ -66,5 +66,11 @@ namespace TehPers.FishingOverhaul.Api.Content
         /// </summary>
         public ImmutableArray<TreasureEntryFilter> RemoveTreasure { get; init; } =
             ImmutableArray<TreasureEntryFilter>.Empty;
+
+        /// <summary>
+        /// Fishing effects entries to add.
+        /// </summary>
+        public ImmutableArray<FishingEffectEntry> AddEffects { get; init; } =
+            ImmutableArray<FishingEffectEntry>.Empty;
     }
 }

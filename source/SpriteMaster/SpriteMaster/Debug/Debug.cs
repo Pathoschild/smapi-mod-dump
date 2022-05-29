@@ -19,7 +19,8 @@ using System.Text;
 using static SpriteMaster.Runtime;
 
 namespace SpriteMaster;
-static partial class Debug {
+
+internal static partial class Debug {
 	private static readonly string ModuleName = typeof(Debug).Namespace!;
 
 	private static class Color {
@@ -53,7 +54,7 @@ static partial class Debug {
 
 	// Logging Stuff
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	private static string ParseException(Exception exception) {
 		var output = new StringBuilder();
@@ -69,11 +70,15 @@ static partial class Debug {
 		return output.ToString();
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
-	private static string Format(this string memberName, bool format = true) {
+	[DebuggerStepThrough, DebuggerHidden]
+	private static string Format(this string? memberName, bool format = true) {
 		return (!format || memberName is null) ? "" : $"[{memberName}] ";
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	internal static void Flush() => _ = Console.Error.FlushAsync();
+
+	[DebuggerStepThrough, DebuggerHidden]
+	[Conditional("DEBUG")]
+	internal static void Break() => Debugger.Break();
 }

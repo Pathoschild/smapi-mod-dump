@@ -73,41 +73,15 @@
       "SignObjectIndex": 221,
       "DefaultSellPriceMultiplier": 1.4,
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Pink Cake" ],
-          "Stock": 5
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Chocolate Cake" ],
-          "Stock": 5
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Plum Pudding" ],
-          "Stock": 10
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Rhubarb Pie" ],
-          "Stock": 3
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Blueberry Tart" ],
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Blackberry Cobbler" ],
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [ "Pumpkin Pie" ],
-          "Stock": 2
-        }
+        {"ItemType": "Object", "ItemNames": [ "Pink Cake" ], "Stock": 5},
+        {"ItemType": "Object", "ItemNames": [ "Chocolate Cake" ], "Stock": 5},
+        {"ItemType": "Object", "ItemNames": [ "Plum Pudding" ], "Stock": 10},
+        {"ItemType": "Object", "ItemNames": [ "Rhubarb Pie" ], "Stock": 3},
+        {"ItemType": "Object", "ItemNames": [ "Blueberry Tart" ], "Stock": 2},
+        {"ItemType": "Object", "ItemNames": [ "Blackberry Cobbler" ], "Stock": 2}, 
+        {"ItemType": "Object", "ItemNames": [ "Pumpkin Pie" ], "Stock": 2},
+        {"ItemNames": ["Decorative Bowl"], "StockPrice": 200, "Stock": 2, "ItemType": "Furniture"},
+        {"ItemNames": ["House Plant"], "StockPrice": 300, "Stock": 2, "ItemType": "Furniture"}
       ]
     },
     {
@@ -129,7 +103,8 @@
         {  "ItemType": "Object",  "ItemNames": ["Energy Tonic"], "Stock": 1 },
         {  "ItemType": "Object",  "ItemNames": ["Muscle Remedy"], "Stock": 1 },
         {  "ItemType": "Object",  "ItemNames": ["Pickled Cauliflower"], "Stock": 1 },
-        {"ItemNames": ["Harvey's Mallet"], "When": ["e 528052"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"}
+        {"ItemNames": ["Harvey's Mallet"], "When": ["e 528052"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"},
+        {"ItemNames": ["Pour-Over Shirt"], "StockPrice": 1000, "Stock": 1, "ItemType": "Clothing"}
       ]
     },
     {
@@ -167,22 +142,8 @@
         {  "ItemType": "Object",  "ItemNames": ["Dressed Spinner"], "StockPrice":1000, "Stock": 1 },
         {  "ItemType": "Furniture",  "ItemNames": ["Large Fish Tank"], "StockPrice":2000, "Stock": 1 },
         {  "ItemType": "Furniture",  "ItemNames": ["Fisher Double Bed"], "StockPrice":25000, "Stock": 1 },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Catfish"
-          ],
-          "StockPrice": 700,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Octopus"
-          ],
-          "StockPrice": 300,
-          "Stock": 2
-        }
+        {"ItemType": "Object", "ItemNames": ["Catfish"], "StockPrice": 700, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Octopus"], "StockPrice": 300, "Stock": 2}
       ]
     },
     {
@@ -194,22 +155,9 @@
       "DefaultSellPriceMultiplier": 1.5,
       "SignObjectIndex": 424,
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Cheese",
-            "Goat Cheese",
-            "Wool",
-            "Egg",
-            "Duck Egg",
-            "Farmer's Lunch",
-            "Pumpkin Pie",
-            "Milk",
-            "Goat Milk"
-          ],
-          "MaxNumItemsSoldInItemStock": 5,
-          "Stock": 3
-        }
+        {"ItemType": "Object", "ItemNames": ["Cheese", "Goat Cheese", "Wool", "Egg", "Duck Egg", "Farmer's Lunch", "Pumpkin Pie", "Milk", "Goat Milk"], "MaxNumItemsSoldInItemStock": 5, "Stock": 3},
+        {"ItemNames": ["Decorative Pitchfork"], "StockPrice": 500, "Stock": 2, "ItemType": "Furniture"},
+        {"ItemNames": ["Ornamental Hay Bale"], "StockPrice": 200, "Stock": 2, "ItemType": "BigCraftable"}
       ]
     },
     {
@@ -222,21 +170,13 @@
       "ItemStocks": [
         {
           "ItemType": "Object",
-          "ItemNames": [
-            "Fairy Rose",
-            "Tulip",
-            "Daffodil",
-            "Sweet Pea",
-            "Crocus",
-            "Sunflower",
-            "Summer Spangle",
-            "Blue Jazz"
-          ],
+          "ItemNames": ["Fairy Rose", "Tulip", "Daffodil", "Sweet Pea", "Crocus", "Sunflower", "Summer Spangle", "Blue Jazz"],
           "JAPacks": [ "mizu.flowers" ],
           "FilterSeedsBySeason": true,
           "MaxNumItemsSoldInItemStock": 30,
           "Stock": 2
-        }
+        },
+        {"ItemType": "Object", "ItemNames": ["Honey"], "Stock": 3}
       ]
     },
     {
@@ -503,115 +443,38 @@
           "StockPrice": 600,
           "Stock": 2
         },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Sashimi"
-          ],
-          "StockPrice": 150,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Spicy Eel"
-          ],
-          "StockPrice": 350,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Strange Bun"
-          ],
-          "StockPrice": 450,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Stuffing"
-          ],
-          "StockPrice": 330,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Super Meal"
-          ],
-          "StockPrice": 440,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Tom Kha Soup"
-          ],
-          "StockPrice": 500,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Tortilla"
-          ],
-          "StockPrice": 100,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Trout Soup"
-          ],
-          "StockPrice": 200,
-          "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Vegetable Medley"
-          ],
-          "StockPrice": 240,
-          "Stock": 2
-        }
+        {"ItemType": "Object", "ItemNames": ["Sashimi"], "StockPrice": 150, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Spicy Eel"], "StockPrice": 350, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Strange Bun"], "StockPrice": 450, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Stuffing"], "StockPrice": 330, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Super Meal"], "StockPrice": 440, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Tom Kha Soup"], "StockPrice": 500, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Tortilla"], "StockPrice": 100, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Trout Soup"], "StockPrice": 200, "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Vegetable Medley"], "StockPrice": 240, "Stock": 2},
+        {"ItemNames": ["Chef Hat"], "When": ["f Gus 1000"], "StockPrice": 250, "Stock": 1, "ItemType": "Hat"},
+        {"ItemNames": ["Chef Coat"], "When": ["f Gus 1000"], "StockPrice": 250, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Burger Shirt", "Toasted Shirt", "Fried Egg Shirt", "Oil Stained Shirt"], "StockPrice": 1000, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Decorative Bowl"], "StockPrice": 500, "Stock": 2, "ItemType": "Furniture"}
       ]
     },
     {
       "ShopName": "LeahShop",
       "NpcName": "Leah",
+      "OpenSignPath": "assets/open-leah.png",
       "ClosedSignPath": "assets/closed-red.png",
       "Quote": "Objets d'Leah",
       "SignObjectIndex": 169,
         "When": ["n afterArtShow"],
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Malachite",
-            "Marble"
-          ],
-          "Stock": 0
-        },
+        {"ItemType": "Object", "ItemNames": ["Malachite", "Marble"], "Stock": 0},
         {"ItemType": "Furniture", "ItemNames": ["'Blue City'", "'Blueberries'", "'Dancing Grass'", "'The Muzzamaroo'", "'Sun #45'", "'Sun #44'", "'Queen of the Gem Sea'", "'Pathways'", "'Little Tree'", "'Vanilla Villa'", "'VGA Paradise'", "Calico Falls", "Colorful Set", "Needlepoint Flower", "'Spires'"], "Stock": 1, "StockPrice": 500},
-        {
-          "ItemType": "Furniture",
-          "ItemNames": [
-            "Leah's Sculpture"
-          ],
-          "StockPrice": 5000,
-          "Stock": 1
-        },
-        {
-          "ItemType": "BigCraftable",
-          "ItemNames": [
-            "Stone Frog",
-            "Stone Parrot"
-          ],
-          "StockPrice": 1000,
-          "Stock": 1
-        },
-        {"ItemNames": ["Leah's Whittler"], "When": ["e 54"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"}
+        {"ItemType": "Furniture", "ItemNames": ["Leah's Sculpture"], "StockPrice": 5000, "Stock": 1},
+        {"ItemType": "BigCraftable", "ItemNames": ["Stone Frog", "Stone Parrot"], "StockPrice": 1000, "Stock": 1},
+        {"ItemNames": ["Leah's Whittler"], "When": ["e 54"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"},
+        {"ItemNames": ["Artist Bookcase"], "StockPrice": 500, "Stock": 1, "ItemType": "Furniture"},
+        {"ItemNames": ["Cone Hat"], "StockPrice": 3000, "Stock": 1, "ItemType": "Hat"},
+        {"ItemNames": ["Tye Die Shirt"], "StockPrice": 1000, "Stock": 1, "ItemType": "Clothing"}
       ]
     },
     {
@@ -623,34 +486,18 @@
       "SignObjectIndex": 336,
       "ShopColor": "64, 64, 64, 0",
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Copper Bar",
-            "Iron Bar",
-            "Gold Bar",
-            "Iridium Bar"
-          ],
-          "Stock": 3
-        },
-        {
-          "ItemType": "Weapon",
-          "ItemNames": ["Steel Smallsword"],
-          "Stock": 1,
-          "StockPrice": 1000
-        },
-        {
-          "ItemType": "Furniture",
-          "ItemNames": ["Hanging Shield"],
-          "Stock": 1,
-          "StockPrice": 1000
-        },
-        {
-          "ItemType": "Weapon",
-          "ItemNames": ["Tempered Broadsword"],
-          "Stock": 1,
-          "StockPrice": 10000
-        }
+        {"ItemType": "Object", "ItemNames": ["Copper Bar", "Iron Bar", "Gold Bar", "Iridium Bar"], "Stock": 3},
+        {"ItemType": "Weapon", "ItemNames": ["Steel Smallsword"], "Stock": 1, "StockPrice": 1000},
+        {"ItemType": "Furniture", "ItemNames": ["Hanging Shield"], "Stock": 1, "StockPrice": 1000},
+        {"ItemType": "Weapon", "ItemNames": ["Tempered Broadsword"], "Stock": 1, "StockPrice": 10000},
+        {"ItemNames": ["Industrial Pipe"], "StockPrice": 100, "Stock": 1, "ItemType": "Furniture"},
+        {"ItemNames": ["Miner's Crest"], "StockPrice": 500, "Stock": 1, "ItemType": "Furniture"},
+        {"ItemNames": ["Work Boots"], "StockPrice": 200, "Stock": 1, "ItemType": "Boot"},
+        {"ItemNames": ["Copper Breastplate"], "StockPrice": 200, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Steel Breastplate"], "StockPrice": 400, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Gold Breastplate"], "StockPrice": 800, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Iridium Breastplate"], "StockPrice": 1600, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Blacksmith Apron"], "When": ["f Clint 1000"], "StockPrice": 250, "Stock": 1, "ItemType": "Clothing"}
       ]
     },
     {
@@ -662,26 +509,14 @@
       "SignObjectIndex": 614,
       "DefaultSellPriceMultiplier": 1.2,
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": ["Green Tea", "Nettle Tea", "Mahonia Tea", "Christmas Rose Tea"], "Stock": 3
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": ["Chocolate Cake", "Sweet Cranberry Cheesecake", "Lemon and Persimmon Cake"], "Stock": 3
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": ["Tea Leaves"], "Stock": 4
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": ["Tea Sapling"], "Stock": 2
-        },
-        {
-          "ItemType": "Object",
-          "ItemNames": ["Tea Set"], "Stock": 3
-        }
+        {"ItemType": "Object", "ItemNames": ["Green Tea", "Nettle Tea", "Mahonia Tea", "Christmas Rose Tea"], "Stock": 3},
+        {"ItemType": "Object", "ItemNames": ["Chocolate Cake", "Sweet Cranberry Cheesecake", "Lemon and Persimmon Cake"], "Stock": 3},
+        {"ItemType": "Object", "ItemNames": ["Tea Leaves"], "Stock": 4},
+        {"ItemType": "Object", "ItemNames": ["Tea Sapling"], "Stock": 2},
+        {"ItemType": "Object", "ItemNames": ["Tea Set"], "Stock": 3},
+        {"ItemNames": ["Tea Shirt"], "When": ["f Caroline 1000"], "StockPrice": 250, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Decorative Bowl"], "StockPrice": 250, "Stock": 2, "ItemType": "Furniture"},
+        {"ItemNames": ["Bonsai Tree"], "StockPrice": 500, "Stock": 1, "ItemType": "Furniture"}
       ]
     },
     {
@@ -693,18 +528,9 @@
       "SignObjectIndex": 749,
       "DefaultSellPriceMultiplier": 10,
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": ["%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral"], "Stock": 1
-        },
-        {
-          "ItemType": "BigCraftable",
-          "ItemNames": ["Crystalarium", "Skeleton Model"], "Stock": 1
-        },
-        {
-          "ItemType": "BigCraftable",
-          "ItemNames": ["Standing Geode"], "Stock": 1, "StockPrice": 5000
-        }
+        {"ItemType": "Object", "ItemNames": ["%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral"], "Stock": 1},
+        {"ItemType": "BigCraftable", "ItemNames": ["Crystalarium", "Skeleton Model"], "Stock": 1},
+        {"ItemType": "BigCraftable", "ItemNames": ["Standing Geode"], "Stock": 1, "StockPrice": 5000}
       ]
     },
     {
@@ -716,34 +542,8 @@
       "SignObjectIndex": 428,
       "ShopColor": "143, 0, 255, 0",
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Cloth"
-          ],
-          "Stock": 6
-        },
-        {
-          "ItemType": "Clothing",
-          "ItemNames": [
-            "%Match:Pants",
-            "%Match:Pants",
-            "%Match:Pants",
-            "%Match:Pants",
-            "%Match:Pants",
-            "%Match:Pants",
-            "%Match:Pants",
-            "%Match:Shirt",
-            "%Match:Shirt",
-            "%Match:Shirt",
-            "%Match:Shirt",
-            "%Match:Shirt",
-            "%Match:Shirt",
-            "%Match:Shirt",
-            "%Match:Shirt"
-          ],
-          "Stock": 1
-        }
+        {"ItemType": "Object", "ItemNames": ["Cloth"], "Stock": 6},
+        {"ItemType": "Clothing", "ItemNames": ["%Match:Pants", "%Match:Pants", "%Match:Pants", "%Match:Pants", "%Match:Pants", "%Match:Pants", "%Match:Pants", "%Match:Shirt", "%Match:Shirt", "%Match:Shirt", "%Match:Shirt", "%Match:Shirt", "%Match:Shirt", "%Match:Shirt", "%Match:Shirt"], "Stock": 1}
       ]
     },
     {
@@ -757,30 +557,9 @@
       "PortraitPath": "assets/HatMousePlace.png",
       "When": ["n hatter"],
       "ItemStocks": [
-        {
-          "ItemType": "Object",
-          "ItemNames": [
-            "Cheese"
-          ],
-          "Stock": 1
-        },
-        {
-          "ItemType": "Hat",
-          "ItemNames": [
-            "%Match: Hat",
-            "%Match: Hat",
-            "%Match: Hat",
-            "%Match: Hat",
-            "%Match: Hat",
-            "%Match: Cap",
-            "%Match: Cap",
-            "%Match: Cap",
-            "%Match: Cap",
-            "%Match: Cap"
-          ],
-          "Stock": 1,
-          "StockPrice": 1000
-        }
+        {"ItemType": "Object", "ItemNames": ["Cheese"], "Stock": 1},
+        {"ItemType": "Hat", "ItemNames": ["%Match: Hat", "%Match: Hat", "%Match: Hat", "%Match: Hat", "%Match: Hat", "%Match: Cap", "%Match: Cap", "%Match: Cap", "%Match: Cap", "%Match: Cap"], "Stock": 1, "StockPrice": 1000},
+        {"ItemNames": ["Panda Hat", "Mouse Ears", "Magic Cowboy Hat"], "StockPrice": 1000, "Stock": 1, "ItemType": "Hat"}
       ]
     },
     {
@@ -831,7 +610,10 @@
         {"ItemNames": ["Magic Bait"], "StockPrice": 6000, "Stock": 2, "ItemType": "Object"},
         {"ItemNames": ["Wizard Couch", "Dark Throne"], "StockPrice": 4000, "Stock": 1, "ItemType": "Furniture"},
         {"ItemNames": ["Magic Rock Candy"], "StockPrice": 12000, "Stock": 2, "ItemType": "Object"},
-        {"ItemNames": ["Pumpkin"], "When": [ "z spring/z summer/z winter" ], "Stock": 5, "ItemType": "Object", "Quality": 4}
+        {"ItemNames": ["Pumpkin"], "When": [ "z spring/z summer/z winter" ], "Stock": 5, "ItemType": "Object", "Quality": 4},
+        {"ItemNames": ["Witch Hat"], "When": [ "z spring/z summer/z winter" ],  "StockPrice": 1000, "Stock": 2, "ItemType": "Hat"},
+        {"ItemNames": ["Arcane Shirt"], "When": ["f Wizard 1000"], "StockPrice": 1000, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Arcane Hat"], "When": ["f Wizard 1000"], "StockPrice": 1000, "Stock": 1, "ItemType": "Hat"}
       ]
     },
     {
@@ -841,14 +623,16 @@
       "OpenSignPath": "assets/open-haley.png",
       "Quote": "Studio Haley",
       "DefaultSellPriceMultiplier": 1.2,
-      "SignObjectIndex": 769,
+      "SignObjectIndex": 421,
       "ItemStocks": [
         {"ItemNames": ["Fruit Salad", "Sunflower Honey"], "Stock": 2, "ItemType": "Object", "Quality": 1},
         {"ItemNames": ["Dried Sunflowers"], "StockPrice": 300, "Stock": 1, "ItemType": "Furniture"},
         {"ItemNames": ["Little Photos"], "When": ["f Haley 2000"], "StockPrice": 250, "Stock": 3, "ItemType": "Furniture"},
         {"ItemNames": ["Sunflower"], "When": [ "z spring/z winter" ], "Stock": 4, "ItemType": "Object", "Quality": 2},
         {"ItemNames": ["Pink Cake", "Chocolate Cake"], "When": ["e 6184644"], "Stock": 3, "ItemType": "Object"},
-        {"ItemNames": ["Haley's Iron"], "When": ["e 6184644"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"}
+        {"ItemNames": ["Haley's Iron"], "When": ["e 6184644"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"},
+        {"ItemNames": ["Long Dress"], "StockPrice": 1000, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Wall Flower", "S. Wall Flower"], "StockPrice": 300, "Stock": 1, "ItemType": "Furniture"}
       ]
     },
     {
@@ -882,8 +666,9 @@
         {"ItemNames": ["'The Brave Little Sapling'", "'Journey Of The Prairie King: The Motion Picture'", "'Mysterium'", "'Natural Wonders: Exploring Our Vibrant World'", "'Wumbus'", "'It Howls In The Rain'"], "StockPrice": 250, "Stock": 1, "ItemType": "Furniture"},
         {"ItemNames": ["Sam's Old Guitar"], "When": ["e 4081148"], "StockPrice": 2000, "Stock": 1, "ItemType": "Weapon"},
         {"ItemNames": ["Earmuffs"], "StockPrice": 1000, "Stock": 1, "ItemType": "Hat"},
+        {"ItemNames": ["Sunglasses"], "StockPrice": 500, "Stock": 1, "ItemType": "Hat"},
         {"ItemNames": ["Pizza", "Joja Cola"], "Stock": 3, "ItemType": "Object"},
-        {"ItemNames": ["Super Joja Cola"], "Stock": 1, "ItemType": "Object"},
+        {"ItemNames": ["Super Joja Cola"], "Stock": 1, "ItemType": "Object"}
       ]
     },
     {
@@ -910,7 +695,7 @@
       "NpcName": "Maru",
       "ClosedSignPath": "assets/closed-purple.png",
       "OpenSignPath": "assets/open-roboshack.png",
-      "Quote": "Roboshack",
+      "Quote": "RoboShack",
       "DefaultSellPriceMultiplier": 1.2,
       "ItemStocks": [
         {"ItemNames": ["Battery Pack"], "StockPrice": 2000, "Stock": 2, "ItemType": "Object"},
@@ -929,7 +714,10 @@
         {
           "ItemType": "Object",
           "ItemNames": ["%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral", "%Category:Mineral"], "Stock": 1
-        }
+        },
+        {"ItemNames": ["Pendant Shirt"], "StockPrice": 1050, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Prismatic Shirt", "Prismatic Pants"], "StockPrice": 7050, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Small Magnet Ring"], "StockPrice": 350, "Stock": 1, "ItemType": "Ring"}
       ]
     },
     {
@@ -947,7 +735,9 @@
         {"ItemNames": ["Cauliflower", "Garlic", "Green Bean", "Kale", "Parsnip", "Potato", "Rhubarb", "Strawberry"], "When": [ "z summer/z fall/z winter" ], "Stock": 2, "ItemType": "Object", "Quality": 4},
         {"ItemNames": ["Blueberry", "Corn", "Hot Pepper", "Melon", "Poppy", "Radish", "Red Cabbage", "Starfruit", "Tomato"], "When": [ "z spring/z fall/z winter" ], "Stock": 2, "ItemType": "Object", "Quality": 4},
         {"ItemNames": ["Pickled Beet", "Pickled Pumpkin", "Pumpkin", "Yam", "Winter Root"], "When": [ "z spring/z summer/z fall" ], "Stock": 2, "ItemType": "Object", "Quality": 2},
-        {"ItemNames": ["Pickled Beet", "Pickled Pumpkin", "Pumpkin", "Yam", "Winter Root"], "When": [ "z spring/z summer/z fall" ], "Stock": 2, "ItemType": "Object", "Quality": 4}
+        {"ItemNames": ["Pickled Beet", "Pickled Pumpkin", "Pumpkin", "Yam", "Winter Root"], "When": [ "z spring/z summer/z fall" ], "Stock": 2, "ItemType": "Object", "Quality": 4},
+        {"ItemNames": ["Store Owner's Jacket"], "When": ["f Pierre 1000"], "StockPrice": 2800, "Stock": 1, "ItemType": "Clothing"},
+        {"ItemNames": ["Ceiling Flags"], "StockPrice": 1000, "Stock": 2, "ItemType": "Furniture"}
       ]
     }
   ]

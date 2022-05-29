@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.TractorMod.Framework.Config;
 using StardewModdingAPI;
 using StardewValley;
@@ -28,8 +27,6 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         *********/
         /// <summary>The attachment settings.</summary>
         private readonly MeleeBluntConfig Config;
-
-
 
 
         /*********
@@ -50,9 +47,10 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool IsEnabled(Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool IsEnabled(Farmer player, Tool? tool, Item? item, GameLocation location)
         {
-            return tool is MeleeWeapon weapon && weapon.type.Value != MeleeWeapon.dagger && weapon.type.Value != MeleeWeapon.defenseSword;
+            return
+                tool is MeleeWeapon { type.Value: not (MeleeWeapon.dagger or MeleeWeapon.defenseSword) };
         }
 
         /// <summary>Apply the tool to the given tile.</summary>
@@ -63,8 +61,10 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool Apply(Vector2 tile, SObject? tileObj, TerrainFeature? tileFeature, Farmer player, Tool? tool, Item? item, GameLocation location)
         {
+            tool = tool.AssertNotNull();
+
             // break mine containers
             if (this.Config.BreakMineContainers && this.TryBreakContainer(tile, tileObj, tool, location))
                 return true;

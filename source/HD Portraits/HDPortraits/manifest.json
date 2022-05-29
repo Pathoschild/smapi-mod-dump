@@ -11,10 +11,10 @@
 {
   "Name": "HD Portraits",
   "Author": "Tlitookilakin",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Enables portraits at other resolutions & with animation.",
   "UniqueID": "tlitookilakin.HDPortraits",
   "EntryDll": "HDPortraits.dll",
-  "MinimumApiVersion": "3.13",
+  "MinimumApiVersion": "3.14",
   "UpdateKeys": [ "GitHub:tlitookilakin/HDPortraits", "Nexus:10971", "ModDrop:1103418" ]
 }

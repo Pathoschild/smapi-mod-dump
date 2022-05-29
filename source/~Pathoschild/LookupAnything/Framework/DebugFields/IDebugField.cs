@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-#nullable disable
+using System.Diagnostics.CodeAnalysis;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.DebugFields
 {
@@ -22,15 +22,16 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.DebugFields
         string Label { get; }
 
         /// <summary>The field value.</summary>
-        string Value { get; }
+        string? Value { get; }
 
         /// <summary>Whether the field should be displayed.</summary>
+        [MemberNotNullWhen(true, nameof(IDebugField.Value))]
         bool HasValue { get; }
 
         /// <summary>Whether the field should be highlighted for special attention.</summary>
         bool IsPinned { get; }
 
         /// <summary>The debug category text.</summary>
-        public string OverrideCategory { get; set; }
+        public string? OverrideCategory { get; set; }
     }
 }

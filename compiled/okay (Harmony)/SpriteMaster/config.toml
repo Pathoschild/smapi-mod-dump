@@ -1,199 +1,31 @@
 [Config]
-ConfigVersion = "0.13.1.300"
-# Should SpriteMaster be enabled?
+ConfigVersion = "0.14.1.3"
+# Should SpriteMaster be enabled? Unsetting this will disable _all_ SpriteMaster functionality.
 Enabled = true
 # Button to toggle SpriteMaster
 # Legal Values: [
-#	[None, System.Collections.Generic.List`1[System.String]], 
-#	[Back, System.Collections.Generic.List`1[System.String]], 
-#	[Tab, System.Collections.Generic.List`1[System.String]], 
-#	[Enter, System.Collections.Generic.List`1[System.String]], 
-#	[Pause, System.Collections.Generic.List`1[System.String]], 
-#	[CapsLock, System.Collections.Generic.List`1[System.String]], 
-#	[Kana, System.Collections.Generic.List`1[System.String]], 
-#	[Kanji, System.Collections.Generic.List`1[System.String]], 
-#	[Escape, System.Collections.Generic.List`1[System.String]], 
-#	[ImeConvert, System.Collections.Generic.List`1[System.String]], 
-#	[ImeNoConvert, System.Collections.Generic.List`1[System.String]], 
-#	[Space, System.Collections.Generic.List`1[System.String]], 
-#	[PageUp, System.Collections.Generic.List`1[System.String]], 
-#	[PageDown, System.Collections.Generic.List`1[System.String]], 
-#	[End, System.Collections.Generic.List`1[System.String]], 
-#	[Home, System.Collections.Generic.List`1[System.String]], 
-#	[Left, System.Collections.Generic.List`1[System.String]], 
-#	[Up, System.Collections.Generic.List`1[System.String]], 
-#	[Right, System.Collections.Generic.List`1[System.String]], 
-#	[Down, System.Collections.Generic.List`1[System.String]], 
-#	[Select, System.Collections.Generic.List`1[System.String]], 
-#	[Print, System.Collections.Generic.List`1[System.String]], 
-#	[Execute, System.Collections.Generic.List`1[System.String]], 
-#	[PrintScreen, System.Collections.Generic.List`1[System.String]], 
-#	[Insert, System.Collections.Generic.List`1[System.String]], 
-#	[Delete, System.Collections.Generic.List`1[System.String]], 
-#	[Help, System.Collections.Generic.List`1[System.String]], 
-#	[D0, System.Collections.Generic.List`1[System.String]], 
-#	[D1, System.Collections.Generic.List`1[System.String]], 
-#	[D2, System.Collections.Generic.List`1[System.String]], 
-#	[D3, System.Collections.Generic.List`1[System.String]], 
-#	[D4, System.Collections.Generic.List`1[System.String]], 
-#	[D5, System.Collections.Generic.List`1[System.String]], 
-#	[D6, System.Collections.Generic.List`1[System.String]], 
-#	[D7, System.Collections.Generic.List`1[System.String]], 
-#	[D8, System.Collections.Generic.List`1[System.String]], 
-#	[D9, System.Collections.Generic.List`1[System.String]], 
-#	[A, System.Collections.Generic.List`1[System.String]], 
-#	[B, System.Collections.Generic.List`1[System.String]], 
-#	[C, System.Collections.Generic.List`1[System.String]], 
-#	[D, System.Collections.Generic.List`1[System.String]], 
-#	[E, System.Collections.Generic.List`1[System.String]], 
-#	[F, System.Collections.Generic.List`1[System.String]], 
-#	[G, System.Collections.Generic.List`1[System.String]], 
-#	[H, System.Collections.Generic.List`1[System.String]], 
-#	[I, System.Collections.Generic.List`1[System.String]], 
-#	[J, System.Collections.Generic.List`1[System.String]], 
-#	[K, System.Collections.Generic.List`1[System.String]], 
-#	[L, System.Collections.Generic.List`1[System.String]], 
-#	[M, System.Collections.Generic.List`1[System.String]], 
-#	[N, System.Collections.Generic.List`1[System.String]], 
-#	[O, System.Collections.Generic.List`1[System.String]], 
-#	[P, System.Collections.Generic.List`1[System.String]], 
-#	[Q, System.Collections.Generic.List`1[System.String]], 
-#	[R, System.Collections.Generic.List`1[System.String]], 
-#	[S, System.Collections.Generic.List`1[System.String]], 
-#	[T, System.Collections.Generic.List`1[System.String]], 
-#	[U, System.Collections.Generic.List`1[System.String]], 
-#	[V, System.Collections.Generic.List`1[System.String]], 
-#	[W, System.Collections.Generic.List`1[System.String]], 
-#	[X, System.Collections.Generic.List`1[System.String]], 
-#	[Y, System.Collections.Generic.List`1[System.String]], 
-#	[Z, System.Collections.Generic.List`1[System.String]], 
-#	[LeftWindows, System.Collections.Generic.List`1[System.String]], 
-#	[RightWindows, System.Collections.Generic.List`1[System.String]], 
-#	[Apps, System.Collections.Generic.List`1[System.String]], 
-#	[Sleep, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad0, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad1, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad2, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad3, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad4, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad5, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad6, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad7, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad8, System.Collections.Generic.List`1[System.String]], 
-#	[NumPad9, System.Collections.Generic.List`1[System.String]], 
-#	[Multiply, System.Collections.Generic.List`1[System.String]], 
-#	[Add, System.Collections.Generic.List`1[System.String]], 
-#	[Separator, System.Collections.Generic.List`1[System.String]], 
-#	[Subtract, System.Collections.Generic.List`1[System.String]], 
-#	[Decimal, System.Collections.Generic.List`1[System.String]], 
-#	[Divide, System.Collections.Generic.List`1[System.String]], 
-#	[F1, System.Collections.Generic.List`1[System.String]], 
-#	[F2, System.Collections.Generic.List`1[System.String]], 
-#	[F3, System.Collections.Generic.List`1[System.String]], 
-#	[F4, System.Collections.Generic.List`1[System.String]], 
-#	[F5, System.Collections.Generic.List`1[System.String]], 
-#	[F6, System.Collections.Generic.List`1[System.String]], 
-#	[F7, System.Collections.Generic.List`1[System.String]], 
-#	[F8, System.Collections.Generic.List`1[System.String]], 
-#	[F9, System.Collections.Generic.List`1[System.String]], 
-#	[F10, System.Collections.Generic.List`1[System.String]], 
-#	[F11, System.Collections.Generic.List`1[System.String]], 
-#	[F12, System.Collections.Generic.List`1[System.String]], 
-#	[F13, System.Collections.Generic.List`1[System.String]], 
-#	[F14, System.Collections.Generic.List`1[System.String]], 
-#	[F15, System.Collections.Generic.List`1[System.String]], 
-#	[F16, System.Collections.Generic.List`1[System.String]], 
-#	[F17, System.Collections.Generic.List`1[System.String]], 
-#	[F18, System.Collections.Generic.List`1[System.String]], 
-#	[F19, System.Collections.Generic.List`1[System.String]], 
-#	[F20, System.Collections.Generic.List`1[System.String]], 
-#	[F21, System.Collections.Generic.List`1[System.String]], 
-#	[F22, System.Collections.Generic.List`1[System.String]], 
-#	[F23, System.Collections.Generic.List`1[System.String]], 
-#	[F24, System.Collections.Generic.List`1[System.String]], 
-#	[NumLock, System.Collections.Generic.List`1[System.String]], 
-#	[Scroll, System.Collections.Generic.List`1[System.String]], 
-#	[LeftShift, System.Collections.Generic.List`1[System.String]], 
-#	[RightShift, System.Collections.Generic.List`1[System.String]], 
-#	[LeftControl, System.Collections.Generic.List`1[System.String]], 
-#	[RightControl, System.Collections.Generic.List`1[System.String]], 
-#	[LeftAlt, System.Collections.Generic.List`1[System.String]], 
-#	[RightAlt, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserBack, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserForward, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserRefresh, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserStop, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserSearch, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserFavorites, System.Collections.Generic.List`1[System.String]], 
-#	[BrowserHome, System.Collections.Generic.List`1[System.String]], 
-#	[VolumeMute, System.Collections.Generic.List`1[System.String]], 
-#	[VolumeDown, System.Collections.Generic.List`1[System.String]], 
-#	[VolumeUp, System.Collections.Generic.List`1[System.String]], 
-#	[MediaNextTrack, System.Collections.Generic.List`1[System.String]], 
-#	[MediaPreviousTrack, System.Collections.Generic.List`1[System.String]], 
-#	[MediaStop, System.Collections.Generic.List`1[System.String]], 
-#	[MediaPlayPause, System.Collections.Generic.List`1[System.String]], 
-#	[LaunchMail, System.Collections.Generic.List`1[System.String]], 
-#	[SelectMedia, System.Collections.Generic.List`1[System.String]], 
-#	[LaunchApplication1, System.Collections.Generic.List`1[System.String]], 
-#	[LaunchApplication2, System.Collections.Generic.List`1[System.String]], 
-#	[OemSemicolon, System.Collections.Generic.List`1[System.String]], 
-#	[OemPlus, System.Collections.Generic.List`1[System.String]], 
-#	[OemComma, System.Collections.Generic.List`1[System.String]], 
-#	[OemMinus, System.Collections.Generic.List`1[System.String]], 
-#	[OemPeriod, System.Collections.Generic.List`1[System.String]], 
-#	[OemQuestion, System.Collections.Generic.List`1[System.String]], 
-#	[OemTilde, System.Collections.Generic.List`1[System.String]], 
-#	[ChatPadGreen, System.Collections.Generic.List`1[System.String]], 
-#	[ChatPadOrange, System.Collections.Generic.List`1[System.String]], 
-#	[OemOpenBrackets, System.Collections.Generic.List`1[System.String]], 
-#	[OemPipe, System.Collections.Generic.List`1[System.String]], 
-#	[OemCloseBrackets, System.Collections.Generic.List`1[System.String]], 
-#	[OemQuotes, System.Collections.Generic.List`1[System.String]], 
-#	[Oem8, System.Collections.Generic.List`1[System.String]], 
-#	[OemBackslash, System.Collections.Generic.List`1[System.String]], 
-#	[ProcessKey, System.Collections.Generic.List`1[System.String]], 
-#	[OemCopy, System.Collections.Generic.List`1[System.String]], 
-#	[OemAuto, System.Collections.Generic.List`1[System.String]], 
-#	[OemEnlW, System.Collections.Generic.List`1[System.String]], 
-#	[Attn, System.Collections.Generic.List`1[System.String]], 
-#	[Crsel, System.Collections.Generic.List`1[System.String]], 
-#	[Exsel, System.Collections.Generic.List`1[System.String]], 
-#	[EraseEof, System.Collections.Generic.List`1[System.String]], 
-#	[Play, System.Collections.Generic.List`1[System.String]], 
-#	[Zoom, System.Collections.Generic.List`1[System.String]], 
-#	[Pa1, System.Collections.Generic.List`1[System.String]], 
-#	[OemClear, System.Collections.Generic.List`1[System.String]], 
-#	[MouseLeft, System.Collections.Generic.List`1[System.String]], 
-#	[MouseRight, System.Collections.Generic.List`1[System.String]], 
-#	[MouseMiddle, System.Collections.Generic.List`1[System.String]], 
-#	[MouseX1, System.Collections.Generic.List`1[System.String]], 
-#	[MouseX2, System.Collections.Generic.List`1[System.String]], 
-#	[DPadUp, System.Collections.Generic.List`1[System.String]], 
-#	[DPadDown, System.Collections.Generic.List`1[System.String]], 
-#	[DPadLeft, System.Collections.Generic.List`1[System.String]], 
-#	[DPadRight, System.Collections.Generic.List`1[System.String]], 
-#	[ControllerStart, System.Collections.Generic.List`1[System.String]], 
-#	[ControllerBack, System.Collections.Generic.List`1[System.String]], 
-#	[LeftStick, System.Collections.Generic.List`1[System.String]], 
-#	[RightStick, System.Collections.Generic.List`1[System.String]], 
-#	[LeftShoulder, System.Collections.Generic.List`1[System.String]], 
-#	[RightShoulder, System.Collections.Generic.List`1[System.String]], 
-#	[BigButton, System.Collections.Generic.List`1[System.String]], 
-#	[ControllerA, System.Collections.Generic.List`1[System.String]], 
-#	[ControllerB, System.Collections.Generic.List`1[System.String]], 
-#	[ControllerX, System.Collections.Generic.List`1[System.String]], 
-#	[ControllerY, System.Collections.Generic.List`1[System.String]], 
-#	[LeftThumbstickLeft, System.Collections.Generic.List`1[System.String]], 
-#	[RightTrigger, System.Collections.Generic.List`1[System.String]], 
-#	[LeftTrigger, System.Collections.Generic.List`1[System.String]], 
-#	[RightThumbstickUp, System.Collections.Generic.List`1[System.String]], 
-#	[RightThumbstickDown, System.Collections.Generic.List`1[System.String]], 
-#	[RightThumbstickRight, System.Collections.Generic.List`1[System.String]], 
-#	[RightThumbstickLeft, System.Collections.Generic.List`1[System.String]], 
-#	[LeftThumbstickUp, System.Collections.Generic.List`1[System.String]], 
-#	[LeftThumbstickDown, System.Collections.Generic.List`1[System.String]], 
-#	[LeftThumbstickRight, System.Collections.Generic.List`1[System.String]]
+#	None, Back, Tab, Enter, Pause, CapsLock, Kana, Kanji, Escape, ImeConvert, 
+#	ImeNoConvert, Space, PageUp, PageDown, End, Home, Left, Up, Right, Down, Select, 
+#	Print, Execute, PrintScreen, Insert, Delete, Help, D0, D1, D2, D3, D4, D5, D6, 
+#	D7, D8, D9, A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, 
+#	X, Y, Z, LeftWindows, RightWindows, Apps, Sleep, NumPad0, NumPad1, NumPad2, 
+#	NumPad3, NumPad4, NumPad5, NumPad6, NumPad7, NumPad8, NumPad9, Multiply, Add, 
+#	Separator, Subtract, Decimal, Divide, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, 
+#	F11, F12, F13, F14, F15, F16, F17, F18, F19, F20, F21, F22, F23, F24, NumLock, 
+#	Scroll, LeftShift, RightShift, LeftControl, RightControl, LeftAlt, RightAlt, 
+#	BrowserBack, BrowserForward, BrowserRefresh, BrowserStop, BrowserSearch, 
+#	BrowserFavorites, BrowserHome, VolumeMute, VolumeDown, VolumeUp, MediaNextTrack, 
+#	MediaPreviousTrack, MediaStop, MediaPlayPause, LaunchMail, SelectMedia, 
+#	LaunchApplication1, LaunchApplication2, OemSemicolon, OemPlus, OemComma, 
+#	OemMinus, OemPeriod, OemQuestion, OemTilde, ChatPadGreen, ChatPadOrange, 
+#	OemOpenBrackets, OemPipe, OemCloseBrackets, OemQuotes, Oem8, OemBackslash, 
+#	ProcessKey, OemCopy, OemAuto, OemEnlW, Attn, Crsel, Exsel, EraseEof, Play, Zoom, 
+#	Pa1, OemClear, MouseLeft, MouseRight, MouseMiddle, MouseX1, MouseX2, DPadUp, 
+#	DPadDown, DPadLeft, DPadRight, ControllerStart, ControllerBack, LeftStick, 
+#	RightStick, LeftShoulder, RightShoulder, BigButton, ControllerA, ControllerB, 
+#	ControllerX, ControllerY, LeftThumbstickLeft, RightTrigger, LeftTrigger, 
+#	RightThumbstickUp, RightThumbstickDown, RightThumbstickRight, 
+#	RightThumbstickLeft, LeftThumbstickUp, LeftThumbstickDown, LeftThumbstickRight
 # ]
 ToggleButton = "F11"
 # The preferred maximum texture edge length, if allowed by the hardware
@@ -225,122 +57,45 @@ DataStoreOverride = ""
 	SeasonalPurge = true
 	# What runtime garbage collection latency mode should be set?
 	# Legal Values: [
-	#	[Batch, System.Collections.Generic.List`1[System.String]], 
-	#	[Interactive, System.Collections.Generic.List`1[System.String]], 
-	#	[LowLatency, System.Collections.Generic.List`1[System.String]], 
-	#	[SustainedLowLatency, System.Collections.Generic.List`1[System.String]], 
-	#	[NoGCRegion, System.Collections.Generic.List`1[System.String]]
+	#	Batch, Interactive, LowLatency, SustainedLowLatency, NoGCRegion
 	# ]
 	LatencyMode = "SustainedLowLatency"
 
 		[Config.Debug.Logging]
 		# Legal Values: [
-		#	[Trace, System.Collections.Generic.List`1[System.String]], 
-		#	[Debug, System.Collections.Generic.List`1[System.String]], 
-		#	[Info, System.Collections.Generic.List`1[System.String]], 
-		#	[Warn, System.Collections.Generic.List`1[System.String]], 
-		#	[Error, System.Collections.Generic.List`1[System.String]], 
-		#	[Alert, System.Collections.Generic.List`1[System.String]]
+		#	Trace, Debug, Info, Warn, Error, Alert
 		# ]
 		LogLevel = "Trace"
 
 	[Config.DrawState]
 	# Enable linear sampling for sprites
 	SetLinear = true
+	# Enable linear sampling for sprites
+	SetLinearUnresampled = false
 	# How many MSAA samples should be used?
-	MSAASamples = 0
+	MSAASamples = 1
 	# Disable the depth buffer (unused in this game)
 	DisableDepthBuffer = false
 	# The default backbuffer format to request
 	# Legal Values: [
-	#	[Color, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgr565, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra5551, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra4444, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt1, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt3, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt5, System.Collections.Generic.List`1[System.String]], 
-	#	[NormalizedByte2, System.Collections.Generic.List`1[System.String]], 
-	#	[NormalizedByte4, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgba1010102, System.Collections.Generic.List`1[System.String]], 
-	#	[Rg32, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgba64, System.Collections.Generic.List`1[System.String]], 
-	#	[Alpha8, System.Collections.Generic.List`1[System.String]], 
-	#	[Single, System.Collections.Generic.List`1[System.String]], 
-	#	[Vector2, System.Collections.Generic.List`1[System.String]], 
-	#	[Vector4, System.Collections.Generic.List`1[System.String]], 
-	#	[HalfSingle, System.Collections.Generic.List`1[System.String]], 
-	#	[HalfVector2, System.Collections.Generic.List`1[System.String]], 
-	#	[HalfVector4, System.Collections.Generic.List`1[System.String]], 
-	#	[HdrBlendable, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgr32, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra32, System.Collections.Generic.List`1[System.String]], 
-	#	[ColorSRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgr32SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra32SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt1SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt3SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt5SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbPvrtc2Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbPvrtc4Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaPvrtc2Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaPvrtc4Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbEtc1, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt1a, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaAtcExplicitAlpha, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaAtcInterpolatedAlpha, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgb8Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Srgb8Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgb8A1Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Srgb8A1Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgba8Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[SRgb8A8Etc2, System.Collections.Generic.List`1[System.String]]
+	#	Color, Bgr565, Bgra5551, Bgra4444, Dxt1, Dxt3, Dxt5, NormalizedByte2, 
+	#	NormalizedByte4, Rgba1010102, Rg32, Rgba64, Alpha8, Single, Vector2, Vector4, 
+	#	HalfSingle, HalfVector2, HalfVector4, HdrBlendable, Bgr32, Bgra32, ColorSRgb, 
+	#	Bgr32SRgb, Bgra32SRgb, Dxt1SRgb, Dxt3SRgb, Dxt5SRgb, RgbPvrtc2Bpp, RgbPvrtc4Bpp, 
+	#	RgbaPvrtc2Bpp, RgbaPvrtc4Bpp, RgbEtc1, Dxt1a, RgbaAtcExplicitAlpha, 
+	#	RgbaAtcInterpolatedAlpha, Rgb8Etc2, Srgb8Etc2, Rgb8A1Etc2, Srgb8A1Etc2, 
+	#	Rgba8Etc2, SRgb8A8Etc2
 	# ]
 	BackbufferFormat = "Color"
 	# The default HDR backbuffer format to request
 	# Legal Values: [
-	#	[Color, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgr565, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra5551, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra4444, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt1, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt3, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt5, System.Collections.Generic.List`1[System.String]], 
-	#	[NormalizedByte2, System.Collections.Generic.List`1[System.String]], 
-	#	[NormalizedByte4, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgba1010102, System.Collections.Generic.List`1[System.String]], 
-	#	[Rg32, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgba64, System.Collections.Generic.List`1[System.String]], 
-	#	[Alpha8, System.Collections.Generic.List`1[System.String]], 
-	#	[Single, System.Collections.Generic.List`1[System.String]], 
-	#	[Vector2, System.Collections.Generic.List`1[System.String]], 
-	#	[Vector4, System.Collections.Generic.List`1[System.String]], 
-	#	[HalfSingle, System.Collections.Generic.List`1[System.String]], 
-	#	[HalfVector2, System.Collections.Generic.List`1[System.String]], 
-	#	[HalfVector4, System.Collections.Generic.List`1[System.String]], 
-	#	[HdrBlendable, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgr32, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra32, System.Collections.Generic.List`1[System.String]], 
-	#	[ColorSRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgr32SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Bgra32SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt1SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt3SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt5SRgb, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbPvrtc2Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbPvrtc4Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaPvrtc2Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaPvrtc4Bpp, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbEtc1, System.Collections.Generic.List`1[System.String]], 
-	#	[Dxt1a, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaAtcExplicitAlpha, System.Collections.Generic.List`1[System.String]], 
-	#	[RgbaAtcInterpolatedAlpha, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgb8Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Srgb8Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgb8A1Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Srgb8A1Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[Rgba8Etc2, System.Collections.Generic.List`1[System.String]], 
-	#	[SRgb8A8Etc2, System.Collections.Generic.List`1[System.String]]
+	#	Color, Bgr565, Bgra5551, Bgra4444, Dxt1, Dxt3, Dxt5, NormalizedByte2, 
+	#	NormalizedByte4, Rgba1010102, Rg32, Rgba64, Alpha8, Single, Vector2, Vector4, 
+	#	HalfSingle, HalfVector2, HalfVector4, HdrBlendable, Bgr32, Bgra32, ColorSRgb, 
+	#	Bgr32SRgb, Bgra32SRgb, Dxt1SRgb, Dxt3SRgb, Dxt5SRgb, RgbPvrtc2Bpp, RgbPvrtc4Bpp, 
+	#	RgbaPvrtc2Bpp, RgbaPvrtc4Bpp, RgbEtc1, Dxt1a, RgbaAtcExplicitAlpha, 
+	#	RgbaAtcInterpolatedAlpha, Rgb8Etc2, Srgb8Etc2, Rgb8A1Etc2, Srgb8A1Etc2, 
+	#	Rgba8Etc2, SRgb8A8Etc2
 	# ]
 	BackbufferHDRFormat = "Rgba64"
 	# Should the system HDR settings be honored?
@@ -353,24 +108,22 @@ DataStoreOverride = ""
 	[Config.Resample]
 	# Should resampling be enabled?
 	Enabled = true
-	# Should texture rescaling be enabled?
+	# Should resampling be enabled for normal sprites?
+	EnabledSprites = true
+	# Should resampling be enabled for regular text?
+	EnabledText = true
+	# Should resampling be enabled for 'basic' text?
+	EnabledBasicText = true
+	# Should the texture be scale-adjusted if its scaled dimensions are outside preferred dimensional limits?
 	Scale = true
 	# What scaling algorithm should be used by default?
 	# Legal Values: [
-	#	[xBRZ, System.Collections.Generic.List`1[System.String]], 
-	#	[SuperXBR, System.Collections.Generic.List`1[System.String]], 
-	#	[EPX, System.Collections.Generic.List`1[System.String]], 
-	#	[Bilinear, System.Collections.Generic.List`1[System.String]], 
-	#	[None, System.Collections.Generic.List`1[System.String]]
+	#	xBRZ, EPX/ScaleX, None
 	# ]
 	Scaler = "xBRZ"
 	# What scaling algorithm should be used for gradient sprites?
 	# Legal Values: [
-	#	[xBRZ, System.Collections.Generic.List`1[System.String]], 
-	#	[SuperXBR, System.Collections.Generic.List`1[System.String]], 
-	#	[EPX, System.Collections.Generic.List`1[System.String]], 
-	#	[Bilinear, System.Collections.Generic.List`1[System.String]], 
-	#	[None, System.Collections.Generic.List`1[System.String]]
+	#	xBRZ, EPX/ScaleX, None
 	# ]
 	ScalerGradient = "None"
 	# Should dynamic scaling be used (scaling based upon apparent sprite size)
@@ -378,7 +131,7 @@ DataStoreOverride = ""
 	# Should we assume that input sprites are gamma corrected?
 	AssumeGammaCorrected = true
 	# Maximum scale factor of sprites (clamped to chosen scaler)
-	MaxScale = 4294967295
+	MaxScale = 6
 	# Minimum edge length of a sprite to be considered for resampling
 	MinimumTextureDimensions = 1
 	# Should wrapped addressing be enabled for sprite resampling (when analysis suggests it)?
@@ -491,10 +244,7 @@ DataStoreOverride = ""
 		Enabled = true
 		# What quality level should be used?
 		# Legal Values: [
-		#	[Fastest, System.Collections.Generic.List`1[System.String]], 
-		#	[Normal, System.Collections.Generic.List`1[System.String]], 
-		#	[Production, System.Collections.Generic.List`1[System.String]], 
-		#	[Highest, System.Collections.Generic.List`1[System.String]]
+		#	Fastest, Normal, Production, Highest
 		# ]
 		Quality = "Highest"
 		# What alpha deviation threshold should be applied to determine if a sprite's transparency is smooth or mask-like (determines between bc2 and bc3)?
@@ -549,12 +299,14 @@ DataStoreOverride = ""
 			"TerrainFeatures\\tree2_winter", 
 			"TerrainFeatures\\tree3_winter"
 		]
-
-		[Config.Resample.xBRZ]
-		# The weight provided to luminance as opposed to chrominance when performing color comparisons
-		LuminanceWeight = 1
+		# Settings common to all scalers
+		[Config.Resample.Common]
 		# The tolerance for colors to be considered equal - [0, 256)
 		EqualColorTolerance = 20
+		# The weight provided to luminance as opposed to chrominance when performing color comparisons
+		LuminanceWeight = 1
+
+		[Config.Resample.xBRZ]
 		# The threshold for a corner-direction to be considered 'dominant'
 		DominantDirectionThreshold = 4.4
 		# The threshold for a corner-direction to be considered 'steep'
@@ -566,9 +318,9 @@ DataStoreOverride = ""
 
 	[Config.WrapDetection]
 	# What is the threshold percentage of alpha values to be used to determine if it is a wrapping edge?
-	edgeThreshold = 0.2000000029802322
+	EdgeThreshold = 0.2000000029802322
 	# What is the minimum alpha value assumed to be opaque?
-	alphaThreshold = 1
+	AlphaThreshold = 1
 
 	[Config.AsyncScaling]
 	# Should asynchronous scaling be enabled for unknown textures?
@@ -589,15 +341,10 @@ DataStoreOverride = ""
 	[Config.SuspendedCache]
 	# Should the suspended sprite cache be enabled?
 	Enabled = true
+	# What is the maximum number of sprites to store in suspended sprite cache?
+	MaxCacheCount = 2000
 
 	[Config.SMAPI]
-	# Should the experimental SMAPI texture cache patch be enabled?
-	TextureCacheEnabled = true
-	# Should the PMA texture cache be enabled?
-	PMATextureCacheEnabled = true
-	# Should the experimental SMAPI texture cache have high memory usage enabled?
-	# Unrecommended: This results in the game's texture being retained (and thus loaded faster) but doesn't suspend the resampled sprite instances.
-	TextureCacheHighMemoryEnabled = false
 	# Should the ApplyPatch method be patched?
 	ApplyPatchEnabled = true
 	# Should ApplyPatch pin temporary memory?
@@ -610,6 +357,8 @@ DataStoreOverride = ""
 	FastQuit = false
 	# Should line drawing be smoothed?
 	SmoothLines = true
+	# Should shadowed text be stroked instead?
+	StrokeShadowedText = false
 	# Should Harmony patches have inlining re-enabled?
 	HarmonyInlining = false
 	# Should the game's 'parseMasterSchedule' method be fixed and optimized?
@@ -626,6 +375,10 @@ DataStoreOverride = ""
 	PreventUnresponsive = true
 	# Should the engine's deferred thread task runner be optimized?
 	OptimizeEngineTaskRunner = true
+	# Should dirt drawing optimizations be enabled?
+	EnableDirtDrawOptimizations = false
+	# Should low-level OpenGL optimizations be performed?
+	OptimizeOpenGL = true
 
 		[Config.Extras.Snow]
 		# Should custom snowfall be used during snowstorms?
@@ -635,28 +388,33 @@ DataStoreOverride = ""
 		# Maximum Snow Density
 		MaximumDensity = 3072
 		# Maximum Snow Rotation Speed
-		MaximumRotationSpeed = 0.01666666666666667
+		MaximumRotationSpeed = 0.01666666753590107
 		# Maximum Snow Scale
 		MaximumScale = 3
 		# Puffersnow Chance
-		PuffersnowChance = -1
+		PuffersnowChance = 0
 
 		[Config.Extras.ModPatches]
 		# Patch CustomNPCFixes in order to improve load times?
 		PatchCustomNPCFixes = false
-		# Disable PyTK mitigation for SpriteMaster?
+		# Disable unnecessary PyTK mitigation for SpriteMaster?
 		DisablePyTKMitigation = true
+
+	[Config.TextureCache]
+	# Should the experimental SMAPI texture cache patch be enabled?
+	Enabled = true
+	# Should the PMA texture cache be enabled?
+	PMAEnabled = true
+	# Should the experimental SMAPI texture cache have high memory usage enabled?
+	# Unrecommended: This results in the game's texture being retained (and thus loaded faster) but doesn't suspend the resampled sprite instances.
+	HighMemoryEnabled = false
 
 	[Config.FileCache]
 	# Should the file cache be enabled?
 	Enabled = true
 	# What compression algorithm should be used?
 	# Legal Values: [
-	#	[None, System.Collections.Generic.List`1[System.String]], 
-	#	[Compress, System.Collections.Generic.List`1[System.String]], 
-	#	[Deflate, System.Collections.Generic.List`1[System.String]], 
-	#	[LZMA, System.Collections.Generic.List`1[System.String]], 
-	#	[Zstd, System.Collections.Generic.List`1[System.String]]
+	#	None, Compress, Deflate, Zstd/Best
 	# ]
 	Compress = "Zstd"
 	# Should files be compressed regardless of if it would be beneficial?

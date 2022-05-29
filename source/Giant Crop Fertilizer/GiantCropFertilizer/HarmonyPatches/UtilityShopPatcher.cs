@@ -20,7 +20,7 @@ internal static class UtilityShopPatcher
 {
     [HarmonyPatch(nameof(Utility.GetQiChallengeRewardStock))]
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention.")]
-    private static void Postfix(Farmer who, ref Dictionary<ISalable, int[]> __result)
+    private static void Postfix(ref Dictionary<ISalable, int[]> __result)
     {
         if (ModEntry.GiantCropFertilizerID != -1)
         {

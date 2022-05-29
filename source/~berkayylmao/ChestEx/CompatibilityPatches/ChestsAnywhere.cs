@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -39,7 +39,7 @@ using ChestEx.LanguageExtensions;
 using ChestEx.Types.BaseTypes;
 using ChestEx.Types.CustomTypes.ChestExMenu;
 
-using Harmony;
+using HarmonyLib;
 
 using JetBrains.Annotations;
 
@@ -55,7 +55,7 @@ using Object = System.Object;
 
 namespace ChestEx.CompatibilityPatches {
   internal class ChestsAnywhere : CompatibilityPatch {
-  #region Patches
+    #region Patches
 
     [HarmonyPatch]
     private static class BaseChestOverlay {
@@ -67,8 +67,8 @@ namespace ChestEx.CompatibilityPatches {
       private static IEnumerable<CodeInstruction> transpilerDrawUi(IEnumerable<CodeInstruction> instructions, ILGenerator ilg) {
         ConstructorInfo xna_rectangle_ctor = AccessTools.Constructor(typeof(Rectangle), new[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Int32) });
 
-        Boolean patched  = false;
-        Label   lbl_skip = ilg.DefineLabel();
+        Boolean patched = false;
+        Label lbl_skip = ilg.DefineLabel();
 
         foreach (CodeInstruction instruction in instructions) {
           if (!patched && instruction.opcode == OpCodes.Newobj && (MethodBase)instruction.operand == xna_rectangle_ctor) {
@@ -124,11 +124,11 @@ namespace ChestEx.CompatibilityPatches {
       [HarmonyTranspiler]
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
-      private static IEnumerable<CodeInstruction> transpilerReinitializeComponents(IEnumerable<CodeInstruction> instructions, ILGenerator ilg) {
+      private static IEnumerable<CodeInstruction> transpilerReinitializeBaseComponents(IEnumerable<CodeInstruction> instructions, ILGenerator ilg) {
         ConstructorInfo xna_rectangle_ctor = AccessTools.Constructor(typeof(Rectangle), new[] { typeof(Int32), typeof(Int32), typeof(Int32), typeof(Int32) });
 
-        Boolean patched  = false;
-        Label   lbl_skip = ilg.DefineLabel();
+        Boolean patched = false;
+        Label lbl_skip = ilg.DefineLabel();
 
         foreach (CodeInstruction instruction in instructions) {
           if (!patched && instruction.opcode == OpCodes.Call && (MethodBase)instruction.operand == xna_rectangle_ctor) {
@@ -182,8 +182,8 @@ namespace ChestEx.CompatibilityPatches {
       }
 
       public static void Install() {
-        GlobalVars.gHarmony.PatchEx(AccessTools.Method(sType, "ReinitializeComponents"),
-                                    transpiler: new HarmonyMethod(AccessTools.Method(typeof(BaseChestOverlay), "transpilerReinitializeComponents")),
+        GlobalVars.gHarmony.PatchEx(AccessTools.Method(sType, "ReinitializeBaseComponents"),
+                                    transpiler: new HarmonyMethod(AccessTools.Method(typeof(BaseChestOverlay), "transpilerReinitializeBaseComponents")),
                                     reason: "move ChestAnywhere buttons");
         GlobalVars.gHarmony.PatchEx(AccessTools.Method(sType, "DrawUi"),
                                     transpiler: new HarmonyMethod(AccessTools.Method(typeof(BaseChestOverlay), "transpilerDrawUi")),
@@ -199,11 +199,11 @@ namespace ChestEx.CompatibilityPatches {
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
       private static IEnumerable<CodeInstruction> transpilerReinitializeComponents(IEnumerable<CodeInstruction> instructions) {
-        var        target_type = Type.GetType("Pathoschild.Stardew.ChestsAnywhere.Framework.ModConfig, ChestsAnywhere");
-        MethodInfo patch_fn    = AccessTools.Method(target_type, "get_AddOrganizePlayerInventoryButton");
+        var target_type = Type.GetType("Pathoschild.Stardew.ChestsAnywhere.Framework.ModConfig, ChestsAnywhere");
+        MethodInfo patch_fn = AccessTools.Method(target_type, "get_AddOrganizePlayerInventoryButton");
 
         Boolean found_target = false;
-        Boolean patched      = false;
+        Boolean patched = false;
 
         foreach (CodeInstruction instruction in instructions) {
           if (!found_target)
@@ -211,11 +211,11 @@ namespace ChestEx.CompatibilityPatches {
           else if (!patched) {
             if (instruction.opcode == OpCodes.Brfalse) {
               instruction.opcode = OpCodes.Br;
-              patched            = true;
+              patched = true;
             }
             else if (instruction.opcode == OpCodes.Brfalse_S) {
               instruction.opcode = OpCodes.Br_S;
-              patched            = true;
+              patched = true;
             }
 
             if (patched) yield return new CodeInstruction(OpCodes.Pop);
@@ -281,11 +281,11 @@ namespace ChestEx.CompatibilityPatches {
       [UsedImplicitly]
       [SuppressMessage("ReSharper", "InconsistentNaming")]
       private static IEnumerable<CodeInstruction> transpilerOnRenderedHud(IEnumerable<CodeInstruction> instructions) {
-        var        target_type = Type.GetType("Pathoschild.Stardew.ChestsAnywhere.Framework.ModConfig, ChestsAnywhere");
-        MethodInfo patch_fn    = AccessTools.Method(target_type, "get_ShowHoverTooltips");
+        var target_type = Type.GetType("Pathoschild.Stardew.ChestsAnywhere.Framework.ModConfig, ChestsAnywhere");
+        MethodInfo patch_fn = AccessTools.Method(target_type, "get_ShowHoverTooltips");
 
         Boolean found_target = false;
-        Boolean patched      = false;
+        Boolean patched = false;
 
         foreach (CodeInstruction instruction in instructions) {
           if (!found_target)
@@ -293,11 +293,11 @@ namespace ChestEx.CompatibilityPatches {
           else if (!patched) {
             if (instruction.opcode == OpCodes.Brfalse) {
               instruction.opcode = OpCodes.Br;
-              patched            = true;
+              patched = true;
             }
             else if (instruction.opcode == OpCodes.Brfalse_S) {
               instruction.opcode = OpCodes.Br_S;
-              patched            = true;
+              patched = true;
             }
 
             if (patched) yield return new CodeInstruction(OpCodes.Pop);
@@ -315,10 +315,10 @@ namespace ChestEx.CompatibilityPatches {
       }
     }
 
-  #endregion
+    #endregion
 
     // Protected:
-  #region Protected
+    #region Protected
 
     protected override void InstallPatches() {
       BaseChestOverlay.Install();
@@ -333,14 +333,14 @@ namespace ChestEx.CompatibilityPatches {
       base.OnLoaded();
     }
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     internal ChestsAnywhere()
-      : base("Pathoschild.ChestsAnywhere", new SemanticVersion("1.20.14")) { }
+      : base("Pathoschild.ChestsAnywhere", new SemanticVersion("1.22.0")) { }
 
-  #endregion
+    #endregion
   }
 }

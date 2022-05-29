@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -97,7 +95,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
             }
 
             // get caption text
-            string caption = null;
+            string? caption = null;
             if (this.Friendship.EmptyHearts == 0 && this.Friendship.LockedHearts > 0)
                 caption = $"({I18n.Npc_Friendship_NeedBouquet()})";
             else

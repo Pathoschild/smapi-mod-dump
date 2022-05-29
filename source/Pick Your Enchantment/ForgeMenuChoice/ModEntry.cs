@@ -9,12 +9,15 @@
 *************************************************/
 
 using AtraBase.Toolkit.Reflection;
+using AtraShared.ConstantsAndEnums;
 using AtraShared.Integrations;
+using AtraShared.Utils;
 using AtraShared.Utils.Extensions;
 using ForgeMenuChoice.HarmonyPatches;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
+using AtraUtils = AtraShared.Utils.Utils;
 
 namespace ForgeMenuChoice;
 
@@ -28,9 +31,9 @@ internal class ModEntry : Mod
     internal static IMonitor ModMonitor { get; private set; }
 
     /// <summary>
-    /// Gets the content helper for this mod.
+    /// Gets the game content helper for this mod.
     /// </summary>
-    internal static IContentHelper ContentHelper { get; private set; }
+    internal static IGameContentHelper GameContentHelper { get; private set; }
 
     /// <summary>
     /// Gets the translation helper for this mod.
@@ -47,33 +50,28 @@ internal class ModEntry : Mod
     public override void Entry(IModHelper helper)
     {
         ModMonitor = this.Monitor;
-        ContentHelper = helper.Content;
-        TranslationHelper = helper.Translation;
-        I18n.Init(helper.Translation);
 
-        try
-        {
-            Config = this.Helper.ReadConfig<ModConfig>();
-        }
-        catch
-        {
-            this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
-            Config = new();
-        }
+        StringUtils.Initialize(this.Monitor);
+        GameContentHelper = helper.GameContent;
+        TranslationHelper = helper.Translation;
+
+        I18n.Init(helper.Translation);
+        Config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
 
         helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
-        helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-        helper.Events.Player.Warped += this.OnWarp;
-        helper.Content.AssetLoaders.Add(AssetLoader.Instance);
+
+        helper.Events.Player.Warped += this.Player_Warped;
+        helper.Events.Content.AssetRequested += this.OnAssetRequested;
+        helper.Events.Content.LocaleChanged += this.OnLocaleChanged;
+        helper.Events.Content.AssetsInvalidated += this.OnAssetInvalidated;
     }
 
-    private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
+    private void OnLocaleChanged(object? sender, LocaleChangedEventArgs e)
     {
-        ContentHelper.InvalidateCache(AssetLoader.ENCHANTMENT_NAMES_LOCATION);
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type. This is a valid call, SMAPI just doesn't use nullable.
-        // This is the games cache of enchantment names. I null it here to clear it, in case the user changes languages.
-        this.Helper.Reflection.GetField<List<BaseEnchantment>>(typeof(BaseEnchantment), "_enchantments").SetValue(null);
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+        GameContentHelper.InvalidateCache(AssetLoader.ENCHANTMENT_NAMES_LOCATION);
+
+        // This is the games cache of enchantment names. I null it here to clear it.
+        this.Helper.Reflection.GetField<List<BaseEnchantment>?>(typeof(BaseEnchantment), "_enchantments").SetValue(null);
         AssetLoader.Refresh();
     }
 
@@ -154,16 +152,26 @@ internal class ModEntry : Mod
         }
         catch (Exception ex)
         {
-            ModMonitor.Log($"Mod failed while applying patches:\n{ex}", LogLevel.Error);
+            ModMonitor.Log(string.Format(ErrorMessageConsts.HARMONYCRASH, ex), LogLevel.Error);
         }
         harmony.Snitch(this.Monitor, harmony.Id, transpilersOnly: true);
     }
 
-    private void OnWarp(object? sender, WarpedEventArgs e)
+    /*****************
+     * REGION ASSET MANAGEMENT
+     * ************/
+
+    private void Player_Warped(object? sender, WarpedEventArgs e)
     {
         if (e.IsLocalPlayer)
         {
             AssetLoader.Refresh();
         }
     }
+
+    private void OnAssetInvalidated(object? sender, AssetsInvalidatedEventArgs e)
+        => AssetLoader.Refresh(e.NamesWithoutLocale);
+
+    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
+        => AssetLoader.OnLoadAsset(e);
 }

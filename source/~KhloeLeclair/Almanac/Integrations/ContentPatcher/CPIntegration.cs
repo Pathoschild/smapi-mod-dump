@@ -8,8 +8,7 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
+#nullable enable
 
 using Leclair.Stardew.Common.Integrations;
 
@@ -18,55 +17,55 @@ using StardewModdingAPI;
 
 using ContentPatcher;
 
-namespace Leclair.Stardew.Almanac.Integrations.ContentPatcher {
-	public class CPIntegration : BaseAPIIntegration<IContentPatcherAPI, ModEntry> {
+namespace Leclair.Stardew.Almanac.Integrations.ContentPatcher;
 
-		public CPIntegration(ModEntry mod)
-		: base(mod, "Pathoschild.ContentPatcher", "1.25") {
-			if (!IsLoaded)
-				return;
+public class CPIntegration : BaseAPIIntegration<IContentPatcherAPI, ModEntry> {
 
-			API.RegisterToken(Self.ModManifest, "HasBase", () => {
-				if (Context.IsWorldReady)
-					return new[] {
-						Self.HasAlmanac(Game1.player).ToString()
-					};
+	public CPIntegration(ModEntry mod)
+	: base(mod, "Pathoschild.ContentPatcher", "1.25") {
+		if (!IsLoaded)
+			return;
 
-				if (SaveGame.loaded?.player != null)
-					return new[] {
-						Self.HasAlmanac(SaveGame.loaded.player).ToString()
-					};
+		API.RegisterToken(Self.ModManifest, "HasBase", () => {
+			if (Context.IsWorldReady)
+				return new[] {
+					Self.HasAlmanac(Game1.player).ToString()
+				};
 
-				return null;
-			});
+			if (SaveGame.loaded?.player != null)
+				return new[] {
+					Self.HasAlmanac(SaveGame.loaded.player).ToString()
+				};
 
-			API.RegisterToken(Self.ModManifest, "HasMagic", () => {
-				if (Context.IsWorldReady)
-					return new[] {
-						Self.HasMagic(Game1.player).ToString()
-					};
+			return null;
+		});
 
-				if (SaveGame.loaded?.player != null)
-					return new[] {
-						Self.HasMagic(SaveGame.loaded.player).ToString()
-					};
+		API.RegisterToken(Self.ModManifest, "HasMagic", () => {
+			if (Context.IsWorldReady)
+				return new[] {
+					Self.HasMagic(Game1.player).ToString()
+				};
 
-				return null;
-			});
+			if (SaveGame.loaded?.player != null)
+				return new[] {
+					Self.HasMagic(SaveGame.loaded.player).ToString()
+				};
 
-			API.RegisterToken(Self.ModManifest, "HasIsland", () => {
-				if (Context.IsWorldReady)
-					return new[] {
-						Self.HasIsland(Game1.player).ToString()
-					};
+			return null;
+		});
 
-				if (SaveGame.loaded?.player != null)
-					return new[] {
-						Self.HasIsland(SaveGame.loaded.player).ToString()
-					};
+		API.RegisterToken(Self.ModManifest, "HasIsland", () => {
+			if (Context.IsWorldReady)
+				return new[] {
+					Self.HasIsland(Game1.player).ToString()
+				};
 
-				return null;
-			});
-		}
+			if (SaveGame.loaded?.player != null)
+				return new[] {
+					Self.HasIsland(SaveGame.loaded.player).ToString()
+				};
+
+			return null;
+		});
 	}
 }

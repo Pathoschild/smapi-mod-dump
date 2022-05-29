@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 namespace Pathoschild.Stardew.SmallBeachFarm.Framework.Config
 {
     /// <summary>The mod configuration.</summary>
@@ -23,5 +21,11 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework.Config
 
         /// <summary>Use the beach's background music (i.e. wave sounds) on the beach farm.</summary>
         public bool UseBeachMusic { get; set; } = false;
+
+        /// <summary>Place the stone path tiles in front of the default shipping bin position.</summary>
+        public bool ShippingBinPath { get; set; } = true;
+
+        /// <summary>The default value for the 'spawn monsters at night' option when creating a new save.</summary>
+        public bool DefaultSpawnMonstersAtNight { get; set; } = false;
     }
 }

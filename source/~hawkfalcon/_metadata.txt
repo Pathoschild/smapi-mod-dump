@@ -8,9 +8,9 @@ mods:
    Tillable Ground
 
 latest commit:
-   commit 7cbb25ac5082aca48f64cd718b678155ffc4056b
+   commit 0dc350d0884a3a4e3fff3c394a0e13ec51cd442a
    Author: ceruleandeep <ceruleandeep>
-   Date:   Thu Apr 28 10:23:01 2022 +1000
+   Date:   Fri May 20 15:18:02 2022 +1000
    
-       Update for 2.0.7 RELEASE
+       Update asset loader for new SMAPI
    

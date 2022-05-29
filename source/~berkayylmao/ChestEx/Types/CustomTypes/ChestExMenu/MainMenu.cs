@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -49,22 +49,22 @@ using Object = System.Object;
 namespace ChestEx.Types.CustomTypes.ChestExMenu {
   public sealed class MainMenu : CustomItemGrabMenu {
     // Private:
-  #region Private
+    #region Private
 
-    private CustomTextureButton             configButton;
+    private CustomTextureButton configButton;
     private CustomClickableTextureComponent newFillStacksButton => this.fillStacksButton as CustomClickableTextureComponent;
-    private CustomClickableTextureComponent newOrganizeButton   => this.organizeButton as CustomClickableTextureComponent;
-    private CustomClickableTextureComponent newOKButton         => this.okButton as CustomClickableTextureComponent;
+    private CustomClickableTextureComponent newOrganizeButton => this.organizeButton as CustomClickableTextureComponent;
+    private CustomClickableTextureComponent newOKButton => this.okButton as CustomClickableTextureComponent;
 
     private ChestConfigPanel configPanel;
 
-  #endregion
+    #endregion
 
     // Protected:
-  #region Protected
+    #region Protected
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     protected override void CreateOrganizationButtons(Boolean createChestColorPicker, Boolean createOrganizeButton, Boolean createFillStacksButton) {
       this.mComponents.Clear();
@@ -81,11 +81,11 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
                                                     TexturePresets.gConfigButtonTexture,
                                                     "Open configuration panel",
                                                     () => this.configPanel.SetVisible(!this.configPanel.mIsVisible)) {
-          myID           = region_colorPickToggle,
-          upNeighborID   = this.colorPickerToggleButton?.myID ?? -500,
+          myID = region_colorPickToggle,
+          upNeighborID = this.colorPickerToggleButton?.myID ?? -500,
           downNeighborID = region_organizeButton,
           leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-          region         = region_organizationButtons
+          region = region_organizationButtons
         };
       }
 
@@ -95,11 +95,11 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
                                               Colours.gTurnTranslucentOnAction,
                                               TexturePresets.gFillStacksPickerButtonTexture,
                                               Game1.content.LoadString("Strings\\UI:ItemGrab_FillStacks")) {
-            myID           = region_fillStacksButton,
-            upNeighborID   = this.configButton?.myID ?? -500,
+            myID = region_fillStacksButton,
+            upNeighborID = this.configButton?.myID ?? -500,
             downNeighborID = region_organizeButton,
             leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-            region         = region_organizationButtons
+            region = region_organizationButtons
           };
       }
 
@@ -109,11 +109,11 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
                                               Colours.gTurnTranslucentOnAction,
                                               TexturePresets.gOrganizeButtonTexture,
                                               Game1.content.LoadString("Strings\\UI:ItemGrab_Organize")) {
-            myID           = region_organizeButton,
-            upNeighborID   = region_fillStacksButton,
+            myID = region_organizeButton,
+            upNeighborID = region_fillStacksButton,
             downNeighborID = region_trashCan,
             leftNeighborID = ClickableComponent.SNAP_AUTOMATIC,
-            region         = region_organizationButtons
+            region = region_organizationButtons
           };
       }
 
@@ -145,15 +145,15 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
                                   .Where(c => c is not null));
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     public override void draw(SpriteBatch b) {
       if (!this.mIsVisible) return;
@@ -162,7 +162,7 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
       if (this.mPlayerInventoryOptions.mIsVisible) {
         // draw backpack icon next to player inventory
         Rectangle player_menu_bounds = this.mPlayerInventoryOptions.mDialogueBoxBounds;
-        Point     backpack_size      = new(player_menu_bounds.Height / 3, player_menu_bounds.Height / 3);
+        Point backpack_size = new(player_menu_bounds.Height / 3, player_menu_bounds.Height / 3);
 
         b.Draw(Game1.uncoloredMenuTexture,
                new Vector2(player_menu_bounds.X - backpack_size.X - 24, player_menu_bounds.Y + player_menu_bounds.Height / 2 - backpack_size.Y / 2),
@@ -183,17 +183,17 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
       this.drawMouse(b);
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
-    public MainMenu(IList<Item>          inventory,                    Boolean reverseGrab, Boolean showReceivingMenu, InventoryMenu.highlightThisItem highlightFunction,
-                    behaviorOnItemSelect behaviorOnItemSelectFunction, String  message, behaviorOnItemSelect behaviorOnItemGrab = null, Boolean snapToBottom = false,
-                    Boolean              canBeExitedWithKey = false,   Boolean playRightClickSound = true, Boolean allowRightClick = true, Boolean showOrganizeButton = false,
-                    Int32                source             = 0,       Item    sourceItem          = null, Int32 whichSpecialButton = -1, Object context = null)
+    public MainMenu(IList<Item> inventory, Boolean reverseGrab, Boolean showReceivingMenu, InventoryMenu.highlightThisItem highlightFunction,
+                    behaviorOnItemSelect behaviorOnItemSelectFunction, String message, behaviorOnItemSelect behaviorOnItemGrab = null, Boolean snapToBottom = false,
+                    Boolean canBeExitedWithKey = false, Boolean playRightClickSound = true, Boolean allowRightClick = true, Boolean showOrganizeButton = false,
+                    Int32 source = 0, Item sourceItem = null, Int32 whichSpecialButton = -1, Object context = null)
       : base(inventory,
              reverseGrab,
              showReceivingMenu,
@@ -232,17 +232,17 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
       this.mSourceInventoryOptions.mDialogueBoxBounds = this.ItemsToGrabMenu.GetTextureBoxRectangle(borderScale: this.mSourceInventoryOptions.mBorderScale);
       this.mSourceInventoryOptions.SetVisible(this.mSourceInventoryOptions.mIsVisible);
       if (GlobalVars.gIsExpandedStorageLoaded) {
-        this.mSourceInventoryOptions.mDialogueBoxBounds.Y      -= 52;
+        this.mSourceInventoryOptions.mDialogueBoxBounds.Y -= 52;
         this.mSourceInventoryOptions.mDialogueBoxBounds.Height += 52;
       }
 
       foreach (ClickableComponent cc in this.ItemsToGrabMenu.inventory.Where(cc => cc != null)) {
-        cc.myID            += region_itemsToGrabMenuModifier;
-        cc.upNeighborID    += region_itemsToGrabMenuModifier;
+        cc.myID += region_itemsToGrabMenuModifier;
+        cc.upNeighborID += region_itemsToGrabMenuModifier;
         cc.rightNeighborID += region_itemsToGrabMenuModifier;
-        cc.downNeighborID  =  ClickableComponent.CUSTOM_SNAP_BEHAVIOR;
-        cc.leftNeighborID  += region_itemsToGrabMenuModifier;
-        cc.fullyImmutable  =  true;
+        cc.downNeighborID = ClickableComponent.CUSTOM_SNAP_BEHAVIOR;
+        cc.leftNeighborID += region_itemsToGrabMenuModifier;
+        cc.fullyImmutable = true;
       }
 
       Int32 compatibility_y_shift = GlobalVars.gIsExpandedStorageLoaded ? 48 : 0;
@@ -283,6 +283,6 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu {
       this.RegisterInputEvents();
     }
 
-  #endregion
+    #endregion
   }
 }

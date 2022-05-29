@@ -6,12 +6,9 @@ mods:
    More Bundles
 
 latest commit:
-   commit b629b290f1bc9c6f55b8e5d37e918ec15eda2db3
-   Merge: 90ce623 dc721e0
-   Author: TwinBuilderOne <86498605+TwinBuilderOne@users.noreply.github.com>
-   Date:   Mon Oct 4 17:20:22 2021 -0500
+   commit 0420da5bb47e17dc6c3d0395fa7c5a106a6e7d27
+   Author: TwinBuilderOne <jackreynolds9128@gmail.com>
+   Date:   Wed May 18 17:58:46 2022 -0500
    
-       Merge pull request #2 from TwinBuilderOne/more-bundles
-       
-       More Bundles 1.1.0
+       Add project files.
    

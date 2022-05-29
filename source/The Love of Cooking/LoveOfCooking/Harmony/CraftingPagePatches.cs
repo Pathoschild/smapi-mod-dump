@@ -12,12 +12,10 @@ using HarmonyLib;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace LoveOfCooking.Core.HarmonyPatches
+namespace LoveOfCooking.HarmonyPatches
 {
 	public static class CraftingPagePatches
 	{
-		private static uint ItemsCooked;
-
 		public static void Patch(Harmony harmony)
 		{
 			Log.D($"Applying patches to CraftingPage.clickCraftingRecipe",
@@ -32,18 +30,25 @@ namespace LoveOfCooking.Core.HarmonyPatches
 
         public static void CraftItem_Prefix()
 		{
-			ItemsCooked = Game1.stats.ItemsCooked;
+			ModEntry.Instance.States.Value.ItemsCooked = Game1.stats.ItemsCooked;
 		}
 
-		public static void CraftItem_Postfix(CraftingPage __instance, ClickableTextureComponent c)
+		/// <summary>
+		/// Unique crafting behaviours for when the Cooking Menu is disabled.
+		/// </summary>
+		public static void CraftItem_Postfix(CraftingPage __instance,
+			Item ___lastCookingHover,
+			ClickableTextureComponent c)
 		{
-			if (Game1.stats.ItemsCooked <= ItemsCooked)
-			{
+			// Do nothing if the Cooking Menu is enabled
+			if (ModEntry.Config.AddCookingMenu)
 				return;
-			}
 
-			var item = ModEntry.Instance.Helper.Reflection.GetField<Item>(__instance, "lastCookingHover").GetValue();
-			var recipe = new CraftingRecipe(item.Name, isCookingRecipe: true);
+			if (Game1.stats.ItemsCooked <= ModEntry.Instance.States.Value.ItemsCooked)
+				return;
+
+			Item item = ___lastCookingHover;
+			CraftingRecipe recipe = new CraftingRecipe(item.Name, isCookingRecipe: true);
 
 			// Apply burn chance to destroy cooked food at random
 			/*

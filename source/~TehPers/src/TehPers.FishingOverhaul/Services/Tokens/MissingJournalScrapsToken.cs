@@ -20,16 +20,16 @@ namespace TehPers.FishingOverhaul.Services.Tokens
     internal class MissingJournalScrapsToken : MissingNotesToken
     {
         public MissingJournalScrapsToken(
-            IAssetTracker assetTracker,
+            IModHelper helper,
             [ContentSource(ContentSource.GameContent)] IAssetProvider gameAssets
         )
-            : base(assetTracker, gameAssets)
+            : base(helper, gameAssets)
         {
         }
 
         public override IEnumerable<string> GetValues(string? input)
         {
-            if (Game1.player is not { secretNotesSeen: { } secretNotesSeen } player)
+            if (Game1.player is not {secretNotesSeen: { } secretNotesSeen} player)
             {
                 return Enumerable.Empty<string>();
             }

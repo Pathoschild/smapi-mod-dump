@@ -33,14 +33,14 @@ namespace Dem1se.CustomReminders.UI
         {
             CheckBox_Box = new ClickableTextureComponent(
                 new Rectangle(PosX, PosY, (int)(18 * Scale), (int)(18 * Scale)),
-                Utilities.Globals.Helper.Content.Load<Texture2D>("assets/CheckBox_Box.png", ContentSource.ModFolder),
+                Utilities.Globals.Helper.ModContent.Load<Texture2D>("assets/CheckBox_Box.png"),
                 new Rectangle(),
                 Scale
             );
 
             CheckBox_Check = new ClickableTextureComponent(
                 new Rectangle(PosX + (int)(5 * Scale), PosY + (int)(6 * Scale), (int)(8 * Scale), (int)(7 * Scale)),
-                Utilities.Globals.Helper.Content.Load<Texture2D>("assets/CheckBox_Check.png", ContentSource.ModFolder),
+                Utilities.Globals.Helper.ModContent.Load<Texture2D>("assets/CheckBox_Check.png"),
                 new Rectangle(),
                 Scale
             );

@@ -12,6 +12,7 @@ using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Hashing;
 using SpriteMaster.Metadata;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Interlocking;
@@ -23,10 +24,10 @@ namespace SpriteMaster;
 
 /// <summary>
 /// A wrapper during the resampling process that encapsulates the properties of the sprite itself
-/// <para>Warning: <seealso cref="SpriteInfo">SpriteInfo</seealso> holds a reference to the reference texture's data in its <seealso cref="SpriteInfo._ReferenceData">ReferenceData field</seealso>.</para>
+/// <para>Warning: <seealso cref="SpriteInfo">SpriteInfo</seealso> holds a reference to the reference texture's data in its <seealso cref="ReferenceDataInternal">ReferenceData field</seealso>.</para>
 /// </summary>
-sealed class SpriteInfo : IDisposable {
-	internal readonly Texture2D Reference;
+internal sealed class SpriteInfo : IDisposable {
+	internal readonly XTexture2D Reference;
 	internal readonly Bounds Bounds;
 	internal Vector2I ReferenceSize => Reference.Extent();
 	internal readonly Vector2B Wrapped;
@@ -37,62 +38,62 @@ sealed class SpriteInfo : IDisposable {
 	internal readonly bool IsPreview;
 	internal readonly Resample.Scaler Scaler;
 	internal readonly Resample.Scaler ScalerGradient;
-	internal readonly XNA.Graphics.BlendState BlendState;
+	internal readonly BlendState BlendState;
 	internal readonly bool BlendEnabled;
 	internal readonly bool IsWater;
 	internal readonly bool IsFont;
-	private volatile bool _Broken = false;
+	private volatile bool Broken = false;
 
 	public override string ToString() => $"SpriteInfo[Name: '{Reference.Name}', ReferenceSize: {ReferenceSize}, Size: {Bounds}]";
 
-	private ulong? _SpriteDataHash = null;
+	private ulong? SpriteDataHashInternal = null;
 	private ulong? SpriteDataHash {
 		get {
-			if (_SpriteDataHash.HasValue) {
-				return _SpriteDataHash;
+			if (SpriteDataHashInternal.HasValue) {
+				return SpriteDataHashInternal;
 			}
 
-			if (_ReferenceData is null) {
+			if (ReferenceDataInternal is null) {
 				return null;
 			}
 
-			var result = GetDataHash(_ReferenceData, Reference, Bounds, RawOffset, RawStride);
+			var result = GetDataHash(ReferenceDataInternal, Reference, Bounds, RawOffset, RawStride);
 			if (result.HasValue) {
-				_SpriteDataHash = result.Value;
+				SpriteDataHashInternal = result.Value;
 				return result;
 			}
 
-			_Broken = true;
-			_ReferenceData = null;
+			Broken = true;
+			ReferenceDataInternal = null;
 			return null;
 		}
 	}
-	private byte[]? _ReferenceData = null;
+	private byte[]? ReferenceDataInternal = null;
 	internal byte[]? ReferenceData {
-		get => _ReferenceData;
+		get => ReferenceDataInternal;
 		private set {
-			if (_Broken) {
+			if (Broken) {
 				return;
 			}
-			if (_ReferenceData == value) {
+			if (ReferenceDataInternal == value) {
 				return;
 			}
-			_ReferenceData = value;
-			if (_ReferenceData is null) {
-				_SpriteDataHash = null;
+			ReferenceDataInternal = value;
+			if (ReferenceDataInternal is null) {
+				SpriteDataHashInternal = null;
 			}
 		}
 	}
 
-	private static ulong? GetDataHash(byte[] data, Texture2D reference, in Bounds bounds, int rawOffset, int rawStride) {
+	private static ulong? GetDataHash(byte[] data, XTexture2D reference, Bounds bounds, int rawOffset, int rawStride) {
 		var meta = reference.Meta();
 
-		if (meta.TryGetSpriteHash(in bounds, out ulong hash)) {
+		if (meta.TryGetSpriteHash(bounds, out ulong hash)) {
 			return hash;
 		}
 
 		var format = reference.Format.IsCompressed() ? SurfaceFormat.Color : reference.Format;
-		int actualWidth = (int)format.SizeBytes(bounds.Extent.X);
+		var actualWidth = format.SizeBytes(bounds.Extent.X);
 
 		try {
 			var spriteData = new Span2D<byte>(
@@ -111,8 +112,6 @@ sealed class SpriteInfo : IDisposable {
 			return hash;
 		}
 		catch (ArgumentOutOfRangeException) {
-			float realFormatSize = (float)reference.Format.SizeBytes(4) / 4.0f;
-
 			var errorBuilder = new StringBuilder();
 			errorBuilder.AppendLine("SpriteInfo.ReferenceData: arguments out of range");
 			errorBuilder.AppendLine($"Reference: {reference.NormalizedName()}");
@@ -128,17 +127,16 @@ sealed class SpriteInfo : IDisposable {
 		return null;
 	}
 
-	private InterlockedULong _Hash = 0;
+	private InterlockedULong HashInternal = 0;
 	internal ulong Hash {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
 		get {
-			if (_ReferenceData is null) {
-				throw new NullReferenceException(nameof(_ReferenceData));
+			if (ReferenceDataInternal is null) {
+				throw new NullReferenceException(nameof(ReferenceDataInternal));
 			}
 
-			ulong hash = _Hash;
+			ulong hash = HashInternal;
 			if (hash == 0) {
-				hash = Hashing.Combine(
+				hash = HashUtility.Combine(
 					SpriteDataHash,
 					Bounds.Extent.GetLongHashCode(),
 					BlendEnabled.GetLongHashCode(),
@@ -151,35 +149,37 @@ sealed class SpriteInfo : IDisposable {
 				);
 
 			}
-			_Hash = hash;
-			return hash;// ^ (ulong)ExpectedScale.GetHashCode();
+			HashInternal = hash;
+			return hash;
 		}
 	}
 
 	// Attempt to update the bytedata cache for the reference texture, or purge if it that makes more sense or if updating
 	// is not plausible.
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void Purge(Texture2D reference, in Bounds? bounds, in DataRef<byte> data, bool animated) => reference.Meta().Purge(reference, bounds, data, animated: animated);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void Purge(XTexture2D reference, Bounds? bounds, in DataRef<byte> data, bool animated) =>
+		reference.Meta().Purge(reference, bounds, data, animated: animated);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool IsCached(Texture2D reference) => reference.Meta().CachedDataNonBlocking is not null;
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool IsCached(XTexture2D reference) =>
+		reference.Meta().CachedDataNonBlocking is not null;
 
-	internal ref struct Initializer {
-		internal readonly byte[]? ReferenceData;
+	internal readonly ref struct Initializer {
 		internal readonly Bounds Bounds;
-		internal readonly Texture2D Reference;
+		internal readonly byte[]? ReferenceData;
+		internal readonly XTexture2D Reference;
 		internal readonly BlendState BlendState;
 		internal readonly SamplerState SamplerState;
+		internal readonly ulong? Hash;
 		internal readonly uint ExpectedScale;
 		internal readonly TextureType TextureType;
+		internal readonly Resample.Scaler Scaler;
+		internal readonly Resample.Scaler ScalerGradient;
 		// For statistics and throttling
 		internal readonly bool WasCached;
 		internal readonly bool IsPreview;
-		internal readonly ulong? Hash;
-		internal readonly Resample.Scaler Scaler;
-		internal readonly Resample.Scaler ScalerGradient;
 
-		internal Initializer(Texture2D reference, in Bounds dimensions, uint expectedScale, TextureType textureType, bool animated) {
+		internal Initializer(XTexture2D reference, Bounds dimensions, uint expectedScale, TextureType textureType, bool animated) {
 			Reference = reference;
 			BlendState = DrawState.CurrentBlendState;
 			SamplerState = DrawState.CurrentSamplerState;
@@ -227,14 +227,14 @@ sealed class SpriteInfo : IDisposable {
 			}
 		}
 
-		private readonly ulong? GetHash() {
+		private ulong? GetHash() {
 			if (ReferenceData is null) {
 				return null;
 			}
 
 			var format = Reference.Format.IsCompressed() ? SurfaceFormat.Color : Reference.Format;
-			int rawStride = (int)format.SizeBytes(Reference.Width);
-			int rawOffset = (rawStride * Bounds.Top) + (int)format.SizeBytes(Bounds.Left);
+			int rawStride = format.SizeBytes(Reference.Width);
+			int rawOffset = (rawStride * Bounds.Top) + format.SizeBytes(Bounds.Left);
 
 			bool blendEnabled = BlendState.AlphaSourceBlend != Blend.One;
 			bool isWater = TextureType == TextureType.Sprite && SpriteOverrides.IsWater(Bounds, Reference);
@@ -245,7 +245,7 @@ sealed class SpriteInfo : IDisposable {
 				return null;
 			}
 
-			var result = Hashing.Combine(
+			var result = HashUtility.Combine(
 				dataHash,
 				Bounds.Extent.GetLongHashCode(),
 				blendEnabled.GetLongHashCode(),
@@ -260,7 +260,6 @@ sealed class SpriteInfo : IDisposable {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal SpriteInfo(in Initializer initializer) {
 		Reference = initializer.Reference;
 		BlendState = initializer.BlendState;
@@ -268,8 +267,8 @@ sealed class SpriteInfo : IDisposable {
 		Bounds = initializer.Bounds;
 		TextureType = initializer.TextureType;
 		var format = Reference.Format.IsCompressed() ? SurfaceFormat.Color : Reference.Format;
-		RawStride = (int)format.SizeBytes(ReferenceSize.Width);
-		RawOffset = (RawStride * Bounds.Top) + (int)format.SizeBytes(Bounds.Left);
+		RawStride = format.SizeBytes(ReferenceSize.Width);
+		RawOffset = (RawStride * Bounds.Top) + format.SizeBytes(Bounds.Left);
 		ReferenceData = initializer.ReferenceData;
 		IsPreview = initializer.IsPreview;
 		Scaler = initializer.Scaler;
@@ -289,13 +288,13 @@ sealed class SpriteInfo : IDisposable {
 		IsFont = !IsWater && TextureType == TextureType.Sprite && SpriteOverrides.IsFont(Reference, Bounds.Extent, ReferenceSize);
 
 		if (initializer.Hash.HasValue) {
-			_Hash = initializer.Hash.Value;
+			HashInternal = initializer.Hash.Value;
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public void Dispose() {
 		ReferenceData = null;
-		_Hash = 0;
+		HashInternal = 0;
 	}
 }

@@ -26,7 +26,7 @@ using Leclair.Stardew.Common.Inventory;
 using Leclair.Stardew.Common.Crafting;
 using Leclair.Stardew.BetterCrafting.Models;
 
-namespace Leclair.Stardew.BetterCrafting.Not;
+namespace Leclair.Stardew.BetterCrafting;
 
 #else
 
@@ -239,6 +239,13 @@ public interface IInventory {
 	IList<Item?>? GetItems();
 
 	/// <summary>
+	/// Check to see if a specific item is allowed to be stored in the
+	/// object's inventory.
+	/// </summary>
+	/// <param name="item">The item we're checking</param>
+	bool IsItemValid(Item item);
+
+	/// <summary>
 	/// Attempt to clean the object's inventory. This should remove null
 	/// entries, and run any other necessary logic.
 	/// </summary>
@@ -284,7 +291,7 @@ public interface IIngredient {
 	/// </summary>
 	Rectangle SourceRectangle { get; }
 
-#region Quantity
+	#region Quantity
 
 	/// <summary>
 	/// The amount of this ingredient required to perform a craft.
@@ -307,9 +314,9 @@ public interface IIngredient {
 	/// returns <c>false</c>.</param>
 	int GetAvailableQuantity(Farmer who, IList<Item?>? items, IList<IInventory>? inventories, int maxQuality);
 
-#endregion
+	#endregion
 
-#region Consumption
+	#region Consumption
 
 	/// <summary>
 	/// Consume this ingredient out of the player's inventory and the other
@@ -325,7 +332,7 @@ public interface IIngredient {
 	/// ingredients.</param>
 	void Consume(Farmer who, IList<IInventory>? inventories, int maxQuality, bool lowQualityFirst);
 
-#endregion
+	#endregion
 }
 
 
@@ -374,7 +381,7 @@ public interface IPerformCraftEvent {
 /// </summary>
 public interface IRecipe {
 
-#region Identity
+	#region Identity
 
 	/// <summary>
 	/// An addditional sorting value to apply to recipes in the Better Crafting
@@ -422,9 +429,9 @@ public interface IRecipe {
 	/// </summary>
 	CraftingRecipe? CraftingRecipe { get; }
 
-#endregion
+	#endregion
 
-#region Display
+	#region Display
 
 	/// <summary>
 	/// The texture to use when drawing this recipe in the menu.
@@ -446,9 +453,9 @@ public interface IRecipe {
 	/// </summary>
 	int GridWidth { get; }
 
-#endregion
+	#endregion
 
-#region Cost and Quantity
+	#region Cost and Quantity
 
 	/// <summary>
 	/// The quantity of item produced every time this recipe is crafted.
@@ -460,9 +467,9 @@ public interface IRecipe {
 	/// </summary>
 	IIngredient[]? Ingredients { get; }
 
-#endregion
+	#endregion
 
-#region Creation
+	#region Creation
 
 	/// <summary>
 	/// Whether or not the item created by this recipe is stackable, and thus
@@ -508,7 +515,7 @@ public interface IRecipe {
 		evt.Complete();
 	}
 
-#endregion
+	#endregion
 }
 
 
@@ -518,7 +525,7 @@ public interface IRecipe {
 /// </summary>
 public interface IRecipeProvider {
 	/// <summary>
-	/// The priority of this recipe provider, sort sorting purposes.
+	/// The priority of this recipe provider, for sorting purposes.
 	/// When handling CraftingRecipe instances, the first provider
 	/// to return a result is used.
 	/// </summary>
@@ -728,10 +735,17 @@ public interface IBetterCrafting {
 	/// Otherwise, crafting.</param>
 	/// <param name="categoryId">An internal ID for the category. Make sure
 	/// this is unique.</param>
-	/// <param name="Name">A human-readable name displayed in the menu.</param>
+	/// <param name="Name">A method returning a human-readable name to be
+	/// displayed in the menu.</param>
 	/// <param name="recipeNames">An enumeration of recipe names for recipes to
 	/// display in the category.</param>
-	void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null);
+	/// <param name="iconRecipe">The name of a recipe to use as the category's
+	/// default icon.</param>
+	///
+	void CreateDefaultCategory(bool cooking, string categoryId, Func<string> Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null);
+
+	[Obsolete("Use the method that takes a function for the display-name instead.")]
+	void CreateDefaultCategory(bool cooking, string categoryId, string Name, IEnumerable<string>? recipeNames = null, string? iconRecipe = null);
 
 	/// <summary>
 	/// Add recipes to a default category. If a player has modified their

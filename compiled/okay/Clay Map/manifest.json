@@ -1,0 +1,10 @@
+﻿{
+  "Name": "ClayMap",
+  "Author": "Underscore",
+  "Version": "1.0.0",
+  "Description": "Draws the clay tiles over the game window",
+  "UniqueID": "underscore.clay_map",
+  "EntryDll": "ClayMap.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

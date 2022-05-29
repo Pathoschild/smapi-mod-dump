@@ -20,11 +20,18 @@ This document is intended to help mod authors create content packs for Almanac.
 * [Fish](#fish)
   * [Fish Overrides](#fish-overrides)
   * [Using Content Patcher](#fish-overrides-using-content-patcher)
+* [Fortune Events](#fortune-events)
+  * [What is a Fortune Event?](#what-is-a-fortune-event)
+  * [Using Content Packs](#fortune-events-using-content-packs)
+  * [Using Content Patcher](#fortune-events-using-content-patcher)
+  * [Testing](#fortune-event-testing)
+  * [Fortune Event Format](#fortune-event-notice-format)
 * [Local Notices](#local-notices)
   * [What is a Notice?](#what-is-a-notice)
+  * [Using Content Packs](#notices-using-content-packs)
   * [Using Content Patcher](#notices-using-content-patcher)
   * [Testing](#notice-testing)
-  * [Notice Format](#notice-format)
+  * [Notice Format](#fortune-event-notice-format)
 * [NPCs](#npcs)
   * [NPC Overrides](#npc-overrides)
   * [Using Content Patcher](#npc-overrides-using-content-patcher)
@@ -203,6 +210,89 @@ users can see information on fish they should reasonably know about even
 if those fish cannot currently be obtained.
 
 
+## Fortune Events
+
+### What is a Fortune Event?
+
+Fortune Events are simply entries that show in the Fortune tab of Almanac. They
+can use rich text formatting, and have an associated image that is displayed
+on the calendar.
+
+Fortune Events can be added to the system using the C# API, content packs, or
+via Content Patcher.
+
+
+### Fortune Events Using Content Packs
+
+Fortune Events can be added to Almanac via Content Packs by adding them to a file
+named `fortune_events.json` within any content pack that targets Almanac. The file
+is a JSON object where event IDs are keys and event data is values. Here's a brief
+example:
+```json
+{
+  "leclair.almanac.example-fortune/1": {
+    "Condition": "DAYS_PLAYED 123",
+    "Description": "DOOM."
+  }
+}
+```
+
+
+### Fortune Events Using Content Patcher
+
+Adding fortune events to Almanac using Content Patcher is particularly useful
+to authors as you can then use Content Patcher's tokens and conditions systems
+for better control over event content.
+
+> When using Content Patcher, you'll need to make a separate content pack
+> that targets Content Patcher rather than Almanac. For more on that, you'll
+> want to see [Content Patcher's own documentation](https://github.com/Pathoschild/StardewMods/blob/stable/ContentPatcher/docs/author-guide.md).
+
+To add a fortune event, you'll want to use Content Patcher's `EditData` action on
+the file `Mods/leclair.almanac/FortuneEvents`. Here's a quick example of
+the previous example implemented using Content Patcher:
+```json
+{
+  "Format": "1.25.0",
+  "Changes": [
+    {
+      "LogName": "Fortune Events",
+      "Action": "EditData",
+      "Target": "Mods/leclair.almanac/FortuneEvents",
+      "Entries": {
+        "leclair.almanac.example-fortune/1": {
+          "Condition": "DAYS_PLAYED 123",
+          "Description": "DOOM."
+        }
+      }
+    }
+  ]
+}
+```
+
+When adding fortune events using Content Patcher, you should limit your use of
+Content Patcher conditions as much as possible for the best user experience.
+
+You should especially avoid using Content Patcher to limit an event to appearing
+over a specific date range, instead using the event format itself to do so.
+Fortune events added through Content Patcher are **only visible when their
+conditions match**.
+
+
+### Fortune Event Testing
+
+Once you've edited your content file, you can use the `al_update` command to
+invalidate cached data. Then, the next time you open your Almanac to the
+Fortune tab, it'll reload fortune data and show your changes.
+
+If you use Content Patcher, you'll need to use Content Patcher's `patch`
+command to reload your content pack. This also invalidates the cached data,
+so you should be able to just reopen your Almanac at that point.
+
+> If you have Debug Mode enabled in settings, pressing F5 will also reload data
+> as if you used the `al_update` command.
+
+
 ## Local Notices
 
 ### What is a Notice?
@@ -215,13 +305,45 @@ Notices can also have an associated item. The item is only used at this time
 in an integration with Lookup Anything, allowing users to look up the item
 paired with a notice.
 
-Notices can be added to the system using the C# API, or via Content Patcher.
+Notices can be added to the system using the C# API, content packs, or via
+Content Patcher.
+
+
+### Notices Using Content Packs
+
+Notices can be added to Almanac via Content Packs by adding them to a file named
+`notices.json` within any content pack that targets Almanac. The file is a JSON
+object where notice IDs are keys and notice data is values. Here's a brief
+example:
+```json
+{
+  "leclair.almanac.example-cp-notices/1": {
+    "Period": "Season",
+    "Ranges": [
+      {"Start": 1, "End": 1}
+    ],
+
+    "Description": "It's the first of the month.",
+
+    "IconType": "Texture",
+    "IconSource": "MouseCursors",
+    "IconSourceRect": {"X": 434, "Y": 475, "Width": 9, "Height": 9}
+  }
+}
+```
+
+That example adds a new notice with the ID `leclair.almanac.example-cp-notices/1`,
+that appears seasonally, that appears on the first and only the first, and that
+has a text message along with an icon. It looks like this:
+
+![](docs/NoticeCalendarExample.png)
+
+![](docs/NoticeExample.png)
 
 
 ### Notices Using Content Patcher
 
-The best, and currently only, way to add Notices to Almanac using a content
-pack is through the use of Content Patcher. This is particularly useful to
+Adding notices to Almanac using Content Patcher is particularly useful to
 authors as you can then use Content Patcher's conditions system to only
 display notices in certain cases.
 
@@ -230,8 +352,8 @@ display notices in certain cases.
 > want to see [Content Patcher's own documentation](https://github.com/Pathoschild/StardewMods/blob/stable/ContentPatcher/docs/author-guide.md).
 
 To add a notice, you'll want to use Content Patcher's `EditData` action on
-the file `Mods/leclair.almanac/ExtraLocalNotices`. Here's a quick example
-that adds a simple notice to the first day of every season:
+the file `Mods/leclair.almanac/ExtraLocalNotices`. Here's a quick example of
+the previous example implemented using Content Patcher:
 ```json
 {
   "Format": "1.25.0",
@@ -259,16 +381,8 @@ that adds a simple notice to the first day of every season:
 }
 ```
 
-That example adds a new notice with the ID `leclair.almanac.example-cp-notices/1`,
-that appears seasonally, that appears on the first and only the first, and that
-has a text message along with an icon. It looks like this:
-
-![](docs/NoticeCalendarExample.png)
-
-![](docs/NoticeExample.png)
-
-When adding notices, you should limit your use of Content Patcher conditions as
-much as possible for the best user experience.
+When adding notices using Content Patcher, you should limit your use of Content
+Patcher conditions as much as possible for the best user experience.
 
 You should especially avoid using Content Patcher to limit a notice to appearing
 over a specific date range, instead using the notice format itself to do so.
@@ -278,15 +392,22 @@ match**.
 
 ### Notice Testing
 
-Once you've edited your content file, you can use Content Patcher's `patch`
-command to reload your content pack. To then see the data in game, you'll need
-to either re-open the Almanac or use the `al_update` command.
+Once you've edited your content file, you can use the `al_update` command to
+invalidate cached data. Then, the next time you open your Almanac to the
+Local Notices tab, it'll reload notice data and show your changes.
+
+If you use Content Patcher, you'll need to use Content Patcher's `patch`
+command to reload your content pack. This also invalidates the cached data,
+so you should be able to just reopen your Almanac at that point.
 
 > If you have Debug Mode enabled in settings, pressing F5 will also reload data
 > as if you used the `al_update` command.
 
 
-### Notice Format
+### Fortune Event / Notice Format
+
+Fortune Events and Notices use the same data format, though they may be
+displayed with slight differences in game.
 
 <table>
 <tr>
@@ -295,6 +416,19 @@ to either re-open the Almanac or use the `al_update` command.
 </tr>
 <tr>
 <td colspan=2>When It Happens</td>
+</tr>
+<tr>
+<td><code>Condition</code></td>
+<td>
+
+An optional [Game State Query](https://stardewvalleywiki.com/Modding:Migrate_to_Stardew_Valley_1.6#Game_state_queries)
+for limiting the visibility of a notice. If `Condition` is set, and isn't true,
+then the notice won't be displayed.
+
+While Game State Query is a Stardew Valley 1.6 feature, Almanac supports it on
+older versions using a custom reimplementation.
+
+</td>
 </tr>
 <tr>
 <td><code>Period</code></td>
@@ -420,6 +554,20 @@ seasons and the night market.
 </td>
 </tr>
 <tr>
+<td><code>I18nKey</code></td>
+<td>
+
+`I18nKey` is a translation key for the notice. If this is set, the notice's
+`Description` is ignored and the description text is taken from your content
+pack's i18n files.
+
+> **Note:** This should *not* be used by Content Patcher packs, as Almanac has
+> no way of identifying which Content Patcher pack adds a specific notice. In
+> that situation, you should use Content Patcher's own i18n tokens.
+
+</td>
+</tr>
+<tr>
 <td><code>Description</code></td>
 <td>
 
@@ -462,9 +610,14 @@ used as the notice's icon.
 texture. When set to `texture`, the item should have either an `IconPath` or
 `IconSource` along with an `IconSourceRect` set.
 
-</td>
-</tr>
-</table>
+3. `ModTexture`: A value of `modtexture` means that the notice should take its icon from a
+specific texture. When set to `modtexture`, the item should have an `IconPath` along with
+an `IconSourceRect` set.
+
+> **Note:** `ModTexture` should *not* be used by Content Patcher packs, as
+> Almanac has no way of identifying which Content Patcher pack adds a specific
+> notice. In that situation, you should load a texture through game files using
+> Content Patcher's ability to load files.
 
 </td>
 </tr>
@@ -491,8 +644,15 @@ as the source for a notice's icon. The following are valid values:
 <td>
 
 `IconPath` allows you to specify a path to your own texture. `IconPath` is a
-string, and it's used via `Game1.content.Load<Texture2D(iconPath)` so can be
-any texture from the game's content files.
+string. It's behavior changes depending on whether the `IconType` is set to
+`Texture` or `ModTexture`.
+
+1. For `Texture`, it's used via `GameContent.Load<Texture2D>(iconPath)` and
+should follow normal game asset name conventions.
+
+2. For `ModTexture`, it's used via `ModContent.Load<Texture2D>(iconPath)` and
+should be a relative path from the root of your Content Pack, including the
+file extension.
 
 </td>
 </tr>

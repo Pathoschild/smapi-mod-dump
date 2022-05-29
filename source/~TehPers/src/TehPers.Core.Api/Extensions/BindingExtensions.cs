@@ -136,7 +136,7 @@ namespace TehPers.Core.Api.Extensions
         /// <param name="root">The mod's binding root.</param>
         /// <param name="modId">The foreign mod's ID.</param>
         /// <returns>The syntax that can be used to configure the binding.</returns>
-        public static IBindingInNamedWithOrOnSyntax<TApi> BindForeignModApi<TApi>(
+        public static IBindingInNamedWithOrOnSyntax<TApi?> BindForeignModApi<TApi>(
             this IModBindingRoot root,
             string modId
         )
@@ -145,7 +145,7 @@ namespace TehPers.Core.Api.Extensions
             _ = modId ?? throw new ArgumentNullException(nameof(modId));
             _ = root ?? throw new ArgumentNullException(nameof(root));
 
-            return root.Bind<TApi>()
+            return root.Bind<TApi?>()
                 .ToMethod(_ => root.ParentMod.Helper.ModRegistry.GetApi<TApi>(modId))
                 .When(_ => root.ParentMod.Helper.ModRegistry.IsLoaded(modId));
         }

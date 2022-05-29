@@ -9,11 +9,12 @@
 *************************************************/
 
 using SpriteMaster.Types;
+using SpriteMaster.Types.Spans;
 using System;
 
 namespace SpriteMaster.Resample.Scalers.xBRZ;
 
-sealed partial class Scaler {
+internal sealed partial class Scaler {
 	internal sealed class ScalerInterface : IScaler {
 		internal static readonly ScalerInterface Instance = new();
 
@@ -25,7 +26,14 @@ sealed partial class Scaler {
 
 		public uint ClampScale(uint scale) => Scaler.ClampScale(scale);
 
-		public Span<Color16> Apply(in Resample.Scalers.Config configuration, uint scaleMultiplier, ReadOnlySpan<Color16> sourceData, Vector2I sourceSize, Span<Color16> targetData, Vector2I targetSize) =>
+		public Span<Color16> Apply(
+			in Resample.Scalers.Config configuration,
+			uint scaleMultiplier,
+			ReadOnlySpan<Color16> sourceData,
+			Vector2I sourceSize,
+			Span<Color16> targetData,
+			Vector2I targetSize
+		) =>
 			Scaler.Apply(configuration as Config, scaleMultiplier, sourceData, sourceSize, targetData, targetSize);
 
 		public Resample.Scalers.Config CreateConfig(Vector2B wrapped, bool hasAlpha, bool gammaCorrected) => new Config(

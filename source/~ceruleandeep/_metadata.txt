@@ -10,12 +10,9 @@ mods:
    Warp Snitch
 
 latest commit:
-   commit 8eea39092feafc19a81cca85e32e62dd91270fb5
+   commit 70ddea932a2435c2fc5c54db7ca36c9556e77b13
    Author: ceruleandeep <ceruleandeep>
-   Date:   Sat Apr 30 22:57:56 2022 +1000
+   Date:   Tue May 24 19:31:07 2022 +1000
    
-       1.0.9-beta.1
-       
-       * Wrap another NPC gift tastes call in a try/catch block
-       * Fix some ordering stuff that prevented shop en/dis from being saved
+       Good news DGA haters now it's optional
    

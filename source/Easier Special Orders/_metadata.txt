@@ -6,12 +6,10 @@ mods:
    Easier Special Orders
 
 latest commit:
-   commit d00cc518a60df9cb61f167f7073adc95f6ee5345
-   Merge: 67e88f2 5978e9d
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Fri Apr 2 13:06:06 2021 +1100
+   commit 6fa000ef6551fb705b9a59e4947cbdfdf8b5392d
+   Merge: 10b24a6 d00cc51
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Tue May 3 14:52:09 2022 +1000
    
-       Merge pull request #1 from TheMightyAmondee/add-license-1
-       
-       Create LICENSE
+       Merge branch 'master' of https://github.com/TheMightyAmondee/EasierSpecialOrders
    

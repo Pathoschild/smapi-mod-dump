@@ -15,11 +15,20 @@
 		<ApplicationIcon>$(SolutionDir)pufferchick_xbrz.ico</ApplicationIcon>
 		<DebugSymbols>true</DebugSymbols>
 		<DebugType>portable</DebugType>
+		
+		<EnableModDeploy>false</EnableModDeploy>
+		<EnableModDeploy>EnableModZip</EnableModDeploy>
+		
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)obj\**\*</DefaultItemExcludes>
 	</PropertyGroup>
 	
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)SpriteMaster\SpriteMaster.csproj" />
   </ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" ExcludeAssets="all" />
+	</ItemGroup>
 	
   <ItemGroup>
     <Reference Include="StardewModdingAPI">

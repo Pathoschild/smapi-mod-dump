@@ -9,8 +9,12 @@
 *************************************************/
 
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
+using AtraBase.Toolkit.Extensions;
+using AtraBase.Toolkit.StringHandler;
 using AtraShared.Integrations;
+using AtraShared.MigrationManager;
 using AtraShared.Utils.Extensions;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
@@ -22,8 +26,6 @@ namespace FarmCaveSpawn;
 /// <inheritdoc />
 public class ModEntry : Mod
 {
-    private readonly AssetManager assetManager = new();
-
     /// <summary>
     /// Sublocation-parsing regex.
     /// </summary>
@@ -47,6 +49,8 @@ public class ModEntry : Mod
     /// Item IDs for items produced by trees.
     /// </summary>
     private List<int> TreeFruit = new();
+
+    private MigrationManager? migrator;
 
     // The config is set by the Entry method, so it should never realistically be null
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -85,26 +89,24 @@ public class ModEntry : Mod
         this.Monitor.Log("FarmCaveSpawn initializing, DEBUG mode. Do not release this version", LogLevel.Warn);
 #endif
         I18n.Init(helper.Translation);
-        try
-        {
-            this.config = this.Helper.ReadConfig<ModConfig>();
-        }
-        catch
-        {
-            this.Monitor.Log(I18n.IllFormatedConfig(), LogLevel.Warn);
-            this.config = new();
-        }
+
+        this.config = AtraUtils.GetConfigOrDefault<ModConfig>(helper, this.Monitor);
 
         helper.Events.GameLoop.DayStarted += this.SpawnFruit;
         helper.Events.GameLoop.GameLaunched += this.SetUpConfig;
         helper.Events.GameLoop.OneSecondUpdateTicking += this.BellsAndWhistles;
+        helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
+
+        helper.Events.Content.AssetRequested += this.OnAssetRequested;
+
         helper.ConsoleCommands.Add(
             name: "av.fcs.list_fruits",
             documentation: I18n.ListFruits_Description(),
             callback: this.ListFruits);
-
-        helper.Content.AssetLoaders.Add(this.assetManager);
     }
+
+    private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
+        => AssetManager.Load(e);
 
     /// <summary>
     /// Remove the list TreeFruit when no longer necessary, delete the Random as well.
@@ -155,7 +157,8 @@ public class ModEntry : Mod
                     property: property,
                     getConfig: () => this.config,
                     min: 0f,
-                    max: 100f);
+                    max: 100f,
+                    formatValue: FormatPercentValue);
             }
             else if (property.PropertyType.Equals(typeof(SeasonalBehavior)))
             {
@@ -165,7 +168,7 @@ public class ModEntry : Mod
             }
             else
             {
-                this.Monitor.DebugLog($"{property.Name} unaccounted for.", LogLevel.Warn);
+                this.Monitor.DebugOnlyLog($"{property.Name} unaccounted for.", LogLevel.Warn);
             }
         }
     }
@@ -182,22 +185,22 @@ public class ModEntry : Mod
         if (Game1.CustomData.TryGetValue("smapi/mod-data/aedenthorn.farmcaveframework/farm-cave-framework-choice", out string? farmcavechoice))
         {
             // Crosscheck this = probably better to just use the actual value, maybe...
-            hasFCFbatcave = (farmcavechoice is not null) && (farmcavechoice.ToLowerInvariant().Contains("bat") || farmcavechoice.ToLowerInvariant().Contains("fruit"));
-            this.Monitor.DebugLog(hasFCFbatcave ? "FarmCaveFramework fruit bat cave detected." : "FarmCaveFramework fruit bat cave not detected.");
+            hasFCFbatcave = (farmcavechoice is not null) && (farmcavechoice.Contains("bat", StringComparison.OrdinalIgnoreCase) || farmcavechoice.Contains("fruit", StringComparison.OrdinalIgnoreCase));
+            this.Monitor.DebugOnlyLog(hasFCFbatcave ? "FarmCaveFramework fruit bat cave detected." : "FarmCaveFramework fruit bat cave not detected.");
         }
 
         if (!this.config.EarlyFarmCave
             && (Game1.MasterPlayer.caveChoice?.Value is null || Game1.MasterPlayer.caveChoice.Value <= Farmer.caveNothing)
             && string.IsNullOrWhiteSpace(farmcavechoice))
         {
-            this.Monitor.DebugLog("Demetrius cutscene not seen and config not set to early, skip spawning for today.");
+            this.Monitor.DebugOnlyLog("Demetrius cutscene not seen and config not set to early, skip spawning for today.");
             return false;
         }
         if (!this.config.IgnoreFarmCaveType && !this.config.EarlyFarmCave
             && (Game1.MasterPlayer.caveChoice?.Value is null || Game1.MasterPlayer.caveChoice.Value != Farmer.caveBats)
             && !hasFCFbatcave)
         {
-            this.Monitor.DebugLog("Fruit bat cave not selected and config not set to ignore that, skip spawning for today.");
+            this.Monitor.DebugOnlyLog("Fruit bat cave not selected and config not set to ignore that, skip spawning for today.");
             return false;
         }
         return true;
@@ -228,7 +231,7 @@ public class ModEntry : Mod
 
         if (Game1.getLocationFromName("FarmCave") is FarmCave farmcave)
         {
-            this.Monitor.DebugLog($"Spawning in the farmcave");
+            this.Monitor.DebugOnlyLog($"Spawning in the farmcave");
             foreach (Vector2 v in this.IterateTiles(farmcave))
             {
                 this.PlaceFruit(farmcave, v);
@@ -240,14 +243,13 @@ public class ModEntry : Mod
             farmcave.UpdateReadyFlag();
             if (count >= this.config.MaxDailySpawns)
             {
-                this.Cleanup();
-                return;
+                goto END;
             }
         }
 
         if (this.config.UseModCaves)
         {
-            foreach (string location in this.GetData(this.assetManager.ADDITIONAL_LOCATIONS_LOCATION))
+            foreach (string location in this.GetData(AssetManager.ADDITIONAL_LOCATIONS_LOCATION))
             {
                 string parseloc = location;
                 // initialize default limits
@@ -265,14 +267,8 @@ public class ModEntry : Mod
                     {
                         Match match = matches[0];
                         parseloc = location[..^match.Value.Length];
-                        foreach (Group group in match.Groups)
-                        {
-                            if (int.TryParse(group.Value, out int result))
-                            {
-                                locLimits[group.Name] = result;
-                            }
-                        }
-                        this.Monitor.DebugLog($"Found and parsed sublocation: {parseloc} + ({locLimits["x1"]};{locLimits["y1"]});({locLimits["x2"]};{locLimits["y2"]})");
+                        locLimits.Update(match, namedOnly: true);
+                        this.Monitor.DebugOnlyLog($"Found and parsed sublocation: {parseloc} + ({locLimits["x1"]};{locLimits["y1"]});({locLimits["x2"]};{locLimits["y2"]})");
                     }
                     else if (matches.Count >= 2)
                     {
@@ -287,20 +283,19 @@ public class ModEntry : Mod
 
                 if (Game1.getLocationFromName(parseloc) is GameLocation gameLocation)
                 {
-                    this.Monitor.Log($"Found {gameLocation}");
+                    this.Monitor.DebugOnlyLog($"Found {gameLocation}");
                     foreach (Vector2 v in this.IterateTiles(gameLocation, xstart: locLimits["x1"], xend: locLimits["x2"], ystart: locLimits["y1"], yend: locLimits["y2"]))
                     {
                         this.PlaceFruit(gameLocation, v);
                         if (++count >= this.config.MaxDailySpawns)
                         {
-                            this.Cleanup();
-                            return;
+                            goto END;
                         }
                     }
                 }
                 else
                 {
-                    this.Monitor.Log(I18n.LocationMissing(loc: location), LogLevel.Debug);
+                    this.Monitor.Log(I18n.LocationMissing(loc: location), LogLevel.Info);
                 }
             }
         }
@@ -312,11 +307,14 @@ public class ModEntry : Mod
                 this.PlaceFruit(mine, v);
                 if (++count >= this.config.MaxDailySpawns)
                 {
-                    this.Cleanup();
-                    return;
+                    goto END;
                 }
             }
         }
+
+END:
+        this.Cleanup();
+        return;
     }
 
     /// <summary>
@@ -326,12 +324,12 @@ public class ModEntry : Mod
     /// <param name="tile">Tile to place fruit on.</param>
     private void PlaceFruit(GameLocation location, Vector2 tile)
     {
-        int fruitToPlace = Utility.GetRandom(this.Random.NextDouble() < (this.config.TreeFruitChance / 100f) && this.TreeFruit.Count > 0 ? this.TreeFruit : this.BASE_FRUIT, this.Random);
+        int fruitToPlace = Utility.GetRandom(this.TreeFruit.Count > 0 && this.Random.NextDouble() < (this.config.TreeFruitChance / 100f) ? this.TreeFruit : this.BASE_FRUIT, this.Random);
         location.setObject(tile, new SObject(fruitToPlace, 1)
         {
             IsSpawnedObject = true,
         });
-        this.Monitor.DebugLog($"Spawning item {fruitToPlace} at {location.Name}:{tile.X},{tile.Y}", LogLevel.Debug);
+        this.Monitor.DebugOnlyLog($"Spawning item {fruitToPlace} at {location.Name}:{tile.X},{tile.Y}", LogLevel.Debug);
     }
 
     /// <summary>
@@ -364,7 +362,6 @@ public class ModEntry : Mod
     /// </summary>
     /// <param name="command">Name of command.</param>
     /// <param name="args">Arguments for command.</param>
-    [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Console command format.")]
     private void ListFruits(string command, string[] args)
     {
         if (!Context.IsWorldReady)
@@ -376,11 +373,15 @@ public class ModEntry : Mod
         List<string> fruitNames = new();
         foreach (int objectID in this.GetTreeFruits())
         {
-            SObject obj = new(objectID, 1);
-            fruitNames.Add(obj.DisplayName);
+            if (Game1.objectInformation.TryGetValue(objectID, out string? val)
+                && val.SpanSplit('/').TryGetAtIndex(SObject.objectInfoDisplayNameIndex, out SpanSplitEntry name))
+            {
+                fruitNames.Add(name);
+            }
         }
-
-        this.Monitor.Log($"Possible fruits: {string.Join(", ", AtraUtils.ContextSort(fruitNames))}", LogLevel.Info);
+        StringBuilder sb = new("Possible fruits: ");
+        sb.AppendJoin(", ", AtraUtils.ContextSort(fruitNames));
+        this.Monitor.Log(sb.ToString(), LogLevel.Info);
     }
 
     /// <summary>
@@ -390,8 +391,8 @@ public class ModEntry : Mod
     /// <returns>List of data, split by commas.</returns>
     private List<string> GetData(string datalocation)
     {
-        this.Helper.Content.InvalidateCache(datalocation);
-        IDictionary<string, string> rawlist = this.Helper.Content.Load<Dictionary<string, string>>(datalocation, ContentSource.GameContent);
+        this.Helper.GameContent.InvalidateCache(datalocation);
+        IDictionary<string, string> rawlist = this.Helper.GameContent.Load<Dictionary<string, string>>(datalocation);
         List<string> datalist = new();
 
         foreach (string uniqueID in rawlist.Keys)
@@ -415,43 +416,37 @@ public class ModEntry : Mod
             return this.VANILLA_FRUIT;
         }
 
-        List<string> denylist = this.GetData(this.assetManager.DENYLIST_LOCATION);
+        List<string> denylist = this.GetData(AssetManager.DENYLIST_LOCATION);
         List<int> treeFruits = new();
 
-        Dictionary<int, string> fruittrees = this.Helper.Content.Load<Dictionary<int, string>>("Data/fruitTrees", ContentSource.GameContent);
-        string currentseason = Game1.currentSeason.ToLowerInvariant().Trim();
+        Dictionary<int, string> fruittrees = this.Helper.GameContent.Load<Dictionary<int, string>>("Data/fruitTrees");
+        string currentseason = Game1.currentSeason.Trim().ToLowerInvariant();
         foreach (string tree in fruittrees.Values)
         {
-            string[] treedata = tree.Split('/', StringSplitOptions.TrimEntries);
+            SpanSplit treedata = tree.SpanSplit('/', StringSplitOptions.TrimEntries);
 
-            if ((this.config.SeasonalOnly == SeasonalBehavior.SeasonalOnly
-                    || (this.config.SeasonalOnly == SeasonalBehavior.SeasonalExceptWinter && !currentseason.Contains("winter")))
+            if ((this.config.SeasonalOnly == SeasonalBehavior.SeasonalOnly || (this.config.SeasonalOnly == SeasonalBehavior.SeasonalExceptWinter && !Game1.IsWinter))
                 && !treedata[1].Contains(currentseason)
-                && (!currentseason.Contains("summer") || !treedata[1].Contains("island")))
+                && (!Game1.IsSummer || !treedata[1].Contains("island")))
             {
                 continue;
             }
 
-            if (int.TryParse(treedata[2], out int objectIndex))
+            if (treedata.TryGetAtIndex(2, out SpanSplitEntry val) && int.TryParse(val, out int objectIndex))
             {
                 try
                 {
-                    SObject fruit = new(objectIndex, 1);
-                    if ((!this.config.AllowAnyTreeProduct && fruit.Category != SObject.FruitsCategory)
-                        || (this.config.EdiblesOnly && fruit.Edibility < 0)
-                        || fruit.Price > this.config.PriceCap
-                        || denylist.Contains(fruit.Name))
+                    SpanSplit fruit = Game1.objectInformation[objectIndex].SpanSplit('/');
+                    string fruitname = fruit[SObject.objectInfoNameIndex].ToString();
+                    if ((this.config.AllowAnyTreeProduct || (fruit[SObject.objectInfoTypeIndex].SpanSplit().TryGetAtIndex(1, out SpanSplitEntry cat) && int.TryParse(cat, out int category) && category == SObject.FruitsCategory))
+                        && (!this.config.EdiblesOnly || int.Parse(fruit[SObject.objectInfoEdibilityIndex]) >= 0)
+                        && int.Parse(fruit[SObject.objectInfoPriceIndex]) <= this.config.PriceCap
+                        && !denylist.Contains(fruitname)
+                        && (!this.config.NoBananasBeforeShrine || !fruitname.Equals("Banana", StringComparison.OrdinalIgnoreCase)
+                            || (Context.IsWorldReady && Game1.getLocationFromName("IslandEast") is IslandEast islandeast && islandeast.bananaShrineComplete.Value)))
                     {
-                        continue;
+                        treeFruits.Add(objectIndex);
                     }
-                    if (this.config.NoBananasBeforeShrine && fruit.Name.Equals("Banana"))
-                    {
-                        if (!Context.IsWorldReady && Game1.getLocationFromName("IslandEast") is IslandEast islandeast && !islandeast.bananaShrineComplete.Value)
-                        {
-                            continue;
-                        }
-                    }
-                    treeFruits.Add(objectIndex);
                 }
                 catch (Exception ex)
                 {
@@ -512,4 +507,44 @@ public class ModEntry : Mod
             }
         }
     }
+
+    /// <summary>
+    /// Raised when save is loaded.
+    /// </summary>
+    /// <param name="sender">Unknown, used by SMAPI.</param>
+    /// <param name="e">Parameters.</param>
+    /// <remarks>Used to load in this mod's data models.</remarks>
+    private void SaveLoaded(object? sender, SaveLoadedEventArgs e)
+    {
+        if (Context.IsSplitScreen && Context.ScreenId != 0)
+        {
+            return;
+        }
+        this.migrator = new(this.ModManifest, this.Helper, this.Monitor);
+        this.migrator.ReadVersionInfo();
+
+        this.Helper.Events.GameLoop.Saved += this.WriteMigrationData;
+    }
+
+    /// <summary>
+    /// Writes migration data then detaches the migrator.
+    /// </summary>
+    /// <param name="sender">Smapi thing.</param>
+    /// <param name="e">Arguments for just-before-saving.</param>
+    private void WriteMigrationData(object? sender, SavedEventArgs e)
+    {
+        if (this.migrator is not null)
+        {
+            this.migrator.SaveVersionInfo();
+            this.migrator = null;
+        }
+        this.Helper.Events.GameLoop.Saved -= this.WriteMigrationData;
+    }
+
+    /// <summary>
+    /// Formats a float as a percent value.
+    /// </summary>
+    /// <param name="val">Value to format.</param>
+    /// <returns>Formatted string.</returns>
+    private static string FormatPercentValue(float val) => $"{val:f0}%";
 }

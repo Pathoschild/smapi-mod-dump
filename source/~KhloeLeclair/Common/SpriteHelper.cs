@@ -50,8 +50,8 @@ public static class SpriteHelper {
 	public static void LoadKeyTexture() {
 		lock (loadLock) {
 			if (KeyTexture == null)
-				KeyTexture = Helper!.Content.Load<Texture2D>("assets/keys.png");
-				//KeyTexture = Helper!.ModContent.Load<Texture2D>("assets/keys.png");
+				//KeyTexture = Helper!.Content.Load<Texture2D>("assets/keys.png");
+				KeyTexture = Helper!.ModContent.Load<Texture2D>("assets/keys.png");
 		}
 	}
 

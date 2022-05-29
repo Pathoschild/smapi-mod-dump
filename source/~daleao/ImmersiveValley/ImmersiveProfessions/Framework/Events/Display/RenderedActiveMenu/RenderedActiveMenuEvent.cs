@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,15 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IDisplayEvents.RenderedActiveMenu"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class RenderedActiveMenuEvent : BaseEvent
 {
-    /// <summary>
-    ///     When a menu is open, raised after that menu is drawn to the sprite batch but before it's rendered to the
-    ///     screen.
-    /// </summary>
+    /// <inheritdoc cref="IDisplayEvents.RenderedActiveMenu"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+    internal void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
     {
-        if (enabled.Value) OnRenderedActiveMenuImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnRenderedActiveMenuImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnRenderedActiveMenu" />

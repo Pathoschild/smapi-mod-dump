@@ -16,145 +16,140 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Colors;
 
-static class ColorHelpers {
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+internal static class ColorHelpers {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this byte value) => value / 255.0;
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this ushort value) => value / 65_535.0;
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this uint value) => value / 4_294_967_295.0;
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this Fixed8 value) => ValueToScalar(value.Value);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static double ValueToScalar(this Fixed16 value) => ValueToScalar(value.Value);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte ScalarToValue8(this double scalar) => (byte)((scalar * 255.0) + 0.5);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte ScalarToValue8(this float scalar) => (byte)((scalar * 255.0f) + 0.5f);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ushort ScalarToValue16(this double scalar) => (ushort)((scalar * 655_35.0) + 0.5);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ushort ScalarToValue16(this float scalar) => (ushort)((scalar * 655_35.0f) + 0.5f);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static uint ScalarToValue32(this double scalar) => (uint)((scalar * 4_294_967_295.0) + 0.5);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static uint ScalarToValue32(this float scalar) => (uint)((scalar * 4_294_967_295.0f) + 0.5f);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static ushort Color8To16(this byte value) => (ushort)((value << 8) | value);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static byte Color16To8Fast(this ushort value) => (byte)((uint)((value * 0xFF01U) + 0x800000U) >> 24);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static byte Color16To8Fast(this ushort value) => (byte)((value * 0xFF01U) + 0x800000U >> 24);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static byte Color16To8Accurate(this ushort value) => (byte)(((uint)value + 128U) / 0x101U);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static byte Color16To8Accurate(this ushort value) => (byte)((value + 128U) / 0x101U);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte Color16to8(this ushort value) => Color16To8Accurate(value);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static half Color8ToHalf(this byte value) {
 		if (value == 0) {
 			ushort shortValue = 0;
 			return shortValue.ReinterpretAs<half>();
 		}
-		const uint InBits = sizeof(byte) * 8;
-		uint uValue = (uint)value;
-		int leadingZerosWithMSB = value.CountLeadingZeros() + 1;
-		uValue = (byte)(uValue << leadingZerosWithMSB);
-		uint remainingBits = (uint)(InBits - (leadingZerosWithMSB));
-		int shiftRight = (leadingZerosWithMSB) + ((int)remainingBits - (int)Numeric.Float.Half.SignificandBits);
-		if (InBits <= Numeric.Float.Half.SignificandBits || shiftRight < 0) {
+		const uint inBits = sizeof(byte) * 8;
+		uint uValue = value;
+		int leadingZerosWithMsb = value.CountLeadingZeros() + 1;
+		uValue = (byte)(uValue << leadingZerosWithMsb);
+		uint remainingBits = (uint)(inBits - (leadingZerosWithMsb));
+		int shiftRight = (leadingZerosWithMsb) + ((int)remainingBits - (int)Numeric.Float.Half.SignificandBits);
+		if (inBits <= Numeric.Float.Half.SignificandBits || shiftRight < 0) {
 			uValue <<= -shiftRight;
 		}
 		else {
 			uValue >>= shiftRight;
 		}
 		uint mantissa = uValue;
-		uint exponent = ((uint)-(int)(leadingZerosWithMSB + 1)) & (Numeric.Float.Half.ExponentMask >> 1);
-		uint result = (mantissa | exponent << (int)Numeric.Float.Half.SignificandBits);
+		uint exponent = ((uint)-(leadingZerosWithMsb + 1)) & (Numeric.Float.Half.ExponentMask >> 1);
+		uint result = mantissa | exponent << (int)Numeric.Float.Half.SignificandBits;
 		return result.ReinterpretAs<half>();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static half Color16ToHalf(this ushort value) {
 		if (value == 0) {
 			return value.ReinterpretAs<half>();
 		}
-		const uint InBits = sizeof(ushort) * 8;
-		uint uValue = (uint)value;
-		int leadingZerosWithMSB = value.CountLeadingZeros() + 1;
-		uValue = (byte)(uValue << leadingZerosWithMSB);
-		uint remainingBits = (uint)(InBits - (leadingZerosWithMSB));
-		int shiftRight = (leadingZerosWithMSB) + ((int)remainingBits - (int)Numeric.Float.Half.SignificandBits);
-		if (InBits <= Numeric.Float.Half.SignificandBits || shiftRight < 0) {
+		const uint inBits = sizeof(ushort) * 8;
+		uint uValue = value;
+		int leadingZerosWithMsb = value.CountLeadingZeros() + 1;
+		uValue = (byte)(uValue << leadingZerosWithMsb);
+		uint remainingBits = (uint)(inBits - (leadingZerosWithMsb));
+		int shiftRight = (leadingZerosWithMsb) + ((int)remainingBits - (int)Numeric.Float.Half.SignificandBits);
+		if (inBits <= Numeric.Float.Half.SignificandBits || shiftRight < 0) {
 			uValue <<= -shiftRight;
 		}
 		else {
 			uValue >>= shiftRight;
 		}
 		uint mantissa = uValue;
-		uint exponent = ((uint)-(int)(leadingZerosWithMSB + 1)) & (Numeric.Float.Half.ExponentMask >> 1);
-		uint result = (mantissa | exponent << (int)Numeric.Float.Half.SignificandBits);
+		uint exponent = ((uint)-(leadingZerosWithMsb + 1)) & (Numeric.Float.Half.ExponentMask >> 1);
+		uint result = mantissa | exponent << (int)Numeric.Float.Half.SignificandBits;
 		return result.ReinterpretAs<half>();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static float Color8ToFloat(this byte value) {
 		if (value == 0) {
 			return 0.0f;
 		}
-		const uint InBits = sizeof(byte) * 8;
-		uint uValue = (uint)value;
-		int leadingZerosWithMSB = value.CountLeadingZeros() + 1;
-		uValue = (byte)(uValue << leadingZerosWithMSB);
-		uint remainingBits = (uint)(InBits - (leadingZerosWithMSB));
-		int shiftRight = (leadingZerosWithMSB) + ((int)remainingBits - (int)Numeric.Float.Single.SignificandBits);
-		if (InBits <= Numeric.Float.Single.SignificandBits || shiftRight < 0) {
+		const uint inBits = sizeof(byte) * 8;
+		uint uValue = value;
+		int leadingZerosWithMsb = value.CountLeadingZeros() + 1;
+		uValue = (byte)(uValue << leadingZerosWithMsb);
+		uint remainingBits = (uint)(inBits - (leadingZerosWithMsb));
+		int shiftRight = (leadingZerosWithMsb) + ((int)remainingBits - (int)Numeric.Float.Single.SignificandBits);
+		if (inBits <= Numeric.Float.Single.SignificandBits || shiftRight < 0) {
 			uValue <<= -shiftRight;
 		}
 		else {
 			uValue >>= shiftRight;
 		}
 		uint mantissa = uValue;
-		uint exponent = ((uint)-(int)(leadingZerosWithMSB + 1)) & (Numeric.Float.Single.ExponentMask >> 1);
-		uint result = (mantissa | exponent << (int)Numeric.Float.Single.SignificandBits);
+		uint exponent = ((uint)-(leadingZerosWithMsb + 1)) & (Numeric.Float.Single.ExponentMask >> 1);
+		uint result = mantissa | exponent << (int)Numeric.Float.Single.SignificandBits;
 		return result.ReinterpretAs<float>();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static float Color16ToFloat(this ushort value) {
 		if (value == 0) {
 			return 0.0f;
 		}
-		const uint InBits = sizeof(ushort) * 8;
-		uint uValue = (uint)value;
-		int leadingZerosWithMSB = value.CountLeadingZeros() + 1;
-		uValue = (byte)(uValue << leadingZerosWithMSB);
-		uint remainingBits = (uint)(InBits - (leadingZerosWithMSB));
-		int shiftRight = (leadingZerosWithMSB) + ((int)remainingBits - (int)Numeric.Float.Single.SignificandBits);
-		if (InBits <= Numeric.Float.Single.SignificandBits || shiftRight < 0) {
+		const uint inBits = sizeof(ushort) * 8;
+		uint uValue = value;
+		int leadingZerosWithMsb = value.CountLeadingZeros() + 1;
+		uValue = (byte)(uValue << leadingZerosWithMsb);
+		uint remainingBits = (uint)(inBits - (leadingZerosWithMsb));
+		int shiftRight = (leadingZerosWithMsb) + ((int)remainingBits - (int)Numeric.Float.Single.SignificandBits);
+		if (inBits <= Numeric.Float.Single.SignificandBits || shiftRight < 0) {
 			uValue <<= -shiftRight;
 		}
 		else {
 			uValue >>= shiftRight;
 		}
 		uint mantissa = uValue;
-		uint exponent = ((uint)-(int)(leadingZerosWithMSB + 1)) & (Numeric.Float.Single.ExponentMask >> 1);
-		uint result = (mantissa | exponent << (int)Numeric.Float.Single.SignificandBits);
+		uint exponent = ((uint)-(leadingZerosWithMsb + 1)) & (Numeric.Float.Single.ExponentMask >> 1);
+		uint result = mantissa | exponent << (int)Numeric.Float.Single.SignificandBits;
 		return result.ReinterpretAs<float>();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static uint RedmeanDifference(this in Color8 colorA, in Color8 colorB, bool linear, bool alpha = true) {
+	internal static uint RedmeanDifference(this Color8 colorA, Color8 colorB, bool linear, bool alpha = true) {
 		static int Square(int value) => value * value;
 
 		if (colorA == colorB) {
 			return 0;
 		}
 
-		Fixed8 alphaScalar = Fixed8.Max;
+		var alphaScalar = Fixed8.Max;
 		if (alpha) {
 			alphaScalar = Math.Min(colorA.A.Value, colorB.A.Value);
 
@@ -199,7 +194,7 @@ static class ColorHelpers {
 			var bFac = bWeight * bDiff;
 			var sumSq = rFac + gFac + bFac;
 			var sum = MathF.Sqrt(sumSq);
-			colorDistance = (Fixed8)MathExt.RoundToInt(Math.Clamp(sum, 0, 255));
+			colorDistance = (Fixed8)Math.Clamp(sum, 0, 255).RoundToInt();
 		}
 
 		if (alphaScalar == Fixed8.Max) {
@@ -210,15 +205,14 @@ static class ColorHelpers {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static uint RedmeanDifference(this in Color16 colorA, in Color16 colorB, bool linear, bool alpha = true) {
+	internal static uint RedmeanDifference(this Color16 colorA, Color16 colorB, bool linear, bool alpha = true) {
 		static int Square(int value) => value * value;
 
 		if (colorA == colorB) {
 			return 0;
 		}
 
-		Fixed16 alphaScalar = Fixed16.Max;
+		var alphaScalar = Fixed16.Max;
 		if (alpha) {
 			alphaScalar = Math.Min(colorA.A.Value, colorB.A.Value);
 
@@ -263,7 +257,7 @@ static class ColorHelpers {
 			var bFac = bWeight * bDiff;
 			var sumSq = rFac + gFac + bFac;
 			var sum = MathF.Sqrt(sumSq);
-			colorDistance = (Fixed16)MathExt.RoundToInt(Math.Clamp(sum, 0, 65_535));
+			colorDistance = (Fixed16)Math.Clamp(sum, 0, 65_535).RoundToInt();
 		}
 
 		if (alphaScalar == Fixed16.Max) {
@@ -279,13 +273,12 @@ static class ColorHelpers {
 		internal double ChrominanceWeight { get; init; }
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static uint YccDifference(this in Color16 colorA, in Color16 colorB, in YccConfig config, bool linear, bool alpha = true) {
+	internal static uint YccDifference(this Color16 colorA, Color16 colorB, in YccConfig config, bool linear, bool alpha = true) {
 		if (colorA == colorB) {
 			return 0;
 		}
 
-		static double YccColorDifference(in Color16 pix1, in Color16 pix2, in YccConfig config) {
+		static double YccColorDifference(Color16 pix1, Color16 pix2, in YccConfig config) {
 			// See if the colors are the same
 			if (pix1.NoAlpha == pix2.NoAlpha) {
 				return 0.0;
@@ -334,6 +327,6 @@ static class ColorHelpers {
 			distance = alphaScalar * distance + Math.Abs(a2.Value - a1.Value);
 		}
 
-		return (uint)MathExt.RoundToInt(Math.Clamp(distance, 0.0, 65_535.0));
+		return (uint)Math.Clamp(distance, 0.0, 65_535.0).RoundToInt();
 	}
 }

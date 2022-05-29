@@ -9,9 +9,10 @@
 *************************************************/
 
 using System;
-using System.Linq;
 using StardewModdingAPI;
-using TehPers.Core.Api.Content;
+using StardewModdingAPI.Events;
+using System.Collections.Generic;
+using System.Linq;
 using TehPers.Core.Api.Items;
 using TehPers.Core.Api.Setup;
 
@@ -19,7 +20,7 @@ namespace TehPers.Core.Setup
 {
     internal class NamespaceSetup : ISetup, IDisposable
     {
-        private static readonly string[] itemAssets =
+        private static readonly HashSet<string> itemAssets = new()
         {
             @"Data\ClothingInformation",
             @"Data\Boots",
@@ -32,13 +33,11 @@ namespace TehPers.Core.Setup
         };
 
         private readonly IModHelper helper;
-        private readonly IAssetTracker assetTracker;
         private readonly INamespaceRegistry namespaceRegistry;
 
-        public NamespaceSetup(IModHelper helper, IAssetTracker assetTracker, INamespaceRegistry namespaceRegistry)
+        public NamespaceSetup(IModHelper helper, INamespaceRegistry namespaceRegistry)
         {
             this.helper = helper ?? throw new ArgumentNullException(nameof(helper));
-            this.assetTracker = assetTracker ?? throw new ArgumentNullException(nameof(assetTracker));
             this.namespaceRegistry = namespaceRegistry
                 ?? throw new ArgumentNullException(nameof(namespaceRegistry));
         }
@@ -46,13 +45,13 @@ namespace TehPers.Core.Setup
         public void Setup()
         {
             this.helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
-            this.assetTracker.AssetLoading += this.OnAssetLoading;
+            this.helper.Events.Content.AssetReady += this.OnAssetReady;
         }
 
         public void Dispose()
         {
             this.helper.Events.GameLoop.SaveLoaded -= this.OnSaveLoaded;
-            this.assetTracker.AssetLoading -= this.OnAssetLoading;
+            this.helper.Events.Content.AssetReady -= this.OnAssetReady;
         }
 
         private void OnSaveLoaded(object? sender, EventArgs e)
@@ -60,11 +59,11 @@ namespace TehPers.Core.Setup
             this.namespaceRegistry.RequestReload();
         }
 
-        private void OnAssetLoading(object? sender, IAssetData e)
+        private void OnAssetReady(object? sender, AssetReadyEventArgs e)
         {
             // Reload namespace registry if any of the vanilla assets which provide item
             // information are reloaded
-            if (NamespaceSetup.itemAssets.Any(e.AssetNameEquals))
+            if (NamespaceSetup.itemAssets.Any(name => e.NameWithoutLocale.IsEquivalentTo(name)))
             {
                 this.namespaceRegistry.RequestReload();
             }

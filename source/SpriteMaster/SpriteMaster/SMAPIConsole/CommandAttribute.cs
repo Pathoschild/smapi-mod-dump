@@ -8,10 +8,12 @@
 **
 *************************************************/
 
+using JetBrains.Annotations;
 using System;
 
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-class CommandAttribute : Attribute {
+[MeansImplicitUse(ImplicitUseTargetFlags.WithMembers)]
+[AttributeUsage(AttributeTargets.Method)]
+internal class CommandAttribute : Attribute {
 	internal readonly string Name;
 	internal readonly string Description;
 

@@ -2,7 +2,7 @@
 for queries and analysis.**
 
 **This is _not_ the original file, and not necessarily the latest version.**  
-**Source repository: https://gitlab.com/daleao/smapi-mods**
+**Source repository: https://gitlab.com/daleao/sdv-mods**
 
 ----
 
@@ -75,4 +75,4 @@ To uninstall simply delete the mod from your mods folder. This mod is safe to un
 
 ## License
 
-See [LICENSE](../LICENSE) for more information.
+See [LICENSE](../../LICENSE) for more information.

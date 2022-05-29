@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -14,14 +14,12 @@ namespace DaLion.Stardew.Professions.Framework.Events.GameLoop;
 
 using System.Linq;
 using JetBrains.Annotations;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI.Enums;
 using StardewModdingAPI.Events;
 using StardewValley;
 
 using Common.Extensions;
 using Extensions;
-using Ultimate;
+using Framework.Ultimate;
 
 #endregion using directives
 
@@ -31,7 +29,7 @@ internal class StaticSaveLoadedEvent : SaveLoadedEvent
     /// <summary>Construct an instance.</summary>
     internal StaticSaveLoadedEvent()
     {
-        Enable();
+        this.Enable();
     }
 
     /// <inheritdoc />
@@ -80,10 +78,10 @@ internal class StaticSaveLoadedEvent : SaveLoadedEvent
                 ModEntry.PlayerState.RegisteredUltimate = superModeIndex switch
 #pragma warning restore CS8509
                 {
-                    UltimateIndex.Brute => new Frenzy(),
-                    UltimateIndex.Poacher => new Ambush(),
-                    UltimateIndex.Piper => new Pandemonia(),
-                    UltimateIndex.Desperado => new DeathBlossom()
+                    UltimateIndex.Frenzy => new Frenzy(),
+                    UltimateIndex.Ambush => new Ambush(),
+                    UltimateIndex.Pandemonia => new Pandemonia(),
+                    UltimateIndex.Blossom => new DeathBlossom()
                 };
         }
 

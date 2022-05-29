@@ -27,18 +27,18 @@ Remove every instance of the giant crop fertilizer you have in your inventory an
 
 ## Configuration
 
-`GiantCropChance` sets the chance a crop will grow big. Note: to ensure that the crop will become giant, probably best to set this slightly above `1`, which is why the default is `1.1`.
+* `GiantCropChance` sets the chance a crop will grow big. Note: to ensure that the crop will become giant, probably best to set this slightly above `1`, which is why the default is `1.1`.
+* `AllowGiantCropsOffFarm` will allow giant crops off the farm. Note that [More Giant Crops](https://www.nexusmods.com/stardewvalley/mods/5263) will always allow giant crops off the farm, so if you have that mod installed, this configuration option will do nothing.
 
 ## Compatibility
 
 * Works with Stardew Valley 1.5.6 on Linux/macOS/Windows.
 * Works in single player, multiplayer, and split-screen mode. In multiplayer, all players should install.
-* Should be compatible with most other mods. Tested with [MultiFertilizer](https://www.nexusmods.com/stardewvalley/mods/7436), [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720)'s giant crops and [More Giant Crops](https://www.nexusmods.com/stardewvalley/mods/5263). A small note: when MultiFertilizer is installed, the check that looks for whether or not a tile has already been fertilized doesn't quite work right with this fertilizer. Try to not accidentally apply two to the same square...
+* Should be compatible with most other mods. Tested with [MultiFertilizer](https://www.nexusmods.com/stardewvalley/mods/7436), [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720)'s giant crops and [More Giant Crops](https://www.nexusmods.com/stardewvalley/mods/5263). Should work with [DynamicGameAssets](https://www.nexusmods.com/stardewvalley/mods/9365?tab=description) giant crops as well!
 
-(Yes, the picture is from Ginger Island! More Giant Crops allows giant crops on any map, that's where that's from!)
+* A small note: when MultiFertilizer is installed, the check that looks for whether or not a tile has already been fertilized doesn't quite work right with this fertilizer. Try to not accidentally apply two to the same square...
 
 * A note: this fertilizer does NOT work with [CJB Cheats Menu](https://www.nexusmods.com/stardewvalley/mods/4)'s instant crop growth. You can use that to grow the crops, but you'll need to sleep into the next day for this fertilizer to take effect.
-* Additionally, this mod currently does not work with DGA giant crops. Will fix that!
 
 ## See also
 

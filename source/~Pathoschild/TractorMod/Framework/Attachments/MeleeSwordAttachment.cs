@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.TractorMod.Framework.Config;
 using StardewModdingAPI;
 using StardewValley;
@@ -48,9 +47,11 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool IsEnabled(Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool IsEnabled(Farmer player, Tool? tool, Item? item, GameLocation location)
         {
-            return tool is MeleeWeapon weapon && weapon.type.Value == MeleeWeapon.defenseSword && !weapon.isScythe();
+            return
+                tool is MeleeWeapon { type.Value: MeleeWeapon.defenseSword } weapon
+                && !weapon.isScythe();
         }
 
         /// <summary>Apply the tool to the given tile.</summary>
@@ -61,8 +62,10 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="tool">The tool selected by the player (if any).</param>
         /// <param name="item">The item selected by the player (if any).</param>
         /// <param name="location">The current location.</param>
-        public override bool Apply(Vector2 tile, SObject tileObj, TerrainFeature tileFeature, Farmer player, Tool tool, Item item, GameLocation location)
+        public override bool Apply(Vector2 tile, SObject? tileObj, TerrainFeature? tileFeature, Farmer player, Tool? tool, Item? item, GameLocation location)
         {
+            tool = tool.AssertNotNull();
+
             // clear dead crops
             if (this.Config.ClearDeadCrops && this.TryClearDeadCrop(location, tile, tileFeature, player))
                 return true;

@@ -1,0 +1,366 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sergiomadd/StardewValleyMods
+**
+*************************************************/
+
+{
+  "itemsData": [
+    {
+      "Name": "Iron Pipe",
+      "IDName": "IronPipe",
+      "ID": 222560,
+      "Description": "Type: Connector Pipe\nThe basic pipe for connecting inputs and outputs. It moves items once every second.",
+      "NameLocalization": {
+        "es": "Tuberia de hierro",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "Tipo: Tuberia de conexión\nLa tuberia basica para conectar entradas con salidas. Transporta 1 stack por segundo.",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Gold Pipe",
+      "IDName": "GoldPipe",
+      "ID": 222561,
+      "Description": "Type: Connector Pipe\nA more advanced and shinier pipe for connecting inputs and outputs. It moves items every 0.5 seconds.",
+      "NameLocalization": {
+        "es": "Tuberia de oro",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "Tipo: Tuberia de conexión\nUna tuberia mas avanzada y brillante para conectar entradas con salidas. Transporta 1 stack cada 0.5 segundos.",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Iridium Pipe",
+      "IDName": "IridiumPipe",
+      "ID": 222562,
+      "Description": "Type: Connector Pipe\nThe top tier pipe for connecting inputs and outputs. It moves items every 0.2 seconds.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Extractor Pipe",
+      "IDName": "ExtractorPipe",
+      "ID": 222563,
+      "Description": "Type: Output Pipe\nExtracts 1 item from an adjacent container every 3 seconds, and sends them through the network.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Gold Extractor Pipe",
+      "IDName": "GoldExtractorPipe",
+      "ID": 222564,
+      "Description": "Type: Output Pipe\nExtracts 10 items from an adjacent container every second, and sends them through the network.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Iridium Extractor Pipe",
+      "IDName": "IridiumExtractorPipe",
+      "ID": 222565,
+      "Description": "Type: Output Pipe\nExtracts 20 items from an adjacent container every half second, and sends them through the network.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Inserter Pipe",
+      "IDName": "InserterPipe",
+      "ID": 222566,
+      "Description": "Type: Input Pipe\nInserts items into an adjacent container, it doesn't filter items.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Polymorphic Pipe",
+      "IDName": "PolymorphicPipe",
+      "ID": 222567,
+      "Description": "Type: Input Pipe\nInserts items into an adjacent container, it filters only the items already on the adjacent container.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Filter Pipe",
+      "IDName": "FilterPipe",
+      "ID": 222568,
+      "Description": "Type: Input Pipe\nInserts items into an adjacent container, it filters only the items already on the Filter Pipe Inventory. Right click the Filter Pipe to open the Inventory.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "P.P.M.",
+      "IDName": "PPM",
+      "ID": 222660,
+      "Description": "Type: Machine\nThe P.P.M. makes pipes of the attached network turn crossable.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    },
+    {
+      "Name": "Wrench",
+      "IDName": "Wrench",
+      "ID": 222661,
+      "Description": "Type: Tool\nUsed for turning on/off IOPipes.",
+      "NameLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      },
+      "DescriptionLocalization": {
+        "es": "",
+        "ko": "",
+        "de": "",
+        "fr": "",
+        // "hu": "",
+        "it": "",
+        "ja": "",
+        // "pt": "",
+        "ru": "",
+        // "tr": "",
+        "zh": ""
+      }
+    }
+  ]
+}

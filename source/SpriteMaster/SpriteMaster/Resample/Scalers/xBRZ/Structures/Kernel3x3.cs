@@ -15,13 +15,15 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Resample.Scalers.xBRZ.Structures;
 
 [ImmutableObject(true)]
-unsafe ref struct Kernel3x3 {
+internal unsafe ref struct Kernel3X3 {
+#pragma warning disable CS0649
 	private fixed ulong Data[3 * 3];
+#pragma warning restore CS0649
 
 	internal readonly Color16 this[int index] => (Color16)Data[index];
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Kernel3x3(Color16 _0, Color16 _1, Color16 _2, Color16 _3, Color16 _4, Color16 _5, Color16 _6, Color16 _7, Color16 _8) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Kernel3X3(Color16 _0, Color16 _1, Color16 _2, Color16 _3, Color16 _4, Color16 _5, Color16 _6, Color16 _7, Color16 _8) {
 		Data[0] = _0.AsPacked;
 		Data[1] = _1.AsPacked;
 		Data[2] = _2.AsPacked;

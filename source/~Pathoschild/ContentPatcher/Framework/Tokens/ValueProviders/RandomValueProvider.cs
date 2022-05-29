@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Conditions;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
@@ -38,7 +37,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             : base(ConditionType.Random, mayReturnMultipleValuesForRoot: false)
         {
             this.EnableInputArguments(required: true, mayReturnMultipleValues: false, maxPositionalArgs: null);
-            this.ValidNamedArguments.Add("key");
+            this.ValidNamedArguments = InvariantSets.FromValue("key");
             this.BaseSeed = this.GenerateBaseSeed();
         }
 
@@ -56,21 +55,21 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             // validate
             this.AssertInput(input);
             if (!input.HasPositionalArgs)
-                yield break;
+                return InvariantSets.Empty;
 
             // get random number for input
-            string seedString = input.GetRawArgumentValue("key") ?? input.TokenString.Path;
+            string seedString = input.GetRawArgumentValue("key") ?? input.TokenString!.Path;
             int randomNumber = new Random(unchecked(this.BaseSeed + this.GetDeterministicHashCode(seedString))).Next();
 
             // choose value
-            yield return input.PositionalArgs[randomNumber % input.PositionalArgs.Length];
+            return InvariantSets.FromValue(input.PositionalArgs[randomNumber % input.PositionalArgs.Length]);
         }
 
         /// <inheritdoc />
-        public override bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public override bool HasBoundedValues(IInputArguments input, [NotNullWhen(true)] out IInvariantSet? allowedValues)
         {
             allowedValues = !input.IsMutable
-                ? new InvariantHashSet(input.PositionalArgs)
+                ? InvariantSets.From(input.PositionalArgs)
                 : null;
 
             return allowedValues != null;

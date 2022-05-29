@@ -8,9 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
-using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Tokens;
 using Pathoschild.Stardew.Common.Utilities;
@@ -46,13 +43,13 @@ namespace ContentPatcher.Framework.Conditions
         public ITokenString Values { get; }
 
         /// <summary>The current values from <see cref="Values"/>.</summary>
-        public InvariantHashSet CurrentValues { get; private set; }
+        public IInvariantSet CurrentValues { get; private set; }
 
         /// <inheritdoc />
         public bool IsMutable => this.IsTokenMutable || this.Contextuals.IsMutable;
 
         /// <inheritdoc />
-        public bool IsReady => this.Contextuals.IsReady && this.State.IsReady && this.CurrentValues != null;
+        public bool IsReady => this.Contextuals.IsReady && this.State.IsReady;
 
         /// <summary>Whether the condition matches the current context.</summary>
         public bool IsMatch { get; private set; }
@@ -66,11 +63,13 @@ namespace ContentPatcher.Framework.Conditions
         /// <param name="input">The token input arguments.</param>
         /// <param name="values">The token values for which this condition is valid.</param>
         /// <param name="isTokenMutable">Whether the token represented by <paramref name="name"/> is mutable.</param>
-        public Condition(string name, IManagedTokenString input, IManagedTokenString values, bool isTokenMutable)
+        public Condition(string name, IManagedTokenString? input, IManagedTokenString values, bool isTokenMutable)
         {
             // save values
             this.Name = name;
-            this.Input = new InputArguments(input);
+            this.Input = !string.IsNullOrWhiteSpace(input?.Raw)
+                ? new InputArguments(input)
+                : InputArguments.Empty;
             this.Values = values;
             this.IsTokenMutable = isTokenMutable;
             this.Contextuals = new AggregateContextual()
@@ -78,8 +77,9 @@ namespace ContentPatcher.Framework.Conditions
                 .Add(values);
 
             // init immutable values
-            if (this.Values.IsReady)
-                this.CurrentValues = this.Values.SplitValuesUnique();
+            this.CurrentValues = this.Values.IsReady
+                ? this.Values.SplitValuesUnique()
+                : InvariantSets.Empty;
         }
 
         /// <summary>Get whether the condition is for a given condition type.</summary>
@@ -105,7 +105,7 @@ namespace ContentPatcher.Framework.Conditions
             bool changed = this.Contextuals.UpdateContext(context);
 
             // get token
-            IToken token = context.GetToken(this.Name, enforceContext: true);
+            IToken? token = context.GetToken(this.Name, enforceContext: true);
             if (token == null)
                 this.State.AddUnreadyTokens(this.Name);
 
@@ -119,7 +119,7 @@ namespace ContentPatcher.Framework.Conditions
             }
             else
             {
-                this.CurrentValues = new InvariantHashSet();
+                this.CurrentValues = InvariantSets.Empty;
                 this.IsMatch = false;
             }
 
@@ -130,11 +130,11 @@ namespace ContentPatcher.Framework.Conditions
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
-            yield return this.Name;
-            foreach (string token in this.Contextuals.GetTokensUsed())
-                yield return token;
+            return this.Contextuals
+                .GetTokensUsed()
+                .GetWith(this.Name);
         }
 
         /// <inheritdoc />

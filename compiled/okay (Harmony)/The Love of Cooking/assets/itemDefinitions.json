@@ -8,8 +8,11 @@
 		"1",
 		"1"
 	],
-	"CookingUseRange": [
-		"3"
+	"ConsoleCommandPrefix": [
+		"bb.loc."
+	],
+	"ShowWalletItems": [
+		"true"
 	],
 	"NpcKitchenFriendshipRequired": [
 		"6"

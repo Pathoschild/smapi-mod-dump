@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -44,7 +44,7 @@ internal class SavingEvent : IEvent
         Log.D("[Ponds] Unhooked Saving event.");
     }
 
-    /// <summary>Raised before the game writes data to save file.</summary>
+    /// <inheritdoc cref="IGameLoopEvents.Saving"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
     public void OnSaving(object sender, SavingEventArgs e)

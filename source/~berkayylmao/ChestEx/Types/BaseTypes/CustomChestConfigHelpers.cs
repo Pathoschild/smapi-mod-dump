@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -74,7 +74,7 @@ namespace ChestEx.Types.BaseTypes {
     public static void SetCustomConfigName(this Chest chest, String name) {
       String final_name = name.Trim().Trim('|');
       chest.modData[$"{CustomChestConfig.CONST_MODDATA_PREFIX}/{CustomChestConfig.CONST_NAME_KEY}"] = final_name;
-      chest.modData[CustomChestConfig.CONST_NAME_CHESTSANYWHERE_KEY]                                = final_name;
+      chest.modData[CustomChestConfig.CONST_NAME_CHESTSANYWHERE_KEY] = final_name;
     }
     public static void SetCustomConfigDescription(this Chest chest, String description) {
       chest.modData[$"{CustomChestConfig.CONST_MODDATA_PREFIX}/{CustomChestConfig.CONST_DESC_KEY}"] = description.Trim();
@@ -85,7 +85,9 @@ namespace ChestEx.Types.BaseTypes {
 
     public static CustomChestConfig GetCustomConfig(this Chest chest) {
       var config = new CustomChestConfig {
-        mName = chest.GetCustomConfigName(), mDescription = chest.GetCustomConfigDescription(), mHingesColour = chest.GetCustomConfigHingesColour()
+        mName = chest.GetCustomConfigName(),
+        mDescription = chest.GetCustomConfigDescription(),
+        mHingesColour = chest.GetCustomConfigHingesColour()
       };
 
       chest.SetCustomConfig(config);

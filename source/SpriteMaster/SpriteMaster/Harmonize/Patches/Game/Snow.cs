@@ -24,31 +24,31 @@ using System.Collections.Generic;
 
 namespace SpriteMaster.Harmonize.Patches.Game;
 
-static class Snow {
+internal static class Snow {
 	private static Dictionary<Bounds, List<SnowWeatherDebris>> MappedWeatherDebris = new();
 	private static List<WeatherDebris> AllWeatherDebris = new();
 
-	internal struct SnowState {
-		internal readonly Dictionary<Bounds, List<SnowWeatherDebris>> MappedWeatherDebris { get; init; }
-		internal readonly List<WeatherDebris> AllWeatherDebris { get; init; }
+	internal readonly struct SnowState {
+		internal Dictionary<Bounds, List<SnowWeatherDebris>> MappedWeatherDebris { get; init; }
+		internal List<WeatherDebris> AllWeatherDebris { get; init; }
 
 		internal static SnowState Backup() => new() {
 			MappedWeatherDebris = new(Snow.MappedWeatherDebris),
 			AllWeatherDebris = new(Snow.AllWeatherDebris)
 		};
 
-		internal readonly void Restore() {
+		internal void Restore() {
 			Snow.MappedWeatherDebris = MappedWeatherDebris;
 			Snow.AllWeatherDebris = AllWeatherDebris;
 		}
 	}
 
-	internal sealed class SnowWeatherDebris : StardewValley.WeatherDebris {
+	internal sealed class SnowWeatherDebris : WeatherDebris {
 		internal float Rotation;
 		internal readonly float RotationRate;
 		internal readonly float Scale;
 
-		internal SnowWeatherDebris(Vector2 position, int which, float rotationVelocity, float dx, float dy, float rotation, float rotationRate, float scale) :
+		internal SnowWeatherDebris(XVector2 position, int which, float rotationVelocity, float dx, float dy, float rotation, float rotationRate, float scale) :
 			base(position, which, rotationVelocity, dx, dy) {
 			Rotation = rotation;
 			RotationRate = rotationRate;
@@ -56,7 +56,7 @@ static class Snow {
 		}
 
 		internal void Update() {
-			base.update();
+			update();
 			Rotation = (Rotation + RotationRate) % (2.0f * MathF.PI);
 		}
 	}
@@ -65,7 +65,7 @@ static class Snow {
 
 	private static bool ShouldDrawSnow => Game1.IsSnowingHere() && Game1.currentLocation.IsOutdoors && Game1.currentLocation is not Desert;
 
-	private static readonly Lazy<Texture2D> FishTexture = new(() => SpriteMaster.Self.Helper.Content.Load<Texture2D>(@"LooseSprites\AquariumFish", StardewModdingAPI.ContentSource.GameContent));
+	private static readonly Lazy<XTexture2D> FishTexture = new(() => SpriteMaster.Self.Helper.GameContent.Load<XTexture2D>(@"LooseSprites\AquariumFish"));
 
 	public readonly record struct DrawWeatherState(bool Overridden, PrecipitationType? PreviousOverride);
 
@@ -76,20 +76,20 @@ static class Snow {
 		Harmonize.PriorityLevel.Last,
 		critical: false
 	)]
-	public static bool DrawWeather(Game1 __instance, GameTime time, RenderTarget2D target_screen, ref DrawWeatherState __state) {
+	public static bool DrawWeather(Game1 __instance, GameTime? time, RenderTarget2D? target_screen, ref DrawWeatherState __state) {
 		__state = new(false, null);
 
 		if (!Config.IsEnabled || !Config.Extras.Snow.Enabled) {
 			return true;
 		}
 
-		bool isPrecipitationSnow = Configuration.Preview.Scene.Current?.Precipitation == Configuration.Preview.PrecipitationType.Snow;
+		bool isPrecipitationSnow = Scene.Current?.Precipitation == PrecipitationType.Snow;
 
-		if ((!ShouldDrawSnow || Configuration.Preview.Scene.Current is not null) && !isPrecipitationSnow) {
+		if ((!ShouldDrawSnow || Scene.Current is not null) && !isPrecipitationSnow) {
 			return true;
 		}
 
-		if (MappedWeatherDebris is null || MappedWeatherDebris.Count == 0) {
+		if (MappedWeatherDebris.Count == 0) {
 			return true;
 		}
 
@@ -101,16 +101,17 @@ static class Snow {
 		Game1.spriteBatch.Begin(
 			sortMode: IsPuffersnow ? SpriteSortMode.Texture : SpriteSortMode.Deferred,
 			blendState: IsPuffersnow ? BlendState.AlphaBlend : BlendState.Additive,
-			samplerState: Config.Resample.IsEnabled ? SamplerState.LinearClamp : SamplerState.PointClamp
+			samplerState: Config.Resample.IsEnabled ? SamplerState.LinearClamp : SamplerState.PointClamp,
+			rasterizerState: Game1.spriteBatch.GraphicsDevice.RasterizerState
 		);
 
 		try {
 			if (__instance.takingMapScreenshot) {
-				Texture2D drawTexture = IsPuffersnow ? FishTexture.Value : Game1.mouseCursors;
+				XTexture2D drawTexture = IsPuffersnow ? FishTexture.Value : Game1.mouseCursors;
 
 				foreach (var _item in AllWeatherDebris) {
 					var item = (SnowWeatherDebris)_item;
-					var position = new Vector2(
+					var position = new XVector2(
 						Game1.random.Next(Game1.viewport.Width - item.sourceRect.Width * 3),
 						Game1.random.Next(Game1.viewport.Height - item.sourceRect.Height * 3)
 					);
@@ -119,9 +120,9 @@ static class Snow {
 						texture: drawTexture,
 						position: position,
 						sourceRectangle: IsPuffersnow ? new(0, 0, 24, 24) : item.sourceRect,
-						color: Color.White,
+						color: XColor.White,
 						rotation: item.Rotation,
-						origin: Vector2.Zero,
+						origin: XVector2.Zero,
 						scale: item.Scale,
 						effects: SpriteEffects.None,
 						layerDepth: 1E-06f
@@ -130,19 +131,17 @@ static class Snow {
 			}
 			else if (Game1.viewport.X > -Game1.viewport.Width) {
 				if (IsPuffersnow) {
-					Texture2D drawTexture = FishTexture.Value;
+					XTexture2D drawTexture = FishTexture.Value;
 
-					foreach (var mappedListPair in MappedWeatherDebris) {
-						var source = mappedListPair.Key;
-
-						foreach (SnowWeatherDebris item in mappedListPair.Value) {
+					foreach (var weatherDebris in MappedWeatherDebris.Values) {
+						foreach (SnowWeatherDebris item in weatherDebris) {
 							Game1.spriteBatch.Draw(
 								texture: drawTexture,
 								position: item.position,
 								sourceRectangle: new(0, 0, 24, 24),
-								color: Color.White,
+								color: XColor.White,
 								rotation: item.Rotation,
-								origin: Vector2.Zero,
+								origin: XVector2.Zero,
 								scale: item.Scale,
 								effects: SpriteEffects.None,
 								layerDepth: 1E-06f
@@ -151,21 +150,18 @@ static class Snow {
 					}
 				}
 				else {
-					Texture2D drawTexture = Game1.mouseCursors;
+					XTexture2D drawTexture = Game1.mouseCursors;
 
-					foreach (var mappedListPair in MappedWeatherDebris) {
-						var source = mappedListPair.Key;
-						var list = mappedListPair.Value;
-
+					foreach (var (source, list) in MappedWeatherDebris) {
 #if !USE_MULTIDRAW
 						foreach (SnowWeatherDebris item in list) {
 							Game1.spriteBatch.Draw(
 								texture: drawTexture,
 								position: item.position,
 								sourceRectangle: source, 
-								color: Color.White,
+								color: XColor.White,
 								rotation: item.Rotation,
-								origin: Vector2.Zero,
+								origin: XVector2.Zero,
 								scale: item.Scale,
 								effects: SpriteEffects.None,
 								layerDepth: 1E-06f
@@ -184,8 +180,8 @@ static class Snow {
 						Game1.spriteBatch.DrawMulti(
 							texture: drawTexture,
 							source: source,
-							color: Color.White,
-							origin: Vector2.Zero,
+							color: XColor.White,
+							origin: XVector2.Zero,
 							effects: SpriteEffects.None,
 							layerDepth: 1E-06F,
 							instances: instances
@@ -237,9 +233,9 @@ static class Snow {
 			return true;
 		}
 
-		bool isPrecipitationSnow = Configuration.Preview.Scene.Current?.Precipitation == Configuration.Preview.PrecipitationType.Snow;
+		bool isPrecipitationSnow = Scene.Current?.Precipitation == PrecipitationType.Snow;
 
-		if ((!ShouldDrawSnow || Configuration.Preview.Scene.Current is not null) && !isPrecipitationSnow) {
+		if ((!ShouldDrawSnow || Scene.Current is not null) && !isPrecipitationSnow) {
 			return true;
 		}
 
@@ -266,7 +262,7 @@ static class Snow {
 			(item as SnowWeatherDebris)!.Update();
 		}
 
-		if (Configuration.Preview.Scene.Current is null) {
+		if (Scene.Current is null) {
 			Game1.updateDebrisWeatherForMovement(AllWeatherDebris);
 		}
 
@@ -351,7 +347,7 @@ static class Snow {
 		AllWeatherDebris.Clear();
 		for (int i = 0; i < debrisToMake; i++) {
 			var debris = new SnowWeatherDebris(
-				position: new Vector2(Game1.random.Next(0, screenSize.Width), Game1.random.Next(0, screenSize.Height)),
+				position: new XVector2(Game1.random.Next(0, screenSize.Width), Game1.random.Next(0, screenSize.Height)),
 				which: 3,
 				rotationVelocity: 0.0f,
 				dx: Game1.random.Next(-10, 0) / 50f,

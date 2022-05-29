@@ -63,7 +63,7 @@ internal static class FarmLightningTranspiler
         }
         catch (Exception ex)
         {
-            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Farm.doLightingStrike:\n\n{ex}", LogLevel.Error);
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Utility.performLightningUpdate:\n\n{ex}", LogLevel.Error);
         }
         return null;
     }

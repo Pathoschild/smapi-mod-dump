@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
 using System.Linq;
 using ContentPatcher.Framework.Lexing.LexTokens;
 using ContentPatcher.Framework.Tokens;
+using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher.Framework.Conditions
 {
@@ -24,7 +23,7 @@ namespace ContentPatcher.Framework.Conditions
         ** Accessors
         *********/
         /// <inheritdoc />
-        public string Raw { get; }
+        public string? Raw { get; }
 
         /// <inheritdoc />
         public IEnumerable<ILexToken> LexTokens { get; }
@@ -54,10 +53,10 @@ namespace ContentPatcher.Framework.Conditions
         /// <summary>Construct an instance.</summary>
         /// <param name="value">The literal string value.</param>
         /// <param name="path">The path to the value from the root content file.</param>
-        public LiteralString(string value, LogPathBuilder path)
+        public LiteralString(string? value, LogPathBuilder path)
         {
             this.Raw = value;
-            this.Value = value;
+            this.Value = value ?? string.Empty;
             this.LexTokens = new ILexToken[] { new LexTokenLiteral(value) };
             this.Path = path.ToString();
         }
@@ -69,9 +68,9 @@ namespace ContentPatcher.Framework.Conditions
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
-            return Enumerable.Empty<string>();
+            return InvariantSets.Empty;
         }
 
         /// <inheritdoc />

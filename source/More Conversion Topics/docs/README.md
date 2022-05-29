@@ -11,7 +11,7 @@ A mod for Stardew Valley to add conversation topics that need code to add, so di
 
 ## What You Can Use This Mod For
 
-This mod was created primarily for dialogue content packs added by Content Patcher, but since events can use conversation topics as preconditions and Content Patcher can use conversation topics as part of a condition, there is a broad range of possible uses. However, this mod does not implement any of the dialogue/content itself, just the conversation topics. When adding dialogue, it can be added via setting the dialogue key as the relevant conversation topic. 
+This mod was created primarily for dialogue content packs added by Content Patcher, but since events can use conversation topics as preconditions and Content Patcher can use conversation topics as part of a condition, there is a broad range of possible uses. However, this mod does not implement any of the dialogue/content itself, just the conversation topics. When adding dialogue, it can be added via setting the dialogue key as the relevant conversation topic. This mod can also be used to make conversation topics added by other mods repeatable.
 
 Some good references when creating content packs that rely on this mod:
    * The wiki page on conversation topics: https://stardewvalleywiki.com/Modding:Dialogue#Conversation_topics
@@ -40,6 +40,7 @@ Some of the events that happen around town never get commented on by the townspe
    * `jojaMartStruckByLightning` (triggered after Community Center completion on a rainy day)
    * `willyBoatRepaired` (triggered when Willy's boat in the back room is repaired)
    * `leoValleyArrival` (triggered when Leo moves to the valley)
+   * `islandResortUnlocked` (triggered when the island resort is repaired)
 
 ### Overnight Events on Your Farm
 Some of these might go unnoticed by most townspeople, but the more magically-inclined ones (or your spouse) might take an interest.
@@ -71,19 +72,27 @@ All the conversation topics have default lengths but are also configurable in th
    * `RailroadEarthquakeDuration` (default of 7 days, controls length of `railroadEarthquake` conversation topic)
    * `WitchVisitDuration` (default of 7 days, controls length of all witch visit conversation topics)
    * `FairyVisitDuration` (default of 7 days, controls length of `fairyFarmVisit` conversation topic)
+   * `IslandResortDuration` (default of 7 days, controls length of `islandResortUnlocked` conversation topic)
+
+## Adding Repeatable Conversation Topics
+This mod allows other mods to add repeatable conversation topics by using Content Patcher to edit the file `Mods/vl.mct/RepeatableTopics` with EditData. You can add new repeatable conversation topics by adding them as new entries, with any string as the value. An example CP pack will be provided. 
+
+It is possible to remove the conversation topics added by this mod from the list of repeatable conversation topics. Please don't do this in a released mod unless you have a good reason to do so, as it could cause compatibility issues with any other mods that depend on this one or unnecessary bug reports.
 
 ## Console Commands
 This mod also adds some new console commands:
-   * `vl.mct.current_CTs`, which prints a list of the current active conversation topics to the console. 
+   * `vl.mct.current_CTs`, which prints a list of the current active conversation topics and their durations to the console. 
    * `vl.mct.has_flag <flagName>`, which tells you whether or not you have that mail flag.
    * `vl.mct.add_CT <topicName> <duration>`, which adds the specified conversation topic with a duration of 1 day by default, or can specify duration.
    * `vl.mct.remove_CT <topicName>`, which removes the specified conversation topic.
+   * `vl.mct.is_repeatable_CT <topicName>`, which tells you whether or not the specified conversation topic is repeatable.
+   * `vl.mct.repeatable_CTs`, which prints a list of the repeatable conversation topics to the console.
 
 ## Planned Conversation Topics To Be Added
    * `newHorse` triggered when the player gets a horse
    * `newCat` triggered when the player adopts a cat
    * `newDog` triggered when the player adopts a dog
-   * `UFOEscaped`` triggered when the Strange Capsule cracks open
+   * `UFOEscaped` triggered when the Strange Capsule cracks open
    * `passedOutExhausted` triggered when the player passes out due to low energy
    * `passedOutInjured` triggered when the player passes out due to low health
    * `beachBridgeFixed` triggered when the player fixes the bridge on the beach

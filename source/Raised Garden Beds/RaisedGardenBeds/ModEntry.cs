@@ -224,7 +224,7 @@ namespace RaisedGardenBeds
 				foreach (System.Reflection.PropertyInfo property in properties)
 				{
 					string key = property.Name.ToLower();
-					string description = Translations.GetTranslation($"config.{key}.description");
+					string description = Translations.GetTranslation($"config.{key}.description", defaultToNull: true);
 					modconfigAPI.RegisterSimpleOption(
 						mod: this.ModManifest,
 						optionName: Translations.GetTranslation($"config.{key}.name"),

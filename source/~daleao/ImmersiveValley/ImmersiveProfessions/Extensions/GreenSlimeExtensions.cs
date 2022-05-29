@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -57,6 +57,7 @@ public static class GreenSlimeExtensions
 
         slime.Health += (int) Math.Round(slime.Health * slime.Scale * slime.Scale);
         slime.moveTowardPlayerThreshold.Value = 9999;
+        if (Game1.random.NextDouble() < 1.0 / 3.0) slime.addedSpeed += Game1.random.Next(3);
         if (slime.Scale >= 1.8f) slime.willDestroyObjectsUnderfoot = true;
 
         slime.WriteData("DoneInflating", true.ToString());
@@ -72,6 +73,8 @@ public static class GreenSlimeExtensions
         slime.Health = slime.ReadDataAs<int>("OriginalHealth");
         slime.moveTowardPlayerThreshold.Value = slime.ReadDataAs<int>("OriginalAggroThreshold");
         slime.willDestroyObjectsUnderfoot = false;
+        slime.addedSpeed = 0;
+        slime.focusedOnFarmers = false;
         slime.WriteData("Piped", false.ToString());
         ModEntry.PlayerState.PipedSlimes.Remove(slime);
 

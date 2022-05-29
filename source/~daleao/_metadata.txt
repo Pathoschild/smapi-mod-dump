@@ -1,19 +1,19 @@
 urls:
-   web: https://gitlab.com/daleao/smapi-mods
-   Git: https://gitlab.com/daleao/smapi-mods.git
+   web: https://gitlab.com/daleao/sdv-mods
+   Git: https://gitlab.com/daleao/sdv-mods.git
 
 mods:
    Aquarism - Immersive Fish Ponds
-   Aquarism - Immersive Fish Ponds → Automate
+   Better Artisan Good Icons For Meads
    Fellowship - Immersive Rings
    Power Tools
    Quality of Life - Immersive Tweaks
    Walk of Life
 
 latest commit:
-   commit e585d70fbbe8585998c8583229daa14289f975ff
+   commit 2501904ace546f1344f42a99b73318c5f6d98f1e
    Author: Mat L <daleao.matheus@gmail.com>
-   Date:   Sat Apr 30 18:02:31 2022 -0300
+   Date:   Fri May 6 21:44:02 2022 -0300
    
-       GMCM cleanup.
+       Better Rings compatibility for Fellowship.
    

@@ -1,0 +1,140 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/KhloeLeclair/StardewMods
+**
+*************************************************/
+
+{
+	"Name": "Theme Template",
+
+	// Generic Colors
+	"TextColor": "#221122",
+	"TextShadowColor": "#CE9C5F",
+	"TextShadowAltColor": "#dd9454",
+
+	"ErrorTextColor": "red",
+
+	"HoverColor": "wheat",
+	"ButtonHoverColor": "lightpink",
+
+	"UnselectedOptionColor": "#646464",
+
+	"SpriteTextColors": {
+		"1": "skyblue",
+		"2": "red",
+		"3": "#642bff",
+		"4": "white",
+		"5": "orangered",
+		"6": "limegreen",
+		"7": "cyan",
+		"8": "#3c3c3c"
+	},
+
+	// Billboard
+	"CalendarDimColor": "gray",
+	"CalendarTodayColor": "blue",
+	"BillboardHoverColor": null, // ButtonHoverColor
+	"BillboardTextColor": null, // TextColor
+
+	// CarpenterMenu
+
+	"CarpenterMagicBackgroundColor": "royalblue",
+	"CarpenterMagicTextColor": "palegoldenrod",
+
+	// CoopMenu
+
+	"CoopTabSelectedColor": "#ffff96",
+	"CoopTabSelectedShadowColor": "#dd9454",
+	"CoopSmallTabSelectedColor": "orange",
+	"CoopSmallTabSelectedShadowColor": "darkorange",
+	"CoopTabHoverColor": "yellow",
+	"CoopTabHoverShadowColor": "darkgoldenrod",
+	"CoopHoverColor": null, // HoverColor
+
+	// DayTimeMoneyBox
+
+	"DayTimeAlignment": "top,right",
+	"DayTimeOffsetX": 0,
+	"DayTimeOffsetY": 8,
+	"DayTimeTextColor": null, // TextColor
+	"DayTimeAfterMidnightColor": null, // ErrorTextColor
+
+	// ExitPage
+
+	"ExitPageHoverColor": null, // HoverColor
+
+	// ForgeMenu
+
+	"ForgeMenuBackgroundColor": "#740b03",
+
+	// IClickableMenu
+
+	"HoverTextTextColor": null, // TextColor
+	"HoverTextShadowColor": null, // TextShadowColor
+	"HoverTextInsufficientTextColor": "red",
+	"HoverTextModifiedStatTextColor": "#007878",
+	"HoverTextEnchantmentTextColor": "#7800d2",
+	"HoverTextForgeCountTextColor": "dimgray",
+	"HoverTextForgedTextColor": "darkred",
+
+	// LetterViewerMenu
+
+	"LetterViewerHoverColor": null, // ButtonHoverColor
+
+	// LevelUpMenu
+
+	"LevelUpHoverTextColor": "green",
+
+	// LoadGameMenu
+
+	"LoadGameErrorTextColor": null, // ErrorTextColor
+	"LoadGameHoverColor": null, // HoverColor
+
+	// MineElevatorMenu
+
+	"ElevatorCurrentFloorTextColor": "gray",
+	"ElevatorFloorTextColor": "gold",
+
+	// MoneyDial
+
+	"MoneySparkleColor": "gold",
+	"MoneyTextColor": "maroon",
+
+	// OptionsDropDown
+
+	"DropDownTextColor": null, // TextColor
+	"DropDownHoverColor": null, // HoverColor
+
+	// QuestLog
+
+	"QuestHoverColor": null, // HoverColor
+	"QuestObjectiveTextColor": "darkblue",
+	"QuestBarIncompleteColor": "red",
+	"QuestBarIncompleteDarkColor": "darkred",
+	"QuestBarCompleteColor": "limegreen",
+	"QuestBarCompleteDarkColor": "green",
+
+	// ShopMenu
+
+	"ShopSelectedColor": "wheat",
+	"ShopQiSelectedColor": "blue",
+
+	// SkillsPage
+
+	"SkillsPageTextColor": null, // TextColor
+	"SkillsPageModifiedNumberColor": "lightgreen",
+	"SkillsPageNumberColor": "sandybrown",
+
+	// SpecialOrdersBoard
+
+	"SpecialOrdersHoverColor": null, // ButtonHoverColor
+
+	// TutorialMenu
+
+	"TutorialHoverColor": "blue"
+
+}

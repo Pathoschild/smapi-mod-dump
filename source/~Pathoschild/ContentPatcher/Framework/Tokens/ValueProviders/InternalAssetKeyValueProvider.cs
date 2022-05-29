@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using ContentPatcher.Framework.Conditions;
@@ -53,10 +51,11 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            string path = input.GetPositionalSegment();
+            string? path = input.GetPositionalSegment();
 
-            if (!string.IsNullOrWhiteSpace(path))
-                yield return this.GetInternalAssetKey(path).Name;
+            return !string.IsNullOrWhiteSpace(path)
+                ? InvariantSets.FromValue(this.GetInternalAssetKey(path).Name)
+                : InvariantSets.Empty;
         }
     }
 }

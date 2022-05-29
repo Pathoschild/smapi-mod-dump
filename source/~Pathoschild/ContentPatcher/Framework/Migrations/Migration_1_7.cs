@@ -8,13 +8,12 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
 using ContentPatcher.Framework.Lexing.LexTokens;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
 
@@ -31,16 +30,16 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_7()
             : base(new SemanticVersion(1, 7, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.HasReadLetter.ToString(),
-                ConditionType.HasValue.ToString(),
-                ConditionType.IsCommunityCenterComplete.ToString(),
-                ConditionType.IsMainPlayer.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.HasReadLetter),
+                nameof(ConditionType.HasValue),
+                nameof(ConditionType.IsCommunityCenterComplete),
+                nameof(ConditionType.IsMainPlayer)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;
@@ -56,20 +55,20 @@ namespace ContentPatcher.Framework.Migrations
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ContentConfig content, out string error)
+        public override bool TryMigrate(ContentConfig content, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
             // 1.7 adds tokens in dynamic token values
-            if (content.DynamicTokens.Any(p => p.Value?.Contains("{{") == true))
+            if (content.DynamicTokens.Any(p => p?.Value?.Contains("{{") == true))
             {
                 error = this.GetNounPhraseError("using tokens in dynamic token values");
                 return false;
             }
 
             // 1.7 adds tokens in field keys and condition values
-            foreach (PatchConfig patch in content.Changes)
+            foreach (PatchConfig patch in content.Changes.WhereNotNull())
             {
                 if (patch.Fields.Keys.Any(key => key.Contains("{{")))
                 {

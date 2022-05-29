@@ -9,7 +9,9 @@
 *************************************************/
 
 using SpriteMaster.Extensions;
+using SpriteMaster.Hashing;
 using SpriteMaster.Types.Fixed;
+using SpriteMaster.Types.Spans;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -17,23 +19,41 @@ using System.Runtime.InteropServices;
 namespace SpriteMaster.Types;
 
 [DebuggerDisplay("[{R.Value}, {G.Value}, {B.Value}, {A.Value}]")]
-[StructLayout(LayoutKind.Explicit, Pack = sizeof(uint), Size = sizeof(uint))]
-partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
+[StructLayout(LayoutKind.Sequential, Pack = sizeof(uint), Size = sizeof(uint))]
+internal partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 	internal static readonly Color8 Zero = new(0U);
 
-	[FieldOffset(0)]
 	internal uint Packed = 0;
 
 	internal readonly uint AsPacked => Packed;
 
-	[FieldOffset(0)]
-	internal Fixed8 R = 0;
-	[FieldOffset(1)]
-	internal Fixed8 G = 0;
-	[FieldOffset(2)]
-	internal Fixed8 B = 0;
-	[FieldOffset(3)]
-	internal Fixed8 A = 0;
+	[StructLayout(LayoutKind.Sequential, Pack = sizeof(uint), Size = sizeof(uint))]
+	private struct PackedWrapper {
+		internal Fixed8 R;
+		internal Fixed8 G;
+		internal Fixed8 B;
+		internal Fixed8 A;
+	}
+
+	internal Fixed8 R {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().R;
+		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).R = value;
+	}
+
+	internal Fixed8 G {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().G;
+		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).G = value;
+	}
+
+	internal Fixed8 B {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().B;
+		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).B = value;
+	}
+
+	internal Fixed8 A {
+		readonly get => Packed.ReinterpretAs<PackedWrapper>().A;
+		set => Reinterpret.ReinterpretAsRefUnsafe<uint, PackedWrapper>(Packed).A = value;
+	}
 
 	internal uint ARGB => new PackedUInt(
 		A.Value, R.Value, G.Value, B.Value
@@ -62,7 +82,7 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		Packed = rgba;
 	}
 
-	internal Color8(in (byte R, byte G, byte B) color) : this(color.R, color.G, color.B) { }
+	internal Color8((byte R, byte G, byte B) color) : this(color.R, color.G, color.B) { }
 
 	internal Color8(byte r, byte g, byte b) : this() {
 		R = r;
@@ -70,7 +90,7 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		B = b;
 	}
 
-	internal Color8(in (Fixed8 R, Fixed8 G, Fixed8 B) color) : this(color.R, color.G, color.B) { }
+	internal Color8((Fixed8 R, Fixed8 G, Fixed8 B) color) : this(color.R, color.G, color.B) { }
 
 	internal Color8(Fixed8 r, Fixed8 g, Fixed8 b) : this() {
 		R = r;
@@ -78,7 +98,7 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		B = b;
 	}
 
-	internal Color8(in (byte R, byte G, byte B, byte A) color) : this(color.R, color.G, color.B, color.A) { }
+	internal Color8((byte R, byte G, byte B, byte A) color) : this(color.R, color.G, color.B, color.A) { }
 
 	internal Color8(byte r, byte g, byte b, byte a) : this() {
 		R = r;
@@ -87,7 +107,7 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		A = a;
 	}
 
-	internal Color8(in (Fixed8 R, Fixed8 G, Fixed8 B, Fixed8 A) color) : this(color.R, color.G, color.B, color.A) { }
+	internal Color8((Fixed8 R, Fixed8 G, Fixed8 B, Fixed8 A) color) : this(color.R, color.G, color.B, color.A) { }
 
 	internal Color8(Fixed8 r, Fixed8 g, Fixed8 b, Fixed8 a) : this() {
 		R = r;
@@ -99,8 +119,8 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 	public static explicit operator uint(Color8 value) => value.Packed;
 	public static explicit operator Color8(uint value) => new(value);
 
-	public static implicit operator XNA.Color(Color8 value) => new(value.Packed);
-	public static implicit operator Color8(XNA.Color value) => new(value.PackedValue);
+	public static implicit operator XColor(Color8 value) => new(value.Packed);
+	public static implicit operator Color8(XColor value) => new(value.PackedValue);
 
 	public override readonly bool Equals(object? obj) {
 		if (obj is Color8 color) {
@@ -123,9 +143,9 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		return diffR <= threshold && diffG <= threshold && diffB <= threshold && diffA <= threshold;
 	}
 
-	readonly bool IEquatable<Color8>.Equals(Color8 other) => this.Equals(other);
+	readonly bool IEquatable<Color8>.Equals(Color8 other) => Equals(other);
 
-	readonly bool IEquatable<uint>.Equals(uint other) => this.Equals(other);
+	readonly bool IEquatable<uint>.Equals(uint other) => Equals(other);
 
 	public static bool operator ==(Color8 lhs, Color8 rhs) => lhs.Packed == rhs.Packed;
 	public static bool operator !=(Color8 lhs, Color8 rhs) => lhs.Packed != rhs.Packed;
@@ -142,8 +162,16 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 		}
 	}
 
-	internal static Span<Color8> Convert(ReadOnlySpan<Color16> source, bool pinned = true) {
-		var destination = SpanExt.MakeUninitialized<Color8>(source.Length, pinned: pinned);
+	internal static Span<Color8> Convert(ReadOnlySpan<Color16> source) {
+		var destination = SpanExt.Make<Color8>(source.Length);
+		for (int i = 0; i < source.Length; ++i) {
+			destination[i] = From(source[i]);
+		}
+		return destination;
+	}
+
+	internal static PinnedSpan<Color8> ConvertPinned(ReadOnlySpan<Color16> source) {
+		var destination = SpanExt.MakePinned<Color8>(source.Length);
 		for (int i = 0; i < source.Length; ++i) {
 			destination[i] = From(source[i]);
 		}
@@ -152,7 +180,7 @@ partial struct Color8 : IEquatable<Color8>, IEquatable<uint>, ILongHash {
 
 	public override readonly int GetHashCode() => Packed.GetHashCode();
 
-	readonly ulong ILongHash.GetLongHashCode() => Hashing.Combine(Packed);
+	readonly ulong ILongHash.GetLongHashCode() => HashUtility.Combine(Packed);
 
 	static Color8() {
 #if SM_INTERNAL_TESTING

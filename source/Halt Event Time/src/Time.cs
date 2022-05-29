@@ -39,12 +39,17 @@ namespace HaltEventTime
                     return false;
                 State = Status.Run;
             }
-            if (ModConfig.Instance.PauseTemporarySprite)
-                TemporarySpritesUp();
-            if (ModConfig.Instance.PauseMonster)
-                MonsterUp();
-            Game1.gameTimeInterval = orginalTimeInterval;
-            return true;
+            try
+            {
+                if (ModConfig.Instance.PauseTemporarySprite)
+                    TemporarySpritesUp();
+                if (ModConfig.Instance.PauseMonster)
+                    MonsterUp();
+                Game1.gameTimeInterval = orginalTimeInterval;
+                return true;
+            }
+            catch (NullReferenceException) { return false; }
+
         }
 
         /// <summary>
@@ -55,41 +60,45 @@ namespace HaltEventTime
         {
             lock (stateLock)
             {
-                if (State == Status.Stop)
+                try
                 {
-                    Game1.gameTimeInterval = 0;
-                    if (ModConfig.Instance.PauseTemporarySprite)
-                        TemporarySpritesDown(); //基本上是0，非0的时候基本上也是个位数，也没必要异步。
-                    if (Async && ModConfig.Instance.PauseNPC && ModConfig.Instance.PauseMonster)
+                    if (State == Status.Stop)
                     {
-                        if (ModConfig.Instance.PauseNPC && ModConfig.Instance.PauseMonster)
-                            Task.WaitAll(new Task[] { Task.Run(MonsterDown), Task.Run(NPCDownAsync) });
+                        Game1.gameTimeInterval = 0;
+                        if (ModConfig.Instance.PauseTemporarySprite)
+                            TemporarySpritesDown(); //基本上是0，非0的时候基本上也是个位数，也没必要异步。
+                        if (Async && ModConfig.Instance.PauseNPC && ModConfig.Instance.PauseMonster)
+                        {
+                            if (ModConfig.Instance.PauseNPC && ModConfig.Instance.PauseMonster)
+                                Task.WaitAll(new Task[] { Task.Run(MonsterDown), Task.Run(NPCDownAsync) });
+                        }
+                        else
+                        {
+                            if (ModConfig.Instance.PauseMonster)
+                                MonsterDown();
+                            if (ModConfig.Instance.PauseNPC)
+                                NPCDown();
+                        }
+                        return false;
                     }
                     else
                     {
-                        if (ModConfig.Instance.PauseMonster)
-                            MonsterDown();
-                        if (ModConfig.Instance.PauseNPC)
-                            NPCDown();
+                        State = Status.Stop;
+                        orginalTimeInterval = Game1.gameTimeInterval;
+                        if (ModConfig.Instance.AsyncThreshold > 0)
+                        {
+                            //计算需要遍历的量，因为每tick都要遍历如果如果过多就用Task
+                            int Count = Game1.currentLocation.TemporarySprites.Count + Game1.getOnlineFarmers().Count * 3 + Game1.locations.Count;
+                            foreach (GameLocation location in Game1.locations)
+                                Count += location.characters.Count;
+                            foreach (var farmer in Game1.getOnlineFarmers())
+                                Count += farmer.currentLocation.characters.Count;
+                            Async = Count > ModConfig.Instance.AsyncThreshold;
+                        }
+                        return true;
                     }
-                    return false;
                 }
-                else
-                {
-                    State = Status.Stop;
-                    orginalTimeInterval = Game1.gameTimeInterval;
-                    if (ModConfig.Instance.AsyncThreshold > 0)
-                    {
-                        //计算需要遍历的量，因为每tick都要遍历如果如果过多就用Task
-                        int Count = Game1.currentLocation.TemporarySprites.Count + Game1.getOnlineFarmers().Count * 3 + Game1.locations.Count;
-                        foreach (GameLocation location in Game1.locations)
-                            Count += location.characters.Count;
-                        foreach (var farmer in Game1.getOnlineFarmers())
-                            Count += farmer.currentLocation.characters.Count;
-                        Async = Count > ModConfig.Instance.AsyncThreshold;
-                    }
-                    return true;
-                }
+                catch (NullReferenceException) { return false; }
             }
         }
 
@@ -145,7 +154,7 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (Character character in farmer.currentLocation?.characters)
+                foreach (Character character in farmer?.currentLocation?.characters)
                 {
                     if (character != null && character is Monster monster && monster.Speed == 0 && orginalMonsterSpeed.TryGetValue(monster.getName(), out int speed))
                     {
@@ -163,7 +172,7 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (Character character in farmer.currentLocation?.characters)
+                foreach (Character character in farmer?.currentLocation?.characters)
                 {
                     if (character != null && character is Monster monster)
                     {
@@ -187,7 +196,7 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (var sprites in farmer.currentLocation?.TemporarySprites)
+                foreach (var sprites in farmer?.currentLocation?.TemporarySprites)
                 {
                     if (sprites != null && sprites.bombRadius > 0)
                         sprites.paused = false;
@@ -202,9 +211,9 @@ namespace HaltEventTime
         {
             foreach (var farmer in Game1.getOnlineFarmers())
             {
-                foreach (var sprites in farmer.currentLocation?.TemporarySprites)
+                foreach (var sprites in farmer?.currentLocation?.TemporarySprites)
                 {
-                    if (sprites.bombRadius > 0)
+                    if (sprites != null && sprites.bombRadius > 0)
                         sprites.paused = true;
                 }
             }

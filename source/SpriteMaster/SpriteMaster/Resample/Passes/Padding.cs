@@ -9,20 +9,20 @@
 *************************************************/
 
 using LinqFasterer;
-using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
 using SpriteMaster.Types;
+using SpriteMaster.Types.Spans;
 using System;
 
 namespace SpriteMaster.Resample.Passes;
 
-static class Padding {
-	private static readonly Color16 padConstant = Color16.Zero;
+internal static class Padding {
+	private static readonly Color16 PadConstant = Color16.Zero;
 
 	private record struct PaddingParameters(Vector2I PaddedSize, int ExpectedPadding, Vector2B HasPaddingX, Vector2B HasPaddingY, Vector2B SolidEdgeX, Vector2B SolidEdgeY);
 
-	private static bool GetPaddingParameters(in Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Passes.Analysis.LegacyResults analysis, out PaddingParameters parameters) {
+	private static bool GetPaddingParameters(Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Analysis.LegacyResults analysis, out PaddingParameters parameters) {
 		if (!Config.Resample.Padding.Enabled) {
 			parameters = new();
 			return false;
@@ -126,7 +126,7 @@ static class Padding {
 		return true;
 	}
 
-	internal static Span<Color16> Apply(ReadOnlySpan<Color16> data, in Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Passes.Analysis.LegacyResults analysis, out PaddingQuad padding, out Vector2I paddedSize) {
+	internal static Span<Color16> Apply(ReadOnlySpan<Color16> data, Vector2I spriteSize, uint scale, SpriteInfo input, bool forcePadding, in Analysis.LegacyResults analysis, out PaddingQuad padding, out Vector2I paddedSize) {
 		if (!GetPaddingParameters(spriteSize, scale, input, forcePadding, analysis, out var parameters)) {
 			padding = PaddingQuad.Zero;
 			paddedSize = spriteSize;
@@ -140,7 +140,7 @@ static class Padding {
 
 		// The actual padding logic. If we get to this point, we are actually performing padding.
 
-		var paddedData = SpanExt.MakeUninitialized<Color16>(paddedSpriteSize.Area);
+		var paddedData = SpanExt.Make<Color16>(paddedSpriteSize.Area);
 		paddedData.Clear();
 
 		{
@@ -150,7 +150,7 @@ static class Padding {
 				for (int i = 0; i < expectedPadding; ++i) {
 					var strideOffset = y * paddedSpriteSize.Width;
 					for (int x = 0; x < paddedSpriteSize.Width; ++x) {
-						data[strideOffset + x] = padConstant;
+						data[strideOffset + x] = PadConstant;
 					}
 					++y;
 				}
@@ -158,7 +158,7 @@ static class Padding {
 
 			void WritePaddingX(Span<Color16> data, ref int xOffset) {
 				for (int x = 0; x < expectedPadding; ++x) {
-					data[xOffset++] = padConstant;
+					data[xOffset++] = PadConstant;
 				}
 			}
 
@@ -194,11 +194,9 @@ static class Padding {
 			for (int y = 0; y < spriteSize.Height; ++y) {
 				int yOffset = (y + startingYOffset) * paddedSpriteSize.Width;
 
-				int xSrcOffset = startingXOffset;
-
-				var src = paddedData[yOffset + xSrcOffset];
+				var src = paddedData[yOffset + startingXOffset];
 				src.A = 128;
-				paddedData[yOffset + xSrcOffset - 1] = src;
+				paddedData[yOffset + startingXOffset - 1] = src;
 			}
 		}
 		if (parameters.HasPaddingX.Y && parameters.SolidEdgeX.Y) {
@@ -259,7 +257,7 @@ static class Padding {
 		return paddedData;
 	}
 
-	internal static bool IsBlacklisted(in Bounds bounds, Texture2D reference) {
+	internal static bool IsBlacklisted(Bounds bounds, XTexture2D reference) {
 		var normalizedName = reference.NormalizedName();
 
 		foreach (var blacklistedRef in Config.Resample.Padding.BlackListS) {

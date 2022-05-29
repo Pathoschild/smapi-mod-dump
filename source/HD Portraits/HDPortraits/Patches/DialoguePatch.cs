@@ -19,9 +19,6 @@ namespace HDPortraits.Patches
     [HarmonyPatch]
     class DialoguePatch
     {
-
-        internal static FieldInfo islandwear = typeof(NPC).FieldNamed("isWearingIslandAttire");
-
         [HarmonyPatch(typeof(Dialogue),"exitCurrentDialogue")]
         [HarmonyPostfix]
         public static void Cleanup()
@@ -42,14 +39,16 @@ namespace HDPortraits.Patches
                     PortraitDrawPatch.lastLoaded.Value.Add(meta);
                     PortraitDrawPatch.currentMeta.Value = meta;
                     meta.Reload();
+                } else
+                {
+                    PortraitDrawPatch.currentMeta.Value = null;
                 }
             }
         }
 
-        [HarmonyPatch(typeof(DialogueBox), "closeDialogue")]
-        [HarmonyPostfix]
         public static void Finish()
         {
+            Cleanup();
             PortraitDrawPatch.overrideName.Value = null;
             PortraitDrawPatch.currentMeta.Value = null;
         }

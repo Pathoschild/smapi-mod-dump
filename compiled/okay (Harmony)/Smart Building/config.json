@@ -12,6 +12,7 @@
   "CrabPotsInAnyWaterTile": false,
   "EnableReplacingFences": false,
   "EnableReplacingFloors": false,
+  "LessRestrictiveObjectPlacement": false,
   "LessRestrictiveFloorPlacement": false,
   "LessRestrictiveFurniturePlacement": false,
   "LessRestrictiveBedPlacement": false,

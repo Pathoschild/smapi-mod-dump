@@ -58,7 +58,7 @@ namespace LoveOfCooking
 
 		internal static void InvokeOnCookingExperienceGained(int experienceGained)
 		{
-			if (CookingExperienceGained == null)
+			if (CookingExperienceGained is null)
 				return;
 
 			CookingExperienceGained.Invoke(
@@ -68,7 +68,7 @@ namespace LoveOfCooking
 
 		internal static void InvokeOnBushShaken(CustomBush bush)
 		{
-			if (BushShaken == null)
+			if (BushShaken is null)
 				return;
 
 			BushShaken.Invoke(
@@ -78,7 +78,7 @@ namespace LoveOfCooking
 
 		internal static void InvokeOnBushToolUsed(CustomBush bush, Tool tool, int explosion, Vector2 tileLocation, GameLocation location)
 		{
-			if (BushToolUsed == null)
+			if (BushToolUsed is null)
 				return;
 
 			BushToolUsed.Invoke(

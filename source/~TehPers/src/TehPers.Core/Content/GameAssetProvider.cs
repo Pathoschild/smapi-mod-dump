@@ -17,16 +17,17 @@ namespace TehPers.Core.Content
 {
     public class GameAssetProvider : IAssetProvider
     {
-        private readonly IModHelper helper;
+        private readonly IGameContentHelper contentHelper;
 
         public GameAssetProvider(IModHelper helper)
         {
-            this.helper = helper ?? throw new ArgumentNullException(nameof(helper));
+            this.contentHelper = helper.GameContent;
         }
 
         public T Load<T>(string path)
+            where T : notnull
         {
-            return this.helper.Content.Load<T>(path, ContentSource.GameContent);
+            return this.contentHelper.Load<T>(path);
         }
 
         public Stream Open(string path, FileMode mode)

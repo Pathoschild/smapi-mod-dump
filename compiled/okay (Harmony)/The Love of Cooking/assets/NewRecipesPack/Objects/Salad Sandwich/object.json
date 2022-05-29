@@ -9,7 +9,27 @@
     "EdibleBuffs": null,
     "Price": 195,
     "IsColored": false,
-    "Recipe": null,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+            {
+                "Object": 216, // Bread
+                "Count": 1
+            },
+            {
+                "Object": 196, // Salad
+                "Count": 1
+            },
+            {
+                "Object": 256, // Tomato
+                "Count": 1
+            }
+        ],
+        "CanPurchase": false,
+        "PurchaseFrom": "Gus",
+        "PurchasePrice": 500,
+        "PurchaseRequirements": null
+    },
     "CanPurchase": false,
     "PurchaseFrom": "Gus",
     "PurchasePrice": 405,

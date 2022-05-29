@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -21,5 +21,5 @@ internal interface IPatch
 {
     /// <summary>Apply internally-defined Harmony patches.</summary>
     /// <param name="harmony">The Harmony instance for this mod.</param>
-    public void Apply(Harmony harmony);
+    void Apply(Harmony harmony);
 }

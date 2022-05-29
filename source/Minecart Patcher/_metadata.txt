@@ -6,9 +6,9 @@ mods:
    Minecart Patcher
 
 latest commit:
-   commit c7f1f1b3eb0429082dc013cca088022ef41c5411
+   commit 422b349ab33d906b629ff5b20810bd8f044b48ab
    Author: bwdy <47769190+bwdy@users.noreply.github.com>
-   Date:   Wed Apr 27 12:23:29 2022 -0800
+   Date:   Mon May 16 22:02:39 2022 -0800
    
-       fix minecart tile ids
+       Fix pagination (again), existence testing for destinations
    

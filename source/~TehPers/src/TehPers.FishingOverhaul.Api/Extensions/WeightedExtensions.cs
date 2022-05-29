@@ -30,7 +30,7 @@ namespace TehPers.FishingOverhaul.Api.Extensions
         {
             _ = source ?? throw new ArgumentNullException(nameof(source));
 
-            var enumeratedSource = source as T[] ?? source.ToArray();
+            var enumeratedSource = source as List<T> ?? source.ToList();
             return enumeratedSource.Any() ? enumeratedSource.Choose(rand) : default;
         }
 
@@ -45,7 +45,7 @@ namespace TehPers.FishingOverhaul.Api.Extensions
             _ = rand ?? throw new ArgumentNullException(nameof(rand));
             _ = source ?? throw new ArgumentNullException(nameof(source));
 
-            var sourceArray = source as T[] ?? source.ToArray();
+            var sourceArray = source as List<T> ?? source.ToList();
             if (!sourceArray.Any())
             {
                 throw new ArgumentException("Source must contain entries", nameof(source));
@@ -104,8 +104,7 @@ namespace TehPers.FishingOverhaul.Api.Extensions
         )
         {
             return source
-                .Select(e => new WeightedValue<TEntry>(elementSelector(e), weightSelector(e)))
-                .ToArray();
+                .Select(e => new WeightedValue<TEntry>(elementSelector(e), weightSelector(e)));
         }
 
         /// <summary>Normalizes the weights of each item and returns a new <see cref="IEnumerable{T}"/> with the normalized items.</summary>
@@ -119,7 +118,7 @@ namespace TehPers.FishingOverhaul.Api.Extensions
         )
             where T : IWeighted
         {
-            var enumeratedSource = source as T[] ?? source.ToArray();
+            var enumeratedSource = source as List<T> ?? source.ToList();
             var totalWeight = enumeratedSource.SumWeights();
             if (Math.Abs(totalWeight) < double.Epsilon)
             {
@@ -130,8 +129,7 @@ namespace TehPers.FishingOverhaul.Api.Extensions
             }
 
             return enumeratedSource
-                .Select(e => new WeightedValue<T>(e, weight * e.Weight / totalWeight))
-                .ToArray();
+                .Select(e => new WeightedValue<T>(e, weight * e.Weight / totalWeight));
         }
 
         /// <summary>Normalizes the weights of each <see cref="IWeightedValue{T}"/> and returns a new <see cref="IEnumerable{T}"/> with the normalized items.</summary>
@@ -144,8 +142,8 @@ namespace TehPers.FishingOverhaul.Api.Extensions
             double weight = 1
         )
         {
-            var enumeratedSource = source as IWeightedValue<T>[] ?? source.ToArray();
-            if (enumeratedSource.Length == 0)
+            var enumeratedSource = source as List<IWeightedValue<T>> ?? source.ToList();
+            if (enumeratedSource.Count == 0)
             {
                 return enumeratedSource;
             }

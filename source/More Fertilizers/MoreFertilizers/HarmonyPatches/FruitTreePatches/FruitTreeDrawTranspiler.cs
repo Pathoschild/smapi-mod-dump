@@ -22,9 +22,31 @@ using StardewValley.TerrainFeatures;
 
 namespace MoreFertilizers.HarmonyPatches.FruitTreePatches;
 
+/// <summary>
+/// Transpilers to color fertilized fruit trees.
+/// </summary>
 [HarmonyPatch(typeof(FruitTree))]
 internal static class FruitTreeDrawTranspiler
 {
+    /// <summary>
+    /// Applies this patch to DGA.
+    /// </summary>
+    /// <param name="harmony">Harmony instance.</param>
+    internal static void ApplyDGAPatch(Harmony harmony)
+    {
+        try
+        {
+            Type dgaFruitTree = AccessTools.TypeByName("DynamicGameAssets.Game.CustomFruitTree") ?? throw new("DGA Fruit trees not found!");
+            harmony.Patch(
+                original: dgaFruitTree.InstanceMethodNamed("draw"),
+                transpiler: new HarmonyMethod(typeof(FruitTreeDrawTranspiler), nameof(Transpiler)));
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling DGA. Integration may not work correctly.\n\n{ex}", LogLevel.Error);
+        }
+    }
+
     [MethodImpl(TKConstants.Hot)]
     private static Color ReplaceColorIfNeeded(Color prevcolor, FruitTree tree)
     {
@@ -66,6 +88,8 @@ internal static class FruitTreeDrawTranspiler
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, typeof(FruitTreeDrawTranspiler).StaticMethodNamed(nameof(FruitTreeDrawTranspiler.ReplaceColorIfNeeded))),
             });
+
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)

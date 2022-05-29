@@ -16,7 +16,7 @@
       "Target": "{{PeacefulEnd.CustomCompanions/Companions:ExampleAuthor.ExamplePack.ExampleAlternativeWanderWalkingCow}}",
       "Entries": {
         "Companion": {
-          "InspectionDialogue": "{{Time}}",
+          "InspectionDialogue": "example.translation.string_{{Random: 1,2,3 |key={{Time}} }}",
           "Colors": [
             [
               255,

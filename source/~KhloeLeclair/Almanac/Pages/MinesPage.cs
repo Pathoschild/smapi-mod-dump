@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System.Collections.Generic;
 
 using Leclair.Stardew.Common;
@@ -22,225 +24,226 @@ using StardewValley;
 
 using Leclair.Stardew.Almanac.Menus;
 
-namespace Leclair.Stardew.Almanac.Pages {
-	public class MinesPage : BasePage<BaseState>, ICalendarPage {
+namespace Leclair.Stardew.Almanac.Pages;
 
-		private readonly ulong Seed;
+public class MinesPage : BasePage<BaseState>, ICalendarPage {
 
-		private Dictionary<LevelType, SpriteInfo> Sprites;
-		private Dictionary<LevelType, List<int>>[] Levels;
-		private IFlowNode[] Nodes;
+	private readonly ulong Seed;
 
-		#region Lifecycle
+	private readonly Dictionary<LevelType, SpriteInfo?> Sprites;
 
-		public static MinesPage GetPage(AlmanacMenu menu, ModEntry mod) {
-			if (!mod.Config.ShowMines || !mod.HasMagic(Game1.player))
-				return null;
+	private Dictionary<LevelType, List<int>>[]? Levels;
+	private IFlowNode[]? Nodes;
 
-			return new(menu, mod);
-		}
+	#region Lifecycle
 
-		public MinesPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
-			Seed = Mod.GetBaseWorldSeed();
+	public static MinesPage? GetPage(AlmanacMenu menu, ModEntry mod) {
+		if (!mod.Config.ShowMines || !mod.HasMagic(Game1.player))
+			return null;
 
-			Sprites = new();
+		return new(menu, mod);
+	}
 
-			Sprites[LevelType.Mushroom] = SpriteHelper.GetSprite(
-				new Object(420, 1) // Red Mushroom
-			);
+	public MinesPage(AlmanacMenu menu, ModEntry mod) : base(menu, mod) {
+		Seed = Mod.GetBaseWorldSeed();
 
-			Sprites[LevelType.InfestedMonster] = SpriteHelper.GetSprite(
-				new StardewValley.Tools.MeleeWeapon(0) // Rusty Sword
-			);
+		Sprites = new();
 
-			Sprites[LevelType.InfestedSlime] = SpriteHelper.GetSprite(
-				new Object(766, 1) // Slime
-			);
+		Sprites[LevelType.Mushroom] = SpriteHelper.GetSprite(
+			InventoryHelper.CreateItemById("(O)420", 1) // Red Mushroom
+		);
 
-			Sprites[LevelType.Quarry] = new SpriteInfo(
-				Mod.Helper.GameContent.Load<Texture2D>("Characters/Monsters/Haunted Skull"),
-				new Rectangle(0, 0, 16, 16)
-			);
+		Sprites[LevelType.InfestedMonster] = SpriteHelper.GetSprite(
+			InventoryHelper.CreateItemById("(W)0", 1) // Rusty Sword
+		);
 
-			Sprites[LevelType.InfestedQuarry] = new SpriteInfo(
-				Mod.Helper.GameContent.Load<Texture2D>("Characters/Monsters/Haunted Skull"),
-				new Rectangle(0, 0, 16, 16)
-			);
+		Sprites[LevelType.InfestedSlime] = SpriteHelper.GetSprite(
+			InventoryHelper.CreateItemById("(O)766", 1) // Slime
+		);
 
-			Sprites[LevelType.Dino] = SpriteHelper.GetSprite(
-				new Object(107, 1) // Dino Egg
-			);
+		Sprites[LevelType.Quarry] = new SpriteInfo(
+			Mod.Helper.GameContent.Load<Texture2D>("Characters/Monsters/Haunted Skull"),
+			new Rectangle(0, 0, 16, 16)
+		);
 
-			Update();
-		}
+		Sprites[LevelType.InfestedQuarry] = new SpriteInfo(
+			Mod.Helper.GameContent.Load<Texture2D>("Characters/Monsters/Haunted Skull"),
+			new Rectangle(0, 0, 16, 16)
+		);
 
-		#endregion
+		Sprites[LevelType.Dino] = SpriteHelper.GetSprite(
+			InventoryHelper.CreateItemById("(O)107", 1) // Dino Egg
+		);
 
-		#region Logic
+		Update();
+	}
 
-		public override void Update() {
-			base.Update();
+	#endregion
 
-			Levels = new Dictionary<LevelType, List<int>>[ModEntry.DaysPerMonth];
-			Nodes = new IFlowNode[ModEntry.DaysPerMonth];
-			WorldDate date = new(Menu.Date);
+	#region Logic
 
-			FlowBuilder builder = new();
+	public override void Update() {
+		base.Update();
 
-			builder.FormatText(
-				I18n.Page_Mines_About(Utility.getSeasonNameFromNumber(date.SeasonIndex))
-			);
+		Levels = new Dictionary<LevelType, List<int>>[ModEntry.DaysPerMonth];
+		Nodes = new IFlowNode[ModEntry.DaysPerMonth];
+		WorldDate date = new(Menu.Date);
 
-			for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
-				date.DayOfMonth = day;
-				int days = date.TotalDays;
-				Levels[day - 1] = new();
+		FlowBuilder builder = new();
 
-				// Normal Mines
-				for(int floor = 1; floor <= 120; floor++) {
-					LevelType type = MineHelper.GetLevelType(
-						floor: floor,
-						seed: Seed,
-						date: days
-					);
+		builder.FormatText(
+			I18n.Page_Mines_About(Utility.getSeasonNameFromNumber(date.SeasonIndex))
+		);
 
-					if (type == LevelType.None)
-						continue;
+		for (int day = 1; day <= ModEntry.DaysPerMonth; day++) {
+			date.DayOfMonth = day;
+			int days = date.TotalDays;
+			Levels[day - 1] = new();
 
-					if (! Levels[day-1].ContainsKey(type))
-						Levels[day-1].Add(type, new List<int>());
-
-					Levels[day - 1][type].Add(floor);
-				}
-
-				// Dinosaurs
-				for (int floor = 121; floor <= 600; floor++) {
-					LevelType type = MineHelper.GetLevelType(
-						floor: floor,
-						seed: Seed,
-						date: days
-					);
-
-					if (type != LevelType.Dino)
-						continue;
-
-					if (!Levels[day - 1].ContainsKey(type))
-						Levels[day - 1].Add(type, new List<int>());
-
-					Levels[day - 1][type].Add(floor - 120);
-				}
-
-				SDate sdate = new(day, date.Season);
-
-				builder.Text("\n\n");
-
-				var node = new TextNode(
-					$"{sdate.ToLocaleString(withYear: false)}\n",
-					new TextStyle(font: Game1.dialogueFont),
-					onClick: (_,_,_) => false
+			// Normal Mines
+			for(int floor = 1; floor <= 120; floor++) {
+				LevelType type = MineHelper.GetLevelType(
+					floor: floor,
+					seed: Seed,
+					date: days
 				);
 
-				Nodes[day - 1] = node;
-				builder.Add(node);
-
-				bool fline = true;
-
-				foreach (var entry in Levels[day - 1]) {
-					string key = $"page.mines.type.{entry.Key}";
-					string floors = string.Join(", ", entry.Value);
-
-					if (!fline)
-						builder.Text("\n");
-					else
-						fline = false;
-
-					if (Sprites != null && Sprites.TryGetValue(entry.Key, out SpriteInfo sprite))
-						builder.Sprite(Sprites[entry.Key], 2);
-
-					builder
-						.FormatText($" {Mod.Helper.Translation.Get(key)}: ", shadow: false);
-
-					builder.Text(
-						string.Join(", ", entry.Value),
-						color: Color.White * 0.75f
-					);
-				}
-			}
-
-			SetRightFlow(builder, 4);
-		}
-
-		#endregion
-
-		#region ITab
-
-		public override int SortKey => 55;
-		public override string TabSimpleTooltip => I18n.Page_Mines();
-		public override Texture2D TabTexture => Game1.mouseCursors;
-		public override Rectangle? TabSource => new(30, 428, 10, 10);
-
-		#endregion
-
-		#region IAlmanacPage
-
-		public override bool IsMagic => true;
-
-		#endregion
-
-		#region ICalendarPage
-
-		public bool ShouldDimPastCells => true;
-		public bool ShouldHighlightToday => true;
-
-		public void DrawUnderCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
-			if (Levels?[date.DayOfMonth - 1] is not Dictionary<LevelType, List<int>> data)
-				return;
-
-			int x = bounds.X + 4;
-			int y = bounds.Y + 20 + 4;
-
-			foreach(var entry in data) {
-				Sprites.TryGetValue(entry.Key, out SpriteInfo sprite);
-				if (sprite == null)
+				if (type == LevelType.None)
 					continue;
 
-				if (entry.Key == LevelType.Dino)
-					y = bounds.Y + bounds.Height - (16 + 4);
+				if (! Levels[day-1].ContainsKey(type))
+					Levels[day-1].Add(type, new List<int>());
 
-				sprite.Draw(b, new Vector2(x, y), 1);
+				Levels[day - 1][type].Add(floor);
+			}
 
-				Utility.drawTinyDigits(entry.Value[0], b, new Vector2(x + 16 + 4, y), 2, 1, Color.White);
+			// Dinosaurs
+			for (int floor = 121; floor <= 600; floor++) {
+				LevelType type = MineHelper.GetLevelType(
+					floor: floor,
+					seed: Seed,
+					date: days
+				);
 
-				y += 16 + 4;
-				if ((y + 16 + 4) > (bounds.Y + bounds.Height))
-					break;
+				if (type != LevelType.Dino)
+					continue;
+
+				if (!Levels[day - 1].ContainsKey(type))
+					Levels[day - 1].Add(type, new List<int>());
+
+				Levels[day - 1][type].Add(floor - 120);
+			}
+
+			SDate sdate = new(day, date.Season);
+
+			builder.Text("\n\n");
+
+			var node = new TextNode(
+				$"{sdate.ToLocaleString(withYear: false)}\n",
+				new TextStyle(font: Game1.dialogueFont),
+				onClick: (_,_,_) => false
+			);
+
+			Nodes[day - 1] = node;
+			builder.Add(node);
+
+			bool fline = true;
+
+			foreach (var entry in Levels[day - 1]) {
+				string key = $"page.mines.type.{entry.Key}";
+				string floors = string.Join(", ", entry.Value);
+
+				if (!fline)
+					builder.Text("\n");
+				else
+					fline = false;
+
+				if (Sprites != null && Sprites.TryGetValue(entry.Key, out SpriteInfo? sprite) && sprite != null)
+					builder.Sprite(sprite, 2);
+
+				builder
+					.FormatText($" {Mod.Helper.Translation.Get(key)}: ", shadow: false);
+
+				builder.Text(
+					string.Join(", ", entry.Value),
+					color: Color.White * 0.75f
+				);
 			}
 		}
 
-		public void DrawOverCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
-			
+		SetRightFlow(builder, 4);
+	}
 
+	#endregion
+
+	#region ITab
+
+	public override int SortKey => 55;
+	public override string TabSimpleTooltip => I18n.Page_Mines();
+	public override Texture2D TabTexture => Game1.mouseCursors;
+	public override Rectangle? TabSource => new(30, 428, 10, 10);
+
+	#endregion
+
+	#region IAlmanacPage
+
+	public override bool IsMagic => true;
+
+	#endregion
+
+	#region ICalendarPage
+
+	public bool ShouldDimPastCells => true;
+	public bool ShouldHighlightToday => true;
+
+	public void DrawUnderCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
+		if (Levels?[date.DayOfMonth - 1] is not Dictionary<LevelType, List<int>> data)
+			return;
+
+		int x = bounds.X + 4;
+		int y = bounds.Y + 20 + 4;
+
+		foreach(var entry in data) {
+			Sprites.TryGetValue(entry.Key, out SpriteInfo? sprite);
+			if (sprite == null)
+				continue;
+
+			if (entry.Key == LevelType.Dino)
+				y = bounds.Y + bounds.Height - (16 + 4);
+
+			sprite.Draw(b, new Vector2(x, y), 1);
+
+			Utility.drawTinyDigits(entry.Value[0], b, new Vector2(x + 16 + 4, y), 2, 1, Color.White);
+
+			y += 16 + 4;
+			if ((y + 16 + 4) > (bounds.Y + bounds.Height))
+				break;
 		}
+	}
 
-		public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
-			int day = date.DayOfMonth;
-			if (Nodes?[day - 1] is IFlowNode node && Menu.ScrollRightFlow(node)) {
-				Game1.playSound("shiny4");
-				return true;
-			}
-
-			return false;
-		}
-
-		public bool ReceiveCellRightClick(int x, int y, WorldDate date, Rectangle bounds) {
-			return false;
-		}
-
-		public void PerformCellHover(int x, int y, WorldDate date, Rectangle bounds) {
-			
-		}
-
-		#endregion
+	public void DrawOverCell(SpriteBatch b, WorldDate date, Rectangle bounds) {
+		
 
 	}
+
+	public bool ReceiveCellLeftClick(int x, int y, WorldDate date, Rectangle bounds) {
+		int day = date.DayOfMonth;
+		if (Nodes?[day - 1] is IFlowNode node && Menu.ScrollRightFlow(node)) {
+			Game1.playSound("shiny4");
+			return true;
+		}
+
+		return false;
+	}
+
+	public bool ReceiveCellRightClick(int x, int y, WorldDate date, Rectangle bounds) {
+		return false;
+	}
+
+	public void PerformCellHover(int x, int y, WorldDate date, Rectangle bounds) {
+		
+	}
+
+	#endregion
+
 }

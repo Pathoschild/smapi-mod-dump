@@ -14,4 +14,8 @@
 	"gmcm.coal-amount-description": "启动熔炉所需要的煤炭数量",
 	"gmcm.instant-smelting-label": "即时熔炼",
 	"gmcm.instant-smelting-description": "启用时, 熔炼会立刻完成",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

@@ -207,5 +207,11 @@
 	"category.food.mining": "Mining and Magnetism",
 	"category.food.fishing": "Fishing",
 	"category.food.combat": "Combat",
-	"category.food.other": "Luck, Speed, and Others"
+	"category.food.other": "Luck, Speed, and Others",
+
+	// Currencies
+	"currency.gold": "Gold",
+	"currency.festival-points": "Points",
+	"currency.club-coins": "Club Coins",
+	"currency.qi-gems": "Qi Gems"
 }

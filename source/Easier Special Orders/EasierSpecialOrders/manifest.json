@@ -12,8 +12,9 @@
   "Name": "Easier Special Orders",
   "Author": "TheMightyAmondee",
   "Description": "Removes collection requirements from two part special orders, lowers requirements for Qi challenges.",
-  "Version": "1.0.0",
+  "Version": "1.0.3",
   "UniqueID": "TheMightyAmondee.EasierSpecialOrders",
   "EntryDll": "EasierSpecialOrders.dll",
-  "UpdateKeys": ["Nexus:8432"]
+  "MinimumApiVersion":"3.14.0",
+  "UpdateKeys": ["Nexus:8342"]
 }

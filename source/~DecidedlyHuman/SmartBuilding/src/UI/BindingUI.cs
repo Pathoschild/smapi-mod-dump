@@ -16,7 +16,7 @@ using StardewValley.Menus;
 
 namespace SmartBuilding.UI
 {
-#if DEBUG
+
     public class BindingUi : IClickableMenu
     {
         private Texture2D texture;
@@ -43,5 +43,4 @@ namespace SmartBuilding.UI
             base.draw(b);
         }
     }
-#endif
 }

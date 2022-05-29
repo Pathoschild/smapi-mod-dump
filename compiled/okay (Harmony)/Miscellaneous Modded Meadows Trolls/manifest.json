@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MiscTrolls",
+  "Author": "BlaDe",
+  "Version": "1.0.0",
+  "Description": "Various trolls and easter eggs",
+  "UniqueID": "BlaDe.MiscTrolls",
+  "EntryDll": "MiscTrolls.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

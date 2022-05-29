@@ -34,8 +34,7 @@ namespace TehPers.Core.Items
 
         public StardewValleyNamespace(
             IMonitor monitor,
-            [ContentSource(ContentSource.GameContent)]
-            IAssetProvider gameAssets
+            [ContentSource(ContentSource.GameContent)] IAssetProvider gameAssets
         )
         {
             this.monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
@@ -57,7 +56,9 @@ namespace TehPers.Core.Items
         public void Reload()
         {
             this.itemFactories.Clear();
-            foreach (var (key, itemFactory) in StardewValleyNamespace.GetItemFactories(this.gameAssets))
+            foreach (var (key, itemFactory) in StardewValleyNamespace.GetItemFactories(
+                         this.gameAssets
+                     ))
             {
                 if (!this.itemFactories.TryAdd(key, itemFactory))
                 {
@@ -130,7 +131,8 @@ namespace TehPers.Core.Items
 
             // Clothing
             // TODO: dynamic clothing?
-            var clothingInformation = assetProvider.Load<Dictionary<int, string>>(@"Data\ClothingInformation");
+            var clothingInformation =
+                assetProvider.Load<Dictionary<int, string>>(@"Data\ClothingInformation");
             var clothingIds = clothingInformation.Keys.ToHashSet();
             foreach (var id in clothingIds)
             {
@@ -143,7 +145,10 @@ namespace TehPers.Core.Items
             foreach (var id in Enumerable.Range(0, 112))
             {
                 var key = NamespacedKey.SdvWallpaper(id).Key;
-                var itemFactory = new SimpleItemFactory(ItemTypes.Wallpaper, () => new Wallpaper(id));
+                var itemFactory = new SimpleItemFactory(
+                    ItemTypes.Wallpaper,
+                    () => new Wallpaper(id)
+                );
                 yield return (key, itemFactory);
             }
 
@@ -151,7 +156,10 @@ namespace TehPers.Core.Items
             foreach (var id in Enumerable.Range(0, 56))
             {
                 var key = NamespacedKey.SdvFlooring(id).Key;
-                var itemFactory = new SimpleItemFactory(ItemTypes.Flooring, () => new Wallpaper(id, true));
+                var itemFactory = new SimpleItemFactory(
+                    ItemTypes.Flooring,
+                    () => new Wallpaper(id, true)
+                );
                 yield return (key, itemFactory);
             }
 
@@ -180,7 +188,10 @@ namespace TehPers.Core.Items
                 var key = NamespacedKey.SdvWeapon(id).Key;
                 var itemFactory = id switch
                 {
-                    >= 32 and <= 34 => new SimpleItemFactory(ItemTypes.Weapon, () => new Slingshot(id)),
+                    >= 32 and <= 34 => new SimpleItemFactory(
+                        ItemTypes.Weapon,
+                        () => new Slingshot(id)
+                    ),
                     _ => new SimpleItemFactory(ItemTypes.Weapon, () => new MeleeWeapon(id)),
                 };
                 yield return (key, itemFactory);
@@ -191,7 +202,10 @@ namespace TehPers.Core.Items
             foreach (var id in furniture.Keys)
             {
                 var key = NamespacedKey.SdvFurniture(id).Key;
-                var itemFactory = new SimpleItemFactory(ItemTypes.Furniture, () => Furniture.GetFurnitureInstance(id));
+                var itemFactory = new SimpleItemFactory(
+                    ItemTypes.Furniture,
+                    () => Furniture.GetFurnitureInstance(id)
+                );
                 yield return (key, itemFactory);
             }
 
@@ -201,12 +215,16 @@ namespace TehPers.Core.Items
             foreach (var id in bigCraftablesInformation.Keys)
             {
                 var key = NamespacedKey.SdvBigCraftable(id).Key;
-                var itemFactory = new SimpleItemFactory(ItemTypes.BigCraftable, () => new SObject(Vector2.Zero, id));
+                var itemFactory = new SimpleItemFactory(
+                    ItemTypes.BigCraftable,
+                    () => new SObject(Vector2.Zero, id)
+                );
                 yield return (key, itemFactory);
             }
 
             // Objects
-            var objectInformation = assetProvider.Load<Dictionary<int, string>>(@"Data\ObjectInformation");
+            var objectInformation =
+                assetProvider.Load<Dictionary<int, string>>(@"Data\ObjectInformation");
             var secretNotes = assetProvider.Load<Dictionary<int, string>>(@"Data\SecretNotes");
             foreach (var (id, rawData) in objectInformation)
             {
@@ -215,77 +233,110 @@ namespace TehPers.Core.Items
                 {
                     // Secret notes
                     case 79:
-                    {
-                        foreach (var secretNoteId in secretNotes.Keys.Where(key => key < GameLocation.JOURNAL_INDEX))
                         {
-                            var key = NamespacedKey.SdvCustom(ItemTypes.Object, $"SecretNotes/{secretNoteId}").Key;
-                            var itemFactory = new SimpleItemFactory(
-                                ItemTypes.Object,
-                                () =>
-                                {
-                                    var note = new SObject(id, 1);
-                                    note.name += $" #{secretNoteId}";
-                                    return note;
-                                }
-                            );
-                            yield return (key, itemFactory);
-                        }
+                            foreach (var secretNoteId in secretNotes.Keys.Where(
+                                         key => key < GameLocation.JOURNAL_INDEX
+                                     ))
+                            {
+                                var key = NamespacedKey.SdvCustom(
+                                        ItemTypes.Object,
+                                        $"SecretNotes/{secretNoteId}"
+                                    )
+                                    .Key;
+                                var itemFactory = new SimpleItemFactory(
+                                    ItemTypes.Object,
+                                    () =>
+                                    {
+                                        var note = new SObject(id, 1);
+                                        note.name += $" #{secretNoteId}";
+                                        return note;
+                                    }
+                                );
+                                yield return (key, itemFactory);
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
 
                     // Journal scraps
                     case 842:
-                    {
-                        foreach (var journalId in secretNotes.Keys.Where(key => key >= GameLocation.JOURNAL_INDEX))
                         {
-                            var key = NamespacedKey.SdvCustom(ItemTypes.Object, $"Journals/{journalId - GameLocation.JOURNAL_INDEX}").Key;
-                            var itemFactory = new SimpleItemFactory(
-                                ItemTypes.Object,
-                                () =>
-                                {
-                                    var note = new SObject(id, 1);
-                                    note.name += $" #{journalId - GameLocation.JOURNAL_INDEX}";
-                                    return note;
-                                }
-                            );
-                            yield return (key, itemFactory);
-                        }
+                            foreach (var journalId in secretNotes.Keys.Where(
+                                         key => key >= GameLocation.JOURNAL_INDEX
+                                     ))
+                            {
+                                var key = NamespacedKey.SdvCustom(
+                                        ItemTypes.Object,
+                                        $"Journals/{journalId - GameLocation.JOURNAL_INDEX}"
+                                    )
+                                    .Key;
+                                var itemFactory = new SimpleItemFactory(
+                                    ItemTypes.Object,
+                                    () =>
+                                    {
+                                        var note = new SObject(id, 1);
+                                        note.name += $" #{journalId - GameLocation.JOURNAL_INDEX}";
+                                        return note;
+                                    }
+                                );
+                                yield return (key, itemFactory);
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
 
                     // Rings
                     case not 801 when data.Length >= 4 && data[3] == "Ring":
-                    {
-                        var key = NamespacedKey.SdvRing(id).Key;
-                        var itemFactory = new SimpleItemFactory(ItemTypes.Ring, () => new Ring(id));
-                        yield return (key, itemFactory);
-                        break;
-                    }
+                        {
+                            var key = NamespacedKey.SdvRing(id).Key;
+                            var itemFactory = new SimpleItemFactory(
+                                ItemTypes.Ring,
+                                () => new Ring(id)
+                            );
+                            yield return (key, itemFactory);
+                            break;
+                        }
 
                     // Roe
                     case 812:
-                    {
-                        // TODO: Variants?
-                        var key = NamespacedKey.SdvObject(id).Key;
-                        var itemFactory = new SimpleItemFactory(
-                            ItemTypes.Object,
-                            () => new ColoredObject(id, 1, Color.White)
-                        );
-                        yield return (key, itemFactory);
-                        break;
-                    }
+                        {
+                            // TODO: Variants?
+                            var key = NamespacedKey.SdvObject(id).Key;
+                            var itemFactory = new SimpleItemFactory(
+                                ItemTypes.Object,
+                                () => new ColoredObject(id, 1, Color.White)
+                            );
+                            yield return (key, itemFactory);
+                            break;
+                        }
+
+                    // Caroline's necklace
+                    case 191:
+                        {
+                            var key = NamespacedKey.SdvObject(id).Key;
+                            var itemFactory = new SimpleItemFactory(
+                                ItemTypes.Object,
+                                () => new SObject(GameLocation.CAROLINES_NECKLACE_ITEM, 1)
+                                {
+                                    questItem = {Value = true}
+                                }
+                            );
+                            yield return (key, itemFactory);
+                            break;
+                        }
 
                     // Other objects
                     default:
-                    {
-                        // TODO: Variants?
-                        var key = NamespacedKey.SdvObject(id).Key;
-                        var itemFactory = new SimpleItemFactory(ItemTypes.Object, () => new SObject(id, 1));
-                        yield return (key, itemFactory);
-                        break;
-                    }
+                        {
+                            // TODO: Variants?
+                            var key = NamespacedKey.SdvObject(id).Key;
+                            var itemFactory = new SimpleItemFactory(
+                                ItemTypes.Object,
+                                () => new SObject(id, 1)
+                            );
+                            yield return (key, itemFactory);
+                            break;
+                        }
                 }
             }
         }

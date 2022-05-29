@@ -106,7 +106,7 @@ namespace RaisedGardenBeds
 		/// <summary>
 		/// Return the translated string for a given entry in the <see cref="Translations.CommonTranslations"/> dictionary.
 		/// </summary>
-		public static string GetTranslation(string key, object[] tokens = null)
+		public static string GetTranslation(string key, object[] tokens = null, bool defaultToNull = false)
 		{
 			foreach (LocalizedContentManager.LanguageCode lc in Translations.LanguageCodesToTry)
 			{
@@ -119,7 +119,7 @@ namespace RaisedGardenBeds
 					return tokens?.Length > 0 ? string.Format(translation, tokens) : translation;
 				}
 			}
-			return key;
+			return defaultToNull ? null : key;
 		}
 
 		/// <summary>

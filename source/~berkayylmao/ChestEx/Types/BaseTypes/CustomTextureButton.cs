@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -41,17 +41,17 @@ using StardewValley;
 namespace ChestEx.Types.BaseTypes {
   internal sealed class CustomTextureButton : CustomButton {
     // Private:
-  #region Private
+    #region Private
 
     private readonly Texture2D texture;
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -64,23 +64,23 @@ namespace ChestEx.Types.BaseTypes {
       if (this.mData.mIsCursorHovering) spriteBatch.DrawHoverText(Game1.smallFont, this.mData.mHoverText, colours: this.mData.mColours, borderScale: 0.5f);
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public CustomTextureButton(Rectangle bounds, Colours colours, Texture2D texture, String hoverText,
-                               Action    onClickHandler)
+                               Action onClickHandler)
       : base(bounds, colours, "", hoverText, onClickHandler) {
       this.texture = texture;
     }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -94,6 +94,6 @@ namespace ChestEx.Types.BaseTypes {
       this.texture?.Dispose();
     }
 
-  #endregion
+    #endregion
   }
 }

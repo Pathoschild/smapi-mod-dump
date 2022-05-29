@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -43,26 +43,26 @@ using StardewValley.Objects;
 namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
   public class ChestConfigPanel : CustomClickableMenu {
     // Private:
-  #region Private
+    #region Private
 
     // Consts:
-  #region Consts
+    #region Consts
 
-    private const String CONST_MODE_HEX        = "COLOURS_HEX";
-    private const String CONST_MODE_HSV_CHEST  = "CHEST_HSV";
+    private const String CONST_MODE_HEX = "COLOURS_HEX";
+    private const String CONST_MODE_HSV_CHEST = "CHEST_HSV";
     private const String CONST_MODE_HSV_HINGES = "HINGES_HSV";
-    private const String CONST_MODE_RESET      = "COLOURS_RESET";
+    private const String CONST_MODE_RESET = "COLOURS_RESET";
 
-  #endregion
+    #endregion
 
     private readonly CustomItemGrabMenu hostMenu;
-    private          Chest              hostMenuChest => this.hostMenu.GetSourceAs<Chest>();
+    private Chest hostMenuChest => this.hostMenu.GetSourceAs<Chest>();
 
-    private          Boolean       colouringChestNeedsReset;
+    private Boolean colouringChestNeedsReset;
     private readonly ExtendedChest colouringChest;
 
-    private readonly ColouringHEXMenu      colouringHEXMenu;
-    private readonly ColouringHSVMenu      colouringHSVMenu;
+    private readonly ColouringHEXMenu colouringHEXMenu;
+    private readonly ColouringHSVMenu colouringHSVMenu;
     private readonly ColouringMenuSwitcher colouringModeSwitcher;
 
     private String activeColouringMode = CONST_MODE_HSV_CHEST;
@@ -83,9 +83,9 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
           this.colouringHEXMenu.SetVisible(true);
           break;
         case CONST_MODE_RESET:
-          this.hostMenuChest.playerChoiceColor.Value  = Color.Black;
+          this.hostMenuChest.playerChoiceColor.Value = Color.Black;
           this.colouringChest.playerChoiceColor.Value = Color.Black;
-          this.colouringChest.mHingesColour           = Color.Black;
+          this.colouringChest.mHingesColour = Color.Black;
 
           this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.hostMenuChest.GetActualColour();
           this.hostMenuChest.SetCustomConfigHingesColour(Color.Black);
@@ -100,9 +100,9 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
     private void onHEXFinalColour(Color chestColour, Color hingesColour) {
       if (this.activeColouringMode != CONST_MODE_HEX) return;
 
-      this.hostMenuChest.playerChoiceColor.Value  = chestColour;
+      this.hostMenuChest.playerChoiceColor.Value = chestColour;
       this.colouringChest.playerChoiceColor.Value = chestColour;
-      this.colouringChest.mHingesColour           = hingesColour;
+      this.colouringChest.mHingesColour = hingesColour;
 
       this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.hostMenuChest.GetActualColour();
       this.hostMenuChest.SetCustomConfigHingesColour(hingesColour);
@@ -113,7 +113,7 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
 
       switch (this.activeColouringMode) {
         case CONST_MODE_HSV_CHEST:
-          this.colouringChest.playerChoiceColor.Value             = colour;
+          this.colouringChest.playerChoiceColor.Value = colour;
           this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.colouringChest.GetActualColour();
           break;
         case CONST_MODE_HSV_HINGES:
@@ -125,7 +125,7 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
     private void onHSVFinalColour(Color colour) {
       switch (this.activeColouringMode) {
         case CONST_MODE_HSV_CHEST:
-          this.hostMenuChest.playerChoiceColor.Value              = colour;
+          this.hostMenuChest.playerChoiceColor.Value = colour;
           this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.hostMenuChest.GetActualColour();
           break;
         case CONST_MODE_HSV_HINGES:
@@ -134,13 +134,13 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
       }
     }
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     public override void SetVisible(Boolean isVisible) {
       base.SetVisible(isVisible);
@@ -163,23 +163,23 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
       if (this.colouringChestNeedsReset && (!this.colouringHEXMenu.mBounds.Contains(cursorPos) || !this.colouringHSVMenu.mBounds.Contains(cursorPos))) {
         this.colouringChestNeedsReset = false;
 
-        this.colouringChest.playerChoiceColor.Value             = this.hostMenuChest.playerChoiceColor.Value;
-        this.colouringChest.mHingesColour                       = this.hostMenuChest.GetCustomConfigHingesColour();
+        this.colouringChest.playerChoiceColor.Value = this.hostMenuChest.playerChoiceColor.Value;
+        this.colouringChest.mHingesColour = this.hostMenuChest.GetCustomConfigHingesColour();
         this.hostMenu.mSourceInventoryOptions.mBackgroundColour = this.colouringChest.GetActualColour();
       }
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public ChestConfigPanel(CustomItemGrabMenu hostMenu)
       : base(GlobalVars.gUIViewport, Colours.gTransparent) {
-      var       menu_colour                = Colours.GenerateFromMenuTiles();
-      var       player_chest               = hostMenu.GetSourceAs<Chest>();
+      var menu_colour = Colours.GenerateFromMenuTiles();
+      var player_chest = hostMenu.GetSourceAs<Chest>();
       Rectangle player_menu_content_bounds = hostMenu.inventory.GetBounds();
 
       this.colouringChest = new ExtendedChest(new Rectangle(player_menu_content_bounds.X - 24 - 64, player_menu_content_bounds.Center.Y - 32, 64, 64),
@@ -225,6 +225,6 @@ namespace ChestEx.Types.CustomTypes.ChestExMenu.Items {
       this.mComponents.AddRange(new ICustomComponent[] { chest_settings, this.colouringHEXMenu, this.colouringHSVMenu, this.colouringModeSwitcher });
     }
 
-  #endregion
+    #endregion
   }
 }

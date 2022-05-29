@@ -9,6 +9,7 @@
 *************************************************/
 
 using SpriteMaster.Configuration;
+using SpriteMaster.Hashing;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
@@ -18,85 +19,82 @@ using static SpriteMaster.Runtime;
 
 namespace SpriteMaster;
 
-static partial class Debug {
-	[DebuggerStepThrough, DebuggerHidden()]
+internal static partial class Debug {
+	[DebuggerStepThrough, DebuggerHidden]
 	internal static bool CheckLogLevel(LogLevel logLevel) => Config.Debug.Logging.LogLevel <= logLevel;
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
 		DebugWriteStr($"{caller.Format(format)}{message}", LogLevel.Trace);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
 		TraceLn(ParseException(exception), caller: caller);
 	}
 
-	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Trace<T>(string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Trace))
 			return;
 		TraceLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("DEBUG"), DebuggerStepThrough, DebuggerHidden]
 	private static void TraceLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Trace($"{message}\n", format, caller);
 	}
 
-	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Info(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Debug))
 			return;
 		DebugWriteStr($"{caller.Format(format)}{message}", LogLevel.Debug);
 	}
 
-	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Info<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Debug))
 			return;
 		InfoLn(ParseException(exception), caller: caller);
 	}
 
-	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	internal static void Info<T>(string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Debug))
 			return;
 		InfoLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden()]
+	[Conditional("TRACE"), DebuggerStepThrough, DebuggerHidden]
 	private static void InfoLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Info($"{message}\n", format, caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
-	[MethodImpl(MethodImpl.Hot)]
+	[DebuggerStepThrough, DebuggerHidden]
 	internal static void Message(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Info))
 			return;
 		DebugWriteStr($"{caller.Format(format)}{message}", LogLevel.Info);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
-	[MethodImpl(MethodImpl.Hot)]
+	[DebuggerStepThrough, DebuggerHidden]
 	internal static void Message<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Info))
 			return;
 		MessageLn(ParseException(exception));
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
-	[MethodImpl(MethodImpl.Hot)]
+	[DebuggerStepThrough, DebuggerHidden]
 	private static void MessageLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Message($"{message}\n", format, caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void Warning(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Warn))
@@ -104,7 +102,7 @@ static partial class Debug {
 		DebugWrite(LogLevel.Warn, $"{caller.Format(format)}{message}");
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void Warning<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Warn))
@@ -112,7 +110,7 @@ static partial class Debug {
 		WarningLn(ParseException(exception), caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void Warning<T>(string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Warn))
@@ -120,39 +118,38 @@ static partial class Debug {
 		WarningLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
-	[MethodImpl(MethodImpl.Hot)]
+	[DebuggerStepThrough, DebuggerHidden]
 	private static void WarningLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Warning($"{message}\n", format, caller);
 	}
 
 	private static readonly HashSet<ulong> WarningOnceSet = new();
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void WarningOnce(string message, bool format = true, [CallerMemberName] string caller = null!, [CallerFilePath] string path = null!, [CallerLineNumber] int line = 0) {
-		if (!CheckLogLevel(LogLevel.Warn) || !WarningOnceSet.Add(Hashing.Combine(caller, path, line)))
+		if (!CheckLogLevel(LogLevel.Warn) || !WarningOnceSet.Add(HashUtility.Combine(caller, path, line)))
 			return;
 		DebugWrite(LogLevel.Warn, $"{caller.Format(format)}{message}");
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void WarningOnce<T>(T exception, [CallerMemberName] string caller = null!, [CallerFilePath] string path = null!, [CallerLineNumber] int line = 0) where T : Exception {
-		if (!CheckLogLevel(LogLevel.Warn) || !WarningOnceSet.Add(Hashing.Combine(caller, path, line)))
+		if (!CheckLogLevel(LogLevel.Warn) || !WarningOnceSet.Add(HashUtility.Combine(caller, path, line)))
 			return;
 		WarningLn(ParseException(exception), caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void WarningOnce<T>(string message, T exception, [CallerMemberName] string caller = null!, [CallerFilePath] string path = null!, [CallerLineNumber] int line = 0) where T : Exception {
-		if (!CheckLogLevel(LogLevel.Warn) || !WarningOnceSet.Add(Hashing.Combine(caller, path, line)))
+		if (!CheckLogLevel(LogLevel.Warn) || !WarningOnceSet.Add(HashUtility.Combine(caller, path, line)))
 			return;
 		WarningLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void Error(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (!CheckLogLevel(LogLevel.Error))
@@ -160,7 +157,7 @@ static partial class Debug {
 		DebugWrite(LogLevel.Error, $"{caller.Format(format)}{message}");
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void Error<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Error))
@@ -168,7 +165,7 @@ static partial class Debug {
 		ErrorLn(ParseException(exception), caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void Error<T>(string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Error))
@@ -176,13 +173,13 @@ static partial class Debug {
 		ErrorLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static void ErrorLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Error($"{message}\n", format, caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
 	internal static void Fatal(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		try {
@@ -198,7 +195,7 @@ static partial class Debug {
 		}
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
 	internal static void Fatal<T>(T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Alert))
@@ -206,7 +203,7 @@ static partial class Debug {
 		FatalLn(ParseException(exception), caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
 	internal static void Fatal<T>(string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (!CheckLogLevel(LogLevel.Alert))
@@ -214,13 +211,13 @@ static partial class Debug {
 		FatalLn($"{message}\n{ParseException(exception)}", caller: caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.ErrorPath)]
 	private static void FatalLn(string message, bool format = true, [CallerMemberName] string caller = null!) {
 		Fatal($"{message}\n", format, caller);
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void ConditionalError(bool condition, string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (condition) {
@@ -236,29 +233,29 @@ static partial class Debug {
 		}
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void ConditionalError<T>(bool condition, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (condition) {
-			Error<T>(exception: exception, caller: caller);
+			Error(exception: exception, caller: caller);
 		}
 		else {
-			Trace<T>(exception: exception, caller: caller);
+			Trace(exception: exception, caller: caller);
 		}
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	internal static void ConditionalError<T>(bool condition, string message, T exception, [CallerMemberName] string caller = null!) where T : Exception {
 		if (condition) {
-			Error<T>(message: message, exception: exception, caller: caller);
+			Error(message: message, exception: exception, caller: caller);
 		}
 		else {
 			Trace(message: message, caller: caller);
 		}
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	[MethodImpl(MethodImpl.Cold)]
 	private static void ConditionalErrorLn(bool condition, string message, bool format = true, [CallerMemberName] string caller = null!) {
 		if (condition) {

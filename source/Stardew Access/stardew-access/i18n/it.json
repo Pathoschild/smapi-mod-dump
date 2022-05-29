@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/stardew-access/stardew-access
+**
+*************************************************/
+
+{
+    "warnings.health": "Avvertimento! La salute è al {{value}} percento!",
+    "warnings.stamina": "Avvertimento! La resistenza è al {{value}} percento!",
+    "warnings.time": "Avvertimento! L'ora è {{value}}",
+    "grandpastory.scene0":"Il nonno, sul letto di morte.",
+    "grandpastory.scene4":"Dipendenti che lavorano in JoJa corp.",
+    "grandpastory.scene5":"Impiegati nei loro cubicoli, alcuni di loro sembrano esausti, compreso te.",
+    "grandpastory.scene6":"Raggiungi la tua scrivania e trovi la lettera del nonno.",
+    "grandpastory.letteropen":"Fare clic con il tasto sinistro per aprire la lettera del nonno",
+    "intro.scene3":"In viaggio verso la fermata dell'autobus di Stardew Valley",
+    "intro.scene4":"Stardew Valley 0.5 miglia di distanza"
+}

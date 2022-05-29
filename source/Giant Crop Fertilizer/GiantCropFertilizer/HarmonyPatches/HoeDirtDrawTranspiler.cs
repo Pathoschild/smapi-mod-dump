@@ -10,6 +10,8 @@
 
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
+using AtraBase.Toolkit;
 using AtraBase.Toolkit.Reflection;
 using AtraShared.Utils.HarmonyHelper;
 using HarmonyLib;
@@ -23,15 +25,6 @@ namespace GiantCropFertilizer.HarmonyPatches;
 /// </summary>
 internal static class HoeDirtDrawTranspiler
 {
-
-    /// <summary>
-    /// Gets the correct color for the fertilizer.
-    /// </summary>
-    /// <param name="fertilizer">Fertilizer ID.</param>
-    /// <returns>A color.</returns>
-    public static Color GetColor(int fertilizer)
-        => ModEntry.GiantCropFertilizerID != -1 && ModEntry.GiantCropFertilizerID == fertilizer ? Color.Purple : Color.White;
-
     /// <summary>
     /// Applies patches to draw this fertilizer slightly different.
     /// </summary>
@@ -44,7 +37,15 @@ internal static class HoeDirtDrawTranspiler
             transpiler: new HarmonyMethod(typeof(HoeDirtDrawTranspiler).StaticMethodNamed(nameof(HoeDirtDrawTranspiler.Transpiler))));
     }
 
-#pragma warning disable SA1116 // Split parameters should start on line after declaration. Reviewed.
+    /// <summary>
+    /// Gets the correct color for the fertilizer.
+    /// </summary>
+    /// <param name="fertilizer">Fertilizer ID.</param>
+    /// <returns>A color.</returns>
+    [MethodImpl(TKConstants.Hot)]
+    private static Color GetColor(int fertilizer)
+        => ModEntry.GiantCropFertilizerID != -1 && ModEntry.GiantCropFertilizerID == fertilizer ? Color.Purple : Color.White;
+
     private static IEnumerable<CodeInstruction>? Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
     {
         try
@@ -67,10 +68,9 @@ internal static class HoeDirtDrawTranspiler
                 })
             .GetLabels(out IList<Label> labels, clear: true)
             .ReplaceInstruction(OpCodes.Call, typeof(HoeDirtDrawTranspiler).StaticMethodNamed(nameof(HoeDirtDrawTranspiler.GetColor)))
-            .Insert(new CodeInstruction[]
-            {
-                local,
-            }, withLabels: labels);
+            .Insert(new CodeInstruction[] { local }, withLabels: labels);
+
+            // helper.Print();
             return helper.Render();
         }
         catch (Exception ex)
@@ -79,5 +79,4 @@ internal static class HoeDirtDrawTranspiler
         }
         return null;
     }
-#pragma warning restore SA1116 // Split parameters should start on line after declaration
 }

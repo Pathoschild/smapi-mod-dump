@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-//#define THEME_MANAGER_PRE_314
-
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -20,6 +19,7 @@ using HarmonyLib;
 
 using Leclair.Stardew.Common.Integrations.GenericModConfigMenu;
 using Leclair.Stardew.Common.Events;
+using Leclair.Stardew.Common.UI;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,6 +29,7 @@ using StardewValley.Menus;
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Toolkit.Serialization;
 
 namespace Leclair.Stardew.ThemeManager;
 
@@ -43,16 +44,19 @@ public class ModEntry : ModSubscriber {
 
 	internal Harmony? Harmony;
 	internal GMCMIntegration<ModConfig, ModEntry>? intGMCM;
+	internal Integrations.ContentPatcher.CPIntegration? intCP;
 
 	internal bool ConfigStale = false;
+
+	internal JsonHelper? JsonHelper;
 
 	internal readonly Dictionary<IManifest, IContentPack> ContentPacks = new();
 	internal readonly Dictionary<string, Func<object>> LoadingAssets = new();
 	internal readonly Dictionary<IManifest, (Type, IThemeManager)> Managers = new();
 
-#if THEME_MANAGER_PRE_314
-	internal ThemeAssetLoader? Loader;
-#endif
+	internal ThemeManager<Models.BaseTheme>? BaseThemeManager;
+
+	internal Models.BaseTheme? BaseTheme;
 
 	#region Construction
 
@@ -60,22 +64,58 @@ public class ModEntry : ModSubscriber {
 		base.Entry(helper);
 
 		Instance = this;
-		API = new ModAPI(this);
 
 		// Harmony
 		Harmony = new Harmony(ModManifest.UniqueID);
 
+		Patches.Billboard_Patches.Patch(this);
+		// TODO: BobberBar
+		Patches.CarpenterMenu_Patches.Patch(this);
+		Patches.CharacterCustomization_Patches.Patch(this);
+		Patches.CoopMenu_Patches.Patch(this);
+		Patches.DayTimeMoneyBox_Patches.Patch(this);
+		// TODO: DigitEntryMenu
+		Patches.ExitPage_Patches.Patch(this);
+		Patches.ForgeMenu_Patches.Patch(this);
+		Patches.IClickableMenu_Patches.Patch(this);
+		Patches.LetterViewerMenu_Patches.Patch(this);
+		Patches.LevelUpMenu_Patches.Patch(this);
+		Patches.LoadGameMenu_Patches.Patch(this);
+		Patches.MineElevatorMenu_Patches.Patch(this);
+		Patches.MoneyDial_Patches.Patch(this);
+		// TODO: MuseumMenu
+		// TODO: NumberSelectionMenu
+		Patches.OptionsDropDown_Patches.Patch(this);
+		Patches.QuestLog_Patches.Patch(this);
+		Patches.ShopMenu_Patches.Patch(this);
+		Patches.SkillsPage_Patches.Patch(this);
+		Patches.SpriteBatch_Patches.Patch(this);
+		Patches.SpriteText_Patches.Patch(this);
+		Patches.TutorialMenu_Patches.Patch(this);
+		Patches.Utility_Patches.Patch(this);
+
 		// Read Config
 		Config = Helper.ReadConfig<ModConfig>();
+		Patches.SpriteBatch_Patches.AlignText = Config.AlignText;
 
 		// I18n
 		I18n.Init(Helper.Translation);
 
-		// Asset Loader
-		#if THEME_MANAGER_PRE_314
-		Loader = new ThemeAssetLoader(this);
-		Helper.Content.AssetLoaders.Add(Loader);
-		#endif
+		// Base Theme
+		BaseTheme = Models.BaseTheme.GetDefaultTheme();
+		BaseThemeManager = new ThemeManager<Models.BaseTheme>(
+			mod: this,
+			other: ModManifest,
+			selectedThemeId: Config.StardewTheme ?? "automatic",
+			manifestKey: "stardew:theme",
+			defaultTheme: BaseTheme
+		);
+
+		BaseThemeManager.ThemeChanged += OnStardewThemeChanged;
+		BaseThemeManager.Discover();
+
+		// API
+		API = new ModAPI(this);
 	}
 
 	public override object GetApi() {
@@ -88,10 +128,12 @@ public class ModEntry : ModSubscriber {
 
 	internal void ResetConfig() {
 		Config = new ModConfig();
+		Patches.SpriteBatch_Patches.AlignText = Config.AlignText;
 	}
 
 	internal void SaveConfig() {
 		Helper.WriteConfig(Config);
+		Patches.SpriteBatch_Patches.AlignText = Config.AlignText;
 	}
 
 	[MemberNotNullWhen(true, nameof(intGMCM))]
@@ -117,12 +159,25 @@ public class ModEntry : ModSubscriber {
 		intGMCM.Unregister();
 		intGMCM.Register(true);
 
+		var choices = BaseThemeManager!.GetThemeChoiceMethods();
+
+		intGMCM.AddChoice(
+			name: I18n.Setting_GameTheme,
+			tooltip: I18n.Setting_GameTheme_Tip,
+			get: c => c.StardewTheme,
+			set: (c,v) => {
+				c.StardewTheme = v;
+				BaseThemeManager!._SelectTheme(v);
+			},
+			choices: choices
+		);
+
 		intGMCM.AddLabel(I18n.Settings_ModThemes);
 
 		foreach (var entry in Managers) {
 
 			string uid = entry.Key.UniqueID;
-			var choices = entry.Value.Item2.GetThemeChoiceMethods();
+			var mchoices = entry.Value.Item2.GetThemeChoiceMethods();
 
 			string Getter(ModConfig cfg) {
 				if (cfg.SelectedThemes.TryGetValue(uid, out string? value))
@@ -141,9 +196,116 @@ public class ModEntry : ModSubscriber {
 				tooltip: null,
 				get: Getter,
 				set: Setter,
-				choices: choices
+				choices: mchoices
 			);
 		}
+
+		intGMCM.AddLabel(I18n.Setting_Advanced);
+
+		intGMCM.Add(
+			name: I18n.Setting_FixText,
+			tooltip: I18n.Setting_FixText_Tip,
+			get: c => c.AlignText,
+			set: (c, v) => {
+				c.AlignText = v;
+				Patches.SpriteBatch_Patches.AlignText = v;
+			}
+		);
+
+		var clock_choices = new Dictionary<string, Func<string>> {
+			{ "by-theme", I18n.Setting_FromTheme },
+			{ "top-left", I18n.Alignment_TopLeft },
+			{ "top-center", I18n.Alignment_TopCenter },
+			{ "default", I18n.Alignment_Default },
+			{ "mid-left", I18n.Alignment_MidLeft },
+			{ "mid-center", I18n.Alignment_MidCenter },
+			{ "mid-right", I18n.Alignment_MidRight },
+			{ "bottom-left", I18n.Alignment_BottomLeft },
+			{ "bottom-center", I18n.Alignment_BottomCenter },
+			{ "bottom-right", I18n.Alignment_BottomRight }
+		};
+
+		intGMCM.AddChoice(
+			name: I18n.Setting_ClockPosition,
+			tooltip: I18n.Setting_ClockPosition_Tip,
+			get: c => {
+				if (c.ClockMode == ClockAlignMode.Default)
+					return "default";
+				if (c.ClockMode == ClockAlignMode.ByTheme)
+					return "by-theme";
+
+				Alignment align = c.ClockAlignment ?? Alignment.None;
+
+				if (align.HasFlag(Alignment.Middle)) {
+					if (align.HasFlag(Alignment.Left))
+						return "mid-left";
+					if (align.HasFlag(Alignment.Center))
+						return "mid-center";
+					return "mid-right";
+
+				} else if (align.HasFlag(Alignment.Bottom)) {
+					if (align.HasFlag(Alignment.Left))
+						return "bottom-left";
+					if (align.HasFlag(Alignment.Center))
+						return "bottom-center";
+					return "bottom-right";
+				}
+
+				if (align.HasFlag(Alignment.Left))
+					return "top-left";
+				if (align.HasFlag(Alignment.Center))
+					return "top-center";
+				return "top-right";
+			},
+			set: (c, v) => {
+				switch (v) {
+					case "default":
+						c.ClockMode = ClockAlignMode.Default;
+						return;
+					case "by-theme":
+						c.ClockMode = ClockAlignMode.ByTheme;
+						return;
+				}
+
+				Alignment align = Alignment.None;
+
+				switch (v) {
+					case "bottom-left":
+					case "bottom-center":
+					case "bottom-right":
+						align |= Alignment.Bottom;
+						break;
+					case "mid-left":
+					case "mid-center":
+					case "mid-right":
+						align |= Alignment.Middle;
+						break;
+					default:
+						align |= Alignment.Top;
+						break;
+				}
+
+				switch (v) {
+					case "top-left":
+					case "mid-left":
+					case "bottom-left":
+						align |= Alignment.Left;
+						break;
+					case "top-center":
+					case "mid-center":
+					case "bottom-center":
+						align |= Alignment.Center;
+						break;
+					default:
+						align |= Alignment.Right;
+						break;
+				}
+
+				c.ClockMode = ClockAlignMode.Manual;
+				c.ClockAlignment = align;
+			},
+			choices: clock_choices
+		);
 
 		ConfigStale = false;
 	}
@@ -151,6 +313,35 @@ public class ModEntry : ModSubscriber {
 	#endregion
 
 	#region Content Pack Access
+
+	internal void GetJsonHelper() {
+		if (JsonHelper is not null)
+			return;
+
+		if (Helper.Data.GetType().GetField("JsonHelper", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(Helper.Data) is JsonHelper helper) {
+			JsonHelper = new();
+			var converters = JsonHelper.JsonSettings.Converters;
+			converters.Clear();
+			foreach(var converter in helper.JsonSettings.Converters)
+				if (converter.GetType().Name != "ColorConverter")
+					converters.Add(converter);
+
+			converters.Add(new Leclair.Stardew.Common.Serialization.Converters.ColorConverter());
+		}
+	}
+
+	internal TModel? ReadJsonFile<TModel>(string path, IContentPack pack) where TModel : class {
+		if (JsonHelper is null)
+			GetJsonHelper();
+
+		if (JsonHelper is not null) {
+			if (JsonHelper.ReadJsonFileIfExists(Path.Join(pack.DirectoryPath, path), out TModel? result))
+				return result;
+			return null;
+		}
+		
+		return pack.ReadJsonFile<TModel>(path);
+	}
 
 	internal IContentPack? GetContentPackFor(IManifest manifest) {
 		if (ContentPacks.TryGetValue(manifest, out IContentPack? cp))
@@ -191,12 +382,48 @@ public class ModEntry : ModSubscriber {
 
 	#region Events
 
+	private void OnStardewThemeChanged(object? sender, IThemeChangedEvent<Models.BaseTheme> e) {
+		BaseTheme = e.NewData;
+
+		Game1.textColor = BaseTheme.TextColor ?? BaseThemeManager!.DefaultTheme.TextColor!.Value;
+		Game1.textShadowColor = BaseTheme.TextShadowColor ?? BaseThemeManager!.DefaultTheme.TextShadowColor!.Value;
+	}
+
 	[Subscriber]
 	private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) {
 		// Integrations
+		intCP = new(this);
 		CheckRecommendedIntegrations();
 
+		// Commands
+		/*Helper.ConsoleCommands.Add("theme", "View available themes, reload themes, and change the current themes.", (_, args) => {
+			Log($"Not yet implemented.");
+		});*/
+
+		Helper.ConsoleCommands.Add("retheme", "Reload all themes.", (_, _) => {
+			BaseThemeManager!.Invalidate();
+			BaseThemeManager!.Discover();
+
+			foreach (var entry in Managers) {
+				entry.Value.Item2.Invalidate();
+				entry.Value.Item2.Discover();
+			}
+
+			Log($"Reloaded all themes across {Managers.Count + 1} managers.", LogLevel.Info);
+		});
+
+		// Settings
 		RegisterSettings();
+		Helper.Events.Display.RenderingActiveMenu += OnDrawMenu;
+	}
+
+	private void OnDrawMenu(object? sender, RenderingActiveMenuEventArgs e) {
+		// Rebuild our settings menu when first drawing the title menu, since
+		// the MenuChanged event doesn't handle the TitleMenu.
+		Helper.Events.Display.RenderingActiveMenu -= OnDrawMenu;
+
+		if (ConfigStale)
+			RegisterSettings();
 	}
 
 	[Subscriber]
@@ -214,7 +441,6 @@ public class ModEntry : ModSubscriber {
 		}
 	}
 
-	#if !THEME_MANAGER_PRE_314
 	[Subscriber]
 	private void OnAssetRequested(object? sender, AssetRequestedEventArgs e) {
 		Func<object>? loader;
@@ -228,30 +454,7 @@ public class ModEntry : ModSubscriber {
 			priority: AssetLoadPriority.Low
 		);
 	}
-#endif
 
 	#endregion
 
 }
-
-#if THEME_MANAGER_PRE_314
-internal class ThemeAssetLoader : IAssetLoader {
-
-	private readonly ModEntry Mod;
-
-	internal ThemeAssetLoader(ModEntry mod) {
-		Mod = mod;
-	}
-
-	public bool CanLoad<T>(IAssetInfo asset) {
-		return Mod.LoadingAssets.ContainsKey(asset.AssetName);
-	}
-
-	public T Load<T>(IAssetInfo asset) {
-		if (!Mod.LoadingAssets.TryGetValue(asset.AssetName, out var loader))
-			return (T) ((object?) null)!;
-
-		return (T) loader();
-	}
-}
-#endif

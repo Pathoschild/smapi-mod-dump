@@ -60,18 +60,18 @@ namespace MoreConversationTopics
         }
 
         // Method that is used to postfix
-        private static void BirthingEvent_setUp_Postfix(bool __result, bool ___isMale)
+        private static void BirthingEvent_setUp_Postfix(bool ___isMale)
         {
             // If a player married to an NPC has a child, add conversation topics depending on gender
             try
             {
                 if (___isMale)
                 {
-                    MCTHelperFunctions.AddMaybePreExistingCT("babyBoy", Config.BirthDuration);
+                    MCTHelperFunctions.AddOrExtendCT("babyBoy", Config.BirthDuration);
                 }
                 else
                 {
-                    MCTHelperFunctions.AddMaybePreExistingCT("babyGirl", Config.BirthDuration);
+                    MCTHelperFunctions.AddOrExtendCT("babyGirl", Config.BirthDuration);
                 }
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace MoreConversationTopics
             }
         }
 
-        private static void PlayerCoupleBirthingEvent_setUp_Postfix(PlayerCoupleBirthingEvent __instance, bool __result, Farmer ___spouse, bool ___isMale)
+        private static void PlayerCoupleBirthingEvent_setUp_Postfix(bool __result, Farmer ___spouse, bool ___isMale)
         {
             // If two players are married and have a child, add the conversation topic for having a new baby to both players
             try
@@ -89,11 +89,11 @@ namespace MoreConversationTopics
                 {
                     if (___isMale)
                     {
-                        MCTHelperFunctions.AddMaybePreExistingCT("babyBoy", Config.BirthDuration);
+                        MCTHelperFunctions.AddOrExtendCT("babyBoy", Config.BirthDuration);
                     }
                     else
                     {
-                        MCTHelperFunctions.AddMaybePreExistingCT("babyGirl", Config.BirthDuration);
+                        MCTHelperFunctions.AddOrExtendCT("babyGirl", Config.BirthDuration);
                     }
                 }
             }
@@ -108,11 +108,11 @@ namespace MoreConversationTopics
                 {
                     if (___isMale)
                     {
-                        MCTHelperFunctions.AddMaybePreExistingCT(___spouse, "babyBoy", Config.BirthDuration);
+                        MCTHelperFunctions.AddOrExtendCT(___spouse, "babyBoy", Config.BirthDuration);
                     }
                     else
                     {
-                        MCTHelperFunctions.AddMaybePreExistingCT(___spouse, "babyGirl", Config.BirthDuration);
+                        MCTHelperFunctions.AddOrExtendCT(___spouse, "babyGirl", Config.BirthDuration);
                     }
                 }
             }

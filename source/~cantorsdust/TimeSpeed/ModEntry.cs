@@ -228,7 +228,7 @@ namespace TimeSpeed
                 return false;
 
             // only handle keys if the player is free, or currently watching an event
-            if (forInput && !Context.IsPlayerFree && !Game1.eventUp)
+            if (forInput && !Context.IsPlayerFree)
                 return false;
 
             return true;

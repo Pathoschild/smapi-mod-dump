@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -13,7 +13,6 @@ namespace DaLion.Stardew.Professions.Framework;
 #region using directives
 
 using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -31,7 +30,7 @@ internal class HudPointer
 
     /// <summary>The texture that will be used to draw the indicator.</summary>
     public Texture2D Texture { get; } =
-        Game1.content.Load<Texture2D>(Path.Combine(ModEntry.Manifest.UniqueID, "HudPointer"));
+        ModEntry.ModHelper.GameContent.Load<Texture2D>($"{ModEntry.Manifest.UniqueID}/HudPointer");
 
     /// <summary>Draw the indicator at the edge of the screen, pointing to a target off-screen.</summary>
     /// <param name="target">The target tile to point to.</param>

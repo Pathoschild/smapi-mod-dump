@@ -13,7 +13,7 @@ using System;
 
 namespace SpriteMaster.Configuration.Preview;
 
-class SpriteSheet : MetaTexture {
+internal class SpriteSheet : MetaTexture {
 	internal readonly Vector2I Size;
 	internal Vector2I RenderedSize => Size * 4;
 	internal readonly Vector2I Dimensions;

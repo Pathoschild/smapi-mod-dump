@@ -1,8 +1,8 @@
 {
-    "Fri": "600 ArchaeologyHouse 45 4 2/1000 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 4 2",
-    "rain": "600 ArchaeologyHouse 45 4 2/1000 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 4 2",
-    "fall": "600 ArchaeologyHouse 45 4 2/1000 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 4 2",
-    "winter": "600 ArchaeologyHouse 45 4 2/1000 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 4 2",
-    "summer": "600 ArchaeologyHouse 45 4 2/1000 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 4 2",
-    "spring": "600 ArchaeologyHouse 45 4 2/1000 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 4 2"
+    "Fri": "600 ArchaeologyHouse 45 5 2/720 ArchaeologyHouse 3 8 2/1800 Saloon 40 17 2/2400 ArchaeologyHouse 45 5 2",
+    "rain": "600 ArchaeologyHouse 45 5 2/720 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2400 ArchaeologyHouse 45 5 2",
+    "fall": "600 ArchaeologyHouse 45 5 2/720 ArchaeologyHouse 3 8 2/1800 Town 78 81 2/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 5 2",
+    "winter": "600 ArchaeologyHouse 45 5 2/720 ArchaeologyHouse 3 8 2/1800 Town 78 81 2/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 5 2",
+    "summer": "600 ArchaeologyHouse 45 5 2/720 ArchaeologyHouse 3 8 2/1800 Saloon 40 17 2/2000 Saloon 40 17 2/2400 ArchaeologyHouse 45 5 2",
+    "spring": "600 ArchaeologyHouse 45 5 2/720 ArchaeologyHouse 3 8 2/1800 ArchaeologyHouse 13 9 0/2000 Town 78 81 2/2400 ArchaeologyHouse 45 5 2"
 }

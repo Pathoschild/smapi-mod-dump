@@ -8,10 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
@@ -50,10 +49,21 @@ namespace ContentPatcher.Framework.Patches
         private bool FromAssetExistsImpl;
 
         /// <summary>The <see cref="RawFromAsset"/> with support for managing its state.</summary>
-        private IManagedTokenString ManagedRawFromAsset { get; }
+        protected IManagedTokenString? ManagedRawFromAsset { get; }
 
         /// <summary>The <see cref="RawTargetAsset"/> with support for managing its state.</summary>
-        protected IManagedTokenString ManagedRawTargetAsset { get; }
+        protected IManagedTokenString? ManagedRawTargetAsset { get; }
+
+        /// <summary>Whether the patch has a 'FromFile' field specified, regardless of whether it's ready.</summary>
+        [MemberNotNullWhen(true, nameof(Patch.RawFromAsset), nameof(Patch.ManagedRawFromAsset))]
+        protected bool HasFromAsset => this.RawFromAsset != null && this.ManagedRawFromAsset != null;
+
+        /// <summary>Whether the patch has a 'Target' field specified, regardless of whether it's ready.</summary>
+        [MemberNotNullWhen(true, nameof(Patch.RawTargetAsset), nameof(Patch.ManagedRawTargetAsset))]
+        protected bool HasTargetAsset => this.RawTargetAsset != null && this.ManagedRawTargetAsset != null;
+
+        /// <summary>The cached result for <see cref="GetTokensUsed"/>.</summary>
+        protected IInvariantSet? TokensUsedCache;
 
 
         /*********
@@ -72,7 +82,7 @@ namespace ContentPatcher.Framework.Patches
         public IContentPack ContentPack { get; }
 
         /// <inheritdoc />
-        public IPatch ParentPatch { get; }
+        public IPatch? ParentPatch { get; }
 
         /// <inheritdoc />
         public bool IsMutable { get; } = true;
@@ -81,16 +91,16 @@ namespace ContentPatcher.Framework.Patches
         public bool IsReady { get; protected set; }
 
         /// <inheritdoc />
-        public string FromAsset { get; private set; }
+        public string? FromAsset { get; private set; }
 
         /// <inheritdoc />
-        public ITokenString RawFromAsset => this.ManagedRawFromAsset;
+        public ITokenString? RawFromAsset => this.ManagedRawFromAsset;
 
         /// <inheritdoc />
-        public IAssetName TargetAsset { get; private set; }
+        public IAssetName? TargetAsset { get; private set; }
 
         /// <inheritdoc />
-        public ITokenString RawTargetAsset => this.ManagedRawTargetAsset;
+        public ITokenString? RawTargetAsset => this.ManagedRawTargetAsset;
 
         /// <inheritdoc />
         public UpdateRate UpdateRate { get; set; }
@@ -133,23 +143,26 @@ namespace ContentPatcher.Framework.Patches
             isReady &= this.RawTargetAsset?.IsReady != false && this.RawFromAsset?.IsReady != false;
 
             // update contextuals
-            changed |= this.Contextuals.UpdateContext(
-                this.PrivateContext,
-                update: p => !this.ManuallyUpdatedTokens.Contains(p),
+            if (isReady)
+            {
+                changed |= this.Contextuals.UpdateContext(
+                    this.PrivateContext,
+                    update: p => !this.ManuallyUpdatedTokens.Contains(p),
 
-                // This avoids propagating irrelevant changes. For example, consider this condition:
-                //    "{{Time}}": "0800"
-                // 
-                // Since the condition key will be different on each time change, the condition would be marked as
-                // changed which would trigger a patch update. But the patch should only update if the *result*
-                // changes, which we check below via isReady.
-                countChange: p => p is not Condition
-            );
-            isReady &= this.Contextuals.IsReady && (!this.Conditions.Any() || this.Conditions.All(p => p.IsMatch));
-            this.FromAssetExistsImpl = false;
+                    // This avoids propagating irrelevant changes. For example, consider this condition:
+                    //    "{{Time}}": "0800"
+                    // 
+                    // Since the condition key will be different on each time change, the condition would be marked as
+                    // changed which would trigger a patch update. But the patch should only update if the *result*
+                    // changes, which we check below via isReady.
+                    countChange: p => p is not Condition
+                );
+                isReady &= this.Contextuals.IsReady && (!this.Conditions.Any() || this.Conditions.All(p => p.IsMatch));
+                this.FromAssetExistsImpl = false;
+            }
 
             // check from asset existence
-            if (isReady && this.FromAsset != null)
+            if (isReady && this.HasFromAsset && this.FromAsset != null)
             {
                 this.FromAssetExistsImpl = this.ContentPack.HasFile(this.FromAsset);
                 if (!this.FromAssetExistsImpl && this.Conditions.All(p => p.IsMatch))
@@ -165,6 +178,7 @@ namespace ContentPatcher.Framework.Patches
         }
 
         /// <inheritdoc />
+        [MemberNotNullWhen(true, nameof(Patch.RawFromAsset), nameof(Patch.FromAsset), nameof(Patch.ManagedRawFromAsset))]
         public bool FromAssetExists()
         {
             return this.FromAssetExistsImpl;
@@ -172,20 +186,22 @@ namespace ContentPatcher.Framework.Patches
 
         /// <inheritdoc />
         public virtual T Load<T>(IAssetName assetName)
+            where T : notnull
         {
             throw new NotSupportedException("This patch type doesn't support loading assets.");
         }
 
         /// <inheritdoc />
         public virtual void Edit<T>(IAssetData asset)
+            where T : notnull
         {
             throw new NotSupportedException("This patch type doesn't support loading assets.");
         }
 
         /// <inheritdoc />
-        public virtual IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
-            return this.Contextuals.GetTokensUsed();
+            return this.TokensUsedCache ??= this.Contextuals.GetTokensUsed();
         }
 
         /// <inheritdoc />
@@ -213,7 +229,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="contentPack">The content pack which requested the patch.</param>
         /// <param name="parentPatch">The parent <see cref="PatchType.Include"/> patch for which this patch was loaded, if any.</param>
         /// <param name="fromAsset">The normalized asset key from which to load the local asset (if applicable), including tokens.</param>
-        protected Patch(int[] indexPath, LogPathBuilder path, PatchType type, IManagedTokenString assetName, IEnumerable<Condition> conditions, UpdateRate updateRate, IContentPack contentPack, IPatch parentPatch, Func<string, IAssetName> parseAssetName, IManagedTokenString fromAsset = null)
+        protected Patch(int[] indexPath, LogPathBuilder path, PatchType type, IManagedTokenString? assetName, IEnumerable<Condition> conditions, UpdateRate updateRate, IContentPack contentPack, IPatch? parentPatch, Func<string, IAssetName> parseAssetName, IManagedTokenString? fromAsset = null)
         {
             this.IndexPath = indexPath;
             this.Path = path;
@@ -231,8 +247,10 @@ namespace ContentPatcher.Framework.Patches
                 .Add(this.Conditions)
                 .Add(assetName)
                 .Add(fromAsset);
-            this.ManuallyUpdatedTokens.Add(assetName);
-            this.ManuallyUpdatedTokens.Add(fromAsset);
+            if (assetName != null)
+                this.ManuallyUpdatedTokens.Add(assetName);
+            if (fromAsset != null)
+                this.ManuallyUpdatedTokens.Add(fromAsset);
 
             this.LastChangedTick = Game1.ticks;
         }
@@ -255,7 +273,7 @@ namespace ContentPatcher.Framework.Patches
         /// <param name="area">The parsed rectangle.</param>
         /// <param name="error">The error phrase indicating why parsing failed, if applicable.</param>
         /// <returns>Returns whether the rectangle was successfully parsed.</returns>
-        protected bool TryReadArea(TokenRectangle tokenArea, int defaultX, int defaultY, int defaultWidth, int defaultHeight, out Rectangle area, out string error)
+        protected bool TryReadArea(TokenRectangle? tokenArea, int defaultX, int defaultY, int defaultWidth, int defaultHeight, out Rectangle area, [NotNullWhen(false)] out string? error)
         {
             if (tokenArea != null)
                 return tokenArea.TryGetRectangle(out area, out error);
@@ -280,24 +298,24 @@ namespace ContentPatcher.Framework.Patches
         /// <returns>Returns whether the field changed.</returns>
         private bool UpdateTargetPath(LocalContext context)
         {
-            if (this.RawTargetAsset == null)
+            if (!this.HasTargetAsset)
                 return false;
 
             bool changed = this.ManagedRawTargetAsset.UpdateContext(context);
 
             if (this.RawTargetAsset.IsReady)
             {
-                this.TargetAsset = this.ParseAssetNameImpl(this.RawTargetAsset.Value);
-                context.SetLocalValue(ConditionType.Target.ToString(), this.TargetAsset.Name);
-                context.SetLocalValue(ConditionType.TargetPathOnly.ToString(), System.IO.Path.GetDirectoryName(this.TargetAsset.Name));
-                context.SetLocalValue(ConditionType.TargetWithoutPath.ToString(), System.IO.Path.GetFileName(this.TargetAsset.Name));
+                this.TargetAsset = this.ParseAssetNameImpl(this.RawTargetAsset.Value!);
+                context.SetLocalValue(nameof(ConditionType.Target), this.TargetAsset.Name);
+                context.SetLocalValue(nameof(ConditionType.TargetPathOnly), System.IO.Path.GetDirectoryName(this.TargetAsset.Name));
+                context.SetLocalValue(nameof(ConditionType.TargetWithoutPath), System.IO.Path.GetFileName(this.TargetAsset.Name));
             }
             else
             {
                 this.TargetAsset = null;
-                context.SetLocalValue(ConditionType.Target.ToString(), "", ready: false);
-                context.SetLocalValue(ConditionType.TargetPathOnly.ToString(), "", ready: false);
-                context.SetLocalValue(ConditionType.TargetWithoutPath.ToString(), "", ready: false);
+                context.SetLocalValue(nameof(ConditionType.Target), "", ready: false);
+                context.SetLocalValue(nameof(ConditionType.TargetPathOnly), "", ready: false);
+                context.SetLocalValue(nameof(ConditionType.TargetWithoutPath), "", ready: false);
             }
 
             return changed;
@@ -309,10 +327,10 @@ namespace ContentPatcher.Framework.Patches
         private bool UpdateFromFile(LocalContext context)
         {
             // no value
-            if (this.ManagedRawFromAsset == null)
+            if (!this.HasFromAsset)
             {
                 this.FromAsset = null;
-                context.SetLocalValue(ConditionType.FromFile.ToString(), "");
+                context.SetLocalValue(nameof(ConditionType.FromFile), "");
                 return false;
             }
 
@@ -320,13 +338,13 @@ namespace ContentPatcher.Framework.Patches
             bool changed = this.ManagedRawFromAsset.UpdateContext(context);
             if (this.RawFromAsset.IsReady)
             {
-                this.FromAsset = this.NormalizeLocalAssetPath(this.RawFromAsset.Value, logName: $"{nameof(PatchConfig.FromFile)} field");
-                context.SetLocalValue(ConditionType.FromFile.ToString(), this.FromAsset);
+                this.FromAsset = this.NormalizeLocalAssetPath(this.RawFromAsset.Value!, logName: $"{nameof(PatchConfig.FromFile)} field");
+                context.SetLocalValue(nameof(ConditionType.FromFile), this.FromAsset);
             }
             else
             {
                 this.FromAsset = null;
-                context.SetLocalValue(ConditionType.FromFile.ToString(), "", ready: false);
+                context.SetLocalValue(nameof(ConditionType.FromFile), "", ready: false);
             }
 
             return changed;
@@ -335,7 +353,7 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Get a normalized file path relative to the content pack folder.</summary>
         /// <param name="path">The relative asset path.</param>
         /// <param name="logName">A descriptive name for the field being normalized shown in error messages.</param>
-        private string NormalizeLocalAssetPath(string path, string logName)
+        private string? NormalizeLocalAssetPath(string? path, string logName)
         {
             try
             {

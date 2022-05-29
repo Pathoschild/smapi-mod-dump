@@ -128,12 +128,15 @@ namespace NormanPCN.Utils
             xorw_z = xorw_w;
             xorw_w = s;
 
-            t ^= t >> 2;
-            t ^= t << 1;
-            t ^= s ^ (s << 4);
-            xorw_v = t;
-            incr += 362437;
-            return t + incr;
+            unchecked
+            {
+                t ^= t >> 2;
+                t ^= t << 1;
+                t ^= s ^ (s << 4);
+                xorw_v = t;
+                incr += 362437;
+                return t + incr;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -142,13 +145,16 @@ namespace NormanPCN.Utils
             ulong t = xorp_0;
             ulong s = xorp_1;
 
-            xorp_0 = s;
-            t ^= t << 23;
-            t ^= t >> 18;
-            t ^= s ^ (s >> 5);
-            xorp_1 = t;
+            unchecked
+            {
+                xorp_0 = s;
+                t ^= t << 23;
+                t ^= t >> 18;
+                t ^= s ^ (s >> 5);
+                xorp_1 = t;
 
-            return t + s;
+                return t + s;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -156,11 +162,14 @@ namespace NormanPCN.Utils
         {
             // a so called XorShift64* algorithm
             ulong v = ran_v;
-            v ^= v >> 21;
-            v ^= v << 35;
-            v ^= v >> 4;
-            ran_v = v;
-            return v * 2685821657736338717;
+            unchecked
+            {
+                v ^= v >> 21;
+                v ^= v << 35;
+                v ^= v >> 4;
+                ran_v = v;
+                return v * 2685821657736338717;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -170,18 +179,21 @@ namespace NormanPCN.Utils
             ulong v = ran_v;
             ulong w = ran_w;
 
-            u = u * 2862933555777941757 + 7046029254386353087;
-            ran_u = u;
-            v ^= v >> 17;
-            v ^= v << 31;
-            v ^= v >> 8;
-            ran_v = v;
-            w = 4294957665U * (w & 0xffffffff) + (w >> 32);
-            ran_w = w;
-            ulong x = u ^ (u << 21);
-            x ^= x >> 35;
-            x ^= x << 4;
-            return (x + v) ^ w;
+            unchecked
+            {
+                u = u * 2862933555777941757 + 7046029254386353087;
+                ran_u = u;
+                v ^= v >> 17;
+                v ^= v << 31;
+                v ^= v >> 8;
+                ran_v = v;
+                w = 4294957665U * (w & 0xffffffff) + (w >> 32);
+                ran_w = w;
+                ulong x = u ^ (u << 21);
+                x ^= x >> 35;
+                x ^= x << 4;
+                return (x + v) ^ w;
+            }
         }
 
         /// <summary>
@@ -387,7 +399,7 @@ namespace NormanPCN.Utils
             // negate is promoted so we have to trunc it down. decent compiler should do that well.
 
             // Lemire unbiased mult moduluo algorithm. https://github.com/lemire/fastrange
-            // second tweak (threshold calc) found at https://www.pcg-random.org/posts/bounded-rands.html
+            // second opt (threshold tweak) found at https://www.pcg-random.org/posts/bounded-rands.html
 
             uint x = rndNum();
             ulong m = (ulong)x * (ulong)range;
@@ -395,6 +407,7 @@ namespace NormanPCN.Utils
             if (leftover < range)
             {
                 uint threshold = (uint)(-range) % range;
+                // threshold tweak
                 //uint threshold = (uint)-range;
                 //if (threshold >= range)
                 //{

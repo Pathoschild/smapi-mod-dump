@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12034
+IDs: LetsTrollTheMan.HabooNPC
+update keys: Nexus:12034

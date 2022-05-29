@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +22,10 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         ** Fields
         *********/
         /// <summary>Get the current values for given input arguments (if any).</summary>
-        private readonly Func<IEnumerable<string>> GetValueImpl;
+        private readonly Func<IEnumerable<string>?> GetValueImpl;
 
         /// <summary>The current values.</summary>
-        private readonly InvariantHashSet Values = new InvariantHashSet();
+        private IInvariantSet Values = InvariantSets.Empty;
 
 
         /*********
@@ -36,7 +34,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>Construct an instance.</summary>
         /// <param name="name">The token name. This only needs to be unique for your mod; Content Patcher will prefix it with your mod ID automatically, like <c>Pathoschild.ExampleMod/SomeTokenName</c>.</param>
         /// <param name="getValue">A function which returns the current token value (if any). If this returns null, the token is considered unavailable for use.</param>
-        public ModSimpleValueProvider(string name, Func<IEnumerable<string>> getValue)
+        public ModSimpleValueProvider(string name, Func<IEnumerable<string>?> getValue)
             : base(name, mayReturnMultipleValuesForRoot: true)
         {
             this.GetValueImpl = getValue;
@@ -50,8 +48,8 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
             this.AssertInput(input);
 
             return this.IsReady
-                ? this.Values.ToArray()
-                : Enumerable.Empty<string>();
+                ? this.Values
+                : InvariantSets.Empty;
         }
 
         /// <inheritdoc />
@@ -59,9 +57,14 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             return this.IsChanged(this.Values, () =>
             {
-                this.Values.Clear();
-                this.Values.AddMany(this.GetValueImpl() ?? Enumerable.Empty<string>());
+                IEnumerable<string>? raw = this.GetValueImpl();
+                this.Values = raw != null
+                    ? InvariantSets.From(raw)
+                    : InvariantSets.Empty;
+
                 this.MarkReady(this.Values.Any());
+
+                return this.Values;
             });
         }
     }

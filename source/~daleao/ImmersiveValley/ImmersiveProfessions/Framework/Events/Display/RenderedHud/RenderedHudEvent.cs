@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,15 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IDisplayEvents.RenderedHud"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class RenderedHudEvent : BaseEvent
 {
-    /// <summary>
-    ///     Raised after the game draws to the sprite patch in a draw tick, just before the final sprite batch is rendered
-    ///     to the screen.
-    /// </summary>
+    /// <inheritdoc cref="IDisplayEvents.RenderedHud"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnRenderedHud(object sender, RenderedHudEventArgs e)
+    internal void OnRenderedHud(object sender, RenderedHudEventArgs e)
     {
-        if (enabled.Value) OnRenderedHudImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnRenderedHudImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnRenderedHud" />

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Linq;
 using System.Text;
@@ -60,8 +58,8 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
         /// <inheritdoc />
         public override void Handle(string[] args)
         {
-            GlobalStats stats = new GlobalStats(this.MachineManager.GetActiveMachineGroups());
-            StringBuilder report = new StringBuilder();
+            GlobalStats stats = new(this.MachineManager.GetActiveMachineGroups());
+            StringBuilder report = new();
             ModConfig config = this.Config();
 
             report.AppendLine("\n##########\n## Automate summary\n##########");
@@ -74,7 +72,7 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands
 
             // per-machine settings
             {
-                StringBuilder perMachineReport = new StringBuilder();
+                StringBuilder perMachineReport = new();
 
                 foreach (var machineConfig in this.MachineManager.GetMachineOverrides().OrderBy(p => p.Key, StringComparer.OrdinalIgnoreCase))
                 {

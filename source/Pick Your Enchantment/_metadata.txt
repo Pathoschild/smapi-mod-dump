@@ -6,9 +6,9 @@ mods:
    Pick Your Enchantment
 
 latest commit:
-   commit d9f3ab8610f1cb3c6e8cc7ce69250fb7eadb7a73
+   commit 112307b23665c3f59ff38a770992e26ecc84f9f8
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Thu Apr 14 22:32:41 2022 -0400
+   Date:   Sun May 1 19:32:25 2022 -0400
    
-       Add Moddrop update keys
+       update manifest as well
    

@@ -14,13 +14,11 @@ using Newtonsoft.Json;
 
 using Microsoft.Xna.Framework;
 
-using Leclair.Stardew.Common.UI;
-
 using Leclair.Stardew.Common.Serialization.Converters;
 
 namespace Leclair.Stardew.BetterCrafting.Models;
 
-public class Theme : BaseThemeData {
+public class Theme {
 
 	[JsonConverter(typeof(ColorConverter))]
 	public Color? SearchHighlightColor { get; set; }

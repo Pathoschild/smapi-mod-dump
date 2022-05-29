@@ -1,0 +1,172 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Traktori7/StardewValleyMods
+**
+*************************************************/
+
+{
+  "EndgameBundleSet1": {
+    "ID": "EndgameBundleSet1",
+    "Bundles": [
+      {
+        "Name": "Bundle 1",
+        "MinRequiredAmount": -1,
+        "Reward": {
+          "ItemType": "O",
+          "ItemID": 465,
+          "Amount": 20
+        },
+        "Ingredients": [
+          {
+            "ItemID": 24,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 188,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 190,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 192,
+            "Amount": 1,
+            "Quality": 0
+          }
+        ]
+      },
+      {
+        "Name": "Bundle 2",
+        "MinRequiredAmount": -1,
+        "Reward": {
+          "ItemType": "BO",
+          "ItemID": 12,
+          "Amount": 1
+        },
+        "Ingredients": [
+          {
+            "ItemID": 24,
+            "Amount": 1,
+            "Quality": 1
+          },
+          {
+            "ItemID": 188,
+            "Amount": 1,
+            "Quality": 1
+          },
+          {
+            "ItemID": 190,
+            "Amount": 1,
+            "Quality": 1
+          },
+          {
+            "ItemID": 192,
+            "Amount": 1,
+            "Quality": 1
+          }
+        ]
+      },
+      {
+        "Name": "Bundle 3",
+        "MinRequiredAmount": 3,
+        "Reward": {
+          "ItemType": "O",
+          "ItemID": 242,
+          "Amount": 5
+        },
+        "Ingredients": [
+          {
+            "ItemID": 24,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 188,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 190,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 192,
+            "Amount": 1,
+            "Quality": 0
+          }
+        ]
+      },
+      {
+        "Name": "Bundle 4",
+        "MinRequiredAmount": 2,
+        "Reward": {
+          "ItemType": "O",
+          "ItemID": 749,
+          "Amount": 5
+        },
+        "Ingredients": [
+          {
+            "ItemID": 80,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 86,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 84,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 82,
+            "Amount": 1,
+            "Quality": 0
+          }
+        ]
+      },
+      {
+        "Name": "Bundle 5",
+        "MinRequiredAmount": -1,
+        "Reward": {
+          "ItemType": "R",
+          "ItemID": 518,
+          "Amount": 1
+        },
+        "Ingredients": [
+          {
+            "ItemID": 766,
+            "Amount": 99,
+            "Quality": 0
+          },
+          {
+            "ItemID": 767,
+            "Amount": 10,
+            "Quality": 0
+          },
+          {
+            "ItemID": 768,
+            "Amount": 1,
+            "Quality": 0
+          },
+          {
+            "ItemID": 769,
+            "Amount": 1,
+            "Quality": 0
+          }
+        ]
+      }
+    ]
+  }
+}

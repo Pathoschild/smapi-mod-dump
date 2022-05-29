@@ -12,13 +12,14 @@ using SpriteMaster.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace SpriteMaster.WatchDog;
 
 // WatchDog only interrupts in non-debug builds; in debug builds, if we encounter a deadlock, I want to know about it.
 
-static class WatchDog {
+internal static class WatchDog {
 	private static Thread? WatchdogThread = null;
 
 	private static readonly object WatchedThreadsLock = new();
@@ -28,9 +29,9 @@ static class WatchDog {
 	private static readonly Dictionary<Thread, long> LastTickMap = new();
 
 	internal ref struct WorkingStateCookie {
-		public WorkingStateCookie() => WatchDog.SetWorkingState(true);
+		public WorkingStateCookie() => SetWorkingState(true);
 
-		internal void Dispose() => WatchDog.SetWorkingState(false);
+		internal void Dispose() => SetWorkingState(false);
 	}
 
 	internal static WorkingStateCookie ScopedWorkingState => new();
@@ -74,7 +75,9 @@ static class WatchDog {
 		}
 
 		Tick();
-		ThreadWorkingState[Thread.CurrentThread] = state;
+		lock (WatchedThreadsLock) {
+			ThreadWorkingState[Thread.CurrentThread] = state;
+		}
 	}
 
 	/*
@@ -142,6 +145,7 @@ static class WatchDog {
 		return true;
 	}
 
+	[DoesNotReturn]
 	private static void WatchdogRun() {
 		bool wasInterrupted = false;
 		while (true) {
@@ -164,5 +168,6 @@ static class WatchDog {
 				}
 			}
 		}
+		// ReSharper disable once FunctionNeverReturns
 	}
 }

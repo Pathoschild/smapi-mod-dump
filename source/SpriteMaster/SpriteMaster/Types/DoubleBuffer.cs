@@ -15,17 +15,14 @@ using System.Threading;
 
 namespace SpriteMaster.Types;
 
-sealed class DoubleBuffer<T> {
-	internal const uint BufferCount = 2;
+internal sealed class DoubleBuffer<T> {
 	internal const int StartingIndex = 0;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private uint GetIndex(uint index) => (index & 1U);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static uint GetIndex(uint index) => (index & 1U);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private T GetBuffer(uint index) => (GetIndex(index) == 0U) ? Buffer0 : Buffer1;
-
-	internal static readonly Type<T> BufferType = Type<T>.This;
 
 	// Regarding bounds checking on x86 and x64
 	// https://stackoverflow.com/questions/16713076/array-bounds-check-efficiency-in-net-4-and-above
@@ -45,7 +42,7 @@ sealed class DoubleBuffer<T> {
 	internal T this[uint index] => GetBuffer(index);
 
 	internal (T, T) Both {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		get {
 			var currentIndex = CurrentBufferIndex;
 			return (
@@ -68,16 +65,16 @@ sealed class DoubleBuffer<T> {
 	) { }
 
 	internal DoubleBuffer(params object[] parameters) : this(
-		// We do, indeed, want to create two seperate instances.
+		// We do, indeed, want to create two separate instances.
 #pragma warning disable CS0618 // Type or member is obsolete
 		ReflectionExt.CreateInstance<T>(parameters) ?? throw new NullReferenceException(nameof(parameters)),
 		ReflectionExt.CreateInstance<T>(parameters) ?? throw new NullReferenceException(nameof(parameters))
 #pragma warning restore CS0618 // Type or member is obsolete
 	) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal void Swap() => System.Threading.Interlocked.Increment(ref CurrentBufferIndex);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal void Swap() => Interlocked.Increment(ref CurrentBufferIndex);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static implicit operator T(in DoubleBuffer<T> buffer) => buffer.Current;
 }

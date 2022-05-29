@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -24,9 +24,10 @@ using StardewValley;
 
 using DaLion.Common.Extensions;
 using DaLion.Common.Extensions.Collections;
-using AssetLoaders;
+using Events;
 using Events.GameLoop;
 using Extensions;
+using Sounds;
 using Ultimate;
 
 using Localization = Utility.Localization;
@@ -203,10 +204,10 @@ internal class GameLocationAnswerDialogueActionPatch : BasePatch
                             ModEntry.PlayerState.RegisteredUltimate = newIndex switch
 #pragma warning restore CS8509
                             {
-                                UltimateIndex.Brute => new Frenzy(),
-                                UltimateIndex.Poacher => new Ambush(),
-                                UltimateIndex.Piper => new Pandemonia(),
-                                UltimateIndex.Desperado => new DeathBlossom()
+                                UltimateIndex.Frenzy => new Frenzy(),
+                                UltimateIndex.Ambush => new Ambush(),
+                                UltimateIndex.Pandemonia => new Pandemonia(),
+                                UltimateIndex.Blossom => new DeathBlossom()
                             };
                         Game1.player.WriteData(DataField.UltimateIndex, newIndex.ToString());
 

@@ -8,57 +8,34 @@
 **
 *************************************************/
 
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 
 namespace TrashDoesNotConsumeBait;
 
-/// <inheritdoc />
-public class AssetEditor : IAssetEditor
+/// <summary>
+/// Handles asset editing for this mod.
+/// </summary>
+public static class AssetEditor
 {
 #pragma warning disable SA1310 // Field names should not contain underscore. Reviewed.
     private static readonly string FORGE_MENU_CHOICE = PathUtilities.NormalizeAssetName("Mods/atravita_ForgeMenuChoice_Tooltip_Data");
     private static readonly string SECRET_NOTE_LOCATION = PathUtilities.NormalizeAssetName("Data/SecretNotes");
 #pragma warning restore SA1310 // Field names should not contain underscore
 
-    private AssetEditor()
-    {
-    }
-
     /// <summary>
-    /// Gets the instance of the asset editor for this mod.
+    /// Edits the secret note and ForgeMenuChoice's tooltips to match.
     /// </summary>
-    public static AssetEditor Instance { get; } = new();
-
-    /// <inheritdoc/>
-    public bool CanEdit<T>(IAssetInfo asset)
-        => asset.AssetNameEquals(FORGE_MENU_CHOICE) || asset.AssetNameEquals(SECRET_NOTE_LOCATION);
-
-    /// <inheritdoc/>
-    public void Edit<T>(IAssetData asset)
+    /// <param name="e">Event params.</param>
+    internal static void EditAssets(AssetRequestedEventArgs e)
     {
-        if (asset.AssetNameEquals(FORGE_MENU_CHOICE))
+        if (e.NameWithoutLocale.IsEquivalentTo(FORGE_MENU_CHOICE))
         {
-            IAssetDataForDictionary<string, string> data = asset.AsDictionary<string, string>();
-            if (data.Data.TryGetValue("Preserving", out string? val))
-            {
-                data.Data["Preserving"] = val.Replace("50", ((1 - ModEntry.Config.ConsumeChancePreserving) * 100).ToString());
-            }
-            else
-            {
-                ModEntry.ModMonitor.Log("ForgeMenuChoice's Preserving key not found....", LogLevel.Debug);
-            }
+            e.Edit(EditForgeMenu);
         }
-        else
+        else if (e.NameWithoutLocale.IsEquivalentTo(SECRET_NOTE_LOCATION))
         {
-            IAssetDataForDictionary<int, string> data = asset.AsDictionary<int, string>();
-            if (data.Data.TryGetValue(1008, out string? val))
-            {
-                data.Data[1008] = val.Replace("50", ((1 - ModEntry.Config.ConsumeChancePreserving) * 100).ToString());
-            }
-            else
-            {
-                ModEntry.ModMonitor.Log("Data for secret note 1008 not found?", LogLevel.Debug);
-            }
+            e.Edit(EditSecretNote);
         }
     }
 
@@ -67,7 +44,33 @@ public class AssetEditor : IAssetEditor
     /// </summary>
     internal static void Invalidate()
     {
-        ModEntry.ContentHelper.InvalidateCache(SECRET_NOTE_LOCATION);
-        ModEntry.ContentHelper.InvalidateCache(FORGE_MENU_CHOICE);
+        ModEntry.GameContentHelper.InvalidateCache(SECRET_NOTE_LOCATION);
+        ModEntry.GameContentHelper.InvalidateCache(FORGE_MENU_CHOICE);
+    }
+
+    private static void EditForgeMenu(IAssetData editor)
+    {
+        IAssetDataForDictionary<string, string> data = editor.AsDictionary<string, string>();
+        if (data.Data.TryGetValue("Preserving", out string? val))
+        {
+            data.Data["Preserving"] = val.Replace("50", ((1 - ModEntry.Config.ConsumeChancePreserving) * 100).ToString());
+        }
+        else
+        {
+            ModEntry.ModMonitor.Log("ForgeMenuChoice's Preserving key not found....", LogLevel.Debug);
+        }
+    }
+
+    private static void EditSecretNote(IAssetData editor)
+    {
+        IAssetDataForDictionary<int, string> data = editor.AsDictionary<int, string>();
+        if (data.Data.TryGetValue(1008, out string? val))
+        {
+            data.Data[1008] = val.Replace("50", ((1 - ModEntry.Config.ConsumeChancePreserving) * 100).ToString());
+        }
+        else
+        {
+            ModEntry.ModMonitor.Log("Data for secret note 1008 not found?", LogLevel.Debug);
+        }
     }
 }

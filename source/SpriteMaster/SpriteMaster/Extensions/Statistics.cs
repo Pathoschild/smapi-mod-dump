@@ -13,16 +13,15 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
 
-static class Statistics {
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+internal static class Statistics {
 	internal static double StandardDeviation(this ReadOnlySpan<int> data, int length, int startIndex = 0, int count = 0) {
 		//return StandardDeviation(new FixedSpan<int>(data, length), startIndex: startIndex, count: count);
 
-		Contracts.AssertPositiveOrZero(startIndex);
-		Contracts.AssertLess(startIndex, length);
+		startIndex.AssertPositiveOrZero();
+		startIndex.AssertLess(length);
 		int endIndex = startIndex + count;
-		Contracts.AssertLess(startIndex, endIndex);
-		Contracts.AssertLess(endIndex, length);
+		startIndex.AssertLess(endIndex);
+		endIndex.AssertLess(length);
 
 		double sum = 0.0;
 		for (int i = startIndex; i < endIndex; ++i) {

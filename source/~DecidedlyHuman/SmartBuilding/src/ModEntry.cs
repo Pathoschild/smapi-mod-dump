@@ -54,6 +54,7 @@ namespace SmartBuilding
         // Debug stuff to make my life less painful when going through my pre-release checklist.
         private ConsoleCommand command = null!;
 
+        // Integration for atravita's More Fertilizers mod.
         private IMoreFertilizersAPI? moreFertilizersAPI;
 
         private bool BuildingMode
@@ -431,6 +432,14 @@ namespace SmartBuilding
                 tooltip: () => I18n.SmartBuilding_Settings_OptionalToggles_CanDestroyChests_Tooltip(),
                 getValue: () => config.CanDestroyChests,
                 setValue: value => config.CanDestroyChests = value
+            );
+
+            configMenuApi.AddBoolOption(
+                mod: ModManifest,
+                name: () => I18n.SmartBuilding_Settings_OptionalTogglesMoreLaxObjectPlacement(),
+                tooltip: () => I18n.SmartBuilding_Settings_OptionalTogglesMoreLaxObjectPlacement_Tooltip(),
+                getValue: () => config.LessRestrictiveObjectPlacement,
+                setValue: value => config.LessRestrictiveObjectPlacement = value
             );
 
             configMenuApi.AddBoolOption(
@@ -937,7 +946,7 @@ namespace SmartBuilding
                     if (!config.EnableCropFertilizers)
                         return false;
 
-                    // This is a More Fertilizers fertilizer, defer to More Fertilizer's placement logic.
+                    // If this is a More Fertilizers fertilizer, defer to More Fertilizer's placement logic.
                     if (i is SObject obj && moreFertilizersAPI?.CanPlaceFertilizer(obj, here, v) == true)
                         return true;
 
@@ -1106,6 +1115,26 @@ namespace SmartBuilding
                     else
                         return (i as Furniture).canBePlacedHere(here, v);
                 case ItemType.Generic:
+                    if (config.LessRestrictiveObjectPlacement)
+                    {
+                        // If the less restrictive object placement setting is enabled, we first want to check if vanilla logic dictates the obect be placeable.
+                        if (Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v))
+                        {
+                            // It dictates that it is, so we can simply return true.
+                            return true;
+                        } else
+                        {
+                            // Otherwise, we want to check for an object already present in this location.
+                            if (!here.Objects.ContainsKey(v))
+                            {
+                                // There is no object here, so we return true, as we should be able to place the object here.
+                                return true;
+                            }
+
+                            // We could just fall through to vanilla logic again at this point, but that would be vaguely pointless, so we just return false.
+                            return false;
+                        }
+                    }
                     return Game1.currentLocation.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v);
             }
 
@@ -1628,15 +1657,19 @@ namespace SmartBuilding
                 }
                 else if (itemInfo.ItemType == ItemType.Fertilizer)
                 {
+                    // First, we get whether or not More Fertilizers can place this fertiliser.
                     if (this.moreFertilizersAPI?.CanPlaceFertilizer(itemToPlace, here, targetTile) == true)
                     {
-                        if(this.moreFertilizersAPI.TryPlaceFertilizer(itemToPlace, here, targetTile))
+                        // If it can, we try to place it.
+                        if (this.moreFertilizersAPI.TryPlaceFertilizer(itemToPlace, here, targetTile))
                         {
+                            // If the placement is successful, we do the fancy animation thing.
                             this.moreFertilizersAPI.AnimateFertilizer(itemToPlace, here, targetTile);
                         }
                         else
                         {
-                            RefundItem(itemToPlace, $"This fertilizer position may have been invalid for {itemToPlace.Name} at {targetTile}", LogLevel.Debug);
+                            // Otherwise, the fertiliser gets refunded.
+                            RefundItem(itemToPlace, $"{I18n.SmartBuilding_Integrations_MoreFertilizers_InvalidFertiliserPosition()}: {itemToPlace.Name} @ {targetTile}", LogLevel.Debug);
                         }
                     }
 

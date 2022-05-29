@@ -14,9 +14,12 @@ using System.Reflection;
 
 namespace SpriteMaster.Extensions;
 
-static partial class ReflectionExt {
+internal static partial class ReflectionExt {
 	private const BindingFlags InstanceFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy;
 	private const BindingFlags StaticFlags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+
+	private const BindingFlags ShallowInstanceFlags = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+	private const BindingFlags ShallowStaticFlags = BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public;
 
 	#region GetFieldMeow (instance)
 	internal static Action<T, U>? GetFieldSetter<T, U>(this Type type, string name) => GetFieldSetter<T, U>(type, type.GetField(name, InstanceFlags));

@@ -16,7 +16,7 @@ using HDPortraits.Models;
 
 namespace HDPortraits
 {
-    public class ModEntry : Mod, IAssetLoader
+    public class ModEntry : Mod
     {
         internal ITranslationHelper i18n => Helper.Translation;
         internal static IMonitor monitor;
@@ -37,59 +37,70 @@ namespace HDPortraits
             ModEntry.helper = Helper;
             harmony = new(ModManifest.UniqueID);
             ModID = ModManifest.UniqueID;
-            helper.Events.GameLoop.DayStarted += (object sender, DayStartedEventArgs ev) => ReloadData();
+            helper.Events.Content.AssetRequested += LoadDefaultAsset;
+            helper.Events.Content.AssetsInvalidated += TryReloadAsset;
             harmony.PatchAll();
         }
-        public override object GetApi()
+        public override object GetApi() => api;
+        private void LoadDefaultAsset(object _, AssetRequestedEventArgs ev)
         {
-            return api;
+            if (ev.Name.IsEquivalentTo("Mods/HDPortraits"))
+                ev.LoadFromModFile<Dictionary<string, MetadataModel>>("assets/default.json", AssetLoadPriority.Low);
         }
-        public bool CanLoad<T>(IAssetInfo asset)
+        private void TryReloadAsset(object _, AssetsInvalidatedEventArgs ev)
         {
-            return asset.AssetNameEquals("Mods/HDPortraits");
+            foreach(var name in ev.Names)
+                if (name.IsEquivalentTo("Mods/HDPortraits"))
+                    ReloadBaseData();
+
+                else if(name.IsDirectlyUnderPath("Mods/HDPortraits"))
+                    ReloadItem(name);
         }
-        public T Load<T>(IAssetInfo asset)
+        private static void ReloadItem(IAssetName name)
         {
-            return helper.Content.Load<T>("assets/default.json");
+            monitor.Log($"Reloading portrait metadata for '{name}'...", LogLevel.Debug);
+            var localPath = name.WithoutPath("Mods/HDPortraits");
+            failedPaths.Remove(localPath);
+            portraitSizes.Remove(localPath);
         }
-        public static void ReloadData()
+        private static void ReloadBaseData()
         {
             monitor.Log("Reloading portrait data...", LogLevel.Debug);
-            failedPaths.Clear();
-            backupPortraits = helper.Content.Load<Dictionary<string, MetadataModel>>("Mods/HDPortraits", ContentSource.GameContent);
+            backupPortraits = helper.GameContent.Load<Dictionary<string, MetadataModel>>("Mods/HDPortraits");
             foreach ((string id, MetadataModel meta) in backupPortraits)
             {
                 meta.defaultPath = "Portraits/" + id;
                 meta.Reload();
+                failedPaths.Remove(id);
             }
-            portraitSizes.Clear();
         }
         public static bool TryGetMetadata(string name, string suffix, out MetadataModel meta)
         {
-            if (((suffix != null && 
-                portraitSizes.TryGetValue($"{name}_{suffix}", out meta)) ||
-                portraitSizes.TryGetValue(name, out meta)) &&
-                meta is not null)
+            string path = $"{name}_{suffix}";
+            if (suffix is not null)
             {
-                return true; //cached
+                if (portraitSizes.TryGetValue(path, out meta) && meta is not null)
+                    return true; //cached
+
+                if (!failedPaths.Contains(path) && 
+                    (Utils.TryLoadAsset("Mods/HDPortraits/" + path, out meta) ||
+                    backupPortraits.TryGetValue(path, out meta)) &&
+                    meta is not null)
+                {
+                    meta.defaultPath = "Portraits/" + path;
+                    portraitSizes[path] = meta;
+                    return true; //suffix
+                }
             }
 
-            string path = $"{name}_{suffix}";
+            //no suffix or suffix not found
+            if (portraitSizes.TryGetValue(name, out meta) && meta is not null)
+                return true; //cached
 
             if (failedPaths.Contains(path))
             {
                 meta = null;
                 return false;
-            }
-
-            if (suffix != null && 
-                (Utils.TryLoadAsset("Mods/HDPortraits/" + path, out meta) || 
-                backupPortraits.TryGetValue(path, out meta)) && 
-                meta is not null)
-            {
-                meta.defaultPath = "Portraits/" + path;
-                portraitSizes[path] = meta;
-                return true; //suffix
             }
 
             if ((Utils.TryLoadAsset("Mods/HDPortraits/" + name, out meta) || 
@@ -100,6 +111,8 @@ namespace HDPortraits
                 portraitSizes[name] = meta;
                 return true; //base
             }
+
+            monitor.Log($"No Data for {path}");
 
             failedPaths.Add(path);
             meta = null;

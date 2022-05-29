@@ -11,7 +11,7 @@ for queries and analysis.**
 ## Documentation
 ### Overview
 This mod checks for:
-* Bushes that are currently blooming with berries
+* Bushes that are currently blooming with berries or tea leaves
 * Fruit trees that currently have fruit on them
 * Trees that have a seed available to be shaken down
 
@@ -33,6 +33,9 @@ NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 * FruitsReadyToShake
     * Number of fruits (1-3) that need to be on a fruit tree before it is shaken
     * *Default* - 1
+* ShakeTeaBushes
+    * Whether or not the AutoShaker should try and shake tea bushes
+    * *Default* - true
 * ShakeBushes
     * Whether or not the AutoShaker should try and shake bushes
     * *Default* - true
@@ -69,6 +72,8 @@ NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/jag3dagster/AutoShaker/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+### 1.4.0
+* Added the ability to shake Tea Bushes for their Tea Leaves
 ### 1.3.2
 * Fixes a NullReferenceException thrown when a second user is joining a split-screen instance
 * Updated the way the End-Of-Day messages are built

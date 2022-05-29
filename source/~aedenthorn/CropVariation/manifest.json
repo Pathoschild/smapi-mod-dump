@@ -11,7 +11,7 @@
 {
   "Name": "Crop Variation",
   "Author": "aedenthorn",
-  "Version": "0.2.0",
+  "Version": "0.2.1",
   "Description": "Crop Variation.",
   "UniqueID": "aedenthorn.CropVariation",
   "EntryDll": "CropVariation.dll",

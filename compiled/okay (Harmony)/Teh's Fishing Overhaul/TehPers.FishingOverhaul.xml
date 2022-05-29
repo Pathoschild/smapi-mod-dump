@@ -9,6 +9,9 @@
             Fishing content pack.
             </summary>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack.Schema">
+            <inheritdoc cref="P:TehPers.FishingOverhaul.Config.JsonConfigRoot.Schema"/>
+        </member>
         <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack.SetFishTraits">
             <summary>
             Fish traits to set.
@@ -53,6 +56,11 @@
             Fishing Overhaul) will be removed.
             </summary>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack.AddEffects">
+            <summary>
+            Fishing effects entries to add.
+            </summary>
+        </member>
         <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack.Include">
             <summary>
             The additional content files to include. These are treated the same as your mod's
@@ -60,7 +68,7 @@
             than Content Patcher!).
             </summary>
         </member>
-        <member name="M:TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack.AddTo(TehPers.FishingOverhaul.Api.Content.FishingContent,System.String,StardewModdingAPI.IContentPack,TehPers.Core.Api.Json.IJsonProvider,StardewModdingAPI.IMonitor)">
+        <member name="M:TehPers.FishingOverhaul.Config.ContentPacks.FishingContentPack.AddTo(TehPers.FishingOverhaul.Api.Content.FishingContent,System.String,StardewModdingAPI.IContentPack,TehPers.Core.Api.Json.IJsonProvider,StardewModdingAPI.IMonitor,System.Collections.Generic.List{System.String})">
             <summary>
             Merges all the content into a single content object.
             </summary>
@@ -69,11 +77,15 @@
             <param name="contentPack">The content pack.</param>
             <param name="jsonProvider">The JSON provider.</param>
             <param name="monitor">The monitor to log errors to.</param>
+            <param name="warnings">The warnings generated when adding this content pack.</param>
         </member>
         <member name="T:TehPers.FishingOverhaul.Config.ContentPacks.FishPack">
             <summary>
             Content which controls what fish are available to catch.
             </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishPack.Schema">
+            <inheritdoc cref="P:TehPers.FishingOverhaul.Config.JsonConfigRoot.Schema" />
         </member>
         <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishPack.Add">
             <summary>
@@ -91,6 +103,9 @@
             Content which modifies the behavior of fish.
             </summary>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishTraitsPack.Schema">
+            <inheritdoc cref="P:TehPers.FishingOverhaul.Config.JsonConfigRoot.Schema" />
+        </member>
         <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.FishTraitsPack.Add">
             <summary>
             The fish traits to add.
@@ -107,6 +122,9 @@
             Content which controls what trash are available to catch.
             </summary>
         </member>
+        <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.TrashPack.Schema">
+            <inheritdoc cref="P:TehPers.FishingOverhaul.Config.JsonConfigRoot.Schema" />
+        </member>
         <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.TrashPack.Add">
             <summary>
             The trash entries to add.
@@ -122,6 +140,9 @@
             <summary>
             Content which controls what treasure are available to catch.
             </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.TreasurePack.Schema">
+            <inheritdoc cref="P:TehPers.FishingOverhaul.Config.JsonConfigRoot.Schema" />
         </member>
         <member name="P:TehPers.FishingOverhaul.Config.ContentPacks.TreasurePack.Add">
             <summary>
@@ -259,7 +280,9 @@
         </member>
         <member name="M:TehPers.FishingOverhaul.Config.FishingChances.ClampChance(System.Double)">
             <summary>
-            Clamps the chance to an allowed value.
+            Clamps the chance to an allowed value. This does not take any additional adjustments
+            by other mods into account. For example, a mod may change the range of valid values
+            for the chance.
             </summary>
             <param name="chance">The chance to clamp.</param>
             <returns>The clamped chance.</returns>
@@ -289,6 +312,11 @@
         <member name="P:TehPers.FishingOverhaul.Config.HudConfig.MaxFishTypes">
             <summary>
             The number of fish to show on the fishing HUD.
+            </summary>
+        </member>
+        <member name="P:TehPers.FishingOverhaul.Config.HudConfig.ShowTrash">
+            <summary>
+            Whether to show trash in the fishing HUD.
             </summary>
         </member>
         <member name="T:TehPers.FishingOverhaul.Config.JsonConfigRoot">
@@ -370,6 +398,69 @@
             <summary>
             The chances of getting additional loot when finding treasure. This is rolled until it
             fails or the max number of items have been added to the loot.
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Effects.EffectEntryJsonConverter">
+            <summary>
+            Converts <see cref="T:TehPers.FishingOverhaul.Api.Content.FishingEffectEntry"/> subclasses.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Effects.EffectEntryJsonConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Effects.EffectEntryJsonConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc />
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Effects.EffectEntryJsonConverter.CanConvert(System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Effects.ModifyChanceEffectEntry">
+            <summary>
+            Modifies the chance of catching a fish when fishing.
+            </summary>
+            <param name="Type">The type of chance to modify.</param>
+            <param name="Expression">An expression representing the operation. <c>x</c> represents the chance.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Effects.ModifyChanceEffectEntry.#ctor(TehPers.FishingOverhaul.Effects.ModifyChanceType,System.String)">
+            <summary>
+            Modifies the chance of catching a fish when fishing.
+            </summary>
+            <param name="Type">The type of chance to modify.</param>
+            <param name="Expression">An expression representing the operation. <c>x</c> represents the chance.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Effects.ModifyChanceType">
+            <summary>
+            The type of chance to modify.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Effects.ModifyChanceType.Fish">
+            <summary>
+            Chance of finding a fish.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Effects.ModifyChanceType.MinFish">
+            <summary>
+            Minimum chance of finding a fish.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Effects.ModifyChanceType.MaxFish">
+            <summary>
+            Maximum chance of finding a fish.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Effects.ModifyChanceType.Treasure">
+            <summary>
+            Chance of finding a treasure chest.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Effects.ModifyChanceType.MinTreasure">
+            <summary>
+            Minimum chance of finding a treasure chest.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Effects.ModifyChanceType.MaxTreasure">
+            <summary>
+            Maximum chance of finding a treasure chest.
             </summary>
         </member>
         <member name="M:TehPers.FishingOverhaul.Extensions.DrawingExtensions.DrawStringWithShadow(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Graphics.SpriteFont,System.String,Microsoft.Xna.Framework.Vector2,Microsoft.Xna.Framework.Color,System.Single,System.Single)">
@@ -567,12 +658,121 @@
             <summary>Remove a mod from the config UI and delete all its options and pages.</summary>
             <param name="mod">The mod's manifest.</param>
         </member>
-        <member name="M:TehPers.FishingOverhaul.Services.ChanceCalculator`1.GetWeightedChance(TehPers.FishingOverhaul.Api.FishingInfo)">
+        <member name="T:TehPers.FishingOverhaul.Parsing.BinaryExpr">
+            <summary>
+            A binary operation.
+            </summary>
+            <param name="Operator">The operator to apply.</param>
+            <param name="Left">The expression on the left side of the operator.</param>
+            <param name="Right">The expression on the right side of the operator.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Parsing.BinaryExpr.#ctor(TehPers.FishingOverhaul.Parsing.BinaryOperator,TehPers.FishingOverhaul.Parsing.Expr{System.Double},TehPers.FishingOverhaul.Parsing.Expr{System.Double})">
+            <summary>
+            A binary operation.
+            </summary>
+            <param name="Operator">The operator to apply.</param>
+            <param name="Left">The expression on the left side of the operator.</param>
+            <param name="Right">The expression on the right side of the operator.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Parsing.BinaryOperator">
+            <summary>
+            A binary operataor in an expression.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.BinaryOperator.Add">
+            <summary>
+            The add operator (<c>+</c>).
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.BinaryOperator.Subtract">
+            <summary>
+            The subtraction operator (<c>-</c>).
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.BinaryOperator.Multiply">
+            <summary>
+            The multiplication operator (<c>*</c>).
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.BinaryOperator.Divide">
+            <summary>
+            The division operator (<c>/</c>).
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.BinaryOperator.Modulo">
+            <summary>
+            The modulus operator (<c>%</c>).
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.BinaryOperator.Power">
+            <summary>
+            The power operator (<c>^</c>).
+            </summary>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Parsing.ConstantExpr`1">
+            <summary>
+            A numeric expression.
+            </summary>
+            <param name="Value">The value of this expression.</param>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Parsing.ConstantExpr`1.#ctor(`0)">
+            <summary>
+            A numeric expression.
+            </summary>
+            <param name="Value">The value of this expression.</param>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Parsing.Expr`1">
+            <summary>
+            A parsed expression.
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Parsing.Expr`1.Optimized">
+            <summary>
+            this expression.
+            </summary>
+            <returns>The optimized expression.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Parsing.Expr`1.TryEvaluate(System.Collections.Generic.IDictionary{System.String,System.Double},System.Collections.Generic.HashSet{System.String},`0@)">
+            <summary>
+            Tries to evaluate this expression.
+            </summary>
+            <param name="variables">The values of variables within this expression.</param>
+            <param name="missingVariables">The set of variables that had no value during evaluation.</param>
+            <param name="result">The result of evaluating this expression.</param>
+            <returns></returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Parsing.Expr`1.TryCompile(System.Collections.Generic.Dictionary{System.String,System.Linq.Expressions.ParameterExpression},System.Collections.Generic.HashSet{System.String},System.Linq.Expressions.Expression@)">
+            <summary>
+            Tries to compile this expression.
+            </summary>
+            <param name="variables">The parameters that represent the variables within this expression.</param>
+            <param name="missingVariables">The set of variables that had no value during evaluation.</param>
+            <param name="result">The result of evaluating this expression.</param>
+            <returns></returns>
+        </member>
+        <member name="T:TehPers.FishingOverhaul.Parsing.UnaryOperator">
+            <summary>
+            A unary operator in an expression.
+            </summary>
+        </member>
+        <member name="F:TehPers.FishingOverhaul.Parsing.UnaryOperator.Negate">
+            <summary>
+            The negation operator (<c>-</c>).
+            </summary>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Services.ChanceCalculator.GetWeightedChance(TehPers.FishingOverhaul.Api.FishingInfo)">
             <summary>
             Calculates the chance of catching this entry.
             </summary>
             <param name="fishingInfo">The fishing info to calculate the chance for.</param>
             <returns>The chance of catching this entry, or <see langword="null"/> if the entry is not available.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Services.ConditionsCalculator.IsAvailable(TehPers.FishingOverhaul.Api.FishingInfo)">
+            <summary>
+            Calculates whether the entry is available.
+            </summary>
+            <param name="fishingInfo">The fishing info to calculate the availability for.</param>
+            <returns>Whether the entry is available.</returns>
         </member>
         <member name="T:TehPers.FishingOverhaul.Services.FishingApi">
             <summary>
@@ -599,6 +799,22 @@
         </member>
         <member name="M:TehPers.FishingOverhaul.Services.FishingApi.GetChanceForTreasure(TehPers.FishingOverhaul.Api.FishingInfo)">
             <inheritdoc/>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Services.FishingApi.ClampFishChance(TehPers.FishingOverhaul.Api.FishingInfo,System.Double)">
+            <summary>
+            Clamps the chance of finding a fish.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <param name="chance">The unclamped chance.</param>
+            <returns>The minimum and maximum chance of catching a fish.</returns>
+        </member>
+        <member name="M:TehPers.FishingOverhaul.Services.FishingApi.ClampTreasureChance(TehPers.FishingOverhaul.Api.FishingInfo,System.Double)">
+            <summary>
+            Clamps the chance of finding treasure while fishing.
+            </summary>
+            <param name="fishingInfo">Information about the <see cref="T:StardewValley.Farmer"/> that is fishing.</param>
+            <param name="chance">The unclamped chance.</param>
+            <returns>The minimum and maximum chance of finding a treasure chest.</returns>
         </member>
         <member name="M:TehPers.FishingOverhaul.Services.FishingApi.IsLegendary(TehPers.Core.Api.Items.NamespacedKey)">
             <inheritdoc/>

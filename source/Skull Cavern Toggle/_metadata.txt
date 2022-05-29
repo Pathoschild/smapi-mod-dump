@@ -6,10 +6,9 @@ mods:
    Skull Cavern Toggle
 
 latest commit:
-   commit fdddb774e11cc2cb0bfaf9318ef2454ad57d6bfd
-   Merge: 3aaffe1 9583913
+   commit ee0a9df57057bfa252c1e9afb9705f6b13585a84
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Mon May 3 09:52:37 2021 +1000
+   Date:   Tue May 3 15:27:46 2022 +1000
    
-       Merge branch 'master' of https://github.com/TheMightyAmondee/SkullCavernToggle
+       update for smapi 3.14
    

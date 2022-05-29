@@ -14,21 +14,21 @@ using System.Text;
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
 
 internal class DrawString {
-	// public unsafe void DrawString (SpriteFont spriteFont, string text, Vector2 position, Color color)
-	// public unsafe void DrawString (SpriteFont spriteFont, string text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
-	// public unsafe void DrawString (SpriteFont spriteFont, StringBuilder text, Vector2 position, Color color)
-	// public unsafe void DrawString (SpriteFont spriteFont, StringBuilder text, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale, SpriteEffects effects, float layerDepth)
+	// public unsafe void DrawString (SpriteFont spriteFont, string text, XVector2 position, XColor color)
+	// public unsafe void DrawString (SpriteFont spriteFont, string text, XVector2 position, XColor color, float rotation, XVector2 origin, XVector2 scale, SpriteEffects effects, float layerDepth)
+	// public unsafe void DrawString (SpriteFont spriteFont, StringBuilder text, XVector2 position, XColor color)
+	// public unsafe void DrawString (SpriteFont spriteFont, StringBuilder text, XVector2 position, XColor color, float rotation, XVector2 origin, XVector2 scale, SpriteEffects effects, float layerDepth)
 
 	[Harmonize("DrawString", priority: Harmonize.PriorityLevel.First)]
-	public static bool OnDrawString(SpriteBatch __instance, SpriteFont spriteFont, string text, XNA.Vector2 position, XNA.Color color) {
+	public static bool OnDrawString(XSpriteBatch __instance, SpriteFont spriteFont, string text, XVector2 position, XColor color) {
 		__instance.DrawString(
 			spriteFont: spriteFont,
 			text: text,
 			position: position,
 			color: color,
 			rotation: 0.0f,
-			origin: XNA.Vector2.Zero,
-			scale: XNA.Vector2.One,
+			origin: XVector2.Zero,
+			scale: XVector2.One,
 			effects: SpriteEffects.None,
 			layerDepth: 0.0f
 		);
@@ -36,15 +36,15 @@ internal class DrawString {
 	}
 
 	[Harmonize("DrawString", priority: Harmonize.PriorityLevel.First)]
-	public static bool OnDrawString(SpriteBatch __instance, SpriteFont spriteFont, StringBuilder text, XNA.Vector2 position, XNA.Color color) {
+	public static bool OnDrawString(XSpriteBatch __instance, SpriteFont spriteFont, StringBuilder text, XVector2 position, XColor color) {
 		__instance.DrawString(
 			spriteFont: spriteFont,
 			text: text,
 			position: position,
 			color: color,
 			rotation: 0.0f,
-			origin: XNA.Vector2.Zero,
-			scale: XNA.Vector2.One,
+			origin: XVector2.Zero,
+			scale: XVector2.One,
 			effects: SpriteEffects.None,
 			layerDepth: 0.0f
 		);
@@ -53,14 +53,14 @@ internal class DrawString {
 
 	[Harmonize("DrawString", priority: Harmonize.PriorityLevel.Last)]
 	public static bool OnDrawString(
-		SpriteBatch __instance,
+		XSpriteBatch __instance,
 		SpriteFont spriteFont,
 		string text,
-		XNA.Vector2 position,
-		XNA.Color color,
+		XVector2 position,
+		XColor color,
 		float rotation,
-		XNA.Vector2 origin,
-		XNA.Vector2 scale,
+		XVector2 origin,
+		XVector2 scale,
 		SpriteEffects effects,
 		float layerDepth
 	) {
@@ -80,14 +80,14 @@ internal class DrawString {
 
 	[Harmonize("DrawString", priority: Harmonize.PriorityLevel.Last)]
 	public static bool OnDrawString(
-		SpriteBatch __instance,
+		XSpriteBatch __instance,
 		SpriteFont spriteFont,
 		StringBuilder text,
-		XNA.Vector2 position,
-		XNA.Color color,
+		XVector2 position,
+		XColor color,
 		float rotation,
-		XNA.Vector2 origin,
-		XNA.Vector2 scale,
+		XVector2 origin,
+		XVector2 scale,
 		SpriteEffects effects,
 		float layerDepth
 	) {

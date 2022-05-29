@@ -18,15 +18,15 @@ using System.Runtime.CompilerServices;
 namespace SpriteMaster.Compressors;
 
 //[HarmonizeFinalizeCatcher<ZlibStream, DllNotFoundException>(critical: false)]
-static class Deflate {
+internal static class Deflate {
 	private static readonly Action<ZlibStream, CompressionStrategy>? SetStrategy = typeof(ZlibStream).GetFieldSetter<ZlibStream, CompressionStrategy>("Strategy");
 
-	private static bool? IsSupported_ = null;
+	private static bool? IsSupportedInternal = null;
 	internal static bool IsSupported {
 		[MethodImpl(Runtime.MethodImpl.RunOnce)]
 		get {
-			if (IsSupported_.HasValue) {
-				return IsSupported_.Value;
+			if (IsSupportedInternal.HasValue) {
+				return IsSupportedInternal.Value;
 			}
 
 			try {
@@ -37,25 +37,25 @@ static class Deflate {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
 				Debug.Info("Deflate Compression is supported");
-				IsSupported_ = true;
+				IsSupportedInternal = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.Info($"Deflate Compression not supported");
-				IsSupported_ = false;
+				Debug.Info("Deflate Compression not supported");
+				IsSupportedInternal = false;
 			}
 			catch (Exception ex) {
 				Debug.Info($"Deflate Compression not supported: '{ex.GetType().Name} {ex.Message}'");
-				IsSupported_ = false;
+				IsSupportedInternal = false;
 			}
 
-			return IsSupported_.Value;
+			return IsSupportedInternal.Value;
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int CompressedLengthEstimate(byte[] data) => data.Length >> 1;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int CompressedLengthEstimate(ReadOnlySpan<byte> data) => data.Length >> 1;
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
@@ -64,12 +64,10 @@ static class Deflate {
 		try {
 			using var val = new MemoryStream(CompressedLengthEstimate(data));
 			using (compressor = new ZlibStream(val, CompressionMode.Compress, CompressionLevel.BestCompression)) {
-				if (SetStrategy is not null) {
-					SetStrategy(compressor, CompressionStrategy.Filtered);
-				}
+				SetStrategy?.Invoke(compressor, CompressionStrategy.Filtered);
 				compressor.Write(data, 0, data.Length);
 			}
-			return val.ToArray();
+			return val.GetArray();
 		}
 		catch (DllNotFoundException) when (compressor is not null) {
 			GC.SuppressFinalize(compressor);
@@ -77,41 +75,33 @@ static class Deflate {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Compress(byte[] data) {
 		using var val = new MemoryStream(CompressedLengthEstimate(data));
 		using (var compressor = new ZlibStream(val, CompressionMode.Compress, CompressionLevel.BestCompression)) {
-			if (SetStrategy is not null) {
-				SetStrategy(compressor, CompressionStrategy.Filtered);
-			}
+			SetStrategy?.Invoke(compressor, CompressionStrategy.Filtered);
 			compressor.Write(data, 0, data.Length);
 		}
-		return val.ToArray();
+		return val.GetArray();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Compress(ReadOnlySpan<byte> data) {
 		using var val = new MemoryStream(CompressedLengthEstimate(data));
 		using (var compressor = new ZlibStream(val, CompressionMode.Compress, CompressionLevel.BestCompression)) {
-			if (SetStrategy is not null) {
-				SetStrategy(compressor, CompressionStrategy.Filtered);
-			}
+			SetStrategy?.Invoke(compressor, CompressionStrategy.Filtered);
 			compressor.Write(data.ToArray(), 0, data.Length);
 		}
-		return val.ToArray();
+		return val.GetArray();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte[] Decompress(byte[] data) => ZlibStream.UncompressBuffer(data);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Decompress(byte[] data, int size) {
 		using var dataStream = new MemoryStream(data);
 		var output = new byte[size];
-		using (var val = new MemoryStream(output)) {
-			using var compressor = new ZlibStream(dataStream, CompressionMode.Decompress);
-			compressor.CopyTo(val);
-		}
+		using var val = new MemoryStream(output);
+		using var compressor = new ZlibStream(dataStream, CompressionMode.Decompress);
+		compressor.CopyTo(val);
 		return output;
 	}
 }

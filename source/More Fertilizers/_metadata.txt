@@ -6,9 +6,9 @@ mods:
    More Fertilizers
 
 latest commit:
-   commit 5bae5434d12e7fff846186cb7cae65e0f3c6b9eb
+   commit e394629cea6dea15ac4037f71aa9bf20a3951ce4
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Thu Apr 28 15:33:22 2022 -0400
+   Date:   Fri May 20 10:34:25 2022 -0400
    
-       Move level-based random fertilizer selection to its own method.
+       Fix issues with invalidations for other languages
    

@@ -239,6 +239,31 @@ public interface IThemeManager {
 
 	#endregion
 
+	#region Theme Discovery
+
+	/// <summary>
+	/// Perform theme discovery, reloading all themes and updating the active
+	/// theme. If the <see cref="SelectedThemeId"/> is <c>automatic</c>, this
+	/// may result in the <see cref="ActiveThemeId"/> changing.
+	///
+	/// This method will always result in a <see cref="ThemeChanged"/> event
+	/// being emitted.
+	/// </summary>
+	/// <param name="checkEmbedded">Whether or not to load embedded themes from
+	/// your mod's own directory. If <see cref="EmbeddedThemesPath"/> is
+	/// <c>null</c>, this will do nothing.</param>
+	/// <param name="checkOwned">Whether or not to load themes from content
+	/// packs belonging to your mod.</param>
+	/// <param name="checkExternal">Whether or not to load themes from other,
+	/// unrelated mods that declare a theme for your mod in their manifest.</param>
+	void Discover(
+		bool checkEmbedded = true,
+		bool checkOwned = true,
+		bool checkExternal = true
+	);
+
+	#endregion
+
 	#region Theme Selection
 
 	/// <summary>
@@ -322,32 +347,6 @@ public interface IThemeManager {
 /// </summary>
 /// <typeparam name="DataT">Your mod's theme data type</typeparam>
 public interface ITypedThemeManager<DataT> : IThemeManager where DataT : new() {
-
-	#region Theme Discovery
-
-	/// <summary>
-	/// Perform theme discovery, reloading all themes and updating the active
-	/// theme. If the <see cref="SelectedThemeId"/> is <c>automatic</c>, this
-	/// may result in the <see cref="ActiveThemeId"/> changing.
-	///
-	/// This method will always result in a <see cref="ThemeChanged"/> event
-	/// being emitted.
-	/// </summary>
-	/// <param name="checkEmbedded">Whether or not to load embedded themes from
-	/// your mod's own directory. If <see cref="EmbeddedThemesPath"/> is
-	/// <c>null</c>, this will do nothing.</param>
-	/// <param name="checkOwned">Whether or not to load themes from content
-	/// packs belonging to your mod.</param>
-	/// <param name="checkExternal">Whether or not to load themes from other,
-	/// unrelated mods that declare a theme for your mod in their manifest.</param>
-	/// <returns>The same <see cref="ITypedThemeManager{DataT}"/> instance.</returns>
-	ITypedThemeManager<DataT> Discover(
-		bool checkEmbedded = true,
-		bool checkOwned = true,
-		bool checkExternal = true
-	);
-
-	#endregion
 
 	#region Theme Enumeration
 

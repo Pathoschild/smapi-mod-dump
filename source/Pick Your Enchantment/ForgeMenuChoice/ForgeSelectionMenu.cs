@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using AtraShared.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
@@ -25,6 +26,8 @@ internal sealed class ForgeSelectionMenu : IClickableMenu
 
     private const int Width = 400; // px
     private const int Height = 188; // px
+
+    private static readonly int InherentWidth = (int)Game1.dialogueFont.MeasureWord("Matador de Insetos") + 12;
 
     private readonly bool shouldShowTooltip;
     private readonly List<BaseEnchantment> options = new();
@@ -56,14 +59,14 @@ internal sealed class ForgeSelectionMenu : IClickableMenu
             || (ModEntry.Config.TooltipBehavior == TooltipBehavior.Immersive && Utility.HasAnyPlayerSeenSecretNote(1008));
     }
 
-    private static Texture2D Graphics => AssetLoader.UIElement;
-
-    private static IDictionary<string, string> TooltipData => AssetLoader.TooltipData;
-
     /// <summary>
     /// Gets the currently selected enchantment.
     /// </summary>
     internal BaseEnchantment CurrentSelectedOption => this.options[this.Index % this.options.Count];
+
+    private static Texture2D Graphics => AssetLoader.UIElement;
+
+    private static IDictionary<string, string> TooltipData => AssetLoader.TooltipData;
 
     /// <summary>
     /// Gets the display name of the currently selected enchantment.
@@ -188,7 +191,7 @@ internal sealed class ForgeSelectionMenu : IClickableMenu
         try
         {
             base.draw(b);
-            int stringWidth = Math.Max((int)Game1.dialogueFont.MeasureString("Matador de Insetos").X + 12, (int)Game1.dialogueFont.MeasureString(this.CurrentSelectedTranslatedOption).X);
+            int stringWidth = Math.Max(InherentWidth, (int)Game1.dialogueFont.MeasureWord(this.CurrentSelectedTranslatedOption));
             drawTextureBox(
                 b,
                 texture: Graphics,
@@ -258,11 +261,10 @@ internal sealed class ForgeSelectionMenu : IClickableMenu
 
     private Rectangle GetHoverRect()
     {
-        int stringWidth = (int)Game1.dialogueFont.MeasureString("Matador de Insetos").X + 12;
         return new Rectangle(
-                   x: this.xPositionOnScreen + ((Width - stringWidth - 64) / 2),
+                   x: this.xPositionOnScreen + ((Width - InherentWidth - 64) / 2),
                    y: this.yPositionOnScreen + (Height / 2) - 40,
-                   width: stringWidth + 64,
+                   width: InherentWidth + 64,
                    height: 80
                    );
     }

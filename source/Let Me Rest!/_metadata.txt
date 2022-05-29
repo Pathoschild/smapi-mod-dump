@@ -6,9 +6,9 @@ mods:
    Let Me Rest!
 
 latest commit:
-   commit dd7ccfdefa70d42e0803db2d9a1cf116602e1ad5
-   Author: Gustavo Hinkel <78951385+Ophaneom@users.noreply.github.com>
-   Date:   Wed Mar 24 00:41:00 2021 -0300
+   commit 07ecd28e697182135893222b4973c8e2bf3c40b7
+   Author: Gustavo Hinkel <gustavopradahinkel@gmail.com>
+   Date:   Tue May 24 11:48:39 2022 -0300
    
-       .
+       Adjusted buff system
    

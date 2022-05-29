@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,9 +48,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         }
 
         /// <inheritdoc />
-        public override bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public override bool HasBoundedValues(IInputArguments input, out IInvariantSet allowedValues)
         {
-            allowedValues = InvariantHashSet.Boolean();
+            allowedValues = InvariantSets.Boolean;
             return true;
         }
 
@@ -61,7 +59,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         {
             this.AssertInput(input);
 
-            yield return this.GetPathExists(input.GetPositionalSegment()).ToString();
+            return InvariantSets.FromValue(
+                this.GetPathExists(input.GetPositionalSegment())
+            );
         }
 
 
@@ -71,7 +71,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
         /// <summary>Get whether the given file path exists.</summary>
         /// <param name="path">The relative file path.</param>
         /// <exception cref="InvalidOperationException">The path is not relative or contains directory climbing (../).</exception>
-        private bool GetPathExists(string path)
+        private bool GetPathExists(string? path)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return false;
@@ -81,7 +81,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders
 
             // validate
             if (Path.IsPathRooted(path))
-                throw new InvalidOperationException($"The {this.Name} token requires a relative path.");
+                return false; // don't throw an error since this is often an empty token like "{{FolderName}}/asset.png"
             if (!PathUtilities.IsSafeRelativePath(path))
                 throw new InvalidOperationException($"The {this.Name} token requires a relative path and cannot contain directory climbing (../).");
 

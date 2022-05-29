@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,13 +12,16 @@ namespace DaLion.Stardew.Professions.Framework.Events.Multiplayer;
 
 #region using directives
 
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
+using Content;
 using GameLoop;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class RequestGlobalEventModMessageReceivedEvent : ModMessageReceivedEvent
 {
     /// <inheritdoc />
@@ -36,12 +39,16 @@ internal class RequestGlobalEventModMessageReceivedEvent : ModMessageReceivedEve
 
         switch (which)
         {
+            case "Aquarist":
+                Log.D($"{who.Name} requested {which} event subscription.");
+                EventManager.Enable(typeof(HostFishPondDataRequestedEvent));
+                break;
             case "Conservationism":
                 Log.D($"{who.Name} requested {which} event subscription.");
                 EventManager.Enable(typeof(HostConservationismDayEndingEvent));
                 break;
             case "HuntIsOn":
-                Log.D($"{who.Name} is hunting for treasure.");
+                Log.D($"Prestiged treasure hunter {who.Name} is hunting for treasure.");
                 EventManager.Enable(typeof(HostPrestigeTreasureHuntUpdateTickedEvent));
                 break;
             case "HuntIsOff":

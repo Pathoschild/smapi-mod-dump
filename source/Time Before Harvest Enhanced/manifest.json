@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/enom/time-before-harvest-enhanced
+**
+*************************************************/
+
+{
+  "Name": "TimeBeforeHarvestEnhanced",
+  "Author": "Jonathan Ginn",
+  "Version": "1.0.0",
+  "Description": "Shows the remaining days until a given crop can be harvested",
+  "UniqueID": "JonathanGinn.TimeBeforeHarvestEnhanced",
+  "EntryDll": "TimeBeforeHarvestEnhanced.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

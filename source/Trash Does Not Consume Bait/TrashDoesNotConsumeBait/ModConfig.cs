@@ -50,4 +50,9 @@ public class ModConfig
         get => this.consumeChancePreserving;
         set => this.consumeChancePreserving = Math.Clamp(value, 0f, 1f);
     }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this mod should affect crab pots as well.
+    /// </summary>
+    public bool CrabPotTrashDoesNotEatBait { get; set; } = true;
 }

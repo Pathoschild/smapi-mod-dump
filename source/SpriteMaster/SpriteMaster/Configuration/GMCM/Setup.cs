@@ -22,19 +22,23 @@ using SMMetadata = SpriteMaster.Metadata.Metadata;
 
 namespace SpriteMaster.Configuration.GMCM;
 
-static class Setup {
-	private const int PreviewHeight = 400;
+internal static class Setup {
+	private const int DefaultPreviewHeight = 400;
+	internal const bool LockPreview = false;
+	private static int PreviewHeight => Math.Min(DefaultPreviewHeight, DrawState.Device.ScissorRectangle.Height - 100);
 
 	private static volatile bool Initialized = false;
 
 	private static IGenericModConfigMenuApi? ConfigAPI = null;
 	private static readonly Dictionary<string, FieldInfo> FieldMap = new();
-	private static Preview.Override PreviewOverride = new();
+	private static Override PreviewOverride = new();
 	private static bool IsMenuOpened = false;
 	private static bool DisposeNextClick = false;
-	private static Preview.Scene? PreviewScene = null;
+	private static Scene? PreviewScene = null;
 
-	internal static void Initialize(IModHelper help) {
+	private const int RowHeight = 0;
+
+	internal static void Initialize() {
 		if (Initialized) {
 			throw new Exception("GMCM already initialized");
 		}
@@ -42,7 +46,7 @@ static class Setup {
 
 		// https://github.com/spacechase0/StardewValleyMods/tree/develop/GenericModConfigMenu#for-c-mod-authors
 
-		ConfigAPI = help.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+		ConfigAPI = SpriteMaster.Self.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 		if (ConfigAPI is null) {
 			Debug.Trace("Could not acquire GenericModConfigMenu interface");
 			return;
@@ -97,12 +101,38 @@ static class Setup {
 		Serialize.Save(Config.Path);
 	}
 
+	private static bool IsAdvanced(Type type) {
+		bool isAdvancedField = type.HasAttribute<Attributes.AdvancedAttribute>();
+		if (isAdvancedField) {
+			return true;
+		}
+
+		if (type.DeclaringType is null) {
+			return false;
+		}
+
+		return IsAdvanced(type.DeclaringType);
+	}
+
+	private static bool IsAdvanced(FieldInfo field) {
+		bool isAdvancedField = field.HasAttribute<Attributes.AdvancedAttribute>();
+		if (isAdvancedField) {
+			return true;
+		}
+
+		if (field.DeclaringType is null) {
+			return false;
+		}
+
+		return IsAdvanced(field.DeclaringType);
+	}
+
 	private static bool Hidden(FieldInfo field, bool advanced) {
 		if (field.HasAttribute<Attributes.GMCMHiddenAttribute>()) {
 			return true;
 		}
 
-		bool isAdvancedField = field.HasAttribute<Attributes.AdvancedAttribute>();
+		bool isAdvancedField = IsAdvanced(field);
 		if (advanced != isAdvancedField) {
 			return true;
 		}
@@ -151,7 +181,6 @@ static class Setup {
 		if (order < 0) {
 			throw new ArgumentOutOfRangeException(nameof(order), "parameter must not be negative");
 		}
-		var shift = 10 * order;
 
 		// 1024^1 = (1024 << 0)
 		// 1024^2 = (1024 << 10)
@@ -166,7 +195,7 @@ static class Setup {
 				var divisor = SizeOrder(1024, order);
 				var dValue = (double)value / divisor;
 				var prefix = Prefixes[Math.Min(order, Prefixes.Length - 1)][0];
-				return $"{dValue.ToString("0.##")} {prefix}";
+				return $"{dValue:0.##} {prefix}";
 			}
 			return null;
 		}
@@ -263,6 +292,10 @@ static class Setup {
 		return Enum.Parse<T>(combinedName);
 	}
 
+	private static string GetFieldName(FieldInfo field) {
+		var attribute = field.GetCustomAttribute<Attributes.MenuNameAttribute>();
+		return attribute?.Name ?? FormatName(field.Name);
+	}
 
 	private static void ProcessField(FieldInfo field, bool advanced, IManifest manifest, IGenericModConfigMenuApi config) {
 		if (Hidden(field, advanced)) {
@@ -271,17 +304,21 @@ static class Setup {
 
 		var comments = field.GetCustomAttributes<Attributes.CommentAttribute>();
 		string? comment = null;
-		if (comments.Any()) {
+		var commentAttributes = comments as Attributes.CommentAttribute[] ?? comments.ToArray();
+		if (commentAttributes.Any()) {
 			comment = string.Join(
 				Environment.NewLine,
-				comments.Select(attr => attr.Message)
+				commentAttributes.Select(attr => attr.Message)
 			);
 		}
 
 		var fieldType = field.FieldType;
 		var fieldId = $"{field.ReflectedType?.FullName ?? "unknown"}.{field.Name}";
-		Func<string> fieldName = () => FormatName(field.Name);
-		Func<string>? tooltip = comment is null ? null : () => comment;
+		Func<string> fieldName = () => GetFieldName(field);
+		Func<string>? tooltip = null;
+		if (comment is not null) {
+			tooltip = () => comment;
+		}
 
 		FieldMap[fieldId] = field;
 
@@ -415,6 +452,12 @@ static class Setup {
 			case "SpriteMaster.Configuration.Config.Enabled":
 				PreviewOverride.Enabled = (bool)value;
 				break;
+			case "SpriteMaster.Configuration.Config+DrawState.SetLinear":
+				PreviewOverride.SetLinear = (bool)value;
+				break;
+			case "SpriteMaster.Configuration.Config+DrawState.SetLinearUnresampled":
+				PreviewOverride.SetLinearUnresampled = (bool)value;
+				break;
 			case "SpriteMaster.Configuration.Config+Resample.Enabled":
 				PreviewOverride.ResampleEnabled = (bool)value;
 				break;
@@ -453,7 +496,7 @@ static class Setup {
 			return null;
 		}
 
-		var names = new List<string>();
+		var names = new List<string> { category.Name };
 		foreach (var currentCategory in category.ParentTraverser) {
 			if (!currentCategory.Name.IsBlank()) {
 				names.Add(currentCategory.Name);
@@ -530,7 +573,7 @@ static class Setup {
 		DisposeNextClick = false;
 	}
 
-	private static void OnDrawPreview(XNA.Graphics.SpriteBatch batch, Vector2F offset) {
+	private static void OnDrawPreview(XSpriteBatch batch, Vector2F offset) {
 		Bounds scissor = batch.GraphicsDevice.ScissorRectangle;
 
 		Bounds destination = new(
@@ -541,11 +584,16 @@ static class Setup {
 		destination.Offset.X += scissor.X;
 
 		if (PreviewScene is null) {
-			PreviewScene = new Preview.Scene1(destination);
+			PreviewScene = new Scene1(destination);
 		}
 		else {
-			if (PreviewScene.Region != destination) {
-				PreviewScene.Resize(destination);
+			if (PreviewScene.ReferenceRegion != destination) {
+				if (PreviewScene.ReferenceRegion.Extent != destination.Extent) {
+					PreviewScene.Resize(destination);
+				}
+				else {
+					PreviewScene.ChangeOffset(destination.Offset);
+				}
 			}
 		}
 
@@ -556,48 +604,41 @@ static class Setup {
 	private static void ProcessCategory(Serialize.Category? parent, Serialize.Category category, bool advanced, IManifest manifest, IGenericModConfigMenuApi config, bool first = false) {
 		bool isRoot = parent is null;
 		
-		if (isRoot) {
-			if (advanced) {
-				config.AddPage(
-					mod: manifest,
-					pageId: "advanced",
-					pageTitle: () => "Advanced Settings"
-				);
-			}
-			else {
-				config.AddPageLink(
-					mod: manifest,
-					pageId: "advanced",
-					text: () => "[ Advanced Settings ]",
-					tooltip: () => "Display Advanced Settings"
-				);
-				//config.AddSectionTitle(mod: manifest, text: () => "");
-			}
+		if (isRoot && advanced) {
+			config.AddPage(
+				mod: manifest,
+				pageId: "advanced",
+				pageTitle: () => "Advanced Settings"
+			);
 		}
 
 		if (category.Name.Length != 0) {
-			if (string.IsNullOrEmpty(GetCategoryName(category)) && !first) {
-				if (category.Type.GetAttribute<Attributes.CommentAttribute>(out var commentAttribute)) {
-					config.AddSectionTitle(manifest, () => GetCategoryName(category) ?? "", () => commentAttribute.Message);
-				}
-				else {
-					config.AddSectionTitle(manifest, () => GetCategoryName(category) ?? "");
+			var categoryName = GetCategoryName(category);
+			if (categoryName.IsBlank()) {
+				if (!first && (!isRoot || advanced)) {
+					config.AddSectionTitle(manifest, () => "");
 				}
 			}
-		}
-
-		foreach (var field in category.Fields.Values) {
-			ProcessField(field, advanced, manifest, config);
+			else {
+				if (category.Type.GetAttribute<Attributes.CommentAttribute>(out var commentAttribute)) {
+					config.AddSectionTitle(manifest, () => categoryName, () => commentAttribute.Message);
+				}
+				else {
+					config.AddSectionTitle(manifest, () => categoryName);
+				}
+			}
 		}
 
 		if (isRoot) {
 			// Fancy special case!
+			// TODO : we need to have the element's height change when the window is resized,
+			// not only when the menu is opened.
 			config.AddComplexOption(
 				mod: manifest,
-				name: () => "Preview",
+				name: () => "",
 				draw: (batch, offset) => OnDrawPreview(batch, offset),
 				tooltip: () => "Resampling Preview (click to change)",
-				height: () => PreviewHeight,
+				height: () => PreviewHeight - RowHeight,
 				beforeMenuClosed: () => {
 					IsMenuOpened = false;
 					OnMenuClose();
@@ -609,8 +650,26 @@ static class Setup {
 					IsMenuOpened = true;
 					OnMenuOpen();
 				},
+				afterReset: () => { },
+				beforeSave: () => { },
+				afterSave: () => { },
 				fieldId: "resampling.preview"
 			);
+
+			if (!advanced) {
+				config.AddPageLink(
+					mod: manifest,
+					pageId: "advanced",
+					text: () => "[ Advanced Settings ]",
+					tooltip: () => "Display Advanced Settings"
+				);
+			}
+
+			config.AddSectionTitle(manifest, () => "");
+		}
+
+		foreach (var field in category.Fields.Values) {
+			ProcessField(field, advanced, manifest, config);
 		}
 
 		first = true;

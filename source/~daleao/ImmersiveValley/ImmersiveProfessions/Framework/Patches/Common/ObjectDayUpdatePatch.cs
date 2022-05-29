@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -35,18 +35,9 @@ internal class ObjectDayUpdatePatch : BasePatch
     internal ObjectDayUpdatePatch()
     {
         Original = RequireMethod<SObject>(nameof(SObject.DayUpdate));
-        Postfix.priority = Priority.LowerThanNormal;
     }
 
     #region harmony patches
-
-    /// <summary>Patch to increment object age + add quality to Ecologist Mushroom Boxes.</summary>
-    [HarmonyPostfix]
-    private static void ObjectDayUpdatePostfix(SObject __instance)
-    {
-        if (__instance.IsMushroomBox() && __instance.heldObject.Value is not null && Game1.MasterPlayer.HasProfession(Profession.Ecologist))
-            __instance.heldObject.Value.Quality = Game1.MasterPlayer.GetEcologistForageQuality();
-    }
 
     /// <summary>Patch to increase production frequency of Producer Bee House.</summary>
     [HarmonyTranspiler]

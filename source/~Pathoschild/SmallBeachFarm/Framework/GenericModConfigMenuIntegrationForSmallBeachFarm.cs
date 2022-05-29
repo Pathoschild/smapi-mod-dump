@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Pathoschild.Stardew.Common.Integrations.GenericModConfigMenu;
 using Pathoschild.Stardew.SmallBeachFarm.Framework.Config;
@@ -54,6 +52,8 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
             menu
                 .Register(titleScreenOnly: true) // configuring in-game would have unintended effects like small beach farm logic being half-applied
 
+                // farm layout
+                .AddSectionTitle(I18n.Config_FarmLayoutSection)
                 .AddCheckbox(
                     name: I18n.Config_Campfire_Name,
                     tooltip: I18n.Config_Campfire_Tooltip,
@@ -67,10 +67,25 @@ namespace Pathoschild.Stardew.SmallBeachFarm.Framework
                     set: (config, value) => config.EnableIslands = value
                 )
                 .AddCheckbox(
+                    name: I18n.Config_ShippingBinPath_Name,
+                    tooltip: I18n.Config_ShippingBinPath_Tooltip,
+                    get: config => config.ShippingBinPath,
+                    set: (config, value) => config.ShippingBinPath = value
+                )
+
+                // farm options
+                .AddSectionTitle(I18n.Config_OtherFarmOptions)
+                .AddCheckbox(
                     name: I18n.Config_BeachSounds_Name,
                     tooltip: I18n.Config_BeachSounds_Tooltip,
                     get: config => config.UseBeachMusic,
                     set: (config, value) => config.UseBeachMusic = value
+                )
+                .AddCheckbox(
+                    name: I18n.Config_SpawnMonsters_Name,
+                    tooltip: I18n.Config_SpawnMonsters_Tooltip,
+                    get: config => config.DefaultSpawnMonstersAtNight,
+                    set: (config, value) => config.DefaultSpawnMonstersAtNight = value
                 );
         }
     }

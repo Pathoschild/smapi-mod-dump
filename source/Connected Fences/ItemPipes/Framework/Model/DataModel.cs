@@ -18,8 +18,8 @@ namespace ItemPipes.Framework.Model
 {
     class DataModel
     {
-        public List<string> ModItems { get; set; }
-        public List<string> NetworkItems { get; set; }
+        public List<int> ModItems { get; set; }
+        public List<int> NetworkItems { get; set; }
         public List<string> PipeNames { get; set; }
         public List<string> IOPipeNames { get; set; }
         public List<string> Locations { get; set; }

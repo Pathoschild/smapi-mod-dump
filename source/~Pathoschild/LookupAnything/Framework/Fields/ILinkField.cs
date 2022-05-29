@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Pathoschild.Stardew.LookupAnything.Framework.Lookups;
 
 namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
@@ -21,6 +19,6 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Fields
         ** Public methods
         *********/
         /// <summary>Get the subject the link points to.</summary>
-        ISubject GetLinkSubject();
+        ISubject? GetLinkSubject();
     }
 }

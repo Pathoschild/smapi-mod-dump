@@ -35,9 +35,10 @@ namespace ItemPipes.Framework.Patches
     [HarmonyPatch(typeof(CraftingPage))]
     public static class CraftingPatcher
     {
-
+        public static bool WrenchCrafted { get; set; }
         public static void Apply(Harmony harmony)
         {
+			WrenchCrafted = false;
 			try
 			{
 				harmony.Patch(
@@ -49,12 +50,38 @@ namespace ItemPipes.Framework.Patches
 					original: typeof(LevelUpMenu).GetMethod(nameof(LevelUpMenu.draw), new Type[] { typeof(SpriteBatch) }),
 					prefix: new HarmonyMethod(typeof(CraftingPatcher), nameof(CraftingPatcher.LevelUpMenu_draw_Prefix))
 				);
+				/*
+				harmony.Patch(
+					original: typeof(LetterViewerMenu).GetMethod(nameof(LetterViewerMenu.OnPageChange)),
+					prefix: new HarmonyMethod(typeof(CraftingPatcher), nameof(CraftingPatcher.LetterViewerMenu_HasInteractable_Prefix))
+				);
+				*/
+				
+				harmony.Patch(
+					original: typeof(LetterViewerMenu).GetMethod(nameof(LetterViewerMenu.update), new Type[] { typeof(GameTime) }),
+					prefix: new HarmonyMethod(typeof(CraftingPatcher), nameof(CraftingPatcher.LetterViewerMenu_update_Prefix))
+				);
+				
 			}
 			catch (Exception ex)
 			{
 				Printer.Info($"Failed to add crafting patches: {ex}");
 			}
         }
+
+		private static bool LetterViewerMenu_update_Prefix(LetterViewerMenu __instance)
+		{
+			if(__instance.mailTitle.Equals("ItemPipes_SendWrench"))
+            {
+				Item wrench = Factories.ItemFactory.CreateTool("Wrench");
+				if(!__instance.itemsToGrab.Any(c => c != null && c.item != null && c.item.Name.Equals("Wrench")) && !WrenchCrafted)
+                {
+					__instance.itemsToGrab.Add(new ClickableComponent(new Rectangle(__instance.xPositionOnScreen + __instance.width / 2 - 48, __instance.yPositionOnScreen + __instance.height - 32 - 96, 96, 96), Factories.ItemFactory.CreateTool("Wrench")));
+					WrenchCrafted = true;
+				}
+			}
+			return true;
+		}
 
 		private static bool LevelUpMenu_draw_Prefix(LevelUpMenu __instance, SpriteBatch b)
 		{

@@ -25,4 +25,6 @@ public class ModConfig
         get => this.giantCropChance;
         set => this.giantCropChance = Math.Clamp(value, 0, 1.1d);
     }
+
+    public bool AllowGiantCropsOffFarm { get; set; } = false;
 }

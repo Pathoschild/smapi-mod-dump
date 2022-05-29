@@ -6,9 +6,9 @@ mods:
    More Clocks
 
 latest commit:
-   commit aff8485ff5378bf489b7188d2d97cbb337781c41
+   commit 0e58424765599de83982fdcda34d4d103ce4f46f
    Author: p-holodynski <p.holodynski@gmail.com>
-   Date:   Sat Apr 30 11:59:54 2022 -1000
+   Date:   Tue May 3 09:04:01 2022 -1000
    
-       Added multiple config options
+       Updated project file
    

@@ -24,10 +24,6 @@
   "PreventPlantingOnRugs.description": "Prevents hoeing on rugs and planting saplings on rugs.",
   "PlaceGrassUnder.title": "Place Grass Under",
   "PlaceGrassUnder.description": "Allow placing grass under other objects",
-  "InSafeAreas.title": "In Safe Areas",
-  "InSafeAreas.description": "Whether bomb confirmation should be enabled in safe area.",
-  "InDangerousAreas.title": "In Dangerous Areas",
-  "InDangerousAreas.description": "Whether bombs should be confirmed in dangerous areas.",
   "JukeboxesEverywhere.title": "Jukeboxes Everywhere",
   "JukeboxesEverywhere.description": "Allows jukeboxes to be played anywhere!",
   "GoldenCoconutsOffIsland.title": "Golden Coconuts Off Island",
@@ -36,26 +32,58 @@
   "FurniturePlacementKey.title": "Furniture Placement Key",
   "FurniturePlacementKey.description": "The keybind used to allow objects to be removed from tables.",
 
-  "BombLocationDetailed": "Bomb confirmation per location",
+  "HideCrabPots.title": "Hide Crab Pots",
+  "HideCrabPots.description": "Hides crab pots during events.",
 
+  "SaveBombedForage.title": "Save Bombed Forage",
+  "SaveBombedForage.description": "Bombed forage is automatically collected",
+
+  // Handle the confirmation GMCM stuff....
+
+  "BombLocationDetailed": "Bomb and warp confirmation per location",
   "BombLocationDetailed.description": "Sets whether or not a location should be considered safe or dangerous when it comes to bomb confirmation. A dynamic location is considered dangerous if there is a single enemy on it.",
 
   "config.IsSafeLocationEnum.Safe": "Safe",
   "config.IsSafeLocationEnum.Dangerous": "Dangerous",
   "config.IsSafeLocationEnum.Dynamic": "Dynamic",
 
-  "config.ConfirmBombEnum.Off": "Off",
-  "config.ConfirmBombEnum.NotInMultiplayer": "Not In Multiplayer",
-  "config.ConfirmBombEnum.On": "On",
-  "config.ConfirmBombEnum.InMultiplayerOnly": "In MultiplayerOnly",
+  "config.ConfirmationEnum.Off": "Off",
+  "config.ConfirmationEnum.NotInMultiplayer": "Not In Multiplayer",
+  "config.ConfirmationEnum.On": "On",
+  "config.ConfirmationEnum.InMultiplayerOnly": "In MultiplayerOnly",
 
   "ConfirmBomb.title": "Bomb confirmation settings",
   "ConfirmBomb.description": "Whether or not to ask for confirmation before using a bomb.",
 
+  "BombsInSafeAreas.title": "Bombs in Safe Areas",
+  "BombsInSafeAreas.description": "Whether bomb confirmation should be enabled in safe area.",
+  "BombsInDangerousAreas.title": "Bombs in Dangerous Areas",
+  "BombsInDangerousAreas.description": "Whether bombs should be confirmed in dangerous areas.",
+
+  "ConfirmWarps.title": "Warp confirmation settings",
+  "ConfirmWarps.description": "Whether or not to ask for confirmation before using a warp.",
+
+  "WarpsInSafeAreas.title": "Warps In Safe Areas",
+  "WarpsInSafeAreas.description": "Whether warp confirmation should be enabled in safe areas.",
+  "WarpsInDangerousAreas.title": "Warps In Dangerous Areas",
+  "WarpsInDangerousAreas.description": "Whether warps should be confirmed in dangerous areas.",
+
+  "ConfirmScepter.title": "Return Scepter confirmation settings",
+  "ConfirmScepter.description": "Whether or not to ask for confirmation before using the return scepter",
+
+  "BetterReturnScepter":  "Since you have Better Return Scepter installed, the return scepter settings for this mod have been disabled.",
+
+  "ReturnScepterInSafeAreas.title": "Return Scepter\nin Safe Areas",
+  "ReturnScepterInSafeAreas.description": "Whether return scepter confirmation should be enabled in safe areas.",
+  "ReturnScepterInDangerousAreas.title": "Return Scepter\nIn Dangerous Areas",
+  "ReturnScepterInDangerousAreas.description": "Whether return scepter confirmation should be enabled in dangerous areas.",
+
+  // Messages to the player.
   "rug-removal-message": "Remove all items on rug before removing rug!",
   "table-removal-message": "Hold down {{keybind}} to remove object from table.",
   "rug-planting-message": "Planting on rugs is not allowed!",
   "gate-removal-message": "Hold down {{keybind}} to remove gates easily",
+  "invalid-special-order": "Special Order {{order}} seems to be invalid; was not added to your quest log.",
 
   // Config errors and messages
   "IllFormatedConfig": "Config file seems ill-formated, using default. Please use Generic Mod Config Menu to configure.",
@@ -64,7 +92,20 @@
 
   // Confirm bombs?
   "ConfirmBombs": "Place bomb?",
-  "Yes": "Yes (one)",
+  "YesOne": "Yes (one)",
   "YesArea": "Yes (for this map)",
-  "No": "No"
+  "No": "No",
+
+  // Confirm warps:
+  "ConfirmWarps": "Confirm warp?",
+  "Yes": "Yes",
+
+  // For editing Elliott's event
+  "drink": "Oh, I'd love a drink!",
+  "nondrink": "Actually, could I have some juice?",
+
+  // Casino!
+  "bet1k": "Bet1000",
+  "bet10k": "Bet10000",
+  "BuyCasino": "Buy casino coins? 10 g each!"
 }

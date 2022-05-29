@@ -6,9 +6,11 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit 9b2de2b684651418139733e482d4a8b71993c731
+   commit 50915405c51b26d4c8e5fa905d2763224d2a57d6
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Thu Mar 31 12:36:59 2022 -0700
+   Date:   Fri May 13 20:39:14 2022 -0700
    
-       1.4.4 update
+       1.4.6 update
+       
+       Previous fix introduced a bug that made horse not animate properly, so changed approach to Tool Hit Location indicator entirely; it now directly prevents the Draw method for said indicator when taking over.
    

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,7 +97,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.Lookups.Buildings
                 return true;
 
             // special exceptions
-            if (BuildingTarget.SpriteCollisionOverrides.TryGetValue(this.Value.buildingType.Value, out Rectangle[] overrides))
+            if (BuildingTarget.SpriteCollisionOverrides.TryGetValue(this.Value.buildingType.Value, out Rectangle[]? overrides))
             {
                 Vector2 spriteSheetPosition = this.GameHelper.GetSpriteSheetCoordinates(position, spriteArea, sourceRect);
                 return overrides.Any(p => p.Contains((int)spriteSheetPosition.X, (int)spriteSheetPosition.Y));

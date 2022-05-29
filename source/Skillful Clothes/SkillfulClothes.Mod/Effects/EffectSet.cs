@@ -21,7 +21,7 @@ namespace SkillfulClothes.Effects
     /*
      * A set of effects
      */
-    class EffectSet : IEffect
+    public class EffectSet : IEffect
     {
 
         public IEffect[] Effects { get; }        

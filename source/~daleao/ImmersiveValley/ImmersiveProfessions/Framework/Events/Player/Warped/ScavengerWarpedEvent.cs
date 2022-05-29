@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -12,13 +12,15 @@ namespace DaLion.Stardew.Professions.Framework.Events.Player;
 
 #region using directives
 
+using JetBrains.Annotations;
 using StardewModdingAPI.Events;
 using StardewValley;
 
-using TreasureHunt;
+using Framework.TreasureHunt;
 
 #endregion using directives
 
+[UsedImplicitly]
 internal class ScavengerWarpedEvent : WarpedEvent
 {
     /// <inheritdoc />
@@ -30,6 +32,6 @@ internal class ScavengerWarpedEvent : WarpedEvent
         if (ModEntry.PlayerState.ScavengerHunt.IsActive) ModEntry.PlayerState.ScavengerHunt.Fail();
         if (!Game1.eventUp && e.NewLocation.IsOutdoors &&
             (ModEntry.Config.AllowScavengerHuntsOnFarm || !e.NewLocation.IsFarm))
-            ModEntry.PlayerState.ScavengerHunt.TryStartNewHunt(e.NewLocation);
+            ModEntry.PlayerState.ScavengerHunt.TryStart(e.NewLocation);
     }
 }

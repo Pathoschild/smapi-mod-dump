@@ -27,7 +27,7 @@ namespace TehPers.FishSword
         private static int playedSwipes;
 
         private static readonly Lazy<IDynamicGameAssetsApi?> dgaApi = new(
-            () => ModFishSword.instance?.Helper.ModRegistry.GetApi<IDynamicGameAssetsApi?>(
+            () => ModFishSword.instance?.Helper.ModRegistry.GetApi<IDynamicGameAssetsApi>(
                 "spacechase0.DynamicGameAssets"
             )
         );

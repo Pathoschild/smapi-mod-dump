@@ -4,6 +4,7 @@
   "ShakeRegularTrees": true,
   "ShakeFruitTrees": true,
   "FruitsReadyToShake": 1,
+  "ShakeTeaBushes": true,
   "ShakeBushes": true,
   "UsePlayerMagnetism": false,
   "ShakeDistance": 2

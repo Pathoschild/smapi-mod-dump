@@ -24,6 +24,8 @@ namespace MoreFertilizers.Framework;
 [HarmonyPatch(typeof(Utility))]
 internal static class SpecialFertilizerApplication
 {
+    private const int PLACEMENTRADIUS = 2;
+
     private static readonly CanPlaceHandler PlaceHandler = new();
 
     /// <summary>
@@ -34,9 +36,22 @@ internal static class SpecialFertilizerApplication
     internal static void ApplyFertilizer(ButtonPressedEventArgs e, IInputHelper helper)
     {
         if (!Context.IsWorldReady || !(e.Button.IsUseToolButton() || e.Button.IsActionButton())
-            || Game1.player.ActiveObject is not SObject obj || obj.bigCraftable.Value
-            || !Utility.withinRadiusOfPlayer(((int)e.Cursor.GrabTile.X * 64) + 32, ((int)e.Cursor.GrabTile.Y * 64) + 32, 3, Game1.player)
-            || !PlaceHandler.CanPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.GrabTile))
+            || Game1.player.ActiveObject is not SObject obj || obj.bigCraftable.Value)
+        {
+            return;
+        }
+
+        Vector2 placementtile;
+        if (PlaceHandler.CanPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.Tile)
+            && Utility.withinRadiusOfPlayer(((int)e.Cursor.Tile.X * 64) + 32, ((int)e.Cursor.Tile.Y * 64) + 32, PLACEMENTRADIUS, Game1.player))
+        {
+            placementtile = e.Cursor.Tile;
+        }
+        else if (PlaceHandler.CanPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.GrabTile))
+        {
+            placementtile = e.Cursor.GrabTile;
+        }
+        else
         {
             return;
         }
@@ -44,22 +59,22 @@ internal static class SpecialFertilizerApplication
         // Handle the special case of tossing the fish food fertilizer.
         if (obj.ParentSheetIndex == ModEntry.FishFoodID || obj.ParentSheetIndex == ModEntry.DeluxeFishFoodID || obj.ParentSheetIndex == ModEntry.DomesticatedFishFoodID)
         {
-            Vector2 placementtile = (e.Cursor.GrabTile * 64f) + new Vector2(32f, 32f);
+            Vector2 placementpixel = (placementtile * 64f) + new Vector2(32f, 32f);
             if (obj.ParentSheetIndex == ModEntry.DomesticatedFishFoodID && Game1.currentLocation is BuildableGameLocation loc)
             {
                 foreach (Building b in loc.buildings)
                 {
                     if (b is FishPond fishPond && b.occupiesTile(e.Cursor.GrabTile))
                     {
-                        placementtile = fishPond.GetCenterTile() * 64f;
+                        placementpixel = fishPond.GetCenterTile() * 64f;
                         break;
                     }
                 }
             }
-            Game1.player.FaceFarmerTowardsPosition(placementtile);
+            Game1.player.FaceFarmerTowardsPosition(placementpixel);
             Game1.playSound("throwDownITem");
 
-            Vector2 delta = placementtile - Game1.player.Position;
+            Vector2 delta = placementpixel - Game1.player.Position;
             float gravity = 0.0025f;
             float velocity = -0.08f;
             if (delta.Y < -80)
@@ -89,17 +104,17 @@ internal static class SpecialFertilizerApplication
                     timeBasedMotion = true,
                 });
 
-            GameLocationUtils.DrawWaterSplash(Game1.currentLocation, placementtile, mp, (int)time);
+            GameLocationUtils.DrawWaterSplash(Game1.currentLocation, placementpixel, mp, (int)time);
 
             DelayedAction.playSoundAfterDelay("waterSlosh", (int)time, Game1.player.currentLocation);
             if (obj.ParentSheetIndex != ModEntry.DomesticatedFishFoodID)
             {
                 DelayedAction.functionAfterDelay(
-                    () => Game1.currentLocation.waterColor.Value = FedFishWaterColor(),
+                    static () => Game1.currentLocation.waterColor.Value = ModEntry.Config.WaterOverlayColor,
                     (int)time);
             }
 
-            if (PlaceHandler.TryPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.GrabTile))
+            if (PlaceHandler.TryPlaceFertilizer(obj, Game1.currentLocation, placementtile))
             {
                 Game1.player.reduceActiveItemByOne();
                 helper.Suppress(e.Button);
@@ -108,23 +123,12 @@ internal static class SpecialFertilizerApplication
         }
 
         // Handle placing the other fertilizers.
-        if (PlaceHandler.TryPlaceFertilizer(obj, Game1.currentLocation, e.Cursor.GrabTile))
+        if (PlaceHandler.TryPlaceFertilizer(obj, Game1.currentLocation, placementtile))
         {
             Game1.player.reduceActiveItemByOne();
             helper.Suppress(e.Button);
             return;
         }
-    }
-
-    /// <summary>
-    /// Gets the color to tint the water for fed fish.
-    /// </summary>
-    /// <returns>The color.</returns>
-    internal static Color FedFishWaterColor()
-    {
-        Color color = Color.MediumPurple;
-        color.A = 155;
-        return color;
     }
 
     [HarmonyPrefix]
@@ -137,7 +141,7 @@ internal static class SpecialFertilizerApplication
         {
             Vector2 tile = new(MathF.Floor(x / 64f), MathF.Floor(y / 64f));
             if (item is SObject obj && PlaceHandler.CanPlaceFertilizer(obj, location, tile) &&
-                Utility.withinRadiusOfPlayer(x, y, 2, f))
+                Utility.withinRadiusOfPlayer(x, y, PLACEMENTRADIUS, f))
             {
                 __result = true;
                 return false;

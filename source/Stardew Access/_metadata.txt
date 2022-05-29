@@ -6,9 +6,12 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 666dfd745b9e64ae400d48f552308b2cb13ec27c
+   commit d48e4cc1b6fb78fdc65fabb442506a6fa63a71e0
+   Merge: 93c75fc 9f8d427
    Author: Mohammad Shoaib <shoaib.khan20@outlook.com>
-   Date:   Sat Apr 30 23:45:58 2022 +0530
+   Date:   Fri May 27 18:11:12 2022 +0530
    
-       Added library museum tiles
+       Merge pull request #21 from bradjrenshaw/GingerIslandAdditions
+       
+       Ginger island additions
    

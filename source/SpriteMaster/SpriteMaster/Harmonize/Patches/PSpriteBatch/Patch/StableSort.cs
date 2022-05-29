@@ -22,12 +22,12 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Harmonize.Patches.PSpriteBatch.Patch;
 
-static class StableSort {
-	private static readonly Type? SpriteBatchItemType = typeof(XNA.Graphics.SpriteBatch).Assembly.GetType("Microsoft.Xna.Framework.Graphics.SpriteBatchItem");
+internal static class StableSort {
+	private static readonly Type? SpriteBatchItemType = typeof(XSpriteBatch).Assembly.GetType("Microsoft.Xna.Framework.Graphics.SpriteBatchItem");
 	private static readonly Func<object?, float>? GetSortKeyImpl = SpriteBatchItemType?.GetFieldGetter<object?, float>("SortKey");
 
 	internal static class BySortKey {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		private static float GetSortKey(object? obj) => obj is null ? float.MinValue : GetSortKeyImpl!(obj);
 
 		private readonly record struct KeyType(float Key, int Index);
@@ -54,7 +54,7 @@ static class StableSort {
 				KeyList[i] = new(Key: GetSortKey(array[i]), Index: i);
 			}
 
-			Array.Sort<KeyType, T>(KeyList, array, index, length, KeyTypeComparer);
+			Array.Sort(KeyList, array, index, length, KeyTypeComparer);
 		}
 	}
 
@@ -83,13 +83,13 @@ static class StableSort {
 				KeyList[i] = new(Key: array[i], Index: i);
 			}
 
-			Array.Sort<KeyType, T>(KeyList, array, index, length, KeyTypeComparer);
+			Array.Sort(KeyList, array, index, length, KeyTypeComparer);
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static void ArrayStableSort<T>(T[] array, int index, int length, SpriteSortMode sortMode) where T : IComparable<T> {
-		if (DrawState.CurrentBlendState == Microsoft.Xna.Framework.Graphics.BlendState.Additive) {
+		if (DrawState.CurrentBlendState == BlendState.Additive) {
 			// There is basically no reason to sort when the blend state is additive.
 			return;
 		}
@@ -111,11 +111,11 @@ static class StableSort {
 		}
 	}
 
-	[Harmonize(
-		typeof(XNA.Graphics.SpriteBatch),
+	[HarmonizeTranspile(
+		typeof(XSpriteBatch),
 		"Microsoft.Xna.Framework.Graphics.SpriteBatcher",
 		"DrawBatch",
-		fixation: Harmonize.Fixation.Transpile
+		argumentTypes: new [] { typeof(SpriteSortMode), typeof(Effect) }
 	)]
 	public static IEnumerable<CodeInstruction> SpriteBatcherTranspiler(IEnumerable<CodeInstruction> instructions) {
 		if (SpriteBatchItemType is null) {
@@ -124,20 +124,22 @@ static class StableSort {
 		}
 
 		if (GetSortKeyImpl is null) {
-			Debug.Warning($"Could not get accessor for SpriteBatchItem 'SortKey' - slower path being used");
+			Debug.Warning("Could not get accessor for SpriteBatchItem 'SortKey' - slower path being used");
 		}
 
 
-		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
+		var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)?.MakeGenericMethod(SpriteBatchItemType);
 		//var newMethod = typeof(StableSort).GetMethod("ArrayStableSort", BindingFlags.Static | BindingFlags.NonPublic)?.MakeGenericMethod(new Type[] { SpriteBatchItemType });
 
 		if (newMethod is null) {
-			Debug.Error($"Could not apply SpriteBatcher stable sorting patch: could not find MethodInfo for ArrayStableSort");
+			Debug.Error("Could not apply SpriteBatcher stable sorting patch: could not find MethodInfo for ArrayStableSort");
 			return instructions;
 		}
 
+		var codeInstructions = instructions as CodeInstruction[] ?? instructions.ToArray();
+
 		IEnumerable<CodeInstruction> ApplyPatch() {
-			foreach (var instruction in instructions) {
+			foreach (var instruction in codeInstructions) {
 				if (
 					instruction.opcode.Value != OpCodes.Call.Value ||
 					instruction.operand is not MethodInfo callee ||
@@ -158,7 +160,7 @@ static class StableSort {
 
 		var result = ApplyPatch();
 
-		if (result.SequenceEqual(instructions)) {
+		if (result.SequenceEqual(codeInstructions)) {
 			Debug.Error("Could not apply SpriteBatcher stable sorting patch: Sort call could not be found in IL");
 		}
 

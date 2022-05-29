@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12178
+IDs: aedenthorn.CropGrowthInformation
+update keys: Nexus:12178, GitHub:aedenthorn/StardewValleyMods

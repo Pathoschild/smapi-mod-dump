@@ -21,12 +21,21 @@
 	"CoverTextColor": null,
 	"CoverYearColor": "red",
 
+	// If set to true, the mouse will be drawn with sprites from the
+	// Menu.png file. Otherwise, the default mouse will be used.
+	"CustomMouse": false,
+
 	// Standard applies to pages with the standard Almanac theme.
 	"Standard": {
 		// If CustomScroll is enabled, the scrollbar will be drawn using
 		// sprites from the Menu.png file. Otherwise, it'll use the
 		// game's main texture.
 		"CustomScroll": false,
+
+		// If CustomTooltip is enabled, tooltips will be drawn using
+		// sprites from the Menu.png file. Otherwise, it'll use the
+		// game's main texture.
+		"CustomTooltip": false,
 
 		// The scroll offset top and bottom numbers let you add margins
 		// around the right page's scrollbar so that it doesn't overlap
@@ -78,6 +87,7 @@
 		// texture sheet. Magic always uses one, and Standard always
 		// uses the other.
 		"CustomScroll": true,
+		"CustomTooltip": true,
 
 		"ScrollOffsetTop": 32,
 		"ScrollOffsetBottom": -32,

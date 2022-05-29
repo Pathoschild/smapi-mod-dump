@@ -10,6 +10,7 @@
 
 using SpriteMaster.Configuration;
 using SpriteMaster.Types;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Security;
 
@@ -19,50 +20,40 @@ namespace SpriteMaster.Caching;
 /// Used to cache original texture data so it doesn't need to perform blocking fetches as often
 /// </summary>
 [SuppressUnmanagedCodeSecurity]
-static class ResidentCache {
+internal static class ResidentCache {
 	internal static bool Enabled => Config.MemoryCache.Enabled;
 
 	private static readonly SharedLock CacheLock = new();
-	private static TypedMemoryCache<byte[]> Cache = CreateCache();
+	private static readonly TypedMemoryCache<byte[]> Cache = CreateCache();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	private static TypedMemoryCache<byte[]> CreateCache() => Enabled ? new(name: "ResidentCache") : null!;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte[]? Get(string key) => Cache.Get(key);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool TryGet(string key, out byte[]? value) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool TryGet(string key, [NotNullWhen(true)] out byte[]? value) {
 		var result = Get(key);
 		value = result;
 		return result is not null;
 	}
 
-	internal static byte[]? Set(string key, byte[] value) => Cache.Set(key, value);
+	internal static byte[] Set(string key, byte[] value) => Cache.Set(key, value);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static byte[]? Remove(string key) => Cache.Remove(key);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void Purge() {
-		if (Cache is null) {
-			return;
-		}
-
 		using (CacheLock.Write) {
-			Cache?.Clear();
+			Cache.Clear();
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void OnSettingsChanged() {
 		using (CacheLock.Write) {
-			if (Enabled) {
-				if (Cache is null) {
-					Cache = CreateCache();
-				}
-			}
-			else {
+			if (!Enabled) {
 				Purge();
 			}
 		}

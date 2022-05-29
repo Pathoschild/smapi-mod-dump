@@ -53,15 +53,15 @@ namespace MoreConversationTopics
                 string governorReactionString = __instance.eventCommands[__instance.CurrentCommand + 1];
                 if (governorReactionString.EndsWith("6"))
                 {
-                    MCTHelperFunctions.AddMaybePreExistingCT("luauShorts", Config.LuauDuration);
+                    MCTHelperFunctions.AddOrExtendCT("luauShorts", Config.LuauDuration);
                 }
                 else if (governorReactionString.EndsWith("4"))
                 {
-                    MCTHelperFunctions.AddMaybePreExistingCT("luauBest", Config.LuauDuration);
+                    MCTHelperFunctions.AddOrExtendCT("luauBest", Config.LuauDuration);
                 }
                 else if (governorReactionString.EndsWith("0"))
                 {
-                    MCTHelperFunctions.AddMaybePreExistingCT("luauPoisoned", Config.LuauDuration);
+                    MCTHelperFunctions.AddOrExtendCT("luauPoisoned", Config.LuauDuration);
                 }
             }
             catch (Exception ex)

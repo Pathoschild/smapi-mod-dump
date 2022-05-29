@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -48,7 +48,7 @@ namespace ChestEx.Types.BaseTypes {
   public class CustomClickableMenu : IClickableMenu,
                                      ICustomComponent {
     // Protected:
-  #region Protected
+    #region Protected
 
     protected List<ICustomComponent> mComponents { get; } = new();
 
@@ -58,25 +58,25 @@ namespace ChestEx.Types.BaseTypes {
     /// </remarks>
     protected virtual void OnClose() { this.Dispose(); }
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     public Rectangle mBounds {
       get => new(this.xPositionOnScreen, this.yPositionOnScreen, this.width, this.height);
       protected set {
         this.xPositionOnScreen = value.X;
         this.yPositionOnScreen = value.Y;
-        this.width             = value.Width;
-        this.height            = value.Height;
+        this.width = value.Width;
+        this.height = value.Height;
       }
     }
-    public ICustomComponent.IData mData      { get; }
-    public Boolean                mIsVisible { get; private set; } = true;
+    public ICustomComponent.IData mData { get; }
+    public Boolean mIsVisible { get; private set; } = true;
 
     // Virtuals:
-  #region Virtuals
+    #region Virtuals
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks><see cref="CustomClickableMenu"/> implementation also passes this to <see cref="mComponents"/>.</remarks>
@@ -189,14 +189,14 @@ namespace ChestEx.Types.BaseTypes {
       }));
     }
 
-  #endregion
+    #endregion
 
     // Shadowed:
-  #region Shadowed
+    #region Shadowed
 
     /// <summary>Calls <see cref="Draw(SpriteBatch)"/>.</summary>
     [UsedImplicitly]
-    [SuppressMessage("ReSharper", "InconsistentNaming", Justification                  = "Game code")]
+    [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Game code")]
     [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "Game code")]
     public new void draw(SpriteBatch b, Int32 red = -1, Int32 green = -1, Int32 blue = -1) { this.Draw(b); }
 
@@ -205,36 +205,36 @@ namespace ChestEx.Types.BaseTypes {
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Game code")]
     public new void draw(SpriteBatch b) { this.Draw(b); }
 
-  #endregion
+    #endregion
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     /// <summary>Makes sure <see cref="IClickableMenu.upperRightCloseButton"/> is not drawn.</summary>
     [UsedImplicitly]
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Game code")]
     public override Boolean shouldDrawCloseButton() { return false; }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public CustomClickableMenu(Rectangle bounds, Colours colours)
       : base(bounds.X, bounds.Y, bounds.Width, bounds.Height) {
       this.exitFunction = this.OnClose;
-      this.mData        = new CustomComponentData(colours, 0.86f + bounds.Y / 20000.0f, String.Empty);
+      this.mData = new CustomComponentData(colours, 0.86f + bounds.Y / 20000.0f, String.Empty);
     }
 
     public CustomClickableMenu(Rectangle bounds)
       : this(bounds, Colours.gLight) { }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -250,6 +250,6 @@ namespace ChestEx.Types.BaseTypes {
       this.mComponents.ForEach(c => c.Dispose());
     }
 
-  #endregion
+    #endregion
   }
 }

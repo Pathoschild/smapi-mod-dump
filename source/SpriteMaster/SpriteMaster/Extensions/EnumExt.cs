@@ -10,13 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
 
 /// <summary>
 /// Enumerator Extensions
 /// </summary>
-static class EnumExt {
+internal static class EnumExt {
 	/// <summary>
 	/// Return an array name and value pairs representing the enum
 	/// </summary>
@@ -44,4 +45,7 @@ static class EnumExt {
 		}
 		return result;
 	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Type GetUnderlyingType<T>() where T : Enum => Enum.GetUnderlyingType(typeof(T));
 }

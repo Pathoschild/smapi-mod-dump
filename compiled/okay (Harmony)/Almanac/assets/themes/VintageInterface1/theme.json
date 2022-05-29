@@ -1,0 +1,33 @@
+{
+	"$schema": "https://raw.githubusercontent.com/KhloeLeclair/StardewMods/main/Almanac/theme-schema.json",
+	"Name": "Vintage Interface 1",
+	"For": [
+		"ManaKirel.VMI"
+	],
+
+	"CoverTextColor": "#654c44",
+	"CoverYearColor": "#402e29",
+
+	"Standard": {
+		"CustomScroll": true,
+		"SeasonTextColor": "#654c44",
+
+		"CalendarDimColor": "#998C84",
+		"CalendarDimOpacity": 0.4,
+
+		"CalendarHighlightColor": "#cc7e66",
+
+		"TextColor": "#382f29",
+		"TextShadowColor": "#D4C8AF"
+	},
+
+	"Magic": {
+		"CustomScroll": true,
+		"CustomTooltip": true,
+		"SeasonTextColor": "white",
+
+		"CalendarLabelColor": "#8073D1",
+		"CalendarDayColor": "#9c8cff",
+		"CalendarHighlightColor": "#ccc"
+	}
+}

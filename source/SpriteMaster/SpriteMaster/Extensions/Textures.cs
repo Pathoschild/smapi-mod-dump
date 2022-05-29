@@ -21,35 +21,55 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
 
-static class Textures {
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static int Area(this Texture2D texture) => texture.Width * texture.Height;
+internal static class Textures {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int Area(this XTexture2D texture) => texture.Width * texture.Height;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2I Extent(this Texture2D texture) => new(texture.Width, texture.Height);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2I Extent(this XTexture2D texture) => new(texture.Width, texture.Height);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Bounds Bounds(this Texture2D texture) => new(texture);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Bounds Bounds(this XTexture2D texture) => new(texture);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static long SizeBytes(this SurfaceFormat format, int texels) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static long SizeBytesLong(this SurfaceFormat format, int texels) {
 		switch (format) {
 			case SurfaceFormat.Dxt1:
 			case SurfaceFormat.Dxt1SRgb:
 			case SurfaceFormat.Dxt1a:
 			case var _ when format == TextureFormat.BC1a:
+			case SurfaceFormat.RgbEtc1:
+			case SurfaceFormat.Rgb8Etc2:
+			case SurfaceFormat.Srgb8Etc2:
+			case SurfaceFormat.Rgb8A1Etc2:
+			case SurfaceFormat.Srgb8A1Etc2:
+			case SurfaceFormat.RgbPvrtc4Bpp:
+			case SurfaceFormat.RgbaPvrtc4Bpp:
 				return texels / 2;
+
+			case SurfaceFormat.Dxt3:
+			case SurfaceFormat.Dxt3SRgb:
+			case SurfaceFormat.Dxt5:
+			case SurfaceFormat.Dxt5SRgb:
+			case SurfaceFormat.RgbPvrtc2Bpp:
+			case SurfaceFormat.RgbaPvrtc2Bpp:
+			case SurfaceFormat.RgbaAtcExplicitAlpha:
+			case SurfaceFormat.RgbaAtcInterpolatedAlpha:
+			case SurfaceFormat.Rgba8Etc2:
+			case SurfaceFormat.SRgb8A8Etc2:
+				return texels;
 		}
 
-		long elementSize = format switch {
+		int elementSize = format switch {
 			SurfaceFormat.Color => 4,
+			SurfaceFormat.ColorSRgb => 4,
 			SurfaceFormat.Bgr565 => 2,
 			SurfaceFormat.Bgra5551 => 2,
 			SurfaceFormat.Bgra4444 => 2,
-			SurfaceFormat.Dxt3 => 1,
-			SurfaceFormat.Dxt3SRgb => 1,
-			SurfaceFormat.Dxt5 => 1,
-			SurfaceFormat.Dxt5SRgb => 1,
+			SurfaceFormat.Bgr32 => 4,
+			SurfaceFormat.Bgr32SRgb => 4,
+			SurfaceFormat.Bgra32 => 4,
+			SurfaceFormat.Bgra32SRgb => 4,
 			SurfaceFormat.NormalizedByte2 => 2,
 			SurfaceFormat.NormalizedByte4 => 4,
 			SurfaceFormat.Rgba1010102 => 4,
@@ -65,51 +85,84 @@ static class Textures {
 			_ => throw new ArgumentException(nameof(format))
 		};
 
-		return texels * elementSize;
+		return (long)texels * elementSize;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int SizeBytes(this SurfaceFormat format, int texels) {
+		var result = SizeBytesLong(format, texels);
+		return checked((int)result);
+	}
+
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool IsCompressed(this SurfaceFormat format) => format switch {
 		SurfaceFormat.Dxt1 or
 		SurfaceFormat.Dxt1SRgb or
-		SurfaceFormat.Dxt3 or
+		SurfaceFormat.Dxt3 or 
 		SurfaceFormat.Dxt3SRgb or
 		SurfaceFormat.Dxt5 or
 		SurfaceFormat.Dxt5SRgb or
-		SurfaceFormat.Dxt1a
+		SurfaceFormat.RgbPvrtc4Bpp or
+		SurfaceFormat.RgbaPvrtc4Bpp or
+		SurfaceFormat.RgbEtc1 or
+		SurfaceFormat.Dxt1a or
+		SurfaceFormat.RgbaAtcExplicitAlpha or
+		SurfaceFormat.RgbaAtcInterpolatedAlpha or
+		SurfaceFormat.Rgb8Etc2 or
+		SurfaceFormat.Srgb8Etc2 or
+		SurfaceFormat.Rgb8A1Etc2 or
+		SurfaceFormat.Srgb8A1Etc2 or
+		SurfaceFormat.Rgba8Etc2 or
+		SurfaceFormat.SRgb8A8Etc2 or
+		SurfaceFormat.RgbPvrtc2Bpp or
+		SurfaceFormat.RgbaPvrtc2Bpp
 		=> true,
 		_ => false
 	};
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool IsBlock(this SurfaceFormat format) => IsCompressed(format);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static int BlockEdge(this SurfaceFormat format) => format switch {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2I BlockEdge(this SurfaceFormat format) => format switch {
 		SurfaceFormat.Dxt1 or
 		SurfaceFormat.Dxt1SRgb or
 		SurfaceFormat.Dxt3 or
 		SurfaceFormat.Dxt3SRgb or
 		SurfaceFormat.Dxt5 or
 		SurfaceFormat.Dxt5SRgb or
-		SurfaceFormat.Dxt1a
-		=> 4,
-		_ => 1
+		SurfaceFormat.RgbPvrtc4Bpp or
+		SurfaceFormat.RgbaPvrtc4Bpp or
+		SurfaceFormat.RgbEtc1 or
+		SurfaceFormat.Dxt1a or
+		SurfaceFormat.RgbaAtcExplicitAlpha or
+		SurfaceFormat.RgbaAtcInterpolatedAlpha or
+		SurfaceFormat.Rgb8Etc2 or
+		SurfaceFormat.Srgb8Etc2 or
+		SurfaceFormat.Rgb8A1Etc2 or
+		SurfaceFormat.Srgb8A1Etc2 or
+		SurfaceFormat.Rgba8Etc2 or
+		SurfaceFormat.SRgb8A8Etc2
+		=> (4, 4),
+		SurfaceFormat.RgbPvrtc2Bpp or
+		SurfaceFormat.RgbaPvrtc2Bpp
+		=> (8, 4),
+		_ => (1, 1)
 	};
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static long SizeBytes(this Texture2D texture) => texture.Format.SizeBytes(texture.Area());
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static long SizeBytesLong(this XTexture2D texture) => texture.Format.SizeBytesLong(texture.Area());
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static long SizeBytes(this ManagedTexture2D texture) => (long)texture.Area() * 4;
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static int SizeBytes(this XTexture2D texture) => texture.Format.SizeBytes(texture.Area());
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static bool Anonymous(this Texture2D texture) => texture.Name.IsWhiteBlank();
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static bool Anonymous(this XTexture2D texture) => texture.Name.IsWhiteBlank();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static bool Anonymous(this ManagedSpriteInstance texture) => texture.Name.IsWhiteBlank();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static string NormalizeNameInternal(this string? name) {
 		/*
 		if (name.IsWhiteBlank()) {
@@ -134,7 +187,7 @@ static class Textures {
 		return name.Replace('/', '\\').Replace(@"\\", @"\");
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	private static string? NormalizeNameOrNullInternal(this string? name) {
 		/*
 		if (name.IsWhiteBlank()) {
@@ -159,50 +212,50 @@ static class Textures {
 		return name.Replace('/', '\\').Replace(@"\\", @"\");
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string? NormalizedNameOrNull(this string name) => name.NormalizeNameOrNullInternal();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this string name) => name.NormalizeNameInternal();
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this string name, in DrawingColor color) => name.NormalizeNameInternal().Pastel(color);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this Texture texture) => texture.Name.NormalizedName();
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this Texture texture, in DrawingColor color) => texture.Name.NormalizedName(in color);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string? NormalizedNameOrNull(this Texture texture) => texture.Name.NormalizedNameOrNull();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string NormalizedName(this Texture2D texture) => texture.Name.NormalizedName();
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string NormalizedName(this Texture2D texture, in DrawingColor color) => texture.Name.NormalizedName(in color);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static string? NormalizedNameOrNull(this Texture2D texture) => texture.Name.NormalizedNameOrNull();
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string NormalizedName(this XTexture2D texture) => texture.Name.NormalizedName();
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string NormalizedName(this XTexture2D texture, in DrawingColor color) => texture.Name.NormalizedName(in color);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static string? NormalizedNameOrNull(this XTexture2D texture) => texture.Name.NormalizedNameOrNull();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this ManagedTexture2D texture) => texture.Name;
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this ManagedTexture2D texture, in DrawingColor color) => texture.Name.Pastel(color);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string? NormalizedNameOrNull(this ManagedTexture2D texture) => texture.Name.NormalizedNameOrNull();
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this ManagedSpriteInstance instance) => instance.Name;
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string NormalizedName(this ManagedSpriteInstance instance, in DrawingColor color) => instance.Name.Pastel(color);
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static string? NormalizedNameOrNull(this ManagedSpriteInstance texture) => texture.Name.NormalizedNameOrNull();
 
 	internal static void DumpTexture(
 		string path,
 		byte[] source,
-		in Vector2I sourceSize,
+		Vector2I sourceSize,
 		SurfaceFormat format = SurfaceFormat.Color,
-		in double? adjustGamma = null,
-		in Bounds? destBounds = null,
-		in (int i0, int i1, int i2, int i3)? swap = null
+		double? adjustGamma = null,
+		Bounds? destBounds = null,
+		(int i0, int i1, int i2, int i3)? swap = null
 	) {
 		DumpTexture(path, source.AsReadOnlySpan(), sourceSize, format, adjustGamma, destBounds, swap);
 	}
@@ -210,11 +263,11 @@ static class Textures {
 	internal static void DumpTexture(
 		string path,
 		ReadOnlySpan<byte> source,
-		in Vector2I sourceSize,
+		Vector2I sourceSize,
 		SurfaceFormat format = SurfaceFormat.Color,
-		in double? adjustGamma = null,
-		in Bounds? destBounds = null,
-		in (int i0, int i1, int i2, int i3)? swap = null
+		double? adjustGamma = null,
+		Bounds? destBounds = null,
+		(int i0, int i1, int i2, int i3)? swap = null
 	) {
 		if (format.IsCompressed()) {
 			DumpTextureInternal<byte, byte, byte>(path, source, sourceSize, format, adjustGamma, destBounds, null);
@@ -227,11 +280,11 @@ static class Textures {
 	internal static void DumpTexture(
 		string path,
 		ReadOnlySpan<Color8> source,
-		in Vector2I sourceSize,
+		Vector2I sourceSize,
 		SurfaceFormat format = SurfaceFormat.Color,
-		in double? adjustGamma = null,
-		in Bounds? destBounds = null,
-		in (int i0, int i1, int i2, int i3)? swap = null
+		double? adjustGamma = null,
+		Bounds? destBounds = null,
+		(int i0, int i1, int i2, int i3)? swap = null
 	) {
 		DumpTextureInternal<Color8, uint, byte>(path, source, sourceSize, format, adjustGamma, destBounds, swap);
 	}
@@ -239,11 +292,11 @@ static class Textures {
 	internal static void DumpTexture(
 		string path,
 		ReadOnlySpan<Color16> source,
-		in Vector2I sourceSize,
+		Vector2I sourceSize,
 		SurfaceFormat format = SurfaceFormat.Rgba64,
-		in double? adjustGamma = null,
-		in Bounds? destBounds = null,
-		in (int i0, int i1, int i2, int i3)? swap = null
+		double? adjustGamma = null,
+		Bounds? destBounds = null,
+		(int i0, int i1, int i2, int i3)? swap = null
 	) {
 		DumpTextureInternal<Color16, ulong, ushort>(path, source, sourceSize, format, adjustGamma, destBounds, swap);
 	}
@@ -251,11 +304,11 @@ static class Textures {
 	private static void DumpTextureInternal<ColorT, RawT, UnderlyingT>(
 		string path,
 		ReadOnlySpan<ColorT> source,
-		in Vector2I sourceSize,
+		Vector2I sourceSize,
 		SurfaceFormat format,
-		in double? adjustGamma = null,
-		in Bounds? destBounds = null,
-		in (int i0, int i1, int i2, int i3)? swap = null
+		double? adjustGamma = null,
+		Bounds? destBounds = null,
+		(int i0, int i1, int i2, int i3)? swap = null
 	)
 		where ColorT : unmanaged
 		where RawT : unmanaged
@@ -319,7 +372,7 @@ static class Textures {
 				};
 
 				dumpTexture.SetData(subData);
-				if (Path.GetDirectoryName(path) is string directory) {
+				if (Path.GetDirectoryName(path) is { } directory) {
 					Directory.CreateDirectory(directory);
 				}
 				using var dumpFile = File.Create(path);

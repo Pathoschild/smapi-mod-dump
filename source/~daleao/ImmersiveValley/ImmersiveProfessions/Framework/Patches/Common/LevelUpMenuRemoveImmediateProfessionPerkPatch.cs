@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -72,10 +72,10 @@ internal class LevelUpMenuRemoveImmediateProfessionPerkPatch : BasePatch
             ModEntry.PlayerState.RegisteredUltimate = firstIndex switch
 #pragma warning restore CS8509
             {
-                UltimateIndex.Brute => new Frenzy(),
-                UltimateIndex.Poacher => new Ambush(),
-                UltimateIndex.Piper => new Pandemonia(),
-                UltimateIndex.Desperado => new DeathBlossom()
+                UltimateIndex.Frenzy => new Frenzy(),
+                UltimateIndex.Ambush => new Ambush(),
+                UltimateIndex.Pandemonia => new Pandemonia(),
+                UltimateIndex.Blossom => new DeathBlossom()
             };
         }
         else

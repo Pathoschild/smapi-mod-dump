@@ -24,4 +24,8 @@
 	"gmcm.coal-amount-description": "Количество угля, необходимое для запуска печи",
 	"gmcm.instant-smelting-label": "Мгновенная плавка",
 	"gmcm.instant-smelting-description": "При включении плавка в печи происходит мгновенно",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

@@ -9,6 +9,13 @@ for queries and analysis.**
 ﻿[← back to readme](README.md)
 
 # Release notes
+## 2.7.2
+Released 25 May 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
+
+* Reduced the max seconds-per-minute in the config UI from 60 to 15.
+* The keybinds are now ignored while viewing a cutscene.
+* Improved translations. Thanks to Dracoeris (updated Spanish)!
+
 ## 2.7.1
 Released 27 February 2022 for SMAPI 3.13.0 or later. Updated by Pathoschild.
 

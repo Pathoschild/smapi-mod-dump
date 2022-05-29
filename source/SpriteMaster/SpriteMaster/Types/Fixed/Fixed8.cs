@@ -18,49 +18,46 @@ using static SpriteMaster.Runtime;
 
 namespace SpriteMaster.Types.Fixed;
 
-[DebuggerDisplay("{InternalValue}")]
-[StructLayout(LayoutKind.Explicit, Pack = sizeof(byte), Size = sizeof(byte))]
-struct Fixed8 : IEquatable<Fixed8>, IEquatable<byte>, ILongHash {
+[DebuggerDisplay("{Value}")]
+[StructLayout(LayoutKind.Sequential, Pack = sizeof(byte), Size = sizeof(byte))]
+internal readonly struct Fixed8 : IEquatable<Fixed8>, IEquatable<byte>, ILongHash {
 	internal static readonly Fixed8 Zero = new(0);
 	internal static readonly Fixed8 Max = new(byte.MaxValue);
 
-	[FieldOffset(0)]
-	private byte InternalValue = 0;
+	internal byte Value { get; } = 0;
 
-	internal readonly byte Value => InternalValue;
-
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static byte FromU16(ushort value) => value.Color16to8();
 
-	internal readonly Fixed16 Widen => Value.Color8To16();
-	internal readonly float Real => Value.Color8ToFloat();
+	internal Fixed16 Widen => Value.Color8To16();
+	internal float Real => Value.Color8ToFloat();
 
-	[MethodImpl(MethodImpl.Hot)]
-	internal Fixed8(byte value) => InternalValue = value;
-	[MethodImpl(MethodImpl.Hot)]
-	internal Fixed8(Fixed8 value) => InternalValue = value.InternalValue;
-	[MethodImpl(MethodImpl.Hot)]
-	internal Fixed8(Fixed16 value) => InternalValue = FromU16((ushort)value);
+	[MethodImpl(MethodImpl.Inline)]
+	internal Fixed8(byte value) => Value = value;
+	[MethodImpl(MethodImpl.Inline)]
+	internal Fixed8(Fixed8 value) => Value = value.Value;
+	[MethodImpl(MethodImpl.Inline)]
+	internal Fixed8(Fixed16 value) => Value = FromU16((ushort)value);
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	private static uint InternalDivide(Fixed8 numerator, Fixed8 denominator) {
-		uint numeratorWidened = ((uint)numerator.InternalValue) << 16;
-		numeratorWidened -= numerator.InternalValue;
-		return numeratorWidened / denominator.InternalValue;
+		uint numeratorWidened = ((uint)numerator.Value) << 16;
+		numeratorWidened -= numerator.Value;
+		return numeratorWidened / denominator.Value;
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	public static Fixed8 operator /(Fixed8 numerator, Fixed8 denominator) {
-		if (denominator == Fixed8.Zero) {
+		if (denominator == Zero) {
 			return numerator;
 		}
 		var result = InternalDivide(numerator, denominator);
 		return (byte)(result >> 8);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal Fixed8 ClampedDivide(Fixed8 denominator) {
-		if (denominator == Fixed8.Zero) {
+		if (denominator == Zero) {
 			return 0;
 		}
 		var result = InternalDivide(this, denominator);
@@ -71,91 +68,91 @@ struct Fixed8 : IEquatable<Fixed8>, IEquatable<byte>, ILongHash {
 		return (byte)(result >> 8);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	public static Fixed8 operator %(Fixed8 numerator, Fixed8 denominator) {
-		if (denominator == Fixed8.Zero) {
+		if (denominator == Zero) {
 			return numerator;
 		}
 		var result = InternalDivide(numerator, denominator);
 		return (byte)result;
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	public static Fixed8 operator *(Fixed8 lhs, Fixed8 rhs) {
-		int intermediate = lhs.InternalValue * rhs.InternalValue;
+		int intermediate = lhs.Value * rhs.Value;
 		intermediate += byte.MaxValue;
 		return new((byte)(intermediate >> 8));
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
-	public static Fixed8 operator +(Fixed8 lhs, Fixed8 rhs) => (byte)(lhs.InternalValue + rhs.InternalValue);
+	[MethodImpl(MethodImpl.Inline)]
+	public static Fixed8 operator +(Fixed8 lhs, Fixed8 rhs) => (byte)(lhs.Value + rhs.Value);
 
-	[MethodImpl(MethodImpl.Hot)]
-	public static Fixed8 operator -(Fixed8 lhs, Fixed8 rhs) => (byte)(lhs.InternalValue + rhs.InternalValue);
+	[MethodImpl(MethodImpl.Inline)]
+	public static Fixed8 operator -(Fixed8 lhs, Fixed8 rhs) => (byte)(lhs.Value + rhs.Value);
 
-	[MethodImpl(MethodImpl.Hot)]
-	internal static Fixed8 AddClamped(Fixed8 lhs, Fixed8 rhs) => (byte)Math.Min(byte.MaxValue, lhs.InternalValue + rhs.InternalValue);
-	[MethodImpl(MethodImpl.Hot)]
-	internal readonly Fixed8 AddClamped(Fixed8 other) => AddClamped(this, other);
-	[MethodImpl(MethodImpl.Hot)]
-	internal static Fixed8 SubtractClamped(Fixed8 lhs, Fixed8 rhs) => (byte)Math.Max(byte.MinValue, lhs.InternalValue - rhs.InternalValue);
-	[MethodImpl(MethodImpl.Hot)]
-	internal readonly Fixed8 SubtractClamped(Fixed8 other) => SubtractClamped(this, other);
+	[MethodImpl(MethodImpl.Inline)]
+	internal static Fixed8 AddClamped(Fixed8 lhs, Fixed8 rhs) => (byte)Math.Min(byte.MaxValue, lhs.Value + rhs.Value);
+	[MethodImpl(MethodImpl.Inline)]
+	internal Fixed8 AddClamped(Fixed8 other) => AddClamped(this, other);
+	[MethodImpl(MethodImpl.Inline)]
+	internal static Fixed8 SubtractClamped(Fixed8 lhs, Fixed8 rhs) => (byte)Math.Max(byte.MinValue, lhs.Value - rhs.Value);
+	[MethodImpl(MethodImpl.Inline)]
+	internal Fixed8 SubtractClamped(Fixed8 other) => SubtractClamped(this, other);
 
-	[MethodImpl(MethodImpl.Hot)]
-	public static bool operator ==(Fixed8 lhs, Fixed8 rhs) => lhs.InternalValue == rhs.InternalValue;
-	[MethodImpl(MethodImpl.Hot)]
-	public static bool operator !=(Fixed8 lhs, Fixed8 rhs) => lhs.InternalValue != rhs.InternalValue;
+	[MethodImpl(MethodImpl.Inline)]
+	public static bool operator ==(Fixed8 lhs, Fixed8 rhs) => lhs.Value == rhs.Value;
+	[MethodImpl(MethodImpl.Inline)]
+	public static bool operator !=(Fixed8 lhs, Fixed8 rhs) => lhs.Value != rhs.Value;
 
-	[MethodImpl(MethodImpl.Hot)]
-	public override readonly bool Equals(object? obj) {
+	[MethodImpl(MethodImpl.Inline)]
+	public override bool Equals(object? obj) {
 		if (obj is Fixed8 valueF) {
 			return this == valueF;
 		}
 		if (obj is byte valueB) {
-			return this.InternalValue == valueB;
+			return Value == valueB;
 		}
 		return false;
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
-	internal readonly bool Equals(Fixed8 other) => this == other;
-	[MethodImpl(MethodImpl.Hot)]
-	internal readonly bool Equals(byte other) => this == (Fixed8)other;
+	[MethodImpl(MethodImpl.Inline)]
+	internal bool Equals(Fixed8 other) => this == other;
+	[MethodImpl(MethodImpl.Inline)]
+	internal bool Equals(byte other) => this == (Fixed8)other;
 
-	[MethodImpl(MethodImpl.Hot)]
-	readonly bool IEquatable<Fixed8>.Equals(Fixed8 other) => this.Equals(other);
-	[MethodImpl(MethodImpl.Hot)]
-	readonly bool IEquatable<byte>.Equals(byte other) => this.Equals(other);
+	[MethodImpl(MethodImpl.Inline)]
+	bool IEquatable<Fixed8>.Equals(Fixed8 other) => Equals(other);
+	[MethodImpl(MethodImpl.Inline)]
+	bool IEquatable<byte>.Equals(byte other) => Equals(other);
 
-	[MethodImpl(MethodImpl.Hot)]
-	public override readonly int GetHashCode() => InternalValue.GetHashCode();
+	[MethodImpl(MethodImpl.Inline)]
+	public override int GetHashCode() => Value.GetHashCode();
 
-	[MethodImpl(MethodImpl.Hot)]
-	public static explicit operator byte(Fixed8 value) => value.InternalValue;
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
+	public static explicit operator byte(Fixed8 value) => value.Value;
+	[MethodImpl(MethodImpl.Inline)]
 	public static implicit operator Fixed8(byte value) => new(value);
-	[MethodImpl(MethodImpl.Hot)]
-	public static explicit operator Fixed16(Fixed8 value) => new(Fixed16.FromU8(value.InternalValue));
+	[MethodImpl(MethodImpl.Inline)]
+	public static explicit operator Fixed16(Fixed8 value) => new(Fixed16.FromU8(value.Value));
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static Span<float> ConvertToReal(ReadOnlySpan<Fixed8> values) {
-		var result = SpanExt.MakeUninitialized<float>(values.Length);
+		var result = SpanExt.Make<float>(values.Length);
 		for (int i = 0; i < values.Length; ++i) {
 			result[i] = values[i].Real;
 		}
 		return result;
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static Span<Fixed8> ConvertFromReal(ReadOnlySpan<float> values) {
-		var result = SpanExt.MakeUninitialized<Fixed8>(values.Length);
+		var result = SpanExt.Make<Fixed8>(values.Length);
 		for (int i = 0; i < values.Length; ++i) {
-			result[i] = ColorHelpers.ScalarToValue8(values[i]);
+			result[i] = values[i].ScalarToValue8();
 		}
 		return result;
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
-	readonly ulong ILongHash.GetLongHashCode() => InternalValue.GetLongHashCode();
+	[MethodImpl(MethodImpl.Inline)]
+	ulong ILongHash.GetLongHashCode() => Value.GetLongHashCode();
 }

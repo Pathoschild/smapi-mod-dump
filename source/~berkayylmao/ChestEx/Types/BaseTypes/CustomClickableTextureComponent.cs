@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -46,14 +46,14 @@ namespace ChestEx.Types.BaseTypes {
   public class CustomClickableTextureComponent : ClickableTextureComponent,
                                                  ICustomComponent {
     // Public:
-  #region Public
+    #region Public
 
-    public Rectangle              mBounds    => this.bounds;
-    public ICustomComponent.IData mData      { get; }
-    public Boolean                mIsVisible { get; private set; } = true;
+    public Rectangle mBounds => this.bounds;
+    public ICustomComponent.IData mData { get; }
+    public Boolean mIsVisible { get; private set; } = true;
 
     // Virtuals:
-  #region
+    #region
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     public virtual void SetEnabled(Boolean isEnabled) { this.mData.SetEnabled(isEnabled); }
@@ -96,16 +96,16 @@ namespace ChestEx.Types.BaseTypes {
         Math.Max(this.scale - this.baseScale * 0.01f, this.baseScale);
     }
 
-    public virtual void OnButtonPressed(InputStateEx      inputState)                     { }
-    public virtual void OnButtonReleased(InputStateEx     inputState)                     { }
-    public virtual void OnCursorMoved(Vector2             cursorPos)                      { }
-    public virtual void OnMouseClick(InputStateEx         inputState)                     { }
+    public virtual void OnButtonPressed(InputStateEx inputState) { }
+    public virtual void OnButtonReleased(InputStateEx inputState) { }
+    public virtual void OnCursorMoved(Vector2 cursorPos) { }
+    public virtual void OnMouseClick(InputStateEx inputState) { }
     public virtual void OnGameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) { }
 
-  #endregion
+    #endregion
 
     // Shadowed:
-  #region Shadowed
+    #region Shadowed
 
     /// <summary>Calls <see cref="Draw(SpriteBatch)"/>.</summary>
     [UsedImplicitly]
@@ -117,12 +117,12 @@ namespace ChestEx.Types.BaseTypes {
     [SuppressMessage("ReSharper", "InconsistentNaming", Justification = "Game code")]
     public new void draw(SpriteBatch b) { this.Draw(b); }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public CustomClickableTextureComponent(Rectangle bounds, Colours colours, Texture2D texture, String hoverText)
       : base(bounds, texture, texture?.Bounds ?? Rectangle.Empty, texture is null ? 1.0f : Convert.ToSingle(bounds.Width / texture.Bounds.Width)) {
@@ -138,10 +138,10 @@ namespace ChestEx.Types.BaseTypes {
     public CustomClickableTextureComponent(Rectangle bounds)
       : this(bounds, Colours.gDefault) { }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -157,6 +157,6 @@ namespace ChestEx.Types.BaseTypes {
       this.texture?.Dispose();
     }
 
-  #endregion
+    #endregion
   }
 }

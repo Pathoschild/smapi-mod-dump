@@ -153,34 +153,22 @@ namespace BetterBeehouses
 
         [HarmonyPatch("minutesElapsed")]
         [HarmonyTranspiler]
-        internal static IEnumerable<CodeInstruction> minutesElapsed(IEnumerable<CodeInstruction> instructions)
-        {
-            return minutesElapsedPatch.Run(instructions);
-        }
+        internal static IEnumerable<CodeInstruction> minutesElapsed(IEnumerable<CodeInstruction> instructions) => minutesElapsedPatch.Run(instructions);
 
         [HarmonyPatch("DayUpdate")]
         [HarmonyTranspiler]
         [HarmonyPriority(Priority.VeryLow)]
-        internal static IEnumerable<CodeInstruction> DayUpdate(IEnumerable<CodeInstruction> instructions)
-        {
-            return dayUpdatePatch.Run(instructions);
-        }
+        internal static IEnumerable<CodeInstruction> DayUpdate(IEnumerable<CodeInstruction> instructions) => dayUpdatePatch.Run(instructions);
 
         [HarmonyPatch("performDropDownAction")]
         [HarmonyTranspiler]
         [HarmonyPriority(Priority.VeryLow)]
-        internal static IEnumerable<CodeInstruction> DropDown(IEnumerable<CodeInstruction> instructions)
-        {
-            return dropDownPatch.Run(instructions);
-        }
+        internal static IEnumerable<CodeInstruction> DropDown(IEnumerable<CodeInstruction> instructions) => dropDownPatch.Run(instructions);
 
         [HarmonyPatch("checkForAction")]
         [HarmonyTranspiler]
         [HarmonyPriority(Priority.VeryLow)]
-        internal static IEnumerable<CodeInstruction> checkForAction(IEnumerable<CodeInstruction> instructions)
-        {
-            return checkForActionPatch.Run(instructions);
-        }
+        internal static IEnumerable<CodeInstruction> checkForAction(IEnumerable<CodeInstruction> instructions) => checkForActionPatch.Run(instructions);
 
         //--------
 
@@ -196,7 +184,7 @@ namespace BetterBeehouses
         public static void ManipulateObject(Object obj, Farmer who = null)
         {
             obj.Quality = GetQuality(who);
-            float val = obj.Price * GetMultiplier(obj.Quality);
+            float val = obj.Price * ModEntry.config.ValueMultiplier;
             int cap = ModEntry.config.CapFactor;
             if(val > cap)
                 val = cap * MathF.Pow(
@@ -205,29 +193,17 @@ namespace BetterBeehouses
                 );
             obj.Price = (int)(val + .5f);
         }
-        public static bool CantProduceToday(bool isWinter, GameLocation loc)
-        {
-            return isWinter && !Utils.GetProduceHere(loc, ModEntry.config.ProduceInWinter);
-        }
-        public static int GetSearchRange()
-        {
-            return ModEntry.config.FlowerRange;
-        }
-        public static int GetProduceDays(int original)
-        {
-            return System.Math.Max(original * ModEntry.config.DaysToProduce / 4, 1);
-        }
+        public static bool CantProduceToday(bool isWinter, GameLocation loc) => isWinter && !Utils.GetProduceHere(loc, ModEntry.config.ProduceInWinter);
+        public static int GetSearchRange() => ModEntry.config.FlowerRange;
+        public static int GetProduceDays(int original) => System.Math.Max(original * ModEntry.config.DaysToProduce / 4, 1);
         public static bool CanProduceHere(GameLocation loc)
         {
             var where = ModEntry.config.UsableIn;
             return where is Config.UsableOptions.Anywhere || loc.IsOutdoors || loc.isGreenhouse.Value && where is not Config.UsableOptions.Outdoors;
         }
-        public static float GetMultiplier(int quality)
-        {
-            return (1f + .25f * quality) * ModEntry.config.ValueMultiplier;
-        }
         public static int GetQuality(Farmer who)
         {
+            //based on Crop.harvest()
             if (!ModEntry.config.UseQuality)
                 return 0;
 

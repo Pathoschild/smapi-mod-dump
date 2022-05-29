@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using StardewValley;
 using SObject = StardewValley.Object;
@@ -31,10 +29,10 @@ namespace Pathoschild.Stardew.Automate.Framework.Machines.Objects
             : base(machine, location, tile) { }
 
         /// <summary>Get the output item.</summary>
-        public override ITrackedStack GetOutput()
+        public override ITrackedStack? GetOutput()
         {
             SObject bin = this.Machine;
-            return new TrackedItem(bin.heldObject.Value, _ =>
+            return this.GetTracked(bin.heldObject.Value, _ =>
             {
                 bin.heldObject.Value = new SObject(685, Game1.random.Next(2, 6));
                 bin.MinutesUntilReady = Utility.CalculateMinutesUntilMorning(Game1.timeOfDay);

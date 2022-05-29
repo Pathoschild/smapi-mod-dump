@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Pathoschild.Stardew.NoclipMode.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -25,7 +23,7 @@ namespace Pathoschild.Stardew.NoclipMode
         ** Fields
         *********/
         /// <summary>The mod configuration.</summary>
-        private ModConfig Config;
+        private ModConfig Config = null!; // set in Entry
 
         /// <summary>The keys which toggle noclip mode.</summary>
         private KeybindList ToggleKey => this.Config.ToggleKey;
@@ -57,7 +55,7 @@ namespace Pathoschild.Stardew.NoclipMode
         /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
             // add Generic Mod Config Menu integration
             new GenericModConfigMenuIntegrationForNoclipMode(
@@ -73,7 +71,7 @@ namespace Pathoschild.Stardew.NoclipMode
         /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
             if (this.CanToggle() && this.ToggleKey.JustPressed())
             {
@@ -95,7 +93,7 @@ namespace Pathoschild.Stardew.NoclipMode
 
             // show message
             Game1.hudMessages.RemoveAll(p => p.number == ModEntry.MessageID);
-            string keybindStr = keybind.GetKeybindCurrentlyDown().ToString();
+            string? keybindStr = keybind.GetKeybindCurrentlyDown()?.ToString();
             string text = noclipEnabled ? I18n.EnabledMessage(keybindStr) : I18n.DisabledMessage(keybindStr);
             Game1.addHUDMessage(new HUDMessage(text, HUDMessage.error_type) { noIcon = true, number = ModEntry.MessageID });
         }

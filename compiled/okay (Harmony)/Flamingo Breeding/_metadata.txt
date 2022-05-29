@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12015
+IDs: BlaDe.FlamingoBreeding
+update keys: Nexus:12015

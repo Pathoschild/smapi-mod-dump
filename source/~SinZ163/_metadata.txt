@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/SinZ163/StardewMods
+   Git: https://github.com/SinZ163/StardewMods.git
+
+mods:
+   Automate Chests
+   Profiler
+
+latest commit:
+   commit 96e5dc7124392ed5cbf69bd002f6f3df0d85b3f8
+   Author: SinZ <github@361zn.is>
+   Date:   Mon May 23 23:05:49 2022 +1000
+   
+       Release Profiler v1.0
+   

@@ -35,8 +35,12 @@ namespace MarketDay.Shop
         /// </summary>
         public static void LoadContentPacks()
         {
+            MarketDay.Log("Clearing content packs (what's the worst that could happen, right?)", LogLevel.Debug);
+            foreach (var grangeShop in GrangeShops.Keys) GrangeShops.Remove(grangeShop);
+            foreach (var animalShop in AnimalShops.Keys) GrangeShops.Remove(animalShop);
+            
             MarketDay.Log("Adding Content Packs...", LogLevel.Info);
-            foreach (IContentPack contentPack in MarketDay.helper.ContentPacks.GetOwned())
+            foreach (var contentPack in MarketDay.helper.ContentPacks.GetOwned())
             {
                 if (!contentPack.HasFile("shops.json"))
                 {
@@ -127,7 +131,7 @@ namespace MarketDay.Shop
             {
                 try
                 {
-                    shopPack.OpenSign = contentPack.LoadAsset<Texture2D>(shopPack.OpenSignPath);
+                    shopPack.OpenSign = contentPack.ModContent.Load<Texture2D>(shopPack.OpenSignPath);
                     MarketDay.Log($"[{shopPack.ShopName}] Loaded asset {shopPack.OpenSignPath}", LogLevel.Trace);
                 }
                 catch (Exception ex)
@@ -141,7 +145,7 @@ namespace MarketDay.Shop
             {
                 try
                 {
-                    shopPack.ClosedSign = contentPack.LoadAsset<Texture2D>(shopPack.ClosedSignPath);
+                    shopPack.ClosedSign = contentPack.ModContent.Load<Texture2D>(shopPack.ClosedSignPath);
                     MarketDay.Log($"[{shopPack.ShopName}] Loaded asset {shopPack.ClosedSignPath}", LogLevel.Trace);
                 }
                 catch (Exception ex)
@@ -202,12 +206,12 @@ namespace MarketDay.Shop
         internal static void UpdateStock()
         {
             if (GrangeShops.Count > 0)
-                MarketDay.Log($"Refreshing stock for all custom shops...", LogLevel.Debug);
+                MarketDay.Log($"Refreshing stock for all custom shops...", LogLevel.Trace);
 
-            foreach (GrangeShop store in GrangeShops.Values)
+            foreach (var grangeShop in GrangeShops.Values)
             {
-                store.UpdateItemPriceAndStock();
-                store.UpdatePortrait();
+                if (! grangeShop.IsPlayerShop()) grangeShop.UpdateItemPriceAndStock();
+                grangeShop.UpdatePortrait();
             }
         }
 

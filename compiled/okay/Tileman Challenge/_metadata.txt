@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11945
+IDs: SpicyKai.Tileman
+update keys: Nexus:11945, GitHub:spicykai/StardewValley-Mods

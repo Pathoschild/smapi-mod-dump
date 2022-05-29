@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Conditions;
 using Pathoschild.Stardew.Common.Utilities;
@@ -28,9 +26,9 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_14()
             : base(new SemanticVersion(1, 14, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.FromFile.ToString(),
-                ConditionType.Round.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.FromFile),
+                nameof(ConditionType.Round)
             );
         }
     }

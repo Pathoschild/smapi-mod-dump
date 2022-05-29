@@ -22,18 +22,22 @@ namespace TehPers.FishingOverhaul.Services
 {
     internal sealed partial class DefaultFishingSource
     {
-        private static readonly ImmutableDictionary<string, string> hasCaughtFish =
-            new Dictionary<string, string>
+        private static readonly ImmutableDictionary<string, string?> hasCaughtFish =
+            new Dictionary<string, string?>
             {
                 ["HasValue:{{HasCaughtFish}}"] = "true",
             }.ToImmutableDictionary();
 
-        private static readonly ImmutableDictionary<string, string> isLegendaryFamilyActive =
-            new Dictionary<string, string>
+        private static readonly ImmutableDictionary<string, string?> legendaryBaseConditions =
+            DefaultFishingSource.hasCaughtFish.Add(
+                "TehPers.FishingOverhaul/SpecialOrderRuleActive |contains=LEGENDARY_FAMILY",
+                "false"
+            );
+
+        private static readonly ImmutableDictionary<string, string?> isLegendaryFamilyActive =
+            new Dictionary<string, string?>
             {
                 ["TehPers.FishingOverhaul/SpecialOrderRuleActive"] = "LEGENDARY_FAMILY",
-                // TODO: remove this once CP updates
-                ["HasMod"] = "TehPers.FishingOverhaul",
             }.ToImmutableDictionary();
 
         // Legendary fish
@@ -55,8 +59,8 @@ namespace TehPers.FishingOverhaul.Services
                         GreaterThanEq = 82,
                     },
                 },
-                MinDepth = 3,
-                When = DefaultFishingSource.hasCaughtFish.Add(
+                MinBobberDepth = 3,
+                When = DefaultFishingSource.legendaryBaseConditions.Add(
                     $"HasFlag |contains={DefaultFishingSource.crimsonfishFlag}",
                     "false"
                 ),
@@ -87,7 +91,7 @@ namespace TehPers.FishingOverhaul.Services
                         LessThan = 15,
                     },
                 },
-                When = DefaultFishingSource.hasCaughtFish.Add(
+                When = DefaultFishingSource.legendaryBaseConditions.Add(
                     $"HasFlag |contains={DefaultFishingSource.anglerFlag}",
                     "false"
                 ),
@@ -113,8 +117,8 @@ namespace TehPers.FishingOverhaul.Services
                 Weathers = Weathers.Rainy,
                 WaterTypes = WaterTypes.PondOrOcean,
                 MinFishingLevel = 10,
-                MinDepth = 4,
-                When = DefaultFishingSource.hasCaughtFish.Add(
+                MinBobberDepth = 4,
+                When = DefaultFishingSource.legendaryBaseConditions.Add(
                     $"HasFlag |contains={DefaultFishingSource.legendFlag}",
                     "false"
                 ),
@@ -147,7 +151,7 @@ namespace TehPers.FishingOverhaul.Services
                         LessThanEq = 42,
                     },
                 },
-                When = DefaultFishingSource.hasCaughtFish.Add(
+                When = DefaultFishingSource.legendaryBaseConditions.Add(
                     $"HasFlag |contains={DefaultFishingSource.mutantCarpFlag}",
                     "false"
                 ),
@@ -185,8 +189,8 @@ namespace TehPers.FishingOverhaul.Services
                         LessThan = 88,
                     },
                 },
-                MinDepth = 3,
-                When = DefaultFishingSource.hasCaughtFish.Add(
+                MinBobberDepth = 3,
+                When = DefaultFishingSource.legendaryBaseConditions.Add(
                     $"HasFlag |contains={DefaultFishingSource.glacierfishFlag}",
                     "false"
                 ),
@@ -212,6 +216,8 @@ namespace TehPers.FishingOverhaul.Services
                 AvailabilityInfo =
                 DefaultFishingSource.crimsonfishEntry.AvailabilityInfo with
                 {
+                    Seasons = Seasons.All,
+                    Weathers = Weathers.All,
                     When = DefaultFishingSource.isLegendaryFamilyActive,
                 },
                 OnCatch = new()
@@ -231,6 +237,8 @@ namespace TehPers.FishingOverhaul.Services
             AvailabilityInfo =
             DefaultFishingSource.anglerEntry.AvailabilityInfo with
             {
+                Seasons = Seasons.All,
+                Weathers = Weathers.All,
                 When = DefaultFishingSource.isLegendaryFamilyActive,
             },
             OnCatch = new()
@@ -248,6 +256,8 @@ namespace TehPers.FishingOverhaul.Services
             AvailabilityInfo =
             DefaultFishingSource.legendEntry.AvailabilityInfo with
             {
+                Seasons = Seasons.All,
+                Weathers = Weathers.All,
                 When = DefaultFishingSource.isLegendaryFamilyActive,
             },
             OnCatch = new()
@@ -266,6 +276,8 @@ namespace TehPers.FishingOverhaul.Services
                 AvailabilityInfo =
                 DefaultFishingSource.mutantCarpEntry.AvailabilityInfo with
                 {
+                    Seasons = Seasons.All,
+                    Weathers = Weathers.All,
                     When = DefaultFishingSource.isLegendaryFamilyActive,
                 },
                 OnCatch = new()
@@ -285,6 +297,8 @@ namespace TehPers.FishingOverhaul.Services
                 AvailabilityInfo =
                 DefaultFishingSource.glacierfishEntry.AvailabilityInfo with
                 {
+                    Seasons = Seasons.All,
+                    Weathers = Weathers.All,
                     When = DefaultFishingSource.isLegendaryFamilyActive,
                 },
                 OnCatch = new()
@@ -319,7 +333,7 @@ namespace TehPers.FishingOverhaul.Services
             var trashEntries = new List<TrashEntry>();
 
             // Parse the fish traits
-            var fish = this.assetProvider.Load<Dictionary<int, string>>(@"Data\Fish.xnb");
+            var fish = this.assetProvider.Load<Dictionary<int, string>>(@"Data\Fish");
             var fishAvailabilities = new Dictionary<int, List<FishAvailabilityInfo>>(fish.Count);
             var trashAvailabilities = new Dictionary<int, List<AvailabilityInfo>>();
             foreach (var (fishId, rawFishInfo) in fish)
@@ -342,11 +356,15 @@ namespace TehPers.FishingOverhaul.Services
                     }
 
                     // Add traits and availabilities
-                    fishTraits[fishKey] = traits with
-                    {
-                        IsLegendary = DefaultFishingSource.vanillaLegendaries.Contains(fishKey),
-                    };
-                    fishAvailabilities[fishId] = availabilities.ToList();
+                    fishTraits.Add(
+                        fishKey,
+                        traits with
+                        {
+                            IsLegendary =
+                            DefaultFishingSource.vanillaLegendaries.Contains(fishKey),
+                        }
+                    );
+                    fishAvailabilities.Add(fishId, availabilities.ToList());
                 }
                 else
                 {
@@ -366,8 +384,7 @@ namespace TehPers.FishingOverhaul.Services
             }
 
             // Parse the location data
-            var locations =
-                this.assetProvider.Load<Dictionary<string, string>>(@"Data\Locations.xnb");
+            var locations = this.assetProvider.Load<Dictionary<string, string>>(@"Data\Locations");
             foreach (var (locationName, rawLocationData) in locations)
             {
                 var locationData = rawLocationData.Split('/');
@@ -689,7 +706,7 @@ namespace TehPers.FishingOverhaul.Services
                 availability => availability with
                 {
                     DepthMultiplier = depthMultiplier,
-                    MaxDepth = maxDepth
+                    MaxChanceDepth = maxDepth
                 }
             );
 

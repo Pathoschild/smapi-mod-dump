@@ -31,6 +31,8 @@
   "WitchVisitDuration.description": "People may comment on the witch visiting your farm for this many days afterwards.",
   "FairyVisitDuration.title": "Fairy Visit Duration",
   "FairyVisitDuration.description": "People may comment on the fairy visiting your farm for this many days afterwards.",
+  "IslandResortDuration.title": "Island Resort Unlock Duration",
+  "IslandResortDuration.description": "People may comment on the resort being unlocked for this many days afterwards.",
 
   // Errors
   "IllFormattedConfig": "Config file seems ill-formatted, using default. Please use Generic Mod Config Menu to configure.",

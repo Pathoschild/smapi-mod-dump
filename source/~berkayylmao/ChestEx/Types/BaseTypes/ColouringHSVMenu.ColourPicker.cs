@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -30,9 +30,7 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using SkiaSharp;
 using System.IO;
 
 using ChestEx.LanguageExtensions;
@@ -52,46 +50,43 @@ namespace ChestEx.Types.BaseTypes {
   public partial class ColouringHSVMenu {
     public class ColourPicker : CustomClickableTextureComponent {
       // Consts:
-    #region Consts
+      #region Consts
 
       private const Int32 CONST_SELECTOR_SIZE = 12;
 
-    #endregion
+      #endregion
 
       // Private:
-    #region Private
+      #region Private
 
       private readonly Action<Color> onColourHovered;
       private readonly Action<Color> onColourChanged;
 
-      private Bitmap  bitmap;
+      private SKBitmap bitmap;
       private Boolean selectorIsVisible = true;
-      private Point   selectorPos       = Point.Zero;
-      private Point   selectorActivePos = Point.Zero;
-      private Color   hueColour         = Color.Red;
+      private Point selectorPos = Point.Zero;
+      private Point selectorActivePos = Point.Zero;
+      private Color hueColour = Color.Red;
 
       private Texture2D getOrCreateTexture(GraphicsDevice device) {
         if (this.bitmap is null || this.texture is null) {
           this.bitmap?.Dispose();
           this.texture?.Dispose();
 
-          this.bitmap = new Bitmap(this.mBounds.Width, this.mBounds.Height);
+          this.bitmap = new SKBitmap(this.mBounds.Width, this.mBounds.Height);
 
-          using var      ms = new MemoryStream();
-          using Graphics g  = Graphics.FromImage(this.bitmap);
-          using var white_gradient = new LinearGradientBrush(new RectangleF(0.0f, 0.0f, this.mBounds.Width, this.mBounds.Height),
-                                                             System.Drawing.Color.Transparent,
-                                                             System.Drawing.Color.White,
-                                                             0.0f);
-          using var black_gradient = new LinearGradientBrush(new RectangleF(0.0f, 0.0f, this.mBounds.Width, this.mBounds.Height),
-                                                             System.Drawing.Color.Transparent,
-                                                             System.Drawing.Color.FromArgb(255, 1, 1, 1),
-                                                             90.0f);
-          g.FillRectangle(new SolidBrush(this.hueColour.AsDotNetColor()), 0.0f, 0.0f, this.mBounds.Width, this.mBounds.Height);
-          g.FillRectangle(white_gradient, 0f, 0f, this.mBounds.Width, this.mBounds.Height);
-          g.FillRectangle(black_gradient, 0f, 0f, this.mBounds.Width, this.mBounds.Height);
-          this.bitmap.Save(ms, ImageFormat.Png);
-          ms.Seek(0, SeekOrigin.Begin);
+          using var ms = new MemoryStream();
+          using var canvas = new SKCanvas(this.bitmap);
+          using var white_skpaint = new SKPaint() { Shader = SKShader.CreateLinearGradient(new SKPoint(0.0f, 0.0f), new SKPoint(this.mBounds.Width, 0.0f), new SKColor[] { SKColors.Transparent, SKColors.White }, SKShaderTileMode.Decal) };
+          using var black_skpaint = new SKPaint() { Shader = SKShader.CreateLinearGradient(new SKPoint(0.0f, 0.0f), new SKPoint(this.mBounds.Height, 0.0f), new SKColor[] { SKColors.Transparent, new SKColor(1, 1, 1, 255) }, SKShaderTileMode.Decal) };
+          using var colour_skpaint = new SKPaint() { Shader = SKShader.CreateColor(this.hueColour.AsSKColor()) };
+
+          canvas.DrawPaint(colour_skpaint);
+          canvas.DrawPaint(white_skpaint);
+          canvas.RotateDegrees(90.0f);
+          canvas.DrawPaint(black_skpaint);
+
+          this.bitmap.Encode(ms, SKEncodedImageFormat.Png, 95);
           this.texture = Texture2D.FromStream(device, ms);
         }
 
@@ -110,10 +105,10 @@ namespace ChestEx.Types.BaseTypes {
         this.onColourHovered?.Invoke(this.getColourAt(position));
       }
 
-    #endregion
+      #endregion
 
       // Public:
-    #region Public
+      #region Public
 
       public void SetHueColour(Color colour) {
         if (this.hueColour == colour) return;
@@ -121,7 +116,7 @@ namespace ChestEx.Types.BaseTypes {
 
         this.bitmap?.Dispose();
         this.texture?.Dispose();
-        this.bitmap  = null;
+        this.bitmap = null;
         this.texture = null;
       }
 
@@ -142,7 +137,7 @@ namespace ChestEx.Types.BaseTypes {
       }
 
       // Overrides:
-    #region Overrides
+      #region Overrides
 
       public override void Draw(SpriteBatch spriteBatch) {
         this.texture = this.getOrCreateTexture(spriteBatch.GraphicsDevice);
@@ -172,12 +167,12 @@ namespace ChestEx.Types.BaseTypes {
       // Disable cursor hover scaling
       public override void OnGameTick() { }
 
-    #endregion
+      #endregion
 
-    #endregion
+      #endregion
 
       // Constructors:
-    #region Constructors
+      #region Constructors
 
       public ColourPicker(Rectangle bounds, Colours colours, Action<Color> onColourHovered, Action<Color> onColourChanged)
         : base(bounds, colours) {
@@ -185,19 +180,19 @@ namespace ChestEx.Types.BaseTypes {
         this.onColourChanged = onColourChanged;
       }
 
-    #endregion
+      #endregion
 
       // IDisposable:
-    #region IDisposable
+      #region IDisposable
 
       public override void Dispose() {
         base.Dispose();
         this.bitmap?.Dispose();
-        this.bitmap  = null;
+        this.bitmap = null;
         this.texture = null;
       }
 
-    #endregion
+      #endregion
     }
   }
 }

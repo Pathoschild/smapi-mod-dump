@@ -11,7 +11,7 @@
 {
   "Name": "MinecartPatcher",
   "Author": "mod.kitchen",
-  "Version": "1.0.3",
+  "Version": "1.1.0",
   "Description": "A library for patching Minecarts in Stardew Valley.",
   "UniqueID": "mod.kitchen.minecartpatcher",
   "EntryDll": "MinecartPatcher.dll",

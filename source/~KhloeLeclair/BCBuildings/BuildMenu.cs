@@ -11,11 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-#if IS_BETTER_CRAFTING
-using Leclair.Stardew.Common.Crafting;
-#else
 using Leclair.Stardew.BetterCrafting;
-#endif
 
 using StardewValley;
 using StardewValley.BellsAndWhistles;

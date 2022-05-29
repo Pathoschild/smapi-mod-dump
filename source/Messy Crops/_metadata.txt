@@ -6,12 +6,10 @@ mods:
    Messy Crops
 
 latest commit:
-   commit 8a107fe2db5c7e880fb02c0b43d677626664e721
-   Merge: c7b6a8b a2eb6e9
-   Author: Wren <grahamgrasley@gmail.com>
-   Date:   Sun Apr 24 19:05:47 2022 -0400
+   commit c1be0ce218792aca988060a3dca584dfe6eec7be
+   Merge: 34619ad 8a107fe
+   Author: tlitookilakin <swyrlyy@gmail.com>
+   Date:   Wed May 4 13:34:58 2022 -0400
    
-       Merge pull request #1 from ChulkyBow/patch-1
-       
-       Add Ukrainian translation
+       Merge branch 'master' of https://github.com/tlitookilakin/MessyCrops
    

@@ -26,7 +26,7 @@ using static SpriteMaster.Harmonize.Harmonize;
 
 namespace SpriteMaster.Harmonize.Patches;
 
-static class TextureCache {
+internal static class TextureCache {
 	private const int MaxDequeItems = 20;
 	private static readonly Deque<XTexture2D> TextureCacheDeque = new(MaxDequeItems);
 	private static readonly ConcurrentDictionary<string, WeakReference<XTexture2D>> TextureCacheTable = new();
@@ -40,16 +40,16 @@ static class TextureCache {
 	[Harmonize(
 		typeof(XTexture2D),
 		"FromStream",
-		Harmonize.Fixation.Prefix,
+		Fixation.Prefix,
 		PriorityLevel.Last,
-		platform: Harmonize.Platform.MonoGame,
+		platform: Platform.MonoGame,
 		instance: false,
 		critical: false
 	)]
-	public static bool FromStreamPre(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream, ref bool __state) {
+	public static bool FromStreamPre(ref XTexture2D? __result, GraphicsDevice? graphicsDevice, Stream? stream, ref bool __state) {
 		lock (Lock) {
 
-			if (!Config.IsUnconditionallyEnabled || !Config.SMAPI.TextureCacheEnabled) {
+			if (!Config.IsUnconditionallyEnabled || !Config.TextureCache.Enabled) {
 				__state = false;
 				return true;
 			}
@@ -67,7 +67,7 @@ static class TextureCache {
 			bool isContentManager = false;
 			var stackTrace = new StackTrace(fNeedFileInfo: false, skipFrames: 1);
 			foreach (var frame in stackTrace.GetFrames()) {
-				if (frame.GetMethod() is MethodBase method) {
+				if (frame.GetMethod() is { } method) {
 					if (method.DeclaringType == ModContentManagerType) {
 						isContentManager = true;
 						break;
@@ -92,7 +92,7 @@ static class TextureCache {
 						TexturePaths.Remove(texture);
 					}
 					else {
-						Debug.Trace($"Found Texture2D for '{path}' in cache!".Pastel(System.Drawing.Color.LightCyan));
+						Debug.Trace($"Found XTexture2D for '{path}' in cache!".Pastel(DrawingColor.LightCyan));
 						__result = texture;
 						__state = false;
 						return false;
@@ -104,10 +104,10 @@ static class TextureCache {
 		}
 	}
 
-	[Harmonize(typeof(XTexture2D), "FromStream", Harmonize.Fixation.Postfix, PriorityLevel.Last, platform: Harmonize.Platform.MonoGame, instance: false)]
-	public static void FromStreamPost(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream, bool __state) {
+	[Harmonize(typeof(XTexture2D), "FromStream", Fixation.Postfix, PriorityLevel.Last, platform: Platform.MonoGame, instance: false)]
+	public static void FromStreamPost(ref XTexture2D? __result, GraphicsDevice? graphicsDevice, Stream? stream, bool __state) {
 		lock (Lock) {
-			if (!Config.IsUnconditionallyEnabled || !Config.SMAPI.TextureCacheEnabled) {
+			if (!Config.IsUnconditionallyEnabled || !Config.TextureCache.Enabled) {
 				return;
 			}
 
@@ -131,10 +131,10 @@ static class TextureCache {
 		}
 	}
 
-	[Harmonize(typeof(XTexture2D), "FromStream", Harmonize.Fixation.Finalizer, PriorityLevel.Last, platform: Harmonize.Platform.MonoGame, instance: false)]
-	public static void FromStreamFinal(ref XTexture2D __result, GraphicsDevice graphicsDevice, Stream stream, bool __state) {
+	[Harmonize(typeof(XTexture2D), "FromStream", Fixation.Finalizer, PriorityLevel.Last, platform: Platform.MonoGame, instance: false)]
+	public static void FromStreamFinal(ref XTexture2D? __result, GraphicsDevice? graphicsDevice, Stream? stream, bool __state) {
 		lock (Lock) {
-			if (!Config.IsUnconditionallyEnabled || !Config.SMAPI.TextureCacheEnabled) {
+			if (!Config.IsUnconditionallyEnabled || !Config.TextureCache.Enabled) {
 				return;
 			}
 
@@ -153,7 +153,7 @@ static class TextureCache {
 			}
 
 			var result = __result;
-			if (Config.SMAPI.TextureCacheHighMemoryEnabled) {
+			if (Config.TextureCache.HighMemoryEnabled) {
 				lock (TextureCacheDeque) {
 					int dequeIndex = TextureCacheDeque.IndexOf(result);
 					if (dequeIndex != -1) {
@@ -167,7 +167,7 @@ static class TextureCache {
 					TextureCacheDeque.AddToFront(result);
 				}
 			}
-			WeakReference<Texture2D>? previousTexture = null;
+			WeakReference<XTexture2D>? previousTexture = null;
 			TextureCacheTable.AddOrUpdate(fileStream.Name, result.MakeWeak(), (name, original) => {
 				previousTexture = original;
 				return result.MakeWeak();
@@ -185,12 +185,12 @@ static class TextureCache {
 		typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade),
 		"StardewModdingAPI.Framework.ContentManagers.ModContentManager",
 		"PremultiplyTransparency",
-		Harmonize.Fixation.Prefix,
-		Harmonize.PriorityLevel.First
+		Fixation.Prefix,
+		PriorityLevel.First
 	)]
 	public static bool PremultiplyTransparencyPre(ContentManager __instance, ref XTexture2D __result, XTexture2D texture) {
 		lock (Lock) {
-			if (!Config.IsUnconditionallyEnabled || !Config.SMAPI.TextureCacheEnabled || !Config.SMAPI.PMATextureCacheEnabled) {
+			if (!Config.IsUnconditionallyEnabled || !Config.TextureCache.Enabled || !Config.TextureCache.PMAEnabled) {
 				return true;
 			}
 
@@ -209,14 +209,14 @@ static class TextureCache {
 		typeof(StardewModdingAPI.Framework.ModLoading.RewriteFacades.AccessToolsFacade),
 		"StardewModdingAPI.Framework.ContentManagers.ModContentManager",
 		"PremultiplyTransparency",
-		Harmonize.Fixation.Finalizer,
-		Harmonize.PriorityLevel.First
+		Fixation.Finalizer,
+		PriorityLevel.First
 	)]
 	public static void PremultiplyTransparencyPost(ContentManager __instance, XTexture2D __result, XTexture2D texture) {
 		lock (Lock) {
 			CurrentPremultiplyingTexture.Value = null!;
 
-			if (!Config.IsUnconditionallyEnabled || !Config.SMAPI.TextureCacheEnabled || !Config.SMAPI.PMATextureCacheEnabled) {
+			if (!Config.IsUnconditionallyEnabled || !Config.TextureCache.Enabled || !Config.TextureCache.PMAEnabled) {
 				return;
 			}
 

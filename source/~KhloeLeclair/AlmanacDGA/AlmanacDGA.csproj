@@ -4,7 +4,6 @@
 		<AssemblyName>AlmanacDGA</AssemblyName>
 		<Version>1.1.0</Version>
 		<RootNamespace>Leclair.Stardew.AlmanacDGA</RootNamespace>
-		<TargetFramework>net5.0</TargetFramework>
 	</PropertyGroup>
 
 	<Import Project="..\Common\Common.projitems" Label="Shared" />
@@ -12,7 +11,7 @@
 
 	<ItemGroup>
 		<Reference Include="DynamicGameAssets">
-			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\DevMods\DynamicGameAssets\DynamicGameAssets.dll</HintPath>
+			<HintPath>$(GameModsPath)\DynamicGameAssets\DynamicGameAssets.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>

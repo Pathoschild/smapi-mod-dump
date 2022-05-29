@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12058
+IDs: Adverserath.QuickGlance
+update keys: Nexus:12058

@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.Lexing.LexTokens;
@@ -30,13 +28,13 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_15_Prevalidation()
             : base(new SemanticVersion(1, 15, 0))
         {
-            this.AddedTokens.AddMany(
-                ConditionType.HasConversationTopic.ToString()
+            this.AddedTokens = new InvariantSet(
+                nameof(ConditionType.HasConversationTopic)
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ref ILexToken lexToken, out string error)
+        public override bool TryMigrate(ref ILexToken lexToken, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(ref lexToken, out error))
                 return false;

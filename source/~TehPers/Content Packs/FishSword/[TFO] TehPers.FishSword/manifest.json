@@ -16,7 +16,8 @@
   "Description": "Adds a catchable fish sword.",
   "Version": "1.0.0-beta.2021.12.23",
   "ContentPackFor": {
-    "UniqueID": "TehPers.FishingOverhaul"
+    "UniqueID": "TehPers.FishingOverhaul",
+    "MinimumVersion": "3.3.0"
   },
   "Dependencies": [
     {

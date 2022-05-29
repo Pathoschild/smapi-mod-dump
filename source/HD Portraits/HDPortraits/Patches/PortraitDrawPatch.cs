@@ -11,7 +11,6 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
@@ -30,16 +29,26 @@ namespace HDPortraits.Patches
         private static ILHelper patcher = SetupPatch();
         internal static readonly PerScreen<HashSet<MetadataModel>> lastLoaded = new(() => new());
         internal static readonly PerScreen<MetadataModel> currentMeta = new();
-        internal static readonly PerScreen<Dictionary<string, string>> EventOverrides = new(() => new());
         internal static readonly PerScreen<string> overrideName = new();
+        internal static readonly PerScreen<Dictionary<NPC, string>> NpcEventSuffixes = new(() => new());
+        internal static FieldInfo islandwear = typeof(NPC).FieldNamed("isWearingIslandAttire");
+
+        [HarmonyPatch(typeof(Event), "command_changePortrait")]
+        [HarmonyPostfix]
+        public static void changeActivePortraitOf(string[] split, Event __instance)
+        {
+            NPC n = __instance.getActorByName(split[1]) ?? Game1.getCharacterFromName(split[1]);
+            NpcEventSuffixes.Value[n] = split[2];
+            if (Game1.activeClickableMenu is DialogueBox db && db.characterDialogue?.speaker == n)
+            {
+                DialoguePatch.Finish();
+                DialoguePatch.Init(db);
+            }
+        }
 
         [HarmonyPatch(typeof(DialogueBox), "drawPortrait")]
         [HarmonyTranspiler]
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            foreach (var code in patcher.Run(instructions))
-                yield return code;
-        }
+        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => patcher.Run(instructions);
         public static ILHelper SetupPatch()
         {
             return new ILHelper("Dialogue Patch")
@@ -76,10 +85,7 @@ namespace HDPortraits.Patches
                 })
                 .Finish();
         }
-        public static Texture2D SwapTexture(Texture2D texture)
-        {
-            return currentMeta.Value?.overrideTexture?.Value ?? texture;
-        }
+        public static Texture2D SwapTexture(Texture2D texture) => currentMeta.Value?.overrideTexture.Value ?? texture;
         public static Rectangle GetData(Texture2D texture, int index)
         {
             int asize = currentMeta.Value?.Size ?? 64;
@@ -92,11 +98,10 @@ namespace HDPortraits.Patches
         }
         public static string GetSuffix(NPC npc)
         {
-            return (bool)DialoguePatch.islandwear.GetValue(npc) ? "Beach" : npc.uniquePortraitActive ? npc.currentLocation.Name : null;
+            return NpcEventSuffixes.Value.TryGetValue(npc, out string s) ? s : 
+                (bool)islandwear.GetValue(npc) ? "Beach" : 
+                npc.uniquePortraitActive ? npc.currentLocation.Name : null;
         }
-        public static float GetScale()
-        {
-            return currentMeta.Value is not null ? 256f / currentMeta.Value.Size : 4f;
-        }
+        public static float GetScale() => currentMeta.Value is not null ? 256f / currentMeta.Value.Size : 4f;
     }
 }

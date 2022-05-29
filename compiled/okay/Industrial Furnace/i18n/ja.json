@@ -14,4 +14,8 @@
 	"gmcm.coal-amount-description": "工業炉の始動に必要な石炭の量",
 	"gmcm.instant-smelting-label": "インスタント加工",
 	"gmcm.instant-smelting-description": "true(有効)にすると、加工が即座に終了する様になります。",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

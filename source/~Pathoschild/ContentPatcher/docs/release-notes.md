@@ -18,8 +18,53 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 -->
 ## Upcoming release
+* Improved `EditImage` performance by migrating to SMAPI 3.15's new `IRawTextureData` asset type.
+
+## 1.26.5
+Released 27 May 2022 for SMAPI 3.14.0 or later.
+
+* Fixed `EditData` patches in older content packs not applied correctly if `FromFile` has an immutable value.
+
+## 1.26.4
+Released 22 May 2022 for SMAPI 3.14.0 or later.
+
+* Optimized load times and in-game performance.
+* Optimized redundant reindex on context updates (thanks to SinZ163!).
+* Fixed config UI dropdown values no longer matching order listed in `ConfigSchema`.
+* Fixed custom tokens sometimes failing in SMAPI 3.14 with '_rejected token … because it could not be mapped_' error.
+
+## 1.26.3
+Released 16 May 2022 for SMAPI 3.14.0 or later.
+
+* Fixed token normalization not applied to conditions in 1.26.2.
+
+## 1.26.2
+Released 15 May 2022 for SMAPI 3.14.0 or later.
+
+* Optimized performance and memory allocation:
+  * Migrated to immutable sets internally, so Content Patcher can avoid copying values in many cases.
+  * Added predefined sets for common values to reduce allocations.
+  * Optimized token normalization, string splitting, `EditData` edits, and `{{time}}` formatting.
+  * Removed unneeded array copies.
+* Fixed error when passing a null input to the `LowerCase`/`UpperCase` or `Render` tokens.
+* Fixed `EditData` patches in older content packs not updated if their `FromFile` changes.
+
+## 1.26.1
+Released 11 May 2022 for SMAPI 3.14.0 or later.
+
+* Optimized performance and memory allocation:
+  * Reduced time spent updating patches (they now stop updating at the first unready field).
+  * Reduced allocations for immutable values and empty inputs.
+  * Removed unneeded/recursive yields.
+* Fixed content packs which include the `.xnb` extension in the `Target` field.
+* Fixed error when a content pack uses `HasFile` or `FirstValidFile` with a path which contains only empty tokens before the first path separator.
+
+## 1.26.0
+Released 09 May 2022 for SMAPI 3.14.0 or later. See the [release highlights](https://www.patreon.com/posts/66203059).
+
+* Updated for SMAPI 3.14.0.
 * Added support for [config UI sections](author-guide/config.md#display-options) (thanks to Shockah!).
-* Updated for the upcoming SMAPI 4.0.0.
+* The `patch export` console command's optional type argument can now be `image` or an unqualified type name (thanks to atravita!).
 * Fixed content packs reloaded unnecessarily on startup.
 * Fixed `patch summary` showing non-ready token values in some cases.
 

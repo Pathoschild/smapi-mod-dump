@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,12 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IGameLoopEvents.DayEnding"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class DayEndingEvent : BaseEvent
 {
-    /// <summary>Raised before the game ends the current day.</summary>
+    /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnDayEnding(object sender, DayEndingEventArgs e)
+    internal void OnDayEnding(object sender, DayEndingEventArgs e)
     {
-        if (enabled.Value) OnDayEndingImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnDayEndingImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnDayEnding" />

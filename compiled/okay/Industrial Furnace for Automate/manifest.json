@@ -1,14 +1,13 @@
 {
 	"Name": "Industrial Furnace for Automate",
 	"Author": "Traktori",
-	"Version": "1.6.1",
+	"Version": "1.7.0",
 	"Description": "Integrates the Industrial Furnace with Automate.",
 	"UniqueID": "Traktori.AM.IndustrialFurnace",
 	"EntryDll": "IndustrialFurnaceAutomate.dll",
 	"MinimumApiVersion": "3.13.0",
 	"UpdateKeys": [ "Nexus:5568@Automate" ],
-	"Dependencies":
-	[
+	"Dependencies": [
 		{
 			"UniqueID": "Pathoschild.Automate"
 		},

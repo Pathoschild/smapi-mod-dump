@@ -1,10 +1,14 @@
-﻿{
+{
   "Name": "Pick Your Enchantment",
   "Author": "atravita",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "Allows you to pick which enchantment you get.",
   "UniqueID": "atravita.ForgeMenuChoice",
   "EntryDll": "ForgeMenuChoice.dll",
-  "UpdateKeys": [ "Nexus:11376", "GitHub:atravita-mods/ForgeMenuChoice", "ModDrop:1125882" ],
+  "UpdateKeys": [
+    "Nexus:11376",
+    "GitHub:atravita-mods/ForgeMenuChoice",
+    "ModDrop:1125882"
+  ],
   "MinimumApiVersion": "3.13"
 }

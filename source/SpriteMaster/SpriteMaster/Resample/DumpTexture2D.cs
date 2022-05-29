@@ -15,7 +15,7 @@ namespace SpriteMaster.Types;
 /// <summary>
 /// A Texture2D that represents a texture being used to dump a PNG
 /// </summary>
-sealed class DumpTexture2D : InternalTexture2D {
+internal sealed class DumpTexture2D : InternalTexture2D {
 	private const string DefaultName = "Dump Texture (Internal)";
 
 	internal DumpTexture2D(GraphicsDevice graphicsDevice, int width, int height) : base(graphicsDevice, width, height) {

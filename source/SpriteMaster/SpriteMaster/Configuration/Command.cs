@@ -16,10 +16,10 @@ using System.Text;
 
 namespace SpriteMaster.Configuration;
 
-static class Command {
+internal static class Command {
 	private static Serialize.Category Root => Serialize.Root;
 
-	[CommandAttribute("config", "Config Commands")]
+	[Command("config", "Config Commands")]
 	public static void OnConsoleCommand(string command, Queue<string> arguments) {
 		if (arguments.Count == 0) {
 			EmitHelp(new());
@@ -67,12 +67,11 @@ static class Command {
 			}
 			foreach (var subCategory in category.Children) {
 				var comment = subCategory.Value.Type.GetCustomAttribute<Attributes.CommentAttribute>();
-				if (comment is null) {
-					output.AppendLine($"\t{subCategory.Value.Name}");
-				}
-				else {
-					output.AppendLine($"\t{subCategory.Value.Name.PadRight(maxCategoryLength)} : {comment.Message}");
-				}
+				output.AppendLine(
+					comment is null
+					? $"\t{subCategory.Value.Name}"
+					: $"\t{subCategory.Value.Name.PadRight(maxCategoryLength)} : {comment.Message}"
+				);
 			}
 			if (category.Fields.Count != 0) {
 				output.AppendLine();
@@ -87,12 +86,11 @@ static class Command {
 
 			foreach (var field in category.Fields) {
 				var comment = field.Value.GetCustomAttribute<Attributes.CommentAttribute>();
-				if (comment is null) {
-					output.AppendLine($"\t{field.Value.Name}");
-				}
-				else {
-					output.AppendLine($"\t{field.Value.Name.PadRight(maxFieldLength)} : {comment.Message}");
-				}
+				output.AppendLine(
+					comment is null
+					? $"\t{field.Value.Name}"
+					: $"\t{field.Value.Name.PadRight(maxFieldLength)} : {comment.Message}"
+				);
 			}
 		}
 		Debug.Info(output.ToString());
@@ -221,7 +219,7 @@ static class Command {
 			Caching.ResidentCache.Purge();
 		}
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.ResetDisplay)) {
-			// TODO
+			StardewValley.Game1.graphics.ApplyChanges();
 		}
 		if (options.Flags.HasFlag(Attributes.OptionsAttribute.Flag.GarbageCollect)) {
 			Extensions.Garbage.Collect(compact: true, blocking: true, background: false);
@@ -297,7 +295,7 @@ static class Command {
 	}
 
 	private static void Load(Queue<string> arguments) {
-		string path = Configuration.Config.Path;
+		string path = Config.Path;
 		if (arguments.Count > 1) {
 			throw new ArgumentException($"Too many arguments for load: expected 0 or 1, found {arguments.Count}");
 		}
@@ -309,13 +307,13 @@ static class Command {
 	}
 
 	internal static bool LoadConfig(string? path = null, bool retain = true) {
-		path ??= Configuration.Config.Path;
+		path ??= Config.Path;
 
 		return Serialize.Load(path, retain);
 	}
 
 	private static void Save(Queue<string> arguments) {
-		string path = Configuration.Config.Path;
+		string path = Config.Path;
 		if (arguments.Count > 1) {
 			throw new ArgumentException($"Too many arguments for save: expected 0 or 1, found {arguments.Count}");
 		}
@@ -327,7 +325,7 @@ static class Command {
 	}
 
 	internal static bool SaveConfig(string? path = null) {
-		path ??= Configuration.Config.Path;
+		path ??= Config.Path;
 
 		return Serialize.Save(path);
 	}

@@ -75,7 +75,7 @@ internal static class FishFoodHandler
             && UnsavedLocHandler.FishFoodLocationMap.TryGetValue(e.NewLocation.NameOrUniqueName, out int val) && val > 0)
         {
             e.NewLocation.modData?.SetInt(CanPlaceHandler.FishFood, val);
-            e.NewLocation.waterColor.Value = SpecialFertilizerApplication.FedFishWaterColor();
+            e.NewLocation.waterColor.Value = ModEntry.Config.WaterOverlayColor;
         }
     }
 

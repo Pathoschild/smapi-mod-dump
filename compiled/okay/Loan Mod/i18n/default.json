@@ -3,7 +3,8 @@
   "menu.days": "Days",
   "menu.leave": "Leave",
   "menu.no": "No",
-  "menu.repayfull": "Repay Full Amount",
+  "menu.repaycustom": "Repay a Custom Amount",
+  "menu.repayfull": "Repay Full Balance",
   "menu.showbalance": "Show Balance",
   "menu.yes": "Yes",
   "msg.create": "Loan file has been created!",
@@ -19,5 +20,6 @@
   "msg.payment.missed-2": "Warning: We will now add a late payment fee of: {{LateChargeAmount}}g to your balance.",
   "msg.payment.remaining": "Your remaining balance is: {{Balance}}g. You have {{Duration}} days left. You are paying {{DailyAmount}}g per day.",
   "msg.startborrow-1": "How much money would you like to borrow?",
-  "msg.startborrow-2": "How long would you like to borrow for?"
+  "msg.startborrow-2": "How long would you like to borrow for?",
+  "msg.startrepay": "How much money would you like to repay?"
 }

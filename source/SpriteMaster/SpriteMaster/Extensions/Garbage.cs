@@ -16,16 +16,14 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Extensions;
 
-static class Garbage {
-	private delegate void CompactingCollectDelegate(int generation, GCCollectionMode mode, bool blocking, bool compacting);
+internal static class Garbage {
 	internal static volatile bool ManualCollection = false;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void EnterNonInteractive() {
 		GCSettings.LatencyMode = GCLatencyMode.Interactive;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void EnterInteractive() {
 		//Debug.Error("Interactive GC");
 
@@ -42,12 +40,14 @@ static class Garbage {
 					Debug.Warning($"Set GC Latency Mode to '{mode}'");
 					break;
 				}
-				catch { }
+				catch {
+					// ignored
+				}
 			}
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void MarkCompact() {
 		Debug.Trace("Marking for Compact");
 		try {
@@ -58,7 +58,6 @@ static class Garbage {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static void Collect(bool compact = false, bool blocking = false, bool background = true) {
 		try {
 			ManualCollection = true;
@@ -110,67 +109,67 @@ static class Garbage {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void Mark(long size) {
-		Contracts.AssertPositiveOrZero(size);
+		size.AssertPositiveOrZero();
 		GC.AddMemoryPressure(size);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void Mark(Texture2D texture) {
-		Contracts.AssertNotNull(texture);
-		Mark(texture.SizeBytes());
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void Mark(XTexture2D texture) {
+		texture.AssertNotNull();
+		Mark(texture.SizeBytesLong());
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void Unmark(long size) {
-		Contracts.AssertPositiveOrZero(size);
+		size.AssertPositiveOrZero();
 		GC.RemoveMemoryPressure(size);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void Unmark(Texture2D texture) {
-		Contracts.AssertNotNull(texture);
-		Unmark(texture.SizeBytes());
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void Unmark(XTexture2D texture) {
+		texture.AssertNotNull();
+		Unmark(texture.SizeBytesLong());
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void MarkOwned(SurfaceFormat format, int texels) {
 		if (!Config.Garbage.CollectAccountOwnedTextures) {
 			return;
 		}
-		Contracts.AssertPositiveOrZero(texels);
-		var size = format.SizeBytes(texels);
+		texels.AssertPositiveOrZero();
+		var size = format.SizeBytesLong(texels);
 		Mark(size);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void UnmarkOwned(SurfaceFormat format, int texels) {
 		if (!Config.Garbage.CollectAccountOwnedTextures) {
 			return;
 		}
-		Contracts.AssertPositiveOrZero(texels);
-		var size = format.SizeBytes(texels);
+		texels.AssertPositiveOrZero();
+		var size = format.SizeBytesLong(texels);
 		Unmark(size);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void MarkUnowned(SurfaceFormat format, int texels) {
 		if (!Config.Garbage.CollectAccountUnownedTextures) {
 			return;
 		}
-		Contracts.AssertPositiveOrZero(texels);
-		var size = format.SizeBytes(texels);
+		texels.AssertPositiveOrZero();
+		var size = format.SizeBytesLong(texels);
 		Mark(size);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static void UnmarkUnowned(SurfaceFormat format, int texels) {
 		if (!Config.Garbage.CollectAccountUnownedTextures) {
 			return;
 		}
-		Contracts.AssertPositiveOrZero(texels);
-		var size = format.SizeBytes(texels);
+		texels.AssertPositiveOrZero();
+		var size = format.SizeBytesLong(texels);
 		Unmark(size);
 	}
 }

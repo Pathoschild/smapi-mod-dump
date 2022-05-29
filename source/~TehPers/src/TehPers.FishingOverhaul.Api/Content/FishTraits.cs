@@ -10,7 +10,6 @@
 
 using System.ComponentModel;
 using Newtonsoft.Json;
-using TehPers.Core.Api.Json;
 
 namespace TehPers.FishingOverhaul.Api.Content
 {
@@ -21,7 +20,6 @@ namespace TehPers.FishingOverhaul.Api.Content
     /// <param name="DartBehavior">How the fish moves during the fishing minigame.</param>
     /// <param name="MinSize">The minimum size the fish can be.</param>
     /// <param name="MaxSize">The maximum size the fish can be.</param>
-    [JsonDescribe]
     public record FishTraits(
         [property: JsonRequired] int DartFrequency,
         [property: JsonRequired] DartBehavior DartBehavior,

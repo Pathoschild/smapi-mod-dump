@@ -12,7 +12,7 @@ using System.Runtime.Caching;
 
 namespace SpriteMaster.Types;
 
-class TypedMemoryCache<T> where T : class {
+internal class TypedMemoryCache<T> where T : class {
 	internal delegate void RemovalCallbackDelegate(CacheEntryRemovedReason reason, T element);
 
 	private MemoryCache Cache;

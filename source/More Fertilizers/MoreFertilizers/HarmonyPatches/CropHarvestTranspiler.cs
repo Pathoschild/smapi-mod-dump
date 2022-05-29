@@ -28,6 +28,25 @@ namespace MoreFertilizers.HarmonyPatches;
 [HarmonyPatch(typeof(Crop))]
 internal static class CropHarvestTranspiler
 {
+    /// <summary>
+    /// Applies a matching patch to DGA's crop.Harvest.
+    /// </summary>
+    /// <param name="harmony">Harmony instance.</param>
+    internal static void ApplyDGAPatch(Harmony harmony)
+    {
+        try
+        {
+            Type dgaCrop = AccessTools.TypeByName("DynamicGameAssets.Game.CustomCrop") ?? throw new("DGA crops");
+            harmony.Patch(
+                original: dgaCrop.InstanceMethodNamed("Harvest"),
+                transpiler: new HarmonyMethod(typeof(CropHarvestTranspiler), nameof(TranspileDGA)));
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling DGA. Integration may not work correctly.\n\n{ex}", LogLevel.Error);
+        }
+    }
+
     private static int GetQualityForJojaFert(int prevQual, HoeDirt? dirt)
     {
         if(dirt is not null && dirt.fertilizer.Value != -1)
@@ -44,11 +63,14 @@ internal static class CropHarvestTranspiler
         return prevQual;
     }
 
+    private static Item? MakeItemOrganic(Item? item, HoeDirt? dirt)
+        => item is SObject obj ? MakeObjectOrganic(obj, dirt) : item;
+
     private static SObject MakeObjectOrganic(SObject obj, HoeDirt? dirt)
     {
         if (dirt is not null && dirt.fertilizer.Value != -1)
         {
-            if (dirt.fertilizer.Value == ModEntry.OrganicFertilizerID)
+            if (dirt.fertilizer.Value == ModEntry.OrganicFertilizerID && !obj.Name.Contains("Joja", StringComparison.OrdinalIgnoreCase))
             {
                 obj.modData?.SetBool(CanPlaceHandler.Organic, true);
                 obj.Price = (int)(obj.Price * 1.1);
@@ -58,6 +80,7 @@ internal static class CropHarvestTranspiler
             else if (dirt.fertilizer.Value == ModEntry.DeluxeJojaFertilizerID || dirt.fertilizer.Value == ModEntry.JojaFertilizerID)
             {
                 obj.modData?.SetBool(CanPlaceHandler.Joja, true);
+                obj.MarkContextTagsDirty();
             }
         }
         return obj;
@@ -180,7 +203,7 @@ internal static class CropHarvestTranspiler
             })
             .FindNext(new CodeInstructionWrapper[]
             { // Find the place where the second creation of an SObject/ColoredSObject is saved.
-                new (OpCodes.Newobj, typeof(ColoredObject).GetConstructor(new[] { typeof(int), typeof(int), typeof(Color) } )),
+                new (OpCodes.Newobj, typeof(ColoredObject).Constructor(new[] { typeof(int), typeof(int), typeof(Color) } )),
                 new (SpecialCodeInstructionCases.StLoc, typeof(SObject)),
             })
             .Advance(1);
@@ -202,6 +225,108 @@ internal static class CropHarvestTranspiler
                 new(OpCodes.Ldarg_3),
                 new(OpCodes.Call, typeof(CropHarvestTranspiler).StaticMethodNamed(nameof(GetQualityForJojaFert))),
                 new(OpCodes.Callvirt, typeof(SObject).InstancePropertyNamed(nameof(SObject.Quality)).GetSetMethod()),
+            });
+
+            // helper.Print();
+            return helper.Render();
+        }
+        catch (Exception ex)
+        {
+            ModEntry.ModMonitor.Log($"Mod crashed while transpiling Crop.harvest:\n\n{ex}", LogLevel.Error);
+        }
+        return null;
+    }
+
+    private static IEnumerable<CodeInstruction>? TranspileDGA(IEnumerable<CodeInstruction> instructions, ILGenerator gen, MethodBase original)
+    {
+        try
+        {
+            ILHelper helper = new(original, instructions, ModEntry.ModMonitor, gen);
+            helper.FindNext(new CodeInstructionWrapper[]
+            { // match the second half of if (fertilizerQualityLevel >= 3 && r.NextDobule() < chanceForGoldQuality/2
+              // DaLion might take out the first half. Dunno.
+                new(SpecialCodeInstructionCases.LdLoc),
+                new(OpCodes.Callvirt, typeof(Random).InstanceMethodNamed(nameof(Random.NextDouble))),
+                new(SpecialCodeInstructionCases.LdLoc),
+                new(OpCodes.Ldc_R8, 2d),
+                new(OpCodes.Div),
+                new(OpCodes.Bge_Un_S),
+            })
+            .FindNext(new CodeInstructionWrapper[]
+            { // quality = 4
+                new(OpCodes.Ldc_I4_4),
+                new(SpecialCodeInstructionCases.StLoc),
+                new(OpCodes.Br_S),
+            })
+            .Advance(1);
+
+            // and grab local
+            CodeInstruction qualityStLoc = helper.CurrentInstruction.Clone();
+            CodeInstruction qualityLdLoc = helper.CurrentInstruction.ToLdLoc();
+
+            // Grab the branch point so we can exit this block entirely
+            helper.Advance(1)
+            .StoreBranchDest()
+            .AdvanceToStoredLabel()
+            .GetLabels(out IList<Label>? qualityLabels, clear: true)
+            .Insert(new CodeInstruction[]
+            {
+                qualityLdLoc,
+                new(OpCodes.Ldarg_3), // HoeDirt soil
+                new(OpCodes.Call, typeof(CropHarvestTranspiler).StaticMethodNamed(nameof(GetQualityForJojaFert))),
+                qualityStLoc,
+            }, withLabels: qualityLabels);
+
+            Type cropPackData = AccessTools.TypeByName("DynamicGameAssets.PackData.CropPackData") ?? throw new MethodNotFoundException("DGA crop data not found");
+            Type harvestData = cropPackData.GetNestedType("HarvestedDropData") ?? throw new MethodNotFoundException("Harvested data not found!");
+
+            helper.FindNext(new CodeInstructionWrapper[]
+            { // data.MaximumHarvestedQuantity > 1
+                new(SpecialCodeInstructionCases.LdLoc),
+                new(OpCodes.Callvirt, harvestData.InstancePropertyNamed("MaximumHarvestedQuantity").GetGetMethod()),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Ble_S),
+            })
+            .Advance(3)
+            .StoreBranchDest() // Incrementer will be placed at the end of this block, store the destination to get there next.
+            .FindNext(new CodeInstructionWrapper[]
+            {// Advance into that block, find num = random2.Next(data.MininumHarvestedQuality + ...). This lets us grab the right local.
+                new(OpCodes.Add),
+                new(OpCodes.Call, typeof(Math).StaticMethodNamed(nameof(Math.Max), new[] { typeof(int), typeof(int) } )),
+                new(OpCodes.Callvirt, typeof(Random).InstanceMethodNamed(nameof(Random.Next), new[] { typeof(int), typeof(int) })),
+                new(SpecialCodeInstructionCases.StLoc),
+            })
+            .FindNext(new CodeInstructionWrapper[]
+            {
+                new(SpecialCodeInstructionCases.StLoc),
+            });
+
+            CodeInstruction numberToHarvestLdLoc = helper.CurrentInstruction.ToLdLoc();
+            CodeInstruction numberToHarvestStLoc = helper.CurrentInstruction.Clone();
+
+            // Advance out of that block.
+            helper.AdvanceToStoredLabel()
+            .GetLabels(out IList<Label>? numAdjustLabels, clear: true)
+            .Insert(new CodeInstruction[]
+            { // and insert our incrementer.
+                numberToHarvestLdLoc,
+                new(OpCodes.Ldarg_3),
+                new(OpCodes.Call, typeof(CropHarvestTranspiler).StaticMethodNamed(nameof(IncrementForBountiful))),
+                numberToHarvestStLoc,
+            }, withLabels: numAdjustLabels);
+
+            Type itemAbstraction = AccessTools.TypeByName("DynamicGameAssets.ItemAbstraction") ?? throw new MethodNotFoundException("Item Abstraction not found!");
+
+            helper.FindNext(new CodeInstructionWrapper[]
+            {
+                new(OpCodes.Call, itemAbstraction.InstanceMethodNamed("Create")),
+                new(SpecialCodeInstructionCases.StLoc, typeof(Item)),
+            })
+            .Advance(1)
+            .Insert(new CodeInstruction[]
+            {
+                new(OpCodes.Ldarg_3),
+                new(OpCodes.Call, typeof(CropHarvestTranspiler).StaticMethodNamed(nameof(MakeItemOrganic))),
             });
 
             // helper.Print();

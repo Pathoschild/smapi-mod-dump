@@ -1,6 +1,8 @@
 {
   "general.startup": "Починаємо...",
   "general.patchedModsWarning": "Слухняні дітки читають свої журнали перед сном, інакше жучина фея прийде до них вночі, щоб віднести до модової в'язниці.",
+  "general.pfmPatchDisabled": "Інтеграцію з модом PF вимкнено, але мод PF знайдено. Мод Better Beehouses може працювати не так, як очікувалося. Інтеграцію можна увімкнути в сурисуванні мода.",
+  "general.automatePatchDisabled": "Інтеграцію з модом Automate вимкнено, але мод Automate знайдено. Мод Better Beehouses може працювати не так, як очікувалося. Інтеграцію можна увімкнути в сурисуванні мода.",
   "general.removedPfmBeehouse": "PF мод вимкнено, поки встановлено мод Better Beehouses.",
   "config.title": "Better Beehouses",
   "config.daysToProduce.name": "Дні(в) для виготовлення",

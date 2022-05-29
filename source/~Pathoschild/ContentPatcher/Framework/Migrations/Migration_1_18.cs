@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Conditions;
 using ContentPatcher.Framework.ConfigModels;
+using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
 using StardewModdingAPI;
 
@@ -30,18 +29,18 @@ namespace ContentPatcher.Framework.Migrations
         public Migration_1_18()
             : base(new SemanticVersion(1, 18, 0))
         {
-            this.AddedTokens.AddMany(
+            this.AddedTokens = new InvariantSet(
                 ConditionType.I18n.ToString()
             );
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ContentConfig content, out string error)
+        public override bool TryMigrate(ContentConfig content, [NotNullWhen(false)] out string? error)
         {
             if (!base.TryMigrate(content, out error))
                 return false;
 
-            foreach (PatchConfig patch in content.Changes)
+            foreach (PatchConfig patch in content.Changes.WhereNotNull())
             {
                 // 1.18 adds 'TextOperations' field
                 if (patch.TextOperations.Any())

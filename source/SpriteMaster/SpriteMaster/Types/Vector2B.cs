@@ -18,8 +18,7 @@ namespace SpriteMaster.Types;
 
 [DebuggerDisplay("[{X}, {Y}]")]
 [StructLayout(LayoutKind.Sequential, Pack = sizeof(byte), Size = sizeof(byte))]
-struct Vector2B :
-	ICloneable,
+internal struct Vector2B :
 	IComparable,
 	IComparable<Vector2B>,
 	IComparable<bool>,
@@ -27,8 +26,8 @@ struct Vector2B :
 	IEquatable<Vector2B>,
 	IEquatable<bool>,
 	IEquatable<(bool, bool)> {
-	internal static readonly Vector2B True = new(Packed: All_Value);
-	internal static readonly Vector2B False = new(Packed: ZeroByte);
+	internal static readonly Vector2B True = new(packed: AllValue);
+	internal static readonly Vector2B False = new(packed: ZeroByte);
 
 	/*
 	// TODO : would an int be faster? Since it would be a native type?
@@ -38,69 +37,69 @@ struct Vector2B :
 
 	private const byte ZeroByte = 0;
 	private const byte OneByte = 1;
-	private const byte X_Bit = 0;
-	private const byte Y_Bit = 1;
-	private const byte X_Value = 1 << X_Bit;
-	private const byte Y_Value = 1 << Y_Bit;
-	private const byte All_Value = X_Value | Y_Value;
+	private const byte XBit = 0;
+	private const byte YBit = 1;
+	private const byte XValue = 1 << XBit;
+	private const byte YValue = 1 << YBit;
+	private const byte AllValue = XValue | YValue;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static byte GetX(bool Value) => (byte)(Value.ToByte() << X_Bit);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static byte GetX(bool value) => (byte)(value.ToByte() << XBit);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static byte GetY(bool Value) => (byte)(Value.ToByte() << Y_Bit);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static byte GetY(bool value) => (byte)(value.ToByte() << YBit);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	private static byte Get(bool X, bool Y) => (byte)(GetX(X) | GetY(Y));
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	private static byte Get(bool x, bool y) => (byte)(GetX(x) | GetY(y));
 
 	private byte Packed = 0;
 
 	internal bool X {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		readonly get => (Packed & X_Value) != ZeroByte;
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		set => Packed.SetBit(X_Bit, value);
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		readonly get => (Packed & XValue) != ZeroByte;
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		set => Packed.SetBit(XBit, value);
 	}
 	internal bool Y {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		readonly get => (Packed & Y_Value) != ZeroByte;
-		[MethodImpl(Runtime.MethodImpl.Hot)]
-		set => Packed.SetBit(Y_Bit, value);
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		readonly get => (Packed & YValue) != ZeroByte;
+		[MethodImpl(Runtime.MethodImpl.Inline)]
+		set => Packed.SetBit(YBit, value);
 	}
 
 	internal bool Width {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		readonly get => X;
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		set => X = value;
 	}
 	internal bool Height {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		readonly get => Y;
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		set => Y = value;
 	}
 
 	internal bool Negative {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		readonly get => X;
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		set => X = value;
 	}
 	internal bool Positive {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		readonly get => Y;
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		set => Y = value;
 	}
 
 	internal readonly bool None => Packed == ZeroByte;
 	internal readonly bool Any => Packed != ZeroByte;
-	internal readonly bool All => Packed == All_Value;
+	internal readonly bool All => Packed == AllValue;
 
 	internal readonly Vector2B Invert => (!X, !Y);
 
-	[MethodImpl(Runtime.MethodImpl.Hot), DebuggerStepThrough, DebuggerHidden()]
+	[MethodImpl(Runtime.MethodImpl.Inline), DebuggerStepThrough, DebuggerHidden]
 	private static int CheckIndex(int index) {
 #if DEBUG
 		if (index < 0 || index >= 2) {
@@ -111,76 +110,70 @@ struct Vector2B :
 	}
 
 	internal bool this[int index] {
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		readonly get => Packed.GetBit(CheckIndex(index));
-		[MethodImpl(Runtime.MethodImpl.Hot)]
+		[MethodImpl(Runtime.MethodImpl.Inline)]
 		set => Packed.SetBit(CheckIndex(index), value);
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2B(byte Packed) => this.Packed = Packed;
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Vector2B(byte packed) => Packed = packed;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2B From(byte Packed) => new(Packed: Packed);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2B From(byte packed) => new(packed: packed);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2B(bool X, bool Y) : this(Packed: Get(X, Y)) { }
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Vector2B(bool x, bool y) : this(packed: Get(x, y)) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2B From(bool X, bool Y) => new(X, Y);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2B From(bool x, bool y) => new(x, y);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2B(in (bool X, bool Y) Value) : this(Value.X, Value.Y) { }
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Vector2B((bool X, bool Y) value) : this(value.X, value.Y) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2B From(in (bool X, bool Y) Value) => new(Value.X, Value.Y);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2B From((bool X, bool Y) value) => new(value.X, value.Y);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2B(bool Value) : this(Value ? All_Value : ZeroByte) { }
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Vector2B(bool value) : this(value ? AllValue : ZeroByte) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2B From(bool Value) => new(Value: Value);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2B From(bool value) => new(value: value);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal Vector2B(Vector2B Vector) : this(Vector.Packed) { }
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal Vector2B(Vector2B vector) : this(vector.Packed) { }
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static Vector2B From(Vector2B Vector) => new(Vector: Vector);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static Vector2B From(Vector2B vector) => new(vector: vector);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal readonly Vector2B Clone() => this;
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public static implicit operator Vector2B((bool X, bool Y) vec) => new(vec.X, vec.Y);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	readonly object ICloneable.Clone() => this;
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public static implicit operator Vector2B(in (bool X, bool Y) vec) => new(vec.X, vec.Y);
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static implicit operator (bool X, bool Y)(Vector2B vec) => (vec.X, vec.Y);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2B operator &(Vector2B lhs, Vector2B rhs) => new((byte)(lhs.Packed & rhs.Packed));
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2B operator &(Vector2B lhs, bool rhs) => rhs ? lhs : False;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2B operator |(Vector2B lhs, Vector2B rhs) => new((byte)(lhs.Packed | rhs.Packed));
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2B operator |(Vector2B lhs, bool rhs) => rhs ? True : lhs;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2B operator ^(Vector2B lhs, Vector2B rhs) => new((byte)(lhs.Packed ^ rhs.Packed));
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public static Vector2B operator ^(Vector2B lhs, bool rhs) => new((byte)(lhs.Packed ^ (rhs ? OneByte : ZeroByte)));
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public override readonly string ToString() => $"[{X}, {Y}]";
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly int CompareTo(object? obj) => obj switch {
 		Vector2B vector => CompareTo(vector),
 		Tuple<bool, bool> vector => CompareTo(new Vector2B(vector.Item1, vector.Item2)),
@@ -189,24 +182,21 @@ struct Vector2B :
 		_ => throw new ArgumentException(Exceptions.BuildArgumentException(nameof(obj), obj))
 	};
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly int CompareTo(Vector2B other) => Packed.CompareTo(other.Packed);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly int CompareTo((bool, bool) other) => CompareTo((Vector2B)other);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly int CompareTo(bool other) => Packed.CompareTo(other ? OneByte : ZeroByte);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly bool Equals(Vector2B other) => Packed == other.Packed;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	public readonly bool Equals((bool, bool) other) => this.Equals((Vector2B)other);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	public readonly bool Equals((bool, bool) other) => Equals((Vector2B)other);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	public readonly bool Equals(bool other) => Packed == (other ? OneByte : ZeroByte);
-
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal readonly TypeCode GetTypeCode() => TypeCode.Object;
 }

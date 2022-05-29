@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,80 +20,79 @@ using StardewModdingAPI;
 
 using StardewValley;
 
-namespace Leclair.Stardew.Almanac.Crops {
-	public class ModProvider : ICropProvider {
+namespace Leclair.Stardew.Almanac.Crops;
 
-		public readonly IManifest Manifest;
+public class ModProvider : ICropProvider {
 
-		private Action CropCallback;
-		private Dictionary<string, CropInfo> Crops;
+	public readonly IManifest Manifest;
 
-		public ModProvider(IManifest manifest, int priority = 0) {
-			Manifest = manifest;
-			Priority = priority;
-			Crops = new();
-		}
+	private Action? CropCallback;
+	private readonly Dictionary<string, CropInfo> Crops;
 
-		public string Name => Manifest.Name;
+	public ModProvider(IManifest manifest, int priority = 0) {
+		Manifest = manifest;
+		Priority = priority;
+		Crops = new();
+	}
 
-		public int Priority { get; set; } = 0;
+	public string Name => Manifest.Name;
 
-		public void SetCallback(Action action) {
-			CropCallback = action;
-		}
+	public int Priority { get; set; } = 0;
 
-		public void ClearCrops() {
-			Crops.Clear();
-		}
+	public void SetCallback(Action? action) {
+		CropCallback = action;
+	}
 
-		public void RemoveCrop(string id) {
-			if (Crops.ContainsKey(id))
-				Crops.Remove(id);
-		}
+	public void ClearCrops() {
+		Crops.Clear();
+	}
 
-		public IEnumerable<CropInfo> GetCrops() {
-			CropCallback?.Invoke();
-			return Crops.Values;
-		}
+	public void RemoveCrop(string id) {
+		if (Crops.ContainsKey(id))
+			Crops.Remove(id);
+	}
 
-		public void AddCrop(
-			string id,
+	public IEnumerable<CropInfo> GetCrops() {
+		CropCallback?.Invoke();
+		return Crops.Values;
+	}
 
-			Item item,
-			string name,
-			SpriteInfo sprite,
+	public void AddCrop(
+		string id,
 
-			bool isTrellisCrop,
-			bool isGiantCrop,
-			SpriteInfo giantSprite,
-			Item[] seeds,
-			bool isPaddyCrop,
+		Item item,
+		string name,
+		SpriteInfo? sprite,
 
-			IEnumerable<int> phases,
-			IEnumerable<SpriteInfo> phaseSprites,
+		bool isTrellisCrop,
+		bool isGiantCrop,
+		SpriteInfo? giantSprite,
+		Item[]? seeds,
+		bool isPaddyCrop,
 
-			int regrow,
+		IEnumerable<int> phases,
+		IEnumerable<SpriteInfo?>? phaseSprites,
 
-			WorldDate start,
-			WorldDate end
-		) {
-			Crops[id] = new CropInfo(
-				id,
-				item,
-				name,
-				sprite,
-				isGiantCrop,
-				giantSprite,
-				seeds: seeds,
-				isTrellisCrop,
-				phases.ToArray(),
-				regrow,
-				isPaddyCrop,
-				phaseSprites.ToArray(),
-				start,
-				end
-			);
-		}
+		int regrow,
 
+		WorldDate start,
+		WorldDate end
+	) {
+		Crops[id] = new CropInfo(
+			Id: id,
+			Item: item,
+			Name: name,
+			Sprite: sprite,
+			IsTrellisCrop: isTrellisCrop,
+			IsGiantCrop: isGiantCrop,
+			GiantSprite: giantSprite,
+			Seeds: seeds,
+			Phases: phases.ToArray(),
+			PhaseSprites: phaseSprites?.ToArray(),
+			Regrow: regrow,
+			IsPaddyCrop: isPaddyCrop,
+			StartDate: start,
+			EndDate: end
+		);
 	}
 }

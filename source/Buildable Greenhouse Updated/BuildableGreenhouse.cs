@@ -21,7 +21,7 @@ namespace BuildableGreenhouse
         private static readonly BluePrint Blueprint = new("BuildableGreenhouse");
 
         public BuildableGreenhouseBuilding()
-            : base(BuildableGreenhouseBuilding.Blueprint, Vector2.Zero) { }
+            : base(Blueprint, Vector2.Zero) { }
 
         public BuildableGreenhouseBuilding(BluePrint blueprint, Vector2 tileLocation)
             : base(blueprint, tileLocation) { }
@@ -36,6 +36,9 @@ namespace BuildableGreenhouse
     public class BuildableGreenhouseLocation : GameLocation
     {
         public BuildableGreenhouseLocation()
-            : base("Maps\\BuildableGreenhouse", "BuildableGreenhouse") { }
+            : base("Maps\\Greenhouse", "BuildableGreenhouse")
+        { 
+            isGreenhouse.Value = true;
+        }
     }
 }

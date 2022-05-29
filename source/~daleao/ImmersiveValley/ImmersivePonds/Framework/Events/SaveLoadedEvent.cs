@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -42,10 +42,7 @@ internal class SaveLoadedEvent : IEvent
         Log.D("[Ponds] Unhooked SaveLoaded event.");
     }
 
-    /// <summary>
-    ///     Raised after loading a save (including the first day after creating a new save), or connecting to a
-    ///     multiplayer world.
-    /// </summary>
+    /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
     public void OnSaveLoaded(object sender, SaveLoadedEventArgs e)

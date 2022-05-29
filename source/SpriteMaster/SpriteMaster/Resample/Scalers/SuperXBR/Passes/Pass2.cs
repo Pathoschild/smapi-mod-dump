@@ -51,7 +51,6 @@ sealed class Pass2 : Pass {
 	};
 
 	// Pass-0 does not resize - it is a prefiltering pass
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal void Pass(ReadOnlySpan<Float4> sourceData, Span<Float4> target) {
 		var source = new Texture(this, sourceData, SourceSize);
 

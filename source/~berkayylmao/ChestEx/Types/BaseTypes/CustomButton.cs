@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -43,25 +43,25 @@ using StardewValley;
 namespace ChestEx.Types.BaseTypes {
   public class CustomButton : CustomClickableComponent {
     // Private:
-  #region Private
+    #region Private
 
     private Action onClickHandler { get; }
-    private String text           { get; }
+    private String text { get; }
 
-  #endregion
+    #endregion
 
     // Protected:
-  #region Protected
+    #region Protected
 
     protected Vector2 mTextPosition { get; set; }
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -88,28 +88,28 @@ namespace ChestEx.Types.BaseTypes {
       if (inputState.mButton == SButton.MouseLeft) this.onClickHandler();
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public CustomButton(Rectangle bounds, Colours colours, String text, String hoverText,
-                        Action    onClickHandler)
+                        Action onClickHandler)
       : base(bounds, colours, hoverText) {
       this.onClickHandler = onClickHandler;
-      this.text           = text;
+      this.text = text;
 
-      Vector2 text_size            = Game1.smallFont.MeasureString(text);
+      Vector2 text_size = Game1.smallFont.MeasureString(text);
       if (text == "+") text_size.Y = 26.0f;
       this.mTextPosition = new Vector2(this.mBounds.Center.X - text_size.X / 2.0f, this.mBounds.Center.Y - text_size.Y / 2.0f);
     }
 
     public CustomButton(Rectangle bounds, Color backgroundColour, String text, String hoverText,
-                        Action    onClickHandler)
+                        Action onClickHandler)
       : this(bounds, Colours.GenerateFrom(backgroundColour), text, hoverText, onClickHandler) { }
 
-  #endregion
+    #endregion
   }
 }

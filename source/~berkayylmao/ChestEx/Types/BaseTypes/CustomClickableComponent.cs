@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -43,21 +43,21 @@ namespace ChestEx.Types.BaseTypes {
   public class CustomClickableComponent : ClickableComponent,
                                           ICustomComponent {
     // Private:
-  #region Private
+    #region Private
 
     private Single baseScale { get; } = 1.0f;
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
-    public Rectangle              mBounds    => this.bounds;
-    public ICustomComponent.IData mData      { get; }
-    public Boolean                mIsVisible { get; private set; } = true;
+    public Rectangle mBounds => this.bounds;
+    public ICustomComponent.IData mData { get; }
+    public Boolean mIsVisible { get; private set; } = true;
 
     // Virtuals:
-  #region Virtuals
+    #region Virtuals
 
     /// <inheritdoc/>
     public virtual void SetEnabled(Boolean isEnabled) { this.mData.SetEnabled(isEnabled); }
@@ -84,18 +84,18 @@ namespace ChestEx.Types.BaseTypes {
       this.scale = this.mBounds.Contains(InputStateEx.gCursorPos) ? Math.Min(this.scale + 0.01f, this.baseScale + 0.1f) : Math.Max(this.scale - 0.01f, this.baseScale);
     }
 
-    public virtual void OnButtonPressed(InputStateEx      inputState)                     { }
-    public virtual void OnButtonReleased(InputStateEx     inputState)                     { }
-    public virtual void OnCursorMoved(Vector2             cursorPos)                      { }
-    public virtual void OnMouseClick(InputStateEx         inputState)                     { }
+    public virtual void OnButtonPressed(InputStateEx inputState) { }
+    public virtual void OnButtonReleased(InputStateEx inputState) { }
+    public virtual void OnCursorMoved(Vector2 cursorPos) { }
+    public virtual void OnMouseClick(InputStateEx inputState) { }
     public virtual void OnGameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) { }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public CustomClickableComponent(Rectangle bounds, Colours colours, String hoverText)
       : base(bounds, String.Empty, String.Empty) {
@@ -108,10 +108,10 @@ namespace ChestEx.Types.BaseTypes {
     public CustomClickableComponent(Rectangle bounds)
       : this(bounds, Colours.gDefault) { }
 
-  #endregion
+    #endregion
 
     // IDisposable:
-  #region IDisposable
+    #region IDisposable
 
     /// <inheritdoc path="//*[not(self::remarks)]"/>
     /// <remarks>
@@ -124,6 +124,6 @@ namespace ChestEx.Types.BaseTypes {
       this.SetVisible(false);
     }
 
-  #endregion
+    #endregion
   }
 }

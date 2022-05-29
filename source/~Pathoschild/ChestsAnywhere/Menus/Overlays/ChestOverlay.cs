@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Pathoschild.Stardew.ChestsAnywhere.Framework;
@@ -41,7 +39,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays
         private readonly InventoryMenu.highlightThisItem DefaultInventoryHighlighter;
 
         /// <summary>The button which sorts the player inventory.</summary>
-        private ClickableTextureComponent SortInventoryButton;
+        private ClickableTextureComponent? SortInventoryButton;
 
 
         /*********

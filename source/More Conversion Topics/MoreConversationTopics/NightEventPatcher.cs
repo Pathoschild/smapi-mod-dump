@@ -12,7 +12,6 @@ using System;
 using HarmonyLib;
 using Netcode;
 using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Events;
 
@@ -86,13 +85,13 @@ namespace MoreConversationTopics
             // Decide what to do based on the type of sound in the night event
             try
             {
-                switch ((int)___behavior)
+                switch (___behavior.Value)
                 {
                     // If the sound in the night event is the UFO landing, add UFO landing conversation topic
                     case 0:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("UFOLandedOnFarm", Config.UFOLandedDuration);
+                            MCTHelperFunctions.AddOrExtendCT("UFOLandedOnFarm", Config.UFOLandedDuration);
                         }
                         catch (Exception ex)
                         {
@@ -103,7 +102,7 @@ namespace MoreConversationTopics
                     case 1:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("meteoriteLandedOnFarm", Config.MeteoriteLandedDuration);
+                            MCTHelperFunctions.AddOrExtendCT("meteoriteLandedOnFarm", Config.MeteoriteLandedDuration);
                         }
                         catch (Exception ex)
                         {
@@ -114,7 +113,7 @@ namespace MoreConversationTopics
                     case 3:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("owlStatueLandedOnFarm", Config.OwlStatueDuration);
+                            MCTHelperFunctions.AddOrExtendCT("owlStatueLandedOnFarm", Config.OwlStatueDuration);
                         }
                         catch (Exception ex)
                         {
@@ -125,7 +124,7 @@ namespace MoreConversationTopics
                     case 4:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("railroadEarthquake", Config.MeteoriteLandedDuration);
+                            MCTHelperFunctions.AddOrExtendCT("railroadEarthquake", Config.MeteoriteLandedDuration);
                         }
                         catch (Exception ex)
                         {
@@ -153,24 +152,24 @@ namespace MoreConversationTopics
             // Add the right witch event conversation topics depending on the witch visit
             try
             {
-                // If the witch is visiting a Slime Hutch, add the witch slime hut conversation topic
-                if (___targetBuilding.buildingType.Equals("Slime Hutch"))
-                {
-                    MCTHelperFunctions.AddMaybePreExistingCT("witchSlimeHutVisit", Config.WitchVisitDuration);
-                }
-                // Otherwise, if the witch is visiting a coop, add one of the witch coop conversation topics
-                else if (___targetBuilding is Coop)
+                // If the witch is visiting a coop, add one of the witch coop conversation topics
+                if (___targetBuilding is Coop)
                 {
                     // If the witch is a golden witch (post-perfection coop visit), add the golden witch conversation topic
                     if (__instance.goldenWitch)
                     {
-                        MCTHelperFunctions.AddMaybePreExistingCT("goldenWitchCoopVisit", Config.WitchVisitDuration);
+                        MCTHelperFunctions.AddOrExtendCT("goldenWitchCoopVisit", Config.WitchVisitDuration);
                     }
                     // Otherwise add the normal witch coop visit conversation topic
                     else
                     {
-                        MCTHelperFunctions.AddMaybePreExistingCT("witchCoopVisit", Config.WitchVisitDuration);
+                        MCTHelperFunctions.AddOrExtendCT("witchCoopVisit", Config.WitchVisitDuration);
                     }
+                }
+                // Otherwise, if the witch is visiting a Slime Hutch, add the witch slime hut conversation topic
+                else if (___targetBuilding.buildingType.Equals("Slime Hutch"))
+                {
+                    MCTHelperFunctions.AddOrExtendCT("witchSlimeHutVisit", Config.WitchVisitDuration);
                 }
             }
             catch (Exception ex)
@@ -191,7 +190,7 @@ namespace MoreConversationTopics
             // Add the fairy event conversation topic
             try
             {
-                MCTHelperFunctions.AddMaybePreExistingCT("fairyFarmVisit", Config.FairyVisitDuration);
+                MCTHelperFunctions.AddOrExtendCT("fairyFarmVisit", Config.FairyVisitDuration);
             }
             catch (Exception ex)
             {

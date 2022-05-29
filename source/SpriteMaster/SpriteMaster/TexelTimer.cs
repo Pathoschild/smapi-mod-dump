@@ -13,21 +13,20 @@ using System;
 using System.Runtime.CompilerServices;
 
 namespace SpriteMaster;
-sealed class TexelTimer {
+
+internal sealed class TexelTimer {
 	private long TotalDuration = 0;
-	private long TotalTexels;
+	private long TotalTexels = 0;
 
 	private double DurationPerTexel => (TotalTexels == 0) ? 0.0 : (double)TotalDuration / TotalTexels;
-
-	private const int MaxDurationCounts = 50;
 
 	internal void Reset() {
 		TotalDuration = 0;
 		TotalTexels = 0;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal void Add(int texels, in TimeSpan duration) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal void Add(int texels, TimeSpan duration) {
 		// Avoid a division by zero
 		if (texels == 0) {
 			return;
@@ -40,12 +39,12 @@ sealed class TexelTimer {
 		//DurationPerTexel += texelDuration / MaxDurationCounts;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal void Add(TextureAction action, in TimeSpan duration) => Add(action.Size, duration);
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal void Add(TextureAction action, TimeSpan duration) => Add(action.Size, duration);
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal TimeSpan Estimate(int texels) => TimeSpan.FromTicks((DurationPerTexel * texels).NextLong());
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal TimeSpan Estimate(TextureAction action) => Estimate(action.Size);
 }

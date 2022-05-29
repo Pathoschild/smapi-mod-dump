@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using Pathoschild.Stardew.ChestsAnywhere.Menus.Overlays;
 
@@ -22,7 +20,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
         ** Fields
         *********/
         /// <summary>Get the current chest UI overlay, if any.</summary>
-        private readonly Func<IStorageOverlay> GetOverlay;
+        private readonly Func<IStorageOverlay?> GetOverlay;
 
 
         /*********
@@ -30,7 +28,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="getOverlay">Get the current chest UI overlay, if any.</param>
-        internal ChestsAnywhereApi(Func<IStorageOverlay> getOverlay)
+        internal ChestsAnywhereApi(Func<IStorageOverlay?> getOverlay)
         {
             this.GetOverlay = getOverlay;
         }

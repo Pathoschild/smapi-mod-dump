@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<AssemblyName>WaterFlow</AssemblyName>
+		<RootNamespace>WaterFlow</RootNamespace>
+		<Version>1.0.0</Version>
+		<TargetFramework>net5</TargetFramework>
+		<Platforms>AnyCPU</Platforms>
+		<PlatformTarget>AnyCPU</PlatformTarget>
+		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+	</ItemGroup>
+
+</Project>

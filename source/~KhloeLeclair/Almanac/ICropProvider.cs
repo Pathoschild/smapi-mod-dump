@@ -8,16 +8,18 @@
 **
 *************************************************/
 
+#nullable enable
+
 using System.Collections.Generic;
 
-namespace Leclair.Stardew.Almanac {
-	public interface ICropProvider {
+namespace Leclair.Stardew.Almanac;
 
-		string Name { get; }
+public interface ICropProvider {
 
-		int Priority { get; }
+	string Name { get; }
 
-		IEnumerable<CropInfo> GetCrops();
+	int Priority { get; }
 
-	}
+	IEnumerable<CropInfo>? GetCrops();
+
 }

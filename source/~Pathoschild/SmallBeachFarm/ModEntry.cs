@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
@@ -46,10 +45,10 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         private readonly string TilesheetsPath = Path.Combine("assets", "tilesheets");
 
         /// <summary>The mod configuration.</summary>
-        private ModConfig Config;
+        private ModConfig Config = null!; // set in Entry
 
         /// <summary>The mod's hardcoded data.</summary>
-        private ModData Data;
+        private ModData Data = null!; // set in Entry
 
         /// <summary>A fake asset key prefix from which to load tilesheets.</summary>
         private string FakeAssetPrefix => PathUtilities.NormalizeAssetName($"Mods/{this.ModManifest.UniqueID}");
@@ -63,11 +62,15 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         {
             I18n.Init(helper.Translation);
 
+            // read config
+            this.Config = this.Helper.ReadConfig<ModConfig>();
+
             // read data
-            this.Data = this.Helper.Data.ReadJsonFile<ModData>("assets/data.json");
+            ModData? data = this.Helper.Data.ReadJsonFile<ModData>("assets/data.json");
+            this.Data = data ?? new ModData();
             {
                 string dataPath = Path.Combine(this.Helper.DirectoryPath, "assets", "data.json");
-                if (this.Data == null || !File.Exists(dataPath))
+                if (data == null || !File.Exists(dataPath))
                 {
                     this.Monitor.Log("The mod's 'assets/data.json' file is missing, so this mod can't work correctly. Please reinstall the mod to fix this.", LogLevel.Error);
                     return;
@@ -75,9 +78,6 @@ namespace Pathoschild.Stardew.SmallBeachFarm
                 if (CommonHelper.GetFileHash(dataPath) != ModEntry.DataFileHash)
                     this.Monitor.Log("Found edits to 'assets/data.json'.");
             }
-
-            // read config
-            this.Config = this.Helper.ReadConfig<ModConfig>();
 
             // hook events
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
@@ -88,10 +88,14 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             // hook Harmony patch
             HarmonyPatcher.Apply(this,
                 new FarmPatcher(
-                    this.Monitor,
+                    monitor: this.Monitor,
                     config: this.Config,
                     isSmallBeachFarm: location => this.IsSmallBeachFarm(location, out _),
                     getFishType: this.GetFishType
+                ),
+                new CharacterCustomizationPatcher(
+                    config: this.Config,
+                    farmTypeId: this.ModManifest.UniqueID
                 )
             );
         }
@@ -103,7 +107,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <inheritdoc cref="IContentEvents.AssetRequested"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
         {
             // add farm type
             if (e.NameWithoutLocale.IsEquivalentTo("Data/AdditionalFarms"))
@@ -138,14 +142,14 @@ namespace Pathoschild.Stardew.SmallBeachFarm
                     {
                         // load map
                         Map map = this.Helper.ModContent.Load<Map>("assets/farm.tmx");
+                        IAssetDataForMap editor = this.Helper.ModContent.GetPatchHelper(map).AsMap();
+                        TileSheet outdoorTilesheet = map.GetTileSheet("untitled tile sheet");
 
                         // add islands
                         if (this.Config.EnableIslands)
                         {
                             Map islands = this.Helper.ModContent.Load<Map>("assets/islands.tmx");
-                            this.Helper.ModContent.GetPatchHelper(map)
-                                .AsMap()
-                                .PatchMap(source: islands, targetArea: new Rectangle(0, 26, 56, 49));
+                            editor.PatchMap(source: islands, targetArea: new Rectangle(0, 26, 56, 49));
                         }
 
                         // add campfire
@@ -153,7 +157,18 @@ namespace Pathoschild.Stardew.SmallBeachFarm
                         {
                             var buildingsLayer = map.GetLayer("Buildings");
                             buildingsLayer.Tiles[65, 23] = new StaticTile(buildingsLayer, map.GetTileSheet("zbeach"), BlendMode.Alpha, 157); // driftwood pile
-                            buildingsLayer.Tiles[64, 22] = new StaticTile(buildingsLayer, map.GetTileSheet("untitled tile sheet"), BlendMode.Alpha, 242); // campfire
+                            buildingsLayer.Tiles[64, 22] = new StaticTile(buildingsLayer, outdoorTilesheet, BlendMode.Alpha, 242); // campfire
+                        }
+
+                        // remove shipping bin path
+                        if (!this.Config.ShippingBinPath)
+                        {
+                            var backLayer = map.GetLayer("Back");
+                            for (int x = 71; x <= 72; x++)
+                            {
+                                for (int y = 14; y <= 15; y++)
+                                    backLayer.Tiles[x, y] = new StaticTile(backLayer, outdoorTilesheet, BlendMode.Alpha, 175); // grass tile
+                            }
                         }
 
                         // apply tilesheet recolors
@@ -176,12 +191,12 @@ namespace Pathoschild.Stardew.SmallBeachFarm
                 e.LoadFrom(
                     () =>
                     {
-                        string filename = Path.GetFileName(e.NameWithoutLocale.Name)!;
+                        string filename = Path.GetFileName(e.NameWithoutLocale.Name);
                         if (!Path.HasExtension(filename))
                             filename += ".png";
 
                         // get relative path to load
-                        string relativePath = new DirectoryInfo(this.GetFullPath(this.TilesheetsPath))
+                        string? relativePath = new DirectoryInfo(this.GetFullPath(this.TilesheetsPath))
                             .EnumerateDirectories()
                             .FirstOrDefault(p => p.Name != "_default" && this.Helper.ModRegistry.IsLoaded(p.Name))
                             ?.Name;
@@ -199,7 +214,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <inheritdoc cref="IGameLoopEvents.GameLaunched"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
             // add Generic Mod Config Menu integration
             new GenericModConfigMenuIntegrationForSmallBeachFarm(
@@ -219,7 +234,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <inheritdoc cref="IGameLoopEvents.SaveLoaded"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
         {
             // when the player first loads the save, fix the broken TV if needed
             if (Context.IsMainPlayer && Game1.currentLocation is FarmHouse farmhouse && Game1.dayOfMonth == 1 && Game1.currentSeason == "spring" && Game1.year == 1)
@@ -239,9 +254,9 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <inheritdoc cref="IGameLoopEvents.DayEnding"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void DayEnding(object sender, DayEndingEventArgs e)
+        private void DayEnding(object? sender, DayEndingEventArgs e)
         {
-            if (!this.IsSmallBeachFarm(Game1.getFarm(), out Farm farm))
+            if (!this.IsSmallBeachFarm(Game1.getFarm(), out Farm? farm))
                 return;
 
             // update ocean crab pots before the game does
@@ -263,7 +278,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
         /// <summary>Get whether the given location is the Small Beach Farm.</summary>
         /// <param name="location">The location to check.</param>
         /// <param name="farm">The farm instance.</param>
-        private bool IsSmallBeachFarm(GameLocation location, out Farm farm)
+        private bool IsSmallBeachFarm(GameLocation? location, [NotNullWhen(true)] out Farm? farm)
         {
             if (Game1.whichModFarm?.ID == this.ModManifest.UniqueID && location is Farm { Name: "Farm" } farmInstance)
             {
@@ -294,7 +309,7 @@ namespace Pathoschild.Stardew.SmallBeachFarm
             }
 
             // ocean or river
-            string tilesheetId = farm.map
+            string? tilesheetId = farm.map
                 ?.GetLayer("Back")
                 ?.PickTile(new Location(x * Game1.tileSize, y * Game1.tileSize), Game1.viewport.Size)
                 ?.TileSheet

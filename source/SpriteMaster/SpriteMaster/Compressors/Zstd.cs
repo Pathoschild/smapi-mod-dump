@@ -17,17 +17,17 @@ using static SpriteMaster.Runtime;
 namespace SpriteMaster.Compressors;
 // TODO : Implement a continual training dictionary so each stream doesn't require its own dictionary for in-memory compression.
 //[HarmonizeFinalizeCatcher<ZstdNet.Compressor, DllNotFoundException>(critical: false)]
-static class Zstd {
+internal static class Zstd {
 	private sealed class Compressor : IDisposable {
 		private readonly ZstdNet.Compressor Delegator;
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal Compressor() : this(Options.CompressionDefault) { }
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal Compressor(ZstdNet.CompressionOptions options) => Delegator = new(options);
 
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		public void Dispose() {
 			try {
 				Delegator.Dispose();
@@ -38,37 +38,37 @@ static class Zstd {
 			}
 		}
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal byte[] Wrap(byte[] data) => Delegator.Wrap(data);
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal byte[] Wrap(ReadOnlySpan<byte> data) => Delegator.Wrap(data);
 	}
 
 	private sealed class Decompressor : IDisposable {
 		private readonly ZstdNet.Decompressor Delegate;
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal Decompressor() : this(Options.DecompressionDefault) { }
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal Decompressor(ZstdNet.DecompressionOptions options) => Delegate = new(options);
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		public void Dispose() => Delegate.Dispose();
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal byte[] Unwrap(byte[] data) => Delegate.Unwrap(data);
 
-		[MethodImpl(MethodImpl.Hot)]
+		[MethodImpl(MethodImpl.Inline)]
 		internal byte[] Unwrap(byte[] data, int size) => Delegate.Unwrap(data, size);
 	}
 
-	private static bool? IsSupported_ = null;
+	private static bool? IsSupportedInternal = null;
 	internal static bool IsSupported {
 		[MethodImpl(MethodImpl.RunOnce)]
 		get {
-			if (IsSupported_.HasValue) {
-				return IsSupported_.Value;
+			if (IsSupportedInternal.HasValue) {
+				return IsSupportedInternal.Value;
 			}
 
 			try {
@@ -79,18 +79,18 @@ static class Zstd {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
 				Debug.Info("Zstd Compression is supported".Pastel(DrawingColor.LightGreen));
-				IsSupported_ = true;
+				IsSupportedInternal = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.Info($"Zstd Compression not supported".Pastel(DrawingColor.LightGreen));
-				IsSupported_ = false;
+				Debug.Info("Zstd Compression not supported".Pastel(DrawingColor.LightGreen));
+				IsSupportedInternal = false;
 			}
 			catch (Exception ex) {
 				Debug.Info($"Zstd Compression not supported: '{ex.GetType().Name} {ex.Message}'".Pastel(DrawingColor.Red));
-				IsSupported_ = false;
+				IsSupportedInternal = false;
 			}
 
-			return IsSupported_.Value;
+			return IsSupportedInternal.Value;
 		}
 	}
 
@@ -99,45 +99,37 @@ static class Zstd {
 		internal static readonly ZstdNet.DecompressionOptions DecompressionDefault = new(null);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	private static Compressor GetEncoder() => new(Options.CompressionDefault);
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	private static Decompressor GetDecoder() => new(Options.DecompressionDefault);
 
 	[MethodImpl(MethodImpl.RunOnce)]
 	private static byte[] CompressTest(byte[] data) {
-		Compressor? encoder = null;
-		try {
-			using (encoder = GetEncoder()) {
-				return encoder.Wrap(data);
-			}
-		}
-		catch (DllNotFoundException) when (encoder is not null) {
-			GC.SuppressFinalize(encoder);
-			throw;
-		}
+		using var encoder = GetEncoder();
+		return encoder.Wrap(data);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static byte[] Compress(byte[] data) {
 		using var encoder = GetEncoder();
 		return encoder.Wrap(data);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static byte[] Compress(ReadOnlySpan<byte> data) {
 		using var encoder = GetEncoder();
 		return encoder.Wrap(data);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static byte[] Decompress(byte[] data) {
 		using var decoder = GetDecoder();
 		return decoder.Unwrap(data);
 	}
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static byte[] Decompress(byte[] data, int size) {
 		using var decoder = GetDecoder();
 		return decoder.Unwrap(data, size);

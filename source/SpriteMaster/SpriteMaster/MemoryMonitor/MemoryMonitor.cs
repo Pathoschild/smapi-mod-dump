@@ -17,7 +17,7 @@ using System.Threading;
 
 namespace SpriteMaster;
 
-class MemoryMonitor {
+internal class MemoryMonitor {
 	private readonly Thread MemoryPressureThread;
 	private readonly Thread GarbageCollectThread;
 	private readonly object CollectLock = new();
@@ -45,10 +45,10 @@ class MemoryMonitor {
 		}
 	}
 
-	internal void TriggerGC() {
+	internal void TriggerGarbageCollection() {
 		lock (CollectLock) {
 			Garbage.Collect(compact: true, blocking: true, background: false);
-			DrawState.TriggerGC.Set(true);
+			DrawState.TriggerCollection.Set(true);
 		}
 	}
 
@@ -57,17 +57,17 @@ class MemoryMonitor {
 			Garbage.Collect(compact: true, blocking: true, background: false);
 			ResidentCache.Purge();
 			Garbage.Collect(compact: true, blocking: true, background: false);
-			DrawState.TriggerGC.Set(true);
+			DrawState.TriggerCollection.Set(true);
 		}
 	}
 
 	private void MemoryPressureLoop() {
 		for (; ; ) {
-			if (DrawState.TriggerGC && DrawState.TriggerGC.Wait()) {
+			if (DrawState.TriggerCollection && DrawState.TriggerCollection.Wait()) {
 				continue;
 			}
 
-			lock (CollectLock!) {
+			lock (CollectLock) {
 				try {
 					using var _ = new MemoryFailPoint(Config.Garbage.RequiredFreeMemory);
 				}
@@ -75,7 +75,7 @@ class MemoryMonitor {
 					Debug.Warning($"Less than {(Config.Garbage.RequiredFreeMemory * 1024 * 1024).AsDataSize(decimals: 0)} available for block allocation, forcing full garbage collection");
 					ResidentCache.Purge();
 					SuspendedSpriteCache.Purge();
-					DrawState.TriggerGC.Set(true);
+					DrawState.TriggerCollection.Set(true);
 					Thread.Sleep(10000);
 				}
 			}
@@ -92,19 +92,19 @@ class MemoryMonitor {
 					Thread.Sleep(128);
 					continue;
 				}
-				lock (CollectLock!) {
-					if (DrawState.TriggerGC && DrawState.TriggerGC.Wait()) {
+				lock (CollectLock) {
+					if (DrawState.TriggerCollection && DrawState.TriggerCollection.Wait()) {
 						continue;
 					}
 
 					ResidentCache.Purge();
-					DrawState.TriggerGC.Set(true);
+					DrawState.TriggerCollection.Set(true);
 					// TODO : Do other cleanup attempts here.
 				}
 			}
 		}
 		catch {
-
+			// ignored
 		}
 	}
 }

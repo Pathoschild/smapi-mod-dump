@@ -41,7 +41,7 @@
         "Width": "16",
         "Height": "32"
       },
-      "Update": "OnLocationChange"
+      "Update": "OnDayStart,OnLocationChange,OnTimeChange"
     },
     {
       "LogName": "Test AT Tool Modification",

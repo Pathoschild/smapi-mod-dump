@@ -14,7 +14,6 @@ using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 using StardewValley;
 using TehPers.Core.Api.Items;
-using TehPers.Core.Api.Json;
 using TehPers.FishingOverhaul.Api.Extensions;
 using SObject = StardewValley.Object;
 
@@ -25,7 +24,6 @@ namespace TehPers.FishingOverhaul.Api.Content
     /// </summary>
     /// <param name="AvailabilityInfo">The availability information.</param>
     /// <param name="ItemKeys">The possible namespaced keys for the loot. The item key is chosen randomly.</param>
-    [JsonDescribe]
     public record TreasureEntry(
         AvailabilityInfo AvailabilityInfo,
         [property: JsonRequired]

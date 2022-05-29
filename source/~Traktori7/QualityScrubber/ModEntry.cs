@@ -69,7 +69,7 @@ namespace QualityScrubber
 
 				objects.TryGetValue(e.Cursor.GrabTile, out SObject machine);
 
-				if (machine != null && machine.Name == qualityScrubberType)
+				if (machine is not null && machine.Name == qualityScrubberType)
 				{
 					// See if the machine accepts the item, suppress the input to prevent the eating menu from opening
 					if (controller!.CanProcess(Game1.player.ActiveObject, machine))

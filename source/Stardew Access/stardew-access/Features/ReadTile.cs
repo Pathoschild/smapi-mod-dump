@@ -16,34 +16,80 @@ namespace stardew_access.Features
 {
     public class ReadTile
     {
-        public static bool isReadingTile = false;
-        public static Vector2 prevTile;
+        private bool isBusy; // To pause execution of run method between fixed intervals
+        private int delay; // Length of each interval (in ms)
+        private bool shouldPause; // To pause the execution
+        private Vector2 prevTile;
 
         public ReadTile()
         {
-            isReadingTile = false;
+            isBusy = false;
+            delay = 100;
         }
 
-        public static void run(bool manuallyTriggered = false, bool playersPosition = false)
+        public void update()
+        {
+            if (this.isBusy)
+                return;
+
+            if (this.shouldPause)
+                return;
+
+            if (!MainClass.Config.ReadTile)
+                return;
+
+            this.isBusy = true;
+            this.run();
+            Task.Delay(delay).ContinueWith(_ => { this.isBusy = false; });
+        }
+
+        /// <summary>
+        /// Pauses the feature for the provided time.
+        /// </summary>
+        /// <param name="time">The amount of time we want to pause the execution (in ms).<br/>Default is 2500 (2.5s).</param>
+        public void pauseUntil(int time = 2500)
+        {
+            this.shouldPause = true;
+            Task.Delay(time).ContinueWith(_ => { this.shouldPause = false; });
+        }
+
+        /// <summary>
+        /// Pauses the feature
+        /// </summary>
+        public void pause()
+        {
+            this.shouldPause = true;
+        }
+
+        /// <summary>
+        /// Resumes the feature
+        /// </summary>
+        public void resume()
+        {
+            this.shouldPause = false;
+        }
+
+        public void run(bool manuallyTriggered = false, bool playersPosition = false)
         {
             try
             {
                 Vector2 tile;
-                int x, y;
+
                 #region Get Tile
+                int x, y;
                 if (!playersPosition)
                 {
                     // Grab tile
-                    tile = CurrentPlayer.getNextTile();
+                    tile = CurrentPlayer.FacingTile;
                 }
                 else
                 {
                     // Player's standing tile
-                    tile = CurrentPlayer.getPosition();
+                    tile = CurrentPlayer.Position;
                 }
-                #endregion
                 x = (int)tile.X;
                 y = (int)tile.Y;
+                #endregion
 
                 if (Context.IsPlayerFree)
                 {
@@ -55,15 +101,15 @@ namespace stardew_access.Features
 
                     bool isColliding = TileInfo.isCollidingAtTile(x, y);
 
-                    string? toSpeak = TileInfo.getNameAtTile(tile);
+                    (string? name, string? category) info = TileInfo.getNameWithCategoryNameAtTile(tile);
 
                     #region Narrate toSpeak
-                    if (toSpeak != null)
+                    if (info.name != null)
                         if (MainClass.ScreenReader != null)
                             if (manuallyTriggered)
-                                MainClass.ScreenReader.Say(toSpeak, true);
+                                MainClass.ScreenReader.Say($"{info.name}, Category: {info.category}", true);
                             else
-                                MainClass.ScreenReader.SayWithTileQuery(toSpeak, x, y, true);
+                                MainClass.ScreenReader.SayWithTileQuery(info.name, x, y, true);
                     #endregion
 
                     #region Play colliding sound effect

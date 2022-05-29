@@ -11,14 +11,12 @@
 using System.Collections.Immutable;
 using System.Linq;
 using TehPers.Core.Api.Items;
-using TehPers.Core.Api.Json;
 
 namespace TehPers.FishingOverhaul.Api.Content
 {
     /// <summary>
     /// Actions to be executed on catch.
     /// </summary>
-    [JsonDescribe]
     public record CatchActions
     {
         /// <summary>

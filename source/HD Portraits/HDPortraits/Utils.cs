@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace HDPortraits
             ModEntry.monitor.Log($"Attempting to load asset from {path}.");
             try
             {
-                value = ModEntry.helper.Content.Load<T>(path, ContentSource.GameContent);
+                value = ModEntry.helper.GameContent.Load<T>(path);
                 return true;
             } catch(Exception e)
             {
@@ -49,6 +50,15 @@ namespace HDPortraits
                 value = default;
                 return false;
             }
+        }
+
+        public static string WithoutPath(this IAssetName name, string path)
+        {
+            if (!name.StartsWith(path, false))
+                return null;
+
+            int count = PathUtilities.GetSegments(path).Length;
+            return string.Join(PathUtilities.PreferredAssetSeparator, PathUtilities.GetSegments(name.ToString()).Skip(count));
         }
     }
 }

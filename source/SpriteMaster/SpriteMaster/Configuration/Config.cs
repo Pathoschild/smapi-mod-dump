@@ -12,13 +12,11 @@ global using SMConfig = SpriteMaster.Configuration.Config;
 using LinqFasterer;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Extensions;
-using SpriteMaster.Resample;
 using SpriteMaster.Types;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Runtime;
 using System.Text.RegularExpressions;
 using TeximpNet.Compression;
@@ -27,8 +25,8 @@ using Root = SpriteMaster;
 
 namespace SpriteMaster.Configuration;
 
-static class Config {
-	internal static readonly string ModuleName = typeof(SMConfig).Namespace?.Split('.')?.ElementAtOrDefaultF(0) ?? "SpriteMaster";
+internal static class Config {
+	internal static readonly string ModuleName = typeof(SMConfig).Namespace?.Split('.').ElementAtOrDefaultF(0) ?? "SpriteMaster";
 
 	[Attributes.Ignore]
 	internal static string Path { get; private set; } = null!;
@@ -45,16 +43,6 @@ static class Config {
 		false;
 #endif
 	internal const bool SkipIntro = IgnoreConfig;
-
-	[Attributes.Ignore]
-	internal static readonly string CurrentVersion = typeof(SMConfig).Assembly.GetCustomAttribute<FullVersionAttribute>()?.Value?.Split('-', 2)?.ElementAtOrDefaultF(0) ??
-		throw new BadImageFormatException($"Could not extract version from assembly {typeof(SMConfig).Assembly.FullName ?? typeof(SMConfig).Assembly.ToString()}");
-
-	[Attributes.Ignore]
-	internal static readonly Version AssemblyVersionObj = typeof(SMConfig).Assembly.GetName().Version ??
-		throw new BadImageFormatException($"Could not extract version from assembly {typeof(SMConfig).Assembly.FullName ?? typeof(SMConfig).Assembly.ToString()}");
-	[Attributes.Ignore]
-	internal static readonly string AssemblyVersion = AssemblyVersionObj.ToString();
 
 	private enum BuildType {
 		Alpha,
@@ -87,7 +75,7 @@ static class Config {
 	[Attributes.GMCMHidden]
 	internal static string ConfigVersion = "";
 	[Attributes.Ignore]
-	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 13, 0, 0, BuildType.Final, 0);
+	internal static string ClearConfigBefore = GenerateAssemblyVersionString(0, 14, 0, 0, BuildType.Final, 0);
 
 	[Attributes.Ignore]
 	internal static bool ForcedDisable = false;
@@ -95,7 +83,8 @@ static class Config {
 	[Attributes.Ignore]
 	internal static bool ToggledEnable = true;
 
-	[Attributes.Comment("Should SpriteMaster be enabled?")]
+	[Attributes.Comment("Should SpriteMaster be enabled? Unsetting this will disable _all_ SpriteMaster functionality.")]
+	[Attributes.MenuName("Enable SpriteMaster")]
 	[Obsolete("Use IsEnabled")]
 	internal static bool Enabled = true;
 
@@ -119,7 +108,6 @@ static class Config {
 	[Attributes.Advanced]
 	internal static int PreferredMaxTextureDimension = 16384;
 	internal const bool ClampInvalidBounds = true;
-	internal const bool IgnoreUnknownTextures = false;
 
 	[Attributes.Retain]
 	[Attributes.GMCMHidden]
@@ -226,7 +214,23 @@ static class Config {
 	[Attributes.Advanced]
 	internal static class DrawState {
 		[Attributes.Comment("Enable linear sampling for sprites")]
+		[Obsolete("Use IsSetLinear")]
 		internal static bool SetLinear = true;
+
+		[Attributes.Ignore]
+#pragma warning disable CS0618 // Type or member is obsolete
+		internal static bool IsSetLinear => Preview.Override.Instance?.SetLinear ?? SetLinear;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+		[Attributes.Comment("Enable linear sampling for sprites")]
+		[Obsolete("Use IsSetLinear")]
+		internal static bool SetLinearUnresampled = false;
+
+		[Attributes.Ignore]
+#pragma warning disable CS0618 // Type or member is obsolete
+		internal static bool IsSetLinearUnresampled => (Preview.Override.Instance?.SetLinearUnresampled ?? SetLinearUnresampled && Resample.IsEnabled);
+#pragma warning restore CS0618 // Type or member is obsolete
+
 		[Attributes.Comment("How many MSAA samples should be used?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.ResetDisplay | Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.LimitsInt(1, 16)]
@@ -258,6 +262,7 @@ static class Config {
 	internal static class Resample {
 		[Attributes.Comment("Should resampling be enabled?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
+		[Attributes.MenuName("Enable Resampling")]
 		[Obsolete("Use IsEnabled")]
 		internal static bool Enabled = true;
 
@@ -626,10 +631,10 @@ static class Config {
 		[Attributes.Comment("What is the threshold percentage of alpha values to be used to determine if it is a wrapping edge?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
 		[Attributes.LimitsReal(0.0, 1.0)]
-		internal static float edgeThreshold = 0.2f;
+		internal static float EdgeThreshold = 0.2f;
 		[Attributes.Comment("What is the minimum alpha value assumed to be opaque?")]
 		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushAllInternalCaches)]
-		internal static byte alphaThreshold = 1;
+		internal static byte AlphaThreshold = 1;
 	}
 
 	[Attributes.Advanced]
@@ -675,15 +680,6 @@ static class Config {
 
 	[Attributes.Advanced]
 	internal static class SMAPI {
-		[Attributes.Comment("Should the experimental SMAPI texture cache patch be enabled?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureCache)]
-		internal static bool TextureCacheEnabled = true;
-		[Attributes.Comment("Should the PMA texture cache be enabled?")]
-		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureCache)]
-		internal static bool PMATextureCacheEnabled = true;
-		[Attributes.Comment("Should the experimental SMAPI texture cache have high memory usage enabled?")]
-		[Attributes.Comment("Unrecommended: This results in the game's texture being retained (and thus loaded faster) but doesn't suspend the resampled sprite instances.")]
-		internal static bool TextureCacheHighMemoryEnabled = false;
 		[Attributes.Comment("Should the ApplyPatch method be patched?")]
 		internal static bool ApplyPatchEnabled = true;
 		[Attributes.Comment("Should ApplyPatch pin temporary memory?")]
@@ -698,6 +694,8 @@ static class Config {
 		internal static bool FastQuit = false;
 		[Attributes.Comment("Should line drawing be smoothed?")]
 		internal static bool SmoothLines = true;
+		[Attributes.Comment("Should shadowed text be stroked instead?")]
+		internal static bool StrokeShadowedText = false;
 		[Attributes.Comment("Should Harmony patches have inlining re-enabled?")]
 		internal static bool HarmonyInlining = false;
 		[Attributes.Comment("Should the game's 'parseMasterSchedule' method be fixed and optimized?")]
@@ -714,6 +712,11 @@ static class Config {
 		internal static bool PreventUnresponsive = true;
 		[Attributes.Comment("Should the engine's deferred thread task runner be optimized?")]
 		internal static bool OptimizeEngineTaskRunner = true;
+
+		[Attributes.Comment("Should dirt drawing optimizations be enabled?")]
+		internal static bool EnableDirtDrawOptimizations = false;
+		[Attributes.Comment("Should low-level OpenGL optimizations be performed?")]
+		internal static bool OptimizeOpenGL = true;
 		internal static class Snow {
 			[Attributes.Comment("Should custom snowfall be used during snowstorms?")]
 			internal static bool Enabled = true;
@@ -736,9 +739,23 @@ static class Config {
 		internal static class ModPatches {
 			[Attributes.Comment("Patch CustomNPCFixes in order to improve load times?")]
 			internal static bool PatchCustomNPCFixes = false;
-			[Attributes.Comment("Disable PyTK mitigation for SpriteMaster?")]
+			[Attributes.Comment("Disable unnecessary PyTK mitigation for SpriteMaster?")]
+			[Attributes.MenuName("Disable PyTK Mitigation")]
 			internal static bool DisablePyTKMitigation = true;
 		}
+	}
+
+	[Attributes.Advanced]
+	internal static class TextureCache {
+		[Attributes.Comment("Should the experimental SMAPI texture cache patch be enabled?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureCache)]
+		internal static bool Enabled = true;
+		[Attributes.Comment("Should the PMA texture cache be enabled?")]
+		[Attributes.OptionsAttribute(Attributes.OptionsAttribute.Flag.FlushTextureCache)]
+		internal static bool PMAEnabled = true;
+		[Attributes.Comment("Should the experimental SMAPI texture cache have high memory usage enabled?")]
+		[Attributes.Comment("Unrecommended: This results in the game's texture being retained (and thus loaded faster) but doesn't suspend the resampled sprite instances.")]
+		internal static bool HighMemoryEnabled = false;
 	}
 
 	[Attributes.Advanced]

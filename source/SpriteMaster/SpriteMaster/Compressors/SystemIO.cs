@@ -9,6 +9,7 @@
 *************************************************/
 
 using LinqFasterer;
+using SpriteMaster.Extensions;
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -18,14 +19,14 @@ using IOC = System.IO.Compression;
 namespace SpriteMaster.Compressors;
 
 //[HarmonizeFinalizeCatcher<IOC.DeflateStream, DllNotFoundException>(critical: false)]
-static class SystemIO {
+internal static class SystemIO {
 
-	private static bool? IsSupported_ = null;
+	private static bool? IsSupportedInternal = null;
 	internal static bool IsSupported {
 		[MethodImpl(Runtime.MethodImpl.RunOnce)]
 		get {
-			if (IsSupported_.HasValue) {
-				return IsSupported_.Value;
+			if (IsSupportedInternal.HasValue) {
+				return IsSupportedInternal.Value;
 			}
 
 			try {
@@ -36,28 +37,28 @@ static class SystemIO {
 					throw new Exception("Original and Uncompressed Data Mismatch");
 				}
 				Debug.Info("System.IO Compression is supported");
-				IsSupported_ = true;
+				IsSupportedInternal = true;
 			}
 			catch (DllNotFoundException) {
-				Debug.Info($"System.IO Compression not supported");
-				IsSupported_ = false;
+				Debug.Info("System.IO Compression not supported");
+				IsSupportedInternal = false;
 			}
 			catch (Exception ex) {
 				Debug.Info($"System.IO Compression not supported: '{ex.GetType().Name} {ex.Message}'");
-				IsSupported_ = false;
+				IsSupportedInternal = false;
 			}
 
-			return IsSupported_.Value;
+			return IsSupportedInternal.Value;
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int CompressedLengthEstimate(byte[] data) => data.Length >> 1;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int CompressedLengthEstimate(ReadOnlySpan<byte> data) => data.Length >> 1;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	internal static int DecompressedLengthEstimate(byte[] data) => data.Length << 1;
 
 	[MethodImpl(Runtime.MethodImpl.RunOnce)]
@@ -68,7 +69,7 @@ static class SystemIO {
 			using (compressor = new IOC.DeflateStream(val, IOC.CompressionLevel.Optimal)) {
 				compressor.Write(data, 0, data.Length);
 			}
-			return val.ToArray();
+			return val.GetArray();
 		}
 		catch (DllNotFoundException) when (compressor is not null) {
 			GC.SuppressFinalize(compressor);
@@ -76,42 +77,37 @@ static class SystemIO {
 		}
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Compress(byte[] data) {
 		using var val = new MemoryStream(CompressedLengthEstimate(data));
 		using (var compressor = new IOC.DeflateStream(val, IOC.CompressionLevel.Optimal)) {
 			compressor.Write(data, 0, data.Length);
 		}
-		return val.ToArray();
+		return val.GetArray();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Compress(ReadOnlySpan<byte> data) {
 		using var val = new MemoryStream(CompressedLengthEstimate(data));
 		using (var compressor = new IOC.DeflateStream(val, IOC.CompressionLevel.Optimal)) {
 			compressor.Write(data);
 		}
-		return val.ToArray();
+		return val.GetArray();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Decompress(byte[] data) {
 		using var dataStream = new MemoryStream(data);
 		using var val = new MemoryStream(DecompressedLengthEstimate(data));
 		using (var compressor = new IOC.DeflateStream(dataStream, IOC.CompressionMode.Decompress)) {
 			compressor.CopyTo(val);
 		}
-		return val.ToArray();
+		return val.GetArray();
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static byte[] Decompress(byte[] data, int size) {
 		using var dataStream = new MemoryStream(data);
 		var output = new byte[size];
-		using (var val = new MemoryStream(output)) {
-			using var compressor = new IOC.DeflateStream(dataStream, IOC.CompressionMode.Decompress);
-			compressor.CopyTo(val);
-		}
+		using var val = new MemoryStream(output);
+		using var compressor = new IOC.DeflateStream(dataStream, IOC.CompressionMode.Decompress);
+		compressor.CopyTo(val);
 		return output;
 	}
 }

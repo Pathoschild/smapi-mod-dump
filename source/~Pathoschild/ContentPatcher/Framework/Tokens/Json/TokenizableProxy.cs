@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
-using System.Collections.Generic;
+using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher.Framework.Tokens.Json
 {
@@ -46,17 +44,16 @@ namespace ContentPatcher.Framework.Tokens.Json
             this.SetValue = setValue;
         }
 
-
         /// <inheritdoc />
         public bool UpdateContext(IContext context)
         {
             bool changed = this.TokenString.UpdateContext(context);
-            this.SetValue(this.TokenString.Value);
+            this.SetValue(this.TokenString.Value!);
             return changed;
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
             return this.TokenString.GetTokensUsed();
         }

@@ -96,35 +96,13 @@ namespace AlternativeTextures.Framework.Interfaces.API
 
                     // Load in the first texture_#.png to get its dimensions for creating stitchedTexture
                     int maxVariationsPerTexture = AlternativeTextureModel.MAX_TEXTURE_HEIGHT / textureModel.TextureHeight;
-                    Texture2D baseTexture = textures.First();
-                    for (int t = 0; t <= (textureModel.GetVariations() * textureModel.TextureHeight) / AlternativeTextureModel.MAX_TEXTURE_HEIGHT; t++)
+
+                    int variation = 0;
+                    foreach (var splitTexture in textures)
                     {
-                        int variationLimit = Math.Min(maxVariationsPerTexture, textureModel.GetVariations() - (maxVariationsPerTexture * t));
-                        if (variationLimit < 0)
-                        {
-                            variationLimit = 0;
-                        }
-                        Texture2D stitchedTexture = new Texture2D(Game1.graphics.GraphicsDevice, baseTexture.Width, Math.Min(textureModel.TextureHeight * variationLimit, AlternativeTextureModel.MAX_TEXTURE_HEIGHT));
+                        textureModel.Textures[variation] = splitTexture;
 
-                        // Now stitch together the split textures into a single texture
-                        Color[] pixels = new Color[stitchedTexture.Width * stitchedTexture.Height];
-                        for (int x = 0; x < variationLimit; x++)
-                        {
-                            _framework.Monitor.Log($"Stitching together {textureModel.TextureId}: texture_{x}", LogLevel.Trace);
-
-                            var offset = x * baseTexture.Width * baseTexture.Height;
-                            var subTexture = textures.ElementAt(x + (maxVariationsPerTexture * t));
-
-                            Color[] subPixels = new Color[subTexture.Width * subTexture.Height];
-                            subTexture.GetData(subPixels);
-                            for (int i = 0; i < subPixels.Length; i++)
-                            {
-                                pixels[i + offset] = subPixels[i];
-                            }
-                        }
-
-                        stitchedTexture.SetData(pixels);
-                        textureModel.Textures.Add(stitchedTexture);
+                        variation++;
                     }
 
                     textureModel.TileSheetPath = String.Empty;
@@ -144,9 +122,19 @@ namespace AlternativeTextures.Framework.Interfaces.API
                         _framework.Monitor.Log($"Unable to add alternative texture for {textureModel.ItemName} from {textureModel.TextureId}: The required image width is 256 for Decoration types (wallpapers / floors). Please correct the image's width manually.", LogLevel.Warn);
                         continue;
                     }
-                    else
+                    else if (textureModel.IsDecoration())
                     {
-                        textureModel.Textures.Add(singularTexture);
+                        if (singularTexture.Width < 256)
+                        {
+                            _framework.Monitor.Log($"Unable to add alternative texture for {textureModel.ItemName} from {textureModel.TextureId}: The required image width is 256 for Decoration types (wallpapers / floors). Please correct the image's width manually.", LogLevel.Warn);
+                            continue;
+                        }
+
+                        textureModel.Textures[0] = singularTexture;
+                    }
+                    else if (!_framework.SplitVerticalTexturesToModel(textureModel, textureModel.TextureId, singularTexture))
+                    {
+                        continue;
                     }
                 }
 
@@ -154,7 +142,10 @@ namespace AlternativeTextures.Framework.Interfaces.API
                 AlternativeTextures.textureManager.AddAlternativeTexture(textureModel);
 
                 // Log it
-                _framework.Monitor.Log(textureModel.ToString(), LogLevel.Trace);
+                if (AlternativeTextures.modConfig.OutputTextureDataToLog)
+                {
+                    _framework.Monitor.Log(textureModel.ToString(), LogLevel.Trace);
+                }
             }
         }
     }

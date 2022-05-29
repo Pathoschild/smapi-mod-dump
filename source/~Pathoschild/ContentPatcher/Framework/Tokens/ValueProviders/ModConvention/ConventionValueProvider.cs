@@ -8,9 +8,9 @@
 **
 *************************************************/
 
-#nullable disable
-
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Pathoschild.Stardew.Common.Utilities;
 
@@ -26,7 +26,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         private readonly ConventionWrapper Provider;
 
         /// <summary>Diagnostic info about the contextual instance.</summary>
-        private readonly ContextualState State = new ContextualState();
+        private readonly ContextualState State = new();
 
 
         /*********
@@ -48,8 +48,11 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <remarks>This is cached to ensure it never changes outside a context update (even if the mod token is otherwise incorrectly changing without a context update), since that would cause subtle hard-to-troubleshoot bugs where patches don't update correctly in some cases.</remarks>
         public bool IsReady { get; private set; }
 
-        /// <summary>Whether to allow using this token in any value context (e.g. as a number or boolean) without validating ahead of time.</summary>
+        /// <inheritdoc />
         public bool BypassesContextValidation => false;
+
+        /// <inheritdoc />
+        public Func<string, string>? NormalizeValue => this.Provider.NormalizeValue;
 
 
         /*********
@@ -72,31 +75,34 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         }
 
         /// <inheritdoc />
-        public bool TryValidateInput(IInputArguments input, out string error)
+        public bool TryValidateInput(IInputArguments input, [NotNullWhen(false)] out string? error)
         {
             return this.Provider.TryValidateInput(this.ToApiInput(input), out error);
         }
 
         /// <inheritdoc />
-        public bool TryValidateValues(IInputArguments input, InvariantHashSet values, out string error)
+        public bool TryValidateValues(IInputArguments input, IInvariantSet values, [NotNullWhen(false)] out string? error)
         {
             return this.Provider.TryValidateValues(this.ToApiInput(input), values, out error);
         }
 
         /// <inheritdoc />
-        public InvariantHashSet GetValidPositionalArgs()
+        public IInvariantSet GetValidPositionalArgs()
         {
-            return new InvariantHashSet(this.Provider.GetValidInputs());
+            return InvariantSets.From(this.Provider.GetValidInputs());
         }
 
         /// <inheritdoc />
-        public bool HasBoundedValues(IInputArguments input, out InvariantHashSet allowedValues)
+        public bool HasBoundedValues(IInputArguments input, [NotNullWhen(true)] out IInvariantSet? allowedValues)
         {
-            bool bounded = this.Provider.HasBoundedValues(this.ToApiInput(input), out IEnumerable<string> values);
-            allowedValues = bounded
-                ? new InvariantHashSet(values)
-                : null;
-            return bounded;
+            if (this.Provider.HasBoundedValues(this.ToApiInput(input), out IEnumerable<string>? values))
+            {
+                allowedValues = InvariantSets.From(values);
+                return true;
+            }
+
+            allowedValues = null;
+            return false;
         }
 
         /// <inheritdoc />
@@ -109,12 +115,6 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         public IEnumerable<string> GetValues(IInputArguments input)
         {
             return this.Provider.GetValues(this.ToApiInput(input));
-        }
-
-        /// <inheritdoc />
-        public string NormalizeValue(string value)
-        {
-            return this.Provider.NormalizeValue(value);
         }
 
         /// <inheritdoc />
@@ -135,9 +135,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
-            yield break;
+            return InvariantSets.Empty;
         }
 
 
@@ -146,12 +146,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         *********/
         /// <summary>Convert input arguments into the format used by the mod API.</summary>
         /// <param name="input">The input arguments.</param>
-        private string ToApiInput(IInputArguments input)
+        private string? ToApiInput(IInputArguments input)
         {
             if (!input.IsReady)
                 return null;
 
-            StringBuilder inputStr = new StringBuilder();
+            StringBuilder inputStr = new();
 
             inputStr.Append(string.Join(", ", input.PositionalArgs));
             foreach (var arg in input.NamedArgs)

@@ -13,7 +13,6 @@ using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
-using TehPers.Core.Api.Json;
 using TehPers.FishingOverhaul.Integrations.GenericModConfigMenu;
 
 namespace TehPers.FishingOverhaul.Config
@@ -22,7 +21,6 @@ namespace TehPers.FishingOverhaul.Config
     /// Configuration for the chances of catching treasure while fishing.
     /// </summary>
     /// <inheritdoc cref="FishingChances"/>
-    [JsonDescribe]
     public class TreasureChances : FishingChances
     {
         /// <summary>

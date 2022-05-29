@@ -26,7 +26,7 @@
       "AvailabilityInfo": {
         "BaseChance": 0.01,
         "DepthMultiplier": 0.005,
-        "MinDepth": 3,
+        "MinBobberDepth": 3,
         "MinFishingLevel": 6,
         "Seasons": ["Fall"],
         "StartTime": 1200,

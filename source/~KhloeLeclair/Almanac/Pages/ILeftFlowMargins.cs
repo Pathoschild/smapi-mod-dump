@@ -8,17 +8,18 @@
 **
 *************************************************/
 
+#nullable enable
 
-namespace Leclair.Stardew.Almanac.Pages {
-	public interface ILeftFlowMargins {
+namespace Leclair.Stardew.Almanac.Pages;
 
-		// Left Flow
-		int LeftMarginTop { get; }
-		int LeftMarginLeft { get; }
-		int LeftMarginRight { get; }
-		int LeftMarginBottom { get; }
+public interface ILeftFlowMargins {
 
-		int LeftScrollMarginTop { get; }
-		int LeftScrollMarginBottom { get; }
-	}
+	// Left Flow
+	int LeftMarginTop { get; }
+	int LeftMarginLeft { get; }
+	int LeftMarginRight { get; }
+	int LeftMarginBottom { get; }
+
+	int LeftScrollMarginTop { get; }
+	int LeftScrollMarginBottom { get; }
 }

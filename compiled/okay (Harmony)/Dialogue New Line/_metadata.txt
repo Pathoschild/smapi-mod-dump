@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12175
+IDs: aedenthorn.DialogueNewLine
+update keys: Nexus:12175, GitHub:aedenthorn/StardewValleyMods

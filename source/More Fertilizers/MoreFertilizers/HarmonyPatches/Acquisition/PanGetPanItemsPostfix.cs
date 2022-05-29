@@ -25,17 +25,26 @@ internal static class PanGetPanItemsPostfix
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Harmony Convention")]
     private static void Postfix(GameLocation location, ref List<Item> __result)
     {
-        if (location is Town && Game1.random.NextDouble() < 0.05 && ModEntry.LuckyFertilizerID != -1)
+        if (Game1.random.NextDouble() > 0.05)
+        {
+            return;
+        }
+
+        if (location is Town && ModEntry.LuckyFertilizerID != -1)
         {
             __result.Add(new SObject(ModEntry.LuckyFertilizerID, 5));
         }
-        else if (location is IslandLocation && Game1.random.NextDouble() < 0.05 && ModEntry.OrganicFertilizerID != -1)
+        else if (location is IslandLocation && ModEntry.OrganicFertilizerID != -1)
         {
             __result.Add(new SObject(ModEntry.OrganicFertilizerID, 5));
         }
-        else if (location is Sewer && Game1.random.NextDouble() < 0.05 && ModEntry.DeluxeJojaFertilizerID != -1)
+        else if (location is Sewer && ModEntry.DeluxeJojaFertilizerID != -1)
         {
             __result.Add(new SObject(ModEntry.DeluxeJojaFertilizerID, 5));
+        }
+        else if (location is BugLand && ModEntry.BountifulFertilizerID != -1)
+        {
+            __result.Add(new SObject(ModEntry.BountifulFertilizerID, 5));
         }
     }
 }

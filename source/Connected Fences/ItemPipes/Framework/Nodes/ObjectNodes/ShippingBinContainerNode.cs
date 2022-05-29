@@ -198,7 +198,6 @@ namespace ItemPipes.Framework.Nodes.ObjectNodes
         }
         public Item TryExtractItem(ContainerNode input, NetCollection<Item> itemList)
         {
-            Printer.Info("ShippingBin");
             //Exception for multiple thread collisions
             Item source = itemList.Last();
             Item tosend = null;

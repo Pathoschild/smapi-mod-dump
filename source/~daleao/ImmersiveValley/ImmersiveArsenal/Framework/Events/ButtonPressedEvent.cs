@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -39,7 +39,7 @@ internal class ButtonPressedEvent : IEvent
         Log.D("[Arsenal] Unhooked ButtonPressed event.");
     }
 
-    /// <summary>Raised after the player pressed a keyboard, mouse, or controller button.</summary>
+    /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
     public void OnButtonPressed(object sender, ButtonPressedEventArgs e)

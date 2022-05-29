@@ -89,7 +89,7 @@ namespace ItemPipes.Framework
             if (ConnectedContainer != null && !ConnectedContainer.IsEmpty()
                 && ConnectedInputs.Count > 0 && Signal.Equals("on"))
             {
-                if (Globals.UltraDebug) { Printer.Info($"[N{ParentNetwork.ID}] Is output empty? " + ConnectedContainer.IsEmpty().ToString()); }
+                if (Globals.UltraDebug) { Printer.Info($"[N{ParentNetwork.ID}] Is output ({Print()}) empty? " + ConnectedContainer.IsEmpty().ToString()); }
                 try
                 {
                     Thread thread = new Thread(new ThreadStart(StartExchage));
@@ -107,7 +107,8 @@ namespace ItemPipes.Framework
         {
             bool canSend = false;
             if(ConnectedContainer != null && ConnectedContainer.CanSendItems() 
-                && (input.CanRecieveItems() || input.ConnectedContainer.CanStackItems()))
+                && (input.CanRecieveItems() || input.ConnectedContainer.CanStackItems())
+                && StoredItem == null)
             {
                 canSend = true;
             }
@@ -147,16 +148,20 @@ namespace ItemPipes.Framework
                             if (item != null && StoredItem == null)
                             {
                                 //Printer.Info($"Item to send: {item.Name}({item.Stack})");
-                                SendItem(item, input);
+                                Node ret = SendItem(item, input);
+                                if(ret == null)
+                                {
+                                    input.SendItem(item, this);
+                                }
                             }
                             else if(StoredItem != null)
                             {
-                                Printer.Info($"Output locked");
+                                //Printer.Info($"Output locked");
                                 //Output locked
                             }
                             else if(item == null)
                             {
-                                Printer.Info($"Item is null");
+                                //Printer.Info($"Item is null");
                                 //Item is null
                             }
                         }
@@ -238,6 +243,21 @@ namespace ItemPipes.Framework
                 removed = true;
                 ConnectedInputs.Remove(input);
             }
+            return removed;
+        }
+
+        public override bool RemoveAllAdjacents()
+        {
+            bool removed = false;
+            foreach (KeyValuePair<Side, Node> adj in Adjacents.ToList())
+            {
+                if (adj.Value != null)
+                {
+                    removed = true;
+                    RemoveAdjacent(adj.Key, adj.Value);
+                }
+            }
+            ConnectedInputs.Clear();
             return removed;
         }
     }

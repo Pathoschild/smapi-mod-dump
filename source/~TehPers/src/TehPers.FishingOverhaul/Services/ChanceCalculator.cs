@@ -9,66 +9,28 @@
 *************************************************/
 
 using System;
-using System.Linq;
 using ContentPatcher;
 using StardewModdingAPI;
-using TehPers.Core.Api.Extensions;
 using TehPers.FishingOverhaul.Api;
 using TehPers.FishingOverhaul.Api.Content;
 
 namespace TehPers.FishingOverhaul.Services
 {
-    internal class ChanceCalculator<T>
-        where T : AvailabilityInfo
+    internal class ChanceCalculator : ConditionsCalculator
     {
-        private readonly T availabilityInfo;
-        private readonly IManagedConditions? managedConditions;
+        private readonly AvailabilityInfo availabilityInfo;
 
         public ChanceCalculator(
             IMonitor monitor,
             IContentPatcherAPI contentPatcherApi,
             IManifest fishingManifest,
             IManifest owner,
-            T availabilityInfo
+            AvailabilityInfo availabilityInfo
         )
+            : base(monitor, contentPatcherApi, fishingManifest, owner, availabilityInfo)
         {
-            _ = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            _ = contentPatcherApi ?? throw new ArgumentNullException(nameof(contentPatcherApi));
-            _ = owner ?? throw new ArgumentNullException(nameof(owner));
             this.availabilityInfo = availabilityInfo
                 ?? throw new ArgumentNullException(nameof(availabilityInfo));
-
-            if (availabilityInfo.When.Any())
-            {
-                // Get Content Patcher version
-                var version =
-                    fishingManifest.Dependencies.FirstOrDefault(
-                            dependency => dependency.UniqueID == "Pathoschild.ContentPatcher"
-                        )
-                        ?.MinimumVersion
-                    ?? throw new ArgumentException(
-                        "Fishing overhaul does not depend on Content Patcher",
-                        nameof(fishingManifest)
-                    );
-
-                // Parse conditions
-                this.managedConditions = contentPatcherApi.ParseConditions(
-                    owner,
-                    availabilityInfo.When,
-                    version,
-                    new[] { fishingManifest.UniqueID }
-                );
-
-                // Check if conditions are valid
-                if (!this.managedConditions.IsValid)
-                {
-                    // Log error
-                    monitor.Log(
-                        $"Failed to parse conditions for one of {owner.UniqueID}'s entries: {this.managedConditions.ValidationError}",
-                        LogLevel.Error
-                    );
-                }
-            }
         }
 
         /// <summary>
@@ -78,19 +40,12 @@ namespace TehPers.FishingOverhaul.Services
         /// <returns>The chance of catching this entry, or <see langword="null"/> if the entry is not available.</returns>
         public double? GetWeightedChance(FishingInfo fishingInfo)
         {
-            return this.availabilityInfo.GetWeightedChance(fishingInfo)
-                .Where(
-                    _ =>
-                    {
-                        if (this.managedConditions is not { } conditions)
-                        {
-                            return true;
-                        }
+            if (!this.IsAvailable(fishingInfo))
+            {
+                return null;
+            }
 
-                        conditions.UpdateContext();
-                        return conditions.IsMatch;
-                    }
-                );
+            return this.availabilityInfo.GetChance(fishingInfo);
         }
     }
 }

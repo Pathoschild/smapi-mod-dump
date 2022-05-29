@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -30,9 +30,7 @@
 #endregion
 
 using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
+using SkiaSharp;
 using System.IO;
 
 using ChestEx.LanguageExtensions;
@@ -51,63 +49,47 @@ namespace ChestEx.Types.BaseTypes {
   public partial class ColouringHSVMenu {
     private class HueSlider : CustomClickableTextureComponent {
       // Consts:
-    #region Consts
+      #region Consts
 
       private const Int32 CONST_SELECTOR_HEIGHT = 4;
 
-    #endregion
+      #endregion
 
       // Private:
-    #region Private
+      #region Private
 
       private readonly Action<Color> onColourHovered;
       private readonly Action<Color> onColourChanged;
 
-      private Bitmap bitmap;
-      private Int32  selectorY;
-      private Int32  selectorActiveY;
-      private Color  selectorColour = Color.Red;
+      private SKBitmap bitmap;
+      private Int32 selectorY;
+      private Int32 selectorActiveY;
+      private Color selectorColour = Color.Red;
 
       private Texture2D getOrCreateTexture(GraphicsDevice device) {
         if (this.bitmap is null || this.texture is null) {
           this.bitmap?.Dispose();
           this.texture?.Dispose();
 
-          this.bitmap = new Bitmap(this.mBounds.Width, this.mBounds.Height);
+          this.bitmap = new SKBitmap(this.mBounds.Width, this.mBounds.Height);
 
-          using var      ms = new MemoryStream();
-          using Graphics g  = Graphics.FromImage(this.bitmap);
-          using var gradient =
-            new LinearGradientBrush(new RectangleF(0.0f, 0.0f, this.mBounds.Width, this.mBounds.Height),
-                                    System.Drawing.Color.Transparent,
-                                    System.Drawing.Color.Transparent,
-                                    90.0f) {
-              InterpolationColors = new ColorBlend {
-                Colors = new[] {
-                  System.Drawing.Color.Red,
-                  System.Drawing.Color.Yellow,
-                  System.Drawing.Color.Lime,
-                  System.Drawing.Color.Cyan,
-                  System.Drawing.Color.Blue,
-                  System.Drawing.Color.Magenta,
-                  System.Drawing.Color.Red
-                },
-                Positions = new[] {
-                  0f,
+          using var ms = new MemoryStream();
+          using var canvas = new SKCanvas(this.bitmap);
+          using var paint = new SKPaint() {
+            Shader = SKShader.CreateLinearGradient(new SKPoint(0.0f, 0.0f), new SKPoint(this.mBounds.Width, this.mBounds.Height),
+            new SKColor[] { SKColors.Red, SKColors.Yellow, SKColors.Lime, SKColors.Cyan, SKColors.Blue, SKColors.Magenta, SKColors.Red }, new Single[] {0f,
                   1 / 6f,
                   2 / 6f,
                   3 / 6f,
                   4 / 6f,
                   5 / 6f,
-                  1f
-                }
-              }
-            };
-          g.FillRectangle(gradient, 0f, 0f, this.mBounds.Width, this.mBounds.Height);
+                  1f }, SKShaderTileMode.Decal)
+          };
 
-          this.bitmap.Save(ms, ImageFormat.Png);
-          ms.Seek(0, SeekOrigin.Begin);
+          canvas.DrawPaint(paint);
+          canvas.RotateDegrees(90.0f);
 
+          this.bitmap.Encode(ms, SKEncodedImageFormat.Png, 95);
           this.texture = Texture2D.FromStream(device, ms);
         }
 
@@ -120,15 +102,15 @@ namespace ChestEx.Types.BaseTypes {
         if (this.bitmap is null) return;
         if (this.selectorY == y) return;
 
-        this.selectorY      = y;
+        this.selectorY = y;
         this.selectorColour = this.getColourAt(y);
         this.onColourHovered(this.selectorColour);
       }
 
-    #endregion
+      #endregion
 
       // Public:
-    #region Public
+      #region Public
 
       public void Reset() { this.SetSelectorActiveY(0); }
 
@@ -144,7 +126,7 @@ namespace ChestEx.Types.BaseTypes {
       }
 
       // Overrides:
-    #region Overrides
+      #region Overrides
 
       public override void Draw(SpriteBatch spriteBatch) {
         this.texture = this.getOrCreateTexture(spriteBatch.GraphicsDevice);
@@ -180,12 +162,12 @@ namespace ChestEx.Types.BaseTypes {
       // Disable cursor hover scaling
       public override void OnGameTick() { }
 
-    #endregion
+      #endregion
 
-    #endregion
+      #endregion
 
       // Constructors:
-    #region Constructors
+      #region Constructors
 
       public HueSlider(Rectangle bounds, Action<Color> onColourHovered, Action<Color> onColourChanged)
         : base(bounds) {
@@ -193,20 +175,20 @@ namespace ChestEx.Types.BaseTypes {
         this.onColourChanged = onColourChanged;
       }
 
-    #endregion
+      #endregion
 
       // IDisposable:
-    #region IDisposable
+      #region IDisposable
 
       public override void Dispose() {
         base.Dispose();
 
         this.bitmap?.Dispose();
-        this.bitmap  = null;
+        this.bitmap = null;
         this.texture = null;
       }
 
-    #endregion
+      #endregion
     }
   }
 }

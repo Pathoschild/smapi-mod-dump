@@ -1,0 +1,4 @@
+﻿{
+	"config.size.name": "Maximum stack size",
+	"config.size.tooltip": "The maximum number of items in one stack. Only applies to stackable items."
+}

@@ -8,9 +8,8 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentPatcher.Framework.Commands;
 using ContentPatcher.Framework.Conditions;
@@ -41,10 +40,11 @@ namespace ContentPatcher.Framework.Api
         ** Accessors
         *********/
         /// <inheritdoc />
+        [MemberNotNullWhen(false, nameof(ApiManagedConditions.ValidationError))]
         public bool IsValid { get; }
 
         /// <inheritdoc />
-        public string ValidationError { get; }
+        public string? ValidationError { get; }
 
         /// <inheritdoc />
         public bool IsReady => this.Contextuals.IsReady;
@@ -64,7 +64,7 @@ namespace ContentPatcher.Framework.Api
         /// <param name="context">The context with which to update conditions.</param>
         /// <param name="isValid">Whether the conditions were parsed successfully (regardless of whether they're in scope currently).</param>
         /// <param name="validationError">If <paramref name="isValid"/> is false, an error phrase indicating why the conditions failed to parse.</param>
-        public ApiManagedConditionsForSingleScreen(Condition[] conditions, IContext context, bool isValid = true, string validationError = null)
+        public ApiManagedConditionsForSingleScreen(Condition[] conditions, IContext context, bool isValid = true, string? validationError = null)
         {
             this.Conditions = conditions;
             this.Context = context;
@@ -97,7 +97,7 @@ namespace ContentPatcher.Framework.Api
         }
 
         /// <inheritdoc />
-        public string GetReasonNotMatched()
+        public string? GetReasonNotMatched()
         {
             if (this.IsMatch)
                 return null;

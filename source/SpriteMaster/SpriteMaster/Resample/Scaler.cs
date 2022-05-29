@@ -10,7 +10,7 @@
 
 namespace SpriteMaster.Resample;
 
-enum Scaler : int {
+internal enum Scaler : int {
 	None = -1,
 	xBRZ = 0,
 #if !SHIPPING

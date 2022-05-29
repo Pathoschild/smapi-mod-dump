@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -40,9 +40,9 @@ using StardewValley;
 namespace ChestEx.Types.BaseTypes {
   public class Colours {
     // Public static instances:
-  #region Public static instances
+    #region Public static instances
 
-    public static readonly Colours gDefault     = new(Color.White, Color.White, Color.White, Color.White, Color.White);
+    public static readonly Colours gDefault = new(Color.White, Color.White, Color.White, Color.White, Color.White);
     public static readonly Colours gTransparent = new(Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent, Color.Transparent);
 
     public static readonly Colours gLight = new(Color.FromNonPremultiplied(200, 200, 200, 255),
@@ -69,16 +69,16 @@ namespace ChestEx.Types.BaseTypes {
 
     public static readonly Colours gTurnTranslucentOnAction = new(Color.White, Color.White, Color.Black, Color.White.MultAlpha(0.75f), Color.White.MultAlpha(0.50f));
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     public Color mBackgroundColour { get; }
-    public Color mBorderColour     { get; }
+    public Color mBorderColour { get; }
     public Color mForegroundColour { get; }
-    public Color mHoverColour      { get; }
-    public Color mActiveColour     { get; }
+    public Color mHoverColour { get; }
+    public Color mActiveColour { get; }
 
     public Colours NewBackgroundColour(Color colour) { return new(colour, this.mBorderColour, this.mForegroundColour, this.mHoverColour, this.mActiveColour); }
     public Colours MultAlpha(Single multiplier) {
@@ -90,7 +90,7 @@ namespace ChestEx.Types.BaseTypes {
     }
 
     // Statics:
-  #region Statics
+    #region Statics
 
     public static Colours GenerateFrom(Color backgroundColour) {
       return new(backgroundColour, backgroundColour.MultRGB(0.5f), backgroundColour.ContrastColour(), backgroundColour.MultRGB(1.25f), backgroundColour.MultRGB(0.675f));
@@ -110,9 +110,9 @@ namespace ChestEx.Types.BaseTypes {
           Game1.menuTexture.GetData(0, new Rectangle(20, 128, 1, 1), pixel, 0, 1);
           borderColour = pixel[0];
           Game1.menuTexture.GetData(0, new Rectangle(64, 128, 1, 1), pixel, 0, 1);
-          bgColour     = pixel[0];
-          fgColour     = bgColour.ContrastColour();
-          hoverColour  = bgColour.MultRGB(1.25f);
+          bgColour = pixel[0];
+          fgColour = bgColour.ContrastColour();
+          hoverColour = bgColour.MultRGB(1.25f);
           activeColour = bgColour.MultRGB(0.675f);
         }
         sMenuTileColourCache = new Colours(bgColour, borderColour, fgColour, hoverColour, activeColour);
@@ -122,7 +122,7 @@ namespace ChestEx.Types.BaseTypes {
     }
 
     /// <summary>Resets <see cref="mForegroundColour"/> to the contrast BW colour of the new <see cref="mBackgroundColour"/>.</summary>
-    public static Colours operator*(Colours lhs, Single rhs) {
+    public static Colours operator *(Colours lhs, Single rhs) {
       return new(lhs.mBackgroundColour.MultRGB(rhs),
                  lhs.mBorderColour.MultRGB(rhs),
                  lhs.mBackgroundColour.MultRGB(rhs).ContrastColour(),
@@ -130,22 +130,22 @@ namespace ChestEx.Types.BaseTypes {
                  lhs.mActiveColour.MultRGB(rhs));
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     private Colours(Color backgroundColour, Color borderColour, Color foregroundColour, Color hoverColour,
                     Color activeColour) {
       this.mBackgroundColour = backgroundColour;
-      this.mBorderColour     = borderColour;
+      this.mBorderColour = borderColour;
       this.mForegroundColour = foregroundColour;
-      this.mHoverColour      = hoverColour;
-      this.mActiveColour     = activeColour;
+      this.mHoverColour = hoverColour;
+      this.mActiveColour = activeColour;
     }
 
-  #endregion
+    #endregion
   }
 }

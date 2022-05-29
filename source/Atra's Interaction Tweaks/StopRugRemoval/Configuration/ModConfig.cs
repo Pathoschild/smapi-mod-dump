@@ -71,14 +71,44 @@ public class ModConfig
     public KeybindList FurniturePlacementKey { get; set; } = KeybindList.Parse("LeftShift + Z");
 
     /// <summary>
+    /// Gets or sets a value indicating whether or not to hide crab pots during events.
+    /// </summary>
+    public bool HideCrabPots { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether SObjects that are bombed that are forage should be saved.
+    /// </summary>
+    public bool SaveBombedForage { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets a value indicating whether or not to confirm bomb placement in safe areas.
     /// </summary>
-    public ConfirmBombEnum InSafeAreas { get; set; } = ConfirmBombEnum.On;
+    public ConfirmationEnum BombsInSafeAreas { get; set; } = ConfirmationEnum.On;
 
     /// <summary>
     /// Gets or sets a value indicating whether or not to confirm bomb placement in dangerous areas.
     /// </summary>
-    public ConfirmBombEnum InDangerousAreas { get; set; } = ConfirmBombEnum.Off;
+    public ConfirmationEnum BombsInDangerousAreas { get; set; } = ConfirmationEnum.Off;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether or not to confirm warps in safe areas.
+    /// </summary>
+    public ConfirmationEnum WarpsInSafeAreas { get; set; } = ConfirmationEnum.On;
+
+    /// <summary>
+    /// Gets or sets a value indiciating whether or not to confirm warps in dangerous areas.
+    /// </summary>
+    public ConfirmationEnum WarpsInDangerousAreas { get; set; } = ConfirmationEnum.NotInMultiplayer;
+
+    /// <summary>
+    /// Gets or sets a value indiciating whether or not to confirm the return scepter in safe areas.
+    /// </summary>
+    public ConfirmationEnum ReturnScepterInSafeAreas { get; set; } = ConfirmationEnum.On;
+
+    /// <summary>
+    /// Gets or sets a value indiciating whether or not to confirm the return scepter in dangerous areas.
+    /// </summary>
+    public ConfirmationEnum ReturnScepterInDangerousAreas { get; set; } = ConfirmationEnum.NotInMultiplayer;
 
     /// <summary>
     /// Gets or sets map to which locations are considered safe.
@@ -96,7 +126,7 @@ public class ModConfig
             {
                 this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Safe);
             }
-            else if (loc is MineShaft or VolcanoDungeon)
+            else if (loc is MineShaft or VolcanoDungeon or BugLand)
             {
                 this.SafeLocationMap.TryAdd(loc.NameOrUniqueName, IsSafeLocationEnum.Dangerous);
             }

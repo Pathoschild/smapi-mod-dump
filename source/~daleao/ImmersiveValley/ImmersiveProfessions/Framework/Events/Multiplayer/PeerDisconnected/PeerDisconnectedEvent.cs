@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,10 +19,10 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IMultiplayerEvents.PeerDisconnected"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class PeerDisconnectedEvent : BaseEvent
 {
-    /// <summary>Raised after the connection to a player is severed.</summary>
+    /// <inheritdoc cref="IMultiplayerEvents.PeerDisconnected"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs e)
+    internal void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs e)
     {
         if (enabled.Value) OnPeerDisconnectedImpl(sender, e);
     }

@@ -17,52 +17,52 @@ using static SpriteMaster.Runtime;
 
 namespace SpriteMaster.Extensions;
 
-static class Collections {
+internal static class Collections {
 	#region IsBlank
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsBlank<T>(this IEnumerable<T>? enumerable) => enumerable is null || !enumerable.Any();
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsBlank<T>(this ICollection<T>? collection) => collection is null || collection.Count == 0;
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsBlank<T>(this IList<T>? list) => list is null || list.Count == 0;
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsBlank<T>(this List<T>? list) => list is null || list.Count == 0;
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsBlank<T>(this T[]? array) => array is null || array.Length == 0;
 	#endregion
 
 	#region IsEmpty
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsEmpty<T>(this IEnumerable<T> enumerable) => !enumerable.Any();
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsEmpty<T>(this ICollection<T> collection) => !collection.Any();
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsEmpty<T>(this IList<T> list) => list.Count == 0;
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsEmpty<T>(this List<T> list) => list.Count == 0;
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static bool IsEmpty<T>(this T[] array) => array.Length == 0;
 	#endregion
 
 	#region Blanked
-	[MethodImpl(MethodImpl.Hot)]
-	internal static T? Blanked<T>(this T? enumerable) where T : class?, IEnumerable<T> => enumerable.IsBlank() ? null : enumerable;
+	[MethodImpl(MethodImpl.Inline)]
+	internal static T? Blanked<T>(this T? enumerable) where T : class, IEnumerable<T> => enumerable.IsBlank() ? null : enumerable;
 
-	[MethodImpl(MethodImpl.Hot)]
+	[MethodImpl(MethodImpl.Inline)]
 	internal static T[]? Blanked<T>(this T[]? array) => array.IsBlank() ? null : array;
 	#endregion
 
-	[MethodImpl(MethodImpl.Hot)]
-	internal static V? GetOrAddDefault<K, V>(this Dictionary<K, V> dictionary, K key, Func<V> defaultGetter) where K : notnull {
-		if (dictionary.TryGetValue(key, out V? value)) {
+	[MethodImpl(MethodImpl.Inline)]
+	internal static V GetOrAddDefault<K, V>(this Dictionary<K, V> dictionary, K key, Func<V> defaultGetter) where K : notnull {
+		if (dictionary.TryGetValue(key, out var value)) {
 			return value;
 		}
 		var newValue = defaultGetter.Invoke();
@@ -74,7 +74,6 @@ static class Collections {
 	/// <summary>
 	/// Returns a new List that is constructed from the array.
 	/// </summary>
-	[MethodImpl(MethodImpl.Hot)]
 	internal static List<T> ToList<T>(this T[] array) {
 		if (ListReflectImpl<T>.ListSetItems is null || ListReflectImpl<T>.ListSetSize is null) {
 			var newList = new List<T>(array.Length);
@@ -98,7 +97,6 @@ static class Collections {
 	/// Returns a new List that contains the same elements as the array.
 	/// <para>Warning: it is not safe to use the array afterwards - the List now owns it.</para>
 	/// </summary>
-	[MethodImpl(MethodImpl.Hot)]
 	internal static List<T> BeList<T>(this T[] array) {
 		if (ListReflectImpl<T>.ListSetItems is null || ListReflectImpl<T>.ListSetSize is null) {
 			return array.ToList();

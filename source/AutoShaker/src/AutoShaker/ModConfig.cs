@@ -37,6 +37,7 @@ namespace AutoShaker
 						? MaxFruitsReady
 						: value;
 		}
+		public bool ShakeTeaBushes { get; set; }
 		public bool ShakeBushes { get; set; }
 		public bool UsePlayerMagnetism { get; set; }
 		public int ShakeDistance { get; set; }
@@ -50,6 +51,7 @@ namespace AutoShaker
 
 			ShakeRegularTrees = true;
 			ShakeFruitTrees = true;
+			ShakeTeaBushes = true;
 			FruitsReadyToShake = MinFruitsReady;
 			ShakeBushes = true;
 
@@ -118,6 +120,14 @@ namespace AutoShaker
 				val => FruitsReadyToShake = val,
 				MinFruitsReady,
 				MaxFruitsReady);
+
+			// ShakeTeaBushes
+			gmcmApi.RegisterSimpleOption(
+				manifest,
+				"Shake Tea Bushes?",
+				"Whether or not the AutoShaker will shake tea bushes that you walk by for tea leaves.",
+				() => ShakeTeaBushes,
+				val => ShakeTeaBushes = val);
 
 			// ShakeBushes
 			gmcmApi.RegisterSimpleOption(

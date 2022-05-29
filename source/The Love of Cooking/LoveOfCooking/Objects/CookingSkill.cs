@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -136,8 +137,8 @@ namespace LoveOfCooking.Objects
 					Name = i18n.Get($"{id}{extra}.name"),
 					Description = i18n.Get($"{id}{extra}.description",
 					new { // v-- Skill profession description values are tokenised here
-						SaleValue = (SalePriceModifier - 1) * 100,
-						RestorationAltValue = RestorationAltValue,
+						SaleValue = $"{((SalePriceModifier - 1) * 100):00}",
+						RestorationAltValue = $"{(RestorationAltValue):00}",
 					})
 				};
 				// Skill professions are paired and applied
@@ -160,7 +161,7 @@ namespace LoveOfCooking.Objects
 			{
 				list.Add(i18n.Get("menu.cooking_skill.levelup_burn", new
 					{
-						Number = level * BurnChanceModifier * BurnChanceReduction
+						Number = $"{(level * BurnChanceModifier * BurnChanceReduction):0.00}"
 					}));
 			}
 
@@ -175,15 +176,19 @@ namespace LoveOfCooking.Objects
 
 		public override string GetSkillPageHoverText(int level)
 		{
-			string str = "";
+			string hoverText = string.Empty;
 
 			if (ModEntry.Config.FoodCanBurn)
-				str += "\n" + i18n.Get("menu.cooking_skill.levelup_burn", new
+			{
+				hoverText += Environment.NewLine + i18n.Get(
+					key: "menu.cooking_skill.levelup_burn",
+					tokens: new
 					{
-						Number = level * BurnChanceModifier * BurnChanceReduction
+						Number = $"{(level * BurnChanceModifier * BurnChanceReduction):0.00}"
 					});
+			}
 
-			return str;
+			return hoverText;
 		}
 	}
 }

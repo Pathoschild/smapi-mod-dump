@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -19,12 +19,12 @@ using StardewModdingAPI.Events;
 /// <summary>Wrapper for <see cref="IGameLoopEvents.UpdateTicked"/> allowing dynamic enabling / disabling.</summary>
 internal abstract class UpdateTickedEvent : BaseEvent
 {
-    /// <summary>Raised after the game state is updated.</summary>
+    /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event arguments.</param>
-    public void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+    internal void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
     {
-        if (enabled.Value) OnUpdateTickedImpl(sender, e);
+        if (enabled.Value || GetType().Name.StartsWith("Static")) OnUpdateTickedImpl(sender, e);
     }
 
     /// <inheritdoc cref="OnUpdateTicked" />

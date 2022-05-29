@@ -71,6 +71,9 @@ public static class InventoryHelper {
 		if (item is Boots boots)
 			return $"(B){boots.indexInTileSheet.Value}";
 
+		if (item is Ring ring)
+			return $"(R){ring.indexInTileSheet.Value}";
+
 		if (item is Furniture furniture)
 			return $"(F){furniture.ParentSheetIndex}";
 
@@ -148,6 +151,9 @@ public static class InventoryHelper {
 			case "P":
 			case "S":
 				result = new Clothing(nid);
+				break;
+			case "R":
+				result = new Ring(nid);
 				break;
 			case "W":
 				result = new MeleeWeapon(nid);
@@ -272,7 +278,8 @@ public static class InventoryHelper {
 			distanceLimit,
 			scanLimit,
 			targetLimit,
-			includeDiagonal
+			includeDiagonal,
+			null
 		);
 	}
 
@@ -339,6 +346,8 @@ public static class InventoryHelper {
 			}
 		}
 
+		List<LocatedInventory> extra_located = new();
+
 		if (sources != null)
 			foreach (LocatedInventory source in sources) {
 				var provider = getProvider(source.Source);
@@ -363,6 +372,10 @@ public static class InventoryHelper {
 							AbsolutePosition abs = new(source.Location, pos.Value);
 							potentials.Add(abs);
 							origins[abs] = abs.Position;
+						} else {
+							// We couldn't find it, but we need to assume it's
+							// still valid.
+							extra_located.Add(new LocatedInventory(source.Source, source.Location));
 						}
 					}
 				}
@@ -393,7 +406,8 @@ public static class InventoryHelper {
 			distanceLimit,
 			scanLimit,
 			targetLimit,
-			includeDiagonal
+			includeDiagonal,
+			extra_located
 		);
 	}
 
@@ -439,7 +453,8 @@ public static class InventoryHelper {
 			distanceLimit,
 			scanLimit,
 			targetLimit,
-			includeDiagonal
+			includeDiagonal,
+			null
 		);
 	}
 
@@ -485,9 +500,13 @@ public static class InventoryHelper {
 		int distanceLimit,
 		int scanLimit,
 		int targetLimit,
-		bool includeDiagonal
+		bool includeDiagonal,
+		List<LocatedInventory>? extra
 	) {
 		List<LocatedInventory> result = new();
+
+		if (extra is not null)
+			result.AddRange(extra);
 
 		int i = start;
 

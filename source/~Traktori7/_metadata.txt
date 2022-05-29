@@ -11,9 +11,9 @@ mods:
    Show Birthdays
 
 latest commit:
-   commit 8eff20e61b7d2f36a500926a3d81462abac118f1
+   commit ae58d2819426bb61d10ae2e7bbb05c236a55b566
    Author: KiviKivi9133 <salonenkyosti@gmail.com>
-   Date:   Wed Apr 27 21:23:46 2022 +0300
+   Date:   Fri May 20 20:23:33 2022 +0300
    
-       Added exceptions if the method wasn't found, just in case
+       Initial Commit for Endgame Bundles, and some other commits
    

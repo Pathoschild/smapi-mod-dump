@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/11420
+IDs: Aimon111.RedisignedFarmHouseLayout.Warps
+update keys: Nexus:11420

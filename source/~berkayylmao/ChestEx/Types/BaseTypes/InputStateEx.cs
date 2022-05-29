@@ -12,7 +12,7 @@
 
 // 
 //    ChestEx (StardewValleyMods)
-//    Copyright (c) 2021 Berkay Yigit <berkaytgy@gmail.com>
+//    Copyright (c) 2022 Berkay Yigit <berkaytgy@gmail.com>
 // 
 //    This program is free software: you can redistribute it and/or modify
 //    it under the terms of the GNU Affero General Public License as published
@@ -39,15 +39,15 @@ using StardewModdingAPI;
 namespace ChestEx.Types.BaseTypes {
   public class InputStateEx : IEquatable<InputStateEx> {
     // Private:
-  #region Private
+    #region Private
 
-    private        SButtonState buttonState = SButtonState.None;
-    private static Vector2      sCursorPos  = Vector2.Zero;
+    private SButtonState buttonState = SButtonState.None;
+    private static Vector2 sCursorPos = Vector2.Zero;
 
-  #endregion
+    #endregion
 
     // Public:
-  #region Public
+    #region Public
 
     /// <summary>Button</summary>
     public SButton mButton { get; }
@@ -59,7 +59,7 @@ namespace ChestEx.Types.BaseTypes {
         if (this.buttonState == value) return;
 
         this.mLastButtonState = this.mButtonState;
-        this.buttonState      = value;
+        this.buttonState = value;
       }
     }
 
@@ -81,7 +81,7 @@ namespace ChestEx.Types.BaseTypes {
         if (sCursorPos == value) return;
 
         gLastCursorPos = sCursorPos;
-        sCursorPos     = value;
+        sCursorPos = value;
       }
     }
 
@@ -89,24 +89,24 @@ namespace ChestEx.Types.BaseTypes {
     public static Vector2 gLastCursorPos { get; set; }
 
     // Overrides:
-  #region Overrides
+    #region Overrides
 
     public Boolean Equals(InputStateEx other) {
       return other is not null && other.mButton == this.mButton && other.mButtonState == this.mButtonState && other.mLastButtonState == this.mLastButtonState;
     }
 
-  #endregion
+    #endregion
 
-  #endregion
+    #endregion
 
     // Constructors:
-  #region Constructors
+    #region Constructors
 
     public InputStateEx(SButton button) {
-      this.mButton      = button;
+      this.mButton = button;
       this.mButtonState = SButtonState.None;
     }
 
-  #endregion
+    #endregion
   }
 }

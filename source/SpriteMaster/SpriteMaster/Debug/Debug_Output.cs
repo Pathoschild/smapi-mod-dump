@@ -15,8 +15,8 @@ using System.Diagnostics;
 
 namespace SpriteMaster;
 
-static partial class Debug {
-	[DebuggerStepThrough, DebuggerHidden()]
+internal static partial class Debug {
+	[DebuggerStepThrough, DebuggerHidden]
 	private static ConsoleColor GetColor(this LogLevel @this) {
 		return @this switch {
 			LogLevel.Debug => Color.Trace,
@@ -28,7 +28,7 @@ static partial class Debug {
 		};
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	private static void DebugWrite(LogLevel level, string str) {
 		if (LogFile is not null) {
 			try {
@@ -56,7 +56,7 @@ static partial class Debug {
 		}
 	}
 
-	[DebuggerStepThrough, DebuggerHidden()]
+	[DebuggerStepThrough, DebuggerHidden]
 	private static void DebugWriteStr(string str, LogLevel level) {
 		var lines = str.Lines(removeEmpty: true);
 		var fullString = string.Join("\n", lines);

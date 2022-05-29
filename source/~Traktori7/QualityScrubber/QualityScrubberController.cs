@@ -11,27 +11,27 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using SObject = StardewValley.Object;
 using StardewValley.Objects;
+using SObject = StardewValley.Object;
 
 
 namespace QualityScrubber
 {
 	public class QualityScrubberController
 	{
-		private IMonitor Monitor { get; set; }
-		private ModConfig Config { get; set; }
+		private readonly IMonitor monitor;
+		private readonly ModConfig config;
 
 		public int Duration
 		{
-			get { return Config.Duration; }
+			get { return config.Duration; }
 		}
 
 
 		public QualityScrubberController(IMonitor monitor, ModConfig config)
 		{
-			this.Monitor = monitor;
-			this.Config = config;
+			this.monitor = monitor;
+			this.config = config;
 		}
 
 
@@ -40,7 +40,7 @@ namespace QualityScrubber
 			if (inputItem is null)
 				return false;
 
-			if (machine.heldObject.Value != null)
+			if (machine.heldObject.Value is not null)
 			{
 				//Monitor.Log("The machine is already scrubbing!", LogLevel.Debug);
 				return false;
@@ -59,14 +59,14 @@ namespace QualityScrubber
 			}
 
 			// Ignore roe/wine/juice/jelly/pickles
-			if (!Config.AllowPreserves && inputObject.preserve.Value != null)
+			if (!config.AllowPreserves && inputObject.preserve.Value is not null)
 			{
 				//Monitor.Log("You can't scrub these yet!", LogLevel.Debug);
 				return false;
 			}
 
 			// Ignore honey...
-			if (!Config.AllowHoney && inputObject.ParentSheetIndex == 340)
+			if (!config.AllowHoney && inputObject.ParentSheetIndex == 340)
 			{
 				//Monitor.Log("You can't scrub honey!", LogLevel.Debug);
 				return false;
@@ -98,7 +98,7 @@ namespace QualityScrubber
 					{
 						outputObject.honeyType.Value = inputObject.honeyType.Value;
 
-						if (Config.TurnHoneyIntoGenericHoney)
+						if (config.TurnHoneyIntoGenericHoney)
 							turnIntoGeneric = true;
 					}
 				}
@@ -109,23 +109,23 @@ namespace QualityScrubber
 				{
 					case SObject.PreserveType.AgedRoe:
 					case SObject.PreserveType.Roe:
-						if (Config.TurnRoeIntoGenericRoe)
+						if (config.TurnRoeIntoGenericRoe)
 							turnIntoGeneric = true;
 						break;
 					case SObject.PreserveType.Jelly:
-						if (Config.TurnJellyIntoGenericJelly)
+						if (config.TurnJellyIntoGenericJelly)
 							turnIntoGeneric = true;
 						break;
 					case SObject.PreserveType.Juice:
-						if (Config.TurnJuiceIntoGenericJuice)
+						if (config.TurnJuiceIntoGenericJuice)
 							turnIntoGeneric = true;
 						break;
 					case SObject.PreserveType.Pickle:
-						if (Config.PicklesIntoGenericPickles)
+						if (config.PicklesIntoGenericPickles)
 							turnIntoGeneric = true;
 						break;
 					case SObject.PreserveType.Wine:
-						if (Config.TurnWineIntoGenericWine)
+						if (config.TurnWineIntoGenericWine)
 							turnIntoGeneric = true;
 						break;
 					default:
@@ -156,7 +156,7 @@ namespace QualityScrubber
 
 			//this.Monitor.Log("Machine starts to scrub the item", LogLevel.Debug);
 			machine.heldObject.Value = outputObject;
-			machine.MinutesUntilReady = Config.Duration;
+			machine.MinutesUntilReady = config.Duration;
 
 			// Remove the item from inventory, if everything was successful
 			if (who.ActiveObject.Stack == 1)

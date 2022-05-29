@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-//using SObject = StardewValley.Object;
+// using SObject = StardewValley.Object;
 
 using Microsoft.Xna.Framework;
 

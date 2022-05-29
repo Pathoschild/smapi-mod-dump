@@ -9,16 +9,16 @@
 *************************************************/
 
 using LinqFasterer;
-using Microsoft.Toolkit.HighPerformance;
-using Microsoft.Xna.Framework.Graphics;
 using SpriteMaster.Caching;
 using SpriteMaster.Configuration;
 using SpriteMaster.Extensions;
+using SpriteMaster.Hashing;
 using SpriteMaster.Metadata;
 using SpriteMaster.Resample.Passes;
 using SpriteMaster.Tasking;
 using SpriteMaster.Types;
 using SpriteMaster.Types.Fixed;
+using SpriteMaster.Types.Spans;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -26,7 +26,7 @@ using System.Text;
 
 namespace SpriteMaster.Resample;
 
-sealed class Resampler {
+internal sealed class Resampler {
 	internal enum ResampleStatus {
 		Unknown = -1,
 		Success = 0,
@@ -36,61 +36,57 @@ sealed class Resampler {
 		Disabled = 4,
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
-	internal static void PurgeHash(Texture2D reference) {
+	[MethodImpl(Runtime.MethodImpl.Inline)]
+	internal static void PurgeHash(XTexture2D reference) {
 		reference.Meta().CachedRawData = null;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ulong GetHash(SpriteInfo input, TextureType textureType) {
 		// Need to make Hashing.CombineHash work better.
-		ulong hash = input.Hash;
+		var hash = input.Hash;
 
 		if (Config.Resample.EnableDynamicScale) {
-			hash = Hashing.Combine(hash, Hashing.Rehash(input.ExpectedScale));
+			hash = HashUtility.Combine(hash, HashUtility.Rehash(input.ExpectedScale));
 		}
 
 		if (textureType == TextureType.Sprite) {
-			hash = Hashing.Combine(hash, input.Bounds.Extent.GetLongHashCode());
+			hash = HashUtility.Combine(hash, input.Bounds.Extent.GetLongHashCode());
 		}
 		return hash;
 	}
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
 	internal static ulong? GetHash(in SpriteInfo.Initializer input, TextureType textureType) {
 		if (!input.Hash.HasValue) {
 			return null;
 		}
 
 		// Need to make Hashing.CombineHash work better.
-		ulong hash = input.Hash.Value;
+		var hash = input.Hash.Value;
 
 		if (Config.Resample.EnableDynamicScale) {
-			hash = Hashing.Combine(hash, Hashing.Rehash(input.ExpectedScale));
+			hash = HashUtility.Combine(hash, HashUtility.Rehash(input.ExpectedScale));
 		}
 
 		if (textureType == TextureType.Sprite) {
-			hash = Hashing.Combine(hash, input.Bounds.Extent.GetLongHashCode());
+			hash = HashUtility.Combine(hash, input.Bounds.Extent.GetLongHashCode());
 		}
 		return hash;
 	}
 
-	private static readonly WeakSet<Texture2D> GarbageMarkSet = Config.Garbage.CollectAccountUnownedTextures ? new() : null!;
+	private static readonly WeakSet<XTexture2D> GarbageMarkSet = Config.Garbage.CollectAccountUnownedTextures ? new() : null!;
 
 	private const int WaterBlock = 4;
-	private const int FontBlock = 1;
 
 	// TODO : use MemoryFailPoint class. Extensively.
 
 	private enum GammaState {
 		Linear,
-		Gamma,
-		Unknown
+		Gamma
 	}
 
 	//internal static readonly ArrayPool<Color16> ResamplerArrayPool = ArrayPool<Color16>.Shared;
 
-	private static unsafe Span<byte> CreateNewTexture(
+	private static unsafe ReadOnlyPinnedSpan<byte> CreateNewTexture(
 		ManagedSpriteInstance texture,
 		bool async,
 		SpriteInfo input,
@@ -114,12 +110,12 @@ sealed class Resampler {
 		blockPadding = Vector2I.Zero;
 		isGradient = false;
 
-		string MakeDumpPath(in Analysis.LegacyResults? analysis = null, in PaddingQuad? padding = null, string? subPath = null, string[]? modifiers = null) {
+		string MakeDumpPath(in Analysis.LegacyResults? analysis = null, PaddingQuad? padding = null, string? subPath = null, string[]? modifiers = null) {
 			var normalizedName = input.Reference.NormalizedName().Replace('\\', '.');
 			var dumpPath = new StringBuilder();
 			dumpPath.Append($"{normalizedName}.{hashString}");
 			if (analysis.HasValue) {
-				static string SimplifyBools(in Vector2B vec) {
+				static string SimplifyBools(Vector2B vec) {
 					return $"{vec.X.ToInt()}{vec.Y.ToInt()}";
 				}
 
@@ -198,20 +194,27 @@ sealed class Resampler {
 				result = ResampleStatus.DisabledSolid;
 				size = default;
 				format = default;
-				return Span<byte>.Empty;
+				return PinnedSpan<byte>.Empty;
 			}
 		}
 
 		// TODO : handle inverted input.Bounds
-		var spriteRawData8 = Passes.ExtractSprite.Extract(
-			data: input.ReferenceData.AsSpan<Color8>(),
-			textureBounds: input.Reference.Bounds,
-			spriteBounds: inputBounds,
-			stride: input.ReferenceSize.Width,
-			block: blockSize,
-			newExtent: out Vector2I spriteRawExtent
-		);
-		var innerSpriteRawExtent = spriteRawExtent;
+		ReadOnlySpan<Color8> spriteRawData8;
+		Vector2I spriteRawExtent;
+		if (blockSize <= 1 && inputBounds == input.Reference.Bounds) {
+			spriteRawData8 = input.ReferenceData.AsReadOnlySpan<Color8>();
+			spriteRawExtent = inputBounds.Extent;
+		}
+		else {
+			spriteRawData8 = ExtractSprite.Extract(
+				data: input.ReferenceData.AsSpan<Color8>(),
+				textureBounds: input.Reference.Bounds,
+				spriteBounds: inputBounds,
+				stride: input.ReferenceSize.Width,
+				block: blockSize,
+				newExtent: out spriteRawExtent
+			);
+		}
 
 		if (Config.Debug.Sprite.DumpReference) {
 			Textures.DumpTexture(
@@ -224,7 +227,7 @@ sealed class Resampler {
 
 		// At this point, rawData includes just the sprite's raw data.
 
-		var analysis = Passes.Analysis.AnalyzeLegacy(
+		var analysis = Analysis.AnalyzeLegacy(
 			reference: input.Reference,
 			data: spriteRawData8,
 			bounds: spriteRawExtent,
@@ -263,7 +266,7 @@ sealed class Resampler {
 			result = isGradient ? ResampleStatus.DisabledGradient : ResampleStatus.Disabled;
 			size = default;
 			format = default;
-			return Span<byte>.Empty;
+			return PinnedSpan<byte>.Empty;
 		}
 
 		if (analysis.MaxChannelShades <= 1) {
@@ -280,7 +283,7 @@ sealed class Resampler {
 				result = ResampleStatus.DisabledSolid;
 				size = default;
 				format = default;
-				return Span<byte>.Empty;
+				return PinnedSpan<byte>.Empty;
 			}
 		}
 
@@ -314,7 +317,7 @@ sealed class Resampler {
 
 		Span<Color16> bitmapDataWide = spriteRawData;
 
-		scalerInfo = Resample.Scalers.IScaler.GetScalerInfo(scalerType);
+		scalerInfo = Scalers.IScaler.GetScalerInfo(scalerType);
 
 		if (scalerInfo is not null) {
 			scale *= (uint)blockSize;
@@ -339,14 +342,14 @@ sealed class Resampler {
 			bool handlePadding = !directImage;
 
 			if (handlePadding) {
-				if (Passes.Padding.IsBlacklisted(inputBounds, input.Reference)) {
+				if (Padding.IsBlacklisted(inputBounds, input.Reference)) {
 					handlePadding = false;
 				}
 			}
 
 			// Apply padding to the sprite if necessary
 			if (handlePadding) {
-				spriteRawData = Passes.Padding.Apply(
+				spriteRawData = Padding.Apply(
 					data: spriteRawData,
 					spriteSize: spriteRawExtent,
 					scale: scale,
@@ -361,22 +364,22 @@ sealed class Resampler {
 			scaledSize = spriteRawExtent * scale;
 			scaledSizeClamped = scaledSize.Min(Config.ClampDimension);
 
-			bitmapDataWide = SpanExt.MakePinned<Color16>(scaledSize.Area);
+			bitmapDataWide = SpanExt.Make<Color16>(scaledSize.Area);
 
 			try {
 				var doWrap = wrapped | input.IsWater;
 
 				if (gammaCorrect && currentGammaState == GammaState.Gamma) {
-					Passes.GammaCorrection.Linearize(spriteRawData, spriteRawExtent);
+					GammaCorrection.Linearize(spriteRawData, spriteRawExtent);
 					currentGammaState = GammaState.Linear;
 				}
 
 				if (premultiplyAlpha) {
-					Passes.PremultipliedAlpha.Reverse(spriteRawData, spriteRawExtent);
+					PremultipliedAlpha.Reverse(spriteRawData, spriteRawExtent);
 				}
 
 				if (Config.Resample.Deposterization.PreEnabled) {
-					spriteRawData = Deposterize.Enhance<Color16>(spriteRawData, spriteRawExtent, doWrap);
+					spriteRawData = Deposterize.Enhance(spriteRawData, spriteRawExtent, doWrap);
 
 					if (Config.Debug.Sprite.DumpReference) {
 						Textures.DumpTexture(
@@ -406,19 +409,19 @@ sealed class Resampler {
 				);
 
 				if (Config.Resample.Deposterization.PostEnabled) {
-					bitmapDataWide = Deposterize.Enhance<Color16>(bitmapDataWide, scaledSize, doWrap);
+					bitmapDataWide = Deposterize.Enhance(bitmapDataWide, scaledSize, doWrap);
 				}
 
 				if (Config.Resample.UseColorEnhancement) {
-					bitmapDataWide = Recolor.Enhance<Color16>(bitmapDataWide, scaledSize);
+					bitmapDataWide = Recolor.Enhance(bitmapDataWide, scaledSize);
 				}
 
 				if (premultiplyAlpha) {
-					Passes.PremultipliedAlpha.Apply(bitmapDataWide, scaledSize);
+					PremultipliedAlpha.Apply(bitmapDataWide, scaledSize);
 				}
 
 				if (gammaCorrect && currentGammaState == GammaState.Linear) {
-					Passes.GammaCorrection.Delinearize(bitmapDataWide, scaledSize);
+					GammaCorrection.Delinearize(bitmapDataWide, scaledSize);
 					currentGammaState = GammaState.Gamma;
 				}
 			}
@@ -469,7 +472,7 @@ sealed class Resampler {
 		}
 
 		// Narrow
-		var bitmapData = Color8.Convert(bitmapDataWide);
+		var bitmapData = Color8.ConvertPinned(bitmapDataWide);
 		var resultData = bitmapData.AsBytes();
 
 		if (Config.Debug.Sprite.DumpResample) {
@@ -494,27 +497,28 @@ sealed class Resampler {
 			// so it will just ignore the padding areas. That would be more efficient than this.
 
 			// Check for special cases
-			bool HasAlpha = true;
-			bool IsPunchThroughAlpha = false;
-			bool IsMasky = false;
+			bool hasAlpha = true;
+			bool isPunchThroughAlpha = false;
+			bool isMasky = false;
 			bool hasR = true;
 			bool hasG = true;
 			bool hasB = true;
 			{
-				const int MaxShades = byte.MaxValue + 1;
+				const int maxShades = byte.MaxValue + 1;
 
-				Span<int> alpha = stackalloc int[MaxShades];
-				Span<int> blue = stackalloc int[MaxShades];
-				Span<int> green = stackalloc int[MaxShades];
-				Span<int> red = stackalloc int[MaxShades];
-				for (int i = 0; i < MaxShades; ++i) {
+				Span<int> alpha = stackalloc int[maxShades];
+				Span<int> blue = stackalloc int[maxShades];
+				Span<int> green = stackalloc int[maxShades];
+				Span<int> red = stackalloc int[maxShades];
+				for (int i = 0; i < maxShades; ++i) {
 					alpha[i] = 0;
 					blue[i] = 0;
 					green[i] = 0;
 					red[i] = 0;
 				}
-
-				foreach (var color in bitmapData) {
+				
+				for (int i = 0; i < bitmapData.Length; ++i) {
+					var color = bitmapData[i];
 					alpha[color.A.Value]++;
 					blue[color.B.Value]++;
 					green[color.G.Value]++;
@@ -526,19 +530,23 @@ sealed class Resampler {
 				hasB = blue[0] != bitmapData.Length;
 
 				//Debug.Warning($"Punch-through Alpha: {intData.Length}");
-				IsPunchThroughAlpha = IsMasky = alpha[0] + alpha[MaxShades - 1] == bitmapData.Length;
-				HasAlpha = alpha[MaxShades - 1] != bitmapData.Length;
+				isPunchThroughAlpha = isMasky = alpha[0] + alpha[maxShades - 1] == bitmapData.Length;
+				hasAlpha = alpha[maxShades - 1] != bitmapData.Length;
 
-				if (HasAlpha && !IsPunchThroughAlpha) {
-					var alphaDeviation = Statistics.StandardDeviation(alpha, MaxShades, 1, MaxShades - 2);
-					IsMasky = alphaDeviation < Config.Resample.BlockCompression.HardAlphaDeviationThreshold;
+				if (hasAlpha && !isPunchThroughAlpha) {
+					var alphaDeviation = Statistics.StandardDeviation(alpha, maxShades, 1, maxShades - 2);
+					isMasky = alphaDeviation < Config.Resample.BlockCompression.HardAlphaDeviationThreshold;
 				}
 			}
+
+			ReadOnlySpan<Color8> uncompressedBitmapData = bitmapData;
+			var originalScaledSizeClamped = scaledSizeClamped;
+			var originalBlockPadding = blockPadding;
 
 			if (!Decoder.BlockDecoderCommon.IsBlockMultiple(scaledSizeClamped)) {
 				var blockPaddedSize = scaledSizeClamped + 3 & ~3;
 
-				var spanDst = SpanExt.MakeUninitialized<Color8>(blockPaddedSize.Area);
+				var spanDst = SpanExt.Make<Color8>(blockPaddedSize.Area);
 				var spanSrc = bitmapData;
 
 				int y;
@@ -566,13 +574,13 @@ sealed class Resampler {
 					}
 				}
 
-				bitmapData = spanDst;
+				uncompressedBitmapData = spanDst;
 				blockPadding += blockPaddedSize - scaledSizeClamped;
 				scaledSizeClamped = blockPaddedSize;
 
 				if (Config.Debug.Sprite.DumpResample) {
 					Textures.DumpTexture(
-						source: bitmapData,
+						source: uncompressedBitmapData,
 						sourceSize: blockPaddedSize,
 						// swap: (2, 1, 0, 4),
 						path: MakeDumpPath(analysis: analysis, padding: padding, modifiers: new[] { "resample", "blockpadded" })
@@ -580,29 +588,22 @@ sealed class Resampler {
 				}
 			}
 
-			resultData = TextureEncode.Encode(
-				data: bitmapData,
-				format: ref format,
-				dimensions: scaledSizeClamped,
-				hasAlpha: HasAlpha,
-				isPunchthroughAlpha: IsPunchThroughAlpha,
-				isMasky: IsMasky,
-				hasR: hasR,
-				hasG: hasG,
-				hasB: hasB
-			);
-
-			/*
-			if (Config.Debug.Sprite.DumpResample) {
-				Textures.DumpTexture(
-					source: resultData,
-					sourceSize: scaledSizeClamped,
-					format: format,
-					// swap: (2, 1, 0, 4),
-					path: MakeDumpPath(analysis: analysis, padding: padding, modifiers: new[] { "resample", "encoded" })
-				);
+			if (!TextureEncode.Encode(
+					data: uncompressedBitmapData,
+					format: ref format,
+					dimensions: scaledSizeClamped,
+					hasAlpha: hasAlpha,
+					isPunchthroughAlpha: isPunchThroughAlpha,
+					isMasky: isMasky,
+					hasR: hasR,
+					hasG: hasG,
+					hasB: hasB,
+					result: out resultData
+				)) {
+				resultData = bitmapData.AsBytes();
+				blockPadding = originalBlockPadding;
+				scaledSizeClamped = originalScaledSizeClamped;
 			}
-			*/
 		}
 
 		size = scaledSizeClamped;
@@ -625,17 +626,18 @@ sealed class Resampler {
 						result: out var result
 					);
 
-					if (result is (ResampleStatus.DisabledGradient or ResampleStatus.DisabledSolid)) {
-						Debug.Trace($"Skipping resample of {spriteInstance.Name} {input.Bounds}: NoResample");
-						spriteInstance.NoResample = true;
-						if (input.Reference is Texture2D texture) {
-							texture.Meta().AddNoResample(input.Bounds);
-						}
-
-						return null;
+					if (result is not (ResampleStatus.DisabledGradient or ResampleStatus.DisabledSolid)) {
+						return resultTexture;
 					}
 
-					return resultTexture;
+					Debug.Trace($"Skipping resample of {spriteInstance.Name} {input.Bounds}: NoResample");
+					spriteInstance.NoResample = true;
+					if (input.Reference is { } texture) {
+						texture.Meta().AddNoResample(input.Bounds);
+					}
+
+					return null;
+
 				}
 				catch (OutOfMemoryException) {
 					Debug.Warning("OutOfMemoryException encountered during Upscale, garbage collecting and deferring.");
@@ -651,9 +653,10 @@ sealed class Resampler {
 		return null;
 	}
 
-	internal static readonly Action<Texture2D, int, byte[], int, int>? PlatformSetData = typeof(Texture2D).GetMethods(
+	internal static readonly Action<XTexture2D, int, byte[], int, int>? PlatformSetData = typeof(XTexture2D).GetMethods(
 		BindingFlags.Instance | BindingFlags.NonPublic
-	).SingleF(m => m.Name == "PlatformSetData" && m.GetParameters().Length == 4)?.MakeGenericMethod(new Type[] { typeof(byte) })?.CreateDelegate<Action<Texture2D, int, byte[], int, int>>();
+	).SingleF(m => m.Name == "PlatformSetData" && m.GetParameters().Length == 4).MakeGenericMethod(typeof(byte))
+		.CreateDelegate<Action<XTexture2D, int, byte[], int, int>>();
 
 	private static ManagedTexture2D? UpscaleInternal(ManagedSpriteInstance spriteInstance, ref uint scale, SpriteInfo input, ulong hash, ref Vector2B wrapped, bool async, out ResampleStatus result) {
 		var spriteFormat = TextureFormat.Color;
@@ -662,27 +665,21 @@ sealed class Resampler {
 			Garbage.Mark(input.Reference);
 			// TODO : this won't be hit if the object is finalized without disposal
 			input.Reference.Disposing += (obj, _) => {
-				Garbage.Unmark((Texture2D)obj!);
+				Garbage.Unmark((XTexture2D)obj!);
 			};
 		}
 
 		var hashString = hash.ToString("x");
 
-		var inputSize = input.TextureType switch {
-			TextureType.Sprite => input.Bounds.Extent,
-			TextureType.Image => input.ReferenceSize,
-			TextureType.SlicedImage => input.Bounds.Extent,
-			_ => throw new NotImplementedException("Unknown Image Type provided")
-		};
-
 		result = ResampleStatus.Unknown;
 
-		Span<byte> bitmapData;
 		try {
 			var newSize = Vector2I.Zero;
 
 			var cachePath = FileCache.GetPath($"{hashString}.cache");
 
+			ReadOnlyPinnedSpan<byte> pinnedBitmapData = default;
+			ReadOnlySpan<byte> bitmapData;
 			try {
 				if (FileCache.Fetch(
 					path: cachePath,
@@ -716,7 +713,7 @@ sealed class Resampler {
 				bool isGradient = false;
 
 				try {
-					bitmapData = CreateNewTexture(
+					bitmapData = pinnedBitmapData = CreateNewTexture(
 						async: async,
 						texture: spriteInstance,
 						input: input,
@@ -752,32 +749,29 @@ sealed class Resampler {
 						blockPadding: spriteInstance.BlockPadding,
 						scalerInfo: spriteInstance.ScalerInfo,
 						gradient: isGradient,
-						data: bitmapData
+						data: pinnedBitmapData
 					);
 				}
-				catch { }
+				catch {
+					// ignored
+				}
 			}
 
 			spriteInstance.UnpaddedSize = newSize - (spriteInstance.Padding.Sum + spriteInstance.BlockPadding);
 			spriteInstance.InnerRatio = (Vector2F)newSize / (Vector2F)spriteInstance.UnpaddedSize;
 
-			ManagedTexture2D? CreateTexture(byte[] data) {
+			ManagedTexture2D? CreateTexture(ReadOnlyPinnedSpan<byte>.FixedSpan data) {
 				if (input.Reference.GraphicsDevice.IsDisposed) {
 					return null;
 				}
 				//var newTexture2 = GL.GLTexture.CreateTexture2D(newSize, false, spriteFormat);
 				var newTexture = new ManagedTexture2D(
+					data: data,
 					instance: spriteInstance,
 					reference: input.Reference,
 					dimensions: newSize,
 					format: spriteFormat
 				);
-				if (PlatformSetData is not null) {
-					PlatformSetData(newTexture, 0, data, 0, data.Length);
-				}
-				else {
-					newTexture.SetData(data);
-				}
 
 				return newTexture;
 			}
@@ -785,8 +779,13 @@ sealed class Resampler {
 			var isAsync = Config.AsyncScaling.Enabled && async;
 			if (!isAsync || Config.AsyncScaling.ForceSynchronousStores || DrawState.ForceSynchronous) {
 				var reference = input.Reference;
-				var bitmapDataArray = bitmapData.ToArray();
-				void syncCall() {
+
+				byte[]? bitmapDataArray = null;
+				if (pinnedBitmapData.IsEmpty) {
+					bitmapDataArray = bitmapData.ToArray();
+				}
+
+				void SyncCallFixed(ReadOnlyPinnedSpan<byte>.FixedSpan data) {
 					if (reference.IsDisposed) {
 						return;
 					}
@@ -795,36 +794,76 @@ sealed class Resampler {
 					}
 					ManagedTexture2D? newTexture = null;
 					try {
-						newTexture = CreateTexture(bitmapDataArray);
+						newTexture = CreateTexture(data);
 						spriteInstance.Texture = newTexture;
 						spriteInstance.Finish();
 					}
 					catch (Exception ex) {
 						ex.PrintError();
-						if (newTexture is not null) {
-							newTexture.Dispose();
-						}
+						newTexture?.Dispose();
 						spriteInstance.Dispose();
 					}
 				}
-				SynchronizedTaskScheduler.Instance.QueueDeferred(syncCall, new(bitmapData.Length));
+
+				void SyncCallArray() {
+					if (reference.IsDisposed) {
+						return;
+					}
+					if (spriteInstance.IsDisposed) {
+						return;
+					}
+
+					unsafe {
+						fixed (byte* ptr = bitmapDataArray) {
+							var pinnedSpan = new ReadOnlyPinnedSpan<byte>(bitmapDataArray, ptr, bitmapDataArray.Length);
+							SyncCallFixed(pinnedSpan.Fixed);
+						}
+					}
+				}
+
+				if (bitmapDataArray is null) {
+					var fixedData = pinnedBitmapData.Fixed;
+					SynchronizedTaskScheduler.Instance.QueueDeferred(
+						() => SyncCallFixed(fixedData),
+						new(bitmapData.Length)
+					);
+				}
+				else {
+					SynchronizedTaskScheduler.Instance.QueueDeferred(
+						SyncCallArray,
+						new(bitmapData.Length)
+					);
+				}
 				return null;
 			}
 			else {
 				ManagedTexture2D? newTexture = null;
 				try {
-					newTexture = CreateTexture(bitmapData.ToArray());
-					if (isAsync) {
-						spriteInstance.Texture = newTexture;
-						spriteInstance.Finish();
+					// TODO : this is very inefficient
+					if (pinnedBitmapData.IsEmpty) {
+						var asArray = bitmapData.ToArray();
+						unsafe {
+							fixed (byte* ptr = asArray) {
+								var pinnedSpan = new ReadOnlyPinnedSpan<byte>(asArray, ptr, asArray.Length);
+								newTexture = CreateTexture(pinnedSpan.Fixed);
+							}
+						}
 					}
+					else {
+
+					}
+					newTexture = CreateTexture(pinnedBitmapData.Fixed);
+					if (!isAsync) {
+						return newTexture;
+					}
+
+					spriteInstance.Texture = newTexture;
+					spriteInstance.Finish();
 					return newTexture;
 				}
 				catch (Exception ex) {
 					ex.PrintError();
-					if (newTexture is not null) {
-						newTexture.Dispose();
-					}
+					newTexture?.Dispose();
 				}
 			}
 		}

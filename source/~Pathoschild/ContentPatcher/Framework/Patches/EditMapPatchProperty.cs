@@ -8,10 +8,8 @@
 **
 *************************************************/
 
-#nullable disable
-
-using System.Collections.Generic;
 using ContentPatcher.Framework.Tokens;
+using Pathoschild.Stardew.Common.Utilities;
 
 namespace ContentPatcher.Framework.Patches
 {
@@ -32,7 +30,7 @@ namespace ContentPatcher.Framework.Patches
         public ITokenString Key { get; }
 
         /// <summary>The map property value.</summary>
-        public ITokenString Value { get; }
+        public ITokenString? Value { get; }
 
         /// <inheritdoc />
         public bool IsMutable => this.Contextuals.IsMutable;
@@ -47,7 +45,7 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>Construct an instance.</summary>
         /// <param name="key">The map property name.</param>
         /// <param name="value">The map property value.</param>
-        public EditMapPatchProperty(IManagedTokenString key, IManagedTokenString value)
+        public EditMapPatchProperty(IManagedTokenString key, IManagedTokenString? value)
         {
             this.Key = key;
             this.Value = value;
@@ -64,7 +62,7 @@ namespace ContentPatcher.Framework.Patches
         }
 
         /// <inheritdoc />
-        public IEnumerable<string> GetTokensUsed()
+        public IInvariantSet GetTokensUsed()
         {
             return this.Contextuals.GetTokensUsed();
         }

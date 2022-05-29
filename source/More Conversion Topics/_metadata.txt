@@ -6,9 +6,9 @@ mods:
    More Conversion Topics
 
 latest commit:
-   commit 4a4ce2c402f90c952eeb9f47d8539825f18d3d2a
+   commit 94273473f61e3981cf3a4ce4be0c8c9669e4ddb8
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Wed Mar 16 21:10:08 2022 -0400
+   Date:   Sat May 7 14:23:48 2022 -0400
    
-       Adding in island resort conversation topic
+       Adding island resort to i18n
    

@@ -31,13 +31,13 @@ namespace MarketDay.ItemPriceAndStock
 
         public ItemBuilder(ItemStock itemStock)
         {
-            this._itemStock = itemStock;
+            _itemStock = itemStock;
         }
 
         /// <param name="itemPriceAndStock">the ItemPriceAndStock this builder will add items to</param>
         public void SetItemPriceAndStock(Dictionary<ISalable, int[]> itemPriceAndStock)
         {
-            this._itemPriceAndStock = itemPriceAndStock;
+            _itemPriceAndStock = itemPriceAndStock;
         }
 
         /// <summary>
@@ -63,9 +63,10 @@ namespace MarketDay.ItemPriceAndStock
             }
             
             if (id >= 0) return AddItemToStock(id, priceMultiplier);
+            var item = ItemsUtil.GetDGAObjectByName(itemName, _itemStock.ItemType);
+            if (item is not null) return AddItemToStock(item, priceMultiplier);
             MarketDay.Log($"{_itemStock.ItemType} named \"{itemName}\" could not be added to the Shop {_itemStock.ShopName}", LogLevel.Trace);
             return false;
-
         }
 
         /// <summary>
@@ -91,11 +92,17 @@ namespace MarketDay.ItemPriceAndStock
             }
 
             var item = CreateItem(itemId);
-            if (item == null)
+            return item != null && AddItemToStock(item, priceMultiplier);
+        }
+
+        private bool AddItemToStock(ISalable item, double priceMultiplier)
+        {
+            if (item is null)
             {
+                MarketDay.Log($"Null {_itemStock.ItemType} could not be added to the Shop {_itemStock.ShopName}", LogLevel.Trace);
                 return false;
             }
-
+            
             if (_itemStock.IsRecipe)
             {
                 if (!ItemsUtil.RecipesList.Contains(item.Name))
@@ -108,7 +115,7 @@ namespace MarketDay.ItemPriceAndStock
             var priceStockCurrency = GetPriceStockAndCurrency(item, priceMultiplier);
             _itemPriceAndStock.Add(item, priceStockCurrency);
 
-            return true;       
+            return true;
         }
 
         /// <summary>

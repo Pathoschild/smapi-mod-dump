@@ -14,6 +14,8 @@ using System.Linq;
 using ContentPatcher;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Tools;
+using TehPers.Core.Api.Items;
 using TehPers.Core.Api.Setup;
 using TehPers.FishingOverhaul.Services.Tokens;
 
@@ -75,11 +77,21 @@ namespace TehPers.FishingOverhaul.Services.Setup
                 "TidePoolGoldenWalnut",
                 ContentPatcherSetup.GetTidePoolGoldenWalnut
             );
+            this.contentPatcherApi.RegisterToken(
+                this.manifest,
+                "ActiveBait",
+                ContentPatcherSetup.GetActiveBait
+            );
+            this.contentPatcherApi.RegisterToken(
+                this.manifest,
+                "ActiveTackle",
+                ContentPatcherSetup.GetActiveTackle
+            );
         }
 
         private static IEnumerable<string>? GetSpecialOrderRuleActive()
         {
-            if (Game1.player is not { team: { specialOrders: { } specialOrders } })
+            if (Game1.player is not {team: {specialOrders: { } specialOrders}})
             {
                 return null;
             }
@@ -108,26 +120,58 @@ namespace TehPers.FishingOverhaul.Services.Setup
 
         private static IEnumerable<string>? GetRandomGoldenWalnuts()
         {
-            if (Game1.player is not { team: { limitedNutDrops: { } limitedNutDrops } })
+            if (Game1.player is not {team: {limitedNutDrops: { } limitedNutDrops}})
             {
                 return null;
             }
 
             return limitedNutDrops.TryGetValue("IslandFishing", out var fishingNuts)
-                ? new[] { fishingNuts.ToString("G") }
-                : new[] { "0" };
+                ? new[] {fishingNuts.ToString("G")}
+                : new[] {"0"};
         }
 
         private static IEnumerable<string>? GetTidePoolGoldenWalnut()
         {
-            if (Game1.player is not { team: { } team })
+            if (Game1.player is not {team: { } team})
             {
                 return null;
             }
 
             return team.collectedNutTracker.TryGetValue("StardropPool", out var gotNut) && gotNut
-                ? new[] { "true" }
-                : new[] { "false" };
+                ? new[] {"true"}
+                : new[] {"false"};
+        }
+
+        private static IEnumerable<string>? GetActiveBait()
+        {
+            if (Game1.player is not {CurrentItem: FishingRod rod})
+            {
+                return null;
+            }
+
+            var index = rod.getBaitAttachmentIndex();
+            if (index < 0)
+            {
+                return null;
+            }
+
+            return new[] {NamespacedKey.SdvObject(index).ToString()};
+        }
+
+        private static IEnumerable<string>? GetActiveTackle()
+        {
+            if (Game1.player is not {CurrentItem: FishingRod rod})
+            {
+                return null;
+            }
+
+            var index = rod.getBobberAttachmentIndex();
+            if (index < 0)
+            {
+                return null;
+            }
+
+            return new[] {NamespacedKey.SdvObject(index).ToString()};
         }
     }
 }

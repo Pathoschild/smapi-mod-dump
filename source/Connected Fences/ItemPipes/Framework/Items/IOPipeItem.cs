@@ -22,7 +22,6 @@ using ItemPipes.Framework.Util;
 using ItemPipes.Framework.Factories;
 using ItemPipes.Framework.Items.Objects;
 using ItemPipes.Framework.Items.Tools;
-
 using System.Xml.Serialization;
 
 namespace ItemPipes.Framework.Items
@@ -39,6 +38,7 @@ namespace ItemPipes.Framework.Items
         public Texture2D UnconnectedSignal { get; set; }
         [XmlIgnore]
         public Texture2D NoChestSignal { get; set; }
+        public bool Clicked { get; set; }
 
         public IOPipeItem() : base()
         {
@@ -87,6 +87,7 @@ namespace ItemPipes.Framework.Items
             return ItemFactory.CreateItem(IDName);
         }
 
+        /*
         public override bool clicked(Farmer who)
         {
             if(who.CurrentTool == null)
@@ -102,12 +103,14 @@ namespace ItemPipes.Framework.Items
                         if (pipe != null)
                         {
                             Printer.Info($"{Name} is {pipe.Signal}");
+
                         }
                     }
                 }
             }
             return false;
         }
+        */
 
         public void ChangeSignal()
         {
@@ -164,6 +167,22 @@ namespace ItemPipes.Framework.Items
                         }
                         Rectangle srcRect = new Rectangle(0, 0, 16, 16);
                         spriteBatch.Draw(SignalTexture, Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, y * 64)), srcRect, Color.White * transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, ((float)(y * 64 + 32) / 10000f) + 0.002f);
+                    }
+                    if (Globals.IOPipeStatePopup && IONode.Signal != null)
+                    {
+                        if(IONode.Signal.Equals("nochest"))
+                        {
+                            Texture2D sprite;
+                            if (((int)Game1.currentGameTime.TotalGameTime.TotalSeconds) % 2 == 0)
+                            {
+                                sprite = DataAccess.Sprites["nochest_state"];
+                            }
+                            else
+                            {
+                                sprite = DataAccess.Sprites["nochest1_state"];
+                            }
+                            Popup.Draw(spriteBatch, sprite, x, y);
+                        }
                     }
                 }
             }

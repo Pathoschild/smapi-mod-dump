@@ -16,20 +16,20 @@ using static SpriteMaster.Harmonize.Patches.Game.Snow;
 
 namespace SpriteMaster.Configuration.Preview;
 
-struct WeatherState : IDisposable {
+internal readonly struct WeatherState : IDisposable {
 	// SDV
-	internal readonly List<WeatherDebris>? DebrisWeather { get; init; }
-	internal readonly RainDrop[]? RainDrops { get; init; }
-	internal readonly XNA.Vector2 SnowPos { get; init; }
-	internal readonly float GlobalWind { get; init; }
-	internal readonly float WindGust { get; init; }
-	internal readonly bool IsDebrisWeather { get; init; }
-	internal readonly bool IsRaining { get; init; }
-	internal readonly bool IsSnowing { get; init; }
-	internal readonly bool IsLightning { get; init; }
+	internal List<WeatherDebris>? DebrisWeather { get; init; }
+	internal RainDrop[]? RainDrops { get; init; }
+	internal XVector2 SnowPos { get; init; }
+	internal float GlobalWind { get; init; }
+	internal float WindGust { get; init; }
+	internal bool IsDebrisWeather { get; init; }
+	internal bool IsRaining { get; init; }
+	internal bool IsSnowing { get; init; }
+	internal bool IsLightning { get; init; }
 
 	// SM
-	internal readonly SnowState SnowWeatherState { get; init; }
+	internal SnowState SnowWeatherState { get; init; }
 
 	internal static WeatherState Backup() => new() {
 		IsDebrisWeather = Game1.isDebrisWeather,
@@ -45,7 +45,7 @@ struct WeatherState : IDisposable {
 		SnowWeatherState = SnowState.Backup()
 	};
 
-	internal readonly void Restore() {
+	internal void Restore() {
 		Game1.isDebrisWeather = IsDebrisWeather;
 		Game1.debrisWeather = DebrisWeather;
 		WeatherDebris.globalWind = GlobalWind;
@@ -59,5 +59,5 @@ struct WeatherState : IDisposable {
 		SnowWeatherState.Restore();
 	}
 
-	public readonly void Dispose() => Restore();
+	public void Dispose() => Restore();
 }

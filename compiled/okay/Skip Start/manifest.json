@@ -1,0 +1,9 @@
+﻿{
+  "Name": "SkipStart",
+  "Author": "DeadRobotDev",
+  "Version": "0.2.0",
+  "UniqueID": "DeadRobotDev.SkipStart",
+  "EntryDll": "SkipStart.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:11885" ]
+}

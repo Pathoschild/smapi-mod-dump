@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using CJB.Common;
@@ -90,7 +91,7 @@ namespace CJBItemSpawner.Framework
         private readonly SpawnableItem[] AllItems;
 
         /// <summary>The items matching the current search filters, without scrolling.</summary>
-        private readonly List<SpawnableItem> FilteredItems = new List<SpawnableItem>();
+        private readonly List<SpawnableItem> FilteredItems = new();
 
         /// <summary>The items currently visible in the UI.</summary>
         private readonly IList<Item> ItemsInView;
@@ -147,7 +148,7 @@ namespace CJBItemSpawner.Framework
         private float SearchIconOpacity = 1f;
 
         /// <summary>Whether the search icon is transitioning between the selected/unselected states.</summary>
-        private bool IsSearchBoxSelectionChanging => this.SearchIconOpacity > 0 && this.SearchIconOpacity < 1;
+        private bool IsSearchBoxSelectionChanging => this.SearchIconOpacity is > 0 and < 1;
 
 
         /*********
@@ -155,7 +156,7 @@ namespace CJBItemSpawner.Framework
         *********/
         /// <summary>The child components for controller snapping.</summary>
         /// <remarks>This must be public and match a type supported by <see cref="IClickableMenu.populateClickableComponentList"/>.</remarks>
-        public readonly List<ClickableComponent> ChildComponents = new List<ClickableComponent>();
+        public readonly List<ClickableComponent> ChildComponents = new();
 
 
         /*********
@@ -166,14 +167,14 @@ namespace CJBItemSpawner.Framework
         /// <param name="textEntryManager">Manages the gamepad text entry UI.</param>
         /// <param name="content">The content helper for loading assets.</param>
         /// <param name="monitor">Handles writing to the SMAPI console and log.</param>
-        public ItemMenu(SpawnableItem[] spawnableItems, TextEntryManager textEntryManager, IContentHelper content, IMonitor monitor)
+        public ItemMenu(SpawnableItem[] spawnableItems, TextEntryManager textEntryManager, IModContentHelper content, IMonitor monitor)
             : base(
                 inventory: new List<Item>(),
                 reverseGrab: false,
                 showReceivingMenu: true,
-                highlightFunction: item => true,
-                behaviorOnItemGrab: (item, player) => { },
-                behaviorOnItemSelectFunction: (item, player) => { },
+                highlightFunction: _ => true,
+                behaviorOnItemGrab: (_, _) => { },
+                behaviorOnItemSelectFunction: (_, _) => { },
                 message: null,
                 canBeExitedWithKey: true,
                 showOrganizeButton: false,
@@ -316,14 +317,14 @@ namespace CJBItemSpawner.Framework
             }
 
             // navigate
-            else if (key == Keys.Left || key == Keys.Right)
+            else if (key is Keys.Left or Keys.Right)
             {
                 int direction = key == Keys.Left ? -1 : 1;
                 this.NextCategory(direction);
             }
 
             // scroll
-            else if (key == Keys.Up || key == Keys.Down)
+            else if (key is Keys.Up or Keys.Down)
             {
                 int direction = key == Keys.Up ? -1 : 1;
 
@@ -333,7 +334,7 @@ namespace CJBItemSpawner.Framework
                     this.ScrollView(direction);
             }
 
-            // default behavior (unless we're already handling a searchbox selection change)
+            // default behavior (unless we're already handling a search box selection change)
             else
             {
                 bool isIgnoredExitKey = this.SearchBox.Selected && isExitButton && !isEscape;
@@ -346,7 +347,7 @@ namespace CJBItemSpawner.Framework
         /// <param name="button">The button that was pressed.</param>
         public override void receiveGamePadButton(Buttons button)
         {
-            bool isExitKey = button == Buttons.B || button == Buttons.Y || button == Buttons.Start;
+            bool isExitKey = button is Buttons.B or Buttons.Y or Buttons.Start;
             bool inDropdown = this.CategoryDropdown.IsExpanded;
 
             // handle search box
@@ -357,7 +358,7 @@ namespace CJBItemSpawner.Framework
                     Game1.showTextEntry(this.SearchBox);
 
                 // cancel search box
-                else if (isExitKey || button == Buttons.LeftShoulder || button == Buttons.RightShoulder)
+                else if (isExitKey || button is Buttons.LeftShoulder or Buttons.RightShoulder)
                     this.DeselectSearchBox();
             }
 
@@ -438,7 +439,7 @@ namespace CJBItemSpawner.Framework
             }
 
             // fix empty spots on Android
-            if (this.IsAndroid && this.ItemsInView.Any(p => p == null))
+            if (this.IsAndroid && this.ItemsInView.Any(p => p == null!)) // deliberate null-check to fix edge case
                 this.ResetItemView();
 
             base.update(time);
@@ -476,11 +477,11 @@ namespace CJBItemSpawner.Framework
 
             // draw category dropdown
             {
-                Vector2 position = new Vector2(
+                Vector2 position = new(
                     x: this.CategoryDropdown.bounds.X + this.CategoryDropdown.bounds.Width - 3 * Game1.pixelZoom,
                     y: this.CategoryDropdown.bounds.Y + 2 * Game1.pixelZoom
                 );
-                Rectangle sourceRect = new Rectangle(437, 450, 10, 11);
+                Rectangle sourceRect = new(437, 450, 10, 11);
                 spriteBatch.Draw(Game1.mouseCursors, position, sourceRect, Color.White, 0, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 1f);
                 if (this.CategoryDropdown.IsExpanded)
                     spriteBatch.Draw(Game1.mouseCursors, new Vector2(position.X + 2 * Game1.pixelZoom, position.Y + 3 * Game1.pixelZoom), new Rectangle(sourceRect.X + 2, sourceRect.Y + 3, 5, 6), Color.White, 0, Vector2.Zero, Game1.pixelZoom, SpriteEffects.FlipVertically, 1f);  // right triangle
@@ -548,6 +549,17 @@ namespace CJBItemSpawner.Framework
         }
 
         /// <summary>Initialize the custom UI components.</summary>
+        [MemberNotNull(
+            nameof(ItemMenu.CategoryDropdown),
+            nameof(ItemMenu.DownArrow),
+            nameof(ItemMenu.QualityButton),
+            nameof(ItemMenu.SearchBox),
+            nameof(ItemMenu.SearchBoxArea),
+            nameof(ItemMenu.SearchIcon),
+            nameof(ItemMenu.SortButton),
+            nameof(ItemMenu.SortIcon),
+            nameof(ItemMenu.UpArrow)
+        )]
         private void InitializeComponents()
         {
             // get basic positions
@@ -693,8 +705,8 @@ namespace CJBItemSpawner.Framework
         protected void SetDropdown(bool expanded)
         {
             this.CategoryDropdown.IsExpanded = expanded;
-            this.inventory.highlightMethod = item => !expanded;
-            this.ItemsToGrabMenu.highlightMethod = item => !expanded;
+            this.inventory.highlightMethod = _ => !expanded;
+            this.ItemsToGrabMenu.highlightMethod = _ => !expanded;
             if (!expanded && !Game1.lastCursorMotionWasMouse)
             {
                 this.setCurrentlySnappedComponentTo(this.CategoryDropdown.myID);
@@ -745,7 +757,7 @@ namespace CJBItemSpawner.Framework
                 this.TopRowIndex++;
 
             // normalize scroll
-            this.TopRowIndex = (int)MathHelper.Clamp(this.TopRowIndex, 0, this.MaxTopRowIndex);
+            this.TopRowIndex = MathHelper.Clamp(this.TopRowIndex, 0, this.MaxTopRowIndex);
 
             // update view
             if (resetItemView)
@@ -797,7 +809,7 @@ namespace CJBItemSpawner.Framework
 
             // update items in view
             this.ItemsInView.Clear();
-            foreach (var match in this.FilteredItems.Skip(this.TopRowIndex * this.ItemsPerRow).Take(this.ItemsPerView))
+            foreach (SpawnableItem match in this.FilteredItems.Skip(this.TopRowIndex * this.ItemsPerRow).Take(this.ItemsPerView))
             {
                 Item item = match.CreateItem();
                 item.Stack = item.maximumStackSize();
@@ -829,8 +841,8 @@ namespace CJBItemSpawner.Framework
             if (search != "")
             {
                 items = items.Where(item =>
-                    item.Name.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0
-                    || item.DisplayName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase) >= 0
+                    item.Name.Contains(search, StringComparison.InvariantCultureIgnoreCase)
+                    || item.DisplayName.Contains(search, StringComparison.InvariantCultureIgnoreCase)
                 );
             }
 
@@ -884,7 +896,7 @@ namespace CJBItemSpawner.Framework
         {
             MethodInfo method = typeof(ItemGrabMenu).GetMethod("draw", BindingFlags.Instance | BindingFlags.Public, null, new[] { typeof(SpriteBatch) }, null) ?? throw new InvalidOperationException($"Can't find {nameof(ItemGrabMenu)}.{nameof(ItemGrabMenu.draw)} method.");
             IntPtr pointer = method.MethodHandle.GetFunctionPointer();
-            return (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, pointer);
+            return (Action<SpriteBatch>)Activator.CreateInstance(typeof(Action<SpriteBatch>), this, pointer)!;
         }
 
         /// <summary>Get whether two strings are equal, ignoring case differences.</summary>

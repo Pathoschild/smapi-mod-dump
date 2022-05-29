@@ -11,7 +11,6 @@
 using System;
 using HarmonyLib;
 using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Events;
 
 namespace MoreConversationTopics
@@ -51,13 +50,13 @@ namespace MoreConversationTopics
         {
             try
             {
-                switch ((int)__instance.whichEvent)
+                switch (__instance.whichEvent.Value)
                 {
                     // If the world change event in question is building the Joja greenhouse, add Joja greenhouse conversation topic
                     case 0:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("joja_Greenhouse", Config.JojaGreenhouseDuration);
+                            MCTHelperFunctions.AddOrExtendCT("joja_Greenhouse", Config.JojaGreenhouseDuration);
                         }
                         catch (Exception ex)
                         {
@@ -68,7 +67,7 @@ namespace MoreConversationTopics
                     case 12:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("jojaMartStruckByLightning", Config.JojaLightningDuration);
+                            MCTHelperFunctions.AddOrExtendCT("jojaMartStruckByLightning", Config.JojaLightningDuration);
                         }
                         catch (Exception ex)
                         {
@@ -79,7 +78,7 @@ namespace MoreConversationTopics
                     case 13:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("willyBoatRepaired", Config.WillyBoatRepairDuration);
+                            MCTHelperFunctions.AddOrExtendCT("willyBoatRepaired", Config.WillyBoatRepairDuration);
                         }
                         catch (Exception ex)
                         {
@@ -90,7 +89,7 @@ namespace MoreConversationTopics
                     case 14:
                         try
                         {
-                            MCTHelperFunctions.AddMaybePreExistingCT("leoValleyArrival", Config.LeoArrivalDuration);
+                            MCTHelperFunctions.AddOrExtendCT("leoValleyArrival", Config.LeoArrivalDuration);
                         }
                         catch (Exception ex)
                         {

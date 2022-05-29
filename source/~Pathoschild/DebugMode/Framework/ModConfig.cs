@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 namespace Pathoschild.Stardew.DebugMode.Framework
 {
     /// <summary>The parsed mod configuration.</summary>

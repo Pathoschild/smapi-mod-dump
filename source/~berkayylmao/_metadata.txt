@@ -8,9 +8,9 @@ mods:
    Ship Anything
 
 latest commit:
-   commit 2021f43e4718b9331a7686a1bda0d9b4a5913be6
-   Author: Berkay <berkaytgy@gmail.com>
-   Date:   Tue Apr 12 14:32:38 2022 +0300
+   commit 92bdc25c5201057459e3602b5d8f99ad682fae2b
+   Author: Berkay YÄ°ÄžÄ°T <berkayyigit@anadolu.edu.tr>
+   Date:   Wed May 18 20:34:30 2022 +0300
    
-       Update funding
+       [ShipAnything] Bump version
    

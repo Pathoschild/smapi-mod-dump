@@ -41,6 +41,9 @@ namespace CustomCompanions.Framework.Companions
         private int targetLastFacingDirection;
         private List<Point> nodeTargets;
 
+        // Cache related
+        private CompanionModel cachedModel;
+
         public MapCompanion()
         {
 
@@ -137,7 +140,14 @@ namespace CustomCompanions.Framework.Companions
             // Check if player is nearby for UpdateWhenPlayerNearby property, if applicable
             if (this.model.UpdateWhenPlayerNearby != null && Utility.isThereAFarmerWithinDistance(base.getTileLocation(), this.model.MinTilesForNearby, base.currentLocation) != null)
             {
+                cachedModel = this.model.Clone(true);
                 this.UpdateModel(this.model.UpdateWhenPlayerNearby);
+            }
+            else if (this.model.ResetWhenPlayerAway && Utility.isThereAFarmerWithinDistance(base.getTileLocation(), this.model.MinTilesForAway, base.currentLocation) is null && cachedModel is not null)
+            {
+                // Restore cache, if it exists
+                this.UpdateModel(cachedModel);
+                this.model.ResetWhenPlayerAway = false;
             }
 
             // Do Idle Behaviors

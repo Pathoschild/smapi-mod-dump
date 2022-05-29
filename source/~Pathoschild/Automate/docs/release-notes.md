@@ -10,8 +10,20 @@ for queries and analysis.**
 
 # Release notes
 ## Upcoming release
+* Fixed performance impact when many machines have output ready, but the chests they're connected to are all full.
+
+## 1.26.1
+Released 27 May 2022 for SMAPI 3.14.0 or later.
+
+* Fixed some config values not loaded correctly in Automate 1.26.0.
+* Improved translations. Thanks to mukers (added Russian)!
+
+## 1.26.0
+Released 09 May 2022 for SMAPI 3.14.0 or later.
+
+* Updated for SMAPI 3.14.0.
 * Added option to toggle whether Automate is enabled through [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
-* Fixed saving machine overrides through Generic Mod Config Menu.
+* Fixed machine overrides through Generic Mod Config Menu not saved correctly.
 * Fixed error when a geode crusher produces a [golden helmet](https://stardewvalleywiki.com/Golden_Helmet).
 * Improved translations. Thanks to ChulkyBow (updated Ukrainian), JingGongGi (added Chinese), and Pedrowser (added Portuguese)!
 

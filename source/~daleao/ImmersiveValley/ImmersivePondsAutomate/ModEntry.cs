@@ -4,7 +4,7 @@
 ** for queries and analysis.
 **
 ** This is *not* the original file, and not necessarily the latest version.
-** Source repository: https://gitlab.com/daleao/smapi-mods
+** Source repository: https://gitlab.com/daleao/sdv-mods
 **
 *************************************************/
 
@@ -24,7 +24,6 @@ using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-using Pathoschild.Stardew.Automate;
 using Common.Extensions;
 using Common.Extensions.Reflection;
 using Extensions;
@@ -57,7 +56,7 @@ public class ModEntry : Mod
     }
 
     /// <summary>Harvest produce from mod data until none are left.</summary>
-    private static bool FishPondMachineOnOutputTakenPrefix(IMachine __instance, Item item)
+    private static bool FishPondMachineOnOutputTakenPrefix(object __instance, Item item)
     {
         FishPond machine = null;
         try

@@ -15,12 +15,12 @@ using System.Runtime.CompilerServices;
 
 namespace SpriteMaster.Resample.Scalers;
 
-abstract class Config : IEquatable<Config> {
+internal abstract class Config : IEquatable<Config> {
 	internal readonly Vector2B Wrapped;
 	internal readonly bool HasAlpha;
 	internal readonly bool GammaCorrected;
 
-	[MethodImpl(Runtime.MethodImpl.Hot)]
+	[MethodImpl(Runtime.MethodImpl.Inline)]
 	protected Config(
 		Vector2B wrapped,
 		bool hasAlpha,

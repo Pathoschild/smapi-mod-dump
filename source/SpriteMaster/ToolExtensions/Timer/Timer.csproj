@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="$(SolutionDir)SpriteMasterCommon.props" />
+
+	<PropertyGroup>
+		<AssemblyName>SpriteMaster.Timer</AssemblyName>
+		<PackageId>SpriteMasterTimer-SV</PackageId>
+		<ProjectGuid>F653C09F-A328-425F-86DF-8BACF500054E</ProjectGuid>
+		<EnableHarmony>true</EnableHarmony>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+		<NoWarn>0162;7035</NoWarn>
+		<IgnoreModFilePatterns>$(IgnoreModFilePatterns), \.dll\.config$, ILMerge, runtimes, net452, net450, net45</IgnoreModFilePatterns>
+		<Configurations>Debug;Release;Development;Shipping</Configurations>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
+		<PackageProjectUrl>https://github.com/ameisen/SV-SpriteMaster</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/ameisen/SV-SpriteMaster</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<IsPublishable>False</IsPublishable>
+		<Nullable>enable</Nullable>
+		<Platforms>x64</Platforms>
+		<ModFolderName>SpriteMaster.Timer</ModFolderName>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <DefineConstants>TRACE</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
+	  <DefineConstants>TRACE;SHIPPING</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|x64'">
+	  <DefineConstants>DEBUG;DEVELOPMENT;TRACE</DefineConstants>
+	  <Optimize>true</Optimize>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+		<PackageReference Include="Pastel" Version="3.0.0" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+	</ItemGroup>
+	
+	<PropertyGroup>
+		<InternalsAssemblyNames>MonoGame.Framework</InternalsAssemblyNames>
+	</PropertyGroup>
+	
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="$(ProjectDir)scripts\build.post.rb 'OutDir=$(OutDir)' 'SolutionDir=$(SolutionDir)' 'ILRepack=$(PkgILRepack)' 'ILStrip=$(PkgBrokenevent_ILStrip_CLI)' 'IgnoreModFilePatterns=$(IgnoreModFilePatterns)'" />
+	</Target>
+
+	<ItemGroup>
+		<Reference Update="Stardew Valley">
+			<Aliases>destination</Aliases>
+		</Reference>
+	</ItemGroup>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+	  <Exec Command="$(SolutionDir)SetVersion.rb -q" WorkingDirectory="$(SolutionDir)" />
+	</Target>
+
+</Project>

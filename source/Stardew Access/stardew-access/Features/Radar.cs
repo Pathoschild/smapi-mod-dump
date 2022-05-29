@@ -107,7 +107,6 @@ namespace stardew_access.Features
             List<Vector2> searched = new List<Vector2>();
             int[] dirX = { -1, 0, 1, 0 };
             int[] dirY = { 0, 1, 0, -1 };
-            int count = 0;
 
             toSearch.Enqueue(center);
             searched.Add(center);
@@ -126,13 +125,58 @@ namespace stardew_access.Features
                         detectedTiles.Add(item, (tileInfo.Item2, tileInfo.Item3));
                     }
                 }
-                count++;
 
                 for (int i = 0; i < 4; i++)
                 {
                     Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
 
                     if (isValid(dir, center, searched, limit))
+                    {
+                        toSearch.Enqueue(dir);
+                        searched.Add(dir);
+                    }
+                }
+            }
+
+            return detectedTiles;
+        }
+
+        /// <summary>
+        /// Search the entire location using Breadth First Search algorithm(BFS).
+        /// </summary>
+        /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
+        public Dictionary<Vector2, (string, string)> SearchLocation()
+        {
+            Dictionary<Vector2, (string, string)> detectedTiles = new Dictionary<Vector2, (string, string)>();
+            Vector2 position = Vector2.Zero;
+            (bool, string? name, string category) tileInfo;
+
+            Queue<Vector2> toSearch = new Queue<Vector2>();
+            List<Vector2> searched = new List<Vector2>();
+            int[] dirX = { -1, 0, 1, 0 };
+            int[] dirY = { 0, 1, 0, -1 };
+            int count = 0;
+
+            toSearch.Enqueue(Game1.player.getTileLocation());
+            searched.Add(Game1.player.getTileLocation());
+
+            while (toSearch.Count > 0)
+            {
+                Vector2 item = toSearch.Dequeue();
+                tileInfo = CheckTile(item, true);
+                if (tileInfo.Item1 && tileInfo.name != null)
+                {
+                    // Add detected tile to the dictionary
+                    detectedTiles.Add(item, (tileInfo.name, tileInfo.category));
+                }
+
+                count++;
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 dir = new Vector2(item.X + dirX[i], item.Y + dirY[i]);
+
+                    if (!searched.Contains(dir) && Game1.currentLocation.isTileOnMap(dir))
                     {
                         toSearch.Enqueue(dir);
                         searched.Add(dir);
@@ -164,9 +208,9 @@ namespace stardew_access.Features
             return true;
         }
 
-        public (bool, string?, string) CheckTile(Vector2 position)
+        public (bool, string? name, string category) CheckTile(Vector2 position, bool lessInfo = false)
         {
-            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position);
+            (string? name, CATEGORY? category) tileDetail = TileInfo.getNameWithCategoryAtTile(position, lessInfo);
             if (tileDetail.name == null)
                 return (false, null, CATEGORY.Others.ToString());
 
@@ -228,7 +272,7 @@ namespace stardew_access.Features
             #region Check whether to skip the object or not
 
             // Skip if player is directly looking at the tile
-            if (CurrentPlayer.getNextTile().Equals(position))
+            if (CurrentPlayer.FacingTile.Equals(position))
                 return;
 
             if (!radarFocus)

@@ -28,6 +28,7 @@ namespace LoveOfCooking.Objects
 		private static ITranslationHelper i18n => ModEntry.Instance.Helper.Translation;
 		private static Texture2D Texture => ModEntry.SpriteSheet;
 		private readonly CookingManager _cookingManager;
+		private bool cooking = true; // Used for simple reflection checks alongside CraftingPage instances
 
 		// Spritesheet source areas
 		// Custom spritesheet
@@ -217,7 +218,7 @@ namespace LoveOfCooking.Objects
 		private readonly List<int> _recipeIngredientQuantitiesHeld = new List<int>();
 		private bool ReadyToCook => _recipeIndex >= 0
 					&& _recipesFiltered.Count > _recipeIndex
-					&& _recipeAsItem != null
+					&& _recipeAsItem is not null
 					&& _recipeReadyToCraftCount > 0
 					&& !_showCookingConfirmPopup;
 		// inventories
@@ -286,14 +287,14 @@ namespace LoveOfCooking.Objects
 			this._locale = LocalizedContentManager.CurrentLanguageCode.ToString();
 			if (!CookTextSourceWidths.ContainsKey(this._locale))
 			{
-				this._locale = "en";
+				this._locale = LocalizedContentManager.LanguageCode.en.ToString();
 			}
 			this._resizeKoreanFonts = Config.ResizeKoreanFonts;
 			this.initializeUpperRightCloseButton();
 			this.trashCan = null;
 			this._cookingManager = new CookingManager(cookingMenu: this)
 			{
-				MaxIngredients = Utils.GetNearbyCookingStationLevel()
+				MaxIngredients = Objects.CookingTool.GetIngredientsSlotsForToolUpgradeLevel(upgradeLevel: Objects.CookingTool.GetEffectiveGlobalToolUpgradeLevel())
 			};
 
 			this._iconShakeTimerField = Helper.Reflection.GetField<Dictionary<int, double>>(inventory, "_iconShakeTimer");
@@ -301,7 +302,7 @@ namespace LoveOfCooking.Objects
 			// Set initial material containers for additional inventories
 			this._materialContainers = materialContainers ?? new List<Chest>();
 
-			this._recipesAvailable = recipes != null
+			this._recipesAvailable = recipes is not null
 				// Recipes may be populated by those of any CraftingMenu that this menu supercedes
 				// Should guarantee Limited Campfire Cooking compatibility
 				? recipes.Where(recipe => Game1.player.cookingRecipes.ContainsKey(recipe.name)).ToList()
@@ -315,7 +316,7 @@ namespace LoveOfCooking.Objects
 			// Default autofill preferences if none set
 			if (!Game1.player.modData.ContainsKey(ModEntry.AssetPrefix + "autofill"))
 			{
-				IsUsingAutofill = false;
+				this.IsUsingAutofill = false;
 			}
 			Log.D($"Autofill on startup: {IsUsingAutofill}",
 				Config.DebugMode);
@@ -1499,7 +1500,7 @@ namespace LoveOfCooking.Objects
 					break;
 			}
 
-			List<CraftingRecipe> recipes = (order != null
+			List<CraftingRecipe> recipes = (order is not null
 				? isOrderReversedToStart
 					? _recipesAvailable.OrderByDescending(order)
 					: _recipesAvailable.OrderBy(order)
@@ -1513,7 +1514,7 @@ namespace LoveOfCooking.Objects
 			if (!recipes.Any())
 				recipes.Add(new CraftingRecipe("none", true));
 
-			if (_recipeSearchResults != null)
+			if (_recipeSearchResults is not null)
 			{
 				this.UpdateSearchRecipes();
 				_recipeIndex = _recipeSearchResults.Count / 2;
@@ -1522,7 +1523,7 @@ namespace LoveOfCooking.Objects
 			_lastFilterUsed = which;
 
 			// Change toggle filter button icon
-			if (_toggleFilterButton != null)
+			if (_toggleFilterButton is not null)
 				_toggleFilterButton.sourceRect.X = (_lastFilterUsed == Filter.None ? ToggleFilterButtonSource.X : ToggleFilterButtonSource.X - ToggleFilterButtonSource.Width);
 
 			return recipes;
@@ -1663,10 +1664,10 @@ namespace LoveOfCooking.Objects
 			List<int> buffs = info.Length >= 7
 				? info[7].Split(' ').ToList().ConvertAll(int.Parse)
 				: null;
-			this._recipeBuffs = buffs != null && !buffs.All(b => b == 0)
+			this._recipeBuffs = buffs is not null && !buffs.All(b => b == 0)
 				? buffs
 				: null;
-			this._recipeBuffDuration = this._recipeBuffs != null && info.Length >= 8
+			this._recipeBuffDuration = this._recipeBuffs is not null && info.Length >= 8
 				? (int.Parse(info[8]) * 7 / 10 / 10) * 10
 				: -1;
 			if (this._stack.Count > 0 && this._stack.Peek() != State.Search)
@@ -1684,7 +1685,7 @@ namespace LoveOfCooking.Objects
 				int requiredQuantity = CurrentRecipe.recipeList.Values.ElementAt(i);
 				int heldQuantity = 0;
 				List<CookingManager.Ingredient> ingredients = CookingManager.GetMatchingIngredients(id: id, sourceItems: this._allInventories, required: requiredQuantity);
-				if (ingredients != null && ingredients.Count > 0)
+				if (ingredients is not null && ingredients.Count > 0)
 				{
 					heldQuantity = ingredients.Sum(ing => this._cookingManager.GetItemForIngredient(ingredient: ing, sourceItems: this._allInventories).Stack);
 					requiredQuantity -= heldQuantity;
@@ -1800,7 +1801,7 @@ namespace LoveOfCooking.Objects
 					return;
 			}
 
-			if (Game1.options.SnappyMenus && this.currentlySnappedComponent != null && !this.IsNavButtonActive(this.currentlySnappedComponent.myID))
+			if (Game1.options.SnappyMenus && this.currentlySnappedComponent is not null && !this.IsNavButtonActive(this.currentlySnappedComponent.myID))
 			{
 				if (this.currentlySnappedComponent.myID == this._navLeftButton.myID || this.currentlySnappedComponent.myID == this._navRightButton.myID)
 					this.setCurrentlySnappedComponentTo(this._recipeIconButton.myID);
@@ -1870,7 +1871,7 @@ namespace LoveOfCooking.Objects
 			if (Game1.options.SnappyMenus
 				&& itemWasMoved
 				&& ReadyToCook
-				&& currentlySnappedComponent != null
+				&& currentlySnappedComponent is not null
 				&& currentlySnappedComponent.myID != _navLeftButton.myID
 				&& currentlySnappedComponent.myID != _navRightButton.myID)
 			{
@@ -1899,7 +1900,7 @@ namespace LoveOfCooking.Objects
 			}
 			else
 			{
-				if (item != null)
+				if (item is not null)
 				{
 					inventory.ShakeItem(item);
 					Game1.playSound(CancelCue);
@@ -1948,7 +1949,7 @@ namespace LoveOfCooking.Objects
 		private bool IsNavButtonActive(int id)
 		{
 			ClickableComponent clickable = getComponentWithID(id);
-			if (clickable == null || !clickable.visible)
+			if (clickable is null || !clickable.visible)
 				return false;
 
 			if (id == _navUpButton.myID)
@@ -2022,7 +2023,7 @@ namespace LoveOfCooking.Objects
 			}
 			catch (Exception e)
 			{
-				Log.E($"Hit error on pop stack, emergency shutdown.\n{e}");
+				Log.E($"Hit error on pop stack, emergency shutdown.{Environment.NewLine}{e}");
 				this.emergencyShutDown();
 				exitFunction();
 			}
@@ -2086,7 +2087,7 @@ namespace LoveOfCooking.Objects
 				return;
 			State state = _stack.Peek();
 
-			if (oldRegion == 9000 && this.currentlySnappedComponent != null)
+			if (oldRegion == 9000 && this.currentlySnappedComponent is not null)
 			{
 				switch (direction)
 				{
@@ -2138,7 +2139,7 @@ namespace LoveOfCooking.Objects
 				hoveredItem = obj;
 			}
 
-			for (int i = 0; i < _ingredientsClickables.Count && hoveredItem == null; ++i)
+			for (int i = 0; i < _ingredientsClickables.Count && hoveredItem is null; ++i)
 			{
 				if (_ingredientsClickables[i].containsPoint(x, y))
 				{
@@ -2208,7 +2209,7 @@ namespace LoveOfCooking.Objects
 					{
 						// Hover text over recipe search results when in grid view, which unlike list view, has names hidden
 						int index = this.TryGetIndexForSearchResult(x, y);
-						if (index >= 0 && index < _recipeSearchResults.Count && _recipeSearchResults[index] != null && _recipeSearchResults[index].name != "Torch")
+						if (index >= 0 && index < _recipeSearchResults.Count && _recipeSearchResults[index] is not null && _recipeSearchResults[index].name != "Torch")
 							hoverText = Game1.player.knowsRecipe(_recipeSearchResults[index].name)
 								? _recipeSearchResults[index].DisplayName
 								: i18n.Get("menu.cooking_recipe.title_unknown");
@@ -2250,7 +2251,7 @@ namespace LoveOfCooking.Objects
 
 		public override void receiveLeftClick(int x, int y, bool playSound = true)
 		{
-			if (!_stack.Any() || Game1.activeClickableMenu == null)
+			if (!_stack.Any() || Game1.activeClickableMenu is null)
 				return;
 			State state = _stack.Peek();
 			if (state == State.Opening)
@@ -2272,7 +2273,7 @@ namespace LoveOfCooking.Objects
 					int index = this.TryGetIndexForSearchResult(x, y);
 					bool clickedSearchResult = index >= 0
 						&& index < _recipeSearchResults.Count
-						&& _recipeSearchResults[index] != null
+						&& _recipeSearchResults[index] is not null
 						&& _recipeSearchResults[index].name != "Torch";
 					if (clickedSearchResult)
 					{
@@ -2306,7 +2307,7 @@ namespace LoveOfCooking.Objects
 						if (_showSearchFilters)
 						{
 							ClickableTextureComponent clickable = _filterButtons.FirstOrDefault(c => c.containsPoint(x, y));
-							if (clickable != null)
+							if (clickable is not null)
 							{
 								Filter which = (Filter)int.Parse(clickable.name[clickable.name.Length - 1].ToString());
 								if (which == _lastFilterUsed)
@@ -2573,10 +2574,10 @@ namespace LoveOfCooking.Objects
 				return;
 
 			bool isExitButton = b == Buttons.Start || b == Buttons.B || b == Buttons.Y;
-			int cur = currentlySnappedComponent != null ? currentlySnappedComponent.myID : -1;
+			int cur = currentlySnappedComponent is not null ? currentlySnappedComponent.myID : -1;
 
 			if (Config.DebugMode)
-				Log.D(currentlySnappedComponent != null
+				Log.D(currentlySnappedComponent is not null
 				? $"GP CSC: {currentlySnappedComponent.myID} ({currentlySnappedComponent.name})"
 					+ $" [{currentlySnappedComponent.leftNeighborID} {currentlySnappedComponent.upNeighborID}"
 					+ $" {currentlySnappedComponent.rightNeighborID} {currentlySnappedComponent.downNeighborID}]"
@@ -2697,7 +2698,7 @@ namespace LoveOfCooking.Objects
 				return;
 
 			// Contextual navigation
-			if (Game1.options.SnappyMenus && currentlySnappedComponent != null)
+			if (Game1.options.SnappyMenus && currentlySnappedComponent is not null)
 			{
 				int cur = currentlySnappedComponent.myID;
 				int next = -1;
@@ -2945,7 +2946,7 @@ namespace LoveOfCooking.Objects
 				if (Game1.options.doesInputListContain(Game1.options.menuButton, key) && canExitOnKey)
 				{
 					this.PopMenuStack(playSound: true);
-					if (Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.CurrentCommand > 0)
+					if (Game1.currentLocation.currentEvent is not null && Game1.currentLocation.currentEvent.CurrentCommand > 0)
 					{
 						Game1.currentLocation.currentEvent.CurrentCommand++;
 					}
@@ -3009,7 +3010,7 @@ namespace LoveOfCooking.Objects
 
 			if (false && Config.DebugMode)
 			{
-				if (currentlySnappedComponent != null)
+				if (currentlySnappedComponent is not null)
 					b.Draw(Game1.fadeToBlackRect, currentlySnappedComponent.bounds, Color.Green * 0.5f);
 				b.Draw(Game1.fadeToBlackRect, _searchResultsArea, Color.Red * 0.5f);
 				foreach (var c in _searchGridClickables)
@@ -3049,7 +3050,7 @@ namespace LoveOfCooking.Objects
 					for (int i = 0; i < _recipeSearchResults.Count; ++i)
 					{
 						recipe = _recipeSearchResults[i];
-						if (recipe == null || !_searchGridClickables[i].visible)
+						if (recipe is null || !_searchGridClickables[i].visible)
 							continue;
 
 						recipe.drawMenuView(b, _searchGridClickables[i].bounds.X, _searchGridClickables[i].bounds.Y);
@@ -3061,7 +3062,7 @@ namespace LoveOfCooking.Objects
 					for (int i = 0; i < _recipeSearchResults.Count; ++i)
 					{
 						recipe = _recipeSearchResults[i];
-						if (recipe == null || !_searchListClickables[i].visible)
+						if (recipe is null || !_searchListClickables[i].visible)
 							continue;
 
 						recipe.drawMenuView(b, _searchListClickables[i].bounds.X, _searchListClickables[i].bounds.Y);
@@ -3153,7 +3154,7 @@ namespace LoveOfCooking.Objects
 
 		private void DrawRecipePage(SpriteBatch b)
 		{
-			bool knowsRecipe = CurrentRecipe != null && Game1.player.knowsRecipe(CurrentRecipe.name);
+			bool knowsRecipe = CurrentRecipe is not null && Game1.player.knowsRecipe(CurrentRecipe.name);
 			float xScale = _locale == "ko" && _resizeKoreanFonts ? KoWidthScale : 1f;
 			float yScale = _locale == "ko" && _resizeKoreanFonts ? KoHeightScale : 1f;
 			float textHeightCheck;
@@ -3230,7 +3231,7 @@ namespace LoveOfCooking.Objects
 			if (textHeightCheck > textHeightCheckMilestones[1] && CurrentRecipe?.getNumberOfIngredients() < 6)
 				textPosition.Y += 6 * Scale;
 			textPosition.Y += TextDividerGap + Game1.smallFont.MeasureString(
-				Game1.parseText(yScale < 1 ? "Hoplite!\nHoplite!" : "Hoplite!\nHoplite!\nHoplite!", Game1.smallFont, textWidth)).Y * yScale;
+				Game1.parseText(yScale < 1 ? "Hippo!\nHippo!" : "Hippo!\nHippo!\nHippo!", Game1.smallFont, textWidth)).Y * yScale;
 			this.DrawHorizontalDivider(b, 0, textPosition.Y, _lineWidth, isLeftSide);
 			textPosition.Y += TextDividerGap;
 			text = i18n.Get("menu.cooking_recipe.ingredients_label");
@@ -3365,7 +3366,7 @@ namespace LoveOfCooking.Objects
 			for (int i = 0; i < _cookingManager.CurrentIngredients.Count; ++i)
 			{
 				Item item = _cookingManager.GetItemForIngredient(index: i, sourceItems: _allInventories);
-				if (item == null)
+				if (item is null)
 					continue;
 
 				Vector2 position = new Vector2(
@@ -3429,6 +3430,7 @@ namespace LoveOfCooking.Objects
 			textPosition.Y = _cookbookRightRect.Y + _cookbookRightRect.Height - (50 * Scale) - Game1.smallFont.MeasureString(
 				Game1.parseText(text: text, whichFont: Game1.smallFont, width: textWidth)).Y * yScale;
 
+			// Visual display for frying pan uses default icon if not using cooking tool upgrades
 			int fryingPanLevel = ModEntry.Config.AddCookingToolProgression ? ModEntry.Instance.States.Value.CookingToolLevel : 0;
 			if (_showCookingConfirmPopup)
 			{
@@ -3488,7 +3490,7 @@ namespace LoveOfCooking.Objects
 			this.DrawHorizontalDivider(b, 0, textPosition.Y, _lineWidth, false);
 			textPosition.Y += ((6 * Scale) / 2);
 
-			if (_recipeAsItem == null || !_stack.Any() || _stack.Peek() != State.Recipe)
+			if (_recipeAsItem is null || !_stack.Any() || _stack.Peek() != State.Recipe)
 				return;
 
 			if (ReadyToCook)
@@ -3644,7 +3646,7 @@ namespace LoveOfCooking.Objects
 				textPosition.X += -xOffset + (_lineWidth / 2f) + (4 * Scale);
 
 				// Buffs
-				if (_recipeBuffs != null && _recipeBuffs.Count > 0)
+				if (_recipeBuffs is not null && _recipeBuffs.Count > 0)
 				{
 					const int maxBuffsToDisplay = 4;
 					int count = 0;
@@ -3858,7 +3860,7 @@ namespace LoveOfCooking.Objects
 						- (i >= inventory.capacity / inventory.rows
 						   || !inventory.playerInventory || inventory.verticalGap != 0 ? 0 : 12));
 
-				if (inventory.actualInventory.Count <= i || inventory.actualInventory.ElementAt(i) == null)
+				if (inventory.actualInventory.Count <= i || inventory.actualInventory.ElementAt(i) is null)
 					continue;
 
 				Color colour = !_cookingManager.IsInventoryItemInCurrentIngredients(inventoryIndex: _inventoryId, itemIndex: i)
@@ -3884,7 +3886,7 @@ namespace LoveOfCooking.Objects
 		private void DrawExtraStuff(SpriteBatch b)
 		{
 			/*
-			if (poof != null)
+			if (poof is not null)
 			{
 				poof.draw(b, true);
 			}
@@ -3893,7 +3895,7 @@ namespace LoveOfCooking.Objects
 			upperRightCloseButton.draw(b);
 
 			// Hover text
-			if (hoverText != null)
+			if (hoverText is not null)
 			{
 				if (hoverAmount > 0)
 					drawToolTip(b, hoverText: hoverText, hoverTitle: "", hoveredItem: null, heldItem: true, moneyAmountToShowAtBottom: hoverAmount);
@@ -3902,10 +3904,10 @@ namespace LoveOfCooking.Objects
 			}
 
 			// Hover elements
-			if (hoveredItem != null)
-				drawToolTip(b, hoverText: hoveredItem.getDescription(), hoverTitle: hoveredItem.DisplayName, hoveredItem: hoveredItem, heldItem: heldItem != null);
-			else if (hoveredItem != null && ItemsToGrabMenu != null)
-				drawToolTip(b, hoverText: ItemsToGrabMenu.descriptionText, hoverTitle: ItemsToGrabMenu.descriptionTitle, hoveredItem: hoveredItem, heldItem: heldItem != null);
+			if (hoveredItem is not null)
+				drawToolTip(b, hoverText: hoveredItem.getDescription(), hoverTitle: hoveredItem.DisplayName, hoveredItem: hoveredItem, heldItem: heldItem is not null);
+			else if (hoveredItem is not null && ItemsToGrabMenu is not null)
+				drawToolTip(b, hoverText: ItemsToGrabMenu.descriptionText, hoverTitle: ItemsToGrabMenu.descriptionTitle, hoveredItem: hoveredItem, heldItem: heldItem is not null);
 			heldItem?.drawInMenu(b, location: new Vector2(Game1.getOldMouseX() + 8, Game1.getOldMouseY() + 8), scaleSize: 1f);
 
 			// Search button

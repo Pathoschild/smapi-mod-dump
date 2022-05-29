@@ -31,9 +31,10 @@ namespace SmartBuilding
         public bool CrabPotsInAnyWaterTile = false;
         public bool EnableReplacingFences = false;
         public bool EnableReplacingFloors = false;
+        public bool LessRestrictiveObjectPlacement = false;
         public bool LessRestrictiveFloorPlacement = false;
         public bool LessRestrictiveFurniturePlacement = false;
-        public bool LessRestrictiveBedPlacement = false;
+        public bool LessRestrictiveBedPlacement = false;        
         // THE DANGER ZONE.
         public bool EnablePlacingStorageFurniture = false;
         // The cheesy zone.

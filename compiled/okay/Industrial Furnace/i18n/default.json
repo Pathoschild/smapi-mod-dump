@@ -14,4 +14,8 @@
 	"gmcm.coal-amount-description": "The amount of Coal needed to start the furnace",
 	"gmcm.instant-smelting-label": "Instant Smelting",
 	"gmcm.instant-smelting-description": "When enabled, the furnace smelting is instant",
+	"gmcm.smoke-label": "Enable the smoke animation",
+	"gmcm.smoke-description": "Enables the smoke animation when the furnace is running",
+	"gmcm.fire-label": "Enable the fire animation",
+	"gmcm.fire-description": "Enables the fire animation when the furnace is running"
 }

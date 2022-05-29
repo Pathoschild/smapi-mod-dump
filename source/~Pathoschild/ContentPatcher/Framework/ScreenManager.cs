@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-#nullable disable
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -76,12 +74,13 @@ namespace ContentPatcher.Framework
         /// <param name="installedMods">The installed mod IDs.</param>
         /// <param name="modTokens">The custom tokens provided by mods.</param>
         /// <param name="assetValidators">Handle special validation logic on loaded or edited assets.</param>
-        public ScreenManager(IModHelper helper, IMonitor monitor, InvariantHashSet installedMods, ModProvidedToken[] modTokens, IAssetValidator[] assetValidators)
+        /// <param name="groupEditsByMod">Whether to apply changes from each content pack in a separate operation.</param>
+        public ScreenManager(IModHelper helper, IMonitor monitor, IInvariantSet installedMods, ModProvidedToken[] modTokens, IAssetValidator[] assetValidators, bool groupEditsByMod)
         {
             this.Helper = helper;
             this.Monitor = monitor;
             this.TokenManager = new TokenManager(helper.GameContent, installedMods, modTokens);
-            this.PatchManager = new PatchManager(this.Monitor, this.TokenManager, assetValidators);
+            this.PatchManager = new PatchManager(this.Monitor, this.TokenManager, assetValidators, groupEditsByMod);
             this.PatchLoader = new PatchLoader(this.PatchManager, this.TokenManager, this.Monitor, installedMods, helper.GameContent.ParseAssetName);
             this.CustomLocationManager = new CustomLocationManager(this.Monitor, helper.GameContent);
         }
@@ -89,7 +88,7 @@ namespace ContentPatcher.Framework
         /// <summary>Initialize the mod and content packs.</summary>
         /// <param name="contentPacks">The content packs to load.</param>
         /// <param name="installedMods">The installed mod IDs.</param>
-        public void Initialize(LoadedContentPack[] contentPacks, InvariantHashSet installedMods)
+        public void Initialize(LoadedContentPack[] contentPacks, IInvariantSet installedMods)
         {
             if (this.IsInitialized)
                 this.Monitor.Log($"{nameof(ScreenManager)}.{nameof(this.Initialize)} was called more than once for screen {Context.ScreenId}.", LogLevel.Error);
@@ -110,8 +109,8 @@ namespace ContentPatcher.Framework
         /// <param name="e">The event data.</param>
         public void OnAssetRequested(AssetRequestedEventArgs e)
         {
-            this.PatchManager.OnAssetRequested(e);
-            this.CustomLocationManager.OnAssetRequested(e);
+            bool ignoreLoads = this.CustomLocationManager.OnAssetRequested(e);
+            this.PatchManager.OnAssetRequested(e, ignoreLoads);
         }
 
         /// <summary>Raised when the low-level stage in the game's loading process has changed. This is an advanced event for mods which need to run code at specific points in the loading process. The available stages or when they happen might change without warning in future versions (e.g. due to changes in the game's load process), so mods using this event are more likely to break or have bugs.</summary>
@@ -208,7 +207,7 @@ namespace ContentPatcher.Framework
         /// <param name="updateType">The context update type.</param>
         public void UpdateContext(ContextUpdateType updateType)
         {
-            this.TokenManager.UpdateContext(out InvariantHashSet changedGlobalTokens);
+            this.TokenManager.UpdateContext(out IInvariantSet changedGlobalTokens);
             this.PatchManager.UpdateContext(this.Helper.GameContent, changedGlobalTokens, updateType);
         }
 
@@ -221,7 +220,7 @@ namespace ContentPatcher.Framework
         /// <param name="installedMods">The mod IDs which are currently installed.</param>
         /// <returns>Returns the loaded content pack IDs.</returns>
         [SuppressMessage("ReSharper", "AccessToModifiedClosure", Justification = "The value is used immediately, so this isn't an issue.")]
-        private void LoadContentPacks(IEnumerable<LoadedContentPack> contentPacks, InvariantHashSet installedMods)
+        private void LoadContentPacks(IEnumerable<LoadedContentPack> contentPacks, IInvariantSet installedMods)
         {
             // load content packs
             foreach (LoadedContentPack current in contentPacks)
@@ -247,20 +246,27 @@ namespace ContentPatcher.Framework
 
                         // load dynamic tokens
                         IDictionary<string, int> dynamicTokenCountByName = new InvariantDictionary<int>();
-                        foreach (DynamicTokenConfig entry in content.DynamicTokens)
+                        foreach (DynamicTokenConfig? entry in content.DynamicTokens)
                         {
+                            if (entry is null)
+                                continue;
+
                             void LogSkip(string reason) => this.Monitor.Log($"Ignored {current.Manifest.Name} > dynamic token '{entry.Name}': {reason}", LogLevel.Warn);
 
                             // get path
                             LogPathBuilder localPath = current.LogPath.With(nameof(content.DynamicTokens));
                             {
-                                if (!dynamicTokenCountByName.ContainsKey(entry.Name))
-                                    dynamicTokenCountByName[entry.Name] = -1;
-                                int discriminator = ++dynamicTokenCountByName[entry.Name];
+                                string label = string.IsNullOrWhiteSpace(entry.Name)
+                                    ? "unnamed"
+                                    : entry.Name;
+
+                                if (!dynamicTokenCountByName.ContainsKey(label))
+                                    dynamicTokenCountByName[label] = -1;
+                                int discriminator = ++dynamicTokenCountByName[label];
                                 localPath = localPath.With($"{entry.Name} {discriminator}");
                             }
 
-                            // validate token key
+                            // validate token name
                             if (string.IsNullOrWhiteSpace(entry.Name))
                             {
                                 LogSkip("the token name can't be empty.");
@@ -283,10 +289,10 @@ namespace ContentPatcher.Framework
                             }
 
                             // parse conditions
-                            IList<Condition> conditions;
-                            InvariantHashSet immutableRequiredModIDs;
+                            Condition[] conditions;
+                            IInvariantSet immutableRequiredModIDs;
                             {
-                                if (!this.PatchLoader.TryParseConditions(entry.When, tokenParser, localPath.With(nameof(entry.When)), out conditions, out immutableRequiredModIDs, out string conditionError))
+                                if (!this.PatchLoader.TryParseConditions(entry.When, tokenParser, localPath.With(nameof(entry.When)), out conditions, out immutableRequiredModIDs, out string? conditionError))
                                 {
                                     this.Monitor.Log($"Ignored {current.Manifest.Name} > '{entry.Name}' token: its {nameof(DynamicTokenConfig.When)} field is invalid: {conditionError}.", LogLevel.Warn);
                                     continue;
@@ -294,10 +300,10 @@ namespace ContentPatcher.Framework
                             }
 
                             // parse values
-                            IManagedTokenString values;
+                            IManagedTokenString? values;
                             if (!string.IsNullOrWhiteSpace(entry.Value))
                             {
-                                if (!tokenParser.TryParseString(entry.Value, immutableRequiredModIDs, localPath.With(nameof(entry.Value)), out string valueError, out values))
+                                if (!tokenParser.TryParseString(entry.Value, immutableRequiredModIDs, localPath.With(nameof(entry.Value)), out string? valueError, out values))
                                 {
                                     LogSkip($"the token value is invalid: {valueError}");
                                     continue;
@@ -313,11 +319,11 @@ namespace ContentPatcher.Framework
 
                     // load alias token names
                     {
-                        InvariantDictionary<string> aliasTokenNames = new();
-                        foreach ((string key, string value) in content.AliasTokenNames)
+                        InvariantDictionary<string?> aliasTokenNames = new();
+                        foreach ((string key, string? value) in content.AliasTokenNames)
                             aliasTokenNames[key.Trim()] = value?.Trim();
 
-                        foreach ((string key, string value) in aliasTokenNames)
+                        foreach ((string key, string? value) in aliasTokenNames)
                         {
                             void LogSkip(string reason) => this.Monitor.Log($"Ignored {current.Manifest.Name} > alias token name '{key}': {reason}", LogLevel.Warn);
 
@@ -347,9 +353,9 @@ namespace ContentPatcher.Framework
                     );
 
                     // load custom locations
-                    foreach (CustomLocationConfig location in content.CustomLocations)
+                    foreach (CustomLocationConfig? location in content.CustomLocations)
                     {
-                        if (!this.CustomLocationManager.TryAddCustomLocationConfig(location, current.ContentPack, out string error))
+                        if (!this.CustomLocationManager.TryAddCustomLocationConfig(location, current.ContentPack, out string? error))
                             this.Monitor.Log($"Ignored {current.Manifest.Name} > custom location '{location?.Name}': {error}", LogLevel.Warn);
                     }
                 }
@@ -377,7 +383,7 @@ namespace ContentPatcher.Framework
             this.TokenManager.UpdateContext(out _);
 
             // reload changes to force-reset config token references
-            if (!contentPack.TryReloadContent(out string loadContentError))
+            if (!contentPack.TryReloadContent(out string? loadContentError))
             {
                 this.Monitor.Log($"Failed to reload content pack '{contentPack.Manifest.Name}' for configuration changes: {loadContentError}. The content pack may not be in a valid state.", LogLevel.Error); // should never happen
                 return;

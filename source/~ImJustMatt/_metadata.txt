@@ -15,9 +15,35 @@ mods:
    Too Many Animals
 
 latest commit:
-   commit 96310f118c8a8d779fdf19901021ad7914a840a6
-   Author: Matthew <justmatt@outlook.com>
-   Date:   Fri Mar 25 11:17:34 2022 -0700
+   commit d83149cb5399f492cb340cb18bf4650884361591
+   Author: Matthew <ImJustMatt@users.noreply.github.com>
+   Date:   Mon May 23 16:32:21 2022 -0700
    
-       Added Translations
+       Better crafting integration (#45)
+       
+       * Update reference
+       
+       * Placeholder
+       
+       * Added support for ModManifestBuilder
+       
+       * Added Hungarian translation
+       
+       * Updated for SMAPI 3.1.4.0
+       
+       * Added support for matching localized name
+       
+       * Updated to correct wiki links
+       
+       * Updated support for Better Crafting
+       
+       * Additional prepare for release
+       
+       * Create zh.json (#42) (#44)
+       
+       Added Chinese translation file.
+       
+       Co-authored-by: Andycc <103167501+Andyc66@users.noreply.github.com>
+       
+       Co-authored-by: Andycc <103167501+Andyc66@users.noreply.github.com>
    
