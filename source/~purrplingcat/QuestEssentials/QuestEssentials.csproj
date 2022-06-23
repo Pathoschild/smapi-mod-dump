@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
     <ProjectReference Include="$(SolutionDir)\QuestFramework\QuestFramework.csproj" Private="false" Condition="Exists('$(SolutionDir)\QuestFramework\QuestFramework.csproj')" />
     <!-- <Reference Include="PurrplingCore" HintPath="$(GamePath)\Mods\PurrplingCore\PurrplingCore.dll" Private="false" /> -->
